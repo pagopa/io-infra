@@ -1,4 +1,4 @@
-# terraform-infrastructure-template
+# pagoPA-infrastructure
 
 pagoPA project infrastructure
 
