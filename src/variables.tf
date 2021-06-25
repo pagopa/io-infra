@@ -38,6 +38,12 @@ variable "law_daily_quota_gb" {
   default     = -1
 }
 
+variable "mock_ec_enabled" {
+  type        = bool
+  description = "Mock EC enabled"
+  default     = true
+}
+
 variable "mock_ec_always_on" {
   type        = bool
   description = "Mock EC always on property"
@@ -54,4 +60,10 @@ variable "mock_ec_size" {
   type        = string
   description = "Mock EC Plan size"
   default     = "S1"
+}
+
+variable "mockec_ssl_certificate_name" {
+  type        = string
+  description = "Certificate name on Key Vault"
+  default     = "mock-ec-ssl-certificate-name"
 }
