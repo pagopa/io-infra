@@ -18,16 +18,16 @@ module "key_vault" {
 }
 
 # ## api management policy ## 
-# resource "azurerm_key_vault_access_policy" "api_management_policy" {
-#   key_vault_id = module.key_vault.id
-#   tenant_id    = data.azurerm_client_config.current.tenant_id
-#   object_id    = module.apim.principal_id
+resource "azurerm_key_vault_access_policy" "api_management_policy" {
+  key_vault_id = module.key_vault.id
+  tenant_id    = data.azurerm_client_config.current.tenant_id
+  object_id    = module.apim.principal_id
 
-#   key_permissions         = []
-#   secret_permissions      = ["Get", "List"]
-#   certificate_permissions = ["Get", "List"]
-#   storage_permissions     = []
-# }
+  key_permissions         = []
+  secret_permissions      = ["Get", "List"]
+  certificate_permissions = ["Get", "List"]
+  storage_permissions     = []
+}
 
 # ## user assined identity: (application gateway) ##
 # resource "azurerm_key_vault_access_policy" "app_gateway_policy" {
@@ -146,25 +146,6 @@ resource "azurerm_key_vault_access_policy" "azdo_sp_tls_cert" {
   ]
 }
 
-resource "azurerm_key_vault_access_policy" "cert_renew_policy" {
-  count        = var.devops_service_connection_object_id == null ? 0 : 1
-  key_vault_id = module.key_vault.id
-  tenant_id    = data.azurerm_client_config.current.tenant_id
-  object_id    = var.devops_service_connection_object_id
-
-  secret_permissions = [
-    "Get",
-    "List",
-    "Set",
-  ]
-
-  certificate_permissions = [
-    "Get",
-    "List",
-    "Import",
-  ]
-}
-
 # resource "azurerm_user_assigned_identity" "appgateway" {
 #   resource_group_name = azurerm_resource_group.sec_rg.name
 #   location            = azurerm_resource_group.sec_rg.location
@@ -179,20 +160,20 @@ resource "azurerm_key_vault_access_policy" "cert_renew_policy" {
 #   key_vault_id = module.key_vault.id
 # }
 
-# data "azurerm_key_vault_certificate" "app_gw_cstar" {
-#   name         = var.app_gateway_api_certificate_name
-#   key_vault_id = module.key_vault.id
-# }
+data "azurerm_key_vault_certificate" "app_gw_platform" {
+  name         = var.app_gateway_api_certificate_name
+  key_vault_id = module.key_vault.id
+}
 
-# data "azurerm_key_vault_certificate" "portal_cstar" {
-#   name         = var.app_gateway_portal_certificate_name
-#   key_vault_id = module.key_vault.id
-# }
+data "azurerm_key_vault_certificate" "portal_platform" {
+  name         = var.app_gateway_portal_certificate_name
+  key_vault_id = module.key_vault.id
+}
 
-# data "azurerm_key_vault_certificate" "management_cstar" {
-#   name         = var.app_gateway_management_certificate_name
-#   key_vault_id = module.key_vault.id
-# }
+data "azurerm_key_vault_certificate" "management_platform" {
+  name         = var.app_gateway_management_certificate_name
+  key_vault_id = module.key_vault.id
+}
 
 # data "azurerm_key_vault_secret" "bpd_pm_client_certificate_thumbprint" {
 #   name         = "BPD-PM-client-certificate-thumbprint"
@@ -214,10 +195,10 @@ resource "azurerm_key_vault_access_policy" "cert_renew_policy" {
 #   key_vault_id = module.key_vault.id
 # }
 
-# data "azurerm_key_vault_secret" "apim_publisher_email" {
-#   name         = "apim-publisher-email"
-#   key_vault_id = module.key_vault.id
-# }
+data "azurerm_key_vault_secret" "apim_publisher_email" {
+  name         = "apim-publisher-email"
+  key_vault_id = module.key_vault.id
+}
 
 # data "azurerm_key_vault_secret" "cruscotto-basic-auth-pwd" {
 #   name         = "CRUSCOTTO-Basic-Auth-Pwd"

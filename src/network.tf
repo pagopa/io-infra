@@ -26,3 +26,4 @@ module "vnet_integration" {
 
   tags = var.tags
 }
+

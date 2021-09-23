@@ -19,12 +19,6 @@ variable "lock_enable" {
 }
 
 # Azure DevOps
-variable "devops_service_connection_object_id" {
-  type        = string
-  description = "Azure deveops service connection id."
-  default     = null
-}
-
 variable "azdo_sp_tls_cert_enabled" {
   type        = string
   description = "Enable Azure DevOps connection for TLS cert management"
@@ -126,4 +120,49 @@ variable "dns_zone_prefix" {
   type        = string
   default     = null
   description = "The dns subdomain."
+}
+
+# apim
+variable "apim_publisher_name" {
+  type = string
+}
+
+variable "apim_sku" {
+  type = string
+}
+
+## Redis cache
+variable "redis_capacity" {
+  type    = number
+  default = 1
+}
+
+variable "redis_sku_name" {
+  type    = string
+  default = "Standard"
+}
+
+variable "redis_family" {
+  type    = string
+  default = "C"
+}
+variable "cidr_subnet_redis" {
+  type        = list(string)
+  description = "Redis network address space."
+  default     = []
+}
+
+variable "app_gateway_api_certificate_name" {
+  type        = string
+  description = "Application gateway api certificate name on Key Vault"
+}
+
+variable "app_gateway_portal_certificate_name" {
+  type        = string
+  description = "Application gateway developer portal certificate name on Key Vault"
+}
+
+variable "app_gateway_management_certificate_name" {
+  type        = string
+  description = "Application gateway api management certificate name on Key Vault"
 }
