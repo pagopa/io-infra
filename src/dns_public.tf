@@ -6,8 +6,8 @@ resource "azurerm_dns_zone" "public" {
   tags = var.tags
 }
 
-# DEV public DNS delegation
-resource "azurerm_dns_ns_record" "cstar_dev_pagopa_it_ns" {
+# Prod ONLY record to DEV public DNS delegation
+resource "azurerm_dns_ns_record" "dev_pagopa_it_ns" {
   count               = var.env_short == "p" ? 1 : 0
   name                = "dev"
   zone_name           = azurerm_dns_zone.public[0].name
@@ -22,8 +22,8 @@ resource "azurerm_dns_ns_record" "cstar_dev_pagopa_it_ns" {
   tags = var.tags
 }
 
-# UAT public DNS delegation
-resource "azurerm_dns_ns_record" "cstar_uat_pagopa_it_ns" {
+# Prod ONLY record to UAT public DNS delegation
+resource "azurerm_dns_ns_record" "uat_pagopa_it_ns" {
   count               = var.env_short == "p" ? 1 : 0
   name                = "uat"
   zone_name           = azurerm_dns_zone.public[0].name
@@ -36,4 +36,32 @@ resource "azurerm_dns_ns_record" "cstar_uat_pagopa_it_ns" {
   ]
   ttl  = var.dns_default_ttl_sec
   tags = var.tags
+}
+
+# application gateway records
+resource "azurerm_dns_a_record" "dns_a_api" {
+  name                = "api"
+  zone_name           = azurerm_dns_zone.public[0].name
+  resource_group_name = azurerm_resource_group.rg_vnet.name
+  ttl                 = var.dns_default_ttl_sec
+  records             = [azurerm_public_ip.appgateway_public_ip.ip_address]
+  tags                = var.tags
+}
+
+resource "azurerm_dns_a_record" "dns_a_portal" {
+  name                = "portal"
+  zone_name           = azurerm_dns_zone.public[0].name
+  resource_group_name = azurerm_resource_group.rg_vnet.name
+  ttl                 = var.dns_default_ttl_sec
+  records             = [azurerm_public_ip.appgateway_public_ip.ip_address]
+  tags                = var.tags
+}
+
+resource "azurerm_dns_a_record" "dns_a_management" {
+  name                = "management"
+  zone_name           = azurerm_dns_zone.public[0].name
+  resource_group_name = azurerm_resource_group.rg_vnet.name
+  ttl                 = var.dns_default_ttl_sec
+  records             = [azurerm_public_ip.appgateway_public_ip.ip_address]
+  tags                = var.tags
 }
