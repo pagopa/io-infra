@@ -10,20 +10,6 @@ pr:
       - 'src/k8s/*'
 
 parameters:
-  - name: 'DEV'
-    displayName: 'Plan on DEV environment'
-    type: boolean
-    default: True
-    values:
-      - False
-      - True
-  - name: 'UAT'
-    displayName: 'Plan on UAT environment'
-    type: boolean
-    default: True
-    values:
-      - False
-      - True
   - name: 'PROD'
     displayName: 'Plan on PROD environment'
     type: boolean
@@ -47,53 +33,11 @@ resources:
       endpoint: 'io-azure-devops-github-ro'
 
 stages:
-  - stage: DEV
-    dependsOn: []
-    condition: and(succeeded(), eq(${{parameters.DEV}}, true))
-    pool:
-      name: pagopa-dev-linux
-    jobs:
-      - job: terraform_install
-        steps:
-          # 1. Install terraform and terragrunt
-          - template: templates/terraform-setup/template.yaml@terraform
-      - job: terraform_plan
-        dependsOn: terraform_install
-        timeoutInMinutes: $[variables.TIME_OUT]
-        steps:
-          - checkout: self
-          # 2. Run terragrunt plan
-          - template: templates/terraform-plan/template.yaml@terraform
-            parameters:
-              SUBSCRIPTION: DEV-PAGOPA-SERVICE-CONN
-              ENVIRONMENT: dev
-
-  - stage: UAT
-    dependsOn: []
-    condition: and(succeeded(), eq(${{parameters.UAT}}, true))
-    pool:
-      name: pagopa-uat-linux
-    jobs:
-      - job: terraform_install
-        steps:
-          # 1. Install terraform and terragrunt
-          - template: templates/terraform-setup/template.yaml@terraform
-      - job: terraform_plan
-        dependsOn: terraform_install
-        timeoutInMinutes: $[variables.TIME_OUT]
-        steps:
-          - checkout: self
-          # 2. Run terragrunt plan
-          - template: templates/terraform-plan/template.yaml@terraform
-            parameters:
-              SUBSCRIPTION: UAT-PAGOPA-SERVICE-CONN
-              ENVIRONMENT: uat
-
   - stage: PROD
     dependsOn: []
     condition: and(succeeded(), eq(${{parameters.PROD}}, true))
     pool:
-      name: pagopa-prod-linux
+      name: io-prod-linux
     jobs:
       - job: terraform_install
         steps:
@@ -107,5 +51,5 @@ stages:
           # 2. Run terragrunt plan
           - template: templates/terraform-plan/template.yaml@terraform
             parameters:
-              SUBSCRIPTION: PROD-PAGOPA-SERVICE-CONN
+              SUBSCRIPTION: PROD-IO-SERVICE-CONN
               ENVIRONMENT: prod
