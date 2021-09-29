@@ -1,6 +1,6 @@
-# pagoPA-infrastructure
+# IO-infrastructure
 
-pagoPA project infrastructure
+IO project infrastructure
 
 ## Requirements
 
