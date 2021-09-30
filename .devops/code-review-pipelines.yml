@@ -53,3 +53,4 @@ stages:
             parameters:
               SUBSCRIPTION: PROD-IO-SERVICE-CONN
               ENVIRONMENT: prod
+              WORKINGDIR: 'src/core'

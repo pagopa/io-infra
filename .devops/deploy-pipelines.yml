@@ -43,6 +43,7 @@ stages:
             parameters:
               SUBSCRIPTION: PROD-IO-SERVICE-CONN
               ENVIRONMENT: prod
+              WORKINGDIR: 'src/core'
 
   - stage: apply_PROD
     dependsOn: [plan_PROD]
@@ -68,3 +69,4 @@ stages:
                   parameters:
                     SUBSCRIPTION: PROD-IO-SERVICE-CONN
                     ENVIRONMENT: prod
+                    WORKINGDIR: 'src/core'
