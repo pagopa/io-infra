@@ -8,9 +8,6 @@ tags = {
   CostCenter  = "TS300 - PRODOTTI E SERVIZI"
 }
 
-# main vnet
-cidr_vnet              = ["10.1.0.0/16"]
-
 external_domain = "pagopa.it"
 dns_zone_prefix = "platform"
 

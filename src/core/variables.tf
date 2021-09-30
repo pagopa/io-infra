@@ -18,6 +18,13 @@ variable "lock_enable" {
   description = "Apply locks to block accedentaly deletions."
 }
 
+variable "tags" {
+  type = map(any)
+  default = {
+    CreatedBy = "Terraform"
+  }
+}
+
 variable "common_rg" {
   type        = string
   description = "Common Virtual network resource group name."
