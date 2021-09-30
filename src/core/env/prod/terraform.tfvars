@@ -18,3 +18,8 @@ lock_enable              = true
 azdo_sp_tls_cert_enabled = true
 enable_azdoa             = true
 enable_iac_pipeline      = true
+
+common_rg = "io-p-rg-common"
+
+# Network
+vnet_name = "io-p-vnet-common"
