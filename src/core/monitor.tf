@@ -1,27 +1,24 @@
-resource "azurerm_resource_group" "monitor_rg" {
-  name     = format("%s-monitor-rg", local.project)
-  location = var.location
-
-  tags = var.tags
+data "azurerm_resource_group" "monitor_rg" {
+  name = var.common_rg
 }
 
-resource "azurerm_log_analytics_workspace" "log_analytics_workspace" {
-  name                = format("%s-law", local.project)
-  location            = azurerm_resource_group.monitor_rg.location
-  resource_group_name = azurerm_resource_group.monitor_rg.name
-  sku                 = var.law_sku
-  retention_in_days   = var.law_retention_in_days
-  daily_quota_gb      = var.law_daily_quota_gb
-
-  tags = var.tags
+data "azurerm_log_analytics_workspace" "monitor_rg" {
+  name                = var.log_analytics_workspace_name
+  resource_group_name = data.azurerm_resource_group.monitor_rg.name
 }
 
 # Application insights
-resource "azurerm_application_insights" "application_insights" {
-  name                = format("%s-appinsights", local.project)
-  location            = azurerm_resource_group.monitor_rg.location
-  resource_group_name = azurerm_resource_group.monitor_rg.name
-  application_type    = "other"
+data "azurerm_application_insights" "application_insights" {
+  name                = var.application_insights_name
+  resource_group_name = data.azurerm_resource_group.monitor_rg.name
+}
 
-  tags = var.tags
+data "azurerm_monitor_action_group" "email" {
+  name                = var.monitor_action_group_email_name
+  resource_group_name = data.azurerm_resource_group.monitor_rg.name
+}
+
+data "azurerm_monitor_action_group" "slack" {
+  name                = var.monitor_action_group_slack_name
+  resource_group_name = data.azurerm_resource_group.monitor_rg.name
 }
