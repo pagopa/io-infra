@@ -1,15 +1,15 @@
-env_short = "p"
+env_short = "d"
 
 tags = {
   CreatedBy   = "Terraform"
-  Environment = "Prod"
+  Environment = "Dev"
   Owner       = "IO"
   Source      = "https://github.com/pagopa/io-infra"
   CostCenter  = "TS300 - PRODOTTI E SERVIZI"
 }
 
 external_domain = "pagopa.it"
-dns_zone_prefix = "io"
+dns_zone_prefix = "dev.io"
 
 lock_enable              = true
 azdo_sp_tls_cert_enabled = true
