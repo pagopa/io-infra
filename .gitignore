@@ -34,4 +34,10 @@ override.tf.json
 settings.json
 __TMP
 .metals/
+*.log
+*.h2.db
+settings.json
+__TMP
+.metals/
 __azurite_*
+/.idea
