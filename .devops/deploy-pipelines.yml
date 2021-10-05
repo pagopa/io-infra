@@ -4,7 +4,7 @@ pr: none
 
 parameters:
   - name: 'PROD'
-    displayName: 'Plan on PROD environment'
+    displayName: 'Run on PROD environment'
     type: boolean
     default: True
     values:

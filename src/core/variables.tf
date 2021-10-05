@@ -1,28 +1,35 @@
-variable "location" {
-  type    = string
-  default = "westeurope"
-}
+# general
 
 variable "prefix" {
   type    = string
-  default = "pagopa"
+  default = "io"
+  validation {
+    condition = (
+      length(var.prefix) < 6
+    )
+    error_message = "Max length is 6 chars."
+  }
 }
 
 variable "env_short" {
   type = string
+  validation {
+    condition = (
+      length(var.env_short) <= 1
+    )
+    error_message = "Max length is 1 chars."
+  }
+}
+
+variable "location" {
+  type    = string
+  default = "westeurope"
 }
 
 variable "lock_enable" {
   type        = bool
   default     = false
   description = "Apply locks to block accedentaly deletions."
-}
-
-# Azure DevOps
-variable "azdo_sp_tls_cert_enabled" {
-  type        = string
-  description = "Enable Azure DevOps connection for TLS cert management"
-  default     = false
 }
 
 variable "tags" {
@@ -32,195 +39,13 @@ variable "tags" {
   }
 }
 
-## Monitor
-variable "law_sku" {
+# azure devops
+variable "azdo_sp_tls_cert_enabled" {
   type        = string
-  description = "Sku of the Log Analytics Workspace"
-  default     = "PerGB2018"
-}
-
-variable "law_retention_in_days" {
-  type        = number
-  description = "The workspace data retention in days"
-  default     = 30
-}
-
-variable "law_daily_quota_gb" {
-  type        = number
-  description = "The workspace daily quota for ingestion in GB."
-  default     = -1
-}
-
-# mock_ec
-
-variable "mock_ec_enabled" {
-  type        = bool
-  description = "Mock EC enabled"
+  description = "Enable Azure DevOps connection for TLS cert management"
   default     = false
 }
 
-variable "mock_ec_always_on" {
-  type        = bool
-  description = "Mock EC always on property"
-  default     = false
-}
-
-variable "mock_ec_tier" {
-  type        = string
-  description = "Mock EC Plan tier"
-  default     = "Standard"
-}
-
-variable "mock_ec_size" {
-  type        = string
-  description = "Mock EC Plan size"
-  default     = "S1"
-}
-
-variable "cidr_subnet_mock_ec" {
-  type        = list(string)
-  description = "Address prefixes subnet mock ec"
-  default     = null
-}
-
-# mock_ec
-
-variable "mock_psp_enabled" {
-  type        = bool
-  description = "Mock PSP enabled"
-  default     = false
-}
-
-variable "mock_psp_always_on" {
-  type        = bool
-  description = "Mock PSP always on property"
-  default     = false
-}
-
-variable "mock_psp_tier" {
-  type        = string
-  description = "Mock PSP Plan tier"
-  default     = "Standard"
-}
-
-variable "mock_psp_size" {
-  type        = string
-  description = "Mock PSP Plan size"
-  default     = "S1"
-}
-
-variable "cidr_subnet_mock_psp" {
-  type        = list(string)
-  description = "Address prefixes subnet mock psp"
-  default     = null
-}
-
-# Network
-variable "cidr_vnet" {
-  type        = list(string)
-  description = "Virtual network address space."
-}
-
-variable "cidr_vnet_integration" {
-  type        = list(string)
-  description = "Virtual network to peer with sia subscription. It should host apim"
-}
-
-variable "cidr_subnet_apim" {
-  type        = list(string)
-  description = "Address prefixes subnet api management."
-  default     = null
-}
-
-variable "cidr_subnet_appgateway" {
-  type        = list(string)
-  description = "Application gateway address space."
-}
-
-# DNS
-variable "dns_default_ttl_sec" {
-  type        = number
-  description = "value"
-  default     = 3600
-}
-
-variable "external_domain" {
-  type        = string
-  default     = null
-  description = "Domain for delegation"
-}
-
-variable "dns_zone_prefix" {
-  type        = string
-  default     = null
-  description = "The dns subdomain."
-}
-
-# apim
-variable "apim_publisher_name" {
-  type = string
-}
-
-variable "apim_sku" {
-  type = string
-}
-
-## Redis cache
-
-variable "redis_cache_enabled" {
-  type        = bool
-  description = "redis cache enabled"
-  default     = false
-}
-
-variable "redis_capacity" {
-  type    = number
-  default = 1
-}
-
-variable "redis_sku_name" {
-  type    = string
-  default = "Standard"
-}
-
-variable "redis_family" {
-  type    = string
-  default = "C"
-}
-variable "cidr_subnet_redis" {
-  type        = list(string)
-  description = "Redis network address space."
-  default     = []
-}
-
-variable "app_gateway_api_certificate_name" {
-  type        = string
-  description = "Application gateway api certificate name on Key Vault"
-}
-
-variable "app_gateway_portal_certificate_name" {
-  type        = string
-  description = "Application gateway developer portal certificate name on Key Vault"
-}
-
-variable "app_gateway_management_certificate_name" {
-  type        = string
-  description = "Application gateway api management certificate name on Key Vault"
-}
-
-# Scaling
-
-variable "app_gateway_min_capacity" {
-  type    = number
-  default = 1
-}
-
-variable "app_gateway_max_capacity" {
-  type    = number
-  default = 2
-}
-
-# Azure DevOps Agent
 variable "enable_azdoa" {
   type        = bool
   description = "Enable Azure DevOps agent."
@@ -236,3 +61,122 @@ variable "enable_iac_pipeline" {
   description = "If true create the key vault policy to allow used by azure devops iac pipelines."
   default     = false
 }
+
+# network
+variable "common_rg" {
+  type        = string
+  description = "Common Virtual network resource group name."
+  default     = ""
+}
+
+## Monitor
+variable "log_analytics_workspace_name" {
+  type        = string
+  description = "The common Log Analytics Workspace name"
+  default     = ""
+}
+
+variable "application_insights_name" {
+  type        = string
+  description = "The common Application Insights name"
+  default     = ""
+}
+##
+
+## Network
+variable "vnet_name" {
+  type        = string
+  description = "Common Virtual network resource name."
+  default     = ""
+}
+
+variable "cidr_subnet_eventhub" {
+  type        = list(string)
+  description = "Eventhub network address space."
+}
+##
+
+## Event hub
+variable "ehns_sku_name" {
+  type        = string
+  description = "Defines which tier to use."
+  default     = "Basic"
+}
+
+variable "ehns_capacity" {
+  type        = number
+  description = "Specifies the Capacity / Throughput Units for a Standard SKU namespace."
+  default     = null
+}
+
+variable "ehns_maximum_throughput_units" {
+  type        = number
+  description = "Specifies the maximum number of throughput units when Auto Inflate is Enabled"
+  default     = null
+}
+
+variable "ehns_auto_inflate_enabled" {
+  type        = bool
+  description = "Is Auto Inflate enabled for the EventHub Namespace?"
+  default     = false
+}
+
+variable "ehns_zone_redundant" {
+  type        = bool
+  description = "Specifies if the EventHub Namespace should be Zone Redundant (created across Availability Zones)."
+  default     = false
+}
+
+variable "eventhubs" {
+  description = "A list of event hubs to add to namespace."
+  type = list(object({
+    name              = string
+    partitions        = number
+    message_retention = number
+    consumers         = list(string)
+    keys = list(object({
+      name   = string
+      listen = bool
+      send   = bool
+      manage = bool
+    }))
+  }))
+  default = []
+}
+
+variable "ehns_alerts_enabled" {
+  type        = bool
+  default     = true
+  description = "Event hub alerts enabled?"
+}
+
+variable "ehns_metric_alerts" {
+  default = {}
+
+  description = <<EOD
+Map of name = criteria objects
+EOD
+
+  type = map(object({
+    # criteria.*.aggregation to be one of [Average Count Minimum Maximum Total]
+    aggregation = string
+    metric_name = string
+    description = string
+    # criteria.0.operator to be one of [Equals NotEquals GreaterThan GreaterThanOrEqual LessThan LessThanOrEqual]
+    operator  = string
+    threshold = number
+    # Possible values are PT1M, PT5M, PT15M, PT30M and PT1H
+    frequency = string
+    # Possible values are PT1M, PT5M, PT15M, PT30M, PT1H, PT6H, PT12H and P1D.
+    window_size = string
+
+    dimension = list(object(
+      {
+        name     = string
+        operator = string
+        values   = list(string)
+      }
+    ))
+  }))
+}
+## 
