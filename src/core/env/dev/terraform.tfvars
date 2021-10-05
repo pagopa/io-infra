@@ -5,7 +5,7 @@ tags = {
   Environment = "Dev"
   Owner       = "IO"
   Source      = "https://github.com/pagopa/io-infra"
-  CostCenter  = "TS300 - PRODOTTI E SERVIZI"
+  CostCenter  = "TS310 - PAGAMENTI & SERVIZI"
 }
 
 external_domain = "pagopa.it"

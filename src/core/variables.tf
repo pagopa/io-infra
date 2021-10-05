@@ -1,15 +1,29 @@
-variable "location" {
-  type    = string
-  default = "westeurope"
-}
+# general
 
 variable "prefix" {
   type    = string
   default = "io"
+  validation {
+    condition = (
+      length(var.prefix) < 6
+    )
+    error_message = "Max length is 6 chars."
+  }
 }
 
 variable "env_short" {
   type = string
+  validation {
+    condition = (
+      length(var.env_short) <= 1
+    )
+    error_message = "Max length is 1 chars."
+  }
+}
+
+variable "location" {
+  type    = string
+  default = "westeurope"
 }
 
 variable "lock_enable" {
@@ -25,6 +39,30 @@ variable "tags" {
   }
 }
 
+# azure devops
+variable "azdo_sp_tls_cert_enabled" {
+  type        = string
+  description = "Enable Azure DevOps connection for TLS cert management"
+  default     = false
+}
+
+variable "enable_azdoa" {
+  type        = bool
+  description = "Enable Azure DevOps agent."
+}
+
+variable "cidr_subnet_azdoa" {
+  type        = list(string)
+  description = "Azure DevOps agent network address space."
+}
+
+variable "enable_iac_pipeline" {
+  type        = bool
+  description = "If true create the key vault policy to allow used by azure devops iac pipelines."
+  default     = false
+}
+
+# network
 variable "common_rg" {
   type        = string
   description = "Common Virtual network resource group name."
@@ -41,18 +79,6 @@ variable "log_analytics_workspace_name" {
 variable "application_insights_name" {
   type        = string
   description = "The common Application Insights name"
-  default     = ""
-}
-
-variable "monitor_action_group_email_name" {
-  type        = string
-  description = "The common email group name"
-  default     = ""
-}
-
-variable "monitor_action_group_slack_name" {
-  type        = string
-  description = "The common slack group name"
   default     = ""
 }
 ##
@@ -123,6 +149,7 @@ variable "ehns_alerts_enabled" {
   default     = true
   description = "Event hub alerts enabled?"
 }
+
 variable "ehns_metric_alerts" {
   default = {}
 

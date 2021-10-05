@@ -16,29 +16,6 @@ module "key_vault" {
   tags = var.tags
 }
 
-# ## api management policy ## 
-resource "azurerm_key_vault_access_policy" "api_management_policy" {
-  key_vault_id = module.key_vault.id
-  tenant_id    = data.azurerm_client_config.current.tenant_id
-  object_id    = module.apim.principal_id
-
-  key_permissions         = []
-  secret_permissions      = ["Get", "List"]
-  certificate_permissions = ["Get", "List"]
-  storage_permissions     = []
-}
-
-## user assined identity: (application gateway) ##
-resource "azurerm_key_vault_access_policy" "app_gateway_policy" {
-  key_vault_id            = module.key_vault.id
-  tenant_id               = data.azurerm_client_config.current.tenant_id
-  object_id               = azurerm_user_assigned_identity.appgateway.principal_id
-  key_permissions         = ["Get", "List"]
-  secret_permissions      = ["Get", "List"]
-  certificate_permissions = ["Get", "List", "Purge"]
-  storage_permissions     = []
-}
-
 # Azure AD
 data "azuread_group" "adgroup_admin" {
   display_name = format("%s-adgroup-admin", local.project)
@@ -51,13 +28,10 @@ resource "azurerm_key_vault_access_policy" "ad_group_policy" {
   tenant_id = data.azurerm_client_config.current.tenant_id
   object_id = data.azuread_group.adgroup_admin.object_id
 
-  key_permissions     = ["Get", "List", "Update", "Create", "Import", "Delete", ]
-  secret_permissions  = ["Get", "List", "Set", "Delete", ]
-  storage_permissions = []
-  certificate_permissions = [
-    "Get", "List", "Update", "Create", "Import",
-    "Delete", "Restore", "Purge", "Recover"
-  ]
+  key_permissions         = ["Get", "List", "Update", "Create", "Import", "Delete", ]
+  secret_permissions      = ["Get", "List", "Set", "Delete", ]
+  storage_permissions     = []
+  certificate_permissions = ["Get", "List", "Update", "Create", "Import", "Delete", "Restore", "Purge", "Recover", ]
 }
 
 data "azuread_group" "adgroup_developers" {
@@ -73,13 +47,10 @@ resource "azurerm_key_vault_access_policy" "adgroup_developers_policy" {
   tenant_id = data.azurerm_client_config.current.tenant_id
   object_id = data.azuread_group.adgroup_developers.object_id
 
-  key_permissions     = ["Get", "List", "Update", "Create", "Import", "Delete", ]
-  secret_permissions  = ["Get", "List", "Set", "Delete", ]
-  storage_permissions = []
-  certificate_permissions = [
-    "Get", "List", "Update", "Create", "Import",
-    "Delete", "Restore", "Purge", "Recover"
-  ]
+  key_permissions         = ["Get", "List", "Update", "Create", "Import", "Delete", ]
+  secret_permissions      = ["Get", "List", "Set", "Delete", ]
+  storage_permissions     = []
+  certificate_permissions = ["Get", "List", "Update", "Create", "Import", "Delete", "Restore", "Purge", "Recover", ]
 }
 
 data "azuread_group" "adgroup_externals" {
@@ -95,13 +66,10 @@ resource "azurerm_key_vault_access_policy" "adgroup_externals_policy" {
   tenant_id = data.azurerm_client_config.current.tenant_id
   object_id = data.azuread_group.adgroup_externals.object_id
 
-  key_permissions     = ["Get", "List", "Update", "Create", "Import", "Delete", ]
-  secret_permissions  = ["Get", "List", "Set", "Delete", ]
-  storage_permissions = []
-  certificate_permissions = [
-    "Get", "List", "Update", "Create", "Import",
-    "Delete", "Restore", "Purge", "Recover"
-  ]
+  key_permissions         = ["Get", "List", "Update", "Create", "Import", "Delete", ]
+  secret_permissions      = ["Get", "List", "Set", "Delete", ]
+  storage_permissions     = []
+  certificate_permissions = ["Get", "List", "Update", "Create", "Import", "Delete", "Restore", "Purge", "Recover", ]
 }
 
 data "azuread_group" "adgroup_security" {
@@ -117,13 +85,10 @@ resource "azurerm_key_vault_access_policy" "adgroup_security_policy" {
   tenant_id = data.azurerm_client_config.current.tenant_id
   object_id = data.azuread_group.adgroup_security.object_id
 
-  key_permissions     = ["Get", "List", "Update", "Create", "Import", "Delete", ]
-  secret_permissions  = ["Get", "List", "Set", "Delete", ]
-  storage_permissions = []
-  certificate_permissions = [
-    "Get", "List", "Update", "Create", "Import",
-    "Delete", "Restore", "Purge", "Recover"
-  ]
+  key_permissions         = ["Get", "List", "Update", "Create", "Import", "Delete", ]
+  secret_permissions      = ["Get", "List", "Set", "Delete", ]
+  storage_permissions     = []
+  certificate_permissions = ["Get", "List", "Update", "Create", "Import", "Delete", "Restore", "Purge", "Recover", ]
 }
 
 ## azure devops ##
@@ -138,49 +103,17 @@ resource "azurerm_key_vault_access_policy" "azdo_sp_tls_cert" {
   tenant_id    = data.azurerm_client_config.current.tenant_id
   object_id    = data.azuread_service_principal.azdo_sp_tls_cert[0].object_id
 
-  certificate_permissions = [
-    "Get",
-    "List",
-    "Import",
-  ]
+  certificate_permissions = ["Get", "Import", ]
 }
 
-resource "azurerm_user_assigned_identity" "appgateway" {
-  resource_group_name = azurerm_resource_group.sec_rg.name
-  location            = azurerm_resource_group.sec_rg.location
-  name                = format("%s-appgateway-identity", local.project)
+# data "azurerm_key_vault_secret" "sec_workspace_id" {
+#   count        = var.env_short == "p" ? 1 : 0
+#   name         = "sec-workspace-id"
+#   key_vault_id = module.key_vault.id
+# }
 
-  tags = var.tags
-}
-
-data "azurerm_key_vault_certificate" "app_gw_platform" {
-  name         = var.app_gateway_api_certificate_name
-  key_vault_id = module.key_vault.id
-}
-
-data "azurerm_key_vault_certificate" "portal_platform" {
-  name         = var.app_gateway_portal_certificate_name
-  key_vault_id = module.key_vault.id
-}
-
-data "azurerm_key_vault_certificate" "management_platform" {
-  name         = var.app_gateway_management_certificate_name
-  key_vault_id = module.key_vault.id
-}
-
-data "azurerm_key_vault_secret" "apim_publisher_email" {
-  name         = "apim-publisher-email"
-  key_vault_id = module.key_vault.id
-}
-
-data "azurerm_key_vault_secret" "sec_workspace_id" {
-  count        = var.env_short == "p" ? 1 : 0
-  name         = "sec-workspace-id"
-  key_vault_id = module.key_vault.id
-}
-
-data "azurerm_key_vault_secret" "sec_storage_id" {
-  count        = var.env_short == "p" ? 1 : 0
-  name         = "sec-storage-id"
-  key_vault_id = module.key_vault.id
-}
+# data "azurerm_key_vault_secret" "sec_storage_id" {
+#   count        = var.env_short == "p" ? 1 : 0
+#   name         = "sec-storage-id"
+#   key_vault_id = module.key_vault.id
+# }
