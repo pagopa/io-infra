@@ -17,6 +17,12 @@
 - [ ] Update configuration to existing resources
 - [ ] Remove existing resources
 
+### Env to apply
+
+- [ ] DEV
+- [ ] UAT
+- [ ] PROD
+
 ### Does this introduce a change to production resources with possible user impact?
 
 - [ ] Yes, users may be impacted applying this change
