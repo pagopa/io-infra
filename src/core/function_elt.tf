@@ -12,7 +12,6 @@ module "fnelt_snet" {
   resource_group_name  = data.azurerm_resource_group.vnet_common_rg.name
   virtual_network_name = data.azurerm_virtual_network.vnet_common.name
   service_endpoints    = ["Microsoft.EventHub"]
-  location             = var.location
 
   delegation = {
     name = "default"
