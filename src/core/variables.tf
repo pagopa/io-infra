@@ -94,6 +94,11 @@ variable "cidr_subnet_eventhub" {
   type        = list(string)
   description = "Eventhub network address space."
 }
+
+variable "cidr_subnet_fnelt" {
+  type        = list(string)
+  description = "function-elt network address space."
+}
 ##
 
 ## Event hub
