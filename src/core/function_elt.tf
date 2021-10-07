@@ -58,6 +58,22 @@ module "function_elt" {
     FETCH_KEEPALIVE_MAX_FREE_SOCKETS    = "10"
     FETCH_KEEPALIVE_FREE_SOCKET_TIMEOUT = "30000"
     FETCH_KEEPALIVE_TIMEOUT             = "60000"
+
+    COSMOSDB_NAME                = "db"
+    COSMOSDB_URI                 = data.azurerm_cosmosdb_account.cosmos_api.endpoint
+    COSMOSDB_KEY                 = data.azurerm_cosmosdb_account.cosmos_api.primary_master_key
+    COSMOS_API_CONNECTION_STRING = format("AccountEndpoint=%s;AccountKey=%s;", data.azurerm_cosmosdb_account.cosmos_api.endpoint, data.azurerm_cosmosdb_account.cosmos_api.primary_master_key)
+
+    TARGETKAFKA_clientId            = "IO_FUNCTIONS_ELT"
+    TARGETKAFKA_brokers             = local.event_hub.connection
+    TARGETKAFKA_ssl                 = "true"
+    TARGETKAFKA_sasl_mechanism      = "plain"
+    TARGETKAFKA_sasl_username       = "$ConnectionString"
+    TARGETKAFKA_sasl_password       = module.event_hub.keys["io-cosmosdb-services.io-fn-elt"].primary_connection_string
+    TARGETKAFKA_maxInFlightRequests = "1"
+    TARGETKAFKA_idempotent          = "true"
+    TARGETKAFKA_transactionalId     = "IO_ELT"
+    SERVICESTOPIC_topic             = "io-cosmosdb-services"
   }
 
   allowed_subnets = [

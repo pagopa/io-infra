@@ -4,3 +4,8 @@ resource "azurerm_resource_group" "data" {
 
   tags = var.tags
 }
+
+data "azurerm_cosmosdb_account" "cosmos_api" {
+  name                = format("%s-cosmos-api", local.project)
+  resource_group_name = format("%s-rg-internal", local.project)
+}
