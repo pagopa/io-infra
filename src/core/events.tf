@@ -16,7 +16,7 @@ module "eventhub_snet" {
 }
 
 module "event_hub" {
-  source                   = "git::https://github.com/pagopa/azurerm.git//eventhub?ref=v1.0.51"
+  source                   = "git::https://github.com/pagopa/azurerm.git//eventhub?ref=v1.0.66"
   name                     = format("%s-evh-ns", local.project)
   location                 = var.location
   resource_group_name      = azurerm_resource_group.event_rg.name
@@ -45,6 +45,12 @@ module "event_hub" {
   ]
 
   tags = var.tags
+}
+
+locals {
+  event_hub = {
+    connection = "${format("%s-evh-ns", local.project)}.servicebus.windows.net:9093"
+  }
 }
 
 #tfsec:ignore:AZU023
