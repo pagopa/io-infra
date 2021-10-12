@@ -23,7 +23,7 @@ cidr_subnet_azdoa    = ["10.0.250.0/24"]
 cidr_subnet_fnelt    = ["10.0.11.0/24"]
 
 # azure devops
-azdo_sp_tls_cert_enabled = false
+azdo_sp_tls_cert_enabled = true
 enable_azdoa             = true
 enable_iac_pipeline      = true
 ##
