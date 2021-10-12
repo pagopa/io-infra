@@ -74,7 +74,7 @@ module "function_publiceventdispatcher" {
 }
 
 #tfsec:ignore:azure-storage-default-action-deny
-module "storage_account_publiceventdispatcher" {
+module "storage_account_pblevtdispatcher" {
   source = "git::https://github.com/pagopa/azurerm.git//storage_account?ref=v1.0.60"
 
   # name is too long for a storage, let's be short
