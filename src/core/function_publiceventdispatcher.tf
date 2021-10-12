@@ -1,14 +1,20 @@
-resource "azurerm_resource_group" "publiceventdispatcher_rg" {
-  name     = format("%s-publiceventdispatcher-rg", local.project)
+#
+# Define resources for fn-pblevtdispatcher
+#
+# as the full name would result in a storage name too long, we user the shorter version: pblevtdispatcher
+#
+
+resource "azurerm_resource_group" "pblevtdispatcher_rg" {
+  name     = format("%s-pblevtdispatcher-rg", local.project)
   location = var.location
 
   tags = var.tags
 }
 
-module "function_publiceventdispatcher_snetout" {
+module "function_pblevtdispatcher_snetout" {
   source               = "git::https://github.com/pagopa/azurerm.git//subnet?ref=v1.0.60"
-  name                 = "fn3publiceventdispatcherout"
-  address_prefixes     = var.cidr_subnet_fnpubliceventdispatcher
+  name                 = "fn3pblevtdispatcherout"
+  address_prefixes     = var.cidr_subnet_fnpblevtdispatcher
   resource_group_name  = data.azurerm_resource_group.vnet_common_rg.name
   virtual_network_name = data.azurerm_virtual_network.vnet_common.name
   service_endpoints = [
@@ -26,16 +32,16 @@ module "function_publiceventdispatcher_snetout" {
   }
 }
 
-module "function_publiceventdispatcher" {
+module "function_pblevtdispatcher" {
   source = "git::https://github.com/pagopa/azurerm.git//function_app?ref=v1.0.65"
 
-  resource_group_name                      = azurerm_resource_group.publiceventdispatcher_rg.name
+  resource_group_name                      = azurerm_resource_group.pblevtdispatcher_rg.name
   prefix                                   = var.prefix
   env_short                                = var.env_short
-  name                                     = "publiceventdispatcher"
+  name                                     = "pblevtdispatcher"
   location                                 = var.location
   health_check_path                        = "api/v1/info"
-  subnet_out_id                            = module.function_publiceventdispatcher_snetout.id
+  subnet_out_id                            = module.function_pblevtdispatcher_snetout.id
   runtime_version                          = "~3"
   application_insights_instrumentation_key = data.azurerm_application_insights.application_insights.instrumentation_key
 
@@ -77,13 +83,12 @@ module "function_publiceventdispatcher" {
 module "storage_account_pblevtdispatcher" {
   source = "git::https://github.com/pagopa/azurerm.git//storage_account?ref=v1.0.60"
 
-  # name is too long for a storage, let's be short
   name                       = replace(format("%s-stpblevtdispatcher", local.project), "-", "")
   account_kind               = "StorageV2"
   account_tier               = "Standard"
   account_replication_type   = "GRS"
   access_tier                = "Hot"
-  resource_group_name        = azurerm_resource_group.publiceventdispatcher_rg.name
+  resource_group_name        = azurerm_resource_group.pblevtdispatcher_rg.name
   location                   = var.location
   advanced_threat_protection = false
 
@@ -96,7 +101,7 @@ module "storage_account_pblevtdispatcher" {
       "AzureServices",
     ]
     virtual_network_subnet_ids = [
-      module.function_publiceventdispatcher_snetout.id
+      module.function_pblevtdispatcher_snetout.id
     ]
   }
 

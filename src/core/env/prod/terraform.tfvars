@@ -18,10 +18,10 @@ common_rg = "io-p-rg-common"
 # networking
 vnet_name = "io-p-vnet-common"
 # cidr_vnet         = ["10.0.0.0/16"]
-cidr_subnet_eventhub                = ["10.0.10.0/24"]
-cidr_subnet_azdoa                   = ["10.0.250.0/24"]
-cidr_subnet_fnelt                   = ["10.0.11.0/24"]
-cidr_subnet_fnpubliceventdispatcher = ["10.0.12.0/24"]
+cidr_subnet_eventhub           = ["10.0.10.0/24"]
+cidr_subnet_azdoa              = ["10.0.250.0/24"]
+cidr_subnet_fnelt              = ["10.0.11.0/24"]
+cidr_subnet_fnpblevtdispatcher = ["10.0.12.0/24"]
 
 # azure devops
 azdo_sp_tls_cert_enabled = false

@@ -100,7 +100,7 @@ variable "cidr_subnet_fnelt" {
   description = "function-elt network address space."
 }
 
-variable "cidr_subnet_fnpubliceventdispatcher" {
+variable "cidr_subnet_fnpblevtdispatcher" {
   type        = list(string)
   description = "function-publiceventdispatcher network address space."
 }
