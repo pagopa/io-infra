@@ -5,9 +5,9 @@
 module "apim_io_backend_product" {
   source = "git::https://github.com/pagopa/azurerm.git//api_management_product?ref=v1.0.16"
 
-  product_id   = "product-io-backend"
-  display_name = "product-io-backend"
-  description  = "product-io-backend"
+  product_id   = "io-backend"
+  display_name = "IO BACKEND"
+  description  = "Product for IO backend"
 
   api_management_name = data.azurerm_api_management.apim.name
   resource_group_name = data.azurerm_api_management.apim.resource_group_name
