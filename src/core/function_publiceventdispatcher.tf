@@ -77,7 +77,8 @@ module "function_publiceventdispatcher" {
 module "storage_account_publiceventdispatcher" {
   source = "git::https://github.com/pagopa/azurerm.git//storage_account?ref=v1.0.60"
 
-  name                       = replace(format("%s-stpubliceventdispatcher", local.project), "-", "")
+  # name is too long for a storage, let's be short
+  name                       = replace(format("%s-stpblevtdispatcher", local.project), "-", "")
   account_kind               = "StorageV2"
   account_tier               = "Standard"
   account_replication_type   = "GRS"
