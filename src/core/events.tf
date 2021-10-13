@@ -32,7 +32,21 @@ module "event_hub" {
   eventhubs = var.eventhubs
 
   network_rulesets = [
-    { ip_rule = [{ ip_mask = "18.192.147.151" }] }
+    { 
+      default_action = "Deny", 
+      virtual_network_rule = [
+        { 
+          subnet_id = module.function_elt_snetout.id, 
+          ignore_missing_virtual_network_service_endpoint = false 
+        }
+      ], 
+      ip_rule = [
+        { 
+          ip_mask = "18.192.147.151", 
+          action = "Allow" 
+        }
+      ] 
+    }
   ]
 
   alerts_enabled = var.ehns_alerts_enabled
