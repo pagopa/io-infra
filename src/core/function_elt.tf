@@ -104,7 +104,7 @@ module "storage_account_elt" {
 
   network_rules = {
     default_action = "Deny"
-    ip_rules       = []
+    ip_rules       = [var.cidr_subnet_azdoa]
     bypass = [
       "Logging",
       "Metrics",
