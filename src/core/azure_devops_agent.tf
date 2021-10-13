@@ -11,6 +11,9 @@ data "azurerm_subnet" "azdoa_snet" {
   name                 = "azure-devops"
   virtual_network_name = data.azurerm_virtual_network.vnet_common.name
   resource_group_name  = data.azurerm_resource_group.vnet_common_rg.name
+  service_endpoints    = [
+    "Microsoft.Storage"
+  ]
 }
 
 module "azdoa_li" {
