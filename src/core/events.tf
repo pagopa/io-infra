@@ -42,7 +42,7 @@ module "event_hub" {
       ], 
       ip_rule = [
         { 
-          ip_mask = "18.192.147.151", 
+          ip_mask = "18.192.147.151", # PDND public IP
           action = "Allow" 
         }
       ] 
