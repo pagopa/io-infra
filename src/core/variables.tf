@@ -149,6 +149,15 @@ variable "eventhubs" {
   default = []
 }
 
+variable "ehns_ip_rules" {
+  description = "eventhub netowrk rules"
+  type = list(object({
+    ip_mask = string
+    action  = string
+  }))
+  default = []
+}
+
 variable "ehns_alerts_enabled" {
   type        = bool
   default     = true

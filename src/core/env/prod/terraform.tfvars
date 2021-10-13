@@ -41,6 +41,13 @@ ehns_maximum_throughput_units = 5
 ehns_zone_redundant           = true
 ehns_alerts_enabled           = true
 
+ehns_ip_rules = [
+  {
+    ip_mask = "18.192.147.151", # PDND
+    action  = "Allow"
+  }
+]
+
 ehns_metric_alerts = {
   no_trx = {
     aggregation = "Total"
