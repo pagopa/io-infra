@@ -31,6 +31,10 @@ module "event_hub" {
 
   eventhubs = var.eventhubs
 
+  network_rulesets = [
+    { ip_rules = [{ ip_mask = "18.192.147.151" }] }
+  ]
+
   alerts_enabled = var.ehns_alerts_enabled
   metric_alerts  = var.ehns_metric_alerts
   action = [
