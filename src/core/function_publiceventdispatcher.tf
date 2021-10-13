@@ -13,7 +13,7 @@ resource "azurerm_resource_group" "pblevtdispatcher_rg" {
 
 module "function_pblevtdispatcher_snetout" {
   source               = "git::https://github.com/pagopa/azurerm.git//subnet?ref=v1.0.60"
-  name                 = "fn3pblevtdispatcherout"
+  name                 = "fnpblevtdispatcherout"
   address_prefixes     = var.cidr_subnet_fnpblevtdispatcher
   resource_group_name  = data.azurerm_resource_group.vnet_common_rg.name
   virtual_network_name = data.azurerm_virtual_network.vnet_common.name
