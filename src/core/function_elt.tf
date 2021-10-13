@@ -50,7 +50,7 @@ module "function_elt" {
     WEBSITE_NODE_DEFAULT_VERSION   = "14.16.0"
     FUNCTIONS_WORKER_PROCESS_COUNT = 4
     NODE_ENV                       = "production"
-    AzureWebJobsStorage            = module.function_elt.storage_account.primary_access_key   
+    AzureWebJobsStorage            = module.function_elt.storage_account.primary_access_key
 
     // Keepalive fields are all optionals
     FETCH_KEEPALIVE_ENABLED             = "true"
@@ -120,5 +120,5 @@ module "storage_account_elt" {
 
 resource "azurerm_storage_table" "fnelterrors" {
   name                 = "fnelterrors"
-  storage_account_name = modeule.storage_account_elt.name
+  storage_account_name = module.storage_account_elt.name
 }
