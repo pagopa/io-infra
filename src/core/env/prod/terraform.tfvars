@@ -19,10 +19,16 @@ common_rg = "io-p-rg-common"
 # networking
 vnet_name = "io-p-vnet-common"
 # cidr_vnet         = ["10.0.0.0/16"]
-cidr_subnet_eventhub           = ["10.0.10.0/24"]
-cidr_subnet_azdoa              = ["10.0.250.0/24"]
-cidr_subnet_fnelt              = ["10.0.11.0/24"]
-cidr_subnet_fnpblevtdispatcher = ["10.0.12.0/24"]
+cidr_subnet_eventhub                  = ["10.0.10.0/24"]
+cidr_subnet_azdoa                     = ["10.0.250.0/24"]
+cidr_subnet_fnelt                     = ["10.0.11.0/24"]
+cidr_subnet_fnpblevtdispatcher        = ["10.0.12.0/24"]
+cidr_subnet_appgateway                = ["10.0.13.0/24"]
+app_gateway_api_certificate_name      = "api-io-pagopa-it"
+app_gateway_api_app_certificate_name  = "api-app-io-pagopa-it"
+app_gateway_api_mtls_certificate_name = "api-mtls-io-pagopa-it"
+app_gateway_min_capacity              = 0
+app_gateway_max_capacity              = 50
 
 # azure devops
 azdo_sp_tls_cert_enabled = true
@@ -42,6 +48,13 @@ ehns_auto_inflate_enabled     = true
 ehns_maximum_throughput_units = 5
 ehns_zone_redundant           = true
 ehns_alerts_enabled           = true
+
+ehns_ip_rules = [
+  {
+    ip_mask = "18.192.147.151", # PDND
+    action  = "Allow"
+  }
+]
 
 ehns_metric_alerts = {
   no_trx = {
@@ -111,166 +124,3 @@ eventhubs = [
     ]
   }
 ]
-
-# eventhubs = [
-#   {
-#     name              = "bpd-citizen-trx"
-#     partitions        = 32
-#     message_retention = 7
-#     consumers         = ["bpd-citizen"]
-#     keys = [
-#       {
-#         name   = "bpd-payment-instrument"
-#         listen = false
-#         send   = true
-#         manage = false
-#       },
-#       {
-#         name   = "bpd-citizen"
-#         listen = true
-#         send   = false
-#         manage = false
-#       }
-#     ]
-#   },
-#   {
-#     name              = "bpd-trx"
-#     partitions        = 32
-#     message_retention = 7
-#     consumers         = ["bpd-point-processor"]
-#     keys = [
-#       {
-#         name   = "bpd-payment-instrument"
-#         listen = false
-#         send   = true
-#         manage = false
-#       },
-#       {
-#         name   = "bpd-point-processor"
-#         listen = true
-#         send   = false
-#         manage = false
-#       },
-#       {
-#         name   = "bpd-citizen"
-#         listen = false
-#         send   = true
-#         manage = false
-#       }
-#     ]
-#   },
-#   {
-#     name              = "bpd-trx-cashback"
-#     partitions        = 32
-#     message_retention = 7
-#     consumers         = ["bpd-winning-transaction"]
-#     keys = [
-#       {
-#         name   = "bpd-point-processor"
-#         listen = false
-#         send   = true
-#         manage = false
-#       },
-#       {
-#         name   = "bpd-winning-transaction"
-#         listen = true
-#         send   = false
-#         manage = false
-#       },
-#     ]
-#   },
-#   {
-#     name              = "bpd-trx-error"
-#     partitions        = 3
-#     message_retention = 7
-#     consumers         = ["bpd-transaction-error-manager"]
-#     keys = [
-#       {
-#         name   = "bpd-point-processor"
-#         listen = false
-#         send   = true
-#         manage = false
-#       },
-#       {
-#         name   = "bpd-transaction-error-manager"
-#         listen = true
-#         send   = false
-#         manage = false
-#       },
-#       {
-#         name   = "bpd-payment-instrument"
-#         listen = false
-#         send   = true
-#         manage = false
-#       }
-#     ]
-#   },
-#   {
-#     name              = "bpd-winner-outcome"
-#     partitions        = 32
-#     message_retention = 7
-#     consumers         = []
-#     keys = [
-#       {
-#         name   = "award-winner"
-#         listen = true
-#         send   = true
-#         manage = true
-#       },
-#       {
-#         name   = "consap-csv-connector"
-#         listen = false
-#         send   = true
-#         manage = false
-#       },
-#       {
-#         name   = "award-winner-integration" //TODO Check
-#         listen = true
-#         send   = true
-#         manage = false
-#       }
-#     ]
-#   },
-#   {
-#     name              = "rtd-trx"
-#     partitions        = 32
-#     message_retention = 7
-#     consumers         = ["bpd-payment-instrument"]
-#     keys = [
-#       {
-#         name   = "rtd-csv-connector"
-#         listen = false
-#         send   = true
-#         manage = false
-#       },
-#       {
-#         name   = "bpd-payment-instrument"
-#         listen = true
-#         send   = false
-#         manage = false
-#       }
-#     ]
-#   },
-#   {
-#     name              = "rtd-log"
-#     partitions        = 3
-#     message_retention = 7
-#     consumers         = ["elk"]
-#     keys = [
-#       {
-#         name   = "app"
-#         listen = false
-#         send   = true
-#         manage = false
-#       },
-#       {
-#         name   = "elk"
-#         listen = true
-#         send   = false
-#         manage = false
-#       }
-#     ]
-#   },
-# ]
-
-##

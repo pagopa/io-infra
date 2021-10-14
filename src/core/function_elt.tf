@@ -100,20 +100,20 @@ module "storage_account_elt" {
   access_tier                = "Hot"
   resource_group_name        = azurerm_resource_group.elt_rg.name
   location                   = var.location
-  advanced_threat_protection = false
+  advanced_threat_protection = true
 
-  network_rules = {
-    default_action = "Deny"
-    ip_rules       = []
-    bypass = [
-      "Logging",
-      "Metrics",
-      "AzureServices",
-    ]
-    virtual_network_subnet_ids = [
-      module.function_elt_snetout.id
-    ]
-  }
+  # network_rules = {
+  #   default_action = "Deny"
+  #   ip_rules       = []
+  #   bypass = [
+  #     "Logging",
+  #     "Metrics",
+  #     "AzureServices",
+  #   ]
+  #   virtual_network_subnet_ids = [
+  #     module.function_elt_snetout.id
+  #   ]
+  # }
 
   tags = var.tags
 }

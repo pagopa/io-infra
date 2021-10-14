@@ -31,6 +31,19 @@ module "event_hub" {
 
   eventhubs = var.eventhubs
 
+  network_rulesets = [
+    {
+      default_action = "Deny",
+      virtual_network_rule = [
+        {
+          subnet_id                                       = module.function_elt_snetout.id,
+          ignore_missing_virtual_network_service_endpoint = false
+        }
+      ],
+      ip_rule = var.ehns_ip_rules
+    }
+  ]
+
   alerts_enabled = var.ehns_alerts_enabled
   metric_alerts  = var.ehns_metric_alerts
   action = [
