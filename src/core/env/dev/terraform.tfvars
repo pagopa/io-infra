@@ -8,8 +8,9 @@ tags = {
   CostCenter  = "TS310 - PAGAMENTI & SERVIZI"
 }
 
+# dns
 external_domain = "pagopa.it"
-dns_zone_prefix = "dev.io"
+dns_zone_io     = "dev.io"
 
 lock_enable              = true
 azdo_sp_tls_cert_enabled = true

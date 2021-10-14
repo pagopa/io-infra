@@ -39,6 +39,25 @@ variable "tags" {
   }
 }
 
+# DNS
+variable "dns_default_ttl_sec" {
+  type        = number
+  description = "value"
+  default     = 3600
+}
+
+variable "external_domain" {
+  type        = string
+  default     = "pagopa.it"
+  description = "Domain for delegation"
+}
+
+variable "dns_zone_io" {
+  type        = string
+  default     = null
+  description = "The dns subdomain."
+}
+
 # azure devops
 variable "azdo_sp_tls_cert_enabled" {
   type        = string
