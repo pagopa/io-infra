@@ -26,3 +26,31 @@ resource "azurerm_dns_caa_record" "io_public" {
 
   tags = var.tags
 }
+
+# application gateway records
+resource "azurerm_dns_a_record" "api_io_pagopa_it" {
+  name                = "api"
+  zone_name           = azurerm_dns_zone.io_public[0].name
+  resource_group_name = azurerm_resource_group.rg_vnet.name
+  ttl                 = var.dns_default_ttl_sec
+  records             = [azurerm_public_ip.appgateway_public_ip.ip_address]
+  tags                = var.tags
+}
+
+resource "azurerm_dns_a_record" "api_app_io_pagopa_it" {
+  name                = "api-app"
+  zone_name           = azurerm_dns_zone.io_public[0].name
+  resource_group_name = azurerm_resource_group.rg_vnet.name
+  ttl                 = var.dns_default_ttl_sec
+  records             = [azurerm_public_ip.appgateway_public_ip.ip_address]
+  tags                = var.tags
+}
+
+resource "azurerm_dns_a_record" "api_mtls_io_pagopa_it" {
+  name                = "api-mtls"
+  zone_name           = azurerm_dns_zone.io_public[0].name
+  resource_group_name = azurerm_resource_group.rg_vnet.name
+  ttl                 = var.dns_default_ttl_sec
+  records             = [azurerm_public_ip.appgateway_public_ip.ip_address]
+  tags                = var.tags
+}
