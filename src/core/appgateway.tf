@@ -87,45 +87,45 @@ module "app_gw" {
 
     api = {
       protocol         = "Https"
-      host             = format("api.%s.%s", var.dns_zone_prefix, var.external_domain)
+      host             = format("api.%s.%s", var.dns_zone_io, var.external_domain)
       port             = 443
       ssl_profile_name = format("%s-ssl-profile", local.project)
 
       certificate = {
         name = var.app_gateway_api_certificate_name
         id = trimsuffix(
-          data.azurerm_key_vault_certificate.app_gw_platform.secret_id,
-          data.azurerm_key_vault_certificate.app_gw_platform.version
+          data.azurerm_key_vault_certificate.app_gw_api.secret_id,
+          data.azurerm_key_vault_certificate.app_gw_api.version
         )
       }
     }
 
-    api-io = {
+    api-app = {
       protocol         = "Https"
-      host             = format("api.%s.%s", var.dns_zone_prefix, var.external_domain)
+      host             = format("api-app.%s.%s", var.dns_zone_io, var.external_domain)
       port             = 443
       ssl_profile_name = format("%s-ssl-profile", local.project)
 
       certificate = {
-        name = var.app_gateway_api_certificate_name
+        name = var.app_gateway_api_app_certificate_name
         id = trimsuffix(
-          data.azurerm_key_vault_certificate.app_gw_platform.secret_id,
-          data.azurerm_key_vault_certificate.app_gw_platform.version
+          data.azurerm_key_vault_certificate.app_gw_api_app.secret_id,
+          data.azurerm_key_vault_certificate.app_gw_api_app.version
         )
       }
     }
 
     api-mtls = {
       protocol         = "Https"
-      host             = format("api.%s.%s", var.dns_zone_prefix, var.external_domain)
+      host             = format("api-mtls.%s.%s", var.dns_zone_io, var.external_domain)
       port             = 443
       ssl_profile_name = format("%s-ssl-profile", local.project)
 
       certificate = {
-        name = var.app_gateway_api_certificate_name
+        name = var.app_gateway_api_mtls_certificate_name
         id = trimsuffix(
-          data.azurerm_key_vault_certificate.app_gw_platform.secret_id,
-          data.azurerm_key_vault_certificate.app_gw_platform.version
+          data.azurerm_key_vault_certificate.app_gw_api_mtls.secret_id,
+          data.azurerm_key_vault_certificate.app_gw_api_mtls.version
         )
       }
     }
@@ -138,14 +138,14 @@ module "app_gw" {
       backend  = "apim"
     }
 
-    portal = {
-      listener = "portal"
-      backend  = "portal"
+    api-app = {
+      listener = "api-app"
+      backend  = "apim"
     }
 
-    mangement = {
-      listener = "management"
-      backend  = "management"
+    api-mtls = {
+      listener = "api-mtls"
+      backend  = "apim"
     }
   }
 
@@ -162,4 +162,38 @@ module "app_gw" {
   # sec_storage_id                 = var.env_short == "p" ? data.azurerm_key_vault_secret.sec_storage_id[0].value : null
 
   tags = var.tags
+}
+
+## user assined identity: (application gateway) ##
+resource "azurerm_key_vault_access_policy" "app_gateway_policy" {
+  key_vault_id            = module.key_vault.id
+  tenant_id               = data.azurerm_client_config.current.tenant_id
+  object_id               = azurerm_user_assigned_identity.appgateway.principal_id
+  key_permissions         = ["Get", "List"]
+  secret_permissions      = ["Get", "List"]
+  certificate_permissions = ["Get", "List"]
+  storage_permissions     = []
+}
+
+resource "azurerm_user_assigned_identity" "appgateway" {
+  resource_group_name = azurerm_resource_group.sec_rg.name
+  location            = azurerm_resource_group.sec_rg.location
+  name                = format("%s-appgateway-identity", local.project)
+
+  tags = var.tags
+}
+
+data "azurerm_key_vault_certificate" "app_gw_api" {
+  name         = var.app_gateway_api_certificate_name
+  key_vault_id = module.key_vault.id
+}
+
+data "azurerm_key_vault_certificate" "app_gw_api_app" {
+  name         = var.app_gateway_api_app_certificate_name
+  key_vault_id = module.key_vault.id
+}
+
+data "azurerm_key_vault_certificate" "app_gw_api_mtls" {
+  name         = var.app_gateway_api_mtls_certificate_name
+  key_vault_id = module.key_vault.id
 }
