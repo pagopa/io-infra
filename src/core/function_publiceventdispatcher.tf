@@ -68,6 +68,34 @@ module "function_pblevtdispatcher" {
     COSMOS_API_CONNECTION_STRING = format("AccountEndpoint=%s;AccountKey=%s;", data.azurerm_cosmosdb_account.cosmos_api.endpoint, data.azurerm_cosmosdb_account.cosmos_api.primary_master_key)
 
     QUEUESTORAGE_APIEVENTS_CONNECTION_STRING = data.azurerm_storage_account.storage_apievents.primary_connection_string
+
+    webhooks = jsonencode([
+      # EUCovidCert PROD
+      {
+        url     = format("%s/api/v1/webhook", data.azurerm_function_app.fnapp_eucovidcert.default_hostname),
+        headers = { "X-Functions-Key" = data.azurerm_key_vault_secret.fnapp_eucovidcert_authtoken.value },
+        # TODO: add id for EUCovidCert Prod
+        attributes    = { serviceId = "" },
+        subscriptions = ["service:subscribed"]
+      },
+      # EUCovidCert UAT
+      {
+        url     = format("%s/api/v1/webhook", data.azurerm_function_app.fnapp_eucovidcert.default_hostname),
+        headers = { "X-Functions-Key" = data.azurerm_key_vault_secret.fnapp_eucovidcert_authtoken.value },
+        # TODO: add id for EUCovidCert UAT
+        attributes    = { serviceId = "" },
+        subscriptions = ["service:subscribed"]
+      },
+      # EUCovidCert LOAD
+      {
+        url     = format("%s/api/v1/webhook", data.azurerm_function_app.fnapp_eucovidcert.default_hostname),
+        headers = { "X-Functions-Key" = data.azurerm_key_vault_secret.fnapp_eucovidcert_authtoken.value },
+        # TODO: add id for EUCovidCert LOAD
+        attributes    = { serviceId = "" },
+        subscriptions = ["service:subscribed"]
+      }
+    ])
+
   }
 
   allowed_subnets = [
