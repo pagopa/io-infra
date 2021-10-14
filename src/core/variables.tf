@@ -155,7 +155,7 @@ variable "eventhubs" {
 }
 
 variable "ehns_ip_rules" {
-  description = "eventhub netowrk rules"
+  description = "eventhub network rules"
   type = list(object({
     ip_mask = string
     action  = string
