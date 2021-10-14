@@ -113,6 +113,11 @@ variable "app_gateway_max_capacity" {
   default = 2
 }
 
+variable "cidr_subnet_appgateway" {
+  type        = list(string)
+  description = "Application gateway address space."
+}
+
 ## Monitor
 variable "log_analytics_workspace_name" {
   type        = string

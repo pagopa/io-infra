@@ -18,7 +18,7 @@ module "appgateway_snet" {
   virtual_network_name = data.azurerm_virtual_network.vnet_common.name
 }
 
-## Application gateway ## 
+## Application gateway ##
 # Since these variables are re-used - a locals block makes this more maintainable
 locals {
   backend_address_pool_name       = format("%s-appgw-be-address-pool", local.project)
@@ -38,7 +38,7 @@ locals {
 module "app_gw" {
   source = "git::https://github.com/pagopa/azurerm.git//app_gateway?ref=v1.0.55"
 
-  resource_group_name  = data.azurerm_resource_group.vnet_common_rg.name
+  resource_group_name = data.azurerm_resource_group.vnet_common_rg.name
   location            = data.azurerm_resource_group.vnet_common_rg.location
   name                = format("%s-app-gw", local.project)
 
