@@ -26,6 +26,6 @@ data "azurerm_function_app" "fnapp_eucovidcert" {
 }
 
 data "azurerm_key_vault_secret" "fnapp_eucovidcert_authtoken" {
-  name         = "funceucovidcert-KEY-IOEVENTDISPATCHER"
+  name         = "funceucovidcert-KEY-PUBLICIOEVENTDISPATCHER"
   key_vault_id = module.key_vault.id
 }
