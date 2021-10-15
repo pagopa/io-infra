@@ -19,16 +19,23 @@ common_rg = "io-p-rg-common"
 # networking
 vnet_name = "io-p-vnet-common"
 # cidr_vnet         = ["10.0.0.0/16"]
-cidr_subnet_eventhub                  = ["10.0.10.0/24"]
-cidr_subnet_azdoa                     = ["10.0.250.0/24"]
-cidr_subnet_fnelt                     = ["10.0.11.0/24"]
-cidr_subnet_fnpblevtdispatcher        = ["10.0.12.0/24"]
-cidr_subnet_appgateway                = ["10.0.13.0/24"]
+# check free subnet on azure portal io-p-vnet-common -> subnets
+cidr_subnet_eventhub           = ["10.0.10.0/24"]
+cidr_subnet_fnelt              = ["10.0.11.0/24"]
+cidr_subnet_fnpblevtdispatcher = ["10.0.12.0/24"]
+cidr_subnet_appgateway         = ["10.0.13.0/24"]
+cidr_subnet_apim               = ["10.0.101.0/24"]
+cidr_subnet_azdoa              = ["10.0.250.0/24"]
+
 app_gateway_api_certificate_name      = "api-io-pagopa-it"
 app_gateway_api_app_certificate_name  = "api-app-io-pagopa-it"
 app_gateway_api_mtls_certificate_name = "api-mtls-io-pagopa-it"
 app_gateway_min_capacity              = 0
 app_gateway_max_capacity              = 50
+
+# apim
+apim_publisher_name = "IO"
+apim_sku            = "Premium_1"
 
 # azure devops
 azdo_sp_tls_cert_enabled = true
