@@ -155,6 +155,29 @@ variable "cidr_subnet_fnpblevtdispatcher" {
 }
 ##
 
+## Redis cache
+variable "redis_capacity" {
+  type    = number
+  default = 1
+}
+
+variable "redis_sku_name" {
+  type    = string
+  default = "Standard"
+}
+
+variable "redis_family" {
+  type    = string
+  default = "C"
+}
+
+variable "cidr_subnet_redis" {
+  type        = list(string)
+  description = "Redis network address space."
+  default     = []
+}
+##
+
 ## Event hub
 variable "ehns_sku_name" {
   type        = string
