@@ -72,7 +72,7 @@ module "function_pblevtdispatcher" {
     # queue storage used by this function app to run async jobs 
     QueueStorageConnection = module.storage_account_pblevtdispatcher.primary_connection_string
 
-    HTTP_CALL_JOB_QUEUE_NAME = azurerm_storage_queue.http_call_job_queue
+    HTTP_CALL_JOB_QUEUE_NAME = azurerm_storage_queue.http_call_job_queue.name
 
     webhooks = jsonencode([
       # EUCovidCert PROD
