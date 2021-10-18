@@ -1,8 +1,3 @@
-data "azurerm_api_management" "apim" {
-  name                = format("%s-apim-api", local.project)
-  resource_group_name = format("%s-rg-internal", local.project)
-}
-
 # APIM subnet
 module "apim_snet" {
   source               = "git::https://github.com/pagopa/azurerm.git//subnet?ref=v1.0.51"
@@ -28,7 +23,8 @@ locals {
 # ###########################
 
 module "apim" {
-  source                    = "git::https://github.com/pagopa/azurerm.git//api_management?ref=add-apim-extension"
+  source = "git::https://github.com/pagopa/azurerm.git//api_management?ref=add-apim-extension"
+
   subnet_id                 = module.apim_snet.id
   location                  = azurerm_resource_group.rg_internal.location
   name                      = format("%s-apim-api", local.project)
@@ -75,7 +71,7 @@ module "apim" {
     portal           = null
   }
 
-  lock_enable = var.lock_enable
+  lock_enable = false # no lock
 
   application_insights_instrumentation_key = data.azurerm_application_insights.application_insights.instrumentation_key
 
@@ -95,4 +91,27 @@ data "azurerm_key_vault_certificate" "api_internal_io_italia_it" {
 data "azurerm_key_vault_certificate" "api_app_internal_io_pagopa_it" {
   name         = replace(local.apim_hostname_api_app_internal, ".", "-")
   key_vault_id = module.key_vault.id
+}
+
+# ## api management key vault policy ##
+resource "azurerm_key_vault_access_policy" "kv" {
+  key_vault_id = module.key_vault.id
+  tenant_id    = data.azurerm_client_config.current.tenant_id
+  object_id    = module.apim.principal_id
+
+  key_permissions         = []
+  secret_permissions      = ["Get", "List"]
+  certificate_permissions = ["Get", "List"]
+  storage_permissions     = []
+}
+
+resource "azurerm_key_vault_access_policy" "common" {
+  key_vault_id = data.azurerm_key_vault.common.id
+  tenant_id    = data.azurerm_client_config.current.tenant_id
+  object_id    = module.apim.principal_id
+
+  key_permissions         = []
+  secret_permissions      = ["Get", "List"]
+  certificate_permissions = ["Get", "List"]
+  storage_permissions     = []
 }
