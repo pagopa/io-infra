@@ -68,11 +68,12 @@ module "function_pblevtdispatcher" {
     COSMOS_API_CONNECTION_STRING = format("AccountEndpoint=%s;AccountKey=%s;", data.azurerm_cosmosdb_account.cosmos_api.endpoint, data.azurerm_cosmosdb_account.cosmos_api.primary_master_key)
 
     QUEUESTORAGE_APIEVENTS_CONNECTION_STRING = data.azurerm_storage_account.storage_apievents.primary_connection_string
+    QUEUESTORAGE_APIEVENTS_EVENTS_QUEUE_NAME = azurerm_storage_queue.storage_account_apievents_events_queue.name
 
     # queue storage used by this function app to run async jobs 
     QueueStorageConnection = module.storage_account_pblevtdispatcher.primary_connection_string
 
-    HTTP_CALL_JOB_QUEUE_NAME = azurerm_storage_queue.http_call_job_queue.name
+    HTTP_CALL_JOB_QUEUE_NAME = azurerm_storage_queue.storage_account_pblevtdispatcher_http_call_jobs_queue.name
 
     webhooks = jsonencode([
       # EUCovidCert PROD
@@ -131,7 +132,7 @@ module "storage_account_pblevtdispatcher" {
   tags = var.tags
 }
 
-resource "azurerm_storage_queue" "storage_account_pblevtdispatcher_http_call_job_queue" {
+resource "azurerm_storage_queue" "storage_account_pblevtdispatcher_http_call_jobs_queue" {
   name                 = "httpcalljobqueue"
   storage_account_name = module.storage_account_pblevtdispatcher.name
 }

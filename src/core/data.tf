@@ -10,10 +10,6 @@ data "azurerm_cosmosdb_account" "cosmos_api" {
   resource_group_name = format("%s-rg-internal", local.project)
 }
 
-data "azurerm_storage_account" "storage_apievents" {
-  name                = replace(format("%s-stapievents", local.project), "-", "")
-  resource_group_name = format("%s-rg-internal", local.project)
-}
 
 
 #
