@@ -131,7 +131,7 @@ module "storage_account_pblevtdispatcher" {
   tags = var.tags
 }
 
-resource "azurerm_storage_queue" "http_call_job_queue" {
+resource "azurerm_storage_queue" "storage_account_pblevtdispatcher_http_call_job_queue" {
   name                 = "httpcalljobqueue"
   storage_account_name = module.storage_account_pblevtdispatcher.name
 }
