@@ -16,6 +16,11 @@ module "key_vault" {
   tags = var.tags
 }
 
+data "azurerm_key_vault" "common" {
+  name                = format("%s-kv-common", local.project)
+  resource_group_name = format("%s-rg-common", local.project)
+}
+
 # Azure AD
 data "azuread_group" "adgroup_admin" {
   display_name = format("%s-adgroup-admin", local.project)
