@@ -17,7 +17,7 @@ module "redis" {
   sku_name              = var.redis_sku_name
   enable_non_ssl_port   = false
   enable_authentication = true
-  subnet_id             = length(module.redis_snet.*.id) == 0 ? null : module.redis_snet[0].id
+  subnet_id             = length(module.redis_snet) == 0 ? null : module.redis_snet[0].id
 
   tags = var.tags
 }
