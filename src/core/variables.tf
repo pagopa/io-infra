@@ -81,13 +81,60 @@ variable "enable_iac_pipeline" {
   default     = false
 }
 
-# network
+## Monitor
+variable "log_analytics_workspace_name" {
+  type        = string
+  description = "The common Log Analytics Workspace name"
+  default     = ""
+}
+
+variable "application_insights_name" {
+  type        = string
+  description = "The common Application Insights name"
+  default     = ""
+}
+##
+
+## Network
 variable "common_rg" {
   type        = string
   description = "Common Virtual network resource group name."
   default     = ""
 }
 
+variable "vnet_name" {
+  type        = string
+  description = "Common Virtual network resource name."
+  default     = ""
+}
+
+variable "cidr_subnet_eventhub" {
+  type        = list(string)
+  description = "Eventhub network address space."
+}
+
+variable "cidr_subnet_fnelt" {
+  type        = list(string)
+  description = "function-elt network address space."
+}
+
+variable "cidr_subnet_fnpblevtdispatcher" {
+  type        = list(string)
+  description = "function-publiceventdispatcher network address space."
+}
+
+variable "cidr_subnet_appgateway" {
+  type        = list(string)
+  description = "Application gateway address space."
+}
+
+variable "cidr_subnet_apim" {
+  type        = list(string)
+  description = "Api Management address space."
+}
+##
+
+## Application Gateway
 variable "app_gateway_api_certificate_name" {
   type        = string
   description = "Application gateway api certificate name on Key Vault"
@@ -112,46 +159,20 @@ variable "app_gateway_max_capacity" {
   type    = number
   default = 2
 }
-
-variable "cidr_subnet_appgateway" {
-  type        = list(string)
-  description = "Application gateway address space."
-}
-
-## Monitor
-variable "log_analytics_workspace_name" {
-  type        = string
-  description = "The common Log Analytics Workspace name"
-  default     = ""
-}
-
-variable "application_insights_name" {
-  type        = string
-  description = "The common Application Insights name"
-  default     = ""
-}
 ##
 
-## Network
-variable "vnet_name" {
-  type        = string
-  description = "Common Virtual network resource name."
-  default     = ""
+## Apim
+variable "apim_publisher_name" {
+  type = string
 }
 
-variable "cidr_subnet_eventhub" {
-  type        = list(string)
-  description = "Eventhub network address space."
+variable "apim_sku" {
+  type = string
 }
 
-variable "cidr_subnet_fnelt" {
-  type        = list(string)
-  description = "function-elt network address space."
-}
-
-variable "cidr_subnet_fnpblevtdispatcher" {
-  type        = list(string)
-  description = "function-publiceventdispatcher network address space."
+variable "apim_redis_cache_enabled" {
+  type    = bool
+  default = false
 }
 ##
 
@@ -247,4 +268,3 @@ EOD
     ))
   }))
 }
-##
