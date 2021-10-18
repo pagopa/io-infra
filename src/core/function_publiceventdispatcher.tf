@@ -69,18 +69,23 @@ module "function_pblevtdispatcher" {
 
     QUEUESTORAGE_APIEVENTS_CONNECTION_STRING = data.azurerm_storage_account.storage_apievents.primary_connection_string
 
+    # queue storage used by this function app to run async jobs 
+    QueueStorageConnection = module.storage_account_pblevtdispatcher.primary_connection_string
+
+    HTTP_CALL_JOB_QUEUE_NAME = azurerm_storage_queue.http_call_job_queue
+
     webhooks = jsonencode([
       # EUCovidCert PROD
       {
-        url     = format("%s/api/v1/webhook", data.azurerm_function_app.fnapp_eucovidcert.default_hostname),
-        headers = { "X-Functions-Key" = data.azurerm_key_vault_secret.fnapp_eucovidcert_authtoken.value },
+        url           = format("%s/api/v1/webhook", data.azurerm_function_app.fnapp_eucovidcert.default_hostname),
+        headers       = { "X-Functions-Key" = data.azurerm_key_vault_secret.fnapp_eucovidcert_authtoken.value },
         attributes    = { serviceId = "01F73DNTMJTCEZQKJDFNB53KEB" },
         subscriptions = ["service:subscribed"]
       },
       # EUCovidCert UAT
       {
-        url     = format("%s/api/v1/webhook", data.azurerm_function_app.fnapp_eucovidcert.default_hostname),
-        headers = { "X-Functions-Key" = data.azurerm_key_vault_secret.fnapp_eucovidcert_authtoken.value },
+        url           = format("%s/api/v1/webhook", data.azurerm_function_app.fnapp_eucovidcert.default_hostname),
+        headers       = { "X-Functions-Key" = data.azurerm_key_vault_secret.fnapp_eucovidcert_authtoken.value },
         attributes    = { serviceId = "01F798T3NX5RARB38DVKPABKV2" },
         subscriptions = ["service:subscribed"]
       }
@@ -124,4 +129,9 @@ module "storage_account_pblevtdispatcher" {
   }
 
   tags = var.tags
+}
+
+resource "azurerm_storage_queue" "http_call_job_queue" {
+  name                 = "httpcalljobqueue"
+  storage_account_name = module.storage_account_pblevtdispatcher.name
 }
