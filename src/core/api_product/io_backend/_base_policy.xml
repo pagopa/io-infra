@@ -13,7 +13,7 @@
 <policies>
     <inbound>
         <base />
-        <set-backend-service base-url="https://io-p-app-appbackendl1.azurewebsites.net" />
+        <!-- <set-backend-service base-url="https://io-p-app-appbackendl1.azurewebsites.net/api/v1" /> -->
     </inbound>
     <outbound>
         <base />
