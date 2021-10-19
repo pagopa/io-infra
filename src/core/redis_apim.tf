@@ -8,7 +8,7 @@ module "redis_snet" {
   virtual_network_name = data.azurerm_virtual_network.vnet_common.name
 }
 
-module "redis" {
+module "redis_apim" {
   source                = "git::https://github.com/pagopa/azurerm.git//redis_cache?ref=v1.0.37"
   name                  = format("%s-redis-apim", local.project)
   resource_group_name   = data.azurerm_resource_group.vnet_common_rg.name
