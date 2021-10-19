@@ -147,7 +147,7 @@ data "azuread_service_principal" "cdn" {
 
 resource "azurerm_key_vault_access_policy" "cdn" {
 
-  key_vault_id = module.key_vault.id
+  key_vault_id = azurerm_key_vault.common.id
 
   tenant_id = data.azurerm_client_config.current.tenant_id
   object_id = data.azuread_service_principal.cdn.object_id
