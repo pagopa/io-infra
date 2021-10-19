@@ -169,30 +169,25 @@ variable "apim_publisher_name" {
 variable "apim_sku" {
   type = string
 }
-
-variable "apim_redis_cache_enabled" {
-  type    = bool
-  default = false
-}
 ##
 
 ## Redis cache
-variable "redis_capacity" {
+variable "redis_apim_capacity" {
   type    = number
   default = 1
 }
 
-variable "redis_sku_name" {
+variable "redis_apim_sku_name" {
   type    = string
   default = "Standard"
 }
 
-variable "redis_family" {
+variable "redis_apim_family" {
   type    = string
   default = "C"
 }
 
-variable "cidr_subnet_redis" {
+variable "cidr_subnet_redis_apim" {
   type        = list(string)
   description = "Redis network address space."
   default     = []
