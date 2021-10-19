@@ -70,7 +70,7 @@ module "function_pblevtdispatcher" {
     QUEUESTORAGE_APIEVENTS_CONNECTION_STRING = data.azurerm_storage_account.storage_apievents.primary_connection_string
     QUEUESTORAGE_APIEVENTS_EVENTS_QUEUE_NAME = azurerm_storage_queue.storage_account_apievents_events_queue.name
 
-    # queue storage used by this function app to run async jobs 
+    # queue storage used by this function app to run async jobs
     QueueStorageConnection = module.storage_account_pblevtdispatcher.primary_connection_string
 
     HTTP_CALL_JOB_QUEUE_NAME = azurerm_storage_queue.storage_account_pblevtdispatcher_http_call_jobs_queue.name
@@ -116,18 +116,18 @@ module "storage_account_pblevtdispatcher" {
   location                   = var.location
   advanced_threat_protection = false
 
-  network_rules = {
-    default_action = "Deny"
-    ip_rules       = []
-    bypass = [
-      "Logging",
-      "Metrics",
-      "AzureServices",
-    ]
-    virtual_network_subnet_ids = [
-      module.function_pblevtdispatcher_snetout.id
-    ]
-  }
+  # network_rules = {
+  #   default_action = "Deny"
+  #   ip_rules       = []
+  #   bypass = [
+  #     "Logging",
+  #     "Metrics",
+  #     "AzureServices",
+  #   ]
+  #   virtual_network_subnet_ids = [
+  #     module.function_pblevtdispatcher_snetout.id
+  #   ]
+  # }
 
   tags = var.tags
 }
