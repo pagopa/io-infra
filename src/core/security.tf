@@ -123,34 +123,28 @@ resource "azurerm_key_vault_access_policy" "azdo_sp_tls_cert" {
 #   key_vault_id = module.key_vault.id
 # }
 
-# Microsoft Azure App Service
-data "azuread_service_principal" "app_service" {
-  display_name = "Microsoft Azure App Service"
-}
+# Microsoft Azure WebSites
 
 resource "azurerm_key_vault_access_policy" "app_service" {
 
   key_vault_id = azurerm_key_vault.common.id
 
   tenant_id = data.azurerm_client_config.current.tenant_id
-  object_id = data.azuread_service_principal.app_service.object_id
+  object_id = "bb319217-f6ab-45d9-833d-555ef1173316"
 
   secret_permissions      = ["Get", ]
   storage_permissions     = []
   certificate_permissions = ["Get", ]
 }
 
-# Microsoft.Azure.Cdn enterprise application
-data "azuread_service_principal" "cdn" {
-  display_name = "Microsoft.Azure.Cdn"
-}
-
+# Microsoft.AzureFrontDoor-Cdn Enterprise application.
+# Note: the application id is always the same in every tenant while the object id is different.
 resource "azurerm_key_vault_access_policy" "cdn" {
 
   key_vault_id = azurerm_key_vault.common.id
 
   tenant_id = data.azurerm_client_config.current.tenant_id
-  object_id = data.azuread_service_principal.cdn.object_id
+  object_id = "f3b3f72f-4770-47a5-8c1e-aa298003be12"
 
   secret_permissions      = ["Get", "List", ]
   storage_permissions     = []
