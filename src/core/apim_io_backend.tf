@@ -9,8 +9,8 @@ module "apim_io_backend_product" {
   display_name = "IO BACKEND"
   description  = "Product for IO backend"
 
-  api_management_name = data.azurerm_api_management.apim.name
-  resource_group_name = data.azurerm_api_management.apim.resource_group_name
+  api_management_name = module.apim.name
+  resource_group_name = module.apim.resource_group_name
 
   published             = true
   subscription_required = false

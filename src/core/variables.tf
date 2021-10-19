@@ -39,6 +39,25 @@ variable "tags" {
   }
 }
 
+# DNS
+variable "dns_default_ttl_sec" {
+  type        = number
+  description = "value"
+  default     = 3600
+}
+
+variable "external_domain" {
+  type        = string
+  default     = "pagopa.it"
+  description = "Domain for delegation"
+}
+
+variable "dns_zone_io" {
+  type        = string
+  default     = null
+  description = "The dns subdomain."
+}
+
 # azure devops
 variable "azdo_sp_tls_cert_enabled" {
   type        = string
@@ -62,13 +81,6 @@ variable "enable_iac_pipeline" {
   default     = false
 }
 
-# network
-variable "common_rg" {
-  type        = string
-  description = "Common Virtual network resource group name."
-  default     = ""
-}
-
 ## Monitor
 variable "log_analytics_workspace_name" {
   type        = string
@@ -84,6 +96,12 @@ variable "application_insights_name" {
 ##
 
 ## Network
+variable "common_rg" {
+  type        = string
+  description = "Common Virtual network resource group name."
+  default     = ""
+}
+
 variable "vnet_name" {
   type        = string
   description = "Common Virtual network resource name."
@@ -103,6 +121,76 @@ variable "cidr_subnet_fnelt" {
 variable "cidr_subnet_fnpblevtdispatcher" {
   type        = list(string)
   description = "function-publiceventdispatcher network address space."
+}
+
+variable "cidr_subnet_appgateway" {
+  type        = list(string)
+  description = "Application gateway address space."
+}
+
+variable "cidr_subnet_apim" {
+  type        = list(string)
+  description = "Api Management address space."
+}
+##
+
+## Application Gateway
+variable "app_gateway_api_certificate_name" {
+  type        = string
+  description = "Application gateway api certificate name on Key Vault"
+}
+
+variable "app_gateway_api_app_certificate_name" {
+  type        = string
+  description = "Application gateway api certificate name on Key Vault"
+}
+
+variable "app_gateway_api_mtls_certificate_name" {
+  type        = string
+  description = "Application gateway api certificate name on Key Vault"
+}
+
+variable "app_gateway_min_capacity" {
+  type    = number
+  default = 0
+}
+
+variable "app_gateway_max_capacity" {
+  type    = number
+  default = 2
+}
+##
+
+## Apim
+variable "apim_publisher_name" {
+  type = string
+}
+
+variable "apim_sku" {
+  type = string
+}
+##
+
+## Redis cache
+variable "redis_apim_capacity" {
+  type    = number
+  default = 1
+}
+
+variable "redis_apim_sku_name" {
+  type    = string
+  default = "Standard"
+}
+
+variable "redis_apim_family" {
+  type    = string
+  default = "C"
+}
+
+variable "cidr_subnet_redis_apim" {
+  type        = list(string)
+  description = "Redis network address space."
+  default     = []
 }
 ##
 
@@ -154,6 +242,15 @@ variable "eventhubs" {
   default = []
 }
 
+variable "ehns_ip_rules" {
+  description = "eventhub network rules"
+  type = list(object({
+    ip_mask = string
+    action  = string
+  }))
+  default = []
+}
+
 variable "ehns_alerts_enabled" {
   type        = bool
   default     = true
@@ -189,4 +286,3 @@ EOD
     ))
   }))
 }
-##
