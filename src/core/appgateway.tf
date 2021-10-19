@@ -56,7 +56,15 @@ module "app_gw" {
       protocol     = "Https"
       host         = "api-internal.io.italia.it"
       port         = 443
-      ip_addresses = data.azurerm_api_management.apim.private_ip_addresses
+      ip_addresses = null # with null value use host
+      probe        = "/status-0123456789abcdef"
+      probe_name   = "probe-apim"
+    }
+    apim-app = {
+      protocol     = "Https"
+      host         = "api-app.internal.io.pagopa.it"
+      port         = 443
+      ip_addresses = null # with null value use host
       probe        = "/status-0123456789abcdef"
       probe_name   = "probe-apim"
     }
@@ -140,7 +148,7 @@ module "app_gw" {
 
     api-app = {
       listener = "api-app"
-      backend  = "apim"
+      backend  = "apim-app"
     }
 
     api-mtls = {

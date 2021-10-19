@@ -68,6 +68,30 @@ module "function_pblevtdispatcher" {
     COSMOS_API_CONNECTION_STRING = format("AccountEndpoint=%s;AccountKey=%s;", data.azurerm_cosmosdb_account.cosmos_api.endpoint, data.azurerm_cosmosdb_account.cosmos_api.primary_master_key)
 
     QUEUESTORAGE_APIEVENTS_CONNECTION_STRING = data.azurerm_storage_account.storage_apievents.primary_connection_string
+    QUEUESTORAGE_APIEVENTS_EVENTS_QUEUE_NAME = azurerm_storage_queue.storage_account_apievents_events_queue.name
+
+    # queue storage used by this function app to run async jobs
+    QueueStorageConnection = module.storage_account_pblevtdispatcher.primary_connection_string
+
+    HTTP_CALL_JOB_QUEUE_NAME = azurerm_storage_queue.storage_account_pblevtdispatcher_http_call_jobs_queue.name
+
+    webhooks = jsonencode([
+      # EUCovidCert PROD
+      {
+        url           = format("%s/api/v1/webhook", data.azurerm_function_app.fnapp_eucovidcert.default_hostname),
+        headers       = { "X-Functions-Key" = data.azurerm_key_vault_secret.fnapp_eucovidcert_authtoken.value },
+        attributes    = { serviceId = "01F73DNTMJTCEZQKJDFNB53KEB" },
+        subscriptions = ["service:subscribed"]
+      },
+      # EUCovidCert UAT
+      {
+        url           = format("%s/api/v1/webhook", data.azurerm_function_app.fnapp_eucovidcert.default_hostname),
+        headers       = { "X-Functions-Key" = data.azurerm_key_vault_secret.fnapp_eucovidcert_authtoken.value },
+        attributes    = { serviceId = "01F798T3NX5RARB38DVKPABKV2" },
+        subscriptions = ["service:subscribed"]
+      }
+    ])
+
   }
 
   allowed_subnets = [
@@ -92,18 +116,23 @@ module "storage_account_pblevtdispatcher" {
   location                   = var.location
   advanced_threat_protection = false
 
-  network_rules = {
-    default_action = "Deny"
-    ip_rules       = []
-    bypass = [
-      "Logging",
-      "Metrics",
-      "AzureServices",
-    ]
-    virtual_network_subnet_ids = [
-      module.function_pblevtdispatcher_snetout.id
-    ]
-  }
+  # network_rules = {
+  #   default_action = "Deny"
+  #   ip_rules       = []
+  #   bypass = [
+  #     "Logging",
+  #     "Metrics",
+  #     "AzureServices",
+  #   ]
+  #   virtual_network_subnet_ids = [
+  #     module.function_pblevtdispatcher_snetout.id
+  #   ]
+  # }
 
   tags = var.tags
+}
+
+resource "azurerm_storage_queue" "storage_account_pblevtdispatcher_http_call_jobs_queue" {
+  name                 = "httpcalljobqueue"
+  storage_account_name = module.storage_account_pblevtdispatcher.name
 }
