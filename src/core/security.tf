@@ -130,7 +130,7 @@ data "azuread_service_principal" "app_service" {
 
 resource "azurerm_key_vault_access_policy" "app_service" {
 
-  key_vault_id = module.key_vault.id
+  key_vault_id = azurerm_key_vault.common.id
 
   tenant_id = data.azurerm_client_config.current.tenant_id
   object_id = data.azuread_service_principal.app_service.object_id
