@@ -13,7 +13,7 @@
 <policies>
     <inbound>
         <base />
-        <set-backend-service id="apim-generated-policy" base-url="{{io-fn3-services-url}}/api/v1" />
+        <set-backend-service base-url="https://io-p-app-appbackendl1.azurewebsites.net" />
     </inbound>
     <outbound>
         <base />
