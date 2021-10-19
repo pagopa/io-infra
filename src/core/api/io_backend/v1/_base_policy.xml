@@ -13,14 +13,13 @@
 <policies>
     <inbound>
         <base />
-        <set-backend-service id="apim-generated-policy" base-url="{{io-fn3-services-url}}/api/v1" />
     </inbound>
-    <outbound>
-        <base />
-    </outbound>
     <backend>
         <base />
     </backend>
+    <outbound>
+        <base />
+    </outbound>
     <on-error>
         <base />
     </on-error>
