@@ -33,7 +33,7 @@ module "apim_io_backend_api_v1" {
   name                  = format("%s-io-backend-api", var.env_short)
   api_management_name   = module.apim.name
   resource_group_name   = module.apim.resource_group_name
-  product_ids           = [module.apim_io_backend_product[0].product_id]
+  product_ids           = [module.apim_io_backend_product.product_id]
   subscription_required = false
   version_set_id        = azurerm_api_management_api_version_set.io_backend_api.id
   api_version           = "v1"
