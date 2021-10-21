@@ -13,13 +13,15 @@
 <policies>
     <inbound>
         <base />
+        <!-- TODO move set-backend-service at product level, now we have a dependency on final path with /api/v1, so we need to set this param here -->
+        <set-backend-service base-url="https://io-p-app-appbackendl1.azurewebsites.net/api/v1/mitvoucher/auth" />
     </inbound>
-    <outbound>
-        <base />
-    </outbound>
     <backend>
         <base />
     </backend>
+    <outbound>
+        <base />
+    </outbound>
     <on-error>
         <base />
     </on-error>
