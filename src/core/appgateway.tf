@@ -55,7 +55,7 @@ module "app_gw" {
   }
 
   ssl_profiles = [{
-    name                             = format("%s-ssl-profile", local.project)
+    name                             = format("%s-api-mtls-profile", local.project)
     trusted_client_certificate_names = null
     verify_client_cert_issuer_dn     = false
     ssl_policy = {
@@ -72,7 +72,12 @@ module "app_gw" {
     }
   }]
 
-  trusted_client_certificates = []
+  trusted_client_certificates = [
+    {
+      secret_name  = format("cstar-%s-issuer-chain", local.project)
+      key_vault_id = module.key_vault.id
+    }
+  ]
 
   # Configure listeners
   listeners = {
@@ -161,6 +166,7 @@ module "app_gw" {
             header_value = "{var_client_ip}"
           },
           {
+            # this header will be checked in apim policy
             header_name  = data.azurerm_key_vault_secret.app_gw_mtls_header_name.value
             header_value = "false"
           },
@@ -203,6 +209,7 @@ module "app_gw" {
             header_value = "{var_client_ip}"
           },
           {
+            # this header will be checked in apim policy
             header_name  = data.azurerm_key_vault_secret.app_gw_mtls_header_name.value
             header_value = "true"
           },
@@ -214,6 +221,14 @@ module "app_gw" {
 
   # TLS
   identity_ids = [azurerm_user_assigned_identity.appgateway.id]
+
+  # WAF
+  waf_disabled_rule_group = [
+    {
+      rule_group_name = "REQUEST-920-PROTOCOL-ENFORCEMENT"
+      rules           = ["920300", ]
+    }
+  ]
 
   # Scaling
   app_gateway_min_capacity = var.app_gateway_min_capacity
