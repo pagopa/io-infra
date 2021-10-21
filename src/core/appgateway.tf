@@ -19,24 +19,8 @@ module "appgateway_snet" {
 }
 
 ## Application gateway ##
-# Since these variables are re-used - a locals block makes this more maintainable
-locals {
-  backend_address_pool_name       = format("%s-appgw-be-address-pool", local.project)
-  frontend_http_port_name         = format("%s-appgw-fe-http-port", local.project)
-  frontend_https_port_name        = format("%s-appgw-fe-https-port", local.project)
-  frontend_ip_configuration_name  = format("%s-appgw-fe-ip-configuration", local.project)
-  http_setting_name               = format("%s-appgw-be-http-settings", local.project)
-  http_listener_name              = format("%s-appgw-fe-http-settings", local.project)
-  https_listener_name             = format("%s-appgw-fe-https-settings", local.project)
-  http_request_routing_rule_name  = format("%s-appgw-http-reqs-routing-rule", local.project)
-  https_request_routing_rule_name = format("%s-appgw-https-reqs-routing-rule", local.project)
-  acme_le_ssl_cert_name           = format("%s-appgw-acme-le-ssl-cert", local.project)
-  http_to_https_redirect_rule     = format("%s-appgw-http-to-https-redirect-rule", local.project)
-}
-
-# Application gateway: Multilistener configuraiton
 module "app_gw" {
-  source = "git::https://github.com/pagopa/azurerm.git//app_gateway?ref=v1.0.55"
+  source = "git::https://github.com/pagopa/azurerm.git//app_gateway?ref=v1.0.76"
 
   resource_group_name = data.azurerm_resource_group.vnet_common_rg.name
   location            = data.azurerm_resource_group.vnet_common_rg.location
@@ -71,9 +55,9 @@ module "app_gw" {
   }
 
   ssl_profiles = [{
-    name                             = format("%s-ssl-profile", local.project)
-    trusted_client_certificate_names = null
-    verify_client_cert_issuer_dn     = false
+    name                             = format("%s-api-mtls-profile", local.project)
+    trusted_client_certificate_names = [format("%s-issuer-chain", var.prefix)]
+    verify_client_cert_issuer_dn     = true
     ssl_policy = {
       disabled_protocols = []
       policy_type        = "Custom"
@@ -82,13 +66,18 @@ module "app_gw" {
         "TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256",
         "TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384",
         "TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA",
-        "TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA"
+        "TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA",
       ]
       min_protocol_version = "TLSv1_2"
     }
   }]
 
-  trusted_client_certificates = []
+  trusted_client_certificates = [
+    {
+      secret_name  = format("%s-issuer-chain", var.prefix)
+      key_vault_id = module.key_vault.id
+    }
+  ]
 
   # Configure listeners
   listeners = {
@@ -97,7 +86,7 @@ module "app_gw" {
       protocol         = "Https"
       host             = format("api.%s.%s", var.dns_zone_io, var.external_domain)
       port             = 443
-      ssl_profile_name = format("%s-ssl-profile", local.project)
+      ssl_profile_name = null
 
       certificate = {
         name = var.app_gateway_api_certificate_name
@@ -112,7 +101,7 @@ module "app_gw" {
       protocol         = "Https"
       host             = format("api-app.%s.%s", var.dns_zone_io, var.external_domain)
       port             = 443
-      ssl_profile_name = format("%s-ssl-profile", local.project)
+      ssl_profile_name = null
 
       certificate = {
         name = var.app_gateway_api_app_certificate_name
@@ -127,7 +116,7 @@ module "app_gw" {
       protocol         = "Https"
       host             = format("api-mtls.%s.%s", var.dns_zone_io, var.external_domain)
       port             = 443
-      ssl_profile_name = format("%s-ssl-profile", local.project)
+      ssl_profile_name = format("%s-api-mtls-profile", local.project)
 
       certificate = {
         name = var.app_gateway_api_mtls_certificate_name
@@ -142,20 +131,93 @@ module "app_gw" {
   # maps listener to backend
   routes = {
     api = {
-      listener = "api"
-      backend  = "apim"
+      listener              = "api"
+      backend               = "apim"
+      rewrite_rule_set_name = "rewrite-rule-set-api"
     }
 
     api-app = {
-      listener = "api-app"
-      backend  = "apim-app"
+      listener              = "api-app"
+      backend               = "apim-app"
+      rewrite_rule_set_name = "rewrite-rule-set-api-app"
     }
 
     api-mtls = {
-      listener = "api-mtls"
-      backend  = "apim"
+      listener              = "api-mtls"
+      backend               = "apim"
+      rewrite_rule_set_name = "rewrite-rule-set-api-mtls"
     }
   }
+
+  rewrite_rule_sets = [
+    {
+      name = "rewrite-rule-set-api"
+      rewrite_rules = [{
+        name          = "http-headers-api"
+        rule_sequence = 100
+        condition     = null
+        request_header_configurations = [
+          {
+            header_name  = "X-Forwarded-For"
+            header_value = "{var_client_ip}"
+          },
+          {
+            header_name  = "X-Client-Ip"
+            header_value = "{var_client_ip}"
+          },
+          {
+            # this header will be checked in apim policy
+            header_name  = data.azurerm_key_vault_secret.app_gw_mtls_header_name.value
+            header_value = "false"
+          },
+        ]
+        response_header_configurations = []
+      }]
+    },
+    {
+      name = "rewrite-rule-set-api-app"
+      rewrite_rules = [{
+        name          = "http-headers-api-app"
+        rule_sequence = 100
+        condition     = null
+        request_header_configurations = [
+          {
+            header_name  = "X-Forwarded-For"
+            header_value = "{var_client_ip}"
+          },
+          {
+            header_name  = "X-Client-Ip"
+            header_value = "{var_client_ip}"
+          },
+        ]
+        response_header_configurations = []
+      }]
+    },
+    {
+      name = "rewrite-rule-set-api-mtls"
+      rewrite_rules = [{
+        name          = "http-headers-api-mtls"
+        rule_sequence = 100
+        condition     = null
+        request_header_configurations = [
+          {
+            header_name  = "X-Forwarded-For"
+            header_value = "{var_client_ip}"
+          },
+          {
+            header_name  = "X-Client-Ip"
+            header_value = "{var_client_ip}"
+          },
+          {
+            # this header will be checked in apim policy
+            header_name  = data.azurerm_key_vault_secret.app_gw_mtls_header_name.value
+            header_value = "true"
+          },
+        ]
+        response_header_configurations = []
+      }]
+    },
+  ]
 
   # TLS
   identity_ids = [azurerm_user_assigned_identity.appgateway.id]
@@ -203,5 +265,10 @@ data "azurerm_key_vault_certificate" "app_gw_api_app" {
 
 data "azurerm_key_vault_certificate" "app_gw_api_mtls" {
   name         = var.app_gateway_api_mtls_certificate_name
+  key_vault_id = module.key_vault.id
+}
+
+data "azurerm_key_vault_secret" "app_gw_mtls_header_name" {
+  name         = "mtls-header-name"
   key_vault_id = module.key_vault.id
 }
