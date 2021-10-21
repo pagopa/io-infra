@@ -36,8 +36,7 @@ module "appgateway_snet" {
 
 # Application gateway: Multilistener configuraiton
 module "app_gw" {
-  # source = "git::https://github.com/pagopa/azurerm.git//app_gateway?ref=v1.0.55"
-  source = "/Users/pasqualedevita/Documents/github/azurerm/app_gateway"
+  source = "git::https://github.com/pagopa/azurerm.git//app_gateway?ref=app-gateway-improvements"
 
   resource_group_name = data.azurerm_resource_group.vnet_common_rg.name
   location            = data.azurerm_resource_group.vnet_common_rg.location
@@ -178,7 +177,7 @@ module "app_gw" {
             header_value = "{var_client_ip}"
           },
           {
-            header_name  = "x-client-certificate-verified"
+            header_name  = data.azurerm_key_vault_secret.app_gw_mtls_header_name.value
             header_value = "false"
           },
         ]
@@ -220,7 +219,7 @@ module "app_gw" {
             header_value = "{var_client_ip}"
           },
           {
-            header_name  = "x-client-certificate-verified"
+            header_name  = data.azurerm_key_vault_secret.app_gw_mtls_header_name.value
             header_value = "true"
           },
         ]
@@ -275,5 +274,10 @@ data "azurerm_key_vault_certificate" "app_gw_api_app" {
 
 data "azurerm_key_vault_certificate" "app_gw_api_mtls" {
   name         = var.app_gateway_api_mtls_certificate_name
+  key_vault_id = module.key_vault.id
+}
+
+data "azurerm_key_vault_secret" "app_gw_mtls_header_name" {
+  name         = "mtls-header-name"
   key_vault_id = module.key_vault.id
 }
