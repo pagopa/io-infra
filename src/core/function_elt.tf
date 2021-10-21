@@ -39,18 +39,11 @@ module "function_elt" {
   runtime_version                          = "~3"
   application_insights_instrumentation_key = data.azurerm_application_insights.application_insights.instrumentation_key
 
-  app_service_plan_info = {
-    kind     = "elastic"
-    sku_tier = "ElasticPremium"
-    sku_size = "EP1"
-  }
-
   app_settings = {
     FUNCTIONS_WORKER_RUNTIME       = "node"
     WEBSITE_NODE_DEFAULT_VERSION   = "14.16.0"
     FUNCTIONS_WORKER_PROCESS_COUNT = 4
     NODE_ENV                       = "production"
-    AzureWebJobsStorage            = module.function_elt.storage_account.primary_access_key
 
     // Keepalive fields are all optionals
     FETCH_KEEPALIVE_ENABLED             = "true"

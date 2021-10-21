@@ -23,7 +23,7 @@ locals {
 # ###########################
 
 module "apim" {
-  source = "git::https://github.com/pagopa/azurerm.git//api_management?ref=add-apim-extension"
+  source = "git::https://github.com/pagopa/azurerm.git//api_management?ref=v1.0.74"
 
   subnet_id                 = module.apim_snet.id
   location                  = azurerm_resource_group.rg_internal.location
@@ -35,10 +35,8 @@ module "apim" {
   sku_name                  = var.apim_sku
   virtual_network_type      = "Internal"
 
-  # redis_connection_string = var.apim_redis_cache_enabled ? module.apim_redis[0].primary_connection_string : null
-  # redis_cache_id          = var.apim_redis_cache_enabled ? module.apim_redis[0].id : null
-  redis_connection_string = null
-  redis_cache_id          = null
+  redis_connection_string = module.redis_apim.primary_connection_string
+  redis_cache_id          = module.redis_apim.id
 
   # This enables the Username and Password Identity Provider
   sign_up_enabled = false
