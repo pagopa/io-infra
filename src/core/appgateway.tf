@@ -56,8 +56,8 @@ module "app_gw" {
 
   ssl_profiles = [{
     name                             = format("%s-api-mtls-profile", local.project)
-    trusted_client_certificate_names = null
-    verify_client_cert_issuer_dn     = false
+    trusted_client_certificate_names = [format("%s-issuer-chain", var.prefix)]
+    verify_client_cert_issuer_dn     = true
     ssl_policy = {
       disabled_protocols = []
       policy_type        = "Custom"
@@ -66,7 +66,7 @@ module "app_gw" {
         "TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256",
         "TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384",
         "TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA",
-        "TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA"
+        "TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA",
       ]
       min_protocol_version = "TLSv1_2"
     }
@@ -74,7 +74,7 @@ module "app_gw" {
 
   trusted_client_certificates = [
     {
-      secret_name  = format("cstar-%s-issuer-chain", local.project)
+      secret_name  = format("%s-issuer-chain", var.prefix)
       key_vault_id = module.key_vault.id
     }
   ]
@@ -86,7 +86,7 @@ module "app_gw" {
       protocol         = "Https"
       host             = format("api.%s.%s", var.dns_zone_io, var.external_domain)
       port             = 443
-      ssl_profile_name = format("%s-ssl-profile", local.project)
+      ssl_profile_name = null
 
       certificate = {
         name = var.app_gateway_api_certificate_name
@@ -101,7 +101,7 @@ module "app_gw" {
       protocol         = "Https"
       host             = format("api-app.%s.%s", var.dns_zone_io, var.external_domain)
       port             = 443
-      ssl_profile_name = format("%s-ssl-profile", local.project)
+      ssl_profile_name = null
 
       certificate = {
         name = var.app_gateway_api_app_certificate_name
@@ -116,7 +116,7 @@ module "app_gw" {
       protocol         = "Https"
       host             = format("api-mtls.%s.%s", var.dns_zone_io, var.external_domain)
       port             = 443
-      ssl_profile_name = format("%s-ssl-profile", local.project)
+      ssl_profile_name = format("%s-api-mtls-profile", local.project)
 
       certificate = {
         name = var.app_gateway_api_mtls_certificate_name
@@ -221,14 +221,6 @@ module "app_gw" {
 
   # TLS
   identity_ids = [azurerm_user_assigned_identity.appgateway.id]
-
-  # WAF
-  waf_disabled_rule_group = [
-    {
-      rule_group_name = "REQUEST-920-PROTOCOL-ENFORCEMENT"
-      rules           = ["920300", ]
-    }
-  ]
 
   # Scaling
   app_gateway_min_capacity = var.app_gateway_min_capacity
