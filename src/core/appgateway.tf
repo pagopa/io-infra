@@ -19,22 +19,6 @@ module "appgateway_snet" {
 }
 
 ## Application gateway ##
-# Since these variables are re-used - a locals block makes this more maintainable
-# locals {
-#   backend_address_pool_name       = format("%s-appgw-be-address-pool", local.project)
-#   frontend_http_port_name         = format("%s-appgw-fe-http-port", local.project)
-#   frontend_https_port_name        = format("%s-appgw-fe-https-port", local.project)
-#   frontend_ip_configuration_name  = format("%s-appgw-fe-ip-configuration", local.project)
-#   http_setting_name               = format("%s-appgw-be-http-settings", local.project)
-#   http_listener_name              = format("%s-appgw-fe-http-settings", local.project)
-#   https_listener_name             = format("%s-appgw-fe-https-settings", local.project)
-#   http_request_routing_rule_name  = format("%s-appgw-http-reqs-routing-rule", local.project)
-#   https_request_routing_rule_name = format("%s-appgw-https-reqs-routing-rule", local.project)
-#   acme_le_ssl_cert_name           = format("%s-appgw-acme-le-ssl-cert", local.project)
-#   http_to_https_redirect_rule     = format("%s-appgw-http-to-https-redirect-rule", local.project)
-# }
-
-# Application gateway: Multilistener configuraiton
 module "app_gw" {
   source = "git::https://github.com/pagopa/azurerm.git//app_gateway?ref=app-gateway-improvements"
 
