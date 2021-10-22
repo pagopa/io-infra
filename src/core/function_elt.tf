@@ -68,9 +68,13 @@ module "function_elt" {
     TARGETKAFKA_idempotent          = "true"
     TARGETKAFKA_transactionalId     = "IO_ELT"
     TARGETKAFKA_topic               = "io-cosmosdb-services"
-    ERROR_STORAGE_ACCOUNT           = module.storage_account_elt.name,
-    ERROR_STORAGE_KEY               = module.storage_account_elt.primary_access_key,
+    ERROR_STORAGE_ACCOUNT           = module.storage_account_elt.name
+    ERROR_STORAGE_KEY               = module.storage_account_elt.primary_access_key
     ERROR_STORAGE_TABLE             = azurerm_storage_table.fnelterrors.name
+    COMMAND_STORAGE                 = module.storage_account_elt.primary_connection_string
+    COMMAND_STORAGE_TABLE           = azurerm_storage_table.fneltcommands.name
+    IMPORT_TOPIC_NAME               = "import-command"
+    IMPORT_TOPIC_CONNECTION_STRING  = module.event_hub.keys["import-command.io-fn-elt"].primary_connection_string
   }
 
   allowed_subnets = [
@@ -113,5 +117,10 @@ module "storage_account_elt" {
 
 resource "azurerm_storage_table" "fnelterrors" {
   name                 = "fnelterrors"
+  storage_account_name = module.storage_account_elt.name
+}
+
+resource "azurerm_storage_table" "fneltcommands" {
+  name                 = "fneltcommands"
   storage_account_name = module.storage_account_elt.name
 }

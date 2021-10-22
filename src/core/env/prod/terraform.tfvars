@@ -134,5 +134,25 @@ eventhubs = [
         manage = false
       }
     ]
+  },
+  {
+    name              = "import-command"
+    partitions        = 2
+    message_retention = 7
+    consumers         = []
+    keys = [
+      {
+        name   = "ops"
+        listen = false
+        send   = true
+        manage = false
+      },
+      {
+        name   = "io-fn-elt"
+        listen = true
+        send   = false
+        manage = false
+      }
+    ]
   }
 ]
