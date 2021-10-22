@@ -35,7 +35,7 @@ resource "azurerm_api_management_api_version_set" "io_backend_bpd_api" {
   name                = format("%s-io-backend-bpd-api", var.env_short)
   resource_group_name = module.apim.resource_group_name
   api_management_name = module.apim.name
-  display_name        = local.apim_io_backend_api.display_name
+  display_name        = "${local.apim_io_backend_api.display_name} - bpd"
   versioning_scheme   = "Segment"
 }
 
@@ -70,7 +70,7 @@ resource "azurerm_api_management_api_version_set" "io_backend_myportal_api" {
   name                = format("%s-io-backend-myportal-api", var.env_short)
   resource_group_name = module.apim.resource_group_name
   api_management_name = module.apim.name
-  display_name        = local.apim_io_backend_api.display_name
+  display_name        = "${local.apim_io_backend_api.display_name} - myportal"
   versioning_scheme   = "Segment"
 }
 
@@ -105,7 +105,7 @@ resource "azurerm_api_management_api_version_set" "io_backend_pagopa_api" {
   name                = format("%s-io-backend-pagopa-api", var.env_short)
   resource_group_name = module.apim.resource_group_name
   api_management_name = module.apim.name
-  display_name        = local.apim_io_backend_api.display_name
+  display_name        = "${local.apim_io_backend_api.display_name} - pagopa"
   versioning_scheme   = "Segment"
 }
 
@@ -140,7 +140,7 @@ resource "azurerm_api_management_api_version_set" "io_backend_app_api" {
   name                = format("%s-io-backend-app-api", var.env_short)
   resource_group_name = module.apim.resource_group_name
   api_management_name = module.apim.name
-  display_name        = local.apim_io_backend_api.display_name
+  display_name        = "${local.apim_io_backend_api.display_name} - app"
   versioning_scheme   = "Segment"
 }
 
@@ -175,7 +175,7 @@ resource "azurerm_api_management_api_version_set" "io_backend_auth_api" {
   name                = format("%s-io-backend-auth-api", var.env_short)
   resource_group_name = module.apim.resource_group_name
   api_management_name = module.apim.name
-  display_name        = local.apim_io_backend_api.display_name
+  display_name        = "${local.apim_io_backend_api.display_name} - auth"
   versioning_scheme   = "Segment"
 }
 
@@ -210,7 +210,7 @@ resource "azurerm_api_management_api_version_set" "io_backend_bonus_api" {
   name                = format("%s-io-backend-bonus-api", var.env_short)
   resource_group_name = module.apim.resource_group_name
   api_management_name = module.apim.name
-  display_name        = local.apim_io_backend_api.display_name
+  display_name        = "${local.apim_io_backend_api.display_name} - bonus"
   versioning_scheme   = "Segment"
 }
 
@@ -245,7 +245,7 @@ resource "azurerm_api_management_api_version_set" "io_backend_cgn_api" {
   name                = format("%s-io-backend-cgn-api", var.env_short)
   resource_group_name = module.apim.resource_group_name
   api_management_name = module.apim.name
-  display_name        = local.apim_io_backend_api.display_name
+  display_name        = "${local.apim_io_backend_api.display_name} - cgn"
   versioning_scheme   = "Segment"
 }
 
@@ -280,7 +280,7 @@ resource "azurerm_api_management_api_version_set" "io_backend_eucovidcert_api" {
   name                = format("%s-io-backend-eucovidcert-api", var.env_short)
   resource_group_name = module.apim.resource_group_name
   api_management_name = module.apim.name
-  display_name        = local.apim_io_backend_api.display_name
+  display_name        = "${local.apim_io_backend_api.display_name} - eucovidcert"
   versioning_scheme   = "Segment"
 }
 
@@ -315,7 +315,7 @@ resource "azurerm_api_management_api_version_set" "io_backend_mitvoucher_api" {
   name                = format("%s-io-backend-mitvoucher-api", var.env_short)
   resource_group_name = module.apim.resource_group_name
   api_management_name = module.apim.name
-  display_name        = local.apim_io_backend_api.display_name
+  display_name        = "${local.apim_io_backend_api.display_name} - mitvoucher"
   versioning_scheme   = "Segment"
 }
 
@@ -350,7 +350,7 @@ resource "azurerm_api_management_api_version_set" "io_backend_notifications_api"
   name                = format("%s-io-backend-notifications-api", var.env_short)
   resource_group_name = module.apim.resource_group_name
   api_management_name = module.apim.name
-  display_name        = local.apim_io_backend_api.display_name
+  display_name        = "${local.apim_io_backend_api.display_name} - notifications"
   versioning_scheme   = "Segment"
 }
 
@@ -385,7 +385,7 @@ resource "azurerm_api_management_api_version_set" "io_backend_public_api" {
   name                = format("%s-io-backend-public-api", var.env_short)
   resource_group_name = module.apim.resource_group_name
   api_management_name = module.apim.name
-  display_name        = local.apim_io_backend_api.display_name
+  display_name        = "${local.apim_io_backend_api.display_name} - public"
   versioning_scheme   = "Segment"
 }
 
@@ -420,7 +420,7 @@ resource "azurerm_api_management_api_version_set" "io_backend_session_api" {
   name                = format("%s-io-backend-session-api", var.env_short)
   resource_group_name = module.apim.resource_group_name
   api_management_name = module.apim.name
-  display_name        = local.apim_io_backend_api.display_name
+  display_name        = "${local.apim_io_backend_api.display_name} - session"
   versioning_scheme   = "Segment"
 }
 
