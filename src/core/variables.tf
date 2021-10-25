@@ -132,7 +132,29 @@ variable "cidr_subnet_apim" {
   type        = list(string)
   description = "Api Management address space."
 }
-##
+
+variable "cidr_subnet_vpn" {
+  type        = list(string)
+  description = "VPN network address space."
+}
+
+variable "cidr_subnet_dnsforwarder" {
+  type        = list(string)
+  description = "DNS Forwarder network address space."
+}
+
+## VPN ##
+variable "vpn_sku" {
+  type        = string
+  default     = "VpnGw1"
+  description = "VPN Gateway SKU"
+}
+
+variable "vpn_pip_sku" {
+  type        = string
+  default     = "Basic"
+  description = "VPN GW PIP SKU"
+}
 
 ## Application Gateway
 variable "app_gateway_api_certificate_name" {
