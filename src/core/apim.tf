@@ -92,7 +92,7 @@ data "azurerm_key_vault_certificate" "api_app_internal_io_pagopa_it" {
 }
 
 # ## api management key vault policy ##
-resource "azurerm_key_vault_access_policy" "kv" {
+resource "azurerm_key_vault_access_policy" "apim_kv_policy" {
   key_vault_id = module.key_vault.id
   tenant_id    = data.azurerm_client_config.current.tenant_id
   object_id    = module.apim.principal_id
