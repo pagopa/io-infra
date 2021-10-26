@@ -167,6 +167,12 @@ module "apim_io_backend_app_api_v1" {
   })
 
   xml_content = file("./api/io_backend/app/v1/_base_policy.xml")
+  api_operation_policies = [
+    {
+      operation_id = "getUserMessages"
+      xml_content  = file("./api/io_backend/app/v1/operations/getUserMessages.xml")
+    }
+  ]
 }
 ##
 

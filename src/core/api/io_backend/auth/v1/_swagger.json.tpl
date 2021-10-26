@@ -16,6 +16,23 @@
     }
   ],
   "paths": {
+    "/login": {
+      "get": {
+        "operationId": "login",
+        "summary": "Login",
+        "description": "Redirect to IDP login page",
+        "responses": {
+          "302": {
+            "description": "302 response",
+            "headers": {
+              "Location": {
+                "type": "string"
+              }
+            }
+          }
+        }
+      }
+    },
     "/logout": {
       "x-swagger-router-controller": "AuthenticationController",
       "post": {
