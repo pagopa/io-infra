@@ -60,7 +60,7 @@ resource "azurerm_resource_group" "dns_forwarder" {
 
 module "dns_forwarder_snet" {
   source                                         = "git::https://github.com/pagopa/azurerm.git//subnet?ref=v1.0.7"
-  name                                           = format("%s-dnsforwarder-snet", local.project)
+  name                                           = format("%s-dnsforwarder", local.project)
   address_prefixes                               = var.cidr_subnet_dnsforwarder
   resource_group_name                            = data.azurerm_resource_group.vnet_common_rg.name
   virtual_network_name                           = data.azurerm_virtual_network.vnet_common.name
@@ -76,7 +76,7 @@ module "dns_forwarder_snet" {
 }
 
 resource "azurerm_network_profile" "dns_forwarder" {
-  name                = format("%s-dnsforwarder-netprofile", local.project)
+  name                = format("%s-dnsforwarder-networkprofile", local.project)
   location            = var.location
   resource_group_name = data.azurerm_resource_group.vnet_common_rg.name
 
@@ -110,7 +110,7 @@ resource "azurerm_storage_share" "dns_forwarder" {
 }
 
 resource "azurerm_container_group" "coredns_forwarder" {
-  name                = format("%s-dns-forwarder", local.project)
+  name                = format("%s-coredns-forwarder", local.project)
   location            = azurerm_resource_group.dns_forwarder.location
   resource_group_name = azurerm_resource_group.dns_forwarder.name
   ip_address_type     = "Private"
