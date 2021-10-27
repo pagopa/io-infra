@@ -134,17 +134,25 @@ resource "azurerm_key_vault_access_policy" "azdo_kv_common_sp_tls_cert" {
   certificate_permissions = ["Get", "Import", ]
 }
 
-# data "azurerm_key_vault_secret" "sec_workspace_id" {
-#   count        = var.env_short == "p" ? 1 : 0
-#   name         = "sec-workspace-id"
-#   key_vault_id = module.key_vault.id
-# }
+# Security monitoring
+ 
+data "azurerm_key_vault_secret" "sec_sub_id" {
+  count        = var.env_short == "p" ? 1 : 0
+  name         = "sec-subscription-id"
+  key_vault_id = module.key_vault.id
+}
 
-# data "azurerm_key_vault_secret" "sec_storage_id" {
-#   count        = var.env_short == "p" ? 1 : 0
-#   name         = "sec-storage-id"
-#   key_vault_id = module.key_vault.id
-# }
+data "azurerm_key_vault_secret" "sec_workspace_id" {
+  count        = var.env_short == "p" ? 1 : 0
+  name         = "sec-workspace-id"
+  key_vault_id = module.key_vault.id
+}
+
+data "azurerm_key_vault_secret" "sec_storage_id" {
+  count        = var.env_short == "p" ? 1 : 0
+  name         = "sec-storage-id"
+  key_vault_id = module.key_vault.id
+}
 
 # Microsoft Azure WebSites
 
