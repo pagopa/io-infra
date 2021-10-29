@@ -1,18 +1,68 @@
 <!--
-    IMPORTANT:
-    - Policy elements can appear only within the <inbound>, <outbound>, <backend> section elements.
-    - To apply a policy to the incoming request (before it is forwarded to the backend service), place a corresponding policy element within the <inbound> section element.
-    - To apply a policy to the outgoing response (before it is sent back to the caller), place a corresponding policy element within the <outbound> section element.
-    - To add a policy, place the cursor at the desired insertion point and select a policy from the sidebar.
-    - To remove a policy, delete the corresponding policy statement from the policy document.
-    - Position the <base> element within a section element to inherit all policies from the corresponding section element in the enclosing scope.
-    - Remove the <base> element to prevent inheriting policies from the corresponding section element in the enclosing scope.
-    - Policies are applied in the order of their appearance, from the top down.
-    - Comments within policy elements are not supported and may disappear. Place your comments between policy elements or at a higher level scope.
+    IO BACKEND Base policy
+
+    Extracts the token from the request, if any, and resolve the associated fiscalCode
 -->
 <policies>
     <inbound>
         <base />
+       
+        <!-- Extract Token from Authorization header parameter -->
+        <set-variable name='token' value="@(context.Request.Headers.GetValueOrDefault("Authorization","no token").Split(' ').Last())" />
+        <!-- Check if token has already been defined in cache -->
+        <cache-lookup-value key="@((string)context.Variables["token"])" variable-name="fiscalCode" caching-type="external" />
+        <set-variable name="storeFiscalCodeInCache" value="false" />
+        
+        <!-- If API Management doesn’t find it in the cache, make a request for it and store it -->
+        <choose>
+            <when condition="@(!context.Variables.ContainsKey("fiscalCode"))">
+                <send-request mode="new" response-variable-name="profileResponse" timeout="5" ignore-error="true">
+                    <!-- Call fn-app /profile endpoint-->
+                    <set-url>https://io-p-app-appbackendl1.azurewebsites.net/api/v1/profile</set-url>
+                    <set-method>GET</set-method>
+                    <set-header name="Authorization" exists-action="override">
+                        <value>Bearer @((string)context.Variables["token"])</value>
+                    </set-header>
+                </send-request>
+
+                <!-- Check response -->
+                <choose>
+                    <when condition="@(context.Variables["profileResponse"] == null)">
+                        <return-response>
+                            <set-status code="504" reason="Backend IO Timeout" />
+                        </return-response>
+                    </when>
+                    <when condition="@(((IResponse)context.Variables["profileResponse"]).StatusCode == 200)">
+                        <set-variable name="fiscalCode" value="@((string)((IResponse)context.Variables["profileResponse"]).Body.As<JObject>()["fiscal_code"])" />
+                        <set-variable name="storeFiscalCodeInCache" value="true" />
+                    </when>
+                    <otherwise>
+                        <return-response>
+                            <set-status code="401" reason="Unauthorized" />
+                        </return-response>
+                    </otherwise>
+                </choose>
+            </when>
+        </choose>
+        
+        <!-- Check fiscalCode is enhanced -->
+        <choose>
+            <when condition="@(context.Variables["fiscalCode"] == null)">
+                <!-- Return 401 Unauthorized with http-problem payload -->
+                <return-response>
+                    <set-status code="401" reason="Unauthorized" />
+                </return-response>
+            </when>
+            <otherwise>
+                <choose>
+                    <when condition="@("true".Equals((string)context.Variables["storeFiscalCodeInCache"]))">
+                        <!-- Store result in cache -->
+                        <cache-store-value key="@((string)context.Variables["token"])" value="@((string)context.Variables["fiscalCode"])" duration="3600" caching-type="external" />
+                    </when>
+                </choose>
+            </otherwise>
+        </choose>
+
     </inbound>
     <outbound>
         <base />
