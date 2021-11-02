@@ -124,7 +124,7 @@ resource "azurerm_key_vault_access_policy" "azdo_kv_sp_tls_cert" {
   certificate_permissions = ["Get", "Import", ]
 }
 
-# allow kv common access to the service principal responsible to renew certigicates.  
+# allow kv common access to the service principal responsible to renew certigicates.
 resource "azurerm_key_vault_access_policy" "azdo_kv_common_sp_tls_cert" {
   count        = var.azdo_sp_tls_cert_enabled ? 1 : 0
   key_vault_id = data.azurerm_key_vault.common.id

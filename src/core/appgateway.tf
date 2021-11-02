@@ -20,7 +20,8 @@ module "appgateway_snet" {
 
 ## Application gateway ##
 module "app_gw" {
-  source = "git::https://github.com/pagopa/azurerm.git//app_gateway?ref=v1.0.76"
+  # source = "git::https://github.com/pagopa/azurerm.git//app_gateway?ref=v1.0.80" # new tag after merge https://github.com/pagopa/azurerm/pull/109
+  source = "git::https://github.com/pagopa/azurerm.git//app_gateway?ref=add-listener-firewall-policy"
 
   resource_group_name = data.azurerm_resource_group.vnet_common_rg.name
   location            = data.azurerm_resource_group.vnet_common_rg.location
@@ -83,10 +84,11 @@ module "app_gw" {
   listeners = {
 
     api = {
-      protocol         = "Https"
-      host             = format("api.%s.%s", var.dns_zone_io, var.external_domain)
-      port             = 443
-      ssl_profile_name = null
+      protocol           = "Https"
+      host               = format("api.%s.%s", var.dns_zone_io, var.external_domain)
+      port               = 443
+      ssl_profile_name   = null
+      firewall_policy_id = null
 
       certificate = {
         name = var.app_gateway_api_certificate_name
@@ -98,10 +100,11 @@ module "app_gw" {
     }
 
     api-app = {
-      protocol         = "Https"
-      host             = format("api-app.%s.%s", var.dns_zone_io, var.external_domain)
-      port             = 443
-      ssl_profile_name = null
+      protocol           = "Https"
+      host               = format("api-app.%s.%s", var.dns_zone_io, var.external_domain)
+      port               = 443
+      ssl_profile_name   = null
+      firewall_policy_id = azurerm_web_application_firewall_policy.app.id
 
       certificate = {
         name = var.app_gateway_api_app_certificate_name
@@ -113,10 +116,11 @@ module "app_gw" {
     }
 
     api-mtls = {
-      protocol         = "Https"
-      host             = format("api-mtls.%s.%s", var.dns_zone_io, var.external_domain)
-      port             = 443
-      ssl_profile_name = format("%s-api-mtls-profile", local.project)
+      protocol           = "Https"
+      host               = format("api-mtls.%s.%s", var.dns_zone_io, var.external_domain)
+      port               = 443
+      ssl_profile_name   = format("%s-api-mtls-profile", local.project)
+      firewall_policy_id = null
 
       certificate = {
         name = var.app_gateway_api_mtls_certificate_name
@@ -286,4 +290,90 @@ data "azurerm_key_vault_certificate" "app_gw_api_mtls" {
 data "azurerm_key_vault_secret" "app_gw_mtls_header_name" {
   name         = "mtls-header-name"
   key_vault_id = module.key_vault.id
+}
+
+resource "azurerm_web_application_firewall_policy" "app" {
+  name                = format("%s-app-gw-policy", local.project)
+  resource_group_name = data.azurerm_resource_group.vnet_common_rg.name
+  location            = data.azurerm_resource_group.vnet_common_rg.location
+
+  policy_settings {
+    enabled                     = true
+    mode                        = "Prevention"
+    request_body_check          = true
+    file_upload_limit_in_mb     = 100
+    max_request_body_size_in_kb = 128
+  }
+
+  managed_rules {
+
+    managed_rule_set {
+      type    = "OWASP"
+      version = "3.1"
+
+      rule_group_override {
+        rule_group_name = "REQUEST-913-SCANNER-DETECTION"
+        disabled_rules = [
+          "913100",
+          "913101",
+          "913102",
+          "913110",
+          "913120",
+        ]
+      }
+
+      rule_group_override {
+        rule_group_name = "REQUEST-920-PROTOCOL-ENFORCEMENT"
+        disabled_rules = [
+          "920300",
+          "920320",
+        ]
+      }
+
+      rule_group_override {
+        rule_group_name = "REQUEST-930-APPLICATION-ATTACK-LFI"
+        disabled_rules = [
+          "930120",
+        ]
+      }
+
+      rule_group_override {
+        rule_group_name = "REQUEST-932-APPLICATION-ATTACK-RCE"
+        disabled_rules = [
+          "932150",
+        ]
+      }
+
+      rule_group_override {
+        rule_group_name = "REQUEST-941-APPLICATION-ATTACK-XSS"
+        disabled_rules = [
+          "941130",
+        ]
+      }
+
+      rule_group_override {
+        rule_group_name = "REQUEST-942-APPLICATION-ATTACK-SQLI"
+        disabled_rules = [
+          "942100",
+          "942120",
+          "942190",
+          "942200",
+          "942210",
+          "942240",
+          "942250",
+          "942260",
+          "942330",
+          "942340",
+          "942370",
+          "942380",
+          "942430",
+          "942440",
+          "942450",
+        ]
+      }
+
+    }
+  }
+
+  tags = var.tags
 }
