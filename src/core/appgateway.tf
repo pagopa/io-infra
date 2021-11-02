@@ -92,9 +92,10 @@ module "app_gw" {
 
       certificate = {
         name = var.app_gateway_api_certificate_name
-        id = trimsuffix(
+        id = replace(
           data.azurerm_key_vault_certificate.app_gw_api.secret_id,
-          data.azurerm_key_vault_certificate.app_gw_api.version
+          "/${data.azurerm_key_vault_certificate.app_gw_api.version}",
+          ""
         )
       }
     }
@@ -108,9 +109,10 @@ module "app_gw" {
 
       certificate = {
         name = var.app_gateway_api_app_certificate_name
-        id = trimsuffix(
+        id = replace(
           data.azurerm_key_vault_certificate.app_gw_api_app.secret_id,
-          data.azurerm_key_vault_certificate.app_gw_api_app.version
+          "/${data.azurerm_key_vault_certificate.app_gw_api_app.version}",
+          ""
         )
       }
     }
@@ -124,9 +126,10 @@ module "app_gw" {
 
       certificate = {
         name = var.app_gateway_api_mtls_certificate_name
-        id = trimsuffix(
+        id = replace(
           data.azurerm_key_vault_certificate.app_gw_api_mtls.secret_id,
-          data.azurerm_key_vault_certificate.app_gw_api_mtls.version
+          "/${data.azurerm_key_vault_certificate.app_gw_api_mtls.version}",
+          ""
         )
       }
     }
