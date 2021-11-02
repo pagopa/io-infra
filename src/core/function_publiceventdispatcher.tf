@@ -21,6 +21,7 @@ module "function_pblevtdispatcher_snetout" {
     "Microsoft.EventHub",
     "Microsoft.Storage",
     "Microsoft.AzureCosmosDB",
+    "Microsoft.Web",
   ]
 
   delegation = {
@@ -72,14 +73,14 @@ module "function_pblevtdispatcher" {
     webhooks = jsonencode([
       # EUCovidCert PROD
       {
-        url           = format("%s/api/v1/webhook", data.azurerm_function_app.fnapp_eucovidcert.default_hostname),
+        url           = format("https://%s/api/v1/webhook", data.azurerm_function_app.fnapp_eucovidcert.default_hostname),
         headers       = { "X-Functions-Key" = data.azurerm_key_vault_secret.fnapp_eucovidcert_authtoken.value },
         attributes    = { serviceId = "01F73DNTMJTCEZQKJDFNB53KEB" },
         subscriptions = ["service:subscribed"]
       },
       # EUCovidCert UAT
       {
-        url           = format("%s/api/v1/webhook", data.azurerm_function_app.fnapp_eucovidcert.default_hostname),
+        url           = format("https://%s/api/v1/webhook", data.azurerm_function_app.fnapp_eucovidcert.default_hostname),
         headers       = { "X-Functions-Key" = data.azurerm_key_vault_secret.fnapp_eucovidcert_authtoken.value },
         attributes    = { serviceId = "01F798T3NX5RARB38DVKPABKV2" },
         subscriptions = ["service:subscribed"]
