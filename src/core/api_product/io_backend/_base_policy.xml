@@ -18,7 +18,7 @@
             <when condition="@(!context.Variables.ContainsKey("fiscalCode"))">
                 <send-request mode="new" response-variable-name="profileResponse" timeout="5" ignore-error="true">
                     <!-- Call fn-app /profile endpoint-->
-                    <set-url>https://io-p-app-appbackendl1.azurewebsites.net/api/v1/profile</set-url>
+                    <set-url>https://io-p-app-appbackendl1.azurewebsites.net/api/v1/user-identity</set-url>
                     <set-method>GET</set-method>
                     <set-header name="Authorization" exists-action="override">
                         <value>Bearer @((string)context.Variables["token"])</value>
