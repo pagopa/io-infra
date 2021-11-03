@@ -24,8 +24,7 @@ module "appgateway_snet" {
 
 ## Application gateway ##
 module "app_gw" {
-  # source = "git::https://github.com/pagopa/azurerm.git//app_gateway?ref=v1.0.80" # new tag after merge https://github.com/pagopa/azurerm/pull/109
-  source = "git::https://github.com/pagopa/azurerm.git//app_gateway?ref=add-listener-firewall-policy"
+  source = "git::https://github.com/pagopa/azurerm.git//app_gateway?ref=v1.0.80"
 
   resource_group_name = azurerm_resource_group.rg_external.name
   location            = azurerm_resource_group.rg_external.location
@@ -367,9 +366,8 @@ module "app_gw" {
   app_gateway_max_capacity = var.app_gateway_max_capacity
 
   # Logs
-  # todo enable
-  # sec_log_analytics_workspace_id = var.env_short == "p" ? data.azurerm_key_vault_secret.sec_workspace_id[0].value : null
-  # sec_storage_id                 = var.env_short == "p" ? data.azurerm_key_vault_secret.sec_storage_id[0].value : null
+  sec_log_analytics_workspace_id = var.env_short == "p" ? data.azurerm_key_vault_secret.sec_workspace_id[0].value : null
+  sec_storage_id                 = var.env_short == "p" ? data.azurerm_key_vault_secret.sec_storage_id[0].value : null
 
   tags = var.tags
 }
