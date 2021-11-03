@@ -77,6 +77,20 @@ module "app_gw" {
       pick_host_name_from_backend = true
     }
 
+    developerportal-backend = {
+      protocol     = "Https"
+      host         = null
+      port         = 443
+      ip_addresses = null # with null value use fqdns
+      fqdns = [
+        data.azurerm_app_service.developerportalbackend.default_site_hostname,
+      ]
+      probe                       = "/info"
+      probe_name                  = "probe-developerportal-backend"
+      request_timeout             = 180
+      pick_host_name_from_backend = true
+    }
+
   }
 
   ssl_profiles = [{
@@ -192,6 +206,23 @@ module "app_gw" {
       }
     }
 
+    developerportal-backend-io-italia-it = {
+      protocol           = "Https"
+      host               = "developerportal-backend.io.italia.it"
+      port               = 443
+      ssl_profile_name   = null
+      firewall_policy_id = null
+
+      certificate = {
+        name = var.app_gateway_developerportal_backend_io_italia_it_certificate_name
+        id = replace(
+          data.azurerm_key_vault_certificate.app_gw_developerportal_backend_io_italia_it.secret_id,
+          "/${data.azurerm_key_vault_certificate.app_gw_developerportal_backend_io_italia_it.version}",
+          ""
+        )
+      }
+    }
+
   }
 
   # maps listener to backend
@@ -225,6 +256,12 @@ module "app_gw" {
       listener              = "app-backend-io-italia-it"
       backend               = "appbackend-app"
       rewrite_rule_set_name = "rewrite-rule-set-api-app"
+    }
+
+    developerportal-backend-io-italia-it = {
+      listener              = "developerportal-backend-io-italia-it"
+      backend               = "developerportal-backend"
+      rewrite_rule_set_name = "rewrite-rule-set-developerportal-backend"
     }
 
   }
@@ -282,6 +319,25 @@ module "app_gw" {
       name = "rewrite-rule-set-api-app"
       rewrite_rules = [{
         name          = "http-headers-api-app"
+        rule_sequence = 100
+        condition     = null
+        request_header_configurations = [
+          {
+            header_name  = "X-Forwarded-For"
+            header_value = "{var_client_ip}"
+          },
+          {
+            header_name  = "X-Client-Ip"
+            header_value = "{var_client_ip}"
+          },
+        ]
+        response_header_configurations = []
+      }]
+    },
+    {
+      name = "rewrite-rule-set-developerportal-backend"
+      rewrite_rules = [{
+        name          = "http-headers-developerportal-backend"
         rule_sequence = 100
         condition     = null
         request_header_configurations = [
@@ -380,6 +436,11 @@ data "azurerm_key_vault_certificate" "app_gw_api_io_italia_it" {
 
 data "azurerm_key_vault_certificate" "app_gw_app_backend_io_italia_it" {
   name         = var.app_gateway_app_backend_io_italia_it_certificate_name
+  key_vault_id = data.azurerm_key_vault.common.id
+}
+
+data "azurerm_key_vault_certificate" "app_gw_developerportal_backend_io_italia_it" {
+  name         = var.app_gateway_developerportal_backend_io_italia_it_certificate_name
   key_vault_id = data.azurerm_key_vault.common.id
 }
 

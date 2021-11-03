@@ -30,6 +30,15 @@ data "azurerm_app_service" "appbackendli" {
 }
 
 #
+# Developer portal
+#
+
+data "azurerm_app_service" "developerportalbackend" {
+  name                = format("%s-app-developerportalbackend", local.project)
+  resource_group_name = format("%s-rg-internal", local.project)
+}
+
+#
 # EUCovicCert resources
 #
 
