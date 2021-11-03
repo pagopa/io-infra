@@ -172,6 +172,16 @@ variable "app_gateway_api_mtls_certificate_name" {
   description = "Application gateway api certificate name on Key Vault"
 }
 
+variable "app_gateway_api_io_italia_it_certificate_name" {
+  type        = string
+  description = "Application gateway api certificate name on Key Vault"
+}
+
+variable "app_gateway_app_backend_io_italia_it_certificate_name" {
+  type        = string
+  description = "Application gateway api certificate name on Key Vault"
+}
+
 variable "app_gateway_min_capacity" {
   type    = number
   default = 0

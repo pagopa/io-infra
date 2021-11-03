@@ -30,11 +30,13 @@ cidr_subnet_vpn                = ["10.0.133.0/24"]
 cidr_subnet_azdoa              = ["10.0.250.0/24"]
 cidr_subnet_dnsforwarder       = ["10.0.252.8/29"]
 
-app_gateway_api_certificate_name      = "api-io-pagopa-it"
-app_gateway_api_app_certificate_name  = "api-app-io-pagopa-it"
-app_gateway_api_mtls_certificate_name = "api-mtls-io-pagopa-it"
-app_gateway_min_capacity              = 0
-app_gateway_max_capacity              = 50
+app_gateway_api_certificate_name                      = "api-io-pagopa-it"
+app_gateway_api_mtls_certificate_name                 = "api-mtls-io-pagopa-it"
+app_gateway_api_app_certificate_name                  = "api-app-io-pagopa-it"
+app_gateway_api_io_italia_it_certificate_name         = "api-io-italia-it"
+app_gateway_app_backend_io_italia_it_certificate_name = "app-backend-io-italia-it"
+app_gateway_min_capacity                              = 0
+app_gateway_max_capacity                              = 50
 
 # redis
 redis_apim_sku_name = "Premium"

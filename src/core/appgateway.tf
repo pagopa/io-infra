@@ -1,8 +1,8 @@
 ## Application gateway public ip ##
 resource "azurerm_public_ip" "appgateway_public_ip" {
   name                = format("%s-appgateway-pip", local.project)
-  resource_group_name = azurerm_resource_group.rg_vnet.name
-  location            = azurerm_resource_group.rg_vnet.location
+  resource_group_name = azurerm_resource_group.rg_external.name
+  location            = azurerm_resource_group.rg_external.location
   sku                 = "Standard"
   allocation_method   = "Static"
 
@@ -23,9 +23,9 @@ module "app_gw" {
   # source = "git::https://github.com/pagopa/azurerm.git//app_gateway?ref=v1.0.80" # new tag after merge https://github.com/pagopa/azurerm/pull/109
   source = "git::https://github.com/pagopa/azurerm.git//app_gateway?ref=add-listener-firewall-policy"
 
-  resource_group_name = data.azurerm_resource_group.vnet_common_rg.name
-  location            = data.azurerm_resource_group.vnet_common_rg.location
-  name                = format("%s-app-gw", local.project)
+  resource_group_name = azurerm_resource_group.rg_external.name
+  location            = azurerm_resource_group.rg_external.location
+  name                = format("%s-appgateway", local.project)
 
   # SKU
   sku_name = "WAF_v2"
@@ -37,22 +37,46 @@ module "app_gw" {
 
   # Configure backends
   backends = {
+
     apim = {
-      protocol     = "Https"
-      host         = "api-internal.io.italia.it"
-      port         = 443
-      ip_addresses = null # with null value use host
-      probe        = "/status-0123456789abcdef"
-      probe_name   = "probe-apim"
+      protocol                    = "Https"
+      host                        = "api-internal.io.italia.it"
+      port                        = 443
+      ip_addresses                = null # with null value use fqdns
+      fqdns                       = ["api-internal.io.italia.it"]
+      probe                       = "/status-0123456789abcdef"
+      probe_name                  = "probe-apim"
+      request_timeout             = 180
+      pick_host_name_from_backend = false
     }
+
     apim-app = {
-      protocol     = "Https"
-      host         = "api-app.internal.io.pagopa.it"
-      port         = 443
-      ip_addresses = null # with null value use host
-      probe        = "/status-0123456789abcdef"
-      probe_name   = "probe-apim"
+      protocol                    = "Https"
+      host                        = "api-app.internal.io.pagopa.it"
+      port                        = 443
+      ip_addresses                = null # with null value use fqdns
+      fqdns                       = ["api-app.internal.io.pagopa.it"]
+      probe                       = "/status-0123456789abcdef"
+      probe_name                  = "probe-apim-app"
+      request_timeout             = 10
+      pick_host_name_from_backend = false
     }
+
+    appbackend-app = {
+      protocol     = "Https"
+      host         = null
+      port         = 443
+      ip_addresses = null # with null value use fqdns
+      fqdns = [
+        data.azurerm_app_service.appbackendl1.default_site_hostname,
+        data.azurerm_app_service.appbackendl2.default_site_hostname,
+      ]
+      probe                       = "/info"
+      probe_name                  = "probe-appbackend-app"
+      request_timeout             = 10
+      pick_host_name_from_backend = true
+    }
+
   }
 
   ssl_profiles = [{
@@ -83,7 +107,7 @@ module "app_gw" {
   # Configure listeners
   listeners = {
 
-    api = {
+    api-io-pagopa-it = {
       protocol           = "Https"
       host               = format("api.%s.%s", var.dns_zone_io, var.external_domain)
       port               = 443
@@ -100,24 +124,7 @@ module "app_gw" {
       }
     }
 
-    api-app = {
-      protocol           = "Https"
-      host               = format("api-app.%s.%s", var.dns_zone_io, var.external_domain)
-      port               = 443
-      ssl_profile_name   = null
-      firewall_policy_id = azurerm_web_application_firewall_policy.app.id
-
-      certificate = {
-        name = var.app_gateway_api_app_certificate_name
-        id = replace(
-          data.azurerm_key_vault_certificate.app_gw_api_app.secret_id,
-          "/${data.azurerm_key_vault_certificate.app_gw_api_app.version}",
-          ""
-        )
-      }
-    }
-
-    api-mtls = {
+    api-mtls-io-pagopa-it = {
       protocol           = "Https"
       host               = format("api-mtls.%s.%s", var.dns_zone_io, var.external_domain)
       port               = 443
@@ -133,27 +140,93 @@ module "app_gw" {
         )
       }
     }
+
+    api-io-italia-it = {
+      protocol           = "Https"
+      host               = "api.io.italia.it"
+      port               = 443
+      ssl_profile_name   = null
+      firewall_policy_id = null
+
+      certificate = {
+        name = var.app_gateway_api_io_italia_it_certificate_name
+        id = replace(
+          data.azurerm_key_vault_certificate.app_gw_api_io_italia_it.secret_id,
+          "/${data.azurerm_key_vault_certificate.app_gw_api_io_italia_it.version}",
+          ""
+        )
+      }
+    }
+
+    api-app-io-pagopa-it = {
+      protocol           = "Https"
+      host               = format("api-app.%s.%s", var.dns_zone_io, var.external_domain)
+      port               = 443
+      ssl_profile_name   = null
+      firewall_policy_id = azurerm_web_application_firewall_policy.api_app.id
+
+      certificate = {
+        name = var.app_gateway_api_app_certificate_name
+        id = replace(
+          data.azurerm_key_vault_certificate.app_gw_api_app.secret_id,
+          "/${data.azurerm_key_vault_certificate.app_gw_api_app.version}",
+          ""
+        )
+      }
+    }
+
+    app-backend-io-italia-it = {
+      protocol           = "Https"
+      host               = "app-backend.io.italia.it"
+      port               = 443
+      ssl_profile_name   = null
+      firewall_policy_id = azurerm_web_application_firewall_policy.api_app.id
+
+      certificate = {
+        name = var.app_gateway_app_backend_io_italia_it_certificate_name
+        id = replace(
+          data.azurerm_key_vault_certificate.app_gw_app_backend_io_italia_it.secret_id,
+          "/${data.azurerm_key_vault_certificate.app_gw_app_backend_io_italia_it.version}",
+          ""
+        )
+      }
+    }
+
   }
 
   # maps listener to backend
   routes = {
-    api = {
-      listener              = "api"
+
+    api-io-pagopa-it = {
+      listener              = "api-io-pagopa-it"
       backend               = "apim"
       rewrite_rule_set_name = "rewrite-rule-set-api"
     }
 
-    api-app = {
-      listener              = "api-app"
+    api-io-italia-it = {
+      listener              = "api-io-italia-it"
+      backend               = "apim"
+      rewrite_rule_set_name = "rewrite-rule-set-api"
+    }
+
+    api-mtls-io-pagopa-it = {
+      listener              = "api-mtls-io-pagopa-it"
+      backend               = "apim"
+      rewrite_rule_set_name = "rewrite-rule-set-api-mtls"
+    }
+
+    api-app-io-pagopa-it = {
+      listener              = "api-app-io-pagopa-it"
       backend               = "apim-app"
       rewrite_rule_set_name = "rewrite-rule-set-api-app"
     }
 
-    api-mtls = {
-      listener              = "api-mtls"
-      backend               = "apim"
-      rewrite_rule_set_name = "rewrite-rule-set-api-mtls"
+    app-backend-io-italia-it = {
+      listener              = "app-backend-io-italia-it"
+      backend               = "appbackend-app"
+      rewrite_rule_set_name = "rewrite-rule-set-api-app"
     }
+
   }
 
   rewrite_rule_sets = [
@@ -176,25 +249,6 @@ module "app_gw" {
             # this header will be checked in apim policy
             header_name  = data.azurerm_key_vault_secret.app_gw_mtls_header_name.value
             header_value = "false"
-          },
-        ]
-        response_header_configurations = []
-      }]
-    },
-    {
-      name = "rewrite-rule-set-api-app"
-      rewrite_rules = [{
-        name          = "http-headers-api-app"
-        rule_sequence = 100
-        condition     = null
-        request_header_configurations = [
-          {
-            header_name  = "X-Forwarded-For"
-            header_value = "{var_client_ip}"
-          },
-          {
-            header_name  = "X-Client-Ip"
-            header_value = "{var_client_ip}"
           },
         ]
         response_header_configurations = []
@@ -224,6 +278,25 @@ module "app_gw" {
         response_header_configurations = []
       }]
     },
+    {
+      name = "rewrite-rule-set-api-app"
+      rewrite_rules = [{
+        name          = "http-headers-api-app"
+        rule_sequence = 100
+        condition     = null
+        request_header_configurations = [
+          {
+            header_name  = "X-Forwarded-For"
+            header_value = "{var_client_ip}"
+          },
+          {
+            header_name  = "X-Client-Ip"
+            header_value = "{var_client_ip}"
+          },
+        ]
+        response_header_configurations = []
+      }]
+    },
   ]
 
   # TLS
@@ -242,8 +315,26 @@ module "app_gw" {
 }
 
 ## user assined identity: (application gateway) ##
+resource "azurerm_user_assigned_identity" "appgateway" {
+  resource_group_name = azurerm_resource_group.sec_rg.name
+  location            = azurerm_resource_group.sec_rg.location
+  name                = format("%s-appgateway-identity", local.project)
+
+  tags = var.tags
+}
+
 resource "azurerm_key_vault_access_policy" "app_gateway_policy" {
   key_vault_id            = module.key_vault.id
+  tenant_id               = data.azurerm_client_config.current.tenant_id
+  object_id               = azurerm_user_assigned_identity.appgateway.principal_id
+  key_permissions         = []
+  secret_permissions      = ["Get", "List"]
+  certificate_permissions = ["Get", "List"]
+  storage_permissions     = []
+}
+
+resource "azurerm_key_vault_access_policy" "app_gateway_policy_common" {
+  key_vault_id            = data.azurerm_key_vault.common.id
   tenant_id               = data.azurerm_client_config.current.tenant_id
   object_id               = azurerm_user_assigned_identity.appgateway.principal_id
   key_permissions         = []
@@ -267,21 +358,8 @@ resource "azurerm_key_vault_access_policy" "app_gw_uai_kvreader_common" {
   storage_permissions     = []
 }
 
-resource "azurerm_user_assigned_identity" "appgateway" {
-  resource_group_name = azurerm_resource_group.sec_rg.name
-  location            = azurerm_resource_group.sec_rg.location
-  name                = format("%s-appgateway-identity", local.project)
-
-  tags = var.tags
-}
-
 data "azurerm_key_vault_certificate" "app_gw_api" {
   name         = var.app_gateway_api_certificate_name
-  key_vault_id = module.key_vault.id
-}
-
-data "azurerm_key_vault_certificate" "app_gw_api_app" {
-  name         = var.app_gateway_api_app_certificate_name
   key_vault_id = module.key_vault.id
 }
 
@@ -290,15 +368,30 @@ data "azurerm_key_vault_certificate" "app_gw_api_mtls" {
   key_vault_id = module.key_vault.id
 }
 
+data "azurerm_key_vault_certificate" "app_gw_api_app" {
+  name         = var.app_gateway_api_app_certificate_name
+  key_vault_id = module.key_vault.id
+}
+
+data "azurerm_key_vault_certificate" "app_gw_api_io_italia_it" {
+  name         = var.app_gateway_api_io_italia_it_certificate_name
+  key_vault_id = data.azurerm_key_vault.common.id
+}
+
+data "azurerm_key_vault_certificate" "app_gw_app_backend_io_italia_it" {
+  name         = var.app_gateway_app_backend_io_italia_it_certificate_name
+  key_vault_id = data.azurerm_key_vault.common.id
+}
+
 data "azurerm_key_vault_secret" "app_gw_mtls_header_name" {
   name         = "mtls-header-name"
   key_vault_id = module.key_vault.id
 }
 
-resource "azurerm_web_application_firewall_policy" "app" {
-  name                = format("%s-app-gw-policy", local.project)
-  resource_group_name = data.azurerm_resource_group.vnet_common_rg.name
-  location            = data.azurerm_resource_group.vnet_common_rg.location
+resource "azurerm_web_application_firewall_policy" "api_app" {
+  name                = format("%s-waf-appgateway-api-app-policy", local.project)
+  resource_group_name = azurerm_resource_group.rg_external.name
+  location            = azurerm_resource_group.rg_external.location
 
   policy_settings {
     enabled                     = true
