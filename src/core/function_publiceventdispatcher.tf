@@ -1,7 +1,7 @@
 #
 # Define resources for fn-pblevtdispatcher
 #
-# as the full name would result in a storage name too long, we user the shorter version: pblevtdispatcher
+# as the full name would result in a storage name too long, we use the shorter version: pblevtdispatcher
 #
 
 resource "azurerm_resource_group" "pblevtdispatcher_rg" {
