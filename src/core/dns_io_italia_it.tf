@@ -49,7 +49,7 @@ resource "azurerm_dns_a_record" "api_io_italia_it" {
   name                = "api"
   zone_name           = azurerm_dns_zone.io_italia_it.name
   resource_group_name = azurerm_resource_group.rg_external.name
-  ttl                 = 60 # var.dns_default_ttl_sec # after first apply, change to default ttl
+  ttl                 = 300 # var.dns_default_ttl_sec # after first apply, change to default ttl
   records             = [azurerm_public_ip.appgateway_public_ip.ip_address]
 
   tags = var.tags
