@@ -196,6 +196,12 @@ variable "app_gateway_max_capacity" {
   type    = number
   default = 2
 }
+
+variable "app_gateway_alerts_enabled" {
+  type        = bool
+  description = "Enable alerts"
+  default     = true
+}
 ##
 
 ## Apim

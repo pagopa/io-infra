@@ -38,6 +38,7 @@ app_gateway_app_backend_io_italia_it_certificate_name             = "app-backend
 app_gateway_developerportal_backend_io_italia_it_certificate_name = "developerportal-backend-io-italia-it"
 app_gateway_min_capacity                                          = 2
 app_gateway_max_capacity                                          = 50
+app_gateway_alerts_enabled                                        = true
 
 # redis
 redis_apim_sku_name = "Premium"
