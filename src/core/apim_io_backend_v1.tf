@@ -13,7 +13,7 @@ module "apim_io_backend_product" {
   resource_group_name = module.apim.resource_group_name
 
   published             = true
-  subscription_required = false
+  subscription_required = true
   approval_required     = false
 
   policy_xml = file("./api_product/io_backend/_base_policy.xml")

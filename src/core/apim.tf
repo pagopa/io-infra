@@ -35,8 +35,9 @@ module "apim" {
   sku_name                  = var.apim_sku
   virtual_network_type      = "Internal"
 
-  redis_connection_string = module.redis_apim.primary_connection_string
-  redis_cache_id          = module.redis_apim.id
+  # not used at the moment
+  redis_connection_string = null # module.redis_apim.primary_connection_string
+  redis_cache_id          = null # module.redis_apim.id
 
   # This enables the Username and Password Identity Provider
   sign_up_enabled = false
