@@ -142,6 +142,26 @@ eventhubs = [
     ]
   },
   {
+    name              = "io-cosmosdb-profiles"
+    partitions        = 5
+    message_retention = 7
+    consumers         = []
+    keys = [
+      {
+        name   = "io-fn-elt"
+        listen = false
+        send   = true
+        manage = false
+      },
+      {
+        name   = "pdnd"
+        listen = true
+        send   = false
+        manage = false
+      }
+    ]
+  },
+  {
     name              = "import-command"
     partitions        = 2
     message_retention = 7
