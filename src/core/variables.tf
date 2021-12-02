@@ -329,3 +329,10 @@ EOD
     ))
   }))
 }
+
+# eucovidcert
+variable "eucovidcert_alerts_enabled" {
+  description = "Enable eucovidcert alerts"
+  type        = bool
+  default     = true
+}

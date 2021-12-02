@@ -24,24 +24,24 @@ provider "registry.terraform.io/hashicorp/azuread" {
 }
 
 provider "registry.terraform.io/hashicorp/azurerm" {
-  version     = "2.76.0"
-  constraints = "2.76.0"
+  version     = "2.87.0"
+  constraints = "2.87.0"
   hashes = [
-    "h1:EIlf0RqHDwJnxcElEkSogrNlRZ4DrEu601zaOa//7Ho=",
-    "h1:kF+u0s0DPnE5gMKhzQACWRUIdwZG1Ax4atXt9hk1J8M=",
-    "h1:zmdPipEF7AqjByQsDGiUt3TPn1ho7NPph82WO2LFhuc=",
-    "h1:zvndphFZu2+2LpyTWV6TvWyb2RE8Eba2Qkp8EZiA65A=",
-    "zh:137eb7c07d3d3c9fe123e74381c108c4442efba9fc051faa2ca603503ff2840f",
-    "zh:142a354dffd59a1d6b7f1614ab66a468ace3636d95933589a8d704ee8dbc4ea6",
-    "zh:4c343b4da8b86e4213c1b11f73337cec73a55b1fa95a0e0e0c79f34597d37cc3",
-    "zh:75d3109d48726fdbaad840d2fa294ec3362b32a3628c261af00f5c5608427521",
-    "zh:7b1e78c144c6ad2beebc798abb9e76c725bf34ced41df36dc0120a0f2426e801",
-    "zh:981235b01c3d4acf94c78cdd96624fd01d0a3622bc06b5c62aef3e788f1481c3",
-    "zh:bad819efae7293ce371409e1ed34197c3e879f61d3e44893af0ce68e6aaffde7",
-    "zh:c8008967722929deccfec9695754ae55028ce12311c321ae7a7c753dde162a44",
-    "zh:d38513d1138864269b2ff333b08a64a7949630d489f18e660630bbaff3b7ebb8",
-    "zh:e1f64d2d91b5f5cba6a9c5d35278a4918d332d7385a87f8e3466aaadb782a90f",
-    "zh:e93a377a1e823df69718686703b07f1712046eeb742006022e982f2e8a594161",
+    "h1:RpADbjg7sQRqNC+fzlRQFxIxdK8XmFldw9O9ztYyr/k=",
+    "h1:S6zLCjUbdw09cFap5xXbnNZ1m3RY2zztI2fT9OzCFBo=",
+    "h1:SYGygMwmSVsWIbJSTSM5/Bpp5A2+k07aVmFxAfOkOoc=",
+    "h1:TP16aT5MhjKGPYOdB4Mgg4hxQZQCoHprc8PFuOLGa9E=",
+    "zh:0bb36fdcbe6084247ada56382dde1d5e7ca466a6de31d8bbe4219f11dc5a5a83",
+    "zh:22404da5a2937465b76922b1dfcccd829447a0fc759bda01eef45275c1c7f3f4",
+    "zh:25c5863f2f3230662a2a25f740e32b43f84db2bf2684dae4ac1995d76a4b388e",
+    "zh:7045c2d3fc0d703189a3b1b535d2816966821b18afb572ea06d6498773823a3f",
+    "zh:7afbd32eae94b72915068ea65152ad52f9556309539061d83f47b2488e280700",
+    "zh:afb07270d9d0306a69cd2bf173d8a7dd1bec26a959145fc0319123538adf7baf",
+    "zh:b4f0f2d00bb6d4a45fce9a2d9059ea6250a3336de8a84f442cb176d05300368d",
+    "zh:bc059efa8ad90fcde84ee3c4c74a2b5ef291061068512172603106339275915e",
+    "zh:c916e13acc85bfa288bd56f0aa12971d6ff01aaa16e4967426ba987523ff523b",
+    "zh:e6e05e8f84ff23aa084ded4eb292287a7d2a1d675a3aa8ba5cedacf1b172988b",
+    "zh:f1c77d552e0ceea90554048a46868bc72c28645f5f11506d4b5ab44fc4520569",
   ]
 }
 

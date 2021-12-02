@@ -75,9 +75,9 @@ module "function_elt" {
     COMMAND_STORAGE_TABLE           = azurerm_storage_table.fneltcommands.name
     IMPORT_TOPIC_NAME               = "import-command"
     IMPORT_TOPIC_CONNECTION_STRING  = module.event_hub.keys["import-command.io-fn-elt"].primary_connection_string
-    
-    PROFILE_TOPIC_NAME               = "io-cosmosdb-profiles"
-    PROFILE_TOPIC_CONNECTION_STRING  = module.event_hub.keys["io-cosmosdb-profiles.io-fn-elt"].primary_connection_string
+
+    PROFILE_TOPIC_NAME              = "io-cosmosdb-profiles"
+    PROFILE_TOPIC_CONNECTION_STRING = module.event_hub.keys["io-cosmosdb-profiles.io-fn-elt"].primary_connection_string
   }
 
   allowed_subnets = [
