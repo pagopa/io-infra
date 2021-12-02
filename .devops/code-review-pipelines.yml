@@ -1,4 +1,5 @@
 pr:
+  autoCancel: false # prevent terraform state lock on new commits
   branches:
     include:
       - main
