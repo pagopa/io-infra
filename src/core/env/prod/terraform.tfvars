@@ -36,7 +36,7 @@ app_gateway_api_app_certificate_name                              = "api-app-io-
 app_gateway_api_io_italia_it_certificate_name                     = "api-io-italia-it"
 app_gateway_app_backend_io_italia_it_certificate_name             = "app-backend-io-italia-it"
 app_gateway_developerportal_backend_io_italia_it_certificate_name = "developerportal-backend-io-italia-it"
-app_gateway_min_capacity                                          = 3
+app_gateway_min_capacity                                          = 2
 app_gateway_max_capacity                                          = 50
 app_gateway_alerts_enabled                                        = true
 
