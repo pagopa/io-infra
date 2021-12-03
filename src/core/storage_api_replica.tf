@@ -37,7 +37,7 @@ module "io_apist_replica" {
   rules = [{
     source_container_name      = "message-content"
     destination_container_name = "message-content"
-    copy_blobs_created_after   = "20021-04-01T00:00:00Z"
+    copy_blobs_created_after   = "2021-01-01T00:00:00Z"
   }]
 
 }
