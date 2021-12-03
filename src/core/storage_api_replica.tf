@@ -9,6 +9,9 @@ module "storage_account_api_replica" {
   resource_group_name        = azurerm_resource_group.rg_internal.name
   location                   = var.location
   advanced_threat_protection = false
+  # requird to create object replication.
+  enable_versioning = true
+  versioning_name   = "versioning"
 
   tags = var.tags
 }
@@ -34,7 +37,7 @@ module "io_apist_replica" {
   rules = [{
     source_container_name      = "message-content"
     destination_container_name = "message-content"
-    copy_blobs_created_after   = "Everything"
+    copy_blobs_created_after   = "20021-04-01T00:00:00Z"
   }]
 
 }
