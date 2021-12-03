@@ -1,7 +1,7 @@
 module "storage_account_api_replica" {
   source = "git::https://github.com/pagopa/azurerm.git//storage_account?ref=v1.0.60"
 
-  name                       = replace(format("%s-api-replica", local.project), "-", "")
+  name                       = replace(format("%s-stapi-replica", local.project), "-", "")
   account_kind               = "StorageV2"
   account_tier               = "Standard"
   account_replication_type   = "LRS"
