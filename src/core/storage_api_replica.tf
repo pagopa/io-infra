@@ -25,7 +25,7 @@ data "azurerm_storage_account" "api" {
 }
 
 
-module "io_apist_replication" {
+module "io_apist_replica" {
   source = "git::https://github.com/pagopa/azurerm.git//storage_object_replication?ref=v2.0.6"
 
   source_storage_account_id      = data.azurerm_storage_account.api.id
