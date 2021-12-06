@@ -39,6 +39,13 @@ data "azurerm_cosmosdb_account" "api_northeurope" {
   resource_group_name = azurerm_resource_group.rg_internal.name
 }
 
+# Storage iopstapi replica
+data "azurerm_storage_account" "api_replica" {
+  name                = "iopstapireplica"
+  resource_group_name = azurerm_resource_group.rg_internal.name
+}
+
+
 
 module "function_elt" {
   source = "git::https://github.com/pagopa/azurerm.git//function_app?ref=v1.0.65"
@@ -104,7 +111,7 @@ module "function_elt" {
     COSMOS_DEGREE_OF_PARALLELISM = "2"
     MESSAGE_CONTENT_CHUNK_SIZE   = "500"
 
-    MessageContentStorageConnection  = module.storage_account_elt.primary_connection_string
+    MessageContentStorageConnection  = data.azurerm_storage_account.api_replica.primary_connection_string
     ServiceInfoBlobStorageConnection = data.azurerm_storage_account.cdnassets.primary_connection_string
   }
 
