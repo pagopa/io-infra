@@ -26,6 +26,11 @@ module "function_elt_snetout" {
   }
 }
 
+data "azurerm_storage_account" "cdnassets" {
+  name                = "iopstcdnassets"
+  resource_group_name = azurerm_resource_group.rg_internal.name
+}
+
 module "function_elt" {
   source = "git::https://github.com/pagopa/azurerm.git//function_app?ref=v1.0.65"
 
@@ -78,6 +83,16 @@ module "function_elt" {
 
     PROFILE_TOPIC_NAME              = "io-cosmosdb-profiles"
     PROFILE_TOPIC_CONNECTION_STRING = module.event_hub.keys["io-cosmosdb-profiles.io-fn-elt"].primary_connection_string
+
+    MESSAGE_EXPORT_STEP_1_CONTAINER     = azurerm_storage_container.container_messages_report_step1.name
+    MESSAGE_EXPORT_STEP_FINAL_CONTAINER = azurerm_storage_container.container_messages_report_step_final.name
+
+    COSMOS_CHUNK_SIZE            = "1000"
+    COSMOS_DEGREE_OF_PARALLELISM = "2"
+    MESSAGE_CONTENT_CHUNK_SIZE   = "500"
+
+    MessageContentStorageConnection  = module.storage_account_elt.primary_connection_string
+    ServiceInfoBlobStorageConnection = data.azurerm_storage_account.cdnassets.primary_connection_string
   }
 
   allowed_subnets = [
@@ -126,4 +141,16 @@ resource "azurerm_storage_table" "fnelterrors" {
 resource "azurerm_storage_table" "fneltcommands" {
   name                 = "fneltcommands"
   storage_account_name = module.storage_account_elt.name
+}
+
+resource "azurerm_storage_container" "container_messages_report_step1" {
+  name                  = "messages-report-step1"
+  storage_account_name  = module.storage_account_elt.name
+  container_access_type = "private"
+}
+
+resource "azurerm_storage_container" "container_messages_report_step_final" {
+  name                  = "messages-report-step-final"
+  storage_account_name  = module.storage_account_elt.name
+  container_access_type = "private"
 }
