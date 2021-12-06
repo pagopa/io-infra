@@ -29,15 +29,9 @@ module "function_elt_snetout" {
 # CDN Assets storage account
 data "azurerm_storage_account" "cdnassets" {
   name                = "iopstcdnassets"
-  resource_group_name = azurerm_resource_group.rg_internal.name
+  resource_group_name = var.common_rg
 }
 
-
-# CosmosDB replica
-data "azurerm_cosmosdb_account" "api_northeurope" {
-  name                = "io-p-cosmos-api-northeurope"
-  resource_group_name = azurerm_resource_group.rg_internal.name
-}
 
 # Storage iopstapi replica
 data "azurerm_storage_account" "api_replica" {
@@ -101,8 +95,8 @@ module "function_elt" {
     PROFILE_TOPIC_CONNECTION_STRING = module.event_hub.keys["io-cosmosdb-profiles.io-fn-elt"].primary_connection_string
 
     COSMOSDB_REPLICA_NAME = "db"
-    COSMOSDB_REPLICA_URI  = azurerm_cosmosdb_account.api_northeurope.endpoint
-    COSMOSDB_REPLICA_KEY  = azurerm_cosmosdb_account.api_northeurope.primary_master_key
+    COSMOSDB_REPLICA_URI  = replace(data.azurerm_cosmosdb_account.cosmos_api.endpoint, "io-p-cosmos-api", "io-p-cosmos-api-northeurope")
+    COSMOSDB_REPLICA_KEY  = data.azurerm_cosmosdb_account.cosmos_api.primary_master_key
 
     MESSAGE_EXPORT_STEP_1_CONTAINER     = azurerm_storage_container.container_messages_report_step1.name
     MESSAGE_EXPORT_STEP_FINAL_CONTAINER = azurerm_storage_container.container_messages_report_step_final.name
