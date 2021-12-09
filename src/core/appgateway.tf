@@ -494,54 +494,6 @@ module "app_gw" {
   tags = var.tags
 }
 
-# we need to send logs to log internal log_analytics_workspace due to covid dashboard
-# this is a temp configuration
-resource "azurerm_monitor_diagnostic_setting" "app_gw" {
-  name                       = format("%s-appgateway", local.project)
-  target_resource_id         = module.app_gw.id
-  log_analytics_workspace_id = data.azurerm_log_analytics_workspace.log_analytics_workspace.id
-
-  log {
-    category = "ApplicationGatewayAccessLog"
-    enabled  = true
-
-    retention_policy {
-      enabled = false
-      days    = 0
-    }
-  }
-
-  log {
-    category = "ApplicationGatewayFirewallLog"
-    enabled  = false
-
-    retention_policy {
-      enabled = false
-      days    = 0
-    }
-  }
-
-  log {
-    category = "ApplicationGatewayPerformanceLog"
-    enabled  = false
-
-    retention_policy {
-      days    = 0
-      enabled = false
-    }
-  }
-
-  metric {
-    category = "AllMetrics"
-    enabled  = false
-
-    retention_policy {
-      days    = 0
-      enabled = false
-    }
-  }
-}
-
 ## user assined identity: (application gateway) ##
 resource "azurerm_user_assigned_identity" "appgateway" {
   resource_group_name = azurerm_resource_group.sec_rg.name

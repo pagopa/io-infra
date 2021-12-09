@@ -38,7 +38,7 @@ module "io_apist_replica" {
     source_container_name      = "message-content"
     destination_container_name = "message-content"
     #copy_blobs_created_after   = "2020-12-31T23:00:00Z"
-    copy_blobs_created_after   = "Everything"
+    copy_blobs_created_after = "Everything"
   }]
 
 }
