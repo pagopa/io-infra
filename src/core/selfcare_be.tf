@@ -1,7 +1,7 @@
 module "selfcare_be" {
   source = "git::https://github.com/pagopa/azurerm.git//app_service?ref=v2.0.2"
 
-  name = "${var.location}-${var.environment}"
+  name = "${var.location}-${var.env_short}"
 
   ftps_state = "AllAllowed"
 
@@ -21,18 +21,18 @@ module "selfcare_be" {
     WEBSITE_NPM_DEFAULT_VERSION  = "6.1.0"
     WEBSITE_RUN_FROM_PACKAGE     = "1"
 
-    LOG_LEVEL     = "info"
-    
+    LOG_LEVEL = "info"
+
     LOGO_URL            = "https://assets.cdn.io.italia.it/logos"
     SANDBOX_FISCAL_CODE = data.azurerm_key_vault_secret.io_sandbox_fiscal_code.value
 
     # SelfCare configuration
     IDP = "selfcare"
-    
+
 
     # Fn-Admin connection
-    ADMIN_API_URL   = "http://api-internal.io.italia.it"
-    ADMIN_API_KEY   = data.azurerm_key_vault_secret.apim_io_service_key.value
+    ADMIN_API_URL = "http://api-internal.io.italia.it"
+    ADMIN_API_KEY = data.azurerm_key_vault_secret.apim_io_service_key.value
 
     # Apim connection
     APIM_PRODUCT_NAME           = "io-services-api"
@@ -73,7 +73,7 @@ module "selfcare_be" {
   app_command_line = "/home/site/deployments/tools/startup_script.sh"
 
   tags = {
-    environment = var.environment
+    environment = var.env_short
   }
 }
 
