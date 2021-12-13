@@ -143,6 +143,11 @@ variable "cidr_subnet_dnsforwarder" {
   description = "DNS Forwarder network address space."
 }
 
+variable "cidr_subnet_selfcare_fe_storage" {
+  type        = list(string)
+  description = "Selfcare IO frontend storage address space."
+}
+
 ## VPN ##
 variable "vpn_sku" {
   type        = string
@@ -335,4 +340,56 @@ variable "eucovidcert_alerts_enabled" {
   description = "Enable eucovidcert alerts"
   type        = bool
   default     = true
+}
+
+#
+# Storage
+#
+# contracts storage
+variable "contracts_account_replication_type" {
+  type        = string
+  description = "Contracts replication type"
+  default     = "LRS"
+}
+
+variable "contracts_delete_retention_days" {
+  type        = number
+  description = "Number of days to retain deleted contracts"
+  default     = 1
+}
+
+variable "contracts_enable_versioning" {
+  type        = bool
+  description = "Enable contract versioning"
+  default     = false
+}
+
+variable "contracts_advanced_threat_protection" {
+  type        = bool
+  description = "Enable contract threat advanced protection"
+  default     = false
+}
+
+#
+# App service
+#
+variable "app_service_plan_sku" {
+  type        = string
+  description = "The sku of app service plan to create"
+}
+
+variable "app_service_plan_sku_tier" {
+  type        = string
+  description = "The sku tier of app service plan to create"
+}
+
+variable "app_service_plan_kind" {
+  type        = string
+  description = "The sku kind of app service plan to create. (ES. Linux, Windows)"
+}
+
+variable "app_service_plan_reserved" {
+  type        = string
+  description = "(Optional) Is this App Service Plan Reserved. Defaults to false."
+  default     = "true"
 }
