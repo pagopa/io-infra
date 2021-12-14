@@ -94,16 +94,17 @@ module "function_elt" {
     PROFILE_TOPIC_NAME              = "io-cosmosdb-profiles"
     PROFILE_TOPIC_CONNECTION_STRING = module.event_hub.keys["io-cosmosdb-profiles.io-fn-elt"].primary_connection_string
 
-    COSMOSDB_REPLICA_NAME = "db"
-    COSMOSDB_REPLICA_URI  = replace(data.azurerm_cosmosdb_account.cosmos_api.endpoint, "io-p-cosmos-api", "io-p-cosmos-api-northeurope")
-    COSMOSDB_REPLICA_KEY  = data.azurerm_cosmosdb_account.cosmos_api.primary_master_key
+    COSMOSDB_REPLICA_NAME     = "db"
+    COSMOSDB_REPLICA_URI      = replace(data.azurerm_cosmosdb_account.cosmos_api.endpoint, "io-p-cosmos-api", "io-p-cosmos-api-northeurope")
+    COSMOSDB_REPLICA_KEY      = data.azurerm_cosmosdb_account.cosmos_api.primary_master_key
+    COSMOSDB_REPLICA_LOCATION = "North Europe"
 
     MESSAGE_EXPORT_STEP_1_CONTAINER     = azurerm_storage_container.container_messages_report_step1.name
     MESSAGE_EXPORT_STEP_FINAL_CONTAINER = azurerm_storage_container.container_messages_report_step_final.name
 
     COSMOS_CHUNK_SIZE            = "1000"
     COSMOS_DEGREE_OF_PARALLELISM = "2"
-    MESSAGE_CONTENT_CHUNK_SIZE   = "500"
+    MESSAGE_CONTENT_CHUNK_SIZE   = "250"
 
     MessageContentStorageConnection  = data.azurerm_storage_account.api_replica.primary_connection_string
     ServiceInfoBlobStorageConnection = data.azurerm_storage_account.cdnassets.primary_connection_string
