@@ -104,7 +104,7 @@ module "function_elt" {
 
     COSMOS_CHUNK_SIZE            = "1000"
     COSMOS_DEGREE_OF_PARALLELISM = "2"
-    MESSAGE_CONTENT_CHUNK_SIZE   = "250"
+    MESSAGE_CONTENT_CHUNK_SIZE   = "200"
 
     MessageContentStorageConnection  = data.azurerm_storage_account.api_replica.primary_connection_string
     ServiceInfoBlobStorageConnection = data.azurerm_storage_account.cdnassets.primary_connection_string
