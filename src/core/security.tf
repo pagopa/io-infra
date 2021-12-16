@@ -112,29 +112,38 @@ resource "azurerm_key_vault_access_policy" "adgroup_security_policy" {
 # Microsoft Azure WebSites
 
 resource "azurerm_key_vault_access_policy" "app_service" {
-
   key_vault_id = data.azurerm_key_vault.common.id
 
   tenant_id = data.azurerm_client_config.current.tenant_id
   object_id = "bb319217-f6ab-45d9-833d-555ef1173316"
 
-  secret_permissions      = ["Get", ]
+  secret_permissions      = ["Get",]
   storage_permissions     = []
-  certificate_permissions = ["Get", ]
+  certificate_permissions = ["Get",]
 }
 
 # Microsoft.AzureFrontDoor-Cdn Enterprise application.
 # Note: the application id is always the same in every tenant while the object id is different.
-resource "azurerm_key_vault_access_policy" "cdn" {
-
+resource "azurerm_key_vault_access_policy" "cdn_common" {
   key_vault_id = data.azurerm_key_vault.common.id
 
   tenant_id = data.azurerm_client_config.current.tenant_id
   object_id = "f3b3f72f-4770-47a5-8c1e-aa298003be12"
 
-  secret_permissions      = ["Get", "List", ]
+  secret_permissions      = ["Get",]
   storage_permissions     = []
-  certificate_permissions = ["Get", "List", ]
+  certificate_permissions = ["Get",]
+}
+
+resource "azurerm_key_vault_access_policy" "cdn_kv" {
+  key_vault_id = module.key_vault.id
+
+  tenant_id = data.azurerm_client_config.current.tenant_id
+  object_id = "f3b3f72f-4770-47a5-8c1e-aa298003be12"
+
+  secret_permissions      = ["Get",]
+  storage_permissions     = []
+  certificate_permissions = ["Get",]
 }
 
 data "azurerm_key_vault_secret" "sec_workspace_id" {
