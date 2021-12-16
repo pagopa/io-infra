@@ -58,6 +58,12 @@ variable "dns_zone_io" {
   description = "The dns subdomain."
 }
 
+variable "dns_zone_io_selfcare" {
+  type        = string
+  default     = null
+  description = "The dns subdomain."
+}
+
 # azure devops
 variable "azdo_sp_tls_cert_enabled" {
   type        = string
@@ -143,7 +149,7 @@ variable "cidr_subnet_dnsforwarder" {
   description = "DNS Forwarder network address space."
 }
 
-variable "cidr_subnet_selfcare_fe_storage" {
+variable "cidr_subnet_selfcare_be" {
   type        = list(string)
   description = "Selfcare IO frontend storage address space."
 }
@@ -342,54 +348,27 @@ variable "eucovidcert_alerts_enabled" {
   default     = true
 }
 
-#
-# Storage
-#
-# contracts storage
-variable "contracts_account_replication_type" {
+# selfcare
+variable "selfcare_external_hostname" {
+  description = "Selfcare external hostname"
   type        = string
-  description = "Contracts replication type"
-  default     = "LRS"
+  default     = "selfcare.pagopa.it"
 }
 
-variable "contracts_delete_retention_days" {
+variable "selfcare_plan_sku_tier" {
+  description = "Selfcare app plan sku tier"
+  type        = string
+  default     = "PremiumV3"
+}
+
+variable "selfcare_plan_sku_size" {
+  description = "Selfcare app plan sku size"
+  type        = string
+  default     = "P1v3"
+}
+
+variable "selfcare_plan_sku_capacity" {
+  description = "Selfcare app plan capacity"
   type        = number
-  description = "Number of days to retain deleted contracts"
   default     = 1
-}
-
-variable "contracts_enable_versioning" {
-  type        = bool
-  description = "Enable contract versioning"
-  default     = false
-}
-
-variable "contracts_advanced_threat_protection" {
-  type        = bool
-  description = "Enable contract threat advanced protection"
-  default     = false
-}
-
-#
-# App service
-#
-variable "app_service_plan_sku" {
-  type        = string
-  description = "The sku of app service plan to create"
-}
-
-variable "app_service_plan_sku_tier" {
-  type        = string
-  description = "The sku tier of app service plan to create"
-}
-
-variable "app_service_plan_kind" {
-  type        = string
-  description = "The sku kind of app service plan to create. (ES. Linux, Windows)"
-}
-
-variable "app_service_plan_reserved" {
-  type        = string
-  description = "(Optional) Is this App Service Plan Reserved. Defaults to false."
-  default     = "true"
 }

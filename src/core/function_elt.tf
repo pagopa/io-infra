@@ -99,7 +99,7 @@ module "function_elt" {
     COSMOSDB_REPLICA_KEY      = data.azurerm_cosmosdb_account.cosmos_api.primary_master_key
     COSMOSDB_REPLICA_LOCATION = "North Europe"
 
-    MESSAGE_EXPORTS_COMMAND_TABLE = azurerm_storage_table.fneltexports.name
+    MESSAGE_EXPORTS_COMMAND_TABLE       = azurerm_storage_table.fneltexports.name
     MESSAGE_EXPORT_STEP_1_CONTAINER     = azurerm_storage_container.container_messages_report_step1.name
     MESSAGE_EXPORT_STEP_FINAL_CONTAINER = azurerm_storage_container.container_messages_report_step_final.name
 

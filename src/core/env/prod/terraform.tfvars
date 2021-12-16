@@ -9,8 +9,9 @@ tags = {
 }
 
 # dns
-external_domain = "pagopa.it"
-dns_zone_io     = "io"
+external_domain      = "pagopa.it"
+dns_zone_io          = "io"
+dns_zone_io_selfcare = "io.selfcare"
 
 lock_enable = true
 
@@ -20,16 +21,16 @@ common_rg = "io-p-rg-common"
 vnet_name = "io-p-vnet-common"
 # cidr_vnet         = ["10.0.0.0/16"]
 # check free subnet on azure portal io-p-vnet-common -> subnets
-cidr_subnet_eventhub            = ["10.0.10.0/24"]
-cidr_subnet_fnelt               = ["10.0.11.0/24"]
-cidr_subnet_fnpblevtdispatcher  = ["10.0.12.0/24"]
-cidr_subnet_appgateway          = ["10.0.13.0/24"]
-cidr_subnet_redis_apim          = ["10.0.14.0/24"]
-cidr_subnet_apim                = ["10.0.101.0/24"]
-cidr_subnet_vpn                 = ["10.0.133.0/24"]
-cidr_subnet_azdoa               = ["10.0.250.0/24"]
-cidr_subnet_dnsforwarder        = ["10.0.252.8/29"]
-cidr_subnet_selfcare_fe_storage = ["10.0.137.0/24"]
+cidr_subnet_eventhub           = ["10.0.10.0/24"]
+cidr_subnet_fnelt              = ["10.0.11.0/24"]
+cidr_subnet_fnpblevtdispatcher = ["10.0.12.0/24"]
+cidr_subnet_appgateway         = ["10.0.13.0/24"]
+cidr_subnet_redis_apim         = ["10.0.14.0/24"]
+cidr_subnet_apim               = ["10.0.101.0/24"]
+cidr_subnet_vpn                = ["10.0.133.0/24"]
+cidr_subnet_selfcare_be        = ["10.0.137.0/24"]
+cidr_subnet_azdoa              = ["10.0.250.0/24"]
+cidr_subnet_dnsforwarder       = ["10.0.252.8/29"]
 
 app_gateway_api_certificate_name                                  = "api-io-pagopa-it"
 app_gateway_api_mtls_certificate_name                             = "api-mtls-io-pagopa-it"
