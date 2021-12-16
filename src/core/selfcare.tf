@@ -149,7 +149,7 @@ resource "azurerm_app_service_virtual_network_swift_connection" "selfcare_common
 }
 
 module "appservice_selfcare_be" {
-  source = "git::https://github.com/pagopa/azurerm.git//app_service?ref=appservice-add-external-plan"
+  source = "git::https://github.com/pagopa/azurerm.git//app_service?ref=v2.0.13"
 
   name                = format("%s-app-selfcare-be", local.project)
   resource_group_name = azurerm_resource_group.selfcare_be_rg.name
