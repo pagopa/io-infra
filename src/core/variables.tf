@@ -58,6 +58,12 @@ variable "dns_zone_io" {
   description = "The dns subdomain."
 }
 
+variable "dns_zone_io_selfcare" {
+  type        = string
+  default     = null
+  description = "The dns subdomain."
+}
+
 # azure devops
 variable "azdo_sp_tls_cert_enabled" {
   type        = string
@@ -141,6 +147,11 @@ variable "cidr_subnet_vpn" {
 variable "cidr_subnet_dnsforwarder" {
   type        = list(string)
   description = "DNS Forwarder network address space."
+}
+
+variable "cidr_subnet_selfcare_be" {
+  type        = list(string)
+  description = "Selfcare IO frontend storage address space."
 }
 
 ## VPN ##
@@ -335,4 +346,29 @@ variable "eucovidcert_alerts_enabled" {
   description = "Enable eucovidcert alerts"
   type        = bool
   default     = true
+}
+
+# selfcare
+variable "selfcare_external_hostname" {
+  description = "Selfcare external hostname"
+  type        = string
+  default     = "selfcare.pagopa.it"
+}
+
+variable "selfcare_plan_sku_tier" {
+  description = "Selfcare app plan sku tier"
+  type        = string
+  default     = "PremiumV3"
+}
+
+variable "selfcare_plan_sku_size" {
+  description = "Selfcare app plan sku size"
+  type        = string
+  default     = "P1v3"
+}
+
+variable "selfcare_plan_sku_capacity" {
+  description = "Selfcare app plan capacity"
+  type        = number
+  default     = 1
 }
