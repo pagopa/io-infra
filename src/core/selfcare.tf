@@ -159,7 +159,7 @@ module "appservice_selfcare_be" {
 
   app_command_line  = "/home/site/deployments/tools/startup_script.sh"
   linux_fx_version  = "NODE|14-lts" # to try
-  health_check_path = "/api/v1/info"
+  health_check_path = "/info"
 
   app_settings = {
     WEBSITE_NODE_DEFAULT_VERSION = "6.11.2"
@@ -196,7 +196,7 @@ module "appservice_selfcare_be" {
     FAILURE_URL                           = "https://${local.selfcare.frontend_hostname}/500.html"
     SELFCARE_LOGIN_URL                    = "https://${var.selfcare_external_hostname}/auth/login"
     SELFCARE_IDP_ISSUER                   = "https://${var.selfcare_external_hostname}"
-    SELFCARE_IDP_ISSUER_JWT_SIGNATURE_KEY = "anykey" # todo static, selfcare (external) public key 
+    SELFCARE_IDP_ISSUER_JWT_SIGNATURE_KEY = "anykey" # todo static, selfcare (external) public key
     JWT_SIGNATURE_KEY                     = "anykey" # todo private key con to sign session tokens (internal)
 
     # JIRA integration for Service review workflow
