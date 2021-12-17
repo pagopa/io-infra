@@ -226,7 +226,7 @@ module "appservice_selfcare_be" {
 }
 
 data "http" "selfcare_well_known_jwks_json" {
-  url = "https://dev.${var.selfcare_external_hostname}/.well-known/jwks.json"
+  url = "https://dev.${var.selfcare_external_hostname}/.well-known/jwks.json" # todo remove .dev
 
   # Optional request headers
   request_headers = {
