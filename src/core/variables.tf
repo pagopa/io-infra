@@ -198,6 +198,11 @@ variable "app_gateway_developerportal_backend_io_italia_it_certificate_name" {
   description = "Application gateway api certificate name on Key Vault"
 }
 
+variable "app_gateway_api_io_selfcare_pagopa_it_certificate_name" {
+  type        = string
+  description = "Application gateway api certificate name on Key Vault"
+}
+
 variable "app_gateway_min_capacity" {
   type    = number
   default = 0
