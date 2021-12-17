@@ -218,5 +218,7 @@ module "appservice_selfcare_be" {
     JIRA_TOKEN                 = data.azurerm_key_vault_secret.selfcare_devportal_jira_token.value
   }
 
+  allowed_subnets = [module.appgateway_snet.id]
+
   tags = var.tags
 }
