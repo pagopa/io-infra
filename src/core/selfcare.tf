@@ -102,6 +102,16 @@ data "azurerm_key_vault_secret" "selfcare_devportal_jira_token" {
   key_vault_id = data.azurerm_key_vault.common.id
 }
 
+data "azurerm_key_vault_secret" "selfcare_selfcare_idp_issuer_jwt_signature_key" {
+  name         = "selfcare-SELFCARE-IDP-ISSUER-JWT-SIGNATURE-KEY"
+  key_vault_id = data.azurerm_key_vault.common.id
+}
+
+data "azurerm_key_vault_secret" "selfcare_jwt_signature_key" {
+  name         = "selfcare-JWT-SIGNATURE-KEY"
+  key_vault_id = data.azurerm_key_vault.common.id
+}
+
 resource "azurerm_app_service_plan" "selfcare_be_common" {
   name                = format("%s-plan-selfcare-be-common", local.project)
   location            = azurerm_resource_group.selfcare_be_rg.location
@@ -193,13 +203,13 @@ module "appservice_selfcare_be" {
     USE_SERVICE_PRINCIPAL       = "1"
 
     FRONTEND_URL                          = "https://${local.selfcare.frontend_hostname}"
-    BACKEND_URL                           = "https://${local.selfcare.backend_hostname}"
+    BACKEND_URL                           = "${local.selfcare.backend_hostname}"
     LOGIN_URL                             = "https://${local.selfcare.frontend_hostname}/login"
     FAILURE_URL                           = "https://${local.selfcare.frontend_hostname}/500.html"
     SELFCARE_LOGIN_URL                    = "https://${var.selfcare_external_hostname}/auth/login"
-    SELFCARE_IDP_ISSUER                   = "https://${var.selfcare_external_hostname}"
-    SELFCARE_IDP_ISSUER_JWT_SIGNATURE_KEY = data.http.selfcare_well_known_jwks_json.body
-    JWT_SIGNATURE_KEY                     = "anykey" # todo private key con to sign session tokens (internal)
+    SELFCARE_IDP_ISSUER                   = "api.${var.selfcare_external_hostname}"
+    SELFCARE_IDP_ISSUER_JWT_SIGNATURE_KEY = data.azurerm_key_vault_secret.selfcare_selfcare_idp_issuer_jwt_signature_key.value # todo data.http.selfcare_well_known_jwks_json.body
+    JWT_SIGNATURE_KEY                     = data.azurerm_key_vault_secret.selfcare_jwt_signature_key.value # todo private key con to sign session tokens (internal)
 
     # JIRA integration for Service review workflow
     JIRA_USERNAME              = "github-bot@pagopa.it"
