@@ -38,6 +38,13 @@ data "azurerm_storage_account" "api_replica" {
   resource_group_name = azurerm_resource_group.rg_internal.name
 }
 
+# KeyVault values - start
+data "azurerm_key_vault_secret" "services_exclusion_list" {
+  name         = "io-fn-services-SERVICEID-EXCLUSION-LIST"
+  key_vault_id = data.azurerm_key_vault.common.id
+}
+# KeyVault values - end
+
 module "function_elt" {
   source = "git::https://github.com/pagopa/azurerm.git//function_app?ref=v1.0.65"
 
@@ -104,15 +111,10 @@ module "function_elt" {
     COSMOS_DEGREE_OF_PARALLELISM = "2"
     MESSAGE_CONTENT_CHUNK_SIZE   = "200"
 
+    SERVICEID_EXCLUSION_LIST = data.azurerm_key_vault_secret.services_exclusion_list.value
+
     MessageContentStorageConnection  = data.azurerm_storage_account.api_replica.primary_connection_string
     ServiceInfoBlobStorageConnection = data.azurerm_storage_account.cdnassets.primary_connection_string
-  }
-
-  app_settings_secrets = {
-    key_vault_id = data.azurerm_key_vault.common.outputs.id
-    map = {
-      SERVICEID_EXCLUSION_LIST = "io-fn-services-SERVICEID-EXCLUSION-LIST"
-    }
   }
 
   allowed_subnets = [
