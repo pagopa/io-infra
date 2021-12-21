@@ -39,7 +39,11 @@ data "azurerm_storage_account" "api_replica" {
   resource_group_name = azurerm_resource_group.rg_internal.name
 }
 
-
+# KeyVault Common
+data "azurerm_key_vault" "common" {
+  name                = format("%s-kv-common", local.project)
+  resource_group_name = format("%s-rg-common", local.project)
+}
 
 module "function_elt" {
   source = "git::https://github.com/pagopa/azurerm.git//function_app?ref=v1.0.65"
@@ -109,6 +113,13 @@ module "function_elt" {
 
     MessageContentStorageConnection  = data.azurerm_storage_account.api_replica.primary_connection_string
     ServiceInfoBlobStorageConnection = data.azurerm_storage_account.cdnassets.primary_connection_string
+  }
+
+  app_settings_secrets = {
+    key_vault_id = data.azurerm_key_vault.common.outputs.id
+    map = {
+      SERVICEID_EXCLUSION_LIST = "io-fn-services-SERVICEID-EXCLUSION-LIST"
+    }
   }
 
   allowed_subnets = [
