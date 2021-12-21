@@ -32,7 +32,6 @@ data "azurerm_storage_account" "cdnassets" {
   resource_group_name = var.common_rg
 }
 
-
 # Storage iopstapi replica
 data "azurerm_storage_account" "api_replica" {
   name                = "iopstapireplica"
