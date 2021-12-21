@@ -39,12 +39,6 @@ data "azurerm_storage_account" "api_replica" {
   resource_group_name = azurerm_resource_group.rg_internal.name
 }
 
-# KeyVault Common
-data "azurerm_key_vault" "common" {
-  name                = format("%s-kv-common", local.project)
-  resource_group_name = format("%s-rg-common", local.project)
-}
-
 module "function_elt" {
   source = "git::https://github.com/pagopa/azurerm.git//function_app?ref=v1.0.65"
 
