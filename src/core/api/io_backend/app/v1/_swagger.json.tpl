@@ -5,9 +5,11 @@
     "title": "Proxy API",
     "description": "Mobile and web proxy API gateway."
   },
-  "host": "${host}",
+  "host": "{host}",
   "basePath": "/api/v1",
-  "schemes": ["https"],
+  "schemes": [
+    "https"
+  ],
   "security": [
     {
       "Bearer": []
@@ -370,6 +372,109 @@
         }
       }
     },
+    "/legal-messages/{id}": {
+      "x-swagger-router-controller": "MessagesController",
+      "parameters": [
+        {
+          "name": "id",
+          "in": "path",
+          "type": "string",
+          "required": true,
+          "description": "The ID of the message."
+        }
+      ],
+      "get": {
+        "operationId": "getUserLegalMessage",
+        "summary": "Get legal message",
+        "description": "Returns the legal message with the provided message ID.",
+        "responses": {
+          "200": {
+            "description": "Found.",
+            "schema": {
+              "$ref": "#/definitions/LegalMessageWithContent"
+            },
+            "examples": {
+              "application/json": "content: {\n  markdown: \"hey hey !! <a style=\\\"color: red\\\" href=\\\"http://example.com\\\"> some content here ..... this is a link with a style applied, some other content</a>\",\n  subject: \"my subject ............\",\n  attachments: [{name:\"attachment\", content:\"aBase64Encoding\", mime_type: \"image/png\"}]\n},\ncreated_at: \"2018-06-06T12:22:24.523Z\",\nfiscal_code: \"LSSLCU79B24L219P\",\nid: \"01CFAGRMGB9XCA8B2CQ4QA7K76\",\nsender_service_id: \"5a25abf4fcc89605c082f042c49a\",\ntime_to_live: 3600\n"
+            }
+          },
+          "400": {
+            "description": "Bad request",
+            "schema": {
+              "$ref": "#/definitions/ProblemJson"
+            }
+          },
+          "401": {
+            "description": "Bearer token null or expired."
+          },
+          "404": {
+            "description": "No message found for the provided ID.",
+            "schema": {
+              "$ref": "#/definitions/ProblemJson"
+            }
+          },
+          "429": {
+            "description": "Too many requests",
+            "schema": {
+              "$ref": "#/definitions/ProblemJson"
+            }
+          },
+          "500": {
+            "description": "There was an error in retrieving the message.",
+            "schema": {
+              "$ref": "#/definitions/ProblemJson"
+            }
+          }
+        }
+      }
+    },
+    "/legal-messages/{legal_message_unique_id}/attachments/{attachment_id}": {
+      "x-swagger-router-controller": "MessagesController",
+      "get": {
+        "operationId": "getLegalMessageAttachment",
+        "summary": "Retrieve an attachment of a legal message",
+        "produces": [
+          "application/octet-stream"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "legal_message_unique_id",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "path",
+            "name": "attachment_id",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "format": "binary",
+              "type": "string"
+            }
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "429": {
+            "description": "Too Many Requests"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
     "/profile": {
       "x-swagger-router-controller": "ProfileController",
       "get": {
@@ -440,7 +545,9 @@
             "x-examples": {
               "application/json": {
                 "email": "foobar@example.com",
-                "preferred_languages": ["it_IT"],
+                "preferred_languages": [
+                  "it_IT"
+                ],
                 "is_inbox_enabled": true,
                 "is_webhook_enabled": false,
                 "version": 1
@@ -520,7 +627,9 @@
             "examples": {
               "application/json": {
                 "email": "email@example.com",
-                "preferred_languages": ["it_IT"],
+                "preferred_languages": [
+                  "it_IT"
+                ],
                 "is_inbox_enabled": true,
                 "accepted_tos_version": 1,
                 "is_webhook_enabled": true,
@@ -1085,7 +1194,9 @@
         "operationId": "abortUserDataProcessing",
         "summary": "Abort User's revious data processing request",
         "description": "Ask for a request to abort, if present",
-        "tags": ["restricted"],
+        "tags": [
+          "restricted"
+        ],
         "parameters": [
           {
             "$ref": "#/parameters/UserDataProcessingChoiceParam"
@@ -1128,181 +1239,235 @@
   },
   "definitions": {
     "AcceptedTosVersion": {
-      "$ref": "https://raw.githubusercontent.com/pagopa/io-functions-commons/v21.7.3/openapi/definitions.yaml#/AcceptedTosVersion"
+      "$ref": "https://raw.githubusercontent.com/pagopa/io-functions-commons/v22.5.0/openapi/definitions.yaml#/AcceptedTosVersion"
     },
     "BlockedInboxOrChannels": {
-      "$ref": "https://raw.githubusercontent.com/pagopa/io-functions-commons/v21.7.3/openapi/definitions.yaml#/BlockedInboxOrChannels"
+      "$ref": "https://raw.githubusercontent.com/pagopa/io-functions-commons/v22.5.0/openapi/definitions.yaml#/BlockedInboxOrChannels"
     },
     "DepartmentName": {
-      "$ref": "https://raw.githubusercontent.com/pagopa/io-functions-commons/v21.7.3/openapi/definitions.yaml#/DepartmentName"
+      "$ref": "https://raw.githubusercontent.com/pagopa/io-functions-commons/v22.5.0/openapi/definitions.yaml#/DepartmentName"
     },
     "EmailAddress": {
-      "$ref": "https://raw.githubusercontent.com/pagopa/io-functions-commons/v21.7.3/openapi/definitions.yaml#/EmailAddress"
+      "$ref": "https://raw.githubusercontent.com/pagopa/io-functions-commons/v22.5.0/openapi/definitions.yaml#/EmailAddress"
     },
     "PreferredLanguage": {
-      "$ref": "https://raw.githubusercontent.com/pagopa/io-functions-commons/v21.7.3/openapi/definitions.yaml#/PreferredLanguage"
+      "$ref": "https://raw.githubusercontent.com/pagopa/io-functions-commons/v22.5.0/openapi/definitions.yaml#/PreferredLanguage"
     },
     "PreferredLanguages": {
-      "$ref": "https://raw.githubusercontent.com/pagopa/io-functions-commons/v21.7.3/openapi/definitions.yaml#/PreferredLanguages"
+      "$ref": "https://raw.githubusercontent.com/pagopa/io-functions-commons/v22.5.0/openapi/definitions.yaml#/PreferredLanguages"
     },
     "Profile": {
-      "$ref": "https://raw.githubusercontent.com/pagopa/io-functions-commons/v21.7.3/openapi/definitions.yaml#/Profile"
+      "$ref": "https://raw.githubusercontent.com/pagopa/io-functions-commons/v22.5.0/openapi/definitions.yaml#/Profile"
     },
     "ExtendedProfile": {
-      "$ref": "https://raw.githubusercontent.com/pagopa/io-functions-commons/v21.7.3/openapi/definitions.yaml#/ExtendedProfile"
+      "$ref": "https://raw.githubusercontent.com/pagopa/io-functions-commons/v22.5.0/openapi/definitions.yaml#/ExtendedProfile"
     },
     "FiscalCode": {
-      "$ref": "https://raw.githubusercontent.com/pagopa/io-functions-commons/v21.7.3/openapi/definitions.yaml#/FiscalCode"
+      "$ref": "https://raw.githubusercontent.com/pagopa/io-functions-commons/v22.5.0/openapi/definitions.yaml#/FiscalCode"
     },
     "IsEmailEnabled": {
-      "$ref": "https://raw.githubusercontent.com/pagopa/io-functions-commons/v21.7.3/openapi/definitions.yaml#/IsEmailEnabled"
+      "$ref": "https://raw.githubusercontent.com/pagopa/io-functions-commons/v22.5.0/openapi/definitions.yaml#/IsEmailEnabled"
     },
     "IsInboxEnabled": {
-      "$ref": "https://raw.githubusercontent.com/pagopa/io-functions-commons/v21.7.3/openapi/definitions.yaml#/IsInboxEnabled"
+      "$ref": "https://raw.githubusercontent.com/pagopa/io-functions-commons/v22.5.0/openapi/definitions.yaml#/IsInboxEnabled"
     },
     "IsEmailValidated": {
-      "$ref": "https://raw.githubusercontent.com/pagopa/io-functions-commons/v21.7.3/openapi/definitions.yaml#/IsEmailValidated"
+      "$ref": "https://raw.githubusercontent.com/pagopa/io-functions-commons/v22.5.0/openapi/definitions.yaml#/IsEmailValidated"
     },
     "IsTestProfile": {
-      "$ref": "https://raw.githubusercontent.com/pagopa/io-functions-commons/v21.7.3/openapi/definitions.yaml#/IsTestProfile"
+      "$ref": "https://raw.githubusercontent.com/pagopa/io-functions-commons/v22.5.0/openapi/definitions.yaml#/IsTestProfile"
     },
     "IsWebhookEnabled": {
-      "$ref": "https://raw.githubusercontent.com/pagopa/io-functions-commons/v21.7.3/openapi/definitions.yaml#/IsWebhookEnabled"
+      "$ref": "https://raw.githubusercontent.com/pagopa/io-functions-commons/v22.5.0/openapi/definitions.yaml#/IsWebhookEnabled"
     },
     "LimitedProfile": {
-      "$ref": "https://raw.githubusercontent.com/pagopa/io-functions-commons/v21.7.3/openapi/definitions.yaml#/LimitedProfile"
+      "$ref": "https://raw.githubusercontent.com/pagopa/io-functions-commons/v22.5.0/openapi/definitions.yaml#/LimitedProfile"
     },
     "MessageBodyMarkdown": {
-      "$ref": "https://raw.githubusercontent.com/pagopa/io-functions-commons/v21.7.3/openapi/definitions.yaml#/MessageBodyMarkdown"
+      "$ref": "https://raw.githubusercontent.com/pagopa/io-functions-commons/v22.5.0/openapi/definitions.yaml#/MessageBodyMarkdown"
     },
     "MessageContent": {
-      "$ref": "https://raw.githubusercontent.com/pagopa/io-functions-commons/v21.7.3/openapi/definitions.yaml#/MessageContent"
+      "$ref": "https://raw.githubusercontent.com/pagopa/io-functions-commons/v22.5.0/openapi/definitions.yaml#/MessageContent"
     },
     "MessageResponseNotificationStatus": {
-      "$ref": "https://raw.githubusercontent.com/pagopa/io-functions-commons/v21.7.3/openapi/definitions.yaml#/MessageResponseNotificationStatus"
+      "$ref": "https://raw.githubusercontent.com/pagopa/io-functions-commons/v22.5.0/openapi/definitions.yaml#/MessageResponseNotificationStatus"
     },
     "NotificationChannelStatusValue": {
-      "$ref": "https://raw.githubusercontent.com/pagopa/io-functions-commons/v21.7.3/openapi/definitions.yaml#/NotificationChannelStatusValue"
+      "$ref": "https://raw.githubusercontent.com/pagopa/io-functions-commons/v22.5.0/openapi/definitions.yaml#/NotificationChannelStatusValue"
     },
     "NotificationChannel": {
-      "$ref": "https://raw.githubusercontent.com/pagopa/io-functions-commons/v21.7.3/openapi/definitions.yaml#/NotificationChannel"
+      "$ref": "https://raw.githubusercontent.com/pagopa/io-functions-commons/v22.5.0/openapi/definitions.yaml#/NotificationChannel"
     },
     "MessageSubject": {
-      "$ref": "https://raw.githubusercontent.com/pagopa/io-functions-commons/v21.7.3/openapi/definitions.yaml#/MessageSubject"
+      "$ref": "https://raw.githubusercontent.com/pagopa/io-functions-commons/v22.5.0/openapi/definitions.yaml#/MessageSubject"
     },
     "MessageContentBase": {
-      "$ref": "https://raw.githubusercontent.com/pagopa/io-functions-commons/v21.7.3/openapi/definitions.yaml#/MessageContentBase"
+      "$ref": "https://raw.githubusercontent.com/pagopa/io-functions-commons/v22.5.0/openapi/definitions.yaml#/MessageContentBase"
     },
     "EUCovidCert": {
-      "$ref": "https://raw.githubusercontent.com/pagopa/io-functions-commons/v21.7.3/openapi/definitions.yaml#/EUCovidCert"
+      "$ref": "https://raw.githubusercontent.com/pagopa/io-functions-commons/v22.5.0/openapi/definitions.yaml#/EUCovidCert"
     },
     "OrganizationFiscalCode": {
-      "$ref": "https://raw.githubusercontent.com/pagopa/io-functions-commons/v21.7.3/openapi/definitions.yaml#/OrganizationFiscalCode"
+      "$ref": "https://raw.githubusercontent.com/pagopa/io-functions-commons/v22.5.0/openapi/definitions.yaml#/OrganizationFiscalCode"
     },
     "NewMessageContent": {
-      "$ref": "https://raw.githubusercontent.com/pagopa/io-functions-commons/v21.7.3/openapi/definitions.yaml#/NewMessageContent"
+      "$ref": "https://raw.githubusercontent.com/pagopa/io-functions-commons/v22.5.0/openapi/definitions.yaml#/NewMessageContent"
     },
     "Payee": {
-      "$ref": "https://raw.githubusercontent.com/pagopa/io-functions-commons/v21.7.3/openapi/definitions.yaml#/Payee"
+      "$ref": "https://raw.githubusercontent.com/pagopa/io-functions-commons/v22.5.0/openapi/definitions.yaml#/Payee"
     },
     "PaymentDataBase": {
-      "$ref": "https://raw.githubusercontent.com/pagopa/io-functions-commons/v21.7.3/openapi/definitions.yaml#/PaymentDataBase"
+      "$ref": "https://raw.githubusercontent.com/pagopa/io-functions-commons/v22.5.0/openapi/definitions.yaml#/PaymentDataBase"
     },
     "PaymentDataWithRequiredPayee": {
-      "$ref": "https://raw.githubusercontent.com/pagopa/io-functions-commons/v21.7.3/openapi/definitions.yaml#/PaymentDataWithRequiredPayee"
+      "$ref": "https://raw.githubusercontent.com/pagopa/io-functions-commons/v22.5.0/openapi/definitions.yaml#/PaymentDataWithRequiredPayee"
     },
     "OrganizationName": {
-      "$ref": "https://raw.githubusercontent.com/pagopa/io-functions-commons/v21.7.3/openapi/definitions.yaml#/OrganizationName"
+      "$ref": "https://raw.githubusercontent.com/pagopa/io-functions-commons/v22.5.0/openapi/definitions.yaml#/OrganizationName"
     },
     "PaginationResponse": {
-      "$ref": "https://raw.githubusercontent.com/pagopa/io-functions-commons/v21.7.3/openapi/definitions.yaml#/PaginationResponse"
+      "$ref": "https://raw.githubusercontent.com/pagopa/io-functions-commons/v22.5.0/openapi/definitions.yaml#/PaginationResponse"
     },
     "PrescriptionData": {
-      "$ref": "https://raw.githubusercontent.com/pagopa/io-functions-commons/v21.7.3/openapi/definitions.yaml#/PrescriptionData"
+      "$ref": "https://raw.githubusercontent.com/pagopa/io-functions-commons/v22.5.0/openapi/definitions.yaml#/PrescriptionData"
     },
     "ProblemJson": {
-      "$ref": "https://raw.githubusercontent.com/pagopa/io-functions-commons/v21.7.3/openapi/definitions.yaml#/ProblemJson"
+      "$ref": "https://raw.githubusercontent.com/pagopa/io-functions-commons/v22.5.0/openapi/definitions.yaml#/ProblemJson"
     },
     "ServiceId": {
-      "$ref": "https://raw.githubusercontent.com/pagopa/io-functions-commons/v21.7.3/openapi/definitions.yaml#/ServiceId"
+      "$ref": "https://raw.githubusercontent.com/pagopa/io-functions-commons/v22.5.0/openapi/definitions.yaml#/ServiceId"
     },
     "ServiceName": {
-      "$ref": "https://raw.githubusercontent.com/pagopa/io-functions-commons/v21.7.3/openapi/definitions.yaml#/ServiceName"
+      "$ref": "https://raw.githubusercontent.com/pagopa/io-functions-commons/v22.5.0/openapi/definitions.yaml#/ServiceName"
     },
     "ServicePublic": {
-      "$ref": "https://raw.githubusercontent.com/pagopa/io-functions-commons/v21.7.3/openapi/definitions.yaml#/ServicePublic"
+      "$ref": "https://raw.githubusercontent.com/pagopa/io-functions-commons/v22.5.0/openapi/definitions.yaml#/ServicePublic"
+    },
+    "ServiceMetadata": {
+      "$ref": "https://raw.githubusercontent.com/pagopa/io-functions-commons/v22.5.0/openapi/definitions.yaml#/ServiceMetadata"
+    },
+    "CommonServiceMetadata": {
+      "$ref": "https://raw.githubusercontent.com/pagopa/io-functions-commons/v22.5.0/openapi/definitions.yaml#/CommonServiceMetadata"
+    },
+    "StandardServiceMetadata": {
+      "$ref": "https://raw.githubusercontent.com/pagopa/io-functions-commons/v22.5.0/openapi/definitions.yaml#/StandardServiceMetadata"
+    },
+    "SpecialServiceMetadata": {
+      "$ref": "https://raw.githubusercontent.com/pagopa/io-functions-commons/v22.5.0/openapi/definitions.yaml#/SpecialServiceMetadata"
     },
     "ServiceTuple": {
-      "$ref": "https://raw.githubusercontent.com/pagopa/io-functions-commons/v21.7.3/openapi/definitions.yaml#/ServiceTuple"
+      "$ref": "https://raw.githubusercontent.com/pagopa/io-functions-commons/v22.5.0/openapi/definitions.yaml#/ServiceTuple"
     },
     "ServiceScope": {
-      "$ref": "https://raw.githubusercontent.com/pagopa/io-functions-commons/v21.7.3/openapi/definitions.yaml#/ServiceScope"
+      "$ref": "https://raw.githubusercontent.com/pagopa/io-functions-commons/v22.5.0/openapi/definitions.yaml#/ServiceScope"
+    },
+    "ServiceCategory": {
+      "$ref": "https://raw.githubusercontent.com/pagopa/io-functions-commons/v22.5.0/openapi/definitions.yaml#/ServiceCategory"
+    },
+    "SpecialServiceCategory": {
+      "$ref": "https://raw.githubusercontent.com/pagopa/io-functions-commons/v22.5.0/openapi/definitions.yaml#/SpecialServiceCategory"
+    },
+    "StandardServiceCategory": {
+      "$ref": "https://raw.githubusercontent.com/pagopa/io-functions-commons/v22.5.0/openapi/definitions.yaml#/StandardServiceCategory"
     },
     "PaginatedServiceTupleCollection": {
-      "$ref": "https://raw.githubusercontent.com/pagopa/io-functions-commons/v21.7.3/openapi/definitions.yaml#/PaginatedServiceTupleCollection"
+      "$ref": "https://raw.githubusercontent.com/pagopa/io-functions-commons/v22.5.0/openapi/definitions.yaml#/PaginatedServiceTupleCollection"
     },
     "Timestamp": {
-      "$ref": "https://raw.githubusercontent.com/pagopa/io-functions-commons/v21.7.3/openapi/definitions.yaml#/Timestamp"
+      "$ref": "https://raw.githubusercontent.com/pagopa/io-functions-commons/v22.5.0/openapi/definitions.yaml#/Timestamp"
     },
     "PaymentNoticeNumber": {
-      "$ref": "https://raw.githubusercontent.com/pagopa/io-functions-commons/v21.7.3/openapi/definitions.yaml#/PaymentNoticeNumber"
+      "$ref": "https://raw.githubusercontent.com/pagopa/io-functions-commons/v22.5.0/openapi/definitions.yaml#/PaymentNoticeNumber"
     },
     "PaymentAmount": {
-      "$ref": "https://raw.githubusercontent.com/pagopa/io-functions-commons/v21.7.3/openapi/definitions.yaml#/PaymentAmount"
+      "$ref": "https://raw.githubusercontent.com/pagopa/io-functions-commons/v22.5.0/openapi/definitions.yaml#/PaymentAmount"
     },
     "PaymentData": {
-      "$ref": "https://raw.githubusercontent.com/pagopa/io-functions-commons/v21.7.3/openapi/definitions.yaml#/PaymentData"
+      "$ref": "https://raw.githubusercontent.com/pagopa/io-functions-commons/v22.5.0/openapi/definitions.yaml#/PaymentData"
     },
     "TimeToLiveSeconds": {
-      "$ref": "https://raw.githubusercontent.com/pagopa/io-functions-commons/v21.7.3/openapi/definitions.yaml#/TimeToLiveSeconds"
+      "$ref": "https://raw.githubusercontent.com/pagopa/io-functions-commons/v22.5.0/openapi/definitions.yaml#/TimeToLiveSeconds"
     },
     "CreatedMessageWithContent": {
-      "$ref": "https://raw.githubusercontent.com/pagopa/io-functions-commons/v21.7.3/openapi/definitions.yaml#/CreatedMessageWithContent"
+      "$ref": "https://raw.githubusercontent.com/pagopa/io-functions-commons/v22.5.0/openapi/definitions.yaml#/CreatedMessageWithContent"
     },
     "CreatedMessageWithoutContent": {
-      "$ref": "https://raw.githubusercontent.com/pagopa/io-functions-commons/v21.7.3/openapi/definitions.yaml#/CreatedMessageWithoutContent"
+      "$ref": "https://raw.githubusercontent.com/pagopa/io-functions-commons/v22.5.0/openapi/definitions.yaml#/CreatedMessageWithoutContent"
     },
     "CreatedMessageWithoutContentCollection": {
-      "$ref": "https://raw.githubusercontent.com/pagopa/io-functions-commons/v21.7.3/openapi/definitions.yaml#/CreatedMessageWithoutContentCollection"
+      "$ref": "https://raw.githubusercontent.com/pagopa/io-functions-commons/v22.5.0/openapi/definitions.yaml#/CreatedMessageWithoutContentCollection"
     },
     "PaginatedCreatedMessageWithoutContentCollection": {
-      "$ref": "https://raw.githubusercontent.com/pagopa/io-functions-commons/v21.7.3/openapi/definitions.yaml#/PaginatedCreatedMessageWithoutContentCollection"
+      "$ref": "https://raw.githubusercontent.com/pagopa/io-functions-commons/v22.5.0/openapi/definitions.yaml#/PaginatedCreatedMessageWithoutContentCollection"
     },
     "UserDataProcessingStatus": {
-      "$ref": "https://raw.githubusercontent.com/pagopa/io-functions-commons/v21.7.3/openapi/definitions.yaml#/UserDataProcessingStatus"
+      "$ref": "https://raw.githubusercontent.com/pagopa/io-functions-commons/v22.5.0/openapi/definitions.yaml#/UserDataProcessingStatus"
     },
     "UserDataProcessingChoice": {
-      "$ref": "https://raw.githubusercontent.com/pagopa/io-functions-commons/v21.7.3/openapi/definitions.yaml#/UserDataProcessingChoice"
+      "$ref": "https://raw.githubusercontent.com/pagopa/io-functions-commons/v22.5.0/openapi/definitions.yaml#/UserDataProcessingChoice"
     },
     "UserDataProcessingChoiceRequest": {
-      "$ref": "https://raw.githubusercontent.com/pagopa/io-functions-commons/v21.7.3/openapi/definitions.yaml#/UserDataProcessingChoiceRequest"
+      "$ref": "https://raw.githubusercontent.com/pagopa/io-functions-commons/v22.5.0/openapi/definitions.yaml#/UserDataProcessingChoiceRequest"
     },
     "UserDataProcessing": {
-      "$ref": "https://raw.githubusercontent.com/pagopa/io-functions-commons/v21.7.3/openapi/definitions.yaml#/UserDataProcessing"
+      "$ref": "https://raw.githubusercontent.com/pagopa/io-functions-commons/v22.5.0/openapi/definitions.yaml#/UserDataProcessing"
     },
     "MessageResponseWithContent": {
-      "$ref": "https://raw.githubusercontent.com/pagopa/io-functions-commons/v21.7.3/openapi/definitions.yaml#/MessageResponseWithContent"
+      "$ref": "https://raw.githubusercontent.com/pagopa/io-functions-commons/v22.5.0/openapi/definitions.yaml#/MessageResponseWithContent"
     },
     "ServicePreferencesSettings": {
-      "$ref": "https://raw.githubusercontent.com/pagopa/io-functions-commons/v21.7.3/openapi/definitions.yaml#/ServicePreferencesSettings"
+      "$ref": "https://raw.githubusercontent.com/pagopa/io-functions-commons/v22.5.0/openapi/definitions.yaml#/ServicePreferencesSettings"
     },
     "ServicesPreferencesMode": {
-      "$ref": "https://raw.githubusercontent.com/pagopa/io-functions-commons/v21.7.3/openapi/definitions.yaml#/ServicesPreferencesMode"
+      "$ref": "https://raw.githubusercontent.com/pagopa/io-functions-commons/v22.5.0/openapi/definitions.yaml#/ServicesPreferencesMode"
     },
     "ServicePreference": {
-      "$ref": "https://raw.githubusercontent.com/pagopa/io-functions-commons/v21.7.3/openapi/definitions.yaml#/ServicePreference"
+      "$ref": "https://raw.githubusercontent.com/pagopa/io-functions-commons/v22.5.0/openapi/definitions.yaml#/ServicePreference"
     },
     "EnrichedMessage": {
-      "$ref": "https://raw.githubusercontent.com/pagopa/io-functions-commons/v21.7.3/openapi/definitions.yaml#/EnrichedMessage"
+      "$ref": "https://raw.githubusercontent.com/pagopa/io-functions-commons/v22.5.0/openapi/definitions.yaml#/EnrichedMessage"
     },
     "PublicMessage": {
-      "$ref": "https://raw.githubusercontent.com/pagopa/io-functions-commons/v21.7.3/openapi/definitions.yaml#/PublicMessage"
+      "$ref": "https://raw.githubusercontent.com/pagopa/io-functions-commons/v22.5.0/openapi/definitions.yaml#/PublicMessage"
     },
     "PublicMessagesCollection": {
-      "$ref": "https://raw.githubusercontent.com/pagopa/io-functions-commons/v21.7.3/openapi/definitions.yaml#/PublicMessagesCollection"
+      "$ref": "https://raw.githubusercontent.com/pagopa/io-functions-commons/v22.5.0/openapi/definitions.yaml#/PublicMessagesCollection"
     },
     "PaginatedPublicMessagesCollection": {
-      "$ref": "https://raw.githubusercontent.com/pagopa/io-functions-commons/v21.7.3/openapi/definitions.yaml#/PaginatedPublicMessagesCollection"
+      "$ref": "https://raw.githubusercontent.com/pagopa/io-functions-commons/v22.5.0/openapi/definitions.yaml#/PaginatedPublicMessagesCollection"
+    },
+    "MessageCategory": {
+      "$ref": "https://raw.githubusercontent.com/pagopa/io-functions-commons/v22.5.0/openapi/definitions.yaml#/MessageCategory"
+    },
+    "MessageCategoryBase": {
+      "$ref": "https://raw.githubusercontent.com/pagopa/io-functions-commons/v22.5.0/openapi/definitions.yaml#/MessageCategoryBase"
+    },
+    "MessageCategoryPayment": {
+      "$ref": "https://raw.githubusercontent.com/pagopa/io-functions-commons/v22.5.0/openapi/definitions.yaml#/MessageCategoryPayment"
+    },
+    "LegalMessageWithContent": {
+      "$ref": "https://raw.githubusercontent.com/pagopa/io-functions-commons/v22.5.0/openapi/definitions.yaml#/LegalMessageWithContent"
+    },
+    "LegalMessage": {
+      "$ref": "https://raw.githubusercontent.com/pagopa/io-functions-commons/v22.5.0/openapi/definitions.yaml#/LegalMessage"
+    },
+    "LegalMessageEml": {
+      "$ref": "https://raw.githubusercontent.com/pagopa/io-functions-commons/v22.5.0/openapi/definitions.yaml#/LegalMessageEml"
+    },
+    "LegalMessageCertData": {
+      "$ref": "https://raw.githubusercontent.com/pagopa/io-functions-commons/v22.5.0/openapi/definitions.yaml#/LegalMessageCertData"
+    },
+    "CertData": {
+      "$ref": "https://raw.githubusercontent.com/pagopa/io-functions-commons/v22.5.0/openapi/definitions.yaml#/CertData"
+    },
+    "CertDataHeader": {
+      "$ref": "https://raw.githubusercontent.com/pagopa/io-functions-commons/v22.5.0/openapi/definitions.yaml#/CertDataHeader"
+    },
+    "Attachment": {
+      "$ref": "https://raw.githubusercontent.com/pagopa/io-functions-commons/v22.5.0/openapi/definitions.yaml#/Attachment"
+    },
+    "LegalData": {
+      "$ref": "https://raw.githubusercontent.com/pagopa/io-functions-commons/v22.5.0/openapi/definitions.yaml#/LegalData"
     },
     "PaymentProblemJson": {
       "$ref": "https://raw.githubusercontent.com/pagopa/io-pagopa-proxy/v0.14.1/api_pagopa.yaml#/definitions/PaymentProblemJson"
@@ -1376,7 +1541,11 @@
           "type": "string"
         }
       },
-      "required": ["name", "content", "mime_type"]
+      "required": [
+        "name",
+        "content",
+        "mime_type"
+      ]
     },
     "CreatedMessageWithContentAndAttachments": {
       "allOf": [
@@ -1387,7 +1556,9 @@
               "$ref": "#/definitions/MessageContentWithAttachments"
             }
           },
-          "required": ["content"]
+          "required": [
+            "content"
+          ]
         },
         {
           "$ref": "#/definitions/CreatedMessageWithoutContent"
@@ -1406,7 +1577,10 @@
           "$ref": "#/definitions/PushChannel"
         }
       },
-      "required": ["platform", "pushChannel"]
+      "required": [
+        "platform",
+        "pushChannel"
+      ]
     },
     "InitializedProfile": {
       "type": "object",
@@ -1486,7 +1660,10 @@
           "type": "string"
         }
       },
-      "required": ["version", "metadata"]
+      "required": [
+        "version",
+        "metadata"
+      ]
     },
     "PublicSession": {
       "type": "object",
@@ -1504,9 +1681,18 @@
         },
         "bpdToken": {
           "type": "string"
+        },
+        "zendeskToken": {
+          "type": "string"
         }
       },
-      "required": ["spidLevel", "walletToken", "myPortalToken", "bpdToken"]
+      "required": [
+        "spidLevel",
+        "walletToken",
+        "myPortalToken",
+        "bpdToken",
+        "zendeskToken"
+      ]
     },
     "SessionInfo": {
       "type": "object",
@@ -1520,7 +1706,10 @@
           "type": "string"
         }
       },
-      "required": ["createdAt", "sessionToken"]
+      "required": [
+        "createdAt",
+        "sessionToken"
+      ]
     },
     "SessionsList": {
       "description": "Contains all active sessions for an authenticated user.",
@@ -1533,7 +1722,9 @@
           }
         }
       },
-      "required": ["sessions"]
+      "required": [
+        "sessions"
+      ]
     },
     "InstallationID": {
       "type": "string",
@@ -1557,7 +1748,10 @@
     "Platform": {
       "type": "string",
       "description": "The platform type where the installation happened.",
-      "x-extensible-enum": ["apns", "gcm"]
+      "x-extensible-enum": [
+        "apns",
+        "gcm"
+      ]
     },
     "PushChannel": {
       "type": "string",
@@ -1589,7 +1783,9 @@
           "$ref": "#/definitions/FiscalCode"
         }
       },
-      "required": ["fiscal_code"]
+      "required": [
+        "fiscal_code"
+      ]
     },
     "FederatedUser": {
       "title": "Federated user",
@@ -1605,7 +1801,10 @@
               "type": "string"
             }
           },
-          "required": ["name", "family_name"]
+          "required": [
+            "name",
+            "family_name"
+          ]
         },
         {
           "$ref": "#/definitions/LimitedFederatedUser"
@@ -1624,7 +1823,10 @@
           "type": "number"
         }
       },
-      "required": ["access_token", "expires_in"]
+      "required": [
+        "access_token",
+        "expires_in"
+      ]
     }
   },
   "responses": {},
@@ -1670,14 +1872,21 @@
       "name": "choice",
       "in": "path",
       "type": "string",
-      "enum": ["DOWNLOAD", "DELETE"],
+      "enum": [
+        "DOWNLOAD",
+        "DELETE"
+      ],
       "description": "A representation of a user data processing choice",
       "required": true,
       "x-example": "DOWNLOAD"
     }
   },
-  "consumes": ["application/json"],
-  "produces": ["application/json"],
+  "consumes": [
+    "application/json"
+  ],
+  "produces": [
+    "application/json"
+  ],
   "securityDefinitions": {
     "Bearer": {
       "type": "apiKey",
