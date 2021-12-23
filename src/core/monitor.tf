@@ -194,12 +194,6 @@ locals {
       http_status = 200
     },
     {
-      name        = trimsuffix(azurerm_dns_a_record.api_io_selfcare_pagopa_it.fqdn, "."),
-      host        = trimsuffix(azurerm_dns_a_record.api_io_selfcare_pagopa_it.fqdn, "."),
-      path        = "/info",
-      http_status = 200
-    },
-    {
       # https://io.selfcare.pagopa.it
       name        = module.selfcare_cdn.fqdn,
       host        = module.selfcare_cdn.fqdn,
