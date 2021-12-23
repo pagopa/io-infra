@@ -17,7 +17,7 @@ resource "azurerm_resource_group" "selfcare_fe_rg" {
 
 ### Frontend resources
 module "selfcare_cdn" {
-  source = "git::https://github.com/pagopa/azurerm.git//cdn?ref=v2.0.13"
+  source = "git::https://github.com/pagopa/azurerm.git//cdn?ref=v2.0.18"
 
   name                  = "selfcare"
   prefix                = local.project
@@ -209,7 +209,7 @@ module "appservice_selfcare_be" {
     SELFCARE_LOGIN_URL                    = "https://${var.selfcare_external_hostname}/auth/login"
     SELFCARE_IDP_ISSUER                   = "api.${var.selfcare_external_hostname}"
     SELFCARE_IDP_ISSUER_JWT_SIGNATURE_KEY = data.azurerm_key_vault_secret.selfcare_selfcare_idp_issuer_jwt_signature_key.value # todo data.http.selfcare_well_known_jwks_json.body
-    JWT_SIGNATURE_KEY                     = data.azurerm_key_vault_secret.selfcare_jwt_signature_key.value # todo private key con to sign session tokens (internal)
+    JWT_SIGNATURE_KEY                     = data.azurerm_key_vault_secret.selfcare_jwt_signature_key.value                     # todo private key con to sign session tokens (internal)
 
     # JIRA integration for Service review workflow
     JIRA_USERNAME              = "github-bot@pagopa.it"
