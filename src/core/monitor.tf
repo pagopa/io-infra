@@ -219,7 +219,7 @@ locals {
 
 module "web_test_api" {
   for_each = { for v in local.test_urls : v.name => v if v != null }
-  source   = "git::https://github.com/pagopa/azurerm.git//application_insights_web_test_preview?ref=fix-webtest"
+  source   = "git::https://github.com/pagopa/azurerm.git//application_insights_web_test_preview?ref=v2.0.17"
 
   subscription_id                   = data.azurerm_subscription.current.subscription_id
   name                              = format("%s-test", each.value.name)
