@@ -17,7 +17,7 @@ resource "azurerm_resource_group" "selfcare_fe_rg" {
 
 ### Frontend resources
 module "selfcare_cdn" {
-  source = "git::https://github.com/pagopa/azurerm.git//cdn?ref=v2.0.16"
+  source = "git::https://github.com/pagopa/azurerm.git//cdn?ref=v2.0.18"
 
   name                  = "selfcare"
   prefix                = local.project
