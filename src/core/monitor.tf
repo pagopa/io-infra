@@ -201,8 +201,8 @@ locals {
     },
     length(module.selfcare_cdn.*.fqdn) == 0 ? null : {
       # https://io.selfcare.pagopa.it
-      name        = module.checkout_cdn[0].fqdn,
-      host        = module.checkout_cdn[0].fqdn,
+      name        = module.selfcare_cdn[0].fqdn,
+      host        = module.selfcare_cdn[0].fqdn,
       path        = "",
       http_status = 200
     },
