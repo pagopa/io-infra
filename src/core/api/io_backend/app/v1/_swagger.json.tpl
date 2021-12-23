@@ -5,7 +5,7 @@
     "title": "Proxy API",
     "description": "Mobile and web proxy API gateway."
   },
-  "host": "{host}",
+  "host": "${host}",
   "basePath": "/api/v1",
   "schemes": [
     "https"
