@@ -199,10 +199,10 @@ locals {
       path        = "/info",
       http_status = 200
     },
-    length(module.selfcare_cdn.*.fqdn) == 0 ? null : {
+    {
       # https://io.selfcare.pagopa.it
-      name        = module.selfcare_cdn[0].fqdn,
-      host        = module.selfcare_cdn[0].fqdn,
+      name        = module.selfcare_cdn.fqdn,
+      host        = module.selfcare_cdn.fqdn,
       path        = "",
       http_status = 200
     },
