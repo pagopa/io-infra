@@ -89,6 +89,13 @@ locals {
       http_status = 200,
     },
     {
+      # https://api-gad.io.italia.it
+      name        = "api-gad.io.italia.it",
+      host        = "api-gad.io.italia.it",
+      path        = "",
+      http_status = 200,
+    },
+    {
       # https://assets.cdn.io.italia.it/status/backend.json
       name        = "assets.cdn.io.italia.it",
       host        = "assets.cdn.io.italia.it",
