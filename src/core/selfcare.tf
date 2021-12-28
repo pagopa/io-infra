@@ -109,7 +109,7 @@ data "azurerm_key_vault_secret" "selfcare_selfcare_idp_issuer_jwt_signature_key"
 
 # JWT
 module "selfcare_jwt" {
-  source = "../modules/jwt"
+  source = "git::https://github.com/pagopa/azurerm.git//jwt_keys?ref=v2.0.21"
 
   jwt_name         = "selfcare-jwt"
   key_vault_id     = data.azurerm_key_vault.common.id
