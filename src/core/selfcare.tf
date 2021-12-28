@@ -112,6 +112,17 @@ data "azurerm_key_vault_secret" "selfcare_jwt_signature_key" {
   key_vault_id = data.azurerm_key_vault.common.id
 }
 
+# JWT
+module "selfcare_jwt" {
+  source = "../modules/jwt"
+
+  jwt_name         = "selfcare-jwt"
+  key_vault_id     = data.azurerm_key_vault.common.id
+  cert_common_name = "IO selfcare"
+  cert_password    = ""
+  tags             = var.tags
+}
+
 resource "azurerm_app_service_plan" "selfcare_be_common" {
   name                = format("%s-plan-selfcare-be-common", local.project)
   location            = azurerm_resource_group.selfcare_be_rg.location
@@ -209,7 +220,7 @@ module "appservice_selfcare_be" {
     SELFCARE_LOGIN_URL                    = "https://${var.selfcare_external_hostname}/auth/login"
     SELFCARE_IDP_ISSUER                   = "api.${var.selfcare_external_hostname}"
     SELFCARE_IDP_ISSUER_JWT_SIGNATURE_KEY = data.azurerm_key_vault_secret.selfcare_selfcare_idp_issuer_jwt_signature_key.value # todo data.http.selfcare_well_known_jwks_json.body
-    JWT_SIGNATURE_KEY                     = data.azurerm_key_vault_secret.selfcare_jwt_signature_key.value                     # todo private key con to sign session tokens (internal)
+    JWT_SIGNATURE_KEY                     = module.selfcare_jwt.jwt_private_key_pem  # data.azurerm_key_vault_secret.selfcare_jwt_signature_key.value                     # todo private key con to sign session tokens (internal)
 
     # JIRA integration for Service review workflow
     JIRA_USERNAME              = "github-bot@pagopa.it"
