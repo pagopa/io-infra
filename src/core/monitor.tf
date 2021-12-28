@@ -197,7 +197,7 @@ locals {
       name        = trimsuffix(azurerm_dns_a_record.api_mtls_io_pagopa_it.fqdn, "."),
       host        = trimsuffix(azurerm_dns_a_record.api_mtls_io_pagopa_it.fqdn, "."),
       path        = "",
-      http_status = 403,
+      http_status = 400,
     },
     {
       # https://api.io.selfcare.pagopa.it/info
