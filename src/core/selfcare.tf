@@ -206,7 +206,7 @@ module "appservice_selfcare_be" {
     BACKEND_URL                           = "${local.selfcare.backend_hostname}"
     LOGIN_URL                             = "https://${local.selfcare.frontend_hostname}/login"
     FAILURE_URL                           = "https://${local.selfcare.frontend_hostname}/500.html"
-    SELFCARE_LOGIN_URL                    = "https://${var.selfcare_external_hostname}/auth/login"
+    SELFCARE_LOGIN_URL                    = "https://uat.${var.selfcare_external_hostname}/auth/login"
     SELFCARE_IDP_ISSUER                   = "api.${var.selfcare_external_hostname}"
     SELFCARE_IDP_ISSUER_JWT_SIGNATURE_KEY = data.azurerm_key_vault_secret.selfcare_selfcare_idp_issuer_jwt_signature_key.value # todo data.http.selfcare_well_known_jwks_json.body
     JWT_SIGNATURE_KEY                     = data.azurerm_key_vault_secret.selfcare_jwt_signature_key.value                     # todo private key con to sign session tokens (internal)
