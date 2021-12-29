@@ -242,7 +242,7 @@ module "app_gw" {
 
     api-io-selfcare-pagopa-it = {
       protocol           = "Https"
-      host               = local.selfcare.backend_hostname
+      host               = local.selfcare_io.backend_hostname
       port               = 443
       ssl_profile_name   = null
       firewall_policy_id = null

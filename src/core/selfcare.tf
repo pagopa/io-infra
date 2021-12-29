@@ -1,9 +1,14 @@
 ### Common resources
 
 locals {
-  selfcare = {
+  selfcare_io = {
     backend_hostname  = "api.${var.dns_zone_io_selfcare}.${var.external_domain}"
     frontend_hostname = "${var.dns_zone_io_selfcare}.${var.external_domain}"
+  }
+
+  selfcare = {
+    hostname   = "uat.${var.selfcare_external_hostname}"
+    jwt_issuer = "api.${var.selfcare_external_hostname}"
   }
 }
 
@@ -208,14 +213,15 @@ module "appservice_selfcare_be" {
     SERVICE_PRINCIPAL_TENANT_ID = data.azurerm_client_config.current.tenant_id
     USE_SERVICE_PRINCIPAL       = "1"
 
-    FRONTEND_URL                          = "https://${local.selfcare.frontend_hostname}"
-    BACKEND_URL                           = "${local.selfcare.backend_hostname}"
-    LOGIN_URL                             = "https://${local.selfcare.frontend_hostname}/login"
-    FAILURE_URL                           = "https://${local.selfcare.frontend_hostname}/500.html"
-    SELFCARE_LOGIN_URL                    = "https://uat.${var.selfcare_external_hostname}/auth/login"
-    SELFCARE_IDP_ISSUER                   = "api.${var.selfcare_external_hostname}"
-    SELFCARE_IDP_ISSUER_JWT_SIGNATURE_KEY = data.azurerm_key_vault_secret.selfcare_selfcare_idp_issuer_jwt_signature_key.value # todo data.http.selfcare_well_known_jwks_json.body
-    JWT_SIGNATURE_KEY                     = trimspace(module.selfcare_jwt.jwt_private_key_pem) # to avoid unwanted changes
+    FRONTEND_URL                          = "https://${local.selfcare_io.frontend_hostname}"
+    BACKEND_URL                           = "${local.selfcare_io.backend_hostname}"
+    LOGIN_URL                             = "https://${local.selfcare_io.frontend_hostname}/login"
+    FAILURE_URL                           = "https://${local.selfcare_io.frontend_hostname}/500.html"
+    SELFCARE_LOGIN_URL                    = "https://${local.selfcare.hostname}/auth/login"
+    SELFCARE_IDP_ISSUER                   = local.selfcare.jwt_issuer
+    SELFCARE_JWKS_URL                     = data.http.selfcare_well_known_jwks_json.url
+    SELFCARE_IDP_ISSUER_JWT_SIGNATURE_KEY = data.azurerm_key_vault_secret.selfcare_selfcare_idp_issuer_jwt_signature_key.value # to be removed
+    JWT_SIGNATURE_KEY                     = trimspace(module.selfcare_jwt.jwt_private_key_pem)                                 # to avoid unwanted changes
 
     # JIRA integration for Service review workflow
     JIRA_USERNAME              = "github-bot@pagopa.it"
@@ -242,7 +248,7 @@ module "appservice_selfcare_be" {
 }
 
 data "http" "selfcare_well_known_jwks_json" {
-  url = "https://dev.${var.selfcare_external_hostname}/.well-known/jwks.json" # todo remove .dev
+  url = "https://${local.selfcare.hostname}/.well-known/jwks.json"
 
   # Optional request headers
   request_headers = {
