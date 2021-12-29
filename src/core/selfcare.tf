@@ -7,7 +7,7 @@ locals {
   }
 
   selfcare = {
-    base_url   = "https://uat.${var.selfcare_external_hostname}"
+    base_url   = "uat.${var.selfcare_external_hostname}"
     jwt_issuer = "api.${var.selfcare_external_hostname}"
   }
 }
@@ -217,7 +217,7 @@ module "appservice_selfcare_be" {
     BACKEND_URL                           = "${local.selfcare_io.backend_hostname}"
     LOGIN_URL                             = "https://${local.selfcare_io.frontend_hostname}/login"
     FAILURE_URL                           = "https://${local.selfcare_io.frontend_hostname}/500.html"
-    SELFCARE_LOGIN_URL                    = "${local.selfcare.base_url}/auth/login"
+    SELFCARE_LOGIN_URL                    = "https://${local.selfcare.base_url}/auth/login"
     SELFCARE_IDP_ISSUER                   = local.selfcare.jwt_issuer
     SELFCARE_JWKS_URL                     = data.http.selfcare_well_known_jwks_json.url
     SELFCARE_IDP_ISSUER_JWT_SIGNATURE_KEY = data.azurerm_key_vault_secret.selfcare_selfcare_idp_issuer_jwt_signature_key.value # to be removed
@@ -248,7 +248,7 @@ module "appservice_selfcare_be" {
 }
 
 data "http" "selfcare_well_known_jwks_json" {
-  url = "${local.selfcare.base_url}/.well-known/jwks.json"
+  url = "https://${local.selfcare.base_url}/.well-known/jwks.json"
 
   # Optional request headers
   request_headers = {
