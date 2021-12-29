@@ -107,11 +107,6 @@ data "azurerm_key_vault_secret" "selfcare_devportal_jira_token" {
   key_vault_id = data.azurerm_key_vault.common.id
 }
 
-data "azurerm_key_vault_secret" "selfcare_selfcare_idp_issuer_jwt_signature_key" {
-  name         = "selfcare-SELFCARE-IDP-ISSUER-JWT-SIGNATURE-KEY"
-  key_vault_id = data.azurerm_key_vault.common.id
-}
-
 # JWT
 module "selfcare_jwt" {
   source = "git::https://github.com/pagopa/azurerm.git//jwt_keys?ref=v2.0.21"
