@@ -174,7 +174,7 @@ module "appservice_selfcare_be" {
   plan_id   = azurerm_app_service_plan.selfcare_be_common.id
 
   app_command_line  = "node /home/site/wwwroot/build/src/app.js"
-  linux_fx_version  = "NODE|14-lts" # to try
+  linux_fx_version  = "NODE|14-lts"
   health_check_path = "/info"
 
   app_settings = {

@@ -62,8 +62,8 @@ locals {
   test_urls = [
     {
       # https://developerportal-backend.io.italia.it/info
-      name        = trimsuffix(azurerm_dns_a_record.developerportal_backend_io_italia_it.fqdn, "."),
-      host        = trimsuffix(azurerm_dns_a_record.developerportal_backend_io_italia_it.fqdn, "."),
+      name        = local.devportal.backend_hostname,
+      host        = local.devportal.backend_hostname,
       path        = "/info",
       http_status = 200,
     },

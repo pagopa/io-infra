@@ -1,3 +1,12 @@
+### Common resources
+
+locals {
+  devportal = {
+    backend_hostname  = trimsuffix(azurerm_dns_a_record.developerportal_backend_io_italia_it.fqdn, ".")
+    frontend_hostname = "developer.${var.dns_zone_io}.italia.it"
+  }
+}
+
 ## key vault
 
 data "azurerm_key_vault_secret" "devportal_apim_io_service_key" {
@@ -25,6 +34,26 @@ data "azurerm_key_vault_secret" "devportal_jira_token" {
   key_vault_id = data.azurerm_key_vault.common.id
 }
 
+data "azurerm_key_vault_secret" "devportal_client_id" {
+  name         = "devportal-CLIENT-ID"
+  key_vault_id = data.azurerm_key_vault.common.id
+}
+
+data "azurerm_key_vault_secret" "devportal_client_secret" {
+  name         = "devportal-CLIENT-SECRET"
+  key_vault_id = data.azurerm_key_vault.common.id
+}
+
+data "azurerm_key_vault_secret" "devportal_cookie_iv" {
+  name         = "devportal-COOKIE-IV"
+  key_vault_id = data.azurerm_key_vault.common.id
+}
+
+data "azurerm_key_vault_secret" "devportal_cookie_key" {
+  name         = "devportal-COOKIE-KEY"
+  key_vault_id = data.azurerm_key_vault.common.id
+}
+
 # Only 1 subnet can be associated to a service plan
 # azurerm_app_service_virtual_network_swift_connection requires an app service id
 # so we choose one of the app service in the app service plan
@@ -43,7 +72,7 @@ module "appservice_devportal_be" {
   plan_id   = azurerm_app_service_plan.selfcare_be_common.id
 
   app_command_line  = "node /home/site/wwwroot/build/src/app.js"
-  linux_fx_version  = "NODE|14-lts" # to try
+  linux_fx_version  = "NODE|14-lts"
   health_check_path = "/info"
 
   app_settings = {
@@ -55,15 +84,12 @@ module "appservice_devportal_be" {
 
     LOG_LEVEL = "info"
 
-    SANDBOX_FISCAL_CODE = data.azurerm_key_vault_secret.selfcare_io_sandbox_fiscal_code.value
+    SANDBOX_FISCAL_CODE = data.azurerm_key_vault_secret.devportal_io_sandbox_fiscal_code.value
     LOGO_URL            = "https://assets.cdn.io.italia.it/logos"
-
-    # SelfCare configuration
-    IDP = "selfcare"
 
     # Fn-Admin connection
     ADMIN_API_URL = "http://api-internal.io.italia.it"
-    ADMIN_API_KEY = data.azurerm_key_vault_secret.selfcare_apim_io_service_key.value
+    ADMIN_API_KEY = data.azurerm_key_vault_secret.devportal_apim_io_service_key.value
 
     # Apim connection
     APIM_PRODUCT_NAME           = "io-services-api"
@@ -77,14 +103,19 @@ module "appservice_devportal_be" {
     SERVICE_PRINCIPAL_TENANT_ID = data.azurerm_client_config.current.tenant_id
     USE_SERVICE_PRINCIPAL       = "1"
 
-    FRONTEND_URL        = "https://${local.selfcare_io.frontend_hostname}"
-    BACKEND_URL         = "${local.selfcare_io.backend_hostname}"
-    LOGIN_URL           = "https://${local.selfcare_io.frontend_hostname}/login"
-    FAILURE_URL         = "https://${local.selfcare_io.frontend_hostname}/500.html"
-    SELFCARE_LOGIN_URL  = "https://${local.selfcare.hostname}/auth/login"
-    SELFCARE_IDP_ISSUER = local.selfcare.jwt_issuer
-    SELFCARE_JWKS_URL   = data.http.selfcare_well_known_jwks_json.url
-    JWT_SIGNATURE_KEY   = trimspace(module.selfcare_jwt.jwt_private_key_pem) # to avoid unwanted changes
+    # devportal
+    CLIENT_NAME                  = "io-p-developer-portal-app"
+    POLICY_NAME                  = "B2C_1_SignUpIn"
+    RESET_PASSWORD_POLICY_NAME   = "B2C_1_PasswordReset"
+    POST_LOGIN_URL               = "https://${local.devportal.frontend_hostname}"
+    POST_LOGOUT_URL              = "https://${local.devportal.frontend_hostname}"
+    REPLY_URL                    = "https://${local.devportal.frontend_hostname}"
+    TENANT_NAME                  = "agidweb"
+    #secrets
+    CLIENT_ID                   = data.azurerm_key_vault_secret.devportal_client_id.value
+    CLIENT_SECRET               = data.azurerm_key_vault_secret.devportal_client_secret.value
+    COOKIE_IV                   = data.azurerm_key_vault_secret.devportal_cookie_iv.value
+    COOKIE_KEY                  = data.azurerm_key_vault_secret.devportal_cookie_key.value
 
     # JIRA integration for Service review workflow
     JIRA_USERNAME              = "github-bot@pagopa.it"
@@ -102,7 +133,7 @@ module "appservice_devportal_be" {
     JIRA_DELEGATE_ID_FIELD     = "customfield_10087"
     JIRA_EMAIL_ID_FIELD        = "customfield_10084"
     JIRA_ORGANIZATION_ID_FIELD = "customfield_10088"
-    JIRA_TOKEN                 = data.azurerm_key_vault_secret.selfcare_devportal_jira_token.value
+    JIRA_TOKEN                 = data.azurerm_key_vault_secret.devportal_jira_token.value
   }
 
   allowed_subnets = [module.appgateway_snet.id]
