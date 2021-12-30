@@ -83,6 +83,8 @@ module "appservice_devportal_be" {
 
     LOG_LEVEL = "info"
 
+    IDP = "azure-ad"
+
     SANDBOX_FISCAL_CODE = data.azurerm_key_vault_secret.devportal_io_sandbox_fiscal_code.value
     LOGO_URL            = "https://assets.cdn.io.italia.it/logos"
 
