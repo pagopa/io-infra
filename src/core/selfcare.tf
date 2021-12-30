@@ -178,7 +178,7 @@ module "appservice_selfcare_be" {
   health_check_path = "/info"
 
   app_settings = {
-    WEBSITE_RUN_FROM_PACKAGE     = "1"
+    WEBSITE_RUN_FROM_PACKAGE = "1"
 
     APPINSIGHTS_INSTRUMENTATIONKEY = data.azurerm_application_insights.application_insights.instrumentation_key
 
