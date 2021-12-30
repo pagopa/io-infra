@@ -178,8 +178,6 @@ module "appservice_selfcare_be" {
   health_check_path = "/info"
 
   app_settings = {
-    WEBSITE_NODE_DEFAULT_VERSION = "6.11.2"
-    WEBSITE_NPM_DEFAULT_VERSION  = "6.1.0"
     WEBSITE_RUN_FROM_PACKAGE     = "1"
 
     APPINSIGHTS_INSTRUMENTATIONKEY = data.azurerm_application_insights.application_insights.instrumentation_key
