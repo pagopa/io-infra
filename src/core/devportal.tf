@@ -103,7 +103,7 @@ module "appservice_devportal_be" {
     SERVICE_PRINCIPAL_TENANT_ID = data.azurerm_client_config.current.tenant_id
     USE_SERVICE_PRINCIPAL       = "1"
 
-    # devportal
+    # devportal configs
     CLIENT_NAME                  = "io-p-developer-portal-app"
     POLICY_NAME                  = "B2C_1_SignUpIn"
     RESET_PASSWORD_POLICY_NAME   = "B2C_1_PasswordReset"
@@ -111,7 +111,6 @@ module "appservice_devportal_be" {
     POST_LOGOUT_URL              = "https://${local.devportal.frontend_hostname}"
     REPLY_URL                    = "https://${local.devportal.frontend_hostname}"
     TENANT_NAME                  = "agidweb"
-    #secrets
     CLIENT_ID                   = data.azurerm_key_vault_secret.devportal_client_id.value
     CLIENT_SECRET               = data.azurerm_key_vault_secret.devportal_client_secret.value
     COOKIE_IV                   = data.azurerm_key_vault_secret.devportal_cookie_iv.value
