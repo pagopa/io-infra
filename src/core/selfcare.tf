@@ -212,7 +212,7 @@ module "appservice_selfcare_be" {
     BACKEND_URL         = "${local.selfcare_io.backend_hostname}"
     LOGIN_URL           = "https://${local.selfcare_io.frontend_hostname}/login"
     FAILURE_URL         = "https://${local.selfcare_io.frontend_hostname}/500.html"
-    SELFCARE_LOGIN_URL  = "${local.selfcare.hostname}/auth/login"
+    SELFCARE_LOGIN_URL  = "https://${local.selfcare.hostname}/auth/login"
     SELFCARE_IDP_ISSUER = local.selfcare.jwt_issuer
     SELFCARE_JWKS_URL   = data.http.selfcare_well_known_jwks_json.url
     JWT_SIGNATURE_KEY   = trimspace(module.selfcare_jwt.jwt_private_key_pem) # to avoid unwanted changes
