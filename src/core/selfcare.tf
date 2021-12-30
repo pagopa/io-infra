@@ -159,7 +159,7 @@ module "selfcare_be_common_snet" {
 # Only 1 subnet can be associated to a service plan
 # azurerm_app_service_virtual_network_swift_connection requires an app service id
 # so we choose one of the app service in the app service plan
-resource "azurerm_app_service_virtual_network_swift_connection" "selfcare_common" {
+resource "azurerm_app_service_virtual_network_swift_connection" "selfcare_be" {
   app_service_id = module.appservice_selfcare_be.id
   subnet_id      = module.selfcare_be_common_snet.id
 }
@@ -174,13 +174,11 @@ module "appservice_selfcare_be" {
   plan_id   = azurerm_app_service_plan.selfcare_be_common.id
 
   app_command_line  = "node /home/site/wwwroot/build/src/app.js"
-  linux_fx_version  = "NODE|14-lts" # to try
+  linux_fx_version  = "NODE|14-lts"
   health_check_path = "/info"
 
   app_settings = {
-    WEBSITE_NODE_DEFAULT_VERSION = "6.11.2"
-    WEBSITE_NPM_DEFAULT_VERSION  = "6.1.0"
-    WEBSITE_RUN_FROM_PACKAGE     = "1"
+    WEBSITE_RUN_FROM_PACKAGE = "1"
 
     APPINSIGHTS_INSTRUMENTATIONKEY = data.azurerm_application_insights.application_insights.instrumentation_key
 
