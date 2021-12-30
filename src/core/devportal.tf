@@ -104,17 +104,17 @@ module "appservice_devportal_be" {
     USE_SERVICE_PRINCIPAL       = "1"
 
     # devportal configs
-    CLIENT_NAME                  = "io-p-developer-portal-app"
-    POLICY_NAME                  = "B2C_1_SignUpIn"
-    RESET_PASSWORD_POLICY_NAME   = "B2C_1_PasswordReset"
-    POST_LOGIN_URL               = "https://${local.devportal.frontend_hostname}"
-    POST_LOGOUT_URL              = "https://${local.devportal.frontend_hostname}"
-    REPLY_URL                    = "https://${local.devportal.frontend_hostname}"
-    TENANT_NAME                  = "agidweb"
-    CLIENT_ID                   = data.azurerm_key_vault_secret.devportal_client_id.value
-    CLIENT_SECRET               = data.azurerm_key_vault_secret.devportal_client_secret.value
-    COOKIE_IV                   = data.azurerm_key_vault_secret.devportal_cookie_iv.value
-    COOKIE_KEY                  = data.azurerm_key_vault_secret.devportal_cookie_key.value
+    CLIENT_NAME                = "io-p-developer-portal-app"
+    POLICY_NAME                = "B2C_1_SignUpIn"
+    RESET_PASSWORD_POLICY_NAME = "B2C_1_PasswordReset"
+    POST_LOGIN_URL             = "https://${local.devportal.frontend_hostname}"
+    POST_LOGOUT_URL            = "https://${local.devportal.frontend_hostname}"
+    REPLY_URL                  = "https://${local.devportal.frontend_hostname}"
+    TENANT_NAME                = "agidweb"
+    CLIENT_ID                  = data.azurerm_key_vault_secret.devportal_client_id.value
+    CLIENT_SECRET              = data.azurerm_key_vault_secret.devportal_client_secret.value
+    COOKIE_IV                  = data.azurerm_key_vault_secret.devportal_cookie_iv.value
+    COOKIE_KEY                 = data.azurerm_key_vault_secret.devportal_cookie_key.value
 
     # JIRA integration for Service review workflow
     JIRA_USERNAME              = "github-bot@pagopa.it"
