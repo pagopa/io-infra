@@ -71,10 +71,10 @@ locals {
 
       // PUSH NOTIFICATIONS
       PRE_SHARED_KEY               = data.azurerm_key_vault_secret.app_backend_PRE_SHARED_KEY.value
-      ALLOW_NOTIFY_IP_SOURCE_RANGE = data.azurerm_subnet.fnapp_services_subnet_out.address_prefixes
+      ALLOW_NOTIFY_IP_SOURCE_RANGE = data.azurerm_subnet.fnapp_services_subnet_out.address_prefixes[0]
 
       // LOCK / UNLOCK SESSION ENDPOINTS
-      ALLOW_SESSION_HANDLER_IP_SOURCE_RANGE = data.azurerm_subnet.fnapp_admin_subnet_out.address_prefixes
+      ALLOW_SESSION_HANDLER_IP_SOURCE_RANGE = data.azurerm_subnet.fnapp_admin_subnet_out.address_prefixes[0]
 
       // PAGOPA
       PAGOPA_API_URL_PROD          = "https://${data.azurerm_app_service.pagopa_proxy_prod.default_site_hostname}"
