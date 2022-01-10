@@ -49,7 +49,7 @@ data "azurerm_function_app" "fnapp_app2" {
 }
 
 data "azurerm_function_app" "fnapp_appasync" {
-  name                = format("%s--fn3-appasync", local.project)
+  name                = format("%s-fn3-appasync", local.project)
   resource_group_name = format("%s-rg-internal", local.project)
 }
 
@@ -88,12 +88,12 @@ data "azurerm_subnet" "fnapp_admin_subnet_out" {
 #
 
 data "azurerm_app_service" "pagopa_proxy_prod" {
-  name                = format("%s-pagopaproxyprod", local.project)
+  name                = format("%s-app-pagopaproxyprod", local.project)
   resource_group_name = format("%s-rg-external", local.project)
 }
 
 data "azurerm_app_service" "pagopa_proxy_test" {
-  name                = format("%s-pagopaproxytest", local.project)
+  name                = format("%s-app-pagopaproxytest", local.project)
   resource_group_name = format("%s-rg-external", local.project)
 }
 
