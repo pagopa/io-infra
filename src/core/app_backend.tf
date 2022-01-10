@@ -316,7 +316,7 @@ module "appservice_app_backendl1" {
     local.app_insights_ips_west_europe,
   )
 
-  subnet_id = module.app_backendl1_snet.id
+  # subnet_id = module.app_backendl1_snet.id
 
   tags = var.tags
 }
@@ -377,7 +377,7 @@ module "appservice_app_backendl2" {
     local.app_insights_ips_west_europe,
   )
 
-  subnet_id = module.app_backendl2_snet.id
+  # subnet_id = module.app_backendl2_snet.id
 
   tags = var.tags
 }
@@ -436,7 +436,7 @@ module "appservice_app_backendli" {
     local.app_insights_ips_west_europe,
   )
 
-  subnet_id = module.app_backendli_snet.id
+  # subnet_id = module.app_backendli_snet.id
 
   tags = var.tags
 }
