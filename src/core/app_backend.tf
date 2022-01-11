@@ -8,6 +8,7 @@ locals {
       WEBSITE_RUN_FROM_PACKAGE                        = "1"
       WEBSITE_VNET_ROUTE_ALL                          = "1"
       WEBSITE_DNS_SERVER                              = "168.63.129.16"
+      WEBSITE_HEALTHCHECK_MAXPINGFAILURES             = "10"
 
       APPINSIGHTS_INSTRUMENTATIONKEY        = data.azurerm_application_insights.application_insights.instrumentation_key
       APPLICATIONINSIGHTS_CONNECTION_STRING = data.azurerm_application_insights.application_insights.connection_string
@@ -259,7 +260,7 @@ data "azurerm_key_vault_secret" "app_backend_PECSERVER_TOKEN_SECRET" {
 ## app_backendl1
 
 module "app_backendl1_snet" {
-  source               = "git::https://github.com/pagopa/azurerm.git//subnet?ref=v1.0.51"
+  source               = "git::https://github.com/pagopa/azurerm.git//subnet?ref=v2.0.27"
   name                 = "appbackendl1"
   address_prefixes     = var.cidr_subnet_appbackendl1
   resource_group_name  = data.azurerm_resource_group.vnet_common_rg.name
@@ -279,7 +280,7 @@ module "app_backendl1_snet" {
 }
 
 module "appservice_app_backendl1" {
-  source = "git::https://github.com/pagopa/azurerm.git//app_service?ref=v2.0.13"
+  source = "git::https://github.com/pagopa/azurerm.git//app_service?ref=v2.0.27"
 
   # App service plan
   plan_type     = "internal"
@@ -322,7 +323,7 @@ module "appservice_app_backendl1" {
 }
 
 module "appservice_app_backendl1_slot_staging" {
-  source = "git::https://github.com/pagopa/azurerm.git//app_service?ref=v2.0.26"
+  source = "git::https://github.com/pagopa/azurerm.git//app_service_slot?ref=v2.0.27"
 
   # App service plan
   app_service_plan_id = module.appservice_app_backendl1.plan_id
@@ -364,7 +365,7 @@ module "appservice_app_backendl1_slot_staging" {
 ## app_backendl2
 
 module "app_backendl2_snet" {
-  source               = "git::https://github.com/pagopa/azurerm.git//subnet?ref=v1.0.51"
+  source               = "git::https://github.com/pagopa/azurerm.git//subnet?ref=v2.0.27"
   name                 = "appbackendl2"
   address_prefixes     = var.cidr_subnet_appbackendl2
   resource_group_name  = data.azurerm_resource_group.vnet_common_rg.name
@@ -384,7 +385,7 @@ module "app_backendl2_snet" {
 }
 
 module "appservice_app_backendl2" {
-  source = "git::https://github.com/pagopa/azurerm.git//app_service?ref=v2.0.13"
+  source = "git::https://github.com/pagopa/azurerm.git//app_service?ref=v2.0.27"
 
   # App service plan
   plan_type     = "internal"
@@ -427,7 +428,7 @@ module "appservice_app_backendl2" {
 }
 
 module "appservice_app_backendl2_slot_staging" {
-  source = "git::https://github.com/pagopa/azurerm.git//app_service?ref=v2.0.26"
+  source = "git::https://github.com/pagopa/azurerm.git//app_service_slot?ref=v2.0.27"
 
   # App service plan
   app_service_plan_id = module.appservice_app_backendl2.plan_id
@@ -469,7 +470,7 @@ module "appservice_app_backendl2_slot_staging" {
 ## app_backendli
 
 module "app_backendli_snet" {
-  source               = "git::https://github.com/pagopa/azurerm.git//subnet?ref=v1.0.51"
+  source               = "git::https://github.com/pagopa/azurerm.git//subnet?ref=v2.0.27"
   name                 = "appbackendli"
   address_prefixes     = var.cidr_subnet_appbackendli
   resource_group_name  = data.azurerm_resource_group.vnet_common_rg.name
@@ -489,7 +490,7 @@ module "app_backendli_snet" {
 }
 
 module "appservice_app_backendli" {
-  source = "git::https://github.com/pagopa/azurerm.git//app_service?ref=v2.0.13"
+  source = "git::https://github.com/pagopa/azurerm.git//app_service?ref=v2.0.27"
 
   # App service plan
   plan_type     = "internal"
@@ -530,7 +531,7 @@ module "appservice_app_backendli" {
 }
 
 module "appservice_app_backendli_slot_staging" {
-  source = "git::https://github.com/pagopa/azurerm.git//app_service?ref=v2.0.26"
+  source = "git::https://github.com/pagopa/azurerm.git//app_service_slot?ref=v2.0.27"
 
   # App service plan
   app_service_plan_id = module.appservice_app_backendli.plan_id
