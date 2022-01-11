@@ -9,7 +9,7 @@ locals {
       WEBSITE_VNET_ROUTE_ALL                          = "1"
       WEBSITE_DNS_SERVER                              = "168.63.129.16"
 
-      APPINSIGHTS_INSTRUMENTATIONKEY        = data.azurerm_application_insights.application_insights.instrumentation_key
+      APPINSIGHTS_INSTRUMENTATIONKEY = data.azurerm_application_insights.application_insights.instrumentation_key
 
       // ENVIRONMENT
       NODE_ENV = "production"
