@@ -2,7 +2,7 @@ data "azurerm_resource_group" "cgn" {
   name = format("%s-rg-cgn", local.project)
 }
 
-## Database subnet
+## redis cgn subnet
 module "redis_cgn_snet" {
   source                                         = "git::https://github.com/pagopa/azurerm.git//subnet?ref=v2.0.26"
   name                                           = format("%s-redis-cgn-snet", local.project)
