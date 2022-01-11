@@ -8,10 +8,8 @@ locals {
       WEBSITE_RUN_FROM_PACKAGE                        = "1"
       WEBSITE_VNET_ROUTE_ALL                          = "1"
       WEBSITE_DNS_SERVER                              = "168.63.129.16"
-      WEBSITE_HEALTHCHECK_MAXPINGFAILURES             = "10"
 
       APPINSIGHTS_INSTRUMENTATIONKEY        = data.azurerm_application_insights.application_insights.instrumentation_key
-      APPLICATIONINSIGHTS_CONNECTION_STRING = data.azurerm_application_insights.application_insights.connection_string
 
       // ENVIRONMENT
       NODE_ENV = "production"
@@ -29,8 +27,8 @@ locals {
 
       // SPID
       SAML_CALLBACK_URL                      = "https://app-backend.io.italia.it/assertionConsumerService"
-      SAML_CERT                              = data.azurerm_key_vault_secret.app_backend_SAML_CERT.value
-      SAML_KEY                               = data.azurerm_key_vault_secret.app_backend_SAML_KEY.value
+      SAML_CERT                              = trimspace(data.azurerm_key_vault_secret.app_backend_SAML_CERT.value)
+      SAML_KEY                               = trimspace(data.azurerm_key_vault_secret.app_backend_SAML_KEY.value)
       SAML_LOGOUT_CALLBACK_URL               = "https://app-backend.io.italia.it/slo"
       SAML_ISSUER                            = "https://app-backend.io.italia.it"
       SAML_ATTRIBUTE_CONSUMING_SERVICE_INDEX = "0"
@@ -298,7 +296,7 @@ module "appservice_app_backendl1" {
   always_on         = true
   linux_fx_version  = "NODE|14-lts"
   app_command_line  = "node /home/site/wwwroot/src/server.js"
-  health_check_path = "/info"
+  health_check_path = null
 
   app_settings = merge(
     local.app_backend.app_settings_common,
@@ -338,7 +336,7 @@ module "appservice_app_backendl1_slot_staging" {
   always_on         = true
   linux_fx_version  = "NODE|14-lts"
   app_command_line  = "node /home/site/wwwroot/src/server.js"
-  health_check_path = "/info"
+  health_check_path = null
 
   app_settings = merge(
     local.app_backend.app_settings_common,
@@ -403,7 +401,7 @@ module "appservice_app_backendl2" {
   always_on         = true
   linux_fx_version  = "NODE|14-lts"
   app_command_line  = "node /home/site/wwwroot/src/server.js"
-  health_check_path = "/info"
+  health_check_path = null
 
   app_settings = merge(
     local.app_backend.app_settings_common,
@@ -443,7 +441,7 @@ module "appservice_app_backendl2_slot_staging" {
   always_on         = true
   linux_fx_version  = "NODE|14-lts"
   app_command_line  = "node /home/site/wwwroot/src/server.js"
-  health_check_path = "/info"
+  health_check_path = null
 
   app_settings = merge(
     local.app_backend.app_settings_common,
@@ -508,7 +506,7 @@ module "appservice_app_backendli" {
   always_on         = true
   linux_fx_version  = "NODE|14-lts"
   app_command_line  = "node /home/site/wwwroot/src/server.js"
-  health_check_path = "/info"
+  health_check_path = null
 
   app_settings = merge(
     local.app_backend.app_settings_common,
@@ -546,7 +544,7 @@ module "appservice_app_backendli_slot_staging" {
   always_on         = true
   linux_fx_version  = "NODE|14-lts"
   app_command_line  = "node /home/site/wwwroot/src/server.js"
-  health_check_path = "/info"
+  health_check_path = null
 
   app_settings = merge(
     local.app_backend.app_settings_common,
