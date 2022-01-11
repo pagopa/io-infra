@@ -24,3 +24,10 @@ resource "azurerm_private_dns_a_record" "api_app_internal_io" {
 
   tags = var.tags
 }
+
+resource "azurerm_private_dns_zone" "privatelink_redis_cache" {
+  name                = "privatelink.redis.cache.windows.net"
+  resource_group_name = data.azurerm_resource_group.vnet_common_rg.name
+
+  tags = var.tags
+}
