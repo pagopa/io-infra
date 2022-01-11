@@ -154,6 +154,21 @@ variable "cidr_subnet_selfcare_be" {
   description = "Selfcare IO frontend storage address space."
 }
 
+variable "cidr_subnet_appbackendl1" {
+  type        = list(string)
+  description = "App backend l1 address space."
+}
+
+variable "cidr_subnet_appbackendl2" {
+  type        = list(string)
+  description = "App backend l1 address space."
+}
+
+variable "cidr_subnet_appbackendli" {
+  type        = list(string)
+  description = "App backend li address space."
+}
+
 ## VPN ##
 variable "vpn_sku" {
   type        = string
@@ -351,6 +366,19 @@ variable "eucovidcert_alerts_enabled" {
   description = "Enable eucovidcert alerts"
   type        = bool
   default     = true
+}
+
+# app backend
+variable "app_backend_plan_sku_tier" {
+  description = "App backend app plan sku tier"
+  type        = string
+  default     = "PremiumV3"
+}
+
+variable "app_backend_plan_sku_size" {
+  description = "App backend app plan sku size"
+  type        = string
+  default     = "P1v3"
 }
 
 # selfcare
