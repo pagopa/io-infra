@@ -11,6 +11,7 @@
 |------|---------|
 | <a name="provider_azuread"></a> [azuread](#provider\_azuread) | = 2.3.0 |
 | <a name="provider_azurerm"></a> [azurerm](#provider\_azurerm) | = 2.87.0 |
+| <a name="provider_http"></a> [http](#provider\_http) | n/a |
 | <a name="provider_local"></a> [local](#provider\_local) | n/a |
 | <a name="provider_null"></a> [null](#provider\_null) | n/a |
 
@@ -35,6 +36,8 @@
 | <a name="module_apim_snet"></a> [apim\_snet](#module\_apim\_snet) | git::https://github.com/pagopa/azurerm.git//subnet?ref=v1.0.51 |  |
 | <a name="module_app_gw"></a> [app\_gw](#module\_app\_gw) | git::https://github.com/pagopa/azurerm.git//app_gateway?ref=v2.0.9 |  |
 | <a name="module_appgateway_snet"></a> [appgateway\_snet](#module\_appgateway\_snet) | git::https://github.com/pagopa/azurerm.git//subnet?ref=v1.0.51 |  |
+| <a name="module_appservice_devportal_be"></a> [appservice\_devportal\_be](#module\_appservice\_devportal\_be) | git::https://github.com/pagopa/azurerm.git//app_service?ref=v2.0.13 |  |
+| <a name="module_appservice_selfcare_be"></a> [appservice\_selfcare\_be](#module\_appservice\_selfcare\_be) | git::https://github.com/pagopa/azurerm.git//app_service?ref=v2.0.13 |  |
 | <a name="module_azdoa_li"></a> [azdoa\_li](#module\_azdoa\_li) | git::https://github.com/pagopa/azurerm.git//azure_devops_agent?ref=v1.0.57 |  |
 | <a name="module_dns_forwarder_snet"></a> [dns\_forwarder\_snet](#module\_dns\_forwarder\_snet) | git::https://github.com/pagopa/azurerm.git//subnet?ref=v1.0.7 |  |
 | <a name="module_event_hub"></a> [event\_hub](#module\_event\_hub) | git::https://github.com/pagopa/azurerm.git//eventhub?ref=v1.0.66 |  |
@@ -44,12 +47,18 @@
 | <a name="module_function_pblevtdispatcher"></a> [function\_pblevtdispatcher](#module\_function\_pblevtdispatcher) | git::https://github.com/pagopa/azurerm.git//function_app?ref=v1.0.65 |  |
 | <a name="module_function_pblevtdispatcher_snetout"></a> [function\_pblevtdispatcher\_snetout](#module\_function\_pblevtdispatcher\_snetout) | git::https://github.com/pagopa/azurerm.git//subnet?ref=v1.0.60 |  |
 | <a name="module_io_apist_replica"></a> [io\_apist\_replica](#module\_io\_apist\_replica) | git::https://github.com/pagopa/azurerm.git//storage_object_replication?ref=v2.0.6 |  |
-| <a name="module_key_vault"></a> [key\_vault](#module\_key\_vault) | git::https://github.com/pagopa/azurerm.git//key_vault?ref=v1.0.48 |  |
+| <a name="module_key_vault"></a> [key\_vault](#module\_key\_vault) | git::https://github.com/pagopa/azurerm.git//key_vault?ref=v2.0.2 |  |
+| <a name="module_redis_cgn"></a> [redis\_cgn](#module\_redis\_cgn) | git::https://github.com/pagopa/azurerm.git//redis_cache?ref=v2.0.26 |  |
+| <a name="module_redis_cgn_snet"></a> [redis\_cgn\_snet](#module\_redis\_cgn\_snet) | git::https://github.com/pagopa/azurerm.git//subnet?ref=v2.0.26 |  |
+| <a name="module_selfcare_be_common_snet"></a> [selfcare\_be\_common\_snet](#module\_selfcare\_be\_common\_snet) | git::https://github.com/pagopa/azurerm.git//subnet?ref=v1.0.51 |  |
+| <a name="module_selfcare_cdn"></a> [selfcare\_cdn](#module\_selfcare\_cdn) | git::https://github.com/pagopa/azurerm.git//cdn?ref=v2.0.18 |  |
+| <a name="module_selfcare_jwt"></a> [selfcare\_jwt](#module\_selfcare\_jwt) | git::https://github.com/pagopa/azurerm.git//jwt_keys?ref=v2.0.21 |  |
 | <a name="module_storage_account_api_replica"></a> [storage\_account\_api\_replica](#module\_storage\_account\_api\_replica) | git::https://github.com/pagopa/azurerm.git//storage_account?ref=v1.0.60 |  |
 | <a name="module_storage_account_elt"></a> [storage\_account\_elt](#module\_storage\_account\_elt) | git::https://github.com/pagopa/azurerm.git//storage_account?ref=v1.0.60 |  |
 | <a name="module_storage_account_pblevtdispatcher"></a> [storage\_account\_pblevtdispatcher](#module\_storage\_account\_pblevtdispatcher) | git::https://github.com/pagopa/azurerm.git//storage_account?ref=v1.0.60 |  |
 | <a name="module_vpn"></a> [vpn](#module\_vpn) | git::https://github.com/pagopa/azurerm.git//vpn_gateway?ref=v1.0.36 |  |
 | <a name="module_vpn_snet"></a> [vpn\_snet](#module\_vpn\_snet) | git::https://github.com/pagopa/azurerm.git//subnet?ref=v1.0.58 |  |
+| <a name="module_web_test_api"></a> [web\_test\_api](#module\_web\_test\_api) | git::https://github.com/pagopa/azurerm.git//application_insights_web_test_preview?ref=v2.0.17 |  |
 
 ## Resources
 
@@ -67,17 +76,23 @@
 | [azurerm_api_management_api_version_set.io_backend_pagopa_api](https://registry.terraform.io/providers/hashicorp/azurerm/2.87.0/docs/resources/api_management_api_version_set) | resource |
 | [azurerm_api_management_api_version_set.io_backend_public_api](https://registry.terraform.io/providers/hashicorp/azurerm/2.87.0/docs/resources/api_management_api_version_set) | resource |
 | [azurerm_api_management_api_version_set.io_backend_session_api](https://registry.terraform.io/providers/hashicorp/azurerm/2.87.0/docs/resources/api_management_api_version_set) | resource |
+| [azurerm_app_service_plan.selfcare_be_common](https://registry.terraform.io/providers/hashicorp/azurerm/2.87.0/docs/resources/app_service_plan) | resource |
+| [azurerm_app_service_virtual_network_swift_connection.devportal_be](https://registry.terraform.io/providers/hashicorp/azurerm/2.87.0/docs/resources/app_service_virtual_network_swift_connection) | resource |
+| [azurerm_app_service_virtual_network_swift_connection.selfcare_be](https://registry.terraform.io/providers/hashicorp/azurerm/2.87.0/docs/resources/app_service_virtual_network_swift_connection) | resource |
 | [azurerm_container_group.coredns_forwarder](https://registry.terraform.io/providers/hashicorp/azurerm/2.87.0/docs/resources/container_group) | resource |
 | [azurerm_dns_a_record.api_app_io_pagopa_it](https://registry.terraform.io/providers/hashicorp/azurerm/2.87.0/docs/resources/dns_a_record) | resource |
 | [azurerm_dns_a_record.api_io_italia_it](https://registry.terraform.io/providers/hashicorp/azurerm/2.87.0/docs/resources/dns_a_record) | resource |
 | [azurerm_dns_a_record.api_io_pagopa_it](https://registry.terraform.io/providers/hashicorp/azurerm/2.87.0/docs/resources/dns_a_record) | resource |
+| [azurerm_dns_a_record.api_io_selfcare_pagopa_it](https://registry.terraform.io/providers/hashicorp/azurerm/2.87.0/docs/resources/dns_a_record) | resource |
 | [azurerm_dns_a_record.api_mtls_io_pagopa_it](https://registry.terraform.io/providers/hashicorp/azurerm/2.87.0/docs/resources/dns_a_record) | resource |
 | [azurerm_dns_a_record.app_backend_io_italia_it](https://registry.terraform.io/providers/hashicorp/azurerm/2.87.0/docs/resources/dns_a_record) | resource |
 | [azurerm_dns_a_record.developerportal_backend_io_italia_it](https://registry.terraform.io/providers/hashicorp/azurerm/2.87.0/docs/resources/dns_a_record) | resource |
 | [azurerm_dns_caa_record.io_italia_it](https://registry.terraform.io/providers/hashicorp/azurerm/2.87.0/docs/resources/dns_caa_record) | resource |
 | [azurerm_dns_caa_record.io_pagopa_it](https://registry.terraform.io/providers/hashicorp/azurerm/2.87.0/docs/resources/dns_caa_record) | resource |
+| [azurerm_dns_caa_record.io_selfcare_pagopa_it](https://registry.terraform.io/providers/hashicorp/azurerm/2.87.0/docs/resources/dns_caa_record) | resource |
 | [azurerm_dns_zone.io_italia_it](https://registry.terraform.io/providers/hashicorp/azurerm/2.87.0/docs/resources/dns_zone) | resource |
 | [azurerm_dns_zone.io_pagopa_it](https://registry.terraform.io/providers/hashicorp/azurerm/2.87.0/docs/resources/dns_zone) | resource |
+| [azurerm_dns_zone.io_selfcare_pagopa_it](https://registry.terraform.io/providers/hashicorp/azurerm/2.87.0/docs/resources/dns_zone) | resource |
 | [azurerm_key_vault_access_policy.ad_group_policy](https://registry.terraform.io/providers/hashicorp/azurerm/2.87.0/docs/resources/key_vault_access_policy) | resource |
 | [azurerm_key_vault_access_policy.adgroup_developers_policy](https://registry.terraform.io/providers/hashicorp/azurerm/2.87.0/docs/resources/key_vault_access_policy) | resource |
 | [azurerm_key_vault_access_policy.adgroup_externals_policy](https://registry.terraform.io/providers/hashicorp/azurerm/2.87.0/docs/resources/key_vault_access_policy) | resource |
@@ -89,7 +104,8 @@
 | [azurerm_key_vault_access_policy.app_service](https://registry.terraform.io/providers/hashicorp/azurerm/2.87.0/docs/resources/key_vault_access_policy) | resource |
 | [azurerm_key_vault_access_policy.azdevops_iac_policy](https://registry.terraform.io/providers/hashicorp/azurerm/2.87.0/docs/resources/key_vault_access_policy) | resource |
 | [azurerm_key_vault_access_policy.azdevops_iac_policy_common](https://registry.terraform.io/providers/hashicorp/azurerm/2.87.0/docs/resources/key_vault_access_policy) | resource |
-| [azurerm_key_vault_access_policy.cdn](https://registry.terraform.io/providers/hashicorp/azurerm/2.87.0/docs/resources/key_vault_access_policy) | resource |
+| [azurerm_key_vault_access_policy.cdn_common](https://registry.terraform.io/providers/hashicorp/azurerm/2.87.0/docs/resources/key_vault_access_policy) | resource |
+| [azurerm_key_vault_access_policy.cdn_kv](https://registry.terraform.io/providers/hashicorp/azurerm/2.87.0/docs/resources/key_vault_access_policy) | resource |
 | [azurerm_key_vault_access_policy.common](https://registry.terraform.io/providers/hashicorp/azurerm/2.87.0/docs/resources/key_vault_access_policy) | resource |
 | [azurerm_key_vault_access_policy.policy_common_admin](https://registry.terraform.io/providers/hashicorp/azurerm/2.87.0/docs/resources/key_vault_access_policy) | resource |
 | [azurerm_key_vault_secret.event_hub_keys](https://registry.terraform.io/providers/hashicorp/azurerm/2.87.0/docs/resources/key_vault_secret) | resource |
@@ -99,7 +115,9 @@
 | [azurerm_network_profile.dns_forwarder](https://registry.terraform.io/providers/hashicorp/azurerm/2.87.0/docs/resources/network_profile) | resource |
 | [azurerm_private_dns_a_record.api_app_internal_io](https://registry.terraform.io/providers/hashicorp/azurerm/2.87.0/docs/resources/private_dns_a_record) | resource |
 | [azurerm_private_dns_zone.internal_io_pagopa_it](https://registry.terraform.io/providers/hashicorp/azurerm/2.87.0/docs/resources/private_dns_zone) | resource |
+| [azurerm_private_dns_zone.privatelink_redis_cache](https://registry.terraform.io/providers/hashicorp/azurerm/2.87.0/docs/resources/private_dns_zone) | resource |
 | [azurerm_private_dns_zone_virtual_network_link.internal_io_pagopa_it_private_vnet_common](https://registry.terraform.io/providers/hashicorp/azurerm/2.87.0/docs/resources/private_dns_zone_virtual_network_link) | resource |
+| [azurerm_private_dns_zone_virtual_network_link.redis_private_vnet_common](https://registry.terraform.io/providers/hashicorp/azurerm/2.87.0/docs/resources/private_dns_zone_virtual_network_link) | resource |
 | [azurerm_public_ip.appgateway_public_ip](https://registry.terraform.io/providers/hashicorp/azurerm/2.87.0/docs/resources/public_ip) | resource |
 | [azurerm_resource_group.azdo_rg](https://registry.terraform.io/providers/hashicorp/azurerm/2.87.0/docs/resources/resource_group) | resource |
 | [azurerm_resource_group.data](https://registry.terraform.io/providers/hashicorp/azurerm/2.87.0/docs/resources/resource_group) | resource |
@@ -112,6 +130,8 @@
 | [azurerm_resource_group.rg_internal](https://registry.terraform.io/providers/hashicorp/azurerm/2.87.0/docs/resources/resource_group) | resource |
 | [azurerm_resource_group.rg_vnet](https://registry.terraform.io/providers/hashicorp/azurerm/2.87.0/docs/resources/resource_group) | resource |
 | [azurerm_resource_group.sec_rg](https://registry.terraform.io/providers/hashicorp/azurerm/2.87.0/docs/resources/resource_group) | resource |
+| [azurerm_resource_group.selfcare_be_rg](https://registry.terraform.io/providers/hashicorp/azurerm/2.87.0/docs/resources/resource_group) | resource |
+| [azurerm_resource_group.selfcare_fe_rg](https://registry.terraform.io/providers/hashicorp/azurerm/2.87.0/docs/resources/resource_group) | resource |
 | [azurerm_storage_account.dns_forwarder](https://registry.terraform.io/providers/hashicorp/azurerm/2.87.0/docs/resources/storage_account) | resource |
 | [azurerm_storage_container.container_messages_report_step1](https://registry.terraform.io/providers/hashicorp/azurerm/2.87.0/docs/resources/storage_container) | resource |
 | [azurerm_storage_container.container_messages_report_step_final](https://registry.terraform.io/providers/hashicorp/azurerm/2.87.0/docs/resources/storage_container) | resource |
@@ -121,6 +141,7 @@
 | [azurerm_storage_share.dns_forwarder](https://registry.terraform.io/providers/hashicorp/azurerm/2.87.0/docs/resources/storage_share) | resource |
 | [azurerm_storage_table.fneltcommands](https://registry.terraform.io/providers/hashicorp/azurerm/2.87.0/docs/resources/storage_table) | resource |
 | [azurerm_storage_table.fnelterrors](https://registry.terraform.io/providers/hashicorp/azurerm/2.87.0/docs/resources/storage_table) | resource |
+| [azurerm_storage_table.fneltexports](https://registry.terraform.io/providers/hashicorp/azurerm/2.87.0/docs/resources/storage_table) | resource |
 | [azurerm_user_assigned_identity.appgateway](https://registry.terraform.io/providers/hashicorp/azurerm/2.87.0/docs/resources/user_assigned_identity) | resource |
 | [azurerm_web_application_firewall_policy.api_app](https://registry.terraform.io/providers/hashicorp/azurerm/2.87.0/docs/resources/web_application_firewall_policy) | resource |
 | [null_resource.upload_corefile](https://registry.terraform.io/providers/hashicorp/null/latest/docs/resources/resource) | resource |
@@ -145,18 +166,35 @@
 | [azurerm_key_vault_certificate.app_gw_api](https://registry.terraform.io/providers/hashicorp/azurerm/2.87.0/docs/data-sources/key_vault_certificate) | data source |
 | [azurerm_key_vault_certificate.app_gw_api_app](https://registry.terraform.io/providers/hashicorp/azurerm/2.87.0/docs/data-sources/key_vault_certificate) | data source |
 | [azurerm_key_vault_certificate.app_gw_api_io_italia_it](https://registry.terraform.io/providers/hashicorp/azurerm/2.87.0/docs/data-sources/key_vault_certificate) | data source |
+| [azurerm_key_vault_certificate.app_gw_api_io_selfcare_pagopa_it](https://registry.terraform.io/providers/hashicorp/azurerm/2.87.0/docs/data-sources/key_vault_certificate) | data source |
 | [azurerm_key_vault_certificate.app_gw_api_mtls](https://registry.terraform.io/providers/hashicorp/azurerm/2.87.0/docs/data-sources/key_vault_certificate) | data source |
 | [azurerm_key_vault_certificate.app_gw_app_backend_io_italia_it](https://registry.terraform.io/providers/hashicorp/azurerm/2.87.0/docs/data-sources/key_vault_certificate) | data source |
 | [azurerm_key_vault_certificate.app_gw_developerportal_backend_io_italia_it](https://registry.terraform.io/providers/hashicorp/azurerm/2.87.0/docs/data-sources/key_vault_certificate) | data source |
 | [azurerm_key_vault_secret.apim_publisher_email](https://registry.terraform.io/providers/hashicorp/azurerm/2.87.0/docs/data-sources/key_vault_secret) | data source |
 | [azurerm_key_vault_secret.app_gw_mtls_header_name](https://registry.terraform.io/providers/hashicorp/azurerm/2.87.0/docs/data-sources/key_vault_secret) | data source |
+| [azurerm_key_vault_secret.devportal_apim_io_service_key](https://registry.terraform.io/providers/hashicorp/azurerm/2.87.0/docs/data-sources/key_vault_secret) | data source |
+| [azurerm_key_vault_secret.devportal_client_id](https://registry.terraform.io/providers/hashicorp/azurerm/2.87.0/docs/data-sources/key_vault_secret) | data source |
+| [azurerm_key_vault_secret.devportal_client_secret](https://registry.terraform.io/providers/hashicorp/azurerm/2.87.0/docs/data-sources/key_vault_secret) | data source |
+| [azurerm_key_vault_secret.devportal_cookie_iv](https://registry.terraform.io/providers/hashicorp/azurerm/2.87.0/docs/data-sources/key_vault_secret) | data source |
+| [azurerm_key_vault_secret.devportal_cookie_key](https://registry.terraform.io/providers/hashicorp/azurerm/2.87.0/docs/data-sources/key_vault_secret) | data source |
+| [azurerm_key_vault_secret.devportal_io_sandbox_fiscal_code](https://registry.terraform.io/providers/hashicorp/azurerm/2.87.0/docs/data-sources/key_vault_secret) | data source |
+| [azurerm_key_vault_secret.devportal_jira_token](https://registry.terraform.io/providers/hashicorp/azurerm/2.87.0/docs/data-sources/key_vault_secret) | data source |
+| [azurerm_key_vault_secret.devportal_service_principal_client_id](https://registry.terraform.io/providers/hashicorp/azurerm/2.87.0/docs/data-sources/key_vault_secret) | data source |
+| [azurerm_key_vault_secret.devportal_service_principal_secret](https://registry.terraform.io/providers/hashicorp/azurerm/2.87.0/docs/data-sources/key_vault_secret) | data source |
 | [azurerm_key_vault_secret.fnapp_eucovidcert_authtoken](https://registry.terraform.io/providers/hashicorp/azurerm/2.87.0/docs/data-sources/key_vault_secret) | data source |
 | [azurerm_key_vault_secret.monitor_notification_email](https://registry.terraform.io/providers/hashicorp/azurerm/2.87.0/docs/data-sources/key_vault_secret) | data source |
 | [azurerm_key_vault_secret.monitor_notification_slack_email](https://registry.terraform.io/providers/hashicorp/azurerm/2.87.0/docs/data-sources/key_vault_secret) | data source |
 | [azurerm_key_vault_secret.sec_storage_id](https://registry.terraform.io/providers/hashicorp/azurerm/2.87.0/docs/data-sources/key_vault_secret) | data source |
 | [azurerm_key_vault_secret.sec_workspace_id](https://registry.terraform.io/providers/hashicorp/azurerm/2.87.0/docs/data-sources/key_vault_secret) | data source |
+| [azurerm_key_vault_secret.selfcare_apim_io_service_key](https://registry.terraform.io/providers/hashicorp/azurerm/2.87.0/docs/data-sources/key_vault_secret) | data source |
+| [azurerm_key_vault_secret.selfcare_devportal_jira_token](https://registry.terraform.io/providers/hashicorp/azurerm/2.87.0/docs/data-sources/key_vault_secret) | data source |
+| [azurerm_key_vault_secret.selfcare_devportal_service_principal_client_id](https://registry.terraform.io/providers/hashicorp/azurerm/2.87.0/docs/data-sources/key_vault_secret) | data source |
+| [azurerm_key_vault_secret.selfcare_devportal_service_principal_secret](https://registry.terraform.io/providers/hashicorp/azurerm/2.87.0/docs/data-sources/key_vault_secret) | data source |
+| [azurerm_key_vault_secret.selfcare_io_sandbox_fiscal_code](https://registry.terraform.io/providers/hashicorp/azurerm/2.87.0/docs/data-sources/key_vault_secret) | data source |
+| [azurerm_key_vault_secret.services_exclusion_list](https://registry.terraform.io/providers/hashicorp/azurerm/2.87.0/docs/data-sources/key_vault_secret) | data source |
 | [azurerm_log_analytics_workspace.log_analytics_workspace](https://registry.terraform.io/providers/hashicorp/azurerm/2.87.0/docs/data-sources/log_analytics_workspace) | data source |
 | [azurerm_log_analytics_workspace.monitor_rg](https://registry.terraform.io/providers/hashicorp/azurerm/2.87.0/docs/data-sources/log_analytics_workspace) | data source |
+| [azurerm_resource_group.cgn](https://registry.terraform.io/providers/hashicorp/azurerm/2.87.0/docs/data-sources/resource_group) | data source |
 | [azurerm_resource_group.monitor_rg](https://registry.terraform.io/providers/hashicorp/azurerm/2.87.0/docs/data-sources/resource_group) | data source |
 | [azurerm_resource_group.vnet_common_rg](https://registry.terraform.io/providers/hashicorp/azurerm/2.87.0/docs/data-sources/resource_group) | data source |
 | [azurerm_storage_account.api](https://registry.terraform.io/providers/hashicorp/azurerm/2.87.0/docs/data-sources/storage_account) | data source |
@@ -166,6 +204,7 @@
 | [azurerm_subnet.azdoa_snet](https://registry.terraform.io/providers/hashicorp/azurerm/2.87.0/docs/data-sources/subnet) | data source |
 | [azurerm_subscription.current](https://registry.terraform.io/providers/hashicorp/azurerm/2.87.0/docs/data-sources/subscription) | data source |
 | [azurerm_virtual_network.vnet_common](https://registry.terraform.io/providers/hashicorp/azurerm/2.87.0/docs/data-sources/virtual_network) | data source |
+| [http_http.selfcare_well_known_jwks_json](https://registry.terraform.io/providers/hashicorp/http/latest/docs/data-sources/http) | data source |
 | [local_file.corefile](https://registry.terraform.io/providers/hashicorp/local/latest/docs/data-sources/file) | data source |
 
 ## Inputs
@@ -177,6 +216,7 @@
 | <a name="input_app_gateway_api_app_certificate_name"></a> [app\_gateway\_api\_app\_certificate\_name](#input\_app\_gateway\_api\_app\_certificate\_name) | Application gateway api certificate name on Key Vault | `string` | n/a | yes |
 | <a name="input_app_gateway_api_certificate_name"></a> [app\_gateway\_api\_certificate\_name](#input\_app\_gateway\_api\_certificate\_name) | Application gateway api certificate name on Key Vault | `string` | n/a | yes |
 | <a name="input_app_gateway_api_io_italia_it_certificate_name"></a> [app\_gateway\_api\_io\_italia\_it\_certificate\_name](#input\_app\_gateway\_api\_io\_italia\_it\_certificate\_name) | Application gateway api certificate name on Key Vault | `string` | n/a | yes |
+| <a name="input_app_gateway_api_io_selfcare_pagopa_it_certificate_name"></a> [app\_gateway\_api\_io\_selfcare\_pagopa\_it\_certificate\_name](#input\_app\_gateway\_api\_io\_selfcare\_pagopa\_it\_certificate\_name) | Application gateway api certificate name on Key Vault | `string` | n/a | yes |
 | <a name="input_app_gateway_api_mtls_certificate_name"></a> [app\_gateway\_api\_mtls\_certificate\_name](#input\_app\_gateway\_api\_mtls\_certificate\_name) | Application gateway api certificate name on Key Vault | `string` | n/a | yes |
 | <a name="input_app_gateway_app_backend_io_italia_it_certificate_name"></a> [app\_gateway\_app\_backend\_io\_italia\_it\_certificate\_name](#input\_app\_gateway\_app\_backend\_io\_italia\_it\_certificate\_name) | Application gateway api certificate name on Key Vault | `string` | n/a | yes |
 | <a name="input_app_gateway_developerportal_backend_io_italia_it_certificate_name"></a> [app\_gateway\_developerportal\_backend\_io\_italia\_it\_certificate\_name](#input\_app\_gateway\_developerportal\_backend\_io\_italia\_it\_certificate\_name) | Application gateway api certificate name on Key Vault | `string` | n/a | yes |
@@ -187,6 +227,7 @@
 | <a name="input_cidr_subnet_eventhub"></a> [cidr\_subnet\_eventhub](#input\_cidr\_subnet\_eventhub) | Eventhub network address space. | `list(string)` | n/a | yes |
 | <a name="input_cidr_subnet_fnelt"></a> [cidr\_subnet\_fnelt](#input\_cidr\_subnet\_fnelt) | function-elt network address space. | `list(string)` | n/a | yes |
 | <a name="input_cidr_subnet_fnpblevtdispatcher"></a> [cidr\_subnet\_fnpblevtdispatcher](#input\_cidr\_subnet\_fnpblevtdispatcher) | function-publiceventdispatcher network address space. | `list(string)` | n/a | yes |
+| <a name="input_cidr_subnet_selfcare_be"></a> [cidr\_subnet\_selfcare\_be](#input\_cidr\_subnet\_selfcare\_be) | Selfcare IO frontend storage address space. | `list(string)` | n/a | yes |
 | <a name="input_cidr_subnet_vpn"></a> [cidr\_subnet\_vpn](#input\_cidr\_subnet\_vpn) | VPN network address space. | `list(string)` | n/a | yes |
 | <a name="input_enable_azdoa"></a> [enable\_azdoa](#input\_enable\_azdoa) | Enable Azure DevOps agent. | `bool` | n/a | yes |
 | <a name="input_env_short"></a> [env\_short](#input\_env\_short) | n/a | `string` | n/a | yes |
@@ -199,6 +240,7 @@
 | <a name="input_common_rg"></a> [common\_rg](#input\_common\_rg) | Common Virtual network resource group name. | `string` | `""` | no |
 | <a name="input_dns_default_ttl_sec"></a> [dns\_default\_ttl\_sec](#input\_dns\_default\_ttl\_sec) | value | `number` | `3600` | no |
 | <a name="input_dns_zone_io"></a> [dns\_zone\_io](#input\_dns\_zone\_io) | The dns subdomain. | `string` | `null` | no |
+| <a name="input_dns_zone_io_selfcare"></a> [dns\_zone\_io\_selfcare](#input\_dns\_zone\_io\_selfcare) | The dns subdomain. | `string` | `null` | no |
 | <a name="input_ehns_alerts_enabled"></a> [ehns\_alerts\_enabled](#input\_ehns\_alerts\_enabled) | Event hub alerts enabled? | `bool` | `true` | no |
 | <a name="input_ehns_auto_inflate_enabled"></a> [ehns\_auto\_inflate\_enabled](#input\_ehns\_auto\_inflate\_enabled) | Is Auto Inflate enabled for the EventHub Namespace? | `bool` | `false` | no |
 | <a name="input_ehns_capacity"></a> [ehns\_capacity](#input\_ehns\_capacity) | Specifies the Capacity / Throughput Units for a Standard SKU namespace. | `number` | `null` | no |
@@ -218,6 +260,10 @@
 | <a name="input_redis_apim_capacity"></a> [redis\_apim\_capacity](#input\_redis\_apim\_capacity) | # Redis cache | `number` | `1` | no |
 | <a name="input_redis_apim_family"></a> [redis\_apim\_family](#input\_redis\_apim\_family) | n/a | `string` | `"C"` | no |
 | <a name="input_redis_apim_sku_name"></a> [redis\_apim\_sku\_name](#input\_redis\_apim\_sku\_name) | n/a | `string` | `"Standard"` | no |
+| <a name="input_selfcare_external_hostname"></a> [selfcare\_external\_hostname](#input\_selfcare\_external\_hostname) | Selfcare external hostname | `string` | `"selfcare.pagopa.it"` | no |
+| <a name="input_selfcare_plan_sku_capacity"></a> [selfcare\_plan\_sku\_capacity](#input\_selfcare\_plan\_sku\_capacity) | Selfcare app plan capacity | `number` | `1` | no |
+| <a name="input_selfcare_plan_sku_size"></a> [selfcare\_plan\_sku\_size](#input\_selfcare\_plan\_sku\_size) | Selfcare app plan sku size | `string` | `"P1v3"` | no |
+| <a name="input_selfcare_plan_sku_tier"></a> [selfcare\_plan\_sku\_tier](#input\_selfcare\_plan\_sku\_tier) | Selfcare app plan sku tier | `string` | `"PremiumV3"` | no |
 | <a name="input_tags"></a> [tags](#input\_tags) | n/a | `map(any)` | <pre>{<br>  "CreatedBy": "Terraform"<br>}</pre> | no |
 | <a name="input_vnet_name"></a> [vnet\_name](#input\_vnet\_name) | Common Virtual network resource name. | `string` | `""` | no |
 | <a name="input_vpn_pip_sku"></a> [vpn\_pip\_sku](#input\_vpn\_pip\_sku) | VPN GW PIP SKU | `string` | `"Basic"` | no |
