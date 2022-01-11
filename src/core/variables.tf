@@ -381,6 +381,24 @@ variable "app_backend_plan_sku_size" {
   default     = "P1v3"
 }
 
+variable "app_backend_autoscale_minimum" {
+  type        = number
+  description = "The minimum number of instances for this resource."
+  default     = 1
+}
+
+variable "app_backend_autoscale_maximum" {
+  type        = number
+  description = "The maximum number of instances for this resource."
+  default     = 20
+}
+
+variable "app_backend_autoscale_default" {
+  type        = number
+  description = "The number of instances that are available for scaling if metrics are not available for evaluation."
+  default     = 5
+}
+
 # selfcare
 variable "selfcare_external_hostname" {
   description = "Selfcare external hostname"

@@ -360,6 +360,67 @@ module "appservice_app_backendl1_slot_staging" {
   tags = var.tags
 }
 
+resource "azurerm_monitor_autoscale_setting" "appservice_app_backendl1" {
+  name                = format("%s-autoscale", module.appservice_app_backendl1.name)
+  resource_group_name = azurerm_resource_group.rg_linux.name
+  location            = azurerm_resource_group.rg_linux.location
+  target_resource_id  = module.appservice_app_backendl1.plan_id
+
+  profile {
+    name = "default"
+
+    capacity {
+      default = var.app_backend_autoscale_default
+      minimum = var.app_backend_autoscale_minimum
+      maximum = var.app_backend_autoscale_maximum
+    }
+
+    rule {
+      metric_trigger {
+        metric_name              = "Requests"
+        metric_resource_id       = module.appservice_app_backendl1.id
+        metric_namespace         = "microsoft.web/sites"
+        time_grain               = "PT1M"
+        statistic                = "Average"
+        time_window              = "PT5M"
+        time_aggregation         = "Average"
+        operator                 = "GreaterThan"
+        threshold                = 3500
+        divide_by_instance_count = false
+      }
+
+      scale_action {
+        direction = "Increase"
+        type      = "ChangeCount"
+        value     = "2"
+        cooldown  = "PT5M"
+      }
+    }
+
+    rule {
+      metric_trigger {
+        metric_name              = "Requests"
+        metric_resource_id       = module.appservice_app_backendl1.id
+        metric_namespace         = "microsoft.web/sites"
+        time_grain               = "PT1M"
+        statistic                = "Average"
+        time_window              = "PT5M"
+        time_aggregation         = "Average"
+        operator                 = "LessThan"
+        threshold                = 2500
+        divide_by_instance_count = false
+      }
+
+      scale_action {
+        direction = "Decrease"
+        type      = "ChangeCount"
+        value     = "1"
+        cooldown  = "PT20M"
+      }
+    }
+  }
+}
+
 ## app_backendl2
 
 module "app_backendl2_snet" {
@@ -465,6 +526,67 @@ module "appservice_app_backendl2_slot_staging" {
   tags = var.tags
 }
 
+resource "azurerm_monitor_autoscale_setting" "appservice_app_backendl2" {
+  name                = format("%s-autoscale", module.appservice_app_backendl2.name)
+  resource_group_name = azurerm_resource_group.rg_linux.name
+  location            = azurerm_resource_group.rg_linux.location
+  target_resource_id  = module.appservice_app_backendl2.plan_id
+
+  profile {
+    name = "default"
+
+    capacity {
+      default = var.app_backend_autoscale_default
+      minimum = var.app_backend_autoscale_minimum
+      maximum = var.app_backend_autoscale_maximum
+    }
+
+    rule {
+      metric_trigger {
+        metric_name              = "Requests"
+        metric_resource_id       = module.appservice_app_backendl2.id
+        metric_namespace         = "microsoft.web/sites"
+        time_grain               = "PT1M"
+        statistic                = "Average"
+        time_window              = "PT5M"
+        time_aggregation         = "Average"
+        operator                 = "GreaterThan"
+        threshold                = 3500
+        divide_by_instance_count = false
+      }
+
+      scale_action {
+        direction = "Increase"
+        type      = "ChangeCount"
+        value     = "2"
+        cooldown  = "PT5M"
+      }
+    }
+
+    rule {
+      metric_trigger {
+        metric_name              = "Requests"
+        metric_resource_id       = module.appservice_app_backendl2.id
+        metric_namespace         = "microsoft.web/sites"
+        time_grain               = "PT1M"
+        statistic                = "Average"
+        time_window              = "PT5M"
+        time_aggregation         = "Average"
+        operator                 = "LessThan"
+        threshold                = 2500
+        divide_by_instance_count = false
+      }
+
+      scale_action {
+        direction = "Decrease"
+        type      = "ChangeCount"
+        value     = "1"
+        cooldown  = "PT20M"
+      }
+    }
+  }
+}
+
 ## app_backendli
 
 module "app_backendli_snet" {
@@ -564,4 +686,65 @@ module "appservice_app_backendli_slot_staging" {
   subnet_id = module.app_backendli_snet.id
 
   tags = var.tags
+}
+
+resource "azurerm_monitor_autoscale_setting" "appservice_app_backendli" {
+  name                = format("%s-autoscale", module.appservice_app_backendli.name)
+  resource_group_name = azurerm_resource_group.rg_linux.name
+  location            = azurerm_resource_group.rg_linux.location
+  target_resource_id  = module.appservice_app_backendli.plan_id
+
+  profile {
+    name = "default"
+
+    capacity {
+      default = var.app_backend_autoscale_default
+      minimum = var.app_backend_autoscale_minimum
+      maximum = var.app_backend_autoscale_maximum
+    }
+
+    rule {
+      metric_trigger {
+        metric_name              = "Requests"
+        metric_resource_id       = module.appservice_app_backendli.id
+        metric_namespace         = "microsoft.web/sites"
+        time_grain               = "PT1M"
+        statistic                = "Average"
+        time_window              = "PT5M"
+        time_aggregation         = "Average"
+        operator                 = "GreaterThan"
+        threshold                = 3500
+        divide_by_instance_count = false
+      }
+
+      scale_action {
+        direction = "Increase"
+        type      = "ChangeCount"
+        value     = "2"
+        cooldown  = "PT5M"
+      }
+    }
+
+    rule {
+      metric_trigger {
+        metric_name              = "Requests"
+        metric_resource_id       = module.appservice_app_backendli.id
+        metric_namespace         = "microsoft.web/sites"
+        time_grain               = "PT1M"
+        statistic                = "Average"
+        time_window              = "PT5M"
+        time_aggregation         = "Average"
+        operator                 = "LessThan"
+        threshold                = 2500
+        divide_by_instance_count = false
+      }
+
+      scale_action {
+        direction = "Decrease"
+        type      = "ChangeCount"
+        value     = "1"
+        cooldown  = "PT20M"
+      }
+    }
+  }
 }
