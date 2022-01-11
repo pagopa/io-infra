@@ -2,7 +2,6 @@
 
 locals {
   app_backend = {
-
     app_settings_common = {
       # No downtime on slots swap
       WEBSITE_ADD_SITENAME_BINDINGS_IN_APPHOST_CONFIG = 1
@@ -138,17 +137,14 @@ locals {
       // CGN
       TEST_CGN_FISCAL_CODES = data.azurerm_key_vault_secret.app_backend_TEST_CGN_FISCAL_CODES.value
     }
-
     app_settings_l1 = {
       // FUNCTIONS
       API_URL = "http://${data.azurerm_function_app.fnapp_app1.default_hostname}/api/v1"
     }
-
     app_settings_l2 = {
       // FUNCTIONS
       API_URL = "http://${data.azurerm_function_app.fnapp_app2.default_hostname}/api/v1"
     }
-
     app_settings_li = {
       // FUNCTIONS
       API_URL = "http://${data.azurerm_function_app.fnapp_app1.default_hostname}/api/v1" # only used in internal app backend
@@ -260,6 +256,8 @@ data "azurerm_key_vault_secret" "app_backend_PECSERVER_TOKEN_SECRET" {
   key_vault_id = data.azurerm_key_vault.common.id
 }
 
+## app_backendl1
+
 module "app_backendl1_snet" {
   source               = "git::https://github.com/pagopa/azurerm.git//subnet?ref=v1.0.51"
   name                 = "appbackendl1"
@@ -294,6 +292,8 @@ module "appservice_app_backendl1" {
   # App service
   name                = format("%s-app-appbackendl1", local.project)
   resource_group_name = azurerm_resource_group.rg_linux.name
+  location            = azurerm_resource_group.rg_linux.location
+
   always_on           = true
   linux_fx_version    = "NODE|14-lts"
   app_command_line    = "node /home/site/wwwroot/src/server.js"
@@ -316,10 +316,52 @@ module "appservice_app_backendl1" {
     local.app_insights_ips_west_europe,
   )
 
-  # subnet_id = module.app_backendl1_snet.id
+  subnet_id = module.app_backendl1_snet.id
 
   tags = var.tags
 }
+
+module "appservice_app_backendl1_slot_staging" {
+  source = "git::https://github.com/pagopa/azurerm.git//app_service?ref=v2.0.26"
+
+  # App service plan
+  app_service_plan_id = module.appservice_app_backendl1.plan_id
+  app_service_id      = module.appservice_app_backendl1.id
+  app_service_name    = module.appservice_app_backendl1.name
+
+  # App service
+  name                = "staging"
+  resource_group_name = azurerm_resource_group.rg_linux.name
+  location            = azurerm_resource_group.rg_linux.location
+
+  always_on           = true
+  linux_fx_version    = "NODE|14-lts"
+  app_command_line    = "node /home/site/wwwroot/src/server.js"
+  health_check_path   = "/info"
+
+  app_settings = merge(
+    local.app_backend.app_settings_common,
+    local.app_backend.app_settings_l1,
+  )
+
+  allowed_subnets = [
+    data.azurerm_subnet.azdoa_snet[0].id,
+    data.azurerm_subnet.fnapp_admin_subnet_out.id,
+    data.azurerm_subnet.fnapp_services_subnet_out.id,
+    module.appgateway_snet.id,
+    module.apim_snet.id,
+  ]
+
+  allowed_ips = concat(
+    [],
+  )
+
+  subnet_id = module.app_backendl1_snet.id
+
+  tags = var.tags
+}
+
+## app_backendl2
 
 module "app_backendl2_snet" {
   source               = "git::https://github.com/pagopa/azurerm.git//subnet?ref=v1.0.51"
@@ -355,6 +397,8 @@ module "appservice_app_backendl2" {
   # App service
   name                = format("%s-app-appbackendl2", local.project)
   resource_group_name = azurerm_resource_group.rg_linux.name
+  location            = azurerm_resource_group.rg_linux.location
+
   always_on           = true
   linux_fx_version    = "NODE|14-lts"
   app_command_line    = "node /home/site/wwwroot/src/server.js"
@@ -377,10 +421,52 @@ module "appservice_app_backendl2" {
     local.app_insights_ips_west_europe,
   )
 
-  # subnet_id = module.app_backendl2_snet.id
+  subnet_id = module.app_backendl2_snet.id
 
   tags = var.tags
 }
+
+module "appservice_app_backendl2_slot_staging" {
+  source = "git::https://github.com/pagopa/azurerm.git//app_service?ref=v2.0.26"
+
+  # App service plan
+  app_service_plan_id = module.appservice_app_backendl2.plan_id
+  app_service_id      = module.appservice_app_backendl2.id
+  app_service_name    = module.appservice_app_backendl2.name
+
+  # App service
+  name                = "staging"
+  resource_group_name = azurerm_resource_group.rg_linux.name
+  location            = azurerm_resource_group.rg_linux.location
+
+  always_on           = true
+  linux_fx_version    = "NODE|14-lts"
+  app_command_line    = "node /home/site/wwwroot/src/server.js"
+  health_check_path   = "/info"
+
+  app_settings = merge(
+    local.app_backend.app_settings_common,
+    local.app_backend.app_settings_l2,
+  )
+
+  allowed_subnets = [
+    data.azurerm_subnet.azdoa_snet[0].id,
+    data.azurerm_subnet.fnapp_admin_subnet_out.id,
+    data.azurerm_subnet.fnapp_services_subnet_out.id,
+    module.appgateway_snet.id,
+    module.apim_snet.id,
+  ]
+
+  allowed_ips = concat(
+    [],
+  )
+
+  subnet_id = module.app_backendl2_snet.id
+
+  tags = var.tags
+}
+
+## app_backendli
 
 module "app_backendli_snet" {
   source               = "git::https://github.com/pagopa/azurerm.git//subnet?ref=v1.0.51"
@@ -416,6 +502,8 @@ module "appservice_app_backendli" {
   # App service
   name                = format("%s-app-appbackendli", local.project)
   resource_group_name = azurerm_resource_group.rg_linux.name
+  location            = azurerm_resource_group.rg_linux.location
+
   always_on           = true
   linux_fx_version    = "NODE|14-lts"
   app_command_line    = "node /home/site/wwwroot/src/server.js"
@@ -436,7 +524,45 @@ module "appservice_app_backendli" {
     local.app_insights_ips_west_europe,
   )
 
-  # subnet_id = module.app_backendli_snet.id
+  subnet_id = module.app_backendli_snet.id
+
+  tags = var.tags
+}
+
+module "appservice_app_backendli_slot_staging" {
+  source = "git::https://github.com/pagopa/azurerm.git//app_service?ref=v2.0.26"
+
+  # App service plan
+  app_service_plan_id = module.appservice_app_backendli.plan_id
+  app_service_id      = module.appservice_app_backendli.id
+  app_service_name    = module.appservice_app_backendli.name
+
+  # App service
+  name                = "staging"
+  resource_group_name = azurerm_resource_group.rg_linux.name
+  location            = azurerm_resource_group.rg_linux.location
+  
+  always_on           = true
+  linux_fx_version    = "NODE|14-lts"
+  app_command_line    = "node /home/site/wwwroot/src/server.js"
+  health_check_path   = "/info"
+
+  app_settings = merge(
+    local.app_backend.app_settings_common,
+    local.app_backend.app_settings_li,
+  )
+
+  allowed_subnets = [
+    data.azurerm_subnet.azdoa_snet[0].id,
+    data.azurerm_subnet.fnapp_admin_subnet_out.id,
+    data.azurerm_subnet.fnapp_services_subnet_out.id,
+  ]
+
+  allowed_ips = concat(
+    [],
+  )
+
+  subnet_id = module.app_backendli_snet.id
 
   tags = var.tags
 }
