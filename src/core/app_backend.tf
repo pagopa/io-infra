@@ -295,10 +295,10 @@ module "appservice_app_backendl1" {
   resource_group_name = azurerm_resource_group.rg_linux.name
   location            = azurerm_resource_group.rg_linux.location
 
-  always_on           = true
-  linux_fx_version    = "NODE|14-lts"
-  app_command_line    = "node /home/site/wwwroot/src/server.js"
-  health_check_path   = "/info"
+  always_on         = true
+  linux_fx_version  = "NODE|14-lts"
+  app_command_line  = "node /home/site/wwwroot/src/server.js"
+  health_check_path = "/info"
 
   app_settings = merge(
     local.app_backend.app_settings_common,
@@ -335,10 +335,10 @@ module "appservice_app_backendl1_slot_staging" {
   resource_group_name = azurerm_resource_group.rg_linux.name
   location            = azurerm_resource_group.rg_linux.location
 
-  always_on           = true
-  linux_fx_version    = "NODE|14-lts"
-  app_command_line    = "node /home/site/wwwroot/src/server.js"
-  health_check_path   = "/info"
+  always_on         = true
+  linux_fx_version  = "NODE|14-lts"
+  app_command_line  = "node /home/site/wwwroot/src/server.js"
+  health_check_path = "/info"
 
   app_settings = merge(
     local.app_backend.app_settings_common,
@@ -400,10 +400,10 @@ module "appservice_app_backendl2" {
   resource_group_name = azurerm_resource_group.rg_linux.name
   location            = azurerm_resource_group.rg_linux.location
 
-  always_on           = true
-  linux_fx_version    = "NODE|14-lts"
-  app_command_line    = "node /home/site/wwwroot/src/server.js"
-  health_check_path   = "/info"
+  always_on         = true
+  linux_fx_version  = "NODE|14-lts"
+  app_command_line  = "node /home/site/wwwroot/src/server.js"
+  health_check_path = "/info"
 
   app_settings = merge(
     local.app_backend.app_settings_common,
@@ -440,10 +440,10 @@ module "appservice_app_backendl2_slot_staging" {
   resource_group_name = azurerm_resource_group.rg_linux.name
   location            = azurerm_resource_group.rg_linux.location
 
-  always_on           = true
-  linux_fx_version    = "NODE|14-lts"
-  app_command_line    = "node /home/site/wwwroot/src/server.js"
-  health_check_path   = "/info"
+  always_on         = true
+  linux_fx_version  = "NODE|14-lts"
+  app_command_line  = "node /home/site/wwwroot/src/server.js"
+  health_check_path = "/info"
 
   app_settings = merge(
     local.app_backend.app_settings_common,
@@ -505,10 +505,10 @@ module "appservice_app_backendli" {
   resource_group_name = azurerm_resource_group.rg_linux.name
   location            = azurerm_resource_group.rg_linux.location
 
-  always_on           = true
-  linux_fx_version    = "NODE|14-lts"
-  app_command_line    = "node /home/site/wwwroot/src/server.js"
-  health_check_path   = "/info"
+  always_on         = true
+  linux_fx_version  = "NODE|14-lts"
+  app_command_line  = "node /home/site/wwwroot/src/server.js"
+  health_check_path = "/info"
 
   app_settings = merge(
     local.app_backend.app_settings_common,
@@ -542,11 +542,11 @@ module "appservice_app_backendli_slot_staging" {
   name                = "staging"
   resource_group_name = azurerm_resource_group.rg_linux.name
   location            = azurerm_resource_group.rg_linux.location
-  
-  always_on           = true
-  linux_fx_version    = "NODE|14-lts"
-  app_command_line    = "node /home/site/wwwroot/src/server.js"
-  health_check_path   = "/info"
+
+  always_on         = true
+  linux_fx_version  = "NODE|14-lts"
+  app_command_line  = "node /home/site/wwwroot/src/server.js"
+  health_check_path = "/info"
 
   app_settings = merge(
     local.app_backend.app_settings_common,
