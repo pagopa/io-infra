@@ -148,31 +148,31 @@ locals {
       // FUNCTIONS
       API_URL = "http://${data.azurerm_function_app.fnapp_app1.default_hostname}/api/v1" # only used in internal app backend
     }
-  }
 
-  test_urls = [
-    {
-      # https://io-p-app-appbackendl1.azurewebsites.net/info
-      name        = module.appservice_app_backendl1.default_site_hostname,
-      host        = module.appservice_app_backendl1.default_site_hostname,
-      path        = "/info",
-      http_status = 200,
-    },
-    {
-      # https://io-p-app-appbackendl2.azurewebsites.net/info
-      name        = module.appservice_app_backendl2.default_site_hostname,
-      host        = module.appservice_app_backendl2.default_site_hostname,
-      path        = "/info",
-      http_status = 200,
-    },
-    {
-      # https://io-p-app-appbackendli.azurewebsites.net/info
-      name        = module.appservice_app_backendli.default_site_hostname,
-      host        = module.appservice_app_backendli.default_site_hostname,
-      path        = "/info",
-      http_status = 200,
-    },
-  ]
+    test_urls = [
+      {
+        # https://io-p-app-appbackendl1.azurewebsites.net/info
+        name        = module.appservice_app_backendl1.default_site_hostname,
+        host        = module.appservice_app_backendl1.default_site_hostname,
+        path        = "/info",
+        http_status = 200,
+      },
+      {
+        # https://io-p-app-appbackendl2.azurewebsites.net/info
+        name        = module.appservice_app_backendl2.default_site_hostname,
+        host        = module.appservice_app_backendl2.default_site_hostname,
+        path        = "/info",
+        http_status = 200,
+      },
+      {
+        # https://io-p-app-appbackendli.azurewebsites.net/info
+        name        = module.appservice_app_backendli.default_site_hostname,
+        host        = module.appservice_app_backendli.default_site_hostname,
+        path        = "/info",
+        http_status = 200,
+      },
+    ]
+  }
 }
 
 resource "azurerm_resource_group" "rg_linux" {
