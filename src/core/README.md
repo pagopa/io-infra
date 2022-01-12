@@ -62,7 +62,6 @@
 | <a name="module_selfcare_be_common_snet"></a> [selfcare\_be\_common\_snet](#module\_selfcare\_be\_common\_snet) | git::https://github.com/pagopa/azurerm.git//subnet | v1.0.51 |
 | <a name="module_selfcare_cdn"></a> [selfcare\_cdn](#module\_selfcare\_cdn) | git::https://github.com/pagopa/azurerm.git//cdn | v2.0.18 |
 | <a name="module_selfcare_jwt"></a> [selfcare\_jwt](#module\_selfcare\_jwt) | git::https://github.com/pagopa/azurerm.git//jwt_keys | v2.0.21 |
-| <a name="module_storage_account_api_replica"></a> [storage\_account\_api\_replica](#module\_storage\_account\_api\_replica) | git::https://github.com/pagopa/azurerm.git//storage_account | v1.0.60 |
 | <a name="module_storage_account_elt"></a> [storage\_account\_elt](#module\_storage\_account\_elt) | git::https://github.com/pagopa/azurerm.git//storage_account | v1.0.60 |
 | <a name="module_storage_account_pblevtdispatcher"></a> [storage\_account\_pblevtdispatcher](#module\_storage\_account\_pblevtdispatcher) | git::https://github.com/pagopa/azurerm.git//storage_account | v1.0.60 |
 | <a name="module_vpn"></a> [vpn](#module\_vpn) | git::https://github.com/pagopa/azurerm.git//vpn_gateway | v1.0.36 |
@@ -148,7 +147,6 @@
 | [azurerm_storage_account.dns_forwarder](https://registry.terraform.io/providers/hashicorp/azurerm/2.87.0/docs/resources/storage_account) | resource |
 | [azurerm_storage_container.container_messages_report_step1](https://registry.terraform.io/providers/hashicorp/azurerm/2.87.0/docs/resources/storage_container) | resource |
 | [azurerm_storage_container.container_messages_report_step_final](https://registry.terraform.io/providers/hashicorp/azurerm/2.87.0/docs/resources/storage_container) | resource |
-| [azurerm_storage_container.container_replica_message_content](https://registry.terraform.io/providers/hashicorp/azurerm/2.87.0/docs/resources/storage_container) | resource |
 | [azurerm_storage_queue.storage_account_apievents_events_queue](https://registry.terraform.io/providers/hashicorp/azurerm/2.87.0/docs/resources/storage_queue) | resource |
 | [azurerm_storage_queue.storage_account_pblevtdispatcher_http_call_jobs_queue](https://registry.terraform.io/providers/hashicorp/azurerm/2.87.0/docs/resources/storage_queue) | resource |
 | [azurerm_storage_share.dns_forwarder](https://registry.terraform.io/providers/hashicorp/azurerm/2.87.0/docs/resources/storage_share) | resource |
@@ -212,6 +210,7 @@
 | [azurerm_key_vault_secret.app_backend_TEST_CGN_FISCAL_CODES](https://registry.terraform.io/providers/hashicorp/azurerm/2.87.0/docs/data-sources/key_vault_secret) | data source |
 | [azurerm_key_vault_secret.app_backend_TEST_LOGIN_PASSWORD](https://registry.terraform.io/providers/hashicorp/azurerm/2.87.0/docs/data-sources/key_vault_secret) | data source |
 | [azurerm_key_vault_secret.app_gw_mtls_header_name](https://registry.terraform.io/providers/hashicorp/azurerm/2.87.0/docs/data-sources/key_vault_secret) | data source |
+| [azurerm_key_vault_secret.backup_storage_id](https://registry.terraform.io/providers/hashicorp/azurerm/2.87.0/docs/data-sources/key_vault_secret) | data source |
 | [azurerm_key_vault_secret.devportal_apim_io_service_key](https://registry.terraform.io/providers/hashicorp/azurerm/2.87.0/docs/data-sources/key_vault_secret) | data source |
 | [azurerm_key_vault_secret.devportal_client_id](https://registry.terraform.io/providers/hashicorp/azurerm/2.87.0/docs/data-sources/key_vault_secret) | data source |
 | [azurerm_key_vault_secret.devportal_client_secret](https://registry.terraform.io/providers/hashicorp/azurerm/2.87.0/docs/data-sources/key_vault_secret) | data source |
