@@ -149,6 +149,30 @@ locals {
       API_URL = "http://${data.azurerm_function_app.fnapp_app1.default_hostname}/api/v1" # only used in internal app backend
     }
   }
+
+  test_urls = [
+    {
+      # https://io-p-app-appbackendl1.azurewebsites.net/info
+      name        = module.appservice_app_backendl1.default_site_hostname,
+      host        = module.appservice_app_backendl1.default_site_hostname,
+      path        = "/info",
+      http_status = 200,
+    },
+    {
+      # https://io-p-app-appbackendl2.azurewebsites.net/info
+      name        = module.appservice_app_backendl2.default_site_hostname,
+      host        = module.appservice_app_backendl2.default_site_hostname,
+      path        = "/info",
+      http_status = 200,
+    },
+    {
+      # https://io-p-app-appbackendli.azurewebsites.net/info
+      name        = module.appservice_app_backendli.default_site_hostname,
+      host        = module.appservice_app_backendli.default_site_hostname,
+      path        = "/info",
+      http_status = 200,
+    },
+  ]
 }
 
 resource "azurerm_resource_group" "rg_linux" {
@@ -747,4 +771,30 @@ resource "azurerm_monitor_autoscale_setting" "appservice_app_backendli" {
       }
     }
   }
+}
+
+
+## web availabolity test
+module "app_backend_web_test_api" {
+  for_each = { for v in local.app_backend.test_urls : v.name => v if v != null }
+  source   = "git::https://github.com/pagopa/azurerm.git//application_insights_web_test_preview?ref=v2.0.17"
+
+  subscription_id                   = data.azurerm_subscription.current.subscription_id
+  name                              = format("%s-test", each.value.name)
+  location                          = data.azurerm_resource_group.monitor_rg.location
+  resource_group                    = data.azurerm_resource_group.monitor_rg.name
+  application_insight_name          = data.azurerm_application_insights.application_insights.name
+  request_url                       = format("https://%s%s", each.value.host, each.value.path)
+  expected_http_status              = each.value.http_status
+  ssl_cert_remaining_lifetime_check = 7
+
+  actions = [
+    {
+      action_group_id = azurerm_monitor_action_group.email.id,
+    },
+    {
+      action_group_id = azurerm_monitor_action_group.slack.id,
+    },
+  ]
+
 }
