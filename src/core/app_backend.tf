@@ -148,31 +148,31 @@ locals {
       // FUNCTIONS
       API_URL = "http://${data.azurerm_function_app.fnapp_app1.default_hostname}/api/v1" # only used in internal app backend
     }
-
-    test_urls = [
-      {
-        # https://io-p-app-appbackendl1.azurewebsites.net/info
-        name        = module.appservice_app_backendl1.default_site_hostname,
-        host        = module.appservice_app_backendl1.default_site_hostname,
-        path        = "/info",
-        http_status = 200,
-      },
-      {
-        # https://io-p-app-appbackendl2.azurewebsites.net/info
-        name        = module.appservice_app_backendl2.default_site_hostname,
-        host        = module.appservice_app_backendl2.default_site_hostname,
-        path        = "/info",
-        http_status = 200,
-      },
-      {
-        # https://io-p-app-appbackendli.azurewebsites.net/info
-        name        = module.appservice_app_backendli.default_site_hostname,
-        host        = module.appservice_app_backendli.default_site_hostname,
-        path        = "/info",
-        http_status = 200,
-      },
-    ]
   }
+
+  app_backend_test_urls = [
+    {
+      # https://io-p-app-appbackendl1.azurewebsites.net/info
+      name        = module.appservice_app_backendl1.default_site_hostname,
+      host        = module.appservice_app_backendl1.default_site_hostname,
+      path        = "/info",
+      http_status = 200,
+    },
+    {
+      # https://io-p-app-appbackendl2.azurewebsites.net/info
+      name        = module.appservice_app_backendl2.default_site_hostname,
+      host        = module.appservice_app_backendl2.default_site_hostname,
+      path        = "/info",
+      http_status = 200,
+    },
+    {
+      # https://io-p-app-appbackendli.azurewebsites.net/info
+      name        = module.appservice_app_backendli.default_site_hostname,
+      host        = module.appservice_app_backendli.default_site_hostname,
+      path        = "/info",
+      http_status = 200,
+    },
+  ]
 }
 
 resource "azurerm_resource_group" "rg_linux" {
@@ -776,7 +776,7 @@ resource "azurerm_monitor_autoscale_setting" "appservice_app_backendli" {
 
 ## web availabolity test
 module "app_backend_web_test_api" {
-  for_each = { for v in local.app_backend.test_urls : v.name => v if v != null }
+  for_each = { for v in local.app_backend_test_urls : v.name => v if v != null }
   source   = "git::https://github.com/pagopa/azurerm.git//application_insights_web_test_preview?ref=v2.0.17"
 
   subscription_id                   = data.azurerm_subscription.current.subscription_id
