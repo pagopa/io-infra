@@ -1,23 +1,3 @@
-module "function_subscriptionmigrations_snet" {
-  source               = "git::https://github.com/pagopa/azurerm.git//subnet?ref=v2.1.0"
-  name                 = format("%s-fn-sub-migrations-snet", local.project)
-  address_prefixes     = var.cidr_subnet_selfcare_be
-  resource_group_name  = data.azurerm_resource_group.vnet_common_rg.name
-  virtual_network_name = data.azurerm_virtual_network.vnet_common.name
-  service_endpoints = [
-    "Microsoft.Storage",
-    "Microsoft.Web",
-  ]
-
-  delegation = {
-    name = "default"
-    service_delegation = {
-      name    = "Microsoft.Web/serverFarms"
-      actions = ["Microsoft.Network/virtualNetworks/subnets/action"]
-    }
-  }
-}
-
 locals {
   app_settings_commons = {
     FUNCTIONS_WORKER_RUNTIME       = "node"
@@ -33,6 +13,15 @@ locals {
     FETCH_KEEPALIVE_FREE_SOCKET_TIMEOUT = "30000"
     FETCH_KEEPALIVE_TIMEOUT             = "60000"
   }
+
+  // As we run this application under SelfCare IO logic subdomain, 
+  //  we share some resources
+  app_context = {
+    resource_group   = azurerm_resource_group.selfcare_be_rg
+    app_service_plan = local.app_context.app_service_plan
+    snet             = selfcare_be_common_snet
+  }
+
 }
 
 module "function_subscriptionmigrations" {
@@ -41,15 +30,15 @@ module "function_subscriptionmigrations" {
   application_insights_instrumentation_key = data.azurerm_application_insights.application_insights.instrumentation_key
   location                                 = var.location
   name                                     = format("%s-subscription-migrations-fn", local.project)
-  resource_group_name                      = azurerm_resource_group.selfcare_be_rg.name
-  subnet_id                                = module.function_subscriptionmigrations_snet.id
+  resource_group_name                      = local.app_context.resource_group.name
+  subnet_id                                = local.app_context.snet.id
   tags                                     = var.tags
   allowed_ips                              = local.app_insights_ips_west_europe
   allowed_subnets = [
     data.azurerm_subnet.azdoa_snet[0].id,
   ]
 
-  app_service_plan_id = azurerm_app_service_plan.selfcare_be_common.id
+  app_service_plan_id = local.app_context.app_service_plan.id
   health_check_path   = "api/v1/info"
   internal_storage = object({
     "blobs_retention_days" : 1,
@@ -67,14 +56,14 @@ module "function_subscriptionmigrations" {
 module "function_subscriptionmigrations_staging_slot" {
   source = "git::https://github.com/pagopa/azurerm.git//function_app_slot?ref=v2.1.0"
 
-  app_service_plan_sku                       = azurerm_app_service_plan.selfcare_be_common.sku
+  app_service_plan_sku                       = local.app_context.app_service_plan.sku
   application_insights_instrumentation_key   = data.azurerm_application_insights.application_insights.instrumentation_key
   durable_function_storage_connection_string = function_subscriptionmigrations.storage_account_internal_function.value.primary_connection_string
   function_app_name                          = function_subscriptionmigrations.storage_account_internal_function.value.primary_connection_string
   location                                   = var.location
   name                                       = "staging"
-  resource_group_name                        = azurerm_resource_group.selfcare_be_rg.name
-  subnet_id                                  = module.function_subscriptionmigrations_snet.id
+  resource_group_name                        = local.app_context.resource_group.name
+  subnet_id                                  = local.app_context.snet.id
   tags                                       = var.tags
 
   allowed_ips = local.app_insights_ips_west_europe
@@ -82,7 +71,7 @@ module "function_subscriptionmigrations_staging_slot" {
     data.azurerm_subnet.azdoa_snet[0].id,
   ]
 
-  app_service_plan_name = azurerm_app_service_plan.selfcare_be_common.name
+  app_service_plan_name = local.app_context.app_service_plan.name
   health_check_path     = "api/v1/info"
 
   runtime_version = "~3"
