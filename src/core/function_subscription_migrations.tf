@@ -65,7 +65,7 @@ module "function_subscriptionmigrations" {
 }
 
 module "function_subscriptionmigrations_staging_slot" {
-  source = "git::https://github.com/pagopa/azurerm.git//function_app?ref=v2.1.0"
+  source = "git::https://github.com/pagopa/azurerm.git//function_app_slot?ref=v2.1.0"
 
   app_service_plan_sku                       = azurerm_app_service_plan.selfcare_be_common.sku
   application_insights_instrumentation_key   = data.azurerm_application_insights.application_insights.instrumentation_key
