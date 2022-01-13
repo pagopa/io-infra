@@ -58,8 +58,8 @@ module "function_subscriptionmigrations_staging_slot" {
 
   app_service_plan_sku                       = local.app_context.app_service_plan.sku
   application_insights_instrumentation_key   = data.azurerm_application_insights.application_insights.instrumentation_key
-  durable_function_storage_connection_string = function_subscriptionmigrations.storage_account_internal_function.value.primary_connection_string
-  function_app_name                          = function_subscriptionmigrations.storage_account_internal_function.value.name
+  durable_function_storage_connection_string = module.function_subscriptionmigrations.storage_account_internal_function.value.primary_connection_string
+  function_app_name                          = module.function_subscriptionmigrations.storage_account_internal_function.value.name
   location                                   = var.location
   name                                       = "staging"
   resource_group_name                        = local.app_context.resource_group.name
