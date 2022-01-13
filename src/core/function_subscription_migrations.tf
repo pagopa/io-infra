@@ -1,6 +1,6 @@
 module "function_subscriptionmigrations_snet" {
   source               = "git::https://github.com/pagopa/azurerm.git//subnet?ref=v2.1.0"
-  name                 = "fnsubscriptionmigrations"
+  name                 = format("%s-fn-sub-migrations-snet", local.project)
   address_prefixes     = var.cidr_subnet_selfcare_be
   resource_group_name  = data.azurerm_resource_group.vnet_common_rg.name
   virtual_network_name = data.azurerm_virtual_network.vnet_common.name
