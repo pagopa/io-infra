@@ -78,4 +78,6 @@ module "function_subscriptionmigrations_staging_slot" {
 
   app_settings = merge(local.app_settings_commons, {})
 
+  storage_account_name = module.function_subscriptionmigrations.storage_account_name
+
 }
