@@ -55,3 +55,49 @@ module "redis_cgn" {
 
   tags = var.tags
 }
+
+##################
+## CosmosDB cgn ##
+##################
+
+module "cosmos_cgn" {
+  source   = "git::https://github.com/pagopa/azurerm.git//cosmosdb?ref=v2.1.0"
+  name     = format("%s-cosmos-cgn", local.project)
+  location = var.location
+
+  resource_group_name = dependency.resource_group.outputs.resource_name
+  offer_type          = "Standard"
+  kind                = "GlobalDocumentDB"
+
+  main_geo_location_zone_redundant = false
+
+  consistency_policy = {
+    consistency_level       = "Strong"
+    max_interval_in_seconds = null
+    max_staleness_prefix    = null
+  }
+
+  main_geo_location_location = "westeurope"
+
+  additional_geo_locations = [
+    {
+      location          = "northeurope"
+      failover_priority = 1
+    }
+  ]
+
+  is_virtual_network_filter_enabled = true
+
+  ip_range = ""
+
+  allowed_virtual_network_subnet_ids = [
+    dependency.subnet_fn3cgn.outputs.id,
+  ]
+
+  subnet_id            = null
+  private_dns_zone_ids = []
+
+  tags = var.tags
+
+}
+
