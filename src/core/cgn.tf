@@ -56,20 +56,30 @@ module "redis_cgn" {
   tags = var.tags
 }
 
+data "azurerm_subnet" "fn3cgn" {
+  name                 = "fn3cgn"
+  virtual_network_name = data.azurerm_virtual_network.vnet_common.name
+  resource_group_name  = data.azurerm_resource_group.vnet_common_rg.name
+}
+
 ##################
 ## CosmosDB cgn ##
 ##################
 
 module "cosmos_cgn" {
-  source   = "git::https://github.com/pagopa/azurerm.git//cosmosdb?ref=v2.1.0"
+  source   = "git::https://github.com/pagopa/azurerm.git//cosmosdb_account?ref=v2.1.1"
   name     = format("%s-cosmos-cgn", local.project)
   location = var.location
 
-  resource_group_name = dependency.resource_group.outputs.resource_name
+  resource_group_name = data.azurerm_resource_group.cgn.name
   offer_type          = "Standard"
   kind                = "GlobalDocumentDB"
 
   main_geo_location_zone_redundant = false
+
+  enable_free_tier          = false
+  enable_automatic_failover = true
+
 
   consistency_policy = {
     consistency_level       = "Strong"
@@ -83,15 +93,18 @@ module "cosmos_cgn" {
     {
       location          = "northeurope"
       failover_priority = 1
+      zone_redundant    = true
     }
   ]
+
+  backup_continuous_enabled = true
 
   is_virtual_network_filter_enabled = true
 
   ip_range = ""
 
   allowed_virtual_network_subnet_ids = [
-    dependency.subnet_fn3cgn.outputs.id,
+    data.azurerm_subnet.fn3cgn.id
   ]
 
   subnet_id            = null
