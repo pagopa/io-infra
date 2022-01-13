@@ -46,15 +46,16 @@ data "azurerm_key_vault_secret" "services_exclusion_list" {
 # KeyVault values - end
 
 module "function_elt" {
-  source = "git::https://github.com/pagopa/azurerm.git//function_app?ref=v1.0.65"
+  source = "git::https://github.com/pagopa/azurerm.git//function_app?ref=function-app-slot"
+
 
   resource_group_name                      = azurerm_resource_group.elt_rg.name
-  prefix                                   = var.prefix
-  env_short                                = var.env_short
-  name                                     = "elt"
+  name                                     = format("%s-fn-elt", local.project)
+  storage_account_name                     = "iopstfnelt"
+  app_service_plan_name                    = format("%s-plan-fnelt", local.project)
   location                                 = var.location
   health_check_path                        = "api/v1/info"
-  subnet_out_id                            = module.function_elt_snetout.id
+  subnet_id                                = module.function_elt_snetout.id
   runtime_version                          = "~3"
   application_insights_instrumentation_key = data.azurerm_application_insights.application_insights.instrumentation_key
 
