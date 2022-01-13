@@ -40,12 +40,12 @@ module "function_subscriptionmigrations" {
 
   app_service_plan_id = local.app_context.app_service_plan.id
   health_check_path   = "api/v1/info"
-  internal_storage = object({
+  internal_storage = {
     "blobs_retention_days" : 1,
     "containers" : [],
     "enable" : true,
     "queues" : []
-  })
+  }
 
   runtime_version = "~3"
 
