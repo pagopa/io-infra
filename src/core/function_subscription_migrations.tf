@@ -71,8 +71,8 @@ module "function_subscriptionmigrations_staging_slot" {
     data.azurerm_subnet.azdoa_snet[0].id,
   ]
 
-  app_service_plan_name = local.app_context.app_service_plan.name
-  health_check_path     = "api/v1/info"
+  app_service_plan_id = local.app_context.app_service_plan.id
+  health_check_path   = "api/v1/info"
 
   runtime_version = "~3"
 
