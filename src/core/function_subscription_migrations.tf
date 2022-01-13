@@ -49,8 +49,8 @@ module "function_subscriptionmigrations" {
     data.azurerm_subnet.azdoa_snet[0].id,
   ]
 
-  app_service_plan_name = azurerm_app_service_plan.selfcare_be_common.name
-  health_check_path     = "api/v1/info"
+  app_service_plan_id = azurerm_app_service_plan.selfcare_be_common.id
+  health_check_path   = "api/v1/info"
   internal_storage = object({
     "blobs_retention_days" : 1,
     "containers" : [],
