@@ -40,7 +40,7 @@ module "function_subscriptionmigrations" {
 
   application_insights_instrumentation_key = data.azurerm_application_insights.application_insights.instrumentation_key
   location                                 = var.location
-  name                                     = "subscriptionmigrations"
+  name                                     = format("%s-subscription-migrations-fn", local.project)
   resource_group_name                      = azurerm_resource_group.selfcare_be_rg.name
   subnet_id                                = module.function_subscriptionmigrations_snet.id
   tags                                     = var.tags
