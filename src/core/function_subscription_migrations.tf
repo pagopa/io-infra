@@ -59,13 +59,14 @@ module "function_subscriptionmigrations" {
 
 }
 
+
 module "function_subscriptionmigrations_staging_slot" {
-  source = "git::https://github.com/pagopa/azurerm.git//function_app_slot?ref=v2.1.2"
+  source = "git::https://github.com/pagopa/azurerm.git//function_app_slot?ref=v2.1.3"
 
   app_service_plan_sku                       = local.function_subscriptionmigrations.app_context.app_service_plan.sku
   application_insights_instrumentation_key   = data.azurerm_application_insights.application_insights.instrumentation_key
-  durable_function_storage_connection_string = module.function_subscriptionmigrations.storage_account_internal_function.value.primary_connection_string
-  function_app_name                          = module.function_subscriptionmigrations.storage_account_internal_function.value.name
+  durable_function_storage_connection_string = module.function_subscriptionmigrations.storage_account_internal_function.primary_connection_string
+  function_app_name                          = module.function_subscriptionmigrations.storage_account_internal_function.name
   location                                   = var.location
   name                                       = "staging"
   resource_group_name                        = local.function_subscriptionmigrations.app_context.resource_group.name
@@ -84,6 +85,7 @@ module "function_subscriptionmigrations_staging_slot" {
 
   app_settings = merge(local.function_subscriptionmigrations.app_settings_commons, {})
 
-  storage_account_name = module.function_subscriptionmigrations.storage_account_name
+  storage_account_name       = module.function_subscriptionmigrations.storage_account_name
+  storage_account_access_key = module.function_subscriptionmigrations.storage_account.primary_access_key
 
 }
