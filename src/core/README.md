@@ -57,6 +57,8 @@
 | <a name="module_function_elt_snetout"></a> [function\_elt\_snetout](#module\_function\_elt\_snetout) | git::https://github.com/pagopa/azurerm.git//subnet?ref=v1.0.60 |  |
 | <a name="module_function_pblevtdispatcher"></a> [function\_pblevtdispatcher](#module\_function\_pblevtdispatcher) | git::https://github.com/pagopa/azurerm.git//function_app?ref=v1.0.65 |  |
 | <a name="module_function_pblevtdispatcher_snetout"></a> [function\_pblevtdispatcher\_snetout](#module\_function\_pblevtdispatcher\_snetout) | git::https://github.com/pagopa/azurerm.git//subnet?ref=v1.0.60 |  |
+| <a name="module_function_subscriptionmigrations"></a> [function\_subscriptionmigrations](#module\_function\_subscriptionmigrations) | git::https://github.com/pagopa/azurerm.git//function_app?ref=v2.1.4 |  |
+| <a name="module_function_subscriptionmigrations_staging_slot"></a> [function\_subscriptionmigrations\_staging\_slot](#module\_function\_subscriptionmigrations\_staging\_slot) | git::https://github.com/pagopa/azurerm.git//function_app_slot?ref=v2.1.3 |  |
 | <a name="module_io_apist_replica"></a> [io\_apist\_replica](#module\_io\_apist\_replica) | git::https://github.com/pagopa/azurerm.git//storage_object_replication?ref=v2.0.6 |  |
 | <a name="module_key_vault"></a> [key\_vault](#module\_key\_vault) | git::https://github.com/pagopa/azurerm.git//key_vault?ref=v2.0.2 |  |
 | <a name="module_redis_cgn"></a> [redis\_cgn](#module\_redis\_cgn) | git::https://github.com/pagopa/azurerm.git//redis_cache?ref=v2.0.26 |  |
@@ -196,7 +198,8 @@
 | [azurerm_key_vault_secret.app_backend_API_KEY](https://registry.terraform.io/providers/hashicorp/azurerm/2.87.0/docs/data-sources/key_vault_secret) | data source |
 | [azurerm_key_vault_secret.app_backend_BONUS_API_KEY](https://registry.terraform.io/providers/hashicorp/azurerm/2.87.0/docs/data-sources/key_vault_secret) | data source |
 | [azurerm_key_vault_secret.app_backend_CGN_API_KEY](https://registry.terraform.io/providers/hashicorp/azurerm/2.87.0/docs/data-sources/key_vault_secret) | data source |
-| [azurerm_key_vault_secret.app_backend_CGN_OPERATOR_SEARCH_API_KEY](https://registry.terraform.io/providers/hashicorp/azurerm/2.87.0/docs/data-sources/key_vault_secret) | data source |
+| [azurerm_key_vault_secret.app_backend_CGN_OPERATOR_SEARCH_API_KEY_PROD](https://registry.terraform.io/providers/hashicorp/azurerm/2.87.0/docs/data-sources/key_vault_secret) | data source |
+| [azurerm_key_vault_secret.app_backend_CGN_OPERATOR_SEARCH_API_KEY_UAT](https://registry.terraform.io/providers/hashicorp/azurerm/2.87.0/docs/data-sources/key_vault_secret) | data source |
 | [azurerm_key_vault_secret.app_backend_EUCOVIDCERT_API_KEY](https://registry.terraform.io/providers/hashicorp/azurerm/2.87.0/docs/data-sources/key_vault_secret) | data source |
 | [azurerm_key_vault_secret.app_backend_JWT_MIT_VOUCHER_TOKEN_AUDIENCE](https://registry.terraform.io/providers/hashicorp/azurerm/2.87.0/docs/data-sources/key_vault_secret) | data source |
 | [azurerm_key_vault_secret.app_backend_JWT_MIT_VOUCHER_TOKEN_PRIVATE_ES_KEY](https://registry.terraform.io/providers/hashicorp/azurerm/2.87.0/docs/data-sources/key_vault_secret) | data source |
@@ -232,6 +235,10 @@
 | [azurerm_key_vault_secret.services_exclusion_list](https://registry.terraform.io/providers/hashicorp/azurerm/2.87.0/docs/data-sources/key_vault_secret) | data source |
 | [azurerm_log_analytics_workspace.log_analytics_workspace](https://registry.terraform.io/providers/hashicorp/azurerm/2.87.0/docs/data-sources/log_analytics_workspace) | data source |
 | [azurerm_log_analytics_workspace.monitor_rg](https://registry.terraform.io/providers/hashicorp/azurerm/2.87.0/docs/data-sources/log_analytics_workspace) | data source |
+| [azurerm_private_dns_zone.privatelink_blob_core_windows_net](https://registry.terraform.io/providers/hashicorp/azurerm/2.87.0/docs/data-sources/private_dns_zone) | data source |
+| [azurerm_private_dns_zone.privatelink_file_core_windows_net](https://registry.terraform.io/providers/hashicorp/azurerm/2.87.0/docs/data-sources/private_dns_zone) | data source |
+| [azurerm_private_dns_zone.privatelink_queue_core_windows_net](https://registry.terraform.io/providers/hashicorp/azurerm/2.87.0/docs/data-sources/private_dns_zone) | data source |
+| [azurerm_private_dns_zone.privatelink_table_core_windows_net](https://registry.terraform.io/providers/hashicorp/azurerm/2.87.0/docs/data-sources/private_dns_zone) | data source |
 | [azurerm_redis_cache.redis_common](https://registry.terraform.io/providers/hashicorp/azurerm/2.87.0/docs/data-sources/redis_cache) | data source |
 | [azurerm_resource_group.cgn](https://registry.terraform.io/providers/hashicorp/azurerm/2.87.0/docs/data-sources/resource_group) | data source |
 | [azurerm_resource_group.monitor_rg](https://registry.terraform.io/providers/hashicorp/azurerm/2.87.0/docs/data-sources/resource_group) | data source |
@@ -246,6 +253,7 @@
 | [azurerm_subnet.fn3cgn](https://registry.terraform.io/providers/hashicorp/azurerm/2.87.0/docs/data-sources/subnet) | data source |
 | [azurerm_subnet.fnapp_admin_subnet_out](https://registry.terraform.io/providers/hashicorp/azurerm/2.87.0/docs/data-sources/subnet) | data source |
 | [azurerm_subnet.fnapp_services_subnet_out](https://registry.terraform.io/providers/hashicorp/azurerm/2.87.0/docs/data-sources/subnet) | data source |
+| [azurerm_subnet.private_endpoints_subnet](https://registry.terraform.io/providers/hashicorp/azurerm/2.87.0/docs/data-sources/subnet) | data source |
 | [azurerm_subscription.current](https://registry.terraform.io/providers/hashicorp/azurerm/2.87.0/docs/data-sources/subscription) | data source |
 | [azurerm_virtual_network.vnet_common](https://registry.terraform.io/providers/hashicorp/azurerm/2.87.0/docs/data-sources/virtual_network) | data source |
 | [http_http.selfcare_well_known_jwks_json](https://registry.terraform.io/providers/hashicorp/http/latest/docs/data-sources/http) | data source |

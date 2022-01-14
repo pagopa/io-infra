@@ -27,7 +27,7 @@ locals {
 }
 
 module "function_subscriptionmigrations" {
-  source = "git::https://github.com/pagopa/azurerm.git//function_app?ref=v2.1.2"
+  source = "git::https://github.com/pagopa/azurerm.git//function_app?ref=v2.1.4"
 
   application_insights_instrumentation_key = data.azurerm_application_insights.application_insights.instrumentation_key
   location                                 = var.location
@@ -63,7 +63,7 @@ module "function_subscriptionmigrations" {
 module "function_subscriptionmigrations_staging_slot" {
   source = "git::https://github.com/pagopa/azurerm.git//function_app_slot?ref=v2.1.3"
 
-  app_service_plan_sku                       = local.function_subscriptionmigrations.app_context.app_service_plan.sku
+  app_service_plan_sku                       = "aaa"
   application_insights_instrumentation_key   = data.azurerm_application_insights.application_insights.instrumentation_key
   durable_function_storage_connection_string = module.function_subscriptionmigrations.storage_account_internal_function.primary_connection_string
   function_app_name                          = module.function_subscriptionmigrations.storage_account_internal_function.name
