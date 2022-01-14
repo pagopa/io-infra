@@ -29,7 +29,7 @@ module "function_subscriptionmigrations" {
 
   application_insights_instrumentation_key = data.azurerm_application_insights.application_insights.instrumentation_key
   location                                 = var.location
-  name                                     = format("%s-subscription-migrations-fn", local.project)
+  name                                     = format("%s-subsmigrations-fn", local.project)
   resource_group_name                      = local.app_context.resource_group.name
   subnet_id                                = local.app_context.snet.id
   tags                                     = var.tags
@@ -43,9 +43,9 @@ module "function_subscriptionmigrations" {
   internal_storage = {
     "enable"                     = true,
     "private_endpoint_subnet_id" = data.azurerm_subnet.private_endpoints_subnet.id,
-    "private_dns_zone_blob_ids"  = [data. azurerm_private_dns_zone.privatelink_blob_core_windows_net.id],
-    "private_dns_zone_queue_ids" = [data. azurerm_private_dns_zone.privatelink_queue_core_windows_net.id],
-    "private_dns_zone_table_ids" = [data. azurerm_private_dns_zone.privatelink_table_core_windows_net.id],
+    "private_dns_zone_blob_ids"  = [data.azurerm_private_dns_zone.privatelink_blob_core_windows_net.id],
+    "private_dns_zone_queue_ids" = [data.azurerm_private_dns_zone.privatelink_queue_core_windows_net.id],
+    "private_dns_zone_table_ids" = [data.azurerm_private_dns_zone.privatelink_table_core_windows_net.id],
     "queues"                     = [],
     "containers"                 = [],
     "blobs_retention_days"       = 1,
