@@ -153,22 +153,22 @@ data "azurerm_subnet" "private_endpoints_subnet" {
 # Private dns zones
 #
 
-data "azurerm_dns_zone" "privatelink_blob_core_windows_net" {
-  name                = "privatelink.blob.core.windows.net"
+data "azurerm_private_dns_zone" "privatelink_blob_core_windows_net" {
+  name                = "privatelink.blob.core.windows_net"
   resource_group_name  = format("%s-rg-common", local.project)
 }
 
-data "azurerm_dns_zone" "privatelink_queue_core_windows.net" {
-  name                = "privatelink.queue.core.windows.net"
+data "azurerm_private_dns_zone" "privatelink_queue_core_windows_net" {
+  name                = "privatelink.queue.core.windows_net"
   resource_group_name  = format("%s-rg-common", local.project)
 }
 
-data "azurerm_dns_zone" "privatelink_file_core_windows.net" {
-  name                = "privatelink.file.core.windows.net"
+data "azurerm_private_dns_zone" "privatelink_file_core_windows_net" {
+  name                = "privatelink.file.core.windows_net"
   resource_group_name  = format("%s-rg-common", local.project)
 }
 
-data "azurerm_dns_zone" "privatelink_table_core_windows.net" {
-  name                = "privatelink.table.core.windows.net"
+data "azurerm_private_dns_zone" "privatelink_table_core_windows_net" {
+  name                = "privatelink.table.core.windows_net"
   resource_group_name  = format("%s-rg-common", local.project)
 }
