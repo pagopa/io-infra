@@ -22,6 +22,78 @@ locals {
       resource_group   = azurerm_resource_group.selfcare_be_rg
       app_service_plan = azurerm_app_service_plan.selfcare_be_common
       snet             = module.selfcare_be_common_snet
+      vnet             = data.azurerm_virtual_network.vnet_common
+    }
+
+    metric_alerts = {
+      db = {
+      cpu = {
+        aggregation = "Average"
+        metric_name = "cpu_percent"
+        operator    = "GreaterThan"
+        threshold   = 70
+        frequency   = "PT1M"
+        window_size = "PT5M"
+        dimension   = []
+      }
+      memory = {
+        aggregation = "Average"
+        metric_name = "memory_percent"
+        operator    = "GreaterThan"
+        threshold   = 75
+        frequency   = "PT1M"
+        window_size = "PT5M"
+        dimension   = []
+      }
+      io = {
+        aggregation = "Average"
+        metric_name = "io_consumption_percent"
+        operator    = "GreaterThan"
+        threshold   = 55
+        frequency   = "PT1M"
+        window_size = "PT5M"
+        dimension   = []
+      }
+      # https://docs.microsoft.com/it-it/azure/postgresql/concepts-limits
+      # GP_Gen5_2 -| 145 / 100 * 80 = 116
+      # GP_Gen5_32 -| 1495 / 100 * 80 = 1196
+      max_active_connections = {
+        aggregation = "Average"
+        metric_name = "active_connections"
+        operator    = "GreaterThan"
+        threshold   = 1196
+        frequency   = "PT5M"
+        window_size = "PT5M"
+        dimension   = []
+      }
+      min_active_connections = {
+        aggregation = "Average"
+        metric_name = "active_connections"
+        operator    = "LessThanOrEqual"
+        threshold   = 0
+        frequency   = "PT5M"
+        window_size = "PT15M"
+        dimension   = []
+      }
+      failed_connections = {
+        aggregation = "Total"
+        metric_name = "connections_failed"
+        operator    = "GreaterThan"
+        threshold   = 10
+        frequency   = "PT5M"
+        window_size = "PT15M"
+        dimension   = []
+      }
+      replica_lag = {
+        aggregation = "Average"
+        metric_name = "pg_replica_log_delay_in_seconds"
+        operator    = "GreaterThan"
+        threshold   = 60
+        frequency   = "PT1M"
+        window_size = "PT5M"
+        dimension   = []
+      }
+    }
     }
   }
 }
@@ -110,7 +182,11 @@ data "azurerm_key_vault_secret" "subscriptionmigrations_db_server_adm_password" 
   key_vault_id = data.azurerm_key_vault.common.id
 }
 
-resource "azurerm_postgresql_server" "subscriptionmigrations_db_server" {
+
+
+module "subscriptionmigrations_db_server" {
+  source = "git::https://github.com/pagopa/azurerm.git//postgresql_server?ref=v2.0.5"
+
   name                = format("%s-%s-db-postgresql", local.project, local.function_subscriptionmigrations.app_context.name)
   location            = var.location
   resource_group_name = local.function_subscriptionmigrations.app_context.resource_group.name
@@ -120,50 +196,30 @@ resource "azurerm_postgresql_server" "subscriptionmigrations_db_server" {
 
   sku_name   = "GP_Gen5_2"
   version    = 11
-  storage_mb = 5120 # 5GB
+  geo_redundant_backup_enabled = false
 
-  auto_grow_enabled = true
+  public_network_access_enabled = false
+  private_endpoint = {
+    enabled              = true
+    virtual_network_id   = local.function_subscriptionmigrations.app_context.vnet.id
+    subnet_id            = data.azurerm_subnet.private_endpoints_subnet.id
+    private_dns_zone_ids = [azurerm_private_dns_zone.privatelink_postgres_database_azure_com.id]
+  }
 
-  public_network_access_enabled    = false
-  ssl_enforcement_enabled          = true
-  ssl_minimal_tls_version_enforced = "TLS1_2"
+  alerts_enabled                = true
+  monitor_metric_alert_criteria = local.function_subscriptionmigrations.metric_alerts.db
+  action = [
+    {
+      action_group_id    = azurerm_monitor_action_group.email.id
+      webhook_properties = null
+    },
+    {
+      action_group_id    = azurerm_monitor_action_group.slack.id
+      webhook_properties = null
+    }
+  ]
+
+  lock_enable = var.lock_enable
 
   tags = var.tags
-
-}
-
-
-resource "azurerm_postgresql_database" "subscriptionmigrations_database" {
-  name                = format("%s%s", local.project, local.function_subscriptionmigrations.app_context.name)
-  resource_group_name = local.function_subscriptionmigrations.app_context.resource_group.name
-  server_name         = azurerm_postgresql_server.subscriptionmigrations_db_server.name
-  charset             = "UTF8"
-  collation           = "Italian_Italy.1252"
-}
-
-resource "azurerm_private_endpoint" "subscriptionmigrations_postgresql_private_endpoint" {
-  name                = format("%s-%s-db-private-endpoint", local.project, local.function_subscriptionmigrations.app_context.name)
-  location            = var.location
-  resource_group_name = local.function_subscriptionmigrations.app_context.resource_group.name
-  subnet_id           = module.subnet_db.id
-
-  private_dns_zone_group {
-    name                 = format("%s-%s-db-private-dns-zone-group", local.project, local.function_subscriptionmigrations.app_context.name)
-    private_dns_zone_ids = [azurerm_private_dns_zone.private_dns_zone_postgres.id]
-  }
-
-  private_service_connection {
-    name                           = format("%s-%s-db-private-service-connection", local.project, local.function_subscriptionmigrations.app_context.name)
-    private_connection_resource_id = azurerm_postgresql_server.subscriptionmigrations_db_server.id
-    is_manual_connection           = false
-    subresource_names              = ["postgreSqlServer"]
-  }
-}
-
-resource "azurerm_private_dns_a_record" "private_dns_a_record_subscriptionmigrations_postgresql" {
-  name                = format("%s%spostgresql", local.project, local.function_subscriptionmigrations.app_context.name)
-  zone_name           = azurerm_private_dns_zone.private_dns_zone_postgres.name
-  resource_group_name = local.function_subscriptionmigrations.app_context.resource_group.name
-  ttl                 = 300
-  records             = azurerm_private_endpoint.subscriptionmigrations_postgresql_private_endpoint.private_service_connection.*.private_ip_address
 }
