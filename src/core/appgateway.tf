@@ -71,8 +71,8 @@ module "app_gw" {
       port         = 443
       ip_addresses = null # with null value use fqdns
       fqdns = [
-        data.azurerm_app_service.appbackendl1.default_site_hostname,
-        data.azurerm_app_service.appbackendl2.default_site_hostname,
+        module.appservice_app_backendl1.default_site_hostname,
+        module.appservice_app_backendl2.default_site_hostname,
       ]
       probe                       = "/info"
       probe_name                  = "probe-appbackend-app"

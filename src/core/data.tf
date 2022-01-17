@@ -16,25 +16,6 @@ data "azurerm_redis_cache" "redis_common" {
 }
 
 #
-# App Backend resources
-#
-
-data "azurerm_app_service" "appbackendl1" {
-  name                = format("%s-app-appbackendl1", local.project)
-  resource_group_name = format("%s-rg-linux", local.project)
-}
-
-data "azurerm_app_service" "appbackendl2" {
-  name                = format("%s-app-appbackendl2", local.project)
-  resource_group_name = format("%s-rg-linux", local.project)
-}
-
-data "azurerm_app_service" "appbackendli" {
-  name                = format("%s-app-appbackendli", local.project)
-  resource_group_name = format("%s-rg-linux", local.project)
-}
-
-#
 # Function apps resources
 #
 
@@ -156,4 +137,38 @@ data "azurerm_storage_account" "notifications" {
 # todo migrate storage account and related resources
 locals {
   storage_account_notifications_queue_push_notifications = "push-notifications"
+}
+
+#
+# Private subnet
+#
+
+data "azurerm_subnet" "private_endpoints_subnet" {
+  name                 = "pendpoints"
+  virtual_network_name = format("%s-vnet-common", local.project)
+  resource_group_name  = format("%s-rg-common", local.project)
+}
+
+#
+# Private dns zones
+#
+
+data "azurerm_private_dns_zone" "privatelink_blob_core_windows_net" {
+  name                = "privatelink.blob.core.windows.net"
+  resource_group_name = format("%s-rg-common", local.project)
+}
+
+data "azurerm_private_dns_zone" "privatelink_queue_core_windows_net" {
+  name                = "privatelink.queue.core.windows.net"
+  resource_group_name = format("%s-rg-common", local.project)
+}
+
+data "azurerm_private_dns_zone" "privatelink_file_core_windows_net" {
+  name                = "privatelink.file.core.windows.net"
+  resource_group_name = format("%s-rg-common", local.project)
+}
+
+data "azurerm_private_dns_zone" "privatelink_table_core_windows_net" {
+  name                = "privatelink.table.core.windows.net"
+  resource_group_name = format("%s-rg-common", local.project)
 }

@@ -145,6 +145,8 @@ module "selfcare_be_common_snet" {
   enforce_private_link_endpoint_network_policies = true
   service_endpoints = [
     "Microsoft.Web",
+    "Microsoft.Storage",
+    "Microsoft.AzureCosmosDB",
   ]
 
   delegation = {
