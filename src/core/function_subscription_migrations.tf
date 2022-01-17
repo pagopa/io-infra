@@ -83,6 +83,7 @@ module "function_subscriptionmigrations_staging_slot" {
   health_check_path   = "api/v1/info"
 
   runtime_version = "~3"
+  os_type         = "linux"
 
   app_settings = merge(local.function_subscriptionmigrations.app_settings_commons, {})
 
