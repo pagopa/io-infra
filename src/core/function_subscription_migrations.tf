@@ -143,8 +143,8 @@ resource "azurerm_postgresql_database" "subscriptionmigrations_database" {
 
 resource "azurerm_private_endpoint" "subscriptionmigrations_postgresql_private_endpoint" {
   name                = format("%s-%s-db-private-endpoint", local.project, local.function_subscriptionmigrations.app_context.name)
-  location            = azurerm_resource_group.rg_db.location
-  resource_group_name = azurerm_resource_group.rg_db.name
+  location            = var.location
+  resource_group_name = local.function_subscriptionmigrations.app_context.resource_group.name
   subnet_id           = module.subnet_db.id
 
   private_dns_zone_group {
@@ -163,7 +163,7 @@ resource "azurerm_private_endpoint" "subscriptionmigrations_postgresql_private_e
 resource "azurerm_private_dns_a_record" "private_dns_a_record_postgresql" {
   name                = format("%s%spostgresql", local.project, local.function_subscriptionmigrations.app_context.name)
   zone_name           = azurerm_private_dns_zone.private_dns_zone_postgres.name
-  resource_group_name = azurerm_resource_group.rg_vnet.name
+  resource_group_name = local.function_subscriptionmigrations.app_context.resource_group.name
   ttl                 = 300
   records             = azurerm_private_endpoint.postgresql_private_endpoint.private_service_connection.*.private_ip_address
 }
