@@ -69,6 +69,7 @@ module "function_subscriptionmigrations_staging_slot" {
   location            = local.function_subscriptionmigrations.app_context.resource_group.location
   resource_group_name = local.function_subscriptionmigrations.app_context.resource_group.name
   function_app_name   = module.function_subscriptionmigrations.name
+  function_app_id     = module.function_subscriptionmigrations.id
   app_service_plan_id = local.function_subscriptionmigrations.app_context.app_service_plan.id
 
   application_insights_instrumentation_key = data.azurerm_application_insights.application_insights.instrumentation_key
