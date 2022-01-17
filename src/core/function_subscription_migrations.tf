@@ -18,6 +18,7 @@ locals {
     // As we run this application under SelfCare IO logic subdomain, 
     //  we share some resources
     app_context = {
+      name             = "subsmigrations"
       resource_group   = azurerm_resource_group.selfcare_be_rg
       app_service_plan = azurerm_app_service_plan.selfcare_be_common
       snet             = module.selfcare_be_common_snet
@@ -31,7 +32,7 @@ module "function_subscriptionmigrations" {
 
   application_insights_instrumentation_key = data.azurerm_application_insights.application_insights.instrumentation_key
   location                                 = var.location
-  name                                     = format("%s-subsmigrations-fn", local.project)
+  name                                     = format("%s-%s-fn", local.project, local.function_subscriptionmigrations.app_context.name)
   resource_group_name                      = local.function_subscriptionmigrations.app_context.resource_group.name
   subnet_id                                = local.function_subscriptionmigrations.app_context.snet.id
   tags                                     = var.tags
@@ -88,4 +89,66 @@ module "function_subscriptionmigrations_staging_slot" {
   storage_account_name       = module.function_subscriptionmigrations.storage_account_name
   storage_account_access_key = module.function_subscriptionmigrations.storage_account.primary_access_key
 
+}
+
+#
+# DB
+#
+
+resource "azurerm_postgresql_server" "subscriptionmigrations_db_server" {
+  name                = format("%s-%s-db-postgresql", local.project, local.function_subscriptionmigrations.app_context.name)
+  location            = var.location
+  resource_group_name = local.function_subscriptionmigrations.app_context.resource_group.name
+
+  administrator_login          = data.azurerm_key_vault_secret.db_administrator_login.value
+  administrator_login_password = data.azurerm_key_vault_secret.db_administrator_login_password.value
+
+  sku_name   = "GP_Gen5_2"
+  version    = 13
+  storage_mb = 5120 # 5GB
+
+  auto_grow_enabled = true
+
+  public_network_access_enabled    = false
+  ssl_enforcement_enabled          = true
+  ssl_minimal_tls_version_enforced = "TLS1_2"
+
+  tags = var.tags
+
+}
+
+
+resource "azurerm_postgresql_database" "subscriptionmigrations_database" {
+  name                = format("%s%s", local.project, local.function_subscriptionmigrations.app_context.name)
+  resource_group_name = local.function_subscriptionmigrations.app_context.resource_group.name
+  server_name         = azurerm_postgresql_server.subscriptionmigrations_db_server.name
+  charset             = "UTF8"
+  collation           = "Italian_Italy.1252"
+}
+
+resource "azurerm_private_endpoint" "subscriptionmigrations_postgresql_private_endpoint" {
+  name                = format("%s-%s-db-private-endpoint", local.project, local.function_subscriptionmigrations.app_context.name)
+  location            = azurerm_resource_group.rg_db.location
+  resource_group_name = azurerm_resource_group.rg_db.name
+  subnet_id           = module.subnet_db.id
+
+  private_dns_zone_group {
+    name                 = format("%s-%s-db-private-dns-zone-group", local.project, local.function_subscriptionmigrations.app_context.name)
+    private_dns_zone_ids = [azurerm_private_dns_zone.private_dns_zone_postgres.id]
+  }
+
+  private_service_connection {
+    name                           = format("%s-%s-db-private-service-connection", local.project, local.function_subscriptionmigrations.app_context.name)
+    private_connection_resource_id = azurerm_postgresql_server.subscriptionmigrations_db_server.id
+    is_manual_connection           = false
+    subresource_names              = ["postgreSqlServer"]
+  }
+}
+
+resource "azurerm_private_dns_a_record" "private_dns_a_record_postgresql" {
+  name                = format("%s%spostgresql", local.project, local.function_subscriptionmigrations.app_context.name)
+  zone_name           = azurerm_private_dns_zone.private_dns_zone_postgres.name
+  resource_group_name = azurerm_resource_group.rg_vnet.name
+  ttl                 = 300
+  records             = azurerm_private_endpoint.postgresql_private_endpoint.private_service_connection.*.private_ip_address
 }
