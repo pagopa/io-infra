@@ -160,7 +160,7 @@ resource "azurerm_private_endpoint" "subscriptionmigrations_postgresql_private_e
   }
 }
 
-resource "azurerm_private_dns_a_record" "private_dns_a_record_postgresql" {
+resource "azurerm_private_dns_a_record" "private_dns_a_record_subscriptionmigrations_postgresql" {
   name                = format("%s%spostgresql", local.project, local.function_subscriptionmigrations.app_context.name)
   zone_name           = azurerm_private_dns_zone.private_dns_zone_postgres.name
   resource_group_name = local.function_subscriptionmigrations.app_context.resource_group.name

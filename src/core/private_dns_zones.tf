@@ -38,3 +38,8 @@ resource "azurerm_private_dns_zone_virtual_network_link" "redis_private_vnet_com
   private_dns_zone_name = azurerm_private_dns_zone.privatelink_redis_cache.name
   virtual_network_id    = data.azurerm_virtual_network.vnet_common.id
 }
+
+resource "azurerm_private_dns_zone" "private_dns_zone_postgres" {
+  name                = "privatelink.postgres.database.azure.com"
+  resource_group_name = azurerm_resource_group.rg_vnet.name
+}
