@@ -165,5 +165,5 @@ resource "azurerm_private_dns_a_record" "private_dns_a_record_postgresql" {
   zone_name           = azurerm_private_dns_zone.private_dns_zone_postgres.name
   resource_group_name = local.function_subscriptionmigrations.app_context.resource_group.name
   ttl                 = 300
-  records             = azurerm_private_endpoint.postgresql_private_endpoint.private_service_connection.*.private_ip_address
+  records             = azurerm_private_endpoint.subscriptionmigrations_postgresql_private_endpoint.private_service_connection.*.private_ip_address
 }
