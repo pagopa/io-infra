@@ -15,7 +15,7 @@ locals {
       FETCH_KEEPALIVE_TIMEOUT             = "60000"
     }
 
-    // As we run this application under SelfCare IO logic subdomain, 
+    // As we run this application under SelfCare IO logic subdomain,
     //  we share some resources
     app_context = {
       resource_group   = azurerm_resource_group.selfcare_be_rg
@@ -27,7 +27,7 @@ locals {
 }
 
 module "function_subscriptionmigrations" {
-  source = "git::https://github.com/pagopa/azurerm.git//function_app?ref=v2.1.10"
+  source = "git::https://github.com/pagopa/azurerm.git//function_app?ref=add-fn-os_type"
 
   application_insights_instrumentation_key = data.azurerm_application_insights.application_insights.instrumentation_key
   location                                 = var.location
@@ -54,6 +54,7 @@ module "function_subscriptionmigrations" {
   }
 
   runtime_version = "~3"
+  os_type         = "linux"
 
   app_settings = merge(local.function_subscriptionmigrations.app_settings_commons, {})
 
@@ -61,7 +62,7 @@ module "function_subscriptionmigrations" {
 
 
 module "function_subscriptionmigrations_staging_slot" {
-  source = "git::https://github.com/pagopa/azurerm.git//function_app_slot?ref=v2.1.10"
+  source = "git::https://github.com/pagopa/azurerm.git//function_app_slot?ref=add-fn-os_type"
 
   app_service_plan_sku                       = "aaa"
   application_insights_instrumentation_key   = data.azurerm_application_insights.application_insights.instrumentation_key
