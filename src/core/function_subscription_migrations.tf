@@ -82,7 +82,9 @@ module "function_subscriptionmigrations_staging_slot" {
   health_check_path = "api/v1/info"
 
   subnet_id   = local.function_subscriptionmigrations.app_context.snet.id
-  allowed_ips = local.app_insights_ips_west_europe
+  allowed_ips = concat(
+    [],
+  )
   allowed_subnets = [
     data.azurerm_subnet.azdoa_snet[0].id,
   ]
