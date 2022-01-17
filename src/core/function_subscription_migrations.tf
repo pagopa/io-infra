@@ -15,7 +15,7 @@ locals {
       FETCH_KEEPALIVE_TIMEOUT             = "60000"
     }
 
-    // As we run this application under SelfCare IO logic subdomain, 
+    // As we run this application under SelfCare IO logic subdomain,
     //  we share some resources
     app_context = {
       name             = "subsmigrations"
@@ -24,25 +24,18 @@ locals {
       snet             = module.selfcare_be_common_snet
     }
   }
-
 }
 
 module "function_subscriptionmigrations" {
-  source = "git::https://github.com/pagopa/azurerm.git//function_app?ref=v2.1.4"
+  source = "git::https://github.com/pagopa/azurerm.git//function_app?ref=v2.1.11"
+
+  name                = format("%s-%s-fn", local.project, local.function_subscriptionmigrations.app_context.name)
+  location            = local.function_subscriptionmigrations.app_context.resource_group.location
+  resource_group_name = local.function_subscriptionmigrations.app_context.resource_group.name
+  app_service_plan_id = local.function_subscriptionmigrations.app_context.app_service_plan.id
 
   application_insights_instrumentation_key = data.azurerm_application_insights.application_insights.instrumentation_key
-  location                                 = var.location
-  name                                     = format("%s-%s-fn", local.project, local.function_subscriptionmigrations.app_context.name)
-  resource_group_name                      = local.function_subscriptionmigrations.app_context.resource_group.name
-  subnet_id                                = local.function_subscriptionmigrations.app_context.snet.id
-  tags                                     = var.tags
-  allowed_ips                              = local.app_insights_ips_west_europe
-  allowed_subnets = [
-    data.azurerm_subnet.azdoa_snet[0].id,
-  ]
 
-  app_service_plan_id = local.function_subscriptionmigrations.app_context.app_service_plan.id
-  health_check_path   = "api/v1/info"
   internal_storage = {
     "enable"                     = true,
     "private_endpoint_subnet_id" = data.azurerm_subnet.private_endpoints_subnet.id,
@@ -54,41 +47,53 @@ module "function_subscriptionmigrations" {
     "blobs_retention_days"       = 1,
   }
 
-  runtime_version = "~3"
+  runtime_version   = "~3"
+  os_type           = "linux"
+  health_check_path = "api/v1/info"
 
-  app_settings = merge(local.function_subscriptionmigrations.app_settings_commons, {})
-
-}
-
-
-module "function_subscriptionmigrations_staging_slot" {
-  source = "git::https://github.com/pagopa/azurerm.git//function_app_slot?ref=v2.1.3"
-
-  app_service_plan_sku                       = "aaa"
-  application_insights_instrumentation_key   = data.azurerm_application_insights.application_insights.instrumentation_key
-  durable_function_storage_connection_string = module.function_subscriptionmigrations.storage_account_internal_function.primary_connection_string
-  function_app_name                          = module.function_subscriptionmigrations.storage_account_internal_function.name
-  location                                   = var.location
-  name                                       = "staging"
-  resource_group_name                        = local.function_subscriptionmigrations.app_context.resource_group.name
-  subnet_id                                  = local.function_subscriptionmigrations.app_context.snet.id
-  tags                                       = var.tags
-
+  subnet_id   = local.function_subscriptionmigrations.app_context.snet.id
   allowed_ips = local.app_insights_ips_west_europe
   allowed_subnets = [
     data.azurerm_subnet.azdoa_snet[0].id,
   ]
 
-  app_service_plan_id = local.function_subscriptionmigrations.app_context.app_service_plan.id
-  health_check_path   = "api/v1/info"
+  app_settings = merge(local.function_subscriptionmigrations.app_settings_commons, {})
 
-  runtime_version = "~3"
+  tags = var.tags
+}
+
+
+module "function_subscriptionmigrations_staging_slot" {
+  source = "git::https://github.com/pagopa/azurerm.git//function_app_slot?ref=v2.1.11"
+
+  name                = "staging"
+  location            = local.function_subscriptionmigrations.app_context.resource_group.location
+  resource_group_name = local.function_subscriptionmigrations.app_context.resource_group.name
+  function_app_name   = module.function_subscriptionmigrations.name
+  function_app_id     = module.function_subscriptionmigrations.id
+  app_service_plan_id = local.function_subscriptionmigrations.app_context.app_service_plan.id
+
+  application_insights_instrumentation_key = data.azurerm_application_insights.application_insights.instrumentation_key
+
+  storage_account_name               = module.function_subscriptionmigrations.storage_account_name
+  storage_account_access_key         = module.function_subscriptionmigrations.storage_account.primary_access_key
+  internal_storage_connection_string = module.function_subscriptionmigrations.storage_account_internal_function.primary_connection_string
+
+  runtime_version   = "~3"
+  os_type           = "linux"
+  health_check_path = "api/v1/info"
+
+  subnet_id   = local.function_subscriptionmigrations.app_context.snet.id
+  allowed_ips = concat(
+    [],
+  )
+  allowed_subnets = [
+    data.azurerm_subnet.azdoa_snet[0].id,
+  ]
 
   app_settings = merge(local.function_subscriptionmigrations.app_settings_commons, {})
 
-  storage_account_name       = module.function_subscriptionmigrations.storage_account_name
-  storage_account_access_key = module.function_subscriptionmigrations.storage_account.primary_access_key
-
+  tags = var.tags
 }
 
 #
