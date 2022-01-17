@@ -26,7 +26,7 @@ locals {
 }
 
 module "function_subscriptionmigrations" {
-  source = "git::https://github.com/pagopa/azurerm.git//function_app?ref=add-fn-os_type"
+  source = "git::https://github.com/pagopa/azurerm.git//function_app?ref=v2.1.11"
 
   name                = format("%s-subsmigrations-fn", local.project)
   location            = local.function_subscriptionmigrations.app_context.resource_group.location
@@ -63,7 +63,7 @@ module "function_subscriptionmigrations" {
 
 
 module "function_subscriptionmigrations_staging_slot" {
-  source = "git::https://github.com/pagopa/azurerm.git//function_app_slot?ref=add-fn-os_type"
+  source = "git::https://github.com/pagopa/azurerm.git//function_app_slot?ref=v2.1.11"
 
   name                = "staging"
   location            = local.function_subscriptionmigrations.app_context.resource_group.location
