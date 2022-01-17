@@ -95,13 +95,23 @@ module "function_subscriptionmigrations_staging_slot" {
 # DB
 #
 
+data "azurerm_key_vault_secret" "subscriptionmigrations_db_server_adm_username" {
+  name         = "selfcare-subsmigrations-DB-ADM-USERNAME"
+  key_vault_id = data.azurerm_key_vault.common.id
+}
+
+data "azurerm_key_vault_secret" "subscriptionmigrations_db_server_adm_password" {
+  name         = "selfcare-subsmigrations-DB-ADM-PASSWORD"
+  key_vault_id = data.azurerm_key_vault.common.id
+}
+
 resource "azurerm_postgresql_server" "subscriptionmigrations_db_server" {
   name                = format("%s-%s-db-postgresql", local.project, local.function_subscriptionmigrations.app_context.name)
   location            = var.location
   resource_group_name = local.function_subscriptionmigrations.app_context.resource_group.name
 
-  administrator_login          = data.azurerm_key_vault_secret.db_administrator_login.value
-  administrator_login_password = data.azurerm_key_vault_secret.db_administrator_login_password.value
+  administrator_login          = data.azurerm_key_vault_secret.subscriptionmigrations_db_server_adm_username.value
+  administrator_login_password = data.azurerm_key_vault_secret.subscriptionmigrations_db_server_adm_password.value
 
   sku_name   = "GP_Gen5_2"
   version    = 13
