@@ -114,3 +114,11 @@ module "cosmos_cgn" {
 
 }
 
+## Database
+module "cgn_cosmos_db" {
+  source              = "git::https://github.com/pagopa/azurerm.git//cosmosdb_sql_database?ref=v2.1.7"
+  name                = "db"
+  resource_group_name = data.azurerm_resource_group.cgn.name
+  account_name        = module.cosmos_cgn.name
+}
+
