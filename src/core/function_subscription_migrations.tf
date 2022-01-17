@@ -119,7 +119,7 @@ resource "azurerm_postgresql_server" "subscriptionmigrations_db_server" {
   administrator_login_password = data.azurerm_key_vault_secret.subscriptionmigrations_db_server_adm_password.value
 
   sku_name   = "GP_Gen5_2"
-  version    = 13
+  version    = 11
   storage_mb = 5120 # 5GB
 
   auto_grow_enabled = true
