@@ -57,22 +57,20 @@ module "function_subscriptionmigrations" {
   os_type         = "linux"
 
   app_settings = merge(local.function_subscriptionmigrations.app_settings_commons, {})
-
 }
 
 
 module "function_subscriptionmigrations_staging_slot" {
   source = "git::https://github.com/pagopa/azurerm.git//function_app_slot?ref=add-fn-os_type"
 
-  app_service_plan_sku                       = "aaa"
-  application_insights_instrumentation_key   = data.azurerm_application_insights.application_insights.instrumentation_key
-  durable_function_storage_connection_string = module.function_subscriptionmigrations.storage_account_internal_function.primary_connection_string
-  function_app_name                          = module.function_subscriptionmigrations.storage_account_internal_function.name
-  location                                   = var.location
-  name                                       = "staging"
-  resource_group_name                        = local.function_subscriptionmigrations.app_context.resource_group.name
-  subnet_id                                  = local.function_subscriptionmigrations.app_context.snet.id
-  tags                                       = var.tags
+  application_insights_instrumentation_key = data.azurerm_application_insights.application_insights.instrumentation_key
+  internal_storage_connection_string       = module.function_subscriptionmigrations.storage_account_internal_function.primary_connection_string
+  function_app_name                        = module.function_subscriptionmigrations.storage_account_internal_function.name
+  location                                 = var.location
+  name                                     = "staging"
+  resource_group_name                      = local.function_subscriptionmigrations.app_context.resource_group.name
+  subnet_id                                = local.function_subscriptionmigrations.app_context.snet.id
+  tags                                     = var.tags
 
   allowed_ips = local.app_insights_ips_west_europe
   allowed_subnets = [
@@ -89,5 +87,4 @@ module "function_subscriptionmigrations_staging_slot" {
 
   storage_account_name       = module.function_subscriptionmigrations.storage_account_name
   storage_account_access_key = module.function_subscriptionmigrations.storage_account.primary_access_key
-
 }
