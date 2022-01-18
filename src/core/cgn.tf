@@ -140,7 +140,7 @@ module "cgn_legalbackup_storage" {
   advanced_threat_protection = false
   allow_blob_public_access   = false
 
-  blob_properties_delete_retention_policy_days = var.legalbackup_delete_retention_days
+  blob_properties_delete_retention_policy_days = var.cgn_legalbackup_delete_retention_days
 
   tags = var.tags
 }
