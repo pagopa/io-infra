@@ -429,7 +429,7 @@ variable "selfcare_plan_sku_capacity" {
 variable "legalbackup_account_replication_type" {
   type        = string
   description = "Legal backup replication type"
-  default     = "LRS"
+  default     = "GRS"
 }
 
 variable "legalbackup_delete_retention_days" {
