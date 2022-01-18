@@ -128,7 +128,7 @@ module "cgn_cosmos_db" {
 module "cgn_legalbackup_storage" {
   source = "git::https://github.com/pagopa/azurerm.git//storage_account?ref=v1.0.79"
 
-  name                       = replace(format("%s_legalbackup_cgn_storage", local.project), "-", "")
+  name                       = replace(format("%s-legalbackup-cgn-storage", local.project), "-", "")
   account_kind               = "StorageV2"
   account_tier               = "Standard"
   access_tier                = "Hot"
