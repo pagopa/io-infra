@@ -155,7 +155,7 @@ module "function_subscriptionmigrations_staging_slot" {
   os_type           = "linux"
   health_check_path = "api/v1/info"
 
-  subnet_id   = local.function_subscriptionmigrations.app_context.snet.id
+  subnet_id = local.function_subscriptionmigrations.app_context.snet.id
   allowed_ips = concat(
     [],
   )
