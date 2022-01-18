@@ -155,7 +155,7 @@ resource "azurerm_key_vault_secret" "cgn_legalbackup_storage_access_key" {
 }
 
 resource "azurerm_key_vault_secret" "cgn_legalbackup_storage_connection_string" {
-  name         = "legalbackup-storage-connection-string"
+  name         = "cgn-legalbackup-storage-connection-string"
   value        = module.cgn-legalbackup-storage.primary_connection_string
   content_type = "text/plain"
 
