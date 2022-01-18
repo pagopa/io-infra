@@ -432,7 +432,7 @@ variable "legalbackup_account_replication_type" {
   default     = "GRS"
 }
 
-variable "legalbackup_enable_versioning" {
+variable "cgn_legalbackup_enable_versioning" {
   type        = bool
   description = "Enable legal backup versioning"
   default     = false
