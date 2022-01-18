@@ -137,7 +137,7 @@ module "cgn_legalbackup_storage" {
   enable_versioning          = var.cgn_legalbackup_enable_versioning
   resource_group_name        = data.azurerm_resource_group.cgn.name
   location                   = data.azurerm_resource_group.cgn.location
-  advanced_threat_protection = var.legalbackup_advanced_threat_protection
+  advanced_threat_protection = false
   allow_blob_public_access   = false
 
   blob_properties_delete_retention_policy_days = var.legalbackup_delete_retention_days
