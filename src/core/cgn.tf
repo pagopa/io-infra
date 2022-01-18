@@ -134,7 +134,7 @@ module "cgn_legalbackup_storage" {
   account_tier               = "Standard"
   access_tier                = "Hot"
   versioning_name            = "versioning"
-  enable_versioning          = var.legalbackup_enable_versioning
+  enable_versioning          = var.cgn_legalbackup_enable_versioning
   resource_group_name        = azurerm_resource_group.rg_legalbackup_storage.name // TODO: change rg name
   location                   = var.location
   advanced_threat_protection = var.legalbackup_advanced_threat_protection
