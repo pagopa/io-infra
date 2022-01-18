@@ -133,7 +133,8 @@ module "cgn_legalbackup_storage" {
   account_tier               = "Standard"
   access_tier                = "Hot"
   versioning_name            = "versioning"
-  enable_versioning          = var.cgn_legalbackup_enable_versioning
+  enable_versioning        = var.cgn_legalbackup_enable_versioning
+  account_replication_type = var.cgn_legalbackup_account_replication_type
   resource_group_name        = data.azurerm_resource_group.cgn.name
   location                   = data.azurerm_resource_group.cgn.location
   advanced_threat_protection = false
