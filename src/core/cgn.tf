@@ -174,3 +174,22 @@ resource "azurerm_storage_container" "cgn-legalbackup-container" {
   storage_account_name  = module.cgn-legalbackup-storage.name
   container_access_type = "private"
 }
+
+resource "azurerm_private_endpoint" "legalbackup_cgn_storage" {
+  name                = format("%s_legalbackup_cgn_storage", local.project)
+  location            = data.azurerm_resource_group.cgn.location
+  resource_group_name = data.azurerm_resource_group.cgn.name
+  subnet_id           = data.azurerm_subnet.private_endpoints_subnet.id
+
+  private_service_connection {
+    name                           = format("%s-legalbackup_cgn_storage-private-endpoint", local.project)
+    private_connection_resource_id = module.cgn_legalbackup_storage.id
+    is_manual_connection           = false
+    subresource_names              = ["Blob"]
+  }
+
+  private_dns_zone_group {
+    name                 = "private-dns-zone-group"
+    private_dns_zone_ids = [data.azurerm_private_dns_zone.privatelink_blob_core_windows_net.id]
+  }
+}
