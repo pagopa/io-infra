@@ -125,7 +125,6 @@ module "cgn_cosmos_db" {
 
 ## Blob storage due to legal backup
 #tfsec:ignore:azure-storage-default-action-deny
-// TODO: verify to use underscore or middlescore
 module "cgn_legalbackup_storage" {
   source = "git::https://github.com/pagopa/azurerm.git//storage_account?ref=v1.0.79"
 
