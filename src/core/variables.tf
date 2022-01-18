@@ -438,9 +438,4 @@ variable "cgn_legalbackup_enable_versioning" {
   default     = false
 }
 
-variable "legalbackup_advanced_threat_protection" {
-  type        = bool
-  description = "Enable legal backup threat advanced protection"
-  default     = false
-}
 
