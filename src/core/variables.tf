@@ -437,5 +437,3 @@ variable "cgn_legalbackup_enable_versioning" {
   description = "Enable legal backup versioning"
   default     = false
 }
-
-

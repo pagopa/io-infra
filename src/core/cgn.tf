@@ -133,8 +133,8 @@ module "cgn_legalbackup_storage" {
   account_tier               = "Standard"
   access_tier                = "Hot"
   versioning_name            = "versioning"
-  enable_versioning        = var.cgn_legalbackup_enable_versioning
-  account_replication_type = var.cgn_legalbackup_account_replication_type
+  enable_versioning          = var.cgn_legalbackup_enable_versioning
+  account_replication_type   = var.cgn_legalbackup_account_replication_type
   resource_group_name        = data.azurerm_resource_group.cgn.name
   location                   = data.azurerm_resource_group.cgn.location
   advanced_threat_protection = false
@@ -154,7 +154,7 @@ resource "azurerm_key_vault_secret" "cgn_legalbackup_storage_access_key" {
 
 resource "azurerm_key_vault_secret" "cgn_legalbackup_storage_connection_string" {
   name         = "cgn-legalbackup-storage-connection-string"
-  value        = module.cgn-legalbackup-storage.primary_connection_string
+  value        = module.cgn_legalbackup_storage.primary_connection_string
   content_type = "text/plain"
 
   key_vault_id = data.azurerm_key_vault.common.id
@@ -162,15 +162,15 @@ resource "azurerm_key_vault_secret" "cgn_legalbackup_storage_connection_string" 
 
 resource "azurerm_key_vault_secret" "cgn_legalbackup_storage_blob_connection_string" {
   name         = "cgn-legalbackup-storage-blob-connection-string"
-  value        = module.cgn-legalbackup-storage.primary_blob_connection_string
+  value        = module.cgn_legalbackup_storage.primary_blob_connection_string
   content_type = "text/plain"
 
   key_vault_id = data.azurerm_key_vault.common.id
 }
 
-resource "azurerm_storage_container" "cgn-legalbackup-container" {
+resource "azurerm_storage_container" "cgn_legalbackup_container" {
   name                  = "cgn-legalbackup-blob"
-  storage_account_name  = module.cgn-legalbackup-storage.name
+  storage_account_name  = module.cgn_legalbackup_storage.name
   container_access_type = "private"
 }
 
