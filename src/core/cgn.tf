@@ -176,13 +176,13 @@ resource "azurerm_storage_container" "cgn-legalbackup-container" {
 }
 
 resource "azurerm_private_endpoint" "legalbackup_cgn_storage" {
-  name                = format("%s_legalbackup_cgn_storage", local.project)
+  name                = format("%s-legalbackup-cgn-storage", local.project)
   location            = data.azurerm_resource_group.cgn.location
   resource_group_name = data.azurerm_resource_group.cgn.name
   subnet_id           = data.azurerm_subnet.private_endpoints_subnet.id
 
   private_service_connection {
-    name                           = format("%s-legalbackup_cgn_storage-private-endpoint", local.project)
+    name                           = format("%s-legalbackup-cgn-storage-private-endpoint", local.project)
     private_connection_resource_id = module.cgn_legalbackup_storage.id
     is_manual_connection           = false
     subresource_names              = ["Blob"]
