@@ -128,7 +128,7 @@ module "cgn_cosmos_db" {
 module "cgn_legalbackup_storage" {
   source = "git::https://github.com/pagopa/azurerm.git//storage_account?ref=v1.0.79"
 
-  name                       = replace(format("%s-legalbackup-cgn-storage", local.project), "-", "")
+  name                       = replace(format("%s-cgn-legalbackup-storage", local.project), "-", "")
   account_kind               = "StorageV2"
   account_tier               = "Standard"
   access_tier                = "Hot"
@@ -138,8 +138,6 @@ module "cgn_legalbackup_storage" {
   location                   = data.azurerm_resource_group.cgn.location
   advanced_threat_protection = false
   allow_blob_public_access   = false
-
-  blob_properties_delete_retention_policy_days = var.cgn_legalbackup_delete_retention_days
 
   tags = var.tags
 }
@@ -162,7 +160,7 @@ resource "azurerm_key_vault_secret" "cgn_legalbackup_storage_connection_string" 
 }
 
 resource "azurerm_key_vault_secret" "cgn_legalbackup_storage_blob_connection_string" {
-  name         = "legalbackup-storage-blob-connection-string"
+  name         = "cgn-legalbackup-storage-blob-connection-string"
   value        = module.cgn-legalbackup-storage.primary_blob_connection_string
   content_type = "text/plain"
 
@@ -170,19 +168,19 @@ resource "azurerm_key_vault_secret" "cgn_legalbackup_storage_blob_connection_str
 }
 
 resource "azurerm_storage_container" "cgn-legalbackup-container" {
-  name                  = "legalbackup-blob"
+  name                  = "cgn-legalbackup-blob"
   storage_account_name  = module.cgn-legalbackup-storage.name
   container_access_type = "private"
 }
 
-resource "azurerm_private_endpoint" "legalbackup_cgn_storage" {
-  name                = format("%s-legalbackup-cgn-storage", local.project)
+resource "azurerm_private_endpoint" "cgn_legalbackup_storage" {
+  name                = format("%s-cgn-legalbackup-storage", local.project)
   location            = data.azurerm_resource_group.cgn.location
   resource_group_name = data.azurerm_resource_group.cgn.name
   subnet_id           = data.azurerm_subnet.private_endpoints_subnet.id
 
   private_service_connection {
-    name                           = format("%s-legalbackup-cgn-storage-private-endpoint", local.project)
+    name                           = format("%s-cgn-legalbackup-storage-private-endpoint", local.project)
     private_connection_resource_id = module.cgn_legalbackup_storage.id
     is_manual_connection           = false
     subresource_names              = ["Blob"]

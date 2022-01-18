@@ -432,12 +432,6 @@ variable "legalbackup_account_replication_type" {
   default     = "GRS"
 }
 
-variable "legalbackup_delete_retention_days" {
-  type        = number
-  description = "Number of days to retain deleted legal backup file"
-  default     = 1
-}
-
 variable "legalbackup_enable_versioning" {
   type        = bool
   description = "Enable legal backup versioning"
