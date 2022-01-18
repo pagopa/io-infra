@@ -122,3 +122,57 @@ module "cgn_cosmos_db" {
   account_name        = module.cosmos_cgn.name
 }
 
+
+## Blob storage due to legal backup
+#tfsec:ignore:azure-storage-default-action-deny
+// TODO: verify to use underscore or middlescore
+module "cgn-legalbackup-storage" {
+  source = "git::https://github.com/pagopa/azurerm.git//storage_account?ref=v1.0.79"
+
+  name                       = replace(format("%s_legalbackup_storage", local.project), "-", "")
+  account_kind               = "StorageV2"
+  account_tier               = "Standard"
+  account_replication_type   = var.legalbackup_account_replication_type
+  access_tier                = "Hot"
+  versioning_name            = "versioning"
+  enable_versioning          = var.legalbackup_enable_versioning
+  resource_group_name        = azurerm_resource_group.rg_legalbackup_storage.name // TODO: change rg name
+  location                   = var.location
+  advanced_threat_protection = var.legalbackup_advanced_threat_protection
+  allow_blob_public_access   = false
+
+  blob_properties_delete_retention_policy_days = var.legalbackup_delete_retention_days
+
+  tags = var.tags
+}
+
+#tfsec:ignore:AZU023
+resource "azurerm_key_vault_secret" "cgn_legalbackup_storage_access_key" {
+  name         = "legalbackup-storage-access-key"
+  value        = module.cgn-legalbackup-storage.primary_access_key
+  content_type = "text/plain"
+
+  key_vault_id = module.key_vault.id
+}
+
+resource "azurerm_key_vault_secret" "cgn_legalbackup_storage_connection_string" {
+  name         = "legalbackup-storage-connection-string"
+  value        = module.cgn-legalbackup-storage.primary_connection_string
+  content_type = "text/plain"
+
+  key_vault_id = module.key_vault.id
+}
+
+resource "azurerm_key_vault_secret" "cgn_legalbackup_storage_blob_connection_string" {
+  name         = "legalbackup-storage-blob-connection-string"
+  value        = module.cgn-legalbackup-storage.primary_blob_connection_string
+  content_type = "text/plain"
+
+  key_vault_id = module.key_vault.id
+}
+
+resource "azurerm_storage_container" "cgn-legalbackup-container" {
+  name                  = format("%s-legalbackup-blob", local.project)
+  storage_account_name  = module.cgn-legalbackup-storage.name
+  container_access_type = "private"
+}

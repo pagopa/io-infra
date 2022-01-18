@@ -423,3 +423,30 @@ variable "selfcare_plan_sku_capacity" {
   type        = number
   default     = 1
 }
+
+
+# legal backup storage
+variable "legalbackup_account_replication_type" {
+  type        = string
+  description = "Legal backup replication type"
+  default     = "LRS"
+}
+
+variable "legalbackup_delete_retention_days" {
+  type        = number
+  description = "Number of days to retain deleted legal backup file"
+  default     = 1
+}
+
+variable "legalbackup_enable_versioning" {
+  type        = bool
+  description = "Enable legal backup versioning"
+  default     = false
+}
+
+variable "legalbackup_advanced_threat_protection" {
+  type        = bool
+  description = "Enable legal backup threat advanced protection"
+  default     = false
+}
+
