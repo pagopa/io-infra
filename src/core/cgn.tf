@@ -147,7 +147,7 @@ module "cgn_legalbackup_storage" {
 
 #tfsec:ignore:AZU023
 resource "azurerm_key_vault_secret" "cgn_legalbackup_storage_access_key" {
-  name         = "legalbackup-storage-access-key"
+  name         = "cgn-legalbackup-storage-access-key"
   value        = module.cgn-legalbackup-storage.primary_access_key
   content_type = "text/plain"
 
