@@ -168,7 +168,7 @@ resource "azurerm_key_vault_secret" "cgn_legalbackup_storage_blob_connection_str
   key_vault_id = data.azurerm_key_vault.common.id
 }
 
-resource "azurerm_storage_container" "cgn-legalbackup-container" {
+resource "azurerm_storage_container" "cgn_legalbackup_container" {
   name                  = "cgn-legalbackup-blob"
   storage_account_name  = module.cgn_legalbackup_storage.name
   container_access_type = "private"
