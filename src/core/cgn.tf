@@ -132,7 +132,6 @@ module "cgn_legalbackup_storage" {
   name                       = replace(format("%s_legalbackup_cgn_storage", local.project), "-", "")
   account_kind               = "StorageV2"
   account_tier               = "Standard"
-  account_replication_type   = var.legalbackup_account_replication_type
   access_tier                = "Hot"
   versioning_name            = "versioning"
   enable_versioning          = var.legalbackup_enable_versioning
