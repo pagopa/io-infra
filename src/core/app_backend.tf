@@ -128,10 +128,14 @@ locals {
       JWT_SUPPORT_TOKEN_EXPIRATION = 1209600
 
       // MVL PECSERVER
-      PECSERVER_URL          = "https://poc.pagopa.poste.it"
-      PECSERVER_BASE_PATH    = ""
-      PECSERVER_TOKEN_ISSUER = "app-backend.io.italia.it"
-      PECSERVER_TOKEN_SECRET = data.azurerm_key_vault_secret.app_backend_PECSERVER_TOKEN_SECRET.value
+      PECSERVERS_poste_url        = "https://poc.pagopa.poste.it"
+      PECSERVERS_poste_basePath   = ""
+      PECSERVERS_poste_secret     = data.azurerm_key_vault_secret.app_backend_PECSERVER_TOKEN_SECRET.value
+      PECSERVERS_poste_serviceId  = "01FQ4945RG5WJGPHKY8ZYRJMQ7"
+      PECSERVERS_aruba_url        = "http://io-mvl-server-mock:4000"
+      PECSERVERS_aruba_basePath   = ""
+      PECSERVERS_aruba_secret     = "aaaa"
+      PECSERVERS_aruba_serviceId  = "2"
 
       // CGN
       TEST_CGN_FISCAL_CODES = data.azurerm_key_vault_secret.app_backend_TEST_CGN_FISCAL_CODES.value
