@@ -172,3 +172,8 @@ data "azurerm_private_dns_zone" "privatelink_table_core_windows_net" {
   name                = "privatelink.table.core.windows.net"
   resource_group_name = format("%s-rg-common", local.project)
 }
+
+data "azurerm_private_dns_zone" "privatelink_documents_azure_com" {
+  name                = "privatelink.documents.azure.com"
+  resource_group_name = format("%s-rg-common", local.project)
+}
