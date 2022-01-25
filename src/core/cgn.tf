@@ -67,7 +67,7 @@ data "azurerm_subnet" "fn3cgn" {
 ##################
 
 module "cosmos_cgn" {
-  source   = "git::https://github.com/pagopa/azurerm.git//cosmosdb_account?ref=v2.1.1"
+  source   = "git::https://github.com/pagopa/azurerm.git//cosmosdb_account?ref=v2.1.18"
   name     = format("%s-cosmos-cgn", local.project)
   location = var.location
 
@@ -107,8 +107,11 @@ module "cosmos_cgn" {
     data.azurerm_subnet.fn3cgn.id
   ]
 
-  subnet_id            = null
-  private_dns_zone_ids = []
+  # private endpoint
+  private_endpoint_name    = format("%s-cosmos-cgn-sql-endpoint", local.project)
+  private_endpoint_enabled = true
+  subnet_id                = data.azurerm_subnet.private_endpoints_subnet.id
+  private_dns_zone_ids     = [data.azurerm_private_dns_zone.privatelink_documents_azure_com.id]
 
   tags = var.tags
 
@@ -116,7 +119,7 @@ module "cosmos_cgn" {
 
 ## Database
 module "cgn_cosmos_db" {
-  source              = "git::https://github.com/pagopa/azurerm.git//cosmosdb_sql_database?ref=v2.1.7"
+  source              = "git::https://github.com/pagopa/azurerm.git//cosmosdb_sql_database?ref=v2.1.15"
   name                = "db"
   resource_group_name = data.azurerm_resource_group.cgn.name
   account_name        = module.cosmos_cgn.name
