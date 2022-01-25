@@ -195,3 +195,34 @@ resource "azurerm_private_endpoint" "cgn_legalbackup_storage" {
     private_dns_zone_ids = [data.azurerm_private_dns_zone.privatelink_blob_core_windows_net.id]
   }
 }
+
+## Api mechant
+
+module "api_cgn_merchant" {
+  source = "git::https://github.com/pagopa/azurerm.git//api_management_api?ref=v2.1.19"
+
+  name                = "io-cgn-merchant-api"
+  api_management_name = module.apim.name
+  resource_group_name = module.apim.resource_group_name
+  // product_ids           = [module.apim_io_backend_product.product_id]
+  //subscription_required = local.apim_io_backend_api.subscription_required
+  // version_set_id        = azurerm_api_management_api_version_set.io_backend_bpd_api.id
+  // api_version           = "v1"
+  service_url = local.apim_io_backend_api.service_url
+
+  description           = "CGN MERCHANT API for IO platform."
+  display_name          = "IO CGN MERCHANT API"
+  path                  = "api/v1/merchant/cgn"
+  protocols             = ["http", "https"]
+  revision              = "1"
+  subscription_required = true
+
+  content_format = "swagger-json"
+  content_value = templatefile("./api/cgn/swagger.json.tmpl",
+    {
+      host = "api.io.italia.it"
+    }
+  )
+
+  xml_content = file("./api/cgn/policy.xml")
+}
