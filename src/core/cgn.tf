@@ -211,7 +211,7 @@ module "apim_product_merchant" {
   subscription_required = true
   approval_required     = false
 
-  policy_xml = file("./api/base_policy.xml")
+  policy_xml = file("./api_product/cgn/policy.xml")
 }
 
 module "api_cgn_merchant" {
