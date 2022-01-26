@@ -196,14 +196,31 @@ resource "azurerm_private_endpoint" "cgn_legalbackup_storage" {
   }
 }
 
+## Api merchant
+module "apim_product_merchant" {
+  source = "git::https://github.com/pagopa/azurerm.git//api_management_product?ref=v2.1.20"
+
+  product_id   = "cgnmerchant"
+  display_name = "IO CGN API MERCHANT"
+  description  = "Product for CGN Merchant Api"
+
+  api_management_name = module.apim.name
+  resource_group_name = module.apim.resource_group_name
+
+  published             = true
+  subscription_required = true
+  approval_required     = false
+
+  policy_xml = file("./api/base_policy.xml")
+}
+
 module "api_cgn_merchant" {
   source = "git::https://github.com/pagopa/azurerm.git//api_management_api?ref=v2.1.19"
 
   name                = "io-cgn-merchant-api"
   api_management_name = module.apim.name
   resource_group_name = module.apim.resource_group_name
-  // product_ids           = [module.apim_io_backend_product.product_id]
-  //subscription_required = local.apim_io_backend_api.subscription_required
+  product_ids         = [module.apim_product_merchant.product_id]
   // version_set_id        = azurerm_api_management_api_version_set.io_backend_bpd_api.id
   // api_version           = "v1"
   service_url = local.apim_io_backend_api.service_url
