@@ -195,3 +195,20 @@ resource "azurerm_private_endpoint" "cgn_legalbackup_storage" {
     private_dns_zone_ids = [data.azurerm_private_dns_zone.privatelink_blob_core_windows_net.id]
   }
 }
+
+
+## Apim role assignement for cgn portal app service
+
+### cgnonboardingportal user identity
+data "azurerm_key_vault_secret" "cgn_onboarding_backend_identity" {
+  name         = "cgn-onboarding-backend-PRINCIPALID"
+  key_vault_id = data.azurerm_key_vault.common.id
+}
+
+
+resource "azurerm_role_assignment" "data_contributor_role" {
+  scope                = module.apim.id
+  role_definition_name = "API Management Service Contributor"
+  principal_id         = data.azurerm_key_vault_secret.cgn_onboarding_backend_identity.value
+
+}
