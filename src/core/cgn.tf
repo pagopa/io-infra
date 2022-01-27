@@ -67,7 +67,7 @@ data "azurerm_subnet" "fn3cgn" {
 ##################
 
 module "cosmos_cgn" {
-  source   = "git::https://github.com/pagopa/azurerm.git//cosmosdb_account?ref=v2.1.1"
+  source   = "git::https://github.com/pagopa/azurerm.git//cosmosdb_account?ref=v2.1.18"
   name     = format("%s-cosmos-cgn", local.project)
   location = var.location
 
@@ -107,8 +107,11 @@ module "cosmos_cgn" {
     data.azurerm_subnet.fn3cgn.id
   ]
 
-  subnet_id            = null
-  private_dns_zone_ids = []
+  # private endpoint
+  private_endpoint_name    = format("%s-cosmos-cgn-sql-endpoint", local.project)
+  private_endpoint_enabled = true
+  subnet_id                = data.azurerm_subnet.private_endpoints_subnet.id
+  private_dns_zone_ids     = [data.azurerm_private_dns_zone.privatelink_documents_azure_com.id]
 
   tags = var.tags
 
@@ -116,7 +119,7 @@ module "cosmos_cgn" {
 
 ## Database
 module "cgn_cosmos_db" {
-  source              = "git::https://github.com/pagopa/azurerm.git//cosmosdb_sql_database?ref=v2.1.7"
+  source              = "git::https://github.com/pagopa/azurerm.git//cosmosdb_sql_database?ref=v2.1.15"
   name                = "db"
   resource_group_name = data.azurerm_resource_group.cgn.name
   account_name        = module.cosmos_cgn.name
@@ -191,4 +194,66 @@ resource "azurerm_private_endpoint" "cgn_legalbackup_storage" {
     name                 = "private-dns-zone-group"
     private_dns_zone_ids = [data.azurerm_private_dns_zone.privatelink_blob_core_windows_net.id]
   }
+}
+
+## Api merchant
+module "apim_product_merchant" {
+  source = "git::https://github.com/pagopa/azurerm.git//api_management_product?ref=v2.1.20"
+
+  product_id   = "cgnmerchant"
+  display_name = "IO CGN API MERCHANT"
+  description  = "Product for CGN Merchant Api"
+
+  api_management_name = module.apim.name
+  resource_group_name = module.apim.resource_group_name
+
+  published             = true
+  subscription_required = true
+  approval_required     = false
+
+  policy_xml = file("./api_product/cgn/policy.xml")
+}
+
+module "api_cgn_merchant" {
+  source = "git::https://github.com/pagopa/azurerm.git//api_management_api?ref=v2.1.19"
+
+  name                = "io-cgn-merchant-api"
+  api_management_name = module.apim.name
+  resource_group_name = module.apim.resource_group_name
+  product_ids         = [module.apim_product_merchant.product_id]
+  // version_set_id        = azurerm_api_management_api_version_set.io_backend_bpd_api.id
+  // api_version           = "v1"
+  service_url = local.apim_io_backend_api.service_url
+
+  description           = "CGN MERCHANT API for IO platform."
+  display_name          = "IO CGN MERCHANT API"
+  path                  = "api/v1/merchant/cgn"
+  protocols             = ["http", "https"]
+  revision              = "1"
+  subscription_required = true
+
+  content_format = "swagger-json"
+  content_value = templatefile("./api/cgn/swagger.json.tmpl",
+    {
+      host = "api.io.italia.it"
+    }
+  )
+
+  xml_content = file("./api/cgn/policy.xml")
+}
+
+## Apim role assignement for cgn portal app service
+
+### cgnonboardingportal user identity
+data "azurerm_key_vault_secret" "cgn_onboarding_backend_identity" {
+  name         = "cgn-onboarding-backend-PRINCIPALID"
+  key_vault_id = data.azurerm_key_vault.common.id
+}
+
+
+resource "azurerm_role_assignment" "data_contributor_role" {
+  scope                = module.apim.id
+  role_definition_name = "API Management Service Contributor"
+  principal_id         = data.azurerm_key_vault_secret.cgn_onboarding_backend_identity.value
+
 }
