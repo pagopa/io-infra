@@ -257,7 +257,7 @@ resource "azurerm_role_assignment" "data_contributor_role" {
 
 }
 
-# Subscriptions merchant can't crate by himself programmatically
+# Subscriptions merchant can't create by himself programmatically
 locals {
   cgn_subscriptions = [
     "Subscription 1",
