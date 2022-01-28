@@ -136,7 +136,7 @@ module "function_subscriptionmigrations" {
 
 
 module "function_subscriptionmigrations_staging_slot" {
-  source = "git::https://github.com/pagopa/azurerm.git//function_app_slot?ref=v2.1.11"
+  source = "git::https://github.com/pagopa/azurerm.git//function_app_slot?ref=v2.1.14"
 
   name                = "staging"
   location            = local.function_subscriptionmigrations.app_context.resource_group.location
@@ -182,10 +182,8 @@ data "azurerm_key_vault_secret" "subscriptionmigrations_db_server_adm_password" 
   key_vault_id = data.azurerm_key_vault.common.id
 }
 
-
-
 module "subscriptionmigrations_db_server" {
-  source = "git::https://github.com/pagopa/azurerm.git//postgresql_server?ref=v2.1.14"
+  source = "git::https://github.com/pagopa/azurerm.git//postgresql_server?ref=v2.1.20"
 
   name                = format("%s-%s-db-postgresql", local.project, local.function_subscriptionmigrations.app_context.name)
   location            = var.location
@@ -195,7 +193,7 @@ module "subscriptionmigrations_db_server" {
   administrator_login_password = data.azurerm_key_vault_secret.subscriptionmigrations_db_server_adm_password.value
 
   sku_name                     = "GP_Gen5_2"
-  version                      = 11
+  db_version                      = 11
   geo_redundant_backup_enabled = false
 
   public_network_access_enabled = false
