@@ -25,7 +25,7 @@ repos:
       - id: terraform_docs
         args:
           - tfvars hcl --output-file terraform.tfvars.model .
-      - id: terraform_tflint
-        args: ['--args=--config=__GIT_WORKING_DIR__/.tflint.hcl']
+      # - id: terraform_tflint
+      #   args: ['--args=--config=__GIT_WORKING_DIR__/.tflint.hcl']
       - id: terraform_tfsec
       - id: terraform_validate
