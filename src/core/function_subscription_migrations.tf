@@ -18,9 +18,82 @@ locals {
     // As we run this application under SelfCare IO logic subdomain,
     //  we share some resources
     app_context = {
+      name             = "subsmigrations"
       resource_group   = azurerm_resource_group.selfcare_be_rg
       app_service_plan = azurerm_app_service_plan.selfcare_be_common
       snet             = module.selfcare_be_common_snet
+      vnet             = data.azurerm_virtual_network.vnet_common
+    }
+
+    metric_alerts = {
+      db = {
+        cpu = {
+          aggregation = "Average"
+          metric_name = "cpu_percent"
+          operator    = "GreaterThan"
+          threshold   = 70
+          frequency   = "PT1M"
+          window_size = "PT5M"
+          dimension   = []
+        }
+        memory = {
+          aggregation = "Average"
+          metric_name = "memory_percent"
+          operator    = "GreaterThan"
+          threshold   = 75
+          frequency   = "PT1M"
+          window_size = "PT5M"
+          dimension   = []
+        }
+        io = {
+          aggregation = "Average"
+          metric_name = "io_consumption_percent"
+          operator    = "GreaterThan"
+          threshold   = 55
+          frequency   = "PT1M"
+          window_size = "PT5M"
+          dimension   = []
+        }
+        # https://docs.microsoft.com/it-it/azure/postgresql/concepts-limits
+        # GP_Gen5_2 -| 145 / 100 * 80 = 116
+        # GP_Gen5_32 -| 1495 / 100 * 80 = 1196
+        max_active_connections = {
+          aggregation = "Average"
+          metric_name = "active_connections"
+          operator    = "GreaterThan"
+          threshold   = 1196
+          frequency   = "PT5M"
+          window_size = "PT5M"
+          dimension   = []
+        }
+        min_active_connections = {
+          aggregation = "Average"
+          metric_name = "active_connections"
+          operator    = "LessThanOrEqual"
+          threshold   = 0
+          frequency   = "PT5M"
+          window_size = "PT15M"
+          dimension   = []
+        }
+        failed_connections = {
+          aggregation = "Total"
+          metric_name = "connections_failed"
+          operator    = "GreaterThan"
+          threshold   = 10
+          frequency   = "PT5M"
+          window_size = "PT15M"
+          dimension   = []
+        }
+        replica_lag = {
+          aggregation = "Average"
+          metric_name = "pg_replica_log_delay_in_seconds"
+          operator    = "GreaterThan"
+          threshold   = 60
+          frequency   = "PT1M"
+          window_size = "PT5M"
+          dimension   = []
+        }
+      }
     }
   }
 }
@@ -28,7 +101,7 @@ locals {
 module "function_subscriptionmigrations" {
   source = "git::https://github.com/pagopa/azurerm.git//function_app?ref=v2.1.11"
 
-  name                = format("%s-subsmigrations-fn", local.project)
+  name                = format("%s-%s-fn", local.project, local.function_subscriptionmigrations.app_context.name)
   location            = local.function_subscriptionmigrations.app_context.resource_group.location
   resource_group_name = local.function_subscriptionmigrations.app_context.resource_group.name
   app_service_plan_id = local.function_subscriptionmigrations.app_context.app_service_plan.id
@@ -63,7 +136,7 @@ module "function_subscriptionmigrations" {
 
 
 module "function_subscriptionmigrations_staging_slot" {
-  source = "git::https://github.com/pagopa/azurerm.git//function_app_slot?ref=v2.1.11"
+  source = "git::https://github.com/pagopa/azurerm.git//function_app_slot?ref=v2.1.14"
 
   name                = "staging"
   location            = local.function_subscriptionmigrations.app_context.resource_group.location
@@ -91,6 +164,60 @@ module "function_subscriptionmigrations_staging_slot" {
   ]
 
   app_settings = merge(local.function_subscriptionmigrations.app_settings_commons, {})
+
+  tags = var.tags
+}
+
+#
+# DB
+#
+
+data "azurerm_key_vault_secret" "subscriptionmigrations_db_server_adm_username" {
+  name         = "selfcare-subsmigrations-DB-ADM-USERNAME"
+  key_vault_id = data.azurerm_key_vault.common.id
+}
+
+data "azurerm_key_vault_secret" "subscriptionmigrations_db_server_adm_password" {
+  name         = "selfcare-subsmigrations-DB-ADM-PASSWORD"
+  key_vault_id = data.azurerm_key_vault.common.id
+}
+
+module "subscriptionmigrations_db_server" {
+  source = "git::https://github.com/pagopa/azurerm.git//postgresql_server?ref=v2.1.20"
+
+  name                = format("%s-%s-db-postgresql", local.project, local.function_subscriptionmigrations.app_context.name)
+  location            = var.location
+  resource_group_name = local.function_subscriptionmigrations.app_context.resource_group.name
+
+  administrator_login          = data.azurerm_key_vault_secret.subscriptionmigrations_db_server_adm_username.value
+  administrator_login_password = data.azurerm_key_vault_secret.subscriptionmigrations_db_server_adm_password.value
+
+  sku_name                     = "GP_Gen5_2"
+  db_version                   = 11
+  geo_redundant_backup_enabled = false
+
+  public_network_access_enabled = false
+  private_endpoint = {
+    enabled              = true
+    virtual_network_id   = local.function_subscriptionmigrations.app_context.vnet.id
+    subnet_id            = data.azurerm_subnet.private_endpoints_subnet.id
+    private_dns_zone_ids = [azurerm_private_dns_zone.privatelink_postgres_database_azure_com.id]
+  }
+
+  alerts_enabled                = true
+  monitor_metric_alert_criteria = local.function_subscriptionmigrations.metric_alerts.db
+  action = [
+    {
+      action_group_id    = azurerm_monitor_action_group.email.id
+      webhook_properties = null
+    },
+    {
+      action_group_id    = azurerm_monitor_action_group.slack.id
+      webhook_properties = null
+    }
+  ]
+
+  lock_enable = var.lock_enable
 
   tags = var.tags
 }
