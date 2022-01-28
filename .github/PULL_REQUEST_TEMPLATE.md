@@ -42,3 +42,10 @@
 ### If PR is partially applied, why? (reserved to mantainers)
 
 <!--- Describe the blocking cause -->
+
+### How to apply
+
+After PR is approved
+1. run deploy pipeline from Azure DevOps [io-infra.deploy](https://dev.azure.com/pagopaspa/io-iac-projects/_build?definitionId=218)
+2. select PR branch
+3. wait for approval

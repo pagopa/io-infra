@@ -274,6 +274,3 @@ resource "azurerm_api_management_subscription" "cgn" {
   product_id          = module.apim_product_merchant.id
   display_name        = local.cgn_subscriptions[count.index]
 }
-
-
-  
