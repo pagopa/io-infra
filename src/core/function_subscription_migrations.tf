@@ -193,7 +193,7 @@ module "subscriptionmigrations_db_server" {
   administrator_login_password = data.azurerm_key_vault_secret.subscriptionmigrations_db_server_adm_password.value
 
   sku_name                     = "GP_Gen5_2"
-  db_version                      = 11
+  db_version                   = 11
   geo_redundant_backup_enabled = false
 
   public_network_access_enabled = false
