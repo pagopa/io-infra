@@ -244,6 +244,14 @@ module "api_cgn_merchant" {
 
 ## App registration for cgn backend portal ## 
 
+/*
+### cgnonboardingportal user identity
+data "azurerm_key_vault_secret" "cgn_onboarding_backend_identity" {
+  name         = "cgn-onboarding-backend-PRINCIPALID"
+  key_vault_id = data.azurerm_key_vault.common.id
+}
+*/
+
 locals {
   cgn_app_registreation_name = "cgn-onboarding-portal-backend"
 }
@@ -255,7 +263,6 @@ resource "azuread_application" "cgn_onboarding_portal" {
   sign_in_audience        = "AzureADMyOrg"
 
   api {
-
 
     oauth2_permission_scope {
       admin_consent_description  = "Allow the application to access cgn-onboarding-portal-backend on behalf of the signed-in user."
@@ -272,19 +279,10 @@ resource "azuread_application" "cgn_onboarding_portal" {
 
   web {
     redirect_uris = []
+    homepage_url  = format("https://%s", local.cgn_app_registreation_name)
     implicit_grant {
       access_token_issuance_enabled = false
-    }
-  }
-
-  required_resource_access {
-    # Microsoft Graph
-    resource_app_id = "00000003-0000-0000-c000-000000000000"
-
-    resource_access {
-      # User.Read
-      id   = "e1fe6dd8-ba31-4d61-89e7-88639da4683d"
-      type = "Scope"
+      id_token_issuance_enabled     = true
     }
   }
 }
@@ -294,10 +292,10 @@ resource "azuread_service_principal" "cgn_onboarding_portal" {
   application_id = azuread_application.cgn_onboarding_portal[0].application_id
 }
 
-resource "azurerm_role_assignment" "data_contributor_role" {
+resource "azurerm_role_assignment" "service_contributor" {
   count                = var.env_short == "p" ? 1 : 0
   scope                = module.apim.id
   role_definition_name = "API Management Service Contributor"
-  #principal_id         = azuread_service_principal.cgn_onboarding_portal[0].id
-  principal_id = azuread_application.cgn_onboarding_portal[0].application_id
+  principal_id         = azuread_service_principal.cgn_onboarding_portal[0].id
+  # principal_id = azuread_application.cgn_onboarding_portal[0].application_id
 }
