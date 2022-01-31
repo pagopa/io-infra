@@ -256,21 +256,11 @@ resource "azurerm_role_assignment" "data_contributor_role" {
   principal_id         = data.azurerm_key_vault_secret.cgn_onboarding_backend_identity.value
 
 }
-
-# Subscriptions merchant can't create by himself programmatically
-locals {
-  cgn_subscriptions = [
-    "Subscription 1",
-    "Subscription 2",
-  ]
-
-}
-
 resource "azurerm_api_management_subscription" "cgn" {
-  count = length(local.cgn_subscriptions)
+  count = length(var.cgn_subscriptions)
 
   api_management_name = module.apim.name
   resource_group_name = module.apim.resource_group_name
   product_id          = module.apim_product_merchant.id
-  display_name        = local.cgn_subscriptions[count.index]
+  display_name        = var.cgn_subscriptions[count.index]
 }

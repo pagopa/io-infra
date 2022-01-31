@@ -188,3 +188,10 @@ eventhubs = [
     ]
   }
 ]
+
+# CGN
+
+cgn_subscriptions = [
+  "Subscription 1",
+  "Subscription 2",
+]

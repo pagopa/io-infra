@@ -437,3 +437,9 @@ variable "cgn_legalbackup_enable_versioning" {
   description = "Enable legal backup versioning"
   default     = false
 }
+
+variable "cgn_subscriptions" {
+  type        = list(string)
+  description = "Subscription names merchant can't create by himself programmatically."
+  default     = []
+}
