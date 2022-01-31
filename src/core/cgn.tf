@@ -299,3 +299,28 @@ resource "azurerm_role_assignment" "service_contributor" {
   principal_id         = azuread_service_principal.cgn_onboarding_portal[0].id
   # principal_id = azuread_application.cgn_onboarding_portal[0].application_id
 }
+
+resource "time_rotating" "cgn_onboarding_portal_secret" {
+  count          = var.env_short == "p" ? 1 : 0
+  rotation_years = 2
+}
+
+resource "azuread_application_password" "cgn_onboarding_portal" {
+  count = var.env_short == "p" ? 1 : 0
+
+  application_object_id = azuread_application.cgn_onboarding_portal[0].object_id
+  rotate_when_changed = {
+    rotation = time_rotating.cgn_onboarding_portal_secret[0].id
+  }
+}
+
+output "cgn_onboarding_app_id" {
+  description = "Id cgn onboarding portal app registration."
+  value       = azuread_application.cgn_onboarding_portal[0].application_id
+}
+
+output "cgn_onboarding_portal_secret" {
+  description = "Secret used by the app to create new subscription."
+  value       = azuread_application_password.cgn_onboarding_portal
+  sensitive   = true
+}
