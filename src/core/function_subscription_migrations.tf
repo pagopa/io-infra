@@ -35,7 +35,7 @@ locals {
       DB_PORT         = ""
       DB_IDLE_TIMEOUT = 30000 // milliseconds
       // TBC: name and schema may be the very same variable
-      DB_NAME   = "SelfcareIOSubscriptionMigrations"
+      DB_NAME   = "db"
       DB_SCHEMA = "SelfcareIOSubscriptionMigrations"
       DB_TABLE  = "migrations"
       // TODO: create and grand an applicative user for PostgresSQL
