@@ -58,7 +58,16 @@ stages:
       - job: validate_migration
         steps:
           - checkout: self
-          - script: |
-              cd src/psql/selfcare/subscription-migrations
-              ./flyway.sh validate PROD-IO
+          - task: AzureCLI@2
             displayName: validate migration data on subscription-migrations
+            inputs:
+              azureSubscription: PROD-IO-SERVICE-CONN
+              scriptType: 'bash'
+              scriptLocation: 'inlineScript'
+              failOnStandardError: false
+              inlineScript: |
+                set -e
+                cd src/psql/selfcare/subscription-migrations
+                echo "Validating migrations"
+                ./flyway.sh validate PROD-IO db && echo "Validation successful" || { echo "Validation failed"; exit 1; }
+                echo $administrator_login

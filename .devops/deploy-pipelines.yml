@@ -70,3 +70,24 @@ stages:
                     SUBSCRIPTION: PROD-IO-SERVICE-CONN
                     ENVIRONMENT: prod
                     WORKINGDIR: 'src/core'
+      - deployment: migrate
+        continueOnError: false
+        dependsOn: apply
+        environment: 'PROD'
+        strategy:
+          runOnce:
+            deploy:
+              steps:
+                - checkout: self
+                - task: AzureCLI@2
+                  displayName: migrate data on subscription-migrations
+                  inputs:
+                    azureSubscription: PROD-IO-SERVICE-CONN
+                    scriptType: 'bash'
+                    scriptLocation: 'inlineScript'
+                    failOnStandardError: false
+                    inlineScript: |
+                      set -e
+                      cd src/psql/selfcare/subscription-migrations
+                      echo "Executing migrations"
+                      ./flyway.sh migrate PROD-IO db && echo "Migration successful" || { echo "Migration failed"; exit 1; }

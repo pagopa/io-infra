@@ -5,19 +5,22 @@
 # Usage:
 #  ./flyway.sh info|validate|migrate ENV-IO
 #
-#  ./flyway.sh migrate DEV-IO 
-#  ./flyway.sh migrate PROD-IO 
+#  ./flyway.sh migrate DEV-IO
+#  ./flyway.sh migrate PROD-IO
 
-BASHDIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
+echo "Running flyway.sh\n"
+
+BASHDIR="$( cd "$( dirname "$BASH_SOURCE" )" >/dev/null 2>&1 && pwd )"
 WORKDIR="$BASHDIR"
 
 set -e
 
 COMMAND=$1
 SUBSCRIPTION=$2
-DATABASE="db"
+DATABASE=$3
 DB_SERVER_NAME="subsmigrations-db-postgresql"
-KV_NAME="kv"
+KV_NAME="kv-common"
+
 shift 3
 other=$@
 
@@ -39,6 +42,10 @@ keyvault_name=$(az keyvault list -o tsv --query "[?contains(name,'$KV_NAME')].{N
 psql_server_name=${psql_server_name//[$'\r']}
 psql_server_private_fqdn=${psql_server_private_fqdn//[$'\r']}
 keyvault_name=${keyvault_name//[$'\r']}
+
+printf "Server name: %s\n" "${psql_server_name}"
+printf "Server FQDN: %s\n" "${psql_server_private_fqdn}"
+printf "KeyVault name: %s\n" "${keyvault_name}"
 
 administrator_login=$(az keyvault secret show --name selfcare-subsmigrations-DB-ADM-USERNAME --vault-name "${keyvault_name}" -o tsv --query value)
 administrator_login_password=$(az keyvault secret show --name selfcare-subsmigrations-DB-ADM-PASSWORD --vault-name "${keyvault_name}" -o tsv --query value)
@@ -67,6 +74,7 @@ if [[ $WORKDIR == /cygdrive/* ]]; then
   WORKDIR=${WORKDIR//\\//}
 fi
 
+echo "Running Flyway docker container"
 docker run --rm --network=host -v "${WORKDIR}/migrations/${DATABASE}":/flyway/sql \
   flyway/flyway:"${FLYWAY_DOCKER_TAG}" \
   -url="${FLYWAY_URL}" -user="${FLYWAY_USER}" -password="${FLYWAY_PASSWORD}" \
