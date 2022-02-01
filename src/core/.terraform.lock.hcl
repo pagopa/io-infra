@@ -112,13 +112,6 @@ provider "registry.terraform.io/hashicorp/random" {
   ]
 }
 
-provider "registry.terraform.io/hashicorp/time" {
-  version = "0.7.2"
-  hashes = [
-    "h1:NKy1QrNLlP5mKy5Tea6lQSRsVoyydJQKh6WvNTdBF4I=",
-  ]
-}
-
 provider "registry.terraform.io/hashicorp/tls" {
   version = "3.1.0"
   hashes = [

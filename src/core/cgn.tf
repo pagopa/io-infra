@@ -255,6 +255,8 @@ data "azurerm_key_vault_secret" "cgn_onboarding_backend_identity" {
 locals {
   cgn_app_registreation_name = "cgn-onboarding-portal-backend"
 }
+
+/*
 resource "azuread_application" "cgn_onboarding_portal" {
   count                   = var.env_short == "p" ? 1 : 0
   display_name            = local.cgn_app_registreation_name
@@ -291,15 +293,22 @@ resource "azuread_service_principal" "cgn_onboarding_portal" {
   count          = var.env_short == "p" ? 1 : 0
   application_id = azuread_application.cgn_onboarding_portal[0].application_id
 }
+*/
+
+### cgnonboardingportal user identity
+data "azurerm_key_vault_secret" "cgn_onboarding_backend_identity" {
+  name         = "cgn-onboarding-backend-PRINCIPALID"
+  key_vault_id = data.azurerm_key_vault.common.id
+}
 
 resource "azurerm_role_assignment" "service_contributor" {
   count                = var.env_short == "p" ? 1 : 0
   scope                = module.apim.id
   role_definition_name = "API Management Service Contributor"
-  principal_id         = azuread_service_principal.cgn_onboarding_portal[0].id
-  # principal_id = azuread_application.cgn_onboarding_portal[0].application_id
+  principal_id         = data.azurerm_key_vault_secret.cgn_onboarding_backend_identity.value
 }
 
+/*
 resource "time_rotating" "cgn_onboarding_portal_secret" {
   count          = var.env_short == "p" ? 1 : 0
   rotation_years = 2
@@ -321,6 +330,7 @@ output "cgn_onboarding_app_id" {
 
 output "cgn_onboarding_portal_secret" {
   description = "Secret used by the app to create new subscription."
-  value       = azuread_application_password.cgn_onboarding_portal
+  value       = azuread_application_password.cgn_onboarding_portal[0].value
   sensitive   = true
 }
+*/
