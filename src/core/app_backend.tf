@@ -138,8 +138,8 @@ locals {
       PECSERVERS_poste_basePath  = ""
       PECSERVERS_poste_secret    = data.azurerm_key_vault_secret.app_backend_PECSERVER_TOKEN_SECRET.value
       PECSERVERS_poste_serviceId = "01FQ4945RG5WJGPHKY8ZYRJMQ7"
-      PECSERVERS_aruba_url       = "http://io-mvl-server-mock:4000"
-      PECSERVERS_aruba_basePath  = ""
+      PECSERVERS_aruba_url       = "https://pagopa-test.pec.aruba.it"
+      PECSERVERS_aruba_basePath  = "/apigateway/api/v2/pagopa/mailbox"
       PECSERVERS_aruba_secret    = data.azurerm_key_vault_secret.app_backend_PECSERVER_ARUBA_TOKEN_SECRET.value
       PECSERVERS_aruba_serviceId = "01FRMRD5P7H378MDXBBW3DTYCF"
 
