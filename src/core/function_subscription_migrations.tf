@@ -13,6 +13,35 @@ locals {
       FETCH_KEEPALIVE_MAX_FREE_SOCKETS    = "10"
       FETCH_KEEPALIVE_FREE_SOCKET_TIMEOUT = "30000"
       FETCH_KEEPALIVE_TIMEOUT             = "60000"
+
+      // connection to CosmosDB
+      COSMOSDB_CONNECTIONSTRING          = format("AccountEndpoint=%s;AccountKey=%s;", data.azurerm_cosmosdb_account.cosmos_api.endpoint, data.azurerm_cosmosdb_account.cosmos_api.primary_master_key),
+      COSMOSDB_KEY                       = data.azurerm_cosmosdb_account.cosmos_api.primary_master_key
+      COSMOSDB_NAME                      = "db",
+      COSMOSDB_SERVICES_COLLECTION       = "services",
+      COSMOSDB_SERVICES_LEASE_COLLECTION = "services-subsmigrations-leases-001",
+      COSMOSDB_URI                       = data.azurerm_cosmosdb_account.cosmos_api.endpoint
+
+      // connection to APIM
+      APIM_CLIENT_ID       = data.azurerm_key_vault_secret.selfcare_devportal_service_principal_client_id.value
+      APIM_RESOURCE_GROUP  = "io-p-rg-internal"
+      APIM_SECRET          = data.azurerm_key_vault_secret.selfcare_devportal_service_principal_secret.value
+      APIM_SERVICE_NAME    = "" // ??? can we read it from somewhere?
+      APIM_SUBSCRIPTION_ID = data.azurerm_subscription.current.subscription_id
+      APIM_TENANT_ID       = data.azurerm_client_config.current.tenant_id
+
+      // connection to PostgresSQL
+      DB_HOST         = "" // ??? can we read it from somewhere?
+      DB_PORT         = ""
+      DB_IDLE_TIMEOUT = 30000 // milliseconds
+      // TBC: name and schema may be the very same variable
+      DB_NAME   = "SelfcareIOSubscriptionMigrations"
+      DB_SCHEMA = "SelfcareIOSubscriptionMigrations"
+      DB_TABLE  = "migrations"
+      // TODO: create and grand an applicative user for PostgresSQL
+      DB_USER     = ""
+      DB_PASSWORD = ""
+
     }
 
     // As we run this application under SelfCare IO logic subdomain,
@@ -129,7 +158,10 @@ module "function_subscriptionmigrations" {
     data.azurerm_subnet.azdoa_snet[0].id,
   ]
 
-  app_settings = merge(local.function_subscriptionmigrations.app_settings_commons, {})
+  app_settings = merge(local.function_subscriptionmigrations.app_settings_commons, {
+    // disable change feed listener until we are ready to start data migration
+    "AzureWebJobs.OnServiceChange.Disabled" = "1"
+  })
 
   tags = var.tags
 }
@@ -163,7 +195,10 @@ module "function_subscriptionmigrations_staging_slot" {
     data.azurerm_subnet.azdoa_snet[0].id,
   ]
 
-  app_settings = merge(local.function_subscriptionmigrations.app_settings_commons, {})
+  app_settings = merge(local.function_subscriptionmigrations.app_settings_commons, {
+    // disable change feed listener on staging slot
+    "AzureWebJobs.OnServiceChange.Disabled" = "1"
+  })
 
   tags = var.tags
 }
