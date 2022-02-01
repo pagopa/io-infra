@@ -296,8 +296,8 @@ resource "azurerm_role_assignment" "service_contributor" {
   count                = var.env_short == "p" ? 1 : 0
   scope                = module.apim.id
   role_definition_name = "API Management Service Contributor"
-  principal_id         = azuread_service_principal.cgn_onboarding_portal[0].id
-  # principal_id = azuread_application.cgn_onboarding_portal[0].application_id
+  # principal_id         = azuread_service_principal.cgn_onboarding_portal[0].id
+  principal_id = azuread_application.cgn_onboarding_portal[0].application_id
 }
 
 resource "time_rotating" "cgn_onboarding_portal_secret" {
@@ -321,6 +321,6 @@ output "cgn_onboarding_app_id" {
 
 output "cgn_onboarding_portal_secret" {
   description = "Secret used by the app to create new subscription."
-  value       = azuread_application_password.cgn_onboarding_portal
+  value       = azuread_application_password.cgn_onboarding_portal.value
   sensitive   = true
 }
