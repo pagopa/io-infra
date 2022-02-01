@@ -228,7 +228,7 @@ data "azurerm_key_vault_secret" "subscriptionmigrations_db_server_fnsubsmigratio
 module "subscriptionmigrations_db_server" {
   source = "git::https://github.com/pagopa/azurerm.git//postgresql_server?ref=v2.1.20"
 
-  name                = local.db.name
+  name                = local.function_subscriptionmigrations.db.name
   location            = var.location
   resource_group_name = local.function_subscriptionmigrations.app_context.resource_group.name
 
