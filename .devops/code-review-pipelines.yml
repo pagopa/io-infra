@@ -55,3 +55,10 @@ stages:
               SUBSCRIPTION: PROD-IO-SERVICE-CONN
               ENVIRONMENT: prod
               WORKINGDIR: 'src/core'
+      - job: validate_migration
+        steps:
+          - checkout: self
+          - script: |
+              cd src/psql/selfcare/subscription-migrations
+              ./flyway.sh validate PROD-IO
+            displayName: validate migration data on subscription-migrations
