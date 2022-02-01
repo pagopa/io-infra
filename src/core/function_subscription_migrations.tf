@@ -53,7 +53,8 @@ locals {
     }
 
     db = {
-      hostname = format("%s-postgresql.postgres.database.azure.com", module.subscriptionmigrations_db_server.name)
+      name     = format("%s-%s-db-postgresql", local.project, local.function_subscriptionmigrations.app_context.name)
+      hostname = format("%s-postgresql.postgres.database.azure.com", local.db.name)
       username = format("%s@%s", "FNSUBSMIGRATIONS_USER", local.db.hostname)
       password = data.azurerm_key_vault_secret.subscriptionmigrations_db_server_fnsubsmigrations_password.value
     }
@@ -230,7 +231,7 @@ data "azurerm_key_vault_secret" "subscriptionmigrations_db_server_fnsubsmigratio
 module "subscriptionmigrations_db_server" {
   source = "git::https://github.com/pagopa/azurerm.git//postgresql_server?ref=v2.1.20"
 
-  name                = format("%s-%s-db-postgresql", local.project, local.function_subscriptionmigrations.app_context.name)
+  name                = local.db.name
   location            = var.location
   resource_group_name = local.function_subscriptionmigrations.app_context.resource_group.name
 
