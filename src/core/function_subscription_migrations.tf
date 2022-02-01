@@ -31,7 +31,7 @@ locals {
       APIM_TENANT_ID       = data.azurerm_client_config.current.tenant_id
 
       // connection to PostgresSQL
-      DB_HOST         = local.db.hostname
+      DB_HOST         = format("%s.postgres.database.azure.com", format("%s-%s-db-postgresql", local.project, "subsmigrations"))
       DB_PORT         = 5432
       DB_IDLE_TIMEOUT = 30000 // milliseconds
       DB_NAME         = "db"
@@ -53,9 +53,8 @@ locals {
     }
 
     db = {
-      name     = format("%s-%s-db-postgresql", local.project, local.function_subscriptionmigrations.app_context.name)
-      hostname = format("%s-postgresql.postgres.database.azure.com", local.db.name)
-      username = format("%s@%s", "FNSUBSMIGRATIONS_USER", local.db.hostname)
+      name     = format("%s-%s-db-postgresql", local.project, "subsmigrations")
+      username = format("%s@%s", "FNSUBSMIGRATIONS_USER", format("%s.postgres.database.azure.com", format("%s-%s-db-postgresql", local.project, "subsmigrations")))
       password = data.azurerm_key_vault_secret.subscriptionmigrations_db_server_fnsubsmigrations_password.value
     }
 
