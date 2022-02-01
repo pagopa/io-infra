@@ -321,6 +321,6 @@ output "cgn_onboarding_app_id" {
 
 output "cgn_onboarding_portal_secret" {
   description = "Secret used by the app to create new subscription."
-  value       = azuread_application_password.cgn_onboarding_portal.value
+  value       = azuread_application_password.cgn_onboarding_portal[0].value
   sensitive   = true
 }
