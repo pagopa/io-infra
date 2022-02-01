@@ -31,16 +31,14 @@ locals {
       APIM_TENANT_ID       = data.azurerm_client_config.current.tenant_id
 
       // connection to PostgresSQL
-      DB_HOST         = "" // ??? can we read it from somewhere?
-      DB_PORT         = ""
+      DB_HOST         = local.db.hostname
+      DB_PORT         = 5432
       DB_IDLE_TIMEOUT = 30000 // milliseconds
-      // TBC: name and schema may be the very same variable
-      DB_NAME   = "db"
-      DB_SCHEMA = "SelfcareIOSubscriptionMigrations"
-      DB_TABLE  = "migrations"
-      // TODO: create and grand an applicative user for PostgresSQL
-      DB_USER     = ""
-      DB_PASSWORD = ""
+      DB_NAME         = "db"
+      DB_SCHEMA       = "SelfcareIOSubscriptionMigrations"
+      DB_TABLE        = "migrations"
+      DB_USER         = local.db.username
+      DB_PASSWORD     = local.db.password
 
     }
 
@@ -52,6 +50,12 @@ locals {
       app_service_plan = azurerm_app_service_plan.selfcare_be_common
       snet             = module.selfcare_be_common_snet
       vnet             = data.azurerm_virtual_network.vnet_common
+    }
+
+    db = {
+      hostname = format("%s-postgresql.postgres.database.azure.com", module.subscriptionmigrations_db_server.name)
+      username = format("%s@%s", "FNSUBSMIGRATIONS_USER", local.db.hostname)
+      password = data.azurerm_key_vault_secret.subscriptionmigrations_db_server_fnsubsmigrations_password.value
     }
 
     metric_alerts = {
@@ -207,15 +211,21 @@ module "function_subscriptionmigrations_staging_slot" {
 # DB
 #
 
+// db admin user credentials
 data "azurerm_key_vault_secret" "subscriptionmigrations_db_server_adm_username" {
   name         = "selfcare-subsmigrations-DB-ADM-USERNAME"
   key_vault_id = data.azurerm_key_vault.common.id
 }
-
 data "azurerm_key_vault_secret" "subscriptionmigrations_db_server_adm_password" {
   name         = "selfcare-subsmigrations-DB-ADM-PASSWORD"
   key_vault_id = data.azurerm_key_vault.common.id
 }
+// db applicative user credentials
+data "azurerm_key_vault_secret" "subscriptionmigrations_db_server_fnsubsmigrations_password" {
+  name         = "selfcare-subsmigrations-FNSUBSMIGRATIONS-PASSWORD"
+  key_vault_id = module.key_vault.id
+}
+
 
 module "subscriptionmigrations_db_server" {
   source = "git::https://github.com/pagopa/azurerm.git//postgresql_server?ref=v2.1.20"
