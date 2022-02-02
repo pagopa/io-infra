@@ -242,7 +242,7 @@ module "api_cgn_merchant" {
   xml_content = file("./api/cgn/policy.xml")
 }
 
-## App registration for cgn backend portal ## 
+## App registration for cgn backend portal ##
 
 /*
 ### cgnonboardingportal user identity
