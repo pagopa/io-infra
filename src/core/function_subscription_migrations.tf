@@ -221,7 +221,7 @@ data "azurerm_key_vault_secret" "subscriptionmigrations_db_server_adm_password" 
 // db applicative user credentials
 data "azurerm_key_vault_secret" "subscriptionmigrations_db_server_fnsubsmigrations_password" {
   name         = "selfcare-subsmigrations-FNSUBSMIGRATIONS-PASSWORD"
-  key_vault_id = module.key_vault.id
+  key_vault_id = data.azurerm_key_vault.common.id
 }
 
 
