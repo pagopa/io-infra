@@ -49,8 +49,8 @@ locals {
       BONUS_API_KEY               = data.azurerm_key_vault_secret.app_backend_BONUS_API_KEY.value
       CGN_API_URL                 = "http://${data.azurerm_function_app.fnapp_cgn.default_hostname}"
       CGN_API_KEY                 = data.azurerm_key_vault_secret.app_backend_CGN_API_KEY.value
-      CGN_OPERATOR_SEARCH_API_URL = "https://cgnonboardingportal-u-os.azurewebsites.net" # uat esercenti subscription
-      CGN_OPERATOR_SEARCH_API_KEY = data.azurerm_key_vault_secret.app_backend_CGN_OPERATOR_SEARCH_API_KEY_UAT.value
+      CGN_OPERATOR_SEARCH_API_URL = "https://cgnonboardingportal-p-os.azurewebsites.net" # prod subscription
+      CGN_OPERATOR_SEARCH_API_KEY = data.azurerm_key_vault_secret.app_backend_CGN_OPERATOR_SEARCH_API_KEY_PROD.value
       EUCOVIDCERT_API_URL         = "http://${data.azurerm_function_app.fnapp_eucovidcert.default_hostname}/api/v1"
       EUCOVIDCERT_API_KEY         = data.azurerm_key_vault_secret.app_backend_EUCOVIDCERT_API_KEY.value
 
