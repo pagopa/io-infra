@@ -69,5 +69,6 @@ stages:
                 set -e
                 cd src/psql/selfcare/subscription-migrations
                 echo "Validating migrations"
-                ./flyway.sh validate PROD-IO db && echo "Validation successful" || { echo "Validation failed"; exit 1; }
+                ./flyway.sh validate PROD-IO db -ignorePendingMigrations=true && echo "Validation successful" || { echo "Validation failed"; exit 1; }
+                ./flyway.sh info PROD-IO db && echo "Info successful" || { echo "Info failed"; exit 1; }
                 echo $administrator_login
