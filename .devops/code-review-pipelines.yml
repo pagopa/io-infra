@@ -71,4 +71,3 @@ stages:
                 echo "Validating migrations"
                 ./flyway.sh validate PROD-IO db -ignorePendingMigrations=true && echo "Validation successful" || { echo "Validation failed"; exit 1; }
                 ./flyway.sh info PROD-IO db && echo "Info successful" || { echo "Info failed"; exit 1; }
-                echo $administrator_login
