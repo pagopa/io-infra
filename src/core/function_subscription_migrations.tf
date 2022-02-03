@@ -37,8 +37,8 @@ locals {
       DB_NAME         = "db"
       DB_SCHEMA       = "SelfcareIOSubscriptionMigrations"
       DB_TABLE        = "migrations"
-      DB_USER         = format("%s@%s", "FNSUBSMIGRATIONS_USER", format("%s.postgres.database.azure.com", format("%s-%s-db-postgresql", local.project, "subsmigrations")))
-      DB_PASSWORD     = data.azurerm_key_vault_secret.subscriptionmigrations_db_server_fnsubsmigrations_password.value
+      DB_USER         = format("%s@%s", data.azurerm_key_vault_secret.subscriptionmigrations_db_server_adm_username.value, format("%s.postgres.database.azure.com", format("%s-%s-db-postgresql", local.project, "subsmigrations")))
+      DB_PASSWORD     = data.azurerm_key_vault_secret.subscriptionmigrations_db_server_adm_password.value
 
     }
 
