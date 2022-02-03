@@ -40,6 +40,11 @@ locals {
       DB_USER         = format("%s@%s", "FNSUBSMIGRATIONS_USER", format("%s.postgres.database.azure.com", format("%s-%s-db-postgresql", local.project, "subsmigrations")))
       DB_PASSWORD     = data.azurerm_key_vault_secret.subscriptionmigrations_db_server_fnsubsmigrations_password.value
 
+      // connection to Application Insight
+      APPINSIGHTS_INSTRUMENTATIONKEY  =""
+      APPINSIGHTS_DISABLE             =""
+      APPINSIGHTS_SAMPLING_PERCENTAGE =""
+
     }
 
     // As we run this application under SelfCare IO logic subdomain,
