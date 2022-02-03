@@ -268,7 +268,7 @@ module "subscriptionmigrations_db_server" {
 resource "azurerm_postgresql_database" "selfcare_subscriptionmigrations_db" {
   name                = "db"
   resource_group_name = local.function_subscriptionmigrations.app_context.resource_group.name
-  server_name         = module.postgresql.name
+  server_name         = module.subscriptionmigrations_db_server.name
   charset             = "UTF8"
   collation           = "English_United States.1252"
 }
