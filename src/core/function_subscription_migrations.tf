@@ -41,7 +41,7 @@ locals {
       DB_PASSWORD     = data.azurerm_key_vault_secret.subscriptionmigrations_db_server_fnsubsmigrations_password.value
 
       // connection to Application Insight
-      APPINSIGHTS_INSTRUMENTATIONKEY  = data.azurerm_application_insights.application_insights.instrumentation_key
+      APPINSIGHTS_INSTRUMENTATIONKEY = data.azurerm_application_insights.application_insights.instrumentation_key
 
     }
 
