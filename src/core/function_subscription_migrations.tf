@@ -160,10 +160,7 @@ module "function_subscriptionmigrations" {
     data.azurerm_subnet.azdoa_snet[0].id,
   ]
 
-  app_settings = merge(local.function_subscriptionmigrations.app_settings_commons, {
-    // disable change feed listener until we are ready to start data migration
-    "AzureWebJobs.OnServiceChange.Disabled" = "1"
-  })
+  app_settings = merge(local.function_subscriptionmigrations.app_settings_commons, {})
 
   tags = var.tags
 }
