@@ -19,7 +19,7 @@ locals {
       COSMOSDB_KEY                       = data.azurerm_cosmosdb_account.cosmos_api.primary_master_key
       COSMOSDB_NAME                      = "db",
       COSMOSDB_SERVICES_COLLECTION       = "services",
-      COSMOSDB_SERVICES_LEASE_COLLECTION = "services-subsmigrations-leases-001",
+      COSMOSDB_SERVICES_LEASE_COLLECTION = "services-subsmigrations-leases-002",
       COSMOSDB_URI                       = data.azurerm_cosmosdb_account.cosmos_api.endpoint
 
       // connection to APIM
