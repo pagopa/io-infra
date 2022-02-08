@@ -200,8 +200,9 @@ module "function_subscriptionmigrations_staging_slot" {
   ]
 
   app_settings = merge(local.function_subscriptionmigrations.app_settings_commons, {
-    // disable change feed listener on staging slot
-    "AzureWebJobs.OnServiceChange.Disabled" = "1"
+    // disable listeners on staging slot
+    "AzureWebJobs.OnServiceChange.Disabled"             = "1"
+    "AzureWebJobs.UpsertSubscriptionToMigrate.Disabled" = "1"
   })
 
   tags = var.tags
