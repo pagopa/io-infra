@@ -55,3 +55,19 @@ stages:
               SUBSCRIPTION: PROD-IO-SERVICE-CONN
               ENVIRONMENT: prod
               WORKINGDIR: 'src/core'
+      - job: validate_migration
+        steps:
+          - checkout: self
+          - task: AzureCLI@2
+            displayName: validate migration data on subscription-migrations
+            inputs:
+              azureSubscription: PROD-IO-SERVICE-CONN
+              scriptType: 'bash'
+              scriptLocation: 'inlineScript'
+              failOnStandardError: false
+              inlineScript: |
+                set -e
+                cd src/psql/selfcare/subscription-migrations
+                echo "Validating migrations"
+                ./flyway.sh validate PROD-IO db -ignorePendingMigrations=true && echo "Validation successful" || { echo "Validation failed"; exit 1; }
+                ./flyway.sh info PROD-IO db && echo "Info successful" || { echo "Info failed"; exit 1; }

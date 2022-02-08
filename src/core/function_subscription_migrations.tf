@@ -26,7 +26,7 @@ locals {
       APIM_CLIENT_ID       = data.azurerm_key_vault_secret.selfcare_devportal_service_principal_client_id.value
       APIM_RESOURCE_GROUP  = "io-p-rg-internal"
       APIM_SECRET          = data.azurerm_key_vault_secret.selfcare_devportal_service_principal_secret.value
-      APIM_SERVICE_NAME    = "" // ??? can we read it from somewhere?
+      APIM_SERVICE_NAME    = "io-p-apim-api"
       APIM_SUBSCRIPTION_ID = data.azurerm_subscription.current.subscription_id
       APIM_TENANT_ID       = data.azurerm_client_config.current.tenant_id
 
@@ -37,8 +37,11 @@ locals {
       DB_NAME         = "db"
       DB_SCHEMA       = "SelfcareIOSubscriptionMigrations"
       DB_TABLE        = "migrations"
-      DB_USER         = format("%s@%s", "FNSUBSMIGRATIONS_USER", format("%s.postgres.database.azure.com", format("%s-%s-db-postgresql", local.project, "subsmigrations")))
-      DB_PASSWORD     = data.azurerm_key_vault_secret.subscriptionmigrations_db_server_fnsubsmigrations_password.value
+      DB_USER         = format("%s@%s", data.azurerm_key_vault_secret.subscriptionmigrations_db_server_adm_username.value, format("%s.postgres.database.azure.com", format("%s-%s-db-postgresql", local.project, "subsmigrations")))
+      DB_PASSWORD     = data.azurerm_key_vault_secret.subscriptionmigrations_db_server_adm_password.value
+
+      // job queues
+      QUEUE_ADD_SERVICE_TO_MIGRATIONS = "add-service-jobs" // when a service change is accepted to be processed into migration log
 
     }
 
@@ -145,9 +148,11 @@ module "function_subscriptionmigrations" {
     "private_dns_zone_blob_ids"  = [data.azurerm_private_dns_zone.privatelink_blob_core_windows_net.id],
     "private_dns_zone_queue_ids" = [data.azurerm_private_dns_zone.privatelink_queue_core_windows_net.id],
     "private_dns_zone_table_ids" = [data.azurerm_private_dns_zone.privatelink_table_core_windows_net.id],
-    "queues"                     = [],
-    "containers"                 = [],
-    "blobs_retention_days"       = 1,
+    "queues" = [
+      local.function_subscriptionmigrations.app_settings_commons.QUEUE_ADD_SERVICE_TO_MIGRATIONS
+    ],
+    "containers"           = [],
+    "blobs_retention_days" = 1,
   }
 
   runtime_version   = "~3"
@@ -160,10 +165,7 @@ module "function_subscriptionmigrations" {
     data.azurerm_subnet.azdoa_snet[0].id,
   ]
 
-  app_settings = merge(local.function_subscriptionmigrations.app_settings_commons, {
-    // disable change feed listener until we are ready to start data migration
-    "AzureWebJobs.OnServiceChange.Disabled" = "1"
-  })
+  app_settings = merge(local.function_subscriptionmigrations.app_settings_commons, {})
 
   tags = var.tags
 }
@@ -263,4 +265,12 @@ module "subscriptionmigrations_db_server" {
   lock_enable = var.lock_enable
 
   tags = var.tags
+}
+
+resource "azurerm_postgresql_database" "selfcare_subscriptionmigrations_db" {
+  name                = "db"
+  resource_group_name = local.function_subscriptionmigrations.app_context.resource_group.name
+  server_name         = module.subscriptionmigrations_db_server.name
+  charset             = "UTF8"
+  collation           = "English_United States.1252"
 }
