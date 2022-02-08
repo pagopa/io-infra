@@ -40,6 +40,9 @@ locals {
       DB_USER         = format("%s@%s", data.azurerm_key_vault_secret.subscriptionmigrations_db_server_adm_username.value, format("%s.postgres.database.azure.com", format("%s-%s-db-postgresql", local.project, "subsmigrations")))
       DB_PASSWORD     = data.azurerm_key_vault_secret.subscriptionmigrations_db_server_adm_password.value
 
+      // job queues
+      QUEUE_ADD_SERVICE_TO_MIGRATIONS = "add-service-jobs" // when a service change is accepted to be processed into migration log
+
     }
 
     // As we run this application under SelfCare IO logic subdomain,
@@ -145,9 +148,11 @@ module "function_subscriptionmigrations" {
     "private_dns_zone_blob_ids"  = [data.azurerm_private_dns_zone.privatelink_blob_core_windows_net.id],
     "private_dns_zone_queue_ids" = [data.azurerm_private_dns_zone.privatelink_queue_core_windows_net.id],
     "private_dns_zone_table_ids" = [data.azurerm_private_dns_zone.privatelink_table_core_windows_net.id],
-    "queues"                     = [],
-    "containers"                 = [],
-    "blobs_retention_days"       = 1,
+    "queues" = [
+      local.function_subscriptionmigrations.app_settings_commons.QUEUE_ADD_SERVICE_TO_MIGRATIONS
+    ],
+    "containers"           = [],
+    "blobs_retention_days" = 1,
   }
 
   runtime_version   = "~3"
