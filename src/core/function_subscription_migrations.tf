@@ -165,7 +165,11 @@ module "function_subscriptionmigrations" {
     data.azurerm_subnet.azdoa_snet[0].id,
   ]
 
-  app_settings = merge(local.function_subscriptionmigrations.app_settings_commons, {})
+  app_settings = merge(local.function_subscriptionmigrations.app_settings_commons, {
+    // those are slot configs
+    "AzureWebJobs.OnServiceChange.Disabled"             = "0"
+    "AzureWebJobs.UpsertSubscriptionToMigrate.Disabled" = "0"
+  })
 
   tags = var.tags
 }
