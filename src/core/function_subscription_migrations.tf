@@ -133,7 +133,7 @@ locals {
 }
 
 module "function_subscriptionmigrations" {
-  source = "git::https://github.com/pagopa/azurerm.git//function_app?ref=v2.1.30"
+  source = "git::https://github.com/pagopa/azurerm.git//function_app?ref=v2.1.31"
 
   name                = format("%s-%s-fn", local.project, local.function_subscriptionmigrations.app_context.name)
   location            = local.function_subscriptionmigrations.app_context.resource_group.location
@@ -176,7 +176,7 @@ module "function_subscriptionmigrations" {
 
 
 module "function_subscriptionmigrations_staging_slot" {
-  source = "git::https://github.com/pagopa/azurerm.git//function_app_slot?ref=v2.1.30"
+  source = "git::https://github.com/pagopa/azurerm.git//function_app_slot?ref=v2.1.31"
 
   name                = "staging"
   location            = local.function_subscriptionmigrations.app_context.resource_group.location
