@@ -240,7 +240,7 @@ module "appservice_selfcare_be" {
     JIRA_ORGANIZATION_ID_FIELD = "customfield_10088"
     JIRA_TOKEN                 = data.azurerm_key_vault_secret.selfcare_devportal_jira_token.value
 
-    SUBSCRIPTION_MIGRATIONS_URLN   = format("https://%s.azurewebsites.net/api/v1", module.function_subscriptionmigrations.name) 
+    SUBSCRIPTION_MIGRATIONS_URLN   = format("https://%s.azurewebsites.net/api/v1", module.function_subscriptionmigrations.name)
     SUBSCRIPTION_MIGRATIONS_APIKEY = data.azurerm_key_vault_secret.selfcare_subsmigrations_apikey.value
   }
 
