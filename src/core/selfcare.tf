@@ -107,6 +107,11 @@ data "azurerm_key_vault_secret" "selfcare_devportal_jira_token" {
   key_vault_id = data.azurerm_key_vault.common.id
 }
 
+data "azurerm_key_vault_secret" "selfcare_subsmigrations_apikey" {
+  name         = "devportal-subsmigrations-APIKEY"
+  key_vault_id = data.azurerm_key_vault.common.id
+}
+
 # JWT
 module "selfcare_jwt" {
   source = "git::https://github.com/pagopa/azurerm.git//jwt_keys?ref=v2.0.21"
@@ -234,6 +239,9 @@ module "appservice_selfcare_be" {
     JIRA_EMAIL_ID_FIELD        = "customfield_10084"
     JIRA_ORGANIZATION_ID_FIELD = "customfield_10088"
     JIRA_TOKEN                 = data.azurerm_key_vault_secret.selfcare_devportal_jira_token.value
+
+    SUBSCRIPTION_MIGRATIONS_URLN   = format("https://%s.azurewebsites.net/api/v1", module.function_subscriptionmigrations.name) 
+    SUBSCRIPTION_MIGRATIONS_APIKEY = data.azurerm_key_vault_secret.selfcare_subsmigrations_apikey.value
   }
 
   allowed_subnets = [module.appgateway_snet.id]
