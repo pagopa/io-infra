@@ -423,3 +423,17 @@ variable "selfcare_plan_sku_capacity" {
   type        = number
   default     = 1
 }
+
+
+# legal backup storage
+variable "cgn_legalbackup_account_replication_type" {
+  type        = string
+  description = "Legal backup replication type"
+  default     = "GRS"
+}
+
+variable "cgn_legalbackup_enable_versioning" {
+  type        = bool
+  description = "Enable legal backup versioning"
+  default     = false
+}
