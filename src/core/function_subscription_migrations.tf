@@ -19,7 +19,7 @@ locals {
       COSMOSDB_KEY                       = data.azurerm_cosmosdb_account.cosmos_api.primary_master_key
       COSMOSDB_NAME                      = "db",
       COSMOSDB_SERVICES_COLLECTION       = "services",
-      COSMOSDB_SERVICES_LEASE_COLLECTION = "services-subsmigrations-leases-001",
+      COSMOSDB_SERVICES_LEASE_COLLECTION = "services-subsmigrations-leases-002",
       COSMOSDB_URI                       = data.azurerm_cosmosdb_account.cosmos_api.endpoint
 
       // connection to APIM
@@ -133,7 +133,7 @@ locals {
 }
 
 module "function_subscriptionmigrations" {
-  source = "git::https://github.com/pagopa/azurerm.git//function_app?ref=v2.1.11"
+  source = "git::https://github.com/pagopa/azurerm.git//function_app?ref=v2.1.31"
 
   name                = format("%s-%s-fn", local.project, local.function_subscriptionmigrations.app_context.name)
   location            = local.function_subscriptionmigrations.app_context.resource_group.location
@@ -165,14 +165,18 @@ module "function_subscriptionmigrations" {
     data.azurerm_subnet.azdoa_snet[0].id,
   ]
 
-  app_settings = merge(local.function_subscriptionmigrations.app_settings_commons, {})
+  app_settings = merge(local.function_subscriptionmigrations.app_settings_commons, {
+    // those are slot configs
+    "AzureWebJobs.OnServiceChange.Disabled"             = "0"
+    "AzureWebJobs.UpsertSubscriptionToMigrate.Disabled" = "0"
+  })
 
   tags = var.tags
 }
 
 
 module "function_subscriptionmigrations_staging_slot" {
-  source = "git::https://github.com/pagopa/azurerm.git//function_app_slot?ref=v2.1.14"
+  source = "git::https://github.com/pagopa/azurerm.git//function_app_slot?ref=v2.1.31"
 
   name                = "staging"
   location            = local.function_subscriptionmigrations.app_context.resource_group.location
@@ -200,8 +204,9 @@ module "function_subscriptionmigrations_staging_slot" {
   ]
 
   app_settings = merge(local.function_subscriptionmigrations.app_settings_commons, {
-    // disable change feed listener on staging slot
-    "AzureWebJobs.OnServiceChange.Disabled" = "1"
+    // disable listeners on staging slot
+    "AzureWebJobs.OnServiceChange.Disabled"             = "1"
+    "AzureWebJobs.UpsertSubscriptionToMigrate.Disabled" = "1"
   })
 
   tags = var.tags

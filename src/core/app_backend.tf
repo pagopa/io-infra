@@ -75,9 +75,11 @@ locals {
       ALLOW_SESSION_HANDLER_IP_SOURCE_RANGE = data.azurerm_subnet.fnapp_admin_subnet_out.address_prefixes[0]
 
       // PAGOPA
-      PAGOPA_API_URL_PROD          = "https://${data.azurerm_app_service.pagopa_proxy_prod.default_site_hostname}"
-      PAGOPA_API_URL_TEST          = "https://${data.azurerm_app_service.pagopa_proxy_test.default_site_hostname}"
+      PAGOPA_API_URL_PROD          = "https://${data.azurerm_app_service.pagopa_proxy_prod.default_site_hostname}" # change me for new pagoPA proxy
+      PAGOPA_API_URL_TEST          = "https://${data.azurerm_app_service.pagopa_proxy_test.default_site_hostname}" # change me for new pagoPA proxy
       PAGOPA_BASE_PATH             = "/pagopa/api/v1"
+      PAGOPA_API_KEY_PROD          = data.azurerm_key_vault_secret.app_backend_PAGOPA_API_KEY_PROD.value
+      PAGOPA_API_KEY_UAT           = data.azurerm_key_vault_secret.app_backend_PAGOPA_API_KEY_UAT.value
       ALLOW_PAGOPA_IP_SOURCE_RANGE = data.azurerm_key_vault_secret.app_backend_ALLOW_PAGOPA_IP_SOURCE_RANGE.value
 
       // MYPORTAL
@@ -241,6 +243,16 @@ data "azurerm_key_vault_secret" "app_backend_PRE_SHARED_KEY" {
 
 data "azurerm_key_vault_secret" "app_backend_ALLOW_PAGOPA_IP_SOURCE_RANGE" {
   name         = "appbackend-ALLOW-PAGOPA-IP-SOURCE-RANGE"
+  key_vault_id = data.azurerm_key_vault.common.id
+}
+
+data "azurerm_key_vault_secret" "app_backend_PAGOPA_API_KEY_PROD" {
+  name         = "appbackend-PAGOPA-API-KEY-PROD-PRIMARY"
+  key_vault_id = data.azurerm_key_vault.common.id
+}
+
+data "azurerm_key_vault_secret" "app_backend_PAGOPA_API_KEY_UAT" {
+  name         = "appbackend-PAGOPA-API-KEY-UAT-PRIMARY"
   key_vault_id = data.azurerm_key_vault.common.id
 }
 
