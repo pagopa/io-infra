@@ -2,81 +2,89 @@
 
 | Name | Version |
 |------|---------|
-| <a name="requirement_azuread"></a> [azuread](#requirement\_azuread) | = 2.3.0 |
+| <a name="requirement_azuread"></a> [azuread](#requirement\_azuread) | = 2.16.0 |
 | <a name="requirement_azurerm"></a> [azurerm](#requirement\_azurerm) | = 2.87.0 |
 
 ## Providers
 
 | Name | Version |
 |------|---------|
-| <a name="provider_azuread"></a> [azuread](#provider\_azuread) | 2.3.0 |
-| <a name="provider_azurerm"></a> [azurerm](#provider\_azurerm) | 2.87.0 |
-| <a name="provider_http"></a> [http](#provider\_http) | 2.1.0 |
-| <a name="provider_local"></a> [local](#provider\_local) | 2.1.0 |
-| <a name="provider_null"></a> [null](#provider\_null) | 3.1.0 |
+| <a name="provider_azuread"></a> [azuread](#provider\_azuread) | = 2.16.0 |
+| <a name="provider_azurerm"></a> [azurerm](#provider\_azurerm) | = 2.87.0 |
+| <a name="provider_http"></a> [http](#provider\_http) | n/a |
+| <a name="provider_local"></a> [local](#provider\_local) | n/a |
+| <a name="provider_null"></a> [null](#provider\_null) | n/a |
+| <a name="provider_time"></a> [time](#provider\_time) | n/a |
 
 ## Modules
 
 | Name | Source | Version |
 |------|--------|---------|
-| <a name="module_apim"></a> [apim](#module\_apim) | git::https://github.com/pagopa/azurerm.git//api_management | v1.0.74 |
-| <a name="module_apim_io_backend_app_api_v1"></a> [apim\_io\_backend\_app\_api\_v1](#module\_apim\_io\_backend\_app\_api\_v1) | git::https://github.com/pagopa/azurerm.git//api_management_api | v1.0.16 |
-| <a name="module_apim_io_backend_auth_api_v1"></a> [apim\_io\_backend\_auth\_api\_v1](#module\_apim\_io\_backend\_auth\_api\_v1) | git::https://github.com/pagopa/azurerm.git//api_management_api | v1.0.16 |
-| <a name="module_apim_io_backend_bonus_api_v1"></a> [apim\_io\_backend\_bonus\_api\_v1](#module\_apim\_io\_backend\_bonus\_api\_v1) | git::https://github.com/pagopa/azurerm.git//api_management_api | v1.0.16 |
-| <a name="module_apim_io_backend_bpd_api_v1"></a> [apim\_io\_backend\_bpd\_api\_v1](#module\_apim\_io\_backend\_bpd\_api\_v1) | git::https://github.com/pagopa/azurerm.git//api_management_api | v1.0.16 |
-| <a name="module_apim_io_backend_cgn_api_v1"></a> [apim\_io\_backend\_cgn\_api\_v1](#module\_apim\_io\_backend\_cgn\_api\_v1) | git::https://github.com/pagopa/azurerm.git//api_management_api | v1.0.16 |
-| <a name="module_apim_io_backend_eucovidcert_api_v1"></a> [apim\_io\_backend\_eucovidcert\_api\_v1](#module\_apim\_io\_backend\_eucovidcert\_api\_v1) | git::https://github.com/pagopa/azurerm.git//api_management_api | v1.0.16 |
-| <a name="module_apim_io_backend_mitvoucher_api_v1"></a> [apim\_io\_backend\_mitvoucher\_api\_v1](#module\_apim\_io\_backend\_mitvoucher\_api\_v1) | git::https://github.com/pagopa/azurerm.git//api_management_api | v1.0.16 |
-| <a name="module_apim_io_backend_myportal_api_v1"></a> [apim\_io\_backend\_myportal\_api\_v1](#module\_apim\_io\_backend\_myportal\_api\_v1) | git::https://github.com/pagopa/azurerm.git//api_management_api | v1.0.16 |
-| <a name="module_apim_io_backend_notifications_api_v1"></a> [apim\_io\_backend\_notifications\_api\_v1](#module\_apim\_io\_backend\_notifications\_api\_v1) | git::https://github.com/pagopa/azurerm.git//api_management_api | v1.0.16 |
-| <a name="module_apim_io_backend_pagopa_api_v1"></a> [apim\_io\_backend\_pagopa\_api\_v1](#module\_apim\_io\_backend\_pagopa\_api\_v1) | git::https://github.com/pagopa/azurerm.git//api_management_api | v1.0.16 |
-| <a name="module_apim_io_backend_product"></a> [apim\_io\_backend\_product](#module\_apim\_io\_backend\_product) | git::https://github.com/pagopa/azurerm.git//api_management_product | v1.0.16 |
-| <a name="module_apim_io_backend_public_api_v1"></a> [apim\_io\_backend\_public\_api\_v1](#module\_apim\_io\_backend\_public\_api\_v1) | git::https://github.com/pagopa/azurerm.git//api_management_api | v1.0.16 |
-| <a name="module_apim_io_backend_session_api_v1"></a> [apim\_io\_backend\_session\_api\_v1](#module\_apim\_io\_backend\_session\_api\_v1) | git::https://github.com/pagopa/azurerm.git//api_management_api | v1.0.16 |
-| <a name="module_apim_snet"></a> [apim\_snet](#module\_apim\_snet) | git::https://github.com/pagopa/azurerm.git//subnet | v1.0.51 |
-| <a name="module_app_backend_web_test_api"></a> [app\_backend\_web\_test\_api](#module\_app\_backend\_web\_test\_api) | git::https://github.com/pagopa/azurerm.git//application_insights_web_test_preview | v2.0.17 |
-| <a name="module_app_backendl1_snet"></a> [app\_backendl1\_snet](#module\_app\_backendl1\_snet) | git::https://github.com/pagopa/azurerm.git//subnet | v2.0.28 |
-| <a name="module_app_backendl2_snet"></a> [app\_backendl2\_snet](#module\_app\_backendl2\_snet) | git::https://github.com/pagopa/azurerm.git//subnet | v2.0.28 |
-| <a name="module_app_backendli_snet"></a> [app\_backendli\_snet](#module\_app\_backendli\_snet) | git::https://github.com/pagopa/azurerm.git//subnet | v2.0.28 |
-| <a name="module_app_gw"></a> [app\_gw](#module\_app\_gw) | git::https://github.com/pagopa/azurerm.git//app_gateway | v2.0.9 |
-| <a name="module_appgateway_snet"></a> [appgateway\_snet](#module\_appgateway\_snet) | git::https://github.com/pagopa/azurerm.git//subnet | v1.0.51 |
-| <a name="module_appservice_app_backendl1"></a> [appservice\_app\_backendl1](#module\_appservice\_app\_backendl1) | git::https://github.com/pagopa/azurerm.git//app_service | v2.0.28 |
-| <a name="module_appservice_app_backendl1_slot_staging"></a> [appservice\_app\_backendl1\_slot\_staging](#module\_appservice\_app\_backendl1\_slot\_staging) | git::https://github.com/pagopa/azurerm.git//app_service_slot | v2.0.28 |
-| <a name="module_appservice_app_backendl2"></a> [appservice\_app\_backendl2](#module\_appservice\_app\_backendl2) | git::https://github.com/pagopa/azurerm.git//app_service | v2.0.28 |
-| <a name="module_appservice_app_backendl2_slot_staging"></a> [appservice\_app\_backendl2\_slot\_staging](#module\_appservice\_app\_backendl2\_slot\_staging) | git::https://github.com/pagopa/azurerm.git//app_service_slot | v2.0.28 |
-| <a name="module_appservice_app_backendli"></a> [appservice\_app\_backendli](#module\_appservice\_app\_backendli) | git::https://github.com/pagopa/azurerm.git//app_service | v2.0.28 |
-| <a name="module_appservice_app_backendli_slot_staging"></a> [appservice\_app\_backendli\_slot\_staging](#module\_appservice\_app\_backendli\_slot\_staging) | git::https://github.com/pagopa/azurerm.git//app_service_slot | v2.0.28 |
-| <a name="module_appservice_devportal_be"></a> [appservice\_devportal\_be](#module\_appservice\_devportal\_be) | git::https://github.com/pagopa/azurerm.git//app_service | v2.0.13 |
-| <a name="module_appservice_selfcare_be"></a> [appservice\_selfcare\_be](#module\_appservice\_selfcare\_be) | git::https://github.com/pagopa/azurerm.git//app_service | v2.0.13 |
-| <a name="module_azdoa_li"></a> [azdoa\_li](#module\_azdoa\_li) | git::https://github.com/pagopa/azurerm.git//azure_devops_agent | v1.0.57 |
-| <a name="module_cgn_cosmos_db"></a> [cgn\_cosmos\_db](#module\_cgn\_cosmos\_db) | git::https://github.com/pagopa/azurerm.git//cosmosdb_sql_database | v2.1.7 |
-| <a name="module_cosmos_cgn"></a> [cosmos\_cgn](#module\_cosmos\_cgn) | git::https://github.com/pagopa/azurerm.git//cosmosdb_account | v2.1.1 |
-| <a name="module_dns_forwarder_snet"></a> [dns\_forwarder\_snet](#module\_dns\_forwarder\_snet) | git::https://github.com/pagopa/azurerm.git//subnet | v1.0.7 |
-| <a name="module_event_hub"></a> [event\_hub](#module\_event\_hub) | git::https://github.com/pagopa/azurerm.git//eventhub | v1.0.66 |
-| <a name="module_eventhub_snet"></a> [eventhub\_snet](#module\_eventhub\_snet) | git::https://github.com/pagopa/azurerm.git//subnet | v1.0.7 |
-| <a name="module_function_elt"></a> [function\_elt](#module\_function\_elt) | git::https://github.com/pagopa/azurerm.git//function_app | v1.0.65 |
-| <a name="module_function_elt_snetout"></a> [function\_elt\_snetout](#module\_function\_elt\_snetout) | git::https://github.com/pagopa/azurerm.git//subnet | v1.0.60 |
-| <a name="module_function_pblevtdispatcher"></a> [function\_pblevtdispatcher](#module\_function\_pblevtdispatcher) | git::https://github.com/pagopa/azurerm.git//function_app | v1.0.65 |
-| <a name="module_function_pblevtdispatcher_snetout"></a> [function\_pblevtdispatcher\_snetout](#module\_function\_pblevtdispatcher\_snetout) | git::https://github.com/pagopa/azurerm.git//subnet | v1.0.60 |
-| <a name="module_function_subscriptionmigrations"></a> [function\_subscriptionmigrations](#module\_function\_subscriptionmigrations) | git::https://github.com/pagopa/azurerm.git//function_app | v2.1.11 |
-| <a name="module_function_subscriptionmigrations_staging_slot"></a> [function\_subscriptionmigrations\_staging\_slot](#module\_function\_subscriptionmigrations\_staging\_slot) | git::https://github.com/pagopa/azurerm.git//function_app_slot | v2.1.11 |
-| <a name="module_io_apist_replica"></a> [io\_apist\_replica](#module\_io\_apist\_replica) | git::https://github.com/pagopa/azurerm.git//storage_object_replication | v2.0.6 |
-| <a name="module_key_vault"></a> [key\_vault](#module\_key\_vault) | git::https://github.com/pagopa/azurerm.git//key_vault | v2.0.2 |
-| <a name="module_redis_cgn"></a> [redis\_cgn](#module\_redis\_cgn) | git::https://github.com/pagopa/azurerm.git//redis_cache | v2.0.26 |
-| <a name="module_redis_cgn_snet"></a> [redis\_cgn\_snet](#module\_redis\_cgn\_snet) | git::https://github.com/pagopa/azurerm.git//subnet | v2.0.26 |
-| <a name="module_selfcare_be_common_snet"></a> [selfcare\_be\_common\_snet](#module\_selfcare\_be\_common\_snet) | git::https://github.com/pagopa/azurerm.git//subnet | v1.0.51 |
-| <a name="module_selfcare_cdn"></a> [selfcare\_cdn](#module\_selfcare\_cdn) | git::https://github.com/pagopa/azurerm.git//cdn | v2.0.18 |
-| <a name="module_selfcare_jwt"></a> [selfcare\_jwt](#module\_selfcare\_jwt) | git::https://github.com/pagopa/azurerm.git//jwt_keys | v2.0.21 |
-| <a name="module_storage_account_elt"></a> [storage\_account\_elt](#module\_storage\_account\_elt) | git::https://github.com/pagopa/azurerm.git//storage_account | v1.0.60 |
-| <a name="module_storage_account_pblevtdispatcher"></a> [storage\_account\_pblevtdispatcher](#module\_storage\_account\_pblevtdispatcher) | git::https://github.com/pagopa/azurerm.git//storage_account | v1.0.60 |
-| <a name="module_vpn"></a> [vpn](#module\_vpn) | git::https://github.com/pagopa/azurerm.git//vpn_gateway | v1.0.36 |
-| <a name="module_vpn_snet"></a> [vpn\_snet](#module\_vpn\_snet) | git::https://github.com/pagopa/azurerm.git//subnet | v1.0.58 |
-| <a name="module_web_test_api"></a> [web\_test\_api](#module\_web\_test\_api) | git::https://github.com/pagopa/azurerm.git//application_insights_web_test_preview | v2.0.17 |
+| <a name="module_api_cgn_merchant"></a> [api\_cgn\_merchant](#module\_api\_cgn\_merchant) | git::https://github.com/pagopa/azurerm.git//api_management_api?ref=v2.1.19 |  |
+| <a name="module_apim"></a> [apim](#module\_apim) | git::https://github.com/pagopa/azurerm.git//api_management?ref=v1.0.74 |  |
+| <a name="module_apim_io_backend_app_api_v1"></a> [apim\_io\_backend\_app\_api\_v1](#module\_apim\_io\_backend\_app\_api\_v1) | git::https://github.com/pagopa/azurerm.git//api_management_api?ref=v1.0.16 |  |
+| <a name="module_apim_io_backend_auth_api_v1"></a> [apim\_io\_backend\_auth\_api\_v1](#module\_apim\_io\_backend\_auth\_api\_v1) | git::https://github.com/pagopa/azurerm.git//api_management_api?ref=v1.0.16 |  |
+| <a name="module_apim_io_backend_bonus_api_v1"></a> [apim\_io\_backend\_bonus\_api\_v1](#module\_apim\_io\_backend\_bonus\_api\_v1) | git::https://github.com/pagopa/azurerm.git//api_management_api?ref=v1.0.16 |  |
+| <a name="module_apim_io_backend_bpd_api_v1"></a> [apim\_io\_backend\_bpd\_api\_v1](#module\_apim\_io\_backend\_bpd\_api\_v1) | git::https://github.com/pagopa/azurerm.git//api_management_api?ref=v1.0.16 |  |
+| <a name="module_apim_io_backend_cgn_api_v1"></a> [apim\_io\_backend\_cgn\_api\_v1](#module\_apim\_io\_backend\_cgn\_api\_v1) | git::https://github.com/pagopa/azurerm.git//api_management_api?ref=v1.0.16 |  |
+| <a name="module_apim_io_backend_eucovidcert_api_v1"></a> [apim\_io\_backend\_eucovidcert\_api\_v1](#module\_apim\_io\_backend\_eucovidcert\_api\_v1) | git::https://github.com/pagopa/azurerm.git//api_management_api?ref=v1.0.16 |  |
+| <a name="module_apim_io_backend_mitvoucher_api_v1"></a> [apim\_io\_backend\_mitvoucher\_api\_v1](#module\_apim\_io\_backend\_mitvoucher\_api\_v1) | git::https://github.com/pagopa/azurerm.git//api_management_api?ref=v1.0.16 |  |
+| <a name="module_apim_io_backend_myportal_api_v1"></a> [apim\_io\_backend\_myportal\_api\_v1](#module\_apim\_io\_backend\_myportal\_api\_v1) | git::https://github.com/pagopa/azurerm.git//api_management_api?ref=v1.0.16 |  |
+| <a name="module_apim_io_backend_notifications_api_v1"></a> [apim\_io\_backend\_notifications\_api\_v1](#module\_apim\_io\_backend\_notifications\_api\_v1) | git::https://github.com/pagopa/azurerm.git//api_management_api?ref=v1.0.16 |  |
+| <a name="module_apim_io_backend_pagopa_api_v1"></a> [apim\_io\_backend\_pagopa\_api\_v1](#module\_apim\_io\_backend\_pagopa\_api\_v1) | git::https://github.com/pagopa/azurerm.git//api_management_api?ref=v1.0.16 |  |
+| <a name="module_apim_io_backend_product"></a> [apim\_io\_backend\_product](#module\_apim\_io\_backend\_product) | git::https://github.com/pagopa/azurerm.git//api_management_product?ref=v1.0.16 |  |
+| <a name="module_apim_io_backend_public_api_v1"></a> [apim\_io\_backend\_public\_api\_v1](#module\_apim\_io\_backend\_public\_api\_v1) | git::https://github.com/pagopa/azurerm.git//api_management_api?ref=v1.0.16 |  |
+| <a name="module_apim_io_backend_session_api_v1"></a> [apim\_io\_backend\_session\_api\_v1](#module\_apim\_io\_backend\_session\_api\_v1) | git::https://github.com/pagopa/azurerm.git//api_management_api?ref=v1.0.16 |  |
+| <a name="module_apim_product_merchant"></a> [apim\_product\_merchant](#module\_apim\_product\_merchant) | git::https://github.com/pagopa/azurerm.git//api_management_product?ref=v2.1.20 |  |
+| <a name="module_apim_snet"></a> [apim\_snet](#module\_apim\_snet) | git::https://github.com/pagopa/azurerm.git//subnet?ref=v1.0.51 |  |
+| <a name="module_app_backend_web_test_api"></a> [app\_backend\_web\_test\_api](#module\_app\_backend\_web\_test\_api) | git::https://github.com/pagopa/azurerm.git//application_insights_web_test_preview?ref=v2.0.17 |  |
+| <a name="module_app_backendl1_snet"></a> [app\_backendl1\_snet](#module\_app\_backendl1\_snet) | git::https://github.com/pagopa/azurerm.git//subnet?ref=v2.0.28 |  |
+| <a name="module_app_backendl2_snet"></a> [app\_backendl2\_snet](#module\_app\_backendl2\_snet) | git::https://github.com/pagopa/azurerm.git//subnet?ref=v2.0.28 |  |
+| <a name="module_app_backendli_snet"></a> [app\_backendli\_snet](#module\_app\_backendli\_snet) | git::https://github.com/pagopa/azurerm.git//subnet?ref=v2.0.28 |  |
+| <a name="module_app_gw"></a> [app\_gw](#module\_app\_gw) | git::https://github.com/pagopa/azurerm.git//app_gateway?ref=v2.0.9 |  |
+| <a name="module_appgateway_snet"></a> [appgateway\_snet](#module\_appgateway\_snet) | git::https://github.com/pagopa/azurerm.git//subnet?ref=v1.0.51 |  |
+| <a name="module_appservice_app_backendl1"></a> [appservice\_app\_backendl1](#module\_appservice\_app\_backendl1) | git::https://github.com/pagopa/azurerm.git//app_service?ref=v2.0.28 |  |
+| <a name="module_appservice_app_backendl1_slot_staging"></a> [appservice\_app\_backendl1\_slot\_staging](#module\_appservice\_app\_backendl1\_slot\_staging) | git::https://github.com/pagopa/azurerm.git//app_service_slot?ref=v2.0.28 |  |
+| <a name="module_appservice_app_backendl2"></a> [appservice\_app\_backendl2](#module\_appservice\_app\_backendl2) | git::https://github.com/pagopa/azurerm.git//app_service?ref=v2.0.28 |  |
+| <a name="module_appservice_app_backendl2_slot_staging"></a> [appservice\_app\_backendl2\_slot\_staging](#module\_appservice\_app\_backendl2\_slot\_staging) | git::https://github.com/pagopa/azurerm.git//app_service_slot?ref=v2.0.28 |  |
+| <a name="module_appservice_app_backendli"></a> [appservice\_app\_backendli](#module\_appservice\_app\_backendli) | git::https://github.com/pagopa/azurerm.git//app_service?ref=v2.0.28 |  |
+| <a name="module_appservice_app_backendli_slot_staging"></a> [appservice\_app\_backendli\_slot\_staging](#module\_appservice\_app\_backendli\_slot\_staging) | git::https://github.com/pagopa/azurerm.git//app_service_slot?ref=v2.0.28 |  |
+| <a name="module_appservice_devportal_be"></a> [appservice\_devportal\_be](#module\_appservice\_devportal\_be) | git::https://github.com/pagopa/azurerm.git//app_service?ref=v2.0.13 |  |
+| <a name="module_appservice_selfcare_be"></a> [appservice\_selfcare\_be](#module\_appservice\_selfcare\_be) | git::https://github.com/pagopa/azurerm.git//app_service?ref=v2.0.13 |  |
+| <a name="module_azdoa_li"></a> [azdoa\_li](#module\_azdoa\_li) | git::https://github.com/pagopa/azurerm.git//azure_devops_agent?ref=v1.0.57 |  |
+| <a name="module_cgn_cosmos_db"></a> [cgn\_cosmos\_db](#module\_cgn\_cosmos\_db) | git::https://github.com/pagopa/azurerm.git//cosmosdb_sql_database?ref=v2.1.15 |  |
+| <a name="module_cgn_legalbackup_storage"></a> [cgn\_legalbackup\_storage](#module\_cgn\_legalbackup\_storage) | git::https://github.com/pagopa/azurerm.git//storage_account?ref=v1.0.79 |  |
+| <a name="module_cosmos_cgn"></a> [cosmos\_cgn](#module\_cosmos\_cgn) | git::https://github.com/pagopa/azurerm.git//cosmosdb_account?ref=v2.1.18 |  |
+| <a name="module_dns_forwarder_snet"></a> [dns\_forwarder\_snet](#module\_dns\_forwarder\_snet) | git::https://github.com/pagopa/azurerm.git//subnet?ref=v1.0.7 |  |
+| <a name="module_event_hub"></a> [event\_hub](#module\_event\_hub) | git::https://github.com/pagopa/azurerm.git//eventhub?ref=v1.0.66 |  |
+| <a name="module_eventhub_snet"></a> [eventhub\_snet](#module\_eventhub\_snet) | git::https://github.com/pagopa/azurerm.git//subnet?ref=v1.0.7 |  |
+| <a name="module_function_elt"></a> [function\_elt](#module\_function\_elt) | git::https://github.com/pagopa/azurerm.git//function_app?ref=v1.0.65 |  |
+| <a name="module_function_elt_snetout"></a> [function\_elt\_snetout](#module\_function\_elt\_snetout) | git::https://github.com/pagopa/azurerm.git//subnet?ref=v1.0.60 |  |
+| <a name="module_function_pblevtdispatcher"></a> [function\_pblevtdispatcher](#module\_function\_pblevtdispatcher) | git::https://github.com/pagopa/azurerm.git//function_app?ref=v1.0.65 |  |
+| <a name="module_function_pblevtdispatcher_snetout"></a> [function\_pblevtdispatcher\_snetout](#module\_function\_pblevtdispatcher\_snetout) | git::https://github.com/pagopa/azurerm.git//subnet?ref=v1.0.60 |  |
+| <a name="module_function_subscriptionmigrations"></a> [function\_subscriptionmigrations](#module\_function\_subscriptionmigrations) | git::https://github.com/pagopa/azurerm.git//function_app?ref=v2.1.11 |  |
+| <a name="module_function_subscriptionmigrations_staging_slot"></a> [function\_subscriptionmigrations\_staging\_slot](#module\_function\_subscriptionmigrations\_staging\_slot) | git::https://github.com/pagopa/azurerm.git//function_app_slot?ref=v2.1.14 |  |
+| <a name="module_io_apist_replica"></a> [io\_apist\_replica](#module\_io\_apist\_replica) | git::https://github.com/pagopa/azurerm.git//storage_object_replication?ref=v2.0.6 |  |
+| <a name="module_key_vault"></a> [key\_vault](#module\_key\_vault) | git::https://github.com/pagopa/azurerm.git//key_vault?ref=v2.0.2 |  |
+| <a name="module_redis_cgn"></a> [redis\_cgn](#module\_redis\_cgn) | git::https://github.com/pagopa/azurerm.git//redis_cache?ref=v2.0.26 |  |
+| <a name="module_redis_cgn_snet"></a> [redis\_cgn\_snet](#module\_redis\_cgn\_snet) | git::https://github.com/pagopa/azurerm.git//subnet?ref=v2.0.26 |  |
+| <a name="module_selfcare_be_common_snet"></a> [selfcare\_be\_common\_snet](#module\_selfcare\_be\_common\_snet) | git::https://github.com/pagopa/azurerm.git//subnet?ref=v1.0.51 |  |
+| <a name="module_selfcare_cdn"></a> [selfcare\_cdn](#module\_selfcare\_cdn) | git::https://github.com/pagopa/azurerm.git//cdn?ref=v2.0.18 |  |
+| <a name="module_selfcare_jwt"></a> [selfcare\_jwt](#module\_selfcare\_jwt) | git::https://github.com/pagopa/azurerm.git//jwt_keys?ref=v2.0.21 |  |
+| <a name="module_storage_account_elt"></a> [storage\_account\_elt](#module\_storage\_account\_elt) | git::https://github.com/pagopa/azurerm.git//storage_account?ref=v1.0.60 |  |
+| <a name="module_storage_account_pblevtdispatcher"></a> [storage\_account\_pblevtdispatcher](#module\_storage\_account\_pblevtdispatcher) | git::https://github.com/pagopa/azurerm.git//storage_account?ref=v1.0.60 |  |
+| <a name="module_subscriptionmigrations_db_server"></a> [subscriptionmigrations\_db\_server](#module\_subscriptionmigrations\_db\_server) | git::https://github.com/pagopa/azurerm.git//postgresql_server?ref=v2.1.20 |  |
+| <a name="module_vpn"></a> [vpn](#module\_vpn) | git::https://github.com/pagopa/azurerm.git//vpn_gateway?ref=v1.0.36 |  |
+| <a name="module_vpn_snet"></a> [vpn\_snet](#module\_vpn\_snet) | git::https://github.com/pagopa/azurerm.git//subnet?ref=v1.0.58 |  |
+| <a name="module_web_test_api"></a> [web\_test\_api](#module\_web\_test\_api) | git::https://github.com/pagopa/azurerm.git//application_insights_web_test_preview?ref=v2.0.17 |  |
 
 ## Resources
 
 | Name | Type |
 |------|------|
+| [azuread_application.cgn_onboarding_portal](https://registry.terraform.io/providers/hashicorp/azuread/2.16.0/docs/resources/application) | resource |
+| [azuread_application_password.cgn_onboarding_portal](https://registry.terraform.io/providers/hashicorp/azuread/2.16.0/docs/resources/application_password) | resource |
+| [azuread_service_principal.cgn_onboarding_portal](https://registry.terraform.io/providers/hashicorp/azuread/2.16.0/docs/resources/service_principal) | resource |
 | [azurerm_api_management_api_version_set.io_backend_app_api](https://registry.terraform.io/providers/hashicorp/azurerm/2.87.0/docs/resources/api_management_api_version_set) | resource |
 | [azurerm_api_management_api_version_set.io_backend_auth_api](https://registry.terraform.io/providers/hashicorp/azurerm/2.87.0/docs/resources/api_management_api_version_set) | resource |
 | [azurerm_api_management_api_version_set.io_backend_bonus_api](https://registry.terraform.io/providers/hashicorp/azurerm/2.87.0/docs/resources/api_management_api_version_set) | resource |
@@ -121,6 +129,9 @@
 | [azurerm_key_vault_access_policy.cdn_kv](https://registry.terraform.io/providers/hashicorp/azurerm/2.87.0/docs/resources/key_vault_access_policy) | resource |
 | [azurerm_key_vault_access_policy.common](https://registry.terraform.io/providers/hashicorp/azurerm/2.87.0/docs/resources/key_vault_access_policy) | resource |
 | [azurerm_key_vault_access_policy.policy_common_admin](https://registry.terraform.io/providers/hashicorp/azurerm/2.87.0/docs/resources/key_vault_access_policy) | resource |
+| [azurerm_key_vault_secret.cgn_legalbackup_storage_access_key](https://registry.terraform.io/providers/hashicorp/azurerm/2.87.0/docs/resources/key_vault_secret) | resource |
+| [azurerm_key_vault_secret.cgn_legalbackup_storage_blob_connection_string](https://registry.terraform.io/providers/hashicorp/azurerm/2.87.0/docs/resources/key_vault_secret) | resource |
+| [azurerm_key_vault_secret.cgn_legalbackup_storage_connection_string](https://registry.terraform.io/providers/hashicorp/azurerm/2.87.0/docs/resources/key_vault_secret) | resource |
 | [azurerm_key_vault_secret.event_hub_keys](https://registry.terraform.io/providers/hashicorp/azurerm/2.87.0/docs/resources/key_vault_secret) | resource |
 | [azurerm_monitor_action_group.email](https://registry.terraform.io/providers/hashicorp/azurerm/2.87.0/docs/resources/monitor_action_group) | resource |
 | [azurerm_monitor_action_group.slack](https://registry.terraform.io/providers/hashicorp/azurerm/2.87.0/docs/resources/monitor_action_group) | resource |
@@ -131,9 +142,12 @@
 | [azurerm_network_profile.dns_forwarder](https://registry.terraform.io/providers/hashicorp/azurerm/2.87.0/docs/resources/network_profile) | resource |
 | [azurerm_private_dns_a_record.api_app_internal_io](https://registry.terraform.io/providers/hashicorp/azurerm/2.87.0/docs/resources/private_dns_a_record) | resource |
 | [azurerm_private_dns_zone.internal_io_pagopa_it](https://registry.terraform.io/providers/hashicorp/azurerm/2.87.0/docs/resources/private_dns_zone) | resource |
+| [azurerm_private_dns_zone.privatelink_postgres_database_azure_com](https://registry.terraform.io/providers/hashicorp/azurerm/2.87.0/docs/resources/private_dns_zone) | resource |
 | [azurerm_private_dns_zone.privatelink_redis_cache](https://registry.terraform.io/providers/hashicorp/azurerm/2.87.0/docs/resources/private_dns_zone) | resource |
 | [azurerm_private_dns_zone_virtual_network_link.internal_io_pagopa_it_private_vnet_common](https://registry.terraform.io/providers/hashicorp/azurerm/2.87.0/docs/resources/private_dns_zone_virtual_network_link) | resource |
+| [azurerm_private_dns_zone_virtual_network_link.privatelink_postgres_database_azure_com_vnet_common](https://registry.terraform.io/providers/hashicorp/azurerm/2.87.0/docs/resources/private_dns_zone_virtual_network_link) | resource |
 | [azurerm_private_dns_zone_virtual_network_link.redis_private_vnet_common](https://registry.terraform.io/providers/hashicorp/azurerm/2.87.0/docs/resources/private_dns_zone_virtual_network_link) | resource |
+| [azurerm_private_endpoint.cgn_legalbackup_storage](https://registry.terraform.io/providers/hashicorp/azurerm/2.87.0/docs/resources/private_endpoint) | resource |
 | [azurerm_public_ip.appgateway_public_ip](https://registry.terraform.io/providers/hashicorp/azurerm/2.87.0/docs/resources/public_ip) | resource |
 | [azurerm_resource_group.azdo_rg](https://registry.terraform.io/providers/hashicorp/azurerm/2.87.0/docs/resources/resource_group) | resource |
 | [azurerm_resource_group.data](https://registry.terraform.io/providers/hashicorp/azurerm/2.87.0/docs/resources/resource_group) | resource |
@@ -149,7 +163,9 @@
 | [azurerm_resource_group.sec_rg](https://registry.terraform.io/providers/hashicorp/azurerm/2.87.0/docs/resources/resource_group) | resource |
 | [azurerm_resource_group.selfcare_be_rg](https://registry.terraform.io/providers/hashicorp/azurerm/2.87.0/docs/resources/resource_group) | resource |
 | [azurerm_resource_group.selfcare_fe_rg](https://registry.terraform.io/providers/hashicorp/azurerm/2.87.0/docs/resources/resource_group) | resource |
+| [azurerm_role_assignment.service_contributor](https://registry.terraform.io/providers/hashicorp/azurerm/2.87.0/docs/resources/role_assignment) | resource |
 | [azurerm_storage_account.dns_forwarder](https://registry.terraform.io/providers/hashicorp/azurerm/2.87.0/docs/resources/storage_account) | resource |
+| [azurerm_storage_container.cgn_legalbackup_container](https://registry.terraform.io/providers/hashicorp/azurerm/2.87.0/docs/resources/storage_container) | resource |
 | [azurerm_storage_container.container_messages_report_step1](https://registry.terraform.io/providers/hashicorp/azurerm/2.87.0/docs/resources/storage_container) | resource |
 | [azurerm_storage_container.container_messages_report_step_final](https://registry.terraform.io/providers/hashicorp/azurerm/2.87.0/docs/resources/storage_container) | resource |
 | [azurerm_storage_queue.storage_account_apievents_events_queue](https://registry.terraform.io/providers/hashicorp/azurerm/2.87.0/docs/resources/storage_queue) | resource |
@@ -161,13 +177,14 @@
 | [azurerm_user_assigned_identity.appgateway](https://registry.terraform.io/providers/hashicorp/azurerm/2.87.0/docs/resources/user_assigned_identity) | resource |
 | [azurerm_web_application_firewall_policy.api_app](https://registry.terraform.io/providers/hashicorp/azurerm/2.87.0/docs/resources/web_application_firewall_policy) | resource |
 | [null_resource.upload_corefile](https://registry.terraform.io/providers/hashicorp/null/latest/docs/resources/resource) | resource |
-| [azuread_application.vpn_app](https://registry.terraform.io/providers/hashicorp/azuread/2.3.0/docs/data-sources/application) | data source |
-| [azuread_group.adgroup_admin](https://registry.terraform.io/providers/hashicorp/azuread/2.3.0/docs/data-sources/group) | data source |
-| [azuread_group.adgroup_developers](https://registry.terraform.io/providers/hashicorp/azuread/2.3.0/docs/data-sources/group) | data source |
-| [azuread_group.adgroup_externals](https://registry.terraform.io/providers/hashicorp/azuread/2.3.0/docs/data-sources/group) | data source |
-| [azuread_group.adgroup_security](https://registry.terraform.io/providers/hashicorp/azuread/2.3.0/docs/data-sources/group) | data source |
-| [azuread_service_principal.app_gw_uai_kvreader](https://registry.terraform.io/providers/hashicorp/azuread/2.3.0/docs/data-sources/service_principal) | data source |
-| [azuread_service_principal.iac_principal](https://registry.terraform.io/providers/hashicorp/azuread/2.3.0/docs/data-sources/service_principal) | data source |
+| [time_rotating.cgn_onboarding_portal_secret](https://registry.terraform.io/providers/hashicorp/time/latest/docs/resources/rotating) | resource |
+| [azuread_application.vpn_app](https://registry.terraform.io/providers/hashicorp/azuread/2.16.0/docs/data-sources/application) | data source |
+| [azuread_group.adgroup_admin](https://registry.terraform.io/providers/hashicorp/azuread/2.16.0/docs/data-sources/group) | data source |
+| [azuread_group.adgroup_developers](https://registry.terraform.io/providers/hashicorp/azuread/2.16.0/docs/data-sources/group) | data source |
+| [azuread_group.adgroup_externals](https://registry.terraform.io/providers/hashicorp/azuread/2.16.0/docs/data-sources/group) | data source |
+| [azuread_group.adgroup_security](https://registry.terraform.io/providers/hashicorp/azuread/2.16.0/docs/data-sources/group) | data source |
+| [azuread_service_principal.app_gw_uai_kvreader](https://registry.terraform.io/providers/hashicorp/azuread/2.16.0/docs/data-sources/service_principal) | data source |
+| [azuread_service_principal.iac_principal](https://registry.terraform.io/providers/hashicorp/azuread/2.16.0/docs/data-sources/service_principal) | data source |
 | [azurerm_app_service.pagopa_proxy_prod](https://registry.terraform.io/providers/hashicorp/azurerm/2.87.0/docs/data-sources/app_service) | data source |
 | [azurerm_app_service.pagopa_proxy_test](https://registry.terraform.io/providers/hashicorp/azurerm/2.87.0/docs/data-sources/app_service) | data source |
 | [azurerm_application_insights.application_insights](https://registry.terraform.io/providers/hashicorp/azurerm/2.87.0/docs/data-sources/application_insights) | data source |
@@ -234,9 +251,12 @@
 | [azurerm_key_vault_secret.selfcare_devportal_service_principal_secret](https://registry.terraform.io/providers/hashicorp/azurerm/2.87.0/docs/data-sources/key_vault_secret) | data source |
 | [azurerm_key_vault_secret.selfcare_io_sandbox_fiscal_code](https://registry.terraform.io/providers/hashicorp/azurerm/2.87.0/docs/data-sources/key_vault_secret) | data source |
 | [azurerm_key_vault_secret.services_exclusion_list](https://registry.terraform.io/providers/hashicorp/azurerm/2.87.0/docs/data-sources/key_vault_secret) | data source |
+| [azurerm_key_vault_secret.subscriptionmigrations_db_server_adm_password](https://registry.terraform.io/providers/hashicorp/azurerm/2.87.0/docs/data-sources/key_vault_secret) | data source |
+| [azurerm_key_vault_secret.subscriptionmigrations_db_server_adm_username](https://registry.terraform.io/providers/hashicorp/azurerm/2.87.0/docs/data-sources/key_vault_secret) | data source |
 | [azurerm_log_analytics_workspace.log_analytics_workspace](https://registry.terraform.io/providers/hashicorp/azurerm/2.87.0/docs/data-sources/log_analytics_workspace) | data source |
 | [azurerm_log_analytics_workspace.monitor_rg](https://registry.terraform.io/providers/hashicorp/azurerm/2.87.0/docs/data-sources/log_analytics_workspace) | data source |
 | [azurerm_private_dns_zone.privatelink_blob_core_windows_net](https://registry.terraform.io/providers/hashicorp/azurerm/2.87.0/docs/data-sources/private_dns_zone) | data source |
+| [azurerm_private_dns_zone.privatelink_documents_azure_com](https://registry.terraform.io/providers/hashicorp/azurerm/2.87.0/docs/data-sources/private_dns_zone) | data source |
 | [azurerm_private_dns_zone.privatelink_file_core_windows_net](https://registry.terraform.io/providers/hashicorp/azurerm/2.87.0/docs/data-sources/private_dns_zone) | data source |
 | [azurerm_private_dns_zone.privatelink_queue_core_windows_net](https://registry.terraform.io/providers/hashicorp/azurerm/2.87.0/docs/data-sources/private_dns_zone) | data source |
 | [azurerm_private_dns_zone.privatelink_table_core_windows_net](https://registry.terraform.io/providers/hashicorp/azurerm/2.87.0/docs/data-sources/private_dns_zone) | data source |
@@ -297,6 +317,8 @@
 | <a name="input_app_gateway_min_capacity"></a> [app\_gateway\_min\_capacity](#input\_app\_gateway\_min\_capacity) | n/a | `number` | `0` | no |
 | <a name="input_application_insights_name"></a> [application\_insights\_name](#input\_application\_insights\_name) | The common Application Insights name | `string` | `""` | no |
 | <a name="input_azdo_sp_tls_cert_enabled"></a> [azdo\_sp\_tls\_cert\_enabled](#input\_azdo\_sp\_tls\_cert\_enabled) | Enable Azure DevOps connection for TLS cert management | `string` | `false` | no |
+| <a name="input_cgn_legalbackup_account_replication_type"></a> [cgn\_legalbackup\_account\_replication\_type](#input\_cgn\_legalbackup\_account\_replication\_type) | Legal backup replication type | `string` | `"GRS"` | no |
+| <a name="input_cgn_legalbackup_enable_versioning"></a> [cgn\_legalbackup\_enable\_versioning](#input\_cgn\_legalbackup\_enable\_versioning) | Enable legal backup versioning | `bool` | `false` | no |
 | <a name="input_cidr_subnet_redis_apim"></a> [cidr\_subnet\_redis\_apim](#input\_cidr\_subnet\_redis\_apim) | Redis network address space. | `list(string)` | `[]` | no |
 | <a name="input_common_rg"></a> [common\_rg](#input\_common\_rg) | Common Virtual network resource group name. | `string` | `""` | no |
 | <a name="input_dns_default_ttl_sec"></a> [dns\_default\_ttl\_sec](#input\_dns\_default\_ttl\_sec) | value | `number` | `3600` | no |
@@ -332,4 +354,7 @@
 
 ## Outputs
 
-No outputs.
+| Name | Description |
+|------|-------------|
+| <a name="output_cgn_onboarding_app_id"></a> [cgn\_onboarding\_app\_id](#output\_cgn\_onboarding\_app\_id) | Id cgn onboarding portal app registration. |
+| <a name="output_cgn_onboarding_portal_secret"></a> [cgn\_onboarding\_portal\_secret](#output\_cgn\_onboarding\_portal\_secret) | Secret used by the app to create new subscription. |
