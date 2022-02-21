@@ -125,6 +125,48 @@ module "cgn_cosmos_db" {
   account_name        = module.cosmos_cgn.name
 }
 
+### Containers
+locals {
+  cgn_cosmosdb_containers = [
+    {
+      name               = "user-cgns"
+      partition_key_path = "/fiscalCode"
+      throughput         = 400
+
+      /*
+      autoscale_settings = {
+        max_throughput = 4000
+      }
+      */
+    },
+    {
+      name               = "user-eyca-cards"
+      partition_key_path = "/fiscalCode"
+      throughput         = 400
+      /*
+      autoscale_settings = {
+        max_throughput = 4000
+      }
+      */
+    }
+  ]
+}
+
+module "cgn_cosmosdb_containers" {
+  source   = "git::https://github.com/pagopa/azurerm.git//cosmosdb_sql_container?ref=v2.1.8"
+  for_each = { for c in local.cgn_cosmosdb_containers : c.name => c }
+
+  name                = each.value.name
+  resource_group_name = data.azurerm_resource_group.cgn.name
+  account_name        = module.cosmos_cgn.name
+  database_name       = module.cgn_cosmos_db.name
+  partition_key_path  = each.value.partition_key_path
+  throughput          = lookup(each.value, "throughput", null)
+
+  autoscale_settings = lookup(each.value, "autoscale_settings", null)
+
+}
+
 
 ## Blob storage due to legal backup
 #tfsec:ignore:azure-storage-default-action-deny
