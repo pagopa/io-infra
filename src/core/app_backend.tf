@@ -75,9 +75,11 @@ locals {
       ALLOW_SESSION_HANDLER_IP_SOURCE_RANGE = data.azurerm_subnet.fnapp_admin_subnet_out.address_prefixes[0]
 
       // PAGOPA
-      PAGOPA_API_URL_PROD          = "https://${data.azurerm_app_service.pagopa_proxy_prod.default_site_hostname}"
-      PAGOPA_API_URL_TEST          = "https://${data.azurerm_app_service.pagopa_proxy_test.default_site_hostname}"
+      PAGOPA_API_URL_PROD          = "https://${data.azurerm_app_service.pagopa_proxy_prod.default_site_hostname}" # change me for new pagoPA proxy
+      PAGOPA_API_URL_TEST          = "https://${data.azurerm_app_service.pagopa_proxy_test.default_site_hostname}" # change me for new pagoPA proxy
       PAGOPA_BASE_PATH             = "/pagopa/api/v1"
+      PAGOPA_API_KEY_PROD          = data.azurerm_key_vault_secret.app_backend_PAGOPA_API_KEY_PROD.value
+      PAGOPA_API_KEY_UAT           = data.azurerm_key_vault_secret.app_backend_PAGOPA_API_KEY_UAT.value
       ALLOW_PAGOPA_IP_SOURCE_RANGE = data.azurerm_key_vault_secret.app_backend_ALLOW_PAGOPA_IP_SOURCE_RANGE.value
 
       // MYPORTAL
@@ -138,10 +140,10 @@ locals {
       PECSERVERS_poste_basePath  = ""
       PECSERVERS_poste_secret    = data.azurerm_key_vault_secret.app_backend_PECSERVER_TOKEN_SECRET.value
       PECSERVERS_poste_serviceId = "01FQ4945RG5WJGPHKY8ZYRJMQ7"
-      PECSERVERS_aruba_url       = "http://io-mvl-server-mock:4000"
-      PECSERVERS_aruba_basePath  = ""
-      PECSERVERS_aruba_secret    = "dummy"
-      PECSERVERS_aruba_serviceId = "dummyServiceId"
+      PECSERVERS_aruba_url       = "https://pagopa-test.pec.aruba.it"
+      PECSERVERS_aruba_basePath  = "/apigateway/api/v2/pagopa/mailbox"
+      PECSERVERS_aruba_secret    = data.azurerm_key_vault_secret.app_backend_PECSERVER_ARUBA_TOKEN_SECRET.value
+      PECSERVERS_aruba_serviceId = "01FRMRD5P7H378MDXBBW3DTYCF"
 
       // CGN
       TEST_CGN_FISCAL_CODES = data.azurerm_key_vault_secret.app_backend_TEST_CGN_FISCAL_CODES.value
@@ -244,6 +246,16 @@ data "azurerm_key_vault_secret" "app_backend_ALLOW_PAGOPA_IP_SOURCE_RANGE" {
   key_vault_id = data.azurerm_key_vault.common.id
 }
 
+data "azurerm_key_vault_secret" "app_backend_PAGOPA_API_KEY_PROD" {
+  name         = "appbackend-PAGOPA-API-KEY-PROD-PRIMARY"
+  key_vault_id = data.azurerm_key_vault.common.id
+}
+
+data "azurerm_key_vault_secret" "app_backend_PAGOPA_API_KEY_UAT" {
+  name         = "appbackend-PAGOPA-API-KEY-UAT-PRIMARY"
+  key_vault_id = data.azurerm_key_vault.common.id
+}
+
 data "azurerm_key_vault_secret" "app_backend_TEST_LOGIN_PASSWORD" {
   name         = "appbackend-TEST-LOGIN-PASSWORD"
   key_vault_id = data.azurerm_key_vault.common.id
@@ -294,6 +306,10 @@ data "azurerm_key_vault_secret" "app_backend_PECSERVER_TOKEN_SECRET" {
   key_vault_id = data.azurerm_key_vault.common.id
 }
 
+data "azurerm_key_vault_secret" "app_backend_PECSERVER_ARUBA_TOKEN_SECRET" {
+  name         = "appbackend-PECSERVER-ARUBA-TOKEN-SECRET"
+  key_vault_id = data.azurerm_key_vault.common.id
+}
 ## app_backendl1
 
 module "app_backendl1_snet" {
