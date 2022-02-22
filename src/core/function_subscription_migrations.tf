@@ -209,6 +209,7 @@ module "function_subscriptionmigrations_staging_slot" {
     "AzureWebJobs.OnServiceChange.Disabled"                = "1"
     "AzureWebJobs.UpsertSubscriptionToMigrate.Disabled"    = "1"
     "AzureWebJobs.ChangeOneSubscriptionOwnership.Disabled" = "1"
+    "AzureWebJobs.ChangeAllSubscriptionsOwnership.Disabled" = "1"
   })
 
   tags = var.tags
