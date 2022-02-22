@@ -73,12 +73,6 @@ data "azurerm_app_service" "pagopa_proxy_prod" {
   resource_group_name = format("%s-rg-external", local.project)
 }
 
-# TODO: Can this data be removed?
-data "azurerm_app_service" "pagopa_proxy_test" {
-  name                = format("%s-app-pagopaproxytest", local.project)
-  resource_group_name = format("%s-rg-external", local.project)
-}
-
 #
 # CGN resources
 #
