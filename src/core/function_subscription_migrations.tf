@@ -41,8 +41,9 @@ locals {
       DB_PASSWORD     = data.azurerm_key_vault_secret.subscriptionmigrations_db_server_adm_password.value
 
       // job queues
-      QUEUE_ADD_SERVICE_TO_MIGRATIONS = "add-service-jobs"              // when a service change is accepted to be processed into migration log
-      QUEUE_SUBSCRIPTION_TO_MIGRATE   = "migrate-one-subscription-jobs" // when a subscription is requested to migrate its ownership
+      QUEUE_ADD_SERVICE_TO_MIGRATIONS    = "add-service-jobs"               // when a service change is accepted to be processed into migration log
+      QUEUE_ALL_SUBSCRIPTIONS_TO_MIGRATE = "migrate-all-subscriptions-jobs" // when a migration is requested for all subscriptions
+      QUEUE_SUBSCRIPTION_TO_MIGRATE      = "migrate-one-subscription-jobs"  // when a subscription is requested to migrate its ownership
 
     }
 
