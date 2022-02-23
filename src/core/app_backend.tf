@@ -76,7 +76,7 @@ locals {
 
       // PAGOPA
       PAGOPA_API_URL_PROD          = "https://${data.azurerm_app_service.pagopa_proxy_prod.default_site_hostname}" # change me for new pagoPA proxy
-      PAGOPA_API_URL_TEST          = "https://${data.azurerm_app_service.pagopa_proxy_test.default_site_hostname}" # change me for new pagoPA proxy
+      PAGOPA_API_URL_TEST          = "https://api.uat.platform.pagopa.it/checkout/auth/payments/v1"                # change me for new pagoPA proxy
       PAGOPA_BASE_PATH             = "/pagopa/api/v1"
       PAGOPA_API_KEY_PROD          = data.azurerm_key_vault_secret.app_backend_PAGOPA_API_KEY_PROD.value
       PAGOPA_API_KEY_UAT           = data.azurerm_key_vault_secret.app_backend_PAGOPA_API_KEY_UAT.value
@@ -454,6 +454,28 @@ resource "azurerm_monitor_autoscale_setting" "appservice_app_backendl1" {
 
     rule {
       metric_trigger {
+        metric_name              = "CpuPercentage"
+        metric_resource_id       = module.appservice_app_backendl1.plan_id
+        metric_namespace         = "microsoft.web/serverfarms"
+        time_grain               = "PT1M"
+        statistic                = "Average"
+        time_window              = "PT5M"
+        time_aggregation         = "Average"
+        operator                 = "GreaterThan"
+        threshold                = 45
+        divide_by_instance_count = false
+      }
+
+      scale_action {
+        direction = "Increase"
+        type      = "ChangeCount"
+        value     = "2"
+        cooldown  = "PT5M"
+      }
+    }
+
+    rule {
+      metric_trigger {
         metric_name              = "Requests"
         metric_resource_id       = module.appservice_app_backendl1.id
         metric_namespace         = "microsoft.web/sites"
@@ -463,6 +485,28 @@ resource "azurerm_monitor_autoscale_setting" "appservice_app_backendl1" {
         time_aggregation         = "Average"
         operator                 = "LessThan"
         threshold                = 2500
+        divide_by_instance_count = false
+      }
+
+      scale_action {
+        direction = "Decrease"
+        type      = "ChangeCount"
+        value     = "1"
+        cooldown  = "PT20M"
+      }
+    }
+
+    rule {
+      metric_trigger {
+        metric_name              = "CpuPercentage"
+        metric_resource_id       = module.appservice_app_backendl1.plan_id
+        metric_namespace         = "microsoft.web/serverfarms"
+        time_grain               = "PT1M"
+        statistic                = "Average"
+        time_window              = "PT5M"
+        time_aggregation         = "Average"
+        operator                 = "LessThan"
+        threshold                = 25
         divide_by_instance_count = false
       }
 
@@ -620,6 +664,28 @@ resource "azurerm_monitor_autoscale_setting" "appservice_app_backendl2" {
 
     rule {
       metric_trigger {
+        metric_name              = "CpuPercentage"
+        metric_resource_id       = module.appservice_app_backendl2.plan_id
+        metric_namespace         = "microsoft.web/serverfarms"
+        time_grain               = "PT1M"
+        statistic                = "Average"
+        time_window              = "PT5M"
+        time_aggregation         = "Average"
+        operator                 = "GreaterThan"
+        threshold                = 45
+        divide_by_instance_count = false
+      }
+
+      scale_action {
+        direction = "Increase"
+        type      = "ChangeCount"
+        value     = "2"
+        cooldown  = "PT5M"
+      }
+    }
+
+    rule {
+      metric_trigger {
         metric_name              = "Requests"
         metric_resource_id       = module.appservice_app_backendl2.id
         metric_namespace         = "microsoft.web/sites"
@@ -629,6 +695,28 @@ resource "azurerm_monitor_autoscale_setting" "appservice_app_backendl2" {
         time_aggregation         = "Average"
         operator                 = "LessThan"
         threshold                = 2500
+        divide_by_instance_count = false
+      }
+
+      scale_action {
+        direction = "Decrease"
+        type      = "ChangeCount"
+        value     = "1"
+        cooldown  = "PT20M"
+      }
+    }
+
+    rule {
+      metric_trigger {
+        metric_name              = "CpuPercentage"
+        metric_resource_id       = module.appservice_app_backendl2.plan_id
+        metric_namespace         = "microsoft.web/serverfarms"
+        time_grain               = "PT1M"
+        statistic                = "Average"
+        time_window              = "PT5M"
+        time_aggregation         = "Average"
+        operator                 = "LessThan"
+        threshold                = 25
         divide_by_instance_count = false
       }
 
