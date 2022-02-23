@@ -41,7 +41,9 @@ locals {
       DB_PASSWORD     = data.azurerm_key_vault_secret.subscriptionmigrations_db_server_adm_password.value
 
       // job queues
-      QUEUE_ADD_SERVICE_TO_MIGRATIONS = "add-service-jobs" // when a service change is accepted to be processed into migration log
+      QUEUE_ADD_SERVICE_TO_MIGRATIONS    = "add-service-jobs"               // when a service change is accepted to be processed into migration log
+      QUEUE_ALL_SUBSCRIPTIONS_TO_MIGRATE = "migrate-all-subscriptions-jobs" // when a migration is requested for all subscriptions
+      QUEUE_SUBSCRIPTION_TO_MIGRATE      = "migrate-one-subscription-jobs"  // when a subscription is requested to migrate its ownership
 
     }
 
@@ -205,8 +207,10 @@ module "function_subscriptionmigrations_staging_slot" {
 
   app_settings = merge(local.function_subscriptionmigrations.app_settings_commons, {
     // disable listeners on staging slot
-    "AzureWebJobs.OnServiceChange.Disabled"             = "1"
-    "AzureWebJobs.UpsertSubscriptionToMigrate.Disabled" = "1"
+    "AzureWebJobs.OnServiceChange.Disabled"                 = "1"
+    "AzureWebJobs.UpsertSubscriptionToMigrate.Disabled"     = "1"
+    "AzureWebJobs.ChangeOneSubscriptionOwnership.Disabled"  = "1"
+    "AzureWebJobs.ChangeAllSubscriptionsOwnership.Disabled" = "1"
   })
 
   tags = var.tags
