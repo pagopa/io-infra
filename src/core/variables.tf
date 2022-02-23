@@ -154,6 +154,21 @@ variable "cidr_subnet_selfcare_be" {
   description = "Selfcare IO frontend storage address space."
 }
 
+variable "cidr_subnet_appbackendl1" {
+  type        = list(string)
+  description = "App backend l1 address space."
+}
+
+variable "cidr_subnet_appbackendl2" {
+  type        = list(string)
+  description = "App backend l1 address space."
+}
+
+variable "cidr_subnet_appbackendli" {
+  type        = list(string)
+  description = "App backend li address space."
+}
+
 ## VPN ##
 variable "vpn_sku" {
   type        = string
@@ -353,6 +368,37 @@ variable "eucovidcert_alerts_enabled" {
   default     = true
 }
 
+# app backend
+variable "app_backend_plan_sku_tier" {
+  description = "App backend app plan sku tier"
+  type        = string
+  default     = "PremiumV3"
+}
+
+variable "app_backend_plan_sku_size" {
+  description = "App backend app plan sku size"
+  type        = string
+  default     = "P1v3"
+}
+
+variable "app_backend_autoscale_minimum" {
+  type        = number
+  description = "The minimum number of instances for this resource."
+  default     = 1
+}
+
+variable "app_backend_autoscale_maximum" {
+  type        = number
+  description = "The maximum number of instances for this resource."
+  default     = 20
+}
+
+variable "app_backend_autoscale_default" {
+  type        = number
+  description = "The number of instances that are available for scaling if metrics are not available for evaluation."
+  default     = 5
+}
+
 # selfcare
 variable "selfcare_external_hostname" {
   description = "Selfcare external hostname"
@@ -376,4 +422,18 @@ variable "selfcare_plan_sku_capacity" {
   description = "Selfcare app plan capacity"
   type        = number
   default     = 1
+}
+
+
+# legal backup storage
+variable "cgn_legalbackup_account_replication_type" {
+  type        = string
+  description = "Legal backup replication type"
+  default     = "GRS"
+}
+
+variable "cgn_legalbackup_enable_versioning" {
+  type        = bool
+  description = "Enable legal backup versioning"
+  default     = false
 }
