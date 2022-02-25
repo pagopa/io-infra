@@ -191,7 +191,7 @@ eventhubs = [
     name              = "io-cosmosdb-message-status"
     partitions        = 5
     message_retention = 7
-    consumers         = ["io-fn-messages"]
+    consumers         = ["io-messages"]
     keys = [
       {
         name   = "io-cdc"
@@ -200,7 +200,7 @@ eventhubs = [
         manage = false
       },
       {
-        name   = "io-fn-messages"
+        name   = "io-messages"
         listen = true
         send   = false
         manage = false
