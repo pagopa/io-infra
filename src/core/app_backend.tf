@@ -75,8 +75,8 @@ locals {
       ALLOW_SESSION_HANDLER_IP_SOURCE_RANGE = data.azurerm_subnet.fnapp_admin_subnet_out.address_prefixes[0]
 
       // PAGOPA
-      PAGOPA_API_URL_PROD          = "https://${data.azurerm_app_service.pagopa_proxy_prod.default_site_hostname}" # change me for new pagoPA proxy
-      PAGOPA_API_URL_TEST          = "https://api.uat.platform.pagopa.it/checkout/auth/payments/v1"                # change me for new pagoPA proxy
+      PAGOPA_API_URL_PROD          = "https://api.platform.pagopa.it/checkout/auth/payments/v1"
+      PAGOPA_API_URL_TEST          = "https://api.uat.platform.pagopa.it/checkout/auth/payments/v1"
       PAGOPA_BASE_PATH             = "/pagopa/api/v1"
       PAGOPA_API_KEY_PROD          = data.azurerm_key_vault_secret.app_backend_PAGOPA_API_KEY_PROD.value
       PAGOPA_API_KEY_UAT           = data.azurerm_key_vault_secret.app_backend_PAGOPA_API_KEY_UAT.value
