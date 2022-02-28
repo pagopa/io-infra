@@ -49,8 +49,8 @@ locals {
       BONUS_API_KEY               = data.azurerm_key_vault_secret.app_backend_BONUS_API_KEY.value
       CGN_API_URL                 = "http://${data.azurerm_function_app.fnapp_cgn.default_hostname}"
       CGN_API_KEY                 = data.azurerm_key_vault_secret.app_backend_CGN_API_KEY.value
-      CGN_OPERATOR_SEARCH_API_URL = "https://cgnonboardingportal-u-os.azurewebsites.net" # uat esercenti subscription
-      CGN_OPERATOR_SEARCH_API_KEY = data.azurerm_key_vault_secret.app_backend_CGN_OPERATOR_SEARCH_API_KEY_UAT.value
+      CGN_OPERATOR_SEARCH_API_URL = "https://cgnonboardingportal-p-os.azurewebsites.net" # prod subscription
+      CGN_OPERATOR_SEARCH_API_KEY = data.azurerm_key_vault_secret.app_backend_CGN_OPERATOR_SEARCH_API_KEY_PROD.value
       EUCOVIDCERT_API_URL         = "http://${data.azurerm_function_app.fnapp_eucovidcert.default_hostname}/api/v1"
       EUCOVIDCERT_API_KEY         = data.azurerm_key_vault_secret.app_backend_EUCOVIDCERT_API_KEY.value
 
@@ -75,8 +75,8 @@ locals {
       ALLOW_SESSION_HANDLER_IP_SOURCE_RANGE = data.azurerm_subnet.fnapp_admin_subnet_out.address_prefixes[0]
 
       // PAGOPA
-      PAGOPA_API_URL_PROD          = "https://${data.azurerm_app_service.pagopa_proxy_prod.default_site_hostname}" # change me for new pagoPA proxy
-      PAGOPA_API_URL_TEST          = "https://api.uat.platform.pagopa.it/checkout/auth/payments/v1"                # change me for new pagoPA proxy
+      PAGOPA_API_URL_PROD          = "https://api.platform.pagopa.it/checkout/auth/payments/v1"
+      PAGOPA_API_URL_TEST          = "https://api.uat.platform.pagopa.it/checkout/auth/payments/v1"
       PAGOPA_BASE_PATH             = "/pagopa/api/v1"
       PAGOPA_API_KEY_PROD          = data.azurerm_key_vault_secret.app_backend_PAGOPA_API_KEY_PROD.value
       PAGOPA_API_KEY_UAT           = data.azurerm_key_vault_secret.app_backend_PAGOPA_API_KEY_UAT.value
@@ -146,7 +146,7 @@ locals {
       PECSERVERS_aruba_serviceId = "01FRMRD5P7H378MDXBBW3DTYCF"
 
       // CGN
-      TEST_CGN_FISCAL_CODES = data.azurerm_key_vault_secret.app_backend_TEST_CGN_FISCAL_CODES.value
+      TEST_CGN_FISCAL_CODES = "" #data.azurerm_key_vault_secret.app_backend_TEST_CGN_FISCAL_CODES.value
     }
     app_settings_l1 = {
       // FUNCTIONS
