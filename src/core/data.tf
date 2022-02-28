@@ -65,15 +65,6 @@ data "azurerm_subnet" "fnapp_admin_subnet_out" {
 }
 
 #
-# pagoPA proxy resources
-#
-
-data "azurerm_app_service" "pagopa_proxy_prod" {
-  name                = format("%s-app-pagopaproxyprod", local.project)
-  resource_group_name = format("%s-rg-external", local.project)
-}
-
-#
 # CGN resources
 #
 
