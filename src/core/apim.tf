@@ -13,10 +13,6 @@ module "apim_snet" {
   ]
 }
 
-locals {
-  apim_hostname_api_app_internal = format("api-app.internal.%s.%s", var.dns_zone_io, var.external_domain)
-  apim_hostname_api_internal     = "api-internal.io.italia.it" # todo change in format("api.internal.%s.%s", var.dns_zone_io, var.external_domain)
-}
 
 # ###########################
 # ## Api Management (apim) ##
@@ -45,7 +41,7 @@ module "apim" {
   hostname_configuration = {
     proxy = [
       {
-        # api-internal.io.italia.it
+        # api.internal.internal.io.pagopa.it
         default_ssl_binding = true
         host_name           = local.apim_hostname_api_internal
         key_vault_id = replace(
