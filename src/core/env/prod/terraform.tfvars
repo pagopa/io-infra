@@ -189,7 +189,7 @@ eventhubs = [
   },
   {
     name              = "io-cosmosdb-message-status"
-    partitions        = 5
+    partitions        = 32
     message_retention = 7
     consumers         = ["io-messages"]
     keys = [
