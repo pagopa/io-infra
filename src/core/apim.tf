@@ -41,7 +41,7 @@ module "apim" {
   hostname_configuration = {
     proxy = [
       {
-        # api.internal.internal.io.pagopa.it
+        # api-internal.io.italia.it
         default_ssl_binding = true
         host_name           = local.apim_hostname_api_internal
         key_vault_id = replace(
