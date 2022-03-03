@@ -243,7 +243,8 @@ module "appservice_selfcare_be" {
     SUBSCRIPTION_MIGRATIONS_URL    = format("https://%s.azurewebsites.net/api/v1", module.function_subscriptionmigrations.name)
     SUBSCRIPTION_MIGRATIONS_APIKEY = data.azurerm_key_vault_secret.selfcare_subsmigrations_apikey.value
 
-    WEBSITE_DNS_SERVER = "168.63.129.16"
+    WEBSITE_VNET_ROUTE_ALL                          = "1"
+    WEBSITE_DNS_SERVER                              = "168.63.129.16"
   }
 
   allowed_subnets = [module.appgateway_snet.id]
