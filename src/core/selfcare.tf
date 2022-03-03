@@ -172,7 +172,7 @@ resource "azurerm_app_service_virtual_network_swift_connection" "selfcare_be" {
 }
 
 module "appservice_selfcare_be" {
-  source = "git::https://github.com/pagopa/azurerm.git//app_service?ref=v2.0.13"
+  source = "git::https://github.com/pagopa/azurerm.git//app_service?ref=v2.2.1"
 
   name                = format("%s-app-selfcare-be", local.project)
   resource_group_name = azurerm_resource_group.selfcare_be_rg.name
@@ -242,6 +242,9 @@ module "appservice_selfcare_be" {
 
     SUBSCRIPTION_MIGRATIONS_URL    = format("https://%s.azurewebsites.net/api/v1", module.function_subscriptionmigrations.name)
     SUBSCRIPTION_MIGRATIONS_APIKEY = data.azurerm_key_vault_secret.selfcare_subsmigrations_apikey.value
+
+    WEBSITE_VNET_ROUTE_ALL = "1"
+    WEBSITE_DNS_SERVER     = "168.63.129.16"
   }
 
   allowed_subnets = [module.appgateway_snet.id]
