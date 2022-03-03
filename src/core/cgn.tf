@@ -270,7 +270,7 @@ module "api_cgn_merchant" {
   subscription_required = true
 
   content_format = "swagger-json"
-  content_value = templatefile("./api/cgn/v1/_swagger.json.tmpl",
+  content_value = templatefile("./api/cgn/v1/_swagger.json.tpl",
     {
       host = "api.io.italia.it"
     }
