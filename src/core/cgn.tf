@@ -250,7 +250,7 @@ module "apim_product_merchant" {
   subscription_required = true
   approval_required     = false
 
-  policy_xml = file("./api_product/cgn/policy.xml")
+  policy_xml = file("./api_product/cgn/_base_policy.xml")
 }
 
 module "api_cgn_merchant" {
@@ -265,7 +265,7 @@ module "api_cgn_merchant" {
   description           = "CGN MERCHANT API for IO platform."
   display_name          = "IO CGN MERCHANT API"
   path                  = "api/v1/merchant/cgn"
-  protocols             = ["http", "https"]
+  protocols             = ["https"]
   revision              = "1"
   subscription_required = true
 
