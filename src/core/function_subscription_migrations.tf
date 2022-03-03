@@ -45,6 +45,8 @@ locals {
       QUEUE_ALL_SUBSCRIPTIONS_TO_MIGRATE = "migrate-all-subscriptions-jobs" // when a migration is requested for all subscriptions
       QUEUE_SUBSCRIPTION_TO_MIGRATE      = "migrate-one-subscription-jobs"  // when a subscription is requested to migrate its ownership
 
+      WEBSITE_VNET_ROUTE_ALL = "1"
+      WEBSITE_DNS_SERVER     = "168.63.129.16"
     }
 
     // As we run this application under SelfCare IO logic subdomain,
@@ -164,7 +166,7 @@ module "function_subscriptionmigrations" {
   subnet_id   = local.function_subscriptionmigrations.app_context.snet.id
   allowed_ips = local.app_insights_ips_west_europe
   allowed_subnets = [
-    data.azurerm_subnet.azdoa_snet[0].id,
+    module.selfcare_be_common_snet.id,
   ]
 
   app_settings = merge(local.function_subscriptionmigrations.app_settings_commons, {
