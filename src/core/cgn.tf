@@ -260,9 +260,7 @@ module "api_cgn_merchant" {
   api_management_name = module.apim.name
   resource_group_name = module.apim.resource_group_name
   product_ids         = [module.apim_product_merchant.product_id]
-  // version_set_id        = azurerm_api_management_api_version_set.io_backend_bpd_api.id
-  // api_version           = "v1"
-  service_url = local.apim_io_backend_api.service_url
+  service_url         = local.apim_io_backend_api.service_url
 
   description           = "CGN MERCHANT API for IO platform."
   display_name          = "IO CGN MERCHANT API"
@@ -272,13 +270,13 @@ module "api_cgn_merchant" {
   subscription_required = true
 
   content_format = "swagger-json"
-  content_value = templatefile("./api/cgn/swagger.json.tmpl",
+  content_value = templatefile("./api/cgn/v1/_swagger.json.tpl",
     {
       host = "api.io.italia.it"
     }
   )
 
-  xml_content = file("./api/cgn/policy.xml")
+  xml_content = file("./api/cgn/v1/_base_policy.xml")
 }
 
 ## App registration for cgn backend portal ##
