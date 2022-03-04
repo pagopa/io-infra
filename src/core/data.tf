@@ -97,7 +97,7 @@ data "azurerm_key_vault_secret" "fnapp_eucovidcert_authtoken" {
 }
 
 #
-# logs resources
+# Logs resources
 #
 
 data "azurerm_storage_account" "logs" {
