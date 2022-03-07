@@ -22,7 +22,7 @@ module "fn_service_cache_subnet" {
 module "function_service_cache" {
   source = "git::https://github.com/pagopa/azurerm.git//function_app?ref=v2.3.0"
 
-  name                                     = "${local.project}-service-cache-fn"
+  name = "${local.project}-service-cache-fn"
   # SELFCARE RG
   resource_group_name                      = azurerm_resource_group.selfcare_be_rg.name
   location                                 = var.location
@@ -32,17 +32,17 @@ module "function_service_cache" {
   application_insights_instrumentation_key = data.azurerm_application_insights.application_insights.instrumentation_key
 
   app_settings = {
-    FUNCTIONS_WORKER_RUNTIME       = "node"
-    WEBSITE_NODE_DEFAULT_VERSION   = "14.16.0"
+    FUNCTIONS_WORKER_RUNTIME     = "node"
+    WEBSITE_NODE_DEFAULT_VERSION = "14.16.0"
     WEBSITE_RUN_FROM_PACKAGE     = "1"
-    NODE_ENV                       = "production"
+    NODE_ENV                     = "production"
 
     COSMOSDB_URI                 = data.azurerm_cosmosdb_account.cosmos_api.endpoint
     COSMOSDB_KEY                 = data.azurerm_cosmosdb_account.cosmos_api.primary_master_key
-    COSMOS_API_CONNECTION_STRING = format("AccountEndpoint=%s;AccountKey=%s;", data.azurerm_cosmosdb_account.cosmos_api.endpoint, data.azurerm_cosmosdb_account.cosmos_api.primary_master_key)
+    COSMOS_API_CONNECTION_STRING = "AccountEndpoint=${data.azurerm_cosmosdb_account.cosmos_api.endpoint};AccountKey=${data.azurerm_cosmosdb_account.cosmos_api.primary_master_key};"
     COSMOSDB_NAME                = "db"
 
-    StorageConnection = data.azurerm_storage_account.api.primary_web_endpoint
+    StorageConnection       = data.azurerm_storage_account.api.primary_web_endpoint
     AssetsStorageConnection = data.azurerm_storage_account.cdnassets.primary_web_endpoint
 
     // Disabled functions on slot function
@@ -57,9 +57,9 @@ module "function_service_cache" {
     "private_dns_zone_blob_ids"  = [data.azurerm_private_dns_zone.privatelink_blob_core_windows_net.id],
     "private_dns_zone_queue_ids" = [data.azurerm_private_dns_zone.privatelink_queue_core_windows_net.id],
     "private_dns_zone_table_ids" = [data.azurerm_private_dns_zone.privatelink_table_core_windows_net.id],
-    "queues" = [],
-    "containers"           = [],
-    "blobs_retention_days" = 0,
+    "queues"                     = [],
+    "containers"                 = [],
+    "blobs_retention_days"       = 0,
   }
 
   allowed_subnets = [
