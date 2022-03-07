@@ -41,7 +41,7 @@ resource "azurerm_resource_group" "app_messages_rg" {
 }
 
 resource "azurerm_container_registry" "container_registry" {
-  name                = format("%s-acr", local.project)
+  name                = replace(format("%s-acr", local.project), "-", "")
   resource_group_name = azurerm_resource_group.rg_internal.name
   location            = azurerm_resource_group.rg_internal.location
   sku                 = var.sku_container_registry
