@@ -164,6 +164,16 @@ variable "cidr_subnet_appbackendl2" {
   description = "App backend l1 address space."
 }
 
+variable "cidr_subnet_appmessages01" {
+  type        = list(string)
+  description = "App messages 01 address space."
+}
+
+variable "cidr_subnet_appmessages02" {
+  type        = list(string)
+  description = "App messages 02 address space."
+}
+
 variable "cidr_subnet_appbackendli" {
   type        = list(string)
   description = "App backend li address space."
@@ -436,4 +446,51 @@ variable "cgn_legalbackup_enable_versioning" {
   type        = bool
   description = "Enable legal backup versioning"
   default     = false
+}
+
+# App Messages
+variable "app_messages_enabled" {
+  type    = bool
+  default = false
+}
+
+variable "app_messages_function_always_on" {
+  type    = bool
+  default = false
+}
+
+variable "app_messages_function_kind" {
+  type        = string
+  description = "App service plan kind"
+  default     = null
+}
+
+variable "app_messages_function_sku_tier" {
+  type        = string
+  description = "App service plan sku tier"
+  default     = null
+}
+
+variable "app_messages_function_sku_size" {
+  type        = string
+  description = "App service plan sku size"
+  default     = null
+}
+
+variable "app_messages_function_autoscale_minimum" {
+  type        = number
+  description = "The minimum number of instances for this resource."
+  default     = 1
+}
+
+variable "app_messages_function_autoscale_maximum" {
+  type        = number
+  description = "The maximum number of instances for this resource."
+  default     = 3
+}
+
+variable "app_messages_function_autoscale_default" {
+  type        = number
+  description = "The number of instances that are available for scaling if metrics are not available for evaluation."
+  default     = 1
 }

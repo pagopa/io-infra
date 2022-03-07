@@ -86,6 +86,17 @@ ehns_metric_alerts = {
   },
 }
 
+# App Messages
+app_messages_enabled            = true
+app_messages_function_always_on = true
+
+app_messages_function_kind              = "Linux"
+app_messages_function_sku_tier          = "Standard"
+app_messages_function_sku_size          = "S1"
+app_messages_function_autoscale_minimum = 1
+app_messages_function_autoscale_maximum = 3
+app_messages_function_autoscale_default = 1
+
 eventhubs = [
   {
     name              = "io-cosmosdb-services"
