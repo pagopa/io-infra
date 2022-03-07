@@ -443,6 +443,24 @@ variable "cgn_legalbackup_enable_versioning" {
   default     = false
 }
 
+## Azure container registry
+variable "sku_container_registry" {
+  type    = string
+  default = "Basic"
+}
+
+variable "retention_policy_acr" {
+  type = object({
+    days    = number
+    enabled = bool
+  })
+  default = {
+    days    = 7
+    enabled = true
+  }
+  description = "Container registry retention policy."
+}
+
 # App Messages
 variable "app_messages_function_always_on" {
   type    = bool

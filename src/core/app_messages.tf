@@ -40,6 +40,25 @@ resource "azurerm_resource_group" "app_messages_rg" {
   tags = var.tags
 }
 
+resource "azurerm_container_registry" "container_registry" {
+  name                = format("%s-acr", local.project)
+  resource_group_name = azurerm_resource_group.rg_internal.name
+  location            = azurerm_resource_group.rg_internal.location
+  sku                 = var.sku_container_registry
+  admin_enabled       = true
+
+
+  dynamic "retention_policy" {
+    for_each = var.sku_container_registry == "Premium" ? [var.retention_policy_acr] : []
+    content {
+      days    = retention_policy.value["days"]
+      enabled = retention_policy.value["enabled"]
+    }
+  }
+
+  tags = var.tags
+}
+
 # Subnet to host app messages function
 module "app_messages_snet" {
   count                                          = 2
@@ -67,7 +86,7 @@ module "app_messages_snet" {
 
 module "app_messages_function" {
   count  = 2
-  source = "git::https://github.com/pagopa/azurerm.git//function_app?ref=v2.3.1"
+  source = "git::https://github.com/pagopa/azurerm.git//app_service?ref=v2.3.1"
 
   resource_group_name = azurerm_resource_group.app_messages_rg[count.index].name
   name                = format("%s-app-messages-fn-%d", local.project, count.index + 1)
@@ -76,6 +95,9 @@ module "app_messages_function" {
   subnet_id           = module.app_messages_snet[count.index].id
   runtime_version     = "~3"
   os_type             = "linux"
+
+  linux_fx_version = format("DOCKER|%s/app-messages-fn:%s",
+  azurerm_container_registry.container_registry.login_server, "latest")
 
   always_on                                = var.app_messages_function_always_on
   application_insights_instrumentation_key = data.azurerm_application_insights.application_insights.instrumentation_key
