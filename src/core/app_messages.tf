@@ -1,14 +1,12 @@
 resource "azurerm_resource_group" "io-p-app-messages-rg-01" {
-  count    = var.app_messages_enabled ? 1 : 0
-  name     = format("%s-io-p-app-messages-rg-01", local.project)
+  name     = format("%s-app-messages-rg-01", local.project)
   location = var.location
 
   tags = var.tags
 }
 
 resource "azurerm_resource_group" "io-p-app-messages-rg-02" {
-  count    = var.app_messages_enabled ? 1 : 0
-  name     = format("%s-io-p-app-messages-rg-02", local.project)
+  name     = format("%s-app-messages-rg-02", local.project)
   location = var.location
 
   tags = var.tags
@@ -28,7 +26,6 @@ locals {
       COSMOSDB_KEY                 = data.azurerm_cosmosdb_account.cosmos_api.primary_master_key
       COSMOS_API_CONNECTION_STRING = format("AccountEndpoint=%s;AccountKey=%s;", data.azurerm_cosmosdb_account.cosmos_api.endpoint, data.azurerm_cosmosdb_account.cosmos_api.primary_master_key)
 
-      QueueStorageConnection = dependency.storage_account.outputs.primary_connection_string
       MESSAGE_CONTAINER_NAME = dependency.storage_container_message-content.outputs.name
 
       // Keepalive fields are all optionals
@@ -40,10 +37,6 @@ locals {
       FETCH_KEEPALIVE_TIMEOUT             = "60000"
 
       FN_APP_STORAGE_CONNECTION_STRING = dependency.storage_account_app.outputs.primary_connection_string
-
-      // Events configs
-      EventsQueueStorageConnection = dependency.storage_account_apievents.outputs.primary_connection_string
-      EventsQueueName              = "events" # reference to https://github.com/pagopa/io-infra/blob/12a2f3bffa49dab481990fccc9f2a904004862ec/src/core/storage_apievents.tf#L7
     }
     app_settings_01 = {
 
@@ -55,9 +48,8 @@ locals {
 
 # Subnet to host app messages function
 module "io-p-app-messages_01_snet" {
-  count                                          = var.app_messages_enabled && var.cidr_subnet_appmessages01 != null ? 1 : 0
   source                                         = "git::https://github.com/pagopa/azurerm.git//subnet?ref=v1.0.51"
-  name                                           = format("%s-io-p-app-messages_01_snet", local.project)
+  name                                           = format("%s-app-messages_01_snet", local.project)
   address_prefixes                               = var.cidr_subnet_appmessages01
   resource_group_name                            = azurerm_resource_group.rg_vnet.name
   virtual_network_name                           = module.vnet.name
@@ -77,9 +69,8 @@ module "io-p-app-messages_01_snet" {
 }
 
 module "io-p-app-messages_02_snet" {
-  count                                          = var.app_messages_enabled && var.cidr_subnet_appmessages02 != null ? 1 : 0
   source                                         = "git::https://github.com/pagopa/azurerm.git//subnet?ref=v1.0.51"
-  name                                           = format("%s-io-p-app-messages_02_snet", local.project)
+  name                                           = format("%s-app-messages_02_snet", local.project)
   address_prefixes                               = var.cidr_subnet_appmessages02
   resource_group_name                            = azurerm_resource_group.rg_vnet.name
   virtual_network_name                           = module.vnet.name
@@ -99,13 +90,12 @@ module "io-p-app-messages_02_snet" {
 }
 
 module "app_messages_function_01" {
-  count  = var.app_messages_enabled ? 1 : 0
   source = "git::https://github.com/pagopa/azurerm.git//function_app?ref=v2.2.0"
 
   resource_group_name = azurerm_resource_group.io-p-app-messages_01_snet[0].name
-  name                = format("%s-io-p-app-messages01", local.project)
+  name                = format("%s-app-messages01", local.project)
   location            = var.location
-  health_check_path   = "info"
+  health_check_path   = "api/v1/info"
   subnet_id           = module.io-p-app-messages_01_snet[0].id
   runtime_version     = "~3"
   os_type             = "linux"
@@ -131,7 +121,6 @@ module "app_messages_function_01" {
 }
 
 resource "azurerm_monitor_autoscale_setting" "app_messages_function_01" {
-  count = var.app_messages_enabled && var.env_short != "d" ? 1 : 0
 
   name                = format("%s-autoscale", module.app_messages_function_01[0].name)
   resource_group_name = azurerm_resource_group.io-p-app-messages_01_snet[0].name
@@ -194,13 +183,12 @@ resource "azurerm_monitor_autoscale_setting" "app_messages_function_01" {
 }
 
 module "app_messages_function_02" {
-  count  = var.app_messages_enabled ? 1 : 0
   source = "git::https://github.com/pagopa/azurerm.git//function_app?ref=v2.2.0"
 
   resource_group_name = azurerm_resource_group.io-p-app-messages_02_snet[0].name
-  name                = format("%s-io-p-app-messages02", local.project)
+  name                = format("%s-app-messages02", local.project)
   location            = var.location
-  health_check_path   = "info"
+  health_check_path   = "api/v1/info"
   subnet_id           = module.io-p-app-messages_02_snet[0].id
   runtime_version     = "~3"
   os_type             = "linux"
@@ -226,7 +214,6 @@ module "app_messages_function_02" {
 }
 
 resource "azurerm_monitor_autoscale_setting" "app_messages_function_02" {
-  count = var.app_messages_enabled && var.env_short != "d" ? 1 : 0
 
   name                = format("%s-autoscale", module.app_messages_function_02[0].name)
   resource_group_name = azurerm_resource_group.io-p-app-messages_02_snet[0].name
