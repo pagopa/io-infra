@@ -57,6 +57,8 @@ module "io-p-app-messages_01_snet" {
 
   service_endpoints = [
     "Microsoft.Web",
+    "Microsoft.AzureCosmosDB",
+    "Microsoft.Storage",
   ]
 
   delegation = {
@@ -78,6 +80,8 @@ module "io-p-app-messages_02_snet" {
 
   service_endpoints = [
     "Microsoft.Web",
+    "Microsoft.AzureCosmosDB",
+    "Microsoft.Storage",
   ]
 
   delegation = {
@@ -103,7 +107,6 @@ module "app_messages_function_01" {
   always_on                                = var.app_messages_function_always_on
   application_insights_instrumentation_key = azurerm_application_insights.application_insights.instrumentation_key
 
-  app_service_plan_name = format("%s-plan-fnmessages01", local.project)
   app_service_plan_info = {
     kind                         = var.app_messages_function_kind
     sku_tier                     = var.app_messages_function_sku_tier
@@ -111,7 +114,6 @@ module "app_messages_function_01" {
     maximum_elastic_worker_count = 0
   }
 
-  storage_account_name = replace(format("%s-st-fnmessages01", local.project), "-", "")
 
   allowed_subnets = [module.apim_snet.id]
 
