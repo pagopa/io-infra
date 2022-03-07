@@ -33,7 +33,7 @@ locals {
 }
 
 resource "azurerm_resource_group" "app_messages_rg" {
-  count    = 2
+  count    = var.app_messages_count
   name     = format("%s-app-messages-rg-%d", local.project, count.index + 1)
   location = var.location
 
@@ -61,11 +61,11 @@ resource "azurerm_resource_group" "app_messages_rg" {
 
 # Subnet to host app messages function
 module "app_messages_snet" {
-  count                                          = 2
+  count                                          = var.app_messages_count
   source                                         = "git::https://github.com/pagopa/azurerm.git//subnet?ref=v1.0.51"
   name                                           = format("%s-app-messages-snet-%d", local.project, count.index + 1)
   address_prefixes                               = [var.cidr_subnet_appmessages[count.index]]
-  resource_group_name                            = azurerm_resource_group.app_messages_rg[count.index].name
+  resource_group_name                            = data.azurerm_resource_group.vnet_common_rg.name
   virtual_network_name                           = data.azurerm_virtual_network.vnet_common.name
   enforce_private_link_endpoint_network_policies = true
 
@@ -132,7 +132,7 @@ module "app_messages_function" {
 }
 
 resource "azurerm_monitor_autoscale_setting" "app_messages_function" {
-  count               = 2
+  count               = var.app_messages_count
   name                = format("%s-autoscale", module.app_messages_function[count.index].name)
   resource_group_name = azurerm_resource_group.app_messages_rg[count.index].name
   location            = var.location

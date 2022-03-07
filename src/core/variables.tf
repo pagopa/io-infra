@@ -462,6 +462,11 @@ variable "cgn_legalbackup_enable_versioning" {
 # }
 
 # App Messages
+variable "app_messages_count" {
+  type    = number
+  default = 2
+}
+
 variable "app_messages_function_always_on" {
   type    = bool
   default = false
