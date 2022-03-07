@@ -93,21 +93,20 @@ module "app_messages_function" {
   location            = var.location
   health_check_path   = "api/v1/info"
   subnet_id           = module.app_messages_snet[count.index].id
-  runtime_version     = "~3"
-  os_type             = "linux"
 
   linux_fx_version = format("DOCKER|%s/app-messages-fn:%s",
   azurerm_container_registry.container_registry.login_server, "latest")
 
-  always_on                                = var.app_messages_function_always_on
-  application_insights_instrumentation_key = data.azurerm_application_insights.application_insights.instrumentation_key
+  always_on = var.app_messages_function_always_on
+  # application_insights_instrumentation_key = data.azurerm_application_insights.application_insights.instrumentation_key
 
-  app_service_plan_info = {
-    kind                         = var.app_messages_function_kind
-    sku_tier                     = var.app_messages_function_sku_tier
-    sku_size                     = var.app_messages_function_sku_size
-    maximum_elastic_worker_count = 0
-  }
+  # App service plan
+  plan_type     = "internal"
+  plan_name     = format("%s-plan-app-messages-fn-%d", local.project, count.index + 1)
+  plan_kind     = var.app_messages_function_kind
+  plan_reserved = true # Mandatory for Linux plan
+  plan_sku_tier = var.app_messages_function_sku_tier
+  plan_sku_size = var.app_messages_function_sku_size
 
   allowed_subnets = [
     module.app_messages_snet[count.index].id,
