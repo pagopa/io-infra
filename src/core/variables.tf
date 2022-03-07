@@ -164,6 +164,11 @@ variable "cidr_subnet_appbackendl2" {
   description = "App backend l1 address space."
 }
 
+variable "cidr_subnet_appmessages" {
+  type        = list(string)
+  description = "App messages address space."
+}
+
 variable "cidr_subnet_appbackendli" {
   type        = list(string)
   description = "App backend li address space."
@@ -436,4 +441,69 @@ variable "cgn_legalbackup_enable_versioning" {
   type        = bool
   description = "Enable legal backup versioning"
   default     = false
+}
+
+## Azure container registry
+# variable "sku_container_registry" {
+#   type    = string
+#   default = "Basic"
+# }
+
+# variable "retention_policy_acr" {
+#   type = object({
+#     days    = number
+#     enabled = bool
+#   })
+#   default = {
+#     days    = 7
+#     enabled = true
+#   }
+#   description = "Container registry retention policy."
+# }
+
+# App Messages
+variable "app_messages_count" {
+  type    = number
+  default = 2
+}
+
+variable "app_messages_function_always_on" {
+  type    = bool
+  default = false
+}
+
+variable "app_messages_function_kind" {
+  type        = string
+  description = "App service plan kind"
+  default     = null
+}
+
+variable "app_messages_function_sku_tier" {
+  type        = string
+  description = "App service plan sku tier"
+  default     = null
+}
+
+variable "app_messages_function_sku_size" {
+  type        = string
+  description = "App service plan sku size"
+  default     = null
+}
+
+variable "app_messages_function_autoscale_minimum" {
+  type        = number
+  description = "The minimum number of instances for this resource."
+  default     = 1
+}
+
+variable "app_messages_function_autoscale_maximum" {
+  type        = number
+  description = "The maximum number of instances for this resource."
+  default     = 3
+}
+
+variable "app_messages_function_autoscale_default" {
+  type        = number
+  description = "The number of instances that are available for scaling if metrics are not available for evaluation."
+  default     = 1
 }
