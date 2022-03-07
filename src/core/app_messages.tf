@@ -110,9 +110,10 @@ module "app_messages_function" {
   # plan_sku_size = var.app_messages_function_sku_size
 
   app_service_plan_info = {
-    kind     = var.app_messages_function_kind
-    sku_tier = var.app_messages_function_sku_tier
-    sku_size = var.app_messages_function_sku_size
+    kind                         = var.app_messages_function_kind
+    sku_tier                     = var.app_messages_function_sku_tier
+    sku_size                     = var.app_messages_function_sku_size
+    maximum_elastic_worker_count = 0
   }
 
   allowed_subnets = [
