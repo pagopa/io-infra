@@ -136,7 +136,7 @@ resource "azurerm_monitor_autoscale_setting" "app_messages_function" {
   name                = format("%s-autoscale", module.app_messages_function[count.index].name)
   resource_group_name = azurerm_resource_group.app_messages_rg[count.index].name
   location            = var.location
-  target_resource_id  = module.app_messages_function[count.index].plan_id
+  target_resource_id  = module.app_messages_function[count.index].app_service_plan_id
 
   profile {
     name = "default"
