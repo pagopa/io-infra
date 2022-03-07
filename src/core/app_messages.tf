@@ -1,5 +1,4 @@
 resource "azurerm_resource_group" "io-p-app-messages-rg-01" {
-  count    = var.app_messages_enabled ? 1 : 0
   name     = format("%s-io-p-app-messages-rg-01", local.project)
   location = var.location
 
