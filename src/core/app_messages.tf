@@ -23,10 +23,11 @@ locals {
       FUNCTIONS_WORKER_PROCESS_COUNT = 4
       NODE_ENV                       = "production"
 
-      COSMOSDB_URI  = dependency.cosmosdb_account.outputs.endpoint
-      COSMOSDB_KEY  = dependency.cosmosdb_account.outputs.primary_master_key
-      COSMOSDB_NAME = dependency.cosmosdb_database.outputs.name
-      // TODO: Rename to STORAGE_CONNECTION_STRING
+      COSMOSDB_NAME                = "db"
+      COSMOSDB_URI                 = data.azurerm_cosmosdb_account.cosmos_api.endpoint
+      COSMOSDB_KEY                 = data.azurerm_cosmosdb_account.cosmos_api.primary_master_key
+      COSMOS_API_CONNECTION_STRING = format("AccountEndpoint=%s;AccountKey=%s;", data.azurerm_cosmosdb_account.cosmos_api.endpoint, data.azurerm_cosmosdb_account.cosmos_api.primary_master_key)
+
       QueueStorageConnection = dependency.storage_account.outputs.primary_connection_string
       MESSAGE_CONTAINER_NAME = dependency.storage_container_message-content.outputs.name
 
