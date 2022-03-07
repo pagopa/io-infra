@@ -191,7 +191,7 @@ resource "azurerm_monitor_autoscale_setting" "app_messages_function_01" {
 }
 
 module "app_messages_function_02" {
-  source = "git::https://github.com/pagopa/azurerm.git//function_app?ref=v2.2.0"
+  source = "git::https://github.com/pagopa/azurerm.git//function_app?ref=v2.3.1"
 
   resource_group_name = azurerm_resource_group.io-p-appmessages_02_snet.name
   name                = format("%s-app-messages02", local.project)
