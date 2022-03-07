@@ -212,7 +212,6 @@ module "app_messages_function_02" {
     maximum_elastic_worker_count = 0
   }
 
-  storage_account_name = replace(format("%s-st-fnmessages02", local.project), "-", "")
 
   allowed_subnets = [
     module.app_messages_02_snet.id,
