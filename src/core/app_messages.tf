@@ -45,9 +45,9 @@ module "app_messages_snet" {
   count                                          = 2
   source                                         = "git::https://github.com/pagopa/azurerm.git//subnet?ref=v1.0.51"
   name                                           = format("%s-app-messages-snet-%d", local.project, count.index + 1)
-  address_prefixes                               = var.cidr_subnet_appmessages[count.index]
+  address_prefixes                               = [var.cidr_subnet_appmessages[count.index]]
   resource_group_name                            = azurerm_resource_group.app_messages_rg[count.index].name
-  virtual_network_name                           = module.vnet.name
+  virtual_network_name                           = data.azurerm_virtual_network.vnet_common.name
   enforce_private_link_endpoint_network_policies = true
 
   service_endpoints = [
@@ -78,12 +78,13 @@ module "app_messages_function" {
   os_type             = "linux"
 
   always_on                                = var.app_messages_function_always_on
-  application_insights_instrumentation_key = azurerm_application_insights.application_insights.instrumentation_key
+  application_insights_instrumentation_key = data.azurerm_application_insights.application_insights.instrumentation_key
 
   app_service_plan_info = {
-    kind     = var.app_messages_function_kind
-    sku_tier = var.app_messages_function_sku_tier
-    sku_size = var.app_messages_function_sku_size
+    kind                         = var.app_messages_function_kind
+    sku_tier                     = var.app_messages_function_sku_tier
+    sku_size                     = var.app_messages_function_sku_size
+    maximum_elastic_worker_count = 0
   }
 
   allowed_subnets = [
