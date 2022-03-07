@@ -194,7 +194,7 @@ module "app_messages_function_02" {
   source = "git::https://github.com/pagopa/azurerm.git//function_app?ref=v2.3.1"
 
   resource_group_name = azurerm_resource_group.io-p-appmessages_02_snet.name
-  name                = format("%s-app-messages02", local.project)
+  name                = format("%s-app-messages-02-fn", local.project)
   location            = var.location
   health_check_path   = "api/v1/info"
   subnet_id           = module.app_messages_02_snet.id
@@ -211,6 +211,7 @@ module "app_messages_function_02" {
     maximum_elastic_worker_count = 0
   }
 
+  storage_account_name = replace(format("%s-st-fnmessages02", local.project), "-", "")
 
   allowed_subnets = [
     module.app_messages_02_snet.id,
