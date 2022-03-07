@@ -134,14 +134,14 @@ locals {
       name               = "user-cgns"
       partition_key_path = "/fiscalCode"
       autoscale_settings = {
-        max_throughput = 4000
+        max_throughput = 6000
       },
     },
     {
       name               = "user-eyca-cards"
       partition_key_path = "/fiscalCode"
       autoscale_settings = {
-        max_throughput = 4000
+        max_throughput = 6000
       },
     },
 
@@ -250,7 +250,7 @@ module "apim_product_merchant" {
   subscription_required = true
   approval_required     = false
 
-  policy_xml = file("./api_product/cgn/policy.xml")
+  policy_xml = file("./api_product/cgn/_base_policy.xml")
 }
 
 module "api_cgn_merchant" {
@@ -260,25 +260,23 @@ module "api_cgn_merchant" {
   api_management_name = module.apim.name
   resource_group_name = module.apim.resource_group_name
   product_ids         = [module.apim_product_merchant.product_id]
-  // version_set_id        = azurerm_api_management_api_version_set.io_backend_bpd_api.id
-  // api_version           = "v1"
-  service_url = local.apim_io_backend_api.service_url
+  service_url         = local.apim_io_backend_api.service_url
 
   description           = "CGN MERCHANT API for IO platform."
   display_name          = "IO CGN MERCHANT API"
   path                  = "api/v1/merchant/cgn"
-  protocols             = ["http", "https"]
+  protocols             = ["https"]
   revision              = "1"
   subscription_required = true
 
   content_format = "swagger-json"
-  content_value = templatefile("./api/cgn/swagger.json.tmpl",
+  content_value = templatefile("./api/cgn/v1/_swagger.json.tpl",
     {
       host = "api.io.italia.it"
     }
   )
 
-  xml_content = file("./api/cgn/policy.xml")
+  xml_content = file("./api/cgn/v1/_base_policy.xml")
 }
 
 ## App registration for cgn backend portal ##
