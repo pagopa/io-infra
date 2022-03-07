@@ -1,5 +1,5 @@
 resource "azurerm_resource_group" "io-p-app-messages-rg-01" {
-  name     = format("%s-io-p-app-messages-rg-01", local.project)
+  name     = format("%s-app-messages-rg-01", local.project)
   location = var.location
 
   tags = var.tags
