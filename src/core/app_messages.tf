@@ -49,7 +49,7 @@ locals {
 }
 
 # Subnet to host app messages function
-module "app-messages_01_snet" {
+module "app_messages_01_snet" {
   source                                         = "git::https://github.com/pagopa/azurerm.git//subnet?ref=v1.0.51"
   name                                           = format("%s-app-messages-01-snet", local.project)
   address_prefixes                               = var.cidr_subnet_appmessages_01
@@ -72,7 +72,7 @@ module "app-messages_01_snet" {
   }
 }
 
-module "app-messages_02_snet" {
+module "app_messages_02_snet" {
   source                                         = "git::https://github.com/pagopa/azurerm.git//subnet?ref=v1.0.51"
   name                                           = format("%s-app-messages-02-snet", local.project)
   address_prefixes                               = var.cidr_subnet_appmessages_02
@@ -96,13 +96,13 @@ module "app-messages_02_snet" {
 }
 
 module "app_messages_function_01" {
-  source = "git::https://github.com/pagopa/azurerm.git//function_app?ref=v2.2.0"
+  source = "git::https://github.com/pagopa/azurerm.git//function_app?ref=v2.3.1"
 
-  resource_group_name = azurerm_resource_group.io-p-app-messages_01_snet[0].name
+  resource_group_name = azurerm_resource_group.app_messages_01_snet.name
   name                = format("%s-app-messages-01-fn", local.project)
   location            = var.location
   health_check_path   = "api/v1/info"
-  subnet_id           = module.io-p-app-messages_01_snet[0].id
+  subnet_id           = module.app_messages_01_snet.id
   runtime_version     = "~3"
   os_type             = "linux"
 
@@ -117,7 +117,11 @@ module "app_messages_function_01" {
   }
 
 
-  allowed_subnets = [module.apim_snet.id]
+  allowed_subnets = [
+    module.app_messages_01_snet.id,
+    module.app_backendl1_snet.id,
+    module.apim_snet.id,
+  ]
 
   allowed_ips = []
 
@@ -189,11 +193,11 @@ resource "azurerm_monitor_autoscale_setting" "app_messages_function_01" {
 module "app_messages_function_02" {
   source = "git::https://github.com/pagopa/azurerm.git//function_app?ref=v2.2.0"
 
-  resource_group_name = azurerm_resource_group.io-p-app-messages_02_snet[0].name
+  resource_group_name = azurerm_resource_group.io-p-appmessages_02_snet.name
   name                = format("%s-app-messages02", local.project)
   location            = var.location
   health_check_path   = "api/v1/info"
-  subnet_id           = module.io-p-app-messages_02_snet[0].id
+  subnet_id           = module.app_messages_02_snet.id
   runtime_version     = "~3"
   os_type             = "linux"
 
@@ -210,7 +214,11 @@ module "app_messages_function_02" {
 
   storage_account_name = replace(format("%s-st-fnmessages02", local.project), "-", "")
 
-  allowed_subnets = [module.apim_snet.id]
+  allowed_subnets = [
+    module.app_messages_02_snet.id,
+    module.app_backendl2_snet.id,
+    module.apim_snet.id,
+  ]
 
   allowed_ips = []
 
