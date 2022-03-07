@@ -449,11 +449,6 @@ variable "cgn_legalbackup_enable_versioning" {
 }
 
 # App Messages
-variable "app_messages_enabled" {
-  type    = bool
-  default = false
-}
-
 variable "app_messages_function_always_on" {
   type    = bool
   default = false

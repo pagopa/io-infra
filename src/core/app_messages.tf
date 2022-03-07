@@ -1,11 +1,11 @@
-resource "azurerm_resource_group" "io-p-app-messages-rg-01" {
+resource "azurerm_resource_group" "app-messages-rg-01" {
   name     = format("%s-app-messages-rg-01", local.project)
   location = var.location
 
   tags = var.tags
 }
 
-resource "azurerm_resource_group" "io-p-app-messages-rg-02" {
+resource "azurerm_resource_group" "app-messages-rg-02" {
   name     = format("%s-app-messages-rg-02", local.project)
   location = var.location
 
@@ -18,6 +18,8 @@ locals {
       FUNCTIONS_WORKER_RUNTIME       = "node"
       WEBSITE_NODE_DEFAULT_VERSION   = "14.16.0"
       WEBSITE_RUN_FROM_PACKAGE       = "1"
+      WEBSITE_VNET_ROUTE_ALL         = "1"
+      WEBSITE_DNS_SERVER             = "168.63.129.16"
       FUNCTIONS_WORKER_PROCESS_COUNT = 4
       NODE_ENV                       = "production"
 
@@ -47,10 +49,10 @@ locals {
 }
 
 # Subnet to host app messages function
-module "io-p-app-messages_01_snet" {
+module "app-messages_01_snet" {
   source                                         = "git::https://github.com/pagopa/azurerm.git//subnet?ref=v1.0.51"
-  name                                           = format("%s-app-messages_01_snet", local.project)
-  address_prefixes                               = var.cidr_subnet_appmessages01
+  name                                           = format("%s-app-messages-01-snet", local.project)
+  address_prefixes                               = var.cidr_subnet_appmessages_01
   resource_group_name                            = azurerm_resource_group.rg_vnet.name
   virtual_network_name                           = module.vnet.name
   enforce_private_link_endpoint_network_policies = true
@@ -70,10 +72,10 @@ module "io-p-app-messages_01_snet" {
   }
 }
 
-module "io-p-app-messages_02_snet" {
+module "app-messages_02_snet" {
   source                                         = "git::https://github.com/pagopa/azurerm.git//subnet?ref=v1.0.51"
-  name                                           = format("%s-app-messages_02_snet", local.project)
-  address_prefixes                               = var.cidr_subnet_appmessages02
+  name                                           = format("%s-app-messages-02-snet", local.project)
+  address_prefixes                               = var.cidr_subnet_appmessages_02
   resource_group_name                            = azurerm_resource_group.rg_vnet.name
   virtual_network_name                           = module.vnet.name
   enforce_private_link_endpoint_network_policies = true
@@ -97,7 +99,7 @@ module "app_messages_function_01" {
   source = "git::https://github.com/pagopa/azurerm.git//function_app?ref=v2.2.0"
 
   resource_group_name = azurerm_resource_group.io-p-app-messages_01_snet[0].name
-  name                = format("%s-app-messages01", local.project)
+  name                = format("%s-app-messages-01-fn", local.project)
   location            = var.location
   health_check_path   = "api/v1/info"
   subnet_id           = module.io-p-app-messages_01_snet[0].id

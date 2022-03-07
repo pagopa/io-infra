@@ -87,7 +87,6 @@ ehns_metric_alerts = {
 }
 
 # App Messages
-app_messages_enabled            = true
 app_messages_function_always_on = true
 
 app_messages_function_kind              = "Linux"
