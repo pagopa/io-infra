@@ -121,7 +121,6 @@ module "app_messages_function_01" {
     maximum_elastic_worker_count = 0
   }
 
-  storage_account_name = replace(format("%s-st-fnmessages01", local.project), "-", "")
 
   allowed_subnets = [module.apim_snet.id]
 
