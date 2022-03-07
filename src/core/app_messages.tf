@@ -64,6 +64,8 @@ module "io-p-app-messages_01_snet" {
 
   service_endpoints = [
     "Microsoft.Web",
+    "Microsoft.AzureCosmosDB",
+    "Microsoft.Storage",
   ]
 
   delegation = {
