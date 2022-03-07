@@ -103,7 +103,7 @@ module "app_messages_function_01" {
   source = "git::https://github.com/pagopa/azurerm.git//function_app?ref=v2.2.0"
 
   resource_group_name = azurerm_resource_group.io-p-app-messages_01_snet[0].name
-  name                = format("%s-io-p-app-messages01", local.project)
+  name                = format("%s-app-messages-fn-01", local.project)
   location            = var.location
   health_check_path   = "api/v1/info"
   subnet_id           = module.io-p-app-messages_01_snet[0].id
