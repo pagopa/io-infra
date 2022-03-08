@@ -163,3 +163,23 @@ data "azurerm_private_dns_zone" "privatelink_documents_azure_com" {
   name                = "privatelink.documents.azure.com"
   resource_group_name = format("%s-rg-common", local.project)
 }
+
+# KeyVault values - start
+data "azurerm_key_vault_secret" "services_exclusion_list" {
+  name         = "io-fn-services-SERVICEID-EXCLUSION-LIST"
+  key_vault_id = data.azurerm_key_vault.common.id
+}
+
+#
+# Storage Accounts
+#
+data "azurerm_storage_account" "api" {
+  name                = "iopstapi"
+  resource_group_name = azurerm_resource_group.rg_internal.name
+}
+
+# CDN Assets storage account
+data "azurerm_storage_account" "cdnassets" {
+  name                = "iopstcdnassets"
+  resource_group_name = var.common_rg
+}
