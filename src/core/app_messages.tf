@@ -1,5 +1,5 @@
 locals {
-  app_messages = {
+  function_app_messages = {
     app_settings_common = {
       FUNCTIONS_WORKER_RUNTIME       = "node"
       WEBSITE_NODE_DEFAULT_VERSION   = "14.16.0"
@@ -25,9 +25,9 @@ locals {
       FETCH_KEEPALIVE_FREE_SOCKET_TIMEOUT = "30000"
       FETCH_KEEPALIVE_TIMEOUT             = "60000"
     }
-    app_settings_01 = {
+    app_settings_1 = {
     }
-    app_settings_02 = {
+    app_settings_2 = {
     }
   }
 }
@@ -39,25 +39,6 @@ resource "azurerm_resource_group" "app_messages_rg" {
 
   tags = var.tags
 }
-
-# resource "azurerm_container_registry" "container_registry" {
-#   name                = replace(format("%s-acr", local.project), "-", "")
-#   resource_group_name = azurerm_resource_group.rg_internal.name
-#   location            = azurerm_resource_group.rg_internal.location
-#   sku                 = var.sku_container_registry
-#   admin_enabled       = true
-
-
-#   dynamic "retention_policy" {
-#     for_each = var.sku_container_registry == "Premium" ? [var.retention_policy_acr] : []
-#     content {
-#       days    = retention_policy.value["days"]
-#       enabled = retention_policy.value["enabled"]
-#     }
-#   }
-
-#   tags = var.tags
-# }
 
 # Subnet to host app messages function
 module "app_messages_snet" {
@@ -85,29 +66,17 @@ module "app_messages_snet" {
 }
 
 module "app_messages_function" {
-  count  = 2
+  count  = var.app_messages_count
   source = "git::https://github.com/pagopa/azurerm.git//function_app?ref=v2.3.1"
 
   resource_group_name = azurerm_resource_group.app_messages_rg[count.index].name
   name                = format("%s-app-messages-fn-%d", local.project, count.index + 1)
   location            = var.location
   health_check_path   = "api/v1/info"
-  subnet_id           = module.app_messages_snet[count.index].id
-
-  # linux_fx_version = format("DOCKER|%s/app-messages-fn:%s",
-  # azurerm_container_registry.container_registry.login_server, "latest")
 
   os_type                                  = "linux"
   always_on                                = var.app_messages_function_always_on
   application_insights_instrumentation_key = data.azurerm_application_insights.application_insights.instrumentation_key
-
-  # App service plan
-  # plan_type     = "internal"
-  # plan_name     = format("%s-plan-app-messages-fn-%d", local.project, count.index + 1)
-  # plan_kind     = var.app_messages_function_kind
-  # plan_reserved = true # Mandatory for Linux plan
-  # plan_sku_tier = var.app_messages_function_sku_tier
-  # plan_sku_size = var.app_messages_function_sku_size
 
   app_service_plan_info = {
     kind                         = var.app_messages_function_kind
@@ -115,6 +84,12 @@ module "app_messages_function" {
     sku_size                     = var.app_messages_function_sku_size
     maximum_elastic_worker_count = 0
   }
+
+  app_settings = merge(
+    local.function_app_messages.app_settings_common,
+  )
+
+  subnet_id = module.app_messages_snet[count.index].id
 
   allowed_subnets = [
     module.app_messages_snet[count.index].id,
@@ -126,6 +101,43 @@ module "app_messages_function" {
   allowed_ips = concat(
     [],
     local.app_insights_ips_west_europe,
+  )
+
+  tags = var.tags
+}
+
+module "app_messages_function_staging_slot" {
+  count  = var.app_messages_count
+  source = "git::https://github.com/pagopa/azurerm.git//function_app_slot?ref=v2.3.1"
+
+  name                = "staging"
+  location            = var.location
+  resource_group_name = azurerm_resource_group.app_messages_rg[count.index].name
+  function_app_name   = module.app_messages_function[count.index].name
+  function_app_id     = module.app_messages_function[count.index].id
+  app_service_plan_id = module.app_messages_function[count.index].app_service_plan_id
+  health_check_path   = "api/v1/info"
+
+  storage_account_name               = module.app_messages_function[count.index]_name
+  storage_account_access_key         = module.app_messages_function[count.index].primary_access_key
+
+  os_type                                  = "linux"
+  always_on                                = var.app_messages_function_always_on
+  application_insights_instrumentation_key = data.azurerm_application_insights.application_insights.instrumentation_key
+
+  app_settings = merge(
+    local.function_app_messages.app_settings_common,
+  )
+
+  subnet_id = module.app_messages_snet[count.index].id
+
+  allowed_subnets = [
+    module.app_messages_snet[count.index].id,
+    data.azurerm_subnet.azdoa_snet[0].id,
+  ]
+
+  allowed_ips = concat(
+    [],
   )
 
   tags = var.tags
