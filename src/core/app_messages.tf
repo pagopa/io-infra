@@ -118,8 +118,8 @@ module "app_messages_function_staging_slot" {
   app_service_plan_id = module.app_messages_function[count.index].app_service_plan_id
   health_check_path   = "api/v1/info"
 
-  storage_account_name               = module.app_messages_function[count.index].name
-  storage_account_access_key         = module.app_messages_function[count.index].primary_access_key
+  storage_account_name       = module.app_messages_function[count.index].storage_account.name
+  storage_account_access_key = module.app_messages_function[count.index].storage_account.primary_access_key
 
   os_type                                  = "linux"
   always_on                                = var.app_messages_function_always_on
