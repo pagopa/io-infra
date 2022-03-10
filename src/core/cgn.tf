@@ -125,6 +125,45 @@ module "cgn_cosmos_db" {
   account_name        = module.cosmos_cgn.name
 }
 
+### Containers
+locals {
+  cgn_cosmosdb_containers = [
+
+
+    {
+      name               = "user-cgns"
+      partition_key_path = "/fiscalCode"
+      autoscale_settings = {
+        max_throughput = 6000
+      },
+    },
+    {
+      name               = "user-eyca-cards"
+      partition_key_path = "/fiscalCode"
+      autoscale_settings = {
+        max_throughput = 6000
+      },
+    },
+
+  ]
+}
+
+module "cgn_cosmosdb_containers" {
+  source   = "git::https://github.com/pagopa/azurerm.git//cosmosdb_sql_container?ref=v2.1.8"
+  for_each = { for c in local.cgn_cosmosdb_containers : c.name => c }
+
+  name                = each.value.name
+  resource_group_name = data.azurerm_resource_group.cgn.name
+  account_name        = module.cosmos_cgn.name
+  database_name       = module.cgn_cosmos_db.name
+  partition_key_path  = each.value.partition_key_path
+  throughput          = lookup(each.value, "throughput", null)
+
+  autoscale_settings = lookup(each.value, "autoscale_settings", null)
+
+
+}
+
 
 ## Blob storage due to legal backup
 #tfsec:ignore:azure-storage-default-action-deny
@@ -211,7 +250,7 @@ module "apim_product_merchant" {
   subscription_required = true
   approval_required     = false
 
-  policy_xml = file("./api_product/cgn/policy.xml")
+  policy_xml = file("./api_product/cgn/_base_policy.xml")
 }
 
 module "api_cgn_merchant" {
@@ -221,25 +260,23 @@ module "api_cgn_merchant" {
   api_management_name = module.apim.name
   resource_group_name = module.apim.resource_group_name
   product_ids         = [module.apim_product_merchant.product_id]
-  // version_set_id        = azurerm_api_management_api_version_set.io_backend_bpd_api.id
-  // api_version           = "v1"
-  service_url = local.apim_io_backend_api.service_url
+  service_url         = local.apim_io_backend_api.service_url
 
   description           = "CGN MERCHANT API for IO platform."
   display_name          = "IO CGN MERCHANT API"
   path                  = "api/v1/merchant/cgn"
-  protocols             = ["http", "https"]
+  protocols             = ["https"]
   revision              = "1"
   subscription_required = true
 
   content_format = "swagger-json"
-  content_value = templatefile("./api/cgn/swagger.json.tmpl",
+  content_value = templatefile("./api/cgn/v1/_swagger.json.tpl",
     {
       host = "api.io.italia.it"
     }
   )
 
-  xml_content = file("./api/cgn/policy.xml")
+  xml_content = file("./api/cgn/v1/_base_policy.xml")
 }
 
 ## App registration for cgn backend portal ##
@@ -256,44 +293,6 @@ locals {
   cgn_app_registreation_name = "cgn-onboarding-portal-backend"
 }
 
-/*
-resource "azuread_application" "cgn_onboarding_portal" {
-  count                   = var.env_short == "p" ? 1 : 0
-  display_name            = local.cgn_app_registreation_name
-  prevent_duplicate_names = true
-  identifier_uris         = [format("http://%s", local.cgn_app_registreation_name)]
-  sign_in_audience        = "AzureADMyOrg"
-
-  api {
-
-    oauth2_permission_scope {
-      admin_consent_description  = "Allow the application to access cgn-onboarding-portal-backend on behalf of the signed-in user."
-      admin_consent_display_name = "Access cgn-onboarding-portal-backend"
-      enabled                    = true
-      id                         = "100361db-cca3-447a-82ea-af00e8fdc0b7"
-      type                       = "User"
-      user_consent_description   = "Allow the application to access cgn-onboarding-portal-backend on your behalf."
-      user_consent_display_name  = "Access cgn-onboarding-portal-backend"
-      value                      = "user_impersonation"
-    }
-
-  }
-
-  web {
-    redirect_uris = []
-    homepage_url  = format("https://%s", local.cgn_app_registreation_name)
-    implicit_grant {
-      access_token_issuance_enabled = false
-      id_token_issuance_enabled     = true
-    }
-  }
-}
-
-resource "azuread_service_principal" "cgn_onboarding_portal" {
-  count          = var.env_short == "p" ? 1 : 0
-  application_id = azuread_application.cgn_onboarding_portal[0].application_id
-}
-*/
 
 ### cgnonboardingportal user identity
 data "azurerm_key_vault_secret" "cgn_onboarding_backend_identity" {
@@ -307,30 +306,3 @@ resource "azurerm_role_assignment" "service_contributor" {
   role_definition_name = "API Management Service Contributor"
   principal_id         = data.azurerm_key_vault_secret.cgn_onboarding_backend_identity.value
 }
-
-/*
-resource "time_rotating" "cgn_onboarding_portal_secret" {
-  count          = var.env_short == "p" ? 1 : 0
-  rotation_years = 2
-}
-
-resource "azuread_application_password" "cgn_onboarding_portal" {
-  count = var.env_short == "p" ? 1 : 0
-
-  application_object_id = azuread_application.cgn_onboarding_portal[0].object_id
-  rotate_when_changed = {
-    rotation = time_rotating.cgn_onboarding_portal_secret[0].id
-  }
-}
-
-output "cgn_onboarding_app_id" {
-  description = "Id cgn onboarding portal app registration."
-  value       = azuread_application.cgn_onboarding_portal[0].application_id
-}
-
-output "cgn_onboarding_portal_secret" {
-  description = "Secret used by the app to create new subscription."
-  value       = azuread_application_password.cgn_onboarding_portal[0].value
-  sensitive   = true
-}
-*/

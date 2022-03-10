@@ -27,6 +27,7 @@ cidr_subnet_fnpblevtdispatcher = ["10.0.12.0/24"]
 cidr_subnet_appgateway         = ["10.0.13.0/24"]
 cidr_subnet_redis_apim         = ["10.0.14.0/24"]
 cidr_subnet_apim               = ["10.0.101.0/24"]
+cidr_subnet_appmessages        = ["10.0.127.0/24", "10.0.128.0/24"]
 cidr_subnet_vpn                = ["10.0.133.0/24"]
 cidr_subnet_selfcare_be        = ["10.0.137.0/24"]
 cidr_subnet_appbackendl1       = ["10.0.152.0/24"]
@@ -42,7 +43,7 @@ app_gateway_api_io_italia_it_certificate_name                     = "api-io-ital
 app_gateway_app_backend_io_italia_it_certificate_name             = "app-backend-io-italia-it"
 app_gateway_developerportal_backend_io_italia_it_certificate_name = "developerportal-backend-io-italia-it"
 app_gateway_api_io_selfcare_pagopa_it_certificate_name            = "api-io-selfcare-pagopa-it"
-app_gateway_min_capacity                                          = 4
+app_gateway_min_capacity                                          = 20
 app_gateway_max_capacity                                          = 50
 app_gateway_alerts_enabled                                        = true
 
@@ -126,6 +127,16 @@ ehns_metric_alerts = {
   },
 }
 
+# App Messages
+app_messages_function_always_on = true
+
+app_messages_function_kind              = "Linux"
+app_messages_function_sku_tier          = "PremiumV3"
+app_messages_function_sku_size          = "P1v3"
+app_messages_function_autoscale_minimum = 1
+app_messages_function_autoscale_maximum = 30
+app_messages_function_autoscale_default = 1
+
 eventhubs = [
   {
     name              = "io-cosmosdb-services"
@@ -181,6 +192,26 @@ eventhubs = [
       },
       {
         name   = "io-fn-elt"
+        listen = true
+        send   = false
+        manage = false
+      }
+    ]
+  },
+  {
+    name              = "io-cosmosdb-message-status"
+    partitions        = 32
+    message_retention = 7
+    consumers         = ["io-messages"]
+    keys = [
+      {
+        name   = "io-cdc"
+        listen = false
+        send   = true
+        manage = false
+      },
+      {
+        name   = "io-messages"
         listen = true
         send   = false
         manage = false

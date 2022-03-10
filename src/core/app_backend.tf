@@ -49,8 +49,8 @@ locals {
       BONUS_API_KEY               = data.azurerm_key_vault_secret.app_backend_BONUS_API_KEY.value
       CGN_API_URL                 = "http://${data.azurerm_function_app.fnapp_cgn.default_hostname}"
       CGN_API_KEY                 = data.azurerm_key_vault_secret.app_backend_CGN_API_KEY.value
-      CGN_OPERATOR_SEARCH_API_URL = "https://cgnonboardingportal-u-os.azurewebsites.net" # uat esercenti subscription
-      CGN_OPERATOR_SEARCH_API_KEY = data.azurerm_key_vault_secret.app_backend_CGN_OPERATOR_SEARCH_API_KEY_UAT.value
+      CGN_OPERATOR_SEARCH_API_URL = "https://cgnonboardingportal-p-os.azurewebsites.net" # prod subscription
+      CGN_OPERATOR_SEARCH_API_KEY = data.azurerm_key_vault_secret.app_backend_CGN_OPERATOR_SEARCH_API_KEY_PROD.value
       EUCOVIDCERT_API_URL         = "http://${data.azurerm_function_app.fnapp_eucovidcert.default_hostname}/api/v1"
       EUCOVIDCERT_API_KEY         = data.azurerm_key_vault_secret.app_backend_EUCOVIDCERT_API_KEY.value
 
@@ -75,8 +75,8 @@ locals {
       ALLOW_SESSION_HANDLER_IP_SOURCE_RANGE = data.azurerm_subnet.fnapp_admin_subnet_out.address_prefixes[0]
 
       // PAGOPA
-      PAGOPA_API_URL_PROD          = "https://${data.azurerm_app_service.pagopa_proxy_prod.default_site_hostname}" # change me for new pagoPA proxy
-      PAGOPA_API_URL_TEST          = "https://${data.azurerm_app_service.pagopa_proxy_test.default_site_hostname}" # change me for new pagoPA proxy
+      PAGOPA_API_URL_PROD          = "https://api.platform.pagopa.it/checkout/auth/payments/v1"
+      PAGOPA_API_URL_TEST          = "https://api.uat.platform.pagopa.it/checkout/auth/payments/v1"
       PAGOPA_BASE_PATH             = "/pagopa/api/v1"
       PAGOPA_API_KEY_PROD          = data.azurerm_key_vault_secret.app_backend_PAGOPA_API_KEY_PROD.value
       PAGOPA_API_KEY_UAT           = data.azurerm_key_vault_secret.app_backend_PAGOPA_API_KEY_UAT.value
@@ -146,7 +146,7 @@ locals {
       PECSERVERS_aruba_serviceId = "01FRMRD5P7H378MDXBBW3DTYCF"
 
       // CGN
-      TEST_CGN_FISCAL_CODES = data.azurerm_key_vault_secret.app_backend_TEST_CGN_FISCAL_CODES.value
+      TEST_CGN_FISCAL_CODES = "" #data.azurerm_key_vault_secret.app_backend_TEST_CGN_FISCAL_CODES.value
     }
     app_settings_l1 = {
       // FUNCTIONS
@@ -454,6 +454,28 @@ resource "azurerm_monitor_autoscale_setting" "appservice_app_backendl1" {
 
     rule {
       metric_trigger {
+        metric_name              = "CpuPercentage"
+        metric_resource_id       = module.appservice_app_backendl1.plan_id
+        metric_namespace         = "microsoft.web/serverfarms"
+        time_grain               = "PT1M"
+        statistic                = "Average"
+        time_window              = "PT5M"
+        time_aggregation         = "Average"
+        operator                 = "GreaterThan"
+        threshold                = 45
+        divide_by_instance_count = false
+      }
+
+      scale_action {
+        direction = "Increase"
+        type      = "ChangeCount"
+        value     = "2"
+        cooldown  = "PT5M"
+      }
+    }
+
+    rule {
+      metric_trigger {
         metric_name              = "Requests"
         metric_resource_id       = module.appservice_app_backendl1.id
         metric_namespace         = "microsoft.web/sites"
@@ -463,6 +485,28 @@ resource "azurerm_monitor_autoscale_setting" "appservice_app_backendl1" {
         time_aggregation         = "Average"
         operator                 = "LessThan"
         threshold                = 2500
+        divide_by_instance_count = false
+      }
+
+      scale_action {
+        direction = "Decrease"
+        type      = "ChangeCount"
+        value     = "1"
+        cooldown  = "PT20M"
+      }
+    }
+
+    rule {
+      metric_trigger {
+        metric_name              = "CpuPercentage"
+        metric_resource_id       = module.appservice_app_backendl1.plan_id
+        metric_namespace         = "microsoft.web/serverfarms"
+        time_grain               = "PT1M"
+        statistic                = "Average"
+        time_window              = "PT5M"
+        time_aggregation         = "Average"
+        operator                 = "LessThan"
+        threshold                = 25
         divide_by_instance_count = false
       }
 
@@ -620,6 +664,28 @@ resource "azurerm_monitor_autoscale_setting" "appservice_app_backendl2" {
 
     rule {
       metric_trigger {
+        metric_name              = "CpuPercentage"
+        metric_resource_id       = module.appservice_app_backendl2.plan_id
+        metric_namespace         = "microsoft.web/serverfarms"
+        time_grain               = "PT1M"
+        statistic                = "Average"
+        time_window              = "PT5M"
+        time_aggregation         = "Average"
+        operator                 = "GreaterThan"
+        threshold                = 45
+        divide_by_instance_count = false
+      }
+
+      scale_action {
+        direction = "Increase"
+        type      = "ChangeCount"
+        value     = "2"
+        cooldown  = "PT5M"
+      }
+    }
+
+    rule {
+      metric_trigger {
         metric_name              = "Requests"
         metric_resource_id       = module.appservice_app_backendl2.id
         metric_namespace         = "microsoft.web/sites"
@@ -629,6 +695,28 @@ resource "azurerm_monitor_autoscale_setting" "appservice_app_backendl2" {
         time_aggregation         = "Average"
         operator                 = "LessThan"
         threshold                = 2500
+        divide_by_instance_count = false
+      }
+
+      scale_action {
+        direction = "Decrease"
+        type      = "ChangeCount"
+        value     = "1"
+        cooldown  = "PT20M"
+      }
+    }
+
+    rule {
+      metric_trigger {
+        metric_name              = "CpuPercentage"
+        metric_resource_id       = module.appservice_app_backendl2.plan_id
+        metric_namespace         = "microsoft.web/serverfarms"
+        time_grain               = "PT1M"
+        statistic                = "Average"
+        time_window              = "PT5M"
+        time_aggregation         = "Average"
+        operator                 = "LessThan"
+        threshold                = 25
         divide_by_instance_count = false
       }
 
