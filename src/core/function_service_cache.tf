@@ -1,7 +1,7 @@
-module "fn_service_cache_subnet" {
+module "fn_services_cache_subnet" {
   source               = "git::https://github.com/pagopa/azurerm.git//subnet?ref=v2.3.0"
-  name                 = "${local.project}-service-cache-snet"
-  address_prefixes     = var.cidr_subnet_fnelt
+  name                 = "${local.project}-services-cache-snet"
+  address_prefixes     = var.cidr_subnet_fnservices_cache
   resource_group_name  = data.azurerm_resource_group.vnet_common_rg.name
   virtual_network_name = data.azurerm_virtual_network.vnet_common.name
   service_endpoints = [
@@ -19,16 +19,16 @@ module "fn_service_cache_subnet" {
   }
 }
 
-module "function_service_cache" {
+module "function_services_cache" {
   source = "git::https://github.com/pagopa/azurerm.git//function_app?ref=v2.3.0"
 
-  name = "${local.project}-service-cache-fn"
+  name = "${local.project}-services-cache-fn"
   # SELFCARE RG
   resource_group_name                      = azurerm_resource_group.selfcare_be_rg.name
   location                                 = var.location
   app_service_plan_id                      = azurerm_app_service_plan.selfcare_be_common.id
   health_check_path                        = "api/v1/info"
-  subnet_id                                = module.fn_service_cache_subnet.id
+  subnet_id                                = module.fn_services_cache_subnet.id
   application_insights_instrumentation_key = data.azurerm_application_insights.application_insights.instrumentation_key
 
   app_settings = {
@@ -64,7 +64,7 @@ module "function_service_cache" {
 
   allowed_subnets = [
     data.azurerm_subnet.azdoa_snet[0].id,
-    module.fn_service_cache_subnet.id
+    module.fn_services_cache_subnet.id
   ]
 
   allowed_ips = local.app_insights_ips_west_europe
