@@ -1,12 +1,9 @@
-data "azurerm_storage_account" "api" {
-  name                = "iopstapi"
-  resource_group_name = azurerm_resource_group.rg_internal.name
-}
-
 data "azurerm_key_vault_secret" "backup_storage_id" {
   name         = "backup-storage-id"
   key_vault_id = data.azurerm_key_vault.common.id
 }
+
+#-----------------------------------------------------
 
 module "io_apist_replica" {
   source = "git::https://github.com/pagopa/azurerm.git//storage_object_replication?ref=v2.0.6"
@@ -19,5 +16,4 @@ module "io_apist_replica" {
     destination_container_name = "message-content"
     copy_blobs_created_after   = "Everything"
   }]
-
 }
