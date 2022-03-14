@@ -101,7 +101,9 @@ variable "application_insights_name" {
 }
 ##
 
-## Network
+#
+# Network
+#
 variable "common_rg" {
   type        = string
   description = "Common Virtual network resource group name."
@@ -114,6 +116,7 @@ variable "vnet_name" {
   default     = ""
 }
 
+## Subnet CIRDS
 variable "cidr_subnet_eventhub" {
   type        = list(string)
   description = "Eventhub network address space."

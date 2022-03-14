@@ -26,24 +26,11 @@ module "function_elt_snetout" {
   }
 }
 
-# CDN Assets storage account
-data "azurerm_storage_account" "cdnassets" {
-  name                = "iopstcdnassets"
-  resource_group_name = var.common_rg
-}
-
 # Storage iopstapi replica
 data "azurerm_storage_account" "api_replica" {
   name                = "iopstapireplica"
   resource_group_name = azurerm_resource_group.rg_internal.name
 }
-
-# KeyVault values - start
-data "azurerm_key_vault_secret" "services_exclusion_list" {
-  name         = "io-fn-services-SERVICEID-EXCLUSION-LIST"
-  key_vault_id = data.azurerm_key_vault.common.id
-}
-# KeyVault values - end
 
 module "function_elt" {
   source = "git::https://github.com/pagopa/azurerm.git//function_app?ref=v1.0.65"
