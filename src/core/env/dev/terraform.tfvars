@@ -138,7 +138,7 @@ eventhubs = [
   },
   {
     name              = "pdnd-io-cosmosdb-message"
-    partitions        = 3
+    partitions        = 30
     message_retention = 1
     consumers         = []
     keys = [
@@ -158,7 +158,7 @@ eventhubs = [
   },
   {
     name              = "pdnd-io-cosmosdb-message-status"
-    partitions        = 3
+    partitions        = 30
     message_retention = 1
     consumers         = []
     keys = [
@@ -178,7 +178,7 @@ eventhubs = [
   },
   {
     name              = "pdnd-io-cosmosdb-notification-status"
-    partitions        = 3
+    partitions        = 30
     message_retention = 1
     consumers         = []
     keys = [
