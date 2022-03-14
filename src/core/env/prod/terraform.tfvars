@@ -43,7 +43,7 @@ app_gateway_api_io_italia_it_certificate_name                     = "api-io-ital
 app_gateway_app_backend_io_italia_it_certificate_name             = "app-backend-io-italia-it"
 app_gateway_developerportal_backend_io_italia_it_certificate_name = "developerportal-backend-io-italia-it"
 app_gateway_api_io_selfcare_pagopa_it_certificate_name            = "api-io-selfcare-pagopa-it"
-app_gateway_min_capacity                                          = 20
+app_gateway_min_capacity                                          = 4
 app_gateway_max_capacity                                          = 50
 app_gateway_alerts_enabled                                        = true
 
@@ -136,6 +136,10 @@ app_messages_function_sku_size          = "P1v3"
 app_messages_function_autoscale_minimum = 1
 app_messages_function_autoscale_maximum = 30
 app_messages_function_autoscale_default = 1
+
+app_backend_autoscale_default = 10
+app_backend_autoscale_minimum = 1
+app_backend_autoscale_maximum = 30
 
 eventhubs = [
   {
