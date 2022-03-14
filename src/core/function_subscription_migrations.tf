@@ -173,8 +173,10 @@ module "function_subscriptionmigrations" {
 
   app_settings = merge(local.function_subscriptionmigrations.app_settings_commons, {
     // those are slot configs
-    "AzureWebJobs.OnServiceChange.Disabled"             = "0"
-    "AzureWebJobs.UpsertSubscriptionToMigrate.Disabled" = "0"
+    "AzureWebJobs.OnServiceChange.Disabled"                 = "0"
+    "AzureWebJobs.UpsertSubscriptionToMigrate.Disabled"     = "0"
+    "AzureWebJobs.ChangeOneSubscriptionOwnership.Disabled"  = "0"
+    "AzureWebJobs.ChangeAllSubscriptionsOwnership.Disabled" = "0"
   })
 
   tags = var.tags
