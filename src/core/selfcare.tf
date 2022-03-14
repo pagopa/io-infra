@@ -252,6 +252,67 @@ module "appservice_selfcare_be" {
   tags = var.tags
 }
 
+resource "azurerm_monitor_autoscale_setting" "appservice_selfcare_be_common" {
+  name                = format("%s-autoscale", azurerm_app_service_plan.selfcare_be_common.name)
+  resource_group_name = azurerm_resource_group.selfcare_be_rg.name
+  location            = azurerm_resource_group.selfcare_be_rg.location
+  target_resource_id  = azurerm_app_service_plan.selfcare_be_common.id
+
+  profile {
+    name = "default"
+
+    capacity {
+      default = 1
+      minimum = 1
+      maximum = 10
+    }
+
+    rule {
+      metric_trigger {
+        metric_name              = "CpuPercentage"
+        metric_resource_id       = azurerm_app_service_plan.selfcare_be_common.id
+        metric_namespace         = "microsoft.web/serverfarms"
+        time_grain               = "PT1M"
+        statistic                = "Average"
+        time_window              = "PT5M"
+        time_aggregation         = "Average"
+        operator                 = "GreaterThan"
+        threshold                = 70
+        divide_by_instance_count = false
+      }
+
+      scale_action {
+        direction = "Increase"
+        type      = "ChangeCount"
+        value     = "5"
+        cooldown  = "PT5M"
+      }
+    }
+
+    rule {
+      metric_trigger {
+        metric_name              = "CpuPercentage"
+        metric_resource_id       = azurerm_app_service_plan.selfcare_be_common.id
+        metric_namespace         = "microsoft.web/serverfarms"
+        time_grain               = "PT1M"
+        statistic                = "Average"
+        time_window              = "PT20M"
+        time_aggregation         = "Average"
+        operator                 = "LessThan"
+        threshold                = 30
+        divide_by_instance_count = false
+      }
+
+      scale_action {
+        direction = "Decrease"
+        type      = "ChangeCount"
+        value     = "5"
+        cooldown  = "PT5M"
+      }
+    }
+  }
+}
+
 data "http" "selfcare_well_known_jwks_json" {
   url = "https://${local.selfcare.hostname}/.well-known/jwks.json"
 

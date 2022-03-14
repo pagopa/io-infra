@@ -177,11 +177,6 @@ variable "cidr_subnet_appbackendli" {
   description = "App backend li address space."
 }
 
-variable "cidr_subnet_fnservices_cache" {
-  type        = list(string)
-  description = "Function services cache address space."
-}
-
 ## VPN ##
 variable "vpn_sku" {
   type        = string
