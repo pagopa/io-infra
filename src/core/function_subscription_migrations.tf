@@ -153,7 +153,9 @@ module "function_subscriptionmigrations" {
     "private_dns_zone_queue_ids" = [data.azurerm_private_dns_zone.privatelink_queue_core_windows_net.id],
     "private_dns_zone_table_ids" = [data.azurerm_private_dns_zone.privatelink_table_core_windows_net.id],
     "queues" = [
-      local.function_subscriptionmigrations.app_settings_commons.QUEUE_ADD_SERVICE_TO_MIGRATIONS
+      local.function_subscriptionmigrations.app_settings_commons.QUEUE_ADD_SERVICE_TO_MIGRATIONS,
+      local.function_subscriptionmigrations.app_settings_commons.QUEUE_ALL_SUBSCRIPTIONS_TO_MIGRATE,
+      local.function_subscriptionmigrations.app_settings_commons.QUEUE_SUBSCRIPTION_TO_MIGRATE,
     ],
     "containers"           = [],
     "blobs_retention_days" = 1,
@@ -171,8 +173,10 @@ module "function_subscriptionmigrations" {
 
   app_settings = merge(local.function_subscriptionmigrations.app_settings_commons, {
     // those are slot configs
-    "AzureWebJobs.OnServiceChange.Disabled"             = "0"
-    "AzureWebJobs.UpsertSubscriptionToMigrate.Disabled" = "0"
+    "AzureWebJobs.OnServiceChange.Disabled"                 = "0"
+    "AzureWebJobs.UpsertSubscriptionToMigrate.Disabled"     = "0"
+    "AzureWebJobs.ChangeOneSubscriptionOwnership.Disabled"  = "0"
+    "AzureWebJobs.ChangeAllSubscriptionsOwnership.Disabled" = "0"
   })
 
   tags = var.tags
