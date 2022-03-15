@@ -24,6 +24,12 @@ locals {
       FETCH_KEEPALIVE_MAX_FREE_SOCKETS    = "10"
       FETCH_KEEPALIVE_FREE_SOCKET_TIMEOUT = "30000"
       FETCH_KEEPALIVE_TIMEOUT             = "60000"
+
+      // REDIS
+      REDIS_URL      = module.redis_messages.hostname
+      REDIS_PORT     = module.redis_messages.ssl_port
+      REDIS_PASSWORD = module.redis_messages.primary_access_key
+
     }
     app_settings_1 = {
     }
@@ -32,6 +38,56 @@ locals {
   }
 }
 
+module "redis_messages" {
+  source                = "git::https://github.com/pagopa/azurerm.git//redis_cache?ref=v2.0.26"
+  name                  = format("%s-redis-app-messages-std", local.project)
+  resource_group_name   = azurerm_resource_group.app_messages_common_rg.name
+  location              = azurerm_resource_group.app_messages_common_rg.location
+  capacity              = 0
+  family                = "C"
+  sku_name              = "Standard"
+  enable_authentication = true
+
+  // when azure can apply patch?
+  patch_schedules = [{
+    day_of_week    = "Sunday"
+    start_hour_utc = 23
+    },
+    {
+      day_of_week    = "Monday"
+      start_hour_utc = 23
+    },
+    {
+      day_of_week    = "Tuesday"
+      start_hour_utc = 23
+    },
+    {
+      day_of_week    = "Wednesday"
+      start_hour_utc = 23
+    },
+    {
+      day_of_week    = "Thursday"
+      start_hour_utc = 23
+    },
+  ]
+
+
+  private_endpoint = {
+    enabled              = true
+    virtual_network_id   = data.azurerm_virtual_network.vnet_common.id
+    subnet_id            = data.azurerm_subnet.private_endpoints_subnet.id
+    private_dns_zone_ids = [azurerm_private_dns_zone.privatelink_redis_cache.id]
+  }
+
+  tags = var.tags
+}
+
+resource "azurerm_resource_group" "app_messages_common_rg" {
+  name     = format("%s-app-messages-common-rg", local.project)
+  location = var.location
+
+  tags = var.tags
+}
 resource "azurerm_resource_group" "app_messages_rg" {
   count    = var.app_messages_count
   name     = format("%s-app-messages-rg-%d", local.project, count.index + 1)
