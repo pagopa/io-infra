@@ -24,12 +24,71 @@ locals {
       FETCH_KEEPALIVE_MAX_FREE_SOCKETS    = "10"
       FETCH_KEEPALIVE_FREE_SOCKET_TIMEOUT = "30000"
       FETCH_KEEPALIVE_TIMEOUT             = "60000"
+
+      // REDIS
+      REDIS_URL      = module.redis_messages.hostname
+      REDIS_PORT     = module.redis_messages.ssl_port
+      REDIS_PASSWORD = module.redis_messages.primary_access_key
+
     }
     app_settings_1 = {
     }
     app_settings_2 = {
     }
   }
+}
+
+module "redis_messages_snet" {
+  source                                         = "git::https://github.com/pagopa/azurerm.git//subnet?ref=v2.0.26"
+  name                                           = format("%s-redis-messages-snet", local.project)
+  address_prefixes                               = ["10.0.14.0/25"] # To check
+  resource_group_name                            = data.azurerm_resource_group.vnet_common_rg.name
+  virtual_network_name                           = data.azurerm_virtual_network.vnet_common.name
+  enforce_private_link_endpoint_network_policies = true
+}
+
+module "redis_messages" {
+  source                = "git::https://github.com/pagopa/azurerm.git//redis_cache?ref=v2.0.26"
+  name                  = format("%s-redis-messages-std", local.project)
+  resource_group_name   = azurerm_resource_group.app_messages_rg1.name
+  location              = azurerm_resource_group.app_messages_rg1.location
+  capacity              = 1
+  family                = "C"
+  sku_name              = "Standard"
+  enable_authentication = true
+
+  // when azure can apply patch?
+  patch_schedules = [{
+    day_of_week    = "Sunday"
+    start_hour_utc = 23
+    },
+    {
+      day_of_week    = "Monday"
+      start_hour_utc = 23
+    },
+    {
+      day_of_week    = "Tuesday"
+      start_hour_utc = 23
+    },
+    {
+      day_of_week    = "Wednesday"
+      start_hour_utc = 23
+    },
+    {
+      day_of_week    = "Thursday"
+      start_hour_utc = 23
+    },
+  ]
+
+
+  private_endpoint = {
+    enabled              = true
+    virtual_network_id   = data.azurerm_virtual_network.vnet_common.id
+    subnet_id            = module.redis_messages_snet.id
+    private_dns_zone_ids = [azurerm_private_dns_zone.privatelink_redis_cache.id]
+  }
+
+  tags = var.tags
 }
 
 resource "azurerm_resource_group" "app_messages_rg" {
@@ -96,6 +155,7 @@ module "app_messages_function" {
     module.app_backendl1_snet.id,
     module.app_backendl2_snet.id,
     module.apim_snet.id,
+    module.redis_messages_snet.id
   ]
 
   allowed_ips = concat(
