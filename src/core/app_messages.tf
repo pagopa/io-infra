@@ -38,21 +38,12 @@ locals {
   }
 }
 
-module "redis_messages_snet" {
-  source                                         = "git::https://github.com/pagopa/azurerm.git//subnet?ref=v2.0.26"
-  name                                           = format("%s-redis-messages-snet", local.project)
-  address_prefixes                               = ["10.0.14.0/25"] # To check
-  resource_group_name                            = data.azurerm_resource_group.vnet_common_rg.name
-  virtual_network_name                           = data.azurerm_virtual_network.vnet_common.name
-  enforce_private_link_endpoint_network_policies = true
-}
-
 module "redis_messages" {
   source                = "git::https://github.com/pagopa/azurerm.git//redis_cache?ref=v2.0.26"
-  name                  = format("%s-redis-messages-std", local.project)
-  resource_group_name   = azurerm_resource_group.app_messages_rg1.name
-  location              = azurerm_resource_group.app_messages_rg1.location
-  capacity              = 1
+  name                  = format("%s-redis-app-messages-std", local.project)
+  resource_group_name   = azurerm_resource_group.app_messages_common_rg.name
+  location              = azurerm_resource_group.app_messages_common_rg.location
+  capacity              = 0
   family                = "C"
   sku_name              = "Standard"
   enable_authentication = true
@@ -84,13 +75,19 @@ module "redis_messages" {
   private_endpoint = {
     enabled              = true
     virtual_network_id   = data.azurerm_virtual_network.vnet_common.id
-    subnet_id            = module.redis_messages_snet.id
+    subnet_id            = data.azurerm_subnet.private_endpoints_subnet.id
     private_dns_zone_ids = [azurerm_private_dns_zone.privatelink_redis_cache.id]
   }
 
   tags = var.tags
 }
 
+resource "azurerm_resource_group" "app_messages_common_rg" {
+  name     = format("%s-app-messages-common-rg-%d", local.project)
+  location = var.location
+
+  tags = var.tags
+}
 resource "azurerm_resource_group" "app_messages_rg" {
   count    = var.app_messages_count
   name     = format("%s-app-messages-rg-%d", local.project, count.index + 1)
@@ -155,7 +152,6 @@ module "app_messages_function" {
     module.app_backendl1_snet.id,
     module.app_backendl2_snet.id,
     module.apim_snet.id,
-    module.redis_messages_snet.id
   ]
 
   allowed_ips = concat(
