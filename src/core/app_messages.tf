@@ -83,7 +83,7 @@ module "redis_messages" {
 }
 
 resource "azurerm_resource_group" "app_messages_common_rg" {
-  name     = format("%s-app-messages-common-rg-%d", local.project)
+  name     = format("%s-app-messages-common-rg", local.project)
   location = var.location
 
   tags = var.tags
