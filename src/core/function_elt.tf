@@ -74,13 +74,31 @@ module "function_elt" {
     TARGETKAFKA_idempotent          = "true"
     TARGETKAFKA_transactionalId     = "IO_ELT"
     TARGETKAFKA_topic               = "io-cosmosdb-services"
-    ERROR_STORAGE_ACCOUNT           = module.storage_account_elt.name
-    ERROR_STORAGE_KEY               = module.storage_account_elt.primary_access_key
-    ERROR_STORAGE_TABLE             = azurerm_storage_table.fnelterrors.name
-    COMMAND_STORAGE                 = module.storage_account_elt.primary_connection_string
-    COMMAND_STORAGE_TABLE           = azurerm_storage_table.fneltcommands.name
-    IMPORT_TOPIC_NAME               = "import-command"
-    IMPORT_TOPIC_CONNECTION_STRING  = module.event_hub.keys["import-command.io-fn-elt"].primary_connection_string
+
+    MESSAGES_TOPIC_NAME              = "pdnd-io-cosmosdb-messages"
+    MESSAGES_TOPIC_CONNECTION_STRING = module.event_hub.keys["io-cosmosdb-services.io-fn-elt"].primary_connection_string
+    MESSAGES_LEASES_PREFIX           = "messages-001"
+
+    MESSAGE_STATUS_TOPIC_NAME              = "pdnd-io-cosmosdb-message-status"
+    MESSAGE_STATUS_TOPIC_CONNECTION_STRING = module.event_hub.keys["io-cosmosdb-services.io-fn-elt"].primary_connection_string
+    MESSAGE_STATUS_LEASES_PREFIX           = "message-status-001"
+
+    NOTIFICATION_STATUS_TOPIC_NAME              = "pdnd-io-cosmosdb-message-status"
+    NOTIFICATION_STATUS_TOPIC_CONNECTION_STRING = module.event_hub.keys["io-cosmosdb-services.io-fn-elt"].primary_connection_string
+    NOTIFICATION_STATUS_LEASES_PREFIX           = "notification-status-001"
+
+
+    ERROR_STORAGE_ACCOUNT                   = module.storage_account_elt.name
+    ERROR_STORAGE_KEY                       = module.storage_account_elt.primary_access_key
+    ERROR_STORAGE_TABLE                     = azurerm_storage_table.fnelterrors.name
+    ERROR_STORAGE_TABLE_MESSAGES            = azurerm_storage_table.fnelterrors_messages.name
+    ERROR_STORAGE_TABLE_MESSAGE_STATUS      = azurerm_storage_table.fnelterrors_message_status.name
+    ERROR_STORAGE_TABLE_NOTIFICATION_STATUS = azurerm_storage_table.fnelterrors_notification_status.name
+
+    COMMAND_STORAGE                = module.storage_account_elt.primary_connection_string
+    COMMAND_STORAGE_TABLE          = azurerm_storage_table.fneltcommands.name
+    IMPORT_TOPIC_NAME              = "import-command"
+    IMPORT_TOPIC_CONNECTION_STRING = module.event_hub.keys["import-command.io-fn-elt"].primary_connection_string
 
     PROFILE_TOPIC_NAME              = "io-cosmosdb-profiles"
     PROFILE_TOPIC_CONNECTION_STRING = module.event_hub.keys["io-cosmosdb-profiles.io-fn-elt"].primary_connection_string
@@ -144,6 +162,21 @@ module "storage_account_elt" {
 
 resource "azurerm_storage_table" "fnelterrors" {
   name                 = "fnelterrors"
+  storage_account_name = module.storage_account_elt.name
+}
+
+resource "azurerm_storage_table" "fnelterrors_messages" {
+  name                 = "fnelterrorsMessages"
+  storage_account_name = module.storage_account_elt.name
+}
+
+resource "azurerm_storage_table" "fnelterrors_message_status" {
+  name                 = "fnelterrorsMessageStatus"
+  storage_account_name = module.storage_account_elt.name
+}
+
+resource "azurerm_storage_table" "fnelterrors_notification_status" {
+  name                 = "fnelterrorsNotificationStatus"
   storage_account_name = module.storage_account_elt.name
 }
 
