@@ -40,7 +40,7 @@ resource "azurerm_resource_group" "function_messages_cqrs_rg" {
 module "function_messages_cqrs_snet" {
   source                                         = "git::https://github.com/pagopa/azurerm.git//subnet?ref=v1.0.51"
   name                                           = format("%s-fn-messages-cqrs-snet", local.project)
-  address_prefixes                               = [var.cidr_subnet_fnmessagescqrs]
+  address_prefixes                               = var.cidr_subnet_fnmessagescqrs
   resource_group_name                            = data.azurerm_resource_group.vnet_common_rg.name
   virtual_network_name                           = data.azurerm_virtual_network.vnet_common.name
   enforce_private_link_endpoint_network_policies = true
@@ -80,7 +80,7 @@ module "function_messages_cqrs" {
   }
 
   app_settings = merge(
-    local.function_app_messages_cqrs.app_settings_common,
+    local.function_app_messages_cqrs.app_settings,
   )
 
   subnet_id = module.function_messages_cqrs_snet.id
@@ -119,7 +119,7 @@ module "function_messages_cqrs_staging_slot" {
   application_insights_instrumentation_key = data.azurerm_application_insights.application_insights.instrumentation_key
 
   app_settings = merge(
-    local.function_app_messages_cqrs.app_settings_common,
+    local.function_app_messages_cqrs.app_settings,
   )
 
   subnet_id = module.function_messages_cqrs_snet.id
