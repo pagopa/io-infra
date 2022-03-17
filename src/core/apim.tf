@@ -123,7 +123,7 @@ data "azurerm_key_vault_secret" "cgnonboardingportal_os_header_name" {
 resource "azurerm_api_management_named_value" "cgnonboardingportal_os_url_value" {
   name                = "cgnonboardingportal-os-url"
   api_management_name = module.apim.name
-  resource_group_name = azurerm_resource_group.rg_api.name
+  resource_group_name = azurerm_resource_group.rg_internal.name
   display_name        = "cgnonboardingportal-os-url"
   value               = format("https://cgnonboardingportal-%s-os.azurewebsites.net", var.env_short)
 }
@@ -131,7 +131,7 @@ resource "azurerm_api_management_named_value" "cgnonboardingportal_os_url_value"
 resource "azurerm_api_management_named_value" "cgnonboardingportal_os_key" {
   name                = "cgnonboardingportal-os-key"
   api_management_name = module.apim.name
-  resource_group_name = azurerm_resource_group.rg_api.name
+  resource_group_name = azurerm_resource_group.rg_internal.name
   display_name        = "cgnonboardingportal-os-key"
   value               = data.azurerm_key_vault_secret.cgnonboardingportal_os_key.value
   secret              = true
@@ -140,7 +140,7 @@ resource "azurerm_api_management_named_value" "cgnonboardingportal_os_key" {
 resource "azurerm_api_management_named_value" "cgnonboardingportal_os_header_name" {
   name                = "cgnonboardingportal-os-header-name"
   api_management_name = module.apim.name
-  resource_group_name = azurerm_resource_group.rg_api.name
+  resource_group_name = azurerm_resource_group.rg_internal.name
   display_name        = "cgnonboardingportal-os-header-name"
   value               = data.azurerm_key_vault_secret.cgnonboardingportal_os_header_name.value
   secret              = true
