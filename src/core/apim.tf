@@ -110,3 +110,39 @@ resource "azurerm_key_vault_access_policy" "common" {
   certificate_permissions = ["Get", "List"]
   storage_permissions     = []
 }
+data "azurerm_key_vault_secret" "cgnonboardingportal_os_key" {
+  name         = "funccgn-KEY-CGNOS"
+  key_vault_id = data.azurerm_key_vault.common.id
+}
+
+data "azurerm_key_vault_secret" "cgnonboardingportal_os_header_name" {
+  name         = "funccgn-KEY-CGNOSHEADERNAME"
+  key_vault_id = data.azurerm_key_vault.common.id
+}
+
+resource "azurerm_api_management_named_value" "cgnonboardingportal_os_url_value" {
+  name                = "cgnonboardingportal-os-url"
+  api_management_name = module.apim.name
+  resource_group_name = azurerm_resource_group.rg_api.name
+  display_name        = "cgnonboardingportal-os-url"
+  value               = format("https://cgnonboardingportal-%s-os.azurewebsites.net", var.env_short)
+}
+
+resource "azurerm_api_management_named_value" "cgnonboardingportal_os_key" {
+  name                = "cgnonboardingportal-os-key"
+  api_management_name = module.apim.name
+  resource_group_name = azurerm_resource_group.rg_api.name
+  display_name        = "cgnonboardingportal-os-key"
+  value               = data.azurerm_key_vault_secret.cgnonboardingportal_os_key.value
+  secret              = true
+}
+
+resource "azurerm_api_management_named_value" "cgnonboardingportal_os_header_name" {
+  name                = "cgnonboardingportal-os-header-name"
+  api_management_name = module.apim.name
+  resource_group_name = azurerm_resource_group.rg_api.name
+  display_name        = "cgnonboardingportal-os-header-name"
+  value               = data.azurerm_key_vault_secret.cgnonboardingportal_os_header_name.value
+  secret              = true
+}
+

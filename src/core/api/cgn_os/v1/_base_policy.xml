@@ -1,0 +1,15 @@
+<policies>
+    <inbound>
+        <base />
+        <set-backend-service base-url="{{cgnonboardingportal-os-url}}/api/v1/cgn/operator-search" />
+        <set-header name="x-functions-key" exists-action="override">
+            <value>{{cgnonboardingportal-os-key}}</value>
+        </set-header>
+        <set-header name="{{cgnonboardingportal_os_header_name}}" exists-action="override">
+            <value>true</value>
+        </set-header>
+    </inbound>
+    <outbound>
+        <base />
+    </outbound>
+</policies>
