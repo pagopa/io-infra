@@ -76,15 +76,15 @@ module "function_elt" {
     TARGETKAFKA_topic               = "io-cosmosdb-services"
 
     MESSAGES_TOPIC_NAME              = "pdnd-io-cosmosdb-messages"
-    MESSAGES_TOPIC_CONNECTION_STRING = module.event_hub.keys["io-cosmosdb-services.io-fn-elt"].primary_connection_string
+    MESSAGES_TOPIC_CONNECTION_STRING = module.event_hub.keys["pdnd-io-cosmosdb-messages"].primary_connection_string
     MESSAGES_LEASES_PREFIX           = "messages-001"
 
     MESSAGE_STATUS_TOPIC_NAME              = "pdnd-io-cosmosdb-message-status"
-    MESSAGE_STATUS_TOPIC_CONNECTION_STRING = module.event_hub.keys["io-cosmosdb-services.io-fn-elt"].primary_connection_string
+    MESSAGE_STATUS_TOPIC_CONNECTION_STRING = module.event_hub.keys["pdnd-io-cosmosdb-message-status"].primary_connection_string
     MESSAGE_STATUS_LEASES_PREFIX           = "message-status-001"
 
     NOTIFICATION_STATUS_TOPIC_NAME              = "pdnd-io-cosmosdb-message-status"
-    NOTIFICATION_STATUS_TOPIC_CONNECTION_STRING = module.event_hub.keys["io-cosmosdb-services.io-fn-elt"].primary_connection_string
+    NOTIFICATION_STATUS_TOPIC_CONNECTION_STRING = module.event_hub.keys["pdnd-io-cosmosdb-notification-status"].primary_connection_string
     NOTIFICATION_STATUS_LEASES_PREFIX           = "notification-status-001"
 
 
