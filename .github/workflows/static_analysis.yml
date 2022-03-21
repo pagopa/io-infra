@@ -4,6 +4,7 @@ on:
   push:
     branches-ignore:
       - main
+      - master
 
 jobs:
   static_analysis:
@@ -21,5 +22,5 @@ jobs:
 
       - name: run_test
         run: |
-          TAG=latest
+          TAG=v1.64.0
           docker run -v $(pwd):/lint -w /lint ghcr.io/antonbabenko/pre-commit-terraform:$TAG run -a
