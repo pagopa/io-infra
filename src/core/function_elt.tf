@@ -26,6 +26,12 @@ module "function_elt_snetout" {
   }
 }
 
+# Storage iopstapi
+data "azurerm_storage_account" "iopstapi" {
+  name                = "iopstapi"
+  resource_group_name = azurerm_resource_group.rg_internal.name
+}
+
 # Storage iopstapi replica
 data "azurerm_storage_account" "api_replica" {
   name                = "iopstapireplica"
@@ -118,8 +124,11 @@ module "function_elt" {
 
     SERVICEID_EXCLUSION_LIST = data.azurerm_key_vault_secret.services_exclusion_list.value
 
-    MessageContentStorageConnection  = data.azurerm_storage_account.api_replica.primary_connection_string
-    ServiceInfoBlobStorageConnection = data.azurerm_storage_account.cdnassets.primary_connection_string
+    #iopstapi connection string
+    MessageContentPrimaryStorageConnection = data.azurerm_storage_account.iopstapi.primary_connection_string
+    #iopstapireplica connection string
+    MessageContentStorageConnection        = data.azurerm_storage_account.api_replica.primary_connection_string
+    ServiceInfoBlobStorageConnection       = data.azurerm_storage_account.cdnassets.primary_connection_string
   }
 
   allowed_subnets = [
