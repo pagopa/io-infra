@@ -83,7 +83,7 @@ module "function_elt" {
     MESSAGE_STATUS_TOPIC_CONNECTION_STRING = module.event_hub.keys["pdnd-io-cosmosdb-message-status.io-fn-elt"].primary_connection_string
     MESSAGE_STATUS_LEASES_PREFIX           = "message-status-001"
 
-    NOTIFICATION_STATUS_TOPIC_NAME              = "pdnd-io-cosmosdb-message-status"
+    NOTIFICATION_STATUS_TOPIC_NAME              = "pdnd-io-cosmosdb-notification-status"
     NOTIFICATION_STATUS_TOPIC_CONNECTION_STRING = module.event_hub.keys["pdnd-io-cosmosdb-notification-status.io-fn-elt"].primary_connection_string
     NOTIFICATION_STATUS_LEASES_PREFIX           = "notification-status-001"
 
