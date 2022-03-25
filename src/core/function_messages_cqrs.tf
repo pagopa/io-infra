@@ -81,7 +81,7 @@ module "function_messages_cqrs" {
   }
 
   app_settings = merge(
-    local.function_app_messages_cqrs.app_settings,
+    local.function_messages_cqrs.app_settings,
   )
 
   subnet_id = module.function_messages_cqrs_snet.id
@@ -93,7 +93,7 @@ module "function_messages_cqrs" {
     "private_dns_zone_queue_ids" = [data.azurerm_private_dns_zone.privatelink_queue_core_windows_net.id],
     "private_dns_zone_table_ids" = [data.azurerm_private_dns_zone.privatelink_table_core_windows_net.id],
     "queues" = [
-      local.function_messages_cqrs.app_settings_commons.MESSAGE_VIEW_UPDATE_FAILURE_QUEUE_NAME
+      local.function_messages_cqrs.app_settings.MESSAGE_VIEW_UPDATE_FAILURE_QUEUE_NAME
     ],
     "containers"           = [],
     "blobs_retention_days" = 1,
@@ -132,7 +132,7 @@ module "function_messages_cqrs_staging_slot" {
   application_insights_instrumentation_key = data.azurerm_application_insights.application_insights.instrumentation_key
 
   app_settings = merge(
-    local.function_app_messages_cqrs.app_settings,
+    local.function_messages_cqrs.app_settings,
   )
 
   subnet_id = module.function_messages_cqrs_snet.id
