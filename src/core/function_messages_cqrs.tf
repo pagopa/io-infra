@@ -14,10 +14,9 @@ locals {
       COSMOSDB_KEY                 = data.azurerm_cosmosdb_account.cosmos_api.primary_master_key
       COSMOS_API_CONNECTION_STRING = format("AccountEndpoint=%s;AccountKey=%s;", data.azurerm_cosmosdb_account.cosmos_api.endpoint, data.azurerm_cosmosdb_account.cosmos_api.primary_master_key)
 
-      MESSAGE_VIEW_UPDATE_FAILURE_QUEUE_NAME       = "message-view-update-failures"
-      MESSAGE_VIEW_UPDATE_FAILURE_QUEUE_CONNECTION = module.function_messages_cqrs.storage_account_internal_function.primary_connection_string
-      MESSAGE_CONTAINER_NAME                       = "message-content"
-      QueueStorageConnection                       = data.azurerm_storage_account.api.primary_connection_string
+      MESSAGE_VIEW_UPDATE_FAILURE_QUEUE_NAME = "message-view-update-failures"
+      MESSAGE_CONTAINER_NAME                 = "message-content"
+      QueueStorageConnection                 = data.azurerm_storage_account.api.primary_connection_string
 
       // Keepalive fields are all optionals
       FETCH_KEEPALIVE_ENABLED             = "true"
