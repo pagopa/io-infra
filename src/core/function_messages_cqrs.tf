@@ -1,5 +1,5 @@
 locals {
-  function_app_messages_cqrs = {
+  function_messages_cqrs = {
     app_settings = {
       FUNCTIONS_WORKER_RUNTIME       = "node"
       WEBSITE_NODE_DEFAULT_VERSION   = "14.16.0"
@@ -14,8 +14,10 @@ locals {
       COSMOSDB_KEY                 = data.azurerm_cosmosdb_account.cosmos_api.primary_master_key
       COSMOS_API_CONNECTION_STRING = format("AccountEndpoint=%s;AccountKey=%s;", data.azurerm_cosmosdb_account.cosmos_api.endpoint, data.azurerm_cosmosdb_account.cosmos_api.primary_master_key)
 
-      MESSAGE_CONTAINER_NAME = "message-content"
-      QueueStorageConnection = data.azurerm_storage_account.api.primary_connection_string
+      MESSAGE_VIEW_UPDATE_FAILURE_QUEUE_NAME       = "message-view-update-failures"
+      MESSAGE_VIEW_UPDATE_FAILURE_QUEUE_CONNECTION = module.function_messages_cqrs.storage_account_internal_function.primary_connection_string
+      MESSAGE_CONTAINER_NAME                       = "message-content"
+      QueueStorageConnection                       = data.azurerm_storage_account.api.primary_connection_string
 
       // Keepalive fields are all optionals
       FETCH_KEEPALIVE_ENABLED             = "true"
@@ -29,8 +31,8 @@ locals {
   }
 }
 
-resource "azurerm_resource_group" "function_messages_cqrs_rg" {
-  name     = format("%s-fn-messages-cqrs-rg", local.project)
+resource "azurerm_resource_group" "io_messages_cqrs_rg" {
+  name     = format("%s-io-messages-cqrs-rg", local.project)
   location = var.location
 
   tags = var.tags
@@ -63,7 +65,7 @@ module "function_messages_cqrs_snet" {
 module "function_messages_cqrs" {
   source = "git::https://github.com/pagopa/azurerm.git//function_app?ref=v2.3.1"
 
-  resource_group_name = azurerm_resource_group.function_messages_cqrs_rg.name
+  resource_group_name = azurerm_resource_group.io_messages_cqrs_rg.name
   name                = format("%s-fn-messages-cqrs", local.project)
   location            = var.location
   health_check_path   = "api/v1/info"
@@ -85,10 +87,21 @@ module "function_messages_cqrs" {
 
   subnet_id = module.function_messages_cqrs_snet.id
 
+  internal_storage = {
+    "enable"                     = true,
+    "private_endpoint_subnet_id" = data.azurerm_subnet.private_endpoints_subnet.id,
+    "private_dns_zone_blob_ids"  = [data.azurerm_private_dns_zone.privatelink_blob_core_windows_net.id],
+    "private_dns_zone_queue_ids" = [data.azurerm_private_dns_zone.privatelink_queue_core_windows_net.id],
+    "private_dns_zone_table_ids" = [data.azurerm_private_dns_zone.privatelink_table_core_windows_net.id],
+    "queues" = [
+      local.function_messages_cqrs.app_settings_commons.MESSAGE_VIEW_UPDATE_FAILURE_QUEUE_NAME
+    ],
+    "containers"           = [],
+    "blobs_retention_days" = 1,
+  }
+
   allowed_subnets = [
     module.function_messages_cqrs_snet.id,
-    module.app_backendl1_snet.id,
-    module.app_backendl2_snet.id,
     module.apim_snet.id,
   ]
 
@@ -105,14 +118,15 @@ module "function_messages_cqrs_staging_slot" {
 
   name                = "staging"
   location            = var.location
-  resource_group_name = azurerm_resource_group.function_messages_cqrs_rg.name
+  resource_group_name = azurerm_resource_group.io_messages_cqrs_rg.name
   function_app_name   = module.function_messages_cqrs.name
   function_app_id     = module.function_messages_cqrs.id
   app_service_plan_id = module.function_messages_cqrs.app_service_plan_id
   health_check_path   = "api/v1/info"
 
-  storage_account_name       = module.function_messages_cqrs.storage_account.name
-  storage_account_access_key = module.function_messages_cqrs.storage_account.primary_access_key
+  storage_account_name               = module.function_messages_cqrs.storage_account.name
+  storage_account_access_key         = module.function_messages_cqrs.storage_account.primary_access_key
+  internal_storage_connection_string = module.function_messages_cqrs.storage_account_internal_function.primary_connection_string
 
   os_type                                  = "linux"
   always_on                                = var.function_messages_cqrs_always_on
@@ -138,7 +152,7 @@ module "function_messages_cqrs_staging_slot" {
 
 resource "azurerm_monitor_autoscale_setting" "function_messages_cqrs" {
   name                = format("%s-autoscale", module.function_messages_cqrs.name)
-  resource_group_name = azurerm_resource_group.function_messages_cqrs_rg.name
+  resource_group_name = azurerm_resource_group.io_messages_cqrs_rg.name
   location            = var.location
   target_resource_id  = module.function_messages_cqrs.app_service_plan_id
 
