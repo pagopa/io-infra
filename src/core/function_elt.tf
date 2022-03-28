@@ -33,7 +33,7 @@ data "azurerm_storage_account" "api_replica" {
 }
 
 module "function_elt" {
-  source = "git::https://github.com/pagopa/azurerm.git//function_app?ref=v1.0.65"
+  source = "git::https://github.com/pagopa/azurerm.git//function_app?ref=v2.7.0"
 
   resource_group_name                      = azurerm_resource_group.elt_rg.name
   prefix                                   = var.prefix
@@ -115,7 +115,7 @@ module "function_elt" {
 
 #tfsec:ignore:azure-storage-default-action-deny
 module "storage_account_elt" {
-  source = "git::https://github.com/pagopa/azurerm.git//storage_account?ref=v1.0.60"
+  source = "git::https://github.com/pagopa/azurerm.git//storage_account?ref=v2.7.0"
 
   name                       = replace(format("%s-stelt", local.project), "-", "")
   account_kind               = "StorageV2"

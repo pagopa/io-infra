@@ -22,7 +22,7 @@ resource "azurerm_resource_group" "selfcare_fe_rg" {
 
 ### Frontend resources
 module "selfcare_cdn" {
-  source = "git::https://github.com/pagopa/azurerm.git//cdn?ref=v2.0.18"
+  source = "git::https://github.com/pagopa/azurerm.git//cdn?ref=v2.7.0"
 
   name                  = "selfcare"
   prefix                = local.project
@@ -172,7 +172,7 @@ resource "azurerm_app_service_virtual_network_swift_connection" "selfcare_be" {
 }
 
 module "appservice_selfcare_be" {
-  source = "git::https://github.com/pagopa/azurerm.git//app_service?ref=v2.2.1"
+  source = "git::https://github.com/pagopa/azurerm.git//app_service?ref=v2.7.0"
 
   name                = format("%s-app-selfcare-be", local.project)
   resource_group_name = azurerm_resource_group.selfcare_be_rg.name

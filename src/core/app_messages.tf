@@ -123,7 +123,7 @@ module "app_messages_snet" {
 
 module "app_messages_function" {
   count  = var.app_messages_count
-  source = "git::https://github.com/pagopa/azurerm.git//function_app?ref=v2.3.1"
+  source = "git::https://github.com/pagopa/azurerm.git//function_app?ref=v2.7.0"
 
   resource_group_name = azurerm_resource_group.app_messages_rg[count.index].name
   name                = format("%s-app-messages-fn-%d", local.project, count.index + 1)

@@ -34,7 +34,7 @@ module "function_pblevtdispatcher_snetout" {
 }
 
 module "function_pblevtdispatcher" {
-  source = "git::https://github.com/pagopa/azurerm.git//function_app?ref=v1.0.65"
+  source = "git::https://github.com/pagopa/azurerm.git//function_app?ref=v2.7.0"
 
   resource_group_name                      = azurerm_resource_group.pblevtdispatcher_rg.name
   prefix                                   = var.prefix
@@ -93,7 +93,7 @@ module "function_pblevtdispatcher" {
 
 #tfsec:ignore:azure-storage-default-action-deny
 module "storage_account_pblevtdispatcher" {
-  source = "git::https://github.com/pagopa/azurerm.git//storage_account?ref=v1.0.60"
+  source = "git::https://github.com/pagopa/azurerm.git//storage_account?ref=v2.7.0"
 
   name                       = replace(format("%s-stpblevtdispatcher", local.project), "-", "")
   account_kind               = "StorageV2"
