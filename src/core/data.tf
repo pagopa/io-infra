@@ -34,6 +34,7 @@ data "azurerm_function_app" "fnapp_appasync" {
   resource_group_name = format("%s-rg-internal", local.project)
 }
 
+
 #
 # Function services resources
 #
