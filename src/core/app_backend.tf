@@ -122,8 +122,8 @@ locals {
       FF_MIT_VOUCHER_ENABLED    = 1
       FF_USER_AGE_LIMIT_ENABLED = 1
 
-      FF_MESSAGES_TYPE               = "none"
-      FF_MESSAGES_BETA_TESTER_LIST   = ""
+      FF_MESSAGES_TYPE               = "beta"
+      FF_MESSAGES_BETA_TESTER_LIST   = data.azurerm_key_vault_secret.app_backend_APP_MESSAGES_BETA_FISCAL_CODES.value
       FF_MESSAGES_CANARY_USERS_REGEX = "XYZ"
 
       // TEST LOGIN
@@ -156,17 +156,17 @@ locals {
     app_settings_l1 = {
       // FUNCTIONS
       API_URL              = "http://${data.azurerm_function_app.fnapp_app1.default_hostname}/api/v1"
-      APP_MESSAGES_API_URL = "http://${data.azurerm_function_app.fnapp_messages_app1.default_hostname}/api/v1"
+      APP_MESSAGES_API_URL = "https://${module.app_messages_function[0].default_hostname}/api/v1"
     }
     app_settings_l2 = {
       // FUNCTIONS
       API_URL              = "http://${data.azurerm_function_app.fnapp_app2.default_hostname}/api/v1"
-      APP_MESSAGES_API_URL = "http://${data.azurerm_function_app.fnapp_messages_app2.default_hostname}/api/v1"
+      APP_MESSAGES_API_URL = "https://${module.app_messages_function[1].default_hostname}/api/v1"
     }
     app_settings_li = {
       // FUNCTIONS
-      API_URL              = "http://${data.azurerm_function_app.fnapp_app1.default_hostname}/api/v1" # only used in internal app backend
-      APP_MESSAGES_API_URL = "http://${data.azurerm_function_app.fnapp_messages_app1.default_hostname}/api/v1" # not used
+      API_URL              = "http://${data.azurerm_function_app.fnapp_app1.default_hostname}/api/v1" # not used
+      APP_MESSAGES_API_URL = "https://${module.app_messages_function[0].default_hostname}/api/v1"     # not used
     }
   }
 
@@ -324,6 +324,11 @@ data "azurerm_key_vault_secret" "app_backend_APP_MESSAGES_API_KEY" {
   name         = "appbackend-APP-MESSAGES-API-KEY"
   key_vault_id = data.azurerm_key_vault.common.id
 }
+data "azurerm_key_vault_secret" "app_backend_APP_MESSAGES_BETA_FISCAL_CODES" {
+  name         = "appbackend-APP-MESSAGES-BETA-FISCAL-CODES"
+  key_vault_id = data.azurerm_key_vault.common.id
+}
+
 ## app_backendl1
 
 module "app_backendl1_snet" {
