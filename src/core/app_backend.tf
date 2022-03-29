@@ -321,7 +321,7 @@ data "azurerm_key_vault_secret" "app_backend_PECSERVER_ARUBA_TOKEN_SECRET" {
 
 
 data "azurerm_key_vault_secret" "app_backend_APP_MESSAGES_API_KEY" {
-  name         = "appbackend-APP-MESSAGES-TOKEN-SECRET"
+  name         = "appbackend-APP-MESSAGES-API-KEY"
   key_vault_id = data.azurerm_key_vault.common.id
 }
 ## app_backendl1
