@@ -30,8 +30,8 @@ locals {
   }
 }
 
-resource "azurerm_resource_group" "io_messages_cqrs_rg" {
-  name     = format("%s-io-messages-cqrs-rg", local.project)
+resource "azurerm_resource_group" "messages_cqrs_rg" {
+  name     = format("%s-messages-cqrs-rg", local.project)
   location = var.location
 
   tags = var.tags
@@ -64,7 +64,7 @@ module "function_messages_cqrs_snet" {
 module "function_messages_cqrs" {
   source = "git::https://github.com/pagopa/azurerm.git//function_app?ref=v2.3.1"
 
-  resource_group_name = azurerm_resource_group.io_messages_cqrs_rg.name
+  resource_group_name = azurerm_resource_group.messages_cqrs_rg.name
   name                = format("%s-fn-messages-cqrs", local.project)
   location            = var.location
   health_check_path   = "api/v1/info"
@@ -117,7 +117,7 @@ module "function_messages_cqrs_staging_slot" {
 
   name                = "staging"
   location            = var.location
-  resource_group_name = azurerm_resource_group.io_messages_cqrs_rg.name
+  resource_group_name = azurerm_resource_group.messages_cqrs_rg.name
   function_app_name   = module.function_messages_cqrs.name
   function_app_id     = module.function_messages_cqrs.id
   app_service_plan_id = module.function_messages_cqrs.app_service_plan_id
@@ -151,7 +151,7 @@ module "function_messages_cqrs_staging_slot" {
 
 resource "azurerm_monitor_autoscale_setting" "function_messages_cqrs" {
   name                = format("%s-autoscale", module.function_messages_cqrs.name)
-  resource_group_name = azurerm_resource_group.io_messages_cqrs_rg.name
+  resource_group_name = azurerm_resource_group.messages_cqrs_rg.name
   location            = var.location
   target_resource_id  = module.function_messages_cqrs.app_service_plan_id
 
