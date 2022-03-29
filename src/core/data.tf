@@ -35,6 +35,21 @@ data "azurerm_function_app" "fnapp_appasync" {
 }
 
 #
+# Function apps messages resources
+#
+
+data "azurerm_function_app" "fnapp_messages_app1" {
+  name                = format("%s-app-messages-fn-1", local.project)
+  resource_group_name = format("%s-app-messages-rg-1", local.project)
+}
+
+data "azurerm_function_app" "fnapp_messages_app2" {
+  name                = format("%s-app-messages-fn-2", local.project)
+  resource_group_name = format("%s-app-messages-rg-2", local.project)
+}
+
+
+#
 # Function services resources
 #
 
