@@ -53,6 +53,7 @@ locals {
       CGN_OPERATOR_SEARCH_API_KEY = data.azurerm_key_vault_secret.app_backend_CGN_OPERATOR_SEARCH_API_KEY_PROD.value
       EUCOVIDCERT_API_URL         = "http://${data.azurerm_function_app.fnapp_eucovidcert.default_hostname}/api/v1"
       EUCOVIDCERT_API_KEY         = data.azurerm_key_vault_secret.app_backend_EUCOVIDCERT_API_KEY.value
+      APP_MESSAGES_API_KEY        = data.azurerm_key_vault_secret.app_backend_APP_MESSAGES_API_KEY.value
 
       // EXPOSED API
       API_BASE_PATH                     = "/api/v1"
@@ -121,6 +122,10 @@ locals {
       FF_MIT_VOUCHER_ENABLED    = 1
       FF_USER_AGE_LIMIT_ENABLED = 1
 
+      FF_MESSAGES_TYPE               = "beta"
+      FF_MESSAGES_BETA_TESTER_LIST   = data.azurerm_key_vault_secret.app_backend_APP_MESSAGES_BETA_FISCAL_CODES.value
+      FF_MESSAGES_CANARY_USERS_REGEX = "XYZ"
+
       // TEST LOGIN
       TEST_LOGIN_PASSWORD     = data.azurerm_key_vault_secret.app_backend_TEST_LOGIN_PASSWORD.value
       TEST_LOGIN_FISCAL_CODES = local.test_users
@@ -150,15 +155,18 @@ locals {
     }
     app_settings_l1 = {
       // FUNCTIONS
-      API_URL = "http://${data.azurerm_function_app.fnapp_app1.default_hostname}/api/v1"
+      API_URL              = "http://${data.azurerm_function_app.fnapp_app1.default_hostname}/api/v1"
+      APP_MESSAGES_API_URL = "https://${module.app_messages_function[0].default_hostname}/api/v1"
     }
     app_settings_l2 = {
       // FUNCTIONS
-      API_URL = "http://${data.azurerm_function_app.fnapp_app2.default_hostname}/api/v1"
+      API_URL              = "http://${data.azurerm_function_app.fnapp_app2.default_hostname}/api/v1"
+      APP_MESSAGES_API_URL = "https://${module.app_messages_function[1].default_hostname}/api/v1"
     }
     app_settings_li = {
       // FUNCTIONS
-      API_URL = "http://${data.azurerm_function_app.fnapp_app1.default_hostname}/api/v1" # only used in internal app backend
+      API_URL              = "http://${data.azurerm_function_app.fnapp_app1.default_hostname}/api/v1" # not used
+      APP_MESSAGES_API_URL = "https://${module.app_messages_function[0].default_hostname}/api/v1"     # not used
     }
   }
 
@@ -310,6 +318,17 @@ data "azurerm_key_vault_secret" "app_backend_PECSERVER_ARUBA_TOKEN_SECRET" {
   name         = "appbackend-PECSERVER-ARUBA-TOKEN-SECRET"
   key_vault_id = data.azurerm_key_vault.common.id
 }
+
+
+data "azurerm_key_vault_secret" "app_backend_APP_MESSAGES_API_KEY" {
+  name         = "appbackend-APP-MESSAGES-API-KEY"
+  key_vault_id = data.azurerm_key_vault.common.id
+}
+data "azurerm_key_vault_secret" "app_backend_APP_MESSAGES_BETA_FISCAL_CODES" {
+  name         = "appbackend-APP-MESSAGES-BETA-FISCAL-CODES"
+  key_vault_id = data.azurerm_key_vault.common.id
+}
+
 ## app_backendl1
 
 module "app_backendl1_snet" {
