@@ -222,7 +222,7 @@ eventhubs = [
       }
     ]
   },
-    {
+  {
     name              = "io-cosmosdb-message-status-for-view"
     partitions        = 32
     message_retention = 7
