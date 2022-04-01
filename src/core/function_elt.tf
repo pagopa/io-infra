@@ -127,8 +127,8 @@ module "function_elt" {
     #iopstapi connection string
     MessageContentPrimaryStorageConnection = data.azurerm_storage_account.iopstapi.primary_connection_string
     #iopstapireplica connection string
-    MessageContentStorageConnection        = data.azurerm_storage_account.api_replica.primary_connection_string
-    ServiceInfoBlobStorageConnection       = data.azurerm_storage_account.cdnassets.primary_connection_string
+    MessageContentStorageConnection  = data.azurerm_storage_account.api_replica.primary_connection_string
+    ServiceInfoBlobStorageConnection = data.azurerm_storage_account.cdnassets.primary_connection_string
   }
 
   allowed_subnets = [
