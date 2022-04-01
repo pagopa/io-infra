@@ -114,7 +114,7 @@ data "azurerm_key_vault_secret" "selfcare_subsmigrations_apikey" {
 
 # JWT
 module "selfcare_jwt" {
-  source = "git::https://github.com/pagopa/azurerm.git//jwt_keys?ref=v2.0.21"
+  source = "git::https://github.com/pagopa/azurerm.git//jwt_keys?ref=v2.9.0"
 
   jwt_name         = "selfcare-jwt"
   key_vault_id     = data.azurerm_key_vault.common.id
