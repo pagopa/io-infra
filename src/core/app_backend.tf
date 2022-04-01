@@ -122,7 +122,7 @@ locals {
       FF_MIT_VOUCHER_ENABLED    = 1
       FF_USER_AGE_LIMIT_ENABLED = 1
 
-      FF_MESSAGES_TYPE               = "beta" # possible values are: beta, canary, prod, none
+      FF_MESSAGES_TYPE               = "prod" # possible values are: beta, canary, prod, none
       FF_MESSAGES_BETA_TESTER_LIST   = data.azurerm_key_vault_secret.app_backend_APP_MESSAGES_BETA_FISCAL_CODES.value
       FF_MESSAGES_CANARY_USERS_REGEX = "XYZ"
 
@@ -157,7 +157,6 @@ locals {
       // FUNCTIONS
       API_URL              = "http://${data.azurerm_function_app.fnapp_app1.default_hostname}/api/v1"
       APP_MESSAGES_API_URL = "https://${module.app_messages_function[0].default_hostname}/api/v1"
-      FF_MESSAGES_TYPE     = "prod"
     }
     app_settings_l2 = {
       // FUNCTIONS
