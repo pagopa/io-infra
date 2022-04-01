@@ -38,7 +38,7 @@ module "function_pblevtdispatcher" {
 
   resource_group_name                      = azurerm_resource_group.pblevtdispatcher_rg.name
   name                                     = "${local.project}-fn-pblevtdispatcher"
-  storage_account_name                     = "${replace(local.project, "-","")}stfnpblevtdispatcher"
+  storage_account_name                     = "${replace(local.project, "-", "")}stfnpblevtdispatcher"
   app_service_plan_name                    = "${local.project}-plan-fnpblevtdispatcher"
   location                                 = var.location
   health_check_path                        = "api/v1/info"
