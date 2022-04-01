@@ -42,12 +42,10 @@ module "function_elt" {
   source = "git::https://github.com/pagopa/azurerm.git//function_app?ref=v2.9.0"
 
   resource_group_name                      = azurerm_resource_group.elt_rg.name
-  prefix                                   = var.prefix
-  env_short                                = var.env_short
-  name                                     = "elt"
+  name                                     = "${local.project}-elt"
   location                                 = var.location
   health_check_path                        = "api/v1/info"
-  subnet_out_id                            = module.function_elt_snetout.id
+  subnet_id                                = module.function_elt_snetout.id
   runtime_version                          = "~3"
   application_insights_instrumentation_key = data.azurerm_application_insights.application_insights.instrumentation_key
 
