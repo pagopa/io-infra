@@ -4,7 +4,7 @@ locals {
   app_backend = {
     app_settings_common = {
       # No downtime on slots swap
-      WEBSITE_ADD_SITENAME_BINDINGS_IN_APPHOST_CONFIG = 1
+      WEBSITE_ADD_SITENAME_BINDINGS_IN_APPHOST_CONFIG = "1"
       WEBSITE_RUN_FROM_PACKAGE                        = "1"
       WEBSITE_VNET_ROUTE_ALL                          = "1"
       WEBSITE_DNS_SERVER                              = "168.63.129.16"
@@ -122,7 +122,7 @@ locals {
       FF_MIT_VOUCHER_ENABLED    = 1
       FF_USER_AGE_LIMIT_ENABLED = 1
 
-      FF_MESSAGES_TYPE               = "beta"
+      FF_MESSAGES_TYPE               = "prod" # possible values are: beta, canary, prod, none
       FF_MESSAGES_BETA_TESTER_LIST   = data.azurerm_key_vault_secret.app_backend_APP_MESSAGES_BETA_FISCAL_CODES.value
       FF_MESSAGES_CANARY_USERS_REGEX = "XYZ"
 
