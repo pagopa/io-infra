@@ -352,7 +352,7 @@ module "app_backendl1_snet" {
 }
 
 module "appservice_app_backendl1" {
-  source = "git::https://github.com/pagopa/azurerm.git//app_service?ref=v2.7.0"
+  source = "git::https://github.com/pagopa/azurerm.git//app_service?ref=v2.9.0"
 
   # App service plan
   plan_type     = "internal"
@@ -395,7 +395,7 @@ module "appservice_app_backendl1" {
 }
 
 module "appservice_app_backendl1_slot_staging" {
-  source = "git::https://github.com/pagopa/azurerm.git//app_service_slot?ref=v2.7.0"
+  source = "git::https://github.com/pagopa/azurerm.git//app_service_slot?ref=v2.9.0"
 
   # App service plan
   app_service_plan_id = module.appservice_app_backendl1.plan_id
@@ -562,7 +562,7 @@ module "app_backendl2_snet" {
 }
 
 module "appservice_app_backendl2" {
-  source = "git::https://github.com/pagopa/azurerm.git//app_service?ref=v2.7.0"
+  source = "git::https://github.com/pagopa/azurerm.git//app_service?ref=v2.9.0"
 
   # App service plan
   plan_type     = "internal"
@@ -605,7 +605,7 @@ module "appservice_app_backendl2" {
 }
 
 module "appservice_app_backendl2_slot_staging" {
-  source = "git::https://github.com/pagopa/azurerm.git//app_service_slot?ref=v2.7.0"
+  source = "git::https://github.com/pagopa/azurerm.git//app_service_slot?ref=v2.9.0"
 
   # App service plan
   app_service_plan_id = module.appservice_app_backendl2.plan_id
@@ -772,7 +772,7 @@ module "app_backendli_snet" {
 }
 
 module "appservice_app_backendli" {
-  source = "git::https://github.com/pagopa/azurerm.git//app_service?ref=v2.7.0"
+  source = "git::https://github.com/pagopa/azurerm.git//app_service?ref=v2.9.0"
 
   # App service plan
   plan_type     = "internal"
@@ -813,7 +813,7 @@ module "appservice_app_backendli" {
 }
 
 module "appservice_app_backendli_slot_staging" {
-  source = "git::https://github.com/pagopa/azurerm.git//app_service_slot?ref=v2.7.0"
+  source = "git::https://github.com/pagopa/azurerm.git//app_service_slot?ref=v2.9.0"
 
   # App service plan
   app_service_plan_id = module.appservice_app_backendli.plan_id

@@ -1,5 +1,5 @@
 module "function_services_cache" {
-  source = "git::https://github.com/pagopa/azurerm.git//function_app?ref=v2.7.0"
+  source = "git::https://github.com/pagopa/azurerm.git//function_app?ref=v2.9.0"
 
   name = "${local.project}-services-cache-fn"
   # SELFCARE RG
