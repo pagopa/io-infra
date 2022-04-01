@@ -42,7 +42,9 @@ module "function_elt" {
   source = "git::https://github.com/pagopa/azurerm.git//function_app?ref=v2.9.0"
 
   resource_group_name                      = azurerm_resource_group.elt_rg.name
-  name                                     = "${local.project}-elt"
+  name                                     = "${local.project}-fn-elt"
+  storage_account_name                     = "${replace(local.project, "-","")}stfnelt"
+  app_service_plan_name                    = "${local.project}-plan-fnelt"
   location                                 = var.location
   health_check_path                        = "api/v1/info"
   subnet_id                                = module.function_elt_snetout.id
