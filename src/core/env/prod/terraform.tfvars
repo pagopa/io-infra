@@ -293,5 +293,25 @@ eventhubs = [
         manage = false
       }
     ]
+  },
+  {
+    name              = "io-cosmosdb-message-status-for-view"
+    partitions        = 32
+    message_retention = 7
+    consumers         = ["io-messages"]
+    keys = [
+      {
+        name   = "io-cdc"
+        listen = false
+        send   = true
+        manage = false
+      },
+      {
+        name   = "io-messages"
+        listen = true
+        send   = false
+        manage = false
+      }
+    ]
   }
 ]
