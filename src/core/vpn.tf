@@ -5,7 +5,7 @@ data "azuread_application" "vpn_app" {
 ## VPN
 
 module "vpn_snet" {
-  source                                         = "git::https://github.com/pagopa/azurerm.git//subnet?ref=v2.9.0"
+  source                                         = "git::https://github.com/pagopa/azurerm.git//subnet?ref=v2.9.1"
   name                                           = "GatewaySubnet"
   address_prefixes                               = var.cidr_subnet_vpn
   resource_group_name                            = data.azurerm_resource_group.vnet_common_rg.name
@@ -15,7 +15,7 @@ module "vpn_snet" {
 }
 
 module "vpn" {
-  source = "git::https://github.com/pagopa/azurerm.git//vpn_gateway?ref=v2.9.0"
+  source = "git::https://github.com/pagopa/azurerm.git//vpn_gateway?ref=v2.9.1"
 
   name                = format("%s-vpn", local.project)
   location            = var.location
@@ -46,7 +46,7 @@ module "vpn" {
 
 ## DNS FORWARDER
 module "dns_forwarder_snet" {
-  source                                         = "git::https://github.com/pagopa/azurerm.git//subnet?ref=v2.9.0"
+  source                                         = "git::https://github.com/pagopa/azurerm.git//subnet?ref=v2.9.1"
   name                                           = format("%s-dnsforwarder", local.project)
   address_prefixes                               = var.cidr_subnet_dnsforwarder
   resource_group_name                            = data.azurerm_resource_group.vnet_common_rg.name
@@ -63,7 +63,7 @@ module "dns_forwarder_snet" {
 }
 
 module "dns_forwarder" {
-  source              = "git::https://github.com/pagopa/azurerm.git//dns_forwarder?ref=v2.9.0"
+  source              = "git::https://github.com/pagopa/azurerm.git//dns_forwarder?ref=v2.9.1"
   name                = format("%s-dns-forwarder", local.project)
   location            = var.location
   resource_group_name = data.azurerm_resource_group.vnet_common_rg.name

@@ -123,7 +123,7 @@ module "app_messages_snet" {
 
 module "app_messages_function" {
   count  = var.app_messages_count
-  source = "git::https://github.com/pagopa/azurerm.git//function_app?ref=v2.9.0"
+  source = "git::https://github.com/pagopa/azurerm.git//function_app?ref=v2.9.1"
 
   resource_group_name = azurerm_resource_group.app_messages_rg[count.index].name
   name                = format("%s-app-messages-fn-%d", local.project, count.index + 1)
@@ -164,7 +164,7 @@ module "app_messages_function" {
 
 module "app_messages_function_staging_slot" {
   count  = var.app_messages_count
-  source = "git::https://github.com/pagopa/azurerm.git//function_app_slot?ref=v2.9.0"
+  source = "git::https://github.com/pagopa/azurerm.git//function_app_slot?ref=v2.9.1"
 
   name                = "staging"
   location            = var.location

@@ -39,7 +39,7 @@ data "azurerm_storage_account" "api_replica" {
 }
 
 module "function_elt" {
-  source = "git::https://github.com/pagopa/azurerm.git//function_app?ref=v2.9.0"
+  source = "git::https://github.com/pagopa/azurerm.git//function_app?ref=v2.9.1"
 
   resource_group_name                      = azurerm_resource_group.elt_rg.name
   name                                     = "${local.project}-fn-elt"
