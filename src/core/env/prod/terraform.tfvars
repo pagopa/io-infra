@@ -28,6 +28,7 @@ cidr_subnet_appgateway         = ["10.0.13.0/24"]
 cidr_subnet_redis_apim         = ["10.0.14.0/24"]
 cidr_subnet_apim               = ["10.0.101.0/24"]
 cidr_subnet_appmessages        = ["10.0.127.0/24", "10.0.128.0/24"]
+cidr_subnet_fnmessagescqrs     = ["10.0.129.0/24"]
 cidr_subnet_vpn                = ["10.0.133.0/24"]
 cidr_subnet_selfcare_be        = ["10.0.137.0/24"]
 cidr_subnet_appbackendl1       = ["10.0.152.0/24"]
@@ -141,6 +142,17 @@ app_backend_autoscale_default = 10
 app_backend_autoscale_minimum = 1
 app_backend_autoscale_maximum = 30
 
+# Function Messages CQRS
+function_messages_cqrs_always_on = true
+
+function_messages_cqrs_kind              = "Linux"
+function_messages_cqrs_sku_tier          = "PremiumV3"
+function_messages_cqrs_sku_size          = "P1v3"
+function_messages_cqrs_autoscale_minimum = 1
+function_messages_cqrs_autoscale_maximum = 30
+function_messages_cqrs_autoscale_default = 1
+
+
 eventhubs = [
   {
     name              = "io-cosmosdb-services"
@@ -216,6 +228,66 @@ eventhubs = [
       },
       {
         name   = "io-messages"
+        listen = true
+        send   = false
+        manage = false
+      }
+    ]
+  },
+  {
+    name              = "pdnd-io-cosmosdb-messages"
+    partitions        = 30
+    message_retention = 7
+    consumers         = []
+    keys = [
+      {
+        name   = "io-fn-elt"
+        listen = false
+        send   = true
+        manage = false
+      },
+      {
+        name   = "pdnd"
+        listen = true
+        send   = false
+        manage = false
+      }
+    ]
+  },
+  {
+    name              = "pdnd-io-cosmosdb-message-status"
+    partitions        = 30
+    message_retention = 7
+    consumers         = []
+    keys = [
+      {
+        name   = "io-fn-elt"
+        listen = false
+        send   = true
+        manage = false
+      },
+      {
+        name   = "pdnd"
+        listen = true
+        send   = false
+        manage = false
+      }
+    ]
+  },
+  {
+    name              = "pdnd-io-cosmosdb-notification-status"
+    partitions        = 30
+    message_retention = 7
+    consumers         = []
+    keys = [
+      {
+        name   = "io-fn-elt"
+        listen = false
+        send   = true
+        manage = false
+      },
+      {
+        name   = "pdnd"
         listen = true
         send   = false
         manage = false
