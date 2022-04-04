@@ -34,7 +34,7 @@ module "function_pblevtdispatcher_snetout" {
 }
 
 module "function_pblevtdispatcher" {
-  source = "git::https://github.com/pagopa/azurerm.git//function_app?ref=v2.9.0"
+  source = "git::https://github.com/pagopa/azurerm.git//function_app?ref=v2.9.1"
 
   resource_group_name                      = azurerm_resource_group.pblevtdispatcher_rg.name
   name                                     = "${local.project}-fn-pblevtdispatcher"
