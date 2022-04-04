@@ -225,7 +225,7 @@ resource "azurerm_monitor_autoscale_setting" "app_messages_function" {
         time_window              = "PT5M"
         time_aggregation         = "Average"
         operator                 = "GreaterThan"
-        threshold                = 3500
+        threshold                = 3000
         divide_by_instance_count = false
       }
 
@@ -247,7 +247,7 @@ resource "azurerm_monitor_autoscale_setting" "app_messages_function" {
         time_window              = "PT5M"
         time_aggregation         = "Average"
         operator                 = "GreaterThan"
-        threshold                = 60
+        threshold                = 50
         divide_by_instance_count = false
       }
 
@@ -269,7 +269,7 @@ resource "azurerm_monitor_autoscale_setting" "app_messages_function" {
         time_window              = "PT5M"
         time_aggregation         = "Average"
         operator                 = "LessThan"
-        threshold                = 2500
+        threshold                = 2000
         divide_by_instance_count = false
       }
 

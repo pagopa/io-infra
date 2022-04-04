@@ -96,6 +96,16 @@ app_messages_function_autoscale_minimum = 1
 app_messages_function_autoscale_maximum = 3
 app_messages_function_autoscale_default = 1
 
+# Function Messages CQRS
+function_messages_cqrs_always_on = true
+
+function_messages_cqrs_kind              = "Linux"
+function_messages_cqrs_sku_tier          = "Standard"
+function_messages_cqrs_sku_size          = "S1"
+function_messages_cqrs_autoscale_minimum = 1
+function_messages_cqrs_autoscale_maximum = 3
+function_messages_cqrs_autoscale_default = 1
+
 eventhubs = [
   {
     name              = "io-cosmosdb-services"

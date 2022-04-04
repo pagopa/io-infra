@@ -172,6 +172,11 @@ variable "cidr_subnet_appmessages" {
   description = "App messages address space."
 }
 
+variable "cidr_subnet_fnmessagescqrs" {
+  type        = list(string)
+  description = "App messages address space."
+}
+
 variable "cidr_subnet_appbackendli" {
   type        = list(string)
   description = "App backend li address space."
@@ -506,6 +511,49 @@ variable "app_messages_function_autoscale_maximum" {
 }
 
 variable "app_messages_function_autoscale_default" {
+  type        = number
+  description = "The number of instances that are available for scaling if metrics are not available for evaluation."
+  default     = 1
+}
+
+# Functions Messages CQRS
+
+variable "function_messages_cqrs_always_on" {
+  type    = bool
+  default = false
+}
+
+variable "function_messages_cqrs_kind" {
+  type        = string
+  description = "App service plan kind"
+  default     = null
+}
+
+variable "function_messages_cqrs_sku_tier" {
+  type        = string
+  description = "App service plan sku tier"
+  default     = null
+}
+
+variable "function_messages_cqrs_sku_size" {
+  type        = string
+  description = "App service plan sku size"
+  default     = null
+}
+
+variable "function_messages_cqrs_autoscale_minimum" {
+  type        = number
+  description = "The minimum number of instances for this resource."
+  default     = 1
+}
+
+variable "function_messages_cqrs_autoscale_maximum" {
+  type        = number
+  description = "The maximum number of instances for this resource."
+  default     = 3
+}
+
+variable "function_messages_cqrs_autoscale_default" {
   type        = number
   description = "The number of instances that are available for scaling if metrics are not available for evaluation."
   default     = 1
