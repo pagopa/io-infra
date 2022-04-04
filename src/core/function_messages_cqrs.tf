@@ -54,7 +54,7 @@ module "function_messages_cqrs_snet" {
 }
 
 module "function_messages_cqrs" {
-  source = "git::https://github.com/pagopa/azurerm.git//function_app?ref=v2.3.1"
+  source = "git::https://github.com/pagopa/azurerm.git//function_app?ref=v2.9.0"
 
   resource_group_name = azurerm_resource_group.backend_messages_rg.name
   name                = format("%s-messages-cqrs-fn", local.project)
@@ -105,7 +105,7 @@ module "function_messages_cqrs" {
 }
 
 module "function_messages_cqrs_staging_slot" {
-  source = "git::https://github.com/pagopa/azurerm.git//function_app_slot?ref=v2.3.1"
+  source = "git::https://github.com/pagopa/azurerm.git//function_app_slot?ref=v2.9.0"
 
   name                = "staging"
   location            = var.location

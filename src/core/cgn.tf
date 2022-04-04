@@ -168,7 +168,7 @@ module "cgn_cosmosdb_containers" {
 ## Blob storage due to legal backup
 #tfsec:ignore:azure-storage-default-action-deny
 module "cgn_legalbackup_storage" {
-  source = "git::https://github.com/pagopa/azurerm.git//storage_account?ref=v1.0.79"
+  source = "git::https://github.com/pagopa/azurerm.git//storage_account?ref=v2.7.0"
 
   name                       = replace(format("%s-cgn-legalbackup-storage", local.project), "-", "")
   account_kind               = "StorageV2"
@@ -185,7 +185,7 @@ module "cgn_legalbackup_storage" {
   tags = var.tags
 }
 
-#tfsec:ignore:AZU023
+#tfsec:ignore:azure-keyvault-ensure-secret-expiry
 resource "azurerm_key_vault_secret" "cgn_legalbackup_storage_access_key" {
   name         = "cgn-legalbackup-storage-access-key"
   value        = module.cgn_legalbackup_storage.primary_access_key
@@ -194,6 +194,7 @@ resource "azurerm_key_vault_secret" "cgn_legalbackup_storage_access_key" {
   key_vault_id = module.key_vault.id
 }
 
+#tfsec:ignore:azure-keyvault-ensure-secret-expiry
 resource "azurerm_key_vault_secret" "cgn_legalbackup_storage_connection_string" {
   name         = "cgn-legalbackup-storage-connection-string"
   value        = module.cgn_legalbackup_storage.primary_connection_string
@@ -202,6 +203,7 @@ resource "azurerm_key_vault_secret" "cgn_legalbackup_storage_connection_string" 
   key_vault_id = data.azurerm_key_vault.common.id
 }
 
+#tfsec:ignore:azure-keyvault-ensure-secret-expiry
 resource "azurerm_key_vault_secret" "cgn_legalbackup_storage_blob_connection_string" {
   name         = "cgn-legalbackup-storage-blob-connection-string"
   value        = module.cgn_legalbackup_storage.primary_blob_connection_string

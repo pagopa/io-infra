@@ -39,15 +39,15 @@ data "azurerm_storage_account" "api_replica" {
 }
 
 module "function_elt" {
-  source = "git::https://github.com/pagopa/azurerm.git//function_app?ref=v1.0.65"
+  source = "git::https://github.com/pagopa/azurerm.git//function_app?ref=v2.9.0"
 
   resource_group_name                      = azurerm_resource_group.elt_rg.name
-  prefix                                   = var.prefix
-  env_short                                = var.env_short
-  name                                     = "elt"
+  name                                     = "${local.project}-fn-elt"
+  storage_account_name                     = "${replace(local.project, "-", "")}stfnelt"
+  app_service_plan_name                    = "${local.project}-plan-fnelt"
   location                                 = var.location
   health_check_path                        = "api/v1/info"
-  subnet_out_id                            = module.function_elt_snetout.id
+  subnet_id                                = module.function_elt_snetout.id
   runtime_version                          = "~3"
   application_insights_instrumentation_key = data.azurerm_application_insights.application_insights.instrumentation_key
 
@@ -142,7 +142,7 @@ module "function_elt" {
 
 #tfsec:ignore:azure-storage-default-action-deny
 module "storage_account_elt" {
-  source = "git::https://github.com/pagopa/azurerm.git//storage_account?ref=v1.0.60"
+  source = "git::https://github.com/pagopa/azurerm.git//storage_account?ref=v2.7.0"
 
   name                       = replace(format("%s-stelt", local.project), "-", "")
   account_kind               = "StorageV2"

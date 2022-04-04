@@ -352,7 +352,7 @@ module "app_backendl1_snet" {
 }
 
 module "appservice_app_backendl1" {
-  source = "git::https://github.com/pagopa/azurerm.git//app_service?ref=v2.0.28"
+  source = "git::https://github.com/pagopa/azurerm.git//app_service?ref=v2.9.0"
 
   # App service plan
   plan_type     = "internal"
@@ -389,13 +389,14 @@ module "appservice_app_backendl1" {
     local.app_insights_ips_west_europe,
   )
 
-  subnet_id = module.app_backendl1_snet.id
+  subnet_id        = module.app_backendl1_snet.id
+  vnet_integration = true
 
   tags = var.tags
 }
 
 module "appservice_app_backendl1_slot_staging" {
-  source = "git::https://github.com/pagopa/azurerm.git//app_service_slot?ref=v2.0.28"
+  source = "git::https://github.com/pagopa/azurerm.git//app_service_slot?ref=v2.9.0"
 
   # App service plan
   app_service_plan_id = module.appservice_app_backendl1.plan_id
@@ -429,7 +430,8 @@ module "appservice_app_backendl1_slot_staging" {
     [],
   )
 
-  subnet_id = module.app_backendl1_snet.id
+  subnet_id        = module.app_backendl1_snet.id
+  vnet_integration = true
 
   tags = var.tags
 }
@@ -562,7 +564,7 @@ module "app_backendl2_snet" {
 }
 
 module "appservice_app_backendl2" {
-  source = "git::https://github.com/pagopa/azurerm.git//app_service?ref=v2.0.28"
+  source = "git::https://github.com/pagopa/azurerm.git//app_service?ref=v2.9.0"
 
   # App service plan
   plan_type     = "internal"
@@ -599,13 +601,14 @@ module "appservice_app_backendl2" {
     local.app_insights_ips_west_europe,
   )
 
-  subnet_id = module.app_backendl2_snet.id
+  subnet_id        = module.app_backendl2_snet.id
+  vnet_integration = true
 
   tags = var.tags
 }
 
 module "appservice_app_backendl2_slot_staging" {
-  source = "git::https://github.com/pagopa/azurerm.git//app_service_slot?ref=v2.0.28"
+  source = "git::https://github.com/pagopa/azurerm.git//app_service_slot?ref=v2.9.0"
 
   # App service plan
   app_service_plan_id = module.appservice_app_backendl2.plan_id
@@ -639,7 +642,8 @@ module "appservice_app_backendl2_slot_staging" {
     [],
   )
 
-  subnet_id = module.app_backendl2_snet.id
+  subnet_id        = module.app_backendl2_snet.id
+  vnet_integration = true
 
   tags = var.tags
 }
@@ -772,7 +776,7 @@ module "app_backendli_snet" {
 }
 
 module "appservice_app_backendli" {
-  source = "git::https://github.com/pagopa/azurerm.git//app_service?ref=v2.0.28"
+  source = "git::https://github.com/pagopa/azurerm.git//app_service?ref=v2.9.0"
 
   # App service plan
   plan_type     = "internal"
@@ -807,13 +811,14 @@ module "appservice_app_backendli" {
     local.app_insights_ips_west_europe,
   )
 
-  subnet_id = module.app_backendli_snet.id
+  subnet_id        = module.app_backendli_snet.id
+  vnet_integration = true
 
   tags = var.tags
 }
 
 module "appservice_app_backendli_slot_staging" {
-  source = "git::https://github.com/pagopa/azurerm.git//app_service_slot?ref=v2.0.28"
+  source = "git::https://github.com/pagopa/azurerm.git//app_service_slot?ref=v2.9.0"
 
   # App service plan
   app_service_plan_id = module.appservice_app_backendli.plan_id
@@ -845,7 +850,8 @@ module "appservice_app_backendli_slot_staging" {
     [],
   )
 
-  subnet_id = module.app_backendli_snet.id
+  subnet_id        = module.app_backendli_snet.id
+  vnet_integration = true
 
   tags = var.tags
 }
@@ -915,7 +921,7 @@ resource "azurerm_monitor_autoscale_setting" "appservice_app_backendli" {
 ## web availabolity test
 module "app_backend_web_test_api" {
   for_each = { for v in local.app_backend_test_urls : v.name => v if v != null }
-  source   = "git::https://github.com/pagopa/azurerm.git//application_insights_web_test_preview?ref=v2.0.17"
+  source   = "git::https://github.com/pagopa/azurerm.git//application_insights_web_test_preview?ref=v2.9.0"
 
   subscription_id                   = data.azurerm_subscription.current.subscription_id
   name                              = format("%s-test", each.value.name)
