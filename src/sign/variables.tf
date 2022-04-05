@@ -1,7 +1,7 @@
 # general
 
 variable "prefix" {
-  type    = string
+  type = string
   validation {
     condition = (
       length(var.prefix) < 6
@@ -31,7 +31,7 @@ variable "domain" {
 }
 
 variable "location" {
-  type    = string
+  type = string
 }
 
 variable "lock_enable" {
