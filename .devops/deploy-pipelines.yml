@@ -54,13 +54,11 @@ stages:
           - template: templates/terraform-setup/template.yaml@terraform
           # 2. Run terraform plan
           - template: templates/terraform-plan/template.yaml@terraform
-            condition: ${{parameters.CORE}}
             parameters:
               SUBSCRIPTION: PROD-IO-SERVICE-CONN
               ENVIRONMENT: prod
               WORKINGDIR: 'src/core'
           - template: templates/terraform-plan/template.yaml@terraform
-            condition: ${{parameters.SIGN}}
             parameters:
               SUBSCRIPTION: PROD-IO-SERVICE-CONN
               ENVIRONMENT: prod
