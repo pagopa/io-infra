@@ -10,6 +10,20 @@ parameters:
     values:
       - False
       - True
+  - name: 'CORE'
+    displayName: 'Run on Core'
+    type: boolean
+    default: True
+    values:
+      - False
+      - True
+  - name: 'SIGN'
+    displayName: 'Run on Sign'
+    type: boolean
+    default: True
+    values:
+      - False
+      - True
 
 variables:
   TIME_OUT: 5
@@ -40,14 +54,21 @@ stages:
           - template: templates/terraform-setup/template.yaml@terraform
           # 2. Run terraform plan
           - template: templates/terraform-plan/template.yaml@terraform
+            condition: ${{parameters.CORE}}
             parameters:
               SUBSCRIPTION: PROD-IO-SERVICE-CONN
               ENVIRONMENT: prod
               WORKINGDIR: 'src/core'
+          - template: templates/terraform-plan/template.yaml@terraform
+            condition: ${{parameters.SIGN}}
+            parameters:
+              SUBSCRIPTION: PROD-IO-SERVICE-CONN
+              ENVIRONMENT: prod
+              WORKINGDIR: 'src/sign'
 
-  - stage: apply_PROD
+  - stage: apply_PROD_CORE
     dependsOn: [plan_PROD]
-    condition: and(succeeded(), eq(${{parameters.PROD}}, true))
+    condition: and(eq(${{parameters.CORE}}, eq(${{parameters.PROD}}, true))
     pool:
       name: io-prod-linux
     jobs:
@@ -91,3 +112,29 @@ stages:
                       cd src/psql/selfcare/subscription-migrations
                       echo "Executing migrations"
                       ./flyway.sh migrate PROD-IO db && echo "Migration successful" || { echo "Migration failed"; exit 1; }
+
+  - stage: apply_PROD_SIGN
+    dependsOn: [plan_PROD]
+    condition: and(eq(${{parameters.SIGN}}, eq(${{parameters.PROD}}, true))
+    pool:
+      name: io-prod-linux
+    jobs:
+      # - job: init
+      #   steps:
+      #     # 1. Install terraform
+      #     - template: templates/terraform-setup/template.yaml@terraform
+      - deployment: apply
+        continueOnError: false
+        # dependsOn: init
+        environment: 'PROD-SIGN'
+        strategy:
+          runOnce:
+            deploy:
+              steps:
+                - checkout: self
+                # 3. Run terraform apply
+                - template: templates/terraform-apply/template.yaml@terraform
+                  parameters:
+                    SUBSCRIPTION: PROD-IO-SERVICE-CONN
+                    ENVIRONMENT: prod
+                    WORKINGDIR: 'src/sign'
