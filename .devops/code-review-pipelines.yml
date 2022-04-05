@@ -44,7 +44,7 @@ stages:
         steps:
           # 1. Install terraform and terragrunt
           - template: templates/terraform-setup/template.yaml@terraform
-      - job: terraform_plan_core
+      - job: terraform_plan
         dependsOn: terraform_install
         timeoutInMinutes: $[variables.TIME_OUT]
         steps:
@@ -55,12 +55,6 @@ stages:
               SUBSCRIPTION: PROD-IO-SERVICE-CONN
               ENVIRONMENT: prod
               WORKINGDIR: 'src/core'
-      - job: terraform_plan_sign
-        dependsOn: terraform_install
-        timeoutInMinutes: $[variables.TIME_OUT]
-        steps:
-          - checkout: self
-          # 2. Run terragrunt plan
           - template: templates/terraform-plan/template.yaml@terraform
             parameters:
               SUBSCRIPTION: PROD-IO-SERVICE-CONN
