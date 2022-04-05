@@ -13,9 +13,9 @@ locals {
 
       AzureWebJobsStorage = module.function_messages_cqrs.storage_account_internal_function.primary_connection_string
 
-      COSMOSDB_NAME                = "db"
-      COSMOSDB_URI                 = data.azurerm_cosmosdb_account.cosmos_api.endpoint
-      COSMOSDB_KEY                 = data.azurerm_cosmosdb_account.cosmos_api.primary_master_key
+      COSMOSDB_NAME              = "db"
+      COSMOSDB_URI               = data.azurerm_cosmosdb_account.cosmos_api.endpoint
+      COSMOSDB_KEY               = data.azurerm_cosmosdb_account.cosmos_api.primary_master_key
       COSMOSDB_CONNECTION_STRING = format("AccountEndpoint=%s;AccountKey=%s;", data.azurerm_cosmosdb_account.cosmos_api.endpoint, data.azurerm_cosmosdb_account.cosmos_api.primary_master_key)
 
       MESSAGE_VIEW_UPDATE_FAILURE_CONNECTION = module.function_messages_cqrs.storage_account_internal_function.primary_connection_string
@@ -25,8 +25,8 @@ locals {
       QueueStorageConnection                 = data.azurerm_storage_account.api.primary_connection_string
 
       MESSAGE_STATUS_FOR_VIEW_TOPIC_CONSUMER_CONNECTION_STRING = module.event_hub.keys["io-cosmosdb-message-status-for-view.io-messages"].primary_connection_string
-      MESSAGE_STATUS_FOR_VIEW_TOPIC_CONSUMER_GROUP = "io-messages"
-      MESSAGE_STATUS_FOR_VIEW_TOPIC_NAME = "io-cosmosdb-message-status-for-view"
+      MESSAGE_STATUS_FOR_VIEW_TOPIC_CONSUMER_GROUP             = "io-messages"
+      MESSAGE_STATUS_FOR_VIEW_TOPIC_NAME                       = "io-cosmosdb-message-status-for-view"
       MESSAGE_STATUS_FOR_VIEW_TOPIC_PRODUCER_CONNECTION_STRING = module.event_hub.keys["io-cosmosdb-message-status-for-view.io-cdc"].primary_connection_string
 
       // Keepalive fields are all optionals
@@ -95,11 +95,9 @@ module "function_messages_cqrs" {
     "private_dns_zone_blob_ids"  = [data.azurerm_private_dns_zone.privatelink_blob_core_windows_net.id],
     "private_dns_zone_queue_ids" = [data.azurerm_private_dns_zone.privatelink_queue_core_windows_net.id],
     "private_dns_zone_table_ids" = [data.azurerm_private_dns_zone.privatelink_table_core_windows_net.id],
-    "queues" = [
-      local.function_messages_cqrs.app_settings.MESSAGE_VIEW_UPDATE_FAILURE_QUEUE_NAME
-    ],
-    "containers"           = [],
-    "blobs_retention_days" = 1,
+    "queues"                     = [],
+    "containers"                 = [],
+    "blobs_retention_days"       = 1,
   }
 
   allowed_subnets = [
@@ -255,4 +253,9 @@ resource "azurerm_monitor_autoscale_setting" "function_messages_cqrs" {
       }
     }
   }
+}
+
+resource "azurerm_storage_queue" "storage_account_message_cqrs_view_failed_queue" {
+  name                 = local.function_messages_cqrs.app_settings.MESSAGE_VIEW_UPDATE_FAILURE_QUEUE_NAME
+  storage_account_name = module.function_messages_cqrs.storage_account.name
 }
