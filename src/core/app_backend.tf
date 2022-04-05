@@ -98,6 +98,9 @@ locals {
       ALLOW_BPD_IP_SOURCE_RANGE         = data.azurerm_key_vault_secret.app_backend_ALLOW_BPD_IP_SOURCE_RANGE.value
       JWT_SUPPORT_TOKEN_PRIVATE_RSA_KEY = data.azurerm_key_vault_secret.app_backend_JWT_SUPPORT_TOKEN_PRIVATE_RSA_KEY.value
 
+      // FIMS
+      FIMS_BASE_PATH = "/fims/api/v1"
+
       // ZENDESK
       ZENDESK_BASE_PATH                    = "/api/backend/zendesk/v1"
       JWT_ZENDESK_SUPPORT_TOKEN_ISSUER     = "app-backend.io.italia.it"
