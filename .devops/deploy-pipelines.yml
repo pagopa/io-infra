@@ -70,13 +70,8 @@ stages:
     pool:
       name: io-prod-linux
     jobs:
-      # - job: init
-      #   steps:
-      #     # 1. Install terraform
-      #     - template: templates/terraform-setup/template.yaml@terraform
       - deployment: apply
         continueOnError: false
-        # dependsOn: init
         environment: 'PROD'
         strategy:
           runOnce:
@@ -117,13 +112,8 @@ stages:
     pool:
       name: io-prod-linux
     jobs:
-      # - job: init
-      #   steps:
-      #     # 1. Install terraform
-      #     - template: templates/terraform-setup/template.yaml@terraform
       - deployment: apply
         continueOnError: false
-        # dependsOn: init
         environment: 'PROD-SIGN'
         strategy:
           runOnce:
