@@ -1,9 +1,9 @@
-prefix          = "io"
-env_short       = "p"
-env             = "prod"
-domain          = "aks-prod-01"
-location        = "westeurope"
-location_short  = "weu"
+prefix         = "io"
+env_short      = "p"
+env            = "prod"
+domain         = "aks-prod-01"
+location       = "westeurope"
+location_short = "weu"
 
 tags = {
   CreatedBy   = "Terraform"
@@ -14,5 +14,3 @@ tags = {
 }
 
 lock_enable = true
-
-container_registry_enabled = true
