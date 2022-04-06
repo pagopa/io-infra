@@ -355,6 +355,7 @@ module "app_backendl1_snet" {
 }
 
 #tfsec:ignore:azure-appservice-authentication-enabled:exp:2022-05-01 # already ignored, maybe a bug in tfsec
+#tfsec:ignore:azure-appservice-require-client-cert:exp:2022-05-01 # already ignored, maybe a bug in tfsec
 module "appservice_app_backendl1" {
   source = "git::https://github.com/pagopa/azurerm.git//app_service?ref=v2.9.1"
 
@@ -568,6 +569,7 @@ module "app_backendl2_snet" {
 }
 
 #tfsec:ignore:azure-appservice-authentication-enabled:exp:2022-05-01 # already ignored, maybe a bug in tfsec
+#tfsec:ignore:azure-appservice-require-client-cert:exp:2022-05-01 # already ignored, maybe a bug in tfsec
 module "appservice_app_backendl2" {
   source = "git::https://github.com/pagopa/azurerm.git//app_service?ref=v2.9.1"
 
@@ -781,6 +783,7 @@ module "app_backendli_snet" {
 }
 
 #tfsec:ignore:azure-appservice-authentication-enabled:exp:2022-05-01 # already ignored, maybe a bug in tfsec
+#tfsec:ignore:azure-appservice-require-client-cert:exp:2022-05-01 # already ignored, maybe a bug in tfsec
 module "appservice_app_backendli" {
   source = "git::https://github.com/pagopa/azurerm.git//app_service?ref=v2.9.1"
 

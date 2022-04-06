@@ -121,6 +121,7 @@ module "app_messages_snet" {
   }
 }
 
+#tfsec:ignore:azure-storage-queue-services-logging-enabled:exp:2022-05-01 # already ignored, maybe a bug in tfsec
 module "app_messages_function" {
   count  = var.app_messages_count
   source = "git::https://github.com/pagopa/azurerm.git//function_app?ref=v2.9.1"

@@ -167,6 +167,7 @@ module "cgn_cosmosdb_containers" {
 
 ## Blob storage due to legal backup
 #tfsec:ignore:azure-storage-default-action-deny
+#tfsec:ignore:azure-storage-queue-services-logging-enabled:exp:2022-05-01 # already ignored, maybe a bug in tfsec
 module "cgn_legalbackup_storage" {
   source = "git::https://github.com/pagopa/azurerm.git//storage_account?ref=v2.7.0"
 
