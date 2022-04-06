@@ -10,6 +10,20 @@ parameters:
     values:
       - False
       - True
+  - name: 'CORE'
+    displayName: 'Run on core domain'
+    type: boolean
+    default: True
+    values:
+      - False
+      - True
+  - name: 'SIGN'
+    displayName: 'Run on sign domain'
+    type: boolean
+    default: True
+    values:
+      - False
+      - True
 
 variables:
   TIME_OUT: 5
@@ -26,10 +40,10 @@ resources:
       endpoint: 'io-azure-devops-github-ro'
 
 stages:
-  # PROD
-  - stage: plan_PROD
+  # PROD_CORE
+  - stage: plan_PROD_CORE
     dependsOn: []
-    condition: and(succeeded(), eq(${{parameters.PROD}}, true))
+    condition: and(eq(${{parameters.CORE}}, true), eq(${{parameters.PROD}}, true))
     pool:
       name: io-prod-linux
     jobs:
@@ -44,27 +58,36 @@ stages:
               SUBSCRIPTION: PROD-IO-SERVICE-CONN
               ENVIRONMENT: prod
               WORKINGDIR: 'src/core'
+          - task: AzureCLI@2
+            displayName: validate migration data on subscription-migrations
+            inputs:
+              azureSubscription: PROD-IO-SERVICE-CONN
+              scriptType: 'bash'
+              scriptLocation: 'inlineScript'
+              failOnStandardError: false
+              inlineScript: |
+                set -e
+                cd src/psql/selfcare/subscription-migrations
+                echo "Validating migrations"
+                ./flyway.sh validate PROD-IO db -ignorePendingMigrations=true && echo "Validation successful" || { echo "Validation failed"; exit 1; }
+                ./flyway.sh info PROD-IO db && echo "Info successful" || { echo "Info failed"; exit 1; }
 
-  - stage: apply_PROD
-    dependsOn: [plan_PROD]
-    condition: and(succeeded(), eq(${{parameters.PROD}}, true))
+  - stage: apply_PROD_CORE
+    dependsOn: [plan_PROD_CORE]
+    condition: and(eq(${{parameters.CORE}}, true), eq(${{parameters.PROD}}, true))
     pool:
       name: io-prod-linux
     jobs:
-      # - job: init
-      #   steps:
-      #     # 1. Install terraform
-      #     - template: templates/terraform-setup/template.yaml@terraform
       - deployment: apply
         continueOnError: false
-        # dependsOn: init
         environment: 'PROD'
         strategy:
           runOnce:
             deploy:
               steps:
-                - checkout: self
-                # 3. Run terraform apply
+                # 1. Install terraform
+                - template: templates/terraform-setup/template.yaml@terraform
+                # 2. Run terraform apply
                 - template: templates/terraform-apply/template.yaml@terraform
                   parameters:
                     SUBSCRIPTION: PROD-IO-SERVICE-CONN
@@ -78,7 +101,6 @@ stages:
           runOnce:
             deploy:
               steps:
-                - checkout: self
                 - task: AzureCLI@2
                   displayName: migrate data on subscription-migrations
                   inputs:
@@ -91,3 +113,44 @@ stages:
                       cd src/psql/selfcare/subscription-migrations
                       echo "Executing migrations"
                       ./flyway.sh migrate PROD-IO db && echo "Migration successful" || { echo "Migration failed"; exit 1; }
+
+  # PROD_CORE
+  - stage: plan_PROD_SIGN
+    dependsOn: []
+    condition: and(eq(${{parameters.SIGN}}, true), eq(${{parameters.PROD}}, true))
+    pool:
+      name: io-prod-linux
+    jobs:
+      - job: plan
+        timeoutInMinutes: $[variables.TIME_OUT]
+        steps:
+          # 1. Install terraform
+          - template: templates/terraform-setup/template.yaml@terraform
+          # 2. Run terraform plan
+          - template: templates/terraform-plan/template.yaml@terraform
+            parameters:
+              SUBSCRIPTION: PROD-IO-SIGN-SERVICE-CONN
+              ENVIRONMENT: prod
+              WORKINGDIR: 'src/sign'
+
+  - stage: apply_PROD_SIGN
+    dependsOn: [plan_PROD_SIGN]
+    condition: and(eq(${{parameters.SIGN}}, true), eq(${{parameters.PROD}}, true))
+    pool:
+      name: io-prod-linux
+    jobs:
+      - deployment: apply
+        continueOnError: false
+        environment: 'PROD-SIGN'
+        strategy:
+          runOnce:
+            deploy:
+              steps:
+                # 1. Install terraform
+                - template: templates/terraform-setup/template.yaml@terraform
+                # 2. Run terraform apply
+                - template: templates/terraform-apply/template.yaml@terraform
+                  parameters:
+                    SUBSCRIPTION: PROD-IO-SIGN-SERVICE-CONN
+                    ENVIRONMENT: prod
+                    WORKINGDIR: 'src/sign'
