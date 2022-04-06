@@ -62,6 +62,7 @@ resource "azurerm_app_service_virtual_network_swift_connection" "devportal_be" {
   subnet_id      = module.selfcare_be_common_snet.id
 }
 
+#tfsec:ignore:azure-appservice-authentication-enabled:exp:2022-05-01 # already ignored, maybe a bug in tfsec
 module "appservice_devportal_be" {
   source = "git::https://github.com/pagopa/azurerm.git//app_service?ref=v2.9.1"
 
