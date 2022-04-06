@@ -51,3 +51,20 @@ resource "azurerm_private_dns_zone_virtual_network_link" "privatelink_postgres_d
   private_dns_zone_name = azurerm_private_dns_zone.privatelink_postgres_database_azure_com.name
   virtual_network_id    = data.azurerm_virtual_network.vnet_common.id
 }
+
+resource "azurerm_private_dns_zone" "privatelink_azurecr_io" {
+  name                = "privatelink.azurecr.io"
+  resource_group_name = data.azurerm_resource_group.vnet_common_rg.name
+
+  tags = var.tags
+}
+
+resource "azurerm_private_dns_zone_virtual_network_link" "privatelink_azurecr_io_vnet_common" {
+  name                  = data.azurerm_virtual_network.vnet_common.name
+  resource_group_name   = data.azurerm_resource_group.vnet_common_rg.name
+  private_dns_zone_name = azurerm_private_dns_zone.privatelink_azurecr_io.name
+  virtual_network_id    = data.azurerm_virtual_network.vnet_common.id
+  registration_enabled  = false
+
+  tags = var.tags
+}
