@@ -31,6 +31,13 @@ parameters:
     values:
       - False
       - True
+  - name: 'AKS'
+    displayName: 'Run on aks domain'
+    type: boolean
+    default: True
+    values:
+      - False
+      - True
 
 variables:
   TIME_OUT: 5
@@ -121,7 +128,68 @@ stages:
                       echo "Executing migrations"
                       ./flyway.sh migrate PROD-IO db && echo "Migration successful" || { echo "Migration failed"; exit 1; }
 
-  # PROD_CORE
+  # PROD_AKS
+  - stage: plan_PROD_AKS
+    dependsOn: []
+    condition: and(eq(${{parameters.AKS}}, true), eq(${{parameters.PROD}}, true))
+    pool:
+      name: io-prod-linux
+    jobs:
+      - job: plan
+        timeoutInMinutes: $[variables.TIME_OUT]
+        steps:
+          # 1. Install terraform
+          - template: templates/terraform-setup/template.yaml@terraform
+          # 2. Run terraform plan
+          - template: templates/terraform-plan/template.yaml@terraform
+            parameters:
+              SUBSCRIPTION: PROD-IO-SERVICE-CONN
+              ENVIRONMENT: beta-weu
+              WORKINGDIR: 'src/aks'
+          - template: templates/terraform-plan/template.yaml@terraform
+            parameters:
+              SUBSCRIPTION: PROD-IO-SERVICE-CONN
+              ENVIRONMENT: prod-weu-01
+              WORKINGDIR: 'src/aks'
+          - template: templates/terraform-plan/template.yaml@terraform
+            parameters:
+              SUBSCRIPTION: PROD-IO-SERVICE-CONN
+              ENVIRONMENT: prod-weu-02
+              WORKINGDIR: 'src/aks'
+
+  - stage: apply_PROD_AKS
+    dependsOn: [plan_PROD_AKS]
+    condition: and(eq(${{parameters.AKS}}, true), eq(${{parameters.PROD}}, true))
+    pool:
+      name: io-prod-linux
+    jobs:
+      - deployment: apply
+        continueOnError: false
+        environment: 'PROD'
+        strategy:
+          runOnce:
+            deploy:
+              steps:
+                # 1. Install terraform
+                - template: templates/terraform-setup/template.yaml@terraform
+                # 2. Run terraform apply
+                - template: templates/terraform-apply/template.yaml@terraform
+                  parameters:
+                    SUBSCRIPTION: PROD-IO-SERVICE-CONN
+                    ENVIRONMENT: beta-weu
+                    WORKINGDIR: 'src/aks'
+                - template: templates/terraform-apply/template.yaml@terraform
+                  parameters:
+                    SUBSCRIPTION: PROD-IO-SERVICE-CONN
+                    ENVIRONMENT: prod-weu-01
+                    WORKINGDIR: 'src/aks'
+                - template: templates/terraform-apply/template.yaml@terraform
+                  parameters:
+                    SUBSCRIPTION: PROD-IO-SERVICE-CONN
+                    ENVIRONMENT: prod-weu-02
+                    WORKINGDIR: 'src/aks'
+
+  # PROD_SIGN
   - stage: plan_PROD_SIGN
     dependsOn: []
     condition: and(eq(${{parameters.SIGN}}, true), eq(${{parameters.PROD}}, true))

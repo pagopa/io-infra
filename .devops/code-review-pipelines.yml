@@ -39,6 +39,13 @@ parameters:
     values:
       - False
       - True
+  - name: 'AKS'
+    displayName: 'Run on aks domain'
+    type: boolean
+    default: True
+    values:
+      - False
+      - True
 
 variables:
   TIME_OUT: 5
@@ -87,6 +94,34 @@ stages:
                 echo "Validating migrations"
                 ./flyway.sh validate PROD-IO db -ignorePendingMigrations=true && echo "Validation successful" || { echo "Validation failed"; exit 1; }
                 ./flyway.sh info PROD-IO db && echo "Info successful" || { echo "Info failed"; exit 1; }
+
+  - stage: PROD_AKS
+    dependsOn: []
+    condition: and(eq(${{parameters.AKS}}, true), eq(${{parameters.PROD}}, true))
+    pool:
+      name: io-prod-linux
+    jobs:
+      - job: terraform_plan
+        timeoutInMinutes: $[variables.TIME_OUT]
+        steps:
+          # 1. Install terraform
+          - template: templates/terraform-setup/template.yaml@terraform
+          # 2. Run terragrunt plan
+          - template: templates/terraform-plan/template.yaml@terraform
+            parameters:
+              SUBSCRIPTION: PROD-IO-SERVICE-CONN
+              ENVIRONMENT: beta-weu
+              WORKINGDIR: 'src/aks'
+          - template: templates/terraform-plan/template.yaml@terraform
+            parameters:
+              SUBSCRIPTION: PROD-IO-SERVICE-CONN
+              ENVIRONMENT: prod-weu-01
+              WORKINGDIR: 'src/aks'
+          - template: templates/terraform-plan/template.yaml@terraform
+            parameters:
+              SUBSCRIPTION: PROD-IO-SERVICE-CONN
+              ENVIRONMENT: prod-weu-02
+              WORKINGDIR: 'src/aks'
 
   - stage: PROD_SIGN
     dependsOn: []
