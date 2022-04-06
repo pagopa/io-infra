@@ -56,7 +56,7 @@ module "function_elt" {
     kind                         = "elastic"
     sku_tier                     = "ElasticPremium"
     sku_size                     = "EP1"
-    maximum_elastic_worker_count = 2
+    maximum_elastic_worker_count = 1
   }
 
   app_settings = {
