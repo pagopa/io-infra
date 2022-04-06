@@ -24,9 +24,9 @@ variable "domain" {
   type = string
   validation {
     condition = (
-      length(var.domain) < 6
+      length(var.domain) < 10
     )
-    error_message = "Max length is 6 chars."
+    error_message = "Max length is 10 chars."
   }
 }
 
