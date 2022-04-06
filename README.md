@@ -1,3 +1,5 @@
+[![Static Analysis](https://github.com/pagopa/io-infra/actions/workflows/static_analysis.yml/badge.svg?branch=main)](https://github.com/pagopa/io-infra/actions/workflows/static_analysis.yml)
+
 # IO-infrastructure
 
 IO project infrastructure
