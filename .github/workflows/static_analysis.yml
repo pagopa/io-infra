@@ -16,9 +16,11 @@ jobs:
           cd src
           for folder in *; do
             if [ -d "$folder" ]; then
-              echo "🔬 folder: $folder in under terraform"
+              # exclude psql folder from static analysis
               [[ -d "$folder" && "$folder" =~ psql ]] && continue
-              cd "$folder" || exit
+
+              echo "🔬 folder: $folder in under terraform"
+              cd "$folder" || exit 1
 
               sed -i -e 's/  backend "azurerm" {}//g' 99_main.tf # use local backend
               docker run -v $(pwd):/tmp -w /tmp hashicorp/terraform:$TAG init
