@@ -16,7 +16,7 @@ jobs:
           cd src
           for folder in *; do
             if [ -d "$folder" ]; then
-              [[ -d "$folder" && "$folder" =~ psql ]] && break
+              [[ -d "$folder" && "$folder" =~ psql ]] && exit
               
               echo "🔬 folder: $folder in under terraform"
               cd "$folder" || exit
