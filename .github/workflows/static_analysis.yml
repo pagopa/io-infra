@@ -16,6 +16,8 @@ jobs:
           cd src
           for folder in *; do
             if [ -d "$folder" ]; then
+              [[ -d "$folder" && "$folder" =~ psql ]] && break
+              
               echo "🔬 folder: $folder in under terraform"
               cd "$folder" || exit
               sed -i -e 's/  backend "azurerm" {}//g' 99_main.tf # use local backend
