@@ -19,14 +19,14 @@ parameters:
       - False
       - True
   - name: 'CORE'
-    displayName: 'Run on Core'
+    displayName: 'Run on core domain'
     type: boolean
     default: True
     values:
       - False
       - True
   - name: 'SIGN'
-    displayName: 'Run on Sign'
+    displayName: 'Run on sign domain'
     type: boolean
     default: True
     values:
@@ -55,11 +55,9 @@ stages:
       name: io-prod-linux
     jobs:
       - job: terraform_plan
-        dependsOn: terraform_install
         timeoutInMinutes: $[variables.TIME_OUT]
         steps:
-          - checkout: self
-          # 1. Install terraform and terragrunt
+          # 1. Install terraform
           - template: templates/terraform-setup/template.yaml@terraform
           # 2. Run terragrunt plan
           - template: templates/terraform-plan/template.yaml@terraform
@@ -69,7 +67,6 @@ stages:
               WORKINGDIR: 'src/core'
       - job: validate_migration
         steps:
-          - checkout: self
           - task: AzureCLI@2
             displayName: validate migration data on subscription-migrations
             inputs:
@@ -91,15 +88,13 @@ stages:
       name: io-prod-linux
     jobs:
       - job: terraform_plan
-        dependsOn: terraform_install
         timeoutInMinutes: $[variables.TIME_OUT]
         steps:
-          - checkout: self
-          # 1. Install terraform and terragrunt
+          # 1. Install terraform
           - template: templates/terraform-setup/template.yaml@terraform
           # 2. Run terragrunt plan
           - template: templates/terraform-plan/template.yaml@terraform
             parameters:
-              SUBSCRIPTION: PROD-IO-SERVICE-CONN
+              SUBSCRIPTION: PROD-IO-SIGN-SERVICE-CONN
               ENVIRONMENT: prod
               WORKINGDIR: 'src/sign'

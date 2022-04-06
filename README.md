@@ -31,11 +31,11 @@ As PagoPA we build our standard Terraform modules, check available modules:
 To apply changes follow the standard terraform lifecycle once the code in this repository has been changed:
 
 ```sh
-terraform.sh init [dev|uat|prod]
+./terraform.sh init [dev|uat|prod]
 
-terraform.sh plan [dev|uat|prod]
+./terraform.sh plan [dev|uat|prod]
 
-terraform.sh apply [dev|uat|prod]
+./terraform.sh apply [dev|uat|prod]
 ```
 
 ## Terraform lock.hcl
@@ -46,7 +46,7 @@ https://www.terraform.io/docs/cli/commands/providers/lock.html#specifying-target
 So we need to specify this in terraform lock providers:
 
 ```sh
-terraform init
+./terraform.sh init [dev|uat|prod]
 
 rm .terraform.lock.hcl
 
