@@ -38,6 +38,7 @@ data "azurerm_storage_account" "api_replica" {
   resource_group_name = azurerm_resource_group.rg_internal.name
 }
 
+#tfsec:ignore:azure-storage-queue-services-logging-enabled:exp:2022-05-01 # already ignored, maybe a bug in tfsec
 module "function_elt" {
   source = "git::https://github.com/pagopa/azurerm.git//function_app?ref=v2.9.1"
 
@@ -50,6 +51,13 @@ module "function_elt" {
   subnet_id                                = module.function_elt_snetout.id
   runtime_version                          = "~3"
   application_insights_instrumentation_key = data.azurerm_application_insights.application_insights.instrumentation_key
+
+  app_service_plan_info = {
+    kind                         = "elastic"
+    sku_tier                     = "ElasticPremium"
+    sku_size                     = "EP1"
+    maximum_elastic_worker_count = 1
+  }
 
   app_settings = {
     FUNCTIONS_WORKER_RUNTIME       = "node"
@@ -141,6 +149,7 @@ module "function_elt" {
 }
 
 #tfsec:ignore:azure-storage-default-action-deny
+#tfsec:ignore:azure-storage-queue-services-logging-enabled:exp:2022-05-01 # already ignored, maybe a bug in tfsec
 module "storage_account_elt" {
   source = "git::https://github.com/pagopa/azurerm.git//storage_account?ref=v2.7.0"
 

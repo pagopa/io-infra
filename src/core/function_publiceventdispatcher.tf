@@ -33,6 +33,7 @@ module "function_pblevtdispatcher_snetout" {
   }
 }
 
+#tfsec:ignore:azure-storage-queue-services-logging-enabled:exp:2022-05-01 # already ignored, maybe a bug in tfsec
 module "function_pblevtdispatcher" {
   source = "git::https://github.com/pagopa/azurerm.git//function_app?ref=v2.9.1"
 
@@ -92,6 +93,7 @@ module "function_pblevtdispatcher" {
 }
 
 #tfsec:ignore:azure-storage-default-action-deny
+#tfsec:ignore:azure-storage-queue-services-logging-enabled:exp:2022-05-01 # already ignored, maybe a bug in tfsec
 module "storage_account_pblevtdispatcher" {
   source = "git::https://github.com/pagopa/azurerm.git//storage_account?ref=v2.7.0"
 

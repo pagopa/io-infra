@@ -5,6 +5,7 @@ resource "azurerm_resource_group" "sec_rg" {
   tags = var.tags
 }
 
+#tfsec:ignore:azure-keyvault-specify-network-acl:exp:2022-05-01 # already ignored, maybe a bug in tfsec
 module "key_vault" {
   source              = "git::https://github.com/pagopa/azurerm.git//key_vault?ref=v2.0.2"
   name                = format("%s-kv", local.project)

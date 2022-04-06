@@ -98,6 +98,9 @@ locals {
       ALLOW_BPD_IP_SOURCE_RANGE         = data.azurerm_key_vault_secret.app_backend_ALLOW_BPD_IP_SOURCE_RANGE.value
       JWT_SUPPORT_TOKEN_PRIVATE_RSA_KEY = data.azurerm_key_vault_secret.app_backend_JWT_SUPPORT_TOKEN_PRIVATE_RSA_KEY.value
 
+      // FIMS
+      FIMS_BASE_PATH = "/fims/api/v1"
+
       // ZENDESK
       ZENDESK_BASE_PATH                    = "/api/backend/zendesk/v1"
       JWT_ZENDESK_SUPPORT_TOKEN_ISSUER     = "app-backend.io.italia.it"
@@ -351,6 +354,8 @@ module "app_backendl1_snet" {
   }
 }
 
+#tfsec:ignore:azure-appservice-authentication-enabled:exp:2022-05-01 # already ignored, maybe a bug in tfsec
+#tfsec:ignore:azure-appservice-require-client-cert:exp:2022-05-01 # already ignored, maybe a bug in tfsec
 module "appservice_app_backendl1" {
   source = "git::https://github.com/pagopa/azurerm.git//app_service?ref=v2.9.1"
 
@@ -563,6 +568,8 @@ module "app_backendl2_snet" {
   }
 }
 
+#tfsec:ignore:azure-appservice-authentication-enabled:exp:2022-05-01 # already ignored, maybe a bug in tfsec
+#tfsec:ignore:azure-appservice-require-client-cert:exp:2022-05-01 # already ignored, maybe a bug in tfsec
 module "appservice_app_backendl2" {
   source = "git::https://github.com/pagopa/azurerm.git//app_service?ref=v2.9.1"
 
@@ -775,6 +782,8 @@ module "app_backendli_snet" {
   }
 }
 
+#tfsec:ignore:azure-appservice-authentication-enabled:exp:2022-05-01 # already ignored, maybe a bug in tfsec
+#tfsec:ignore:azure-appservice-require-client-cert:exp:2022-05-01 # already ignored, maybe a bug in tfsec
 module "appservice_app_backendli" {
   source = "git::https://github.com/pagopa/azurerm.git//app_service?ref=v2.9.1"
 

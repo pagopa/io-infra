@@ -1,3 +1,4 @@
+#tfsec:ignore:azure-storage-queue-services-logging-enabled:exp:2022-05-01 # already ignored, maybe a bug in tfsec
 module "function_services_cache" {
   source = "git::https://github.com/pagopa/azurerm.git//function_app?ref=v2.9.1"
 
