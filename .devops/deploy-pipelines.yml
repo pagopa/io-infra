@@ -24,6 +24,13 @@ parameters:
     values:
       - False
       - True
+  - name: 'REMINDER'
+    displayName: 'Run on reminder domain'
+    type: boolean
+    default: True
+    values:
+      - False
+      - True
 
 variables:
   TIME_OUT: 5
@@ -154,3 +161,44 @@ stages:
                     SUBSCRIPTION: PROD-IO-SIGN-SERVICE-CONN
                     ENVIRONMENT: prod
                     WORKINGDIR: 'src/sign'
+
+  # PROD_REMINDER
+  - stage: plan_PROD_REMINDER
+    dependsOn: []
+    condition: and(eq(${{parameters.REMINDER}}, true), eq(${{parameters.PROD}}, true))
+    pool:
+      name: io-prod-linux
+    jobs:
+      - job: plan
+        timeoutInMinutes: $[variables.TIME_OUT]
+        steps:
+          # 1. Install terraform
+          - template: templates/terraform-setup/template.yaml@terraform
+          # 2. Run terraform plan
+          - template: templates/terraform-plan/template.yaml@terraform
+            parameters:
+              SUBSCRIPTION: PROD-IO-REMINDER-SERVICE-CONN
+              ENVIRONMENT: prod
+              WORKINGDIR: 'src/reminder'
+
+  - stage: apply_PROD_REMINDER
+    dependsOn: [plan_PROD_REMINDER]
+    condition: and(eq(${{parameters.REMINDER}}, true), eq(${{parameters.PROD}}, true))
+    pool:
+      name: io-prod-linux
+    jobs:
+      - deployment: apply
+        continueOnError: false
+        environment: 'PROD-REMINDER'
+        strategy:
+          runOnce:
+            deploy:
+              steps:
+                # 1. Install terraform
+                - template: templates/terraform-setup/template.yaml@terraform
+                # 2. Run terraform apply
+                - template: templates/terraform-apply/template.yaml@terraform
+                  parameters:
+                    SUBSCRIPTION: PROD-IO-REMINDER-SERVICE-CONN
+                    ENVIRONMENT: prod
+                    WORKINGDIR: 'src/reminder'

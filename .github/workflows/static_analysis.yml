@@ -24,6 +24,13 @@ jobs:
           sed -i -e 's/  backend "azurerm" {}//g' 99_main.tf # use local backend
           docker run -v $(pwd):/tmp -w /tmp hashicorp/terraform:$TAG init
 
+      - name: init_src_reminder
+        run: |
+          TAG=$(cat .terraform-version)
+          cd src/reminder
+          sed -i -e 's/  backend "azurerm" {}//g' 99_main.tf # use local backend
+          docker run -v $(pwd):/tmp -w /tmp hashicorp/terraform:$TAG init
+
       - name: run_test
         run: |
           TAG=nightly
