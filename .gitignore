@@ -29,6 +29,7 @@ override.tf.json
 # example: *tfplan*
 
 **/.tfsec/*
+**/.ignore/*
 
 *.DS_Store
 *.log
