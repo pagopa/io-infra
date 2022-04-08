@@ -9,14 +9,20 @@ locals {
       FUNCTIONS_WORKER_PROCESS_COUNT = 4
       NODE_ENV                       = "production"
 
-      COSMOSDB_NAME                = "db"
-      COSMOSDB_URI                 = data.azurerm_cosmosdb_account.cosmos_api.endpoint
-      COSMOSDB_KEY                 = data.azurerm_cosmosdb_account.cosmos_api.primary_master_key
-      COSMOS_API_CONNECTION_STRING = format("AccountEndpoint=%s;AccountKey=%s;", data.azurerm_cosmosdb_account.cosmos_api.endpoint, data.azurerm_cosmosdb_account.cosmos_api.primary_master_key)
+      COSMOSDB_NAME              = "db"
+      COSMOSDB_URI               = data.azurerm_cosmosdb_account.cosmos_api.endpoint
+      COSMOSDB_KEY               = data.azurerm_cosmosdb_account.cosmos_api.primary_master_key
+      COSMOSDB_CONNECTION_STRING = format("AccountEndpoint=%s;AccountKey=%s;", data.azurerm_cosmosdb_account.cosmos_api.endpoint, data.azurerm_cosmosdb_account.cosmos_api.primary_master_key)
 
       MESSAGE_VIEW_UPDATE_FAILURE_QUEUE_NAME = "message-view-update-failures"
       MESSAGE_CONTAINER_NAME                 = "message-content"
+      MESSAGE_CONTENT_STORAGE_CONNECTION     = data.azurerm_storage_account.api.primary_connection_string
       QueueStorageConnection                 = data.azurerm_storage_account.api.primary_connection_string
+
+      MESSAGE_STATUS_FOR_VIEW_TOPIC_CONSUMER_CONNECTION_STRING = module.event_hub.keys["io-cosmosdb-message-status-for-view.io-messages"].primary_connection_string
+      MESSAGE_STATUS_FOR_VIEW_TOPIC_CONSUMER_GROUP             = "io-messages"
+      MESSAGE_STATUS_FOR_VIEW_TOPIC_NAME                       = "io-cosmosdb-message-status-for-view"
+      MESSAGE_STATUS_FOR_VIEW_TOPIC_PRODUCER_CONNECTION_STRING = module.event_hub.keys["io-cosmosdb-message-status-for-view.io-cdc"].primary_connection_string
 
       // Keepalive fields are all optionals
       FETCH_KEEPALIVE_ENABLED             = "true"
