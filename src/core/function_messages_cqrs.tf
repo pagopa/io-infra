@@ -9,16 +9,11 @@ locals {
       FUNCTIONS_WORKER_PROCESS_COUNT = 4
       NODE_ENV                       = "production"
 
-      APPINSIGHTS_INSTRUMENTATIONKEY = data.azurerm_application_insights.application_insights.instrumentation_key
-
-      AzureWebJobsStorage = module.function_messages_cqrs.storage_account_internal_function.primary_connection_string
-
       COSMOSDB_NAME              = "db"
       COSMOSDB_URI               = data.azurerm_cosmosdb_account.cosmos_api.endpoint
       COSMOSDB_KEY               = data.azurerm_cosmosdb_account.cosmos_api.primary_master_key
       COSMOSDB_CONNECTION_STRING = format("AccountEndpoint=%s;AccountKey=%s;", data.azurerm_cosmosdb_account.cosmos_api.endpoint, data.azurerm_cosmosdb_account.cosmos_api.primary_master_key)
 
-      MESSAGE_VIEW_UPDATE_FAILURE_CONNECTION = module.function_messages_cqrs.storage_account_internal_function.primary_connection_string
       MESSAGE_VIEW_UPDATE_FAILURE_QUEUE_NAME = "message-view-update-failures"
       MESSAGE_CONTAINER_NAME                 = "message-content"
       MESSAGE_CONTENT_STORAGE_CONNECTION     = data.azurerm_storage_account.api.primary_connection_string
