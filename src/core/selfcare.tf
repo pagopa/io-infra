@@ -21,6 +21,7 @@ resource "azurerm_resource_group" "selfcare_fe_rg" {
 }
 
 ### Frontend resources
+#tfsec:ignore:azure-storage-queue-services-logging-enabled:exp:2022-05-01 # already ignored, maybe a bug in tfsec
 module "selfcare_cdn" {
   source = "git::https://github.com/pagopa/azurerm.git//cdn?ref=v2.7.0"
 
@@ -113,6 +114,7 @@ data "azurerm_key_vault_secret" "selfcare_subsmigrations_apikey" {
 }
 
 # JWT
+#tfsec:ignore:azure-keyvault-ensure-secret-expiry:exp:2022-05-01 # already ignored, maybe a bug in tfsec
 module "selfcare_jwt" {
   source = "git::https://github.com/pagopa/azurerm.git//jwt_keys?ref=v2.9.1"
 
@@ -171,6 +173,8 @@ resource "azurerm_app_service_virtual_network_swift_connection" "selfcare_be" {
   subnet_id      = module.selfcare_be_common_snet.id
 }
 
+#tfsec:ignore:azure-appservice-authentication-enabled:exp:2022-05-01 # already ignored, maybe a bug in tfsec
+#tfsec:ignore:azure-appservice-require-client-cert:exp:2022-05-01 # already ignored, maybe a bug in tfsec
 module "appservice_selfcare_be" {
   source = "git::https://github.com/pagopa/azurerm.git//app_service?ref=v2.9.1"
 

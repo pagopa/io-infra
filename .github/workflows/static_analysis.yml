@@ -2,9 +2,6 @@ name: Static Analysis
 
 on:
   push:
-    branches-ignore:
-      - main
-      - master
 
 jobs:
   static_analysis:
@@ -17,7 +14,21 @@ jobs:
         run: |
           TAG=$(cat .terraform-version)
           cd src/core
-          sed -i -e 's/  backend "azurerm" {}//g' main.tf # use local backend
+          sed -i -e 's/  backend "azurerm" {}//g' 99_main.tf # use local backend
+          docker run -v $(pwd):/tmp -w /tmp hashicorp/terraform:$TAG init
+
+      - name: init_src_sign
+        run: |
+          TAG=$(cat .terraform-version)
+          cd src/sign
+          sed -i -e 's/  backend "azurerm" {}//g' 99_main.tf # use local backend
+          docker run -v $(pwd):/tmp -w /tmp hashicorp/terraform:$TAG init
+
+      - name: init_src_reminder
+        run: |
+          TAG=$(cat .terraform-version)
+          cd src/reminder
+          sed -i -e 's/  backend "azurerm" {}//g' 99_main.tf # use local backend
           docker run -v $(pwd):/tmp -w /tmp hashicorp/terraform:$TAG init
 
       - name: run_test

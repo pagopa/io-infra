@@ -18,6 +18,27 @@ parameters:
     values:
       - False
       - True
+  - name: 'CORE'
+    displayName: 'Run on core domain'
+    type: boolean
+    default: True
+    values:
+      - False
+      - True
+  - name: 'SIGN'
+    displayName: 'Run on sign domain'
+    type: boolean
+    default: True
+    values:
+      - False
+      - True
+  - name: 'REMINDER'
+    displayName: 'Run on reminder domain'
+    type: boolean
+    default: True
+    values:
+      - False
+      - True
 
 variables:
   TIME_OUT: 5
@@ -34,21 +55,17 @@ resources:
       endpoint: 'io-azure-devops-github-ro'
 
 stages:
-  - stage: PROD
+  - stage: PROD_CORE
     dependsOn: []
-    condition: and(succeeded(), eq(${{parameters.PROD}}, true))
+    condition: and(eq(${{parameters.CORE}}, true), eq(${{parameters.PROD}}, true))
     pool:
       name: io-prod-linux
     jobs:
-      - job: terraform_install
-        steps:
-          # 1. Install terraform and terragrunt
-          - template: templates/terraform-setup/template.yaml@terraform
       - job: terraform_plan
-        dependsOn: terraform_install
         timeoutInMinutes: $[variables.TIME_OUT]
         steps:
-          - checkout: self
+          # 1. Install terraform
+          - template: templates/terraform-setup/template.yaml@terraform
           # 2. Run terragrunt plan
           - template: templates/terraform-plan/template.yaml@terraform
             parameters:
@@ -57,7 +74,6 @@ stages:
               WORKINGDIR: 'src/core'
       - job: validate_migration
         steps:
-          - checkout: self
           - task: AzureCLI@2
             displayName: validate migration data on subscription-migrations
             inputs:
@@ -71,3 +87,39 @@ stages:
                 echo "Validating migrations"
                 ./flyway.sh validate PROD-IO db -ignorePendingMigrations=true && echo "Validation successful" || { echo "Validation failed"; exit 1; }
                 ./flyway.sh info PROD-IO db && echo "Info successful" || { echo "Info failed"; exit 1; }
+
+  - stage: PROD_SIGN
+    dependsOn: []
+    condition: and(eq(${{parameters.SIGN}}, true), eq(${{parameters.PROD}}, true))
+    pool:
+      name: io-prod-linux
+    jobs:
+      - job: terraform_plan
+        timeoutInMinutes: $[variables.TIME_OUT]
+        steps:
+          # 1. Install terraform
+          - template: templates/terraform-setup/template.yaml@terraform
+          # 2. Run terragrunt plan
+          - template: templates/terraform-plan/template.yaml@terraform
+            parameters:
+              SUBSCRIPTION: PROD-IO-SIGN-SERVICE-CONN
+              ENVIRONMENT: prod
+              WORKINGDIR: 'src/sign'
+
+  - stage: PROD_REMINDER
+    dependsOn: []
+    condition: and(eq(${{parameters.REMINDER}}, true), eq(${{parameters.PROD}}, true))
+    pool:
+      name: io-prod-linux
+    jobs:
+      - job: terraform_plan
+        timeoutInMinutes: $[variables.TIME_OUT]
+        steps:
+          # 1. Install terraform
+          - template: templates/terraform-setup/template.yaml@terraform
+          # 2. Run terragrunt plan
+          - template: templates/terraform-plan/template.yaml@terraform
+            parameters:
+              SUBSCRIPTION: PROD-IO-REMINDER-SERVICE-CONN
+              ENVIRONMENT: prod
+              WORKINGDIR: 'src/reminder'
