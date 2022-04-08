@@ -136,7 +136,7 @@ app_messages_function_sku_tier          = "PremiumV3"
 app_messages_function_sku_size          = "P1v3"
 app_messages_function_autoscale_minimum = 1
 app_messages_function_autoscale_maximum = 30
-app_messages_function_autoscale_default = 1
+app_messages_function_autoscale_default = 10
 
 app_backend_autoscale_default = 10
 app_backend_autoscale_minimum = 1
@@ -150,7 +150,7 @@ function_messages_cqrs_sku_tier          = "PremiumV3"
 function_messages_cqrs_sku_size          = "P1v3"
 function_messages_cqrs_autoscale_minimum = 1
 function_messages_cqrs_autoscale_maximum = 30
-function_messages_cqrs_autoscale_default = 10
+function_messages_cqrs_autoscale_default = 1
 
 
 eventhubs = [
