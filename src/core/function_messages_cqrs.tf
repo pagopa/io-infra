@@ -95,9 +95,11 @@ module "function_messages_cqrs" {
     "private_dns_zone_blob_ids"  = [data.azurerm_private_dns_zone.privatelink_blob_core_windows_net.id],
     "private_dns_zone_queue_ids" = [data.azurerm_private_dns_zone.privatelink_queue_core_windows_net.id],
     "private_dns_zone_table_ids" = [data.azurerm_private_dns_zone.privatelink_table_core_windows_net.id],
-    "queues"                     = [],
-    "containers"                 = [],
-    "blobs_retention_days"       = 1,
+    "queues" = [
+      local.function_messages_cqrs.app_settings.MESSAGE_VIEW_UPDATE_FAILURE_QUEUE_NAME
+    ],
+    "containers"           = [],
+    "blobs_retention_days" = 1,
   }
 
   allowed_subnets = [
@@ -253,9 +255,4 @@ resource "azurerm_monitor_autoscale_setting" "function_messages_cqrs" {
       }
     }
   }
-}
-
-resource "azurerm_storage_queue" "storage_account_message_cqrs_view_failed_queue" {
-  name                 = local.function_messages_cqrs.app_settings.MESSAGE_VIEW_UPDATE_FAILURE_QUEUE_NAME
-  storage_account_name = module.function_messages_cqrs.storage_account.name
 }
