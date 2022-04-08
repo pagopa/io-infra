@@ -150,7 +150,7 @@ function_messages_cqrs_sku_tier          = "PremiumV3"
 function_messages_cqrs_sku_size          = "P1v3"
 function_messages_cqrs_autoscale_minimum = 1
 function_messages_cqrs_autoscale_maximum = 30
-function_messages_cqrs_autoscale_default = 1
+function_messages_cqrs_autoscale_default = 10
 
 
 eventhubs = [
