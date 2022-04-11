@@ -248,7 +248,7 @@ resource "azurerm_monitor_autoscale_setting" "app_messages_function" {
         time_window              = "PT5M"
         time_aggregation         = "Average"
         operator                 = "GreaterThan"
-        threshold                = 50
+        threshold                = 45
         divide_by_instance_count = false
       }
 
