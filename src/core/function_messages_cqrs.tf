@@ -131,7 +131,12 @@ module "function_messages_cqrs_staging_slot" {
   application_insights_instrumentation_key = data.azurerm_application_insights.application_insights.instrumentation_key
 
   app_settings = merge(
-    local.function_messages_cqrs.app_settings,
+    local.function_messages_cqrs.app_settings, {
+      // disable listeners on staging slot
+      "AzureWebJobs.CosmosApiMessageStatusChangeFeedForView.Disabled" = "1"
+      "AzureWebJobs.HandleMessageViewUpdateFailures.Disabled"         = "1"
+      "AzureWebJobs.UpdateCosmosMessageView.Disabled"                 = "1"
+    }
   )
 
   subnet_id = module.function_messages_cqrs_snet.id
