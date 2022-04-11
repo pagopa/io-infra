@@ -109,17 +109,17 @@ stages:
           # 2. Run terragrunt plan
           - template: templates/terraform-plan/template.yaml@terraform
             parameters:
-              SUBSCRIPTION: PROD-IO-SERVICE-CONN
+              SUBSCRIPTION: PROD-IO-AKS-SERVICE-CONN
               ENVIRONMENT: beta-weu
               WORKINGDIR: 'src/aks'
           - template: templates/terraform-plan/template.yaml@terraform
             parameters:
-              SUBSCRIPTION: PROD-IO-SERVICE-CONN
+              SUBSCRIPTION: PROD-IO-AKS-SERVICE-CONN
               ENVIRONMENT: prod-weu-01
               WORKINGDIR: 'src/aks'
           - template: templates/terraform-plan/template.yaml@terraform
             parameters:
-              SUBSCRIPTION: PROD-IO-SERVICE-CONN
+              SUBSCRIPTION: PROD-IO-AKS-SERVICE-CONN
               ENVIRONMENT: prod-weu-02
               WORKINGDIR: 'src/aks'
 
