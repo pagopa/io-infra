@@ -119,6 +119,7 @@ variable "aks_system_node_pool" {
 
 variable "aks_user_node_pool" {
   type = object({
+    enabled         = bool,
     name            = string,
     vm_size         = string,
     os_disk_type    = string,
