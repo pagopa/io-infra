@@ -105,14 +105,15 @@ variable "aks_sku_tier" {
 
 variable "aks_system_node_pool" {
   type = object({
-    name            = string,
-    vm_size         = string,
-    os_disk_type    = string,
-    os_disk_size_gb = string,
-    node_count_min  = number,
-    node_count_max  = number,
-    node_labels     = map(any),
-    node_tags       = map(any)
+    name                         = string,
+    vm_size                      = string,
+    os_disk_type                 = string,
+    os_disk_size_gb              = string,
+    node_count_min               = number,
+    node_count_max               = number,
+    only_critical_addons_enabled = bool,
+    node_labels                  = map(any),
+    node_tags                    = map(any)
   })
   description = "AKS node pool system configuration"
 }
@@ -127,6 +128,7 @@ variable "aks_user_node_pool" {
     node_count_min  = number,
     node_count_max  = number,
     node_labels     = map(any),
+    node_taints     = list(string),
     node_tags       = map(any)
   })
   description = "AKS node pool user configuration"

@@ -27,8 +27,9 @@ module "aks" {
   system_node_pool_node_count_min  = var.aks_system_node_pool.node_count_min
   system_node_pool_node_count_max  = var.aks_system_node_pool.node_count_max
   ### K8s node configuration
-  system_node_pool_node_labels = var.aks_system_node_pool.node_labels
-  system_node_pool_tags        = var.aks_system_node_pool.node_tags
+  system_node_pool_only_critical_addons_enabled = var.aks_system_node_pool.only_critical_addons_enabled
+  system_node_pool_node_labels                  = var.aks_system_node_pool.node_labels
+  system_node_pool_tags                         = var.aks_system_node_pool.node_tags
 
   #
   # 👤 User node pool
@@ -68,9 +69,9 @@ module "aks" {
   rbac_enabled        = true
   aad_admin_group_ids = data.azuread_group.adgroup_admin.object_id
 
-  addon_azure_policy_enabled                    = true
-  addon_azure_keyvault_secrets_provider_enabled = true
-  addon_azure_pod_identity_enabled              = true
+  addon_azure_policy_enabled               = true
+  addon_key_vault_secrets_provider_enabled = true
+  addon_azure_pod_identity_enabled         = true
 
   metric_alerts  = var.aks_metric_alerts
   alerts_enabled = true

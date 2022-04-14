@@ -28,14 +28,15 @@ log_analytics_workspace_resource_group_name = "io-p-rg-common"
 aks_sku_tier = "Paid"
 
 aks_system_node_pool = {
-  name            = "system-01"
-  vm_size         = "Standard_D2ds_v5"
-  os_disk_type    = "Ephemeral"
-  os_disk_size_gb = "75"
-  node_count_min  = "2"
-  node_count_max  = "3"
-  node_labels     = { node_name : "aks-system-01", node_type : "system" },
-  node_tags       = { node_tag_1 : "1" },
+  name                         = "system-01"
+  vm_size                      = "Standard_D2ds_v5"
+  os_disk_type                 = "Ephemeral"
+  os_disk_size_gb              = "75"
+  node_count_min               = "2"
+  node_count_max               = "3"
+  only_critical_addons_enabled = true
+  node_labels                  = { node_name : "aks-system-01", node_type : "system" },
+  node_tags                    = { node_tag_1 : "1" },
 }
 
 aks_user_node_pool = {
@@ -47,6 +48,7 @@ aks_user_node_pool = {
   node_count_min  = "2"
   node_count_max  = "3"
   node_labels     = { node_name : "aks-user-01", node_type : "user" },
+  node_taints     = [],
   node_tags       = { node_tag_1 : "1" },
 }
 
