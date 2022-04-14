@@ -1,3 +1,8 @@
+data "azurerm_key_vault_secret" "fn_messages_APP_MESSAGES_BETA_FISCAL_CODES" {
+  name         = "appbackend-APP-MESSAGES-BETA-FISCAL-CODES"
+  key_vault_id = data.azurerm_key_vault.common.id
+}
+
 locals {
   function_app_messages = {
     app_settings_common = {
@@ -29,6 +34,13 @@ locals {
       REDIS_URL      = module.redis_messages.hostname
       REDIS_PORT     = module.redis_messages.ssl_port
       REDIS_PASSWORD = module.redis_messages.primary_access_key
+
+
+      // View Features Flag
+      USE_FALLBACK          = false
+      FF_TYPE               = "beta"
+      FF_BETA_TESTER_LIST   = data.azurerm_key_vault_secret.fn_messages_APP_MESSAGES_BETA_FISCAL_CODES.value
+      FF_CANARY_USERS_REGEX = "XYZ"
 
     }
     app_settings_1 = {
