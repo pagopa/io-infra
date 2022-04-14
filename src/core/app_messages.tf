@@ -1,4 +1,4 @@
-data "azurerm_key_vault_secret" "app_backend_APP_MESSAGES_BETA_FISCAL_CODES" {
+data "azurerm_key_vault_secret" "fn_messages_APP_MESSAGES_BETA_FISCAL_CODES" {
   name         = "appbackend-APP-MESSAGES-BETA-FISCAL-CODES"
   key_vault_id = data.azurerm_key_vault.common.id
 }
@@ -39,7 +39,7 @@ locals {
       // View Features Flag
       USE_FALLBACK          = false
       FF_TYPE               = "beta"
-      FF_BETA_TESTER_LIST   = data.azurerm_key_vault_secret.app_backend_APP_MESSAGES_BETA_FISCAL_CODES.value
+      FF_BETA_TESTER_LIST   = data.azurerm_key_vault_secret.fn_messages_APP_MESSAGES_BETA_FISCAL_CODES.value
       FF_CANARY_USERS_REGEX = "XYZ"
 
     }
