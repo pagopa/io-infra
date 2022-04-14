@@ -32,5 +32,5 @@ jobs:
         run: |
           ls -la
           TAG=nightly
-          docker run -v $(pwd):/lint -w /lint ghcr.io/antonbabenko/pre-commit-terraform:$TAG run -a
+          output=$(docker run -v $(pwd):/lint -w /lint ghcr.io/antonbabenko/pre-commit-terraform:$TAG run -a)
           cat /root/.cache/pre-commit/pre-commit.log
