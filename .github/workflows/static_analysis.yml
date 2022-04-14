@@ -30,5 +30,6 @@ jobs:
 
       - name: run_test
         run: |
+          ls -la
           TAG=nightly
           docker run -v $(pwd):/lint -w /lint ghcr.io/antonbabenko/pre-commit-terraform:$TAG run -a
