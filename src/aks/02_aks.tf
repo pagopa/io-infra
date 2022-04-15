@@ -69,9 +69,9 @@ module "aks" {
   rbac_enabled        = true
   aad_admin_group_ids = [data.azuread_group.adgroup_admin.object_id]
 
-  addon_azure_policy_enabled               = true
-  addon_key_vault_secrets_provider_enabled = true
-  addon_azure_pod_identity_enabled         = true
+  addon_azure_policy_enabled                     = true
+  addon_azure_key_vault_secrets_provider_enabled = true
+  addon_azure_pod_identity_enabled               = true
 
   metric_alerts  = var.aks_metric_alerts
   alerts_enabled = true
