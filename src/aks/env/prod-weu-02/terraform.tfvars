@@ -20,6 +20,7 @@ lock_enable = true
 vnet_name                = "io-p-vnet-common"
 vnet_resource_group_name = "io-p-rg-common"
 
+monitor_resource_group_name                 = "io-p-rg-common"
 log_analytics_workspace_name                = "io-p-law-common"
 log_analytics_workspace_resource_group_name = "io-p-rg-common"
 
@@ -28,7 +29,7 @@ log_analytics_workspace_resource_group_name = "io-p-rg-common"
 aks_sku_tier = "Paid"
 
 aks_system_node_pool = {
-  name                         = "system-01"
+  name                         = "system01"
   vm_size                      = "Standard_D2ds_v5"
   os_disk_type                 = "Ephemeral"
   os_disk_size_gb              = "75"
@@ -41,7 +42,7 @@ aks_system_node_pool = {
 
 aks_user_node_pool = {
   enabled         = true
-  name            = "user-01"
+  name            = "user01"
   vm_size         = "Standard_D8ds_v5"
   os_disk_type    = "Ephemeral"
   os_disk_size_gb = "300"
