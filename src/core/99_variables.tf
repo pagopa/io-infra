@@ -116,6 +116,21 @@ variable "vnet_name" {
   default     = ""
 }
 
+variable "cidr_weu_beta_vnet" {
+  type        = string
+  description = "Beta Virtual network cidr."
+}
+
+variable "cidr_weu_prod01_vnet" {
+  type        = string
+  description = "Prod01 Virtual network cidr."
+}
+
+variable "cidr_weu_prod02_vnet" {
+  type        = string
+  description = "Prod02 Virtual network cidr."
+}
+
 ## Subnet CIRDS
 variable "cidr_subnet_eventhub" {
   type        = list(string)
