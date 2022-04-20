@@ -20,6 +20,9 @@ common_rg = "io-p-rg-common"
 # networking
 vnet_name = "io-p-vnet-common"
 # cidr_vnet         = ["10.0.0.0/16"]
+cidr_weu_beta_vnet   = ["10.10.0.0/16"]
+cidr_weu_prod01_vnet = ["10.11.0.0/16"]
+cidr_weu_prod02_vnet = ["10.12.0.0/16"]
 # check free subnet on azure portal io-p-vnet-common -> subnets
 cidr_subnet_eventhub           = ["10.0.10.0/24"]
 cidr_subnet_fnelt              = ["10.0.11.0/24"]
