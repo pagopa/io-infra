@@ -20,6 +20,9 @@ common_rg = "io-p-rg-common"
 # networking
 vnet_name = "io-p-vnet-common"
 # cidr_vnet         = ["10.0.0.0/16"]
+cidr_weu_beta_vnet   = ["10.10.0.0/16"]
+cidr_weu_prod01_vnet = ["10.11.0.0/16"]
+cidr_weu_prod02_vnet = ["10.12.0.0/16"]
 # check free subnet on azure portal io-p-vnet-common -> subnets
 cidr_subnet_eventhub           = ["10.0.10.0/24"]
 cidr_subnet_fnelt              = ["10.0.11.0/24"]
@@ -44,7 +47,7 @@ app_gateway_api_io_italia_it_certificate_name                     = "api-io-ital
 app_gateway_app_backend_io_italia_it_certificate_name             = "app-backend-io-italia-it"
 app_gateway_developerportal_backend_io_italia_it_certificate_name = "developerportal-backend-io-italia-it"
 app_gateway_api_io_selfcare_pagopa_it_certificate_name            = "api-io-selfcare-pagopa-it"
-app_gateway_min_capacity                                          = 8 #TODO 4 is the base line
+app_gateway_min_capacity                                          = 4 #4 capacity=baseline, 8 capacity=high volume event, 15 capacity=very high volume event
 app_gateway_max_capacity                                          = 50
 app_gateway_alerts_enabled                                        = true
 
