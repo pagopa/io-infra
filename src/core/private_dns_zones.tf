@@ -13,26 +13,26 @@ resource "azurerm_private_dns_zone_virtual_network_link" "internal_io_pagopa_it_
   virtual_network_id    = data.azurerm_virtual_network.vnet_common.id
 }
 
-resource "azurerm_private_dns_zone_virtual_network_link" "internal_io_pagopa_it_private_vnet_beta" {
-  name                  = module.vnet_weu_beta.name
-  resource_group_name   = azurerm_resource_group.rg_internal.name
-  private_dns_zone_name = azurerm_private_dns_zone.internal_io_pagopa_it[0].name
-  virtual_network_id    = module.vnet_weu_beta.id
-}
+# resource "azurerm_private_dns_zone_virtual_network_link" "internal_io_pagopa_it_private_vnet_beta" {
+#   name                  = module.vnet_weu_beta.name
+#   resource_group_name   = azurerm_resource_group.rg_internal.name
+#   private_dns_zone_name = azurerm_private_dns_zone.internal_io_pagopa_it[0].name
+#   virtual_network_id    = module.vnet_weu_beta.id
+# }
 
-resource "azurerm_private_dns_zone_virtual_network_link" "internal_io_pagopa_it_private_vnet_prod01" {
-  name                  = module.vnet_weu_prod01.name
-  resource_group_name   = azurerm_resource_group.rg_internal.name
-  private_dns_zone_name = azurerm_private_dns_zone.internal_io_pagopa_it[0].name
-  virtual_network_id    = module.vnet_weu_prod01.id
-}
+# resource "azurerm_private_dns_zone_virtual_network_link" "internal_io_pagopa_it_private_vnet_prod01" {
+#   name                  = module.vnet_weu_prod01.name
+#   resource_group_name   = azurerm_resource_group.rg_internal.name
+#   private_dns_zone_name = azurerm_private_dns_zone.internal_io_pagopa_it[0].name
+#   virtual_network_id    = module.vnet_weu_prod01.id
+# }
 
-resource "azurerm_private_dns_zone_virtual_network_link" "internal_io_pagopa_it_private_vnet_prod02" {
-  name                  = module.vnet_weu_prod02.name
-  resource_group_name   = azurerm_resource_group.rg_internal.name
-  private_dns_zone_name = azurerm_private_dns_zone.internal_io_pagopa_it[0].name
-  virtual_network_id    = module.vnet_weu_prod02.id
-}
+# resource "azurerm_private_dns_zone_virtual_network_link" "internal_io_pagopa_it_private_vnet_prod02" {
+#   name                  = module.vnet_weu_prod02.name
+#   resource_group_name   = azurerm_resource_group.rg_internal.name
+#   private_dns_zone_name = azurerm_private_dns_zone.internal_io_pagopa_it[0].name
+#   virtual_network_id    = module.vnet_weu_prod02.id
+# }
 
 # api-app.internal.io.pagopa.it
 # api-app.internal.dev.io.pagopa.it
@@ -60,26 +60,26 @@ resource "azurerm_private_dns_zone_virtual_network_link" "redis_private_vnet_com
   virtual_network_id    = data.azurerm_virtual_network.vnet_common.id
 }
 
-resource "azurerm_private_dns_zone_virtual_network_link" "redis_private_vnet_beta" {
-  name                  = module.vnet_weu_beta.name
-  resource_group_name   = data.azurerm_resource_group.vnet_common_rg.name
-  private_dns_zone_name = azurerm_private_dns_zone.privatelink_redis_cache.name
-  virtual_network_id    = module.vnet_weu_beta.id
-}
+# resource "azurerm_private_dns_zone_virtual_network_link" "redis_private_vnet_beta" {
+#   name                  = module.vnet_weu_beta.name
+#   resource_group_name   = data.azurerm_resource_group.vnet_common_rg.name
+#   private_dns_zone_name = azurerm_private_dns_zone.privatelink_redis_cache.name
+#   virtual_network_id    = module.vnet_weu_beta.id
+# }
 
-resource "azurerm_private_dns_zone_virtual_network_link" "redis_private_vnet_prod01" {
-  name                  = module.vnet_weu_prod01.name
-  resource_group_name   = data.azurerm_resource_group.vnet_common_rg.name
-  private_dns_zone_name = azurerm_private_dns_zone.privatelink_redis_cache.name
-  virtual_network_id    = module.vnet_weu_prod01.id
-}
+# resource "azurerm_private_dns_zone_virtual_network_link" "redis_private_vnet_prod01" {
+#   name                  = module.vnet_weu_prod01.name
+#   resource_group_name   = data.azurerm_resource_group.vnet_common_rg.name
+#   private_dns_zone_name = azurerm_private_dns_zone.privatelink_redis_cache.name
+#   virtual_network_id    = module.vnet_weu_prod01.id
+# }
 
-resource "azurerm_private_dns_zone_virtual_network_link" "redis_private_vnet_prod02" {
-  name                  = module.vnet_weu_prod02.name
-  resource_group_name   = data.azurerm_resource_group.vnet_common_rg.name
-  private_dns_zone_name = azurerm_private_dns_zone.privatelink_redis_cache.name
-  virtual_network_id    = module.vnet_weu_prod02.id
-}
+# resource "azurerm_private_dns_zone_virtual_network_link" "redis_private_vnet_prod02" {
+#   name                  = module.vnet_weu_prod02.name
+#   resource_group_name   = data.azurerm_resource_group.vnet_common_rg.name
+#   private_dns_zone_name = azurerm_private_dns_zone.privatelink_redis_cache.name
+#   virtual_network_id    = module.vnet_weu_prod02.id
+# }
 
 resource "azurerm_private_dns_zone" "privatelink_postgres_database_azure_com" {
   name                = "privatelink.postgres.database.azure.com"
@@ -87,12 +87,34 @@ resource "azurerm_private_dns_zone" "privatelink_postgres_database_azure_com" {
 
   tags = var.tags
 }
+
 resource "azurerm_private_dns_zone_virtual_network_link" "privatelink_postgres_database_azure_com_vnet_common" {
   name                  = data.azurerm_virtual_network.vnet_common.name
   resource_group_name   = data.azurerm_resource_group.vnet_common_rg.name
   private_dns_zone_name = azurerm_private_dns_zone.privatelink_postgres_database_azure_com.name
   virtual_network_id    = data.azurerm_virtual_network.vnet_common.id
 }
+
+# resource "azurerm_private_dns_zone_virtual_network_link" "privatelink_postgres_database_azure_com_vnet_beta" {
+#   name                  = module.vnet_weu_beta.name
+#   resource_group_name   = data.azurerm_resource_group.vnet_common_rg.name
+#   private_dns_zone_name = azurerm_private_dns_zone.privatelink_postgres_database_azure_com.name
+#   virtual_network_id    = module.vnet_weu_beta.id
+# }
+
+# resource "azurerm_private_dns_zone_virtual_network_link" "privatelink_postgres_database_azure_com_vnet_prod01" {
+#   name                  = module.vnet_weu_prod01.name
+#   resource_group_name   = data.azurerm_resource_group.vnet_common_rg.name
+#   private_dns_zone_name = azurerm_private_dns_zone.privatelink_postgres_database_azure_com.name
+#   virtual_network_id    = module.vnet_weu_prod01.id
+# }
+
+# resource "azurerm_private_dns_zone_virtual_network_link" "privatelink_postgres_database_azure_com_vnet_prod02" {
+#   name                  = module.vnet_weu_prod02.name
+#   resource_group_name   = data.azurerm_resource_group.vnet_common_rg.name
+#   private_dns_zone_name = azurerm_private_dns_zone.privatelink_postgres_database_azure_com.name
+#   virtual_network_id    = module.vnet_weu_prod02.id
+# }
 
 resource "azurerm_private_dns_zone" "privatelink_azurecr_io" {
   name                = "privatelink.azurecr.io"
@@ -111,32 +133,32 @@ resource "azurerm_private_dns_zone_virtual_network_link" "privatelink_azurecr_io
   tags = var.tags
 }
 
-resource "azurerm_private_dns_zone_virtual_network_link" "privatelink_azurecr_io_vnet_beta" {
-  name                  = module.vnet_weu_beta.name
-  resource_group_name   = data.azurerm_resource_group.vnet_common_rg.name
-  private_dns_zone_name = azurerm_private_dns_zone.privatelink_azurecr_io.name
-  virtual_network_id    = module.vnet_weu_beta.id
-  registration_enabled  = false
+# resource "azurerm_private_dns_zone_virtual_network_link" "privatelink_azurecr_io_vnet_beta" {
+#   name                  = module.vnet_weu_beta.name
+#   resource_group_name   = data.azurerm_resource_group.vnet_common_rg.name
+#   private_dns_zone_name = azurerm_private_dns_zone.privatelink_azurecr_io.name
+#   virtual_network_id    = module.vnet_weu_beta.id
+#   registration_enabled  = false
 
-  tags = var.tags
-}
+#   tags = var.tags
+# }
 
-resource "azurerm_private_dns_zone_virtual_network_link" "privatelink_azurecr_io_vnet_prod01" {
-  name                  = module.vnet_weu_prod01.name
-  resource_group_name   = data.azurerm_resource_group.vnet_common_rg.name
-  private_dns_zone_name = azurerm_private_dns_zone.privatelink_azurecr_io.name
-  virtual_network_id    = module.vnet_weu_prod01.id
-  registration_enabled  = false
+# resource "azurerm_private_dns_zone_virtual_network_link" "privatelink_azurecr_io_vnet_prod01" {
+#   name                  = module.vnet_weu_prod01.name
+#   resource_group_name   = data.azurerm_resource_group.vnet_common_rg.name
+#   private_dns_zone_name = azurerm_private_dns_zone.privatelink_azurecr_io.name
+#   virtual_network_id    = module.vnet_weu_prod01.id
+#   registration_enabled  = false
 
-  tags = var.tags
-}
+#   tags = var.tags
+# }
 
-resource "azurerm_private_dns_zone_virtual_network_link" "privatelink_azurecr_io_vnet_prod02" {
-  name                  = module.vnet_weu_prod02.name
-  resource_group_name   = data.azurerm_resource_group.vnet_common_rg.name
-  private_dns_zone_name = azurerm_private_dns_zone.privatelink_azurecr_io.name
-  virtual_network_id    = module.vnet_weu_prod02.id
-  registration_enabled  = false
+# resource "azurerm_private_dns_zone_virtual_network_link" "privatelink_azurecr_io_vnet_prod02" {
+#   name                  = module.vnet_weu_prod02.name
+#   resource_group_name   = data.azurerm_resource_group.vnet_common_rg.name
+#   private_dns_zone_name = azurerm_private_dns_zone.privatelink_azurecr_io.name
+#   virtual_network_id    = module.vnet_weu_prod02.id
+#   registration_enabled  = false
 
-  tags = var.tags
-}
+#   tags = var.tags
+# }

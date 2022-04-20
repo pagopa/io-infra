@@ -33,20 +33,20 @@ module "vnet_weu_beta" {
   tags = var.tags
 }
 
-module "vnet_peering_common_weu_beta" {
-  source = "git::https://github.com/pagopa/azurerm.git//virtual_network_peering?ref=v2.12.2"
+# module "vnet_peering_common_weu_beta" {
+#   source = "git::https://github.com/pagopa/azurerm.git//virtual_network_peering?ref=v2.12.2"
 
-  location = var.location
+#   location = var.location
 
-  source_resource_group_name       = data.azurerm_resource_group.vnet_common_rg.name
-  source_virtual_network_name      = data.azurerm_virtual_network.vnet_common.name
-  source_remote_virtual_network_id = data.azurerm_virtual_network.vnet_common.id
-  source_allow_gateway_transit     = true # needed by vpn gateway for enabling routing from vnet to vnet_integration
-  target_resource_group_name       = azurerm_resource_group.weu_beta_rg.name
-  target_virtual_network_name      = module.vnet_weu_beta.name
-  target_remote_virtual_network_id = module.vnet_weu_beta.id
-  target_use_remote_gateways       = true
-}
+#   source_resource_group_name       = data.azurerm_resource_group.vnet_common_rg.name
+#   source_virtual_network_name      = data.azurerm_virtual_network.vnet_common.name
+#   source_remote_virtual_network_id = data.azurerm_virtual_network.vnet_common.id
+#   source_allow_gateway_transit     = true # needed by vpn gateway for enabling routing from vnet to vnet_integration
+#   target_resource_group_name       = azurerm_resource_group.weu_beta_rg.name
+#   target_virtual_network_name      = module.vnet_weu_beta.name
+#   target_remote_virtual_network_id = module.vnet_weu_beta.id
+#   target_use_remote_gateways       = true
+# }
 
 resource "azurerm_resource_group" "weu_prod01_rg" {
   name     = "${local.project}-weu-prod01-rg"
@@ -65,20 +65,20 @@ module "vnet_weu_prod01" {
   tags = var.tags
 }
 
-module "vnet_peering_common_weu_prod01" {
-  source = "git::https://github.com/pagopa/azurerm.git//virtual_network_peering?ref=v2.12.2"
+# module "vnet_peering_common_weu_prod01" {
+#   source = "git::https://github.com/pagopa/azurerm.git//virtual_network_peering?ref=v2.12.2"
 
-  location = var.location
+#   location = var.location
 
-  source_resource_group_name       = data.azurerm_resource_group.vnet_common_rg.name
-  source_virtual_network_name      = data.azurerm_virtual_network.vnet_common.name
-  source_remote_virtual_network_id = data.azurerm_virtual_network.vnet_common.id
-  source_allow_gateway_transit     = true # needed by vpn gateway for enabling routing from vnet to vnet_integration
-  target_resource_group_name       = azurerm_resource_group.weu_prod01_rg.name
-  target_virtual_network_name      = module.vnet_weu_prod01.name
-  target_remote_virtual_network_id = module.vnet_weu_prod01.id
-  target_use_remote_gateways       = true
-}
+#   source_resource_group_name       = data.azurerm_resource_group.vnet_common_rg.name
+#   source_virtual_network_name      = data.azurerm_virtual_network.vnet_common.name
+#   source_remote_virtual_network_id = data.azurerm_virtual_network.vnet_common.id
+#   source_allow_gateway_transit     = true # needed by vpn gateway for enabling routing from vnet to vnet_integration
+#   target_resource_group_name       = azurerm_resource_group.weu_prod01_rg.name
+#   target_virtual_network_name      = module.vnet_weu_prod01.name
+#   target_remote_virtual_network_id = module.vnet_weu_prod01.id
+#   target_use_remote_gateways       = true
+# }
 
 resource "azurerm_resource_group" "weu_prod02_rg" {
   name     = "${local.project}-weu-prod02-rg"
@@ -97,17 +97,17 @@ module "vnet_weu_prod02" {
   tags = var.tags
 }
 
-module "vnet_peering_common_weu_prod02" {
-  source = "git::https://github.com/pagopa/azurerm.git//virtual_network_peering?ref=v2.12.2"
+# module "vnet_peering_common_weu_prod02" {
+#   source = "git::https://github.com/pagopa/azurerm.git//virtual_network_peering?ref=v2.12.2"
 
-  location = var.location
+#   location = var.location
 
-  source_resource_group_name       = data.azurerm_resource_group.vnet_common_rg.name
-  source_virtual_network_name      = data.azurerm_virtual_network.vnet_common.name
-  source_remote_virtual_network_id = data.azurerm_virtual_network.vnet_common.id
-  source_allow_gateway_transit     = true # needed by vpn gateway for enabling routing from vnet to vnet_integration
-  target_resource_group_name       = azurerm_resource_group.weu_prod02_rg.name
-  target_virtual_network_name      = module.vnet_weu_prod02.name
-  target_remote_virtual_network_id = module.vnet_weu_prod02.id
-  target_use_remote_gateways       = true
-}
+#   source_resource_group_name       = data.azurerm_resource_group.vnet_common_rg.name
+#   source_virtual_network_name      = data.azurerm_virtual_network.vnet_common.name
+#   source_remote_virtual_network_id = data.azurerm_virtual_network.vnet_common.id
+#   source_allow_gateway_transit     = true # needed by vpn gateway for enabling routing from vnet to vnet_integration
+#   target_resource_group_name       = azurerm_resource_group.weu_prod02_rg.name
+#   target_virtual_network_name      = module.vnet_weu_prod02.name
+#   target_remote_virtual_network_id = module.vnet_weu_prod02.id
+#   target_use_remote_gateways       = true
+# }
