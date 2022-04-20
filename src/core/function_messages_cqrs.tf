@@ -80,7 +80,12 @@ module "function_messages_cqrs" {
   }
 
   app_settings = merge(
-    local.function_messages_cqrs.app_settings,
+    local.function_messages_cqrs.app_settings, {
+      // disable listeners on staging slot
+      "AzureWebJobs.CosmosApiMessageStatusChangeFeedForView.Disabled" = "0"
+      "AzureWebJobs.HandleMessageViewUpdateFailures.Disabled"         = "0"
+      "AzureWebJobs.UpdateCosmosMessageView.Disabled"                 = "0"
+    }
   )
 
   subnet_id = module.function_messages_cqrs_snet.id
