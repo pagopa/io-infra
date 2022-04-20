@@ -17,7 +17,7 @@ data "azurerm_virtual_network" "vnet_common" {
 
 # vnet
 resource "azurerm_resource_group" "weu_beta_rg" {
-  name     = "${local.project}-weu-beta-rg"
+  name     = "${local.project}-weu-beta-vnet-rg"
   location = var.location
 
   tags = var.tags
@@ -49,7 +49,7 @@ module "vnet_weu_beta" {
 # }
 
 resource "azurerm_resource_group" "weu_prod01_rg" {
-  name     = "${local.project}-weu-prod01-rg"
+  name     = "${local.project}-weu-prod01-vnet-rg"
   location = var.location
 
   tags = var.tags
@@ -81,7 +81,7 @@ module "vnet_weu_prod01" {
 # }
 
 resource "azurerm_resource_group" "weu_prod02_rg" {
-  name     = "${local.project}-weu-prod02-rg"
+  name     = "${local.project}-weu-prod02-vnet-rg"
   location = var.location
 
   tags = var.tags
