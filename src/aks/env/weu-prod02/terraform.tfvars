@@ -1,7 +1,7 @@
 prefix         = "io"
 env_short      = "p"
 env            = "prod"
-domain         = "prod02-aks"
+domain         = "prod02"
 location       = "westeurope"
 location_short = "weu"
 
@@ -16,9 +16,6 @@ tags = {
 lock_enable = true
 
 ### External resources
-
-vnet_name                = "io-p-vnet-common"
-vnet_resource_group_name = "io-p-rg-common"
 
 monitor_resource_group_name                 = "io-p-rg-common"
 log_analytics_workspace_name                = "io-p-law-common"
