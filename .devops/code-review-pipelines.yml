@@ -5,42 +5,42 @@ pr:
       - main
   paths:
     include:
-      - 'src/*'
-      - '.devops/*'
+      - "src/*"
+      - ".devops/*"
     exclude:
-      - 'src/k8s/*'
+      - "src/k8s/*"
 
 parameters:
-  - name: 'PROD'
-    displayName: 'Run on PROD environment'
+  - name: "PROD"
+    displayName: "Run on PROD environment"
     type: boolean
     default: True
     values:
       - False
       - True
-  - name: 'CORE'
-    displayName: 'Run on core domain'
+  - name: "CORE"
+    displayName: "Run on core domain"
     type: boolean
     default: True
     values:
       - False
       - True
-  - name: 'SIGN'
-    displayName: 'Run on sign domain'
+  - name: "SIGN"
+    displayName: "Run on sign domain"
     type: boolean
     default: True
     values:
       - False
       - True
-  - name: 'REMINDER'
-    displayName: 'Run on reminder domain'
+  - name: "REMINDER"
+    displayName: "Run on reminder domain"
     type: boolean
     default: True
     values:
       - False
       - True
-  - name: 'AKS'
-    displayName: 'Run on aks domain'
+  - name: "AKS"
+    displayName: "Run on aks domain"
     type: boolean
     default: True
     values:
@@ -51,7 +51,7 @@ variables:
   TIME_OUT: 5
 
 pool:
-  vmImage: 'ubuntu-20.04'
+  vmImage: "ubuntu-20.04"
 
 resources:
   repositories:
@@ -59,7 +59,7 @@ resources:
       type: github
       name: pagopa/azure-pipeline-templates
       ref: refs/tags/v17
-      endpoint: 'io-azure-devops-github-ro'
+      endpoint: "io-azure-devops-github-ro"
 
 stages:
   - stage: PROD_CORE
@@ -78,15 +78,15 @@ stages:
             parameters:
               SUBSCRIPTION: PROD-IO-SERVICE-CONN
               ENVIRONMENT: prod
-              WORKINGDIR: 'src/core'
+              WORKINGDIR: "src/core"
       - job: validate_migration
         steps:
           - task: AzureCLI@2
             displayName: validate migration data on subscription-migrations
             inputs:
               azureSubscription: PROD-IO-SERVICE-CONN
-              scriptType: 'bash'
-              scriptLocation: 'inlineScript'
+              scriptType: "bash"
+              scriptLocation: "inlineScript"
               failOnStandardError: false
               inlineScript: |
                 set -e
@@ -110,18 +110,18 @@ stages:
           - template: templates/terraform-plan/template.yaml@terraform
             parameters:
               SUBSCRIPTION: PROD-IO-AKS-SERVICE-CONN
-              ENVIRONMENT: beta-weu
-              WORKINGDIR: 'src/aks'
+              ENVIRONMENT: weu-beta
+              WORKINGDIR: "src/aks"
           - template: templates/terraform-plan/template.yaml@terraform
             parameters:
               SUBSCRIPTION: PROD-IO-AKS-SERVICE-CONN
-              ENVIRONMENT: prod-weu-01
-              WORKINGDIR: 'src/aks'
+              ENVIRONMENT: weu-prod01
+              WORKINGDIR: "src/aks"
           - template: templates/terraform-plan/template.yaml@terraform
             parameters:
               SUBSCRIPTION: PROD-IO-AKS-SERVICE-CONN
-              ENVIRONMENT: prod-weu-02
-              WORKINGDIR: 'src/aks'
+              ENVIRONMENT: weu-prod02
+              WORKINGDIR: "src/aks"
 
   - stage: PROD_SIGN
     dependsOn: []
@@ -139,7 +139,7 @@ stages:
             parameters:
               SUBSCRIPTION: PROD-IO-SIGN-SERVICE-CONN
               ENVIRONMENT: prod
-              WORKINGDIR: 'src/sign'
+              WORKINGDIR: "src/sign"
 
   - stage: PROD_REMINDER
     dependsOn: []
@@ -157,4 +157,4 @@ stages:
             parameters:
               SUBSCRIPTION: PROD-IO-REMINDER-SERVICE-CONN
               ENVIRONMENT: prod
-              WORKINGDIR: 'src/reminder'
+              WORKINGDIR: "src/reminder"

@@ -1,7 +1,7 @@
 prefix         = "io"
 env_short      = "p"
 env            = "prod"
-domain         = "aks-prod-02"
+domain         = "prod02-aks"
 location       = "westeurope"
 location_short = "weu"
 
