@@ -14,6 +14,6 @@ locals {
   monitor_action_group_slack_name = "SlackPagoPA"
   monitor_action_group_email_name = "EmailPagoPA"
 
-  vnet_name = "${local.project}-vnet"
+  vnet_name                = "${local.project}-vnet"
   vnet_resource_group_name = "${local.project}-vnet-rg"
 }

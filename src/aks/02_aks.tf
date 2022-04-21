@@ -11,7 +11,7 @@ module "aks" {
   name                       = "${local.project}-aks"
   location                   = var.location
   dns_prefix                 = local.project
-  resource_group_name        = azurerm_resource_group.cluster_rg.name
+  resource_group_name        = azurerm_resource_group.aks_rg.name
   kubernetes_version         = var.aks_kubernetes_version
   log_analytics_workspace_id = data.azurerm_log_analytics_workspace.log_analytics.id
   sku_tier                   = var.aks_sku_tier
@@ -73,8 +73,8 @@ module "aks" {
   addon_azure_key_vault_secrets_provider_enabled = true
   addon_azure_pod_identity_enabled               = true
 
-  metric_alerts  = var.aks_metric_alerts
-  alerts_enabled = true
+  custom_metric_alerts = null
+  alerts_enabled       = true
   action = [
     {
       action_group_id    = data.azurerm_monitor_action_group.slack.id
