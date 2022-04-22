@@ -20,6 +20,7 @@ resource "azurerm_public_ip" "aks_outbound" {
   location            = azurerm_resource_group.aks_rg.location
   sku                 = "Standard"
   allocation_method   = "Static"
+  availability_zone   = "Zone-Redundant"
 
   tags = var.tags
 }
