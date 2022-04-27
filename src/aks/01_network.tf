@@ -3,6 +3,11 @@ data "azurerm_virtual_network" "vnet" {
   resource_group_name = local.vnet_resource_group_name
 }
 
+data "azurerm_virtual_network" "vnet_common" {
+  name                = local.vnet_common_name
+  resource_group_name = local.vnet_common_resource_group_name
+}
+
 module "aks_snet" {
   source                                         = "git::https://github.com/pagopa/azurerm.git//subnet?ref=v2.12.0"
   name                                           = "${local.project}-aks-snet"
@@ -36,7 +41,17 @@ resource "azurerm_private_dns_zone_virtual_network_link" "privatelink_azmk8s_io_
   name                  = local.vnet_name
   resource_group_name   = azurerm_resource_group.aks_rg.name
   private_dns_zone_name = azurerm_private_dns_zone.privatelink_azmk8s_io.name
-  virtual_network_id    = azurerm_resource_group.aks_rg.id
+  virtual_network_id    = azurerm_virtual_network.vnet.id
+  registration_enabled  = false
+
+  tags = var.tags
+}
+
+resource "azurerm_private_dns_zone_virtual_network_link" "privatelink_azmk8s_io_vnet_common" {
+  name                  = local.vnet_common_name
+  resource_group_name   = azurerm_resource_group.aks_rg.name
+  private_dns_zone_name = azurerm_private_dns_zone.privatelink_azmk8s_io.name
+  virtual_network_id    = azurerm_virtual_network.vnet_common.id
   registration_enabled  = false
 
   tags = var.tags

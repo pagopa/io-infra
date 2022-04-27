@@ -16,4 +16,7 @@ locals {
 
   vnet_name                = "${local.project}-vnet"
   vnet_resource_group_name = "${local.project}-vnet-rg"
+
+  vnet_common_name                = "${local.product}-vnet-common"
+  vnet_common_resource_group_name = "${local.product}-rg-common"
 }
