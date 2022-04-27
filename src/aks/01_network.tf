@@ -24,3 +24,20 @@ resource "azurerm_public_ip" "aks_outbound" {
 
   tags = var.tags
 }
+
+resource "azurerm_private_dns_zone" "privatelink_azmk8s_io" {
+  name                = "${var.domain}.privatelink.${var.location}.azmk8s.io"
+  resource_group_name = azurerm_resource_group.aks_rg.name
+
+  tags = var.tags
+}
+
+resource "azurerm_private_dns_zone_virtual_network_link" "privatelink_azmk8s_io_vnet" {
+  name                  = local.vnet_name
+  resource_group_name   = azurerm_resource_group.aks_rg.name
+  private_dns_zone_name = azurerm_private_dns_zone.privatelink_azmk8s_io.name
+  virtual_network_id    = azurerm_resource_group.aks_rg.id
+  registration_enabled  = false
+
+  tags = var.tags
+}
