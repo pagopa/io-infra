@@ -41,7 +41,7 @@ resource "azurerm_private_dns_zone_virtual_network_link" "privatelink_azmk8s_io_
   name                  = local.vnet_name
   resource_group_name   = azurerm_resource_group.aks_rg.name
   private_dns_zone_name = azurerm_private_dns_zone.privatelink_azmk8s_io.name
-  virtual_network_id    = azurerm_virtual_network.vnet.id
+  virtual_network_id    = data.azurerm_virtual_network.vnet.id
   registration_enabled  = false
 
   tags = var.tags
@@ -51,7 +51,7 @@ resource "azurerm_private_dns_zone_virtual_network_link" "privatelink_azmk8s_io_
   name                  = local.vnet_common_name
   resource_group_name   = azurerm_resource_group.aks_rg.name
   private_dns_zone_name = azurerm_private_dns_zone.privatelink_azmk8s_io.name
-  virtual_network_id    = azurerm_virtual_network.vnet_common.id
+  virtual_network_id    = data.azurerm_virtual_network.vnet_common.id
   registration_enabled  = false
 
   tags = var.tags
