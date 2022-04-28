@@ -25,7 +25,7 @@ if [ -z "$ENV" ]; then
   exit 0
 fi
 
-if [ ! -d "$ENV" ]; then
+if [ ! -d "../env/$ENV" ]; then
   echo "[ERROR] ENV should be one of:"
   ls "../env"
   exit 0
