@@ -151,11 +151,11 @@ stages:
               SUBSCRIPTION: PROD-IO-AKS-SERVICE-CONN
               ENVIRONMENT: weu-prod01
               WORKINGDIR: "src/aks"
-          - template: templates/terraform-plan/template.yaml@terraform
-            parameters:
-              SUBSCRIPTION: PROD-IO-AKS-SERVICE-CONN
-              ENVIRONMENT: weu-prod02
-              WORKINGDIR: "src/aks"
+          # - template: templates/terraform-plan/template.yaml@terraform
+          #   parameters:
+          #     SUBSCRIPTION: PROD-IO-AKS-SERVICE-CONN
+          #     ENVIRONMENT: weu-prod02
+          #     WORKINGDIR: "src/aks"
 
   - stage: apply_PROD_AKS
     dependsOn: [plan_PROD_AKS]
