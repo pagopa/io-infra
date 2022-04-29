@@ -20,6 +20,6 @@ locals {
   vnet_common_name                = "${local.product}-vnet-common"
   vnet_common_resource_group_name = "${local.product}-rg-common"
 
-  acr_name = replace("${local.product}commonacr","-","")
+  acr_name                = replace("${local.product}commonacr", "-", "")
   acr_resource_group_name = "${local.product}-container-registry-rg"
 }
