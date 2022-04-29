@@ -91,6 +91,11 @@ variable "log_analytics_workspace_resource_group_name" {
 
 ### Aks
 
+variable "k8s_kube_config_path_prefix" {
+  type    = string
+  default = "~/.kube"
+}
+
 variable "aks_kubernetes_version" {
   type        = string
   description = "Kubernetes version specified when creating the AKS managed cluster."
@@ -142,4 +147,20 @@ variable "aks_num_outbound_ips" {
   type        = number
   default     = 1
   description = "How many outbound ips allocate for AKS cluster"
+}
+
+variable "ingress_load_balancer_ip" {
+  type = string
+}
+
+variable "ingress_replica_count" {
+  type = string
+}
+
+variable "nginx_helm_version" {
+  type = string
+}
+
+variable "keda_helm_version" {
+  type = string
 }
