@@ -8,7 +8,7 @@ resource "azurerm_resource_group" "aks_rg" {
 module "aks" {
   source = "git::https://github.com/pagopa/azurerm.git//kubernetes_cluster?ref=v2.13.1"
 
-  name                       = "${local.project}-aks"
+  name                       = local.aks_name
   location                   = var.location
   dns_prefix                 = local.project
   resource_group_name        = azurerm_resource_group.aks_rg.name

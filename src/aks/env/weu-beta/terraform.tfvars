@@ -58,3 +58,7 @@ aks_user_node_pool = {
 }
 
 aks_cidr_subnet = ["10.10.0.0/17"]
+
+ingress_replica_count    = "2"
+ingress_load_balancer_ip = "10.10.100.250"
+nginx_helm_version       = "4.1.0"
