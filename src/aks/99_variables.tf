@@ -160,3 +160,7 @@ variable "ingress_replica_count" {
 variable "nginx_helm_version" {
   type = string
 }
+
+variable "keda_helm_version" {
+  type = string
+}

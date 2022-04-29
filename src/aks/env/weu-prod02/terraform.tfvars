@@ -62,3 +62,4 @@ aks_cidr_subnet = ["10.12.0.0/17"]
 ingress_replica_count    = "2"
 ingress_load_balancer_ip = "10.12.100.250"
 nginx_helm_version       = "4.1.0"
+keda_helm_version        = "2.6.2"
