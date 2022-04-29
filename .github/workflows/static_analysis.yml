@@ -10,26 +10,23 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
-      - name: init_src_core
+      - name: init_src
         run: |
           TAG=$(cat .terraform-version)
-          cd src/core
-          sed -i -e 's/  backend "azurerm" {}//g' 99_main.tf # use local backend
-          docker run -v $(pwd):/tmp -w /tmp hashicorp/terraform:$TAG init
+          cd src
+          for folder in *; do
+            if [ -d "$folder" ]; then
+              # exclude psql folder from static analysis
+              [[ -d "$folder" && "$folder" =~ psql ]] && continue
 
-      - name: init_src_sign
-        run: |
-          TAG=$(cat .terraform-version)
-          cd src/sign
-          sed -i -e 's/  backend "azurerm" {}//g' 99_main.tf # use local backend
-          docker run -v $(pwd):/tmp -w /tmp hashicorp/terraform:$TAG init
+              echo "🔬 folder: $folder in under terraform"
+              cd "$folder" || exit 1
 
-      - name: init_src_reminder
-        run: |
-          TAG=$(cat .terraform-version)
-          cd src/reminder
-          sed -i -e 's/  backend "azurerm" {}//g' 99_main.tf # use local backend
-          docker run -v $(pwd):/tmp -w /tmp hashicorp/terraform:$TAG init
+              sed -i -e 's/  backend "azurerm" {}//g' 99_main.tf # use local backend
+              docker run -v $(pwd):/tmp -w /tmp hashicorp/terraform:$TAG init
+              cd ..
+            fi
+          done
 
       - name: run_test
         run: |
