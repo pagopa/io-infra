@@ -183,11 +183,11 @@ stages:
                     SUBSCRIPTION: PROD-IO-SERVICE-CONN
                     ENVIRONMENT: weu-prod01
                     WORKINGDIR: "src/aks"
-                - template: templates/terraform-apply/template.yaml@terraform
-                  parameters:
-                    SUBSCRIPTION: PROD-IO-SERVICE-CONN
-                    ENVIRONMENT: weu-prod02
-                    WORKINGDIR: "src/aks"
+                # - template: templates/terraform-apply/template.yaml@terraform
+                #   parameters:
+                #     SUBSCRIPTION: PROD-IO-SERVICE-CONN
+                #     ENVIRONMENT: weu-prod02
+                #     WORKINGDIR: "src/aks"
 
   # PROD_SIGN
   - stage: plan_PROD_SIGN
