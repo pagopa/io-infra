@@ -94,13 +94,13 @@ variable "log_analytics_workspace_resource_group_name" {
   description = "The name of the resource group in which the Log Analytics workspace is located in."
 }
 
-variable "main_resources_enabled" {
-  type = bool
-}
-
 ### Aks
 
 variable "k8s_kube_config_path_prefix" {
   type    = string
   default = "~/.kube"
+}
+
+variable "ingress_load_balancer_ip" {
+  type = string
 }

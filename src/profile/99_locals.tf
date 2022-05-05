@@ -20,6 +20,10 @@ locals {
   vnet_common_name                = "${local.product}-vnet-common"
   vnet_common_resource_group_name = "${local.product}-rg-common"
 
+  ingress_hostname                      = "${var.location_short}${var.instance}.${var.domain}"
+  internal_dns_zone_name                = "internal.${var.prefix}.pagopa.it"
+  internal_dns_zone_resource_group_name = "${local.product}-rg-internal"
+
   acr_name                = replace("${local.product}commonacr", "-", "")
   acr_resource_group_name = "${local.product}-container-registry-rg"
 

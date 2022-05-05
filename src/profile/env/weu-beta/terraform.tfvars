@@ -29,5 +29,6 @@ monitor_resource_group_name                 = "io-p-rg-common"
 log_analytics_workspace_name                = "io-p-law-common"
 log_analytics_workspace_resource_group_name = "io-p-rg-common"
 
-### main
-main_resources_enabled = false
+### Aks
+
+ingress_load_balancer_ip = "10.10.100.250"
