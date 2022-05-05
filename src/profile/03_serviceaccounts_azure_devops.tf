@@ -1,6 +1,6 @@
 resource "kubernetes_namespace" "namespace_system" {
   metadata {
-    name =  "${var.domain}-system"
+    name = "${var.domain}-system"
   }
 }
 
