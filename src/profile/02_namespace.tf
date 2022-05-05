@@ -16,7 +16,7 @@ module "ingress" {
   namespace = kubernetes_namespace.namespace.metadata[0].name
   key_vault = data.azurerm_key_vault.kv
 
-  host = "${var.instance}.${var.domain}.internal.io.pagopa.it"
+  host = "${var.location_short}${var.instance}.${var.domain}.internal.io.pagopa.it"
   rules = [
     {
       path         = "/api/v1/email-validation/(.*)"

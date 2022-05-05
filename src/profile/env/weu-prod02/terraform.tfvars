@@ -4,7 +4,7 @@ env            = "prod"
 domain         = "profile"
 location       = "westeurope"
 location_short = "weu"
-instance       = "prod01"
+instance       = "prod02"
 
 tags = {
   CreatedBy   = "Terraform"
