@@ -1,19 +1,28 @@
 module "cosmosdb_account" {
   source                           = "git::https://github.com/pagopa/azurerm.git//cosmosdb_account?ref=v2.13.1"
   name                             = "${local.project}-cosmos"
-  subnet_id                        = module.io_sign_snet.id
-  location                         = azurerm_resource_group.backend_rg.location
-  resource_group_name              = azurerm_resource_group.backend_rg.name
+  location                         = azurerm_resource_group.data_rg.location
+  resource_group_name              = azurerm_resource_group.data_rg.name
   kind                             = "GlobalDocumentDB"
-  main_geo_location_location       = azurerm_resource_group.backend_rg.location
+  main_geo_location_location       = azurerm_resource_group.data_rg.location
   main_geo_location_zone_redundant = false
-  tags                             = var.tags
+
+  public_network_access_enabled = false
+
+  is_virtual_network_filter_enabled = true
+
+  private_endpoint_enabled           = true
+  subnet_id                          = module.io_sign_snet.id
+  private_dns_zone_ids               = [data.azurerm_private_dns_zone.privatelink_documents_azure_com.id]
+  allowed_virtual_network_subnet_ids = [data.azurerm_subnet.private_endpoints_subnet.id]
+
+  tags = var.tags
 }
 
-module "cosmosdb_sql_database_io_sign" {
+module "cosmosdb_sql_database_db" {
   source              = "git::https://github.com/pagopa/azurerm.git//cosmosdb_sql_database?ref=v2.13.1"
-  name                = "io-sign"
-  resource_group_name = azurerm_resource_group.backend_rg.name
+  name                = "db"
+  resource_group_name = azurerm_resource_group.data_rg.name
   account_name        = module.cosmosdb_account.name
   throughput          = var.io_sign_database.throughput
 }
@@ -21,9 +30,9 @@ module "cosmosdb_sql_database_io_sign" {
 module "cosmosdb_sql_container_signature-requests" {
   source              = "git::https://github.com/pagopa/azurerm.git//cosmosdb_sql_container?ref=v2.13.1"
   name                = "signature-requests"
-  resource_group_name = azurerm_resource_group.backend_rg.name
+  resource_group_name = azurerm_resource_group.data_rg.name
   account_name        = module.cosmosdb_account.name
-  database_name       = module.cosmosdb_sql_database_io_sign.name
+  database_name       = module.cosmosdb_sql_database_db.name
   partition_key_path  = "/signerId"
   throughput          = var.io_sign_database.signature_requests.throughput
 }

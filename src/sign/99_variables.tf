@@ -56,7 +56,7 @@ variable "storage" {
   default = {
     enable_versioning            = false
     delete_retention_policy_days = 15
-    replication_type             = "LRS"
+    replication_type             = "ZRS"
   }
 }
 
@@ -84,8 +84,4 @@ variable "io_sign_func" {
     sku_tier = "Standard"
     sku_size = "S1"
   }
-}
-
-variable "io_sign_func_application_insights_instrumentation_key" {
-  type = string
 }

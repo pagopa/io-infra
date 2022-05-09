@@ -8,8 +8,8 @@ module "io_sign_snet" {
   name                 = "${local.project}-snet"
   resource_group_name  = azurerm_resource_group.backend_rg.name
   virtual_network_name = data.azurerm_virtual_network.vnet_common.name
-  address_prefixes     = ["10.0.101.0/24"]
+  address_prefixes     = ["10.0.102.0/24"]
 
   enforce_private_link_endpoint_network_policies = true
-  service_endpoints                              = ["Microsoft.Web"]
+  service_endpoints                              = ["Microsoft.Web", "Microsoft.AzureCosmosDB"]
 }
