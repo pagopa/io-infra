@@ -30,6 +30,6 @@ module "io_sign_func" {
   allowed_subnets = [module.io_sign_snet.id]
 
   runtime_version                          = "~4"
-  application_insights_instrumentation_key = var.io_sign_func_application_insights_instrumentation_key
+  application_insights_instrumentation_key = data.azurerm_application_insights.application_insights.instrumentation_key
   tags                                     = var.tags
 }
