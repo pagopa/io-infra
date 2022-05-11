@@ -14,7 +14,7 @@ module "cosmosdb_account" {
   private_endpoint_enabled           = true
   subnet_id                          = module.io_sign_snet.id
   private_dns_zone_ids               = [data.azurerm_private_dns_zone.privatelink_documents_azure_com.id]
-  allowed_virtual_network_subnet_ids = [data.azurerm_subnet.private_endpoints_subnet.id]
+  allowed_virtual_network_subnet_ids = [module.io_sign_snet.id]
 
   tags = var.tags
 }
