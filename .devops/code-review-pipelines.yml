@@ -42,7 +42,7 @@ parameters:
   - name: "AKS"
     displayName: "Run on aks domain"
     type: boolean
-    default: True
+    default: False
     values:
       - False
       - True
