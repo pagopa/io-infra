@@ -13,7 +13,7 @@ module "io_sign_func" {
   }
 
   internal_storage = {
-    enable                     = true,
+    enable                     = false,
     private_endpoint_subnet_id = data.azurerm_subnet.private_endpoints_subnet.id,
     private_dns_zone_blob_ids  = []
     private_dns_zone_queue_ids = []
