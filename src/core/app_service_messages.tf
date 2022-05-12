@@ -41,7 +41,7 @@ resource "azurerm_resource_group" "app_service_messages_common_rg" {
 module "app_service_messages_snet" {
   source                                         = "git::https://github.com/pagopa/azurerm.git//subnet?ref=v1.0.51"
   name                                           = format("%s-app-service-messages-snet", local.project)
-  address_prefixes                               = [var.cidr_subnet_appservicemessages]
+  address_prefixes                               = var.cidr_subnet_appservicemessages
   resource_group_name                            = data.azurerm_resource_group.vnet_common_rg.name
   virtual_network_name                           = data.azurerm_virtual_network.vnet_common.name
   enforce_private_link_endpoint_network_policies = true
