@@ -96,6 +96,16 @@ app_messages_function_autoscale_minimum = 1
 app_messages_function_autoscale_maximum = 3
 app_messages_function_autoscale_default = 1
 
+# App Service Messages
+app_service_messages_function_always_on = true
+
+app_service_messages_function_kind              = "Linux"
+app_service_messages_function_sku_tier          = "Standard"
+app_service_messages_function_sku_size          = "S1"
+app_service_messages_function_autoscale_minimum = 1
+app_service_messages_function_autoscale_maximum = 3
+app_service_messages_function_autoscale_default = 1
+
 # Function Messages CQRS
 function_messages_cqrs_always_on = true
 
