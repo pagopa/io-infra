@@ -1,3 +1,91 @@
+locals {
+  function_elt = {
+    app_settings = {
+      FUNCTIONS_WORKER_RUNTIME       = "node"
+      WEBSITE_NODE_DEFAULT_VERSION   = "14.16.0"
+      FUNCTIONS_WORKER_PROCESS_COUNT = 4
+      NODE_ENV                       = "production"
+
+      // Keepalive fields are all optionals
+      FETCH_KEEPALIVE_ENABLED             = "true"
+      FETCH_KEEPALIVE_SOCKET_ACTIVE_TTL   = "110000"
+      FETCH_KEEPALIVE_MAX_SOCKETS         = "40"
+      FETCH_KEEPALIVE_MAX_FREE_SOCKETS    = "10"
+      FETCH_KEEPALIVE_FREE_SOCKET_TIMEOUT = "30000"
+      FETCH_KEEPALIVE_TIMEOUT             = "60000"
+
+      COSMOSDB_NAME                = "db"
+      COSMOSDB_URI                 = data.azurerm_cosmosdb_account.cosmos_api.endpoint
+      COSMOSDB_KEY                 = data.azurerm_cosmosdb_account.cosmos_api.primary_master_key
+      COSMOS_API_CONNECTION_STRING = format("AccountEndpoint=%s;AccountKey=%s;", data.azurerm_cosmosdb_account.cosmos_api.endpoint, data.azurerm_cosmosdb_account.cosmos_api.primary_master_key)
+
+      TARGETKAFKA_clientId            = "IO_FUNCTIONS_ELT"
+      TARGETKAFKA_brokers             = local.event_hub.connection
+      TARGETKAFKA_ssl                 = "true"
+      TARGETKAFKA_sasl_mechanism      = "plain"
+      TARGETKAFKA_sasl_username       = "$ConnectionString"
+      TARGETKAFKA_sasl_password       = module.event_hub.keys["io-cosmosdb-services.io-fn-elt"].primary_connection_string
+      TARGETKAFKA_maxInFlightRequests = "1"
+      TARGETKAFKA_idempotent          = "true"
+      TARGETKAFKA_transactionalId     = "IO_ELT"
+      TARGETKAFKA_topic               = "io-cosmosdb-services"
+
+      MESSAGES_TOPIC_NAME              = "pdnd-io-cosmosdb-messages"
+      MESSAGES_TOPIC_CONNECTION_STRING = module.event_hub.keys["pdnd-io-cosmosdb-messages.io-fn-elt"].primary_connection_string
+      MESSAGES_LEASES_PREFIX           = "messages-001"
+
+      MESSAGE_STATUS_TOPIC_NAME              = "pdnd-io-cosmosdb-message-status"
+      MESSAGE_STATUS_TOPIC_CONNECTION_STRING = module.event_hub.keys["pdnd-io-cosmosdb-message-status.io-fn-elt"].primary_connection_string
+      MESSAGE_STATUS_LEASES_PREFIX           = "message-status-001"
+
+      NOTIFICATION_STATUS_TOPIC_NAME              = "pdnd-io-cosmosdb-notification-status"
+      NOTIFICATION_STATUS_TOPIC_CONNECTION_STRING = module.event_hub.keys["pdnd-io-cosmosdb-notification-status.io-fn-elt"].primary_connection_string
+      NOTIFICATION_STATUS_LEASES_PREFIX           = "notification-status-001"
+
+
+      ERROR_STORAGE_ACCOUNT                   = module.storage_account_elt.name
+      ERROR_STORAGE_KEY                       = module.storage_account_elt.primary_access_key
+      ERROR_STORAGE_TABLE                     = azurerm_storage_table.fnelterrors.name
+      ERROR_STORAGE_TABLE_MESSAGES            = azurerm_storage_table.fnelterrors_messages.name
+      ERROR_STORAGE_TABLE_MESSAGE_STATUS      = azurerm_storage_table.fnelterrors_message_status.name
+      ERROR_STORAGE_TABLE_NOTIFICATION_STATUS = azurerm_storage_table.fnelterrors_notification_status.name
+
+      COMMAND_STORAGE                = module.storage_account_elt.primary_connection_string
+      COMMAND_STORAGE_TABLE          = azurerm_storage_table.fneltcommands.name
+      IMPORT_TOPIC_NAME              = "import-command"
+      IMPORT_TOPIC_CONNECTION_STRING = module.event_hub.keys["import-command.io-fn-elt"].primary_connection_string
+
+      PROFILE_TOPIC_NAME              = "io-cosmosdb-profiles"
+      PROFILE_TOPIC_CONNECTION_STRING = module.event_hub.keys["io-cosmosdb-profiles.io-fn-elt"].primary_connection_string
+
+      COSMOSDB_REPLICA_NAME     = "db"
+      COSMOSDB_REPLICA_URI      = replace(data.azurerm_cosmosdb_account.cosmos_api.endpoint, "io-p-cosmos-api", "io-p-cosmos-api-northeurope")
+      COSMOSDB_REPLICA_KEY      = data.azurerm_cosmosdb_account.cosmos_api.primary_master_key
+      COSMOSDB_REPLICA_LOCATION = "North Europe"
+
+      MESSAGE_EXPORTS_COMMAND_TABLE       = azurerm_storage_table.fneltexports.name
+      MESSAGE_EXPORT_STEP_1_CONTAINER     = azurerm_storage_container.container_messages_report_step1.name
+      MESSAGE_EXPORT_STEP_FINAL_CONTAINER = azurerm_storage_container.container_messages_report_step_final.name
+
+      COSMOS_CHUNK_SIZE            = "1000"
+      COSMOS_DEGREE_OF_PARALLELISM = "2"
+      MESSAGE_CONTENT_CHUNK_SIZE   = "200"
+
+      SERVICEID_EXCLUSION_LIST = data.azurerm_key_vault_secret.services_exclusion_list.value
+
+      #iopstapi connection string
+      MessageContentPrimaryStorageConnection = data.azurerm_storage_account.iopstapi.primary_connection_string
+      #iopstapireplica connection string
+      MessageContentStorageConnection  = data.azurerm_storage_account.api_replica.primary_connection_string
+      ServiceInfoBlobStorageConnection = data.azurerm_storage_account.cdnassets.primary_connection_string
+
+      MESSAGES_FAILURE_QUEUE_NAME       = "pdnd-io-cosmosdb-messages-failure"
+      MESSAGE_STATUS_FAILURE_QUEUE_NAME = "pdnd-io-cosmosdb-message-status-failure"
+      SERVICES_FAILURE_QUEUE_NAME       = "pdnd-io-cosmosdb-services-failure"
+    }
+  }
+}
+
 resource "azurerm_resource_group" "elt_rg" {
   name     = format("%s-elt-rg", local.project)
   location = var.location
@@ -59,84 +147,20 @@ module "function_elt" {
     maximum_elastic_worker_count = 3
   }
 
-  app_settings = {
-    FUNCTIONS_WORKER_RUNTIME       = "node"
-    WEBSITE_NODE_DEFAULT_VERSION   = "14.16.0"
-    FUNCTIONS_WORKER_PROCESS_COUNT = 4
-    NODE_ENV                       = "production"
+  app_settings = merge(
+    local.function_elt.app_settings,
+    {}
+  )
 
-    // Keepalive fields are all optionals
-    FETCH_KEEPALIVE_ENABLED             = "true"
-    FETCH_KEEPALIVE_SOCKET_ACTIVE_TTL   = "110000"
-    FETCH_KEEPALIVE_MAX_SOCKETS         = "40"
-    FETCH_KEEPALIVE_MAX_FREE_SOCKETS    = "10"
-    FETCH_KEEPALIVE_FREE_SOCKET_TIMEOUT = "30000"
-    FETCH_KEEPALIVE_TIMEOUT             = "60000"
-
-    COSMOSDB_NAME                = "db"
-    COSMOSDB_URI                 = data.azurerm_cosmosdb_account.cosmos_api.endpoint
-    COSMOSDB_KEY                 = data.azurerm_cosmosdb_account.cosmos_api.primary_master_key
-    COSMOS_API_CONNECTION_STRING = format("AccountEndpoint=%s;AccountKey=%s;", data.azurerm_cosmosdb_account.cosmos_api.endpoint, data.azurerm_cosmosdb_account.cosmos_api.primary_master_key)
-
-    TARGETKAFKA_clientId            = "IO_FUNCTIONS_ELT"
-    TARGETKAFKA_brokers             = local.event_hub.connection
-    TARGETKAFKA_ssl                 = "true"
-    TARGETKAFKA_sasl_mechanism      = "plain"
-    TARGETKAFKA_sasl_username       = "$ConnectionString"
-    TARGETKAFKA_sasl_password       = module.event_hub.keys["io-cosmosdb-services.io-fn-elt"].primary_connection_string
-    TARGETKAFKA_maxInFlightRequests = "1"
-    TARGETKAFKA_idempotent          = "true"
-    TARGETKAFKA_transactionalId     = "IO_ELT"
-    TARGETKAFKA_topic               = "io-cosmosdb-services"
-
-    MESSAGES_TOPIC_NAME              = "pdnd-io-cosmosdb-messages"
-    MESSAGES_TOPIC_CONNECTION_STRING = module.event_hub.keys["pdnd-io-cosmosdb-messages.io-fn-elt"].primary_connection_string
-    MESSAGES_LEASES_PREFIX           = "messages-001"
-
-    MESSAGE_STATUS_TOPIC_NAME              = "pdnd-io-cosmosdb-message-status"
-    MESSAGE_STATUS_TOPIC_CONNECTION_STRING = module.event_hub.keys["pdnd-io-cosmosdb-message-status.io-fn-elt"].primary_connection_string
-    MESSAGE_STATUS_LEASES_PREFIX           = "message-status-001"
-
-    NOTIFICATION_STATUS_TOPIC_NAME              = "pdnd-io-cosmosdb-notification-status"
-    NOTIFICATION_STATUS_TOPIC_CONNECTION_STRING = module.event_hub.keys["pdnd-io-cosmosdb-notification-status.io-fn-elt"].primary_connection_string
-    NOTIFICATION_STATUS_LEASES_PREFIX           = "notification-status-001"
-
-
-    ERROR_STORAGE_ACCOUNT                   = module.storage_account_elt.name
-    ERROR_STORAGE_KEY                       = module.storage_account_elt.primary_access_key
-    ERROR_STORAGE_TABLE                     = azurerm_storage_table.fnelterrors.name
-    ERROR_STORAGE_TABLE_MESSAGES            = azurerm_storage_table.fnelterrors_messages.name
-    ERROR_STORAGE_TABLE_MESSAGE_STATUS      = azurerm_storage_table.fnelterrors_message_status.name
-    ERROR_STORAGE_TABLE_NOTIFICATION_STATUS = azurerm_storage_table.fnelterrors_notification_status.name
-
-    COMMAND_STORAGE                = module.storage_account_elt.primary_connection_string
-    COMMAND_STORAGE_TABLE          = azurerm_storage_table.fneltcommands.name
-    IMPORT_TOPIC_NAME              = "import-command"
-    IMPORT_TOPIC_CONNECTION_STRING = module.event_hub.keys["import-command.io-fn-elt"].primary_connection_string
-
-    PROFILE_TOPIC_NAME              = "io-cosmosdb-profiles"
-    PROFILE_TOPIC_CONNECTION_STRING = module.event_hub.keys["io-cosmosdb-profiles.io-fn-elt"].primary_connection_string
-
-    COSMOSDB_REPLICA_NAME     = "db"
-    COSMOSDB_REPLICA_URI      = replace(data.azurerm_cosmosdb_account.cosmos_api.endpoint, "io-p-cosmos-api", "io-p-cosmos-api-northeurope")
-    COSMOSDB_REPLICA_KEY      = data.azurerm_cosmosdb_account.cosmos_api.primary_master_key
-    COSMOSDB_REPLICA_LOCATION = "North Europe"
-
-    MESSAGE_EXPORTS_COMMAND_TABLE       = azurerm_storage_table.fneltexports.name
-    MESSAGE_EXPORT_STEP_1_CONTAINER     = azurerm_storage_container.container_messages_report_step1.name
-    MESSAGE_EXPORT_STEP_FINAL_CONTAINER = azurerm_storage_container.container_messages_report_step_final.name
-
-    COSMOS_CHUNK_SIZE            = "1000"
-    COSMOS_DEGREE_OF_PARALLELISM = "2"
-    MESSAGE_CONTENT_CHUNK_SIZE   = "200"
-
-    SERVICEID_EXCLUSION_LIST = data.azurerm_key_vault_secret.services_exclusion_list.value
-
-    #iopstapi connection string
-    MessageContentPrimaryStorageConnection = data.azurerm_storage_account.iopstapi.primary_connection_string
-    #iopstapireplica connection string
-    MessageContentStorageConnection  = data.azurerm_storage_account.api_replica.primary_connection_string
-    ServiceInfoBlobStorageConnection = data.azurerm_storage_account.cdnassets.primary_connection_string
+  internal_storage = {
+    "enable"                     = true,
+    "private_endpoint_subnet_id" = data.azurerm_subnet.private_endpoints_subnet.id,
+    "private_dns_zone_queue_ids" = [data.azurerm_private_dns_zone.privatelink_queue_core_windows_net.id],
+    "queues" = [
+      local.function_elt.app_settings.MESSAGES_FAILURE_QUEUE_NAME, "${local.function_elt.app_settings.MESSAGES_FAILURE_QUEUE_NAME}-poison",
+      local.function_elt.app_settings.MESSAGE_STATUS_FAILURE_QUEUE_NAME, "${local.function_elt.app_settings.MESSAGE_STATUS_FAILURE_QUEUE_NAME}-poison",
+      local.function_elt.app_settings.SERVICES_FAILURE_QUEUE_NAME, "${local.function_elt.app_settings.SERVICES_FAILURE_QUEUE_NAME}-poison",
+    ]
   }
 
   allowed_subnets = [
