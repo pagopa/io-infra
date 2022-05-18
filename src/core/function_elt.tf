@@ -159,9 +159,12 @@ module "function_elt" {
     "private_dns_zone_queue_ids" = [data.azurerm_private_dns_zone.privatelink_queue_core_windows_net.id],
     "private_dns_zone_table_ids" = [data.azurerm_private_dns_zone.privatelink_table_core_windows_net.id],
     "queues" = [
-      local.function_elt.app_settings.MESSAGES_FAILURE_QUEUE_NAME, "${local.function_elt.app_settings.MESSAGES_FAILURE_QUEUE_NAME}-poison",
-      local.function_elt.app_settings.MESSAGE_STATUS_FAILURE_QUEUE_NAME, "${local.function_elt.app_settings.MESSAGE_STATUS_FAILURE_QUEUE_NAME}-poison",
-      local.function_elt.app_settings.SERVICES_FAILURE_QUEUE_NAME, "${local.function_elt.app_settings.SERVICES_FAILURE_QUEUE_NAME}-poison",
+      local.function_elt.app_settings.MESSAGES_FAILURE_QUEUE_NAME,
+      "${local.function_elt.app_settings.MESSAGES_FAILURE_QUEUE_NAME}-poison",
+      local.function_elt.app_settings.MESSAGE_STATUS_FAILURE_QUEUE_NAME,
+      "${local.function_elt.app_settings.MESSAGE_STATUS_FAILURE_QUEUE_NAME}-poison",
+      local.function_elt.app_settings.SERVICES_FAILURE_QUEUE_NAME,
+      "${local.function_elt.app_settings.SERVICES_FAILURE_QUEUE_NAME}-poison"
     ],
     "containers"           = [],
     "blobs_retention_days" = 1,
