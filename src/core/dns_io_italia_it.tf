@@ -75,5 +75,8 @@ resource "azurerm_dns_txt_record" "zendeskverification_io_italia_it" {
   record {
     value = "1da62a0d3c1426ec"
   }
+  record {
+    value = "v=spf1 include:mail.zendesk.com -all"
+  }
   tags = var.tags
 }
