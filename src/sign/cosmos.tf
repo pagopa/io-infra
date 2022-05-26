@@ -33,7 +33,7 @@ module "cosmosdb_sql_container_signature-requests" {
   resource_group_name = azurerm_resource_group.data_rg.name
   account_name        = module.cosmosdb_account.name
   database_name       = module.cosmosdb_sql_database_db.name
-  partition_key_path  = "/signerId"
+  partition_key_path  = "/subscriptionId"
   throughput          = var.io_sign_database.signature_requests.throughput
 }
 
