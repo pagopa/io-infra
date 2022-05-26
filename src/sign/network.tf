@@ -6,10 +6,18 @@ data "azurerm_virtual_network" "vnet_common" {
 module "io_sign_snet" {
   source               = "git::https://github.com/pagopa/azurerm.git//subnet?ref=v2.13.1"
   name                 = "${local.project}-snet"
-  resource_group_name  = "io-p-rg-common"
+  resource_group_name  = data.azurerm_virtual_network.vnet_common.resource_group_name
   virtual_network_name = data.azurerm_virtual_network.vnet_common.name
   address_prefixes     = ["10.0.102.0/24"]
 
   enforce_private_link_endpoint_network_policies = true
   service_endpoints                              = ["Microsoft.Web", "Microsoft.AzureCosmosDB"]
+  delegation = {
+    name = "default"
+    service_delegation = {
+      name    = "Microsoft.Web/serverFarms"
+      actions = ["Microsoft.Network/virtualNetworks/subnets/action"]
+    }
+  }
 }
+

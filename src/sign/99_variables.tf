@@ -81,7 +81,7 @@ variable "io_sign_func" {
     sku_size = string
   })
   default = {
-    sku_tier = "Standard"
-    sku_size = "S1"
+    sku_tier = "Basic"
+    sku_size = "B1"
   }
 }

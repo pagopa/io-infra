@@ -12,6 +12,11 @@ module "io_sign_func" {
     maximum_elastic_worker_count = 1
   }
 
+  os_type   = "linux"
+  always_on = true
+  # TODO
+  # health_check_path = "info"
+
   internal_storage = {
     enable                     = false,
     private_endpoint_subnet_id = data.azurerm_subnet.private_endpoints_subnet.id,
