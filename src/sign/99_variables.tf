@@ -46,3 +46,42 @@ variable "tags" {
     CreatedBy = "Terraform"
   }
 }
+
+variable "storage" {
+  type = object({
+    enable_versioning            = bool
+    delete_retention_policy_days = number
+    replication_type             = string
+  })
+  default = {
+    enable_versioning            = false
+    delete_retention_policy_days = 15
+    replication_type             = "ZRS"
+  }
+}
+
+variable "io_sign_database" {
+  type = object({
+    throughput = number
+    signature_requests = object({
+      throughput = number
+    })
+  })
+  default = {
+    throughput = 800
+    signature_requests = {
+      throughput = 400
+    }
+  }
+}
+
+variable "io_sign_func" {
+  type = object({
+    sku_tier = string
+    sku_size = string
+  })
+  default = {
+    sku_tier = "Basic"
+    sku_size = "B1"
+  }
+}
