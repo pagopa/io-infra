@@ -16,6 +16,21 @@ module "services_storage" {
   tags = var.tags
 }
 
+resource "azurerm_storage_container" "services_storage_messages" {
+  name                  = "messages"
+  storage_account_name  = module.services_storage.name
+  container_access_type = "private"
+}
+
 # TODO
 # 1.abilitare la cancellazione dei blob dopo 1 giorno
 # 2.abilitare i private endpoints
+
+#tfsec:ignore:AZU023
+resource "azurerm_key_vault_secret" "services_storage_connection_string" {
+  name         = "${module.services_storage.name}-connection-string"
+  value        = module.services_storage.primary_connection_string
+  content_type = "text/plain"
+
+  key_vault_id = data.azurerm_key_vault.kv.id
+}
