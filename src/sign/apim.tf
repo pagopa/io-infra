@@ -24,8 +24,8 @@ module "apim_io_sign_issuer_api_v1" {
   source = "git::https://github.com/pagopa/azurerm.git//api_management_api?ref=v1.0.16"
 
   name                  = format("%s-io-sign-issuer-api", var.env_short)
-  api_management_name = data.azurerm_api_management.apim_api.name
-  resource_group_name = data.azurerm_api_management.apim_api.resource_group_name
+  api_management_name   = data.azurerm_api_management.apim_api.name
+  resource_group_name   = data.azurerm_api_management.apim_api.resource_group_name
   product_ids           = [module.apim_io_sign_product.product_id]
   subscription_required = false
   api_version           = "v1"
