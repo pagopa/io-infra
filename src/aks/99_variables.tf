@@ -99,7 +99,7 @@ variable "k8s_kube_config_path_prefix" {
 variable "aks_kubernetes_version" {
   type        = string
   description = "Kubernetes version specified when creating the AKS managed cluster."
-  default     = "1.22.6"
+  default     = "1.23.5"
 }
 
 variable "aks_sku_tier" {
