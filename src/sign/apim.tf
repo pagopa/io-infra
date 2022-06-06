@@ -3,6 +3,22 @@ data "azurerm_api_management" "apim_api" {
   resource_group_name = "io-p-rg-internal"
 }
 
+resource "azurerm_api_management_named_value" "io_fn_sign_url" {
+  name                = "io-fn-sign-url"
+  api_management_name = data.azurerm_api_management.apim_api.name
+  resource_group_name = data.azurerm_api_management.apim_api.resource_group_name
+  display_name        = "io-fn-sign-url"
+  value               = format("https://io-%s-sign-func.azurewebsites.net", var.env_short)
+}
+
+/*resource "azurerm_api_management_named_value" "io_fn_sign_key" {
+  name                = "io-fn-sign-key"
+  api_management_name = data.azurerm_api_management.apim_api.name
+  resource_group_name = data.azurerm_api_management.apim_api.resource_group_name
+  display_name        = "io-fn-sign-key"
+  value               = "key-from-keyvault-here!"
+}*/
+
 module "apim_io_sign_product" {
   source = "git::https://github.com/pagopa/azurerm.git//api_management_product?ref=v1.0.16"
 
@@ -33,13 +49,13 @@ module "apim_io_sign_issuer_api_v1" {
 
   description  = "IO Sign - Issuer API"
   display_name = "IO Sign - Issuer API"
-  path         = "sign"
+  path         = "api/v1/sign"
   protocols    = ["https"]
 
   content_format = "swagger-json"
 
   content_value = templatefile("./api/issuer/swagger.json.tpl", {
-    host = "the-host-here"
+    host = "api.io.pagopa.it"
   })
 
   xml_content = file("./api/issuer/policy.xml")
