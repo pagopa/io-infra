@@ -12,7 +12,7 @@ resource "azurerm_resource_group" "backend_rg" {
   tags = var.tags
 }
 
-resource "azurerm_resource_group" "backend_rg" {
+resource "azurerm_resource_group" "sec_rg" {
   name     = "${local.project}-sec-rg"
   location = var.location
 
