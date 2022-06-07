@@ -8,7 +8,7 @@ resource "azurerm_api_management_named_value" "io_fn_sign_url" {
   api_management_name = data.azurerm_api_management.apim_api.name
   resource_group_name = data.azurerm_api_management.apim_api.resource_group_name
   display_name        = "io-fn-sign-url"
-  value               = format("https://%s-sign-func.azurewebsites.net", var.product)
+  value               = format("https://%s-sign-func.azurewebsites.net", local.product)
 }
 
 /*resource "azurerm_api_management_named_value" "io_fn_sign_key" {
@@ -37,7 +37,7 @@ module "apim_io_sign_product" {
 }
 
 resource "azurerm_api_management_api_version_set" "io_sign_issuer_api" {
-  name                = format("%s-sign-issuer-api", var.product)
+  name                = format("%s-sign-issuer-api", local.product)
   resource_group_name = data.azurerm_api_management.apim_api.resource_group_name
   api_management_name = data.azurerm_api_management.apim_api.name
   display_name        = "IO Sign - Issuer API"
@@ -47,7 +47,7 @@ resource "azurerm_api_management_api_version_set" "io_sign_issuer_api" {
 module "apim_io_sign_issuer_api_v1" {
   source = "git::https://github.com/pagopa/azurerm.git//api_management_api?ref=v1.0.16"
 
-  name                  = format("%s-sign-issuer-api", var.product)
+  name                  = format("%s-sign-issuer-api", local.product)
   api_management_name   = data.azurerm_api_management.apim_api.name
   resource_group_name   = data.azurerm_api_management.apim_api.resource_group_name
   product_ids           = [module.apim_io_sign_product.product_id]
