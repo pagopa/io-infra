@@ -11,14 +11,18 @@ resource "azurerm_api_management_named_value" "io_fn_sign_url" {
   value               = format("https://%s-sign-func.azurewebsites.net", local.product)
 }
 
-/*resource "azurerm_api_management_named_value" "io_fn_sign_key" {
+data "azurerm_key_vault_secret" "io_fn_sign_key" {
+  name         = "io-fn-sign-key"
+  key_vault_id = module.key_vault.id
+}
+
+resource "azurerm_api_management_named_value" "io_fn_sign_key" {
   name                = "io-fn-sign-key"
   api_management_name = data.azurerm_api_management.apim_api.name
   resource_group_name = data.azurerm_api_management.apim_api.resource_group_name
   display_name        = "io-fn-sign-key"
-  value               = "key-from-keyvault-here!"
-}*/
-
+  value               = data.azurerm_key_vault_secret.io_fn_sign_key.value
+}
 module "apim_io_sign_product" {
   source = "git::https://github.com/pagopa/azurerm.git//api_management_product?ref=v1.0.16"
 
