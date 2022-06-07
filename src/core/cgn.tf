@@ -128,28 +128,25 @@ module "cgn_cosmos_db" {
 ### Containers
 locals {
   cgn_cosmosdb_containers = [
-
-
     {
       name               = "user-cgns"
       partition_key_path = "/fiscalCode"
       autoscale_settings = {
-        max_throughput = 6000
+        max_throughput = 4000
       },
     },
     {
       name               = "user-eyca-cards"
       partition_key_path = "/fiscalCode"
       autoscale_settings = {
-        max_throughput = 6000
+        max_throughput = 4000
       },
     },
-
   ]
 }
 
 module "cgn_cosmosdb_containers" {
-  source   = "git::https://github.com/pagopa/azurerm.git//cosmosdb_sql_container?ref=v2.1.8"
+  source   = "git::https://github.com/pagopa/azurerm.git//cosmosdb_sql_container?ref=v2.18.1"
   for_each = { for c in local.cgn_cosmosdb_containers : c.name => c }
 
   name                = each.value.name
@@ -160,8 +157,6 @@ module "cgn_cosmosdb_containers" {
   throughput          = lookup(each.value, "throughput", null)
 
   autoscale_settings = lookup(each.value, "autoscale_settings", null)
-
-
 }
 
 
