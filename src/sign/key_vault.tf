@@ -1,7 +1,7 @@
 module "key_vault" {
-  source = "git::https://github.com/pagopa/azurerm.git//key_vault?ref=v2.17.0"
+  source = "git::https://github.com/pagopa/azurerm.git//key_vault?ref=v2.13.1"
 
-  name                       = "${local.project}-kv"
+  name                       = "${local.product}-${var.domain}-kv"
   location                   = azurerm_resource_group.sec_rg.location
   resource_group_name        = azurerm_resource_group.sec_rg.name
   tenant_id                  = data.azurerm_client_config.current.tenant_id
@@ -47,6 +47,19 @@ resource "azurerm_key_vault_access_policy" "adgroup_developers" {
 
   tenant_id = data.azurerm_client_config.current.tenant_id
   object_id = data.azuread_group.adgroup_developers.object_id
+
+  key_permissions         = ["Get", "List", "Update", "Create", "Import", "Delete", ]
+  secret_permissions      = ["Get", "List", "Set", "Delete", "Restore", "Recover", ]
+  storage_permissions     = []
+  certificate_permissions = ["Get", "List", "Update", "Create", "Import", "Delete", "Restore", "Recover", ]
+}
+
+## adgroup_sign group policy ##
+resource "azurerm_key_vault_access_policy" "adgroup_sign" {
+  key_vault_id = module.key_vault.id
+
+  tenant_id = data.azurerm_client_config.current.tenant_id
+  object_id = data.azuread_group.adgroup_sign.object_id
 
   key_permissions         = ["Get", "List", "Update", "Create", "Import", "Delete", ]
   secret_permissions      = ["Get", "List", "Set", "Delete", "Restore", "Recover", ]

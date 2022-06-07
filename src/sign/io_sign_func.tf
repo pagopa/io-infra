@@ -15,7 +15,7 @@ module "io_sign_func" {
   os_type   = "linux"
   always_on = true
   # TODO
-  # health_check_path = "info"
+  health_check_path = "api/v1/sign/info"
 
   internal_storage = {
     enable                     = false,
