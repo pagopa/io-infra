@@ -1,5 +1,5 @@
 module "io_sign_func" {
-  source    = "git::https://github.com/pagopa/azurerm.git//function_app?ref=v2.13.1"
+  source    = "git::https://github.com/pagopa/azurerm.git//function_app?ref=v2.18.2"
   name      = "${local.project}-func"
   subnet_id = module.io_sign_snet.id
 
