@@ -15,10 +15,6 @@ module "key_vault" {
   tags = var.tags
 }
 
-data "azuread_group" "adgroup_admin" {
-  display_name = "${local.project}-adgroup-admin"
-}
-
 ## adgroup_admin group policy ##
 resource "azurerm_key_vault_access_policy" "adgroup_admin" {
   key_vault_id = module.key_vault.id
@@ -32,10 +28,6 @@ resource "azurerm_key_vault_access_policy" "adgroup_admin" {
   certificate_permissions = ["Get", "List", "Update", "Create", "Import", "Delete", "Restore", "Recover", ]
 }
 
-data "azuread_group" "adgroup_contributors" {
-  display_name = "${local.project}-adgroup-contributors"
-}
-
 ## adgroup_developers group policy ##
 resource "azurerm_key_vault_access_policy" "adgroup_contributors" {
   key_vault_id = module.key_vault.id
@@ -47,10 +39,6 @@ resource "azurerm_key_vault_access_policy" "adgroup_contributors" {
   secret_permissions      = ["Get", "List", "Set", "Delete", "Restore", "Recover", ]
   storage_permissions     = []
   certificate_permissions = ["Get", "List", "Update", "Create", "Import", "Delete", "Restore", "Recover", ]
-}
-
-data "azuread_group" "adgroup_developers" {
-  display_name = "${local.project}-adgroup-developers"
 }
 
 ## adgroup_developers group policy ##
