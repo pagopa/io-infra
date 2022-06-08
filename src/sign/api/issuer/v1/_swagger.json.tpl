@@ -8,7 +8,7 @@
       "url": "https://pagopa.it"
     },
   },
-  "host": "{{host}}",
+  "host": "${host}",
   "basePath": "/sign/v1",
   "schemes": [
     "https"
