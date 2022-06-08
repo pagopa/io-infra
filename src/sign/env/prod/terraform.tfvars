@@ -12,3 +12,10 @@ tags = {
 }
 
 lock_enable = true
+
+terraform_remote_state_core = {
+  resource_group_name  = "io-infra-rg"
+  storage_account_name = "ioinfrastterraform"
+  container_name       = "azurermstate"
+  key                  = "terraform.tfstate"
+}

@@ -1,5 +1,10 @@
+data "azurerm_key_vault_secret" "cosmosdb_connection_string" {
+  name         = "CosmosDbConnectionString"
+  key_vault_id = module.key_vault.id
+}
+
 module "io_sign_func" {
-  source    = "git::https://github.com/pagopa/azurerm.git//function_app?ref=v2.13.1"
+  source    = "git::https://github.com/pagopa/azurerm.git//function_app?ref=v2.18.2"
   name      = "${local.project}-func"
   subnet_id = module.io_sign_snet.id
 
@@ -12,10 +17,11 @@ module "io_sign_func" {
     maximum_elastic_worker_count = 1
   }
 
-  os_type   = "linux"
-  always_on = true
+  os_type          = "linux"
+  always_on        = true
+  linux_fx_version = "NODE|16"
   # TODO
-  # health_check_path = "info"
+  health_check_path = "api/v1/sign/info"
 
   internal_storage = {
     enable                     = false,
@@ -32,6 +38,7 @@ module "io_sign_func" {
     WEBSITE_NODE_DEFAULT_VERSION = "16.13.0"
     WEBSITE_VNET_ROUTE_ALL       = "1"
     WEBSITE_DNS_SERVER           = "168.63.129.16"
+    CosmosDbConnectionString     = module.cosmosdb_account.primary_master_key
   }
 
   allowed_subnets = [module.io_sign_snet.id]
