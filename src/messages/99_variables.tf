@@ -50,6 +50,11 @@ variable "location_short" {
   description = "One of wue, neu"
 }
 
+variable "instance" {
+  type        = string
+  description = "One of beta, prod01, prod02"
+}
+
 variable "lock_enable" {
   type        = bool
   default     = false
@@ -96,71 +101,6 @@ variable "k8s_kube_config_path_prefix" {
   default = "~/.kube"
 }
 
-variable "aks_kubernetes_version" {
-  type        = string
-  description = "Kubernetes version specified when creating the AKS managed cluster."
-  default     = "1.23.5"
-}
-
-variable "aks_sku_tier" {
-  type        = string
-  description = "The SKU Tier that should be used for this Kubernetes Cluster. Possible values are Free and Paid (which includes the Uptime SLA)."
-}
-
-variable "aks_system_node_pool" {
-  type = object({
-    name                         = string,
-    vm_size                      = string,
-    os_disk_type                 = string,
-    os_disk_size_gb              = string,
-    node_count_min               = number,
-    node_count_max               = number,
-    only_critical_addons_enabled = bool,
-    node_labels                  = map(any),
-    node_tags                    = map(any)
-  })
-  description = "AKS node pool system configuration"
-}
-
-variable "aks_user_node_pool" {
-  type = object({
-    enabled         = bool,
-    name            = string,
-    vm_size         = string,
-    os_disk_type    = string,
-    os_disk_size_gb = string,
-    node_count_min  = number,
-    node_count_max  = number,
-    node_labels     = map(any),
-    node_taints     = list(string),
-    node_tags       = map(any)
-  })
-  description = "AKS node pool user configuration"
-}
-
-variable "aks_cidr_subnet" {
-  type        = list(string)
-  description = "Aks network address space."
-}
-
-variable "aks_num_outbound_ips" {
-  type        = number
-  default     = 1
-  description = "How many outbound ips allocate for AKS cluster"
-}
-
 variable "ingress_load_balancer_ip" {
-  type = string
-}
-
-variable "ingress_replica_count" {
-  type = string
-}
-
-variable "nginx_helm_version" {
-  type = string
-}
-
-variable "keda_helm_version" {
   type = string
 }

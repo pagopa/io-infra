@@ -32,4 +32,11 @@ resource "kubernetes_cluster_role" "cluster_deployer" {
     resources  = ["deployments"]
     verbs      = ["get", "list", "watch", "create", "update", "patch", "delete"]
   }
+
+  # required to run helm
+  rule {
+    api_groups = ["networking.k8s.io"]
+    resources  = ["ingresses"]
+    verbs      = ["get", "list", "watch", "create", "update", "patch", "delete"]
+  }
 }

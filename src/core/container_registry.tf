@@ -13,14 +13,14 @@ module "container_registry" {
   admin_enabled                 = false
   anonymous_pull_enabled        = false
   zone_redundancy_enabled       = true
-  public_network_access_enabled = false
+  public_network_access_enabled = true
   location                      = var.location
 
   private_endpoint = {
-    enabled              = true
-    private_dns_zone_ids = [azurerm_private_dns_zone.privatelink_azurecr_io.id]
-    subnet_id            = data.azurerm_subnet.private_endpoints_subnet.id
-    virtual_network_id   = data.azurerm_virtual_network.vnet_common.id
+    enabled              = false
+    private_dns_zone_ids = []
+    subnet_id            = null
+    virtual_network_id   = null
   }
 
   tags = var.tags
