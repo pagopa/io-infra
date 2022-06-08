@@ -57,7 +57,8 @@ aks_user_node_pool = {
   node_tags       = { node_tag_1 : "1" },
 }
 
-aks_cidr_subnet = ["10.12.0.0/17"]
+aks_cidr_subnet      = ["10.12.0.0/17"]
+aks_num_outbound_ips = 1
 
 ingress_replica_count    = "2"
 ingress_load_balancer_ip = "10.12.100.250"
