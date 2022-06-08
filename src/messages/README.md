@@ -25,6 +25,7 @@
 | Name | Source | Version |
 |------|--------|---------|
 | <a name="module_pod_identity"></a> [pod\_identity](#module\_pod\_identity) | git::https://github.com/pagopa/azurerm.git//kubernetes_pod_identity | v2.13.1 |
+| <a name="module_services_storage"></a> [services\_storage](#module\_services\_storage) | git::https://github.com/pagopa/azurerm.git//storage_account | v2.7.0 |
 
 ## Resources
 
@@ -33,7 +34,12 @@
 | [azurerm_key_vault_secret.aks_apiserver_url](https://registry.terraform.io/providers/hashicorp/azurerm/2.98.0/docs/resources/key_vault_secret) | resource |
 | [azurerm_key_vault_secret.azure_devops_sa_cacrt](https://registry.terraform.io/providers/hashicorp/azurerm/2.98.0/docs/resources/key_vault_secret) | resource |
 | [azurerm_key_vault_secret.azure_devops_sa_token](https://registry.terraform.io/providers/hashicorp/azurerm/2.98.0/docs/resources/key_vault_secret) | resource |
+| [azurerm_key_vault_secret.services_storage_connection_string](https://registry.terraform.io/providers/hashicorp/azurerm/2.98.0/docs/resources/key_vault_secret) | resource |
 | [azurerm_private_dns_a_record.ingress](https://registry.terraform.io/providers/hashicorp/azurerm/2.98.0/docs/resources/private_dns_a_record) | resource |
+| [azurerm_private_endpoint.services_storage_blob](https://registry.terraform.io/providers/hashicorp/azurerm/2.98.0/docs/resources/private_endpoint) | resource |
+| [azurerm_resource_group.data_process_rg](https://registry.terraform.io/providers/hashicorp/azurerm/2.98.0/docs/resources/resource_group) | resource |
+| [azurerm_storage_container.services_storage_messages](https://registry.terraform.io/providers/hashicorp/azurerm/2.98.0/docs/resources/storage_container) | resource |
+| [azurerm_storage_management_policy.services_storage](https://registry.terraform.io/providers/hashicorp/azurerm/2.98.0/docs/resources/storage_management_policy) | resource |
 | [helm_release.reloader](https://registry.terraform.io/providers/hashicorp/helm/2.5.1/docs/resources/release) | resource |
 | [kubernetes_namespace.namespace](https://registry.terraform.io/providers/hashicorp/kubernetes/2.11.0/docs/resources/namespace) | resource |
 | [kubernetes_namespace.namespace_system](https://registry.terraform.io/providers/hashicorp/kubernetes/2.11.0/docs/resources/namespace) | resource |
