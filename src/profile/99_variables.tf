@@ -104,3 +104,8 @@ variable "k8s_kube_config_path_prefix" {
 variable "ingress_load_balancer_ip" {
   type = string
 }
+
+variable "reloader_helm_version" {
+  type    = string
+  default = "v0.0.110"
+}
