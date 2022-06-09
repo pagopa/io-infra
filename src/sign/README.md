@@ -22,6 +22,7 @@
 | <a name="module_apim_io_sign_issuer_api_v1"></a> [apim\_io\_sign\_issuer\_api\_v1](#module\_apim\_io\_sign\_issuer\_api\_v1) | git::https://github.com/pagopa/azurerm.git//api_management_api | v1.0.16 |
 | <a name="module_apim_io_sign_product"></a> [apim\_io\_sign\_product](#module\_apim\_io\_sign\_product) | git::https://github.com/pagopa/azurerm.git//api_management_product | v1.0.16 |
 | <a name="module_cosmosdb_account"></a> [cosmosdb\_account](#module\_cosmosdb\_account) | git::https://github.com/pagopa/azurerm.git//cosmosdb_account | v2.13.1 |
+| <a name="module_cosmosdb_sql_container_products"></a> [cosmosdb\_sql\_container\_products](#module\_cosmosdb\_sql\_container\_products) | git::https://github.com/pagopa/azurerm.git//cosmosdb_sql_container | v2.13.1 |
 | <a name="module_cosmosdb_sql_container_signature-requests"></a> [cosmosdb\_sql\_container\_signature-requests](#module\_cosmosdb\_sql\_container\_signature-requests) | git::https://github.com/pagopa/azurerm.git//cosmosdb_sql_container | v2.13.1 |
 | <a name="module_cosmosdb_sql_database_db"></a> [cosmosdb\_sql\_database\_db](#module\_cosmosdb\_sql\_database\_db) | git::https://github.com/pagopa/azurerm.git//cosmosdb_sql_database | v2.13.1 |
 | <a name="module_io_sign_func"></a> [io\_sign\_func](#module\_io\_sign\_func) | git::https://github.com/pagopa/azurerm.git//function_app | v2.18.2 |
@@ -33,7 +34,6 @@
 
 | Name | Type |
 |------|------|
-| [azurerm_api_management_api_version_set.io_sign_issuer_api](https://registry.terraform.io/providers/hashicorp/azurerm/2.87.0/docs/resources/api_management_api_version_set) | resource |
 | [azurerm_api_management_named_value.io_fn_sign_key](https://registry.terraform.io/providers/hashicorp/azurerm/2.87.0/docs/resources/api_management_named_value) | resource |
 | [azurerm_api_management_named_value.io_fn_sign_url](https://registry.terraform.io/providers/hashicorp/azurerm/2.87.0/docs/resources/api_management_named_value) | resource |
 | [azurerm_key_vault_access_policy.adgroup_admin](https://registry.terraform.io/providers/hashicorp/azurerm/2.87.0/docs/resources/key_vault_access_policy) | resource |
