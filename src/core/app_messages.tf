@@ -35,6 +35,7 @@ locals {
       REDIS_PORT     = module.redis_messages.ssl_port
       REDIS_PASSWORD = module.redis_messages.primary_access_key
 
+      PN_SERVICE_ID = "01G40DWQGKY5GRWSNM4303VNRP"
 
       // View Features Flag
       USE_FALLBACK          = false
