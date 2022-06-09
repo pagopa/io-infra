@@ -57,7 +57,7 @@ module "apim_io_sign_issuer_api_v1" {
 
   content_format = "openapi"
 
-  content_value = file("./api/issuer/v1/_swagger.json.tpl")
+  content_value = file("./api/issuer/v1/_openapi.yaml")
 
   xml_content = file("./api/issuer/v1/_base_policy.xml")
 }
