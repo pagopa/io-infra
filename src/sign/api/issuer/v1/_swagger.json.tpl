@@ -347,7 +347,7 @@
           }
         },
         "required": [
-          "documentsMetadata"
+          "documents"
         ]
       },
       "ProductDetailView": {
