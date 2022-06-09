@@ -62,14 +62,12 @@ module "apim_io_sign_issuer_api_v1" {
 
   description  = "IO Sign - Issuer API"
   display_name = "IO Sign - Issuer API"
-  path         = "api/sign"
+  path         = "api/v1/sign"
   protocols    = ["https"]
 
   content_format = "swagger-json"
 
-  content_value = templatefile("./api/issuer/v1/_swagger.json.tpl", {
-    host = "api.io.pagopa.it"
-  })
+  content_value = templatefile("./api/issuer/v1/_swagger.json.tpl")
 
   xml_content = file("./api/issuer/v1/_base_policy.xml")
 }
