@@ -40,14 +40,6 @@ module "apim_io_sign_product" {
   policy_xml = file("./api_product/sign/_base_policy.xml")
 }
 
-resource "azurerm_api_management_api_version_set" "io_sign_issuer_api" {
-  name                = format("%s-sign-issuer-api", local.product)
-  resource_group_name = data.azurerm_api_management.apim_api.resource_group_name
-  api_management_name = data.azurerm_api_management.apim_api.name
-  display_name        = "IO Sign - Issuer API"
-  versioning_scheme   = "Segment"
-}
-
 module "apim_io_sign_issuer_api_v1" {
   source = "git::https://github.com/pagopa/azurerm.git//api_management_api?ref=v1.0.16"
 
@@ -55,9 +47,7 @@ module "apim_io_sign_issuer_api_v1" {
   api_management_name   = data.azurerm_api_management.apim_api.name
   resource_group_name   = data.azurerm_api_management.apim_api.resource_group_name
   product_ids           = [module.apim_io_sign_product.product_id]
-  version_set_id        = azurerm_api_management_api_version_set.io_sign_issuer_api.id
   subscription_required = false
-  api_version           = "v1"
   service_url           = null
 
   description  = "IO Sign - Issuer API"
