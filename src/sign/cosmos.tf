@@ -37,7 +37,7 @@ module "cosmosdb_sql_container_signature-requests" {
   throughput          = var.io_sign_database.signature_requests.throughput
 }
 
-module "cosmosdb_sql_container_signature-requests" {
+module "cosmosdb_sql_container_products" {
   source              = "git::https://github.com/pagopa/azurerm.git//cosmosdb_sql_container?ref=v2.13.1"
   name                = "products"
   resource_group_name = azurerm_resource_group.data_rg.name
