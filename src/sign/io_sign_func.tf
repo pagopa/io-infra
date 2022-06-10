@@ -20,7 +20,6 @@ module "io_sign_func" {
   os_type          = "linux"
   always_on        = true
   linux_fx_version = "NODE|16"
-  # TODO
   health_check_path = "api/v1/sign/info"
 
   internal_storage = {
@@ -41,7 +40,7 @@ module "io_sign_func" {
     CosmosDbConnectionString     = module.cosmosdb_account.primary_master_key
   }
 
-  allowed_subnets = [module.io_sign_snet.id]
+  allowed_subnets = [module.io_sign_snet.id, data.azurerm_subnet.apim.id]
 
   runtime_version                          = "~4"
   application_insights_instrumentation_key = data.azurerm_application_insights.application_insights.instrumentation_key
