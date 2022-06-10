@@ -5,7 +5,7 @@ data "azurerm_subnet" "private_endpoints_subnet" {
 }
 
 data "azurerm_subnet" "apim" {
-  name                 = "apim"
+  name                 = "apimapi"
   virtual_network_name = "io-p-vnet-common"
   resource_group_name  = "io-p-rg-common"
 }
