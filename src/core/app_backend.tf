@@ -158,19 +158,19 @@ locals {
       TEST_CGN_FISCAL_CODES = "" #data.azurerm_key_vault_secret.app_backend_TEST_CGN_FISCAL_CODES.value
     }
     app_settings_l1 = {
-      IS_APPBACKENDLI      = "false"
+      IS_APPBACKENDLI = "false"
       // FUNCTIONS
       API_URL              = "http://${data.azurerm_function_app.fnapp_app1.default_hostname}/api/v1"
       APP_MESSAGES_API_URL = "https://${module.app_messages_function[0].default_hostname}/api/v1"
     }
     app_settings_l2 = {
-      IS_APPBACKENDLI      = "false"
+      IS_APPBACKENDLI = "false"
       // FUNCTIONS
       API_URL              = "http://${data.azurerm_function_app.fnapp_app2.default_hostname}/api/v1"
       APP_MESSAGES_API_URL = "https://${module.app_messages_function[1].default_hostname}/api/v1"
     }
     app_settings_li = {
-      IS_APPBACKENDLI      = "true"
+      IS_APPBACKENDLI = "true"
       // FUNCTIONS
       API_URL              = "http://${data.azurerm_function_app.fnapp_app1.default_hostname}/api/v1" # not used
       APP_MESSAGES_API_URL = "https://${module.app_messages_function[0].default_hostname}/api/v1"     # not used

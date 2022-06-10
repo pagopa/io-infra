@@ -125,7 +125,7 @@ resource "azurerm_api_management_named_value" "cgnonboardingportal_os_url_value"
   api_management_name = module.apim.name
   resource_group_name = azurerm_resource_group.rg_internal.name
   display_name        = "cgnonboardingportal-os-url"
-  value               = format("https://cgnonboardingportal-%s-os.azurewebsites.net", var.env_short)
+  value               = format("https://cgnonboardingportal-%s-op.azurewebsites.net", var.env_short)
 }
 
 resource "azurerm_api_management_named_value" "cgnonboardingportal_os_key" {
