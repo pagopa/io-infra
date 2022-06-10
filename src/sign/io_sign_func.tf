@@ -17,9 +17,9 @@ module "io_sign_func" {
     maximum_elastic_worker_count = 1
   }
 
-  os_type          = "linux"
-  always_on        = true
-  linux_fx_version = "NODE|16"
+  os_type           = "linux"
+  always_on         = true
+  linux_fx_version  = "NODE|16"
   health_check_path = "api/v1/sign/info"
 
   internal_storage = {
