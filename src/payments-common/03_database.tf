@@ -61,5 +61,5 @@ module "mongdb_collection_payment" {
     }
   ]
 
-  lock_enable = false #TODO temporary only for dev
+  lock_enable = true
 }
