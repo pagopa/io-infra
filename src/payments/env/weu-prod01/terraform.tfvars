@@ -34,6 +34,7 @@ log_analytics_workspace_resource_group_name = "io-p-rg-common"
 ingress_load_balancer_ip = "10.11.100.250"
 
 ## Event hub
+ehns_enabled                  = true
 ehns_sku_name                 = "Standard"
 ehns_capacity                 = 5
 ehns_auto_inflate_enabled     = true

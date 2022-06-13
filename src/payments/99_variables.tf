@@ -111,6 +111,13 @@ variable "reloader_helm_version" {
 }
 
 ## Event hub
+
+variable "ehns_enabled" {
+  type        = bool
+  description = "Enable event hub namespace"
+  default     = false
+}
+
 variable "ehns_sku_name" {
   type        = string
   description = "Defines which tier to use."

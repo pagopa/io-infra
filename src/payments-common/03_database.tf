@@ -32,9 +32,9 @@ module "cosmosdb_account_mongodb" {
     zone_redundant    = false
   }]
   consistency_policy = {
-    consistency_level = "Session"
+    consistency_level       = "Session"
     max_interval_in_seconds = null
-    max_staleness_prefix = null
+    max_staleness_prefix    = null
   }
 
   tags = var.tags
