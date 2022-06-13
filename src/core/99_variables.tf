@@ -187,6 +187,11 @@ variable "cidr_subnet_appmessages" {
   description = "App messages address space."
 }
 
+variable "cidr_subnet_appservicemessages" {
+  type        = list(string)
+  description = "App service messages address space."
+}
+
 variable "cidr_subnet_fnmessagescqrs" {
   type        = list(string)
   description = "App messages address space."
@@ -526,6 +531,49 @@ variable "app_messages_function_autoscale_maximum" {
 }
 
 variable "app_messages_function_autoscale_default" {
+  type        = number
+  description = "The number of instances that are available for scaling if metrics are not available for evaluation."
+  default     = 1
+}
+
+# App Service Messages
+
+variable "app_service_messages_function_always_on" {
+  type    = bool
+  default = false
+}
+
+variable "app_service_messages_function_kind" {
+  type        = string
+  description = "App service plan kind"
+  default     = null
+}
+
+variable "app_service_messages_function_sku_tier" {
+  type        = string
+  description = "App service plan sku tier"
+  default     = null
+}
+
+variable "app_service_messages_function_sku_size" {
+  type        = string
+  description = "App service plan sku size"
+  default     = null
+}
+
+variable "app_service_messages_function_autoscale_minimum" {
+  type        = number
+  description = "The minimum number of instances for this resource."
+  default     = 1
+}
+
+variable "app_service_messages_function_autoscale_maximum" {
+  type        = number
+  description = "The maximum number of instances for this resource."
+  default     = 3
+}
+
+variable "app_service_messages_function_autoscale_default" {
   type        = number
   description = "The number of instances that are available for scaling if metrics are not available for evaluation."
   default     = 1
