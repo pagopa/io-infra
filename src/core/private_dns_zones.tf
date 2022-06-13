@@ -198,3 +198,50 @@ resource "azurerm_private_dns_zone_virtual_network_link" "privatelink_azurecr_io
 
   tags = var.tags
 }
+
+resource "azurerm_private_dns_zone" "privatelink_mongo_cosmos" {
+  name                = "privatelink.mongo.cosmos.azure.com"
+  resource_group_name = data.azurerm_resource_group.vnet_common_rg.name
+
+  tags = var.tags
+}
+
+resource "azurerm_private_dns_zone_virtual_network_link" "mongo_cosmos_private_vnet_common" {
+  name                  = data.azurerm_virtual_network.vnet_common.name
+  resource_group_name   = data.azurerm_resource_group.vnet_common_rg.name
+  private_dns_zone_name = azurerm_private_dns_zone.privatelink_mongo_cosmos.name
+  virtual_network_id    = data.azurerm_virtual_network.vnet_common.id
+  registration_enabled  = false
+
+  tags = var.tags
+}
+
+resource "azurerm_private_dns_zone_virtual_network_link" "mongo_cosmos_private_vnet_beta" {
+  name                  = module.vnet_weu_beta.name
+  resource_group_name   = data.azurerm_resource_group.vnet_common_rg.name
+  private_dns_zone_name = azurerm_private_dns_zone.privatelink_mongo_cosmos.name
+  virtual_network_id    = module.vnet_weu_beta.id
+  registration_enabled  = false
+
+  tags = var.tags
+}
+
+resource "azurerm_private_dns_zone_virtual_network_link" "mongo_cosmos_private_vnet_prod01" {
+  name                  = module.vnet_weu_prod01.name
+  resource_group_name   = data.azurerm_resource_group.vnet_common_rg.name
+  private_dns_zone_name = azurerm_private_dns_zone.privatelink_mongo_cosmos.name
+  virtual_network_id    = module.vnet_weu_prod01.id
+  registration_enabled  = false
+
+  tags = var.tags
+}
+
+resource "azurerm_private_dns_zone_virtual_network_link" "mongo_cosmos_private_vnet_prod02" {
+  name                  = module.vnet_weu_prod02.name
+  resource_group_name   = data.azurerm_resource_group.vnet_common_rg.name
+  private_dns_zone_name = azurerm_private_dns_zone.privatelink_mongo_cosmos.name
+  virtual_network_id    = module.vnet_weu_prod02.id
+  registration_enabled  = false
+
+  tags = var.tags
+}
