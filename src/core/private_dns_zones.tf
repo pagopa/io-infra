@@ -245,3 +245,38 @@ resource "azurerm_private_dns_zone_virtual_network_link" "mongo_cosmos_private_v
 
   tags = var.tags
 }
+
+data "azurerm_private_dns_zone" "privatelink_servicebus" {
+  name                = "privatelink.servicebus.windows.net"
+  resource_group_name = format("%s-evt-rg", local.project)
+}
+
+resource "azurerm_private_dns_zone_virtual_network_link" "servicebus_private_vnet_beta" {
+  name                  = module.vnet_weu_beta.name
+  resource_group_name   = format("%s-evt-rg", local.project)
+  private_dns_zone_name = data.azurerm_private_dns_zone.privatelink_servicebus.name
+  virtual_network_id    = module.vnet_weu_beta.id
+  registration_enabled  = false
+
+  tags = var.tags
+}
+
+resource "azurerm_private_dns_zone_virtual_network_link" "servicebus_private_vnet_prod01" {
+  name                  = module.vnet_weu_prod01.name
+  resource_group_name   = format("%s-evt-rg", local.project)
+  private_dns_zone_name = data.azurerm_private_dns_zone.privatelink_servicebus.name
+  virtual_network_id    = module.vnet_weu_prod01.id
+  registration_enabled  = false
+
+  tags = var.tags
+}
+
+resource "azurerm_private_dns_zone_virtual_network_link" "servicebus_private_vnet_prod02" {
+  name                  = module.vnet_weu_prod02.name
+  resource_group_name   = format("%s-evt-rg", local.project)
+  private_dns_zone_name = data.azurerm_private_dns_zone.privatelink_servicebus.name
+  virtual_network_id    = module.vnet_weu_prod02.id
+  registration_enabled  = false
+
+  tags = var.tags
+}
