@@ -9,13 +9,18 @@ pool:
 
 steps:
   - task: AzureCLI@2
-    displayName: Azure CLI
+    displayName: Run apim $(APIM_NAME) backup
     inputs:
       azureSubscription: PROD-IO-SERVICE-CONN
       scriptType: bash
       scriptLocation: inlineScript
       failOnStandardError: true
       inlineScript: |
+        key=$(az storage account keys list \
+        -g $(STORAGE_ACCOUNT_RG) \
+        -n $(STORAGE_ACCOUNT_NAME) \
+        --query [0].value -o tsv)
+
         az apim backup \
         --name $(APIM_NAME) \
         -g $(APIM_RG) \
