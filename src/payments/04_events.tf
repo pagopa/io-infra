@@ -58,18 +58,23 @@ module "event_hub" {
   tags = var.tags
 }
 
-locals {
-  event_hub = {
-    connection = "${format("%s-evh-ns", local.project)}.servicebus.windows.net:9093"
-  }
-}
-
 #tfsec:ignore:AZU023
 resource "azurerm_key_vault_secret" "event_hub_keys" {
   for_each = var.ehns_enabled ? module.event_hub[0].key_ids : {}
 
   name         = "${replace(each.key, ".", "-")}-${var.location_short}-${var.instance}-evh-key"
   value        = module.event_hub[0].keys[each.key].primary_key
+  content_type = "text/plain"
+
+  key_vault_id = data.azurerm_key_vault.kv.id
+}
+
+#tfsec:ignore:AZU023
+resource "azurerm_key_vault_secret" "event_hub_jaas_connection_string" {
+  for_each = var.ehns_enabled ? module.event_hub[0].key_ids : {}
+
+  name         = "${replace(each.key, ".", "-")}-${var.location_short}-${var.instance}-evh-jaas-connection-string"
+  value        = "org.apache.kafka.common.security.plain.PlainLoginModule required username=\"$ConnectionString\" password=\"${module.event_hub[0].keys[each.key].primary_connection_string}\";"
   content_type = "text/plain"
 
   key_vault_id = data.azurerm_key_vault.kv.id
