@@ -1,0 +1,24 @@
+# only manual
+trigger: none
+pr: none
+
+
+pool:
+  vmImage: "ubuntu-20.04"
+
+
+steps:
+  - task: AzureCLI@2
+    displayName: Azure CLI
+    inputs:
+      azureSubscription: PROD-IO-SERVICE-CONNß
+      scriptType: ps
+      scriptLocation: inlineScript
+      failOnStandardError: true
+      inlineScript: |
+        az apim backup \
+        --name $(APIM_NAME) \
+        -g $(APIM_RG) \
+        --backup-name $(BACKUP_NAME) \
+        --storage-account-name $(STORAGE_ACCOUNT_NAME) \
+        --storage-account-container $(STORAGE_ACCOUNT_CONTAINER)
