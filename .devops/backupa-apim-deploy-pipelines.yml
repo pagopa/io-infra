@@ -11,7 +11,7 @@ steps:
   - task: AzureCLI@2
     displayName: Azure CLI
     inputs:
-      azureSubscription: PROD-IO-SERVICE-CONNß
+      azureSubscription: PROD-IO-SERVICE-CONN
       scriptType: ps
       scriptLocation: inlineScript
       failOnStandardError: true
