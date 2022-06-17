@@ -73,7 +73,6 @@ module "mongdb_collection_payment" {
 resource "azurerm_key_vault_secret" "mongodb_connection_string" {
   name         = "mongodb-connection-string"
   value        = module.cosmosdb_account_mongodb.connection_strings[0]
-  content_type = ""
-
+  content_type = "full connection string"
   key_vault_id = module.key_vault.id
 }
