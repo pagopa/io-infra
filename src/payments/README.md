@@ -34,6 +34,7 @@
 | [azurerm_key_vault_secret.aks_apiserver_url](https://registry.terraform.io/providers/hashicorp/azurerm/2.98.0/docs/resources/key_vault_secret) | resource |
 | [azurerm_key_vault_secret.azure_devops_sa_cacrt](https://registry.terraform.io/providers/hashicorp/azurerm/2.98.0/docs/resources/key_vault_secret) | resource |
 | [azurerm_key_vault_secret.azure_devops_sa_token](https://registry.terraform.io/providers/hashicorp/azurerm/2.98.0/docs/resources/key_vault_secret) | resource |
+| [azurerm_key_vault_secret.event_hub_jaas_connection_string](https://registry.terraform.io/providers/hashicorp/azurerm/2.98.0/docs/resources/key_vault_secret) | resource |
 | [azurerm_key_vault_secret.event_hub_keys](https://registry.terraform.io/providers/hashicorp/azurerm/2.98.0/docs/resources/key_vault_secret) | resource |
 | [azurerm_private_dns_a_record.ingress](https://registry.terraform.io/providers/hashicorp/azurerm/2.98.0/docs/resources/private_dns_a_record) | resource |
 | [azurerm_resource_group.event_rg](https://registry.terraform.io/providers/hashicorp/azurerm/2.98.0/docs/resources/resource_group) | resource |
