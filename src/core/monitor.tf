@@ -62,156 +62,178 @@ locals {
   test_urls = [
     {
       # https://developerportal-backend.io.italia.it/info
-      name        = local.devportal.backend_hostname,
-      host        = local.devportal.backend_hostname,
-      path        = "/info",
-      http_status = 200,
+      name                              = local.devportal.backend_hostname,
+      host                              = local.devportal.backend_hostname,
+      path                              = "/info",
+      http_status                       = 200,
+      ssl_cert_remaining_lifetime_check = 7,
     },
     {
       # https://api.io.italia.it
-      name        = trimsuffix(azurerm_dns_a_record.api_io_italia_it.fqdn, "."),
-      host        = trimsuffix(azurerm_dns_a_record.api_io_italia_it.fqdn, "."),
-      path        = "",
-      http_status = 404,
+      name                              = trimsuffix(azurerm_dns_a_record.api_io_italia_it.fqdn, "."),
+      host                              = trimsuffix(azurerm_dns_a_record.api_io_italia_it.fqdn, "."),
+      path                              = "",
+      http_status                       = 404,
+      ssl_cert_remaining_lifetime_check = 7,
     },
     {
       # https://app-backend.io.italia.it/info
-      name        = trimsuffix(azurerm_dns_a_record.app_backend_io_italia_it.fqdn, "."),
-      host        = trimsuffix(azurerm_dns_a_record.app_backend_io_italia_it.fqdn, "."),
-      path        = "/info",
-      http_status = 200,
+      name                              = trimsuffix(azurerm_dns_a_record.app_backend_io_italia_it.fqdn, "."),
+      host                              = trimsuffix(azurerm_dns_a_record.app_backend_io_italia_it.fqdn, "."),
+      path                              = "/info",
+      http_status                       = 200,
+      ssl_cert_remaining_lifetime_check = 7,
     },
     {
       # https://io.italia.it
-      name        = "io.italia.it",
-      host        = "io.italia.it",
-      path        = "",
-      http_status = 200,
+      name                              = "io.italia.it",
+      host                              = "io.italia.it",
+      path                              = "",
+      http_status                       = 200,
+      ssl_cert_remaining_lifetime_check = 7,
     },
     {
       # https://assets.cdn.io.italia.it/status/backend.json
-      name        = "assets.cdn.io.italia.it",
-      host        = "assets.cdn.io.italia.it",
-      path        = "/status/backend.json",
-      http_status = 200,
+      name                              = "assets.cdn.io.italia.it",
+      host                              = "assets.cdn.io.italia.it",
+      path                              = "/status/backend.json",
+      http_status                       = 200,
+      ssl_cert_remaining_lifetime_check = 7,
     },
     {
       # CIE https://app-backend.io.italia.it/login?authLevel=SpidL2&entityID=xx_servizicie
-      name        = "CIE",
-      host        = trimsuffix(azurerm_dns_a_record.app_backend_io_italia_it.fqdn, "."),
-      path        = "/login?authLevel=SpidL2&entityID=xx_servizicie",
-      http_status = 200,
+      name                              = "CIE",
+      host                              = trimsuffix(azurerm_dns_a_record.app_backend_io_italia_it.fqdn, "."),
+      path                              = "/login?authLevel=SpidL2&entityID=xx_servizicie",
+      http_status                       = 200,
+      ssl_cert_remaining_lifetime_check = 1,
     },
     {
-      name        = "Spid-registry",
-      host        = "registry.spid.gov.it",
-      path        = "/metadata/idp/spid-entities-idps.xml",
-      http_status = 200,
+      name                              = "Spid-registry",
+      host                              = "registry.spid.gov.it",
+      path                              = "/metadata/idp/spid-entities-idps.xml",
+      http_status                       = 200,
+      ssl_cert_remaining_lifetime_check = 1,
     },
     {
       # SpidL2-arubaid https://app-backend.io.italia.it/login?authLevel=SpidL2&entityID=arubaid
-      name        = "SpidL2-arubaid",
-      host        = trimsuffix(azurerm_dns_a_record.app_backend_io_italia_it.fqdn, "."),
-      path        = "/login?authLevel=SpidL2&entityID=arubaid",
-      http_status = 200,
+      name                              = "SpidL2-arubaid",
+      host                              = trimsuffix(azurerm_dns_a_record.app_backend_io_italia_it.fqdn, "."),
+      path                              = "/login?authLevel=SpidL2&entityID=arubaid",
+      http_status                       = 200,
+      ssl_cert_remaining_lifetime_check = 1,
     },
     {
       # SpidL2-infocertid https://app-backend.io.italia.it/login?authLevel=SpidL2&entityID=infocertid
-      name        = "SpidL2-infocertid",
-      host        = trimsuffix(azurerm_dns_a_record.app_backend_io_italia_it.fqdn, "."),
-      path        = "/login?authLevel=SpidL2&entityID=infocertid",
-      http_status = 200,
+      name                              = "SpidL2-infocertid",
+      host                              = trimsuffix(azurerm_dns_a_record.app_backend_io_italia_it.fqdn, "."),
+      path                              = "/login?authLevel=SpidL2&entityID=infocertid",
+      http_status                       = 200,
+      ssl_cert_remaining_lifetime_check = 1,
     },
     {
       # SpidL2-intesaid https://app-backend.io.italia.it/login?authLevel=SpidL2&entityID=intesaid
-      name        = "SpidL2-intesaid",
-      host        = trimsuffix(azurerm_dns_a_record.app_backend_io_italia_it.fqdn, "."),
-      path        = "/login?authLevel=SpidL2&entityID=intesaid",
-      http_status = 200,
+      name                              = "SpidL2-intesaid",
+      host                              = trimsuffix(azurerm_dns_a_record.app_backend_io_italia_it.fqdn, "."),
+      path                              = "/login?authLevel=SpidL2&entityID=intesaid",
+      http_status                       = 200,
+      ssl_cert_remaining_lifetime_check = 1,
     },
     {
       # SpidL2-lepidaid https://app-backend.io.italia.it/login?authLevel=SpidL2&entityID=lepidaid
-      name        = "SpidL2-lepidaid",
-      host        = trimsuffix(azurerm_dns_a_record.app_backend_io_italia_it.fqdn, "."),
-      path        = "/login?authLevel=SpidL2&entityID=lepidaid",
-      http_status = 200,
+      name                              = "SpidL2-lepidaid",
+      host                              = trimsuffix(azurerm_dns_a_record.app_backend_io_italia_it.fqdn, "."),
+      path                              = "/login?authLevel=SpidL2&entityID=lepidaid",
+      http_status                       = 200,
+      ssl_cert_remaining_lifetime_check = 1,
     },
     {
       # SpidL2-namirialid https://app-backend.io.italia.it/login?authLevel=SpidL2&entityID=namirialid
-      name        = "SpidL2-namirialid",
-      host        = trimsuffix(azurerm_dns_a_record.app_backend_io_italia_it.fqdn, "."),
-      path        = "/login?authLevel=SpidL2&entityID=namirialid",
-      http_status = 200,
+      name                              = "SpidL2-namirialid",
+      host                              = trimsuffix(azurerm_dns_a_record.app_backend_io_italia_it.fqdn, "."),
+      path                              = "/login?authLevel=SpidL2&entityID=namirialid",
+      http_status                       = 200,
+      ssl_cert_remaining_lifetime_check = 1,
     },
     {
       # SpidL2-posteid https://app-backend.io.italia.it/login?authLevel=SpidL2&entityID=posteid
-      name        = "SpidL2-posteid",
-      host        = trimsuffix(azurerm_dns_a_record.app_backend_io_italia_it.fqdn, "."),
-      path        = "/login?authLevel=SpidL2&entityID=posteid",
-      http_status = 200,
+      name                              = "SpidL2-posteid",
+      host                              = trimsuffix(azurerm_dns_a_record.app_backend_io_italia_it.fqdn, "."),
+      path                              = "/login?authLevel=SpidL2&entityID=posteid",
+      http_status                       = 200,
+      ssl_cert_remaining_lifetime_check = 1,
     },
     {
       # SpidL2-sielteid https://app-backend.io.italia.it/login?authLevel=SpidL2&entityID=sielteid
-      name        = "SpidL2-sielteid",
-      host        = trimsuffix(azurerm_dns_a_record.app_backend_io_italia_it.fqdn, "."),
-      path        = "/login?authLevel=SpidL2&entityID=sielteid",
-      http_status = 200,
+      name                              = "SpidL2-sielteid",
+      host                              = trimsuffix(azurerm_dns_a_record.app_backend_io_italia_it.fqdn, "."),
+      path                              = "/login?authLevel=SpidL2&entityID=sielteid",
+      http_status                       = 200,
+      ssl_cert_remaining_lifetime_check = 1,
     },
     {
       # SpidL2-spiditalia https://app-backend.io.italia.it/login?authLevel=SpidL2&entityID=spiditalia
-      name        = "SpidL2-spiditalia",
-      host        = trimsuffix(azurerm_dns_a_record.app_backend_io_italia_it.fqdn, "."),
-      path        = "/login?authLevel=SpidL2&entityID=spiditalia",
-      http_status = 200,
+      name                              = "SpidL2-spiditalia",
+      host                              = trimsuffix(azurerm_dns_a_record.app_backend_io_italia_it.fqdn, "."),
+      path                              = "/login?authLevel=SpidL2&entityID=spiditalia",
+      http_status                       = 200,
+      ssl_cert_remaining_lifetime_check = 1,
     },
-    {
-      # SpidL2-timid https://app-backend.io.italia.it/login?authLevel=SpidL2&entityID=timid
-      name        = "SpidL2-timid",
-      host        = trimsuffix(azurerm_dns_a_record.app_backend_io_italia_it.fqdn, "."),
-      path        = "/login?authLevel=SpidL2&entityID=timid",
-      http_status = 200,
-    },
+    # { # temp disabled because tim blocked application insights ip
+    #   # SpidL2-timid https://app-backend.io.italia.it/login?authLevel=SpidL2&entityID=timid
+    #   name        = "SpidL2-timid",
+    #   host        = trimsuffix(azurerm_dns_a_record.app_backend_io_italia_it.fqdn, "."),
+    #   path        = "/login?authLevel=SpidL2&entityID=timid",
+    #   http_status = 200,
+    #   ssl_cert_remaining_lifetime_check = 1,
+    # },
     {
       # https://api.io.pagopa.it
-      name        = trimsuffix(azurerm_dns_a_record.api_io_pagopa_it.fqdn, "."),
-      host        = trimsuffix(azurerm_dns_a_record.api_io_pagopa_it.fqdn, "."),
-      path        = "",
-      http_status = 404,
+      name                              = trimsuffix(azurerm_dns_a_record.api_io_pagopa_it.fqdn, "."),
+      host                              = trimsuffix(azurerm_dns_a_record.api_io_pagopa_it.fqdn, "."),
+      path                              = "",
+      http_status                       = 404,
+      ssl_cert_remaining_lifetime_check = 7,
     },
     {
       # https://api-app.io.pagopa.it/info
-      name        = trimsuffix(azurerm_dns_a_record.api_app_io_pagopa_it.fqdn, "."),
-      host        = trimsuffix(azurerm_dns_a_record.api_app_io_pagopa_it.fqdn, "."),
-      path        = "/info",
-      http_status = 404,
+      name                              = trimsuffix(azurerm_dns_a_record.api_app_io_pagopa_it.fqdn, "."),
+      host                              = trimsuffix(azurerm_dns_a_record.api_app_io_pagopa_it.fqdn, "."),
+      path                              = "/info",
+      http_status                       = 404,
+      ssl_cert_remaining_lifetime_check = 7,
     },
     {
       # https://api-mtls.io.pagopa.it
-      name        = trimsuffix(azurerm_dns_a_record.api_mtls_io_pagopa_it.fqdn, "."),
-      host        = trimsuffix(azurerm_dns_a_record.api_mtls_io_pagopa_it.fqdn, "."),
-      path        = "",
-      http_status = 400,
+      name                              = trimsuffix(azurerm_dns_a_record.api_mtls_io_pagopa_it.fqdn, "."),
+      host                              = trimsuffix(azurerm_dns_a_record.api_mtls_io_pagopa_it.fqdn, "."),
+      path                              = "",
+      http_status                       = 400,
+      ssl_cert_remaining_lifetime_check = 7,
     },
     {
       # https://api.io.selfcare.pagopa.it/info
-      name        = trimsuffix(azurerm_dns_a_record.api_io_selfcare_pagopa_it.fqdn, "."),
-      host        = trimsuffix(azurerm_dns_a_record.api_io_selfcare_pagopa_it.fqdn, "."),
-      path        = "/info",
-      http_status = 200,
+      name                              = trimsuffix(azurerm_dns_a_record.api_io_selfcare_pagopa_it.fqdn, "."),
+      host                              = trimsuffix(azurerm_dns_a_record.api_io_selfcare_pagopa_it.fqdn, "."),
+      path                              = "/info",
+      http_status                       = 200,
+      ssl_cert_remaining_lifetime_check = 7,
     },
     {
       # https://io.selfcare.pagopa.it
-      name        = module.selfcare_cdn.fqdn,
-      host        = module.selfcare_cdn.fqdn,
-      path        = "",
-      http_status = 200,
+      name                              = module.selfcare_cdn.fqdn,
+      host                              = module.selfcare_cdn.fqdn,
+      path                              = "",
+      http_status                       = 200,
+      ssl_cert_remaining_lifetime_check = 7,
     },
     {
       # https://raw.githubusercontent.com/pagopa/io-services-metadata/master/status/backend.json
-      name        = "github-raw-status-backend",
-      host        = "raw.githubusercontent.com",
-      path        = "/pagopa/io-services-metadata/master/status/backend.json",
-      http_status = 200,
+      name                              = "github-raw-status-backend",
+      host                              = "raw.githubusercontent.com",
+      path                              = "/pagopa/io-services-metadata/master/status/backend.json",
+      http_status                       = 200,
+      ssl_cert_remaining_lifetime_check = 7,
     },
   ]
 
@@ -228,7 +250,7 @@ module "web_test_api" {
   application_insight_name          = data.azurerm_application_insights.application_insights.name
   request_url                       = format("https://%s%s", each.value.host, each.value.path)
   expected_http_status              = each.value.http_status
-  ssl_cert_remaining_lifetime_check = 7
+  ssl_cert_remaining_lifetime_check = each.value.ssl_cert_remaining_lifetime_check
 
   actions = [
     {
