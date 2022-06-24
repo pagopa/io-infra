@@ -23,6 +23,7 @@ resource "azurerm_api_management_named_value" "io_fn_sign_key" {
   display_name        = "io-fn-sign-key"
   value               = data.azurerm_key_vault_secret.io_fn_sign_key.value
 }
+
 module "apim_io_sign_product" {
   source = "git::https://github.com/pagopa/azurerm.git//api_management_product?ref=v1.0.16"
 
