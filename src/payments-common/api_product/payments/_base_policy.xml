@@ -1,13 +1,10 @@
 <policies>
     <inbound>
         <base />
-        <!-- <choose>
-            <when condition="@(context.User.Groups.All(g =&gt; g.Name != &quot;ApiNoRateLimit&quot;))">
-                <rate-limit calls="150" renewal-period="5" remaining-calls-header-name="x-rate-limit-remaining" retry-after-header-name="x-rate-limit-retry-after" />
-            </when>
-        </choose> -->
+        <!-- PRIVATE PRODUCT -->
         <ip-filter action="allow">
             <address-range from="10.0.0.0" to="10.255.255.255" />
+            <address-range from="172.16.2.0" to="172.16.2.255" />
         </ip-filter>
     </inbound>
     <backend>
