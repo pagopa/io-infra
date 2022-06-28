@@ -66,3 +66,16 @@ resource "azurerm_key_vault_access_policy" "adgroup_sign" {
   storage_permissions     = []
   certificate_permissions = ["Get", "List", "Update", "Create", "Import", "Delete", "Restore", "Recover", ]
 }
+
+## Azure DevOps Service Connection group policy ##
+resource "azurerm_key_vault_access_policy" "azdo" {
+  key_vault_id = module.key_vault.id
+
+  tenant_id = data.azurerm_client_config.current.tenant_id
+  object_id = "81b42a5a-2fa4-44b9-aab8-59de02d1706b"
+
+  key_permissions         = ["Get", "List", "Update", "Create", "Import", "Delete", ]
+  secret_permissions      = ["Get", "List", "Set", "Delete", "Restore", "Recover", ]
+  storage_permissions     = []
+  certificate_permissions = ["Get", "List", "Update", "Create", "Import", "Delete", "Restore", "Recover", ]
+}
