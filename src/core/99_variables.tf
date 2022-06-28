@@ -573,3 +573,12 @@ variable "function_messages_cqrs_autoscale_default" {
   description = "The number of instances that are available for scaling if metrics are not available for evaluation."
   default     = 1
 }
+##
+
+# PN Service Id
+variable "pn_service_id" {
+  type        = string
+  description = "The Service ID of PN service"
+  default     = "01G40DWQGKY5GRWSNM4303VNRP"
+}
+
