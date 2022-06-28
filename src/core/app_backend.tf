@@ -156,6 +156,9 @@ locals {
 
       // CGN
       TEST_CGN_FISCAL_CODES = "" #data.azurerm_key_vault_secret.app_backend_TEST_CGN_FISCAL_CODES.value
+
+      // Service ID PN
+      PN_SERVICE_ID = "01G40DWQGKY5GRWSNM4303VNRP"
     }
     app_settings_l1 = {
       IS_APPBACKENDLI = "false"
