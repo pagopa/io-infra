@@ -132,7 +132,7 @@ module "function_elt" {
 
     SERVICEID_EXCLUSION_LIST = data.azurerm_key_vault_secret.services_exclusion_list.value
 
-    PN_SERVICE_ID = "01G40DWQGKY5GRWSNM4303VNRP"
+    PN_SERVICE_ID = var.pn_service_id
 
     #iopstapi connection string
     MessageContentPrimaryStorageConnection = data.azurerm_storage_account.iopstapi.primary_connection_string
