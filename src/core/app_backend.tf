@@ -159,6 +159,33 @@ locals {
 
       // Service ID PN
       PN_SERVICE_ID = var.pn_service_id
+
+      // Third Party Services
+      THIRD_PARTY_CONFIG_LIST = jsonencode([
+        {
+          serviceId  = var.pn_service_id,
+          schemaKind = "PN",
+          jsonSchema = "unused",
+          prodEnvironment = {
+            baseUrl = "https://api-io.pn.pagopa.it",
+            detailsAuthentication = {
+              type            = "API_KEY",
+              header_key_name = "ApiKeyAuth",
+              key             = data.azurerm_key_vault_secret.app_backend_PN_API_KEY_PROD_ENV.value
+            }
+          },
+          testEnvironment = {
+            testUsers = local.test_users,
+            baseUrl   = "https://api-io.dev.pn.pagopa.it/ ",
+            detailsAuthentication = {
+              type            = "API_KEY",
+              header_key_name = "ApiKeyAuth",
+              key             = data.azurerm_key_vault_secret.app_backend_PN_API_KEY_TEST_ENV.value
+            }
+          }
+        }
+      ])
+
     }
     app_settings_l1 = {
       IS_APPBACKENDLI = "false"
@@ -336,6 +363,16 @@ data "azurerm_key_vault_secret" "app_backend_APP_MESSAGES_API_KEY" {
 }
 data "azurerm_key_vault_secret" "app_backend_APP_MESSAGES_BETA_FISCAL_CODES" {
   name         = "appbackend-APP-MESSAGES-BETA-FISCAL-CODES"
+  key_vault_id = data.azurerm_key_vault.common.id
+}
+
+data "azurerm_key_vault_secret" "app_backend_PN_API_KEY_TEST_ENV" {
+  name         = "appbackend-PN-API-KEY-TEST-ENV"
+  key_vault_id = data.azurerm_key_vault.common.id
+}
+
+data "azurerm_key_vault_secret" "app_backend_PN_API_KEY_PROD_ENV" {
+  name         = "appbackend-PN-API-KEY-PROD-ENV"
   key_vault_id = data.azurerm_key_vault.common.id
 }
 
