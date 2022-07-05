@@ -199,7 +199,7 @@ locals {
         // FUNCTIONS
         API_URL              = "http://${data.azurerm_function_app.fnapp_app2.default_hostname}/api/v1"
         APP_MESSAGES_API_URL = "https://${module.app_messages_function[1].default_hostname}/api/v1"
-    }]
+    }],
   }
 
 }

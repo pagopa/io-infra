@@ -654,7 +654,7 @@ resource "azurerm_monitor_autoscale_setting" "appservice_app_backendli" {
 
 ## web availabolity test
 module "app_backend_web_test_api" {
-  for_each = { for v in local.app_backend_legacy_test_urls : v.name => v if v != null }
+  for_each = { for v in local.app_backend_legacy.app_backend_test_urls : v.name => v if v != null }
   source   = "git::https://github.com/pagopa/azurerm.git//application_insights_web_test_preview?ref=v2.9.1"
 
   subscription_id                   = data.azurerm_subscription.current.subscription_id
