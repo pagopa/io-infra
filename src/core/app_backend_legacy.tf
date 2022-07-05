@@ -1,3 +1,48 @@
+locals {
+  app_settings_l1 = {
+    IS_APPBACKENDLI = "false"
+    // FUNCTIONS
+    API_URL              = "http://${data.azurerm_function_app.fnapp_app1.default_hostname}/api/v1"
+    APP_MESSAGES_API_URL = "https://${module.app_messages_function[0].default_hostname}/api/v1"
+  }
+  app_settings_l2 = {
+    IS_APPBACKENDLI = "false"
+    // FUNCTIONS
+    API_URL              = "http://${data.azurerm_function_app.fnapp_app2.default_hostname}/api/v1"
+    APP_MESSAGES_API_URL = "https://${module.app_messages_function[1].default_hostname}/api/v1"
+  }
+  app_settings_li = {
+    IS_APPBACKENDLI = "true"
+    // FUNCTIONS
+    API_URL              = "http://${data.azurerm_function_app.fnapp_app1.default_hostname}/api/v1" # not used
+    APP_MESSAGES_API_URL = "https://${module.app_messages_function[0].default_hostname}/api/v1"     # not used
+  }
+
+  app_backend_test_urls = [
+    {
+      # https://io-p-app-appbackendl1.azurewebsites.net/info
+      name        = module.appservice_app_backendl1.default_site_hostname,
+      host        = module.appservice_app_backendl1.default_site_hostname,
+      path        = "/info",
+      http_status = 200,
+    },
+    {
+      # https://io-p-app-appbackendl2.azurewebsites.net/info
+      name        = module.appservice_app_backendl2.default_site_hostname,
+      host        = module.appservice_app_backendl2.default_site_hostname,
+      path        = "/info",
+      http_status = 200,
+    },
+    {
+      # https://io-p-app-appbackendli.azurewebsites.net/info
+      name        = module.appservice_app_backendli.default_site_hostname,
+      host        = module.appservice_app_backendli.default_site_hostname,
+      path        = "/info",
+      http_status = 200,
+    },
+  ]
+}
+
 ### Common resources
 
 resource "azurerm_resource_group" "rg_linux" {
