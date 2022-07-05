@@ -14,15 +14,24 @@ locals {
       COSMOSDB_KEY               = data.azurerm_cosmosdb_account.cosmos_api.primary_master_key
       COSMOSDB_CONNECTION_STRING = format("AccountEndpoint=%s;AccountKey=%s;", data.azurerm_cosmosdb_account.cosmos_api.endpoint, data.azurerm_cosmosdb_account.cosmos_api.primary_master_key)
 
-      MESSAGE_VIEW_UPDATE_FAILURE_QUEUE_NAME = "message-view-update-failures"
-      MESSAGE_CONTAINER_NAME                 = "message-content"
-      MESSAGE_CONTENT_STORAGE_CONNECTION     = data.azurerm_storage_account.api.primary_connection_string
-      QueueStorageConnection                 = data.azurerm_storage_account.api.primary_connection_string
+      MESSAGE_VIEW_UPDATE_FAILURE_QUEUE_NAME          = "message-view-update-failures"
+      MESSAGE_VIEW_PAYMENT_UPDATE_FAILURE_QUEUE_NAME  = "message-view-paymentupdate-failures"
+      MESSAGE_CONTAINER_NAME                          = "message-content"
+      MESSAGE_CONTENT_STORAGE_CONNECTION              = data.azurerm_storage_account.api.primary_connection_string
+      QueueStorageConnection                          = data.azurerm_storage_account.api.primary_connection_string
 
       MESSAGE_STATUS_FOR_VIEW_TOPIC_CONSUMER_CONNECTION_STRING = module.event_hub.keys["io-cosmosdb-message-status-for-view.io-messages"].primary_connection_string
       MESSAGE_STATUS_FOR_VIEW_TOPIC_CONSUMER_GROUP             = "io-messages"
       MESSAGE_STATUS_FOR_VIEW_TOPIC_NAME                       = "io-cosmosdb-message-status-for-view"
       MESSAGE_STATUS_FOR_VIEW_TOPIC_PRODUCER_CONNECTION_STRING = module.event_hub.keys["io-cosmosdb-message-status-for-view.io-cdc"].primary_connection_string
+
+      PAYMENT_FOR_VIEW_TOPIC_NAME                       = "io-payment-updater"
+      PAYMENT_FOR_VIEW_TOPIC_CONSUMER_GROUP             = "$Default"
+      PAYMENT_FOR_VIEW_TOPIC_CONSUMER_CONNECTION_STRING = data.azurerm_eventhub.payment_updater_evh.keys["io-payment-updater.io-fn-messages-cqrs"].primary_connection_string
+
+      APIM_BASE_URL = "https://api-internal.io.italia.it"
+      APIM_SUBSCRIPTION_KEY = data.azurerm_key_vault_secret.apim_services_subscription_key.value
+
 
       // Keepalive fields are all optionals
       FETCH_KEEPALIVE_ENABLED             = "true"
@@ -85,6 +94,8 @@ module "function_messages_cqrs" {
       "AzureWebJobs.CosmosApiMessageStatusChangeFeedForView.Disabled" = "0"
       "AzureWebJobs.HandleMessageViewUpdateFailures.Disabled"         = "0"
       "AzureWebJobs.UpdateCosmosMessageView.Disabled"                 = "0"
+      "AzureWebJobs.UpdatePaymentOnMessageView.Disabled"              = "0"
+      "AzureWebJobs.HandlePaymentUpdateFailures.Disabled"             = "0"
     }
   )
 
@@ -97,7 +108,8 @@ module "function_messages_cqrs" {
     "private_dns_zone_queue_ids" = [data.azurerm_private_dns_zone.privatelink_queue_core_windows_net.id],
     "private_dns_zone_table_ids" = [data.azurerm_private_dns_zone.privatelink_table_core_windows_net.id],
     "queues" = [
-      local.function_messages_cqrs.app_settings.MESSAGE_VIEW_UPDATE_FAILURE_QUEUE_NAME
+      local.function_messages_cqrs.app_settings.MESSAGE_VIEW_UPDATE_FAILURE_QUEUE_NAME,
+      local.function_messages_cqrs.app_settings.MESSAGE_VIEW_PAYMENT_UPDATE_FAILURE_QUEUE_NAME
     ],
     "containers"           = [],
     "blobs_retention_days" = 1,
@@ -141,6 +153,8 @@ module "function_messages_cqrs_staging_slot" {
       "AzureWebJobs.CosmosApiMessageStatusChangeFeedForView.Disabled" = "1"
       "AzureWebJobs.HandleMessageViewUpdateFailures.Disabled"         = "1"
       "AzureWebJobs.UpdateCosmosMessageView.Disabled"                 = "1"
+      "AzureWebJobs.UpdatePaymentOnMessageView.Disabled"              = "1"
+      "AzureWebJobs.HandlePaymentUpdateFailures.Disabled"             = "1"
     }
   )
 

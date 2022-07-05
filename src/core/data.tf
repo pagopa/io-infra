@@ -184,3 +184,13 @@ data "azurerm_storage_account" "cdnassets" {
   name                = "iopstcdnassets"
   resource_group_name = var.common_rg
 }
+
+data "azurerm_eventhub" "payment_updater_evh" {
+  name                = "io-p-payments-weu-prod01-evh-ns"
+  resource_group_name = "io-p-payments-weu-prod01-evt-rg"
+}
+
+data "azurerm_key_vault_secret" "apim_services_subscription_key" {
+  name         = "apim-IO-SERVICE-KEY"
+  key_vault_id = data.azurerm_key_vault.common.id
+}
