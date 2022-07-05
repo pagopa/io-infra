@@ -2,6 +2,7 @@
 
 locals {
   app_backend = {
+
     app_settings_common = {
       # No downtime on slots swap
       WEBSITE_ADD_SITENAME_BINDINGS_IN_APPHOST_CONFIG = "1"
@@ -160,53 +161,28 @@ locals {
       // Service ID PN
       PN_SERVICE_ID = var.pn_service_id
     }
-    app_settings_l1 = {
+    app_settings_instances = [{
       IS_APPBACKENDLI = "false"
       // FUNCTIONS
       API_URL              = "http://${data.azurerm_function_app.fnapp_app1.default_hostname}/api/v1"
       APP_MESSAGES_API_URL = "https://${module.app_messages_function[0].default_hostname}/api/v1"
-    }
-    app_settings_l2 = {
-      IS_APPBACKENDLI = "false"
-      // FUNCTIONS
-      API_URL              = "http://${data.azurerm_function_app.fnapp_app2.default_hostname}/api/v1"
-      APP_MESSAGES_API_URL = "https://${module.app_messages_function[1].default_hostname}/api/v1"
-    }
-    app_settings_li = {
-      IS_APPBACKENDLI = "true"
-      // FUNCTIONS
-      API_URL              = "http://${data.azurerm_function_app.fnapp_app1.default_hostname}/api/v1" # not used
-      APP_MESSAGES_API_URL = "https://${module.app_messages_function[0].default_hostname}/api/v1"     # not used
-    }
+      },
+      {
+        IS_APPBACKENDLI = "false"
+        // FUNCTIONS
+        API_URL              = "http://${data.azurerm_function_app.fnapp_app2.default_hostname}/api/v1"
+        APP_MESSAGES_API_URL = "https://${module.app_messages_function[1].default_hostname}/api/v1"
+    }]
   }
 
-  app_backend_test_urls = [
-    {
-      # https://io-p-app-appbackendl1.azurewebsites.net/info
-      name        = module.appservice_app_backendl1.default_site_hostname,
-      host        = module.appservice_app_backendl1.default_site_hostname,
-      path        = "/info",
-      http_status = 200,
-    },
-    {
-      # https://io-p-app-appbackendl2.azurewebsites.net/info
-      name        = module.appservice_app_backendl2.default_site_hostname,
-      host        = module.appservice_app_backendl2.default_site_hostname,
-      path        = "/info",
-      http_status = 200,
-    },
-    {
-      # https://io-p-app-appbackendli.azurewebsites.net/info
-      name        = module.appservice_app_backendli.default_site_hostname,
-      host        = module.appservice_app_backendli.default_site_hostname,
-      path        = "/info",
-      http_status = 200,
-    },
-  ]
 }
 
-resource "azurerm_resource_group" "rg_linux" {
-  name     = format("%s-rg-linux", local.project)
+## Resource groups
+## we use a different RG for each app service because MS updates are rolled out on RGs
+## so we can minimize problems that may occur due to platform updates
+resource "azurerm_resource_group" "app_appbackend_rg" {
+  count    = var.appbackend_count
+  name     = format("%s-appbackend-%d-rg", local.project, count.index + 1)
   location = var.location
 
   tags = var.tags
@@ -339,12 +315,13 @@ data "azurerm_key_vault_secret" "app_backend_APP_MESSAGES_BETA_FISCAL_CODES" {
   key_vault_id = data.azurerm_key_vault.common.id
 }
 
-## app_backendl1
+## app_backend instances
 
-module "app_backendl1_snet" {
+module "app_backend_snet" {
+  count                = var.appbackend_count
   source               = "git::https://github.com/pagopa/azurerm.git//subnet?ref=v2.0.28"
-  name                 = "appbackendl1"
-  address_prefixes     = var.cidr_subnet_appbackendl1
+  name                 = format("appbackend-%d", count.index + 1)
+  address_prefixes     = [var.cidr_subnet_appbackend[count.index]]
   resource_group_name  = data.azurerm_resource_group.vnet_common_rg.name
   virtual_network_name = data.azurerm_virtual_network.vnet_common.name
 
@@ -363,21 +340,23 @@ module "app_backendl1_snet" {
 
 #tfsec:ignore:azure-appservice-authentication-enabled:exp:2022-05-01 # already ignored, maybe a bug in tfsec
 #tfsec:ignore:azure-appservice-require-client-cert:exp:2022-05-01 # already ignored, maybe a bug in tfsec
-module "appservice_app_backendl1" {
+module "appservice_app_backend" {
+  count = var.appbackend_count
+
   source = "git::https://github.com/pagopa/azurerm.git//app_service?ref=v2.9.1"
 
   # App service plan
   plan_type     = "internal"
-  plan_name     = format("%s-plan-appappbackendl1", local.project)
+  plan_name     = format("%s-plan-appappbackend-%d", local.project, count.index + 1)
   plan_kind     = "Linux"
   plan_reserved = true # Mandatory for Linux plan
   plan_sku_tier = var.app_backend_plan_sku_tier
   plan_sku_size = var.app_backend_plan_sku_size
 
   # App service
-  name                = format("%s-app-appbackendl1", local.project)
-  resource_group_name = azurerm_resource_group.rg_linux.name
-  location            = azurerm_resource_group.rg_linux.location
+  name                = format("%s-app-appbackend-%d", local.project, count.index + 1)
+  resource_group_name = azurerm_resource_group.app_appbackend_rg[count.index].name
+  location            = azurerm_resource_group.app_appbackend_rg[count.index].location
 
   always_on         = true
   linux_fx_version  = "NODE|14-lts"
@@ -386,7 +365,7 @@ module "appservice_app_backendl1" {
 
   app_settings = merge(
     local.app_backend.app_settings_common,
-    local.app_backend.app_settings_l1,
+    local.app_backend.app_settings_instances[count.index],
   )
 
   allowed_subnets = [
@@ -401,24 +380,26 @@ module "appservice_app_backendl1" {
     local.app_insights_ips_west_europe,
   )
 
-  subnet_id        = module.app_backendl1_snet.id
+  subnet_id        = module.app_backend_snet[count.index].id
   vnet_integration = true
 
   tags = var.tags
 }
 
-module "appservice_app_backendl1_slot_staging" {
+module "appservice_app_backend_slot_staging" {
+  count = var.appbackend_count
+
   source = "git::https://github.com/pagopa/azurerm.git//app_service_slot?ref=v2.9.1"
 
   # App service plan
-  app_service_plan_id = module.appservice_app_backendl1.plan_id
-  app_service_id      = module.appservice_app_backendl1.id
-  app_service_name    = module.appservice_app_backendl1.name
+  app_service_plan_id = module.appservice_app_backend[count.index].plan_id
+  app_service_id      = module.appservice_app_backend[count.index].id
+  app_service_name    = module.appservice_app_backend[count.index].name
 
   # App service
   name                = "staging"
-  resource_group_name = azurerm_resource_group.rg_linux.name
-  location            = azurerm_resource_group.rg_linux.location
+  resource_group_name = azurerm_resource_group.app_appbackend_rg[count.index].name
+  location            = azurerm_resource_group.app_appbackend_rg[count.index].location
 
   always_on         = true
   linux_fx_version  = "NODE|14-lts"
@@ -427,7 +408,7 @@ module "appservice_app_backendl1_slot_staging" {
 
   app_settings = merge(
     local.app_backend.app_settings_common,
-    local.app_backend.app_settings_l1,
+    local.app_backend.app_settings_instances[count.index],
   )
 
   allowed_subnets = [
@@ -442,17 +423,19 @@ module "appservice_app_backendl1_slot_staging" {
     [],
   )
 
-  subnet_id        = module.app_backendl1_snet.id
+  subnet_id        = module.app_backend_snet[count.index].id
   vnet_integration = true
 
   tags = var.tags
 }
 
-resource "azurerm_monitor_autoscale_setting" "appservice_app_backendl1" {
-  name                = format("%s-autoscale", module.appservice_app_backendl1.name)
-  resource_group_name = azurerm_resource_group.rg_linux.name
-  location            = azurerm_resource_group.rg_linux.location
-  target_resource_id  = module.appservice_app_backendl1.plan_id
+resource "azurerm_monitor_autoscale_setting" "appservice_app_backend" {
+  count = var.appbackend_count
+
+  name                = format("%s-autoscale", module.appservice_app_backend[count.index].name)
+  resource_group_name = azurerm_resource_group.app_appbackend_rg[count.index].name
+  location            = azurerm_resource_group.app_appbackend_rg[count.index].location
+  target_resource_id  = module.appservice_app_backend[count.index].plan_id
 
   profile {
     name = "default"
@@ -466,7 +449,7 @@ resource "azurerm_monitor_autoscale_setting" "appservice_app_backendl1" {
     rule {
       metric_trigger {
         metric_name              = "Requests"
-        metric_resource_id       = module.appservice_app_backendl1.id
+        metric_resource_id       = module.appservice_app_backend[count.index].id
         metric_namespace         = "microsoft.web/sites"
         time_grain               = "PT1M"
         statistic                = "Average"
@@ -488,7 +471,7 @@ resource "azurerm_monitor_autoscale_setting" "appservice_app_backendl1" {
     rule {
       metric_trigger {
         metric_name              = "CpuPercentage"
-        metric_resource_id       = module.appservice_app_backendl1.plan_id
+        metric_resource_id       = module.appservice_app_backend[count.index].plan_id
         metric_namespace         = "microsoft.web/serverfarms"
         time_grain               = "PT1M"
         statistic                = "Average"
@@ -510,7 +493,7 @@ resource "azurerm_monitor_autoscale_setting" "appservice_app_backendl1" {
     rule {
       metric_trigger {
         metric_name              = "Requests"
-        metric_resource_id       = module.appservice_app_backendl1.id
+        metric_resource_id       = module.appservice_app_backend[count.index].id
         metric_namespace         = "microsoft.web/sites"
         time_grain               = "PT1M"
         statistic                = "Average"
@@ -532,7 +515,7 @@ resource "azurerm_monitor_autoscale_setting" "appservice_app_backendl1" {
     rule {
       metric_trigger {
         metric_name              = "CpuPercentage"
-        metric_resource_id       = module.appservice_app_backendl1.plan_id
+        metric_resource_id       = module.appservice_app_backend[count.index].plan_id
         metric_namespace         = "microsoft.web/serverfarms"
         time_grain               = "PT1M"
         statistic                = "Average"
@@ -553,399 +536,23 @@ resource "azurerm_monitor_autoscale_setting" "appservice_app_backendl1" {
   }
 }
 
-## app_backendl2
-
-module "app_backendl2_snet" {
-  source               = "git::https://github.com/pagopa/azurerm.git//subnet?ref=v2.0.28"
-  name                 = "appbackendl2"
-  address_prefixes     = var.cidr_subnet_appbackendl2
-  resource_group_name  = data.azurerm_resource_group.vnet_common_rg.name
-  virtual_network_name = data.azurerm_virtual_network.vnet_common.name
-
-  service_endpoints = [
-    "Microsoft.Web",
-  ]
-
-  delegation = {
-    name = "default"
-    service_delegation = {
-      name    = "Microsoft.Web/serverFarms"
-      actions = ["Microsoft.Network/virtualNetworks/subnets/action"]
-    }
-  }
-}
-
-#tfsec:ignore:azure-appservice-authentication-enabled:exp:2022-05-01 # already ignored, maybe a bug in tfsec
-#tfsec:ignore:azure-appservice-require-client-cert:exp:2022-05-01 # already ignored, maybe a bug in tfsec
-module "appservice_app_backendl2" {
-  source = "git::https://github.com/pagopa/azurerm.git//app_service?ref=v2.9.1"
-
-  # App service plan
-  plan_type     = "internal"
-  plan_name     = format("%s-plan-appappbackendl2", local.project)
-  plan_kind     = "Linux"
-  plan_reserved = true # Mandatory for Linux plan
-  plan_sku_tier = var.app_backend_plan_sku_tier
-  plan_sku_size = var.app_backend_plan_sku_size
-
-  # App service
-  name                = format("%s-app-appbackendl2", local.project)
-  resource_group_name = azurerm_resource_group.rg_linux.name
-  location            = azurerm_resource_group.rg_linux.location
-
-  always_on         = true
-  linux_fx_version  = "NODE|14-lts"
-  app_command_line  = "node /home/site/wwwroot/src/server.js"
-  health_check_path = null
-
-  app_settings = merge(
-    local.app_backend.app_settings_common,
-    local.app_backend.app_settings_l2,
-  )
-
-  allowed_subnets = [
-    data.azurerm_subnet.fnapp_admin_subnet_out.id,
-    data.azurerm_subnet.fnapp_services_subnet_out.id,
-    module.appgateway_snet.id,
-    module.apim_snet.id,
-  ]
-
-  allowed_ips = concat(
-    [],
-    local.app_insights_ips_west_europe,
-  )
-
-  subnet_id        = module.app_backendl2_snet.id
-  vnet_integration = true
-
-  tags = var.tags
-}
-
-module "appservice_app_backendl2_slot_staging" {
-  source = "git::https://github.com/pagopa/azurerm.git//app_service_slot?ref=v2.9.1"
-
-  # App service plan
-  app_service_plan_id = module.appservice_app_backendl2.plan_id
-  app_service_id      = module.appservice_app_backendl2.id
-  app_service_name    = module.appservice_app_backendl2.name
-
-  # App service
-  name                = "staging"
-  resource_group_name = azurerm_resource_group.rg_linux.name
-  location            = azurerm_resource_group.rg_linux.location
-
-  always_on         = true
-  linux_fx_version  = "NODE|14-lts"
-  app_command_line  = "node /home/site/wwwroot/src/server.js"
-  health_check_path = null
-
-  app_settings = merge(
-    local.app_backend.app_settings_common,
-    local.app_backend.app_settings_l2,
-  )
-
-  allowed_subnets = [
-    data.azurerm_subnet.azdoa_snet[0].id,
-    data.azurerm_subnet.fnapp_admin_subnet_out.id,
-    data.azurerm_subnet.fnapp_services_subnet_out.id,
-    module.appgateway_snet.id,
-    module.apim_snet.id,
-  ]
-
-  allowed_ips = concat(
-    [],
-  )
-
-  subnet_id        = module.app_backendl2_snet.id
-  vnet_integration = true
-
-  tags = var.tags
-}
-
-resource "azurerm_monitor_autoscale_setting" "appservice_app_backendl2" {
-  name                = format("%s-autoscale", module.appservice_app_backendl2.name)
-  resource_group_name = azurerm_resource_group.rg_linux.name
-  location            = azurerm_resource_group.rg_linux.location
-  target_resource_id  = module.appservice_app_backendl2.plan_id
-
-  profile {
-    name = "default"
-
-    capacity {
-      default = var.app_backend_autoscale_default
-      minimum = var.app_backend_autoscale_minimum
-      maximum = var.app_backend_autoscale_maximum
-    }
-
-    rule {
-      metric_trigger {
-        metric_name              = "Requests"
-        metric_resource_id       = module.appservice_app_backendl2.id
-        metric_namespace         = "microsoft.web/sites"
-        time_grain               = "PT1M"
-        statistic                = "Average"
-        time_window              = "PT5M"
-        time_aggregation         = "Average"
-        operator                 = "GreaterThan"
-        threshold                = 3500
-        divide_by_instance_count = false
-      }
-
-      scale_action {
-        direction = "Increase"
-        type      = "ChangeCount"
-        value     = "2"
-        cooldown  = "PT5M"
-      }
-    }
-
-    rule {
-      metric_trigger {
-        metric_name              = "CpuPercentage"
-        metric_resource_id       = module.appservice_app_backendl2.plan_id
-        metric_namespace         = "microsoft.web/serverfarms"
-        time_grain               = "PT1M"
-        statistic                = "Average"
-        time_window              = "PT5M"
-        time_aggregation         = "Average"
-        operator                 = "GreaterThan"
-        threshold                = 45
-        divide_by_instance_count = false
-      }
-
-      scale_action {
-        direction = "Increase"
-        type      = "ChangeCount"
-        value     = "2"
-        cooldown  = "PT5M"
-      }
-    }
-
-    rule {
-      metric_trigger {
-        metric_name              = "Requests"
-        metric_resource_id       = module.appservice_app_backendl2.id
-        metric_namespace         = "microsoft.web/sites"
-        time_grain               = "PT1M"
-        statistic                = "Average"
-        time_window              = "PT5M"
-        time_aggregation         = "Average"
-        operator                 = "LessThan"
-        threshold                = 2500
-        divide_by_instance_count = false
-      }
-
-      scale_action {
-        direction = "Decrease"
-        type      = "ChangeCount"
-        value     = "1"
-        cooldown  = "PT20M"
-      }
-    }
-
-    rule {
-      metric_trigger {
-        metric_name              = "CpuPercentage"
-        metric_resource_id       = module.appservice_app_backendl2.plan_id
-        metric_namespace         = "microsoft.web/serverfarms"
-        time_grain               = "PT1M"
-        statistic                = "Average"
-        time_window              = "PT5M"
-        time_aggregation         = "Average"
-        operator                 = "LessThan"
-        threshold                = 25
-        divide_by_instance_count = false
-      }
-
-      scale_action {
-        direction = "Decrease"
-        type      = "ChangeCount"
-        value     = "1"
-        cooldown  = "PT20M"
-      }
-    }
-  }
-}
-
-## app_backendli
-
-module "app_backendli_snet" {
-  source               = "git::https://github.com/pagopa/azurerm.git//subnet?ref=v2.0.28"
-  name                 = "appbackendli"
-  address_prefixes     = var.cidr_subnet_appbackendli
-  resource_group_name  = data.azurerm_resource_group.vnet_common_rg.name
-  virtual_network_name = data.azurerm_virtual_network.vnet_common.name
-
-  service_endpoints = [
-    "Microsoft.Web",
-  ]
-
-  delegation = {
-    name = "default"
-    service_delegation = {
-      name    = "Microsoft.Web/serverFarms"
-      actions = ["Microsoft.Network/virtualNetworks/subnets/action"]
-    }
-  }
-}
-
-#tfsec:ignore:azure-appservice-authentication-enabled:exp:2022-05-01 # already ignored, maybe a bug in tfsec
-#tfsec:ignore:azure-appservice-require-client-cert:exp:2022-05-01 # already ignored, maybe a bug in tfsec
-module "appservice_app_backendli" {
-  source = "git::https://github.com/pagopa/azurerm.git//app_service?ref=v2.9.1"
-
-  # App service plan
-  plan_type     = "internal"
-  plan_name     = format("%s-plan-appappbackendli", local.project)
-  plan_kind     = "Linux"
-  plan_reserved = true # Mandatory for Linux plan
-  plan_sku_tier = var.app_backend_plan_sku_tier
-  plan_sku_size = var.app_backend_plan_sku_size
-
-  # App service
-  name                = format("%s-app-appbackendli", local.project)
-  resource_group_name = azurerm_resource_group.rg_linux.name
-  location            = azurerm_resource_group.rg_linux.location
-
-  always_on         = true
-  linux_fx_version  = "NODE|14-lts"
-  app_command_line  = "node /home/site/wwwroot/src/server.js"
-  health_check_path = null
-
-  app_settings = merge(
-    local.app_backend.app_settings_common,
-    local.app_backend.app_settings_li,
-  )
-
-  allowed_subnets = [
-    data.azurerm_subnet.fnapp_admin_subnet_out.id,
-    data.azurerm_subnet.fnapp_services_subnet_out.id,
-  ]
-
-  allowed_ips = concat(
-    [],
-    local.app_insights_ips_west_europe,
-  )
-
-  subnet_id        = module.app_backendli_snet.id
-  vnet_integration = true
-
-  tags = var.tags
-}
-
-module "appservice_app_backendli_slot_staging" {
-  source = "git::https://github.com/pagopa/azurerm.git//app_service_slot?ref=v2.9.1"
-
-  # App service plan
-  app_service_plan_id = module.appservice_app_backendli.plan_id
-  app_service_id      = module.appservice_app_backendli.id
-  app_service_name    = module.appservice_app_backendli.name
-
-  # App service
-  name                = "staging"
-  resource_group_name = azurerm_resource_group.rg_linux.name
-  location            = azurerm_resource_group.rg_linux.location
-
-  always_on         = true
-  linux_fx_version  = "NODE|14-lts"
-  app_command_line  = "node /home/site/wwwroot/src/server.js"
-  health_check_path = null
-
-  app_settings = merge(
-    local.app_backend.app_settings_common,
-    local.app_backend.app_settings_li,
-  )
-
-  allowed_subnets = [
-    data.azurerm_subnet.azdoa_snet[0].id,
-    data.azurerm_subnet.fnapp_admin_subnet_out.id,
-    data.azurerm_subnet.fnapp_services_subnet_out.id,
-  ]
-
-  allowed_ips = concat(
-    [],
-  )
-
-  subnet_id        = module.app_backendli_snet.id
-  vnet_integration = true
-
-  tags = var.tags
-}
-
-resource "azurerm_monitor_autoscale_setting" "appservice_app_backendli" {
-  name                = format("%s-autoscale", module.appservice_app_backendli.name)
-  resource_group_name = azurerm_resource_group.rg_linux.name
-  location            = azurerm_resource_group.rg_linux.location
-  target_resource_id  = module.appservice_app_backendli.plan_id
-
-  profile {
-    name = "default"
-
-    capacity {
-      default = var.app_backend_autoscale_default
-      minimum = var.app_backend_autoscale_minimum
-      maximum = var.app_backend_autoscale_maximum
-    }
-
-    rule {
-      metric_trigger {
-        metric_name              = "Requests"
-        metric_resource_id       = module.appservice_app_backendli.id
-        metric_namespace         = "microsoft.web/sites"
-        time_grain               = "PT1M"
-        statistic                = "Average"
-        time_window              = "PT5M"
-        time_aggregation         = "Average"
-        operator                 = "GreaterThan"
-        threshold                = 3500
-        divide_by_instance_count = false
-      }
-
-      scale_action {
-        direction = "Increase"
-        type      = "ChangeCount"
-        value     = "2"
-        cooldown  = "PT5M"
-      }
-    }
-
-    rule {
-      metric_trigger {
-        metric_name              = "Requests"
-        metric_resource_id       = module.appservice_app_backendli.id
-        metric_namespace         = "microsoft.web/sites"
-        time_grain               = "PT1M"
-        statistic                = "Average"
-        time_window              = "PT5M"
-        time_aggregation         = "Average"
-        operator                 = "LessThan"
-        threshold                = 2500
-        divide_by_instance_count = false
-      }
-
-      scale_action {
-        direction = "Decrease"
-        type      = "ChangeCount"
-        value     = "1"
-        cooldown  = "PT20M"
-      }
-    }
-  }
-}
 
 
-## web availabolity test
-module "app_backend_web_test_api" {
-  for_each = { for v in local.app_backend_test_urls : v.name => v if v != null }
-  source   = "git::https://github.com/pagopa/azurerm.git//application_insights_web_test_preview?ref=v2.9.1"
+
+## Web availability test
+## Checks /info path on each instance
+module "app_backend_web_test_info_api" {
+  count = var.appbackend_count
+
+  source = "git::https://github.com/pagopa/azurerm.git//application_insights_web_test_preview?ref=v2.9.1"
 
   subscription_id                   = data.azurerm_subscription.current.subscription_id
-  name                              = format("%s-test", each.value.name)
+  name                              = format("%s-test", module.appservice_app_backend[count.index].default_site_hostname)
   location                          = data.azurerm_resource_group.monitor_rg.location
   resource_group                    = data.azurerm_resource_group.monitor_rg.name
   application_insight_name          = data.azurerm_application_insights.application_insights.name
-  request_url                       = format("https://%s%s", each.value.host, each.value.path)
-  expected_http_status              = each.value.http_status
+  request_url                       = format("https://%s%s", module.appservice_app_backend[count.index].default_site_hostname, "/info")
+  expected_http_status              = 200
   ssl_cert_remaining_lifetime_check = 7
 
   actions = [

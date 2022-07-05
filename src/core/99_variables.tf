@@ -172,6 +172,10 @@ variable "cidr_subnet_selfcare_be" {
   description = "Selfcare IO frontend storage address space."
 }
 
+variable "cidr_subnet_appbackend" {
+  type        = list(string)
+  description = "App backend instances address space."
+}
 variable "cidr_subnet_appbackendl1" {
   type        = list(string)
   description = "App backend l1 address space."
@@ -582,3 +586,8 @@ variable "pn_service_id" {
   default     = "01G40DWQGKY5GRWSNM4303VNRP"
 }
 
+# N° of instances for appbackend appservice
+variable "appbackend_count" {
+  type    = number
+  default = 2
+}
