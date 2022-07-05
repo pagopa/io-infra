@@ -1,5 +1,5 @@
 locals {
-  app_backend_legacy {
+  app_backend_legacy = {
     app_settings_l1 = {
       IS_APPBACKENDLI = "false"
       // FUNCTIONS
