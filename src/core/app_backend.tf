@@ -175,8 +175,8 @@ locals {
             }
           },
           testEnvironment = {
-            testUsers = local.test_users,
-            baseUrl   = "https://api-io.dev.pn.pagopa.it/ ",
+            testUsers = split(",", local.test_users),
+            baseUrl   = "https://api-io.dev.pn.pagopa.it",
             detailsAuthentication = {
               type            = "API_KEY",
               header_key_name = "ApiKeyAuth",
