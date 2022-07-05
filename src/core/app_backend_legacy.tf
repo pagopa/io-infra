@@ -1,46 +1,50 @@
 locals {
-  app_settings_l1 = {
-    IS_APPBACKENDLI = "false"
-    // FUNCTIONS
-    API_URL              = "http://${data.azurerm_function_app.fnapp_app1.default_hostname}/api/v1"
-    APP_MESSAGES_API_URL = "https://${module.app_messages_function[0].default_hostname}/api/v1"
-  }
-  app_settings_l2 = {
-    IS_APPBACKENDLI = "false"
-    // FUNCTIONS
-    API_URL              = "http://${data.azurerm_function_app.fnapp_app2.default_hostname}/api/v1"
-    APP_MESSAGES_API_URL = "https://${module.app_messages_function[1].default_hostname}/api/v1"
-  }
-  app_settings_li = {
-    IS_APPBACKENDLI = "true"
-    // FUNCTIONS
-    API_URL              = "http://${data.azurerm_function_app.fnapp_app1.default_hostname}/api/v1" # not used
-    APP_MESSAGES_API_URL = "https://${module.app_messages_function[0].default_hostname}/api/v1"     # not used
+  app_backend_legacy {
+    app_settings_l1 = {
+      IS_APPBACKENDLI = "false"
+      // FUNCTIONS
+      API_URL              = "http://${data.azurerm_function_app.fnapp_app1.default_hostname}/api/v1"
+      APP_MESSAGES_API_URL = "https://${module.app_messages_function[0].default_hostname}/api/v1"
+    }
+    app_settings_l2 = {
+      IS_APPBACKENDLI = "false"
+      // FUNCTIONS
+      API_URL              = "http://${data.azurerm_function_app.fnapp_app2.default_hostname}/api/v1"
+      APP_MESSAGES_API_URL = "https://${module.app_messages_function[1].default_hostname}/api/v1"
+    }
+    app_settings_li = {
+      IS_APPBACKENDLI = "true"
+      // FUNCTIONS
+      API_URL              = "http://${data.azurerm_function_app.fnapp_app1.default_hostname}/api/v1" # not used
+      APP_MESSAGES_API_URL = "https://${module.app_messages_function[0].default_hostname}/api/v1"     # not used
+    }
+
+    app_backend_test_urls = [
+      {
+        # https://io-p-app-appbackendl1.azurewebsites.net/info
+        name        = module.appservice_app_backendl1.default_site_hostname,
+        host        = module.appservice_app_backendl1.default_site_hostname,
+        path        = "/info",
+        http_status = 200,
+      },
+      {
+        # https://io-p-app-appbackendl2.azurewebsites.net/info
+        name        = module.appservice_app_backendl2.default_site_hostname,
+        host        = module.appservice_app_backendl2.default_site_hostname,
+        path        = "/info",
+        http_status = 200,
+      },
+      {
+        # https://io-p-app-appbackendli.azurewebsites.net/info
+        name        = module.appservice_app_backendli.default_site_hostname,
+        host        = module.appservice_app_backendli.default_site_hostname,
+        path        = "/info",
+        http_status = 200,
+      },
+    ]
   }
 
-  app_backend_test_urls = [
-    {
-      # https://io-p-app-appbackendl1.azurewebsites.net/info
-      name        = module.appservice_app_backendl1.default_site_hostname,
-      host        = module.appservice_app_backendl1.default_site_hostname,
-      path        = "/info",
-      http_status = 200,
-    },
-    {
-      # https://io-p-app-appbackendl2.azurewebsites.net/info
-      name        = module.appservice_app_backendl2.default_site_hostname,
-      host        = module.appservice_app_backendl2.default_site_hostname,
-      path        = "/info",
-      http_status = 200,
-    },
-    {
-      # https://io-p-app-appbackendli.azurewebsites.net/info
-      name        = module.appservice_app_backendli.default_site_hostname,
-      host        = module.appservice_app_backendli.default_site_hostname,
-      path        = "/info",
-      http_status = 200,
-    },
-  ]
+
 }
 
 ### Common resources
@@ -99,8 +103,8 @@ module "appservice_app_backendl1" {
   health_check_path = null
 
   app_settings = merge(
-    local.app_backend.app_settings_common,
-    local.app_backend.app_settings_l1,
+    local.app_backend_legacy.app_settings_common,
+    local.app_backend_legacy.app_settings_l1,
   )
 
   allowed_subnets = [
@@ -140,8 +144,8 @@ module "appservice_app_backendl1_slot_staging" {
   health_check_path = null
 
   app_settings = merge(
-    local.app_backend.app_settings_common,
-    local.app_backend.app_settings_l1,
+    local.app_backend_legacy.app_settings_common,
+    local.app_backend_legacy.app_settings_l1,
   )
 
   allowed_subnets = [
@@ -313,8 +317,8 @@ module "appservice_app_backendl2" {
   health_check_path = null
 
   app_settings = merge(
-    local.app_backend.app_settings_common,
-    local.app_backend.app_settings_l2,
+    local.app_backend_legacy.app_settings_common,
+    local.app_backend_legacy.app_settings_l2,
   )
 
   allowed_subnets = [
@@ -354,8 +358,8 @@ module "appservice_app_backendl2_slot_staging" {
   health_check_path = null
 
   app_settings = merge(
-    local.app_backend.app_settings_common,
-    local.app_backend.app_settings_l2,
+    local.app_backend_legacy.app_settings_common,
+    local.app_backend_legacy.app_settings_l2,
   )
 
   allowed_subnets = [
@@ -527,8 +531,8 @@ module "appservice_app_backendli" {
   health_check_path = null
 
   app_settings = merge(
-    local.app_backend.app_settings_common,
-    local.app_backend.app_settings_li,
+    local.app_backend_legacy.app_settings_common,
+    local.app_backend_legacy.app_settings_li,
   )
 
   allowed_subnets = [
@@ -566,8 +570,8 @@ module "appservice_app_backendli_slot_staging" {
   health_check_path = null
 
   app_settings = merge(
-    local.app_backend.app_settings_common,
-    local.app_backend.app_settings_li,
+    local.app_backend_legacy.app_settings_common,
+    local.app_backend_legacy.app_settings_li,
   )
 
   allowed_subnets = [
@@ -650,7 +654,7 @@ resource "azurerm_monitor_autoscale_setting" "appservice_app_backendli" {
 
 ## web availabolity test
 module "app_backend_web_test_api" {
-  for_each = { for v in local.app_backend_test_urls : v.name => v if v != null }
+  for_each = { for v in local.app_backend_legacy_test_urls : v.name => v if v != null }
   source   = "git::https://github.com/pagopa/azurerm.git//application_insights_web_test_preview?ref=v2.9.1"
 
   subscription_id                   = data.azurerm_subscription.current.subscription_id
