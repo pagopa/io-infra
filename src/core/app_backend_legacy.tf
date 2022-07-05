@@ -103,7 +103,7 @@ module "appservice_app_backendl1" {
   health_check_path = null
 
   app_settings = merge(
-    local.app_backend_legacy.app_settings_common,
+    local.app_backend.app_settings_common,
     local.app_backend_legacy.app_settings_l1,
   )
 
@@ -144,7 +144,7 @@ module "appservice_app_backendl1_slot_staging" {
   health_check_path = null
 
   app_settings = merge(
-    local.app_backend_legacy.app_settings_common,
+    local.app_backend.app_settings_common,
     local.app_backend_legacy.app_settings_l1,
   )
 
@@ -317,7 +317,7 @@ module "appservice_app_backendl2" {
   health_check_path = null
 
   app_settings = merge(
-    local.app_backend_legacy.app_settings_common,
+    local.app_backend.app_settings_common,
     local.app_backend_legacy.app_settings_l2,
   )
 
@@ -358,7 +358,7 @@ module "appservice_app_backendl2_slot_staging" {
   health_check_path = null
 
   app_settings = merge(
-    local.app_backend_legacy.app_settings_common,
+    local.app_backend.app_settings_common,
     local.app_backend_legacy.app_settings_l2,
   )
 
@@ -531,7 +531,7 @@ module "appservice_app_backendli" {
   health_check_path = null
 
   app_settings = merge(
-    local.app_backend_legacy.app_settings_common,
+    local.app_backend.app_settings_common,
     local.app_backend_legacy.app_settings_li,
   )
 
@@ -570,7 +570,7 @@ module "appservice_app_backendli_slot_staging" {
   health_check_path = null
 
   app_settings = merge(
-    local.app_backend_legacy.app_settings_common,
+    local.app_backend.app_settings_common,
     local.app_backend_legacy.app_settings_li,
   )
 
