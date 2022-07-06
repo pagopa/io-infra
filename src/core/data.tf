@@ -190,6 +190,11 @@ data "azurerm_eventhub" "payment_updater_evh" {
   resource_group_name = "io-p-payments-weu-prod01-evt-rg"
 }
 
+data "azurerm_eventhub" "messages_evh" {
+  name                = "io-p-messages-weu-prod01-evh-ns"
+  resource_group_name = "io-p-messages-weu-prod01-evt-rg"
+}
+
 data "azurerm_key_vault_secret" "apim_services_subscription_key" {
   name         = "apim-IO-SERVICE-KEY"
   key_vault_id = data.azurerm_key_vault.common.id

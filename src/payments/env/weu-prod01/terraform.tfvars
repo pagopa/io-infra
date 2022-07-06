@@ -93,7 +93,7 @@ ehns_metric_alerts = {
 
 eventhubs = [
   {
-    name              = "io-payment-updater"
+    name              = "payment-updates"
     partitions        = 5
     message_retention = 7
     consumers         = []
