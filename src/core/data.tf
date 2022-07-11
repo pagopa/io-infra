@@ -192,7 +192,7 @@ data "azurerm_eventhub" "payment_updater_evh" {
 }
 
 data "azurerm_eventhub" "messages_evh" {
-  name                = "io-p-messages-weu-prod01-evh-ns"
+  name                = "messages-payments"
   namespace_name      = "io-p-messages-weu-prod01-evh-ns"
   resource_group_name = "io-p-messages-weu-prod01-evt-rg"
 }
