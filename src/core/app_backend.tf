@@ -8,6 +8,7 @@ locals {
       WEBSITE_RUN_FROM_PACKAGE                        = "1"
       WEBSITE_VNET_ROUTE_ALL                          = "1"
       WEBSITE_DNS_SERVER                              = "168.63.129.16"
+      WEBSITE_HEALTHCHECK_MAXPINGFAILURES             = "3"
 
       APPINSIGHTS_INSTRUMENTATIONKEY = data.azurerm_application_insights.application_insights.instrumentation_key
 
@@ -419,7 +420,7 @@ module "appservice_app_backendl1" {
   always_on         = true
   linux_fx_version  = "NODE|14-lts"
   app_command_line  = "node /home/site/wwwroot/src/server.js"
-  health_check_path = null
+  health_check_path = "/ping"
 
   app_settings = merge(
     local.app_backend.app_settings_common,
@@ -460,7 +461,7 @@ module "appservice_app_backendl1_slot_staging" {
   always_on         = true
   linux_fx_version  = "NODE|14-lts"
   app_command_line  = "node /home/site/wwwroot/src/server.js"
-  health_check_path = null
+  health_check_path = "/ping"
 
   app_settings = merge(
     local.app_backend.app_settings_common,
@@ -633,7 +634,7 @@ module "appservice_app_backendl2" {
   always_on         = true
   linux_fx_version  = "NODE|14-lts"
   app_command_line  = "node /home/site/wwwroot/src/server.js"
-  health_check_path = null
+  health_check_path = "/ping"
 
   app_settings = merge(
     local.app_backend.app_settings_common,
@@ -674,7 +675,7 @@ module "appservice_app_backendl2_slot_staging" {
   always_on         = true
   linux_fx_version  = "NODE|14-lts"
   app_command_line  = "node /home/site/wwwroot/src/server.js"
-  health_check_path = null
+  health_check_path = "/ping"
 
   app_settings = merge(
     local.app_backend.app_settings_common,
@@ -847,7 +848,7 @@ module "appservice_app_backendli" {
   always_on         = true
   linux_fx_version  = "NODE|14-lts"
   app_command_line  = "node /home/site/wwwroot/src/server.js"
-  health_check_path = null
+  health_check_path = "/ping"
 
   app_settings = merge(
     local.app_backend.app_settings_common,
@@ -886,7 +887,7 @@ module "appservice_app_backendli_slot_staging" {
   always_on         = true
   linux_fx_version  = "NODE|14-lts"
   app_command_line  = "node /home/site/wwwroot/src/server.js"
-  health_check_path = null
+  health_check_path = "/ping"
 
   app_settings = merge(
     local.app_backend.app_settings_common,
