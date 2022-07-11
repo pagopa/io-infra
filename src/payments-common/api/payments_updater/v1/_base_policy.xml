@@ -2,10 +2,10 @@
     <inbound>
         <base />
         <choose>
-            <when condition="@(context.Request.Headers.GetValueOrDefault("weu-beta", "false").Equals("true"))">
+            <when condition="@(context.Request.Headers.GetValueOrDefault("environment", "false").Equals("beta"))">
                 <set-backend-service base-url="https://weubeta.payments.internal.io.pagopa.it/api/v1/payment" />
             </when>
-            <when condition="@(context.Request.Headers.GetValueOrDefault("weu-prod01", "false").Equals("true"))">
+            <when condition="@(context.Request.Headers.GetValueOrDefault("environment", "false").Equals("weu-prod01"))">
                 <set-backend-service base-url="https://weuprod01.payments.internal.io.pagopa.it/api/v1/payment" />
             </when>
             <otherwise>
