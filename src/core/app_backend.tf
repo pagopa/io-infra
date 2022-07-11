@@ -171,16 +171,16 @@ locals {
             baseUrl = "https://api-io.pn.pagopa.it",
             detailsAuthentication = {
               type            = "API_KEY",
-              header_key_name = "ApiKeyAuth",
+              header_key_name = "x-api-key",
               key             = data.azurerm_key_vault_secret.app_backend_PN_API_KEY_PROD_ENV.value
             }
           },
           testEnvironment = {
-            testUsers = local.test_users,
-            baseUrl   = "https://api-io.dev.pn.pagopa.it/ ",
+            testUsers = split(",", local.test_users),
+            baseUrl   = "https://api-io.dev.pn.pagopa.it",
             detailsAuthentication = {
               type            = "API_KEY",
-              header_key_name = "ApiKeyAuth",
+              header_key_name = "x-api-key",
               key             = data.azurerm_key_vault_secret.app_backend_PN_API_KEY_TEST_ENV.value
             }
           }
