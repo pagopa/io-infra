@@ -271,6 +271,32 @@ variable "apim_publisher_name" {
 variable "apim_sku" {
   type = string
 }
+
+variable "apim_autoscale" {
+  type = object(
+    {
+      enabled                       = bool
+      default_instances             = number
+      minimum_instances             = number
+      maximum_instances             = number
+      scale_out_capacity_percentage = number
+      scale_out_time_window         = string
+      scale_out_value               = string
+      scale_out_cooldown            = string
+      scale_in_capacity_percentage  = number
+      scale_in_time_window          = string
+      scale_in_value                = string
+      scale_in_cooldown             = string
+    }
+  )
+  description = "Configure Apim autoscale on capacity metric"
+}
+
+variable "apim_alerts_enabled" {
+  type        = bool
+  description = "Enable alerts"
+  default     = true
+}
 ##
 
 ## Redis cache

@@ -58,6 +58,20 @@ redis_apim_family   = "P"
 # apim
 apim_publisher_name = "IO"
 apim_sku            = "Premium_1"
+apim_autoscale = {
+  enabled                       = false
+  default_instances             = 1
+  minimum_instances             = 1
+  maximum_instances             = 5
+  scale_out_capacity_percentage = 60
+  scale_out_time_window         = "PT10M"
+  scale_out_value               = "2"
+  scale_out_cooldown            = "PT45M"
+  scale_in_capacity_percentage  = 30
+  scale_in_time_window          = "PT30M"
+  scale_in_value                = "1"
+  scale_in_cooldown             = "PT30M"
+}
 
 # azure devops
 azdo_sp_tls_cert_enabled = true
