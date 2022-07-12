@@ -19,7 +19,7 @@ module "apim_snet" {
 # ###########################
 
 module "apim" {
-  source = "git::https://github.com/pagopa/azurerm.git//api_management?ref=v1.0.74"
+  source = "git::https://github.com/pagopa/azurerm.git//api_management?ref=v2.5.0"
 
   subnet_id                 = module.apim_snet.id
   location                  = azurerm_resource_group.rg_internal.location
@@ -66,9 +66,90 @@ module "apim" {
     portal           = null
   }
 
+  application_insights_instrumentation_key = data.azurerm_application_insights.application_insights.instrumentation_key
+
   lock_enable = false # no lock
 
-  application_insights_instrumentation_key = data.azurerm_application_insights.application_insights.instrumentation_key
+  autoscale = var.apim_autoscale
+
+  alerts_enabled = var.apim_alerts_enabled
+
+  # metrics docs
+  # https://docs.microsoft.com/en-us/azure/azure-monitor/essentials/metrics-supported#microsoftapimanagementservice
+  metric_alerts = {
+    capacity = {
+      description   = "Apim used capacity is too high"
+      frequency     = "PT5M"
+      window_size   = "PT5M"
+      severity      = 1
+      auto_mitigate = true
+
+      criteria = [{
+        metric_namespace       = "Microsoft.ApiManagement/service"
+        metric_name            = "Capacity"
+        aggregation            = "Average"
+        operator               = "GreaterThan"
+        threshold              = 50
+        skip_metric_validation = false
+        dimension              = []
+      }]
+      dynamic_criteria = []
+    }
+
+    duration = {
+      description   = "Apim abnormal response time"
+      frequency     = "PT5M"
+      window_size   = "PT5M"
+      severity      = 2
+      auto_mitigate = true
+
+      criteria = []
+
+      dynamic_criteria = [{
+        metric_namespace         = "Microsoft.ApiManagement/service"
+        metric_name              = "Duration"
+        aggregation              = "Average"
+        operator                 = "GreaterThan"
+        alert_sensitivity        = "High"
+        evaluation_total_count   = 2
+        evaluation_failure_count = 2
+        skip_metric_validation   = false
+        ignore_data_before       = "2021-01-01T00:00:00Z" # sample data
+        dimension                = []
+      }]
+    }
+
+    requests_failed = {
+      description   = "Apim abnormal failed requests"
+      frequency     = "PT5M"
+      window_size   = "PT5M"
+      severity      = 2
+      auto_mitigate = true
+
+      criteria = []
+
+      dynamic_criteria = [{
+        metric_namespace         = "Microsoft.ApiManagement/service"
+        metric_name              = "Requests"
+        aggregation              = "Total"
+        operator                 = "GreaterThan"
+        alert_sensitivity        = "High"
+        evaluation_total_count   = 2
+        evaluation_failure_count = 2
+        skip_metric_validation   = false
+        ignore_data_before       = "2021-01-01T00:00:00Z" # sample data
+        dimension = [{
+          name     = "BackendResponseCode"
+          operator = "Include"
+          values   = ["5xx"]
+        }]
+      }]
+    }
+  }
+
+  # Logs
+  sec_log_analytics_workspace_id = var.env_short == "p" ? data.azurerm_key_vault_secret.sec_workspace_id[0].value : null
+  sec_storage_id                 = var.env_short == "p" ? data.azurerm_key_vault_secret.sec_storage_id[0].value : null
 
   tags = var.tags
 }
