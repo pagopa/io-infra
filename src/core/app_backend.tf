@@ -167,7 +167,7 @@ locals {
       PN_ACTIVATION_BASE_PATH = "/api/v1/pn"
       PN_API_KEY              = data.azurerm_key_vault_secret.app_backend_PN_API_KEY.value
       PN_API_KEY_UAT          = data.azurerm_key_vault_secret.app_backend_PN_API_KEY_UAT.value
-      PN_API_URL              = "https://api-iol.pn.pagopa.it"
+      PN_API_URL              = "https://api-io.pn.pagopa.it"
       PN_API_URL_UAT          = "https://api-io.coll.pn.pagopa.it"
 
       // Third Party Services
