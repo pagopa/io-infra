@@ -131,6 +131,8 @@ locals {
       FF_MESSAGES_BETA_TESTER_LIST   = data.azurerm_key_vault_secret.app_backend_APP_MESSAGES_BETA_FISCAL_CODES.value
       FF_MESSAGES_CANARY_USERS_REGEX = "XYZ"
 
+      FF_PN_ACTIVATION_ENABLED = "0" // Temporarily disabled
+
       // TEST LOGIN
       TEST_LOGIN_PASSWORD     = data.azurerm_key_vault_secret.app_backend_TEST_LOGIN_PASSWORD.value
       TEST_LOGIN_FISCAL_CODES = local.test_users
@@ -160,6 +162,13 @@ locals {
 
       // Service ID PN
       PN_SERVICE_ID = var.pn_service_id
+
+      // PN Service Activation
+      PN_ACTIVATION_BASE_PATH = "/api/v1/pn"
+      PN_API_KEY              = data.azurerm_key_vault_secret.app_backend_PN_API_KEY.value
+      PN_API_KEY_UAT          = data.azurerm_key_vault_secret.app_backend_PN_API_KEY_UAT.value
+      PN_API_URL              = "https://api-iol.pn.pagopa.it"
+      PN_API_URL_UAT          = "https://api-io.coll.pn.pagopa.it"
 
       // Third Party Services
       THIRD_PARTY_CONFIG_LIST = jsonencode([
@@ -369,6 +378,16 @@ data "azurerm_key_vault_secret" "app_backend_APP_MESSAGES_BETA_FISCAL_CODES" {
 
 data "azurerm_key_vault_secret" "app_backend_PN_API_KEY_TEST_ENV" {
   name         = "appbackend-PN-API-KEY-TEST-ENV"
+  key_vault_id = data.azurerm_key_vault.common.id
+}
+
+data "azurerm_key_vault_secret" "app_backend_PN_API_KEY" {
+  name         = "appbackend-PN-API-KEY-ENV"
+  key_vault_id = data.azurerm_key_vault.common.id
+}
+
+data "azurerm_key_vault_secret" "app_backend_PN_API_KEY_UAT" {
+  name         = "appbackend-PN-API-KEY-UAT-ENV"
   key_vault_id = data.azurerm_key_vault.common.id
 }
 
