@@ -185,16 +185,20 @@ data "azurerm_storage_account" "cdnassets" {
   resource_group_name = var.common_rg
 }
 
-data "azurerm_eventhub" "payment_updater_evh" {
-  name                = "io-p-payments-weu-prod01-evh-ns"
-  namespace_name      = "io-p-payments-weu-prod01-evh-ns"
-  resource_group_name = "io-p-payments-weu-prod01-evt-rg"
+# Event hubs
+
+data "azurerm_eventhub_authorization_rule" "io-p-payments-weu-prod01-evh-ns_io-payment-updater_io-fn-messages-cqrs" {
+  name                = "io-fn-messages-cqrs"
+  namespace_name      = "${local.project}-payments-weu-prod01-evh-ns"
+  eventhub_name       = "io-payment-updater"
+  resource_group_name = "${local.project}-payments-weu-prod01-evt-rg"
 }
 
-data "azurerm_eventhub" "messages_evh" {
-  name                = "messages-payments"
-  namespace_name      = "io-p-messages-weu-prod01-evh-ns"
-  resource_group_name = "io-p-messages-weu-prod01-evt-rg"
+data "azurerm_eventhub_authorization_rule" "io-p-messages-weu-prod01-evh-ns_messages-payments_io-fn-messages-cqrs" {
+  name                = "io-fn-messages-cqrs"
+  namespace_name      = "${local.project}-messages-weu-prod01-evh-ns"
+  eventhub_name       = "messages-payments"
+  resource_group_name = "${local.project}-messages-weu-prod01-evt-rg"
 }
 
 data "azurerm_key_vault_secret" "apim_services_subscription_key" {
