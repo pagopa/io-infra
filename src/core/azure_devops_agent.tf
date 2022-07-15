@@ -24,6 +24,18 @@ module "azdoa_li" {
   tags = var.tags
 }
 
+module "azdoa_loadtest_li" {
+  source              = "git::https://github.com/pagopa/azurerm.git//azure_devops_agent?ref=v2.18.7"
+  count               = var.enable_azdoa ? 1 : 0
+  name                = format("%s-azdoa-vmss-loadtest-li", local.project)
+  resource_group_name = azurerm_resource_group.azdo_rg[0].name
+  subnet_id           = data.azurerm_subnet.azdoa_snet[0].id
+  subscription        = data.azurerm_subscription.current.display_name
+  vm_sku              = "Standard_D8ds_v5"
+
+  tags = var.tags
+}
+
 # azure devops policy
 data "azuread_service_principal" "iac_principal" {
   count        = var.enable_iac_pipeline ? 1 : 0

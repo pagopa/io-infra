@@ -21,7 +21,7 @@
 |------|--------|---------|
 | <a name="module_api_cgn_merchant"></a> [api\_cgn\_merchant](#module\_api\_cgn\_merchant) | git::https://github.com/pagopa/azurerm.git//api_management_api | v2.1.19 |
 | <a name="module_api_cgn_os"></a> [api\_cgn\_os](#module\_api\_cgn\_os) | git::https://github.com/pagopa/azurerm.git//api_management_api | v2.1.19 |
-| <a name="module_apim"></a> [apim](#module\_apim) | git::https://github.com/pagopa/azurerm.git//api_management | v1.0.74 |
+| <a name="module_apim"></a> [apim](#module\_apim) | git::https://github.com/pagopa/azurerm.git//api_management | v2.5.0 |
 | <a name="module_apim_io_backend_app_api_v1"></a> [apim\_io\_backend\_app\_api\_v1](#module\_apim\_io\_backend\_app\_api\_v1) | git::https://github.com/pagopa/azurerm.git//api_management_api | v1.0.16 |
 | <a name="module_apim_io_backend_auth_api_v1"></a> [apim\_io\_backend\_auth\_api\_v1](#module\_apim\_io\_backend\_auth\_api\_v1) | git::https://github.com/pagopa/azurerm.git//api_management_api | v1.0.16 |
 | <a name="module_apim_io_backend_bonus_api_v1"></a> [apim\_io\_backend\_bonus\_api\_v1](#module\_apim\_io\_backend\_bonus\_api\_v1) | git::https://github.com/pagopa/azurerm.git//api_management_api | v1.0.16 |
@@ -56,6 +56,7 @@
 | <a name="module_appservice_devportal_be"></a> [appservice\_devportal\_be](#module\_appservice\_devportal\_be) | git::https://github.com/pagopa/azurerm.git//app_service | v2.9.1 |
 | <a name="module_appservice_selfcare_be"></a> [appservice\_selfcare\_be](#module\_appservice\_selfcare\_be) | git::https://github.com/pagopa/azurerm.git//app_service | v2.9.1 |
 | <a name="module_azdoa_li"></a> [azdoa\_li](#module\_azdoa\_li) | git::https://github.com/pagopa/azurerm.git//azure_devops_agent | v1.0.57 |
+| <a name="module_azdoa_loadtest_li"></a> [azdoa\_loadtest\_li](#module\_azdoa\_loadtest\_li) | git::https://github.com/pagopa/azurerm.git//azure_devops_agent | v2.18.7 |
 | <a name="module_cgn_cosmos_db"></a> [cgn\_cosmos\_db](#module\_cgn\_cosmos\_db) | git::https://github.com/pagopa/azurerm.git//cosmosdb_sql_database | v2.1.15 |
 | <a name="module_cgn_cosmosdb_containers"></a> [cgn\_cosmosdb\_containers](#module\_cgn\_cosmosdb\_containers) | git::https://github.com/pagopa/azurerm.git//cosmosdb_sql_container | v2.18.1 |
 | <a name="module_cgn_legalbackup_storage"></a> [cgn\_legalbackup\_storage](#module\_cgn\_legalbackup\_storage) | git::https://github.com/pagopa/azurerm.git//storage_account | v2.7.0 |
@@ -276,8 +277,10 @@
 | [azurerm_key_vault_secret.app_backend_PAGOPA_API_KEY_UAT](https://registry.terraform.io/providers/hashicorp/azurerm/2.87.0/docs/data-sources/key_vault_secret) | data source |
 | [azurerm_key_vault_secret.app_backend_PECSERVER_ARUBA_TOKEN_SECRET](https://registry.terraform.io/providers/hashicorp/azurerm/2.87.0/docs/data-sources/key_vault_secret) | data source |
 | [azurerm_key_vault_secret.app_backend_PECSERVER_TOKEN_SECRET](https://registry.terraform.io/providers/hashicorp/azurerm/2.87.0/docs/data-sources/key_vault_secret) | data source |
+| [azurerm_key_vault_secret.app_backend_PN_API_KEY](https://registry.terraform.io/providers/hashicorp/azurerm/2.87.0/docs/data-sources/key_vault_secret) | data source |
 | [azurerm_key_vault_secret.app_backend_PN_API_KEY_PROD_ENV](https://registry.terraform.io/providers/hashicorp/azurerm/2.87.0/docs/data-sources/key_vault_secret) | data source |
 | [azurerm_key_vault_secret.app_backend_PN_API_KEY_TEST_ENV](https://registry.terraform.io/providers/hashicorp/azurerm/2.87.0/docs/data-sources/key_vault_secret) | data source |
+| [azurerm_key_vault_secret.app_backend_PN_API_KEY_UAT](https://registry.terraform.io/providers/hashicorp/azurerm/2.87.0/docs/data-sources/key_vault_secret) | data source |
 | [azurerm_key_vault_secret.app_backend_PRE_SHARED_KEY](https://registry.terraform.io/providers/hashicorp/azurerm/2.87.0/docs/data-sources/key_vault_secret) | data source |
 | [azurerm_key_vault_secret.app_backend_SAML_CERT](https://registry.terraform.io/providers/hashicorp/azurerm/2.87.0/docs/data-sources/key_vault_secret) | data source |
 | [azurerm_key_vault_secret.app_backend_SAML_KEY](https://registry.terraform.io/providers/hashicorp/azurerm/2.87.0/docs/data-sources/key_vault_secret) | data source |
@@ -345,6 +348,8 @@
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
+| <a name="input_apim_alerts_enabled"></a> [apim\_alerts\_enabled](#input\_apim\_alerts\_enabled) | Enable alerts | `bool` | `true` | no |
+| <a name="input_apim_autoscale"></a> [apim\_autoscale](#input\_apim\_autoscale) | Configure Apim autoscale on capacity metric | <pre>object(<br>    {<br>      enabled                       = bool<br>      default_instances             = number<br>      minimum_instances             = number<br>      maximum_instances             = number<br>      scale_out_capacity_percentage = number<br>      scale_out_time_window         = string<br>      scale_out_value               = string<br>      scale_out_cooldown            = string<br>      scale_in_capacity_percentage  = number<br>      scale_in_time_window          = string<br>      scale_in_value                = string<br>      scale_in_cooldown             = string<br>    }<br>  )</pre> | n/a | yes |
 | <a name="input_apim_publisher_name"></a> [apim\_publisher\_name](#input\_apim\_publisher\_name) | # Apim | `string` | n/a | yes |
 | <a name="input_apim_sku"></a> [apim\_sku](#input\_apim\_sku) | n/a | `string` | n/a | yes |
 | <a name="input_app_backend_autoscale_default"></a> [app\_backend\_autoscale\_default](#input\_app\_backend\_autoscale\_default) | The number of instances that are available for scaling if metrics are not available for evaluation. | `number` | `10` | no |
