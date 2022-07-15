@@ -14,12 +14,12 @@ locals {
       COSMOSDB_KEY               = data.azurerm_cosmosdb_account.cosmos_api.primary_master_key
       COSMOSDB_CONNECTION_STRING = format("AccountEndpoint=%s;AccountKey=%s;", data.azurerm_cosmosdb_account.cosmos_api.endpoint, data.azurerm_cosmosdb_account.cosmos_api.primary_master_key)
 
-      MESSAGE_VIEW_UPDATE_FAILURE_QUEUE_NAME          = "message-view-update-failures"
-      MESSAGE_VIEW_PAYMENT_UPDATE_FAILURE_QUEUE_NAME  = "message-view-paymentupdate-failures"
-      MESSAGE_PAYMENT_UPDATER_FAILURE_QUEUE_NAME      = "message-paymentupdater-failures"
-      MESSAGE_CONTAINER_NAME                          = "message-content"
-      MESSAGE_CONTENT_STORAGE_CONNECTION              = data.azurerm_storage_account.api.primary_connection_string
-      QueueStorageConnection                          = data.azurerm_storage_account.api.primary_connection_string
+      MESSAGE_VIEW_UPDATE_FAILURE_QUEUE_NAME         = "message-view-update-failures"
+      MESSAGE_VIEW_PAYMENT_UPDATE_FAILURE_QUEUE_NAME = "message-view-paymentupdate-failures"
+      MESSAGE_PAYMENT_UPDATER_FAILURE_QUEUE_NAME     = "message-paymentupdater-failures"
+      MESSAGE_CONTAINER_NAME                         = "message-content"
+      MESSAGE_CONTENT_STORAGE_CONNECTION             = data.azurerm_storage_account.api.primary_connection_string
+      QueueStorageConnection                         = data.azurerm_storage_account.api.primary_connection_string
 
       MESSAGE_STATUS_FOR_VIEW_TOPIC_CONSUMER_CONNECTION_STRING = module.event_hub.keys["io-cosmosdb-message-status-for-view.io-messages"].primary_connection_string
       MESSAGE_STATUS_FOR_VIEW_TOPIC_CONSUMER_GROUP             = "io-messages"
@@ -28,23 +28,23 @@ locals {
 
 
       MESSAGES_TOPIC_CONNECTION_STRING = data.azurerm_eventhub_authorization_rule.io-p-messages-weu-prod01-evh-ns_messages-payments_io-fn-messages-cqrs.primary_connection_string
-      MESSAGES_TOPIC_NAME = "messages-payments"
+      MESSAGES_TOPIC_NAME              = "messages-payments"
 
-      TARGETKAFKA_clientId            = "IO_FUNCTIONS_MESSAGES_CQRS"
-      TARGETKAFKA_brokers             = "${local.io-p-messages-weu-prod01-evh-ns.hostname}:${local.io-p-messages-weu-prod01-evh-ns.port}"
-      TARGETKAFKA_ssl                 = "true"
-      TARGETKAFKA_sasl_mechanism      = "plain"
-      TARGETKAFKA_sasl_username       = "$ConnectionString"
-      TARGETKAFKA_sasl_password       = data.azurerm_eventhub_authorization_rule.io-p-messages-weu-prod01-evh-ns_messages-payments_io-fn-messages-cqrs.primary_connection_string
-      TARGETKAFKA_idempotent          = "true"
-      TARGETKAFKA_transactionalId     = "IO_MESSAGES_CQRS"
-      TARGETKAFKA_topic               = "messages-payments"
+      TARGETKAFKA_clientId        = "IO_FUNCTIONS_MESSAGES_CQRS"
+      TARGETKAFKA_brokers         = "${local.io-p-messages-weu-prod01-evh-ns.hostname}:${local.io-p-messages-weu-prod01-evh-ns.port}"
+      TARGETKAFKA_ssl             = "true"
+      TARGETKAFKA_sasl_mechanism  = "plain"
+      TARGETKAFKA_sasl_username   = "$ConnectionString"
+      TARGETKAFKA_sasl_password   = data.azurerm_eventhub_authorization_rule.io-p-messages-weu-prod01-evh-ns_messages-payments_io-fn-messages-cqrs.primary_connection_string
+      TARGETKAFKA_idempotent      = "true"
+      TARGETKAFKA_transactionalId = "IO_MESSAGES_CQRS"
+      TARGETKAFKA_topic           = "messages-payments"
 
       PAYMENT_FOR_VIEW_TOPIC_NAME                       = "payment-updates"
       PAYMENT_FOR_VIEW_TOPIC_CONSUMER_GROUP             = "$Default"
       PAYMENT_FOR_VIEW_TOPIC_CONSUMER_CONNECTION_STRING = data.azurerm_eventhub_authorization_rule.io-p-payments-weu-prod01-evh-ns_io-payment-updater_io-fn-messages-cqrs.primary_connection_string
 
-      APIM_BASE_URL = "https://api-internal.io.italia.it"
+      APIM_BASE_URL         = "https://api-internal.io.italia.it"
       APIM_SUBSCRIPTION_KEY = data.azurerm_key_vault_secret.apim_services_subscription_key.value
 
       // Keepalive fields are all optionals

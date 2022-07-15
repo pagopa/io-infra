@@ -33,6 +33,6 @@ locals {
 
   io-p-messages-weu-prod01-evh-ns = {
     hostname = "io-p-messages-weu-prod01-evh-ns.servicebus.windows.net"
-    port = "9093"
+    port     = "9093"
   }
 }
