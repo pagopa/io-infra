@@ -47,6 +47,7 @@ locals {
       APIM_BASE_URL         = "https://api-internal.io.italia.it"
       APIM_SUBSCRIPTION_KEY = data.azurerm_key_vault_secret.apim_services_subscription_key.value
 
+      PN_SERVICE_ID = var.pn_service_id
       // Keepalive fields are all optionals
       FETCH_KEEPALIVE_ENABLED             = "true"
       FETCH_KEEPALIVE_SOCKET_ACTIVE_TTL   = "110000"
@@ -125,8 +126,11 @@ module "function_messages_cqrs" {
     "private_dns_zone_table_ids" = [data.azurerm_private_dns_zone.privatelink_table_core_windows_net.id],
     "queues" = [
       local.function_messages_cqrs.app_settings.MESSAGE_VIEW_UPDATE_FAILURE_QUEUE_NAME,
+      format("%s-poison", local.function_messages_cqrs.app_settings.MESSAGE_VIEW_UPDATE_FAILURE_QUEUE_NAME),
       local.function_messages_cqrs.app_settings.MESSAGE_VIEW_PAYMENT_UPDATE_FAILURE_QUEUE_NAME,
-      local.function_messages_cqrs.app_settings.MESSAGE_PAYMENT_UPDATER_FAILURE_QUEUE_NAME
+      format("%s-poison", local.function_messages_cqrs.app_settings.MESSAGE_VIEW_PAYMENT_UPDATE_FAILURE_QUEUE_NAME),
+      local.function_messages_cqrs.app_settings.MESSAGE_PAYMENT_UPDATER_FAILURE_QUEUE_NAME,
+      format("%s-poison", local.function_messages_cqrs.app_settings.MESSAGE_PAYMENT_UPDATER_FAILURE_QUEUE_NAME)
     ],
     "containers"           = [],
     "blobs_retention_days" = 1,
