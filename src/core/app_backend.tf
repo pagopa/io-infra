@@ -34,8 +34,8 @@ locals {
       SAML_ISSUER                            = "https://app-backend.io.italia.it"
       SAML_ATTRIBUTE_CONSUMING_SERVICE_INDEX = "0"
       SAML_ACCEPTED_CLOCK_SKEW_MS            = "2000"
-      IDP_METADATA_URL                       = "https://registry.SPID.gov.it/metadata/idp/spid-entities-idps.xml"
-      # IDP_METADATA_URL                       = "https://raw.githubusercontent.com/pagopa/spid-idp/main/spid-entities-idps.xml" IDP registry fallback
+      # IDP_METADATA_URL                       = "https://registry.SPID.gov.it/metadata/idp/spid-entities-idps.xml"
+      IDP_METADATA_URL                       = "https://raw.githubusercontent.com/pagopa/spid-idp/main/spid-entities-idps.xml" # IDP registry fallback
       IDP_METADATA_REFRESH_INTERVAL_SECONDS = "864000" # 10 days
 
       // CIE
