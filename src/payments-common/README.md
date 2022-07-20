@@ -20,9 +20,12 @@
 
 | Name | Source | Version |
 |------|--------|---------|
+| <a name="module_apim_payments_updater_api_v1"></a> [apim\_payments\_updater\_api\_v1](#module\_apim\_payments\_updater\_api\_v1) | git::https://github.com/pagopa/azurerm.git//api_management_api | v1.0.16 |
+| <a name="module_apim_product_payments"></a> [apim\_product\_payments](#module\_apim\_product\_payments) | git::https://github.com/pagopa/azurerm.git//api_management_product | v1.0.16 |
 | <a name="module_cosmosdb_account_mongodb"></a> [cosmosdb\_account\_mongodb](#module\_cosmosdb\_account\_mongodb) | git::https://github.com/pagopa/azurerm.git//cosmosdb_account | v2.15.1 |
 | <a name="module_key_vault"></a> [key\_vault](#module\_key\_vault) | git::https://github.com/pagopa/azurerm.git//key_vault | v2.13.1 |
 | <a name="module_mongdb_collection_payment"></a> [mongdb\_collection\_payment](#module\_mongdb\_collection\_payment) | git::https://github.com/pagopa/azurerm.git//cosmosdb_mongodb_collection | v2.3.0 |
+| <a name="module_mongdb_collection_payment_retry"></a> [mongdb\_collection\_payment\_retry](#module\_mongdb\_collection\_payment\_retry) | git::https://github.com/pagopa/azurerm.git//cosmosdb_mongodb_collection | v2.3.0 |
 
 ## Resources
 
@@ -43,6 +46,7 @@
 | [azuread_group.adgroup_developers](https://registry.terraform.io/providers/hashicorp/azuread/2.21.0/docs/data-sources/group) | data source |
 | [azuread_group.adgroup_externals](https://registry.terraform.io/providers/hashicorp/azuread/2.21.0/docs/data-sources/group) | data source |
 | [azuread_group.adgroup_security](https://registry.terraform.io/providers/hashicorp/azuread/2.21.0/docs/data-sources/group) | data source |
+| [azurerm_api_management.apim_api](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/data-sources/api_management) | data source |
 | [azurerm_application_insights.application_insights](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/data-sources/application_insights) | data source |
 | [azurerm_client_config.current](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/data-sources/client_config) | data source |
 | [azurerm_eventhub_authorization_rule.messages-weu-prod01-evh_messages-payments_io-payment-updater](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/data-sources/eventhub_authorization_rule) | data source |
