@@ -34,8 +34,8 @@ locals {
       SAML_ISSUER                            = "https://app-backend.io.italia.it"
       SAML_ATTRIBUTE_CONSUMING_SERVICE_INDEX = "0"
       SAML_ACCEPTED_CLOCK_SKEW_MS            = "2000"
-      IDP_METADATA_URL                       = "https://registry.SPID.gov.it/metadata/idp/spid-entities-idps.xml"
-      # IDP_METADATA_URL                       = "https://raw.githubusercontent.com/pagopa/spid-idp/main/spid-entities-idps.xml" IDP registry fallback
+      # IDP_METADATA_URL                       = "https://registry.SPID.gov.it/metadata/idp/spid-entities-idps.xml"
+      IDP_METADATA_URL                       = "https://raw.githubusercontent.com/pagopa/spid-idp/main/spid-entities-idps.xml" # IDP registry fallback
       IDP_METADATA_REFRESH_INTERVAL_SECONDS = "864000" # 10 days
 
       // CIE
@@ -131,7 +131,7 @@ locals {
       FF_MESSAGES_BETA_TESTER_LIST   = data.azurerm_key_vault_secret.app_backend_APP_MESSAGES_BETA_FISCAL_CODES.value
       FF_MESSAGES_CANARY_USERS_REGEX = "XYZ"
 
-      FF_PN_ACTIVATION_ENABLED = "0" // Temporarily disabled
+      FF_PN_ACTIVATION_ENABLED = "1"
 
       // TEST LOGIN
       TEST_LOGIN_PASSWORD     = data.azurerm_key_vault_secret.app_backend_TEST_LOGIN_PASSWORD.value
@@ -168,7 +168,7 @@ locals {
       PN_API_KEY              = data.azurerm_key_vault_secret.app_backend_PN_API_KEY.value
       PN_API_KEY_UAT          = data.azurerm_key_vault_secret.app_backend_PN_API_KEY_UAT.value
       PN_API_URL              = "https://api-io.pn.pagopa.it"
-      PN_API_URL_UAT          = "https://api-io.coll.pn.pagopa.it"
+      PN_API_URL_UAT          = "https://api-io.dev.pn.pagopa.it" // DEV value will be changed with UAT when available
 
       // Third Party Services
       THIRD_PARTY_CONFIG_LIST = jsonencode([
