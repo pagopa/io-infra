@@ -105,9 +105,15 @@ eventhubs = [
         manage = false
       },
       {
-        name   = "io-p-reminder"
+        name   = "io-reminder"
         listen = true
         send   = false
+        manage = false
+      },
+      {
+        name   = "io-payment-updater"
+        listen = false
+        send   = true
         manage = false
       }
     ]

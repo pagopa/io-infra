@@ -1,0 +1,138 @@
+openapi: 3.0.0
+info:
+  title: Microservice JAVA API
+  description: Microservice JAVA API
+  version: 1.0.1
+servers:
+  - url: https://api.io.pagopa.it/api/v1/payment
+    description: Production
+tags:
+  - name: API  Payment
+    description: API  Payment
+paths:
+  /check/{rptId}:
+    get:
+      tags:
+        - API  Payment
+      summary: Check by rptId
+      operationId: checkProxy
+      parameters:
+        - name: rptId
+          in: path
+          required: true
+          schema:
+            type: string
+          description: concatenation between fiscalCode and noticeNumber
+      responses:
+        200:
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  isPaid:
+                    type: boolean
+          description: "check if the message has been paid"
+        "400":
+          $ref: "#/components/responses/400BadRequest"
+        "401":
+          $ref: "#/components/responses/401Unauthorized"
+        "503":
+          $ref: "#/components/responses/503ServiceUnavailable"
+        default:
+          $ref: "#/components/responses/default"
+  /check/messages/{messageId}:
+    get:
+      tags:
+        - API  Payment
+      summary: Check payment by messageId
+      operationId: isMessagePaid
+      parameters:
+        - name: messageId
+          in: path
+          required: true
+          schema:
+            type: string
+          description: payment's messageId
+      responses:
+        200:
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  isPaid:
+                    type: boolean
+          description: "check if the message has been paid"
+        "404":
+          $ref: "#/components/responses/404NotFound"
+        "400":
+          $ref: "#/components/responses/400BadRequest"
+        "401":
+          $ref: "#/components/responses/401Unauthorized"
+        "503":
+          $ref: "#/components/responses/503ServiceUnavailable"
+        default:
+          $ref: "#/components/responses/default"
+components:
+  schemas:
+    Problem:
+      properties:
+        timestamp:
+          description: |
+            timestamp of the error
+          type: number
+        status:
+          description: |
+            Status code description.
+          type: string
+        error:
+          description: |
+            error description.
+          format: uri
+          type: string
+        path:
+          description: |
+            An absolute URI that identifies the specific occurrence of the problem.
+            It may or may not yield further information if dereferenced.
+          type: string
+      type: object
+  responses:
+    500InternalServerError:
+      content:
+        application/problem+json:
+          schema:
+            $ref: "#/components/schemas/Problem"
+      description: Internal Server Error
+    400BadRequest:
+      content:
+        application/problem+json:
+          schema:
+            $ref: "#/components/schemas/Problem"
+      description: Bad Request
+    404NotFound:
+      description: Not Found
+    429TooManyRequests:
+      content:
+        application/problem+json:
+          schema:
+            $ref: "#/components/schemas/Problem"
+      description: Too many requests
+    503ServiceUnavailable:
+      content:
+        application/problem+json:
+          schema:
+            $ref: "#/components/schemas/Problem"
+      description: Service Unavailable
+    401Unauthorized:
+      content:
+        application/problem+json:
+          schema:
+            $ref: "#/components/schemas/Problem"
+      description: Unauthorized
+    default:
+      content:
+        application/problem+json:
+          schema:
+            $ref: "#/components/schemas/Problem"
+      description: Unexpected error
