@@ -153,7 +153,11 @@ variable "ingress_load_balancer_ip" {
   type = string
 }
 
-variable "ingress_replica_count" {
+variable "ingress_min_replica_count" {
+  type = string
+}
+
+variable "ingress_max_replica_count" {
   type = string
 }
 
@@ -162,5 +166,13 @@ variable "nginx_helm_version" {
 }
 
 variable "keda_helm_version" {
+  type = string
+}
+
+variable "prometheus_helm_version" {
+  type = string
+}
+
+variable "grafana_helm_version" {
   type = string
 }
