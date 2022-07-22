@@ -376,11 +376,6 @@ data "azurerm_key_vault_secret" "app_backend_APP_MESSAGES_BETA_FISCAL_CODES" {
   key_vault_id = data.azurerm_key_vault.common.id
 }
 
-data "azurerm_key_vault_secret" "app_backend_PN_API_KEY_TEST_ENV" {
-  name         = "appbackend-PN-API-KEY-TEST-ENV"
-  key_vault_id = data.azurerm_key_vault.common.id
-}
-
 data "azurerm_key_vault_secret" "app_backend_PN_API_KEY" {
   name         = "appbackend-PN-API-KEY-ENV"
   key_vault_id = data.azurerm_key_vault.common.id
@@ -391,10 +386,6 @@ data "azurerm_key_vault_secret" "app_backend_PN_API_KEY_UAT" {
   key_vault_id = data.azurerm_key_vault.common.id
 }
 
-data "azurerm_key_vault_secret" "app_backend_PN_API_KEY_PROD_ENV" {
-  name         = "appbackend-PN-API-KEY-PROD-ENV"
-  key_vault_id = data.azurerm_key_vault.common.id
-}
 
 ## app_backendl1
 
