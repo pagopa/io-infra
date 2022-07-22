@@ -168,7 +168,7 @@ locals {
       PN_API_KEY              = data.azurerm_key_vault_secret.app_backend_PN_API_KEY.value
       PN_API_KEY_UAT          = data.azurerm_key_vault_secret.app_backend_PN_API_KEY_UAT.value
       PN_API_URL              = "https://api-io.pn.pagopa.it"
-      PN_API_URL_UAT          = "https://api-io.dev.pn.pagopa.it" // DEV value will be changed with UAT when available
+      PN_API_URL_UAT          = "https://api-io.coll.pn.pagopa.it"
 
       // Third Party Services
       THIRD_PARTY_CONFIG_LIST = jsonencode([
@@ -186,7 +186,7 @@ locals {
           },
           testEnvironment = {
             testUsers = split(",", local.test_users),
-            baseUrl   = "https://api-io.dev.pn.pagopa.it",
+            baseUrl   = "https://api-io.coll.pn.pagopa.it",
             detailsAuthentication = {
               type            = "API_KEY",
               header_key_name = "x-api-key",
