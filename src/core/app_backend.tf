@@ -185,7 +185,7 @@ locals {
             }
           },
           testEnvironment = {
-            testUsers = split(",", local.test_users),
+            testUsers = concat(split(",", local.test_users), split(",", data.azurerm_key_vault_secret.app_backend_PN_REAL_TEST_USERS.value)),
             baseUrl   = "https://api-io.coll.pn.pagopa.it",
             detailsAuthentication = {
               type            = "API_KEY",
@@ -376,11 +376,6 @@ data "azurerm_key_vault_secret" "app_backend_APP_MESSAGES_BETA_FISCAL_CODES" {
   key_vault_id = data.azurerm_key_vault.common.id
 }
 
-data "azurerm_key_vault_secret" "app_backend_PN_API_KEY_TEST_ENV" {
-  name         = "appbackend-PN-API-KEY-TEST-ENV"
-  key_vault_id = data.azurerm_key_vault.common.id
-}
-
 data "azurerm_key_vault_secret" "app_backend_PN_API_KEY" {
   name         = "appbackend-PN-API-KEY-ENV"
   key_vault_id = data.azurerm_key_vault.common.id
@@ -391,8 +386,8 @@ data "azurerm_key_vault_secret" "app_backend_PN_API_KEY_UAT" {
   key_vault_id = data.azurerm_key_vault.common.id
 }
 
-data "azurerm_key_vault_secret" "app_backend_PN_API_KEY_PROD_ENV" {
-  name         = "appbackend-PN-API-KEY-PROD-ENV"
+data "azurerm_key_vault_secret" "app_backend_PN_REAL_TEST_USERS" {
+  name         = "appbackend-PN-REAL-TEST-USERS"
   key_vault_id = data.azurerm_key_vault.common.id
 }
 
