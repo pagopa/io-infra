@@ -168,7 +168,7 @@ locals {
       PN_API_KEY              = data.azurerm_key_vault_secret.app_backend_PN_API_KEY.value
       PN_API_KEY_UAT          = data.azurerm_key_vault_secret.app_backend_PN_API_KEY_UAT.value
       PN_API_URL              = "https://api-io.pn.pagopa.it"
-      PN_API_URL_UAT          = "https://api-io.dev.pn.pagopa.it" // DEV value will be changed with UAT when available
+      PN_API_URL_UAT          = "https://api-io.coll.pn.pagopa.it"
 
       // Third Party Services
       THIRD_PARTY_CONFIG_LIST = jsonencode([
@@ -181,16 +181,16 @@ locals {
             detailsAuthentication = {
               type            = "API_KEY",
               header_key_name = "x-api-key",
-              key             = data.azurerm_key_vault_secret.app_backend_PN_API_KEY_PROD_ENV.value
+              key             = data.azurerm_key_vault_secret.app_backend_PN_API_KEY.value
             }
           },
           testEnvironment = {
-            testUsers = split(",", local.test_users),
-            baseUrl   = "https://api-io.dev.pn.pagopa.it",
+            testUsers = concat(split(",", local.test_users), split(",", data.azurerm_key_vault_secret.app_backend_PN_REAL_TEST_USERS.value)),
+            baseUrl   = "https://api-io.coll.pn.pagopa.it",
             detailsAuthentication = {
               type            = "API_KEY",
               header_key_name = "x-api-key",
-              key             = data.azurerm_key_vault_secret.app_backend_PN_API_KEY_TEST_ENV.value
+              key             = data.azurerm_key_vault_secret.app_backend_PN_API_KEY_UAT.value
             }
           }
         }
@@ -376,11 +376,6 @@ data "azurerm_key_vault_secret" "app_backend_APP_MESSAGES_BETA_FISCAL_CODES" {
   key_vault_id = data.azurerm_key_vault.common.id
 }
 
-data "azurerm_key_vault_secret" "app_backend_PN_API_KEY_TEST_ENV" {
-  name         = "appbackend-PN-API-KEY-TEST-ENV"
-  key_vault_id = data.azurerm_key_vault.common.id
-}
-
 data "azurerm_key_vault_secret" "app_backend_PN_API_KEY" {
   name         = "appbackend-PN-API-KEY-ENV"
   key_vault_id = data.azurerm_key_vault.common.id
@@ -391,8 +386,8 @@ data "azurerm_key_vault_secret" "app_backend_PN_API_KEY_UAT" {
   key_vault_id = data.azurerm_key_vault.common.id
 }
 
-data "azurerm_key_vault_secret" "app_backend_PN_API_KEY_PROD_ENV" {
-  name         = "appbackend-PN-API-KEY-PROD-ENV"
+data "azurerm_key_vault_secret" "app_backend_PN_REAL_TEST_USERS" {
+  name         = "appbackend-PN-REAL-TEST-USERS"
   key_vault_id = data.azurerm_key_vault.common.id
 }
 
