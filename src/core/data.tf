@@ -187,10 +187,10 @@ data "azurerm_storage_account" "cdnassets" {
 
 # Event hubs
 
-data "azurerm_eventhub_authorization_rule" "io-p-payments-weu-prod01-evh-ns_io-payment-updater_io-fn-messages-cqrs" {
+data "azurerm_eventhub_authorization_rule" "io-p-payments-weu-prod01-evh-ns_payment-updates_io-fn-messages-cqrs" {
   name                = "io-fn-messages-cqrs"
   namespace_name      = "${local.project}-payments-weu-prod01-evh-ns"
-  eventhub_name       = "io-payment-updater"
+  eventhub_name       = "payment-updates"
   resource_group_name = "${local.project}-payments-weu-prod01-evt-rg"
 }
 

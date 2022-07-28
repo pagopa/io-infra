@@ -42,7 +42,7 @@ locals {
 
       PAYMENT_FOR_VIEW_TOPIC_NAME                       = "payment-updates"
       PAYMENT_FOR_VIEW_TOPIC_CONSUMER_GROUP             = "$Default"
-      PAYMENT_FOR_VIEW_TOPIC_CONSUMER_CONNECTION_STRING = data.azurerm_eventhub_authorization_rule.io-p-payments-weu-prod01-evh-ns_io-payment-updater_io-fn-messages-cqrs.primary_connection_string
+      PAYMENT_FOR_VIEW_TOPIC_CONSUMER_CONNECTION_STRING = data.azurerm_eventhub_authorization_rule.io-p-payments-weu-prod01-evh-ns_payment-updates_io-fn-messages-cqrs.primary_connection_string
 
       APIM_BASE_URL         = "https://api-internal.io.italia.it"
       APIM_SUBSCRIPTION_KEY = data.azurerm_key_vault_secret.apim_services_subscription_key.value
