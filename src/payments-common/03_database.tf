@@ -99,7 +99,7 @@ module "mongdb_collection_payment_retry" {
 
 #tfsec:ignore:AZU023
 resource "azurerm_key_vault_secret" "mongodb_connection_string" {
-  name         = "mongodb-connection-string"
+  name         = "${module.cosmosdb_account_mongodb.name}-connection-string"
   value        = module.cosmosdb_account_mongodb.connection_strings[0]
   content_type = "full connection string"
   key_vault_id = module.key_vault.id
