@@ -1,10 +1,11 @@
-prefix         = "io"
-env_short      = "p"
-env            = "prod"
-domain         = "payments"
-location       = "westeurope"
-location_short = "weu"
-instance       = "prod02"
+prefix          = "io"
+env_short       = "p"
+env             = "prod"
+domain          = "payments"
+location        = "westeurope"
+location_short  = "weu"
+location_string = "West Europe"
+instance        = "prod02"
 
 tags = {
   CreatedBy   = "Terraform"
@@ -28,6 +29,12 @@ terraform_remote_state_core = {
 monitor_resource_group_name                 = "io-p-rg-common"
 log_analytics_workspace_name                = "io-p-law-common"
 log_analytics_workspace_resource_group_name = "io-p-rg-common"
+
+### External tools
+
+reloader_helm_version  = "v0.0.110"
+tls_cert_chart_version = "1.20.3"
+tls_cert_image_tag     = "v1.2.1@sha256:fddc9bed6bb24a88635102fb38b672c1b1abdfd67b100fa0a8ce3bd13ecf09e1"
 
 ### Aks
 
