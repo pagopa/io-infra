@@ -192,8 +192,39 @@ variable "keda_helm" {
   description = "keda helm chart configuration"
 }
 
-variable "prometheus_helm_version" {
-  type = string
+variable "prometheus_helm" {
+  type = object({
+    chart_version = string,
+    alertmanager = object({
+      image_name = string,
+      image_tag  = string,
+    }),
+    configmap_reload_prometheus = object({
+      image_name = string,
+      image_tag  = string,
+    }),
+    configmap_reload_alertmanager = object({
+      image_name = string,
+      image_tag  = string,
+    }),
+    configmap_reload_prometheus = object({
+      image_name = string,
+      image_tag  = string,
+    }),
+    node_exporter = object({
+      image_name = string,
+      image_tag  = string,
+    }),
+    server = object({
+      image_name = string,
+      image_tag  = string,
+    }),
+    pushgateway = object({
+      image_name = string,
+      image_tag  = string,
+    }),
+  })
+  description = "prometheus helm chart configuration"
 }
 
 variable "grafana_helm_version" {
