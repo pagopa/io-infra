@@ -32,9 +32,20 @@ log_analytics_workspace_resource_group_name = "io-p-rg-common"
 
 ### External tools
 
-reloader_helm_version  = "v0.0.110"
-tls_cert_chart_version = "1.20.3"
-tls_cert_image_tag     = "v1.2.1@sha256:fddc9bed6bb24a88635102fb38b672c1b1abdfd67b100fa0a8ce3bd13ecf09e1"
+# chart releases: https://github.com/stakater/Reloader/releases
+# image tags: https://hub.docker.com/r/stakater/reloader/tags
+reloader_helm = {
+  chart_version = "v0.0.118"
+  image_name    = "stakater/reloader"
+  image_tag     = "v0.0.118@sha256:2d423cab8d0e83d1428ebc70c5c5cafc44bd92a597bff94007f93cddaa607b02"
+}
+# chart releases: https://github.com/pagopa/aks-microservice-chart-blueprint/releases
+# image tags: https://github.com/pagopa/infra-ssl-check/releases
+tls_cert_helm = {
+  chart_version = "1.20.3"
+  image_name    = "ghcr.io/pagopa/infra-ssl-check"
+  image_tag     = "v1.2.1@sha256:fddc9bed6bb24a88635102fb38b672c1b1abdfd67b100fa0a8ce3bd13ecf09e1"
+}
 
 ### Aks
 
