@@ -23,12 +23,20 @@ resource "helm_release" "reloader" {
   name       = "reloader"
   repository = "https://stakater.github.io/stakater-charts"
   chart      = "reloader"
-  version    = var.reloader_helm_version
+  version    = var.reloader_helm.chart_version
   namespace  = kubernetes_namespace.namespace.metadata[0].name
 
   set {
     name  = "reloader.watchGlobally"
     value = "false"
+  }
+  set {
+    name  = "reloader.deployment.image.name"
+    value = var.reloader_helm.image_name
+  }
+  set {
+    name  = "reloader.deployment.image.tag"
+    value = var.reloader_helm.image_tag
   }
 }
 
@@ -70,14 +78,15 @@ resource "helm_release" "tls_cert" {
   name       = "tls-cert"
   chart      = "microservice-chart"
   repository = "https://pagopa.github.io/aks-microservice-chart-blueprint"
-  version    = var.tls_cert_chart_version
+  version    = var.tls_cert_helm.chart_version
   namespace  = kubernetes_namespace.namespace.metadata[0].name
 
   values = [
     "${templatefile("${path.module}/templates/tls-cert.yaml.tpl",
       {
         namespace                      = var.domain
-        image_tag                      = var.tls_cert_image_tag
+        image_name                     = var.tls_cert_helm.image_name
+        image_tag                      = var.tls_cert_helm.image_tag
         website_site_name              = "tls-cert-${var.location_short}${var.instance}${var.domain}.internal.io.pagopa.it"
         time_trigger                   = "*/30 * * * *"
         function_name                  = "${var.location_short}${var.instance}.${var.domain}.internal.io.pagopa.it"

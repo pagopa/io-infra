@@ -1,7 +1,7 @@
 namespace: '${namespace}'
 
 image:
-  repository: 'ghcr.io/pagopa/infra-ssl-check'
+  repository: '${image_name}'
   tag: '${image_tag}'
 
 ingress:

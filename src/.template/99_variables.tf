@@ -110,14 +110,20 @@ variable "ingress_load_balancer_ip" {
   type = string
 }
 
-variable "reloader_helm_version" {
-  type = string
+variable "reloader_helm" {
+  type = object({
+    chart_version = string,
+    image_name    = string,
+    image_tag     = string
+  })
+  description = "reloader helm chart configuration"
 }
 
-variable "tls_cert_chart_version" {
-  type = string
-}
-
-variable "tls_cert_image_tag" {
-  type = string
+variable "tls_cert_helm" {
+  type = object({
+    chart_version = string,
+    image_name    = string,
+    image_tag     = string
+  })
+  description = "tls cert helm chart configuration"
 }
