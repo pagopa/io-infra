@@ -50,6 +50,11 @@ variable "location_short" {
   description = "One of wue, neu"
 }
 
+variable "location_string" {
+  type        = string
+  description = "One of West Europe, North Europe"
+}
+
 variable "instance" {
   type        = string
   description = "One of beta, prod01, prod02"
@@ -106,6 +111,13 @@ variable "ingress_load_balancer_ip" {
 }
 
 variable "reloader_helm_version" {
-  type    = string
-  default = "v0.0.110"
+  type = string
+}
+
+variable "tls_cert_chart_version" {
+  type = string
+}
+
+variable "tls_cert_image_tag" {
+  type = string
 }
