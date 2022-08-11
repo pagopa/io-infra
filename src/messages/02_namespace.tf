@@ -40,20 +40,20 @@ resource "helm_release" "reloader" {
   }
 }
 
-resource "helm_release" "tls_cert" {
-  name       = "tls-cert"
+resource "helm_release" "tls_cert_check" {
+  name       = "tls-cert-check"
   chart      = "microservice-chart"
   repository = "https://pagopa.github.io/aks-microservice-chart-blueprint"
-  version    = var.tls_cert_helm.chart_version
+  version    = var.tls_cert_check_helm.chart_version
   namespace  = kubernetes_namespace.namespace.metadata[0].name
 
   values = [
     "${templatefile("${path.module}/templates/tls-cert.yaml.tpl",
       {
         namespace                      = var.domain
-        image_name                     = var.tls_cert_helm.image_name
-        image_tag                      = var.tls_cert_helm.image_tag
-        website_site_name              = "tls-cert-${var.location_short}${var.instance}${var.domain}.internal.io.pagopa.it"
+        image_name                     = var.tls_cert_check_helm.image_name
+        image_tag                      = var.tls_cert_check_helm.image_tag
+        website_site_name              = "tls-cert-check-${var.location_short}${var.instance}${var.domain}.internal.io.pagopa.it"
         time_trigger                   = "*/30 * * * *"
         function_name                  = "${var.location_short}${var.instance}.${var.domain}.internal.io.pagopa.it"
         region                         = var.location_string

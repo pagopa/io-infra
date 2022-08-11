@@ -119,7 +119,7 @@ variable "reloader_helm" {
   description = "reloader helm chart configuration"
 }
 
-variable "tls_cert_helm" {
+variable "tls_cert_check_helm" {
   type = object({
     chart_version = string,
     image_name    = string,
