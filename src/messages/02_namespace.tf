@@ -39,39 +39,6 @@ resource "helm_release" "reloader" {
     value = var.reloader_helm.image_tag
   }
 }
-resource "azurerm_resource_group" "tls_cert_rg" {
-  name     = "${local.project}-tls-rg"
-  location = var.location
-
-  tags = var.tags
-}
-
-module "tls_cert_storage" {
-  source = "git::https://github.com/pagopa/azurerm.git//storage_account?ref=v2.7.0"
-
-  name                       = replace(format("%s-tls", local.project), "-", "")
-  account_kind               = "StorageV2"
-  account_tier               = "Standard"
-  access_tier                = "Hot"
-  versioning_name            = "versioning"
-  enable_versioning          = false
-  account_replication_type   = "ZRS"
-  resource_group_name        = azurerm_resource_group.tls_cert_rg.name
-  location                   = var.location
-  advanced_threat_protection = true
-  allow_blob_public_access   = false
-
-  tags = var.tags
-}
-
-#tfsec:ignore:AZU023
-resource "azurerm_key_vault_secret" "tls_cert_storage_connection_string" {
-  name         = "${module.tls_cert_storage.name}-connection-string"
-  value        = module.tls_cert_storage.primary_connection_string
-  content_type = "text/plain"
-
-  key_vault_id = data.azurerm_key_vault.kv.id
-}
 
 resource "helm_release" "tls_cert" {
   name       = "tls-cert"
@@ -93,7 +60,6 @@ resource "helm_release" "tls_cert" {
         expiration_delta_in_days       = "7"
         host                           = "${var.location_short}${var.instance}.${var.domain}.internal.io.pagopa.it"
         appinsights_instrumentationkey = "appinsights-connection-string"
-        azure_web_jobs_storage         = azurerm_key_vault_secret.tls_cert_storage_connection_string.name
         keyvault_name                  = data.azurerm_key_vault.kv.name
         keyvault_tenantid              = data.azurerm_client_config.current.tenant_id
     })}",

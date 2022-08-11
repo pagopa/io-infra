@@ -42,7 +42,7 @@ reloader_helm = {
 # chart releases: https://github.com/pagopa/aks-microservice-chart-blueprint/releases
 # image tags: https://github.com/pagopa/infra-ssl-check/releases
 tls_cert_helm = {
-  chart_version = "1.20.3"
+  chart_version = "1.21.0"
   image_name    = "ghcr.io/pagopa/infra-ssl-check"
   image_tag     = "v1.2.1@sha256:fddc9bed6bb24a88635102fb38b672c1b1abdfd67b100fa0a8ce3bd13ecf09e1"
 }
