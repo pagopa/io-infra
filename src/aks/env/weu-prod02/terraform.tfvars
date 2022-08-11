@@ -79,6 +79,17 @@ nginx_helm = {
   }
 }
 
-keda_helm_version       = "2.7.1"
+keda_helm = {
+  chart_version = "2.8.0"
+  keda = {
+    image_name = "ghcr.io/kedacore/keda"
+    image_tag  = "2.8.0@sha256:cce502ff17fd2984af70b4e470b403a82067929f6e4d1888875a52fcb33fa9fd"
+  }
+  metrics_api_server = {
+    image_name = "ghcr.io/kedacore/keda-metrics-apiserver"
+    image_tag  = "2.8.0@sha256:4afe231e9ce5ca351fcf10a83479eb0ee2f3e6dc0f386108b89d1b5623d56b14"
+  }
+}
+
 prometheus_helm_version = "15.10.4"
 grafana_helm_version    = "6.32.3"
