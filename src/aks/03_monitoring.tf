@@ -115,6 +115,37 @@ resource "helm_release" "tls_cert_check_api-app_internal_io_pagopa_it" {
   ]
 }
 
+resource "azurerm_monitor_metric_alert" "tls_cert_check_api-app_internal_io_pagopa_it" {
+  name                = "tls-cert-check-api-app.internal.io.pagopa.it"
+  resource_group_name = data.azurerm_resource_group.monitor_rg.name
+  scopes              = [data.azurerm_application_insights.application_insights.id]
+  description         = "Whenever the average availabilityresults/availabilitypercentage is less than 100%"
+  severity            = 0
+  frequency           = "PT5M"
+
+  criteria {
+    metric_namespace = "microsoft.insights/components"
+    metric_name      = "availabilityResults/availabilityPercentage"
+    aggregation      = "Average"
+    operator         = "LessThan"
+    threshold        = 100
+
+    dimension {
+      name     = "availabilityResult/name"
+      operator = "Include"
+      values   = ["api-app.internal.io.pagopa.it"]
+    }
+  }
+
+  action {
+    action_group_id = data.azurerm_monitor_action_group.slack.id
+  }
+
+  action {
+    action_group_id = data.azurerm_monitor_action_group.email.id
+  }
+}
+
 resource "helm_release" "tls_cert_check_api-internal_io_italia_it" {
   name       = "tls-cert-check-api-internal-io-italia-it"
   chart      = "microservice-chart"
@@ -137,4 +168,35 @@ resource "helm_release" "tls_cert_check_api-internal_io_italia_it" {
         appinsights_instrumentationkey = data.azurerm_application_insights.application_insights.connection_string
     })}",
   ]
+}
+
+resource "azurerm_monitor_metric_alert" "tls_cert_check_api-internal_io_italia_it" {
+  name                = "tls-cert-check-api-internal.io.italia.it"
+  resource_group_name = data.azurerm_resource_group.monitor_rg.name
+  scopes              = [data.azurerm_application_insights.application_insights.id]
+  description         = "Whenever the average availabilityresults/availabilitypercentage is less than 100%"
+  severity            = 0
+  frequency           = "PT5M"
+
+  criteria {
+    metric_namespace = "microsoft.insights/components"
+    metric_name      = "availabilityResults/availabilityPercentage"
+    aggregation      = "Average"
+    operator         = "LessThan"
+    threshold        = 100
+
+    dimension {
+      name     = "availabilityResult/name"
+      operator = "Include"
+      values   = ["api-internal.io.italia.it"]
+    }
+  }
+
+  action {
+    action_group_id = data.azurerm_monitor_action_group.slack.id
+  }
+
+  action {
+    action_group_id = data.azurerm_monitor_action_group.email.id
+  }
 }
