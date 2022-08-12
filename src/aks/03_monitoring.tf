@@ -116,7 +116,7 @@ resource "helm_release" "tls_cert_check_api-app_internal_io_pagopa_it" {
 }
 
 resource "azurerm_monitor_metric_alert" "tls_cert_check_api-app_internal_io_pagopa_it" {
-  name                = "tls-cert-check-api-app.internal.io.pagopa.it"
+  name                = "${var.domain}-tls-cert-check-api-internal.io.italia.it"
   resource_group_name = data.azurerm_resource_group.monitor_rg.name
   scopes              = [data.azurerm_application_insights.application_insights.id]
   description         = "Whenever the average availabilityresults/availabilitypercentage is less than 100%"
@@ -171,12 +171,13 @@ resource "helm_release" "tls_cert_check_api-internal_io_italia_it" {
 }
 
 resource "azurerm_monitor_metric_alert" "tls_cert_check_api-internal_io_italia_it" {
-  name                = "tls-cert-check-api-internal.io.italia.it"
+  name                = "${var.domain}-tls-cert-check-api-internal.io.italia.it"
   resource_group_name = data.azurerm_resource_group.monitor_rg.name
   scopes              = [data.azurerm_application_insights.application_insights.id]
   description         = "Whenever the average availabilityresults/availabilitypercentage is less than 100%"
   severity            = 0
   frequency           = "PT5M"
+  auto_mitigate       = false
 
   criteria {
     metric_namespace = "microsoft.insights/components"
