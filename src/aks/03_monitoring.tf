@@ -122,6 +122,7 @@ resource "azurerm_monitor_metric_alert" "tls_cert_check_api-app_internal_io_pago
   description         = "Whenever the average availabilityresults/availabilitypercentage is less than 100%"
   severity            = 0
   frequency           = "PT5M"
+  auto_mitigate       = false
 
   criteria {
     metric_namespace = "microsoft.insights/components"
