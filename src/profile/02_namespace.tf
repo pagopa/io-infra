@@ -53,7 +53,7 @@ resource "helm_release" "tls_cert_check" {
         namespace                      = var.domain
         image_name                     = var.tls_cert_check_helm.image_name
         image_tag                      = var.tls_cert_check_helm.image_tag
-        website_site_name              = "tls-cert-check-${var.location_short}${var.instance}${var.domain}.internal.io.pagopa.it"
+        website_site_name              = "tls-cert-check-${var.location_short}${var.instance}.${var.domain}.internal.io.pagopa.it"
         time_trigger                   = "*/15 * * * *"
         function_name                  = "${var.location_short}${var.instance}.${var.domain}.internal.io.pagopa.it"
         region                         = var.location_string
@@ -64,4 +64,37 @@ resource "helm_release" "tls_cert_check" {
         keyvault_tenantid              = data.azurerm_client_config.current.tenant_id
     })}",
   ]
+}
+
+resource "azurerm_monitor_metric_alert" "tls_cert_check" {
+  name                = "tls-cert-check-${var.location_short}${var.instance}.${var.domain}.internal.io.pagopa.it"
+  resource_group_name = data.azurerm_resource_group.monitor_rg.name
+  scopes              = [data.azurerm_application_insights.application_insights.id]
+  description         = "Whenever the average availabilityresults/availabilitypercentage is less than 100%"
+  severity            = 0
+  frequency           = "PT5M"
+  auto_mitigate       = false
+  enabled             = false #TODO Remove after deploy first microservice
+
+  criteria {
+    metric_namespace = "microsoft.insights/components"
+    metric_name      = "availabilityResults/availabilityPercentage"
+    aggregation      = "Average"
+    operator         = "LessThan"
+    threshold        = 100
+
+    dimension {
+      name     = "availabilityResult/name"
+      operator = "Include"
+      values   = ["${var.location_short}${var.instance}.${var.domain}.internal.io.pagopa.it"]
+    }
+  }
+
+  action {
+    action_group_id = data.azurerm_monitor_action_group.slack.id
+  }
+
+  action {
+    action_group_id = data.azurerm_monitor_action_group.email.id
+  }
 }
