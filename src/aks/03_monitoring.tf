@@ -90,3 +90,51 @@ resource "helm_release" "prometheus" {
 #     value = data.azurerm_key_vault_secret.grafana_admin_password.value
 #   }
 # }
+
+resource "helm_release" "tls_cert_check_api-app_internal_io_pagopa_it" {
+  name       = "tls-cert-check-api-app-internal-io-pagopa-it"
+  chart      = "microservice-chart"
+  repository = "https://pagopa.github.io/aks-microservice-chart-blueprint"
+  version    = var.tls_cert_check_helm.chart_version
+  namespace  = kubernetes_namespace.monitoring.metadata[0].name
+
+  values = [
+    "${templatefile("${path.module}/templates/tls-cert.yaml.tpl",
+      {
+        namespace                      = kubernetes_namespace.monitoring.metadata[0].name
+        image_name                     = var.tls_cert_check_helm.image_name
+        image_tag                      = var.tls_cert_check_helm.image_tag
+        website_site_name              = "tls-cert-check-api-app.internal.io.pagopa.it"
+        time_trigger                   = "*/15 * * * *"
+        function_name                  = "api-app.internal.io.pagopa.it"
+        region                         = var.location_string
+        expiration_delta_in_days       = "7"
+        host                           = "api-app.internal.io.pagopa.it"
+        appinsights_instrumentationkey = data.azurerm_application_insights.application_insights.connection_string
+    })}",
+  ]
+}
+
+resource "helm_release" "tls_cert_check_api-internal_io_italia_it" {
+  name       = "tls-cert-check-api-internal-io-italia-it"
+  chart      = "microservice-chart"
+  repository = "https://pagopa.github.io/aks-microservice-chart-blueprint"
+  version    = var.tls_cert_check_helm.chart_version
+  namespace  = kubernetes_namespace.monitoring.metadata[0].name
+
+  values = [
+    "${templatefile("${path.module}/templates/tls-cert.yaml.tpl",
+      {
+        namespace                      = kubernetes_namespace.monitoring.metadata[0].name
+        image_name                     = var.tls_cert_check_helm.image_name
+        image_tag                      = var.tls_cert_check_helm.image_tag
+        website_site_name              = "tls-cert-check-api-internal.io.italia.it"
+        time_trigger                   = "*/15 * * * *"
+        function_name                  = "api-internal.io.italia.it"
+        region                         = var.location_string
+        expiration_delta_in_days       = "7"
+        host                           = "api-internal.io.italia.it"
+        appinsights_instrumentationkey = data.azurerm_application_insights.application_insights.connection_string
+    })}",
+  ]
+}
