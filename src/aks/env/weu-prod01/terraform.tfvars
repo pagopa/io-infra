@@ -1,9 +1,10 @@
-prefix         = "io"
-env_short      = "p"
-env            = "prod"
-domain         = "prod01"
-location       = "westeurope"
-location_short = "weu"
+prefix          = "io"
+env_short       = "p"
+env             = "prod"
+domain          = "prod01"
+location        = "westeurope"
+location_string = "West Europe"
+location_short  = "weu"
 
 tags = {
   CreatedBy   = "Terraform"
@@ -27,6 +28,7 @@ terraform_remote_state_core = {
 monitor_resource_group_name                 = "io-p-rg-common"
 log_analytics_workspace_name                = "io-p-law-common"
 log_analytics_workspace_resource_group_name = "io-p-rg-common"
+application_insights_name                   = "io-p-ai-common"
 
 ### Aks
 
@@ -128,4 +130,12 @@ prometheus_helm = {
   }
 }
 
-grafana_helm_version = "6.32.3"
+# chart releases: https://github.com/pagopa/aks-microservice-chart-blueprint/releases
+# image tags: https://github.com/pagopa/infra-ssl-check/releases
+tls_cert_check_helm = {
+  chart_version = "1.21.0"
+  image_name    = "ghcr.io/pagopa/infra-ssl-check"
+  image_tag     = "v1.2.1@sha256:fddc9bed6bb24a88635102fb38b672c1b1abdfd67b100fa0a8ce3bd13ecf09e1"
+}
+
+# grafana_helm_version = "6.32.3"

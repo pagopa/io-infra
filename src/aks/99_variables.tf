@@ -50,6 +50,11 @@ variable "location_short" {
   description = "One of wue, neu"
 }
 
+variable "location_string" {
+  type        = string
+  description = "One of West Europe, North Europe"
+}
+
 variable "lock_enable" {
   type        = bool
   default     = false
@@ -87,6 +92,11 @@ variable "log_analytics_workspace_name" {
 variable "log_analytics_workspace_resource_group_name" {
   type        = string
   description = "The name of the resource group in which the Log Analytics workspace is located in."
+}
+
+variable "application_insights_name" {
+  type        = string
+  description = "Specifies the name of the Application Insights."
 }
 
 ### Aks
@@ -227,6 +237,15 @@ variable "prometheus_helm" {
   description = "prometheus helm chart configuration"
 }
 
-variable "grafana_helm_version" {
-  type = string
+variable "tls_cert_check_helm" {
+  type = object({
+    chart_version = string,
+    image_name    = string,
+    image_tag     = string
+  })
+  description = "tls cert helm chart configuration"
 }
+
+# variable "grafana_helm_version" {
+#   type = string
+# }
