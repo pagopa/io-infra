@@ -54,7 +54,7 @@ resource "helm_release" "tls_cert_check" {
         image_name                     = var.tls_cert_check_helm.image_name
         image_tag                      = var.tls_cert_check_helm.image_tag
         website_site_name              = "tls-cert-check-${var.location_short}${var.instance}.${var.domain}.internal.io.pagopa.it"
-        time_trigger                   = "*/15 * * * *"
+        time_trigger                   = "*/1 * * * *"
         function_name                  = "${var.location_short}${var.instance}.${var.domain}.internal.io.pagopa.it"
         region                         = var.location_string
         expiration_delta_in_days       = "7"
@@ -80,7 +80,7 @@ resource "azurerm_monitor_metric_alert" "tls_cert_check" {
     metric_name      = "availabilityResults/availabilityPercentage"
     aggregation      = "Average"
     operator         = "LessThan"
-    threshold        = 100
+    threshold        = 50
 
     dimension {
       name     = "availabilityResult/name"

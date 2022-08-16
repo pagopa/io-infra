@@ -202,6 +202,15 @@ variable "keda_helm" {
   description = "keda helm chart configuration"
 }
 
+variable "reloader_helm" {
+  type = object({
+    chart_version = string,
+    image_name    = string,
+    image_tag     = string
+  })
+  description = "reloader helm chart configuration"
+}
+
 variable "prometheus_helm" {
   type = object({
     chart_version = string,

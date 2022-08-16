@@ -96,6 +96,14 @@ keda_helm = {
   }
 }
 
+# chart releases: https://github.com/stakater/Reloader/releases
+# image tags: https://hub.docker.com/r/stakater/reloader/tags
+reloader_helm = {
+  chart_version = "v0.0.118"
+  image_name    = "stakater/reloader"
+  image_tag     = "v0.0.118@sha256:2d423cab8d0e83d1428ebc70c5c5cafc44bd92a597bff94007f93cddaa607b02"
+}
+
 # chart releases: https://github.com/prometheus-community/helm-charts/releases?q=tag%3Aprometheus-15&expanded=true
 # quay.io/prometheus/alertmanager image tags: https://quay.io/repository/prometheus/alertmanager?tab=tags
 # jimmidyson/configmap-reload image tags: https://hub.docker.com/r/jimmidyson/configmap-reload/tags

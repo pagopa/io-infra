@@ -91,6 +91,27 @@ resource "helm_release" "prometheus" {
 #   }
 # }
 
+resource "helm_release" "monitoring_reloader" {
+  name       = "reloader"
+  repository = "https://stakater.github.io/stakater-charts"
+  chart      = "reloader"
+  version    = var.reloader_helm.chart_version
+  namespace  = kubernetes_namespace.monitoring.metadata[0].name
+
+  set {
+    name  = "reloader.watchGlobally"
+    value = "false"
+  }
+  set {
+    name  = "reloader.deployment.image.name"
+    value = var.reloader_helm.image_name
+  }
+  set {
+    name  = "reloader.deployment.image.tag"
+    value = var.reloader_helm.image_tag
+  }
+}
+
 resource "helm_release" "tls_cert_check_api-app_internal_io_pagopa_it" {
   name       = "tls-cert-check-api-app-internal-io-pagopa-it"
   chart      = "microservice-chart"
@@ -105,7 +126,7 @@ resource "helm_release" "tls_cert_check_api-app_internal_io_pagopa_it" {
         image_name                     = var.tls_cert_check_helm.image_name
         image_tag                      = var.tls_cert_check_helm.image_tag
         website_site_name              = "tls-cert-check-api-app.internal.io.pagopa.it"
-        time_trigger                   = "*/15 * * * *"
+        time_trigger                   = "*/1 * * * *"
         function_name                  = "api-app.internal.io.pagopa.it"
         region                         = var.location_string
         expiration_delta_in_days       = "7"
@@ -129,7 +150,7 @@ resource "azurerm_monitor_metric_alert" "tls_cert_check_api-app_internal_io_pago
     metric_name      = "availabilityResults/availabilityPercentage"
     aggregation      = "Average"
     operator         = "LessThan"
-    threshold        = 100
+    threshold        = 50
 
     dimension {
       name     = "availabilityResult/name"
@@ -161,7 +182,7 @@ resource "helm_release" "tls_cert_check_api-internal_io_italia_it" {
         image_name                     = var.tls_cert_check_helm.image_name
         image_tag                      = var.tls_cert_check_helm.image_tag
         website_site_name              = "tls-cert-check-api-internal.io.italia.it"
-        time_trigger                   = "*/15 * * * *"
+        time_trigger                   = "*/1 * * * *"
         function_name                  = "api-internal.io.italia.it"
         region                         = var.location_string
         expiration_delta_in_days       = "7"
@@ -185,7 +206,7 @@ resource "azurerm_monitor_metric_alert" "tls_cert_check_api-internal_io_italia_i
     metric_name      = "availabilityResults/availabilityPercentage"
     aggregation      = "Average"
     operator         = "LessThan"
-    threshold        = 100
+    threshold        = 50
 
     dimension {
       name     = "availabilityResult/name"
