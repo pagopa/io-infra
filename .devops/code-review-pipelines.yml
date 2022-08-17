@@ -5,10 +5,8 @@ pr:
       - main
   paths:
     include:
-      - "src/*"
+      - "src/core*"
       - ".devops/*"
-    exclude:
-      - "src/k8s/*"
 
 parameters:
   - name: "PROD"
