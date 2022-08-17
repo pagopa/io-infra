@@ -2,6 +2,8 @@ name: Static Analysis
 
 on:
   push:
+    branches-ignore:
+      - main
 
 jobs:
   static_analysis:
@@ -10,25 +12,46 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
-      - name: init_src
+      - name: init_terraform_folders
+        env:
+          FOLDERS: >
+            src/core
+            src/aks-platform
+            src/domains/messages-app
+            src/domains/messages-common
+            src/domains/payments-app
+            src/domains/payments-common
+            src/domains/profile-app
+            src/domains/profile-common
+            src/domains/reminder
+            src/domains/sing
         run: |
+          pids=()
+
           TAG=$(cat .terraform-version)
-          cd src
-          for folder in *; do
-            if [ -d "$folder" ]; then
-              # exclude psql folder from static analysis
-              [[ -d "$folder" && "$folder" =~ psql ]] && continue
-
-              echo "🔬 folder: $folder in under terraform"
-              cd "$folder" || exit 1
-
+          for f in $FOLDERS; do
+            pushd "$(pwd)/${f}"
               sed -i -e 's/  backend "azurerm" {}//g' 99_main.tf # use local backend
-              docker run -v $(pwd):/tmp -w /tmp hashicorp/terraform:$TAG init
-              cd ..
-            fi
+              docker run -v $(pwd):/tmp -w /tmp hashicorp/terraform:$TAG init &
+              pids+=($!)
+            popd
           done
 
-      - name: run_test
+          # Wait for each specific process to terminate.
+          # Instead of this loop, a single call to 'wait' would wait for all the jobs
+          # to terminate, but it would not give us their exit status.
+          #
+          for pid in "${pids[@]}"; do
+            #
+            # Waiting on a specific PID makes the wait command return with the exit
+            # status of that process. Because of the 'set -e' setting, any exit status
+            # other than zero causes the current shell to terminate with that exit
+            # status as well.
+            #
+            wait "$pid"
+          done
+
+      - name: run_pre_commit_terraform
         run: |
-          TAG=nightly
+          TAG=v1.74.1
           docker run -v $(pwd):/lint -w /lint ghcr.io/antonbabenko/pre-commit-terraform:$TAG run -a
