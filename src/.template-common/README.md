@@ -12,8 +12,8 @@
 
 | Name | Version |
 |------|---------|
-| <a name="provider_azuread"></a> [azuread](#provider\_azuread) | = 2.21.0 |
-| <a name="provider_azurerm"></a> [azurerm](#provider\_azurerm) | = 2.99.0 |
+| <a name="provider_azuread"></a> [azuread](#provider\_azuread) | 2.21.0 |
+| <a name="provider_azurerm"></a> [azurerm](#provider\_azurerm) | 2.99.0 |
 | <a name="provider_terraform"></a> [terraform](#provider\_terraform) | n/a |
 
 ## Modules
