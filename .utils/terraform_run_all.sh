@@ -16,6 +16,8 @@ ACTION="$1"
 
 array=(
     'src/core::prod'
+    'src/.template::prod'
+    'src/.template-common::prod'
     'src/aks-platform::weu-beta'
     'src/domains/messages-app::weu-beta'
     'src/domains/messages-common::prod'

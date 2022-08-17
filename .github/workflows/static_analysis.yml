@@ -16,6 +16,8 @@ jobs:
         env:
           FOLDERS: >
             src/core
+            src/.template
+            src/.template-common
             src/aks-platform
             src/domains/messages-app
             src/domains/messages-common
