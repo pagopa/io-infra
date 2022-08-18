@@ -81,7 +81,7 @@ stages:
 
   - stage: PROD_AKS_PLATFORM
     dependsOn: []
-    condition: and(eq(${{parameters.AKS}}, true), eq(${{parameters.PROD}}, true))
+    condition: and(eq(${{parameters.AKS_PLATFORM}}, true), eq(${{parameters.PROD}}, true))
     pool:
       name: io-prod-linux
     jobs:
