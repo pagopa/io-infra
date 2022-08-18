@@ -5,7 +5,7 @@ pr:
       - main
   paths:
     include:
-      - "src/core*"
+      - "src/core/*"
       - ".devops/*"
 
 parameters:
@@ -23,22 +23,8 @@ parameters:
     values:
       - False
       - True
-  - name: "SIGN"
-    displayName: "Run on sign domain"
-    type: boolean
-    default: True
-    values:
-      - False
-      - True
-  - name: "REMINDER"
-    displayName: "Run on reminder domain"
-    type: boolean
-    default: True
-    values:
-      - False
-      - True
-  - name: "AKS"
-    displayName: "Run on aks domain"
+  - name: "AKS_PLATFORM"
+    displayName: "Run on aks platform"
     type: boolean
     default: False
     values:
@@ -56,8 +42,8 @@ resources:
     - repository: terraform
       type: github
       name: pagopa/azure-pipeline-templates
-      ref: refs/tags/v17
-      endpoint: "io-azure-devops-github-ro"
+      ref: refs/tags/v2.4.0
+      endpoint: 'io-azure-devops-github-ro'
 
 stages:
   - stage: PROD_CORE
@@ -74,7 +60,7 @@ stages:
           # 2. Run terragrunt plan
           - template: templates/terraform-plan/template.yaml@terraform
             parameters:
-              SUBSCRIPTION: PROD-IO-SERVICE-CONN
+              AZURE_SERVICE_CONNECTION_NAME: PROD-IO-SERVICE-CONN
               ENVIRONMENT: prod
               WORKINGDIR: "src/core"
       - job: validate_migration
@@ -93,7 +79,7 @@ stages:
                 ./flyway.sh validate PROD-IO db -ignorePendingMigrations=true && echo "Validation successful" || { echo "Validation failed"; exit 1; }
                 ./flyway.sh info PROD-IO db && echo "Info successful" || { echo "Info failed"; exit 1; }
 
-  - stage: PROD_AKS
+  - stage: PROD_AKS_PLATFORM
     dependsOn: []
     condition: and(eq(${{parameters.AKS}}, true), eq(${{parameters.PROD}}, true))
     pool:
@@ -107,52 +93,16 @@ stages:
           # 2. Run terragrunt plan
           - template: templates/terraform-plan/template.yaml@terraform
             parameters:
-              SUBSCRIPTION: PROD-IO-AKS-SERVICE-CONN
+              AZURE_SERVICE_CONNECTION_NAME: PROD-IO-AKS-PLATFORM-SERVICE-CONN
               ENVIRONMENT: weu-beta
-              WORKINGDIR: "src/aks"
+              WORKINGDIR: "src/aks-platform"
           - template: templates/terraform-plan/template.yaml@terraform
             parameters:
-              SUBSCRIPTION: PROD-IO-AKS-SERVICE-CONN
+              AZURE_SERVICE_CONNECTION_NAME: PROD-IO-AKS-PLATFORM-SERVICE-CONN
               ENVIRONMENT: weu-prod01
-              WORKINGDIR: "src/aks"
+              WORKINGDIR: "src/aks-platform"
           # - template: templates/terraform-plan/template.yaml@terraform
           #   parameters:
-          #     SUBSCRIPTION: PROD-IO-AKS-SERVICE-CONN
+          #     AZURE_SERVICE_CONNECTION_NAME: PROD-IO-AKS-PLATFORM-SERVICE-CONN
           #     ENVIRONMENT: weu-prod02
-          #     WORKINGDIR: "src/aks"
-
-  - stage: PROD_SIGN
-    dependsOn: []
-    condition: and(eq(${{parameters.SIGN}}, true), eq(${{parameters.PROD}}, true))
-    pool:
-      name: io-prod-linux
-    jobs:
-      - job: terraform_plan
-        timeoutInMinutes: $[variables.TIME_OUT]
-        steps:
-          # 1. Install terraform
-          - template: templates/terraform-setup/template.yaml@terraform
-          # 2. Run terragrunt plan
-          - template: templates/terraform-plan/template.yaml@terraform
-            parameters:
-              SUBSCRIPTION: PROD-IO-SIGN-SERVICE-CONN
-              ENVIRONMENT: prod
-              WORKINGDIR: "src/sign"
-
-  - stage: PROD_REMINDER
-    dependsOn: []
-    condition: and(eq(${{parameters.REMINDER}}, true), eq(${{parameters.PROD}}, true))
-    pool:
-      name: io-prod-linux
-    jobs:
-      - job: terraform_plan
-        timeoutInMinutes: $[variables.TIME_OUT]
-        steps:
-          # 1. Install terraform
-          - template: templates/terraform-setup/template.yaml@terraform
-          # 2. Run terragrunt plan
-          - template: templates/terraform-plan/template.yaml@terraform
-            parameters:
-              SUBSCRIPTION: PROD-IO-REMINDER-SERVICE-CONN
-              ENVIRONMENT: prod
-              WORKINGDIR: "src/reminder"
+          #     WORKINGDIR: "src/aks-platform"
