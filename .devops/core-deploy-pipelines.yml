@@ -19,7 +19,7 @@ parameters:
       - True
 
 variables:
-  TIME_OUT: 5
+  TIME_OUT: 10
 
 pool:
   vmImage: "ubuntu-20.04"
@@ -45,25 +45,25 @@ stages:
         steps:
           # 1. Install terraform
           - template: templates/terraform-setup/template.yaml@terraform
-          # # 2. Run terraform plan
-          # - template: templates/terraform-plan/template.yaml@terraform
-          #   parameters:
-          #     AZURE_SERVICE_CONNECTION_NAME: PROD-IO-SERVICE-CONN
-          #     ENVIRONMENT: prod
-          #     WORKINGDIR: "src/core"
-          # - task: AzureCLI@2
-          #   displayName: validate migration data on subscription-migrations
-          #   inputs:
-          #     azureSubscription: PROD-IO-SERVICE-CONN
-          #     scriptType: "bash"
-          #     scriptLocation: "inlineScript"
-          #     failOnStandardError: false
-          #     inlineScript: |
-          #       set -e
-          #       cd src/psql/selfcare/subscription-migrations
-          #       echo "Validating migrations"
-          #       ./flyway.sh validate PROD-IO db -ignorePendingMigrations=true && echo "Validation successful" || { echo "Validation failed"; exit 1; }
-          #       ./flyway.sh info PROD-IO db && echo "Info successful" || { echo "Info failed"; exit 1; }
+          # 2. Run terraform plan
+          - template: templates/terraform-plan/template.yaml@terraform
+            parameters:
+              AZURE_SERVICE_CONNECTION_NAME: PROD-IO-SERVICE-CONN
+              ENVIRONMENT: prod
+              WORKINGDIR: "src/core"
+          - task: AzureCLI@2
+            displayName: validate migration data on subscription-migrations
+            inputs:
+              azureSubscription: PROD-IO-SERVICE-CONN
+              scriptType: "bash"
+              scriptLocation: "inlineScript"
+              failOnStandardError: false
+              inlineScript: |
+                set -e
+                cd src/psql/selfcare/subscription-migrations
+                echo "Validating migrations"
+                ./flyway.sh validate PROD-IO db -ignorePendingMigrations=true && echo "Validation successful" || { echo "Validation failed"; exit 1; }
+                ./flyway.sh info PROD-IO db && echo "Info successful" || { echo "Info failed"; exit 1; }
 
   - stage: apply_PROD_CORE
     dependsOn: [plan_PROD_CORE]
@@ -80,12 +80,12 @@ stages:
               steps:
                 # 1. Install terraform
                 - template: templates/terraform-setup/template.yaml@terraform
-                # # 2. Run terraform apply
-                # - template: templates/terraform-apply/template.yaml@terraform
-                #   parameters:
-                #     AZURE_SERVICE_CONNECTION_NAME: PROD-IO-SERVICE-CONN
-                #     ENVIRONMENT: prod
-                #     WORKINGDIR: "src/core"
+                # 2. Run terraform apply
+                - template: templates/terraform-apply/template.yaml@terraform
+                  parameters:
+                    AZURE_SERVICE_CONNECTION_NAME: PROD-IO-SERVICE-CONN
+                    ENVIRONMENT: prod
+                    WORKINGDIR: "src/core"
       - deployment: migrate
         continueOnError: false
         dependsOn: apply
@@ -105,4 +105,4 @@ stages:
                       set -e
                       cd src/psql/selfcare/subscription-migrations
                       echo "Executing migrations"
-                      # ./flyway.sh migrate PROD-IO db && echo "Migration successful" || { echo "Migration failed"; exit 1; }
+                      ./flyway.sh migrate PROD-IO db && echo "Migration successful" || { echo "Migration failed"; exit 1; }
