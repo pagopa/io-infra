@@ -69,7 +69,7 @@ stages:
               AZURE_SERVICE_CONNECTION_NAME: PROD-IO-SERVICE-CONN
 
   - stage: tf_plan_app
-    dependsOn: [tf_plan_common]
+    dependsOn: []
     condition: and(succeeded(), eq(${{parameters.APP}}, true))
     pool:
       name: io-prod-linux
