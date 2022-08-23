@@ -64,7 +64,7 @@ stages:
           # 2. Run terraform plan messages-common
           - template: templates/terraform-plan/template.yaml@terraform
             parameters:
-              ENVIRONMENT: "weu-beta"
+              ENVIRONMENT: "prod"
               WORKINGDIR: 'src/domains/messages-common'
               AZURE_SERVICE_CONNECTION_NAME: PROD-IO-SERVICE-CONN
 
