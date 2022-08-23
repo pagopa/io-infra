@@ -31,8 +31,8 @@ parameters:
     values:
       - False
       - True
-  - name: "AKS"
-    displayName: "Run on aks domain"
+  - name: "AKS_PLATFORM"
+    displayName: "Run on aks platform"
     type: boolean
     default: False
     values:
@@ -69,7 +69,7 @@ stages:
           # 2. Run terraform plan
           - template: templates/terraform-plan/template.yaml@terraform
             parameters:
-              SUBSCRIPTION: PROD-IO-SERVICE-CONN
+              AZURE_SERVICE_CONNECTION_NAME: PROD-IO-SERVICE-CONN
               ENVIRONMENT: prod
               WORKINGDIR: "src/core"
           - task: AzureCLI@2
@@ -104,7 +104,7 @@ stages:
                 # 2. Run terraform apply
                 - template: templates/terraform-apply/template.yaml@terraform
                   parameters:
-                    SUBSCRIPTION: PROD-IO-SERVICE-CONN
+                    AZURE_SERVICE_CONNECTION_NAME: PROD-IO-SERVICE-CONN
                     ENVIRONMENT: prod
                     WORKINGDIR: "src/core"
       - deployment: migrate
@@ -128,10 +128,10 @@ stages:
                       echo "Executing migrations"
                       ./flyway.sh migrate PROD-IO db && echo "Migration successful" || { echo "Migration failed"; exit 1; }
 
-  # PROD_AKS
-  - stage: plan_PROD_AKS
+  # PROD_AKS_PLATFORM
+  - stage: plan_PROD_AKS_PLATFORM
     dependsOn: []
-    condition: and(eq(${{parameters.AKS}}, true), eq(${{parameters.PROD}}, true))
+    condition: and(eq(${{parameters.AKS_PLATFORM}}, true), eq(${{parameters.PROD}}, true))
     pool:
       name: io-prod-linux
     jobs:
@@ -143,23 +143,23 @@ stages:
           # 2. Run terraform plan
           - template: templates/terraform-plan/template.yaml@terraform
             parameters:
-              SUBSCRIPTION: PROD-IO-AKS-SERVICE-CONN
+              AZURE_SERVICE_CONNECTION_NAME: PROD-IO-AKS-PLATFORM-SERVICE-CONN
               ENVIRONMENT: weu-beta
-              WORKINGDIR: "src/aks"
+              WORKINGDIR: "src/aks-platform"
           - template: templates/terraform-plan/template.yaml@terraform
             parameters:
-              SUBSCRIPTION: PROD-IO-AKS-SERVICE-CONN
+              AZURE_SERVICE_CONNECTION_NAME: PROD-IO-AKS-PLATFORM-SERVICE-CONN
               ENVIRONMENT: weu-prod01
-              WORKINGDIR: "src/aks"
+              WORKINGDIR: "src/aks-platform"
           # - template: templates/terraform-plan/template.yaml@terraform
           #   parameters:
-          #     SUBSCRIPTION: PROD-IO-AKS-SERVICE-CONN
+          #     AZURE_SERVICE_CONNECTION_NAME: PROD-IO-AKS-PLATFORM-SERVICE-CONN
           #     ENVIRONMENT: weu-prod02
-          #     WORKINGDIR: "src/aks"
+          #     WORKINGDIR: "src/aks-platform"
 
-  - stage: apply_PROD_AKS
-    dependsOn: [plan_PROD_AKS]
-    condition: and(eq(${{parameters.AKS}}, true), eq(${{parameters.PROD}}, true))
+  - stage: apply_PROD_AKS_PLATFORM
+    dependsOn: [plan_PROD_AKS_PLATFORM]
+    condition: and(eq(${{parameters.AKS_PLATFORM}}, true), eq(${{parameters.PROD}}, true))
     pool:
       name: io-prod-linux
     jobs:
@@ -175,19 +175,19 @@ stages:
                 # 2. Run terraform apply
                 - template: templates/terraform-apply/template.yaml@terraform
                   parameters:
-                    SUBSCRIPTION: PROD-IO-SERVICE-CONN
+                    AZURE_SERVICE_CONNECTION_NAME: PROD-IO-SERVICE-CONN
                     ENVIRONMENT: weu-beta
-                    WORKINGDIR: "src/aks"
+                    WORKINGDIR: "src/aks-platform"
                 - template: templates/terraform-apply/template.yaml@terraform
                   parameters:
-                    SUBSCRIPTION: PROD-IO-SERVICE-CONN
+                    AZURE_SERVICE_CONNECTION_NAME: PROD-IO-SERVICE-CONN
                     ENVIRONMENT: weu-prod01
-                    WORKINGDIR: "src/aks"
+                    WORKINGDIR: "src/aks-platform"
                 # - template: templates/terraform-apply/template.yaml@terraform
                 #   parameters:
-                #     SUBSCRIPTION: PROD-IO-SERVICE-CONN
+                #     AZURE_SERVICE_CONNECTION_NAME: PROD-IO-SERVICE-CONN
                 #     ENVIRONMENT: weu-prod02
-                #     WORKINGDIR: "src/aks"
+                #     WORKINGDIR: "src/aks-platform"
 
   # PROD_SIGN
   - stage: plan_PROD_SIGN
@@ -204,7 +204,7 @@ stages:
           # 2. Run terraform plan
           - template: templates/terraform-plan/template.yaml@terraform
             parameters:
-              SUBSCRIPTION: PROD-IO-SIGN-SERVICE-CONN
+              AZURE_SERVICE_CONNECTION_NAME: PROD-IO-SIGN-SERVICE-CONN
               ENVIRONMENT: prod
               WORKINGDIR: "src/sign"
 
@@ -226,7 +226,7 @@ stages:
                 # 2. Run terraform apply
                 - template: templates/terraform-apply/template.yaml@terraform
                   parameters:
-                    SUBSCRIPTION: PROD-IO-SIGN-SERVICE-CONN
+                    AZURE_SERVICE_CONNECTION_NAME: PROD-IO-SIGN-SERVICE-CONN
                     ENVIRONMENT: prod
                     WORKINGDIR: "src/sign"
 
@@ -245,7 +245,7 @@ stages:
           # 2. Run terraform plan
           - template: templates/terraform-plan/template.yaml@terraform
             parameters:
-              SUBSCRIPTION: PROD-IO-REMINDER-SERVICE-CONN
+              AZURE_SERVICE_CONNECTION_NAME: PROD-IO-REMINDER-SERVICE-CONN
               ENVIRONMENT: prod
               WORKINGDIR: "src/reminder"
 
@@ -267,6 +267,6 @@ stages:
                 # 2. Run terraform apply
                 - template: templates/terraform-apply/template.yaml@terraform
                   parameters:
-                    SUBSCRIPTION: PROD-IO-REMINDER-SERVICE-CONN
+                    AZURE_SERVICE_CONNECTION_NAME: PROD-IO-REMINDER-SERVICE-CONN
                     ENVIRONMENT: prod
                     WORKINGDIR: "src/reminder"

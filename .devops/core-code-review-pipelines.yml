@@ -1,0 +1,66 @@
+pr:
+  autoCancel: false # prevent terraform state lock on new commits
+  branches:
+    include:
+      - main
+  paths:
+    include:
+      - "src/core/*"
+      - ".devops/*"
+
+parameters:
+  - name: "PROD"
+    displayName: "Run on PROD environment"
+    type: boolean
+    default: True
+    values:
+      - False
+      - True
+
+variables:
+  TIME_OUT: 10
+
+pool:
+  vmImage: "ubuntu-20.04"
+
+resources:
+  repositories:
+    - repository: terraform
+      type: github
+      name: pagopa/azure-pipeline-templates
+      ref: refs/tags/v2.4.0
+      endpoint: 'io-azure-devops-github-ro'
+
+stages:
+  - stage: PROD_CORE
+    dependsOn: []
+    condition: eq(${{parameters.PROD}}, true)
+    pool:
+      name: io-prod-linux
+    jobs:
+      - job: terraform_plan
+        timeoutInMinutes: $[variables.TIME_OUT]
+        steps:
+          # 1. Install terraform
+          - template: templates/terraform-setup/template.yaml@terraform
+          # 2. Run terragrunt plan
+          - template: templates/terraform-plan/template.yaml@terraform
+            parameters:
+              AZURE_SERVICE_CONNECTION_NAME: PROD-IO-SERVICE-CONN
+              ENVIRONMENT: prod
+              WORKINGDIR: "src/core"
+      - job: validate_sql_migration
+        steps:
+          - task: AzureCLI@2
+            displayName: validate migration data on subscription-migrations
+            inputs:
+              azureSubscription: PROD-IO-SERVICE-CONN
+              scriptType: "bash"
+              scriptLocation: "inlineScript"
+              failOnStandardError: false
+              inlineScript: |
+                set -e
+                cd src/psql/selfcare/subscription-migrations
+                echo "Validating migrations"
+                ./flyway.sh validate PROD-IO db -ignorePendingMigrations=true && echo "Validation successful" || { echo "Validation failed"; exit 1; }
+                ./flyway.sh info PROD-IO db && echo "Info successful" || { echo "Info failed"; exit 1; }

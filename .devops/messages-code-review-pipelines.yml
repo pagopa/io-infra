@@ -114,7 +114,7 @@ stages:
   #         # 2. Run terragrunt plan
   #         - template: templates/terraform-plan/template.yaml@terraform
   #           parameters:
-  #             SUBSCRIPTION: UAT-CSTAR-SERVICE-CONN
+  #             AZURE_SERVICE_CONNECTION_NAME: UAT-CSTAR-SERVICE-CONN
   #             ENVIRONMENT: uat
 
   # - stage: PROD
@@ -135,5 +135,5 @@ stages:
   #         # 2. Run terragrunt plan
   #         - template: templates/terraform-plan/template.yaml@terraform
   #           parameters:
-  #             SUBSCRIPTION: PROD-CSTAR-SERVICE-CONN
+  #             AZURE_SERVICE_CONNECTION_NAME: PROD-CSTAR-SERVICE-CONN
   #             ENVIRONMENT: prod
