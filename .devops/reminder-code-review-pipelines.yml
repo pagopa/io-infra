@@ -5,7 +5,7 @@ pr:
       - main
   paths:
     include:
-      - "src/core*"
+      - "src/core/*"
       - ".devops/*"
 
 parameters:
@@ -74,7 +74,7 @@ stages:
           # 2. Run terragrunt plan
           - template: templates/terraform-plan/template.yaml@terraform
             parameters:
-              SUBSCRIPTION: PROD-IO-SERVICE-CONN
+              AZURE_SERVICE_CONNECTION_NAME: PROD-IO-SERVICE-CONN
               ENVIRONMENT: prod
               WORKINGDIR: "src/core"
       - job: validate_migration
@@ -107,17 +107,17 @@ stages:
           # 2. Run terragrunt plan
           - template: templates/terraform-plan/template.yaml@terraform
             parameters:
-              SUBSCRIPTION: PROD-IO-AKS-SERVICE-CONN
+              AZURE_SERVICE_CONNECTION_NAME: PROD-IO-AKS-PLATFORM-SERVICE-CONN
               ENVIRONMENT: weu-beta
               WORKINGDIR: "src/aks"
           - template: templates/terraform-plan/template.yaml@terraform
             parameters:
-              SUBSCRIPTION: PROD-IO-AKS-SERVICE-CONN
+              AZURE_SERVICE_CONNECTION_NAME: PROD-IO-AKS-PLATFORM-SERVICE-CONN
               ENVIRONMENT: weu-prod01
               WORKINGDIR: "src/aks"
           # - template: templates/terraform-plan/template.yaml@terraform
           #   parameters:
-          #     SUBSCRIPTION: PROD-IO-AKS-SERVICE-CONN
+          #     AZURE_SERVICE_CONNECTION_NAME: PROD-IO-AKS-PLATFORM-SERVICE-CONN
           #     ENVIRONMENT: weu-prod02
           #     WORKINGDIR: "src/aks"
 
@@ -135,7 +135,7 @@ stages:
           # 2. Run terragrunt plan
           - template: templates/terraform-plan/template.yaml@terraform
             parameters:
-              SUBSCRIPTION: PROD-IO-SIGN-SERVICE-CONN
+              AZURE_SERVICE_CONNECTION_NAME: PROD-IO-SIGN-SERVICE-CONN
               ENVIRONMENT: prod
               WORKINGDIR: "src/sign"
 
@@ -153,6 +153,6 @@ stages:
           # 2. Run terragrunt plan
           - template: templates/terraform-plan/template.yaml@terraform
             parameters:
-              SUBSCRIPTION: PROD-IO-REMINDER-SERVICE-CONN
+              AZURE_SERVICE_CONNECTION_NAME: PROD-IO-REMINDER-SERVICE-CONN
               ENVIRONMENT: prod
               WORKINGDIR: "src/reminder"

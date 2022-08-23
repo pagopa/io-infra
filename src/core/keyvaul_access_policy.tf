@@ -1,27 +1,3 @@
-resource "azurerm_resource_group" "sec_rg" {
-  name     = format("%s-sec-rg", local.project)
-  location = var.location
-
-  tags = var.tags
-}
-
-#tfsec:ignore:azure-keyvault-specify-network-acl:exp:2022-05-01 # already ignored, maybe a bug in tfsec
-module "key_vault" {
-  source              = "git::https://github.com/pagopa/azurerm.git//key_vault?ref=v2.0.2"
-  name                = format("%s-kv", local.project)
-  location            = azurerm_resource_group.sec_rg.location
-  resource_group_name = azurerm_resource_group.sec_rg.name
-  tenant_id           = data.azurerm_client_config.current.tenant_id
-  lock_enable         = var.lock_enable
-
-  tags = var.tags
-}
-
-data "azurerm_key_vault" "common" {
-  name                = format("%s-kv-common", local.project)
-  resource_group_name = format("%s-rg-common", local.project)
-}
-
 # Azure AD
 data "azuread_group" "adgroup_admin" {
   display_name = format("%s-adgroup-admin", local.project)
@@ -157,4 +133,33 @@ data "azurerm_key_vault_secret" "sec_storage_id" {
   count        = var.env_short == "p" ? 1 : 0
   name         = "sec-storage-id"
   key_vault_id = module.key_vault.id
+}
+
+#
+# azure devops policy
+#
+
+#pagopaspa-cstar-platform-iac-projects-{subscription}
+data "azuread_service_principal" "platform_iac_sp" {
+  display_name = "pagopaspa-io-platform-iac-projects-${data.azurerm_subscription.current.subscription_id}"
+}
+
+resource "azurerm_key_vault_access_policy" "azdevops_platform_iac_policy_kv" {
+  key_vault_id = module.key_vault.id
+  tenant_id    = data.azurerm_client_config.current.tenant_id
+  object_id    = data.azuread_service_principal.platform_iac_sp.object_id
+
+  secret_permissions      = ["Get", "List", "Set", ]
+  storage_permissions     = []
+  certificate_permissions = ["SetIssuers", "DeleteIssuers", "Purge", "List", "Get", "ManageContacts", ]
+}
+
+resource "azurerm_key_vault_access_policy" "azdevops_platform_iac_policy_kv_common" {
+  key_vault_id = data.azurerm_key_vault.common.id
+  tenant_id    = data.azurerm_client_config.current.tenant_id
+  object_id    = data.azuread_service_principal.platform_iac_sp.object_id
+
+  secret_permissions      = ["Get", "List", "Set", ]
+  storage_permissions     = []
+  certificate_permissions = ["SetIssuers", "DeleteIssuers", "Purge", "List", "Get", "ManageContacts", ]
 }
