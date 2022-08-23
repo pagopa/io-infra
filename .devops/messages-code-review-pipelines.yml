@@ -10,14 +10,14 @@ pr:
 
 parameters:
   - name: 'COMMON'
-    displayName: 'Run on PROD environment'
+    displayName: 'Run COMMON folder code-review'
     type: boolean
     default: True
     values:
       - False
       - True
   - name: 'APP'
-    displayName: 'Run on PROD environment'
+    displayName: 'Run APP folder code-review'
     type: boolean
     default: True
     values:
@@ -90,5 +90,5 @@ stages:
               AZURE_SERVICE_CONNECTION_NAME: PROD-IO-SERVICE-CONN
               AKS_NAME: ${{ variables.AKS_PLATFORM_BETA_PROD_NAME }}
               AKS_API_SERVER_URL: ${{ variables.BETA_AKS_APISERVER_URL }}
-              AKS_AZURE_PRODOPS_SA_CA_CRT: ${{ variables.BETA_AKS_AZURE_DEVOPS_SA_CACRT }}
-              AKS_AZURE_PRODOPS_SA_TOKEN: ${{ variables.BETA_AKS_AZURE_DEVOPS_SA_TOKEN }}
+              AKS_AZURE_DEVOPS_SA_CA_CRT: ${{ variables.BETA_AKS_AZURE_DEVOPS_SA_CACRT }}
+              AKS_AZURE_DEVOPS_SA_TOKEN: ${{ variables.BETA_AKS_AZURE_DEVOPS_SA_TOKEN }}
