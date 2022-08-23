@@ -64,12 +64,12 @@ stages:
           # 2. Run terraform plan messages-common
           - template: templates/terraform-plan/template.yaml@terraform
             parameters:
-              ENVIRONMENT: "prod"
+              ENVIRONMENT: "weu-beta"
               WORKINGDIR: 'src/domains/messages-common'
               AZURE_SERVICE_CONNECTION_NAME: PROD-IO-SERVICE-CONN
 
   - stage: tf_plan_app
-    dependsOn: []
+    dependsOn: [tf_plan_common]
     condition: and(succeeded(), eq(${{parameters.APP}}, true))
     pool:
       name: io-prod-linux
@@ -85,7 +85,7 @@ stages:
           # Run terraform plan messages-app
           - template: templates/terraform-plan/template.yaml@terraform
             parameters:
-              ENVIRONMENT: "prod"
+              ENVIRONMENT: "weu-beta"
               WORKINGDIR: 'src/domains/messages-app'
               AZURE_SERVICE_CONNECTION_NAME: PROD-IO-SERVICE-CONN
               AKS_NAME: ${{ variables.AKS_PLATFORM_BETA_PROD_NAME }}
