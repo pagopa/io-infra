@@ -9,7 +9,14 @@ pr:
       - 'src/domains/messages-common'
 
 parameters:
-  - name: 'PROD'
+  - name: 'COMMON'
+    displayName: 'Run on PROD environment'
+    type: boolean
+    default: True
+    values:
+      - False
+      - True
+  - name: 'APP'
     displayName: 'Run on PROD environment'
     type: boolean
     default: True
@@ -19,10 +26,14 @@ parameters:
 
 variables:
   TIME_OUT: 10
+  AKS_PLATFORM_BETA_PROD_NAME: '$(TF_AKS_PLATFORM_BETA_PROD_NAME)'
+  BETA_AKS_APISERVER_URL: '$(TF_BETA_AKS_APISERVER_URL)'
+  BETA_AKS_AZURE_DEVOPS_SA_CACRT: '$(TF_BETA_AKS_AZURE_DEVOPS_SA_CACRT)'
+  BETA_AKS_AZURE_DEVOPS_SA_TOKEN: '$(TF_BETA_AKS_AZURE_DEVOPS_SA_TOKEN)'
+  AKS_PLATFORM_PROD01_PROD_NAME: '$(TF_AKS_PLATFORM_PROD01_PROD_NAME)'
   PROD01_AKS_APISERVER_URL: '$(TF_PROD01_AKS_APISERVER_URL)'
-  PROD01_AKS_AZURE_PRODOPS_SA_CACRT: '$(TF_PROD01_AKS_AZURE_PRODOPS_SA_CACRT)'
-  PROD01_AKS_AZURE_PRODOPS_SA_TOKEN: '$(TF_PROD01_AKS_AZURE_PRODOPS_SA_TOKEN)'
-  AKS_PROD_NAME: '$(TF_AKS_PROD_NAME)'
+  PROD01_AKS_AZURE_DEVOPS_SA_CACRT: '$(TF_PROD01_AKS_AZURE_DEVOPS_SA_CACRT)'
+  PROD01_AKS_AZURE_DEVOPS_SA_TOKEN: '$(TF_PROD01_AKS_AZURE_DEVOPS_SA_TOKEN)'
 
 pool:
   vmImage: 'ubuntu-20.04'
@@ -38,7 +49,7 @@ resources:
 stages:
   - stage: tf_plan_common
     dependsOn: []
-    condition: and(succeeded(), eq(${{parameters.PROD}}, true))
+    condition: and(succeeded(), eq(${{parameters.COMMON}}, true))
     pool:
       name: io-prod-linux
     jobs:
@@ -59,7 +70,7 @@ stages:
 
   - stage: tf_plan_app
     dependsOn: [tf_plan_common]
-    condition: and(succeeded(), eq(${{parameters.PROD}}, true))
+    condition: and(succeeded(), eq(${{parameters.APP}}, true))
     pool:
       name: io-prod-linux
     jobs:
@@ -77,7 +88,7 @@ stages:
               ENVIRONMENT: "prod"
               WORKINGDIR: 'src/domains/messages-app'
               AZURE_SERVICE_CONNECTION_NAME: PROD-IO-SERVICE-CONN
-              AKS_NAME: ${{ variables.AKS_PROD_NAME }}
-              AKS_API_SERVER_URL: ${{ variables.PROD01_AKS_APISERVER_URL }}
-              AKS_AZURE_PRODOPS_SA_CA_CRT: ${{ variables.PROD01_AKS_AZURE_PRODOPS_SA_CACRT }}
-              AKS_AZURE_PRODOPS_SA_TOKEN: ${{ variables.PROD01_AKS_AZURE_PRODOPS_SA_TOKEN }}
+              AKS_NAME: ${{ variables.AKS_PLATFORM_BETA_PROD_NAME }}
+              AKS_API_SERVER_URL: ${{ variables.BETA_AKS_APISERVER_URL }}
+              AKS_AZURE_PRODOPS_SA_CA_CRT: ${{ variables.BETA_AKS_AZURE_DEVOPS_SA_CACRT }}
+              AKS_AZURE_PRODOPS_SA_TOKEN: ${{ variables.BETA_AKS_AZURE_DEVOPS_SA_TOKEN }}
