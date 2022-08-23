@@ -10,13 +10,6 @@ parameters:
     values:
       - False
       - True
-  - name: "CORE"
-    displayName: "Run on core domain"
-    type: boolean
-    default: True
-    values:
-      - False
-      - True
   - name: "SQL_MIGRATION"
     displayName: "Run on sql migration"
     type: boolean
@@ -43,7 +36,7 @@ stages:
   # PROD_CORE
   - stage: plan_PROD_CORE
     dependsOn: []
-    condition: and(eq(${{parameters.CORE}}, true), eq(${{parameters.PROD}}, true))
+    condition: eq(${{parameters.PROD}}, true)
     pool:
       name: io-prod-linux
     jobs:
@@ -74,7 +67,7 @@ stages:
 
   - stage: apply_PROD_CORE
     dependsOn: [plan_PROD_CORE]
-    condition: and(eq(${{parameters.CORE}}, true), eq(${{parameters.PROD}}, true))
+    condition: eq(${{parameters.PROD}}, true)
     pool:
       name: io-prod-linux
     jobs:

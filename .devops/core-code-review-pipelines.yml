@@ -16,13 +16,6 @@ parameters:
     values:
       - False
       - True
-  - name: "CORE"
-    displayName: "Run on core domain"
-    type: boolean
-    default: True
-    values:
-      - False
-      - True
 
 variables:
   TIME_OUT: 10
@@ -41,7 +34,7 @@ resources:
 stages:
   - stage: PROD_CORE
     dependsOn: []
-    condition: and(eq(${{parameters.CORE}}, true), eq(${{parameters.PROD}}, true))
+    condition: eq(${{parameters.PROD}}, true)
     pool:
       name: io-prod-linux
     jobs:
