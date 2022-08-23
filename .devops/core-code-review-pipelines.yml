@@ -49,7 +49,7 @@ stages:
               AZURE_SERVICE_CONNECTION_NAME: PROD-IO-SERVICE-CONN
               ENVIRONMENT: prod
               WORKINGDIR: "src/core"
-      - job: validate_migration
+      - job: validate_sql_migration
         steps:
           - task: AzureCLI@2
             displayName: validate migration data on subscription-migrations

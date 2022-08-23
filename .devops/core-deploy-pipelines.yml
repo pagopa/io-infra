@@ -93,7 +93,7 @@ stages:
     pool:
       name: io-prod-linux
     jobs:
-      - deployment: migrate
+      - deployment: migrate_sql
         continueOnError: false
         environment: "PROD"
         strategy:
