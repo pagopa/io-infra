@@ -7,17 +7,25 @@ pr:
     include:
       - 'src/domains/messages-app'
       - 'src/domains/messages-common'
+      - ".devops/*"
 
 parameters:
   - name: 'COMMON'
-    displayName: 'Run COMMON folder code-review'
+    displayName: 'code-review COMMON folder@PROD subscription '
     type: boolean
     default: True
     values:
       - False
       - True
-  - name: 'APP'
-    displayName: 'Run APP folder code-review'
+  - name: 'APP_BETA'
+    displayName: 'code-review APP folder@AKS BETA'
+    type: boolean
+    default: True
+    values:
+      - False
+      - True
+  - name: 'APP_PROD01'
+    displayName: 'code-review APP folder@AKS PROD01'
     type: boolean
     default: True
     values:
@@ -47,6 +55,9 @@ resources:
       endpoint: 'io-azure-devops-github-ro'
 
 stages:
+#
+# Common
+#
   - stage: tf_plan_common
     dependsOn: []
     condition: and(succeeded(), eq(${{parameters.COMMON}}, true))
@@ -68,13 +79,16 @@ stages:
               WORKINGDIR: 'src/domains/messages-common'
               AZURE_SERVICE_CONNECTION_NAME: PROD-IO-SERVICE-CONN
 
-  - stage: tf_plan_app
-    dependsOn: [tf_plan_common]
-    condition: and(succeeded(), eq(${{parameters.APP}}, true))
+#
+# APP
+#
+  - stage: tf_plan_app_beta
+    dependsOn: []
+    condition: and(succeeded(), eq(${{parameters.APP_BETA}}, true))
     pool:
       name: io-prod-linux
     jobs:
-      - job: tf_plan_messages_app
+      - job: tf_plan_messages
         timeoutInMinutes: $[variables.TIME_OUT]
         strategy:
           parallel: 1
@@ -92,3 +106,27 @@ stages:
               AKS_API_SERVER_URL: ${{ variables.BETA_AKS_APISERVER_URL }}
               AKS_AZURE_DEVOPS_SA_CA_CRT: ${{ variables.BETA_AKS_AZURE_DEVOPS_SA_CACRT }}
               AKS_AZURE_DEVOPS_SA_TOKEN: ${{ variables.BETA_AKS_AZURE_DEVOPS_SA_TOKEN }}
+  - stage: tf_plan_app_prod01
+    dependsOn: [tf_plan_app_beta]
+    condition: and(succeeded(), eq(${{parameters.APP_PROD01}}, true))
+    pool:
+      name: io-prod-linux
+    jobs:
+      - job: tf_plan_messages
+        timeoutInMinutes: $[variables.TIME_OUT]
+        strategy:
+          parallel: 1
+        steps:
+          - checkout: self
+          # 1. Install terraform and terragrunt
+          - template: templates/terraform-setup/template.yaml@terraform
+          # Run terraform plan messages-app
+          - template: templates/terraform-plan/template.yaml@terraform
+            parameters:
+              ENVIRONMENT: "weu-prod01"
+              WORKINGDIR: 'src/domains/messages-app'
+              AZURE_SERVICE_CONNECTION_NAME: PROD-IO-SERVICE-CONN
+              AKS_NAME: ${{ variables.AKS_PLATFORM_PROD01_PROD_NAME }}
+              AKS_API_SERVER_URL: ${{ variables.PROD01_AKS_APISERVER_URL }}
+              AKS_AZURE_DEVOPS_SA_CA_CRT: ${{ variables.PROD01_AKS_AZURE_DEVOPS_SA_CACRT }}
+              AKS_AZURE_DEVOPS_SA_TOKEN: ${{ variables.PROD01_AKS_AZURE_DEVOPS_SA_TOKEN }}
