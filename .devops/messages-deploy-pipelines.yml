@@ -76,7 +76,7 @@ stages:
             parameters:
               AZURE_SERVICE_CONNECTION_NAME: PROD-IO-SERVICE-CONN
               ENVIRONMENT: prod
-              WORKINGDIR: "src/messages-common"
+              WORKINGDIR: 'src/domains/messages-common'
 
 #
 # APP
