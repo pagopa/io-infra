@@ -46,6 +46,7 @@
 | [helm_release.tls_cert_check_api-app_internal_io_pagopa_it](https://registry.terraform.io/providers/hashicorp/helm/2.5.1/docs/resources/release) | resource |
 | [helm_release.tls_cert_check_api-internal_io_italia_it](https://registry.terraform.io/providers/hashicorp/helm/2.5.1/docs/resources/release) | resource |
 | [kubernetes_cluster_role.cluster_deployer](https://registry.terraform.io/providers/hashicorp/kubernetes/2.11.0/docs/resources/cluster_role) | resource |
+| [kubernetes_cluster_role.system_cluster_deployer](https://registry.terraform.io/providers/hashicorp/kubernetes/2.11.0/docs/resources/cluster_role) | resource |
 | [kubernetes_manifest.coredns_custom](https://registry.terraform.io/providers/hashicorp/kubernetes/2.11.0/docs/resources/manifest) | resource |
 | [kubernetes_namespace.ingress](https://registry.terraform.io/providers/hashicorp/kubernetes/2.11.0/docs/resources/namespace) | resource |
 | [kubernetes_namespace.keda](https://registry.terraform.io/providers/hashicorp/kubernetes/2.11.0/docs/resources/namespace) | resource |
