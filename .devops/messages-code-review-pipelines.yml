@@ -5,38 +5,43 @@ pr:
       - main
   paths:
     include:
-      - 'src/domains/idpay-app'
-      - 'src/domains/idpay-common'
+      - 'src/domains/messages-app'
+      - 'src/domains/messages-common'
+      - ".devops/messages-code-review-pipelines.yml"
 
 parameters:
-  - name: 'DEV'
-    displayName: 'Run on DEV environment'
+  - name: 'COMMON'
+    displayName: 'code-review COMMON folder@PROD subscription '
     type: boolean
     default: True
     values:
       - False
       - True
-  # - name: 'UAT'
-  #   displayName: 'Run on UAT environment'
-  #   type: boolean
-  #   default: True
-  #   values:
-  #     - False
-  #     - True
-  # - name: 'PROD'
-  #   displayName: 'Run on PROD environment'
-  #   type: boolean
-  #   default: True
-  #   values:
-  #     - False
-  #     - True
+  - name: 'APP_BETA'
+    displayName: 'code-review APP folder@AKS BETA'
+    type: boolean
+    default: True
+    values:
+      - False
+      - True
+  - name: 'APP_PROD01'
+    displayName: 'code-review APP folder@AKS PROD01'
+    type: boolean
+    default: True
+    values:
+      - False
+      - True
 
 variables:
   TIME_OUT: 10
-  DEV01_AKS_APISERVER_URL: '$(TF_DEV01_AKS_APISERVER_URL)'
-  DEV01_AKS_AZURE_DEVOPS_SA_CACRT: '$(TF_DEV01_AKS_AZURE_DEVOPS_SA_CACRT)'
-  DEV01_AKS_AZURE_DEVOPS_SA_TOKEN: '$(TF_DEV01_AKS_AZURE_DEVOPS_SA_TOKEN)'
-  AKS_DEV_NAME: '$(TF_AKS_DEV_NAME)'
+  AKS_PLATFORM_BETA_PROD_NAME: '$(TF_AKS_PLATFORM_BETA_PROD_NAME)'
+  BETA_AKS_APISERVER_URL: '$(TF_BETA_AKS_APISERVER_URL)'
+  BETA_AKS_AZURE_DEVOPS_SA_CACRT: '$(TF_BETA_AKS_AZURE_DEVOPS_SA_CACRT)'
+  BETA_AKS_AZURE_DEVOPS_SA_TOKEN: '$(TF_BETA_AKS_AZURE_DEVOPS_SA_TOKEN)'
+  AKS_PLATFORM_PROD01_PROD_NAME: '$(TF_AKS_PLATFORM_PROD01_PROD_NAME)'
+  PROD01_AKS_APISERVER_URL: '$(TF_PROD01_AKS_APISERVER_URL)'
+  PROD01_AKS_AZURE_DEVOPS_SA_CACRT: '$(TF_PROD01_AKS_AZURE_DEVOPS_SA_CACRT)'
+  PROD01_AKS_AZURE_DEVOPS_SA_TOKEN: '$(TF_PROD01_AKS_AZURE_DEVOPS_SA_TOKEN)'
 
 pool:
   vmImage: 'ubuntu-20.04'
@@ -50,13 +55,16 @@ resources:
       endpoint: 'io-azure-devops-github-ro'
 
 stages:
-  - stage: tf_plan_common
+#
+# Common
+#
+  - stage: tf_plan_common_on_prod
     dependsOn: []
-    condition: and(succeeded(), eq(${{parameters.DEV}}, true))
+    condition: and(succeeded(), eq(${{parameters.COMMON}}, true))
     pool:
-      name: cstar-dev-linux
+      name: io-prod-linux
     jobs:
-      - job: tf_plan_idpay_common
+      - job: tf_plan_common_on_prod
         strategy:
           parallel: 1
         timeoutInMinutes: $[variables.TIME_OUT]
@@ -64,20 +72,23 @@ stages:
           - checkout: self
           # 1. Install terraform and terragrunt
           - template: templates/terraform-setup/template.yaml@terraform
-          # 2. Run terraform plan idpay-common
+          # 2. Run terraform plan messages-common
           - template: templates/terraform-plan/template.yaml@terraform
             parameters:
-              ENVIRONMENT: "dev"
-              WORKINGDIR: 'src/domains/idpay-common'
-              AZURE_SERVICE_CONNECTION_NAME: DEV-CSTAR-SERVICE-CONN
+              ENVIRONMENT: "prod"
+              WORKINGDIR: 'src/domains/messages-common'
+              AZURE_SERVICE_CONNECTION_NAME: PROD-IO-SERVICE-CONN
 
-  - stage: tf_plan_app
-    dependsOn: [tf_plan_common]
-    condition: and(succeeded(), eq(${{parameters.DEV}}, true))
+#
+# APP
+#
+  - stage: tf_plan_app_on_aks_beta
+    dependsOn: [tf_plan_common_on_prod]
+    condition: and(succeeded(), eq(${{parameters.APP_BETA}}, true))
     pool:
-      name: cstar-dev-linux
+      name: io-prod-linux
     jobs:
-      - job: tf_plan_idpay_app
+      - job: tf_plan_app_on_aks_beta
         timeoutInMinutes: $[variables.TIME_OUT]
         strategy:
           parallel: 1
@@ -85,55 +96,37 @@ stages:
           - checkout: self
           # 1. Install terraform and terragrunt
           - template: templates/terraform-setup/template.yaml@terraform
-          # Run terraform plan idpay-app
+          # Run terraform plan messages-app
           - template: templates/terraform-plan/template.yaml@terraform
             parameters:
-              ENVIRONMENT: "dev"
-              WORKINGDIR: 'src/domains/idpay-app'
-              AZURE_SERVICE_CONNECTION_NAME: DEV-CSTAR-SERVICE-CONN
-              AKS_NAME: ${{ variables.AKS_DEV_NAME }}
-              AKS_API_SERVER_URL: ${{ variables.DEV01_AKS_APISERVER_URL }}
-              AKS_AZURE_DEVOPS_SA_CA_CRT: ${{ variables.DEV01_AKS_AZURE_DEVOPS_SA_CACRT }}
-              AKS_AZURE_DEVOPS_SA_TOKEN: ${{ variables.DEV01_AKS_AZURE_DEVOPS_SA_TOKEN }}
-
-  # - stage: UAT
-  #   dependsOn: []
-  #   condition: and(succeeded(), eq(${{parameters.UAT}}, true))
-  #   pool:
-  #     name: cstar-uat-linux
-  #   jobs:
-  #     - job: tf_install
-  #       steps:
-  #         # 1. Install terraform and terragrunt
-  #         - template: templates/terraform-setup/template.yaml@terraform
-  #     - job: tf_plan
-  #       dependsOn: tf_install
-  #       timeoutInMinutes: $[variables.TIME_OUT]
-  #       steps:
-  #         - checkout: self
-  #         # 2. Run terragrunt plan
-  #         - template: templates/terraform-plan/template.yaml@terraform
-  #           parameters:
-  #             AZURE_SERVICE_CONNECTION_NAME: UAT-CSTAR-SERVICE-CONN
-  #             ENVIRONMENT: uat
-
-  # - stage: PROD
-  #   dependsOn: []
-  #   condition: and(succeeded(), eq(${{parameters.PROD}}, true))
-  #   pool:
-  #     name: cstar-prod-linux
-  #   jobs:
-  #     - job: tf_install
-  #       steps:
-  #         # 1. Install terraform and terragrunt
-  #         - template: templates/terraform-setup/template.yaml@terraform
-  #     - job: tf_plan
-  #       dependsOn: tf_install
-  #       timeoutInMinutes: $[variables.TIME_OUT]
-  #       steps:
-  #         - checkout: self
-  #         # 2. Run terragrunt plan
-  #         - template: templates/terraform-plan/template.yaml@terraform
-  #           parameters:
-  #             AZURE_SERVICE_CONNECTION_NAME: PROD-CSTAR-SERVICE-CONN
-  #             ENVIRONMENT: prod
+              ENVIRONMENT: "weu-beta"
+              WORKINGDIR: 'src/domains/messages-app'
+              AZURE_SERVICE_CONNECTION_NAME: PROD-IO-SERVICE-CONN
+              AKS_NAME: ${{ variables.AKS_PLATFORM_BETA_PROD_NAME }}
+              AKS_API_SERVER_URL: ${{ variables.BETA_AKS_APISERVER_URL }}
+              AKS_AZURE_DEVOPS_SA_CA_CRT: ${{ variables.BETA_AKS_AZURE_DEVOPS_SA_CACRT }}
+              AKS_AZURE_DEVOPS_SA_TOKEN: ${{ variables.BETA_AKS_AZURE_DEVOPS_SA_TOKEN }}
+  - stage: tf_plan_app_on_aks_on_prod01
+    dependsOn: [tf_plan_app_on_aks_beta]
+    condition: and(succeeded(), eq(${{parameters.APP_PROD01}}, true))
+    pool:
+      name: io-prod-linux
+    jobs:
+      - job: tf_plan_app_on_aks_on_prod01
+        timeoutInMinutes: $[variables.TIME_OUT]
+        strategy:
+          parallel: 1
+        steps:
+          - checkout: self
+          # 1. Install terraform and terragrunt
+          - template: templates/terraform-setup/template.yaml@terraform
+          # Run terraform plan messages-app
+          - template: templates/terraform-plan/template.yaml@terraform
+            parameters:
+              ENVIRONMENT: "weu-prod01"
+              WORKINGDIR: 'src/domains/messages-app'
+              AZURE_SERVICE_CONNECTION_NAME: PROD-IO-SERVICE-CONN
+              AKS_NAME: ${{ variables.AKS_PLATFORM_PROD01_PROD_NAME }}
+              AKS_API_SERVER_URL: ${{ variables.PROD01_AKS_APISERVER_URL }}
+              AKS_AZURE_DEVOPS_SA_CA_CRT: ${{ variables.PROD01_AKS_AZURE_DEVOPS_SA_CACRT }}
+              AKS_AZURE_DEVOPS_SA_TOKEN: ${{ variables.PROD01_AKS_AZURE_DEVOPS_SA_TOKEN }}
