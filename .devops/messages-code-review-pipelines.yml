@@ -7,7 +7,7 @@ pr:
     include:
       - 'src/domains/messages-app'
       - 'src/domains/messages-common'
-      - ".devops/*"
+      - ".devops/messages-code-review-pipelines.yml"
 
 parameters:
   - name: 'COMMON'
