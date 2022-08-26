@@ -14,3 +14,9 @@ module "io_sign_storage" {
   blob_properties_delete_retention_policy_days = var.storage.delete_retention_policy_days
   tags                                         = var.tags
 }
+
+resource "azurerm_storage_container" "documents" {
+  name                  = "documents"
+  storage_account_name  = module.io_sign_storage.name
+  container_access_type = "private"
+}
