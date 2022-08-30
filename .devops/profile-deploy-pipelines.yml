@@ -65,18 +65,18 @@ stages:
           - checkout: self
           # 1. Install terraform
           - template: templates/terraform-setup/template.yaml@terraform
-          # 2. Run terraform plan payments-common
+          # 2. Run terraform plan profile-common
           - template: templates/terraform-plan/template.yaml@terraform
             parameters:
               AZURE_SERVICE_CONNECTION_NAME: PROD-IO-SERVICE-CONN
               ENVIRONMENT: "prod"
-              WORKINGDIR: 'src/domains/payments-common'
+              WORKINGDIR: 'src/domains/profile-common'
           # 3. Run terraform apply
           - template: templates/terraform-apply/template.yaml@terraform
             parameters:
               AZURE_SERVICE_CONNECTION_NAME: PROD-IO-SERVICE-CONN
               ENVIRONMENT: prod
-              WORKINGDIR: 'src/domains/payments-common'
+              WORKINGDIR: 'src/domains/profile-common'
 
 #
 # APP
@@ -95,7 +95,7 @@ stages:
           - checkout: self
           # 1. Install terraform
           - template: templates/terraform-setup/template.yaml@terraform
-          # 2. Run terraform plan payments-app
+          # 2. Run terraform plan profile-app
           - template: templates/terraform-plan/template.yaml@terraform
             parameters:
               AZURE_SERVICE_CONNECTION_NAME: PROD-IO-SERVICE-CONN
@@ -104,7 +104,7 @@ stages:
               AKS_AZURE_DEVOPS_SA_CA_CRT: ${{ variables.BETA_AKS_AZURE_DEVOPS_SA_CACRT }}
               AKS_AZURE_DEVOPS_SA_TOKEN: ${{ variables.BETA_AKS_AZURE_DEVOPS_SA_TOKEN }}
               ENVIRONMENT: "weu-beta"
-              WORKINGDIR: 'src/domains/payments-app'
+              WORKINGDIR: 'src/domains/profile-app'
           # 3. Run terraform apply
           - template: templates/terraform-apply/template.yaml@terraform
             parameters:
@@ -114,7 +114,7 @@ stages:
               AKS_AZURE_DEVOPS_SA_CA_CRT: ${{ variables.BETA_AKS_AZURE_DEVOPS_SA_CACRT }}
               AKS_AZURE_DEVOPS_SA_TOKEN: ${{ variables.BETA_AKS_AZURE_DEVOPS_SA_TOKEN }}
               ENVIRONMENT: "weu-beta"
-              WORKINGDIR: 'src/domains/payments-app'
+              WORKINGDIR: 'src/domains/profile-app'
 
   - stage: tf_apply_app_on_aks_on_prod01
     dependsOn: [tf_apply_app_on_aks_beta]
@@ -130,7 +130,7 @@ stages:
           - checkout: self
           # 1. Install terraform
           - template: templates/terraform-setup/template.yaml@terraform
-          # 2. Run terraform plan payments-app
+          # 2. Run terraform plan profile-app
           - template: templates/terraform-plan/template.yaml@terraform
             parameters:
               AZURE_SERVICE_CONNECTION_NAME: PROD-IO-SERVICE-CONN
@@ -139,7 +139,7 @@ stages:
               AKS_AZURE_DEVOPS_SA_CA_CRT: ${{ variables.PROD01_AKS_AZURE_DEVOPS_SA_CACRT }}
               AKS_AZURE_DEVOPS_SA_TOKEN: ${{ variables.PROD01_AKS_AZURE_DEVOPS_SA_TOKEN }}
               ENVIRONMENT: "weu-prod01"
-              WORKINGDIR: 'src/domains/payments-app'
+              WORKINGDIR: 'src/domains/profile-app'
           # 3. Run terraform apply
           - template: templates/terraform-apply/template.yaml@terraform
             parameters:
@@ -149,4 +149,4 @@ stages:
               AKS_AZURE_DEVOPS_SA_CA_CRT: ${{ variables.PROD01_AKS_AZURE_DEVOPS_SA_CACRT }}
               AKS_AZURE_DEVOPS_SA_TOKEN: ${{ variables.PROD01_AKS_AZURE_DEVOPS_SA_TOKEN }}
               ENVIRONMENT: "weu-prod01"
-              WORKINGDIR: 'src/domains/payments-app'
+              WORKINGDIR: 'src/domains/profile-app'
