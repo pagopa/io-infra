@@ -63,7 +63,7 @@ stages:
         timeoutInMinutes: $[variables.TIME_OUT]
         steps:
           - checkout: self
-          # 1. Install terraform and terragrunt
+          # 1. Install terraform
           - template: templates/terraform-setup/template.yaml@terraform
           # 2. Run terraform plan messages-common
           - template: templates/terraform-plan/template.yaml@terraform
