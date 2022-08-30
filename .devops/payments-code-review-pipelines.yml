@@ -70,7 +70,7 @@ stages:
         timeoutInMinutes: $[variables.TIME_OUT]
         steps:
           - checkout: self
-          # 1. Install terraform and terragrunt
+          # 1. Install terraform
           - template: templates/terraform-setup/template.yaml@terraform
           # 2. Run terraform plan payments-common
           - template: templates/terraform-plan/template.yaml@terraform
@@ -94,7 +94,7 @@ stages:
           parallel: 1
         steps:
           - checkout: self
-          # 1. Install terraform and terragrunt
+          # 1. Install terraform
           - template: templates/terraform-setup/template.yaml@terraform
           # Run terraform plan payments-app
           - template: templates/terraform-plan/template.yaml@terraform
@@ -118,7 +118,7 @@ stages:
           parallel: 1
         steps:
           - checkout: self
-          # 1. Install terraform and terragrunt
+          # 1. Install terraform
           - template: templates/terraform-setup/template.yaml@terraform
           # Run terraform plan payments-app
           - template: templates/terraform-plan/template.yaml@terraform
