@@ -28,7 +28,7 @@ module "io_sign_func" {
     private_dns_zone_blob_ids  = []
     private_dns_zone_queue_ids = []
     private_dns_zone_table_ids = []
-    queues                     = ["waiting-for-signature", "waiting-for-document"]
+    queues                     = ["waiting-for-message", "waiting-for-signature", "waiting-for-document"]
     containers                 = []
     blobs_retention_days       = 1
   }
