@@ -30,6 +30,9 @@ locals {
       MESSAGES_TOPIC_CONNECTION_STRING = data.azurerm_eventhub_authorization_rule.io-p-messages-weu-prod01-evh-ns_messages-payments_io-fn-messages-cqrs.primary_connection_string
       MESSAGES_TOPIC_NAME              = "messages-payments"
 
+      MESSAGE_STATUS_FOR_REMINDER_TOPIC_PRODUCER_CONNECTION_STRING = data.azurerm_eventhub_authorization_rule.io-p-messages-weu-prod01-evh-ns_message-status_io-fn-messages-cqrs.primary_connection_string
+      MESSAGE_STATUS_FOR_REMINDER_TOPIC_NAME                       = "message-status"
+
       TARGETKAFKA_clientId        = "IO_FUNCTIONS_MESSAGES_CQRS"
       TARGETKAFKA_brokers         = "${local.io-p-messages-weu-prod01-evh-ns.hostname}:${local.io-p-messages-weu-prod01-evh-ns.port}"
       TARGETKAFKA_ssl             = "true"
@@ -106,13 +109,14 @@ module "function_messages_cqrs" {
   app_settings = merge(
     local.function_messages_cqrs.app_settings, {
       // disable listeners on staging slot
-      "AzureWebJobs.CosmosApiMessageStatusChangeFeedForView.Disabled" = "0"
-      "AzureWebJobs.HandleMessageViewUpdateFailures.Disabled"         = "0"
-      "AzureWebJobs.UpdateCosmosMessageView.Disabled"                 = "0"
-      "AzureWebJobs.UpdatePaymentOnMessageView.Disabled"              = "0"
-      "AzureWebJobs.HandlePaymentUpdateFailures.Disabled"             = "0"
-      "AzureWebJobs.CosmosApiMessagesChangeFeed.Disabled"             = "0"
-      "AzureWebJobs.HandleMessageChangeFeedPublishFailures.Disabled"  = "0"
+      "AzureWebJobs.CosmosApiMessageStatusChangeFeedForView.Disabled"     = "0"
+      "AzureWebJobs.CosmosApiMessageStatusChangeFeedForReminder.Disabled" = "1"
+      "AzureWebJobs.HandleMessageViewUpdateFailures.Disabled"             = "0"
+      "AzureWebJobs.UpdateCosmosMessageView.Disabled"                     = "0"
+      "AzureWebJobs.UpdatePaymentOnMessageView.Disabled"                  = "0"
+      "AzureWebJobs.HandlePaymentUpdateFailures.Disabled"                 = "0"
+      "AzureWebJobs.CosmosApiMessagesChangeFeed.Disabled"                 = "0"
+      "AzureWebJobs.HandleMessageChangeFeedPublishFailures.Disabled"      = "0"
     }
   )
 
@@ -171,13 +175,14 @@ module "function_messages_cqrs_staging_slot" {
   app_settings = merge(
     local.function_messages_cqrs.app_settings, {
       // disable listeners on staging slot
-      "AzureWebJobs.CosmosApiMessageStatusChangeFeedForView.Disabled" = "1"
-      "AzureWebJobs.HandleMessageViewUpdateFailures.Disabled"         = "1"
-      "AzureWebJobs.UpdateCosmosMessageView.Disabled"                 = "1"
-      "AzureWebJobs.UpdatePaymentOnMessageView.Disabled"              = "1"
-      "AzureWebJobs.HandlePaymentUpdateFailures.Disabled"             = "1"
-      "AzureWebJobs.CosmosApiMessagesChangeFeed.Disabled"             = "1"
-      "AzureWebJobs.HandleMessageChangeFeedPublishFailures.Disabled"  = "1"
+      "AzureWebJobs.CosmosApiMessageStatusChangeFeedForView.Disabled"     = "1"
+      "AzureWebJobs.CosmosApiMessageStatusChangeFeedForReminder.Disabled" = "1"
+      "AzureWebJobs.HandleMessageViewUpdateFailures.Disabled"             = "1"
+      "AzureWebJobs.UpdateCosmosMessageView.Disabled"                     = "1"
+      "AzureWebJobs.UpdatePaymentOnMessageView.Disabled"                  = "1"
+      "AzureWebJobs.HandlePaymentUpdateFailures.Disabled"                 = "1"
+      "AzureWebJobs.CosmosApiMessagesChangeFeed.Disabled"                 = "1"
+      "AzureWebJobs.HandleMessageChangeFeedPublishFailures.Disabled"      = "1"
     }
   )
 

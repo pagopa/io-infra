@@ -201,6 +201,13 @@ data "azurerm_eventhub_authorization_rule" "io-p-messages-weu-prod01-evh-ns_mess
   resource_group_name = "${local.project}-messages-weu-prod01-evt-rg"
 }
 
+data "azurerm_eventhub_authorization_rule" "io-p-messages-weu-prod01-evh-ns_message-status_io-fn-messages-cqrs" {
+  name                = "io-fn-messages-cqrs"
+  namespace_name      = "${local.project}-messages-weu-prod01-evh-ns"
+  eventhub_name       = "message-status"
+  resource_group_name = "${local.project}-messages-weu-prod01-evt-rg"
+}
+
 data "azurerm_key_vault_secret" "apim_services_subscription_key" {
   name         = "apim-IO-SERVICE-KEY"
   key_vault_id = data.azurerm_key_vault.common.id
