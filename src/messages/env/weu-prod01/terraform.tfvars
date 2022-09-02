@@ -137,6 +137,12 @@ eventhubs = [
         listen = true
         send   = false
         manage = false
+      },
+      {
+        name   = "io-fn-messages-cqrs"
+        listen = false
+        send   = true
+        manage = false
       }
     ]
   }
