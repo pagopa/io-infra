@@ -3,6 +3,11 @@ data "azurerm_key_vault_secret" "cosmosdb_connection_string" {
   key_vault_id = module.key_vault.id
 }
 
+data "azurerm_key_vault_secret" "io_api_subscription_key" {
+  name         = "IOApiSubscriptionKey"
+  key_vault_id = module.key_vault.id
+}
+
 module "io_sign_func" {
   source    = "git::https://github.com/pagopa/azurerm.git//function_app?ref=v2.18.2"
   name      = "${local.project}-func"
@@ -37,7 +42,8 @@ module "io_sign_func" {
     WEBSITE_NODE_DEFAULT_VERSION = "16.13.0"
     WEBSITE_VNET_ROUTE_ALL       = "1"
     WEBSITE_DNS_SERVER           = "168.63.129.16"
-    CosmosDbConnectionString     = module.cosmosdb_account.primary_master_key
+    CosmosDbConnectionString     = data.azurerm_key_vault_secret.cosmosdb_connection_string.value
+    IOApiSubscriptionKey         = data.azurerm_key_vault_secret.io_api_subscription_key.value
   }
 
   allowed_subnets = [module.io_sign_snet.id, data.azurerm_subnet.apim.id]

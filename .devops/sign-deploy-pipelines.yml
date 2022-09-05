@@ -2,45 +2,8 @@
 trigger: none
 pr: none
 
-parameters:
-  - name: "PROD"
-    displayName: "Run on PROD environment"
-    type: boolean
-    default: True
-    values:
-      - False
-      - True
-  - name: "CORE"
-    displayName: "Run on core domain"
-    type: boolean
-    default: True
-    values:
-      - False
-      - True
-  - name: "SIGN"
-    displayName: "Run on sign domain"
-    type: boolean
-    default: True
-    values:
-      - False
-      - True
-  - name: "REMINDER"
-    displayName: "Run on reminder domain"
-    type: boolean
-    default: True
-    values:
-      - False
-      - True
-  - name: "AKS_PLATFORM"
-    displayName: "Run on aks platform"
-    type: boolean
-    default: False
-    values:
-      - False
-      - True
-
 variables:
-  TIME_OUT: 5
+  TIME_OUT: 10
 
 pool:
   vmImage: "ubuntu-20.04"
@@ -50,223 +13,35 @@ resources:
     - repository: terraform
       type: github
       name: pagopa/azure-pipeline-templates
-      ref: refs/tags/v17
+      ref: refs/tags/v2.4.0
       endpoint: "io-azure-devops-github-ro"
 
 stages:
-  # PROD_CORE
-  - stage: plan_PROD_CORE
+  #
+  # Common
+  #
+  - stage: tf_apply_common_on_prod
     dependsOn: []
-    condition: and(eq(${{parameters.CORE}}, true), eq(${{parameters.PROD}}, true))
     pool:
       name: io-prod-linux
     jobs:
-      - job: plan
+      - job: tf_apply_common_on_prod
+        strategy:
+          parallel: 1
         timeoutInMinutes: $[variables.TIME_OUT]
         steps:
+          - checkout: self
           # 1. Install terraform
           - template: templates/terraform-setup/template.yaml@terraform
-          # 2. Run terraform plan
+          # 2. Run terraform plan sign
           - template: templates/terraform-plan/template.yaml@terraform
             parameters:
               AZURE_SERVICE_CONNECTION_NAME: PROD-IO-SERVICE-CONN
+              ENVIRONMENT: "prod"
+              WORKINGDIR: "src/domains/sign"
+          # 3. Run terraform apply
+          - template: templates/terraform-apply/template.yaml@terraform
+            parameters:
+              AZURE_SERVICE_CONNECTION_NAME: PROD-IO-SERVICE-CONN
               ENVIRONMENT: prod
-              WORKINGDIR: "src/core"
-          - task: AzureCLI@2
-            displayName: validate migration data on subscription-migrations
-            inputs:
-              azureSubscription: PROD-IO-SERVICE-CONN
-              scriptType: "bash"
-              scriptLocation: "inlineScript"
-              failOnStandardError: false
-              inlineScript: |
-                set -e
-                cd src/psql/selfcare/subscription-migrations
-                echo "Validating migrations"
-                ./flyway.sh validate PROD-IO db -ignorePendingMigrations=true && echo "Validation successful" || { echo "Validation failed"; exit 1; }
-                ./flyway.sh info PROD-IO db && echo "Info successful" || { echo "Info failed"; exit 1; }
-
-  - stage: apply_PROD_CORE
-    dependsOn: [plan_PROD_CORE]
-    condition: and(eq(${{parameters.CORE}}, true), eq(${{parameters.PROD}}, true))
-    pool:
-      name: io-prod-linux
-    jobs:
-      - deployment: apply
-        continueOnError: false
-        environment: "PROD"
-        strategy:
-          runOnce:
-            deploy:
-              steps:
-                # 1. Install terraform
-                - template: templates/terraform-setup/template.yaml@terraform
-                # 2. Run terraform apply
-                - template: templates/terraform-apply/template.yaml@terraform
-                  parameters:
-                    AZURE_SERVICE_CONNECTION_NAME: PROD-IO-SERVICE-CONN
-                    ENVIRONMENT: prod
-                    WORKINGDIR: "src/core"
-      - deployment: migrate
-        continueOnError: false
-        dependsOn: apply
-        environment: "PROD"
-        strategy:
-          runOnce:
-            deploy:
-              steps:
-                - task: AzureCLI@2
-                  displayName: migrate data on subscription-migrations
-                  inputs:
-                    azureSubscription: PROD-IO-SERVICE-CONN
-                    scriptType: "bash"
-                    scriptLocation: "inlineScript"
-                    failOnStandardError: false
-                    inlineScript: |
-                      set -e
-                      cd src/psql/selfcare/subscription-migrations
-                      echo "Executing migrations"
-                      ./flyway.sh migrate PROD-IO db && echo "Migration successful" || { echo "Migration failed"; exit 1; }
-
-  # PROD_AKS_PLATFORM
-  - stage: plan_PROD_AKS_PLATFORM
-    dependsOn: []
-    condition: and(eq(${{parameters.AKS_PLATFORM}}, true), eq(${{parameters.PROD}}, true))
-    pool:
-      name: io-prod-linux
-    jobs:
-      - job: plan
-        timeoutInMinutes: $[variables.TIME_OUT]
-        steps:
-          # 1. Install terraform
-          - template: templates/terraform-setup/template.yaml@terraform
-          # 2. Run terraform plan
-          - template: templates/terraform-plan/template.yaml@terraform
-            parameters:
-              AZURE_SERVICE_CONNECTION_NAME: PROD-IO-AKS-PLATFORM-SERVICE-CONN
-              ENVIRONMENT: weu-beta
-              WORKINGDIR: "src/aks-platform"
-          - template: templates/terraform-plan/template.yaml@terraform
-            parameters:
-              AZURE_SERVICE_CONNECTION_NAME: PROD-IO-AKS-PLATFORM-SERVICE-CONN
-              ENVIRONMENT: weu-prod01
-              WORKINGDIR: "src/aks-platform"
-          # - template: templates/terraform-plan/template.yaml@terraform
-          #   parameters:
-          #     AZURE_SERVICE_CONNECTION_NAME: PROD-IO-AKS-PLATFORM-SERVICE-CONN
-          #     ENVIRONMENT: weu-prod02
-          #     WORKINGDIR: "src/aks-platform"
-
-  - stage: apply_PROD_AKS_PLATFORM
-    dependsOn: [plan_PROD_AKS_PLATFORM]
-    condition: and(eq(${{parameters.AKS_PLATFORM}}, true), eq(${{parameters.PROD}}, true))
-    pool:
-      name: io-prod-linux
-    jobs:
-      - deployment: apply
-        continueOnError: false
-        environment: "PROD"
-        strategy:
-          runOnce:
-            deploy:
-              steps:
-                # 1. Install terraform
-                - template: templates/terraform-setup/template.yaml@terraform
-                # 2. Run terraform apply
-                - template: templates/terraform-apply/template.yaml@terraform
-                  parameters:
-                    AZURE_SERVICE_CONNECTION_NAME: PROD-IO-SERVICE-CONN
-                    ENVIRONMENT: weu-beta
-                    WORKINGDIR: "src/aks-platform"
-                - template: templates/terraform-apply/template.yaml@terraform
-                  parameters:
-                    AZURE_SERVICE_CONNECTION_NAME: PROD-IO-SERVICE-CONN
-                    ENVIRONMENT: weu-prod01
-                    WORKINGDIR: "src/aks-platform"
-                # - template: templates/terraform-apply/template.yaml@terraform
-                #   parameters:
-                #     AZURE_SERVICE_CONNECTION_NAME: PROD-IO-SERVICE-CONN
-                #     ENVIRONMENT: weu-prod02
-                #     WORKINGDIR: "src/aks-platform"
-
-  # PROD_SIGN
-  - stage: plan_PROD_SIGN
-    dependsOn: []
-    condition: and(eq(${{parameters.SIGN}}, true), eq(${{parameters.PROD}}, true))
-    pool:
-      name: io-prod-linux
-    jobs:
-      - job: plan
-        timeoutInMinutes: $[variables.TIME_OUT]
-        steps:
-          # 1. Install terraform
-          - template: templates/terraform-setup/template.yaml@terraform
-          # 2. Run terraform plan
-          - template: templates/terraform-plan/template.yaml@terraform
-            parameters:
-              AZURE_SERVICE_CONNECTION_NAME: PROD-IO-SIGN-SERVICE-CONN
-              ENVIRONMENT: prod
-              WORKINGDIR: "src/sign"
-
-  - stage: apply_PROD_SIGN
-    dependsOn: [plan_PROD_SIGN]
-    condition: and(eq(${{parameters.SIGN}}, true), eq(${{parameters.PROD}}, true))
-    pool:
-      name: io-prod-linux
-    jobs:
-      - deployment: apply
-        continueOnError: false
-        environment: "PROD-SIGN"
-        strategy:
-          runOnce:
-            deploy:
-              steps:
-                # 1. Install terraform
-                - template: templates/terraform-setup/template.yaml@terraform
-                # 2. Run terraform apply
-                - template: templates/terraform-apply/template.yaml@terraform
-                  parameters:
-                    AZURE_SERVICE_CONNECTION_NAME: PROD-IO-SIGN-SERVICE-CONN
-                    ENVIRONMENT: prod
-                    WORKINGDIR: "src/sign"
-
-  # PROD_REMINDER
-  - stage: plan_PROD_REMINDER
-    dependsOn: []
-    condition: and(eq(${{parameters.REMINDER}}, true), eq(${{parameters.PROD}}, true))
-    pool:
-      name: io-prod-linux
-    jobs:
-      - job: plan
-        timeoutInMinutes: $[variables.TIME_OUT]
-        steps:
-          # 1. Install terraform
-          - template: templates/terraform-setup/template.yaml@terraform
-          # 2. Run terraform plan
-          - template: templates/terraform-plan/template.yaml@terraform
-            parameters:
-              AZURE_SERVICE_CONNECTION_NAME: PROD-IO-REMINDER-SERVICE-CONN
-              ENVIRONMENT: prod
-              WORKINGDIR: "src/reminder"
-
-  - stage: apply_PROD_REMINDER
-    dependsOn: [plan_PROD_REMINDER]
-    condition: and(eq(${{parameters.REMINDER}}, true), eq(${{parameters.PROD}}, true))
-    pool:
-      name: io-prod-linux
-    jobs:
-      - deployment: apply
-        continueOnError: false
-        environment: "PROD-REMINDER"
-        strategy:
-          runOnce:
-            deploy:
-              steps:
-                # 1. Install terraform
-                - template: templates/terraform-setup/template.yaml@terraform
-                # 2. Run terraform apply
-                - template: templates/terraform-apply/template.yaml@terraform
-                  parameters:
-                    AZURE_SERVICE_CONNECTION_NAME: PROD-IO-REMINDER-SERVICE-CONN
-                    ENVIRONMENT: prod
-                    WORKINGDIR: "src/reminder"
+              WORKINGDIR: "src/domains/sign"

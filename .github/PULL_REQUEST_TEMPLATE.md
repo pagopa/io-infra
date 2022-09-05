@@ -46,6 +46,6 @@
 ### How to apply
 
 After PR is approved
-1. run deploy pipeline from Azure DevOps [io-infra.deploy](https://dev.azure.com/pagopaspa/io-iac-projects/_build?definitionId=218)
+1. run deploy pipeline from Azure DevOps [io-platform-iac-projects](https://dev.azure.com/pagopaspa/io-platform-iac-projects/_build?view=folders)
 2. select PR branch
 3. wait for approval
