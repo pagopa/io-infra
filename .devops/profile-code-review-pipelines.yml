@@ -1,24 +1,31 @@
-# only manual
-trigger: none
-pr: none
+pr:
+  autoCancel: false
+  branches:
+    include:
+      - main
+  paths:
+    include:
+      - 'src/domains/profile-app'
+      - 'src/domains/profile-common'
+      - ".devops/profile-code-review-pipelines.yml"
 
 parameters:
   - name: 'COMMON'
-    displayName: 'apply COMMON folder@PROD subscription '
+    displayName: 'code-review COMMON folder@PROD subscription '
     type: boolean
     default: True
     values:
       - False
       - True
   - name: 'APP_BETA'
-    displayName: 'apply APP folder@AKS BETA'
+    displayName: 'code-review APP folder@AKS BETA'
     type: boolean
     default: True
     values:
       - False
       - True
   - name: 'APP_PROD01'
-    displayName: 'apply APP folder@AKS PROD01'
+    displayName: 'code-review APP folder@AKS PROD01'
     type: boolean
     default: True
     values:
@@ -51,13 +58,13 @@ stages:
 #
 # Common
 #
-  - stage: tf_apply_common_on_prod
+  - stage: tf_plan_common_on_prod
     dependsOn: []
     condition: and(succeeded(), eq(${{parameters.COMMON}}, true))
     pool:
       name: io-prod-linux
     jobs:
-      - job: tf_apply_common_on_prod
+      - job: tf_plan_common_on_prod
         strategy:
           parallel: 1
         timeoutInMinutes: $[variables.TIME_OUT]
@@ -65,29 +72,23 @@ stages:
           - checkout: self
           # 1. Install terraform
           - template: templates/terraform-setup/template.yaml@terraform
-          # 2. Run terraform plan messages-common
+          # 2. Run terraform plan profile-common
           - template: templates/terraform-plan/template.yaml@terraform
             parameters:
-              AZURE_SERVICE_CONNECTION_NAME: PROD-IO-SERVICE-CONN
               ENVIRONMENT: "prod"
-              WORKINGDIR: 'src/domains/messages-common'
-          # 3. Run terraform apply
-          - template: templates/terraform-apply/template.yaml@terraform
-            parameters:
+              WORKINGDIR: 'src/domains/profile-common'
               AZURE_SERVICE_CONNECTION_NAME: PROD-IO-SERVICE-CONN
-              ENVIRONMENT: prod
-              WORKINGDIR: 'src/domains/messages-common'
 
 #
 # APP
 #
-  - stage: tf_apply_app_on_aks_beta
-    dependsOn: [tf_apply_common_on_prod]
+  - stage: tf_plan_app_on_aks_beta
+    dependsOn: [tf_plan_common_on_prod]
     condition: and(succeeded(), eq(${{parameters.APP_BETA}}, true))
     pool:
       name: io-prod-linux
     jobs:
-      - job: tf_apply_app_on_aks_beta
+      - job: tf_plan_app_on_aks_beta
         timeoutInMinutes: $[variables.TIME_OUT]
         strategy:
           parallel: 1
@@ -95,34 +96,23 @@ stages:
           - checkout: self
           # 1. Install terraform
           - template: templates/terraform-setup/template.yaml@terraform
-          # 2. Run terraform plan messages-app
+          # Run terraform plan profile-app
           - template: templates/terraform-plan/template.yaml@terraform
             parameters:
+              ENVIRONMENT: "weu-beta"
+              WORKINGDIR: 'src/domains/profile-app'
               AZURE_SERVICE_CONNECTION_NAME: PROD-IO-SERVICE-CONN
               AKS_NAME: ${{ variables.AKS_PLATFORM_BETA_PROD_NAME }}
               AKS_API_SERVER_URL: ${{ variables.BETA_AKS_APISERVER_URL }}
               AKS_AZURE_DEVOPS_SA_CA_CRT: ${{ variables.BETA_AKS_AZURE_DEVOPS_SA_CACRT }}
               AKS_AZURE_DEVOPS_SA_TOKEN: ${{ variables.BETA_AKS_AZURE_DEVOPS_SA_TOKEN }}
-              ENVIRONMENT: "weu-beta"
-              WORKINGDIR: 'src/domains/messages-app'
-          # 3. Run terraform apply
-          - template: templates/terraform-apply/template.yaml@terraform
-            parameters:
-              AZURE_SERVICE_CONNECTION_NAME: PROD-IO-SERVICE-CONN
-              AKS_NAME: ${{ variables.AKS_PLATFORM_BETA_PROD_NAME }}
-              AKS_API_SERVER_URL: ${{ variables.BETA_AKS_APISERVER_URL }}
-              AKS_AZURE_DEVOPS_SA_CA_CRT: ${{ variables.BETA_AKS_AZURE_DEVOPS_SA_CACRT }}
-              AKS_AZURE_DEVOPS_SA_TOKEN: ${{ variables.BETA_AKS_AZURE_DEVOPS_SA_TOKEN }}
-              ENVIRONMENT: "weu-beta"
-              WORKINGDIR: 'src/domains/messages-app'
-
-  - stage: tf_apply_app_on_aks_on_prod01
-    dependsOn: [tf_apply_app_on_aks_beta]
+  - stage: tf_plan_app_on_aks_on_prod01
+    dependsOn: [tf_plan_app_on_aks_beta]
     condition: and(succeeded(), eq(${{parameters.APP_PROD01}}, true))
     pool:
       name: io-prod-linux
     jobs:
-      - job: tf_apply_app_on_aks_on_prod01
+      - job: tf_plan_app_on_aks_on_prod01
         timeoutInMinutes: $[variables.TIME_OUT]
         strategy:
           parallel: 1
@@ -130,23 +120,13 @@ stages:
           - checkout: self
           # 1. Install terraform
           - template: templates/terraform-setup/template.yaml@terraform
-          # 2. Run terraform plan messages-app
+          # Run terraform plan profile-app
           - template: templates/terraform-plan/template.yaml@terraform
             parameters:
+              ENVIRONMENT: "weu-prod01"
+              WORKINGDIR: 'src/domains/profile-app'
               AZURE_SERVICE_CONNECTION_NAME: PROD-IO-SERVICE-CONN
               AKS_NAME: ${{ variables.AKS_PLATFORM_PROD01_PROD_NAME }}
               AKS_API_SERVER_URL: ${{ variables.PROD01_AKS_APISERVER_URL }}
               AKS_AZURE_DEVOPS_SA_CA_CRT: ${{ variables.PROD01_AKS_AZURE_DEVOPS_SA_CACRT }}
               AKS_AZURE_DEVOPS_SA_TOKEN: ${{ variables.PROD01_AKS_AZURE_DEVOPS_SA_TOKEN }}
-              ENVIRONMENT: "weu-prod01"
-              WORKINGDIR: 'src/domains/messages-app'
-          # 3. Run terraform apply
-          - template: templates/terraform-apply/template.yaml@terraform
-            parameters:
-              AZURE_SERVICE_CONNECTION_NAME: PROD-IO-SERVICE-CONN
-              AKS_NAME: ${{ variables.AKS_PLATFORM_PROD01_PROD_NAME }}
-              AKS_API_SERVER_URL: ${{ variables.PROD01_AKS_APISERVER_URL }}
-              AKS_AZURE_DEVOPS_SA_CA_CRT: ${{ variables.PROD01_AKS_AZURE_DEVOPS_SA_CACRT }}
-              AKS_AZURE_DEVOPS_SA_TOKEN: ${{ variables.PROD01_AKS_AZURE_DEVOPS_SA_TOKEN }}
-              ENVIRONMENT: "weu-prod01"
-              WORKINGDIR: 'src/domains/messages-app'
