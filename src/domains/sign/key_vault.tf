@@ -67,15 +67,21 @@ resource "azurerm_key_vault_access_policy" "adgroup_sign" {
   certificate_permissions = ["Get", "List", "Update", "Create", "Import", "Delete", "Restore", "Recover", ]
 }
 
-## Azure DevOps Service Connection group policy ##
-resource "azurerm_key_vault_access_policy" "azdo" {
+#
+# azure devops policy
+#
+
+#pagopaspa-io-platform-iac-projects-{subscription}
+data "azuread_service_principal" "platform_iac_sp" {
+  display_name = "pagopaspa-io-platform-iac-projects-${data.azurerm_subscription.current.subscription_id}"
+}
+
+resource "azurerm_key_vault_access_policy" "azdevops_platform_iac_policy" {
   key_vault_id = module.key_vault.id
+  tenant_id    = data.azurerm_client_config.current.tenant_id
+  object_id    = data.azuread_service_principal.platform_iac_sp.object_id
 
-  tenant_id = data.azurerm_client_config.current.tenant_id
-  object_id = "81b42a5a-2fa4-44b9-aab8-59de02d1706b"
-
-  key_permissions         = ["Get", "List", "Update", "Create", "Import", "Delete", ]
-  secret_permissions      = ["Get", "List", "Set", "Delete", "Restore", "Recover", ]
+  secret_permissions      = ["Get", "List", "Set", ]
   storage_permissions     = []
-  certificate_permissions = ["Get", "List", "Update", "Create", "Import", "Delete", "Restore", "Recover", ]
+  certificate_permissions = ["SetIssuers", "DeleteIssuers", "Purge", "List", "Get", "ManageContacts", ]
 }
