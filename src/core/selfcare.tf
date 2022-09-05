@@ -222,7 +222,7 @@ module "appservice_selfcare_be" {
     FAILURE_URL         = "https://${local.selfcare_io.frontend_hostname}/500.html"
     SELFCARE_LOGIN_URL  = "https://${local.selfcare.hostname}/auth/login"
     SELFCARE_IDP_ISSUER = "https://${local.selfcare.hostname}"
-    SELFCARE_JWKS_URL   = data.http.selfcare_well_known_jwks_json.url
+    SELFCARE_JWKS_URL   = "https://${local.selfcare.hostname}/.well-known/jwks.json"
     JWT_SIGNATURE_KEY   = trimspace(module.selfcare_jwt.jwt_private_key_pem) # to avoid unwanted changes
 
     # JIRA integration for Service review workflow
@@ -313,14 +313,5 @@ resource "azurerm_monitor_autoscale_setting" "appservice_selfcare_be_common" {
         cooldown  = "PT5M"
       }
     }
-  }
-}
-
-data "http" "selfcare_well_known_jwks_json" {
-  url = "https://${local.selfcare.hostname}/.well-known/jwks.json"
-
-  # Optional request headers
-  request_headers = {
-    Accept = "application/json"
   }
 }
