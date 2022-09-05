@@ -44,6 +44,7 @@
 | [azurerm_resource_group.backend_rg](https://registry.terraform.io/providers/hashicorp/azurerm/2.87.0/docs/resources/resource_group) | resource |
 | [azurerm_resource_group.data_rg](https://registry.terraform.io/providers/hashicorp/azurerm/2.87.0/docs/resources/resource_group) | resource |
 | [azurerm_resource_group.sec_rg](https://registry.terraform.io/providers/hashicorp/azurerm/2.87.0/docs/resources/resource_group) | resource |
+| [azurerm_storage_container.documents](https://registry.terraform.io/providers/hashicorp/azurerm/2.87.0/docs/resources/storage_container) | resource |
 | [azuread_group.adgroup_admin](https://registry.terraform.io/providers/hashicorp/azuread/2.16.0/docs/data-sources/group) | data source |
 | [azuread_group.adgroup_contributors](https://registry.terraform.io/providers/hashicorp/azuread/2.16.0/docs/data-sources/group) | data source |
 | [azuread_group.adgroup_developers](https://registry.terraform.io/providers/hashicorp/azuread/2.16.0/docs/data-sources/group) | data source |
