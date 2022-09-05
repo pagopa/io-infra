@@ -40,7 +40,7 @@ paths:
           name: productId
           schema:
             type: string
-            format: uuid
+            format: ulid
           required: true
       responses:
         "200":
@@ -84,16 +84,16 @@ paths:
                 $ref: "#/components/schemas/ProblemJson"
         default:
           $ref: "#/components/responses/Unexpected"
-  /signature-requests/{productId}:
+  /signature-requests/{signatureRequestId}:
     get:
       operationId: getSignatureRequestById
       summary: Get a Signature Request By Id
       parameters:
         - in: path
-          name: productId
+          name: signatureRequestId
           schema:
             type: string
-            format: uuid
+            format: ulid
           required: true
       responses:
         "200":
@@ -108,6 +108,37 @@ paths:
           $ref: "#/components/responses/NotFound"
         default:
           $ref: "#/components/responses/Unexpected"
+  /signature-requests/{signatureRequestId}/documents/{documentId}/upload-token:
+    get:
+      operationId: getDocumentUploadToken
+      summary: Get the upload link for the specified document
+      parameters:
+        - in: path
+          name: signatureRequestId
+          schema:
+            type: string
+            format: ulid
+          required: true
+        - in: path
+          name: documentId
+          schema:
+            type: string
+            format: ulid
+          required: true
+      responses:
+        "200":
+          description: "The upload token of the specified document"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UploadToken"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "404":
+          $ref: "#/components/responses/NotFound"
+        default:
+          $ref: "#/components/responses/Unexpected"
+
 components:
   securitySchemes:
     SubscriptionKey:
@@ -141,6 +172,19 @@ components:
           schema:
             $ref: "#/components/schemas/ProblemJson"
   schemas:
+    UploadToken:
+      type: object
+      properties:
+        documentId:
+          type: string
+          format: ulid
+        token:
+          type: string
+          format: url
+      required:
+        - documentId
+        - token
+
     ProblemJson:
       type: object
       properties:
@@ -225,13 +269,22 @@ components:
           properties:
             id:
               type: string
-              format: uuid
+              format: ulid
+            url:
+              type: string
+              format: uri
           required:
             - id
         - $ref: "#/components/schemas/DocumentMetadata"
     ProductId:
       type: string
-      format: uuid
+      format: ulid
+    Timestamp:
+      type: string
+      format: UTCISODateFromString
+      description: A date-time field in ISO-8601 format and UTC timezone.
+      x-import: "@pagopa/ts-commons/lib/dates"
+      example: "2018-10-13T00:00:00.000Z"
     CreateProductBody:
       type: object
       properties:
@@ -262,6 +315,8 @@ components:
           $ref: "#/components/schemas/ProductId"
         fiscalCode:
           $ref: "#/components/schemas/FiscalCode"
+        expiresAt:
+          $ref: "#/components/schemas/Timestamp"
       required:
         - productId
         - fiscalCode
@@ -270,10 +325,13 @@ components:
       properties:
         id:
           type: string
-          format: uuid
-        productId:
+          format: ulid
+        status:
           type: string
-          format: uuid
+        productId:
+          $ref: "#/components/schemas/ProductId"
+        expiresAt:
+          $ref: "#/components/schemas/Timestamp"
         documents:
           type: array
           items:
