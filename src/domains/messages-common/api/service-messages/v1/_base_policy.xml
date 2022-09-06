@@ -3,10 +3,10 @@
         <base />
         <choose>
             <when condition="@(context.Request.Headers.GetValueOrDefault("environment", "false").Equals("beta"))">
-                <set-backend-service base-url="https://weubeta.messages.internal.io.pagopa.it/service-messages" />
+                <set-backend-service base-url="https://weubeta.messages.internal.io.pagopa.it/service-messages/api/v1" />
             </when>
             <when condition="@(context.Request.Headers.GetValueOrDefault("environment", "false").Equals("weu-prod01"))">
-                <set-backend-service base-url="https://weuprod01.messages.internal.io.pagopa.it/service-messages" />
+                <set-backend-service base-url="https://weuprod01.messages.internal.io.pagopa.it/service-messages/api/v1" />
             </when>
             <otherwise>
                 <!-- https://docs.microsoft.com/en-us/dotnet/api/system.random.next?view=net-6.0#system-random-next(system-int32-system-int32) -->
@@ -18,11 +18,11 @@
                     <when condition="@(context.Variables.GetValueOrDefault
                         <int>("urlWeight")
                             <= 1)">
-                                <set-backend-service base-url="https://weubeta.messages.internal.io.pagopa.it/service-messages" />
+                                <set-backend-service base-url="https://weubeta.messages.internal.io.pagopa.it/service-messages/api/v1" />
                             </when>
                             <when condition="@(context.Variables.GetValueOrDefault
                                 <int>("urlWeight") > 1)">
-                                    <set-backend-service base-url="https://weuprod01.messages.internal.io.pagopa.it/service-messages" />
+                                    <set-backend-service base-url="https://weuprod01.messages.internal.io.pagopa.it/service-messages/api/v1" />
                                 </when>
                                 <otherwise>
                                     <return-response>

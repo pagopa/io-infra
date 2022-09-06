@@ -17,7 +17,7 @@ info:
 
     This is the documentation of the IO API for App.
 host: api.cd.italia.it
-basePath: /api/v1
+basePath: /service-messages/api/v1
 schemes:
   - https
 security:
