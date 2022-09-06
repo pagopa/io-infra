@@ -1,18 +1,3 @@
-data "azurerm_key_vault_secret" "cosmosdb_connection_string" {
-  name         = "CosmosDbConnectionString"
-  key_vault_id = module.key_vault.id
-}
-
-data "azurerm_key_vault_secret" "io_api_subscription_key" {
-  name         = "IOApiSubscriptionKey"
-  key_vault_id = module.key_vault.id
-}
-
-data "azurerm_key_vault_secret" "storage_account_connection_string" {
-  name         = "StorageAccountConnectionString"
-  key_vault_id = module.key_vault.id
-}
-
 module "io_sign_dss_func" {
   source    = "git::https://github.com/pagopa/azurerm.git//function_app?ref=v2.18.2"
   name      = "${local.project}-dss-func"
