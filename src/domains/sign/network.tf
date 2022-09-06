@@ -11,7 +11,13 @@ module "io_sign_snet" {
   address_prefixes     = ["10.0.102.0/24"]
 
   enforce_private_link_endpoint_network_policies = true
-  service_endpoints                              = ["Microsoft.Web", "Microsoft.AzureCosmosDB"]
+
+  service_endpoints = [
+    "Microsoft.Web",
+    "Microsoft.AzureCosmosDB",
+    "Microsoft.Storage",
+  ]
+
   delegation = {
     name = "default"
     service_delegation = {
