@@ -21,3 +21,20 @@ module "io_sign_snet" {
   }
 }
 
+module "io_sign_dss_snet" {
+  source               = "git::https://github.com/pagopa/azurerm.git//subnet?ref=v2.13.1"
+  name                 = "${local.project}-dss-snet"
+  resource_group_name  = data.azurerm_virtual_network.vnet_common.resource_group_name
+  virtual_network_name = data.azurerm_virtual_network.vnet_common.name
+  address_prefixes     = ["10.0.103.0/24"]
+
+  enforce_private_link_endpoint_network_policies = true
+  service_endpoints                              = ["Microsoft.Web", "Microsoft.AzureCosmosDB"]
+  delegation = {
+    name = "default"
+    service_delegation = {
+      name    = "Microsoft.Web/serverFarms"
+      actions = ["Microsoft.Network/virtualNetworks/subnets/action"]
+    }
+  }
+}

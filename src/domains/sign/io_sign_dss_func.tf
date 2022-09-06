@@ -1,7 +1,7 @@
 module "io_sign_dss_func" {
   source    = "git::https://github.com/pagopa/azurerm.git//function_app?ref=v2.18.2"
   name      = "${local.project}-dss-func"
-  subnet_id = module.io_sign_snet.id
+  subnet_id = module.io_sign_dss_snet.id
 
   location            = azurerm_resource_group.backend_rg.location
   resource_group_name = azurerm_resource_group.backend_rg.name
