@@ -28,12 +28,12 @@ module "io_sign_func" {
   health_check_path = "api/v1/sign/info"
 
   internal_storage = {
-    enable                     = false,
+    enable                     = true,
     private_endpoint_subnet_id = data.azurerm_subnet.private_endpoints_subnet.id,
     private_dns_zone_blob_ids  = []
     private_dns_zone_queue_ids = []
     private_dns_zone_table_ids = []
-    queues                     = []
+    queues                     = ["waiting-for-message", "waiting-for-signature", "waiting-for-document"]
     containers                 = []
     blobs_retention_days       = 1
   }
