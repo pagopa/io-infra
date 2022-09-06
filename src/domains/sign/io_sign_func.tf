@@ -1,3 +1,8 @@
+data "azurerm_key_vault_secret" "storage_account_connection_string" {
+  name         = "StorageAccountConnectionString"
+  key_vault_id = module.key_vault.id
+}
+
 data "azurerm_key_vault_secret" "cosmosdb_connection_string" {
   name         = "CosmosDbConnectionString"
   key_vault_id = module.key_vault.id
@@ -44,6 +49,7 @@ module "io_sign_func" {
     WEBSITE_DNS_SERVER           = "168.63.129.16"
     CosmosDbConnectionString     = data.azurerm_key_vault_secret.cosmosdb_connection_string.value
     IOApiSubscriptionKey         = data.azurerm_key_vault_secret.io_api_subscription_key.value
+    StorageAccountConnectionString = data.azurerm_key_vault_secret.storage_account_connection_string.value
   }
 
   allowed_subnets = [module.io_sign_snet.id, data.azurerm_subnet.apim.id]
