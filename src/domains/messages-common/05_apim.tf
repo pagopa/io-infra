@@ -56,7 +56,7 @@ module "apim_service_messages_api_v1" {
 
   description  = "IO Service - Messages API"
   display_name = "IO Service - Messages API"
-  path         = "api/v1"
+  path         = "service-messages"
   protocols    = ["https"]
 
   content_format = "openapi"
