@@ -94,3 +94,14 @@ variable "io_sign_func" {
     sku_size = "B1"
   }
 }
+
+variable "io_sign_dss_func" {
+  type = object({
+    sku_tier = string
+    sku_size = string
+  })
+  default = {
+    sku_tier = "Basic"
+    sku_size = "B1"
+  }
+}
