@@ -234,25 +234,29 @@ data "azurerm_key_vault_secret" "devportalservicedata_db_server_fndevportalservi
 
 
 module "devportalservicedata_db_server" {
-  source = "git::https://github.com/pagopa/azurerm.git//postgresql_server?ref=v2.1.20"
+  source = "git::https://github.com/pagopa/azurerm.git//postgres_flexible_server?ref=v2.18.10"
 
   name                = local.function_devportalservicedata.db.name
   location            = var.location
   resource_group_name = local.function_devportalservicedata.app_context.resource_group.name
 
-  administrator_login          = data.azurerm_key_vault_secret.devportalservicedata_db_server_adm_username.value
-  administrator_login_password = data.azurerm_key_vault_secret.devportalservicedata_db_server_adm_password.value
+  administrator_login    = data.azurerm_key_vault_secret.devportalservicedata_db_server_adm_username.value
+  administrator_password = data.azurerm_key_vault_secret.devportalservicedata_db_server_adm_password.value
 
   sku_name                     = "GP_Gen5_2"
-  db_version                   = 11
+  db_version                   = 14
   geo_redundant_backup_enabled = false
 
   public_network_access_enabled = false
   private_endpoint = {
-    enabled              = true
-    virtual_network_id   = local.function_devportalservicedata.app_context.vnet.id
-    subnet_id            = data.azurerm_subnet.private_endpoints_subnet.id
-    private_dns_zone_ids = [azurerm_private_dns_zone.privatelink_postgres_database_azure_com.id]
+    enabled            = true
+    virtual_network_id = local.function_devportalservicedata.app_context.vnet.id
+    subnet_id          = data.azurerm_subnet.private_endpoints_subnet.id
+    private_dns_zone = {
+      id   = azurerm_private_dns_zone.privatelink_postgres_database_azure_com.id
+      name = azurerm_private_dns_zone.privatelink_postgres_database_azure_com.name
+      rg   = data.azurerm_resource_group.vnet_common_rg.name
+    }
   }
 
   alerts_enabled                = true
