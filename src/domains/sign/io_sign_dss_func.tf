@@ -25,7 +25,7 @@ module "io_sign_dss_func" {
     QueueStorageConnection       = data.azurerm_storage_account.api.primary_connection_string
     CosmosDbConnectionString     = data.azurerm_key_vault_secret.cosmosdb_connection_string.value
     IOApiSubscriptionKey         = data.azurerm_key_vault_secret.io_api_subscription_key.value
-    StorageAccountConnectionString = data.azurerm_key_vault_secret.storage_account_connection_string.value
+    StorageAccountConnectionString = module.io_sign_storage.primary_connection_string
   }
 
   allowed_subnets = [module.io_sign_snet.id, data.azurerm_subnet.apim.id]
