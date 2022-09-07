@@ -28,8 +28,6 @@ module "io_sign_dss_func" {
     StorageAccountConnectionString = module.io_sign_storage.primary_connection_string
   }
 
-  allowed_subnets = [module.io_sign_dss_snet.id, data.azurerm_subnet.apim.id]
-
   runtime_version                          = "~4"
   application_insights_instrumentation_key = data.azurerm_application_insights.application_insights.instrumentation_key
   tags                                     = var.tags
