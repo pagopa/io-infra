@@ -23,12 +23,12 @@ module "io_sign_dss_func" {
     WEBSITE_VNET_ROUTE_ALL       = "1"
     WEBSITE_DNS_SERVER           = "168.63.129.16"
     QueueStorageConnection       = data.azurerm_storage_account.api.primary_connection_string
-    CosmosDbConnectionString     = data.azurerm_key_vault_secret.cosmosdb_connection_string.value
+    CosmosDbConnectionString     = module.cosmosdb_account.primary_connection_string
     IOApiSubscriptionKey         = data.azurerm_key_vault_secret.io_api_subscription_key.value
     StorageAccountConnectionString = module.io_sign_storage.primary_connection_string
   }
 
-  allowed_subnets = [module.io_sign_snet.id, data.azurerm_subnet.apim.id]
+  allowed_subnets = [module.io_sign_dss_snet.id, data.azurerm_subnet.apim.id]
 
   runtime_version                          = "~4"
   application_insights_instrumentation_key = data.azurerm_application_insights.application_insights.instrumentation_key
