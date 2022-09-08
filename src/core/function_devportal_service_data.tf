@@ -245,7 +245,7 @@ module "devportalservicedata_db_server" {
   administrator_password = data.azurerm_key_vault_secret.devportalservicedata_db_server_adm_password.value
 
   sku_name                     = "GP_Standard_D2ds_v4"
-  db_version                   = 14
+  db_version                   = 13
   geo_redundant_backup_enabled = false
 
   private_endpoint_enabled = true
