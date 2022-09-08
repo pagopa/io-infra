@@ -257,18 +257,7 @@ module "devportalservicedata_db_server" {
 
 
   alerts_enabled                = true
-  monitor_metric_alert_criteria = local.function_devportalservicedata.metric_alerts.db
-  action = [
-    {
-      action_group_id    = azurerm_monitor_action_group.email.id
-      webhook_properties = null
-    },
-    {
-      action_group_id    = azurerm_monitor_action_group.slack.id
-      webhook_properties = null
-    }
-  ]
-
+  
   diagnostic_settings_enabled = true
   log_analytics_workspace_id  = data.azurerm_log_analytics_workspace.log_analytics_workspace.id
 
