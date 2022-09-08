@@ -234,7 +234,7 @@ data "azurerm_key_vault_secret" "devportalservicedata_db_server_fndevportalservi
 
 
 module "devportalservicedata_db_server" {
-  source = "git::https://github.com/pagopa/azurerm.git//postgres_flexible_server?ref=v2.1.14"
+  source = "git::https://github.com/pagopa/azurerm.git//postgres_flexible_server?ref=v2.18.10"
 
   name                = local.function_devportalservicedata.db.name
   location            = var.location
