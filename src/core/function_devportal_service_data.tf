@@ -247,17 +247,14 @@ module "devportalservicedata_db_server" {
   db_version                   = 14
   geo_redundant_backup_enabled = false
 
-  public_network_access_enabled = false
-  private_endpoint = {
-    enabled            = true
-    virtual_network_id = local.function_devportalservicedata.app_context.vnet.id
-    subnet_id          = data.azurerm_subnet.private_endpoints_subnet.id
-    private_dns_zone = {
-      id   = azurerm_private_dns_zone.privatelink_postgres_database_azure_com.id
-      name = azurerm_private_dns_zone.privatelink_postgres_database_azure_com.name
-      rg   = data.azurerm_resource_group.vnet_common_rg.name
-    }
-  }
+  private_endpoint_enabled = true
+  private_dns_zone_id      = azurerm_private_dns_zone.privatelink_postgres_database_azure_com.id
+
+  high_availability_enabled = false
+
+  pgbouncer_enabled = true
+
+
 
   alerts_enabled                = true
   monitor_metric_alert_criteria = local.function_devportalservicedata.metric_alerts.db
@@ -272,7 +269,8 @@ module "devportalservicedata_db_server" {
     }
   ]
 
-  lock_enable = var.lock_enable
+  diagnostic_settings_enabled = true
+  log_analytics_workspace_id  = data.azurerm_log_analytics_workspace.log_analytics_workspace.id
 
   tags = var.tags
 }
