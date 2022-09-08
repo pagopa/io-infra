@@ -150,6 +150,7 @@ module "function_devportalservicedata" {
     "private_dns_zone_table_ids" = [data.azurerm_private_dns_zone.privatelink_table_core_windows_net.id],
     "containers"                 = [],
     "blobs_retention_days"       = 1,
+    "queues"                     = []
   }
 
   runtime_version   = "~3"
@@ -256,8 +257,8 @@ module "devportalservicedata_db_server" {
 
 
 
-  alerts_enabled                = true
-  
+  alerts_enabled = true
+
   diagnostic_settings_enabled = true
   log_analytics_workspace_id  = data.azurerm_log_analytics_workspace.log_analytics_workspace.id
 
