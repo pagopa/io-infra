@@ -246,7 +246,7 @@ module "devportalservicedata_db_server" {
 
   sku_name                     = "GP_Standard_D2ds_v4"
   db_version                   = 13
-  geo_redundant_backup_enabled = false
+  geo_redundant_backup_enabled = true
 
   private_endpoint_enabled = true
   private_dns_zone_id      = azurerm_private_dns_zone.privatelink_postgres_database_azure_com.id
