@@ -280,3 +280,38 @@ resource "azurerm_private_dns_zone_virtual_network_link" "servicebus_private_vne
 
   tags = var.tags
 }
+
+data "azurerm_private_dns_zone" "privatelink_documents" {
+  name                = "privatelink.documents.azure.com"
+  resource_group_name = format("%s-rg-common", local.project)
+}
+
+resource "azurerm_private_dns_zone_virtual_network_link" "documents_private_vnet_beta" {
+  name                  = module.vnet_weu_beta.name
+  resource_group_name   = format("%s-rg-common", local.project)
+  private_dns_zone_name = data.azurerm_private_dns_zone.privatelink_documents.name
+  virtual_network_id    = module.vnet_weu_beta.id
+  registration_enabled  = false
+
+  tags = var.tags
+}
+
+resource "azurerm_private_dns_zone_virtual_network_link" "documents_private_vnet_prod01" {
+  name                  = module.vnet_weu_prod01.name
+  resource_group_name   = format("%s-rg-common", local.project)
+  private_dns_zone_name = data.azurerm_private_dns_zone.privatelink_documents.name
+  virtual_network_id    = module.vnet_weu_prod01.id
+  registration_enabled  = false
+
+  tags = var.tags
+}
+
+resource "azurerm_private_dns_zone_virtual_network_link" "documents_private_vnet_prod02" {
+  name                  = module.vnet_weu_prod02.name
+  resource_group_name   = format("%s-rg-common", local.project)
+  private_dns_zone_name = data.azurerm_private_dns_zone.privatelink_documents.name
+  virtual_network_id    = module.vnet_weu_prod02.id
+  registration_enabled  = false
+
+  tags = var.tags
+}
