@@ -67,10 +67,36 @@ resource "azurerm_storage_management_policy" "services_storage" {
   }
 }
 
+data "azurerm_storage_account" "api_storage" {
+  name                = "iopstapi"
+  resource_group_name = format("%s-rg-internal", local.product)
+}
+
+data "azurerm_storage_account" "notifications_storage" {
+  name                = "iopstnotifications"
+  resource_group_name = format("%s-rg-internal", local.product)
+}
+
 #tfsec:ignore:AZU023
 resource "azurerm_key_vault_secret" "services_storage_connection_string" {
   name         = "${module.services_storage.name}-connection-string"
   value        = module.services_storage.primary_connection_string
+  content_type = "text/plain"
+
+  key_vault_id = data.azurerm_key_vault.kv.id
+}
+
+resource "azurerm_key_vault_secret" "notifications_storage_connection_string" {
+  name         = "${data.notifications_storage.name}-connection-string"
+  value        = data.azurerm_storage_account.notifications_storage.primary_connection_string
+  content_type = "text/plain"
+
+  key_vault_id = data.azurerm_key_vault.kv.id
+}
+
+resource "azurerm_key_vault_secret" "api_storage_connection_string" {
+  name         = "${data.api_storage.name}-connection-string"
+  value        = data.azurerm_storage_account.api_storage.primary_connection_string
   content_type = "text/plain"
 
   key_vault_id = data.azurerm_key_vault.kv.id
