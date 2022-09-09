@@ -20,6 +20,8 @@
 
 | Name | Source | Version |
 |------|--------|---------|
+| <a name="module_apim_product_notifications"></a> [apim\_product\_notifications](#module\_apim\_product\_notifications) | git::https://github.com/pagopa/azurerm.git//api_management_product | v1.0.16 |
+| <a name="module_apim_service_messages_api_v1"></a> [apim\_service\_messages\_api\_v1](#module\_apim\_service\_messages\_api\_v1) | git::https://github.com/pagopa/azurerm.git//api_management_api | v1.0.16 |
 | <a name="module_key_vault"></a> [key\_vault](#module\_key\_vault) | git::https://github.com/pagopa/azurerm.git//key_vault | v2.13.1 |
 
 ## Resources
