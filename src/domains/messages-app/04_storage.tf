@@ -87,7 +87,7 @@ resource "azurerm_key_vault_secret" "services_storage_connection_string" {
 }
 
 resource "azurerm_key_vault_secret" "notifications_storage_connection_string" {
-  name         = "${data.notifications_storage.name}-connection-string"
+  name         = "${data.azurerm_storage_account.notifications_storage.name}-connection-string"
   value        = data.azurerm_storage_account.notifications_storage.primary_connection_string
   content_type = "text/plain"
 
@@ -95,7 +95,7 @@ resource "azurerm_key_vault_secret" "notifications_storage_connection_string" {
 }
 
 resource "azurerm_key_vault_secret" "api_storage_connection_string" {
-  name         = "${data.api_storage.name}-connection-string"
+  name         = "${data.azurerm_storage_account.api_storage.name}-connection-string"
   value        = data.azurerm_storage_account.api_storage.primary_connection_string
   content_type = "text/plain"
 
