@@ -4,7 +4,7 @@ data "azurerm_cosmosdb_account" "cosmos_api" {
 }
 
 resource "azurerm_key_vault_secret" "cosmos_api_master_key" {
-  name         = "${data.cosmos_api.name}-master-key"
+  name         = "${data.azurerm_cosmosdb_account.cosmos_api.name}-master-key"
   value        = data.azurerm_cosmosdb_account.cosmos_api.primary_master_key
   content_type = "text/plain"
 
