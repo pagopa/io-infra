@@ -8,6 +8,8 @@ pr:
       - 'src/domains/profile-app'
       - 'src/domains/profile-common'
       - ".devops/profile-code-review-pipelines.yml"
+    exclude:
+      - '**/*.lock.hcl'
 
 parameters:
   - name: 'COMMON'
