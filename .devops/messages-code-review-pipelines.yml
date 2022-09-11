@@ -8,6 +8,8 @@ pr:
       - 'src/domains/messages-app'
       - 'src/domains/messages-common'
       - ".devops/messages-code-review-pipelines.yml"
+    exclude:
+      - '**/*.lock.hcl'
 
 parameters:
   - name: 'COMMON'

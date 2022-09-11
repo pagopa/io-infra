@@ -8,6 +8,8 @@ pr:
       - "src/domains/sign-app"
       - "src/domains/sign"
       - ".devops/sign-code-review-pipelines.yml"
+    exclude:
+      - '**/*.lock.hcl'
 
 # parameters:
 #   - name: "COMMON"
