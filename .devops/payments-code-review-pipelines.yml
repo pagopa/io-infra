@@ -8,6 +8,8 @@ pr:
       - 'src/domains/payments-app'
       - 'src/domains/payments-common'
       - ".devops/payments-code-review-pipelines.yml"
+    exclude:
+      - '**/*.lock.hcl'
 
 parameters:
   - name: 'COMMON'
