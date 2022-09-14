@@ -25,6 +25,7 @@ locals {
       MESSAGE_STATUS_FOR_VIEW_TOPIC_CONSUMER_GROUP             = "io-messages"
       MESSAGE_STATUS_FOR_VIEW_TOPIC_NAME                       = "io-cosmosdb-message-status-for-view"
       MESSAGE_STATUS_FOR_VIEW_TOPIC_PRODUCER_CONNECTION_STRING = module.event_hub.keys["io-cosmosdb-message-status-for-view.io-cdc"].primary_connection_string
+      MESSAGE_STATUS_FOR_VIEW_BROKERS                          = "${local.io-p-evh-ns.hostname}:${local.io-p-evh-ns.port}"
 
 
       MESSAGES_TOPIC_CONNECTION_STRING = data.azurerm_eventhub_authorization_rule.io-p-messages-weu-prod01-evh-ns_messages-payments_io-fn-messages-cqrs.primary_connection_string

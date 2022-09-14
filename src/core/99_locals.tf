@@ -35,4 +35,9 @@ locals {
     hostname = "io-p-messages-weu-prod01-evh-ns.servicebus.windows.net"
     port     = "9093"
   }
+
+  io-p-evh-ns = {
+    hostname = "io-p-evh-ns.servicebus.windows.net"
+    port     = "9093"
+  }
 }
