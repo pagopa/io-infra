@@ -255,7 +255,7 @@ module "devportalservicedata_db_server" {
 
   pgbouncer_enabled = true
 
-
+  storage_mb = 32768 # 32GB
 
   alerts_enabled = true
 
