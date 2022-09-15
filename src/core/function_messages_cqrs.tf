@@ -27,8 +27,8 @@ locals {
       MESSAGE_STATUS_FOR_VIEW_TOPIC_PRODUCER_CONNECTION_STRING = module.event_hub.keys["io-cosmosdb-message-status-for-view.io-cdc"].primary_connection_string
 
 
-      MESSAGES_TOPIC_CONNECTION_STRING = data.azurerm_eventhub_authorization_rule.io-p-messages-weu-prod01-evh-ns_messages-payments_io-fn-messages-cqrs.primary_connection_string
-      MESSAGES_TOPIC_NAME              = "messages-payments"
+      MESSAGES_TOPIC_CONNECTION_STRING = data.azurerm_eventhub_authorization_rule.io-p-messages-weu-prod01-evh-ns_messages_io-fn-messages-cqrs.primary_connection_string
+      MESSAGES_TOPIC_NAME              = "messages"
 
       MESSAGE_STATUS_FOR_REMINDER_TOPIC_PRODUCER_CONNECTION_STRING = data.azurerm_eventhub_authorization_rule.io-p-messages-weu-prod01-evh-ns_message-status_io-fn-messages-cqrs.primary_connection_string
       MESSAGE_STATUS_FOR_REMINDER_TOPIC_NAME                       = "message-status"
@@ -38,10 +38,10 @@ locals {
       TARGETKAFKA_ssl             = "true"
       TARGETKAFKA_sasl_mechanism  = "plain"
       TARGETKAFKA_sasl_username   = "$ConnectionString"
-      TARGETKAFKA_sasl_password   = data.azurerm_eventhub_authorization_rule.io-p-messages-weu-prod01-evh-ns_messages-payments_io-fn-messages-cqrs.primary_connection_string
+      TARGETKAFKA_sasl_password   = data.azurerm_eventhub_authorization_rule.io-p-messages-weu-prod01-evh-ns_messages_io-fn-messages-cqrs.primary_connection_string
       TARGETKAFKA_idempotent      = "true"
       TARGETKAFKA_transactionalId = "IO_MESSAGES_CQRS"
-      TARGETKAFKA_topic           = "messages-payments"
+      TARGETKAFKA_topic           = "messages"
 
       PAYMENT_FOR_VIEW_TOPIC_NAME                       = "payment-updates"
       PAYMENT_FOR_VIEW_TOPIC_CONSUMER_GROUP             = "$Default"
