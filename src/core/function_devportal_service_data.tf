@@ -212,6 +212,8 @@ module "function_devportalservicedata_staging_slot" {
   })
 
   tags = var.tags
+
+  depends_on = [module.function_devportalservicedata]
 }
 
 #
@@ -265,10 +267,11 @@ module "devportalservicedata_db_server" {
   tags = var.tags
 }
 
-/*resource "azurerm_postgresql_database" "devportalservicedata_db" {
+resource "azurerm_postgresql_database" "devportalservicedata_db" {
   name                = "db"
   resource_group_name = local.function_devportalservicedata.app_context.resource_group.name
   server_name         = module.devportalservicedata_db_server.name
   charset             = "UTF8"
   collation           = "English_United States.1252"
-}*/
+  depends_on          = [module.devportalservicedata_db_server]
+}
