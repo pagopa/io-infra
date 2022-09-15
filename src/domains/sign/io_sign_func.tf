@@ -38,12 +38,12 @@ module "io_sign_func" {
     blobs_retention_days       = 1
   }
   app_settings = {
-    FUNCTIONS_WORKER_RUNTIME     = "node"
-    WEBSITE_NODE_DEFAULT_VERSION = "16.13.0"
-    WEBSITE_VNET_ROUTE_ALL       = "1"
-    WEBSITE_DNS_SERVER           = "168.63.129.16"
-    CosmosDbConnectionString     = data.azurerm_key_vault_secret.cosmosdb_connection_string.value
-    IOApiSubscriptionKey         = data.azurerm_key_vault_secret.io_api_subscription_key.value
+    FUNCTIONS_WORKER_RUNTIME       = "node"
+    WEBSITE_NODE_DEFAULT_VERSION   = "16.13.0"
+    WEBSITE_VNET_ROUTE_ALL         = "1"
+    WEBSITE_DNS_SERVER             = "168.63.129.16"
+    CosmosDbConnectionString       = data.azurerm_key_vault_secret.cosmosdb_connection_string.value
+    IOApiSubscriptionKey           = data.azurerm_key_vault_secret.io_api_subscription_key.value
     StorageAccountConnectionString = module.io_sign_storage.primary_connection_string
   }
 
