@@ -22,7 +22,7 @@ resource "azurerm_resource_group" "data_rg" {
 module "cosmosdb_account_mongodb" {
   source = "git::https://github.com/pagopa/azurerm.git//cosmosdb_account?ref=v2.15.1"
 
-  name                 = "${local.product}-${var.domain}-mongodb-account"
+  name                 = "${local.product}-${var.domain}-reminder-mongodb-account"
   location             = azurerm_resource_group.data_rg.location
   resource_group_name  = azurerm_resource_group.data_rg.name
   offer_type           = "Standard"
