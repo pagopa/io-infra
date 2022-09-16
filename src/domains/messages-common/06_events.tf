@@ -1,5 +1,5 @@
 data "azurerm_eventhub_authorization_rule" "messages-weu-prod01-evh_messages_io-reminder" {
-  name                = "${var.prefix}-reminder"
+  name                = "${local.product}-reminder"
   namespace_name      = "${local.product}-messages-weu-prod01-evh-ns"
   eventhub_name       = "messages"
   resource_group_name = "${local.product}-messages-weu-prod01-evt-rg"
@@ -15,7 +15,7 @@ resource "azurerm_key_vault_secret" "messages_io-p-messages-weu-prod01-evh-remin
 }
 
 data "azurerm_eventhub_authorization_rule" "messages-weu-prod01-evh_message-status_io-reminder" {
-  name                = "${var.prefix}-reminder"
+  name                = "${local.product}-reminder"
   namespace_name      = "${local.product}-messages-weu-prod01-evh-ns"
   eventhub_name       = "message-status"
   resource_group_name = "${local.product}-messages-weu-prod01-evt-rg"
