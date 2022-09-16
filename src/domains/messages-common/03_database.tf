@@ -19,7 +19,7 @@ resource "azurerm_resource_group" "data_rg" {
 }
 
 
-module "cosmosdb_account_mongodb" {
+module "cosmosdb_account_mongodb_reminder" {
   source = "git::https://github.com/pagopa/azurerm.git//cosmosdb_account?ref=v2.15.1"
 
   name                 = "${local.product}-${var.domain}-reminder-mongodb-account"
@@ -56,7 +56,7 @@ module "cosmosdb_account_mongodb" {
 resource "azurerm_cosmosdb_mongo_database" "db" {
   name                = "db"
   resource_group_name = azurerm_resource_group.data_rg.name
-  account_name        = module.cosmosdb_account_mongodb.name
+  account_name        = module.cosmosdb_account_mongodb_reminder.name
 
   autoscale_settings {
     max_throughput = 4000
@@ -70,7 +70,7 @@ module "mongdb_collection_reminder" {
   name                = "reminder"
   resource_group_name = azurerm_resource_group.data_rg.name
 
-  cosmosdb_mongo_account_name  = module.cosmosdb_account_mongodb.name
+  cosmosdb_mongo_account_name  = module.cosmosdb_account_mongodb_reminder.name
   cosmosdb_mongo_database_name = azurerm_cosmosdb_mongo_database.db.name
 
   indexes = [
@@ -85,8 +85,8 @@ module "mongdb_collection_reminder" {
 
 #tfsec:ignore:AZU023
 resource "azurerm_key_vault_secret" "mongodb_connection_string" {
-  name         = "${module.cosmosdb_account_mongodb.name}-connection-string"
-  value        = module.cosmosdb_account_mongodb.connection_strings[0]
+  name         = "${module.cosmosdb_account_mongodb_reminder.name}-connection-string"
+  value        = module.cosmosdb_account_mongodb_reminder.connection_strings[0]
   content_type = "full connection string"
   key_vault_id = module.key_vault.id
 }
