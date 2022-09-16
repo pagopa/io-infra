@@ -25,6 +25,8 @@ array=(
     'src/domains/payments-common::prod'
     'src/domains/profile-app::weu-beta'
     'src/domains/profile-common::prod'
+    'src/domains/services-app::prod'
+    'src/domains/services-common::prod'
     'src/domains/reminder::prod'
     'src/domains/sign::prod'
 )
