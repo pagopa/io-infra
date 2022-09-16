@@ -53,7 +53,7 @@ module "cosmosdb_account_mongodb_reminder" {
   tags = var.tags
 }
 
-resource "azurerm_cosmosdb_mongo_database" "db" {
+resource "azurerm_cosmosdb_mongo_database" "db_reminder" {
   name                = "db"
   resource_group_name = azurerm_resource_group.data_rg.name
   account_name        = module.cosmosdb_account_mongodb_reminder.name
@@ -71,7 +71,7 @@ module "mongdb_collection_reminder" {
   resource_group_name = azurerm_resource_group.data_rg.name
 
   cosmosdb_mongo_account_name  = module.cosmosdb_account_mongodb_reminder.name
-  cosmosdb_mongo_database_name = azurerm_cosmosdb_mongo_database.db.name
+  cosmosdb_mongo_database_name = azurerm_cosmosdb_mongo_database.db_reminder.name
 
   indexes = [
     {
@@ -84,7 +84,7 @@ module "mongdb_collection_reminder" {
 }
 
 #tfsec:ignore:AZU023
-resource "azurerm_key_vault_secret" "mongodb_connection_string" {
+resource "azurerm_key_vault_secret" "mongodb_connection_string_reminder" {
   name         = "${module.cosmosdb_account_mongodb_reminder.name}-connection-string"
   value        = module.cosmosdb_account_mongodb_reminder.connection_strings[0]
   content_type = "full connection string"
