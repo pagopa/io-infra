@@ -124,7 +124,7 @@ eventhubs = [
         manage = false
       },
       {
-        name   = "io-reminder"
+        name   = "io-p-reminder"
         listen = true
         send   = false
         manage = false
