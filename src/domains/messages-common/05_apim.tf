@@ -84,7 +84,7 @@ module "apim_service_messages_api_v1" {
 
 
 resource "azurerm_api_management_user" "reminder_user" {
-  user_id             = "io_premium_reminder_user"
+  user_id             = "iopremiumreminderuser"
   api_management_name = data.azurerm_api_management.apim_api.name
   resource_group_name = data.azurerm_api_management.apim_api.resource_group_name
   first_name          = "Reminder"
