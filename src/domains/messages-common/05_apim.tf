@@ -104,7 +104,7 @@ resource "azurerm_api_management_subscription" "reminder" {
   api_management_name = data.azurerm_api_management.apim_api.name
   resource_group_name = data.azurerm_api_management.apim_api.resource_group_name
   user_id             = azurerm_api_management_user.reminder_user.id
-  product_id          = module.apim_product_notifications.product_id
+  product_id          = module.apim_product_notifications.id
   display_name        = "Reminder API"
 }
 
