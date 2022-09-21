@@ -36,7 +36,7 @@ locals {
       SAML_ACCEPTED_CLOCK_SKEW_MS            = "5000"
       # IDP_METADATA_URL                       = "https://registry.SPID.gov.it/metadata/idp/spid-entities-idps.xml"
       IDP_METADATA_URL                      = "https://api.is.eng.pagopa.it/idp-keys/spid/latest" # PagoPA internal cache
-      IDP_METADATA_REFRESH_INTERVAL_SECONDS = "864000"                                                                        # 10 days
+      IDP_METADATA_REFRESH_INTERVAL_SECONDS = "864000"                                            # 10 days
 
       // CIE
       # CIE_METADATA_URL = "https://idserver.servizicie.interno.gov.it:443/idp/shibboleth"
