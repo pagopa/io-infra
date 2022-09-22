@@ -67,7 +67,7 @@ module "mongdb_collection_payment" {
     },
     {
       keys   = ["content_paymentData_payeeFiscalCode", "content_paymentData_noticeNumber"]
-      unique = true
+      unique = false
     },
   ]
 
@@ -90,7 +90,7 @@ module "mongdb_collection_payment_retry" {
     },
     {
       keys   = ["payeeFiscalCode", "noticeNumber"]
-      unique = true
+      unique = false
     },
   ]
 
