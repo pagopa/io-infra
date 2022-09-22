@@ -94,7 +94,7 @@ resource "azurerm_api_management_user" "reminder_user" {
 }
 
 resource "azurerm_api_management_group_user" "reminder_group" {
-  user_id             = azurerm_api_management_user.reminder_user.id
+  user_id             = azurerm_api_management_user.reminder_user.user_id
   group_name          = azurerm_api_management_group.apiremindernotify.name
   resource_group_name = azurerm_api_management_user.reminder_user.resource_group_name
   api_management_name = azurerm_api_management_user.reminder_user.api_management_name
