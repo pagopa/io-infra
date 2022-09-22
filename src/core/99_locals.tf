@@ -10,6 +10,13 @@ locals {
     "51.144.56.176/28",
   ]
 
+  aks_ips = [
+    // aks beta
+    "51.124.16.195/32",
+    // aks prod01
+    "51.105.109.140/32"
+  ]
+
   # windows standatd. It can be different in linux service plan.
   cet_time_zone_win = "Central Europe Standard Time"
 

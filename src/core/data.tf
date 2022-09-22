@@ -194,10 +194,10 @@ data "azurerm_eventhub_authorization_rule" "io-p-payments-weu-prod01-evh-ns_paym
   resource_group_name = "${local.project}-payments-weu-prod01-evt-rg"
 }
 
-data "azurerm_eventhub_authorization_rule" "io-p-messages-weu-prod01-evh-ns_messages-payments_io-fn-messages-cqrs" {
+data "azurerm_eventhub_authorization_rule" "io-p-messages-weu-prod01-evh-ns_messages_io-fn-messages-cqrs" {
   name                = "io-fn-messages-cqrs"
   namespace_name      = "${local.project}-messages-weu-prod01-evh-ns"
-  eventhub_name       = "messages-payments"
+  eventhub_name       = "messages"
   resource_group_name = "${local.project}-messages-weu-prod01-evt-rg"
 }
 
