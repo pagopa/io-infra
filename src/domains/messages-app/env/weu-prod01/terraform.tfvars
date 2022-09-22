@@ -112,7 +112,7 @@ ehns_metric_alerts = {
 
 eventhubs = [
   {
-    name              = "messages-payments"
+    name              = "messages"
     partitions        = 5
     message_retention = 7
     consumers         = []
@@ -128,15 +128,7 @@ eventhubs = [
         listen = false
         send   = true
         manage = false
-      }
-    ]
-  },
-  {
-    name              = "messages"
-    partitions        = 5
-    message_retention = 7
-    consumers         = []
-    keys = [
+      },
       {
         name   = "io-p-reminder"
         listen = true
