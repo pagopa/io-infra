@@ -878,6 +878,7 @@ module "appservice_app_backendli" {
   allowed_ips = concat(
     [],
     local.app_insights_ips_west_europe,
+    local.aks_ips,
   )
 
   subnet_id        = module.app_backendli_snet.id
