@@ -106,6 +106,7 @@ resource "azurerm_api_management_subscription" "reminder" {
   user_id             = azurerm_api_management_user.reminder_user.id
   product_id          = module.apim_product_notifications.id
   display_name        = "Reminder API"
+  state               = "active"
 }
 
 resource "azurerm_key_vault_secret" "reminder_subscription_primary_key" {
