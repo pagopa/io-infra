@@ -36,6 +36,9 @@
                 </choose>
             </otherwise>
         </choose>
+        <set-header name="x-user-groups" exists-action="override">
+            <value>@(String.Join(",", context.User.Groups.Select(g => g.Name)))</value>
+        </set-header>
     </inbound>
     <outbound>
         <base />
