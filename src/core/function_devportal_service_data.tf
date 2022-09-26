@@ -290,6 +290,6 @@ resource "azurerm_postgresql_flexible_server_database" "devportalservicedata_db"
   name       = "db"
   server_id  = module.devportalservicedata_db_server.id
   charset    = "UTF8"
-  collation  = "English_United States.1252"
+  collation  = "en_US.utf8"
   depends_on = [module.devportalservicedata_db_server]
 }
