@@ -248,7 +248,7 @@ module "devportalservicedata_db_server_snet" {
   delegation = {
     name = "default"
     service_delegation = {
-      name    = "Microsoft.Web/serverFarms"
+      name    = "Microsoft.DBforPostgreSQL/flexibleServers"
       actions = ["Microsoft.Network/virtualNetworks/subnets/action"]
     }
   }
