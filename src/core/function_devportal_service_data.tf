@@ -236,6 +236,24 @@ data "azurerm_key_vault_secret" "devportalservicedata_db_server_fndevportalservi
 }
 
 
+module "devportalservicedata_db_server_snet" {
+  source                                         = "git::https://github.com/pagopa/azurerm.git//subnet?ref=v1.0.51"
+  name                                           = format("%s-snet", local.function_devportalservicedata.db.name)
+  address_prefixes                               = var.cidr_subnet_devportalservicedata_db_server
+  resource_group_name                            = data.azurerm_resource_group.vnet_common_rg.name
+  virtual_network_name                           = data.azurerm_virtual_network.vnet_common.name
+  enforce_private_link_endpoint_network_policies = true
+  service_endpoints                              = ["Microsoft.Sql"]
+
+  delegation = {
+    name = "default"
+    service_delegation = {
+      name    = "Microsoft.Web/serverFarms"
+      actions = ["Microsoft.Network/virtualNetworks/subnets/action"]
+    }
+  }
+}
+
 module "devportalservicedata_db_server" {
   source = "git::https://github.com/pagopa/azurerm.git//postgres_flexible_server?ref=v2.19.1"
 
@@ -252,6 +270,7 @@ module "devportalservicedata_db_server" {
 
   private_endpoint_enabled = true
   private_dns_zone_id      = azurerm_private_dns_zone.privatelink_postgres_database_azure_com.id
+  delegated_subnet_id      = module.devportalservicedata_db_server_snet.id
 
   high_availability_enabled = false
 
@@ -268,9 +287,9 @@ module "devportalservicedata_db_server" {
 }
 
 resource "azurerm_postgresql_flexible_server_database" "devportalservicedata_db" {
-  name                = "db"
-  server_id           = module.devportalservicedata_db_server.id
-  charset             = "UTF8"
-  collation           = "English_United States.1252"
-  depends_on          = [module.devportalservicedata_db_server]
+  name       = "db"
+  server_id  = module.devportalservicedata_db_server.id
+  charset    = "UTF8"
+  collation  = "English_United States.1252"
+  depends_on = [module.devportalservicedata_db_server]
 }

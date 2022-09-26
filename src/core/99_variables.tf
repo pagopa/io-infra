@@ -172,6 +172,11 @@ variable "cidr_subnet_selfcare_be" {
   description = "Selfcare IO frontend storage address space."
 }
 
+variable "cidr_subnet_devportalservicedata_db_server" {
+  type        = list(string)
+  description = "Space address for DevPortal Service Data PostgresSQL"
+}
+
 variable "cidr_subnet_appbackendl1" {
   type        = list(string)
   description = "App backend l1 address space."
