@@ -66,6 +66,10 @@ module "mongdb_collection_payment" {
       unique = true
     },
     {
+      keys   = ["rptId"]
+      unique = false
+    },
+    {
       keys   = ["content_paymentData_payeeFiscalCode", "content_paymentData_noticeNumber"]
       unique = false
     },
@@ -87,6 +91,10 @@ module "mongdb_collection_payment_retry" {
     {
       keys   = ["_id"]
       unique = true
+    },
+    {
+      keys   = ["rptId"]
+      unique = false
     },
     {
       keys   = ["payeeFiscalCode", "noticeNumber"]
