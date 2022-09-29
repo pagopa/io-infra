@@ -49,15 +49,15 @@ printf "Server name: %s\n" "${psql_server_name}"
 printf "Server FQDN: %s\n" "${psql_server_private_fqdn}"
 printf "KeyVault name: %s\n" "${keyvault_name}"
 
-administrator_login=$(az keyvault secret show --name $KV_KEY__DB_ADM_USERNAME --vault-name "${keyvault_name}" -o tsv --query value)
-administrator_login_password=$(az keyvault secret show --name $KV_KEY__DB_ADM_PASSWORD --vault-name "${keyvault_name}" -o tsv --query value)
+administrator_login=$(az keyvault secret show --name "$KV_KEY__DB_ADM_USERNAME" --vault-name "${keyvault_name}" -o tsv --query value)
+administrator_login_password=$(az keyvault secret show --name "$KV_KEY__DB_ADM_PASSWORD" --vault-name "${keyvault_name}" -o tsv --query value)
 
 # in widows, even if using cygwin, these variables will contain a landing \r character
 administrator_login=${administrator_login//[$'\r']}
 administrator_login_password=${administrator_login_password//[$'\r']}
 
 export FLYWAY_URL="jdbc:postgresql://${psql_server_private_fqdn}:5432/${DATABASE}?sslmode=require"
-export FLYWAY_USER="${administrator_login}@${psql_server_name}"
+export FLYWAY_USER="${administrator_login}"
 export FLYWAY_PASSWORD="${administrator_login_password}"
 export SERVER_NAME="${psql_server_name}"
 export FLYWAY_DOCKER_TAG="7.11.1-alpine@sha256:88e1b077dd10fd115184383340cd02fe99f30a4def08d1505c1a4db3c97c5278"
