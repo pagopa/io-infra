@@ -112,3 +112,22 @@ stages:
                       cd src/psql/selfcare/subscription-migrations
                       echo "Executing migrations"
                       ./flyway.sh migrate PROD-IO db && echo "Migration successful" || { echo "Migration failed"; exit 1; }
+      - deployment: migrate_sql
+        continueOnError: false
+        environment: "PROD"
+        strategy:
+          runOnce:
+            deploy:
+              steps:
+                - task: AzureCLI@2
+                  displayName: migrate data on devportal-service-data
+                  inputs:
+                    azureSubscription: PROD-IO-SERVICE-CONN
+                    scriptType: "bash"
+                    scriptLocation: "inlineScript"
+                    failOnStandardError: false
+                    inlineScript: |
+                      set -e
+                      cd src/psql/selfcare/devportal-service-data
+                      echo "Executing migrations"
+                      ./flyway.sh migrate PROD-IO db && echo "Migration successful" || { echo "Migration failed"; exit 1; }
