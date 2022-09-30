@@ -93,7 +93,7 @@ stages:
     pool:
       name: io-prod-linux
     jobs:
-      - deployment: migrate_sql
+      - deployment: migrate_sql_subscriptions_migration
         continueOnError: false
         environment: "PROD"
         strategy:
@@ -112,7 +112,7 @@ stages:
                       cd src/psql/selfcare/subscription-migrations
                       echo "Executing migrations"
                       ./flyway.sh migrate PROD-IO db && echo "Migration successful" || { echo "Migration failed"; exit 1; }
-      - deployment: migrate_sql
+      - deployment: migrate_sql_service_data
         continueOnError: false
         environment: "PROD"
         strategy:
