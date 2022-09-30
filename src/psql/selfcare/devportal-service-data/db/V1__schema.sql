@@ -21,8 +21,8 @@ CREATE TABLE IF NOT EXISTS "DeveloperPortalServiceData".services
     CONSTRAINT migrations_pkey PRIMARY KEY ("id")
 );
 
-COMMENT ON COLUMN "DeveloperPortalServiceData".services.id IS "the unique identifier for the Service";
-COMMENT ON COLUMN "DeveloperPortalServiceData".services.organizationFiscalCode IS "identifies the Organization the Service belongs to";
-COMMENT ON COLUMN "DeveloperPortalServiceData".services.version IS "revision number of the Service this record is built upon";
-COMMENT ON COLUMN "DeveloperPortalServiceData".services.isVisible IS "visibility attribute for the Service";
+COMMENT ON COLUMN "DeveloperPortalServiceData".services.id IS 'the unique identifier for the Service';
+COMMENT ON COLUMN "DeveloperPortalServiceData".services.organizationFiscalCode IS 'identifies the Organization the Service belongs to';
+COMMENT ON COLUMN "DeveloperPortalServiceData".services.version IS 'revision number of the Service this record is built upon';
+COMMENT ON COLUMN "DeveloperPortalServiceData".services.isVisible IS 'visibility attribute for the Service';
 
