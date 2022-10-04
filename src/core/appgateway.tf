@@ -121,11 +121,24 @@ module "app_gw" {
       cipher_suites = [
         "TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256",
         "TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384",
-        "TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA",
-        "TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA",
       ]
       min_protocol_version = "TLSv1_2"
     }
+    },
+    {
+      name                             = format("%s-ssl-profile", local.project)
+      trusted_client_certificate_names = null
+      verify_client_cert_issuer_dn     = false
+      ssl_policy = {
+        disabled_protocols = []
+        policy_type        = "Custom"
+        policy_name        = "" # with Custom type set empty policy_name (not required by the provider)
+        cipher_suites = [
+          "TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256",
+          "TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384",
+        ]
+        min_protocol_version = "TLSv1_2"
+      }
   }]
 
   trusted_client_certificates = [
@@ -142,7 +155,7 @@ module "app_gw" {
       protocol           = "Https"
       host               = format("api.%s.%s", var.dns_zone_io, var.external_domain)
       port               = 443
-      ssl_profile_name   = null
+      ssl_profile_name   = format("%s-ssl-profile", local.project)
       firewall_policy_id = null
 
       certificate = {
@@ -193,7 +206,7 @@ module "app_gw" {
       protocol           = "Https"
       host               = format("api-app.%s.%s", var.dns_zone_io, var.external_domain)
       port               = 443
-      ssl_profile_name   = null
+      ssl_profile_name   = format("%s-ssl-profile", local.project)
       firewall_policy_id = azurerm_web_application_firewall_policy.api_app.id
 
       certificate = {
@@ -227,7 +240,7 @@ module "app_gw" {
       protocol           = "Https"
       host               = "developerportal-backend.io.italia.it"
       port               = 443
-      ssl_profile_name   = null
+      ssl_profile_name   = format("%s-ssl-profile", local.project)
       firewall_policy_id = null
 
       certificate = {
@@ -244,7 +257,7 @@ module "app_gw" {
       protocol           = "Https"
       host               = local.selfcare_io.backend_hostname
       port               = 443
-      ssl_profile_name   = null
+      ssl_profile_name   = format("%s-ssl-profile", local.project)
       firewall_policy_id = null
 
       certificate = {
