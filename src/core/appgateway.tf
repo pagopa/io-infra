@@ -206,7 +206,7 @@ module "app_gw" {
       protocol           = "Https"
       host               = format("api-app.%s.%s", var.dns_zone_io, var.external_domain)
       port               = 443
-      ssl_profile_name   = null # TODO format("%s-ssl-profile", local.project)
+      ssl_profile_name   = format("%s-ssl-profile", local.project)
       firewall_policy_id = azurerm_web_application_firewall_policy.api_app.id
 
       certificate = {
