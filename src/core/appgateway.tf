@@ -53,18 +53,6 @@ module "app_gw" {
       pick_host_name_from_backend = false
     }
 
-    apim-app = {
-      protocol                    = "Https"
-      host                        = "api-app.internal.io.pagopa.it"
-      port                        = 443
-      ip_addresses                = null # with null value use fqdns
-      fqdns                       = ["api-app.internal.io.pagopa.it"]
-      probe                       = "/status-0123456789abcdef"
-      probe_name                  = "probe-apim-app"
-      request_timeout             = 10
-      pick_host_name_from_backend = false
-    }
-
     appbackend-app = {
       protocol     = "Https"
       host         = null
@@ -294,7 +282,7 @@ module "app_gw" {
 
     api-app-io-pagopa-it = {
       listener              = "api-app-io-pagopa-it"
-      backend               = "apim-app"
+      backend               = "appbackend-app"
       rewrite_rule_set_name = "rewrite-rule-set-api-app"
     }
 
