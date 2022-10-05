@@ -200,7 +200,7 @@ locals {
       name                              = trimsuffix(azurerm_dns_a_record.api_app_io_pagopa_it.fqdn, "."),
       host                              = trimsuffix(azurerm_dns_a_record.api_app_io_pagopa_it.fqdn, "."),
       path                              = "/info",
-      http_status                       = 404,
+      http_status                       = 200,
       ssl_cert_remaining_lifetime_check = 7,
     },
     {
