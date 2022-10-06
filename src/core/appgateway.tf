@@ -43,10 +43,10 @@ module "app_gw" {
 
     apim = {
       protocol                    = "Https"
-      host                        = "api-internal.io.italia.it"
+      host                        = format("api-app.internal.%s.%s", var.dns_zone_io, var.external_domain)
       port                        = 443
       ip_addresses                = null # with null value use fqdns
-      fqdns                       = ["api-internal.io.italia.it"]
+      fqdns                       = [format("api-app.internal.%s.%s", var.dns_zone_io, var.external_domain)]
       probe                       = "/status-0123456789abcdef"
       probe_name                  = "probe-apim"
       request_timeout             = 180
