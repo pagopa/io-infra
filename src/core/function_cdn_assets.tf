@@ -44,8 +44,7 @@ module "function_cdn_assets_snet" {
 }
 
 module "function_cdn_assets" {
-  # source = "git::https://github.com/pagopa/azurerm.git//function_app?ref=v2.9.1"
-  source = "git::https://github.com/pagopa/azurerm.git//function_app?ref=upgrade-fn-modules"
+  source = "git::https://github.com/pagopa/azurerm.git//function_app?ref=v3.2.1"
 
   resource_group_name = azurerm_resource_group.assets_cdn_rg.name
   name                = "${local.project}-cdn-assets-fn"
@@ -71,9 +70,8 @@ module "function_cdn_assets" {
 }
 
 module "function_cdn_assets_staging_slot" {
-  count = var.function_cdn_assets_sku_tier == "PremiumV3" ? 1 : 0
-  # source = "git::https://github.com/pagopa/azurerm.git//function_app_slot?ref=v2.9.1"
-  source = "git::https://github.com/pagopa/azurerm.git//function_app_slot?ref=upgrade-fn-modules"
+  count  = var.function_cdn_assets_sku_tier == "PremiumV3" ? 1 : 0
+  source = "git::https://github.com/pagopa/azurerm.git//function_app_slot?ref=v3.2.1"
 
   name                = "staging"
   location            = var.location

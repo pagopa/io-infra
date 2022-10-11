@@ -69,9 +69,9 @@
 | <a name="module_dns_forwarder_snet"></a> [dns\_forwarder\_snet](#module\_dns\_forwarder\_snet) | git::https://github.com/pagopa/azurerm.git//subnet | v2.9.1 |
 | <a name="module_event_hub"></a> [event\_hub](#module\_event\_hub) | git::https://github.com/pagopa/azurerm.git//eventhub | v1.0.66 |
 | <a name="module_eventhub_snet"></a> [eventhub\_snet](#module\_eventhub\_snet) | git::https://github.com/pagopa/azurerm.git//subnet | v1.0.7 |
-| <a name="module_function_cdn_assets"></a> [function\_cdn\_assets](#module\_function\_cdn\_assets) | git::https://github.com/pagopa/azurerm.git//function_app | upgrade-fn-modules |
+| <a name="module_function_cdn_assets"></a> [function\_cdn\_assets](#module\_function\_cdn\_assets) | git::https://github.com/pagopa/azurerm.git//function_app | v3.2.1 |
 | <a name="module_function_cdn_assets_snet"></a> [function\_cdn\_assets\_snet](#module\_function\_cdn\_assets\_snet) | git::https://github.com/pagopa/azurerm.git//subnet | v1.0.51 |
-| <a name="module_function_cdn_assets_staging_slot"></a> [function\_cdn\_assets\_staging\_slot](#module\_function\_cdn\_assets\_staging\_slot) | git::https://github.com/pagopa/azurerm.git//function_app_slot | upgrade-fn-modules |
+| <a name="module_function_cdn_assets_staging_slot"></a> [function\_cdn\_assets\_staging\_slot](#module\_function\_cdn\_assets\_staging\_slot) | git::https://github.com/pagopa/azurerm.git//function_app_slot | v3.2.1 |
 | <a name="module_function_devportalservicedata"></a> [function\_devportalservicedata](#module\_function\_devportalservicedata) | git::https://github.com/pagopa/azurerm.git//function_app | v2.9.1 |
 | <a name="module_function_devportalservicedata_staging_slot"></a> [function\_devportalservicedata\_staging\_slot](#module\_function\_devportalservicedata\_staging\_slot) | git::https://github.com/pagopa/azurerm.git//function_app_slot | v2.9.1 |
 | <a name="module_function_elt"></a> [function\_elt](#module\_function\_elt) | git::https://github.com/pagopa/azurerm.git//function_app | v2.9.1 |
