@@ -71,7 +71,7 @@ module "function_cdn_assets" {
 }
 
 module "function_cdn_assets_staging_slot" {
-  count               = var.function_cdn_assets_sku_tier == "PremiumV3" ? 1 : 0
+  count = var.function_cdn_assets_sku_tier == "PremiumV3" ? 1 : 0
   # source = "git::https://github.com/pagopa/azurerm.git//function_app_slot?ref=v2.9.1"
   source = "git::https://github.com/pagopa/azurerm.git//function_app_slot?ref=upgrade-fn-modules"
 
