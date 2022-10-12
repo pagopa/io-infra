@@ -16,6 +16,16 @@ locals {
       FETCH_KEEPALIVE_MAX_FREE_SOCKETS    = "10"
       FETCH_KEEPALIVE_FREE_SOCKET_TIMEOUT = "30000"
       FETCH_KEEPALIVE_TIMEOUT             = "60000"
+
+      COSMOSDB_URI  = data.azurerm_cosmosdb_account.cosmos_api.endpoint
+      COSMOSDB_KEY  = data.azurerm_cosmosdb_account.cosmos_api.primary_master_key
+      COSMOSDB_NAME = "db"
+
+      STATIC_WEB_ASSETS_ENDPOINT  = data.azurerm_storage_account.cdnassets.primary_web_host
+      STATIC_BLOB_ASSETS_ENDPOINT = data.azurerm_storage_account.cdnassets.primary_blob_host
+
+      CachedStorageConnection = data.azurerm_storage_account.api.primary_connection_string
+      AssetsStorageConnection = data.azurerm_storage_account.cdnassets.primary_connection_string
     }
   }
 }
@@ -32,6 +42,7 @@ module "function_cdn_assets_snet" {
   service_endpoints = [
     "Microsoft.Web",
     "Microsoft.Storage",
+    "Microsoft.AzureCosmosDB",
   ]
 
   delegation = {
