@@ -1,5 +1,5 @@
 locals {
-  function_cdn_assets = {
+  function_assets_cdn = {
     app_settings = {
       FUNCTIONS_WORKER_RUNTIME       = "node"
       WEBSITE_NODE_DEFAULT_VERSION   = "14.16.0"
@@ -31,9 +31,9 @@ locals {
 }
 
 # Subnet to host fn cdn assets function
-module "function_cdn_assets_snet" {
+module "function_assets_cdn_snet" {
   source                                         = "git::https://github.com/pagopa/azurerm.git//subnet?ref=v1.0.51"
-  name                                           = format("%s-cdn-assets-fn-snet", local.project)
+  name                                           = format("%s-assets-cdn-fn-snet", local.project)
   address_prefixes                               = var.cidr_subnet_fncdnassets
   resource_group_name                            = data.azurerm_resource_group.vnet_common_rg.name
   virtual_network_name                           = data.azurerm_virtual_network.vnet_common.name
@@ -54,11 +54,11 @@ module "function_cdn_assets_snet" {
   }
 }
 
-module "function_cdn_assets" {
+module "function_assets_cdn" {
   source = "git::https://github.com/pagopa/azurerm.git//function_app?ref=v3.2.1"
 
   resource_group_name = azurerm_resource_group.assets_cdn_rg.name
-  name                = "${local.project}-cdn-assets-fn"
+  name                = "${local.project}-assets-cdn-fn"
   location            = var.location
   health_check_path   = "info"
 
@@ -67,65 +67,65 @@ module "function_cdn_assets" {
   application_insights_instrumentation_key = data.azurerm_application_insights.application_insights.instrumentation_key
 
   app_service_plan_info = {
-    kind                         = var.function_cdn_assets_kind
-    sku_tier                     = var.function_cdn_assets_sku_tier
-    sku_size                     = var.function_cdn_assets_sku_size
+    kind                         = var.function_assets_cdn_kind
+    sku_tier                     = var.function_assets_cdn_sku_tier
+    sku_size                     = var.function_assets_cdn_sku_size
     maximum_elastic_worker_count = 0
   }
 
-  app_settings = local.function_cdn_assets.app_settings
+  app_settings = local.function_assets_cdn.app_settings
 
-  subnet_id = module.function_cdn_assets_snet.id
+  subnet_id = module.function_assets_cdn_snet.id
 
   tags = var.tags
 }
 
-module "function_cdn_assets_staging_slot" {
-  count  = var.function_cdn_assets_sku_tier == "PremiumV3" ? 1 : 0
+module "function_assets_cdn_staging_slot" {
+  count  = var.function_assets_cdn_sku_tier == "PremiumV3" ? 1 : 0
   source = "git::https://github.com/pagopa/azurerm.git//function_app_slot?ref=v3.2.1"
 
   name                = "staging"
   location            = var.location
   resource_group_name = azurerm_resource_group.assets_cdn_rg.name
-  function_app_name   = module.function_cdn_assets.name
-  function_app_id     = module.function_cdn_assets.id
-  app_service_plan_id = module.function_cdn_assets.app_service_plan_id
+  function_app_name   = module.function_assets_cdn.name
+  function_app_id     = module.function_assets_cdn.id
+  app_service_plan_id = module.function_assets_cdn.app_service_plan_id
   health_check_path   = "info"
 
-  storage_account_name       = module.function_cdn_assets.storage_account.name
-  storage_account_access_key = module.function_cdn_assets.storage_account.primary_access_key
+  storage_account_name       = module.function_assets_cdn.storage_account.name
+  storage_account_access_key = module.function_assets_cdn.storage_account.primary_access_key
 
   os_type                                  = "linux"
   always_on                                = true
   application_insights_instrumentation_key = data.azurerm_application_insights.application_insights.instrumentation_key
 
-  app_settings = local.function_cdn_assets.app_settings
+  app_settings = local.function_assets_cdn.app_settings
 
-  subnet_id = module.function_cdn_assets_snet.id
+  subnet_id = module.function_assets_cdn_snet.id
 
   tags = var.tags
 }
 
-resource "azurerm_monitor_autoscale_setting" "function_cdn_assets" {
-  count               = var.function_cdn_assets_sku_tier == "PremiumV3" ? 1 : 0
-  name                = format("%s-autoscale", module.function_cdn_assets.name)
+resource "azurerm_monitor_autoscale_setting" "function_assets_cdn" {
+  count               = var.function_assets_cdn_sku_tier == "PremiumV3" ? 1 : 0
+  name                = format("%s-autoscale", module.function_assets_cdn.name)
   resource_group_name = azurerm_resource_group.backend_messages_rg.name
   location            = var.location
-  target_resource_id  = module.function_cdn_assets.app_service_plan_id
+  target_resource_id  = module.function_assets_cdn.app_service_plan_id
 
   profile {
     name = "default"
 
     capacity {
-      default = var.function_cdn_assets_autoscale_default
-      minimum = var.function_cdn_assets_autoscale_minimum
-      maximum = var.function_cdn_assets_autoscale_maximum
+      default = var.function_assets_cdn_autoscale_default
+      minimum = var.function_assets_cdn_autoscale_minimum
+      maximum = var.function_assets_cdn_autoscale_maximum
     }
 
     rule {
       metric_trigger {
         metric_name              = "Requests"
-        metric_resource_id       = module.function_cdn_assets.id
+        metric_resource_id       = module.function_assets_cdn.id
         metric_namespace         = "microsoft.web/sites"
         time_grain               = "PT1M"
         statistic                = "Average"
@@ -147,7 +147,7 @@ resource "azurerm_monitor_autoscale_setting" "function_cdn_assets" {
     rule {
       metric_trigger {
         metric_name              = "CpuPercentage"
-        metric_resource_id       = module.function_cdn_assets.app_service_plan_id
+        metric_resource_id       = module.function_assets_cdn.app_service_plan_id
         metric_namespace         = "microsoft.web/serverfarms"
         time_grain               = "PT1M"
         statistic                = "Average"
@@ -169,7 +169,7 @@ resource "azurerm_monitor_autoscale_setting" "function_cdn_assets" {
     rule {
       metric_trigger {
         metric_name              = "Requests"
-        metric_resource_id       = module.function_cdn_assets.id
+        metric_resource_id       = module.function_assets_cdn.id
         metric_namespace         = "microsoft.web/sites"
         time_grain               = "PT1M"
         statistic                = "Average"
@@ -191,7 +191,7 @@ resource "azurerm_monitor_autoscale_setting" "function_cdn_assets" {
     rule {
       metric_trigger {
         metric_name              = "CpuPercentage"
-        metric_resource_id       = module.function_cdn_assets.app_service_plan_id
+        metric_resource_id       = module.function_assets_cdn.app_service_plan_id
         metric_namespace         = "microsoft.web/serverfarms"
         time_grain               = "PT1M"
         statistic                = "Average"

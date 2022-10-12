@@ -172,12 +172,12 @@ function_messages_cqrs_autoscale_maximum = 30
 function_messages_cqrs_autoscale_default = 1
 
 # Function CDN Assets
-function_cdn_assets_kind              = "Linux"
-function_cdn_assets_sku_tier          = "PremiumV3"
-function_cdn_assets_sku_size          = "P1v3"
-function_cdn_assets_autoscale_minimum = 1
-function_cdn_assets_autoscale_maximum = 5
-function_cdn_assets_autoscale_default = 1
+function_assets_cdn_kind              = "Linux"
+function_assets_cdn_sku_tier          = "PremiumV3"
+function_assets_cdn_sku_size          = "P1v3"
+function_assets_cdn_autoscale_minimum = 1
+function_assets_cdn_autoscale_maximum = 5
+function_assets_cdn_autoscale_default = 1
 
 eventhubs = [
   {

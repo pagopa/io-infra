@@ -100,14 +100,14 @@ locals {
       http_status                       = 200,
       ssl_cert_remaining_lifetime_check = 7,
     },
-    {
-      # https://assets.cdn.io.pagopa.it/status/backend.json
-      name                              = "assets.cdn.io.pagopa.it",
-      host                              = "assets.cdn.io.pagopa.it",
-      path                              = "" # "/status/backend.json", # TODO change it
-      http_status                       = 200,
-      ssl_cert_remaining_lifetime_check = 7,
-    },
+    # {
+    #   # https://assets.cdn.io.pagopa.it/status/backend.json # TODO enable it
+    #   name                              = "assets.cdn.io.pagopa.it",
+    #   host                              = "assets.cdn.io.pagopa.it",
+    #   path                              = "" # "/status/backend.json", # TODO change it
+    #   http_status                       = 200,
+    #   ssl_cert_remaining_lifetime_check = 7,
+    # },
     {
       # CIE https://app-backend.io.italia.it/login?authLevel=SpidL2&entityID=xx_servizicie
       name                              = "CIE",
