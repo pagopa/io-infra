@@ -1,6 +1,7 @@
 resource "azurerm_resource_group" "assets_cdn_rg" {
   name     = "${local.project}-assets-cdn-rg"
   location = var.location
+
   tags     = var.tags
 }
 
@@ -9,6 +10,7 @@ resource "azurerm_cdn_profile" "assets_cdn_profile" {
   resource_group_name = azurerm_resource_group.assets_cdn_rg.name
   location            = var.location
   sku                 = "Standard_Microsoft"
+
   tags                = var.tags
 }
 
@@ -41,7 +43,6 @@ resource "azurerm_dns_cname_record" "assets_cdn_io_pagopa_it" {
 }
 
 resource "null_resource" "custom_domain_assets_cdn" {
-
   depends_on = [
     azurerm_cdn_endpoint.assets_cdn_endpoint,
     azurerm_dns_cname_record.assets_cdn_io_pagopa_it,
@@ -72,6 +73,7 @@ resource "null_resource" "custom_domain_assets_cdn" {
         --min-tls-version "1.2"
     EOT
   }
+
   # https://docs.microsoft.com/it-it/cli/azure/cdn/custom-domain?view=azure-cli-latest
   provisioner "local-exec" {
     when    = destroy
