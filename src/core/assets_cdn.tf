@@ -14,6 +14,12 @@ resource "azurerm_cdn_profile" "assets_cdn_profile" {
   tags = var.tags
 }
 
+resource "azurerm_management_lock" "assets_cdn_profile" {
+  name       = azurerm_cdn_profile.assets_cdn_profile.name
+  scope      = azurerm_cdn_profile.assets_cdn_profile.id
+  lock_level = "CanNotDelete"
+}
+
 data "azurerm_key_vault_secret" "assets_cdn_fn_key_cdn" {
   name         = "${module.function_assets_cdn.name}-KEY-CDN"
   key_vault_id = data.azurerm_key_vault.common.id
@@ -100,6 +106,12 @@ resource "azurerm_cdn_endpoint" "assets_cdn_endpoint" {
   }
 
   tags = var.tags
+}
+
+resource "azurerm_management_lock" "assets_cdn_endpoint" {
+  name       = azurerm_cdn_endpoint.assets_cdn_endpoint.name
+  scope      = azurerm_cdn_endpoint.assets_cdn_endpoint.id
+  lock_level = "CanNotDelete"
 }
 
 resource "azurerm_dns_cname_record" "assets_cdn_io_pagopa_it" {

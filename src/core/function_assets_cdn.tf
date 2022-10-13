@@ -211,3 +211,83 @@ resource "azurerm_monitor_autoscale_setting" "function_assets_cdn" {
     }
   }
 }
+
+## Alerts
+
+resource "azurerm_monitor_metric_alert" "function_assets_health_check" {
+  name                = "${module.function_assets_cdn.name}-health-check-failed"
+  resource_group_name = azurerm_resource_group.assets_cdn_rg.name
+  scopes              = [module.function_assets_cdn.id]
+  description         = "${module.function_assets_cdn.name} health check failed"
+  severity            = 1
+  frequency           = "PT5M"
+  auto_mitigate       = false
+
+  criteria {
+    metric_namespace = "Microsoft.Web/sites"
+    metric_name      = "HealthCheckStatus"
+    aggregation      = "Average"
+    operator         = "LessThan"
+    threshold        = 50
+  }
+
+  action {
+    action_group_id = azurerm_monitor_action_group.email.id
+  }
+
+  action {
+    action_group_id = azurerm_monitor_action_group.slack.id
+  }
+}
+
+resource "azurerm_monitor_metric_alert" "function_assets_http_server_errors" {
+  name                = "${module.function_assets_cdn.name}-http-server-errors"
+  resource_group_name = azurerm_resource_group.assets_cdn_rg.name
+  scopes              = [module.function_assets_cdn.id]
+  description         = "${module.function_assets_cdn.name} http server errors"
+  severity            = 1
+  frequency           = "PT5M"
+  auto_mitigate       = false
+
+  criteria {
+    metric_namespace = "Microsoft.Web/sites"
+    metric_name      = "Http5xx"
+    aggregation      = "Total"
+    operator         = "GreaterThan"
+    threshold        = 50
+  }
+
+  action {
+    action_group_id = azurerm_monitor_action_group.email.id
+  }
+
+  action {
+    action_group_id = azurerm_monitor_action_group.slack.id
+  }
+}
+
+resource "azurerm_monitor_metric_alert" "function_assets_response_time" {
+  name                = "${module.function_assets_cdn.name}-response-time"
+  resource_group_name = azurerm_resource_group.assets_cdn_rg.name
+  scopes              = [module.function_assets_cdn.id]
+  description         = "${module.function_assets_cdn.name} response time is greater than 0.5s"
+  severity            = 1
+  frequency           = "PT5M"
+  auto_mitigate       = false
+
+  criteria {
+    metric_namespace = "Microsoft.Web/sites"
+    metric_name      = "HttpResponseTime"
+    aggregation      = "Average"
+    operator         = "GreaterThan"
+    threshold        = 0.5
+  }
+
+  action {
+    action_group_id = azurerm_monitor_action_group.email.id
+  }
+
+  action {
+    action_group_id = azurerm_monitor_action_group.slack.id
+  }
+}
