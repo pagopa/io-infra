@@ -1,8 +1,6 @@
 locals {
   function_elt = {
     app_settings = {
-      AzureWebJobs.CosmosApiServicesChangeFeed.Disabled = "1"
-
       FUNCTIONS_WORKER_RUNTIME       = "node"
       WEBSITE_NODE_DEFAULT_VERSION   = "14.16.0"
       FUNCTIONS_WORKER_PROCESS_COUNT = 4
@@ -152,8 +150,9 @@ module "function_elt" {
   }
 
   app_settings = merge(
-    local.function_elt.app_settings,
-    {}
+    local.function_elt.app_settings, {
+      "AzureWebJobs.CosmosApiServicesChangeFeed.Disabled" = "1"
+    }
   )
 
   internal_storage = {
