@@ -15,6 +15,12 @@ resource "azurerm_dns_caa_record" "io_pagopa_it" {
   record {
     flags = 0
     tag   = "issue"
+    value = "digicert.com"
+  }
+
+  record {
+    flags = 0
+    tag   = "issue"
     value = "letsencrypt.org"
   }
 
