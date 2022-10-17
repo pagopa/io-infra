@@ -6,6 +6,7 @@ pr:
   paths:
     include:
       - "src/core/*"
+      - "src/psql/*"
       - ".devops/core-code-review-pipelines.yml"
     exclude:
       - '**/*.lock.hcl'
