@@ -201,7 +201,7 @@ module "appservice_selfcare_be" {
     IDP = "selfcare"
 
     # Fn-Admin connection
-    ADMIN_API_URL = "http://api-internal.io.italia.it"
+    ADMIN_API_URL = "http://${local.apim_hostname_api_app_internal}"
     ADMIN_API_KEY = data.azurerm_key_vault_secret.selfcare_apim_io_service_key.value
 
     # Apim connection
