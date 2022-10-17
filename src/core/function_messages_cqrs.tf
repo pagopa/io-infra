@@ -48,7 +48,7 @@ locals {
       PAYMENT_FOR_VIEW_TOPIC_CONSUMER_GROUP             = "$Default"
       PAYMENT_FOR_VIEW_TOPIC_CONSUMER_CONNECTION_STRING = data.azurerm_eventhub_authorization_rule.io-p-payments-weu-prod01-evh-ns_payment-updates_io-fn-messages-cqrs.primary_connection_string
 
-      APIM_BASE_URL         = "https://api-internal.io.italia.it"
+      APIM_BASE_URL         = "https://${local.apim_hostname_api_app_internal}"
       APIM_SUBSCRIPTION_KEY = data.azurerm_key_vault_secret.apim_services_subscription_key.value
 
       PN_SERVICE_ID = var.pn_service_id

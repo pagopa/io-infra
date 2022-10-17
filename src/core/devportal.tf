@@ -87,10 +87,10 @@ module "appservice_devportal_be" {
     IDP = "azure-ad"
 
     SANDBOX_FISCAL_CODE = data.azurerm_key_vault_secret.devportal_io_sandbox_fiscal_code.value
-    LOGO_URL            = "https://assets.cdn.io.italia.it/logos"
+    LOGO_URL            = "https://assets.cdn.io.pagopa.it/logos"
 
     # Fn-Admin connection
-    ADMIN_API_URL = "http://api-internal.io.italia.it"
+    ADMIN_API_URL = "http://${local.apim_hostname_api_app_internal}"
     ADMIN_API_KEY = data.azurerm_key_vault_secret.devportal_apim_io_service_key.value
 
     # Apim connection
