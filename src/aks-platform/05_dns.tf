@@ -5,6 +5,11 @@ resource "kubernetes_manifest" "coredns_custom" {
     "metadata" = {
       "name"      = "coredns-custom"
       "namespace" = "kube-system"
+      "labels" = {
+        "addonmanager.kubernetes.io/mode" = "EnsureExists"
+        "k8s-app"                         = "kube-dns"
+        "kubernetes.io/cluster-service"   = "true"
+      }
     }
     "data" = {
       "pagopa-d-evh-ns01.server" = <<EOT
