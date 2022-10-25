@@ -7,7 +7,7 @@ module "function_services_cache" {
   resource_group_name                      = azurerm_resource_group.selfcare_be_rg.name
   location                                 = var.location
   app_service_plan_id                      = azurerm_app_service_plan.selfcare_be_common.id
-  runtime_version                          = "~3"
+  runtime_version                          = "~4"
   os_type                                  = "linux"
   health_check_path                        = "api/v1/info"
   always_on                                = true
