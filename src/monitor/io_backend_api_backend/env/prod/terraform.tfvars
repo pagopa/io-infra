@@ -14,5 +14,5 @@ tags = {
 }
 
 log_workspace_name = "io-p-law-common"
-log_workspace_rg = "io-p-rg-common"
-rg_name = "io-p-opex-test"
+log_workspace_rg   = "io-p-rg-common"
+rg_name            = "io-p-opex-test"

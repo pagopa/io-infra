@@ -9161,7 +9161,7 @@ resource "azurerm_dashboard" "this" {
 
 
 resource "azurerm_monitor_scheduled_query_rules_alert" "alarm_availability_0" {
-  name                = replace(join("_",split("/", "Availability @ /api/v1/services/{service_id}")), "/\\{|\\}/", "")
+  name                = replace(join("_", split("/", "Availability @ /api/v1/services/{service_id}")), "/\\{|\\}/", "")
   resource_group_name = azurerm_resource_group.this.name
   location            = azurerm_resource_group.this.location
 
@@ -9201,7 +9201,7 @@ AzureDiagnostics
 }
 
 resource "azurerm_monitor_scheduled_query_rules_alert" "alarm_time_0" {
-  name                = replace(join("_",split("/", "ResponseTime @ /api/v1/services/{service_id}")), "/\\{|\\}/", "")
+  name                = replace(join("_", split("/", "ResponseTime @ /api/v1/services/{service_id}")), "/\\{|\\}/", "")
   resource_group_name = azurerm_resource_group.this.name
   location            = azurerm_resource_group.this.location
 
@@ -9240,7 +9240,7 @@ AzureDiagnostics
 }
 
 resource "azurerm_monitor_scheduled_query_rules_alert" "alarm_availability_1" {
-  name                = replace(join("_",split("/", "Availability @ /api/v1/services/{service_id}/preferences")), "/\\{|\\}/", "")
+  name                = replace(join("_", split("/", "Availability @ /api/v1/services/{service_id}/preferences")), "/\\{|\\}/", "")
   resource_group_name = azurerm_resource_group.this.name
   location            = azurerm_resource_group.this.location
 
@@ -9280,7 +9280,7 @@ AzureDiagnostics
 }
 
 resource "azurerm_monitor_scheduled_query_rules_alert" "alarm_time_1" {
-  name                = replace(join("_",split("/", "ResponseTime @ /api/v1/services/{service_id}/preferences")), "/\\{|\\}/", "")
+  name                = replace(join("_", split("/", "ResponseTime @ /api/v1/services/{service_id}/preferences")), "/\\{|\\}/", "")
   resource_group_name = azurerm_resource_group.this.name
   location            = azurerm_resource_group.this.location
 
@@ -9319,7 +9319,7 @@ AzureDiagnostics
 }
 
 resource "azurerm_monitor_scheduled_query_rules_alert" "alarm_availability_2" {
-  name                = replace(join("_",split("/", "Availability @ /api/v1/services")), "/\\{|\\}/", "")
+  name                = replace(join("_", split("/", "Availability @ /api/v1/services")), "/\\{|\\}/", "")
   resource_group_name = azurerm_resource_group.this.name
   location            = azurerm_resource_group.this.location
 
@@ -9359,7 +9359,7 @@ AzureDiagnostics
 }
 
 resource "azurerm_monitor_scheduled_query_rules_alert" "alarm_time_2" {
-  name                = replace(join("_",split("/", "ResponseTime @ /api/v1/services")), "/\\{|\\}/", "")
+  name                = replace(join("_", split("/", "ResponseTime @ /api/v1/services")), "/\\{|\\}/", "")
   resource_group_name = azurerm_resource_group.this.name
   location            = azurerm_resource_group.this.location
 
@@ -9398,7 +9398,7 @@ AzureDiagnostics
 }
 
 resource "azurerm_monitor_scheduled_query_rules_alert" "alarm_availability_3" {
-  name                = replace(join("_",split("/", "Availability @ /api/v1/messages")), "/\\{|\\}/", "")
+  name                = replace(join("_", split("/", "Availability @ /api/v1/messages")), "/\\{|\\}/", "")
   resource_group_name = azurerm_resource_group.this.name
   location            = azurerm_resource_group.this.location
 
@@ -9438,7 +9438,7 @@ AzureDiagnostics
 }
 
 resource "azurerm_monitor_scheduled_query_rules_alert" "alarm_time_3" {
-  name                = replace(join("_",split("/", "ResponseTime @ /api/v1/messages")), "/\\{|\\}/", "")
+  name                = replace(join("_", split("/", "ResponseTime @ /api/v1/messages")), "/\\{|\\}/", "")
   resource_group_name = azurerm_resource_group.this.name
   location            = azurerm_resource_group.this.location
 
@@ -9477,7 +9477,7 @@ AzureDiagnostics
 }
 
 resource "azurerm_monitor_scheduled_query_rules_alert" "alarm_availability_4" {
-  name                = replace(join("_",split("/", "Availability @ /api/v1/messages/{id}")), "/\\{|\\}/", "")
+  name                = replace(join("_", split("/", "Availability @ /api/v1/messages/{id}")), "/\\{|\\}/", "")
   resource_group_name = azurerm_resource_group.this.name
   location            = azurerm_resource_group.this.location
 
@@ -9517,7 +9517,7 @@ AzureDiagnostics
 }
 
 resource "azurerm_monitor_scheduled_query_rules_alert" "alarm_time_4" {
-  name                = replace(join("_",split("/", "ResponseTime @ /api/v1/messages/{id}")), "/\\{|\\}/", "")
+  name                = replace(join("_", split("/", "ResponseTime @ /api/v1/messages/{id}")), "/\\{|\\}/", "")
   resource_group_name = azurerm_resource_group.this.name
   location            = azurerm_resource_group.this.location
 
@@ -9556,7 +9556,7 @@ AzureDiagnostics
 }
 
 resource "azurerm_monitor_scheduled_query_rules_alert" "alarm_availability_5" {
-  name                = replace(join("_",split("/", "Availability @ /api/v1/messages/{id}/message-status")), "/\\{|\\}/", "")
+  name                = replace(join("_", split("/", "Availability @ /api/v1/messages/{id}/message-status")), "/\\{|\\}/", "")
   resource_group_name = azurerm_resource_group.this.name
   location            = azurerm_resource_group.this.location
 
@@ -9596,7 +9596,7 @@ AzureDiagnostics
 }
 
 resource "azurerm_monitor_scheduled_query_rules_alert" "alarm_time_5" {
-  name                = replace(join("_",split("/", "ResponseTime @ /api/v1/messages/{id}/message-status")), "/\\{|\\}/", "")
+  name                = replace(join("_", split("/", "ResponseTime @ /api/v1/messages/{id}/message-status")), "/\\{|\\}/", "")
   resource_group_name = azurerm_resource_group.this.name
   location            = azurerm_resource_group.this.location
 
@@ -9635,7 +9635,7 @@ AzureDiagnostics
 }
 
 resource "azurerm_monitor_scheduled_query_rules_alert" "alarm_availability_6" {
-  name                = replace(join("_",split("/", "Availability @ /api/v1/legal-messages/{id}")), "/\\{|\\}/", "")
+  name                = replace(join("_", split("/", "Availability @ /api/v1/legal-messages/{id}")), "/\\{|\\}/", "")
   resource_group_name = azurerm_resource_group.this.name
   location            = azurerm_resource_group.this.location
 
@@ -9675,7 +9675,7 @@ AzureDiagnostics
 }
 
 resource "azurerm_monitor_scheduled_query_rules_alert" "alarm_time_6" {
-  name                = replace(join("_",split("/", "ResponseTime @ /api/v1/legal-messages/{id}")), "/\\{|\\}/", "")
+  name                = replace(join("_", split("/", "ResponseTime @ /api/v1/legal-messages/{id}")), "/\\{|\\}/", "")
   resource_group_name = azurerm_resource_group.this.name
   location            = azurerm_resource_group.this.location
 
@@ -9714,7 +9714,7 @@ AzureDiagnostics
 }
 
 resource "azurerm_monitor_scheduled_query_rules_alert" "alarm_availability_7" {
-  name                = replace(join("_",split("/", "Availability @ /api/v1/legal-messages/{id}/attachments/{attachment_id}")), "/\\{|\\}/", "")
+  name                = replace(join("_", split("/", "Availability @ /api/v1/legal-messages/{id}/attachments/{attachment_id}")), "/\\{|\\}/", "")
   resource_group_name = azurerm_resource_group.this.name
   location            = azurerm_resource_group.this.location
 
@@ -9754,7 +9754,7 @@ AzureDiagnostics
 }
 
 resource "azurerm_monitor_scheduled_query_rules_alert" "alarm_time_7" {
-  name                = replace(join("_",split("/", "ResponseTime @ /api/v1/legal-messages/{id}/attachments/{attachment_id}")), "/\\{|\\}/", "")
+  name                = replace(join("_", split("/", "ResponseTime @ /api/v1/legal-messages/{id}/attachments/{attachment_id}")), "/\\{|\\}/", "")
   resource_group_name = azurerm_resource_group.this.name
   location            = azurerm_resource_group.this.location
 
@@ -9793,7 +9793,7 @@ AzureDiagnostics
 }
 
 resource "azurerm_monitor_scheduled_query_rules_alert" "alarm_availability_8" {
-  name                = replace(join("_",split("/", "Availability @ /api/v1/third-party-messages/{id}")), "/\\{|\\}/", "")
+  name                = replace(join("_", split("/", "Availability @ /api/v1/third-party-messages/{id}")), "/\\{|\\}/", "")
   resource_group_name = azurerm_resource_group.this.name
   location            = azurerm_resource_group.this.location
 
@@ -9833,7 +9833,7 @@ AzureDiagnostics
 }
 
 resource "azurerm_monitor_scheduled_query_rules_alert" "alarm_time_8" {
-  name                = replace(join("_",split("/", "ResponseTime @ /api/v1/third-party-messages/{id}")), "/\\{|\\}/", "")
+  name                = replace(join("_", split("/", "ResponseTime @ /api/v1/third-party-messages/{id}")), "/\\{|\\}/", "")
   resource_group_name = azurerm_resource_group.this.name
   location            = azurerm_resource_group.this.location
 
@@ -9872,7 +9872,7 @@ AzureDiagnostics
 }
 
 resource "azurerm_monitor_scheduled_query_rules_alert" "alarm_availability_9" {
-  name                = replace(join("_",split("/", "Availability @ /api/v1/third-party-messages/{id}/attachments/{attachment_url}")), "/\\{|\\}/", "")
+  name                = replace(join("_", split("/", "Availability @ /api/v1/third-party-messages/{id}/attachments/{attachment_url}")), "/\\{|\\}/", "")
   resource_group_name = azurerm_resource_group.this.name
   location            = azurerm_resource_group.this.location
 
@@ -9912,7 +9912,7 @@ AzureDiagnostics
 }
 
 resource "azurerm_monitor_scheduled_query_rules_alert" "alarm_time_9" {
-  name                = replace(join("_",split("/", "ResponseTime @ /api/v1/third-party-messages/{id}/attachments/{attachment_url}")), "/\\{|\\}/", "")
+  name                = replace(join("_", split("/", "ResponseTime @ /api/v1/third-party-messages/{id}/attachments/{attachment_url}")), "/\\{|\\}/", "")
   resource_group_name = azurerm_resource_group.this.name
   location            = azurerm_resource_group.this.location
 
@@ -9951,7 +9951,7 @@ AzureDiagnostics
 }
 
 resource "azurerm_monitor_scheduled_query_rules_alert" "alarm_availability_10" {
-  name                = replace(join("_",split("/", "Availability @ /api/v1/profile")), "/\\{|\\}/", "")
+  name                = replace(join("_", split("/", "Availability @ /api/v1/profile")), "/\\{|\\}/", "")
   resource_group_name = azurerm_resource_group.this.name
   location            = azurerm_resource_group.this.location
 
@@ -9991,7 +9991,7 @@ AzureDiagnostics
 }
 
 resource "azurerm_monitor_scheduled_query_rules_alert" "alarm_time_10" {
-  name                = replace(join("_",split("/", "ResponseTime @ /api/v1/profile")), "/\\{|\\}/", "")
+  name                = replace(join("_", split("/", "ResponseTime @ /api/v1/profile")), "/\\{|\\}/", "")
   resource_group_name = azurerm_resource_group.this.name
   location            = azurerm_resource_group.this.location
 
@@ -10030,7 +10030,7 @@ AzureDiagnostics
 }
 
 resource "azurerm_monitor_scheduled_query_rules_alert" "alarm_availability_11" {
-  name                = replace(join("_",split("/", "Availability @ /api/v1/api-profile")), "/\\{|\\}/", "")
+  name                = replace(join("_", split("/", "Availability @ /api/v1/api-profile")), "/\\{|\\}/", "")
   resource_group_name = azurerm_resource_group.this.name
   location            = azurerm_resource_group.this.location
 
@@ -10070,7 +10070,7 @@ AzureDiagnostics
 }
 
 resource "azurerm_monitor_scheduled_query_rules_alert" "alarm_time_11" {
-  name                = replace(join("_",split("/", "ResponseTime @ /api/v1/api-profile")), "/\\{|\\}/", "")
+  name                = replace(join("_", split("/", "ResponseTime @ /api/v1/api-profile")), "/\\{|\\}/", "")
   resource_group_name = azurerm_resource_group.this.name
   location            = azurerm_resource_group.this.location
 
@@ -10109,7 +10109,7 @@ AzureDiagnostics
 }
 
 resource "azurerm_monitor_scheduled_query_rules_alert" "alarm_availability_12" {
-  name                = replace(join("_",split("/", "Availability @ /api/v1/email-validation-process")), "/\\{|\\}/", "")
+  name                = replace(join("_", split("/", "Availability @ /api/v1/email-validation-process")), "/\\{|\\}/", "")
   resource_group_name = azurerm_resource_group.this.name
   location            = azurerm_resource_group.this.location
 
@@ -10149,7 +10149,7 @@ AzureDiagnostics
 }
 
 resource "azurerm_monitor_scheduled_query_rules_alert" "alarm_time_12" {
-  name                = replace(join("_",split("/", "ResponseTime @ /api/v1/email-validation-process")), "/\\{|\\}/", "")
+  name                = replace(join("_", split("/", "ResponseTime @ /api/v1/email-validation-process")), "/\\{|\\}/", "")
   resource_group_name = azurerm_resource_group.this.name
   location            = azurerm_resource_group.this.location
 
@@ -10188,7 +10188,7 @@ AzureDiagnostics
 }
 
 resource "azurerm_monitor_scheduled_query_rules_alert" "alarm_availability_13" {
-  name                = replace(join("_",split("/", "Availability @ /api/v1/user-metadata")), "/\\{|\\}/", "")
+  name                = replace(join("_", split("/", "Availability @ /api/v1/user-metadata")), "/\\{|\\}/", "")
   resource_group_name = azurerm_resource_group.this.name
   location            = azurerm_resource_group.this.location
 
@@ -10228,7 +10228,7 @@ AzureDiagnostics
 }
 
 resource "azurerm_monitor_scheduled_query_rules_alert" "alarm_time_13" {
-  name                = replace(join("_",split("/", "ResponseTime @ /api/v1/user-metadata")), "/\\{|\\}/", "")
+  name                = replace(join("_", split("/", "ResponseTime @ /api/v1/user-metadata")), "/\\{|\\}/", "")
   resource_group_name = azurerm_resource_group.this.name
   location            = azurerm_resource_group.this.location
 
@@ -10267,7 +10267,7 @@ AzureDiagnostics
 }
 
 resource "azurerm_monitor_scheduled_query_rules_alert" "alarm_availability_14" {
-  name                = replace(join("_",split("/", "Availability @ /api/v1/installations/{installationID}")), "/\\{|\\}/", "")
+  name                = replace(join("_", split("/", "Availability @ /api/v1/installations/{installationID}")), "/\\{|\\}/", "")
   resource_group_name = azurerm_resource_group.this.name
   location            = azurerm_resource_group.this.location
 
@@ -10307,7 +10307,7 @@ AzureDiagnostics
 }
 
 resource "azurerm_monitor_scheduled_query_rules_alert" "alarm_time_14" {
-  name                = replace(join("_",split("/", "ResponseTime @ /api/v1/installations/{installationID}")), "/\\{|\\}/", "")
+  name                = replace(join("_", split("/", "ResponseTime @ /api/v1/installations/{installationID}")), "/\\{|\\}/", "")
   resource_group_name = azurerm_resource_group.this.name
   location            = azurerm_resource_group.this.location
 
@@ -10346,7 +10346,7 @@ AzureDiagnostics
 }
 
 resource "azurerm_monitor_scheduled_query_rules_alert" "alarm_availability_15" {
-  name                = replace(join("_",split("/", "Availability @ /api/v1/session")), "/\\{|\\}/", "")
+  name                = replace(join("_", split("/", "Availability @ /api/v1/session")), "/\\{|\\}/", "")
   resource_group_name = azurerm_resource_group.this.name
   location            = azurerm_resource_group.this.location
 
@@ -10386,7 +10386,7 @@ AzureDiagnostics
 }
 
 resource "azurerm_monitor_scheduled_query_rules_alert" "alarm_time_15" {
-  name                = replace(join("_",split("/", "ResponseTime @ /api/v1/session")), "/\\{|\\}/", "")
+  name                = replace(join("_", split("/", "ResponseTime @ /api/v1/session")), "/\\{|\\}/", "")
   resource_group_name = azurerm_resource_group.this.name
   location            = azurerm_resource_group.this.location
 
@@ -10425,7 +10425,7 @@ AzureDiagnostics
 }
 
 resource "azurerm_monitor_scheduled_query_rules_alert" "alarm_availability_16" {
-  name                = replace(join("_",split("/", "Availability @ /api/v1/sessions")), "/\\{|\\}/", "")
+  name                = replace(join("_", split("/", "Availability @ /api/v1/sessions")), "/\\{|\\}/", "")
   resource_group_name = azurerm_resource_group.this.name
   location            = azurerm_resource_group.this.location
 
@@ -10465,7 +10465,7 @@ AzureDiagnostics
 }
 
 resource "azurerm_monitor_scheduled_query_rules_alert" "alarm_time_16" {
-  name                = replace(join("_",split("/", "ResponseTime @ /api/v1/sessions")), "/\\{|\\}/", "")
+  name                = replace(join("_", split("/", "ResponseTime @ /api/v1/sessions")), "/\\{|\\}/", "")
   resource_group_name = azurerm_resource_group.this.name
   location            = azurerm_resource_group.this.location
 
@@ -10504,7 +10504,7 @@ AzureDiagnostics
 }
 
 resource "azurerm_monitor_scheduled_query_rules_alert" "alarm_availability_17" {
-  name                = replace(join("_",split("/", "Availability @ /api/v1/token/support")), "/\\{|\\}/", "")
+  name                = replace(join("_", split("/", "Availability @ /api/v1/token/support")), "/\\{|\\}/", "")
   resource_group_name = azurerm_resource_group.this.name
   location            = azurerm_resource_group.this.location
 
@@ -10544,7 +10544,7 @@ AzureDiagnostics
 }
 
 resource "azurerm_monitor_scheduled_query_rules_alert" "alarm_time_17" {
-  name                = replace(join("_",split("/", "ResponseTime @ /api/v1/token/support")), "/\\{|\\}/", "")
+  name                = replace(join("_", split("/", "ResponseTime @ /api/v1/token/support")), "/\\{|\\}/", "")
   resource_group_name = azurerm_resource_group.this.name
   location            = azurerm_resource_group.this.location
 
@@ -10583,7 +10583,7 @@ AzureDiagnostics
 }
 
 resource "azurerm_monitor_scheduled_query_rules_alert" "alarm_availability_18" {
-  name                = replace(join("_",split("/", "Availability @ /api/v1/payment-requests/{rptId}")), "/\\{|\\}/", "")
+  name                = replace(join("_", split("/", "Availability @ /api/v1/payment-requests/{rptId}")), "/\\{|\\}/", "")
   resource_group_name = azurerm_resource_group.this.name
   location            = azurerm_resource_group.this.location
 
@@ -10623,7 +10623,7 @@ AzureDiagnostics
 }
 
 resource "azurerm_monitor_scheduled_query_rules_alert" "alarm_time_18" {
-  name                = replace(join("_",split("/", "ResponseTime @ /api/v1/payment-requests/{rptId}")), "/\\{|\\}/", "")
+  name                = replace(join("_", split("/", "ResponseTime @ /api/v1/payment-requests/{rptId}")), "/\\{|\\}/", "")
   resource_group_name = azurerm_resource_group.this.name
   location            = azurerm_resource_group.this.location
 
@@ -10662,7 +10662,7 @@ AzureDiagnostics
 }
 
 resource "azurerm_monitor_scheduled_query_rules_alert" "alarm_availability_19" {
-  name                = replace(join("_",split("/", "Availability @ /api/v1/payment-activations")), "/\\{|\\}/", "")
+  name                = replace(join("_", split("/", "Availability @ /api/v1/payment-activations")), "/\\{|\\}/", "")
   resource_group_name = azurerm_resource_group.this.name
   location            = azurerm_resource_group.this.location
 
@@ -10702,7 +10702,7 @@ AzureDiagnostics
 }
 
 resource "azurerm_monitor_scheduled_query_rules_alert" "alarm_time_19" {
-  name                = replace(join("_",split("/", "ResponseTime @ /api/v1/payment-activations")), "/\\{|\\}/", "")
+  name                = replace(join("_", split("/", "ResponseTime @ /api/v1/payment-activations")), "/\\{|\\}/", "")
   resource_group_name = azurerm_resource_group.this.name
   location            = azurerm_resource_group.this.location
 
@@ -10741,7 +10741,7 @@ AzureDiagnostics
 }
 
 resource "azurerm_monitor_scheduled_query_rules_alert" "alarm_availability_20" {
-  name                = replace(join("_",split("/", "Availability @ /api/v1/payment-activations/{codiceContestoPagamento}")), "/\\{|\\}/", "")
+  name                = replace(join("_", split("/", "Availability @ /api/v1/payment-activations/{codiceContestoPagamento}")), "/\\{|\\}/", "")
   resource_group_name = azurerm_resource_group.this.name
   location            = azurerm_resource_group.this.location
 
@@ -10781,7 +10781,7 @@ AzureDiagnostics
 }
 
 resource "azurerm_monitor_scheduled_query_rules_alert" "alarm_time_20" {
-  name                = replace(join("_",split("/", "ResponseTime @ /api/v1/payment-activations/{codiceContestoPagamento}")), "/\\{|\\}/", "")
+  name                = replace(join("_", split("/", "ResponseTime @ /api/v1/payment-activations/{codiceContestoPagamento}")), "/\\{|\\}/", "")
   resource_group_name = azurerm_resource_group.this.name
   location            = azurerm_resource_group.this.location
 
@@ -10820,7 +10820,7 @@ AzureDiagnostics
 }
 
 resource "azurerm_monitor_scheduled_query_rules_alert" "alarm_availability_21" {
-  name                = replace(join("_",split("/", "Availability @ /api/v1/user-data-processing")), "/\\{|\\}/", "")
+  name                = replace(join("_", split("/", "Availability @ /api/v1/user-data-processing")), "/\\{|\\}/", "")
   resource_group_name = azurerm_resource_group.this.name
   location            = azurerm_resource_group.this.location
 
@@ -10860,7 +10860,7 @@ AzureDiagnostics
 }
 
 resource "azurerm_monitor_scheduled_query_rules_alert" "alarm_time_21" {
-  name                = replace(join("_",split("/", "ResponseTime @ /api/v1/user-data-processing")), "/\\{|\\}/", "")
+  name                = replace(join("_", split("/", "ResponseTime @ /api/v1/user-data-processing")), "/\\{|\\}/", "")
   resource_group_name = azurerm_resource_group.this.name
   location            = azurerm_resource_group.this.location
 
@@ -10899,7 +10899,7 @@ AzureDiagnostics
 }
 
 resource "azurerm_monitor_scheduled_query_rules_alert" "alarm_availability_22" {
-  name                = replace(join("_",split("/", "Availability @ /api/v1/user-data-processing/{choice}")), "/\\{|\\}/", "")
+  name                = replace(join("_", split("/", "Availability @ /api/v1/user-data-processing/{choice}")), "/\\{|\\}/", "")
   resource_group_name = azurerm_resource_group.this.name
   location            = azurerm_resource_group.this.location
 
@@ -10939,7 +10939,7 @@ AzureDiagnostics
 }
 
 resource "azurerm_monitor_scheduled_query_rules_alert" "alarm_time_22" {
-  name                = replace(join("_",split("/", "ResponseTime @ /api/v1/user-data-processing/{choice}")), "/\\{|\\}/", "")
+  name                = replace(join("_", split("/", "ResponseTime @ /api/v1/user-data-processing/{choice}")), "/\\{|\\}/", "")
   resource_group_name = azurerm_resource_group.this.name
   location            = azurerm_resource_group.this.location
 
