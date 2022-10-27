@@ -3,5 +3,5 @@ ALTER TABLE "SelfcareIOSubscriptionMigrations".migrations
     -- This is harmless as
     --  * we will ensure this field to be set at insert time
     --  * the field is not considered yet by the application (at the time of writing)
-    ADD COLUMN "isVisibile" TYPE boolean NOT NULL default false,
-    ADD COLUMN "hasBeenVisibleOnce" TYPE boolean NOT NULL default false;
+    ADD COLUMN "isVisibile" boolean NOT NULL default false,
+    ADD COLUMN "hasBeenVisibleOnce"  boolean NOT NULL default false;
