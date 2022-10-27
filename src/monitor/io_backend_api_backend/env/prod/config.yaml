@@ -1,0 +1,14 @@
+oa3_spec: https://raw.githubusercontent.com/pagopa/opex-dashboard/main/test/data/io_backend.yaml
+# oa3_spec: https://raw.githubusercontent.com/pagopa/io-backend/master/api_backend.yaml
+name: PROD-IO_io_backend_api_backend
+location: West Europe
+timespan: 5m
+resources:
+  - /subscriptions/ec285037-c673-4f58-b594-d7c480da4e8b/resourceGroups/io-p-rg-external/providers/Microsoft.Network/applicationGateways/io-p-appgateway
+terraform:
+  action_group_name:
+    - ""
+  action_group_rg:
+    - ""
+  rg_name:
+    - ""
