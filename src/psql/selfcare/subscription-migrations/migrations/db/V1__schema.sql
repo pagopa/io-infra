@@ -17,8 +17,8 @@ CREATE TABLE IF NOT EXISTS "SelfcareIOSubscriptionMigrations".migrations
     -- This is harmless as
     --  * we will ensure this field to be set at insert time
     --  * the field is not considered yet by the application (at the time of writing)
-    ADD COLUMN "isVisible" boolean NOT NULL default false,
-    ADD COLUMN "hasBeenVisibleOnce"  boolean NOT NULL default false;
+    "isVisible" boolean NOT NULL default false,
+    "hasBeenVisibleOnce"  boolean NOT NULL default false,
 
     status text  NOT NULL DEFAULT 'INITIAL'::bpchar,
     note text ,
