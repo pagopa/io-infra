@@ -6,7 +6,7 @@ CREATE TABLE IF NOT EXISTS "SelfcareIOSubscriptionMigrations".migrations
     "subscriptionId" character(50)  NOT NULL,
     "organizationFiscalCode" character(11)  NOT NULL,
     "serviceVersion" integer NOT NULL,
-    "serviceName" text varying ,
+    "serviceName" text,
 
     "sourceId" character(26)  NOT NULL,
     "sourceName" text ,
