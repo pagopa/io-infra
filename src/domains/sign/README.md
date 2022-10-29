@@ -22,8 +22,8 @@
 | <a name="module_apim_io_sign_issuer_api_v1"></a> [apim\_io\_sign\_issuer\_api\_v1](#module\_apim\_io\_sign\_issuer\_api\_v1) | git::https://github.com/pagopa/azurerm.git//api_management_api | v1.0.16 |
 | <a name="module_apim_io_sign_product"></a> [apim\_io\_sign\_product](#module\_apim\_io\_sign\_product) | git::https://github.com/pagopa/azurerm.git//api_management_product | v1.0.16 |
 | <a name="module_cosmosdb_account"></a> [cosmosdb\_account](#module\_cosmosdb\_account) | git::https://github.com/pagopa/azurerm.git//cosmosdb_account | v2.13.1 |
-| <a name="module_cosmosdb_sql_container_products"></a> [cosmosdb\_sql\_container\_products](#module\_cosmosdb\_sql\_container\_products) | git::https://github.com/pagopa/azurerm.git//cosmosdb_sql_container | v2.13.1 |
-| <a name="module_cosmosdb_sql_container_signature-requests"></a> [cosmosdb\_sql\_container\_signature-requests](#module\_cosmosdb\_sql\_container\_signature-requests) | git::https://github.com/pagopa/azurerm.git//cosmosdb_sql_container | v2.13.1 |
+| <a name="module_cosmosdb_sql_container_products"></a> [cosmosdb\_sql\_container\_products](#module\_cosmosdb\_sql\_container\_products) | git::https://github.com/pagopa/azurerm.git//cosmosdb_sql_container | v3.2.5 |
+| <a name="module_cosmosdb_sql_container_signature-requests"></a> [cosmosdb\_sql\_container\_signature-requests](#module\_cosmosdb\_sql\_container\_signature-requests) | git::https://github.com/pagopa/azurerm.git//cosmosdb_sql_container | v3.2.5 |
 | <a name="module_cosmosdb_sql_database_db"></a> [cosmosdb\_sql\_database\_db](#module\_cosmosdb\_sql\_database\_db) | git::https://github.com/pagopa/azurerm.git//cosmosdb_sql_database | v2.13.1 |
 | <a name="module_io_sign_func"></a> [io\_sign\_func](#module\_io\_sign\_func) | git::https://github.com/pagopa/azurerm.git//function_app | v2.18.2 |
 | <a name="module_io_sign_snet"></a> [io\_sign\_snet](#module\_io\_sign\_snet) | git::https://github.com/pagopa/azurerm.git//subnet | v2.13.1 |
@@ -75,7 +75,7 @@
 |------|-------------|------|---------|:--------:|
 | <a name="input_domain"></a> [domain](#input\_domain) | n/a | `string` | n/a | yes |
 | <a name="input_env_short"></a> [env\_short](#input\_env\_short) | n/a | `string` | n/a | yes |
-| <a name="input_io_sign_database"></a> [io\_sign\_database](#input\_io\_sign\_database) | n/a | <pre>object({<br>    throughput = number<br>    signature_requests = object({<br>      throughput = number<br>    })<br>  })</pre> | <pre>{<br>  "signature_requests": {<br>    "throughput": 400<br>  },<br>  "throughput": 800<br>}</pre> | no |
+| <a name="input_io_sign_database"></a> [io\_sign\_database](#input\_io\_sign\_database) | n/a | <pre>object({<br>    throughput = number<br>  })</pre> | <pre>{<br>  "throughput": 800<br>}</pre> | no |
 | <a name="input_io_sign_func"></a> [io\_sign\_func](#input\_io\_sign\_func) | n/a | <pre>object({<br>    sku_tier = string<br>    sku_size = string<br>  })</pre> | <pre>{<br>  "sku_size": "B1",<br>  "sku_tier": "Basic"<br>}</pre> | no |
 | <a name="input_location"></a> [location](#input\_location) | n/a | `string` | n/a | yes |
 | <a name="input_lock_enable"></a> [lock\_enable](#input\_lock\_enable) | Apply locks to block accedentaly deletions. | `bool` | `false` | no |

@@ -28,22 +28,22 @@ module "cosmosdb_sql_database_db" {
 }
 
 module "cosmosdb_sql_container_signature-requests" {
-  source              = "git::https://github.com/pagopa/azurerm.git//cosmosdb_sql_container?ref=v2.13.1"
+  source              = "git::https://github.com/pagopa/azurerm.git//cosmosdb_sql_container?ref=v3.2.5"
   name                = "signature-requests"
   resource_group_name = azurerm_resource_group.data_rg.name
   account_name        = module.cosmosdb_account.name
   database_name       = module.cosmosdb_sql_database_db.name
   partition_key_path  = "/subscriptionId"
-  throughput          = var.io_sign_database.signature_requests.throughput
+  # throughput          = must be managed manually to avoid problems with terraform
 }
 
 module "cosmosdb_sql_container_products" {
-  source              = "git::https://github.com/pagopa/azurerm.git//cosmosdb_sql_container?ref=v2.13.1"
+  source              = "git::https://github.com/pagopa/azurerm.git//cosmosdb_sql_container?ref=v3.2.5"
   name                = "products"
   resource_group_name = azurerm_resource_group.data_rg.name
   account_name        = module.cosmosdb_account.name
   database_name       = module.cosmosdb_sql_database_db.name
   partition_key_path  = "/subscriptionId"
-  throughput          = var.io_sign_database.signature_requests.throughput
+  # throughput          = must be managed manually to avoid problems with terraform
 }
 
