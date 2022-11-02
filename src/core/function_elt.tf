@@ -85,7 +85,7 @@ locals {
       MESSAGE_STATUS_FAILURE_QUEUE_NAME = "pdnd-io-cosmosdb-message-status-failure"
       SERVICES_FAILURE_QUEUE_NAME       = "pdnd-io-cosmosdb-services-failure"
 
-      TEST_FISCAL_CODES = local.test_users
+      INTERNAL_TEST_FISCAL_CODES = local.test_users
     }
   }
 }
