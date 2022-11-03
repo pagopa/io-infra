@@ -4,12 +4,12 @@ module "function_services_cache" {
 
   name = "${local.project}-services-cache-fn"
   # SELFCARE RG
-  resource_group_name = azurerm_resource_group.selfcare_be_rg.name
-  location            = var.location
-  app_service_plan_id = azurerm_app_service_plan.selfcare_be_common.id
-  runtime_version     = "~4"
-  os_type             = "linux"
-  linux_fx_version    = "NODE|14"
+  resource_group_name                      = azurerm_resource_group.selfcare_be_rg.name
+  location                                 = var.location
+  app_service_plan_id                      = azurerm_app_service_plan.selfcare_be_common.id
+  runtime_version                          = "~4"
+  os_type                                  = "linux"
+  linux_fx_version                         = "NODE|14"
   health_check_path                        = "api/v1/info"
   always_on                                = true
   subnet_id                                = module.selfcare_be_common_snet.id
@@ -41,6 +41,14 @@ module "function_services_cache" {
     "queues"                     = [],
     "containers"                 = [],
     "blobs_retention_days"       = 0,
+  }
+
+  storage_account_info = {
+    account_kind                      = "StorageV2"
+    account_tier                      = "Standard"
+    account_replication_type          = "LRS"
+    access_tier                       = "Hot"
+    advanced_threat_protection_enable = true
   }
 
   allowed_subnets = [
