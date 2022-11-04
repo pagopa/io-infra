@@ -156,5 +156,19 @@ eventhubs = [
         manage = false
       }
     ]
-  }
+  },
+  {
+    name              = "message-reminder-send"
+    partitions        = 5
+    message_retention = 7
+    consumers         = []
+    keys = [
+      {
+        name   = "io-p-reminder"
+        listen = true
+        send   = true
+        manage = false
+      }
+    ]
+  },
 ]
