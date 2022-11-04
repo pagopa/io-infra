@@ -10,7 +10,7 @@ module "services_storage" {
   account_replication_type   = "ZRS"
   resource_group_name        = azurerm_resource_group.data_process_rg.name
   location                   = var.location
-  advanced_threat_protection = false
+  advanced_threat_protection = true
   allow_blob_public_access   = false
 
   tags = var.tags
