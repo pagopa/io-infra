@@ -1,0 +1,2 @@
+ALTER TABLE "DeveloperPortalServiceData".services
+     ALTER COLUMN "requireSecureChannels" TYPE boolean NOT NULL; -- if true the message will be available only in the IOApp instead of both e-mail and IOApp
