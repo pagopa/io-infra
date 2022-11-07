@@ -43,6 +43,14 @@ resource "azurerm_api_management_group" "apiremindernotify" {
   description         = "A group that enables to send a Push notification for a reminder message"
 }
 
+resource "azurerm_api_management_group" "apipaymentupdater" {
+  name                = "apipaymentread"
+  api_management_name = data.azurerm_api_management.apim_api.name
+  resource_group_name = data.azurerm_api_management.apim_api.resource_group_name
+  display_name        = "ApiPaymentRead"
+  description         = "A group that enables to read payment status related to a message"
+}
+
 module "apim_product_notifications" {
   source = "git::https://github.com/pagopa/azurerm.git//api_management_product?ref=v1.0.16"
 
@@ -116,3 +124,33 @@ resource "azurerm_key_vault_secret" "reminder_subscription_primary_key" {
   key_vault_id = module.key_vault.id
 }
 
+########################################
+
+data "azurerm_api_management_product" "payment_updater_product" {
+  product_id          = "io-payments-api"
+  api_management_name = data.azurerm_api_management.apim_api.name
+  resource_group_name = data.azurerm_api_management.apim_api.resource_group_name
+}
+
+resource "azurerm_api_management_group_user" "payment_group" {
+  user_id             = azurerm_api_management_user.reminder_user.user_id
+  group_name          = azurerm_api_management_group.apipaymentupdater.name
+  resource_group_name = azurerm_api_management_user.reminder_user.resource_group_name
+  api_management_name = azurerm_api_management_user.reminder_user.api_management_name
+}
+
+resource "azurerm_api_management_subscription" "payment_updater_reminder" {
+  api_management_name = data.azurerm_api_management.apim_api.name
+  resource_group_name = data.azurerm_api_management.apim_api.resource_group_name
+  user_id             = azurerm_api_management_user.reminder_user.id
+  product_id          = data.azurerm_api_management_product.payment_updater_product.id
+  display_name        = "Payment Updater API"
+  state               = "active"
+}
+
+resource "azurerm_key_vault_secret" "reminder_paymentapi_subscription_primary_key" {
+  name         = "${format("%s-reminder-payment-api", local.product)}-subscription-key"
+  value        = azurerm_api_management_subscription.payment_updater_reminder.primary_key
+  content_type = "subscription key"
+  key_vault_id = module.key_vault.id
+}
