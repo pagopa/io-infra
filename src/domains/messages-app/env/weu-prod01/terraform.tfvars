@@ -15,15 +15,6 @@ tags = {
   CostCenter  = "TS310 - PAGAMENTI & SERVIZI"
 }
 
-lock_enable = true
-
-terraform_remote_state_core = {
-  resource_group_name  = "io-infra-rg"
-  storage_account_name = "ioinfrastterraform"
-  container_name       = "azurermstate"
-  key                  = "terraform.tfstate"
-}
-
 ### External resources
 
 monitor_resource_group_name                 = "io-p-rg-common"
@@ -156,5 +147,19 @@ eventhubs = [
         manage = false
       }
     ]
-  }
+  },
+  {
+    name              = "message-reminder-send"
+    partitions        = 5
+    message_retention = 7
+    consumers         = []
+    keys = [
+      {
+        name   = "io-p-reminder"
+        listen = true
+        send   = true
+        manage = false
+      }
+    ]
+  },
 ]

@@ -7,7 +7,7 @@ locals {
   }
 
   selfcare = {
-    hostname = "uat.${var.selfcare_external_hostname}"
+    hostname = "${var.selfcare_external_hostname}"
   }
 }
 
