@@ -151,7 +151,9 @@ module "function_elt" {
 
   app_settings = merge(
     local.function_elt.app_settings, {
-      "AzureWebJobs.CosmosApiServicesChangeFeed.Disabled" = "1"
+      "AzureWebJobs.CosmosApiServicesChangeFeed.Disabled"      = "1"
+      "AzureWebJobs.CosmosApiMessageStatusChangeFeed.Disabled" = "1"
+      "AzureWebJobs.CosmosApiMessagesChangeFeed.Disabled"      = "1"
     }
   )
 
