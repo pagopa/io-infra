@@ -35,7 +35,7 @@ locals {
       DB_PORT         = 5432
       DB_IDLE_TIMEOUT = 30000 // milliseconds
       DB_NAME         = "db"
-      DB_SCHEMA       = "DevPortalServiceData"
+      DB_SCHEMA       = "DeveloperPortalServiceData"
       DB_TABLE        = "services"
       DB_USER         = format("%s@%s", data.azurerm_key_vault_secret.devportalservicedata_db_server_adm_username.value, format("%s.postgres.database.azure.com", format("%s-%s-db-postgresql", local.project, "devportalservicedata")))
       DB_PASSWORD     = data.azurerm_key_vault_secret.devportalservicedata_db_server_adm_password.value
