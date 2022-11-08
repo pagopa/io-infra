@@ -55,12 +55,6 @@ variable "location_string" {
   description = "One of West Europe, North Europe"
 }
 
-variable "lock_enable" {
-  type        = bool
-  default     = false
-  description = "Apply locks to block accedentaly deletions."
-}
-
 variable "tags" {
   type = map(any)
   default = {
