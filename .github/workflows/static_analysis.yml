@@ -23,7 +23,6 @@ jobs:
             src/domains/payments-common
             src/domains/profile-app
             src/domains/profile-common
-            src/domains/reminder
             src/domains/sign
         run: |
           pids=()
