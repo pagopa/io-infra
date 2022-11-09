@@ -63,15 +63,9 @@ variable "storage" {
 variable "io_sign_database" {
   type = object({
     throughput = number
-    signature_requests = object({
-      throughput = number
-    })
   })
   default = {
     throughput = 800
-    signature_requests = {
-      throughput = 400
-    }
   }
 }
 
