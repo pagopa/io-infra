@@ -111,7 +111,7 @@ module "function_messages_cqrs" {
     local.function_messages_cqrs.app_settings, {
       // disable listeners on staging slot
       "AzureWebJobs.CosmosApiMessageStatusChangeFeedForView.Disabled"     = "0"
-      "AzureWebJobs.CosmosApiMessageStatusChangeFeedForReminder.Disabled" = "1"
+      "AzureWebJobs.CosmosApiMessageStatusChangeFeedForReminder.Disabled" = "0"
       "AzureWebJobs.HandleMessageViewUpdateFailures.Disabled"             = "0"
       "AzureWebJobs.UpdateCosmosMessageView.Disabled"                     = "0"
       "AzureWebJobs.UpdatePaymentOnMessageView.Disabled"                  = "0"
