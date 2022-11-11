@@ -52,6 +52,7 @@
 | [azurerm_resource_group.backend_rg](https://registry.terraform.io/providers/hashicorp/azurerm/2.87.0/docs/resources/resource_group) | resource |
 | [azurerm_resource_group.data_rg](https://registry.terraform.io/providers/hashicorp/azurerm/2.87.0/docs/resources/resource_group) | resource |
 | [azurerm_resource_group.sec_rg](https://registry.terraform.io/providers/hashicorp/azurerm/2.87.0/docs/resources/resource_group) | resource |
+| [azurerm_role_assignment.io_sign_issuer_func_role](https://registry.terraform.io/providers/hashicorp/azurerm/2.87.0/docs/resources/role_assignment) | resource |
 | [azurerm_storage_container.io_sign_issuer_func_container](https://registry.terraform.io/providers/hashicorp/azurerm/2.87.0/docs/resources/storage_container) | resource |
 | [azurerm_storage_container.io_sign_user_func_container](https://registry.terraform.io/providers/hashicorp/azurerm/2.87.0/docs/resources/storage_container) | resource |
 | [azurerm_storage_container.signed_documents](https://registry.terraform.io/providers/hashicorp/azurerm/2.87.0/docs/resources/storage_container) | resource |

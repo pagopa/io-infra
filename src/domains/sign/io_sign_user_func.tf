@@ -5,7 +5,7 @@ locals {
 }
 
 module "io_sign_user_func" {
-  source    = "git::https://github.com/pagopa/azurerm.git//function_app?ref=v2.18.2"
+  source    = "git::https://github.com/pagopa/azurerm.git//function_app?ref=v3.3.0"
   name      = local.user_func_name
   subnet_id = module.io_sign_user_snet.id
 
@@ -49,10 +49,12 @@ module "io_sign_user_func" {
 
   runtime_version                          = "~4"
   application_insights_instrumentation_key = data.azurerm_application_insights.application_insights.instrumentation_key
+  system_identity_enabled                  = true
 
   tags = var.tags
 }
 
+// TODO dependson?
 resource "azurerm_storage_container" "io_sign_user_func_container" {
   name                  = local.user_func_container
   storage_account_name  = module.io_sign_user_func.storage_account_name
