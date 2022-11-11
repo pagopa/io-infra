@@ -45,14 +45,14 @@ variable "tags" {
 
 variable "storage" {
   type = object({
-    enable_versioning            = bool
-    delete_retention_policy_days = number
-    replication_type             = string
+    enable_versioning = bool
+    delete_after_days = number
+    replication_type  = string
   })
   default = {
-    enable_versioning            = false
-    delete_retention_policy_days = 90
-    replication_type             = "ZRS"
+    enable_versioning = false
+    delete_after_days = 90
+    replication_type  = "ZRS"
   }
 }
 

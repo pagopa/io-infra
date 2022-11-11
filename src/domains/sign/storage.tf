@@ -1,17 +1,16 @@
 module "io_sign_storage" {
-  source                                       = "git::https://github.com/pagopa/azurerm.git//storage_account?ref=v2.13.1"
-  name                                         = replace(format("%s-st", local.project), "-", "")
-  account_kind                                 = "StorageV2"
-  account_tier                                 = "Standard"
-  account_replication_type                     = var.storage.replication_type
-  access_tier                                  = "Hot"
-  enable_versioning                            = var.storage.enable_versioning
-  versioning_name                              = "versioning"
-  resource_group_name                          = azurerm_resource_group.data_rg.name
-  location                                     = azurerm_resource_group.data_rg.location
-  advanced_threat_protection                   = true
-  allow_blob_public_access                     = false
-  blob_properties_delete_retention_policy_days = var.storage.delete_retention_policy_days
+  source                     = "git::https://github.com/pagopa/azurerm.git//storage_account?ref=v2.13.1"
+  name                       = replace(format("%s-st", local.project), "-", "")
+  account_kind               = "StorageV2"
+  account_tier               = "Standard"
+  account_replication_type   = var.storage.replication_type
+  access_tier                = "Hot"
+  enable_versioning          = var.storage.enable_versioning
+  versioning_name            = "versioning"
+  resource_group_name        = azurerm_resource_group.data_rg.name
+  location                   = azurerm_resource_group.data_rg.location
+  advanced_threat_protection = true
+  allow_blob_public_access   = false
 
   network_rules = {
     default_action = "Deny"
@@ -28,6 +27,30 @@ module "io_sign_storage" {
   }
 
   tags = var.tags
+}
+
+resource "azurerm_storage_management_policy" "io_sign_storage_management_policy" {
+  storage_account_id = module.io_sign_storage.id
+
+  rule {
+    name    = "deleteafterdays"
+    enabled = true
+    filters {
+      prefix_match = [
+        "uploaded-documents",
+        "validated-documents",
+        "signed-documents",
+      ]
+      blob_types = ["blockBlob"]
+    }
+    actions {
+      base_blob {
+        tier_to_cool_after_days_since_modification_greater_than    = 0
+        tier_to_archive_after_days_since_modification_greater_than = 0
+        delete_after_days_since_modification_greater_than          = var.storage.delete_after_days
+      }
+    }
+  }
 }
 
 resource "azurerm_storage_container" "uploaded_documents" {
