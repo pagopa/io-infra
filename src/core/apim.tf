@@ -74,6 +74,17 @@ module "apim" {
 
   alerts_enabled = var.apim_alerts_enabled
 
+  action = [
+    {
+      action_group_id    = azurerm_monitor_action_group.slack.id
+      webhook_properties = null
+    },
+    {
+      action_group_id    = azurerm_monitor_action_group.email.id
+      webhook_properties = null
+    }
+  ]
+
   # metrics docs
   # https://docs.microsoft.com/en-us/azure/azure-monitor/essentials/metrics-supported#microsoftapimanagementservice
   metric_alerts = {
@@ -89,7 +100,7 @@ module "apim" {
         metric_name            = "Capacity"
         aggregation            = "Average"
         operator               = "GreaterThan"
-        threshold              = 50
+        threshold              = 40
         skip_metric_validation = false
         dimension              = []
       }]
