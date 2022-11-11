@@ -31,6 +31,7 @@
 | <a name="module_io_sign_issuer_func"></a> [io\_sign\_issuer\_func](#module\_io\_sign\_issuer\_func) | git::https://github.com/pagopa/azurerm.git//function_app | v2.18.2 |
 | <a name="module_io_sign_snet"></a> [io\_sign\_snet](#module\_io\_sign\_snet) | git::https://github.com/pagopa/azurerm.git//subnet | v2.13.1 |
 | <a name="module_io_sign_storage"></a> [io\_sign\_storage](#module\_io\_sign\_storage) | git::https://github.com/pagopa/azurerm.git//storage_account | v2.13.1 |
+| <a name="module_io_sign_storage_management_policy"></a> [io\_sign\_storage\_management\_policy](#module\_io\_sign\_storage\_management\_policy) | git::https://github.com/pagopa/azurerm.git//storage_management_policy | v2.7.0 |
 | <a name="module_io_sign_user_func"></a> [io\_sign\_user\_func](#module\_io\_sign\_user\_func) | git::https://github.com/pagopa/azurerm.git//function_app | v2.18.2 |
 | <a name="module_io_sign_user_snet"></a> [io\_sign\_user\_snet](#module\_io\_sign\_user\_snet) | git::https://github.com/pagopa/azurerm.git//subnet | v2.13.1 |
 | <a name="module_key_vault"></a> [key\_vault](#module\_key\_vault) | git::https://github.com/pagopa/azurerm.git//key_vault | v2.13.1 |
@@ -91,7 +92,7 @@
 | <a name="input_io_sign_user_func"></a> [io\_sign\_user\_func](#input\_io\_sign\_user\_func) | n/a | <pre>object({<br>    version  = string<br>    sku_tier = string<br>    sku_size = string<br>  })</pre> | <pre>{<br>  "sku_size": "B1",<br>  "sku_tier": "Basic",<br>  "version": null<br>}</pre> | no |
 | <a name="input_location"></a> [location](#input\_location) | n/a | `string` | n/a | yes |
 | <a name="input_prefix"></a> [prefix](#input\_prefix) | n/a | `string` | n/a | yes |
-| <a name="input_storage"></a> [storage](#input\_storage) | n/a | <pre>object({<br>    enable_versioning            = bool<br>    delete_retention_policy_days = number<br>    replication_type             = string<br>  })</pre> | <pre>{<br>  "delete_retention_policy_days": 90,<br>  "enable_versioning": false,<br>  "replication_type": "ZRS"<br>}</pre> | no |
+| <a name="input_storage"></a> [storage](#input\_storage) | n/a | <pre>object({<br>    enable_versioning = bool<br>    delete_after_days = number<br>    replication_type  = string<br>  })</pre> | <pre>{<br>  "delete_after_days": 90,<br>  "enable_versioning": false,<br>  "replication_type": "ZRS"<br>}</pre> | no |
 | <a name="input_tags"></a> [tags](#input\_tags) | n/a | `map(any)` | <pre>{<br>  "CreatedBy": "Terraform"<br>}</pre> | no |
 
 ## Outputs
