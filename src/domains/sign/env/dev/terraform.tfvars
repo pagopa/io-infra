@@ -10,5 +10,3 @@ tags = {
   Source      = "https://github.com/pagopa/io-infra/src/sign"
   CostCenter  = "TS310 - PAGAMENTI & SERVIZI"
 }
-
-lock_enable = false

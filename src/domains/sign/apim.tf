@@ -3,25 +3,20 @@ data "azurerm_api_management" "apim_api" {
   resource_group_name = "io-p-rg-internal"
 }
 
-resource "azurerm_api_management_named_value" "io_fn_sign_url" {
-  name                = "io-fn-sign-url"
+resource "azurerm_api_management_named_value" "io_fn_sign_issuer_url" {
+  name                = "io-fn-sign-issuer-url"
   api_management_name = data.azurerm_api_management.apim_api.name
   resource_group_name = data.azurerm_api_management.apim_api.resource_group_name
-  display_name        = "io-fn-sign-url"
-  value               = format("https://%s-sign-func.azurewebsites.net", local.product)
+  display_name        = "io-fn-sign-issuer-url"
+  value               = format("https://%s-sign-issuer-func.azurewebsites.net", local.product)
 }
 
-data "azurerm_key_vault_secret" "io_fn_sign_key" {
-  name         = "io-fn-sign-key"
-  key_vault_id = module.key_vault.id
-}
-
-resource "azurerm_api_management_named_value" "io_fn_sign_key" {
-  name                = "io-fn-sign-key"
+resource "azurerm_api_management_named_value" "io_fn_sign_issuer_key" {
+  name                = "io-fn-sign-issuer-key"
   api_management_name = data.azurerm_api_management.apim_api.name
   resource_group_name = data.azurerm_api_management.apim_api.resource_group_name
-  display_name        = "io-fn-sign-key"
-  value               = data.azurerm_key_vault_secret.io_fn_sign_key.value
+  display_name        = "io-fn-sign-issuer-key"
+  value               = module.key_vault_secrets.values["io-fn-sign-issuer-key"].value
 }
 
 module "apim_io_sign_product" {

@@ -34,18 +34,14 @@ variable "location" {
   type = string
 }
 
-variable "lock_enable" {
-  type        = bool
-  default     = false
-  description = "Apply locks to block accedentaly deletions."
-}
-
 variable "tags" {
   type = map(any)
   default = {
     CreatedBy = "Terraform"
   }
 }
+
+# domain specific
 
 variable "storage" {
   type = object({
@@ -55,26 +51,76 @@ variable "storage" {
   })
   default = {
     enable_versioning            = false
-    delete_retention_policy_days = 15
+    delete_retention_policy_days = 90
     replication_type             = "ZRS"
   }
 }
 
-variable "io_sign_database" {
+variable "io_sign_database_issuer" {
   type = object({
     throughput = number
+    dossiers = object({
+      max_throughput = number
+    })
+    signature_requests = object({
+      max_throughput = number
+    })
+    uploads = object({
+      max_throughput = number
+      ttl            = number
+    })
   })
   default = {
     throughput = 800
+    dossiers = {
+      max_throughput = 4000
+    }
+    signature_requests = {
+      max_throughput = 4000
+    }
+    uploads = {
+      max_throughput = 4000
+      ttl            = 7
+    }
   }
 }
 
-variable "io_sign_func" {
+variable "io_sign_database_user" {
   type = object({
+    throughput = number
+    signature_requests = object({
+      max_throughput = number
+    })
+  })
+  default = {
+    throughput = 800
+    signature_requests = {
+      max_throughput = 4000
+    }
+  }
+}
+
+variable "io_sign_issuer_func" {
+  type = object({
+    version  = string
     sku_tier = string
     sku_size = string
   })
   default = {
+    version  = null
+    sku_tier = "Basic"
+    sku_size = "B1"
+  }
+}
+
+variable "io_sign_user_func" {
+  type = object({
+    version  = string
+    sku_tier = string
+    sku_size = string
+  })
+  default = {
+    version  = null
     sku_tier = "Basic"
     sku_size = "B1"
   }
