@@ -1,100 +1,147 @@
 openapi: 3.0.3
 info:
-  title: IO Sign - Issuer API
-  version: 0.1.0
+  title: Firma con IO - Issuer API
+  version: 1.0.0
 servers:
   - url: https://api.io.pagopa.it/api/v1/sign
-    description: Production
+    description: production
 security:
   - SubscriptionKey: []
 paths:
-  /products:
+  /dossiers:
     post:
-      operationId: createProduct
-      summary: Create a Product
+      operationId: createDossier
+      tags:
+        - Dossier
+      summary: Create a Dossier
       requestBody:
         required: true
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/CreateProductBody"
+              $ref: "#/components/schemas/CreateDossierBody"
       responses:
         "201":
-          description: Product created
+          description: The Dossier detail
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ProductDetailView"
+                $ref: "#/components/schemas/DossierDetailView"
         "400":
           $ref: "#/components/responses/BadRequest"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
         "403":
           $ref: "#/components/responses/Forbidden"
+        "429":
+          $ref: "#/components/responses/TooManyRequests"
         default:
           $ref: "#/components/responses/Unexpected"
-  /products/{productId}:
+
+  /dossiers/{id}:
     get:
-      operationId: getProductById
-      summary: Get a Product by Id
+      operationId: getDossier
+      tags:
+        - Dossier
+      summary: Get a Dossier by Id
       parameters:
         - in: path
-          name: productId
-          schema:
-            type: string
-            format: ulid
+          name: id
           required: true
+          schema:
+            $ref: "#/components/schemas/Id"
       responses:
         "200":
-          description: The product detail
+          description: The Dossier detail
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ProductDetailView"
+                $ref: "#/components/schemas/DossierDetailView"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
         "403":
           $ref: "#/components/responses/Forbidden"
         "404":
           $ref: "#/components/responses/NotFound"
+        "429":
+          $ref: "#/components/responses/TooManyRequests"
         default:
           $ref: "#/components/responses/Unexpected"
-  /signature-requests:
+
+  /signers:
     post:
-      operationId: requestSignature
-      summary: Request a Signature (creating a Signature Request)
+      operationId: getSignerByFiscalCode
+      tags:
+        - Signer
+      summary: Get Signer By Fiscal COde
       requestBody:
         required: true
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/RequestSignatureBody"
+              $ref: "#/components/schemas/GetSignerByFiscalCodeBody"
       responses:
         "201":
-          description: RequestSignature created
+          description: The Signer detail
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SignerDetailView"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "429":
+          $ref: "#/components/responses/TooManyRequests"
+        default:
+          $ref: "#/components/responses/Unexpected"
+
+  /signature-requests:
+    post:
+      operationId: createSignatureRequest
+      tags:
+        - Signature Request
+      summary: Create a Signature Request
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateSignatureRequestBody"
+      responses:
+        "201":
+          description: The Signature Request detail
           content:
             application/json:
               schema:
                 $ref: "#/components/schemas/SignatureRequestDetailView"
         "400":
           $ref: "#/components/responses/BadRequest"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
         "403":
           $ref: "#/components/responses/Forbidden"
-        "404":
-          description: Product not found
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ProblemJson"
+        "429":
+          $ref: "#/components/responses/TooManyRequests"
         default:
           $ref: "#/components/responses/Unexpected"
-  /signature-requests/{signatureRequestId}:
+
+  /signature-requests/{id}:
     get:
-      operationId: getSignatureRequestById
-      summary: Get a Signature Request By Id
+      operationId: getSignatureRequest
+      tags:
+        - Signature Request
+      summary: Get a Signature Request by Id
       parameters:
         - in: path
-          name: signatureRequestId
-          schema:
-            type: string
-            format: ulid
+          name: id
           required: true
+          schema:
+            $ref: "#/components/schemas/Id"
       responses:
         "200":
           description: The Signature Request detail
@@ -102,40 +149,118 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/SignatureRequestDetailView"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "429":
+          $ref: "#/components/responses/TooManyRequests"
+        default:
+          $ref: "#/components/responses/Unexpected"
+
+  /signature-requests/{id}/status:
+    put:
+      operationId: setSignatureRequestStatus
+      tags:
+        - Signature Request
+      summary: Set the status of a Signature Request
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            $ref: "#/components/schemas/Id"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/SetSignatureRequestStatusBody"
+      responses:
+        "204":
+          description: Signature Request status successfully set
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
         "403":
           $ref: "#/components/responses/Forbidden"
         "404":
           $ref: "#/components/responses/NotFound"
+        "429":
+          $ref: "#/components/responses/TooManyRequests"
         default:
           $ref: "#/components/responses/Unexpected"
-  /signature-requests/{signatureRequestId}/documents/{documentId}/upload-token:
+
+  /signature-requests/{req_id}/documents/{doc_id}/upload_url:
     get:
-      operationId: getDocumentUploadToken
-      summary: Get the upload link for the specified document
+      operationId: getDocumentUploadUrl
+      tags:
+        - Signature Request
+      summary: Get the Upload Url for the specified document
       parameters:
         - in: path
-          name: signatureRequestId
-          schema:
-            type: string
-            format: ulid
+          name: req_id
           required: true
+          schema:
+            $ref: "#/components/schemas/Id"
         - in: path
-          name: documentId
-          schema:
-            type: string
-            format: ulid
+          name: doc_id
           required: true
+          schema:
+            $ref: "#/components/schemas/Id"
       responses:
         "200":
-          description: "The upload token of the specified document"
+          description: The Upload Url
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/UploadToken"
+                $ref: "#/components/schemas/UploadUrl"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
         "403":
           $ref: "#/components/responses/Forbidden"
         "404":
           $ref: "#/components/responses/NotFound"
+        "429":
+          $ref: "#/components/responses/TooManyRequests"
+        default:
+          $ref: "#/components/responses/Unexpected"
+
+  /signature-requests/{req_id}/notification:
+    put:
+      operationId: sendNotification
+      tags:
+        - Signature Request
+      summary: Send a signature request notification to user via IO message
+      parameters:
+        - in: path
+          name: req_id
+          required: true
+          schema:
+            $ref: "#/components/schemas/Id"
+      responses:
+        "201":
+          description: The notification detail
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/NotificationDetailView"
+        "409":
+          description: "If the notification has already been sent"
+          $ref: "#/components/responses/Conflict"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "429":
+          $ref: "#/components/responses/TooManyRequests"
         default:
           $ref: "#/components/responses/Unexpected"
 
@@ -146,46 +271,59 @@ components:
       name: Ocp-Apim-Subscription-Key
       in: header
       description: The API key obtained through the developer portal
+
   responses:
     NotFound:
       description: The specified resource was not found
       content:
         application/json:
           schema:
-            $ref: "#/components/schemas/ProblemJson"
+            $ref: "#/components/schemas/ProblemDetail"
+
     BadRequest:
       description: Validation error on body
       content:
         application/json:
           schema:
-            $ref: "#/components/schemas/ProblemJson"
+            $ref: "#/components/schemas/ProblemDetail"
+
     Forbidden:
       description: You don't have enough privileges to perform this action
       content:
         application/json:
           schema:
-            $ref: "#/components/schemas/ProblemJson"
+            $ref: "#/components/schemas/ProblemDetail"
+
+    Unauthorized:
+      description: Unauthorized
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/ProblemDetail"
+
+    TooManyRequests:
+      description: Too Many Requests
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/ProblemDetail"
+
     Unexpected:
       description: Unexpected error
       content:
         application/json:
           schema:
-            $ref: "#/components/schemas/ProblemJson"
-  schemas:
-    UploadToken:
-      type: object
-      properties:
-        documentId:
-          type: string
-          format: ulid
-        token:
-          type: string
-          format: url
-      required:
-        - documentId
-        - token
+            $ref: "#/components/schemas/ProblemDetail"
 
-    ProblemJson:
+    Conflict:
+      description: Unexpected error
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/ProblemDetail"
+
+  schemas:
+    ProblemDetail:
       type: object
       properties:
         type:
@@ -233,110 +371,297 @@ components:
         - title
         - status
         - detail
-    FiscalCode:
-      type: string
-      description: User's fiscal code.
-      format: FiscalCode
-      x-import: "@pagopa/ts-commons/lib/strings"
-      example: SPNDNL80R13C555X
+
     Clause:
       type: object
       properties:
         title:
           type: string
-        required:
-          type: boolean
+        type:
+          type: string
+          enum: ["REQUIRED", "UNFAIR", "OPTIONAL"]
       required:
         - title
-        - required
+        - type
+
+    ExistingSignatureFieldAttrs:
+      type: object
+      properties:
+        unique_name:
+          type: string
+      required:
+        - unique_name
+
+    SignatureFieldToBeCreatedAttrs:
+      type: object
+      properties:
+        coordinates:
+          type: object
+          properties:
+            x: { type: number }
+            y: { type: number }
+          required: [x, y]
+        page:
+          type: number
+          minimum: 0
+        size:
+          type: object
+          properties:
+            w: { type: number, minimum: 0 }
+            h: { type: number, minimum: 0 }
+          required: [w, h]
+      required:
+        - coordinates
+        - page
+        - size
+
+    SignatureFieldAttrs:
+      oneOf:
+        - $ref: "#/components/schemas/ExistingSignatureFieldAttrs"
+        - $ref: "#/components/schemas/SignatureFieldToBeCreatedAttrs"
+
+    SignatureField:
+      type: object
+      properties:
+        attrs:
+          $ref: "#/components/schemas/SignatureFieldAttrs"
+        clause:
+          $ref: "#/components/schemas/Clause"
+      required:
+        - attrs
+        - clause
+
     DocumentMetadata:
       type: object
       properties:
         title:
           type: string
-        clauses:
+        signature_fields:
           type: array
           items:
-            $ref: "#/components/schemas/Clause"
-          minItems: 1
-          uniqueItems: true
+            $ref: "#/components/schemas/SignatureField"
+
       required:
         - title
-        - clauses
-    Document:
-      allOf:
-        - type: object
-          properties:
-            id:
-              type: string
-              format: ulid
-            url:
-              type: string
-              format: uri
-          required:
-            - id
-        - $ref: "#/components/schemas/DocumentMetadata"
-    ProductId:
+        - signature_fields
+
+    DocumentMetadataList:
+      type: array
+      items:
+        $ref: "#/components/schemas/DocumentMetadata"
+      minLength: 1
+
+    CreateDossierBody:
+      type: object
+      properties:
+        title:
+          type: string
+        documents_metadata:
+          $ref: "#/components/schemas/DocumentMetadataList"
+      required:
+        - title
+        - documents_metadata
+
+    SetSignatureRequestStatusBody:
       type: string
-      format: ulid
+      x-extensible-enum:
+        - READY
+
+    DossierDetailView:
+      type: object
+      properties:
+        id:
+          $ref: "#/components/schemas/Id"
+        title:
+          type: string
+        documents_metadata:
+          $ref: "#/components/schemas/DocumentMetadataList"
+        created_at:
+          $ref: "#/components/schemas/Timestamp"
+        updated_at:
+          $ref: "#/components/schemas/Timestamp"
+      required:
+        - id
+        - title
+        - documents_metadata
+        - created_at
+        - updated_at
+
     Timestamp:
       type: string
       format: UTCISODateFromString
       description: A date-time field in ISO-8601 format and UTC timezone.
       x-import: "@pagopa/ts-commons/lib/dates"
       example: "2018-10-13T00:00:00.000Z"
-    CreateProductBody:
+
+    Id:
+      type: string
+      description: Entity Id
+      format: NonEmptyString
+      example: 01ARZ3NDEKTSV4RRFFQ69G5FAV
+      x-import: "@pagopa/ts-commons/lib/strings"
+
+    FiscalCode:
+      type: string
+      description: User's fiscal code.
+      format: FiscalCode
+      x-import: "@pagopa/ts-commons/lib/strings"
+      example: SPNDNL80R13C555X
+
+    GetSignerByFiscalCodeBody:
       type: object
       properties:
-        documents:
-          type: array
-          items:
-            $ref: "#/components/schemas/DocumentMetadata"
-          minItems: 1
-          uniqueItems: true
+        fiscal_code:
+          $ref: "#/components/schemas/FiscalCode"
       required:
-        - documents
-    ProductDetailView:
+        - fiscal_code
+
+    SignerDetailView:
       type: object
       properties:
         id:
-          $ref: "#/components/schemas/ProductId"
-        documents:
-          type: array
-          items:
-            $ref: "#/components/schemas/DocumentMetadata"
+          $ref: "#/components/schemas/Id"
       required:
         - id
-        - documents
-    RequestSignatureBody:
+
+    CreateSignatureRequestBody:
       type: object
       properties:
-        productId:
-          $ref: "#/components/schemas/ProductId"
-        fiscalCode:
-          $ref: "#/components/schemas/FiscalCode"
-        expiresAt:
+        dossier_id:
+          $ref: "#/components/schemas/Id"
+        signer_id:
+          $ref: "#/components/schemas/Id"
+        expires_at:
           $ref: "#/components/schemas/Timestamp"
       required:
-        - productId
-        - fiscalCode
+        - dossier_id
+        - signer_id
+
+    Document:
+      type: object
+      properties:
+        id:
+          $ref: "#/components/schemas/Id"
+        status:
+          type: string
+          enum:
+            - WAIT_FOR_UPLOAD
+            - WAIT_FOR_VALIDATION
+            - READY
+            - REJECTED
+        metadata:
+          $ref: "#/components/schemas/DocumentMetadata"
+        created_at:
+          $ref: "#/components/schemas/Timestamp"
+        updated_at:
+          $ref: "#/components/schemas/Timestamp"
+      required:
+        - id
+        - status
+        - metadata
+        - created_at
+        - updated_at
+
+    DocumentToBeUploaded:
+      allOf:
+        - $ref: "#/components/schemas/Document"
+        - type: object
+
+    DocumentToBeValidated:
+      allOf:
+        - $ref: "#/components/schemas/Document"
+        - type: object
+          properties:
+            uploaded_at:
+              $ref: "#/components/schemas/Timestamp"
+          required:
+            - uploaded_at
+
+    DocumentUploaded:
+      allOf:
+        - $ref: "#/components/schemas/Document"
+        - type: object
+          properties:
+            uploaded_at:
+              $ref: "#/components/schemas/Timestamp"
+            url:
+              type: string
+              format: uri
+          required:
+            - uploaded_at
+            - url
+
+    DocumentRejected:
+      allOf:
+        - $ref: "#/components/schemas/Document"
+        - type: object
+          properties:
+            uploaded_at:
+              $ref: "#/components/schemas/Timestamp"
+            rejected_at:
+              $ref: "#/components/schemas/Timestamp"
+            reject_reason:
+              type: string
+          required:
+            - uploaded_at
+            - rejected_at
+            - reject_reason
+
+    DocumentDetailView:
+      oneOf:
+        - $ref: "#/components/schemas/DocumentToBeUploaded"
+        - $ref: "#/components/schemas/DocumentToBeValidated"
+        - $ref: "#/components/schemas/DocumentUploaded"
+        - $ref: "#/components/schemas/DocumentRejected"
+
     SignatureRequestDetailView:
       type: object
       properties:
         id:
-          type: string
-          format: ulid
+          $ref: "#/components/schemas/Id"
         status:
           type: string
-        productId:
-          $ref: "#/components/schemas/ProductId"
-        expiresAt:
+          x-extensible-enum:
+            - DRAFT
+            - READY
+            - WAIT_FOR_SIGNATURE
+            - WAIT_FOR_QTSP
+            - SIGNED
+        dossier_id:
+          $ref: "#/components/schemas/Id"
+        signer_id:
+          $ref: "#/components/schemas/Id"
+        expires_at:
           $ref: "#/components/schemas/Timestamp"
         documents:
           type: array
           items:
-            $ref: "#/components/schemas/Document"
+            $ref: "#/components/schemas/DocumentDetailView"
+        created_at:
+          $ref: "#/components/schemas/Timestamp"
+        updated_at:
+          $ref: "#/components/schemas/Timestamp"
+        qr_code_url:
+          type: string
+          format: uri
       required:
         - id
-        - productId
+        - status
+        - dossier_id
+        - signer_id
+        - expires_at
         - documents
+        - created_at
+        - updated_at
+
+    UploadUrl:
+      type: string
+      format: uri
+
+    NotificationDetailView:
+      type: object
+      properties:
+        io_message_id:
+          type: string
+      required:
+        - io_message_id
