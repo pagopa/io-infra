@@ -52,18 +52,3 @@ stages:
               AZURE_SERVICE_CONNECTION_NAME: PROD-IO-SERVICE-CONN
               ENVIRONMENT: prod
               WORKINGDIR: "src/core"
-      - job: validate_sql_migration__devportal_servicedata
-        steps:
-          - task: AzureCLI@2
-            displayName: validate migration data on devportal-service-data
-            inputs:
-              azureSubscription: PROD-IO-SERVICE-CONN
-              scriptType: "bash"
-              scriptLocation: "inlineScript"
-              failOnStandardError: false
-              inlineScript: |
-                set -e
-                cd src/psql/selfcare/devportal-service-data
-                echo "Validating migrations"
-                ./flyway.sh validate PROD-IO db -ignorePendingMigrations=true && echo "Validation successful" || { echo "Validation failed"; exit 1; }
-                ./flyway.sh info PROD-IO db && echo "Info successful" || { echo "Info failed"; exit 1; }
