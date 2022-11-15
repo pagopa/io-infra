@@ -6,7 +6,7 @@ locals {
       FUNCTIONS_WORKER_PROCESS_COUNT = 4
       NODE_ENV                       = "production"
 
-      
+      APPINSIGHTS_INSTRUMENTATIONKEY = data.azurerm_application_insights.application_insights.instrumentation_key
 
       // Keepalive fields are all optionals
       FETCH_KEEPALIVE_ENABLED             = "true"
