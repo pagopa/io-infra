@@ -37,7 +37,7 @@ locals {
       DB_NAME         = "db"
       DB_SCHEMA       = "DeveloperPortalServiceData"
       DB_TABLE        = "services"
-      DB_USER         = format("%s@%s", data.azurerm_key_vault_secret.devportalservicedata_db_server_adm_username.value, format("%s.postgres.database.azure.com", format("%s-%s-db-postgresql", local.project, "devportalservicedata")))
+      DB_USER         = format("%s", data.azurerm_key_vault_secret.devportalservicedata_db_server_adm_username.value)
       DB_PASSWORD     = data.azurerm_key_vault_secret.devportalservicedata_db_server_adm_password.value
 
       WEBSITE_VNET_ROUTE_ALL = "1"
