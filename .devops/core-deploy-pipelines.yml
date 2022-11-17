@@ -10,16 +10,9 @@ parameters:
     values:
       - False
       - True
-  - name: "SQL_MIGRATION"
-    displayName: "Run on sql migration"
-    type: boolean
-    default: True
-    values:
-      - False
-      - True
 
 variables:
-  TIME_OUT: 10
+  TIME_OUT: 30
 
 pool:
   vmImage: "ubuntu-20.04"
