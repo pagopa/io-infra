@@ -80,7 +80,7 @@ locals {
 
       // Push notifications
       AZURE_NH_HUB_NAME                       = "io-p-ntf-common"
-      NOTIFICATIONS_QUEUE_NAME                = "push-notifications"
+      NOTIFICATIONS_QUEUE_NAME                = local.storage_account_notifications_queue_push_notifications
       NOTIFICATIONS_STORAGE_CONNECTION_STRING = data.azurerm_storage_account.notifications.primary_connection_string
 
       // Service Preferences Migration Queue
@@ -92,8 +92,8 @@ locals {
       EventsQueueName              = "events" # reference to https://github.com/pagopa/io-infra/blob/12a2f3bffa49dab481990fccc9f2a904004862ec/src/core/storage_apievents.tf#L7
 
       // Disable functions
-      #"AzureWebJobs.StoreSpidLogs.Disabled"            = "1"
-      #"AzureWebJobs.HandleNHNotificationCall.Disabled" = "1"
+      "AzureWebJobs.StoreSpidLogs.Disabled"            = "1"
+      "AzureWebJobs.HandleNHNotificationCall.Disabled" = "1"
 
       # Cashback welcome message
       IS_CASHBACK_ENABLED = "false"
@@ -105,16 +105,16 @@ locals {
       FF_NEW_USERS_EUCOVIDCERT_ENABLED       = "true"
       EUCOVIDCERT_PROFILE_CREATED_QUEUE_NAME = "eucovidcert-profile-created"
 
-      OPT_OUT_EMAIL_SWITCH_DATE = "1625781600"
-      FF_OPT_IN_EMAIL_ENABLED   = "true"
+      OPT_OUT_EMAIL_SWITCH_DATE = local.opt_out_email_switch_date
+      FF_OPT_IN_EMAIL_ENABLED   = local.ff_opt_in_email_enabled
 
       VISIBLE_SERVICE_BLOB_ID = "visible-services-national.json"
 
-      MAILUP_USERNAME      = data.azurerm_key_vault_secret.fn_app_MAILUP_USERNAME
-      MAILUP_SECRET        = data.azurerm_key_vault_secret.fn_app_MAILUP_SECRET
-      PUBLIC_API_KEY       = data.azurerm_key_vault_secret.fn_app_PUBLIC_API_KEY
-      SPID_LOGS_PUBLIC_KEY = data.azurerm_key_vault_secret.fn_app_SPID_LOGS_PUBLIC_KEY
-      AZURE_NH_ENDPOINT    = data.azurerm_key_vault_secret.fn_app_AZURE_NH_ENDPOINT
+      MAILUP_USERNAME      = data.azurerm_key_vault_secret.fn_app_MAILUP_USERNAME.value
+      MAILUP_SECRET        = data.azurerm_key_vault_secret.fn_app_MAILUP_SECRET.value
+      PUBLIC_API_KEY       = data.azurerm_key_vault_secret.fn_app_PUBLIC_API_KEY.value
+      SPID_LOGS_PUBLIC_KEY = data.azurerm_key_vault_secret.fn_app_SPID_LOGS_PUBLIC_KEY.value
+      AZURE_NH_ENDPOINT    = data.azurerm_key_vault_secret.fn_app_AZURE_NH_ENDPOINT.value
     }
     app_settings_1 = {
     }
@@ -182,6 +182,17 @@ module "app_function" {
   app_settings = merge(
     local.function_app.app_settings_common,
   )
+
+  internal_storage = {
+    "enable"                     = true,
+    "private_endpoint_subnet_id" = data.azurerm_subnet.private_endpoints_subnet.id,
+    "private_dns_zone_blob_ids"  = [data.azurerm_private_dns_zone.privatelink_blob_core_windows_net.id],
+    "private_dns_zone_queue_ids" = [data.azurerm_private_dns_zone.privatelink_queue_core_windows_net.id],
+    "private_dns_zone_table_ids" = [data.azurerm_private_dns_zone.privatelink_table_core_windows_net.id],
+    "queues"                     = [],
+    "containers"                 = [],
+    "blobs_retention_days"       = 1,
+  }
 
   subnet_id = module.app_snet[count.index].id
 
