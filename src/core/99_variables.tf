@@ -520,6 +520,12 @@ variable "cgn_legalbackup_enable_versioning" {
 #   description = "Container registry retention policy."
 # }
 
+# Function App 
+variable "app_count" {
+  type    = number
+  default = 2
+}
+
 # App Messages
 variable "app_messages_count" {
   type    = number
