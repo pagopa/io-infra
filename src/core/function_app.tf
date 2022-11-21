@@ -92,8 +92,8 @@ locals {
       EventsQueueName              = "events" # reference to https://github.com/pagopa/io-infra/blob/12a2f3bffa49dab481990fccc9f2a904004862ec/src/core/storage_apievents.tf#L7
 
       // Disable functions
-      "AzureWebJobs.StoreSpidLogs.Disabled"            = "1"
-      "AzureWebJobs.HandleNHNotificationCall.Disabled" = "1"
+      #"AzureWebJobs.StoreSpidLogs.Disabled"            = "1"
+      #"AzureWebJobs.HandleNHNotificationCall.Disabled" = "1"
 
       # Cashback welcome message
       IS_CASHBACK_ENABLED = "false"
