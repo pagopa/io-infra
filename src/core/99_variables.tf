@@ -187,6 +187,11 @@ variable "cidr_subnet_appbackendl2" {
   description = "App backend l1 address space."
 }
 
+variable "cidr_subnet_app" {
+  type        = list(string)
+  description = "App messages address space."
+}
+
 variable "cidr_subnet_appmessages" {
   type        = list(string)
   description = "App messages address space."
@@ -524,6 +529,24 @@ variable "cgn_legalbackup_enable_versioning" {
 variable "app_count" {
   type    = number
   default = 2
+}
+
+variable "app_function_kind" {
+  type        = string
+  description = "App service plan kind"
+  default     = null
+}
+
+variable "app_function_sku_tier" {
+  type        = string
+  description = "App service plan sku tier"
+  default     = null
+}
+
+variable "app_function_sku_size" {
+  type        = string
+  description = "App service plan sku size"
+  default     = null
 }
 
 # App Messages
