@@ -168,6 +168,7 @@ module "function_app" {
 
   os_type          = "linux"
   linux_fx_version = "NODE|14"
+  runtime_version  = "~4"
 
   always_on                                = "true"
   application_insights_instrumentation_key = data.azurerm_application_insights.application_insights.instrumentation_key
@@ -224,6 +225,7 @@ module "function_app_staging_slot" {
   os_type                                  = "linux"
   linux_fx_version                         = "NODE|14"
   always_on                                = "true"
+  runtime_version                          = "~4"
   application_insights_instrumentation_key = data.azurerm_application_insights.application_insights.instrumentation_key
 
   app_settings = merge(
