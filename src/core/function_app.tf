@@ -179,9 +179,7 @@ module "app_function" {
     maximum_elastic_worker_count = 0
   }
 
-  app_settings = merge(
-    local.function_app.app_settings_common,
-  )
+  app_settings = local.function_app.app_settings_common
 
   subnet_id = module.app_snet[count.index].id
 
@@ -215,9 +213,7 @@ module "app_function_staging_slot" {
   always_on                                = "true"
   application_insights_instrumentation_key = data.azurerm_application_insights.application_insights.instrumentation_key
 
-  app_settings = merge(
-    local.function_app.app_settings_common,
-  )
+  app_settings = local.function_app.app_settings_common
 
   subnet_id = module.app_snet[count.index].id
 
