@@ -77,10 +77,52 @@ module "mongdb_collection_reminder" {
     {
       keys   = ["_id"]
       unique = true
-    }
+    },
+    {
+      keys   = ["rptId"]
+      unique = false
+    },
+    {
+      keys   = ["shard"]
+      unique = false
+    },
+    {
+      keys   = ["readFlag"]
+      unique = false
+    },
+    {
+      keys   = ["paidFlag"]
+      unique = false
+    },
+    {
+      keys   = ["content_type"]
+      unique = false
+    },
+    {
+      keys   = ["maxReadMessageSend"]
+      unique = false
+    },
+    {
+      keys   = ["maxPaidMessageSend"]
+      unique = false
+    },
+    {
+      keys   = ["lastDateReminder"]
+      unique = false
+    },
+    {
+      keys   = ["dueDate"]
+      unique = false
+    },
+    {
+      keys   = ["content_paymentData_noticeNumber", "content_paymentData_payeeFiscalCode"]
+      unique = false
+    },
+    {
+      keys   = ["content_paymentData_dueDate"]
+      unique = false
+    },
   ]
-
-  lock_enable = true
 }
 
 #tfsec:ignore:AZU023
