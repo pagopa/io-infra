@@ -526,7 +526,7 @@ variable "cgn_legalbackup_enable_versioning" {
 # }
 
 # Function App
-variable "app_count" {
+variable "function_app_count" {
   type    = number
   default = 2
 }

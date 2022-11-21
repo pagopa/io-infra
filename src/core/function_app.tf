@@ -112,8 +112,8 @@ locals {
 
       MAILUP_USERNAME      = data.azurerm_key_vault_secret.fn_app_MAILUP_USERNAME.value
       MAILUP_SECRET        = data.azurerm_key_vault_secret.fn_app_MAILUP_SECRET.value
-      PUBLIC_API_KEY       = data.azurerm_key_vault_secret.fn_app_PUBLIC_API_KEY.value
-      SPID_LOGS_PUBLIC_KEY = data.azurerm_key_vault_secret.fn_app_SPID_LOGS_PUBLIC_KEY.value
+      PUBLIC_API_KEY       = trimspace(data.azurerm_key_vault_secret.fn_app_PUBLIC_API_KEY.value)
+      SPID_LOGS_PUBLIC_KEY = trimspace(data.azurerm_key_vault_secret.fn_app_SPID_LOGS_PUBLIC_KEY.value)
       AZURE_NH_ENDPOINT    = data.azurerm_key_vault_secret.fn_app_AZURE_NH_ENDPOINT.value
     }
     app_settings_1 = {
@@ -124,7 +124,7 @@ locals {
 }
 
 resource "azurerm_resource_group" "app_rg" {
-  count    = var.app_count
+  count    = var.function_app_count
   name     = format("%s-app-rg-%d", local.project, count.index + 1)
   location = var.location
 
@@ -133,7 +133,7 @@ resource "azurerm_resource_group" "app_rg" {
 
 # Subnet to host app function
 module "app_snet" {
-  count                                          = var.app_count
+  count                                          = var.function_app_count
   source                                         = "git::https://github.com/pagopa/azurerm.git//subnet?ref=v1.0.51"
   name                                           = format("%s-app-snet-%d", local.project, count.index + 1)
   address_prefixes                               = [var.cidr_subnet_app[count.index]]
@@ -158,7 +158,7 @@ module "app_snet" {
 
 #tfsec:ignore:azure-storage-queue-services-logging-enabled:exp:2022-05-01 # already ignored, maybe a bug in tfsec
 module "function_app" {
-  count  = var.app_count
+  count  = var.function_app_count
   source = "git::https://github.com/pagopa/azurerm.git//function_app?ref=v3.4.0"
 
   resource_group_name = azurerm_resource_group.app_rg[count.index].name
@@ -207,7 +207,7 @@ module "function_app" {
 }
 
 module "function_app_staging_slot" {
-  count  = var.app_count
+  count  = var.function_app_count
   source = "git::https://github.com/pagopa/azurerm.git//function_app_slot?ref=v3.4.0"
 
   name                = "staging"
@@ -244,7 +244,7 @@ module "function_app_staging_slot" {
 }
 
 resource "azurerm_monitor_autoscale_setting" "function_app" {
-  count               = var.app_count
+  count               = var.function_app_count
   name                = format("%s-autoscale", module.function_app[count.index].name)
   resource_group_name = azurerm_resource_group.app_rg[count.index].name
   location            = var.location
@@ -349,82 +349,32 @@ resource "azurerm_monitor_autoscale_setting" "function_app" {
   }
 }
 
-# ## Alerts
+## Alerts
 
-# resource "azurerm_monitor_metric_alert" "function_app_health_check" {
-#   name                = "${module.function_app.name}-health-check-failed"
-#   resource_group_name = azurerm_resource_group.assets_cdn_rg.name
-#   scopes              = [module.function_app.id]
-#   description         = "${module.function_app.name} health check failed"
-#   severity            = 1
-#   frequency           = "PT5M"
-#   auto_mitigate       = false
+resource "azurerm_monitor_metric_alert" "function_app_health_check" {
+  count = var.function_app_count
 
-#   criteria {
-#     metric_namespace = "Microsoft.Web/sites"
-#     metric_name      = "HealthCheckStatus"
-#     aggregation      = "Average"
-#     operator         = "LessThan"
-#     threshold        = 50
-#   }
+  name                = "${module.function_app[count.index].name}-health-check-failed"
+  resource_group_name = azurerm_resource_group.app_rg[count.index].name
+  scopes              = [module.function_app[count.index].id]
+  description         = "${module.function_app[count.index].name} health check failed"
+  severity            = 1
+  frequency           = "PT5M"
+  auto_mitigate       = false
 
-#   action {
-#     action_group_id = azurerm_monitor_action_group.email.id
-#   }
+  criteria {
+    metric_namespace = "Microsoft.Web/sites"
+    metric_name      = "HealthCheckStatus"
+    aggregation      = "Average"
+    operator         = "LessThan"
+    threshold        = 50
+  }
 
-#   action {
-#     action_group_id = azurerm_monitor_action_group.slack.id
-#   }
-# }
+  action {
+    action_group_id = azurerm_monitor_action_group.email.id
+  }
 
-# resource "azurerm_monitor_metric_alert" "function_app_http_server_errors" {
-#   name                = "${module.function_app.name}-http-server-errors"
-#   resource_group_name = azurerm_resource_group.assets_cdn_rg.name
-#   scopes              = [module.function_app.id]
-#   description         = "${module.function_app.name} http server errors"
-#   severity            = 1
-#   frequency           = "PT5M"
-#   auto_mitigate       = false
-
-#   criteria {
-#     metric_namespace = "Microsoft.Web/sites"
-#     metric_name      = "Http5xx"
-#     aggregation      = "Total"
-#     operator         = "GreaterThan"
-#     threshold        = 50
-#   }
-
-#   action {
-#     action_group_id = azurerm_monitor_action_group.email.id
-#   }
-
-#   action {
-#     action_group_id = azurerm_monitor_action_group.slack.id
-#   }
-# }
-
-# resource "azurerm_monitor_metric_alert" "function_app_response_time" {
-#   name                = "${module.function_app.name}-response-time"
-#   resource_group_name = azurerm_resource_group.assets_cdn_rg.name
-#   scopes              = [module.function_app.id]
-#   description         = "${module.function_app.name} response time is greater than 0.5s"
-#   severity            = 1
-#   frequency           = "PT5M"
-#   auto_mitigate       = false
-
-#   criteria {
-#     metric_namespace = "Microsoft.Web/sites"
-#     metric_name      = "HttpResponseTime"
-#     aggregation      = "Average"
-#     operator         = "GreaterThan"
-#     threshold        = 0.5
-#   }
-
-#   action {
-#     action_group_id = azurerm_monitor_action_group.email.id
-#   }
-
-#   action {
-#     action_group_id = azurerm_monitor_action_group.slack.id
-#   }
-# }
+  action {
+    action_group_id = azurerm_monitor_action_group.slack.id
+  }
+}
