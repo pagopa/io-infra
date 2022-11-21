@@ -30,6 +30,10 @@ locals {
       TARGETKAFKA_transactionalId     = "IO_ELT"
       TARGETKAFKA_topic               = "io-cosmosdb-services"
 
+      SERVICES_TOPIC_NAME              = "io-cosmosdb-services"
+      SERVICES_TOPIC_CONNECTION_STRING = module.event_hub.keys["io-cosmosdb-services.io-fn-elt"].primary_connection_string
+      SERVICES_LEASES_PREFIX           = "services-001"
+
       MESSAGES_TOPIC_NAME              = "pdnd-io-cosmosdb-messages"
       MESSAGES_TOPIC_CONNECTION_STRING = module.event_hub.keys["pdnd-io-cosmosdb-messages.io-fn-elt"].primary_connection_string
       MESSAGES_LEASES_PREFIX           = "messages-001"
