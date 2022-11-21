@@ -80,7 +80,7 @@ locals {
 
       // Push notifications
       AZURE_NH_HUB_NAME                       = "io-p-ntf-common"
-      NOTIFICATIONS_QUEUE_NAME                = local.storage_account_notifications_queue_push_notifications
+      NOTIFICATIONS_QUEUE_NAME                = "push-notifications"
       NOTIFICATIONS_STORAGE_CONNECTION_STRING = data.azurerm_storage_account.notifications.primary_connection_string
 
       // Service Preferences Migration Queue
@@ -105,8 +105,8 @@ locals {
       FF_NEW_USERS_EUCOVIDCERT_ENABLED       = "true"
       EUCOVIDCERT_PROFILE_CREATED_QUEUE_NAME = "eucovidcert-profile-created"
 
-      OPT_OUT_EMAIL_SWITCH_DATE = local.opt_out_email_switch_date
-      FF_OPT_IN_EMAIL_ENABLED   = local.ff_opt_in_email_enabled
+      OPT_OUT_EMAIL_SWITCH_DATE = "1625781600"
+      FF_OPT_IN_EMAIL_ENABLED   = "true"
 
       VISIBLE_SERVICE_BLOB_ID = "visible-services-national.json"
 
