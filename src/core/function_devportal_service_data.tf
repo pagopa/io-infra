@@ -280,8 +280,7 @@ module "devportalservicedata_db_server" {
 
   alerts_enabled = true
 
-  diagnostic_settings_enabled = true
-  log_analytics_workspace_id  = data.azurerm_log_analytics_workspace.log_analytics_workspace.id
+  diagnostic_settings_enabled = false
 
   tags = var.tags
 }
