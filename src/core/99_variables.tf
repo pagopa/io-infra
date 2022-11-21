@@ -549,6 +549,24 @@ variable "app_function_sku_size" {
   default     = null
 }
 
+variable "app_function_autoscale_minimum" {
+  type        = number
+  description = "The minimum number of instances for this resource."
+  default     = 1
+}
+
+variable "app_function_autoscale_maximum" {
+  type        = number
+  description = "The maximum number of instances for this resource."
+  default     = 30
+}
+
+variable "app_function_autoscale_default" {
+  type        = number
+  description = "The number of instances that are available for scaling if metrics are not available for evaluation."
+  default     = 1
+}
+
 # App Messages
 variable "app_messages_count" {
   type    = number
