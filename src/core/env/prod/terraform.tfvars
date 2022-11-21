@@ -149,12 +149,12 @@ ehns_metric_alerts = {
 }
 
 # Functions App
-app_function_kind              = "Linux"
-app_function_sku_tier          = "PremiumV3"
-app_function_sku_size          = "P1v3"
-app_function_autoscale_minimum = 1
-app_function_autoscale_maximum = 30
-app_function_autoscale_default = 10
+function_app_kind              = "Linux"
+function_app_sku_tier          = "PremiumV3"
+function_app_sku_size          = "P1v3"
+function_app_autoscale_minimum = 1
+function_app_autoscale_maximum = 30
+function_app_autoscale_default = 10
 
 # App Messages
 app_messages_function_always_on = true

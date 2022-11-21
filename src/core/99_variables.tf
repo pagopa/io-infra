@@ -525,43 +525,43 @@ variable "cgn_legalbackup_enable_versioning" {
 #   description = "Container registry retention policy."
 # }
 
-# Function App 
+# Function App
 variable "app_count" {
   type    = number
   default = 2
 }
 
-variable "app_function_kind" {
+variable "function_app_kind" {
   type        = string
   description = "App service plan kind"
   default     = null
 }
 
-variable "app_function_sku_tier" {
+variable "function_app_sku_tier" {
   type        = string
   description = "App service plan sku tier"
   default     = null
 }
 
-variable "app_function_sku_size" {
+variable "function_app_sku_size" {
   type        = string
   description = "App service plan sku size"
   default     = null
 }
 
-variable "app_function_autoscale_minimum" {
+variable "function_app_autoscale_minimum" {
   type        = number
   description = "The minimum number of instances for this resource."
   default     = 1
 }
 
-variable "app_function_autoscale_maximum" {
+variable "function_app_autoscale_maximum" {
   type        = number
   description = "The maximum number of instances for this resource."
   default     = 30
 }
 
-variable "app_function_autoscale_default" {
+variable "function_app_autoscale_default" {
   type        = number
   description = "The number of instances that are available for scaling if metrics are not available for evaluation."
   default     = 1
