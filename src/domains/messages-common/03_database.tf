@@ -123,8 +123,6 @@ module "mongdb_collection_reminder" {
       unique = false
     },
   ]
-
-  lock_enable = true
 }
 
 #tfsec:ignore:AZU023
