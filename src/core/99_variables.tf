@@ -184,12 +184,17 @@ variable "cidr_subnet_appbackendl1" {
 
 variable "cidr_subnet_appbackendl2" {
   type        = list(string)
-  description = "App backend l1 address space."
+  description = "App backend l2 address space."
 }
 
 variable "cidr_subnet_app" {
   type        = list(string)
-  description = "App messages address space."
+  description = "Function app address space."
+}
+
+variable "cidr_subnet_app_async" {
+  type        = list(string)
+  description = "Function app async address space."
 }
 
 variable "cidr_subnet_appmessages" {
