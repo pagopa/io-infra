@@ -23,7 +23,7 @@ resource "azurerm_resource_group" "app_async_rg" {
 module "app_async_snet" {
   source                                         = "git::https://github.com/pagopa/azurerm.git//subnet?ref=v1.0.51"
   name                                           = format("%s-app-async-snet-%d", local.project)
-  address_prefixes                               = [var.cidr_subnet_app_async]
+  address_prefixes                               = var.cidr_subnet_app_async
   resource_group_name                            = data.azurerm_resource_group.vnet_common_rg.name
   virtual_network_name                           = data.azurerm_virtual_network.vnet_common.name
   enforce_private_link_endpoint_network_policies = true
