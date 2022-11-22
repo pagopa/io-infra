@@ -99,6 +99,18 @@ variable "application_insights_name" {
   description = "The common Application Insights name"
   default     = ""
 }
+
+variable "monitor_resource_group_name" {
+  type        = string
+  description = "Monitor resource group name"
+}
+
+variable "log_analytics_workspace_resource_group_name" {
+  type        = string
+  description = "The name of the resource group in which the Log Analytics workspace is located in."
+}
+
+
 ##
 
 #

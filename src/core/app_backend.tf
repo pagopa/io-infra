@@ -1028,15 +1028,14 @@ module "app_backend_web_test_api" {
 
 data "azurerm_app_service" "app_backend_app_services" {
   count               = var.app_backend_count
-  name                = format("%s-app-appbackend-l${count.index + 1}", local.project)
+  name                = format("%s-app-appbackendl${count.index + 1}", local.project)
   resource_group_name = azurerm_resource_group.rg_linux.name
 }
-
 
 resource "azurerm_monitor_metric_alert" "too_many_error" {
   count = var.app_backend_count
 
-  name                = "[IO-COMMONS | ${[data.azurerm_app_service.app_backend_app_services[count.index].name]}] Too many errors"
+  name                = "[IO-COMMONS | ${data.azurerm_app_service.app_backend_app_services[count.index].name}] Too many errors"
   resource_group_name = azurerm_resource_group.rg_linux.name
   scopes              = [data.azurerm_app_service.app_backend_app_services[count.index].id]
   # TODO: add Runbook for checking errors
@@ -1060,10 +1059,6 @@ resource "azurerm_monitor_metric_alert" "too_many_error" {
   }
 
   action {
-    action_group_id = data.azurerm_monitor_action_group.prod_error_slack.id
-  }
-
-  action {
-    action_group_id = data.azurerm_monitor_action_group.email.id
+    action_group_id = azurerm_monitor_action_group.error_action_group.id
   }
 }

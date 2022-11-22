@@ -87,8 +87,10 @@ enable_iac_pipeline      = true
 ##
 
 ## Monitor
-log_analytics_workspace_name = "io-p-law-common"
-application_insights_name    = "io-p-ai-common"
+log_analytics_workspace_name                = "io-p-law-common"
+application_insights_name                   = "io-p-ai-common"
+monitor_resource_group_name                 = "io-p-rg-common"
+log_analytics_workspace_resource_group_name = "io-p-rg-common"
 ##
 
 ## Event hub
@@ -389,3 +391,5 @@ eventhubs = [
 
 # PN Service Id
 pn_service_id = "01G40DWQGKY5GRWSNM4303VNRP"
+
+
