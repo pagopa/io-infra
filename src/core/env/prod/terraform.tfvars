@@ -31,6 +31,7 @@ cidr_subnet_appgateway                     = ["10.0.13.0/24"]
 cidr_subnet_redis_apim                     = ["10.0.14.0/24"]
 cidr_subnet_apim                           = ["10.0.101.0/24"]
 cidr_subnet_app                            = ["10.0.132.0/26", "10.0.132.64/26"]
+cidr_subnet_app_async                      = ["10.0.132.128/26"]
 cidr_subnet_appmessages                    = ["10.0.127.0/24", "10.0.128.0/24"]
 cidr_subnet_fnmessagescqrs                 = ["10.0.129.0/24"]
 cidr_subnet_fncdnassets                    = ["10.0.131.0/24"]
@@ -155,6 +156,14 @@ function_app_sku_size          = "P1v3"
 function_app_autoscale_minimum = 1
 function_app_autoscale_maximum = 30
 function_app_autoscale_default = 10
+
+# Functions App Async
+function_app_async_kind              = "Linux"
+function_app_async_sku_tier          = "PremiumV3"
+function_app_async_sku_size          = "P1v3"
+function_app_async_autoscale_minimum = 1
+function_app_async_autoscale_maximum = 30
+function_app_async_autoscale_default = 10
 
 # App Messages
 app_messages_function_always_on = true
