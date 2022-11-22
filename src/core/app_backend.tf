@@ -1021,3 +1021,49 @@ module "app_backend_web_test_api" {
   ]
 
 }
+
+# -----------------------------------------------
+# Alerts
+# -----------------------------------------------
+
+data "azurerm_app_service" "app_backend_app_services" {
+  count               = var.app_backend_count
+  name                = format("%s-app-appbackend-l${count.index + 1}", local.project)
+  resource_group_name = azurerm_resource_group.rg_linux.name
+}
+
+
+resource "azurerm_monitor_metric_alert" "too_many_error" {
+  count = var.app_backend_count
+
+  name                = "[IO-COMMONS | ${[data.azurerm_app_service.app_backend_app_services[count.index].name]}] Too many errors"
+  resource_group_name = azurerm_resource_group.rg_linux.name
+  scopes              = [data.azurerm_app_service.app_backend_app_services[count.index].id]
+  # TODO: add Runbook for checking errors
+  description         = "Whenever the total http server errors exceeds a dynamic threashold. Runbook: TODO"
+  severity            = 0
+  window_size         = "PT5M"
+  frequency           = "PT5M"
+  auto_mitigate       = false
+
+  # Metric info
+  #https://learn.microsoft.com/en-us/azure/azure-monitor/essentials/metrics-supported#microsoftwebhostingenvironmentsmultirolepools
+  dynamic_criteria {
+    metric_namespace         = "Microsoft.Web/hostingEnvironments/multiRolePools"
+    metric_name              = "Http5xx"
+    aggregation              = "Total"
+    operator                 = "GreaterThan"
+    alert_sensitivity        = "Low"
+    evaluation_total_count   = 4
+    evaluation_failure_count = 4
+
+  }
+
+  action {
+    action_group_id = data.prod_error_slack_action_group.slack.id
+  }
+
+  action {
+    action_group_id = data.azurerm_monitor_action_group.email.id
+  }
+}
