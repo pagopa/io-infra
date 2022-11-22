@@ -22,7 +22,7 @@ data "azurerm_monitor_action_group" "email" {
   name                = local.monitor_action_group_email_name
 }
 
-data "azurerm_monitor_action_group" "prod_error_slack_action_group" {
+data "azurerm_monitor_action_group" "prod_error_slack" {
   resource_group_name = var.monitor_resource_group_name
   name                = local.monitor_action_group_prod_error_slack_name
 }

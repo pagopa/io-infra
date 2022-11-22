@@ -1060,7 +1060,7 @@ resource "azurerm_monitor_metric_alert" "too_many_error" {
   }
 
   action {
-    action_group_id = data.prod_error_slack_action_group.slack.id
+    action_group_id = data.azurerm_monitor_action_group.prod_error_slack.id
   }
 
   action {
