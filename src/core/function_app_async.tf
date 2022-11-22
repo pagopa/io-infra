@@ -236,8 +236,6 @@ resource "azurerm_monitor_autoscale_setting" "function_app_async" {
 ## Alerts
 
 resource "azurerm_monitor_metric_alert" "function_app_async_health_check" {
-  count = var.function_app_async_count
-
   name                = "${module.function_app_async.name}-health-check-failed"
   resource_group_name = azurerm_resource_group.app_async_rg.name
   scopes              = [module.function_app_async.id]
