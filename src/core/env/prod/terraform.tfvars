@@ -172,7 +172,7 @@ app_messages_function_kind              = "Linux"
 app_messages_function_sku_tier          = "PremiumV3"
 app_messages_function_sku_size          = "P1v3"
 app_messages_function_autoscale_minimum = 1
-app_messages_function_autoscale_maximum = 30
+app_messages_function_autoscale_maximum = 15
 app_messages_function_autoscale_default = 10
 
 app_backend_autoscale_default = 10

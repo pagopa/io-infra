@@ -137,7 +137,7 @@ module "app_messages_snet" {
 #tfsec:ignore:azure-storage-queue-services-logging-enabled:exp:2022-05-01 # already ignored, maybe a bug in tfsec
 module "app_messages_function" {
   count  = var.app_messages_count
-  source = "git::https://github.com/pagopa/azurerm.git//function_app?ref=v2.9.1"
+  source = "git::https://github.com/pagopa/azurerm.git//function_app?ref=v3.4.0"
 
   resource_group_name = azurerm_resource_group.app_messages_rg[count.index].name
   name                = format("%s-app-messages-fn-%d", local.project, count.index + 1)
@@ -145,6 +145,8 @@ module "app_messages_function" {
   health_check_path   = "api/v1/info"
 
   os_type                                  = "linux"
+  runtime_version                          = "~3"
+  linux_fx_version                         = "NODE|14"
   always_on                                = var.app_messages_function_always_on
   application_insights_instrumentation_key = data.azurerm_application_insights.application_insights.instrumentation_key
 
@@ -153,6 +155,14 @@ module "app_messages_function" {
     sku_tier                     = var.app_messages_function_sku_tier
     sku_size                     = var.app_messages_function_sku_size
     maximum_elastic_worker_count = 0
+  }
+
+  storage_account_info = {
+    account_kind                      = "StorageV2"
+    account_tier                      = "Standard"
+    account_replication_type          = "LRS"
+    access_tier                       = "Hot"
+    advanced_threat_protection_enable = true
   }
 
   app_settings = merge(
@@ -178,7 +188,7 @@ module "app_messages_function" {
 
 module "app_messages_function_staging_slot" {
   count  = var.app_messages_count
-  source = "git::https://github.com/pagopa/azurerm.git//function_app_slot?ref=v2.9.1"
+  source = "git::https://github.com/pagopa/azurerm.git//function_app_slot?ref=v3.4.0"
 
   name                = "staging"
   location            = var.location
@@ -192,6 +202,8 @@ module "app_messages_function_staging_slot" {
   storage_account_access_key = module.app_messages_function[count.index].storage_account.primary_access_key
 
   os_type                                  = "linux"
+  runtime_version                          = "~3"
+  linux_fx_version                         = "NODE|14"
   always_on                                = var.app_messages_function_always_on
   application_insights_instrumentation_key = data.azurerm_application_insights.application_insights.instrumentation_key
 
