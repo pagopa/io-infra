@@ -567,6 +567,43 @@ variable "function_app_autoscale_default" {
   default     = 1
 }
 
+# Function App Async
+variable "function_app_async_kind" {
+  type        = string
+  description = "App service plan kind"
+  default     = null
+}
+
+variable "function_app_async_sku_tier" {
+  type        = string
+  description = "App service plan sku tier"
+  default     = null
+}
+
+variable "function_app_async_sku_size" {
+  type        = string
+  description = "App service plan sku size"
+  default     = null
+}
+
+variable "function_app_async_autoscale_minimum" {
+  type        = number
+  description = "The minimum number of instances for this resource."
+  default     = 1
+}
+
+variable "function_app_async_autoscale_maximum" {
+  type        = number
+  description = "The maximum number of instances for this resource."
+  default     = 30
+}
+
+variable "function_app_async_autoscale_default" {
+  type        = number
+  description = "The number of instances that are available for scaling if metrics are not available for evaluation."
+  default     = 1
+}
+
 # App Messages
 variable "app_messages_count" {
   type    = number
