@@ -67,7 +67,9 @@ module "function_app_async" {
   }
 
   app_settings = merge(
-    local.function_app_async.app_settings_common,
+    local.function_app_async.app_settings_common, {
+      "AzureWebJobs.StoreSpidLogs.Disabled" = "1", # todo enable after deploy, set to 0
+    }
   )
 
   internal_storage = {
@@ -111,7 +113,9 @@ module "function_app_async_staging_slot" {
   application_insights_instrumentation_key = data.azurerm_application_insights.application_insights.instrumentation_key
 
   app_settings = merge(
-    local.function_app_async.app_settings_common,
+    local.function_app_async.app_settings_common, {
+      "AzureWebJobs.StoreSpidLogs.Disabled" = "1",
+    }
   )
 
   subnet_id = module.app_async_snet.id
@@ -231,7 +235,7 @@ resource "azurerm_monitor_autoscale_setting" "function_app_async" {
 
 ## Alerts
 
-resource "azurerm_monitor_metric_alert" "function_app_health_check" {
+resource "azurerm_monitor_metric_alert" "function_app_async_health_check" {
   count = var.function_app_async_count
 
   name                = "${module.function_app_async.name}-health-check-failed"
@@ -241,6 +245,7 @@ resource "azurerm_monitor_metric_alert" "function_app_health_check" {
   severity            = 1
   frequency           = "PT5M"
   auto_mitigate       = false
+  enabled             = false # todo enable after deploy
 
   criteria {
     metric_namespace = "Microsoft.Web/sites"
