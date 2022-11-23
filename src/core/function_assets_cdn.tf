@@ -55,7 +55,7 @@ module "function_assets_cdn_snet" {
 }
 
 module "function_assets_cdn" {
-  source = "git::https://github.com/pagopa/azurerm.git//function_app?ref=v3.2.1"
+  source = "git::https://github.com/pagopa/azurerm.git//function_app?ref=v3.4.0"
 
   resource_group_name = azurerm_resource_group.assets_cdn_rg.name
   name                = "${local.project}-assets-cdn-fn"
@@ -63,6 +63,8 @@ module "function_assets_cdn" {
   health_check_path   = "info"
 
   os_type                                  = "linux"
+  runtime_version                          = "~3"
+  linux_fx_version                         = "NODE|14"
   always_on                                = true
   application_insights_instrumentation_key = data.azurerm_application_insights.application_insights.instrumentation_key
 
@@ -82,7 +84,7 @@ module "function_assets_cdn" {
 
 module "function_assets_cdn_staging_slot" {
   count  = var.function_assets_cdn_sku_tier == "PremiumV3" ? 1 : 0
-  source = "git::https://github.com/pagopa/azurerm.git//function_app_slot?ref=v3.2.1"
+  source = "git::https://github.com/pagopa/azurerm.git//function_app_slot?ref=v3.4.0"
 
   name                = "staging"
   location            = var.location
@@ -96,6 +98,8 @@ module "function_assets_cdn_staging_slot" {
   storage_account_access_key = module.function_assets_cdn.storage_account.primary_access_key
 
   os_type                                  = "linux"
+  runtime_version                          = "~3"
+  linux_fx_version                         = "NODE|14"
   always_on                                = true
   application_insights_instrumentation_key = data.azurerm_application_insights.application_insights.instrumentation_key
 

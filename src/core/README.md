@@ -74,9 +74,9 @@
 | <a name="module_function_app_async"></a> [function\_app\_async](#module\_function\_app\_async) | git::https://github.com/pagopa/azurerm.git//function_app | v3.4.0 |
 | <a name="module_function_app_async_staging_slot"></a> [function\_app\_async\_staging\_slot](#module\_function\_app\_async\_staging\_slot) | git::https://github.com/pagopa/azurerm.git//function_app_slot | v3.4.0 |
 | <a name="module_function_app_staging_slot"></a> [function\_app\_staging\_slot](#module\_function\_app\_staging\_slot) | git::https://github.com/pagopa/azurerm.git//function_app_slot | v3.4.0 |
-| <a name="module_function_assets_cdn"></a> [function\_assets\_cdn](#module\_function\_assets\_cdn) | git::https://github.com/pagopa/azurerm.git//function_app | v3.2.1 |
+| <a name="module_function_assets_cdn"></a> [function\_assets\_cdn](#module\_function\_assets\_cdn) | git::https://github.com/pagopa/azurerm.git//function_app | v3.4.0 |
 | <a name="module_function_assets_cdn_snet"></a> [function\_assets\_cdn\_snet](#module\_function\_assets\_cdn\_snet) | git::https://github.com/pagopa/azurerm.git//subnet | v1.0.51 |
-| <a name="module_function_assets_cdn_staging_slot"></a> [function\_assets\_cdn\_staging\_slot](#module\_function\_assets\_cdn\_staging\_slot) | git::https://github.com/pagopa/azurerm.git//function_app_slot | v3.2.1 |
+| <a name="module_function_assets_cdn_staging_slot"></a> [function\_assets\_cdn\_staging\_slot](#module\_function\_assets\_cdn\_staging\_slot) | git::https://github.com/pagopa/azurerm.git//function_app_slot | v3.4.0 |
 | <a name="module_function_devportalservicedata"></a> [function\_devportalservicedata](#module\_function\_devportalservicedata) | git::https://github.com/pagopa/azurerm.git//function_app | v2.9.1 |
 | <a name="module_function_devportalservicedata_staging_slot"></a> [function\_devportalservicedata\_staging\_slot](#module\_function\_devportalservicedata\_staging\_slot) | git::https://github.com/pagopa/azurerm.git//function_app_slot | v2.9.1 |
 | <a name="module_function_elt"></a> [function\_elt](#module\_function\_elt) | git::https://github.com/pagopa/azurerm.git//function_app | v2.9.1 |
