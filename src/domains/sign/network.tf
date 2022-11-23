@@ -16,7 +16,7 @@ data "azurerm_subnet" "apim" {
 }
 
 module "io_sign_snet" {
-  source               = "git::https://github.com/pagopa/azurerm.git//subnet?ref=v2.13.1"
+  source               = "git::https://github.com/pagopa/azurerm.git//subnet?ref=v2.7.2"
   name                 = format("%s-snet", local.project)
   resource_group_name  = data.azurerm_virtual_network.vnet_common.resource_group_name
   virtual_network_name = data.azurerm_virtual_network.vnet_common.name
@@ -40,7 +40,7 @@ module "io_sign_snet" {
 }
 
 module "io_sign_user_snet" {
-  source               = "git::https://github.com/pagopa/azurerm.git//subnet?ref=v2.13.1"
+  source               = "git::https://github.com/pagopa/azurerm.git//subnet?ref=v2.7.2"
   name                 = format("%s-user-snet", local.project)
   resource_group_name  = data.azurerm_virtual_network.vnet_common.resource_group_name
   virtual_network_name = data.azurerm_virtual_network.vnet_common.name

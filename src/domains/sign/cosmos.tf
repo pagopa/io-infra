@@ -1,5 +1,5 @@
 module "cosmosdb_account" {
-  source                           = "git::https://github.com/pagopa/azurerm.git//cosmosdb_account?ref=v2.13.1"
+  source                           = "git::https://github.com/pagopa/azurerm.git//cosmosdb_account?ref=v2.15.1"
   name                             = format("%s-cosmos", local.project)
   location                         = azurerm_resource_group.data_rg.location
   resource_group_name              = azurerm_resource_group.data_rg.name

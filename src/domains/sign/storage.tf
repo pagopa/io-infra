@@ -1,5 +1,5 @@
 module "io_sign_storage" {
-  source                     = "git::https://github.com/pagopa/azurerm.git//storage_account?ref=v2.13.1"
+  source                     = "git::https://github.com/pagopa/azurerm.git//storage_account?ref=v2.18.0"
   name                       = replace(format("%s-st", local.project), "-", "")
   account_kind               = "StorageV2"
   account_tier               = "Standard"
