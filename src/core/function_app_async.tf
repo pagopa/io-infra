@@ -103,8 +103,9 @@ module "function_app_async_staging_slot" {
   app_service_plan_id = module.function_app_async.app_service_plan_id
   health_check_path   = "api/v1/info"
 
-  storage_account_name       = module.function_app_async.storage_account.name
-  storage_account_access_key = module.function_app_async.storage_account.primary_access_key
+  storage_account_name               = module.function_app_async.storage_account.name
+  storage_account_access_key         = module.function_app_async.storage_account.primary_access_key
+  internal_storage_connection_string = module.function_app_async.storage_account_internal_function.primary_connection_string
 
   os_type                                  = "linux"
   linux_fx_version                         = "NODE|14"
