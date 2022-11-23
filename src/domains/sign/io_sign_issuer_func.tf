@@ -5,7 +5,7 @@ locals {
 }
 
 module "io_sign_issuer_func" {
-  source    = "git::https://github.com/pagopa/azurerm.git//function_app?ref=v3.3.0"
+  source    = "git::https://github.com/pagopa/azurerm.git//function_app?ref=v3.3.1"
   name      = local.issuer_func_name
   subnet_id = module.io_sign_snet.id
 
@@ -18,10 +18,9 @@ module "io_sign_issuer_func" {
     maximum_elastic_worker_count = 1
   }
 
-  os_type           = "linux"
-  always_on         = true
-  linux_fx_version  = "NODE|16"
-  health_check_path = "api/v1/sign/info"
+  os_type          = "linux"
+  always_on        = true
+  linux_fx_version = "NODE|16"
 
   app_settings = {
     FUNCTIONS_WORKER_RUNTIME                        = "node"
@@ -37,9 +36,8 @@ module "io_sign_issuer_func" {
     IssuerUploadedBlobContainerName                 = azurerm_storage_container.uploaded_documents.name
     IssuerValidatedBlobContainerName                = azurerm_storage_container.validated_documents.name
     WaitingMessageQueueName                         = azurerm_storage_queue.waiting_message.name
-    IOApiBasePath                                   = "https://api.io.pagopa.it/api/v1/messages"
-    IOApiSubscriptionKey                            = module.key_vault_secrets.values["IOApiSubscriptionKey"].value
-    IOApiRequestTimeout                             = 10000
+    IoServicesApiBasePath                           = "https://api.io.pagopa.it/api/v1/messages"
+    IoServicesSubscriptionKey                       = module.key_vault_secrets.values["IOApiSubscriptionKey"].value
     PdvTokenizerApiBasePath                         = "https://api.tokenizer.pdv.pagopa.it/"
     PdvTokenizerApiKey                              = module.key_vault_secrets.values["TokenizerApiSubscriptionKey"].value
   }

@@ -5,7 +5,7 @@ locals {
 }
 
 module "io_sign_user_func" {
-  source    = "git::https://github.com/pagopa/azurerm.git//function_app?ref=v3.3.0"
+  source    = "git::https://github.com/pagopa/azurerm.git//function_app?ref=v3.3.1"
   name      = local.user_func_name
   subnet_id = module.io_sign_user_snet.id
 
@@ -18,10 +18,9 @@ module "io_sign_user_func" {
     maximum_elastic_worker_count = 1
   }
 
-  os_type           = "linux"
-  always_on         = true
-  linux_fx_version  = "NODE|16"
-  health_check_path = "api/v1/sign/info"
+  os_type          = "linux"
+  always_on        = true
+  linux_fx_version = "NODE|16"
 
   app_settings = {
     FUNCTIONS_WORKER_RUNTIME                        = "node"
