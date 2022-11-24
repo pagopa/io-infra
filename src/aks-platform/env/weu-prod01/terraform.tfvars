@@ -23,6 +23,8 @@ application_insights_name                   = "io-p-ai-common"
 
 ### Aks
 
+aks_kubernetes_version = "1.23.12"
+
 aks_sku_tier = "Paid"
 
 aks_system_node_pool = {
