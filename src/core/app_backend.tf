@@ -1033,7 +1033,7 @@ data "azurerm_app_service" "app_backend_app_services" {
 }
 
 resource "azurerm_monitor_metric_alert" "too_many_error" {
-  for_each = {for key, name in data.azurerm_app_service.app_backend_app_services: key => name }
+  for_each = { for key, name in data.azurerm_app_service.app_backend_app_services : key => name }
 
   name                = "[IO-COMMONS | ${each.value.name}] Too many errors"
   resource_group_name = azurerm_resource_group.rg_linux.name
