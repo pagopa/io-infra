@@ -68,7 +68,7 @@ module "function_app_async" {
 
   app_settings = merge(
     local.function_app_async.app_settings_common, {
-      "AzureWebJobs.StoreSpidLogs.Disabled" = "1", # todo enable after deploy, set to 0
+      "AzureWebJobs.StoreSpidLogs.Disabled" = "0",
     }
   )
 
@@ -244,7 +244,6 @@ resource "azurerm_monitor_metric_alert" "function_app_async_health_check" {
   severity            = 1
   frequency           = "PT5M"
   auto_mitigate       = false
-  enabled             = false # todo enable after deploy
 
   criteria {
     metric_namespace = "Microsoft.Web/sites"
