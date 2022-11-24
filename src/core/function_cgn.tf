@@ -33,7 +33,7 @@ data "azurerm_key_vault_secret" "fn_cgn_CGN_DATA_BACKUP_CONNECTION" {
 
 data "azurerm_storage_account" "iopstcgn" {
   name                = "iopstcgn"
-  resource_group_name = azurerm_resource_group.rg_internal.name
+  resource_group_name = data.azurerm_resource_group.rg_cgn.name
 }
 
 #
@@ -100,13 +100,6 @@ locals {
   }
 }
 
-resource "azurerm_resource_group" "cgn_rg" {
-  name     = format("%s-cgn-rg", local.project)
-  location = var.location
-
-  tags = var.tags
-}
-
 # Subnet to host app function
 module "cgn_snet" {
   source                                         = "git::https://github.com/pagopa/azurerm.git//subnet?ref=v1.0.51"
@@ -135,7 +128,7 @@ module "cgn_snet" {
 module "function_cgn" {
   source = "git::https://github.com/pagopa/azurerm.git//function_app?ref=v3.4.0"
 
-  resource_group_name = azurerm_resource_group.cgn_rg.name
+  resource_group_name = data.azurerm_resource_group.rg_cgn.name
   name                = format("%s-cgn-fn", local.project)
   location            = var.location
   health_check_path   = "api/v1/info"
@@ -187,7 +180,7 @@ module "function_cgn_staging_slot" {
 
   name                = "staging"
   location            = var.location
-  resource_group_name = azurerm_resource_group.cgn_rg.name
+  resource_group_name = data.azurerm_resource_group.rg_cgn.name
   function_app_name   = module.function_cgn.name
   function_app_id     = module.function_cgn.id
   app_service_plan_id = module.function_cgn.app_service_plan_id
@@ -222,7 +215,7 @@ module "function_cgn_staging_slot" {
 
 resource "azurerm_monitor_autoscale_setting" "function_cgn" {
   name                = format("%s-autoscale", module.function_cgn.name)
-  resource_group_name = azurerm_resource_group.cgn_rg.name
+  resource_group_name = data.azurerm_resource_group.rg_cgn.name
   location            = var.location
   target_resource_id  = module.function_cgn.app_service_plan_id
 
@@ -329,7 +322,7 @@ resource "azurerm_monitor_autoscale_setting" "function_cgn" {
 
 resource "azurerm_monitor_metric_alert" "function_cgn_health_check" {
   name                = "${module.function_cgn.name}-health-check-failed"
-  resource_group_name = azurerm_resource_group.cgn_rg.name
+  resource_group_name = data.azurerm_resource_group.rg_cgn.name
   scopes              = [module.function_cgn.id]
   description         = "${module.function_cgn.name} health check failed"
   severity            = 1
