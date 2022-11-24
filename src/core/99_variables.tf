@@ -471,10 +471,10 @@ variable "eucovidcert_alerts_enabled" {
 
 # app backend
 
-variable "app_backend_count" {
-  description = "App backend instances count"
-  type    = number
-  default = 2
+variable "app_backend_names" {
+  description = "App backend instance names"
+  type    = list(string)
+  default = ["appbackendl1", "appbackendl2", "appbackendli"]
 }
 
 variable "app_backend_plan_sku_tier" {

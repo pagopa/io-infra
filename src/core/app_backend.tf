@@ -1027,23 +1027,23 @@ module "app_backend_web_test_api" {
 # -----------------------------------------------
 
 data "azurerm_app_service" "app_backend_app_services" {
-  count               = var.app_backend_count
-  name                = format("%s-app-appbackendl${count.index + 1}", local.project)
+  for_each            = toset(var.app_backend_names)
+  name                = format("%s-app-${each.value}", local.project)
   resource_group_name = azurerm_resource_group.rg_linux.name
 }
 
 resource "azurerm_monitor_metric_alert" "too_many_error" {
-  count = var.app_backend_count
+  for_each = {for key, name in data.azurerm_app_service.app_backend_app_services: key => name }
 
-  name                = "[IO-COMMONS | ${data.azurerm_app_service.app_backend_app_services[count.index].name}] Too many errors"
+  name                = "[IO-COMMONS | ${each.value.name}] Too many errors"
   resource_group_name = azurerm_resource_group.rg_linux.name
-  scopes              = [data.azurerm_app_service.app_backend_app_services[count.index].id]
+  scopes              = [each.value.id]
   # TODO: add Runbook for checking errors
-  description         = "Whenever the total http server errors exceeds a dynamic threashold. Runbook: TODO"
-  severity            = 0
-  window_size         = "PT5M"
-  frequency           = "PT5M"
-  auto_mitigate       = false
+  description   = "Whenever the total http server errors exceeds a dynamic threashold. Runbook: TODO"
+  severity      = 0
+  window_size   = "PT5M"
+  frequency     = "PT5M"
+  auto_mitigate = false
 
   # Metric info
   #https://learn.microsoft.com/en-us/azure/azure-monitor/essentials/metrics-supported#microsoftwebhostingenvironmentsmultirolepools
