@@ -465,6 +465,7 @@
 | [azurerm_subnet.private_endpoints_subnet](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/subnet) | data source |
 | [azurerm_subscription.current](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/subscription) | data source |
 | [azurerm_virtual_network.vnet_common](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/virtual_network) | data source |
+| [azurerm_monitor_metric_alert.too_many_error](https://registry.terraform.io/providers/hashicorp/azurerm/2.98.0/docs/resources/monitor_metric_alert) | resource |
 
 ## Inputs
 
