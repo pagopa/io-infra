@@ -43,6 +43,7 @@ cidr_subnet_appbackendl2                   = ["10.0.153.0/24"]
 cidr_subnet_appbackendli                   = ["10.0.154.0/24"]
 cidr_subnet_azdoa                          = ["10.0.250.0/24"]
 cidr_subnet_dnsforwarder                   = ["10.0.252.8/29"]
+cidr_subnet_cgn                            = ["10.0.8.0/26"]
 
 app_gateway_api_certificate_name                                  = "api-io-pagopa-it"
 app_gateway_api_mtls_certificate_name                             = "api-mtls-io-pagopa-it"
@@ -164,6 +165,14 @@ function_app_async_sku_size          = "P1v3"
 function_app_async_autoscale_minimum = 1
 function_app_async_autoscale_maximum = 30
 function_app_async_autoscale_default = 10
+
+# Functions Cgn
+function_cgn_kind              = "Linux"
+function_cgn_sku_tier          = "PremiumV3"
+function_cgn_sku_size          = "P1v3"
+function_cgn_autoscale_minimum = 1
+function_cgn_autoscale_maximum = 30
+function_cgn_autoscale_default = 10
 
 # App Messages
 app_messages_function_always_on = true

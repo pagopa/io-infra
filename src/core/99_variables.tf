@@ -217,6 +217,11 @@ variable "cidr_subnet_appbackendli" {
   description = "App backend li address space."
 }
 
+variable "cidr_subnet_cgn" {
+  type        = list(string)
+  description = "Function cgn address space."
+}
+
 ## VPN ##
 variable "vpn_sku" {
   type        = string

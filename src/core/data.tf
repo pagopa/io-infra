@@ -16,6 +16,19 @@ data "azurerm_redis_cache" "redis_common" {
 }
 
 #
+# Function cgn
+#
+data "azurerm_redis_cache" "redis_cgn" {
+  name                = format("%s-redis-cgn-std", local.project)
+  resource_group_name = format("%s-rg-cgn", local.project)
+}
+
+data "azurerm_cosmosdb_account" "cosmos_cgn" {
+  name                = format("%s-cosmos-cgn", local.project)
+  resource_group_name = format("%s-rg-cgn", local.project)
+}
+
+#
 # Function apps resources
 #
 
