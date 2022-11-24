@@ -364,7 +364,6 @@ resource "azurerm_monitor_metric_alert" "function_app_health_check" {
   severity            = 1
   frequency           = "PT5M"
   auto_mitigate       = false
-  enabled             = false # todo enable after deploy
 
   criteria {
     metric_namespace = "Microsoft.Web/sites"
