@@ -11,9 +11,8 @@ locals {
     "51.144.56.176/28",
   ]
 
-  monitor_action_group_slack_name            = "SlackPagoPA"
-  monitor_action_group_email_name            = "EmailPagoPA"
-  monitor_action_group_prod_error_slack_name = "ioperror"
+  monitor_action_group_slack_name = "SlackPagoPA"
+  monitor_action_group_email_name = "EmailPagoPA"
 
   vnet_name                = "${local.product}-${var.location_short}-${var.instance}-vnet"
   vnet_resource_group_name = "${local.product}-${var.location_short}-${var.instance}-vnet-rg"
