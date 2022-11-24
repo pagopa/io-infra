@@ -2,27 +2,27 @@
 # SECRETS
 #
 
-data "azurerm_key_vault-secret" "fn_cgn_SERVICES_API_KEY" {
+data "azurerm_key_vault_secret" "fn_cgn_SERVICES_API_KEY" {
   name         = "apim-CGN-SERVICE-KEY"
   key_vault_id = data.azurerm_key_vault.common.id
 }
 
-data "azurerm_key_vault-secret" "fn_cgn_EYCA_API_USERNAME" {
+data "azurerm_key_vault_secret" "fn_cgn_EYCA_API_USERNAME" {
   name         = "funccgn-EYCA-API-USERNAME"
   key_vault_id = data.azurerm_key_vault.common.id
 }
 
-data "azurerm_key_vault-secret" "fn_cgn_EYCA_API_PASSWORD" {
+data "azurerm_key_vault_secret" "fn_cgn_EYCA_API_PASSWORD" {
   name         = "funccgn-EYCA-API-PASSWORD"
   key_vault_id = data.azurerm_key_vault.common.id
 }
 
-data "azurerm_key_vault-secret" "fn_cgn_CGN_SERVICE_ID" {
+data "azurerm_key_vault_secret" "fn_cgn_CGN_SERVICE_ID" {
   name         = "funccgn-CGN-SERVICE-ID"
   key_vault_id = data.azurerm_key_vault.common.id
 }
 
-data "azurerm_key_vault-secret" "fn_cgn_CGN_DATA_BACKUP_CONNECTION" {
+data "azurerm_key_vault_secret" "fn_cgn_CGN_DATA_BACKUP_CONNECTION" {
   name         = "cgn-legalbackup-storage-connection-string"
   key_vault_id = data.azurerm_key_vault.common.id
 }
@@ -54,7 +54,7 @@ locals {
       COSMOSDB_CGN_URI           = data.azurerm_cosmosdb_account.cosmos_cgn.endpoint
       COSMOSDB_CGN_KEY           = data.azurerm_cosmosdb_account.cosmos_cgn.primary_master_key
       COSMOSDB_CGN_DATABASE_NAME = "db"
-      COSMOSDB_CONNECTION_STRING = data.azurerm_cosmosdb_account.cosmos_cgn.primary_sql_connection_string
+      COSMOSDB_CONNECTION_STRING = format("AccountEndpoint=%s;AccountKey=%s;", data.azurerm_cosmosdb_account.cosmos_cgn.endpoint, data.azurerm_cosmosdb_account.cosmos_cgn.primary_master_key)
 
       // Keepalive fields are all optionals
       FETCH_KEEPALIVE_ENABLED             = "true"
