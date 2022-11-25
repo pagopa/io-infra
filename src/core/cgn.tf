@@ -1,4 +1,4 @@
-data "azurerm_resource_group" "cgn" {
+data "azurerm_resource_group" "rg_cgn" {
   name = format("%s-rg-cgn", local.project)
 }
 
@@ -15,8 +15,8 @@ module "redis_cgn_snet" {
 module "redis_cgn" {
   source                = "git::https://github.com/pagopa/azurerm.git//redis_cache?ref=v2.0.26"
   name                  = format("%s-redis-cgn-std", local.project)
-  resource_group_name   = data.azurerm_resource_group.cgn.name
-  location              = data.azurerm_resource_group.cgn.location
+  resource_group_name   = data.azurerm_resource_group.rg_cgn.name
+  location              = data.azurerm_resource_group.rg_cgn.location
   capacity              = 1
   family                = "C"
   sku_name              = "Standard"
@@ -71,7 +71,7 @@ module "cosmos_cgn" {
   name     = format("%s-cosmos-cgn", local.project)
   location = var.location
 
-  resource_group_name = data.azurerm_resource_group.cgn.name
+  resource_group_name = data.azurerm_resource_group.rg_cgn.name
   offer_type          = "Standard"
   kind                = "GlobalDocumentDB"
 
@@ -121,7 +121,7 @@ module "cosmos_cgn" {
 module "cgn_cosmos_db" {
   source              = "git::https://github.com/pagopa/azurerm.git//cosmosdb_sql_database?ref=v2.1.15"
   name                = "db"
-  resource_group_name = data.azurerm_resource_group.cgn.name
+  resource_group_name = data.azurerm_resource_group.rg_cgn.name
   account_name        = module.cosmos_cgn.name
 }
 
@@ -150,7 +150,7 @@ module "cgn_cosmosdb_containers" {
   for_each = { for c in local.cgn_cosmosdb_containers : c.name => c }
 
   name                = each.value.name
-  resource_group_name = data.azurerm_resource_group.cgn.name
+  resource_group_name = data.azurerm_resource_group.rg_cgn.name
   account_name        = module.cosmos_cgn.name
   database_name       = module.cgn_cosmos_db.name
   partition_key_path  = each.value.partition_key_path
@@ -173,8 +173,8 @@ module "cgn_legalbackup_storage" {
   versioning_name            = "versioning"
   enable_versioning          = var.cgn_legalbackup_enable_versioning
   account_replication_type   = var.cgn_legalbackup_account_replication_type
-  resource_group_name        = data.azurerm_resource_group.cgn.name
-  location                   = data.azurerm_resource_group.cgn.location
+  resource_group_name        = data.azurerm_resource_group.rg_cgn.name
+  location                   = data.azurerm_resource_group.rg_cgn.location
   advanced_threat_protection = false
   allow_blob_public_access   = false
 
@@ -216,8 +216,8 @@ resource "azurerm_storage_container" "cgn_legalbackup_container" {
 
 resource "azurerm_private_endpoint" "cgn_legalbackup_storage" {
   name                = format("%s-cgn-legalbackup-storage", local.project)
-  location            = data.azurerm_resource_group.cgn.location
-  resource_group_name = data.azurerm_resource_group.cgn.name
+  location            = data.azurerm_resource_group.rg_cgn.location
+  resource_group_name = data.azurerm_resource_group.rg_cgn.name
   subnet_id           = data.azurerm_subnet.private_endpoints_subnet.id
 
   private_service_connection {
@@ -303,4 +303,50 @@ resource "azurerm_role_assignment" "service_contributor" {
   scope                = module.apim.id
   role_definition_name = "API Management Service Contributor"
   principal_id         = data.azurerm_key_vault_secret.cgn_onboarding_backend_identity.value
+}
+
+resource "azurerm_resource_group" "cgn_be_rg" {
+  name     = format("%s-cgn-be-rg", local.project)
+  location = var.location
+}
+
+resource "azurerm_app_service_plan" "cgn_common" {
+  name                = format("%s-plan-cgn-common", local.project)
+  location            = azurerm_resource_group.cgn_be_rg.location
+  resource_group_name = azurerm_resource_group.cgn_be_rg.name
+
+  kind     = var.plan_cgn_kind
+  reserved = true
+
+  sku {
+    tier     = var.plan_cgn_sku_tier
+    size     = var.plan_cgn_sku_size
+    capacity = var.plan_cgn_sku_capacity
+  }
+
+  tags = var.tags
+}
+
+# Subnet to host app function
+module "cgn_snet" {
+  source                                         = "git::https://github.com/pagopa/azurerm.git//subnet?ref=v1.0.51"
+  name                                           = format("%s-cgn-snet", local.project)
+  address_prefixes                               = var.cidr_subnet_cgn
+  resource_group_name                            = data.azurerm_resource_group.vnet_common_rg.name
+  virtual_network_name                           = data.azurerm_virtual_network.vnet_common.name
+  enforce_private_link_endpoint_network_policies = true
+
+  service_endpoints = [
+    "Microsoft.Web",
+    "Microsoft.AzureCosmosDB",
+    "Microsoft.Storage",
+  ]
+
+  delegation = {
+    name = "default"
+    service_delegation = {
+      name    = "Microsoft.Web/serverFarms"
+      actions = ["Microsoft.Network/virtualNetworks/subnets/action"]
+    }
+  }
 }

@@ -749,22 +749,28 @@ variable "pn_service_id" {
 }
 
 # Function CGN
-variable "function_cgn_kind" {
+variable "plan_cgn_kind" {
   type        = string
   description = "App service plan kind"
   default     = null
 }
 
-variable "function_cgn_sku_tier" {
+variable "plan_cgn_sku_tier" {
   type        = string
   description = "App service plan sku tier"
   default     = null
 }
 
-variable "function_cgn_sku_size" {
+variable "plan_cgn_sku_size" {
   type        = string
   description = "App service plan sku size"
   default     = null
+}
+
+variable "plan_cgn_sku_capacity" {
+  description = "Selfcare app plan capacity"
+  type        = number
+  default     = 1
 }
 
 variable "function_cgn_autoscale_minimum" {

@@ -18,9 +18,6 @@ data "azurerm_redis_cache" "redis_common" {
 #
 # Function cgn
 #
-data "azurerm_resource_group" "rg_cgn" {
-  name = format("%s-rg-cgn", local.project)
-}
 
 data "azurerm_redis_cache" "redis_cgn" {
   name                = format("%s-redis-cgn-std", local.project)
