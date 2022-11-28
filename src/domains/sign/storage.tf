@@ -81,3 +81,8 @@ resource "azurerm_storage_queue" "waiting_message" {
   name                 = "waiting-message"
   storage_account_name = module.io_sign_storage.name
 }
+
+resource "azurerm_storage_queue" "waiting_for_documents_to_fill" {
+  name                 = "waiting-for-documents-to-fill"
+  storage_account_name = module.io_sign_storage.name
+}
