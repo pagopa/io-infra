@@ -1028,14 +1028,14 @@ module "app_backend_web_test_api" {
 
 data "azurerm_app_service" "app_backend_app_services" {
   for_each            = toset(var.app_backend_names)
-  name                = format("%s-app-${each.value}", local.project)
+  name                = "${local.project}-app-${each.value}"
   resource_group_name = azurerm_resource_group.rg_linux.name
 }
 
-resource "azurerm_monitor_metric_alert" "too_many_error" {
+resource "azurerm_monitor_metric_alert" "too_many_http_5xx" {
   for_each = { for key, name in data.azurerm_app_service.app_backend_app_services : key => name }
 
-  name                = "[IO-COMMONS | ${each.value.name}] Too many errors"
+  name                = "[IO-COMMONS | ${each.value.name}] Too many 5xx"
   resource_group_name = azurerm_resource_group.rg_linux.name
   scopes              = [each.value.id]
   # TODO: add Runbook for checking errors

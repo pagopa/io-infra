@@ -474,7 +474,7 @@ variable "eucovidcert_alerts_enabled" {
 variable "app_backend_names" {
   description = "App backend instance names"
   type        = list(string)
-  default     = ["appbackendl1", "appbackendl2", "appbackendli"]
+  default     = []
 }
 
 variable "app_backend_plan_sku_tier" {

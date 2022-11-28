@@ -393,3 +393,4 @@ eventhubs = [
 pn_service_id = "01G40DWQGKY5GRWSNM4303VNRP"
 
 
+app_backend_names = ["appbackendl1", "appbackendl2", "appbackendli"]
