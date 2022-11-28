@@ -118,7 +118,11 @@ module "function_cgn" {
   application_insights_instrumentation_key = data.azurerm_application_insights.application_insights.instrumentation_key
 
   app_settings = merge(
-    local.function_cgn.app_settings_common,
+    local.function_cgn.app_settings_common, {
+      "AzureWebJobs.ContinueEycaActivation.Disabled" = "0",
+      "AzureWebJobs.UpdateExpiredCgn.Disabled"       = "0",
+      "AzureWebJobs.UpdateExpiredEyca.Disabled"      = "0"
+    }
   )
 
   internal_storage = {
@@ -168,7 +172,11 @@ module "function_cgn_staging_slot" {
   application_insights_instrumentation_key = data.azurerm_application_insights.application_insights.instrumentation_key
 
   app_settings = merge(
-    local.function_cgn.app_settings_common,
+    local.function_cgn.app_settings_common, {
+      "AzureWebJobs.ContinueEycaActivation.Disabled" = "1",
+      "AzureWebJobs.UpdateExpiredCgn.Disabled"       = "1",
+      "AzureWebJobs.UpdateExpiredEyca.Disabled"      = "1"
+    }
   )
 
   subnet_id = module.cgn_snet.id
