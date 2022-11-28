@@ -30,26 +30,6 @@ data "azurerm_cosmosdb_account" "cosmos_cgn" {
 }
 
 #
-# Function apps resources
-#
-
-data "azurerm_function_app" "fnapp_app1" {
-  name                = format("%s-fn3-app1", local.project)
-  resource_group_name = format("%s-rg-functions_app1", local.project)
-}
-
-data "azurerm_function_app" "fnapp_app2" {
-  name                = format("%s-fn3-app2", local.project)
-  resource_group_name = format("%s-rg-internal", local.project)
-}
-
-data "azurerm_function_app" "fnapp_appasync" {
-  name                = format("%s-fn3-appasync", local.project)
-  resource_group_name = format("%s-rg-internal", local.project)
-}
-
-
-#
 # Function services resources
 #
 
