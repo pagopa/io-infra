@@ -768,7 +768,7 @@ variable "plan_cgn_sku_size" {
 }
 
 variable "plan_cgn_sku_capacity" {
-  description = "Selfcare app plan capacity"
+  description = "Cgn app plan capacity"
   type        = number
   default     = 1
 }
