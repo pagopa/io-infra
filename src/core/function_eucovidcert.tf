@@ -169,9 +169,9 @@ module "function_eucovidcert" {
   source = "git::https://github.com/pagopa/azurerm.git//function_app?ref=v3.4.0"
 
   resource_group_name = azurerm_resource_group.eucovidcert_rg.name
-  name                = format("%s-fn3-eucovidcert", local.project)
+  name                = format("%s-eucovidcert-fn-%d", local.project)
   location            = var.location
-  health_check_path   = "api/v1/info"
+  health_check_path   = "/api/v1/info"
 
   os_type          = "linux"
   linux_fx_version = "NODE|14"
@@ -217,7 +217,7 @@ module "function_eucovidcert_staging_slot" {
   function_app_name   = module.function_eucovidcert.name
   function_app_id     = module.function_eucovidcert.id
   app_service_plan_id = module.function_eucovidcert.app_service_plan_id
-  health_check_path   = "api/v1/info"
+  health_check_path   = "/api/v1/info"
 
   storage_account_name       = module.function_eucovidcert.storage_account.name
   storage_account_access_key = module.function_eucovidcert.storage_account.primary_access_key
