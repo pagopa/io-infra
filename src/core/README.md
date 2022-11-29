@@ -191,6 +191,7 @@
 | [azurerm_monitor_autoscale_setting.function_app](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/monitor_autoscale_setting) | resource |
 | [azurerm_monitor_autoscale_setting.function_app_async](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/monitor_autoscale_setting) | resource |
 | [azurerm_monitor_autoscale_setting.function_assets_cdn](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/monitor_autoscale_setting) | resource |
+| [azurerm_monitor_autoscale_setting.function_cgn](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/monitor_autoscale_setting) | resource |
 | [azurerm_monitor_autoscale_setting.function_messages_cqrs](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/monitor_autoscale_setting) | resource |
 | [azurerm_monitor_metric_alert.function_app_async_health_check](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/monitor_metric_alert) | resource |
 | [azurerm_monitor_metric_alert.function_app_health_check](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/monitor_metric_alert) | resource |
@@ -301,9 +302,6 @@
 | [azurerm_eventhub_authorization_rule.io-p-messages-weu-prod01-evh-ns_messages_io-fn-messages-cqrs](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/eventhub_authorization_rule) | data source |
 | [azurerm_eventhub_authorization_rule.io-p-payments-weu-prod01-evh-ns_payment-updates_io-fn-messages-cqrs](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/eventhub_authorization_rule) | data source |
 | [azurerm_function_app.fnapp_admin](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/function_app) | data source |
-| [azurerm_function_app.fnapp_app1](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/function_app) | data source |
-| [azurerm_function_app.fnapp_app2](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/function_app) | data source |
-| [azurerm_function_app.fnapp_appasync](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/function_app) | data source |
 | [azurerm_function_app.fnapp_bonus](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/function_app) | data source |
 | [azurerm_function_app.fnapp_cgn](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/function_app) | data source |
 | [azurerm_function_app.fnapp_eucovidcert](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/function_app) | data source |
@@ -538,7 +536,7 @@
 | <a name="input_lock_enable"></a> [lock\_enable](#input\_lock\_enable) | Apply locks to block accedentaly deletions. | `bool` | `false` | no |
 | <a name="input_log_analytics_workspace_name"></a> [log\_analytics\_workspace\_name](#input\_log\_analytics\_workspace\_name) | The common Log Analytics Workspace name | `string` | `""` | no |
 | <a name="input_plan_cgn_kind"></a> [plan\_cgn\_kind](#input\_plan\_cgn\_kind) | App service plan kind | `string` | `null` | no |
-| <a name="input_plan_cgn_sku_capacity"></a> [plan\_cgn\_sku\_capacity](#input\_plan\_cgn\_sku\_capacity) | Selfcare app plan capacity | `number` | `1` | no |
+| <a name="input_plan_cgn_sku_capacity"></a> [plan\_cgn\_sku\_capacity](#input\_plan\_cgn\_sku\_capacity) | Cgn app plan capacity | `number` | `1` | no |
 | <a name="input_plan_cgn_sku_size"></a> [plan\_cgn\_sku\_size](#input\_plan\_cgn\_sku\_size) | App service plan sku size | `string` | `null` | no |
 | <a name="input_plan_cgn_sku_tier"></a> [plan\_cgn\_sku\_tier](#input\_plan\_cgn\_sku\_tier) | App service plan sku tier | `string` | `null` | no |
 | <a name="input_pn_service_id"></a> [pn\_service\_id](#input\_pn\_service\_id) | The Service ID of PN service | `string` | `"01G40DWQGKY5GRWSNM4303VNRP"` | no |
