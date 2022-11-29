@@ -68,7 +68,7 @@ resource "azurerm_resource_group" "eucovidcert_rg" {
 module "eucovidcert_storage_account" {
   source = "git::https://github.com/pagopa/azurerm.git//storage_account?ref=v3.4.0"
 
-  name                       = "${replace(local.project, "-", "")}fn3eucovidcertst" # imported legacy name
+  name                       = "${replace(local.project, "-", "")}steucovidcert"
   account_kind               = "StorageV2"
   account_tier               = "Standard"
   access_tier                = "Hot"
