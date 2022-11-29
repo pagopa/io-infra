@@ -108,7 +108,7 @@ module "function_cgn" {
   name                = format("%s-cgn-fn", local.project)
   location            = var.location
   app_service_plan_id = azurerm_app_service_plan.cgn_common.id
-  health_check_path   = "api/v1/info"
+  health_check_path   = "/api/v1/cgn/info"
 
   os_type          = "linux"
   linux_fx_version = "NODE|14"
@@ -158,7 +158,7 @@ module "function_cgn_staging_slot" {
   function_app_name   = module.function_cgn.name
   function_app_id     = module.function_cgn.id
   app_service_plan_id = azurerm_app_service_plan.cgn_common.id
-  health_check_path   = "api/v1/info"
+  health_check_path   = "/api/v1/cgn/info"
 
   storage_account_name       = module.function_cgn.storage_account.name
   storage_account_access_key = module.function_cgn.storage_account.primary_access_key
