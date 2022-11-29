@@ -4,13 +4,13 @@ domain    = "sign"
 location  = "westeurope"
 
 io_sign_issuer_func = {
-  version  = "io-func-sign-issuer-85f3331e"
+  version  = "io-func-sign-issuer-093e0ebd"
   sku_tier = "Basic"
   sku_size = "B1"
 }
 
 io_sign_user_func = {
-  version  = "io-func-sign-user-85f3331"
+  version  = "io-func-sign-user-093e0ebd"
   sku_tier = "Basic"
   sku_size = "B1"
 }
