@@ -36,10 +36,9 @@ module "io_sign_user_func" {
     IssuerUploadedBlobContainerName                 = azurerm_storage_container.uploaded_documents.name
     IssuerValidatedBlobContainerName                = azurerm_storage_container.validated_documents.name
     WaitingMessageQueueName                         = azurerm_storage_queue.waiting_message.name
-    IOApiBasePath                                   = "https://api.io.pagopa.it/api/v1/messages"
-    IOApiSubscriptionKey                            = module.key_vault_secrets.values["IOApiSubscriptionKey"].value
-    IOApiRequestTimeout                             = 10000
-    PdvTokenizerApiBasePath                         = "https://api.tokenizer.pdv.pagopa.it/"
+    IoServicesApiBasePath                           = "https://api.io.italia.it"
+    IoServicesSubscriptionKey                       = module.key_vault_secrets.values["IOApiSubscriptionKey"].value
+    PdvTokenizerApiBasePath                         = "https://api.uat.tokenizer.pdv.pagopa.it"
     PdvTokenizerApiKey                              = module.key_vault_secrets.values["TokenizerApiSubscriptionKey"].value
   }
 
