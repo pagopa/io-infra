@@ -50,7 +50,7 @@ locals {
       API_KEY                     = data.azurerm_key_vault_secret.app_backend_API_KEY.value
       BONUS_API_URL               = "http://${data.azurerm_function_app.fnapp_bonus.default_hostname}/api/v1"
       BONUS_API_KEY               = data.azurerm_key_vault_secret.app_backend_BONUS_API_KEY.value
-      CGN_API_URL                 = "http://${data.azurerm_function_app.fnapp_cgn.default_hostname}"
+      CGN_API_URL                 = "https://${module.function_cgn.default_hostname}"
       CGN_API_KEY                 = data.azurerm_key_vault_secret.app_backend_CGN_API_KEY.value
       CGN_OPERATOR_SEARCH_API_URL = "https://cgnonboardingportal-p-op.azurewebsites.net" # prod subscription
       CGN_OPERATOR_SEARCH_API_KEY = data.azurerm_key_vault_secret.app_backend_CGN_OPERATOR_SEARCH_API_KEY_PROD.value
