@@ -132,3 +132,76 @@ resource "azurerm_key_vault_secret" "mongodb_connection_string_reminder" {
   content_type = "full connection string"
   key_vault_id = module.key_vault.id
 }
+
+#
+# Reminder PostgreSQL
+#
+
+// db admin user credentials
+data "azurerm_key_vault_secret" "reminder_postgresql_db_server_adm_username" {
+  name         = "${module.reminder_postgresql_db_server.name}-DB-ADM-USERNAME"
+  key_vault_id = data.azurerm_key_vault.common.id
+}
+data "azurerm_key_vault_secret" "reminder_postgresql_db_server_adm_password" {
+  name         = "${module.reminder_postgresql_db_server.name}-DB-ADM-PASSWORD"
+  key_vault_id = data.azurerm_key_vault.common.id
+}
+
+
+## ?????? 
+module "reminder_postgresql_db_server_snet" {
+  source                                         = "git::https://github.com/pagopa/azurerm.git//subnet?ref=v1.0.51"
+  name                                           = format("%s-snet", module.reminder_postgresql_db_server.name)
+  address_prefixes                               = var.cidr_subnet_devportalservicedata_db_server
+  resource_group_name                            = data.azurerm_virtual_network.vnet_common.name
+  virtual_network_name                           = data.azurerm_virtual_network.vnet_common.resource_group_name
+  enforce_private_link_endpoint_network_policies = true
+  service_endpoints                              = ["Microsoft.Sql"]
+
+  delegation = {
+    name = "default"
+    service_delegation = {
+      name    = "Microsoft.DBforPostgreSQL/flexibleServers"
+      actions = ["Microsoft.Network/virtualNetworks/subnets/join/action"]
+    }
+  }
+}
+
+module "reminder_postgresql_db_server" {
+  source = "git::https://github.com/pagopa/azurerm.git//postgres_flexible_server?ref=v2.19.1"
+
+  name                = "${local.product}-${var.domain}-reminder-postgresql"
+  location             = azurerm_resource_group.data_rg.location
+  resource_group_name  = azurerm_resource_group.data_rg.name
+
+  administrator_login    = data.azurerm_key_vault_secret.reminder_postgresql_db_server_adm_username.value
+  administrator_password = data.azurerm_key_vault_secret.reminder_postgresql_db_server_adm_password.value
+
+  sku_name                     = "Standard_B1ms"
+  db_version                   = 13
+  geo_redundant_backup_enabled = false
+
+  private_endpoint_enabled = true
+  private_dns_zone_id      = data.azurerm_private_dns_zone.privatelink_postgres_azure_com.id
+  delegated_subnet_id      = data.azurerm_subnet.private_endpoints_subnet.id
+
+  high_availability_enabled = false
+
+  pgbouncer_enabled = true
+
+  storage_mb = 1024 # 1GB
+
+  alerts_enabled = true
+
+  diagnostic_settings_enabled = false
+
+  tags = var.tags
+}
+
+resource "azurerm_postgresql_flexible_server_database" "reminder_postgresql_db" {
+  name       = "db"
+  server_id  = module.reminder_postgresql_db_server.id
+  charset    = "UTF8"
+  collation  = "en_US.utf8"
+  depends_on = [module.reminder_postgresql_db_server]
+}
