@@ -282,7 +282,7 @@ data "azurerm_key_vault_secret" "app_backend_CGN_API_KEY" {
 }
 
 data "azurerm_key_vault_secret" "app_backend_IO_SIGN_API_KEY" {
-  name         = "funccgn-KEY-APPBACKEND"
+  name         = "funciosign-KEY-APPBACKEND"
   key_vault_id = data.azurerm_key_vault.common.id
 }
 
