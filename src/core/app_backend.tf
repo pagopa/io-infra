@@ -52,6 +52,8 @@ locals {
       BONUS_API_KEY               = data.azurerm_key_vault_secret.app_backend_BONUS_API_KEY.value
       CGN_API_URL                 = "https://${module.function_cgn.default_hostname}"
       CGN_API_KEY                 = data.azurerm_key_vault_secret.app_backend_CGN_API_KEY.value
+      IO_SIGN_API_URL             = "https://io-p-sign-user-func.azurewebsites.net"
+      IO_SIGN_API_KEY             = data.azurerm_key_vault_secret.app_backend_IO_SIGN_API_KEY.value
       CGN_OPERATOR_SEARCH_API_URL = "https://cgnonboardingportal-p-op.azurewebsites.net" # prod subscription
       CGN_OPERATOR_SEARCH_API_KEY = data.azurerm_key_vault_secret.app_backend_CGN_OPERATOR_SEARCH_API_KEY_PROD.value
       EUCOVIDCERT_API_URL         = "http://${data.azurerm_function_app.fnapp_eucovidcert.default_hostname}/api/v1"
@@ -65,6 +67,7 @@ locals {
       CGN_OPERATOR_SEARCH_API_BASE_PATH = "/api/v1/cgn/operator-search"
       EUCOVIDCERT_API_BASE_PATH         = "/api/v1/eucovidcert"
       MIT_VOUCHER_API_BASE_PATH         = "/api/v1/mitvoucher/auth"
+      IO_SIGN_API_BASE_PATH             = "/api/v1/sign"
 
       // REDIS
       REDIS_URL      = data.azurerm_redis_cache.redis_common.hostname
@@ -127,6 +130,7 @@ locals {
       FF_EUCOVIDCERT_ENABLED    = 1
       FF_MIT_VOUCHER_ENABLED    = 1
       FF_USER_AGE_LIMIT_ENABLED = 1
+      FF_IO_SIGN_ENABLED        = 1
 
       FF_MESSAGES_TYPE               = "prod" # possible values are: beta, canary, prod, none
       FF_MESSAGES_BETA_TESTER_LIST   = data.azurerm_key_vault_secret.app_backend_APP_MESSAGES_BETA_FISCAL_CODES.value
@@ -273,6 +277,11 @@ data "azurerm_key_vault_secret" "app_backend_BONUS_API_KEY" {
 }
 
 data "azurerm_key_vault_secret" "app_backend_CGN_API_KEY" {
+  name         = "funccgn-KEY-APPBACKEND"
+  key_vault_id = data.azurerm_key_vault.common.id
+}
+
+data "azurerm_key_vault_secret" "app_backend_IO_SIGN_API_KEY" {
   name         = "funccgn-KEY-APPBACKEND"
   key_vault_id = data.azurerm_key_vault.common.id
 }
