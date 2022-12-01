@@ -3,7 +3,7 @@ resource "azurerm_resource_group" "shared_rg" {
   location = var.location
 }
 
-resource "azurerm_service_plan" "shared_plan_1" {
+resource "azurerm_app_service_plan" "shared_plan_1" {
   name                = format("%s-plan-shared-common-1", local.project)
   location            = azurerm_resource_group.shared_rg.location
   resource_group_name = azurerm_resource_group.shared_rg.name
