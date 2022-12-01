@@ -709,19 +709,19 @@ variable "function_app_async_autoscale_default" {
 
 # Function Admin
 
-variable "function_admin_async_kind" {
+variable "function_admin_kind" {
   type        = string
   description = "App service plan kind"
   default     = null
 }
 
-variable "function_admin_async_sku_tier" {
+variable "function_admin_sku_tier" {
   type        = string
   description = "App service plan sku tier"
   default     = null
 }
 
-variable "function_admin_async_sku_size" {
+variable "function_admin_sku_size" {
   type        = string
   description = "App service plan sku size"
   default     = null

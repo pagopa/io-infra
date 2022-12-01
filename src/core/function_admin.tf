@@ -195,9 +195,9 @@ module "function_admin" {
   application_insights_instrumentation_key = data.azurerm_application_insights.application_insights.instrumentation_key
 
   app_service_plan_info = {
-    kind                         = var.function_admin_async_kind
-    sku_tier                     = var.function_admin_async_sku_tier
-    sku_size                     = var.function_admin_async_sku_size
+    kind                         = var.function_admin_kind
+    sku_tier                     = var.function_admin_sku_tier
+    sku_size                     = var.function_admin_sku_size
     maximum_elastic_worker_count = 0
   }
 
