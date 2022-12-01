@@ -184,7 +184,7 @@ module "reminder_postgresql_db_server" {
 
   high_availability_enabled = false
 
-  pgbouncer_enabled = true
+  pgbouncer_enabled = false
 
   storage_mb = 32768 # 1GB
 
