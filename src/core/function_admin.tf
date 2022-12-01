@@ -99,7 +99,7 @@ locals {
       AZURE_APIM_HOST           = local.apim_hostname_api_internal
       AZURE_APIM_RESOURCE_GROUP = "io-p-rg-internal"
 
-      MESSAGE_CONTAINER_NAME = local.message-content-container-name
+      MESSAGE_CONTAINER_NAME = local.message_content_container_name
 
       UserDataArchiveStorageConnection = data.azurerm_storage_account.userdatadownload.primary_connection_string
       USER_DATA_CONTAINER_NAME         = "user-data-download"

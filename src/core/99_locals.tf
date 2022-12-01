@@ -49,5 +49,5 @@ locals {
   }
 
   # MESSAGES
-  message-content-container-name = "message-content"
+  message_content_container_name = "message-content"
 }
