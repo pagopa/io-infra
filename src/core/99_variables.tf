@@ -222,6 +222,11 @@ variable "cidr_subnet_cgn" {
   description = "Function cgn address space."
 }
 
+variable "cidr_subnet_shared" {
+  type        = list(string)
+  description = "Function cgn address space."
+}
+
 ## VPN ##
 variable "vpn_sku" {
   type        = string
@@ -786,6 +791,49 @@ variable "function_cgn_autoscale_maximum" {
 }
 
 variable "function_cgn_autoscale_default" {
+  type        = number
+  description = "The number of instances that are available for scaling if metrics are not available for evaluation."
+  default     = 1
+}
+
+# Shared functions
+variable "plan_shared_kind" {
+  type        = string
+  description = "App service plan kind"
+  default     = null
+}
+
+variable "plan_shared_sku_tier" {
+  type        = string
+  description = "App service plan sku tier"
+  default     = null
+}
+
+variable "plan_shared_sku_size" {
+  type        = string
+  description = "App service plan sku size"
+  default     = null
+}
+
+variable "plan_shared_sku_capacity" {
+  description = "Shared functions app plan capacity"
+  type        = number
+  default     = 1
+}
+
+variable "function_public_autoscale_minimum" {
+  type        = number
+  description = "The minimum number of instances for this resource."
+  default     = 1
+}
+
+variable "function_public_autoscale_maximum" {
+  type        = number
+  description = "The maximum number of instances for this resource."
+  default     = 3
+}
+
+variable "function_public_autoscale_default" {
   type        = number
   description = "The number of instances that are available for scaling if metrics are not available for evaluation."
   default     = 1
