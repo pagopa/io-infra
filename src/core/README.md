@@ -89,6 +89,8 @@
 | <a name="module_function_messages_cqrs_staging_slot"></a> [function\_messages\_cqrs\_staging\_slot](#module\_function\_messages\_cqrs\_staging\_slot) | git::https://github.com/pagopa/azurerm.git//function_app_slot | v2.9.1 |
 | <a name="module_function_pblevtdispatcher"></a> [function\_pblevtdispatcher](#module\_function\_pblevtdispatcher) | git::https://github.com/pagopa/azurerm.git//function_app | v2.9.1 |
 | <a name="module_function_pblevtdispatcher_snetout"></a> [function\_pblevtdispatcher\_snetout](#module\_function\_pblevtdispatcher\_snetout) | git::https://github.com/pagopa/azurerm.git//subnet | v1.0.60 |
+| <a name="module_function_public"></a> [function\_public](#module\_function\_public) | git::https://github.com/pagopa/azurerm.git//function_app | v3.4.0 |
+| <a name="module_function_public_staging_slot"></a> [function\_public\_staging\_slot](#module\_function\_public\_staging\_slot) | git::https://github.com/pagopa/azurerm.git//function_app_slot | v3.4.0 |
 | <a name="module_function_services_cache"></a> [function\_services\_cache](#module\_function\_services\_cache) | git::https://github.com/pagopa/azurerm.git//function_app | v3.2.5 |
 | <a name="module_function_subscriptionmigrations"></a> [function\_subscriptionmigrations](#module\_function\_subscriptionmigrations) | git::https://github.com/pagopa/azurerm.git//function_app | v2.9.1 |
 | <a name="module_function_subscriptionmigrations_staging_slot"></a> [function\_subscriptionmigrations\_staging\_slot](#module\_function\_subscriptionmigrations\_staging\_slot) | git::https://github.com/pagopa/azurerm.git//function_app_slot | v2.9.1 |
@@ -100,6 +102,7 @@
 | <a name="module_selfcare_be_common_snet"></a> [selfcare\_be\_common\_snet](#module\_selfcare\_be\_common\_snet) | git::https://github.com/pagopa/azurerm.git//subnet | v1.0.51 |
 | <a name="module_selfcare_cdn"></a> [selfcare\_cdn](#module\_selfcare\_cdn) | git::https://github.com/pagopa/azurerm.git//cdn | v2.7.0 |
 | <a name="module_selfcare_jwt"></a> [selfcare\_jwt](#module\_selfcare\_jwt) | git::https://github.com/pagopa/azurerm.git//jwt_keys | v2.18.9 |
+| <a name="module_shared_snet"></a> [shared\_snet](#module\_shared\_snet) | git::https://github.com/pagopa/azurerm.git//subnet | v1.0.51 |
 | <a name="module_storage_account_elt"></a> [storage\_account\_elt](#module\_storage\_account\_elt) | git::https://github.com/pagopa/azurerm.git//storage_account | v2.7.0 |
 | <a name="module_storage_account_pblevtdispatcher"></a> [storage\_account\_pblevtdispatcher](#module\_storage\_account\_pblevtdispatcher) | git::https://github.com/pagopa/azurerm.git//storage_account | v2.7.0 |
 | <a name="module_subscriptionmigrations_db_server"></a> [subscriptionmigrations\_db\_server](#module\_subscriptionmigrations\_db\_server) | git::https://github.com/pagopa/azurerm.git//postgresql_server | v2.1.20 |
@@ -193,12 +196,14 @@
 | [azurerm_monitor_autoscale_setting.function_assets_cdn](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/monitor_autoscale_setting) | resource |
 | [azurerm_monitor_autoscale_setting.function_cgn](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/monitor_autoscale_setting) | resource |
 | [azurerm_monitor_autoscale_setting.function_messages_cqrs](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/monitor_autoscale_setting) | resource |
+| [azurerm_monitor_autoscale_setting.function_public](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/monitor_autoscale_setting) | resource |
 | [azurerm_monitor_metric_alert.function_app_async_health_check](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/monitor_metric_alert) | resource |
 | [azurerm_monitor_metric_alert.function_app_health_check](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/monitor_metric_alert) | resource |
 | [azurerm_monitor_metric_alert.function_assets_health_check](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/monitor_metric_alert) | resource |
 | [azurerm_monitor_metric_alert.function_assets_http_server_errors](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/monitor_metric_alert) | resource |
 | [azurerm_monitor_metric_alert.function_assets_response_time](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/monitor_metric_alert) | resource |
 | [azurerm_monitor_metric_alert.function_cgn_health_check](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/monitor_metric_alert) | resource |
+| [azurerm_monitor_metric_alert.function_public_health_check](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/monitor_metric_alert) | resource |
 | [azurerm_monitor_scheduled_query_rules_alert.eucovidcert_availability_getcertificate](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/monitor_scheduled_query_rules_alert) | resource |
 | [azurerm_postgresql_database.selfcare_subscriptionmigrations_db](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/postgresql_database) | resource |
 | [azurerm_postgresql_flexible_server_database.devportalservicedata_db](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/postgresql_flexible_server_database) | resource |
@@ -269,10 +274,12 @@
 | [azurerm_resource_group.sec_rg](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/resource_group) | resource |
 | [azurerm_resource_group.selfcare_be_rg](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/resource_group) | resource |
 | [azurerm_resource_group.selfcare_fe_rg](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/resource_group) | resource |
+| [azurerm_resource_group.shared_rg](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/resource_group) | resource |
 | [azurerm_resource_group.weu_beta_vnet_rg](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/resource_group) | resource |
 | [azurerm_resource_group.weu_prod01_vnet_rg](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/resource_group) | resource |
 | [azurerm_resource_group.weu_prod02_vnet_rg](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/resource_group) | resource |
 | [azurerm_role_assignment.service_contributor](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/role_assignment) | resource |
+| [azurerm_service_plan.shared_plan_1](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/service_plan) | resource |
 | [azurerm_storage_container.cgn_legalbackup_container](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/storage_container) | resource |
 | [azurerm_storage_container.container_messages_report_step1](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/storage_container) | resource |
 | [azurerm_storage_container.container_messages_report_step_final](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/storage_container) | resource |
@@ -416,6 +423,7 @@
 | [azurerm_storage_account.iopstapi](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/storage_account) | data source |
 | [azurerm_storage_account.iopstapp](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/storage_account) | data source |
 | [azurerm_storage_account.iopstcgn](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/storage_account) | data source |
+| [azurerm_storage_account.iopstfn3public](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/storage_account) | data source |
 | [azurerm_storage_account.logs](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/storage_account) | data source |
 | [azurerm_storage_account.notifications](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/storage_account) | data source |
 | [azurerm_storage_account.storage_apievents](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/storage_account) | data source |
@@ -481,6 +489,7 @@
 | <a name="input_cidr_subnet_fnpblevtdispatcher"></a> [cidr\_subnet\_fnpblevtdispatcher](#input\_cidr\_subnet\_fnpblevtdispatcher) | function-publiceventdispatcher network address space. | `list(string)` | n/a | yes |
 | <a name="input_cidr_subnet_redis_apim"></a> [cidr\_subnet\_redis\_apim](#input\_cidr\_subnet\_redis\_apim) | Redis network address space. | `list(string)` | `[]` | no |
 | <a name="input_cidr_subnet_selfcare_be"></a> [cidr\_subnet\_selfcare\_be](#input\_cidr\_subnet\_selfcare\_be) | Selfcare IO frontend storage address space. | `list(string)` | n/a | yes |
+| <a name="input_cidr_subnet_shared"></a> [cidr\_subnet\_shared](#input\_cidr\_subnet\_shared) | Function cgn address space. | `list(string)` | n/a | yes |
 | <a name="input_cidr_subnet_vpn"></a> [cidr\_subnet\_vpn](#input\_cidr\_subnet\_vpn) | VPN network address space. | `list(string)` | n/a | yes |
 | <a name="input_cidr_weu_beta_vnet"></a> [cidr\_weu\_beta\_vnet](#input\_cidr\_weu\_beta\_vnet) | Beta Virtual network cidr. | `list(string)` | n/a | yes |
 | <a name="input_cidr_weu_prod01_vnet"></a> [cidr\_weu\_prod01\_vnet](#input\_cidr\_weu\_prod01\_vnet) | Prod01 Virtual network cidr. | `list(string)` | n/a | yes |
@@ -532,6 +541,9 @@
 | <a name="input_function_messages_cqrs_kind"></a> [function\_messages\_cqrs\_kind](#input\_function\_messages\_cqrs\_kind) | App service plan kind | `string` | `null` | no |
 | <a name="input_function_messages_cqrs_sku_size"></a> [function\_messages\_cqrs\_sku\_size](#input\_function\_messages\_cqrs\_sku\_size) | App service plan sku size | `string` | `null` | no |
 | <a name="input_function_messages_cqrs_sku_tier"></a> [function\_messages\_cqrs\_sku\_tier](#input\_function\_messages\_cqrs\_sku\_tier) | App service plan sku tier | `string` | `null` | no |
+| <a name="input_function_public_autoscale_default"></a> [function\_public\_autoscale\_default](#input\_function\_public\_autoscale\_default) | The number of instances that are available for scaling if metrics are not available for evaluation. | `number` | `1` | no |
+| <a name="input_function_public_autoscale_maximum"></a> [function\_public\_autoscale\_maximum](#input\_function\_public\_autoscale\_maximum) | The maximum number of instances for this resource. | `number` | `3` | no |
+| <a name="input_function_public_autoscale_minimum"></a> [function\_public\_autoscale\_minimum](#input\_function\_public\_autoscale\_minimum) | The minimum number of instances for this resource. | `number` | `1` | no |
 | <a name="input_location"></a> [location](#input\_location) | n/a | `string` | `"westeurope"` | no |
 | <a name="input_lock_enable"></a> [lock\_enable](#input\_lock\_enable) | Apply locks to block accedentaly deletions. | `bool` | `false` | no |
 | <a name="input_log_analytics_workspace_name"></a> [log\_analytics\_workspace\_name](#input\_log\_analytics\_workspace\_name) | The common Log Analytics Workspace name | `string` | `""` | no |
@@ -539,6 +551,10 @@
 | <a name="input_plan_cgn_sku_capacity"></a> [plan\_cgn\_sku\_capacity](#input\_plan\_cgn\_sku\_capacity) | Cgn app plan capacity | `number` | `1` | no |
 | <a name="input_plan_cgn_sku_size"></a> [plan\_cgn\_sku\_size](#input\_plan\_cgn\_sku\_size) | App service plan sku size | `string` | `null` | no |
 | <a name="input_plan_cgn_sku_tier"></a> [plan\_cgn\_sku\_tier](#input\_plan\_cgn\_sku\_tier) | App service plan sku tier | `string` | `null` | no |
+| <a name="input_plan_shared_kind"></a> [plan\_shared\_kind](#input\_plan\_shared\_kind) | App service plan kind | `string` | `null` | no |
+| <a name="input_plan_shared_sku_capacity"></a> [plan\_shared\_sku\_capacity](#input\_plan\_shared\_sku\_capacity) | Shared functions app plan capacity | `number` | `1` | no |
+| <a name="input_plan_shared_sku_size"></a> [plan\_shared\_sku\_size](#input\_plan\_shared\_sku\_size) | App service plan sku size | `string` | `null` | no |
+| <a name="input_plan_shared_sku_tier"></a> [plan\_shared\_sku\_tier](#input\_plan\_shared\_sku\_tier) | App service plan sku tier | `string` | `null` | no |
 | <a name="input_pn_service_id"></a> [pn\_service\_id](#input\_pn\_service\_id) | The Service ID of PN service | `string` | `"01G40DWQGKY5GRWSNM4303VNRP"` | no |
 | <a name="input_prefix"></a> [prefix](#input\_prefix) | n/a | `string` | `"io"` | no |
 | <a name="input_redis_apim_capacity"></a> [redis\_apim\_capacity](#input\_redis\_apim\_capacity) | # Redis cache | `number` | `1` | no |
