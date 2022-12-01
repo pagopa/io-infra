@@ -42,8 +42,9 @@ module "io_sign_user_func" {
     PdvTokenizerApiKey                              = module.key_vault_secrets.values["TokenizerApiSubscriptionKey"].value
   }
 
-  allowed_subnets = [module.io_sign_user_snet.id]
-  allowed_ips     = local.app_insights_ips_west_europe
+  # TODO SFEQS-1191 Allow function access from VPN
+  #allowed_subnets = [module.io_sign_user_snet.id]
+  #allowed_ips     = local.app_insights_ips_west_europe
 
   runtime_version                          = "~4"
   application_insights_instrumentation_key = data.azurerm_application_insights.application_insights.instrumentation_key
