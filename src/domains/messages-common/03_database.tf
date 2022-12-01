@@ -139,7 +139,7 @@ resource "azurerm_key_vault_secret" "mongodb_connection_string_reminder" {
 // db admin user credentials
 data "azurerm_key_vault_secret" "reminder_postgresql_db_server_adm_username" {
   name         = "${local.product}-${var.domain}-DB-ADM-USERNAME"
-  key_vault_id = data.azurerm_key_vault.common.id
+  key_vault_id = module.key_vault.id
 }
 data "azurerm_key_vault_secret" "reminder_postgresql_db_server_adm_password" {
   name         = "${local.product}-${var.domain}-DB-ADM-PASSWORD"
