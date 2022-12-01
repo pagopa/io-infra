@@ -86,9 +86,9 @@ locals {
       WEBSITE_DNS_SERVER     = "168.63.129.16"
       WEBSITE_VNET_ROUTE_ALL = "1"
 
-      COSMOSDB_NAME = "db"
-      COSMOSDB_URI  = data.azurerm_cosmosdb_account.cosmos_api.endpoint
-      COSMOSDB_KEY  = data.azurerm_cosmosdb_account.cosmos_api.primary_master_key
+      COSMOSDB_NAME              = "db"
+      COSMOSDB_URI               = data.azurerm_cosmosdb_account.cosmos_api.endpoint
+      COSMOSDB_KEY               = data.azurerm_cosmosdb_account.cosmos_api.primary_master_key
       COSMOSDB_CONNECTION_STRING = format("AccountEndpoint=%s;AccountKey=%s;", data.azurerm_cosmosdb_account.cosmos_api.endpoint, data.azurerm_cosmosdb_account.cosmos_api.primary_master_key)
 
       StorageConnection = data.azurerm_storage_account.api.primary_connection_string
@@ -141,8 +141,8 @@ locals {
       SESSION_API_KEY = data.azurerm_key_vault_secret.app_backend_PRE_SHARED_KEY.value
 
       __DISABLED__SENDGRID_API_KEY = data.azurerm_key_vault_secret.common_SENDGRID_APIKEY.value
-      MAILUP_USERNAME      = data.azurerm_key_vault_secret.common_MAILUP_USERNAME.value
-      MAILUP_SECRET        = data.azurerm_key_vault_secret.common_MAILUP_SECRET.value
+      MAILUP_USERNAME              = data.azurerm_key_vault_secret.common_MAILUP_USERNAME.value
+      MAILUP_SECRET                = data.azurerm_key_vault_secret.common_MAILUP_SECRET.value
     }
   }
 }
@@ -204,9 +204,9 @@ module "function_admin" {
   app_settings = merge(
     local.function_admin.app_settings_common, {
       # TODO: All of this can be removed?
-      "AzureWebJobs.UpdateVisibleServicesCache.Disabled" = "1"
+      "AzureWebJobs.UpdateVisibleServicesCache.Disabled"             = "1"
       "AzureWebJobs.UpdateVisibleServicesCacheOrchestrator.Disabled" = "1"
-      "AzureWebJobs.UpdateVisibleServicesCacheActivity.Disabled" = "1"
+      "AzureWebJobs.UpdateVisibleServicesCacheActivity.Disabled"     = "1"
     }
   )
 
@@ -224,7 +224,7 @@ module "function_admin" {
   subnet_id = module.admin_snet.id
 
   allowed_subnets = [
-    module.admin_snet.id
+    module.admin_snet.id,
     module.apim_snet.id,
   ]
 
@@ -254,9 +254,9 @@ module "function_admin_staging_slot" {
 
   app_settings = merge(
     local.function_admin.app_settings_common, {
-      "AzureWebJobs.UpdateVisibleServicesCache.Disabled" = "1"
+      "AzureWebJobs.UpdateVisibleServicesCache.Disabled"             = "1"
       "AzureWebJobs.UpdateVisibleServicesCacheOrchestrator.Disabled" = "1"
-      "AzureWebJobs.UpdateVisibleServicesCacheActivity.Disabled" = "1"
+      "AzureWebJobs.UpdateVisibleServicesCacheActivity.Disabled"     = "1"
       # Disabled CosmosDB Trigger Activity on slot
       "AzureWebJobs.UserDataProcessingTrigger.Disabled" = "1",
     }
