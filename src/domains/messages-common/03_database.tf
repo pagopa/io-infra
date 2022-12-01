@@ -138,11 +138,11 @@ resource "azurerm_key_vault_secret" "mongodb_connection_string_reminder" {
 #
 // db admin user credentials
 data "azurerm_key_vault_secret" "reminder_postgresql_db_server_adm_username" {
-  name         = "${module.reminder_postgresql_db_server.name}-DB-ADM-USERNAME"
+  name         = "${local.product}-${var.domain}-DB-ADM-USERNAME"
   key_vault_id = data.azurerm_key_vault.common.id
 }
 data "azurerm_key_vault_secret" "reminder_postgresql_db_server_adm_password" {
-  name         = "${module.reminder_postgresql_db_server.name}-DB-ADM-PASSWORD"
+  name         = "${local.product}-${var.domain}-DB-ADM-PASSWORD"
   key_vault_id = data.azurerm_key_vault.common.id
 }
 
@@ -150,7 +150,7 @@ data "azurerm_key_vault_secret" "reminder_postgresql_db_server_adm_password" {
 module "reminder_postgresql_db_server_snet" {
   source                                         = "git::https://github.com/pagopa/azurerm.git//subnet?ref=v1.0.51"
   name                                           = format("%s-snet", module.reminder_postgresql_db_server.name)
-  address_prefixes                               = var.cidr_subnet_devportalservicedata_db_server
+  address_prefixes                               = ["10.0.155.0/28"]
   resource_group_name                            = data.azurerm_virtual_network.vnet_common.name
   virtual_network_name                           = data.azurerm_virtual_network.vnet_common.resource_group_name
   enforce_private_link_endpoint_network_policies = true
@@ -181,7 +181,7 @@ module "reminder_postgresql_db_server" {
 
   private_endpoint_enabled = true
   private_dns_zone_id      = data.azurerm_private_dns_zone.privatelink_postgres_azure_com.id
-  delegated_subnet_id      = data.azurerm_subnet.private_endpoints_subnet.id
+  delegated_subnet_id      = module.reminder_postgresql_db_server_snet.id
 
   high_availability_enabled = false
 
