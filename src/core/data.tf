@@ -215,3 +215,12 @@ data "azurerm_key_vault_secret" "common_MAILUP_SECRET" {
   name         = "common-MAILUP2-SECRET"
   key_vault_id = data.azurerm_key_vault.common.id
 }
+
+#
+# App Backend shared resources
+#
+
+data "azurerm_key_vault_secret" "app_backend_PRE_SHARED_KEY" {
+  name         = "appbackend-PRE-SHARED-KEY"
+  key_vault_id = data.azurerm_key_vault.common.id
+}

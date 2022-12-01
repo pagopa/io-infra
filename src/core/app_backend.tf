@@ -301,11 +301,6 @@ data "azurerm_key_vault_secret" "app_backend_EUCOVIDCERT_API_KEY" {
   key_vault_id = data.azurerm_key_vault.common.id
 }
 
-data "azurerm_key_vault_secret" "app_backend_PRE_SHARED_KEY" {
-  name         = "appbackend-PRE-SHARED-KEY"
-  key_vault_id = data.azurerm_key_vault.common.id
-}
-
 data "azurerm_key_vault_secret" "app_backend_ALLOW_PAGOPA_IP_SOURCE_RANGE" {
   name         = "appbackend-ALLOW-PAGOPA-IP-SOURCE-RANGE"
   key_vault_id = data.azurerm_key_vault.common.id
