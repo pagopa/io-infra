@@ -174,7 +174,7 @@ module "reminder_postgresql_db_server" {
   administrator_login    = data.azurerm_key_vault_secret.reminder_postgresql_db_server_adm_username.value
   administrator_password = data.azurerm_key_vault_secret.reminder_postgresql_db_server_adm_password.value
 
-  sku_name                     = "Standard_B1ms"
+  sku_name                     = "B_Standard_B1ms"
   db_version                   = 13
   geo_redundant_backup_enabled = false
 
