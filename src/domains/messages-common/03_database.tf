@@ -149,7 +149,7 @@ data "azurerm_key_vault_secret" "reminder_postgresql_db_server_adm_password" {
 ## ?????? 
 module "reminder_postgresql_db_server_snet" {
   source                                         = "git::https://github.com/pagopa/azurerm.git//subnet?ref=v1.0.51"
-  name                                           = format("%s-snet", module.reminder_postgresql_db_server.name)
+  name                                           = format("%s-snet", reminder-postgresql)
   address_prefixes                               = ["10.0.155.0/28"]
   resource_group_name                            = data.azurerm_virtual_network.vnet_common.name
   virtual_network_name                           = data.azurerm_virtual_network.vnet_common.resource_group_name
