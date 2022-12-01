@@ -222,6 +222,11 @@ variable "cidr_subnet_cgn" {
   description = "Function cgn address space."
 }
 
+variable "cidr_subnet_eucovidcert" {
+  type        = list(string)
+  description = "Function App EUCovidCert address space."
+}
+
 ## VPN ##
 variable "vpn_sku" {
   type        = string
@@ -786,6 +791,50 @@ variable "function_cgn_autoscale_maximum" {
 }
 
 variable "function_cgn_autoscale_default" {
+  type        = number
+  description = "The number of instances that are available for scaling if metrics are not available for evaluation."
+  default     = 1
+}
+
+
+
+# Function EUCovidCert
+variable "function_eucovidcert_count" {
+  type    = number
+  default = 2
+}
+
+variable "function_eucovidcert_kind" {
+  type        = string
+  description = "App service plan kind"
+  default     = null
+}
+
+variable "function_eucovidcert_sku_tier" {
+  type        = string
+  description = "App service plan sku tier"
+  default     = null
+}
+
+variable "function_eucovidcert_sku_size" {
+  type        = string
+  description = "App service plan sku size"
+  default     = null
+}
+
+variable "function_eucovidcert_autoscale_minimum" {
+  type        = number
+  description = "The minimum number of instances for this resource."
+  default     = 1
+}
+
+variable "function_eucovidcert_autoscale_maximum" {
+  type        = number
+  description = "The maximum number of instances for this resource."
+  default     = 30
+}
+
+variable "function_eucovidcert_autoscale_default" {
   type        = number
   description = "The number of instances that are available for scaling if metrics are not available for evaluation."
   default     = 1
