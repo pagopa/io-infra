@@ -146,7 +146,6 @@ data "azurerm_key_vault_secret" "reminder_postgresql_db_server_adm_password" {
   key_vault_id = module.key_vault.id
 }
 
-## ?????? 
 module "reminder_postgresql_db_server_snet" {
   source                                         = "git::https://github.com/pagopa/azurerm.git//subnet?ref=v1.0.51"
   name                                           = format("%s-snet", "reminder-postgresql")
@@ -169,8 +168,8 @@ module "reminder_postgresql_db_server" {
   source = "git::https://github.com/pagopa/azurerm.git//postgres_flexible_server?ref=v2.19.1"
 
   name                = "${local.product}-${var.domain}-reminder-postgresql"
-  location             = azurerm_resource_group.data_rg.location
-  resource_group_name  = azurerm_resource_group.data_rg.name
+  location            = azurerm_resource_group.data_rg.location
+  resource_group_name = azurerm_resource_group.data_rg.name
 
   administrator_login    = data.azurerm_key_vault_secret.reminder_postgresql_db_server_adm_username.value
   administrator_password = data.azurerm_key_vault_secret.reminder_postgresql_db_server_adm_password.value
@@ -205,12 +204,12 @@ resource "azurerm_postgresql_flexible_server_database" "reminder_postgresql_db" 
 }
 
 resource "azurerm_key_vault_secret" "reminder_postgresql_db_server_url" {
-  name         = "${module.reminder_postgresql_db_server.name}-DB-URL"
-  value        = format("jdbc:postgresql://%s:%s/%s?%s", 
-                        trimsuffix(module.reminder_postgresql_db_server.fqdn, "."), 
-                        module.reminder_postgresql_db_server.connection_port,
-                        module.reminder_postgresql_db_server.name, 
-                        "sslmode=require")
+  name = "${module.reminder_postgresql_db_server.name}-DB-URL"
+  value = format("jdbc:postgresql://%s:%s/%s?%s",
+    trimsuffix(module.reminder_postgresql_db_server.fqdn, "."),
+    module.reminder_postgresql_db_server.connection_port,
+    module.reminder_postgresql_db_server.name,
+  "sslmode=require")
   content_type = "text/plain"
   key_vault_id = module.key_vault.id
 }
