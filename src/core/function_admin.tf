@@ -75,11 +75,10 @@ data "azurerm_storage_account" "userbackups" {
 locals {
   function_admin = {
     app_settings_common = {
-      FUNCTIONS_WORKER_RUNTIME     = "node"
-      WEBSITE_NODE_DEFAULT_VERSION = "14.16.0"
-      WEBSITE_RUN_FROM_PACKAGE     = "1"
-      NODE_ENV                     = "production"
-      # MUST BE INCLUDED?
+      FUNCTIONS_WORKER_RUNTIME       = "node"
+      WEBSITE_NODE_DEFAULT_VERSION   = "14.16.0"
+      WEBSITE_RUN_FROM_PACKAGE       = "1"
+      NODE_ENV                       = "production"
       FUNCTIONS_WORKER_PROCESS_COUNT = 4
 
       # DNS and VNET configuration to use private endpoint
