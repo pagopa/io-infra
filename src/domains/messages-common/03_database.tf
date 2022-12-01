@@ -186,7 +186,7 @@ module "reminder_postgresql_db_server" {
 
   pgbouncer_enabled = true
 
-  storage_mb = 1024 # 1GB
+  storage_mb = 32768 # 1GB
 
   alerts_enabled = true
 
