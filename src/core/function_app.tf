@@ -2,16 +2,6 @@
 # SECRETS
 #
 
-data "azurerm_key_vault_secret" "fn_app_MAILUP_USERNAME" {
-  name         = "common-MAILUP2-USERNAME"
-  key_vault_id = data.azurerm_key_vault.common.id
-}
-
-data "azurerm_key_vault_secret" "fn_app_MAILUP_SECRET" {
-  name         = "common-MAILUP2-SECRET"
-  key_vault_id = data.azurerm_key_vault.common.id
-}
-
 data "azurerm_key_vault_secret" "fn_app_PUBLIC_API_KEY" {
   name         = "apim-IO-SERVICE-KEY"
   key_vault_id = data.azurerm_key_vault.common.id
@@ -55,7 +45,7 @@ locals {
       COSMOSDB_URI  = data.azurerm_cosmosdb_account.cosmos_api.endpoint
       COSMOSDB_KEY  = data.azurerm_cosmosdb_account.cosmos_api.primary_master_key
 
-      MESSAGE_CONTAINER_NAME = "message-content"
+      MESSAGE_CONTAINER_NAME = local.message-content-container-name
       QueueStorageConnection = data.azurerm_storage_account.api.primary_connection_string
 
       // Keepalive fields are all optionals
@@ -75,7 +65,7 @@ locals {
       SUBSCRIPTIONS_FEED_TABLE = "SubscriptionsFeedByDay"
       MAIL_FROM                = "IO - l'app dei servizi pubblici <no-reply@io.italia.it>"
       DPO_EMAIL_ADDRESS        = "dpo@pagopa.it"
-      PUBLIC_API_URL           = "http://api-app.internal.io.pagopa.it/"
+      PUBLIC_API_URL           = local.service_api_url
       FUNCTIONS_PUBLIC_URL     = "https://api.io.pagopa.it/public"
 
       // Push notifications
@@ -110,8 +100,8 @@ locals {
 
       VISIBLE_SERVICE_BLOB_ID = "visible-services-national.json"
 
-      MAILUP_USERNAME      = data.azurerm_key_vault_secret.fn_app_MAILUP_USERNAME.value
-      MAILUP_SECRET        = data.azurerm_key_vault_secret.fn_app_MAILUP_SECRET.value
+      MAILUP_USERNAME      = data.azurerm_key_vault_secret.common_MAILUP_USERNAME.value
+      MAILUP_SECRET        = data.azurerm_key_vault_secret.common_MAILUP_SECRET.value
       PUBLIC_API_KEY       = trimspace(data.azurerm_key_vault_secret.fn_app_PUBLIC_API_KEY.value)
       SPID_LOGS_PUBLIC_KEY = trimspace(data.azurerm_key_vault_secret.fn_app_SPID_LOGS_PUBLIC_KEY.value)
       AZURE_NH_ENDPOINT    = data.azurerm_key_vault_secret.fn_app_AZURE_NH_ENDPOINT.value

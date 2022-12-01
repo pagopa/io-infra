@@ -203,3 +203,15 @@ data "azurerm_key_vault_secret" "apim_services_subscription_key" {
   name         = "apim-IO-SERVICE-KEY"
   key_vault_id = data.azurerm_key_vault.common.id
 }
+
+# MAILUP
+
+data "azurerm_key_vault_secret" "common_MAILUP_USERNAME" {
+  name         = "common-MAILUP2-USERNAME"
+  key_vault_id = data.azurerm_key_vault.common.id
+}
+
+data "azurerm_key_vault_secret" "common_MAILUP_SECRET" {
+  name         = "common-MAILUP2-SECRET"
+  key_vault_id = data.azurerm_key_vault.common.id
+}
