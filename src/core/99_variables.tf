@@ -257,6 +257,11 @@ variable "cidr_subnet_eucovidcert" {
   description = "Function App EUCovidCert address space."
 }
 
+variable "cidr_subnet_fnadmin" {
+  type        = list(string)
+  description = "Function Admin address space."
+}
+
 ## VPN ##
 variable "vpn_sku" {
   type        = string
@@ -697,6 +702,44 @@ variable "function_app_async_autoscale_maximum" {
 }
 
 variable "function_app_async_autoscale_default" {
+  type        = number
+  description = "The number of instances that are available for scaling if metrics are not available for evaluation."
+  default     = 1
+}
+
+# Function Admin
+
+variable "function_admin_async_kind" {
+  type        = string
+  description = "App service plan kind"
+  default     = null
+}
+
+variable "function_admin_async_sku_tier" {
+  type        = string
+  description = "App service plan sku tier"
+  default     = null
+}
+
+variable "function_admin_async_sku_size" {
+  type        = string
+  description = "App service plan sku size"
+  default     = null
+}
+
+variable "function_admin_autoscale_minimum" {
+  type        = number
+  description = "The minimum number of instances for this resource."
+  default     = 1
+}
+
+variable "function_admin_autoscale_maximum" {
+  type        = number
+  description = "The maximum number of instances for this resource."
+  default     = 3
+}
+
+variable "function_admin_autoscale_default" {
   type        = number
   description = "The number of instances that are available for scaling if metrics are not available for evaluation."
   default     = 1
