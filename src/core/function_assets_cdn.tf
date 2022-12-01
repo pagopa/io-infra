@@ -26,6 +26,8 @@ locals {
 
       CachedStorageConnection = data.azurerm_storage_account.api.primary_connection_string
       AssetsStorageConnection = data.azurerm_storage_account.cdnassets.primary_connection_string
+
+      AzureWebJobsFeatureFlags = "EnableProxies"
     }
   }
 }
