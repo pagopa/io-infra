@@ -258,6 +258,7 @@ resource "azurerm_mysql_flexible_server" "reminder_mysql_server" {
   delegated_subnet_id    = module.reminder_mysql_db_server_snet.id
   version                = "8.0.21"
   sku_name               = "B_Standard_B1ms"
+  zone                   = "3"
 }
 
 resource "azurerm_mysql_flexible_database" "reminder_mysql_db" {
