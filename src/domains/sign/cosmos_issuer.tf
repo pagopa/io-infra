@@ -32,3 +32,12 @@ module "cosmosdb_sql_container_issuer-uploads" {
   partition_key_path  = "/id"
   default_ttl         = var.io_sign_database_issuer.uploads.ttl
 }
+
+module "cosmosdb_sql_container_issuer-issuers" {
+  source              = "git::https://github.com/pagopa/azurerm.git//cosmosdb_sql_container?ref=v3.2.5"
+  name                = "issuers"
+  resource_group_name = azurerm_resource_group.data_rg.name
+  account_name        = module.cosmosdb_account.name
+  database_name       = module.cosmosdb_sql_database_issuer.name
+  partition_key_path  = "/subscriptionId"
+}
