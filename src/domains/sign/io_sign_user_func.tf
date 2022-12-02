@@ -45,7 +45,7 @@ module "io_sign_user_func" {
     NamirialPassword                                = module.key_vault_secrets.values["NamirialPassword"].value
   }
 
-  # TODO SFEQS-1191 Allow function access from VPN
+  # TODO(SFEQS-1191) Allow function access from VPN
   #allowed_subnets = [module.io_sign_user_snet.id]
   #allowed_ips     = local.app_insights_ips_west_europe
 
@@ -56,7 +56,36 @@ module "io_sign_user_func" {
   tags = var.tags
 }
 
-// TODO dependson?
+# TODO(SFEQS-1194) Set recommendation for production environment
+module "io_sign_user_func_staging_slot" {
+  count  = var.io_sign_user_func.sku_tier == "PremiumV3" ? 1 : 0
+  source = "git::https://github.com/pagopa/azurerm.git//function_app_slot?ref=v3.4.0"
+
+  name                = "staging"
+  location            = azurerm_resource_group.backend_rg.location
+  resource_group_name = azurerm_resource_group.backend_rg.name
+  function_app_name   = module.io_sign_user_func.name
+  function_app_id     = module.io_sign_user_func.id
+  app_service_plan_id = module.io_sign_user_func.app_service_plan_id
+  health_check_path   = "info"
+
+  storage_account_name       = module.io_sign_user_func.storage_account.name
+  storage_account_access_key = module.io_sign_user_func.storage_account.primary_access_key
+
+  os_type                                  = "linux"
+  runtime_version                          = "~4"
+  always_on                                = true
+  linux_fx_version                         = "NODE|16"
+  application_insights_instrumentation_key = data.azurerm_application_insights.application_insights.instrumentation_key
+
+  app_settings = {}
+
+  subnet_id = module.io_sign_user_snet.id
+
+  tags = var.tags
+}
+
+# TODO(SFEQS-1194) Set recommendation for production environment
 resource "azurerm_storage_container" "io_sign_user_func_container" {
   name                  = local.user_func_container
   storage_account_name  = module.io_sign_user_func.storage_account_name

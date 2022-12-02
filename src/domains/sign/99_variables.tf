@@ -49,55 +49,30 @@ variable "storage" {
     delete_after_days = number
     replication_type  = string
   })
-  default = {
-    enable_versioning = false
-    delete_after_days = 90
-    replication_type  = "ZRS"
-  }
+}
+
+variable "cosmos" {
+  type = object({
+    zone_redundant = bool
+  })
 }
 
 variable "io_sign_database_issuer" {
-  type = object({
-    throughput = number
-    dossiers = object({
-      max_throughput = number
-    })
-    signature_requests = object({
-      max_throughput = number
-    })
-    uploads = object({
+  type = map(
+    object({
       max_throughput = number
       ttl            = number
     })
-  })
-  default = {
-    throughput = 800
-    dossiers = {
-      max_throughput = 4000
-    }
-    signature_requests = {
-      max_throughput = 4000
-    }
-    uploads = {
-      max_throughput = 4000
-      ttl            = 7
-    }
-  }
+  )
 }
 
 variable "io_sign_database_user" {
-  type = object({
-    throughput = number
-    signature_requests = object({
+  type = map(
+    object({
       max_throughput = number
+      ttl            = number
     })
-  })
-  default = {
-    throughput = 800
-    signature_requests = {
-      max_throughput = 4000
-    }
-  }
+  )
 }
 
 variable "io_sign_issuer_func" {
@@ -106,11 +81,6 @@ variable "io_sign_issuer_func" {
     sku_tier = string
     sku_size = string
   })
-  default = {
-    version  = null
-    sku_tier = "Basic"
-    sku_size = "B1"
-  }
 }
 
 variable "io_sign_user_func" {
@@ -119,9 +89,4 @@ variable "io_sign_user_func" {
     sku_tier = string
     sku_size = string
   })
-  default = {
-    version  = null
-    sku_tier = "Basic"
-    sku_size = "B1"
-  }
 }

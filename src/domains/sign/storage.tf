@@ -13,17 +13,14 @@ module "io_sign_storage" {
   allow_blob_public_access   = false
 
   network_rules = {
-    default_action = "Deny"
+    default_action = "Allow"
     ip_rules       = []
     bypass = [
       "Logging",
       "Metrics",
       "AzureServices",
     ]
-    virtual_network_subnet_ids = [
-      module.io_sign_snet.id,
-      module.io_sign_user_snet.id,
-    ]
+    virtual_network_subnet_ids = []
   }
 
   tags = var.tags

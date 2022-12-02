@@ -78,15 +78,17 @@ data "azurerm_private_dns_zone" "privatelink_queue_core_windows_net" {
   resource_group_name = "io-p-rg-common"
 }
 
-data "azurerm_private_dns_zone" "privatelink_file_core_windows_net" {
-  name                = "privatelink.file.core.windows.net"
-  resource_group_name = "io-p-rg-common"
-}
+# Unused at the moment
+# data "azurerm_private_dns_zone" "privatelink_file_core_windows_net" {
+#   name                = "privatelink.file.core.windows.net"
+#   resource_group_name = "io-p-rg-common"
+# }
 
-data "azurerm_private_dns_zone" "privatelink_table_core_windows_net" {
-  name                = "privatelink.table.core.windows.net"
-  resource_group_name = "io-p-rg-common"
-}
+# Unused at the moment
+# data "azurerm_private_dns_zone" "privatelink_table_core_windows_net" {
+#   name                = "privatelink.table.core.windows.net"
+#   resource_group_name = "io-p-rg-common"
+# }
 
 resource "azurerm_private_endpoint" "blob" {
   name                = format("%s-blob-endpoint", module.io_sign_storage.name)
@@ -129,3 +131,20 @@ resource "azurerm_private_endpoint" "queue" {
 
   tags = var.tags
 }
+
+# TODO(SFEQS-1191) Allow function access from VPN
+# resource "azurerm_private_endpoint" "function" {
+#   name                = format("%s-function", module.io_sign_user_func.name)
+#   location            = azurerm_resource_group.data_rg.location
+#   resource_group_name = azurerm_resource_group.data_rg.name
+#   subnet_id           = data.azurerm_subnet.private_endpoints_subnet.id
+
+#   private_service_connection {
+#     name                           = format("%s-function", module.io_sign_user_func.name)
+#     private_connection_resource_id = module.io_sign_user_func.id
+#     is_manual_connection           = false
+#     subresource_names              = ["sites"]
+#   }
+
+#   tags = var.tags
+# }

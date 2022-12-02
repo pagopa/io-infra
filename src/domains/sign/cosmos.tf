@@ -5,7 +5,7 @@ module "cosmosdb_account" {
   resource_group_name              = azurerm_resource_group.data_rg.name
   kind                             = "GlobalDocumentDB"
   main_geo_location_location       = azurerm_resource_group.data_rg.location
-  main_geo_location_zone_redundant = false
+  main_geo_location_zone_redundant = var.cosmos.zone_redundant
 
   public_network_access_enabled = false
 

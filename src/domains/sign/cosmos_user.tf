@@ -12,4 +12,11 @@ module "cosmosdb_sql_container_user-signature-requests" {
   account_name        = module.cosmosdb_account.name
   database_name       = module.cosmosdb_sql_database_user.name
   partition_key_path  = "/signerId"
+
+  # TODO [SFEQS-1200] Refactor to provider v3
+  # autoscale_settings = {
+  #   max_throughput = var.io_sign_database_user.signature_requests.max_throughput
+  # }
+
+  default_ttl = var.io_sign_database_user.signature_requests.ttl
 }

@@ -12,6 +12,13 @@ module "cosmosdb_sql_container_issuer-dossiers" {
   account_name        = module.cosmosdb_account.name
   database_name       = module.cosmosdb_sql_database_issuer.name
   partition_key_path  = "/issuerId"
+
+  # TODO [SFEQS-1200] Refactor to provider v3
+  # autoscale_settings = {
+  #   max_throughput = var.io_sign_database_issuer.dossiers.max_throughput
+  # }
+
+  default_ttl = var.io_sign_database_issuer.dossiers.ttl
 }
 
 module "cosmosdb_sql_container_issuer-signature-requests" {
@@ -21,6 +28,13 @@ module "cosmosdb_sql_container_issuer-signature-requests" {
   account_name        = module.cosmosdb_account.name
   database_name       = module.cosmosdb_sql_database_issuer.name
   partition_key_path  = "/issuerId"
+
+  # TODO [SFEQS-1200] Refactor to provider v3
+  # autoscale_settings = {
+  #   max_throughput = var.io_sign_database_issuer.signature_requests.max_throughput
+  # }
+
+  default_ttl = var.io_sign_database_issuer.signature_requests.ttl
 }
 
 module "cosmosdb_sql_container_issuer-uploads" {
@@ -30,5 +44,11 @@ module "cosmosdb_sql_container_issuer-uploads" {
   account_name        = module.cosmosdb_account.name
   database_name       = module.cosmosdb_sql_database_issuer.name
   partition_key_path  = "/id"
-  default_ttl         = var.io_sign_database_issuer.uploads.ttl
+
+  # TODO [SFEQS-1200] Refactor to provider v3
+  # autoscale_settings = {
+  #   max_throughput = var.io_sign_database_issuer.uploads.max_throughput
+  # }
+
+  default_ttl = var.io_sign_database_issuer.uploads.ttl
 }
