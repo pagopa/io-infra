@@ -270,7 +270,7 @@ resource "azurerm_mysql_flexible_database" "reminder_mysql_db" {
 
 resource "azurerm_key_vault_secret" "reminder_mysql_db_server_url" {
   name = "${azurerm_mysql_flexible_server.reminder_mysql_server.name}-REMINDER-MYSQL-DB-URL"
-  value = format("jdbc:postgresql://%s:%s/%s",
+  value = format("jdbc:mysql://%s:%s/%s",
     trimsuffix(azurerm_mysql_flexible_server.reminder_mysql_server.fqdn, "."),
     "3306",
     azurerm_mysql_flexible_database.reminder_mysql_db.name)
