@@ -208,7 +208,7 @@ resource "azurerm_key_vault_secret" "reminder_postgresql_db_server_url" {
   value = format("jdbc:postgresql://%s:%s/%s?%s",
     trimsuffix(module.reminder_postgresql_db_server.fqdn, "."),
     module.reminder_postgresql_db_server.connection_port,
-    module.reminder_postgresql_db_server.name,
+    azurerm_postgresql_flexible_server_database.reminder_postgresql_db.name,,
   "sslmode=require")
   content_type = "text/plain"
   key_vault_id = module.key_vault.id
