@@ -230,7 +230,7 @@ data "azurerm_key_vault_secret" "reminder_mysql_db_server_adm_password" {
 
 module "reminder_mysql_db_server_snet" {
   source                                         = "git::https://github.com/pagopa/azurerm.git//subnet?ref=v1.0.51"
-  name                                           = format("%s-snet", "reminder-postgresql")
+  name                                           = format("%s-snet", "reminder-mysql")
   address_prefixes                               = ["10.0.155.16/28"]
   resource_group_name                            = data.azurerm_virtual_network.vnet_common.resource_group_name
   virtual_network_name                           = data.azurerm_virtual_network.vnet_common.name
