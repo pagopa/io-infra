@@ -112,6 +112,13 @@ resource "azurerm_private_dns_zone" "privatelink_postgres_database_azure_com" {
   tags = var.tags
 }
 
+resource "azurerm_private_dns_zone" "privatelink_mysql_database_azure_com" {
+  name                = "privatelink.mysql.database.azure.com"
+  resource_group_name = data.azurerm_resource_group.vnet_common_rg.name
+
+  tags = var.tags
+}
+
 resource "azurerm_private_dns_zone_virtual_network_link" "privatelink_postgres_database_azure_com_vnet_common" {
   name                  = data.azurerm_virtual_network.vnet_common.name
   resource_group_name   = data.azurerm_resource_group.vnet_common_rg.name
