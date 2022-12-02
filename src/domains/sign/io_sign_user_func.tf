@@ -40,10 +40,14 @@ module "io_sign_user_func" {
     IoServicesSubscriptionKey                       = module.key_vault_secrets.values["IOApiSubscriptionKey"].value
     PdvTokenizerApiBasePath                         = "https://api.uat.tokenizer.pdv.pagopa.it"
     PdvTokenizerApiKey                              = module.key_vault_secrets.values["TokenizerApiSubscriptionKey"].value
+    NamirialApiBasePath                             = "https://pagopa.demo.bit4id.org"
+    NamirialUsername                                = "api"
+    NamirialPassword                                = module.key_vault_secrets.values["NamirialPassword"].value
   }
 
-  allowed_subnets = [module.io_sign_user_snet.id]
-  allowed_ips     = local.app_insights_ips_west_europe
+  # TODO SFEQS-1191 Allow function access from VPN
+  #allowed_subnets = [module.io_sign_user_snet.id]
+  #allowed_ips     = local.app_insights_ips_west_europe
 
   runtime_version                          = "~4"
   application_insights_instrumentation_key = data.azurerm_application_insights.application_insights.instrumentation_key

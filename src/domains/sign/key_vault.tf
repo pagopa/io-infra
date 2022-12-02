@@ -8,6 +8,7 @@ module "key_vault_secrets" {
     "IOApiSubscriptionKey",
     "TokenizerApiSubscriptionKey",
     "io-fn-sign-issuer-key",
+    "NamirialPassword",
   ]
 }
 
