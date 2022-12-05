@@ -60,15 +60,6 @@ data "azurerm_subnet" "fnapp_admin_subnet_out" {
 }
 
 #
-# CGN resources
-#
-
-data "azurerm_function_app" "fnapp_cgn" {
-  name                = format("%s-func-cgn", local.project)
-  resource_group_name = format("%s-rg-cgn", local.project)
-}
-
-#
 # Bonus vacanze resources
 #
 
