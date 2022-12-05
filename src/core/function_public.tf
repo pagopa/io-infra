@@ -27,8 +27,6 @@ locals {
       StorageConnection = data.azurerm_storage_account.api.primary_connection_string
 
       VALIDATION_CALLBACK_URL = "https://api-app.io.pagopa.it/email_verification.html"
-
-      SLOT_TASK_HUBNAME = "ProductionTaskHub"
     }
   }
 }
