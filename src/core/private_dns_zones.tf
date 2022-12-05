@@ -508,3 +508,23 @@ resource "azurerm_private_dns_zone_virtual_network_link" "azurewebsites_private_
 
   tags = var.tags
 }
+
+resource "azurerm_private_dns_zone_virtual_network_link" "azurewebsites_private_vnet_beta" {
+  name                  = module.vnet_weu_beta.name
+  resource_group_name   = data.azurerm_resource_group.vnet_common_rg.name
+  private_dns_zone_name = azurerm_private_dns_zone.privatelink_azurewebsites.name
+  virtual_network_id    = module.vnet_weu_beta.id
+  registration_enabled  = false
+
+  tags = var.tags
+}
+
+resource "azurerm_private_dns_zone_virtual_network_link" "azurewebsites_private_vnet_prod01" {
+  name                  = module.vnet_weu_prod01.name
+  resource_group_name   = data.azurerm_resource_group.vnet_common_rg.name
+  private_dns_zone_name = azurerm_private_dns_zone.privatelink_azurewebsites.name
+  virtual_network_id    = module.vnet_weu_prod01.id
+  registration_enabled  = false
+
+  tags = var.tags
+}
