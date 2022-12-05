@@ -43,12 +43,3 @@ module "shared_1_snet" {
     }
   }
 }
-
-#
-# Function public
-#
-
-data "azurerm_storage_account" "iopstfn3public" {
-  name                = "iopstfn3public"
-  resource_group_name = azurerm_resource_group.rg_internal.name
-}
