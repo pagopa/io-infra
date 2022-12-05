@@ -24,6 +24,9 @@
 | <a name="module_cosmosdb_account_mongodb_reminder"></a> [cosmosdb\_account\_mongodb\_reminder](#module\_cosmosdb\_account\_mongodb\_reminder) | git::https://github.com/pagopa/azurerm.git//cosmosdb_account | v2.15.1 |
 | <a name="module_key_vault"></a> [key\_vault](#module\_key\_vault) | git::https://github.com/pagopa/azurerm.git//key_vault | v2.13.1 |
 | <a name="module_mongdb_collection_reminder"></a> [mongdb\_collection\_reminder](#module\_mongdb\_collection\_reminder) | git::https://github.com/pagopa/azurerm.git//cosmosdb_mongodb_collection | v2.3.0 |
+| <a name="module_reminder_mysql_db_server_snet"></a> [reminder\_mysql\_db\_server\_snet](#module\_reminder\_mysql\_db\_server\_snet) | git::https://github.com/pagopa/azurerm.git//subnet | v1.0.51 |
+| <a name="module_reminder_postgresql_db_server"></a> [reminder\_postgresql\_db\_server](#module\_reminder\_postgresql\_db\_server) | git::https://github.com/pagopa/azurerm.git//postgres_flexible_server | v2.19.1 |
+| <a name="module_reminder_postgresql_db_server_snet"></a> [reminder\_postgresql\_db\_server\_snet](#module\_reminder\_postgresql\_db\_server\_snet) | git::https://github.com/pagopa/azurerm.git//subnet | v1.0.51 |
 
 ## Resources
 
@@ -55,8 +58,13 @@
 | [azurerm_key_vault_secret.mongodb_connection_string_reminder](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/key_vault_secret) | resource |
 | [azurerm_key_vault_secret.notifications_storage_connection_string](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/key_vault_secret) | resource |
 | [azurerm_key_vault_secret.payments_io-p-payment-updates-weu-prod01-evh-reminder_jaas-connection-string](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/key_vault_secret) | resource |
+| [azurerm_key_vault_secret.reminder_mysql_db_server_url](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/key_vault_secret) | resource |
 | [azurerm_key_vault_secret.reminder_paymentapi_subscription_primary_key](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/key_vault_secret) | resource |
+| [azurerm_key_vault_secret.reminder_postgresql_db_server_url](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/key_vault_secret) | resource |
 | [azurerm_key_vault_secret.reminder_subscription_primary_key](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/key_vault_secret) | resource |
+| [azurerm_mysql_flexible_database.reminder_mysql_db](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/mysql_flexible_database) | resource |
+| [azurerm_mysql_flexible_server.reminder_mysql_server](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/mysql_flexible_server) | resource |
+| [azurerm_postgresql_flexible_server_database.reminder_postgresql_db](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/postgresql_flexible_server_database) | resource |
 | [azurerm_resource_group.data_rg](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/resource_group) | resource |
 | [azurerm_resource_group.sec_rg](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/resource_group) | resource |
 | [azuread_group.adgroup_admin](https://registry.terraform.io/providers/hashicorp/azuread/2.21.0/docs/data-sources/group) | data source |
@@ -74,10 +82,16 @@
 | [azurerm_eventhub_authorization_rule.messages-weu-prod01-evh_message-reminder-send_io-reminder](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/data-sources/eventhub_authorization_rule) | data source |
 | [azurerm_eventhub_authorization_rule.messages-weu-prod01-evh_message-status_io-reminder](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/data-sources/eventhub_authorization_rule) | data source |
 | [azurerm_eventhub_authorization_rule.messages-weu-prod01-evh_messages_io-reminder](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/data-sources/eventhub_authorization_rule) | data source |
+| [azurerm_key_vault_secret.reminder_mysql_db_server_adm_password](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/data-sources/key_vault_secret) | data source |
+| [azurerm_key_vault_secret.reminder_mysql_db_server_adm_username](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/data-sources/key_vault_secret) | data source |
+| [azurerm_key_vault_secret.reminder_postgresql_db_server_adm_password](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/data-sources/key_vault_secret) | data source |
+| [azurerm_key_vault_secret.reminder_postgresql_db_server_adm_username](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/data-sources/key_vault_secret) | data source |
 | [azurerm_log_analytics_workspace.log_analytics](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/data-sources/log_analytics_workspace) | data source |
 | [azurerm_monitor_action_group.email](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/data-sources/monitor_action_group) | data source |
 | [azurerm_monitor_action_group.slack](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/data-sources/monitor_action_group) | data source |
 | [azurerm_private_dns_zone.privatelink_mongo_cosmos_azure_com](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/data-sources/private_dns_zone) | data source |
+| [azurerm_private_dns_zone.privatelink_mysql_azure_com](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/data-sources/private_dns_zone) | data source |
+| [azurerm_private_dns_zone.privatelink_postgres_azure_com](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/data-sources/private_dns_zone) | data source |
 | [azurerm_resource_group.monitor_rg](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/data-sources/resource_group) | data source |
 | [azurerm_storage_account.api_storage](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/data-sources/storage_account) | data source |
 | [azurerm_storage_account.notifications_storage](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/data-sources/storage_account) | data source |

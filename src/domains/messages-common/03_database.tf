@@ -132,3 +132,72 @@ resource "azurerm_key_vault_secret" "mongodb_connection_string_reminder" {
   content_type = "full connection string"
   key_vault_id = module.key_vault.id
 }
+###################################
+# Database Reminder Mysql
+###################################
+data "azurerm_key_vault_secret" "reminder_mysql_db_server_adm_username" {
+  name         = "${local.product}-${var.domain}-REMINDER-MYSQL-DB-ADM-USERNAME"
+  key_vault_id = module.key_vault.id
+}
+data "azurerm_key_vault_secret" "reminder_mysql_db_server_adm_password" {
+  name         = "${local.product}-${var.domain}-REMINDER-MYSQL-DB-ADM-PASSWORD"
+  key_vault_id = module.key_vault.id
+}
+
+module "reminder_mysql_db_server_snet" {
+  source                                         = "git::https://github.com/pagopa/azurerm.git//subnet?ref=v1.0.51"
+  name                                           = format("%s-snet", "reminder-mysql")
+  address_prefixes                               = ["10.0.155.16/28"]
+  resource_group_name                            = data.azurerm_virtual_network.vnet_common.resource_group_name
+  virtual_network_name                           = data.azurerm_virtual_network.vnet_common.name
+  enforce_private_link_endpoint_network_policies = true
+  service_endpoints                              = ["Microsoft.Storage"]
+  delegation = {
+    name = "fs"
+    service_delegation = {
+      name = "Microsoft.DBforMySQL/flexibleServers"
+      actions = [
+        "Microsoft.Network/virtualNetworks/subnets/join/action",
+      ]
+    }
+  }
+}
+
+resource "azurerm_mysql_flexible_server" "reminder_mysql_server" {
+  name                   = "${local.product}-${var.domain}-reminder-mysql"
+  location               = azurerm_resource_group.data_rg.location
+  resource_group_name    = azurerm_resource_group.data_rg.name
+  administrator_login    = data.azurerm_key_vault_secret.reminder_mysql_db_server_adm_username.value
+  administrator_password = data.azurerm_key_vault_secret.reminder_mysql_db_server_adm_password.value
+  backup_retention_days  = 7
+  private_dns_zone_id    = data.azurerm_private_dns_zone.privatelink_mysql_azure_com.id
+  delegated_subnet_id    = module.reminder_mysql_db_server_snet.id
+  version                = "8.0.21"
+  sku_name               = "B_Standard_B1ms"
+  zone                   = "3"
+}
+
+resource "azurerm_mysql_flexible_database" "reminder_mysql_db" {
+  name                = "reminder"
+  resource_group_name = azurerm_resource_group.data_rg.name
+  server_name         = azurerm_mysql_flexible_server.reminder_mysql_server.name
+  charset             = "utf8"
+  collation           = "utf8_unicode_ci"
+}
+
+resource "azurerm_mysql_flexible_server_configuration" "max_connections" {
+  name                = "max_connections"
+  resource_group_name = azurerm_resource_group.data_rg.name
+  server_name         = azurerm_mysql_flexible_server.reminder_mysql_server.name
+  value               = "341"
+}
+
+resource "azurerm_key_vault_secret" "reminder_mysql_db_server_url" {
+  name = "${azurerm_mysql_flexible_server.reminder_mysql_server.name}-REMINDER-MYSQL-DB-URL"
+  value = format("jdbc:mysql://%s:%s/%s",
+    trimsuffix(azurerm_mysql_flexible_server.reminder_mysql_server.fqdn, "."),
+    "3306",
+  azurerm_mysql_flexible_database.reminder_mysql_db.name)
+  content_type = "text/plain"
+  key_vault_id = module.key_vault.id
+}
