@@ -222,7 +222,7 @@ variable "cidr_subnet_cgn" {
   description = "Function cgn address space."
 }
 
-variable "cidr_subnet_shared" {
+variable "cidr_subnet_shared_1" {
   type        = list(string)
   description = "Function cgn address space."
 }
@@ -797,25 +797,25 @@ variable "function_cgn_autoscale_default" {
 }
 
 # Shared functions
-variable "plan_shared_kind" {
+variable "plan_shared_1_kind" {
   type        = string
   description = "App service plan kind"
   default     = null
 }
 
-variable "plan_shared_sku_tier" {
+variable "plan_shared_1_sku_tier" {
   type        = string
   description = "App service plan sku tier"
   default     = null
 }
 
-variable "plan_shared_sku_size" {
+variable "plan_shared_1_sku_size" {
   type        = string
   description = "App service plan sku size"
   default     = null
 }
 
-variable "plan_shared_sku_capacity" {
+variable "plan_shared_1_sku_capacity" {
   description = "Shared functions app plan capacity"
   type        = number
   default     = 1

@@ -38,7 +38,7 @@ module "function_public" {
   resource_group_name = azurerm_resource_group.shared_rg.name
   name                = format("%s-public-fn", local.project)
   location            = var.location
-  app_service_plan_id = azurerm_app_service_plan.shared_plan_1.id
+  app_service_plan_id = azurerm_app_service_plan.shared_1_plan.id
   health_check_path   = "/info"
 
   os_type          = "linux"
@@ -63,10 +63,10 @@ module "function_public" {
     "blobs_retention_days"       = 0,
   }
 
-  subnet_id = module.shared_snet.id
+  subnet_id = module.shared_1_snet.id
 
   allowed_subnets = [
-    module.shared_snet.id,
+    module.shared_1_snet.id,
     module.apim_snet.id,
   ]
 
@@ -81,7 +81,7 @@ module "function_public_staging_slot" {
   resource_group_name = azurerm_resource_group.shared_rg.name
   function_app_name   = module.function_public.name
   function_app_id     = module.function_public.id
-  app_service_plan_id = azurerm_app_service_plan.shared_plan_1.id
+  app_service_plan_id = azurerm_app_service_plan.shared_1_plan.id
   health_check_path   = "/info"
 
   storage_account_name       = module.function_public.storage_account.name
@@ -99,10 +99,10 @@ module "function_public_staging_slot" {
     local.function_public.app_settings_common,
   )
 
-  subnet_id = module.shared_snet.id
+  subnet_id = module.shared_1_snet.id
 
   allowed_subnets = [
-    module.shared_snet.id,
+    module.shared_1_snet.id,
     data.azurerm_subnet.azdoa_snet[0].id,
     module.apim_snet.id,
   ]
