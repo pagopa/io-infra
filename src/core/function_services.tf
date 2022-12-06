@@ -218,6 +218,7 @@ module "function_services" {
 
   allowed_subnets = [
     module.services_snet[count.index].id,
+    data.azurerm_subnet.azdoa_snet[0].id
     module.apim_snet.id,
     module.function_eucovidcert_snet.id,
   ]
@@ -248,20 +249,22 @@ module "function_services_staging_slot" {
   application_insights_instrumentation_key = data.azurerm_application_insights.application_insights.instrumentation_key
 
   app_settings = merge(
-    local.function_services.app_settings_common,
-    # Disabled functions on slot - trigger, queue and timer
-    # mark this configurations as slot settings
-    "AzureWebJobs.CreateNotification.Disabled"     = "1",
-    "AzureWebJobs.EmailNotification.Disabled"      = "1",
-    "AzureWebJobs.OnFailedProcessMessage.Disabled" = "1",
-    "AzureWebJobs.ProcessMessage.Disabled"         = "1",
-    "AzureWebJobs.WebhookNotification.Disabled"    = "1",
+    local.function_services.app_settings_common,{
+      # Disabled functions on slot - trigger, queue and timer
+      # mark this configurations as slot settings
+      "AzureWebJobs.CreateNotification.Disabled"     = "1",
+      "AzureWebJobs.EmailNotification.Disabled"      = "1",
+      "AzureWebJobs.OnFailedProcessMessage.Disabled" = "1",
+      "AzureWebJobs.ProcessMessage.Disabled"         = "1",
+      "AzureWebJobs.WebhookNotification.Disabled"    = "1",
+    }
   )
 
   subnet_id = module.services_snet[count.index].id
 
   allowed_subnets = [
     module.services_snet[count.index].id,
+    data.azurerm_subnet.azdoa_snet[0].id
     module.apim_snet.id,
     module.function_eucovidcert_snet.id,
   ]
