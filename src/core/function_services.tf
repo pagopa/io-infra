@@ -76,7 +76,7 @@ locals {
       COSMOSDB_URI  = data.azurerm_cosmosdb_account.cosmos_api.endpoint
       COSMOSDB_KEY  = data.azurerm_cosmosdb_account.cosmos_api.primary_master_key
 
-      MESSAGE_CONTENT_STORAGE_CONNECTION_STRING = data.azurerm_storage_account.api.primary_connection_string
+      MESSAGE_CONTENT_STORAGE_CONNECTION_STRING   = data.azurerm_storage_account.api.primary_connection_string
       SUBSCRIPTION_FEED_STORAGE_CONNECTION_STRING = data.azurerm_storage_account.api.primary_connection_string
 
       MAIL_FROM = "IO - l'app dei servizi pubblici <no-reply@io.italia.it>"
@@ -107,7 +107,7 @@ locals {
 
       // the duration of message and message-status for those messages sent to user not registered on IO.
       TTL_FOR_USER_NOT_FOUND = "${60 * 60 * 24 * 365 * 3}" //3 years in seconds
-      FEATURE_FLAG = "ALL"
+      FEATURE_FLAG           = "ALL"
 
       #########################
       # Secrets
@@ -244,7 +244,7 @@ module "function_services_staging_slot" {
   application_insights_instrumentation_key = data.azurerm_application_insights.application_insights.instrumentation_key
 
   app_settings = merge(
-    local.function_services.app_settings_common,{
+    local.function_services.app_settings_common, {
       # Disabled functions on slot - trigger, queue and timer
       # mark this configurations as slot settings
       "AzureWebJobs.CreateNotification.Disabled"     = "1"
