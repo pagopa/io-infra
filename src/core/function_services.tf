@@ -187,7 +187,7 @@ module "function_services" {
   }
 
   app_settings = merge(
-    local.function_services.app_settings, {
+    local.function_services.app_settings_common, {
       # Disabled functions on slot - trigger, queue and timer
       # mark this configurations as slot settings
       "AzureWebJobs.CreateNotification.Disabled"     = "0"
