@@ -117,8 +117,8 @@ locals {
       #########################
       # Secrets
       #########################
-      MAILUP_USERNAME                        = trimspace(data.azurerm_key_vault_secret.fn_services_mailup_username.value)
-      MAILUP_SECRET                          = trimspace(data.azurerm_key_vault_secret.fn_services_mailup_password.value)
+      MAILUP_USERNAME                        = data.azurerm_key_vault_secret.fn_services_mailup_username.value
+      MAILUP_SECRET                          = data.azurerm_key_vault_secret.fn_services_mailup_secret.value
       WEBHOOK_CHANNEL_URL                    = data.azurerm_key_vault_secret.fn_services_webhook_channel_url.value
       SANDBOX_FISCAL_CODE                    = data.azurerm_key_vault_secret.fn_services_sandbox_fiscal_code.value
       EMAIL_NOTIFICATION_SERVICE_BLACKLIST   = data.azurerm_key_vault_secret.fn_services_email_service_blacklist_id.value
