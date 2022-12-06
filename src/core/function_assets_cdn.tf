@@ -65,7 +65,7 @@ module "function_assets_cdn" {
   health_check_path   = "info"
 
   os_type                                  = "linux"
-  runtime_version                          = "~3"
+  runtime_version                          = "~4"
   linux_fx_version                         = "NODE|14"
   always_on                                = true
   application_insights_instrumentation_key = data.azurerm_application_insights.application_insights.instrumentation_key
