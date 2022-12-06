@@ -26,6 +26,8 @@ locals {
 
       CachedStorageConnection = data.azurerm_storage_account.api.primary_connection_string
       AssetsStorageConnection = data.azurerm_storage_account.cdnassets.primary_connection_string
+
+      AzureWebJobsFeatureFlags = "EnableProxies"
     }
   }
 }
@@ -63,7 +65,7 @@ module "function_assets_cdn" {
   health_check_path   = "info"
 
   os_type                                  = "linux"
-  runtime_version                          = "~3"
+  runtime_version                          = "~4"
   linux_fx_version                         = "NODE|14"
   always_on                                = true
   application_insights_instrumentation_key = data.azurerm_application_insights.application_insights.instrumentation_key
@@ -98,7 +100,7 @@ module "function_assets_cdn_staging_slot" {
   storage_account_access_key = module.function_assets_cdn.storage_account.primary_access_key
 
   os_type                                  = "linux"
-  runtime_version                          = "~3"
+  runtime_version                          = "~4"
   linux_fx_version                         = "NODE|14"
   always_on                                = true
   application_insights_instrumentation_key = data.azurerm_application_insights.application_insights.instrumentation_key
