@@ -175,7 +175,7 @@ module "function_services" {
   resource_group_name = azurerm_resource_group.services_rg[count.index].name
   name                = format("%s-services-fn-%d", local.project, count.index + 1)
   location            = var.location
-  health_check_path   = "api/v1/info"
+  health_check_path   = "api/info"
 
   os_type          = "linux"
   linux_fx_version = "NODE|14"
@@ -195,11 +195,11 @@ module "function_services" {
     local.function_services.app_settings, {
       # Disabled functions on slot - trigger, queue and timer
       # mark this configurations as slot settings
-      "AzureWebJobs.CreateNotification.Disabled"     = "0",
-      "AzureWebJobs.EmailNotification.Disabled"      = "0",
-      "AzureWebJobs.OnFailedProcessMessage.Disabled" = "0",
-      "AzureWebJobs.ProcessMessage.Disabled"         = "0",
-      "AzureWebJobs.WebhookNotification.Disabled"    = "0",
+      "AzureWebJobs.CreateNotification.Disabled"     = "0"
+      "AzureWebJobs.EmailNotification.Disabled"      = "0"
+      "AzureWebJobs.OnFailedProcessMessage.Disabled" = "0"
+      "AzureWebJobs.ProcessMessage.Disabled"         = "0"
+      "AzureWebJobs.WebhookNotification.Disabled"    = "0"
     }
   )
 
@@ -236,7 +236,7 @@ module "function_services_staging_slot" {
   function_app_name   = module.function_services[count.index].name
   function_app_id     = module.function_services[count.index].id
   app_service_plan_id = module.function_services[count.index].app_service_plan_id
-  health_check_path   = "api/v1/info"
+  health_check_path   = "api/info"
 
   storage_account_name               = module.function_services[count.index].storage_account.name
   storage_account_access_key         = module.function_services[count.index].storage_account.primary_access_key
@@ -252,11 +252,11 @@ module "function_services_staging_slot" {
     local.function_services.app_settings_common,{
       # Disabled functions on slot - trigger, queue and timer
       # mark this configurations as slot settings
-      "AzureWebJobs.CreateNotification.Disabled"     = "1",
-      "AzureWebJobs.EmailNotification.Disabled"      = "1",
-      "AzureWebJobs.OnFailedProcessMessage.Disabled" = "1",
-      "AzureWebJobs.ProcessMessage.Disabled"         = "1",
-      "AzureWebJobs.WebhookNotification.Disabled"    = "1",
+      "AzureWebJobs.CreateNotification.Disabled"     = "1"
+      "AzureWebJobs.EmailNotification.Disabled"      = "1"
+      "AzureWebJobs.OnFailedProcessMessage.Disabled" = "1"
+      "AzureWebJobs.ProcessMessage.Disabled"         = "1"
+      "AzureWebJobs.WebhookNotification.Disabled"    = "1"
     }
   )
 
