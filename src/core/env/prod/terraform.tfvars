@@ -40,6 +40,7 @@ cidr_subnet_eucovidcert                    = ["10.0.132.192/26"]
 cidr_subnet_vpn                            = ["10.0.133.0/24"]
 cidr_subnet_selfcare_be                    = ["10.0.137.0/24"]
 cidr_subnet_devportalservicedata_db_server = ["10.0.138.0/24"]
+cidr_subnet_services                       = ["10.0.139.0/26", "10.0.139.64/26"]
 cidr_subnet_appbackendl1                   = ["10.0.152.0/24"]
 cidr_subnet_appbackendl2                   = ["10.0.153.0/24"]
 cidr_subnet_appbackendli                   = ["10.0.154.0/24"]
@@ -158,6 +159,14 @@ function_app_sku_size          = "P1v3"
 function_app_autoscale_minimum = 1
 function_app_autoscale_maximum = 30
 function_app_autoscale_default = 10
+
+# Functions Services
+function_services_kind              = "Linux"
+function_services_sku_tier          = "PremiumV3"
+function_services_sku_size          = "P1v3"
+function_services_autoscale_minimum = 1
+function_services_autoscale_maximum = 30
+function_services_autoscale_default = 10
 
 # Functions App Async
 function_app_async_kind              = "Linux"
