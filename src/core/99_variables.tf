@@ -222,15 +222,14 @@ variable "cidr_subnet_cgn" {
   description = "Function cgn address space."
 }
 
-<<<<<<< HEAD
 variable "cidr_subnet_shared_1" {
   type        = list(string)
   description = "Function cgn address space."
-=======
+}
+
 variable "cidr_subnet_eucovidcert" {
   type        = list(string)
   description = "Function App EUCovidCert address space."
->>>>>>> main
 }
 
 ## VPN ##
