@@ -36,6 +36,10 @@ data "azurerm_key_vault_secret" "fn_services_notification_service_blacklist_id" 
   key_vault_id = data.azurerm_key_vault.common.id
 }
 
+data "azurerm_key_vault_secret" "fn_services_beta_users" {
+  name         = "io-fn-services-BETA-USERS"
+  key_vault_id = data.azurerm_key_vault.common.id
+}
 
 data "azurerm_key_vault_secret" "fn_services_io_service_key" {
   name         = "apim-IO-SERVICE-KEY"
@@ -107,21 +111,21 @@ locals {
       WEBSITE_PROACTIVE_AUTOHEAL_ENABLED = "True"
 
       // the duration of message and message-status for those messages sent to user not registered on IO.
-      TTL_FOR_USER_NOT_FOUND = 60 * 60 * 24 * 365 * 3 //3 years in seconds
-      FEATURE_FLAG = ALL
-      BETA_USERS = [] // list of CF representing beta users
+      TTL_FOR_USER_NOT_FOUND = "${60 * 60 * 24 * 365 * 3}" //3 years in seconds
+      FEATURE_FLAG = "ALL"
 
       #########################
       # Secrets
       #########################
       MAILUP_USERNAME                        = trimspace(data.azurerm_key_vault_secret.fn_services_mailup_username.value)
       MAILUP_SECRET                          = trimspace(data.azurerm_key_vault_secret.fn_services_mailup_password.value)
-      WEBHOOK_CHANNEL_URL                    = data.azurerm_key_vault_secret.fn_services_webhook_channel_url
-      SANDBOX_FISCAL_CODE                    = data.azurerm_key_vault_secret.fn_services_sandbox_fiscal_code
-      EMAIL_NOTIFICATION_SERVICE_BLACKLIST   = data.azurerm_key_vault_secret.fn_services_email_service_blacklist_id
-      WEBHOOK_NOTIFICATION_SERVICE_BLACKLIST = data.azurerm_key_vault_secret.fn_services_notification_service_blacklist_id
-      IO_FUNCTIONS_ADMIN_API_TOKEN           = data.azurerm_key_vault_secret.fn_services_io_service_key
-      APIM_SUBSCRIPTION_KEY                  = data.azurerm_key_vault_secret.fn_services_io_service_key
+      WEBHOOK_CHANNEL_URL                    = data.azurerm_key_vault_secret.fn_services_webhook_channel_url.value
+      SANDBOX_FISCAL_CODE                    = data.azurerm_key_vault_secret.fn_services_sandbox_fiscal_code.value
+      EMAIL_NOTIFICATION_SERVICE_BLACKLIST   = data.azurerm_key_vault_secret.fn_services_email_service_blacklist_id.value
+      WEBHOOK_NOTIFICATION_SERVICE_BLACKLIST = data.azurerm_key_vault_secret.fn_services_notification_service_blacklist_id.value
+      IO_FUNCTIONS_ADMIN_API_TOKEN           = data.azurerm_key_vault_secret.fn_services_io_service_key.value
+      APIM_SUBSCRIPTION_KEY                  = data.azurerm_key_vault_secret.fn_services_io_service_key.value
+      BETA_USERS                             = data.azurerm_key_vault_secret.fn_services_beta_users.value
     }
     app_settings_1 = {
     }
@@ -215,6 +219,7 @@ module "function_services" {
   allowed_subnets = [
     module.services_snet[count.index].id,
     module.apim_snet.id,
+    module.function_eucovidcert_snet.id,
   ]
 
   tags = var.tags
@@ -258,6 +263,7 @@ module "function_services_staging_slot" {
   allowed_subnets = [
     module.services_snet[count.index].id,
     module.apim_snet.id,
+    module.function_eucovidcert_snet.id,
   ]
 
   tags = var.tags
