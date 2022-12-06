@@ -84,15 +84,15 @@ locals {
       // we keep this while we wait for new app version to be deployed
       MAIL_FROM_DEFAULT = "IO - l'app dei servizi pubblici <no-reply@io.italia.it>"
 
-      IO_FUNCTIONS_ADMIN_BASE_URL       = "http://api-app.internal.io.pagopa.it"
+      IO_FUNCTIONS_ADMIN_BASE_URL       = "https://api-app.internal.io.pagopa.it"
       APIM_BASE_URL                     = "https://api-app.internal.io.pagopa.it"
       DEFAULT_SUBSCRIPTION_PRODUCT_NAME = "io-services-api"
 
       // setting to true all the webhook message content will be disabled
       FF_DISABLE_WEBHOOK_MESSAGE_CONTENT = "false"
 
-      OPT_OUT_EMAIL_SWITCH_DATE = var.opt_out_email_switch_date
-      FF_OPT_IN_EMAIL_ENABLED   = var.ff_opt_in_email_enabled
+      OPT_OUT_EMAIL_SWITCH_DATE = local.opt_out_email_switch_date
+      FF_OPT_IN_EMAIL_ENABLED   = local.ff_opt_in_email_enabled
 
       # setting to allow the retrieve of the payment status from payment-updater
       FF_PAYMENT_STATUS_ENABLED = "true"
@@ -191,11 +191,11 @@ module "function_services" {
     local.function_services.app_settings, {
       # Disabled functions on slot - trigger, queue and timer
       # mark this configurations as slot settings
-      "AzureWebJobs.CreateNotification.Disabled"     = "0"
-      "AzureWebJobs.EmailNotification.Disabled"      = "0"
-      "AzureWebJobs.OnFailedProcessMessage.Disabled" = "0"
-      "AzureWebJobs.ProcessMessage.Disabled"         = "0"
-      "AzureWebJobs.WebhookNotification.Disabled"    = "0"
+      "AzureWebJobs.CreateNotification.Disabled"     = "0",
+      "AzureWebJobs.EmailNotification.Disabled"      = "0",
+      "AzureWebJobs.OnFailedProcessMessage.Disabled" = "0",
+      "AzureWebJobs.ProcessMessage.Disabled"         = "0",
+      "AzureWebJobs.WebhookNotification.Disabled"    = "0",
     }
   )
 
@@ -246,11 +246,11 @@ module "function_services_staging_slot" {
     local.function_services.app_settings_common,
     # Disabled functions on slot - trigger, queue and timer
     # mark this configurations as slot settings
-    "AzureWebJobs.CreateNotification.Disabled"     = "1"
-    "AzureWebJobs.EmailNotification.Disabled"      = "1"
-    "AzureWebJobs.OnFailedProcessMessage.Disabled" = "1"
-    "AzureWebJobs.ProcessMessage.Disabled"         = "1"
-    "AzureWebJobs.WebhookNotification.Disabled"    = "1"
+    "AzureWebJobs.CreateNotification.Disabled"     = "1",
+    "AzureWebJobs.EmailNotification.Disabled"      = "1",
+    "AzureWebJobs.OnFailedProcessMessage.Disabled" = "1",
+    "AzureWebJobs.ProcessMessage.Disabled"         = "1",
+    "AzureWebJobs.WebhookNotification.Disabled"    = "1",
   )
 
   subnet_id = module.services_snet[count.index].id
