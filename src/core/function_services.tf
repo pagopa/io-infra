@@ -31,11 +31,6 @@ data "azurerm_key_vault_secret" "fn_services_notification_service_blacklist_id" 
   key_vault_id = data.azurerm_key_vault.common.id
 }
 
-data "azurerm_key_vault_secret" "fn_services_notification_service_blacklist_id" {
-  name         = "io-NOTIFICATION-SERVICE-BLACKLIST-ID"
-  key_vault_id = data.azurerm_key_vault.common.id
-}
-
 data "azurerm_key_vault_secret" "fn_services_beta_users" {
   name         = "io-fn-services-BETA-USERS"
   key_vault_id = data.azurerm_key_vault.common.id
