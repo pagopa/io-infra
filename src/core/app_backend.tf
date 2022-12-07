@@ -1046,9 +1046,9 @@ resource "azurerm_monitor_metric_alert" "too_many_http_5xx" {
   auto_mitigate = false
 
   # Metric info
-  #https://learn.microsoft.com/en-us/azure/azure-monitor/essentials/metrics-supported#microsoftwebhostingenvironmentsmultirolepools
+  # https://learn.microsoft.com/en-us/azure/azure-monitor/essentials/metrics-supported#microsoftwebsites
   dynamic_criteria {
-    metric_namespace         = "Microsoft.Web/hostingEnvironments/multiRolePools"
+    metric_namespace         = "Microsoft.Web/sites"
     metric_name              = "Http5xx"
     aggregation              = "Total"
     operator                 = "GreaterThan"
