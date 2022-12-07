@@ -192,6 +192,11 @@ variable "cidr_subnet_app" {
   description = "Function app address space."
 }
 
+variable "cidr_subnet_services" {
+  type        = list(string)
+  description = "Function services address space."
+}
+
 variable "cidr_subnet_app_async" {
   type        = list(string)
   description = "Function app async address space."
@@ -581,6 +586,52 @@ variable "function_app_autoscale_default" {
   description = "The number of instances that are available for scaling if metrics are not available for evaluation."
   default     = 1
 }
+
+################################
+# Function Services
+################################
+variable "function_services_count" {
+  type    = number
+  default = 2
+}
+
+variable "function_services_kind" {
+  type        = string
+  description = "App service plan kind"
+  default     = null
+}
+
+variable "function_services_sku_tier" {
+  type        = string
+  description = "App service plan sku tier"
+  default     = null
+}
+
+variable "function_services_sku_size" {
+  type        = string
+  description = "App service plan sku size"
+  default     = null
+}
+
+variable "function_services_autoscale_minimum" {
+  type        = number
+  description = "The minimum number of instances for this resource."
+  default     = 1
+}
+
+variable "function_services_autoscale_maximum" {
+  type        = number
+  description = "The maximum number of instances for this resource."
+  default     = 30
+}
+
+variable "function_services_autoscale_default" {
+  type        = number
+  description = "The number of instances that are available for scaling if metrics are not available for evaluation."
+  default     = 1
+}
+
+
 
 # Function App Async
 variable "function_app_async_kind" {
