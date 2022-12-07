@@ -126,8 +126,6 @@
 
 | Name | Type |
 |------|------|
-| [azurerm_api_management_api_operation.submit_message_for_user](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_api_operation) | resource |
-| [azurerm_api_management_api_operation.submit_message_for_user_with_fiscalcode_in_body](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_api_operation) | resource |
 | [azurerm_api_management_api_operation_policy.submit_message_for_user_policy](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_api_operation_policy) | resource |
 | [azurerm_api_management_api_operation_policy.submit_message_for_user_with_fiscalcode_in_body_policy](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_api_operation_policy) | resource |
 | [azurerm_api_management_api_version_set.io_backend_app_api](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_api_version_set) | resource |

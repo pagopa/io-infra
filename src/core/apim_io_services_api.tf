@@ -14,40 +14,42 @@ module "apim_product_services" {
   policy_xml = file("./api_product/io_services/_base_policy.xml")
 }
 
-resource "azurerm_api_management_api_operation" "submit_message_for_user" {
-  operation_id        = "submitMessageforUser"
-  api_name            = "io-services-api"
-  api_management_name = module.apim.name
-  resource_group_name = module.apim.resource_group_name
-  display_name        = "Submit a Message passing the user fiscal_code as path parameter"
-  method              = "POST"
-  url_template        = "/messages/{fiscal_code}"
-}
+# TODO plugin crash
+# resource "azurerm_api_management_api_operation" "submit_message_for_user" {
+#   operation_id        = "submitMessageforUser"
+#   api_name            = "io-services-api"
+#   api_management_name = module.apim.name
+#   resource_group_name = module.apim.resource_group_name
+#   display_name        = "Submit a Message passing the user fiscal_code as path parameter"
+#   method              = "POST"
+#   url_template        = "/messages/{fiscal_code}"
+# }
 
 resource "azurerm_api_management_api_operation_policy" "submit_message_for_user_policy" {
-  api_name            = azurerm_api_management_api_operation.submit_message_for_user.api_name
-  api_management_name = azurerm_api_management_api_operation.submit_message_for_user.api_management_name
-  resource_group_name = azurerm_api_management_api_operation.submit_message_for_user.resource_group_name
-  operation_id        = azurerm_api_management_api_operation.submit_message_for_user.operation_id
+  api_name            = "io-services-api" # azurerm_api_management_api_operation.submit_message_for_user.api_name
+  api_management_name = module.apim.name
+  resource_group_name = module.apim.resource_group_name
+  operation_id        = "submitMessageforUser" # azurerm_api_management_api_operation.submit_message_for_user.operation_id
 
   xml_content = file("./api/io_services/v1/post_submitmessageforuser_policy/policy.xml")
 }
 
-resource "azurerm_api_management_api_operation" "submit_message_for_user_with_fiscalcode_in_body" {
-  operation_id        = "submitMessageforUserWithFiscalCodeInBody"
-  api_name            = "io-services-api"
-  api_management_name = module.apim.name
-  resource_group_name = module.apim.resource_group_name
-  display_name        = "Submit a Message passing the user fiscal_code in the request body"
-  method              = "POST"
-  url_template        = "/messages"
-}
+# TODO plugin crash
+# resource "azurerm_api_management_api_operation" "submit_message_for_user_with_fiscalcode_in_body" {
+#   operation_id        = "submitMessageforUserWithFiscalCodeInBody"
+#   api_name            = "io-services-api"
+#   api_management_name = module.apim.name
+#   resource_group_name = module.apim.resource_group_name
+#   display_name        = "Submit a Message passing the user fiscal_code in the request body"
+#   method              = "POST"
+#   url_template        = "/messages"
+# }
 
 resource "azurerm_api_management_api_operation_policy" "submit_message_for_user_with_fiscalcode_in_body_policy" {
-  api_name            = azurerm_api_management_api_operation.submit_message_for_user_with_fiscalcode_in_body.api_name
-  api_management_name = azurerm_api_management_api_operation.submit_message_for_user_with_fiscalcode_in_body.api_management_name
-  resource_group_name = azurerm_api_management_api_operation.submit_message_for_user_with_fiscalcode_in_body.resource_group_name
-  operation_id        = azurerm_api_management_api_operation.submit_message_for_user_with_fiscalcode_in_body.operation_id
+  api_name            = "io-services-api" # azurerm_api_management_api_operation.submit_message_for_user_with_fiscalcode_in_body.api_name
+  api_management_name = module.apim.name
+  resource_group_name = module.apim.resource_group_name
+  operation_id        = "submitMessageforUserWithFiscalCodeInBody" # azurerm_api_management_api_operation.submit_message_for_user_with_fiscalcode_in_body.operation_id
 
   xml_content = file("./api/io_services/v1/post_submitmessageforuserwithfiscalcodeinbody_policy/policy.xml")
 }
