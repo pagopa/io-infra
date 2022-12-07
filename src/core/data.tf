@@ -224,11 +224,12 @@ resource "azurerm_monitor_metric_alert" "cosmos_api_throttling_alert" {
   # Metric info
   # https://learn.microsoft.com/en-us/azure/azure-monitor/essentials/metrics-supported#microsoftdocumentdbdatabaseaccounts
   criteria {
-    metric_namespace = "Microsoft.DocumentDB/databaseAccounts"
-    metric_name      = "TotalRequestUnits"
-    aggregation      = "Total"
-    operator         = "GreaterThan"
-    threshold        = 0
+    metric_namespace       = "Microsoft.DocumentDB/databaseAccounts"
+    metric_name            = "TotalRequestUnits"
+    aggregation            = "Total"
+    operator               = "GreaterThan"
+    threshold              = 0
+    skip_metric_validation = false
 
 
     dimension {
@@ -250,6 +251,9 @@ resource "azurerm_monitor_metric_alert" "cosmos_api_throttling_alert" {
   }
 
   action {
-    action_group_id = azurerm_monitor_action_group.error_action_group.id
+    action_group_id    = azurerm_monitor_action_group.error_action_group.id
+    webhook_properties = null
   }
+
+  tags = var.tags
 }
