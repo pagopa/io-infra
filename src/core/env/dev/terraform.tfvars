@@ -26,10 +26,12 @@ cidr_subnet_eventhub = ["10.1.xxx.xxx/xx"]
 ##
 
 ## Monitor
-log_analytics_workspace_name    = "io-p-law-common"
-application_insights_name       = "io-p-ai-common"
-monitor_action_group_email_name = "EMAIL PAGOPA-ALERTS"
-monitor_action_group_slack_name = "SLACK PAGOPA_STATUS"
+log_analytics_workspace_name                = "io-p-law-common"
+application_insights_name                   = "io-p-ai-common"
+monitor_resource_group_name                 = "io-p-rg-common"
+log_analytics_workspace_resource_group_name = "io-p-rg-common"
+monitor_action_group_email_name             = "EMAIL PAGOPA-ALERTS"
+monitor_action_group_slack_name             = "SLACK PAGOPA_STATUS"
 ##
 
 ## Event hub
