@@ -385,6 +385,7 @@ resource "azurerm_monitor_metric_alert" "function_services_health_check" {
   severity            = 1
   frequency           = "PT5M"
   auto_mitigate       = false
+  enabled             = false
 
   criteria {
     metric_namespace = "Microsoft.Web/sites"
