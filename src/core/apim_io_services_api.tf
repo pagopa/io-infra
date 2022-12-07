@@ -1,5 +1,5 @@
 ## Api Operator Search
-module "apim_product_fn_services" {
+module "apim_product_services" {
   source = "git::https://github.com/pagopa/azurerm.git//api_management_product?ref=v2.1.20"
 
   product_id            = "io-services-api"
@@ -11,7 +11,7 @@ module "apim_product_fn_services" {
   approval_required     = false
   published             = true
 
-  policy_xml = file("./api_product/io_fn_services/_base_policy.xml")
+  policy_xml = file("./api_product/io_services/_base_policy.xml")
 }
 
 resource "azurerm_api_management_api_operation" "submit_message_for_user" {
@@ -30,7 +30,7 @@ resource "azurerm_api_management_api_operation_policy" "submit_message_for_user_
   resource_group_name = azurerm_api_management_api_operation.submit_message_for_user.resource_group_name
   operation_id        = azurerm_api_management_api_operation.submit_message_for_user.operation_id
 
-  xml_content = file("./api/io_fn_services/v1/post_submitmessageforuser_policy/policy.xml")
+  xml_content = file("./api/io_services/v1/post_submitmessageforuser_policy/policy.xml")
 }
 
 resource "azurerm_api_management_api_operation" "submit_message_for_user_with_fiscalcode_in_body" {
@@ -49,7 +49,7 @@ resource "azurerm_api_management_api_operation_policy" "submit_message_for_user_
   resource_group_name = azurerm_api_management_api_operation.submit_message_for_user_with_fiscalcode_in_body.resource_group_name
   operation_id        = azurerm_api_management_api_operation.submit_message_for_user_with_fiscalcode_in_body.operation_id
 
-  xml_content = file("./api/io_fn_services/v1/post_submitmessageforuserwithfiscalcodeinbody_policy/policy.xml")
+  xml_content = file("./api/io_services/v1/post_submitmessageforuserwithfiscalcodeinbody_policy/policy.xml")
 
 }
 
@@ -114,7 +114,7 @@ resource "azurerm_api_management_named_value" "api_gad_client_certificate_verifi
   secret              = "true"
 }
 
-module "api_fn_services" {
+module "api_services" {
   source = "git::https://github.com/pagopa/azurerm.git//api_management_api?ref=v2.1.19"
 
   name                  = "io-services-api"
@@ -126,19 +126,18 @@ module "api_fn_services" {
   
   path                  = "api/v1"
   protocols             = ["http", "https"]
-  product_ids         = [module.apim_product_fn_services.product_id]
+  product_ids         = [module.apim_product_services.product_id]
 
   # service_url         = local.apim_io_backend_api.service_url
 
-  revision              = "1"
   subscription_required = true
 
   content_format = "swagger-json"
-  content_value = templatefile("./api/io_fn_services/v1/_swagger.json.tpl",
+  content_value = templatefile("./api/io_services/v1/_swagger.json.tpl",
     {
       host = "api.io.pagopa.it"
     }
   )
 
-  xml_content = file("./api/io_fn_services/v1/policy.xml")
+  xml_content = file("./api/io_services/v1/policy.xml")
 }
