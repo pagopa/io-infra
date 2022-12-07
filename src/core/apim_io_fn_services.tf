@@ -11,10 +11,6 @@ module "apim_product_fn_services" {
   approval_required     = false
   published             = true
 
-  product_id   = "cgnoperatorsearch"
-  display_name = "IO CGN API OPERATOR SEARCH"
-  description  = "Product for CGN Operator Search Api"
-
   policy_xml = file("./api_product/io_fn_services/_base_policy.xml")
 }
 
