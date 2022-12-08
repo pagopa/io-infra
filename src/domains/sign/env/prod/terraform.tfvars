@@ -48,15 +48,11 @@ io_sign_database_user = {
 }
 
 io_sign_issuer_func = {
-  version = "io-func-sign-issuer-0.9.1"
-  # TODO(SFEQS-1194) Set recommended production values
-  sku_tier = "Basic"
-  sku_size = "B1"
+  sku_tier = "PremiumV3"
+  sku_size = "P1v3"
 }
 
 io_sign_user_func = {
-  version = "io-func-sign-user-0.1.0"
-  # TODO(SFEQS-1194) Set recommended production values
-  sku_tier = "Basic"
-  sku_size = "B1"
+  sku_tier = "PremiumV3"
+  sku_size = "P1v3"
 }

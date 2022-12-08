@@ -77,7 +77,6 @@ variable "io_sign_database_user" {
 
 variable "io_sign_issuer_func" {
   type = object({
-    version  = string
     sku_tier = string
     sku_size = string
   })
@@ -85,7 +84,6 @@ variable "io_sign_issuer_func" {
 
 variable "io_sign_user_func" {
   type = object({
-    version  = string
     sku_tier = string
     sku_size = string
   })
