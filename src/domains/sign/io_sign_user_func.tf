@@ -1,5 +1,8 @@
 locals {
   io_sign_user_func = {
+    staging_disabled = [
+      "FillDocument"
+    ]
     app_settings = {
       FUNCTIONS_WORKER_RUNTIME                        = "node"
       WEBSITE_VNET_ROUTE_ALL                          = "1"
@@ -33,9 +36,7 @@ module "io_sign_user_func" {
   location            = azurerm_resource_group.backend_rg.location
   resource_group_name = azurerm_resource_group.backend_rg.name
 
-  # Health check should not be enabled on Premium Functions
-  # https://learn.microsoft.com/en-us/azure/app-service/monitor-instances-health-check?tabs=dotnet#limitations
-  # health_check_path   = "/api/v1/sign/info"
+  health_check_path = "/api/v1/sign/info"
 
   os_type          = "linux"
   runtime_version  = "~4"
@@ -49,7 +50,15 @@ module "io_sign_user_func" {
     maximum_elastic_worker_count = 0
   }
 
-  app_settings = local.io_sign_user_func.app_settings
+  app_settings = merge(
+    local.io_sign_user_func.app_settings,
+    {
+      # Enable functions on production triggered by queue and timer
+      # They had to be disabled in slots
+      for to_disable in local.io_sign_user_func.staging_disabled :
+      format("AzureWebJobs.%s.Disabled", to_disable) => "false"
+    }
+  )
 
   subnet_id       = module.io_sign_user_snet.id
   allowed_subnets = [module.io_sign_user_snet.id]
@@ -71,9 +80,7 @@ module "io_sign_user_func_staging_slot" {
   function_app_id     = module.io_sign_user_func.id
   app_service_plan_id = module.io_sign_user_func.app_service_plan_id
 
-  # Health check should not be enabled on Premium Functions
-  # https://learn.microsoft.com/en-us/azure/app-service/monitor-instances-health-check?tabs=dotnet#limitations
-  # health_check_path   = "/api/v1/sign/info"
+  health_check_path = "/api/v1/sign/info"
 
   storage_account_name       = module.io_sign_user_func.storage_account.name
   storage_account_access_key = module.io_sign_user_func.storage_account.primary_access_key
@@ -84,7 +91,15 @@ module "io_sign_user_func_staging_slot" {
   linux_fx_version                         = "NODE|16"
   application_insights_instrumentation_key = data.azurerm_application_insights.application_insights.instrumentation_key
 
-  app_settings = local.io_sign_user_func.app_settings
+  app_settings = merge(
+    local.io_sign_user_func.app_settings,
+    {
+      # Disabled functions on slot triggered by queue and timer
+      # Manualy mark this configurations as slot settings
+      for to_disable in local.io_sign_user_func.staging_disabled :
+      format("AzureWebJobs.%s.Disabled", to_disable) => "true"
+    }
+  )
 
   subnet_id = module.io_sign_user_snet.id
 
