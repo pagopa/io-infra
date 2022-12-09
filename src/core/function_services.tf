@@ -213,7 +213,9 @@ module "function_services" {
       "notification-created-webhook",
       "notification-created-webhook-poison",
     ],
-    "containers"           = [],
+    "containers" = [
+      "processing-messages",
+    ],
     "blobs_retention_days" = 1,
   }
 
@@ -224,6 +226,7 @@ module "function_services" {
     data.azurerm_subnet.azdoa_snet[0].id,
     module.apim_snet.id,
     module.function_eucovidcert_snet.id,
+    data.azurerm_subnet.fnapp_eucovidcert_subnet_out.id,
   ]
 
   tags = var.tags
@@ -270,6 +273,7 @@ module "function_services_staging_slot" {
     data.azurerm_subnet.azdoa_snet[0].id,
     module.apim_snet.id,
     module.function_eucovidcert_snet.id,
+    data.azurerm_subnet.fnapp_eucovidcert_subnet_out.id,
   ]
 
   tags = var.tags
@@ -301,14 +305,14 @@ resource "azurerm_monitor_autoscale_setting" "function_services_autoscale" {
         time_window              = "PT5M"
         time_aggregation         = "Average"
         operator                 = "GreaterThan"
-        threshold                = 3000
+        threshold                = 2500
         divide_by_instance_count = false
       }
 
       scale_action {
         direction = "Increase"
         type      = "ChangeCount"
-        value     = "2"
+        value     = "5"
         cooldown  = "PT5M"
       }
     }
@@ -323,14 +327,14 @@ resource "azurerm_monitor_autoscale_setting" "function_services_autoscale" {
         time_window              = "PT5M"
         time_aggregation         = "Average"
         operator                 = "GreaterThan"
-        threshold                = 45
+        threshold                = 40
         divide_by_instance_count = false
       }
 
       scale_action {
         direction = "Increase"
         type      = "ChangeCount"
-        value     = "2"
+        value     = "5"
         cooldown  = "PT5M"
       }
     }
@@ -345,7 +349,7 @@ resource "azurerm_monitor_autoscale_setting" "function_services_autoscale" {
         time_window              = "PT5M"
         time_aggregation         = "Average"
         operator                 = "LessThan"
-        threshold                = 2000
+        threshold                = 1500
         divide_by_instance_count = false
       }
 
@@ -367,7 +371,7 @@ resource "azurerm_monitor_autoscale_setting" "function_services_autoscale" {
         time_window              = "PT5M"
         time_aggregation         = "Average"
         operator                 = "LessThan"
-        threshold                = 30
+        threshold                = 25
         divide_by_instance_count = false
       }
 
@@ -412,11 +416,11 @@ resource "azurerm_monitor_metric_alert" "function_services_health_check" {
   }
 }
 
-## Containers
+# ## Containers
 
-resource "azurerm_storage_container" "container_processing_messages" {
-  count                 = var.function_services_count
-  name                  = "processing-messages"
-  storage_account_name  = module.function_services[count.index].storage_account_internal_function.name
-  container_access_type = "private"
-}
+# resource "azurerm_storage_container" "container_processing_messages" {
+#   count                 = var.function_services_count
+#   name                  = "processing-messages"
+#   storage_account_name  = module.function_services[count.index].storage_account_internal_function.name
+#   container_access_type = "private"
+# }
