@@ -203,8 +203,19 @@ module "function_services" {
     "private_dns_zone_blob_ids"  = [data.azurerm_private_dns_zone.privatelink_blob_core_windows_net.id],
     "private_dns_zone_queue_ids" = [data.azurerm_private_dns_zone.privatelink_queue_core_windows_net.id],
     "private_dns_zone_table_ids" = [data.azurerm_private_dns_zone.privatelink_table_core_windows_net.id],
-    "queues"                     = [],
-    "containers"                 = [],
+    "queues"                     = [
+      "message-created",
+      "message-created-poison",
+      "message-processed",
+      "message-processed-poison",
+      "notification-created-email",
+      "notification-created-email-poison",
+      "notification-created-webhook",
+      "notification-created-webhook-poison",
+    ],
+    "containers"                 = [
+      "processing-messages"
+    ],
     "blobs_retention_days"       = 1,
   }
 
