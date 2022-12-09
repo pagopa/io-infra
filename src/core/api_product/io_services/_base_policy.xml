@@ -2,9 +2,17 @@
     <inbound>
         <base />
         <choose>
-          <when condition="@(context.User.Groups.All(g => g.Name != "ApiNoRateLimit"))">
-            <rate-limit calls="150" renewal-period="5" remaining-calls-header-name="x-rate-limit-remaining" retry-after-header-name="x-rate-limit-retry-after" />
-          </when>
+            <when condition="@(context.User.Groups.Select(g => g.Name).Contains("ApiNoRateLimit"))">
+                <!-- ApiNoRateLimit for internal/special users -->
+            </when>
+            <when condition="@(context.User.Groups.Select(g => g.Name).Contains("ApiRateLimit250"))">
+                <!-- ApiRateLimit 250 requests/5seconds for fast premium users -->
+                <rate-limit-by-key calls="250" renewal-period="5" counter-key="@(context.User.Id)" retry-after-header-name="x-rate-limit-retry-after" remaining-calls-header-name="x-rate-limit-remaining" />
+            </when>
+            <otherwise>
+                <!-- ApiRateLimit 150 requests/5seconds for fast standard users -->
+                <rate-limit-by-key calls="150" renewal-period="5" counter-key="@(context.User.Id)" retry-after-header-name="x-rate-limit-retry-after" remaining-calls-header-name="x-rate-limit-remaining" />
+            </otherwise>
         </choose>
     </inbound>
     <backend>
