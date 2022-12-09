@@ -155,7 +155,7 @@ module "function_devportalservicedata" {
 
   runtime_version   = "~3"
   os_type           = "linux"
-  health_check_path = "api/v1/info"
+  health_check_path = "/api/v1/info"
 
   subnet_id   = local.function_devportalservicedata.app_context.snet.id
   allowed_ips = local.app_insights_ips_west_europe
@@ -193,7 +193,7 @@ module "function_devportalservicedata_staging_slot" {
 
   runtime_version   = "~3"
   os_type           = "linux"
-  health_check_path = "api/v1/info"
+  health_check_path = "/api/v1/info"
 
   subnet_id = local.function_devportalservicedata.app_context.snet.id
   allowed_ips = concat(

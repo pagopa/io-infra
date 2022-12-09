@@ -164,7 +164,7 @@ module "function_app" {
   resource_group_name = azurerm_resource_group.app_rg[count.index].name
   name                = format("%s-app-fn-%d", local.project, count.index + 1)
   location            = var.location
-  health_check_path   = "api/v1/info"
+  health_check_path   = "/api/v1/info"
 
   os_type          = "linux"
   linux_fx_version = "NODE|14"
@@ -217,7 +217,7 @@ module "function_app_staging_slot" {
   function_app_name   = module.function_app[count.index].name
   function_app_id     = module.function_app[count.index].id
   app_service_plan_id = module.function_app[count.index].app_service_plan_id
-  health_check_path   = "api/v1/info"
+  health_check_path   = "/api/v1/info"
 
   storage_account_name               = module.function_app[count.index].storage_account.name
   storage_account_access_key         = module.function_app[count.index].storage_account.primary_access_key
