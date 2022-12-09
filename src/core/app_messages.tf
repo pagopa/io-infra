@@ -142,7 +142,7 @@ module "app_messages_function" {
   resource_group_name = azurerm_resource_group.app_messages_rg[count.index].name
   name                = format("%s-app-messages-fn-%d", local.project, count.index + 1)
   location            = var.location
-  health_check_path   = "api/v1/info"
+  health_check_path   = "/api/v1/info"
 
   os_type                                  = "linux"
   runtime_version                          = "~3"
@@ -196,7 +196,7 @@ module "app_messages_function_staging_slot" {
   function_app_name   = module.app_messages_function[count.index].name
   function_app_id     = module.app_messages_function[count.index].id
   app_service_plan_id = module.app_messages_function[count.index].app_service_plan_id
-  health_check_path   = "api/v1/info"
+  health_check_path   = "/api/v1/info"
 
   storage_account_name       = module.app_messages_function[count.index].storage_account.name
   storage_account_access_key = module.app_messages_function[count.index].storage_account.primary_access_key

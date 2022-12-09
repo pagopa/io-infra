@@ -170,7 +170,7 @@ module "function_services" {
   resource_group_name = azurerm_resource_group.services_rg[count.index].name
   name                = format("%s-services-fn-%d", local.project, count.index + 1)
   location            = var.location
-  health_check_path   = "api/info"
+  health_check_path   = "/api/info"
 
   os_type          = "linux"
   linux_fx_version = "NODE|14"
@@ -231,7 +231,7 @@ module "function_services_staging_slot" {
   function_app_name   = module.function_services[count.index].name
   function_app_id     = module.function_services[count.index].id
   app_service_plan_id = module.function_services[count.index].app_service_plan_id
-  health_check_path   = "api/info"
+  health_check_path   = "/api/info"
 
   storage_account_name               = module.function_services[count.index].storage_account.name
   storage_account_access_key         = module.function_services[count.index].storage_account.primary_access_key
@@ -385,7 +385,7 @@ resource "azurerm_monitor_metric_alert" "function_services_health_check" {
   severity            = 1
   frequency           = "PT5M"
   auto_mitigate       = false
-  enabled             = false
+  enabled             = true
 
   criteria {
     metric_namespace = "Microsoft.Web/sites"

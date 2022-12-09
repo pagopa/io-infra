@@ -143,7 +143,7 @@ module "function_elt" {
   storage_account_name                     = "${replace(local.project, "-", "")}stfnelt"
   app_service_plan_name                    = "${local.project}-plan-fnelt"
   location                                 = var.location
-  health_check_path                        = "api/v1/info"
+  health_check_path                        = "/api/v1/info"
   subnet_id                                = module.function_elt_snetout.id
   runtime_version                          = "~3"
   application_insights_instrumentation_key = data.azurerm_application_insights.application_insights.instrumentation_key
