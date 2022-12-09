@@ -8,7 +8,6 @@
                 </return-response>
             </when>
         </choose>
-
         <choose>
             <when condition="@(context.Request.Headers.GetValueOrDefault("environment", "false").Equals("services-fn-1"))">
                 <set-backend-service base-url="https://io-p-services-fn-1.azurewebsites.net/api/v1" />
