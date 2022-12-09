@@ -164,7 +164,7 @@ resource "azurerm_resource_group" "services_rg" {
 #tfsec:ignore:azure-storage-queue-services-logging-enabled:exp:2022-05-01 # already ignored, maybe a bug in tfsec
 module "function_services" {
   count  = var.function_services_count
-  source = "git::https://github.com/pagopa/azurerm.git//function_app?ref=v3.4.0"
+  source = "git::https://github.com/pagopa/azurerm.git//function_app?ref=v3.6.1"
 
   resource_group_name = azurerm_resource_group.services_rg[count.index].name
   name                = format("%s-services-fn-%d", local.project, count.index + 1)
@@ -203,9 +203,18 @@ module "function_services" {
     "private_dns_zone_blob_ids"  = [data.azurerm_private_dns_zone.privatelink_blob_core_windows_net.id],
     "private_dns_zone_queue_ids" = [data.azurerm_private_dns_zone.privatelink_queue_core_windows_net.id],
     "private_dns_zone_table_ids" = [data.azurerm_private_dns_zone.privatelink_table_core_windows_net.id],
-    "queues"                     = [],
-    "containers"                 = [],
-    "blobs_retention_days"       = 1,
+    "queues" = [
+      "message-created",
+      "message-created-poison",
+      "message-processed",
+      "message-processed-poison",
+      "notification-created-email",
+      "notification-created-email-poison",
+      "notification-created-webhook",
+      "notification-created-webhook-poison",
+    ],
+    "containers"           = [],
+    "blobs_retention_days" = 1,
   }
 
   subnet_id = module.services_snet[count.index].id
@@ -222,7 +231,7 @@ module "function_services" {
 
 module "function_services_staging_slot" {
   count  = var.function_services_count
-  source = "git::https://github.com/pagopa/azurerm.git//function_app_slot?ref=v3.4.0"
+  source = "git::https://github.com/pagopa/azurerm.git//function_app_slot?ref=v3.6.1"
 
   name                = "staging"
   location            = var.location
@@ -401,4 +410,13 @@ resource "azurerm_monitor_metric_alert" "function_services_health_check" {
   action {
     action_group_id = azurerm_monitor_action_group.slack.id
   }
+}
+
+## Containers
+
+resource "azurerm_storage_container" "container_processing_messages" {
+  count                 = var.function_services_count
+  name                  = "processing-messages"
+  storage_account_name  = module.function_services[count.index].storage_account_internal_function.name
+  container_access_type = "private"
 }
