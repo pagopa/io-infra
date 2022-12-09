@@ -417,6 +417,6 @@ resource "azurerm_monitor_metric_alert" "function_services_health_check" {
 resource "azurerm_storage_container" "container_processing_messages" {
   count                 = var.function_services_count
   name                  = "processing-messages"
-  storage_account_name  = module.function_services[count.index].storage_account.name
+  storage_account_name  = module.function_services[count.index].storage_account_internal_function.name
   container_access_type = "private"
 }
