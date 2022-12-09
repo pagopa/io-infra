@@ -226,6 +226,7 @@ module "function_services" {
     data.azurerm_subnet.azdoa_snet[0].id,
     module.apim_snet.id,
     module.function_eucovidcert_snet.id,
+    data.azurerm_subnet.fnapp_eucovidcert_subnet_out.id,
   ]
 
   tags = var.tags
@@ -272,6 +273,7 @@ module "function_services_staging_slot" {
     data.azurerm_subnet.azdoa_snet[0].id,
     module.apim_snet.id,
     module.function_eucovidcert_snet.id,
+    data.azurerm_subnet.fnapp_eucovidcert_subnet_out.id,
   ]
 
   tags = var.tags
