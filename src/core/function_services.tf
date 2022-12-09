@@ -49,7 +49,6 @@ locals {
   function_services = {
     app_settings_common = {
       FUNCTIONS_WORKER_RUNTIME       = "node"
-      WEBSITE_NODE_DEFAULT_VERSION   = "14.16.0"
       WEBSITE_RUN_FROM_PACKAGE       = "1"
       WEBSITE_VNET_ROUTE_ALL         = "1"
       WEBSITE_DNS_SERVER             = "168.63.129.16"
@@ -165,12 +164,12 @@ resource "azurerm_resource_group" "services_rg" {
 #tfsec:ignore:azure-storage-queue-services-logging-enabled:exp:2022-05-01 # already ignored, maybe a bug in tfsec
 module "function_services" {
   count  = var.function_services_count
-  source = "git::https://github.com/pagopa/azurerm.git//function_app?ref=v3.4.0"
+  source = "git::https://github.com/pagopa/azurerm.git//function_app?ref=v3.6.1"
 
   resource_group_name = azurerm_resource_group.services_rg[count.index].name
   name                = format("%s-services-fn-%d", local.project, count.index + 1)
   location            = var.location
-  health_check_path   = "api/info"
+  health_check_path   = "/api/info"
 
   os_type          = "linux"
   linux_fx_version = "NODE|14"
@@ -204,9 +203,20 @@ module "function_services" {
     "private_dns_zone_blob_ids"  = [data.azurerm_private_dns_zone.privatelink_blob_core_windows_net.id],
     "private_dns_zone_queue_ids" = [data.azurerm_private_dns_zone.privatelink_queue_core_windows_net.id],
     "private_dns_zone_table_ids" = [data.azurerm_private_dns_zone.privatelink_table_core_windows_net.id],
-    "queues"                     = [],
-    "containers"                 = [],
-    "blobs_retention_days"       = 1,
+    "queues" = [
+      "message-created",
+      "message-created-poison",
+      "message-processed",
+      "message-processed-poison",
+      "notification-created-email",
+      "notification-created-email-poison",
+      "notification-created-webhook",
+      "notification-created-webhook-poison",
+    ],
+    "containers" = [
+      "processing-messages",
+    ],
+    "blobs_retention_days" = 1,
   }
 
   subnet_id = module.services_snet[count.index].id
@@ -216,6 +226,7 @@ module "function_services" {
     data.azurerm_subnet.azdoa_snet[0].id,
     module.apim_snet.id,
     module.function_eucovidcert_snet.id,
+    data.azurerm_subnet.fnapp_eucovidcert_subnet_out.id,
   ]
 
   tags = var.tags
@@ -223,7 +234,7 @@ module "function_services" {
 
 module "function_services_staging_slot" {
   count  = var.function_services_count
-  source = "git::https://github.com/pagopa/azurerm.git//function_app_slot?ref=v3.4.0"
+  source = "git::https://github.com/pagopa/azurerm.git//function_app_slot?ref=v3.6.1"
 
   name                = "staging"
   location            = var.location
@@ -231,7 +242,7 @@ module "function_services_staging_slot" {
   function_app_name   = module.function_services[count.index].name
   function_app_id     = module.function_services[count.index].id
   app_service_plan_id = module.function_services[count.index].app_service_plan_id
-  health_check_path   = "api/info"
+  health_check_path   = "/api/info"
 
   storage_account_name               = module.function_services[count.index].storage_account.name
   storage_account_access_key         = module.function_services[count.index].storage_account.primary_access_key
@@ -262,6 +273,7 @@ module "function_services_staging_slot" {
     data.azurerm_subnet.azdoa_snet[0].id,
     module.apim_snet.id,
     module.function_eucovidcert_snet.id,
+    data.azurerm_subnet.fnapp_eucovidcert_subnet_out.id,
   ]
 
   tags = var.tags
@@ -293,14 +305,14 @@ resource "azurerm_monitor_autoscale_setting" "function_services_autoscale" {
         time_window              = "PT5M"
         time_aggregation         = "Average"
         operator                 = "GreaterThan"
-        threshold                = 3000
+        threshold                = 2500
         divide_by_instance_count = false
       }
 
       scale_action {
         direction = "Increase"
         type      = "ChangeCount"
-        value     = "2"
+        value     = "5"
         cooldown  = "PT5M"
       }
     }
@@ -315,14 +327,14 @@ resource "azurerm_monitor_autoscale_setting" "function_services_autoscale" {
         time_window              = "PT5M"
         time_aggregation         = "Average"
         operator                 = "GreaterThan"
-        threshold                = 45
+        threshold                = 40
         divide_by_instance_count = false
       }
 
       scale_action {
         direction = "Increase"
         type      = "ChangeCount"
-        value     = "2"
+        value     = "5"
         cooldown  = "PT5M"
       }
     }
@@ -337,7 +349,7 @@ resource "azurerm_monitor_autoscale_setting" "function_services_autoscale" {
         time_window              = "PT5M"
         time_aggregation         = "Average"
         operator                 = "LessThan"
-        threshold                = 2000
+        threshold                = 1500
         divide_by_instance_count = false
       }
 
@@ -359,7 +371,7 @@ resource "azurerm_monitor_autoscale_setting" "function_services_autoscale" {
         time_window              = "PT5M"
         time_aggregation         = "Average"
         operator                 = "LessThan"
-        threshold                = 30
+        threshold                = 25
         divide_by_instance_count = false
       }
 
@@ -385,7 +397,7 @@ resource "azurerm_monitor_metric_alert" "function_services_health_check" {
   severity            = 1
   frequency           = "PT5M"
   auto_mitigate       = false
-  enabled             = false
+  enabled             = true
 
   criteria {
     metric_namespace = "Microsoft.Web/sites"
@@ -403,3 +415,12 @@ resource "azurerm_monitor_metric_alert" "function_services_health_check" {
     action_group_id = azurerm_monitor_action_group.slack.id
   }
 }
+
+# ## Containers
+
+# resource "azurerm_storage_container" "container_processing_messages" {
+#   count                 = var.function_services_count
+#   name                  = "processing-messages"
+#   storage_account_name  = module.function_services[count.index].storage_account_internal_function.name
+#   container_access_type = "private"
+# }
