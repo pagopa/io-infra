@@ -45,6 +45,11 @@ io_sign_database_user = {
     max_throughput = 1000
     ttl            = null
   }
+  signatures = {
+    # TODO [SFEQS-1200] Refactor terraform provider to v3
+    max_throughput = 1000
+    ttl            = null
+  }
 }
 
 io_sign_issuer_func = {
