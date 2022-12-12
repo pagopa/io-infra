@@ -1072,7 +1072,7 @@ resource "azurerm_monitor_metric_alert" "too_many_http_5xx" {
   }
 
   action {
-    action_group_id = azurerm_monitor_action_group.error_action_group.id
+    action_group_id    = azurerm_monitor_action_group.error_action_group.id
     webhook_properties = null
   }
 
