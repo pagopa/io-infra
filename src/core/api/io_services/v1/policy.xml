@@ -21,19 +21,18 @@
                      when traffic should be redirected to a specific backend pool. i.e: 1/1000 req must be redirected to back-end-1, the remaining must be redirected to
                      default-back-end.
                 -->
-                <set-variable name="urlWeight" value="@{
-                  Random rnd = new Random();
-                  int urlWeight = rnd.Next(1, 1001);
-                  return urlWeight;}" />
+                <set-variable name="weights" value="@{
+                    Random rnd = new Random();
+                    return JObject.FromObject(
+                        new {
+                            urlWeight = rnd.Next(1, 1001),
+                            fnWeight = rnd.Next(1, 101)
+                        });}" />
                 <choose>
-                    <!-- The following policy fragment allows to split traffic up to 50% for each backend pool instance -->
-                    <when condition="@(context.Variables.GetValueOrDefault<int>("urlWeight") <= 1)">
-                        <set-variable name="fnWeight" value="@{
-                            Random rnd = new Random();
-                            int fnWeight = rnd.Next(1, 101);
-                            return fnWeight;}" />
+                    <when condition="@(context.Variables.GetValueOrDefault<JObject>("weights").GetValue("urlWeight").ToObject<int>() <= 1)">
+                        <!-- The following policy fragment allows to split traffic up to 50% for each backend pool instance -->
                         <choose>
-                            <when condition="@(context.Variables.GetValueOrDefault<int>("fnWeight") <= 50)">
+                            <when condition="@(context.Variables.GetValueOrDefault<JObject>("weights").GetValue("fnWeight").ToObject<int>() <= 50)">
                                 <set-backend-service base-url="https://io-p-services-fn-1.azurewebsites.net/api/v1" />
                             </when>
                             <otherwise>
