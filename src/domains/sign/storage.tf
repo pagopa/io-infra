@@ -72,3 +72,13 @@ resource "azurerm_storage_queue" "waiting_message" {
   name                 = "waiting-message"
   storage_account_name = module.io_sign_storage.name
 }
+
+resource "azurerm_storage_queue" "on_signature_request_ready" {
+  name                 = "on-signature-request-ready"
+  storage_account_name = module.io_sign_storage.name
+}
+
+resource "azurerm_storage_queue" "on_signature_request_wait_for_signature" {
+  name                 = "on-signature-request-wait-for-signature"
+  storage_account_name = module.io_sign_storage.name
+}
