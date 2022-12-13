@@ -242,7 +242,7 @@ module "function_services" {
       webhook_properties = null
     }
   ]
-  
+
 
   tags = var.tags
 }
