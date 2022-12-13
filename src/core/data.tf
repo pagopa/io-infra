@@ -203,3 +203,39 @@ data "azurerm_key_vault_secret" "apim_services_subscription_key" {
   name         = "apim-IO-SERVICE-KEY"
   key_vault_id = data.azurerm_key_vault.common.id
 }
+
+
+# -----------------------------------------------
+# Alerts
+# -----------------------------------------------
+
+resource "azurerm_monitor_metric_alert" "iopstapi_throttling_low_availability" {
+
+  name                = "[IO-COMMONS | ${data.azurerm_storage_account.api}] Low Availability"
+  resource_group_name = azurerm_resource_group.rg_linux.name
+  scopes              = [data.azurerm_storage_account.api.id]
+  # TODO: add Runbook for checking errors
+  description   = "The average availability is less than 99.8%. Runbook: not needed."
+  severity      = 0
+  window_size   = "PT5M"
+  frequency     = "PT5M"
+  auto_mitigate = false
+
+  # Metric info
+  # https://learn.microsoft.com/en-us/azure/azure-monitor/essentials/metrics-supported#microsoftclassicstoragestorageaccountsblobservices
+  criteria {
+    metric_namespace       = "Microsoft.ClassicStorage/storageAccounts"
+    metric_name            = "Availability"
+    aggregation            = "Average"
+    operator               = "LessThan"
+    threshold              = 99.8
+    skip_metric_validation = false
+  }
+
+  action {
+    action_group_id    = azurerm_monitor_action_group.error_action_group.id
+    webhook_properties = null
+  }
+
+  tags = var.tags
+}
