@@ -14,7 +14,7 @@ tags = {
 storage = {
   enable_versioning = false
   delete_after_days = 90
-  replication_type  = "ZRS"
+  replication_type  = "GZRS"
 }
 
 cosmos = {

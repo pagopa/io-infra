@@ -17,6 +17,7 @@ resource "azurerm_api_management_named_value" "io_fn_sign_issuer_key" {
   resource_group_name = data.azurerm_api_management.apim_api.resource_group_name
   display_name        = "io-fn-sign-issuer-key"
   value               = module.key_vault_secrets.values["io-fn-sign-issuer-key"].value
+  secret              = true
 }
 
 module "apim_io_sign_product" {

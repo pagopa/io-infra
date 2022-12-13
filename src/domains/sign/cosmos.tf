@@ -7,6 +7,14 @@ module "cosmosdb_account" {
   main_geo_location_location       = azurerm_resource_group.data_rg.location
   main_geo_location_zone_redundant = var.cosmos.zone_redundant
 
+  additional_geo_locations = [
+    {
+      location          = "northeurope"
+      failover_priority = 1
+      zone_redundant    = true
+    }
+  ]
+
   public_network_access_enabled = false
 
   is_virtual_network_filter_enabled = true

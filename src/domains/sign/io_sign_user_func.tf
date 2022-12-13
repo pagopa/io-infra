@@ -2,7 +2,6 @@ locals {
   io_sign_user_func = {
     app_settings = {
       FUNCTIONS_WORKER_RUNTIME                        = "node"
-      WEBSITE_NODE_DEFAULT_VERSION                    = "16.13.0"
       WEBSITE_VNET_ROUTE_ALL                          = "1"
       WEBSITE_ADD_SITENAME_BINDINGS_IN_APPHOST_CONFIG = "1"
       WEBSITE_DNS_SERVER                              = "168.63.129.16"
@@ -16,7 +15,7 @@ locals {
       userUploadedBlobContainerName                   = azurerm_storage_container.uploaded_documents.name
       userValidatedBlobContainerName                  = azurerm_storage_container.validated_documents.name
       WaitingMessageQueueName                         = azurerm_storage_queue.waiting_message.name
-      IoServicesApiBasePath                           = "https://api.io.italia.it"
+      IoServicesApiBasePath                           = "https://api.io.pagopa.it"
       IoServicesSubscriptionKey                       = module.key_vault_secrets.values["IOApiSubscriptionKey"].value
       PdvTokenizerApiBasePath                         = "https://api.uat.tokenizer.pdv.pagopa.it"
       PdvTokenizerApiKey                              = module.key_vault_secrets.values["TokenizerApiSubscriptionKey"].value
