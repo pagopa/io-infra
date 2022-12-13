@@ -234,11 +234,7 @@ module "function_services" {
   # Action groups for alerts
   action = [
     {
-      action_group_id    = azurerm_monitor_action_group.slack.id
-      webhook_properties = null
-    },
-    {
-      action_group_id    = azurerm_monitor_action_group.email.id
+      action_group_id    = azurerm_monitor_action_group.error_action_group.id
       webhook_properties = null
     }
   ]
