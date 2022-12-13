@@ -201,12 +201,7 @@ module "function_admin" {
   }
 
   app_settings = merge(
-    local.function_admin.app_settings_common, {
-      # TODO: All of this can be removed?
-      "AzureWebJobs.UpdateVisibleServicesCache.Disabled"             = "1"
-      "AzureWebJobs.UpdateVisibleServicesCacheOrchestrator.Disabled" = "1"
-      "AzureWebJobs.UpdateVisibleServicesCacheActivity.Disabled"     = "1"
-    }
+    local.function_admin.app_settings_common
   )
 
   internal_storage = {
@@ -253,9 +248,6 @@ module "function_admin_staging_slot" {
 
   app_settings = merge(
     local.function_admin.app_settings_common, {
-      "AzureWebJobs.UpdateVisibleServicesCache.Disabled"             = "1"
-      "AzureWebJobs.UpdateVisibleServicesCacheOrchestrator.Disabled" = "1"
-      "AzureWebJobs.UpdateVisibleServicesCacheActivity.Disabled"     = "1"
       # Disabled CosmosDB Trigger Activity on slot
       "AzureWebJobs.UserDataProcessingTrigger.Disabled" = "1",
     }
