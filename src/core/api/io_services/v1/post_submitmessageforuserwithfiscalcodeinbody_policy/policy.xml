@@ -3,7 +3,28 @@
         <base />
         <choose>
             <when condition="@(context.User.Groups.Any(g => g.Name == "ApiMessageWriteEUCovidCert"))">
-                <set-backend-service base-url="{{io-fn3-eucovidcert-url}}/api/v1" />
+                <!-- Progressive rollout of the instance io-fn3-eucovidcert-url-alt -->
+                <set-variable name="urlWeight" value="@{
+                  Random rnd = new Random();
+                  int urlWeight = rnd.Next(1, 1001);
+                  return urlWeight;}" />
+                <choose>
+                    <when condition="@(context.Variables.GetValueOrDefault<int>("urlWeight") <= 1)">
+                        <set-backend-service base-url="{{io-fn3-eucovidcert-url}}/api/v1" />
+                    </when>
+                    <when condition="@(context.Variables.GetValueOrDefault<int>("urlWeight") > 1)">
+                        <set-backend-service base-url="{{io-fn3-eucovidcert-url-alt}}/api/v1" />
+                    </when>
+                    <otherwise>
+                        <return-response>
+                            <set-status code="500" reason="InternalServerError" />
+                            <set-header name="Microsoft-Azure-Api-Management-Correlation-Id" exists-action="override">
+                                <value>@{return Guid.NewGuid().ToString();}</value>
+                            </set-header>
+                            <set-body>A gateway-related error occurred while processing the request.</set-body>
+                        </return-response>
+                    </otherwise>
+                </choose>
                 <set-header name="x-functions-key" exists-action="override">
                     <value>{{io-fn3-eucovidcert-key}}</value>
                 </set-header>

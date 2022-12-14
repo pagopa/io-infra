@@ -32,6 +32,15 @@ resource "azurerm_api_management_api_operation_policy" "submit_message_for_user_
   xml_content = file("./api/io_services/v1/post_submitmessageforuserwithfiscalcodeinbody_policy/policy.xml")
 }
 
+resource "azurerm_api_management_api_operation_policy" "create_service_policy" {
+  api_name            = "io-services-api"
+  api_management_name = module.apim.name
+  resource_group_name = module.apim.resource_group_name
+  operation_id        = "createService"
+
+  xml_content = file("./api/io_services/v1/post_createservice_policy/policy.xml")
+}
+
 # Named Value fn3-services
 resource "azurerm_api_management_named_value" "io_fn3_services_url" {
   name                = "io-fn3-services-url"
@@ -62,6 +71,15 @@ resource "azurerm_api_management_named_value" "io_fn3_eucovidcert_url" {
   resource_group_name = module.apim.resource_group_name
   display_name        = "io-fn3-eucovidcert-url"
   value               = "https://io-p-fn3-eucovidcert.azurewebsites.net"
+}
+
+# alternative url, for differential routing (example: progressive rollout)
+resource "azurerm_api_management_named_value" "io_fn3_eucovidcert_url_alt" {
+  name                = "io-fn3-eucovidcert-url-alt"
+  api_management_name = module.apim.name
+  resource_group_name = module.apim.resource_group_name
+  display_name        = "io-fn3-eucovidcert-url-alt"
+  value               = "https://io-p-eucovidcert-fn.azurewebsites.net"
 }
 
 data "azurerm_key_vault_secret" "io_fn3_eucovidcert_key_secret" {
