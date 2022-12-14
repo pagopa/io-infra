@@ -29,7 +29,7 @@
                             fnWeight = rnd.Next(1, 101)
                         });}" />
                 <choose>
-                    <when condition="@(context.Variables.GetValueOrDefault<JObject>("weights").GetValue("urlWeight").ToObject<int>() <= 1)">
+                    <when condition="@(context.Variables.GetValueOrDefault<JObject>("weights").GetValue("urlWeight").ToObject<int>() <= 500)">
                         <!-- The following policy fragment allows to split traffic up to 50% for each backend pool instance -->
                         <choose>
                             <when condition="@(context.Variables.GetValueOrDefault<JObject>("weights").GetValue("fnWeight").ToObject<int>() <= 50)">
