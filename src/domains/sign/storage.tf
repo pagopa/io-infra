@@ -68,6 +68,17 @@ resource "azurerm_storage_container" "signed_documents" {
   container_access_type = "private"
 }
 
+resource "azurerm_storage_container" "filled_modules" {
+  name                  = "filled-modules"
+  storage_account_name  = module.io_sign_storage.name
+  container_access_type = "private"
+}
+
+resource "azurerm_storage_queue" "waiting_for_documents_to_fill" {
+  name                 = "waiting-for-documents-to-fill"
+  storage_account_name = module.io_sign_storage.name
+}
+
 resource "azurerm_storage_queue" "waiting_message" {
   name                 = "waiting-message"
   storage_account_name = module.io_sign_storage.name
