@@ -166,6 +166,7 @@ module "function_services" {
   count  = var.function_services_count
   source = "git::https://github.com/pagopa/azurerm.git//function_app?ref=IOCIT-227--healthcheck-failed-alert"
 
+  domain = "IO-COMMONS"
 
   resource_group_name = azurerm_resource_group.services_rg[count.index].name
   name                = format("%s-services-fn-%d", local.project, count.index + 1)
