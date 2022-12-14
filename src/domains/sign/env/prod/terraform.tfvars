@@ -18,7 +18,8 @@ storage = {
 }
 
 cosmos = {
-  zone_redundant = true
+  # TODO Temporarely disabled due to ServiceUnavailable error
+  zone_redundant = false
 }
 
 io_sign_database_issuer = {
@@ -36,6 +37,11 @@ io_sign_database_issuer = {
     # TODO [SFEQS-1200] Refactor terraform provider to v3
     max_throughput = 1000
     ttl            = 604800
+  }
+  issuers = {
+    # TODO [SFEQS-1200] Refactor terraform provider to v3
+    max_throughput = 1000
+    ttl            = null
   }
 }
 

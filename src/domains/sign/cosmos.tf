@@ -7,13 +7,23 @@ module "cosmosdb_account" {
   main_geo_location_location       = azurerm_resource_group.data_rg.location
   main_geo_location_zone_redundant = var.cosmos.zone_redundant
 
-  additional_geo_locations = [
-    {
-      location          = "northeurope"
-      failover_priority = 1
-      zone_redundant    = true
-    }
-  ]
+  # TODO Temporarely disabled due to Azure Resouces not available in North EU
+  # additional_geo_locations = [
+  #   {
+  #     location          = "northeurope"
+  #     failover_priority = 1
+  #     zone_redundant    = true
+  #   }
+  # ]
+
+  # Having multiple region requires
+  # maximum lag must be between 5 minutes and 1 day
+  # and between 100000 operations and 1000000 operations
+  consistency_policy = {
+    consistency_level       = "BoundedStaleness"
+    max_interval_in_seconds = 300
+    max_staleness_prefix    = 100000
+  }
 
   public_network_access_enabled = false
 

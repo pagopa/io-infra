@@ -14,6 +14,7 @@ locals {
       FUNCTIONS_WORKER_PROCESS_COUNT                  = 4
       AzureWebJobsDisableHomepage                     = "true"
       NODE_ENV                                        = "production"
+      NODE_TLS_REJECT_UNAUTHORIZED                    = 0
       CosmosDbConnectionString                        = module.cosmosdb_account.connection_strings[0]
       CosmosDbDatabaseName                            = module.cosmosdb_sql_database_user.name
       StorageAccountConnectionString                  = module.io_sign_storage.primary_connection_string
@@ -27,6 +28,7 @@ locals {
       NamirialApiBasePath                             = "https://pagopa.demo.bit4id.org"
       NamirialUsername                                = "api"
       NamirialPassword                                = module.key_vault_secrets.values["NamirialPassword"].value
+      SpidAssertionMock                               = module.key_vault_secrets.values["SpidAssertionMock"].value
     }
   }
 }

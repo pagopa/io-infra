@@ -9,6 +9,7 @@ module "key_vault_secrets" {
     "TokenizerApiSubscriptionKey",
     "io-fn-sign-issuer-key",
     "NamirialPassword",
+    "SpidAssertionMock",
   ]
 }
 

@@ -44,7 +44,7 @@ module "apim_io_sign_issuer_api_v1" {
   api_management_name   = data.azurerm_api_management.apim_api.name
   resource_group_name   = data.azurerm_api_management.apim_api.resource_group_name
   product_ids           = [module.apim_io_sign_product.product_id]
-  subscription_required = false
+  subscription_required = true
   service_url           = null
 
   description  = "IO Sign - Issuer API"
