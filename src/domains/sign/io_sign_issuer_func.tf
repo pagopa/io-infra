@@ -1,7 +1,8 @@
 locals {
   io_sign_issuer_func = {
     staging_disabled = [
-      "ValidateUpload"
+      "MarkAsWaitForSignature",
+      "ValidateUpload",
     ]
     app_settings = {
       FUNCTIONS_WORKER_RUNTIME                        = "node"

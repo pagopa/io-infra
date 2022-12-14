@@ -1,7 +1,9 @@
 locals {
   io_sign_user_func = {
     staging_disabled = [
-      "FillDocument"
+      "CreateSignatureRequest",
+      "FillDocument",
+      "ValidateQtspSignature",
     ]
     app_settings = {
       FUNCTIONS_WORKER_RUNTIME                        = "node"
