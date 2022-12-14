@@ -231,6 +231,9 @@ module "function_services" {
     data.azurerm_subnet.fnapp_eucovidcert_subnet_out.id,
   ]
 
+
+  enable_healthcheck = false
+
   # Action groups for alerts
   action = [
     {
