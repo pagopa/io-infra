@@ -73,15 +73,6 @@ resource "azurerm_api_management_named_value" "io_fn3_eucovidcert_url" {
   value               = "https://io-p-fn3-eucovidcert.azurewebsites.net"
 }
 
-# alternative url, for differential routing (example: progressive rollout)
-resource "azurerm_api_management_named_value" "io_fn3_eucovidcert_url_alt" {
-  name                = "io-fn3-eucovidcert-url-alt"
-  api_management_name = module.apim.name
-  resource_group_name = module.apim.resource_group_name
-  display_name        = "io-fn3-eucovidcert-url-alt"
-  value               = "https://io-p-eucovidcert-fn.azurewebsites.net"
-}
-
 data "azurerm_key_vault_secret" "io_fn3_eucovidcert_key_secret" {
   name         = "io-fn3-eucovidcert-KEY-APIM"
   key_vault_id = data.azurerm_key_vault.common.id
