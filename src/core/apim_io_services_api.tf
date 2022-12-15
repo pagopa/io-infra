@@ -78,6 +78,15 @@ resource "azurerm_api_management_named_value" "io_fn3_eucovidcert_key" {
   secret              = "true"
 }
 
+# alternative url, for differential routing (example: progressive rollout)
+resource "azurerm_api_management_named_value" "io_fn3_eucovidcert_url_alt" {
+  name                = "io-fn3-eucovidcert-url-alt"
+  api_management_name = module.apim.name
+  resource_group_name = module.apim.resource_group_name
+  display_name        = "io-fn3-eucovidcert-url-alt"
+  value               = "https://io-p-eucovidcert-fn.azurewebsites.net"
+}
+
 # Named Value api gad certificate header
 data "azurerm_key_vault_secret" "api_gad_client_certificate_verified_header_secret" {
   name         = "apigad-GAD-CLIENT-CERTIFICATE-VERIFIED-HEADER"
