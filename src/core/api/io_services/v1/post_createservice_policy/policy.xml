@@ -5,9 +5,7 @@
             There is an hard-limit o APIM such as creations cannot happen concurrently on the same product
             (because every subscription creation modifies the arm resource).
             In order to mitigate so, we limit concurrency ourself.-->
-        <limit-concurrency key="constant-key-all-users" max-count="10">
-            <forward-request />
-        </limit-concurrency>
+        <limit-concurrency key="constant-key-all-users" max-count="10" />
     </inbound>
     <outbound>
         <base />
