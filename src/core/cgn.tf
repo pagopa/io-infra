@@ -2,6 +2,11 @@ data "azurerm_resource_group" "rg_cgn" {
   name = format("%s-rg-cgn", local.project)
 }
 
+data "azurerm_storage_account" "iopstcgn" {
+  name                = "iopstcgn"
+  resource_group_name = data.azurerm_resource_group.rg_cgn.name
+}
+
 ## redis cgn subnet
 module "redis_cgn_snet" {
   source                                         = "git::https://github.com/pagopa/azurerm.git//subnet?ref=v2.0.26"
