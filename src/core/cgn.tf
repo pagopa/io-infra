@@ -2,6 +2,11 @@ data "azurerm_resource_group" "rg_cgn" {
   name = format("%s-rg-cgn", local.project)
 }
 
+data "azurerm_storage_account" "iopstcgn" {
+  name                = "iopstcgn"
+  resource_group_name = data.azurerm_resource_group.rg_cgn.name
+}
+
 ## redis cgn subnet
 module "redis_cgn_snet" {
   source                                         = "git::https://github.com/pagopa/azurerm.git//subnet?ref=v2.0.26"
@@ -275,6 +280,29 @@ module "api_cgn_merchant" {
   )
 
   xml_content = file("./api/cgn/v1/_base_policy.xml")
+}
+
+# Named Values function-cgn-merchant
+resource "azurerm_api_management_named_value" "io_fn_cgnmerchant_url" {
+  name                = "io-fn-cgnmerchant-url"
+  api_management_name = module.apim.name
+  resource_group_name = module.apim.resource_group_name
+  display_name        = "io-fn-cgnmerchant-url"
+  value               = "https://${module.function_cgn_merchant.default_hostname}"
+}
+
+data "azurerm_key_vault_secret" "io_fn_cgnmerchant_key_secret" {
+  name         = "io-fn-cgnmerchant-KEY-APIM"
+  key_vault_id = data.azurerm_key_vault.common.id
+}
+
+resource "azurerm_api_management_named_value" "io_fn_cgnmerchant_key" {
+  name                = "io-fn-cgnmerchant-key"
+  api_management_name = module.apim.name
+  resource_group_name = module.apim.resource_group_name
+  display_name        = "io-fn-cgnmerchant-key"
+  value               = data.azurerm_key_vault_secret.io_fn_cgnmerchant_key_secret.value
+  secret              = "true"
 }
 
 ## App registration for cgn backend portal ##

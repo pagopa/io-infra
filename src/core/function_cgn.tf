@@ -27,15 +27,6 @@ data "azurerm_key_vault_secret" "fn_cgn_CGN_DATA_BACKUP_CONNECTION" {
   key_vault_id = data.azurerm_key_vault.common.id
 }
 
-# 
-# STORAGE
-#
-
-data "azurerm_storage_account" "iopstcgn" {
-  name                = "iopstcgn"
-  resource_group_name = data.azurerm_resource_group.rg_cgn.name
-}
-
 #
 # APP CONFIGURATION
 #

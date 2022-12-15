@@ -3,29 +3,25 @@ data "azurerm_api_management" "apim_api" {
   resource_group_name = "io-p-rg-internal"
 }
 
-resource "azurerm_api_management_named_value" "io_fn_sign_url" {
-  name                = "io-fn-sign-url"
+resource "azurerm_api_management_named_value" "io_fn_sign_issuer_url" {
+  name                = "io-fn-sign-issuer-url"
   api_management_name = data.azurerm_api_management.apim_api.name
   resource_group_name = data.azurerm_api_management.apim_api.resource_group_name
-  display_name        = "io-fn-sign-url"
-  value               = format("https://%s-sign-func.azurewebsites.net", local.product)
+  display_name        = "io-fn-sign-issuer-url"
+  value               = format("https://%s-sign-issuer-func.azurewebsites.net", local.product)
 }
 
-data "azurerm_key_vault_secret" "io_fn_sign_key" {
-  name         = "io-fn-sign-key"
-  key_vault_id = module.key_vault.id
-}
-
-resource "azurerm_api_management_named_value" "io_fn_sign_key" {
-  name                = "io-fn-sign-key"
+resource "azurerm_api_management_named_value" "io_fn_sign_issuer_key" {
+  name                = "io-fn-sign-issuer-key"
   api_management_name = data.azurerm_api_management.apim_api.name
   resource_group_name = data.azurerm_api_management.apim_api.resource_group_name
-  display_name        = "io-fn-sign-key"
-  value               = data.azurerm_key_vault_secret.io_fn_sign_key.value
+  display_name        = "io-fn-sign-issuer-key"
+  value               = module.key_vault_secrets.values["io-fn-sign-issuer-key"].value
+  secret              = true
 }
 
 module "apim_io_sign_product" {
-  source = "git::https://github.com/pagopa/azurerm.git//api_management_product?ref=v1.0.16"
+  source = "git::https://github.com/pagopa/azurerm.git//api_management_product?ref=v2.7.2"
 
   product_id   = "io-sign-api"
   display_name = "IO SIGN API"
@@ -42,13 +38,13 @@ module "apim_io_sign_product" {
 }
 
 module "apim_io_sign_issuer_api_v1" {
-  source = "git::https://github.com/pagopa/azurerm.git//api_management_api?ref=v1.0.16"
+  source = "git::https://github.com/pagopa/azurerm.git//api_management_api?ref=v2.7.2"
 
   name                  = format("%s-sign-issuer-api", local.product)
   api_management_name   = data.azurerm_api_management.apim_api.name
   resource_group_name   = data.azurerm_api_management.apim_api.resource_group_name
   product_ids           = [module.apim_io_sign_product.product_id]
-  subscription_required = false
+  subscription_required = true
   service_url           = null
 
   description  = "IO Sign - Issuer API"
