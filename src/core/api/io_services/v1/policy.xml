@@ -16,29 +16,34 @@
                 <set-backend-service base-url="https://io-p-services-fn-2.azurewebsites.net/api/v1" />
             </when>
             <otherwise>
-                <set-backend-service id="apim-generated-policy" base-url="{{io-fn3-services-url}}/api/v1" />
                 <!-- https://docs.microsoft.com/en-us/dotnet/api/system.random.next?view=net-6.0#system-random-next(system-int32-system-int32) -->
-                <!-- <set-variable name="urlWeight" value="@{
-                  Random rnd = new Random();
-                  int urlWeight = rnd.Next(1, 1001);
-                  return urlWeight;}" />
+                <!-- The following policy fragment allows to split inbound traffic based on a fixed window. A Random value picked from this window can determine
+                     when traffic should be redirected to a specific backend pool. i.e: 1/1000 req must be redirected to back-end-1, the remaining must be redirected to
+                     default-back-end.
+                -->
+                <set-variable name="weights" value="@{
+                    Random rnd = new Random();
+                    return JObject.FromObject(
+                        new {
+                            urlWeight = rnd.Next(1, 1001),
+                            fnWeight = rnd.Next(1, 101)
+                        });}" />
                 <choose>
-                    <when condition="@(context.Variables.GetValueOrDefault<int>("urlWeight") <= 1)">
-                        <set-backend-service base-url="https://io-p-services-fn-1.azurewebsites.net/api/v1" />
-                    </when>
-                    <when condition="@(context.Variables.GetValueOrDefault<int>("urlWeight") > 1)">
-                        <set-backend-service base-url="https://io-p-services-fn-2.azurewebsites.net/api/v1" />
+                    <when condition="@(context.Variables.GetValueOrDefault<JObject>("weights").GetValue("urlWeight").ToObject<int>() <= 1000)">
+                        <!-- The following policy fragment allows to split traffic up to 50% for each backend pool instance -->
+                        <choose>
+                            <when condition="@(context.Variables.GetValueOrDefault<JObject>("weights").GetValue("fnWeight").ToObject<int>() <= 50)">
+                                <set-backend-service base-url="https://io-p-services-fn-1.azurewebsites.net/api/v1" />
+                            </when>
+                            <otherwise>
+                                <set-backend-service base-url="https://io-p-services-fn-2.azurewebsites.net/api/v1" />
+                            </otherwise>
+                        </choose>
                     </when>
                     <otherwise>
-                        <return-response>
-                            <set-status code="500" reason="InternalServerError" />
-                            <set-header name="Microsoft-Azure-Api-Management-Correlation-Id" exists-action="override">
-                                <value>@{return Guid.NewGuid().ToString();}</value>
-                            </set-header>
-                            <set-body>A gateway-related error occurred while processing the request.</set-body>
-                        </return-response>
+                        <set-backend-service id="apim-generated-policy" base-url="{{io-fn3-services-url}}/api/v1" />
                     </otherwise>
-                </choose> -->
+                </choose>
             </otherwise>
         </choose>
         <set-header name="x-functions-key" exists-action="override">
