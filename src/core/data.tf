@@ -60,15 +60,6 @@ data "azurerm_subnet" "fnapp_admin_subnet_out" {
 }
 
 #
-# CGN resources
-#
-
-data "azurerm_function_app" "fnapp_cgn" {
-  name                = format("%s-func-cgn", local.project)
-  resource_group_name = format("%s-rg-cgn", local.project)
-}
-
-#
 # Bonus vacanze resources
 #
 
@@ -89,6 +80,12 @@ data "azurerm_function_app" "fnapp_eucovidcert" {
 data "azurerm_key_vault_secret" "fnapp_eucovidcert_authtoken" {
   name         = "funceucovidcert-KEY-PUBLICIOEVENTDISPATCHER"
   key_vault_id = module.key_vault.id
+}
+
+data "azurerm_subnet" "fnapp_eucovidcert_subnet_out" {
+  name                 = "fn3eucovidcert"
+  virtual_network_name = format("%s-vnet-common", local.project)
+  resource_group_name  = format("%s-rg-common", local.project)
 }
 
 #

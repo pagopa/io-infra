@@ -10,7 +10,7 @@ module "function_services_cache" {
   runtime_version                          = "~4"
   os_type                                  = "linux"
   linux_fx_version                         = "NODE|14"
-  health_check_path                        = "api/v1/info"
+  health_check_path                        = "/api/v1/info"
   always_on                                = true
   subnet_id                                = module.selfcare_be_common_snet.id
   application_insights_instrumentation_key = data.azurerm_application_insights.application_insights.instrumentation_key

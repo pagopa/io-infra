@@ -26,6 +26,8 @@ locals {
 
       CachedStorageConnection = data.azurerm_storage_account.api.primary_connection_string
       AssetsStorageConnection = data.azurerm_storage_account.cdnassets.primary_connection_string
+
+      AzureWebJobsFeatureFlags = "EnableProxies"
     }
   }
 }
@@ -60,10 +62,10 @@ module "function_assets_cdn" {
   resource_group_name = azurerm_resource_group.assets_cdn_rg.name
   name                = "${local.project}-assets-cdn-fn"
   location            = var.location
-  health_check_path   = "info"
+  health_check_path   = "/info"
 
   os_type                                  = "linux"
-  runtime_version                          = "~3"
+  runtime_version                          = "~4"
   linux_fx_version                         = "NODE|14"
   always_on                                = true
   application_insights_instrumentation_key = data.azurerm_application_insights.application_insights.instrumentation_key
@@ -92,13 +94,13 @@ module "function_assets_cdn_staging_slot" {
   function_app_name   = module.function_assets_cdn.name
   function_app_id     = module.function_assets_cdn.id
   app_service_plan_id = module.function_assets_cdn.app_service_plan_id
-  health_check_path   = "info"
+  health_check_path   = "/info"
 
   storage_account_name       = module.function_assets_cdn.storage_account.name
   storage_account_access_key = module.function_assets_cdn.storage_account.primary_access_key
 
   os_type                                  = "linux"
-  runtime_version                          = "~3"
+  runtime_version                          = "~4"
   linux_fx_version                         = "NODE|14"
   always_on                                = true
   application_insights_instrumentation_key = data.azurerm_application_insights.application_insights.instrumentation_key

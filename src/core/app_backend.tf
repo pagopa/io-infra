@@ -454,6 +454,8 @@ module "appservice_app_backendl1" {
   allowed_subnets = [
     data.azurerm_subnet.fnapp_admin_subnet_out.id,
     data.azurerm_subnet.fnapp_services_subnet_out.id,
+    module.services_snet[0].id,
+    module.services_snet[1].id,
     module.appgateway_snet.id,
     module.apim_snet.id,
   ]
@@ -496,6 +498,8 @@ module "appservice_app_backendl1_slot_staging" {
     data.azurerm_subnet.azdoa_snet[0].id,
     data.azurerm_subnet.fnapp_admin_subnet_out.id,
     data.azurerm_subnet.fnapp_services_subnet_out.id,
+    module.services_snet[0].id,
+    module.services_snet[1].id,
     module.appgateway_snet.id,
     module.apim_snet.id,
   ]
@@ -668,6 +672,8 @@ module "appservice_app_backendl2" {
   allowed_subnets = [
     data.azurerm_subnet.fnapp_admin_subnet_out.id,
     data.azurerm_subnet.fnapp_services_subnet_out.id,
+    module.services_snet[0].id,
+    module.services_snet[1].id,
     module.appgateway_snet.id,
     module.apim_snet.id,
   ]
@@ -710,6 +716,8 @@ module "appservice_app_backendl2_slot_staging" {
     data.azurerm_subnet.azdoa_snet[0].id,
     data.azurerm_subnet.fnapp_admin_subnet_out.id,
     data.azurerm_subnet.fnapp_services_subnet_out.id,
+    module.services_snet[0].id,
+    module.services_snet[1].id,
     module.appgateway_snet.id,
     module.apim_snet.id,
   ]
@@ -882,6 +890,8 @@ module "appservice_app_backendli" {
   allowed_subnets = [
     data.azurerm_subnet.fnapp_admin_subnet_out.id,
     data.azurerm_subnet.fnapp_services_subnet_out.id,
+    module.services_snet[0].id,
+    module.services_snet[1].id,
   ]
 
   allowed_ips = concat(
@@ -923,6 +933,8 @@ module "appservice_app_backendli_slot_staging" {
     data.azurerm_subnet.azdoa_snet[0].id,
     data.azurerm_subnet.fnapp_admin_subnet_out.id,
     data.azurerm_subnet.fnapp_services_subnet_out.id,
+    module.services_snet[0].id,
+    module.services_snet[1].id,
   ]
 
   allowed_ips = concat(
@@ -1020,4 +1032,45 @@ module "app_backend_web_test_api" {
     },
   ]
 
+}
+
+# -----------------------------------------------
+# Alerts
+# -----------------------------------------------
+
+data "azurerm_app_service" "app_backend_app_services" {
+  for_each            = toset(var.app_backend_names)
+  name                = "${local.project}-app-${each.value}"
+  resource_group_name = azurerm_resource_group.rg_linux.name
+}
+
+resource "azurerm_monitor_metric_alert" "too_many_http_5xx" {
+  for_each = { for key, name in data.azurerm_app_service.app_backend_app_services : key => name }
+
+  name                = "[IO-COMMONS | ${each.value.name}] Too many 5xx"
+  resource_group_name = azurerm_resource_group.rg_linux.name
+  scopes              = [each.value.id]
+  # TODO: add Runbook for checking errors
+  description   = "Whenever the total http server errors exceeds a dynamic threashold. Runbook: ${"https://pagopa.atlassian.net"}/wiki/spaces/IC/pages/585072814/Appbackendlx+-+Too+many+errors"
+  severity      = 0
+  window_size   = "PT5M"
+  frequency     = "PT5M"
+  auto_mitigate = false
+
+  # Metric info
+  # https://learn.microsoft.com/en-us/azure/azure-monitor/essentials/metrics-supported#microsoftwebsites
+  dynamic_criteria {
+    metric_namespace         = "Microsoft.Web/sites"
+    metric_name              = "Http5xx"
+    aggregation              = "Total"
+    operator                 = "GreaterThan"
+    alert_sensitivity        = "Low"
+    evaluation_total_count   = 4
+    evaluation_failure_count = 4
+
+  }
+
+  action {
+    action_group_id = azurerm_monitor_action_group.error_action_group.id
+  }
 }

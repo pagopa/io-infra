@@ -1,0 +1,83 @@
+<policies>
+    <inbound>
+        <base />
+        <choose>
+            <when condition="@(context.User.Groups.Any(g => g.Name == "ApiAuthenticationClientCertificate") && !(context.Request.Headers.GetValueOrDefault("{{apigad-gad-client-certificate-verified-header}}", "false") == "true"))">
+                <return-response>
+                    <set-status code="403" reason="Invalid client certificate" />
+                </return-response>
+            </when>
+        </choose>
+        <choose>
+            <when condition="@(context.Request.Headers.GetValueOrDefault("environment", "false").Equals("services-fn-1"))">
+                <set-backend-service base-url="https://io-p-services-fn-1.azurewebsites.net/api/v1" />
+            </when>
+            <when condition="@(context.Request.Headers.GetValueOrDefault("environment", "false").Equals("services-fn-2"))">
+                <set-backend-service base-url="https://io-p-services-fn-2.azurewebsites.net/api/v1" />
+            </when>
+            <otherwise>
+                <set-backend-service id="apim-generated-policy" base-url="{{io-fn3-services-url}}/api/v1" />
+                <!-- https://docs.microsoft.com/en-us/dotnet/api/system.random.next?view=net-6.0#system-random-next(system-int32-system-int32) -->
+                <!-- <set-variable name="urlWeight" value="@{
+                  Random rnd = new Random();
+                  int urlWeight = rnd.Next(1, 1001);
+                  return urlWeight;}" />
+                <choose>
+                    <when condition="@(context.Variables.GetValueOrDefault<int>("urlWeight") <= 1)">
+                        <set-backend-service base-url="https://io-p-services-fn-1.azurewebsites.net/api/v1" />
+                    </when>
+                    <when condition="@(context.Variables.GetValueOrDefault<int>("urlWeight") > 1)">
+                        <set-backend-service base-url="https://io-p-services-fn-2.azurewebsites.net/api/v1" />
+                    </when>
+                    <otherwise>
+                        <return-response>
+                            <set-status code="500" reason="InternalServerError" />
+                            <set-header name="Microsoft-Azure-Api-Management-Correlation-Id" exists-action="override">
+                                <value>@{return Guid.NewGuid().ToString();}</value>
+                            </set-header>
+                            <set-body>A gateway-related error occurred while processing the request.</set-body>
+                        </return-response>
+                    </otherwise>
+                </choose> -->
+            </otherwise>
+        </choose>
+        <set-header name="x-functions-key" exists-action="override">
+            <value>{{io-fn3-services-key}}</value>
+        </set-header>
+        <set-header name="x-user-id" exists-action="override">
+            <value>@(context.User.Id)</value>
+        </set-header>
+        <set-header name="x-user-groups" exists-action="override">
+            <value>@(String.Join(",", context.User.Groups.Select(g => g.Name)))</value>
+        </set-header>
+        <set-header name="x-subscription-id" exists-action="override">
+            <value>@(context.Subscription.Id)</value>
+        </set-header>
+        <set-header name="x-user-email" exists-action="override">
+            <value>@(context.User.Email)</value>
+        </set-header>
+        <cors>
+            <allowed-origins>
+                <origin>*</origin>
+            </allowed-origins>
+            <allowed-methods>
+                <method>*</method>
+            </allowed-methods>
+            <allowed-headers>
+                <header>*</header>
+            </allowed-headers>
+            <expose-headers>
+                <header>*</header>
+            </expose-headers>
+        </cors>
+    </inbound>
+    <outbound>
+        <base />
+    </outbound>
+    <backend>
+        <base />
+    </backend>
+    <on-error>
+        <base />
+    </on-error>
+</policies>

@@ -99,6 +99,18 @@ variable "application_insights_name" {
   description = "The common Application Insights name"
   default     = ""
 }
+
+variable "monitor_resource_group_name" {
+  type        = string
+  description = "Monitor resource group name"
+}
+
+variable "log_analytics_workspace_resource_group_name" {
+  type        = string
+  description = "The name of the resource group in which the Log Analytics workspace is located in."
+}
+
+
 ##
 
 #
@@ -190,6 +202,11 @@ variable "cidr_subnet_appbackendl2" {
 variable "cidr_subnet_app" {
   type        = list(string)
   description = "Function app address space."
+}
+
+variable "cidr_subnet_services" {
+  type        = list(string)
+  description = "Function services address space."
 }
 
 variable "cidr_subnet_app_async" {
@@ -453,6 +470,13 @@ variable "eucovidcert_alerts_enabled" {
 }
 
 # app backend
+
+variable "app_backend_names" {
+  description = "App backend instance names"
+  type        = list(string)
+  default     = []
+}
+
 variable "app_backend_plan_sku_tier" {
   description = "App backend app plan sku tier"
   type        = string
@@ -581,6 +605,52 @@ variable "function_app_autoscale_default" {
   description = "The number of instances that are available for scaling if metrics are not available for evaluation."
   default     = 1
 }
+
+################################
+# Function Services
+################################
+variable "function_services_count" {
+  type    = number
+  default = 2
+}
+
+variable "function_services_kind" {
+  type        = string
+  description = "App service plan kind"
+  default     = null
+}
+
+variable "function_services_sku_tier" {
+  type        = string
+  description = "App service plan sku tier"
+  default     = null
+}
+
+variable "function_services_sku_size" {
+  type        = string
+  description = "App service plan sku size"
+  default     = null
+}
+
+variable "function_services_autoscale_minimum" {
+  type        = number
+  description = "The minimum number of instances for this resource."
+  default     = 1
+}
+
+variable "function_services_autoscale_maximum" {
+  type        = number
+  description = "The maximum number of instances for this resource."
+  default     = 30
+}
+
+variable "function_services_autoscale_default" {
+  type        = number
+  description = "The number of instances that are available for scaling if metrics are not available for evaluation."
+  default     = 1
+}
+
+
 
 # Function App Async
 variable "function_app_async_kind" {
