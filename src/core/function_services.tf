@@ -357,7 +357,7 @@ resource "azurerm_monitor_autoscale_setting" "function_services_autoscale" {
         direction = "Decrease"
         type      = "ChangeCount"
         value     = "1"
-        cooldown  = "PT20M"
+        cooldown  = "PT10M"
       }
     }
 
@@ -379,7 +379,7 @@ resource "azurerm_monitor_autoscale_setting" "function_services_autoscale" {
         direction = "Decrease"
         type      = "ChangeCount"
         value     = "1"
-        cooldown  = "PT20M"
+        cooldown  = "PT10M"
       }
     }
   }
