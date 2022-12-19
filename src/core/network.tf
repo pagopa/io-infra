@@ -24,11 +24,12 @@ resource "azurerm_resource_group" "weu_beta_vnet_rg" {
 }
 
 module "vnet_weu_beta" {
-  source              = "git::https://github.com/pagopa/azurerm.git//virtual_network?ref=v2.12.2"
-  name                = "${local.project}-weu-beta-vnet"
-  location            = azurerm_resource_group.weu_beta_vnet_rg.location
-  resource_group_name = azurerm_resource_group.weu_beta_vnet_rg.name
-  address_space       = var.cidr_weu_beta_vnet
+  source               = "git::https://github.com/pagopa/azurerm.git//virtual_network?ref=v2.12.2"
+  name                 = "${local.project}-weu-beta-vnet"
+  location             = azurerm_resource_group.weu_beta_vnet_rg.location
+  resource_group_name  = azurerm_resource_group.weu_beta_vnet_rg.name
+  address_space        = var.cidr_weu_beta_vnet
+  ddos_protection_plan = var.ddos_protection_plan
 
   tags = var.tags
 }
@@ -56,11 +57,12 @@ resource "azurerm_resource_group" "weu_prod01_vnet_rg" {
 }
 
 module "vnet_weu_prod01" {
-  source              = "git::https://github.com/pagopa/azurerm.git//virtual_network?ref=v2.12.2"
-  name                = "${local.project}-weu-prod01-vnet"
-  location            = azurerm_resource_group.weu_prod01_vnet_rg.location
-  resource_group_name = azurerm_resource_group.weu_prod01_vnet_rg.name
-  address_space       = var.cidr_weu_prod01_vnet
+  source               = "git::https://github.com/pagopa/azurerm.git//virtual_network?ref=v2.12.2"
+  name                 = "${local.project}-weu-prod01-vnet"
+  location             = azurerm_resource_group.weu_prod01_vnet_rg.location
+  resource_group_name  = azurerm_resource_group.weu_prod01_vnet_rg.name
+  address_space        = var.cidr_weu_prod01_vnet
+  ddos_protection_plan = var.ddos_protection_plan
 
   tags = var.tags
 }
@@ -88,11 +90,12 @@ resource "azurerm_resource_group" "weu_prod02_vnet_rg" {
 }
 
 module "vnet_weu_prod02" {
-  source              = "git::https://github.com/pagopa/azurerm.git//virtual_network?ref=v2.12.2"
-  name                = "${local.project}-weu-prod02-vnet"
-  location            = azurerm_resource_group.weu_prod02_vnet_rg.location
-  resource_group_name = azurerm_resource_group.weu_prod02_vnet_rg.name
-  address_space       = var.cidr_weu_prod02_vnet
+  source               = "git::https://github.com/pagopa/azurerm.git//virtual_network?ref=v2.12.2"
+  name                 = "${local.project}-weu-prod02-vnet"
+  location             = azurerm_resource_group.weu_prod02_vnet_rg.location
+  resource_group_name  = azurerm_resource_group.weu_prod02_vnet_rg.name
+  address_space        = var.cidr_weu_prod02_vnet
+  ddos_protection_plan = var.ddos_protection_plan
 
   tags = var.tags
 }
