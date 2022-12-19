@@ -145,7 +145,9 @@ module "function_elt" {
   location                                 = var.location
   health_check_path                        = "/api/v1/info"
   subnet_id                                = module.function_elt_snetout.id
-  runtime_version                          = "~3"
+  os_type                                  = "linux"
+  runtime_version                          = "~4"
+  linux_fx_version                         = "NODE|14"
   application_insights_instrumentation_key = data.azurerm_application_insights.application_insights.instrumentation_key
 
   app_service_plan_info = {
