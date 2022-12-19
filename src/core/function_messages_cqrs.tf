@@ -89,14 +89,16 @@ module "function_messages_cqrs_snet" {
 
 #tfsec:ignore:azure-storage-queue-services-logging-enabled:exp:2022-05-01 # already ignored, maybe a bug in tfsec
 module "function_messages_cqrs" {
-  source = "git::https://github.com/pagopa/azurerm.git//function_app?ref=v2.9.1"
+  source = "git::https://github.com/pagopa/azurerm.git//function_app?ref=v3.6.1"
 
   resource_group_name = azurerm_resource_group.backend_messages_rg.name
   name                = format("%s-messages-cqrs-fn", local.project)
   location            = var.location
   health_check_path   = "/api/v1/info"
 
-  os_type                                  = "linux"
+  os_type          = "linux"
+  linux_fx_version = "NODE|14"
+  runtime_version  = "~4"
   always_on                                = var.function_messages_cqrs_always_on
   application_insights_instrumentation_key = data.azurerm_application_insights.application_insights.instrumentation_key
 
@@ -155,7 +157,7 @@ module "function_messages_cqrs" {
 }
 
 module "function_messages_cqrs_staging_slot" {
-  source = "git::https://github.com/pagopa/azurerm.git//function_app_slot?ref=v2.9.1"
+  source = "git::https://github.com/pagopa/azurerm.git//function_app_slot?ref=v3.6.1"
 
   name                = "staging"
   location            = var.location
@@ -170,6 +172,8 @@ module "function_messages_cqrs_staging_slot" {
   internal_storage_connection_string = module.function_messages_cqrs.storage_account_internal_function.primary_connection_string
 
   os_type                                  = "linux"
+  linux_fx_version                         = "NODE|14"
+  runtime_version                          = "~4"
   always_on                                = var.function_messages_cqrs_always_on
   application_insights_instrumentation_key = data.azurerm_application_insights.application_insights.instrumentation_key
 
