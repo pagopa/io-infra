@@ -41,6 +41,7 @@ cidr_subnet_eucovidcert                    = ["10.0.132.192/26"]
 cidr_subnet_vpn                            = ["10.0.133.0/24"]
 cidr_subnet_selfcare_be                    = ["10.0.137.0/24"]
 cidr_subnet_devportalservicedata_db_server = ["10.0.138.0/24"]
+cidr_subnet_services                       = ["10.0.139.0/26", "10.0.139.64/26"]
 cidr_subnet_appbackendl1                   = ["10.0.152.0/24"]
 cidr_subnet_appbackendl2                   = ["10.0.153.0/24"]
 cidr_subnet_appbackendli                   = ["10.0.154.0/24"]
@@ -54,7 +55,7 @@ app_gateway_api_io_italia_it_certificate_name                     = "api-io-ital
 app_gateway_app_backend_io_italia_it_certificate_name             = "app-backend-io-italia-it"
 app_gateway_developerportal_backend_io_italia_it_certificate_name = "developerportal-backend-io-italia-it"
 app_gateway_api_io_selfcare_pagopa_it_certificate_name            = "api-io-selfcare-pagopa-it"
-app_gateway_min_capacity                                          = 10 # 4 capacity=baseline, 10 capacity=high volume event, 15 capacity=very high volume event
+app_gateway_min_capacity                                          = 4 # 4 capacity=baseline, 10 capacity=high volume event, 15 capacity=very high volume event
 app_gateway_max_capacity                                          = 50
 app_gateway_alerts_enabled                                        = true
 
@@ -87,8 +88,10 @@ enable_iac_pipeline      = true
 ##
 
 ## Monitor
-log_analytics_workspace_name = "io-p-law-common"
-application_insights_name    = "io-p-ai-common"
+log_analytics_workspace_name                = "io-p-law-common"
+application_insights_name                   = "io-p-ai-common"
+monitor_resource_group_name                 = "io-p-rg-common"
+log_analytics_workspace_resource_group_name = "io-p-rg-common"
 ##
 
 ## Event hub
@@ -159,6 +162,14 @@ function_app_sku_size          = "P1v3"
 function_app_autoscale_minimum = 1
 function_app_autoscale_maximum = 30
 function_app_autoscale_default = 10
+
+# Functions Services
+function_services_kind              = "Linux"
+function_services_sku_tier          = "PremiumV3"
+function_services_sku_size          = "P1v3"
+function_services_autoscale_minimum = 1
+function_services_autoscale_maximum = 30
+function_services_autoscale_default = 10
 
 # Functions App Async
 function_app_async_kind              = "Linux"
@@ -389,3 +400,6 @@ eventhubs = [
 
 # PN Service Id
 pn_service_id = "01G40DWQGKY5GRWSNM4303VNRP"
+
+
+app_backend_names = ["appbackendl1", "appbackendl2", "appbackendli"]

@@ -27,15 +27,6 @@ data "azurerm_key_vault_secret" "fn_cgn_CGN_DATA_BACKUP_CONNECTION" {
   key_vault_id = data.azurerm_key_vault.common.id
 }
 
-# 
-# STORAGE
-#
-
-data "azurerm_storage_account" "iopstcgn" {
-  name                = "iopstcgn"
-  resource_group_name = data.azurerm_resource_group.rg_cgn.name
-}
-
 #
 # APP CONFIGURATION
 #
@@ -308,7 +299,7 @@ resource "azurerm_monitor_metric_alert" "function_cgn_health_check" {
   severity            = 1
   frequency           = "PT5M"
   auto_mitigate       = false
-  enabled             = false # todo enable after deploy
+  enabled             = true
 
   criteria {
     metric_namespace = "Microsoft.Web/sites"

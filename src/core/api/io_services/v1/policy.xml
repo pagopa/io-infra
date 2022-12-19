@@ -1,0 +1,88 @@
+<policies>
+    <inbound>
+        <base />
+        <choose>
+            <when condition="@(context.User.Groups.Any(g => g.Name == "ApiAuthenticationClientCertificate") && !(context.Request.Headers.GetValueOrDefault("{{apigad-gad-client-certificate-verified-header}}", "false") == "true"))">
+                <return-response>
+                    <set-status code="403" reason="Invalid client certificate" />
+                </return-response>
+            </when>
+        </choose>
+        <choose>
+            <when condition="@(context.Request.Headers.GetValueOrDefault("environment", "false").Equals("services-fn-1"))">
+                <set-backend-service base-url="https://io-p-services-fn-1.azurewebsites.net/api/v1" />
+            </when>
+            <when condition="@(context.Request.Headers.GetValueOrDefault("environment", "false").Equals("services-fn-2"))">
+                <set-backend-service base-url="https://io-p-services-fn-2.azurewebsites.net/api/v1" />
+            </when>
+            <otherwise>
+                <!-- https://docs.microsoft.com/en-us/dotnet/api/system.random.next?view=net-6.0#system-random-next(system-int32-system-int32) -->
+                <!-- The following policy fragment allows to split inbound traffic based on a fixed window. A Random value picked from this window can determine
+                     when traffic should be redirected to a specific backend pool. i.e: 1/1000 req must be redirected to back-end-1, the remaining must be redirected to
+                     default-back-end.
+                -->
+                <set-variable name="weights" value="@{
+                    Random rnd = new Random();
+                    return JObject.FromObject(
+                        new {
+                            urlWeight = rnd.Next(1, 1001),
+                            fnWeight = rnd.Next(1, 101)
+                        });}" />
+                <choose>
+                    <when condition="@(context.Variables.GetValueOrDefault<JObject>("weights").GetValue("urlWeight").ToObject<int>() <= 1000)">
+                        <!-- The following policy fragment allows to split traffic up to 50% for each backend pool instance -->
+                        <choose>
+                            <when condition="@(context.Variables.GetValueOrDefault<JObject>("weights").GetValue("fnWeight").ToObject<int>() <= 50)">
+                                <set-backend-service base-url="https://io-p-services-fn-1.azurewebsites.net/api/v1" />
+                            </when>
+                            <otherwise>
+                                <set-backend-service base-url="https://io-p-services-fn-2.azurewebsites.net/api/v1" />
+                            </otherwise>
+                        </choose>
+                    </when>
+                    <otherwise>
+                        <set-backend-service id="apim-generated-policy" base-url="{{io-fn3-services-url}}/api/v1" />
+                    </otherwise>
+                </choose>
+            </otherwise>
+        </choose>
+        <set-header name="x-functions-key" exists-action="override">
+            <value>{{io-fn3-services-key}}</value>
+        </set-header>
+        <set-header name="x-user-id" exists-action="override">
+            <value>@(context.User.Id)</value>
+        </set-header>
+        <set-header name="x-user-groups" exists-action="override">
+            <value>@(String.Join(",", context.User.Groups.Select(g => g.Name)))</value>
+        </set-header>
+        <set-header name="x-subscription-id" exists-action="override">
+            <value>@(context.Subscription.Id)</value>
+        </set-header>
+        <set-header name="x-user-email" exists-action="override">
+            <value>@(context.User.Email)</value>
+        </set-header>
+        <cors>
+            <allowed-origins>
+                <origin>*</origin>
+            </allowed-origins>
+            <allowed-methods>
+                <method>*</method>
+            </allowed-methods>
+            <allowed-headers>
+                <header>*</header>
+            </allowed-headers>
+            <expose-headers>
+                <header>*</header>
+            </expose-headers>
+        </cors>
+    </inbound>
+    <outbound>
+        <base />
+    </outbound>
+    <backend>
+        <base />
+    </backend>
+    <on-error>
+        <base />
+    </on-error>
+</policies>

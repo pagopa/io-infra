@@ -94,7 +94,7 @@ module "function_messages_cqrs" {
   resource_group_name = azurerm_resource_group.backend_messages_rg.name
   name                = format("%s-messages-cqrs-fn", local.project)
   location            = var.location
-  health_check_path   = "api/v1/info"
+  health_check_path   = "/api/v1/info"
 
   os_type                                  = "linux"
   always_on                                = var.function_messages_cqrs_always_on
@@ -163,7 +163,7 @@ module "function_messages_cqrs_staging_slot" {
   function_app_name   = module.function_messages_cqrs.name
   function_app_id     = module.function_messages_cqrs.id
   app_service_plan_id = module.function_messages_cqrs.app_service_plan_id
-  health_check_path   = "api/v1/info"
+  health_check_path   = "/api/v1/info"
 
   storage_account_name               = module.function_messages_cqrs.storage_account.name
   storage_account_access_key         = module.function_messages_cqrs.storage_account.primary_access_key

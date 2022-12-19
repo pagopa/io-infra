@@ -62,7 +62,7 @@ module "function_assets_cdn" {
   resource_group_name = azurerm_resource_group.assets_cdn_rg.name
   name                = "${local.project}-assets-cdn-fn"
   location            = var.location
-  health_check_path   = "info"
+  health_check_path   = "/info"
 
   os_type                                  = "linux"
   runtime_version                          = "~4"
@@ -94,7 +94,7 @@ module "function_assets_cdn_staging_slot" {
   function_app_name   = module.function_assets_cdn.name
   function_app_id     = module.function_assets_cdn.id
   app_service_plan_id = module.function_assets_cdn.app_service_plan_id
-  health_check_path   = "info"
+  health_check_path   = "/info"
 
   storage_account_name       = module.function_assets_cdn.storage_account.name
   storage_account_access_key = module.function_assets_cdn.storage_account.primary_access_key
