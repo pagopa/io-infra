@@ -215,6 +215,8 @@ module "app_messages_function_staging_slot" {
 
   allowed_subnets = [
     module.app_messages_snet[count.index].id,
+    module.app_backendl1_snet.id,
+    module.app_backendl2_snet.id,
     data.azurerm_subnet.azdoa_snet[0].id,
   ]
 
