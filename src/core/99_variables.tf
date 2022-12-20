@@ -128,6 +128,14 @@ variable "vnet_name" {
   default     = ""
 }
 
+variable "ddos_protection_plan" {
+  type = object({
+    id     = string
+    enable = bool
+  })
+  default = null
+}
+
 variable "cidr_weu_beta_vnet" {
   type        = list(string)
   description = "Beta Virtual network cidr."
