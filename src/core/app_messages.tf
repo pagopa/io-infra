@@ -188,7 +188,7 @@ module "app_messages_function" {
 
 module "app_messages_function_staging_slot" {
   count  = var.app_messages_count
-  source = "git::https://github.com/pagopa/azurerm.git//function_app_slot?ref=v3.4.0"
+  source = "git::https://github.com/pagopa/azurerm.git//function_app_slot?ref=v3.8.1"
 
   name                = "staging"
   location            = var.location
@@ -202,7 +202,7 @@ module "app_messages_function_staging_slot" {
   storage_account_access_key = module.app_messages_function[count.index].storage_account.primary_access_key
 
   os_type                                  = "linux"
-  runtime_version                          = "~3"
+  runtime_version                          = "~4"
   linux_fx_version                         = "NODE|14"
   always_on                                = var.app_messages_function_always_on
   application_insights_instrumentation_key = data.azurerm_application_insights.application_insights.instrumentation_key
