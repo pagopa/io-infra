@@ -19,6 +19,10 @@ common_rg = "io-p-rg-common"
 
 # networking
 vnet_name = "io-p-vnet-common"
+ddos_protection_plan = {
+  id     = "/subscriptions/0da48c97-355f-4050-a520-f11a18b8be90/resourceGroups/sec-p-ddos/providers/Microsoft.Network/ddosProtectionPlans/sec-p-ddos-protection"
+  enable = true
+}
 # cidr_vnet         = ["10.0.0.0/16"]
 cidr_weu_beta_vnet   = ["10.10.0.0/16"]
 cidr_weu_prod01_vnet = ["10.11.0.0/16"]
