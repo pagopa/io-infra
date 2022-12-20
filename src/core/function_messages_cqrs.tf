@@ -104,6 +104,14 @@ module "function_messages_cqrs" {
     }
   ]
 
+  storage_account_info = {
+    account_kind                      = "StorageV2"
+    account_tier                      = "Standard"
+    account_replication_type          = "LRS"
+    access_tier                       = "Hot"
+    advanced_threat_protection_enable = true
+  }
+
   os_type                                  = "linux"
   linux_fx_version                         = "NODE|14"
   runtime_version                          = "~3"
