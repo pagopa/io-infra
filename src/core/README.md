@@ -46,7 +46,7 @@
 | <a name="module_app_backendl2_snet"></a> [app\_backendl2\_snet](#module\_app\_backendl2\_snet) | git::https://github.com/pagopa/azurerm.git//subnet | v2.0.28 |
 | <a name="module_app_backendli_snet"></a> [app\_backendli\_snet](#module\_app\_backendli\_snet) | git::https://github.com/pagopa/azurerm.git//subnet | v2.0.28 |
 | <a name="module_app_gw"></a> [app\_gw](#module\_app\_gw) | git::https://github.com/pagopa/azurerm.git//app_gateway | v2.0.9 |
-| <a name="module_app_messages_function"></a> [app\_messages\_function](#module\_app\_messages\_function) | git::https://github.com/pagopa/azurerm.git//function_app | v3.4.0 |
+| <a name="module_app_messages_function"></a> [app\_messages\_function](#module\_app\_messages\_function) | git::https://github.com/pagopa/azurerm.git//function_app | v3.8.1 |
 | <a name="module_app_messages_function_staging_slot"></a> [app\_messages\_function\_staging\_slot](#module\_app\_messages\_function\_staging\_slot) | git::https://github.com/pagopa/azurerm.git//function_app_slot | v3.8.1 |
 | <a name="module_app_messages_snet"></a> [app\_messages\_snet](#module\_app\_messages\_snet) | git::https://github.com/pagopa/azurerm.git//subnet | v1.0.51 |
 | <a name="module_app_snet"></a> [app\_snet](#module\_app\_snet) | git::https://github.com/pagopa/azurerm.git//subnet | v1.0.51 |
@@ -87,7 +87,7 @@
 | <a name="module_function_cgn_staging_slot"></a> [function\_cgn\_staging\_slot](#module\_function\_cgn\_staging\_slot) | git::https://github.com/pagopa/azurerm.git//function_app_slot | v3.4.0 |
 | <a name="module_function_devportalservicedata"></a> [function\_devportalservicedata](#module\_function\_devportalservicedata) | git::https://github.com/pagopa/azurerm.git//function_app | v2.9.1 |
 | <a name="module_function_devportalservicedata_staging_slot"></a> [function\_devportalservicedata\_staging\_slot](#module\_function\_devportalservicedata\_staging\_slot) | git::https://github.com/pagopa/azurerm.git//function_app_slot | v2.9.1 |
-| <a name="module_function_elt"></a> [function\_elt](#module\_function\_elt) | git::https://github.com/pagopa/azurerm.git//function_app | v2.9.1 |
+| <a name="module_function_elt"></a> [function\_elt](#module\_function\_elt) | git::https://github.com/pagopa/azurerm.git//function_app | v3.8.1 |
 | <a name="module_function_elt_snetout"></a> [function\_elt\_snetout](#module\_function\_elt\_snetout) | git::https://github.com/pagopa/azurerm.git//subnet | v1.0.60 |
 | <a name="module_function_eucovidcert"></a> [function\_eucovidcert](#module\_function\_eucovidcert) | git::https://github.com/pagopa/azurerm.git//function_app | v3.4.0 |
 | <a name="module_function_eucovidcert_snet"></a> [function\_eucovidcert\_snet](#module\_function\_eucovidcert\_snet) | git::https://github.com/pagopa/azurerm.git//subnet | v1.0.51 |
