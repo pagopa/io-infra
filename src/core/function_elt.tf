@@ -162,12 +162,12 @@ module "function_elt" {
       "AzureWebJobs.CosmosApiServicesChangeFeed.Disabled"                             = "1"
       "AzureWebJobs.CosmosApiMessageStatusChangeFeed.Disabled"                        = "1"
       "AzureWebJobs.CosmosApiMessagesChangeFeed.Disabled"                             = "1"
-      "AzureWebJobs.AnalyticsMessagesChangeFeedInboundProcessorAdapter.Disabled"      = "1"
-      "AzureWebJobs.AnalyticsMessagesStorageQueueInboundProcessorAdapter.Disabled"    = "1"
-      "AzureWebJobs.AnalyticsMessageStatusChangeFeedInboundProcessorAdapter.Disabled" = "1"
-      "AzureWebJobs.AnalyticsMessageStatusStorageQueueInbloundAdapter.Disabled"       = "1"
-      "AzureWebJobs.AnalyticsServiceChangeFeedInboundProcessorAdapter.Disabled"       = "1"
-      "AzureWebJobs.AnalyticsServiceStorageQueueInboundProcessorAdapter.Disabled"     = "1"
+      "AzureWebJobs.AnalyticsMessagesChangeFeedInboundProcessorAdapter.Disabled"      = "0"
+      "AzureWebJobs.AnalyticsMessagesStorageQueueInboundProcessorAdapter.Disabled"    = "0"
+      "AzureWebJobs.AnalyticsMessageStatusChangeFeedInboundProcessorAdapter.Disabled" = "0"
+      "AzureWebJobs.AnalyticsMessageStatusStorageQueueInbloundAdapter.Disabled"       = "0"
+      "AzureWebJobs.AnalyticsServiceChangeFeedInboundProcessorAdapter.Disabled"       = "0"
+      "AzureWebJobs.AnalyticsServiceStorageQueueInboundProcessorAdapter.Disabled"     = "0"
     }
   )
 
