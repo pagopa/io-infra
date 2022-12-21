@@ -93,3 +93,8 @@ resource "azurerm_storage_queue" "on_signature_request_wait_for_signature" {
   name                 = "on-signature-request-wait-for-signature"
   storage_account_name = module.io_sign_storage.name
 }
+
+resource "azurerm_storage_queue" "waiting_for_qtsp" {
+  name                 = "waiting-for-qtsp"
+  storage_account_name = module.io_sign_storage.name
+}
