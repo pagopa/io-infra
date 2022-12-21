@@ -160,9 +160,15 @@ module "function_elt" {
 
   app_settings = merge(
     local.function_elt.app_settings, {
-      "AzureWebJobs.CosmosApiServicesChangeFeed.Disabled"      = "1"
-      "AzureWebJobs.CosmosApiMessageStatusChangeFeed.Disabled" = "1"
-      "AzureWebJobs.CosmosApiMessagesChangeFeed.Disabled"      = "1"
+      "AzureWebJobs.CosmosApiServicesChangeFeed.Disabled"                             = "1"
+      "AzureWebJobs.CosmosApiMessageStatusChangeFeed.Disabled"                        = "1"
+      "AzureWebJobs.CosmosApiMessagesChangeFeed.Disabled"                             = "1"
+      "AzureWebJobs.AnalyticsMessagesChangeFeedInboundProcessorAdapter.Disabled"      = "1"
+      "AzureWebJobs.AnalyticsMessagesStorageQueueInboundProcessorAdapter.Disabled"    = "1"
+      "AzureWebJobs.AnalyticsMessageStatusChangeFeedInboundProcessorAdapter.Disabled" = "1"
+      "AzureWebJobs.AnalyticsMessageStatusStorageQueueInbloundAdapter.Disabled"       = "1"
+      "AzureWebJobs.AnalyticsServiceChangeFeedInboundProcessorAdapter.Disabled"       = "1"
+      "AzureWebJobs.AnalyticsServiceStorageQueueInboundProcessorAdapter.Disabled"     = "1"
     }
   )
 
@@ -194,7 +200,7 @@ module "function_elt" {
   action = [
     {
       action_group_id    = azurerm_monitor_action_group.error_action_group.id
-      webhook_properties = null
+      webhook_properties = {}
     }
   ]
 
