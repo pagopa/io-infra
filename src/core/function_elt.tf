@@ -190,6 +190,14 @@ module "function_elt" {
 
   allowed_ips = local.app_insights_ips_west_europe
 
+  # Action groups for alerts
+  action = [
+    {
+      action_group_id    = azurerm_monitor_action_group.error_action_group.id
+      webhook_properties = null
+    }
+  ]
+
   tags = var.tags
 }
 
