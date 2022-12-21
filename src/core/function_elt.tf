@@ -140,6 +140,7 @@ module "function_elt" {
 
   resource_group_name                      = azurerm_resource_group.elt_rg.name
   name                                     = "${local.project}-fn-elt"
+  domain                                   = "IO-COMMONS"
   storage_account_name                     = "${replace(local.project, "-", "")}stfnelt"
   app_service_plan_name                    = "${local.project}-plan-fnelt"
   location                                 = var.location
