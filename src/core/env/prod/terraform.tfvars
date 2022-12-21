@@ -19,6 +19,10 @@ common_rg = "io-p-rg-common"
 
 # networking
 vnet_name = "io-p-vnet-common"
+ddos_protection_plan = {
+  id     = "/subscriptions/0da48c97-355f-4050-a520-f11a18b8be90/resourceGroups/sec-p-ddos/providers/Microsoft.Network/ddosProtectionPlans/sec-p-ddos-protection"
+  enable = true
+}
 # cidr_vnet         = ["10.0.0.0/16"]
 cidr_weu_beta_vnet   = ["10.10.0.0/16"]
 cidr_weu_prod01_vnet = ["10.11.0.0/16"]
@@ -30,6 +34,7 @@ cidr_subnet_fnelt                          = ["10.0.11.0/24"]
 cidr_subnet_fnpblevtdispatcher             = ["10.0.12.0/24"]
 cidr_subnet_appgateway                     = ["10.0.13.0/24"]
 cidr_subnet_redis_apim                     = ["10.0.14.0/24"]
+cidr_subnet_shared_1                       = ["10.0.16.0/26"]
 cidr_subnet_apim                           = ["10.0.101.0/24"]
 cidr_subnet_appmessages                    = ["10.0.127.0/24", "10.0.128.0/24"]
 cidr_subnet_fnmessagescqrs                 = ["10.0.129.0/24"]
@@ -185,6 +190,14 @@ plan_cgn_sku_size              = "P1v3"
 function_cgn_autoscale_minimum = 1
 function_cgn_autoscale_maximum = 30
 function_cgn_autoscale_default = 10
+
+# Functions shared
+plan_shared_1_kind                = "Linux"
+plan_shared_1_sku_tier            = "PremiumV3"
+plan_shared_1_sku_size            = "P1v3"
+function_public_autoscale_minimum = 1
+function_public_autoscale_maximum = 30
+function_public_autoscale_default = 10
 
 # App Messages
 app_messages_function_always_on = true
