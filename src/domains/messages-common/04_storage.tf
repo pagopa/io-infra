@@ -33,7 +33,7 @@ resource "azurerm_resource_group" "notifications_rg" {
 
 module "push_notifications_storage" {
   source                     = "git::https://github.com/pagopa/azurerm.git//storage_account?ref=v3.8.2"
-  name                       = format("%s-push-notif-st", local.project)
+  name                       = format("%s-notifs", local.project)
   domain                     = upper(var.domain)
   account_kind               = "StorageV2"
   account_tier               = "Standard"
