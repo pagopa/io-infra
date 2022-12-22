@@ -164,7 +164,7 @@ resource "azurerm_resource_group" "services_rg" {
 #tfsec:ignore:azure-storage-queue-services-logging-enabled:exp:2022-05-01 # already ignored, maybe a bug in tfsec
 module "function_services" {
   count  = var.function_services_count
-  source = "git::https://github.com/pagopa/azurerm.git//function_app?ref=v3.7.0"
+  source = "git::https://github.com/pagopa/azurerm.git//function_app?ref=v3.8.1"
 
   domain = "IO-COMMONS"
 
@@ -246,7 +246,7 @@ module "function_services" {
 
 module "function_services_staging_slot" {
   count  = var.function_services_count
-  source = "git::https://github.com/pagopa/azurerm.git//function_app_slot?ref=v3.6.1"
+  source = "git::https://github.com/pagopa/azurerm.git//function_app_slot?ref=v3.8.1"
 
   name                = "staging"
   location            = var.location
