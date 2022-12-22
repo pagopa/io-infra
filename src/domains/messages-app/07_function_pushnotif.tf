@@ -88,7 +88,7 @@ locals {
       // Disable functions
       "AzureWebJobs.HandleNHNotificationCall.Disabled" = "1"
 
-      # AzureFunctionsJobHost__extensions__durableTask__storageProvider__partitionCount = "16"
+      AzureFunctionsJobHost__extensions__durableTask__storageProvider__partitionCount = "8"
 
     }
     app_settings_1 = {
