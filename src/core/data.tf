@@ -272,9 +272,9 @@ resource "azurerm_monitor_metric_alert" "iopstapi_throttling_low_availability" {
   auto_mitigate = false
 
   # Metric info
-  # https://learn.microsoft.com/en-us/azure/azure-monitor/essentials/metrics-supported#microsoftclassicstoragestorageaccountsblobservices
+  # https://learn.microsoft.com/en-us/azure/azure-monitor/essentials/metrics-supported#microsoftstoragestorageaccounts
   criteria {
-    metric_namespace       = "Microsoft.ClassicStorage/storageAccounts"
+    metric_namespace       = "Microsoft.Storage/storageAccounts"
     metric_name            = "Availability"
     aggregation            = "Average"
     operator               = "LessThan"
