@@ -248,6 +248,12 @@ variable "nh_partition_count" {
   default     = 4
 }
 
+variable "enable_azdoa" {
+  type        = bool
+  description = "Specifies Azure Devops Agent enabling"
+  default     = true
+}
+
 ###############################
 # Push Notification
 ###############################
