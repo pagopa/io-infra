@@ -39,3 +39,8 @@ resource "azurerm_key_vault_secret" "appinsights_connection_string" {
 
   key_vault_id = module.key_vault.id
 }
+
+data "azurerm_monitor_action_group" "error_action_group" {
+  resource_group_name = var.monitor_resource_group_name
+  name                = "${var.prefix}${var.env_short}error"
+}
