@@ -81,7 +81,7 @@ resource "azurerm_key_vault_secret" "services_storage_connection_string" {
 #################################
 
 data "azurerm_resource_group" "notifications_rg" {
-  name     = format("%s-notifications-rg", local.common_project)
+  name = format("%s-notifications-rg", local.common_project)
 }
 
 data "azurerm_storage_account" "push_notifications_storage" {

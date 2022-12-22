@@ -1,6 +1,6 @@
 locals {
-  project = "${var.prefix}-${var.env_short}-${var.domain}-${var.location_short}-${var.instance}"
-  product = "${var.prefix}-${var.env_short}"
+  project        = "${var.prefix}-${var.env_short}-${var.domain}-${var.location_short}-${var.instance}"
+  product        = "${var.prefix}-${var.env_short}"
   common_project = "${var.prefix}-${var.env_short}-${var.location_short}-${var.domain}"
 
   app_insights_ips_west_europe = [

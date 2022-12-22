@@ -58,7 +58,7 @@ locals {
       # Notification Hubs variables
 
       # Endpoint for the test notification hub namespace
-      AZURE_NH_HUB_NAME                              = data.azurerm_notification_hub.common.name
+      AZURE_NH_HUB_NAME                                = data.azurerm_notification_hub.common.name
       "AzureWebJobs.HandleNHNotificationCall.Disabled" = "0"
       # Endpoint for the test notification hub namespace
       NH1_PARTITION_REGEX = "^[0-3]"
