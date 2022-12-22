@@ -261,7 +261,6 @@ variable "enable_azdoa" {
 variable "cidr_subnet_push_notif" {
   type        = list(string)
   description = "Function push-notif address space."
-  default     = []
 }
 
 variable "push_notif_enabled" {
