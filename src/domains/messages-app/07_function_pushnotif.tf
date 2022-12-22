@@ -56,7 +56,7 @@ locals {
       # Possible values : "none" | "all" | "beta" | "canary"
       NH_PARTITION_FEATURE_FLAG            = "all"
       NOTIFY_VIA_QUEUE_FEATURE_FLAG        = "all"
-      BETA_USERS_STORAGE_CONNECTION_STRING = module.push_notif_beta_storage.primary_connection_string
+      BETA_USERS_STORAGE_CONNECTION_STRING = data.azurerm_storage_account.push_notif_beta_storage.primary_connection_string
       BETA_USERS_TABLE_NAME                = "notificationhub"
 
       # Takes ~6,25% of users
