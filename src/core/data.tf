@@ -261,7 +261,7 @@ resource "azurerm_monitor_metric_alert" "cosmos_api_throttling_alert" {
 
 resource "azurerm_monitor_metric_alert" "iopstapi_throttling_low_availability" {
 
-  name                = "[IO-COMMONS | ${data.azurerm_storage_account.api}] Low Availability"
+  name                = "[IO-COMMONS | ${data.azurerm_storage_account.api.name}] Low Availability"
   resource_group_name = azurerm_resource_group.rg_linux.name
   scopes              = [data.azurerm_storage_account.api.id]
   # TODO: add Runbook for checking errors
