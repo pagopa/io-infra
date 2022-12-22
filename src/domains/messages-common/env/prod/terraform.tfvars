@@ -25,4 +25,4 @@ nh_name_prefix                              = "io-p-ntf"
 nh_namespace_prefix                         = "io-p-ntfns"
 nh_partition_count                          = 4
 
-cidr_subnet_push_notif                     = ["10.0.140.0/24"]
+cidr_subnet_push_notif = ["10.0.140.0/24"]
