@@ -178,6 +178,8 @@ module "push_notif_function_staging_slot" {
   storage_account_name       = module.push_notif_function[0].storage_account.name
   storage_account_access_key = module.push_notif_function[0].storage_account.primary_access_key
 
+  internal_storage_connection_string = module.push_notif_function[0].storage_account_internal_function.primary_connection_string
+
   os_type                                  = "linux"
   runtime_version                          = "~4"
   linux_fx_version                         = "NODE|14"
