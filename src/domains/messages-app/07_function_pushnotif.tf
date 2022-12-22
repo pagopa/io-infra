@@ -13,7 +13,7 @@ module "push_notif_beta_storage" {
   account_tier               = "Standard"
   access_tier                = "Hot"
   enable_versioning          = false
-  account_replication_type   = "LRS"
+  account_replication_type   = "ZRS"
   resource_group_name        = azurerm_resource_group.push_notif_rg.name
   location                   = azurerm_resource_group.push_notif_rg.location
   advanced_threat_protection = true
