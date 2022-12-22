@@ -88,7 +88,6 @@ locals {
       // Disable functions
       "AzureWebJobs.HandleNHNotificationCall.Disabled" = "1"
 
-      WEBSITE_PROACTIVE_AUTOHEAL_ENABLED = "True"
       # AzureFunctionsJobHost__extensions__durableTask__storageProvider__partitionCount = "16"
 
     }
