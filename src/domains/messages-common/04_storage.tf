@@ -52,3 +52,25 @@ resource "azurerm_storage_queue" "push_notifications_queue" {
   name                 = "push-notifications"
   storage_account_name = module.push_notifications_storage.name
 }
+
+module "push_notif_beta_storage" {
+  source                     = "git::https://github.com/pagopa/azurerm.git//storage_account?ref=v3.8.2"
+  name                       = replace(format("%s-betauserst", local.project), "-", "")
+  domain                     = upper(var.domain)
+  account_kind               = "StorageV2"
+  account_tier               = "Standard"
+  access_tier                = "Hot"
+  enable_versioning          = false
+  account_replication_type   = "ZRS"
+  resource_group_name        = azurerm_resource_group.notifications_rg.name
+  location                   = azurerm_resource_group.notifications_rg.location
+  advanced_threat_protection = true
+  allow_blob_public_access   = false
+
+  tags = var.tags
+}
+
+resource "azurerm_storage_table" "notificationhub_beta_test_users_table" {
+  name                 = "notificationhub"
+  storage_account_name = module.push_notif_beta_storage.name
+}

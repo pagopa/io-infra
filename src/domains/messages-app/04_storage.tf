@@ -88,3 +88,8 @@ data "azurerm_storage_account" "push_notifications_storage" {
   name                = replace(format("%s-notifst", local.common_project), "-", "")
   resource_group_name = data.azurerm_resource_group.notifications_rg.name
 }
+
+data "azurerm_storage_account" "push_notif_beta_storage" {
+  name                = replace(format("%s-betauserst", local.common_project), "-", "")
+  resource_group_name = data.azurerm_resource_group.notifications_rg.name
+}

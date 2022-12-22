@@ -5,28 +5,6 @@ resource "azurerm_resource_group" "push_notif_rg" {
   tags = var.tags
 }
 
-module "push_notif_beta_storage" {
-  source                     = "git::https://github.com/pagopa/azurerm.git//storage_account?ref=v3.8.2"
-  name                       = format("%s-push-notif-beta-st", local.project)
-  domain                     = upper(var.domain)
-  account_kind               = "StorageV2"
-  account_tier               = "Standard"
-  access_tier                = "Hot"
-  enable_versioning          = false
-  account_replication_type   = "ZRS"
-  resource_group_name        = azurerm_resource_group.push_notif_rg.name
-  location                   = azurerm_resource_group.push_notif_rg.location
-  advanced_threat_protection = true
-  allow_blob_public_access   = false
-
-  tags = var.tags
-}
-
-resource "azurerm_storage_table" "notificationhub_beta_test_users_table" {
-  name                 = "notificationhub"
-  storage_account_name = module.push_notif_beta_storage.name
-}
-
 locals {
   function_push_notif = {
     app_settings_common = {
@@ -79,7 +57,7 @@ locals {
       NH_PARTITION_FEATURE_FLAG            = "all"
       NOTIFY_VIA_QUEUE_FEATURE_FLAG        = "all"
       BETA_USERS_STORAGE_CONNECTION_STRING = module.push_notif_beta_storage.primary_connection_string
-      BETA_USERS_TABLE_NAME                = azurerm_storage_table.notificationhub_beta_test_users_table.name
+      BETA_USERS_TABLE_NAME                = "notificationhub"
 
       # Takes ~6,25% of users
       CANARY_USERS_REGEX = "^([(0-9)|(a-f)|(A-F)]{63}0)$"
