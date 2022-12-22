@@ -195,13 +195,13 @@ module "push_notif_function_staging_slot" {
   name                = "staging"
   location            = var.location
   resource_group_name = azurerm_resource_group.push_notif_rg.name
-  function_app_name   = module.push_notif_function.name
-  function_app_id     = module.push_notif_function.id
-  app_service_plan_id = module.push_notif_function.app_service_plan_id
+  function_app_name   = module.push_notif_function[0].name
+  function_app_id     = module.push_notif_function[0].id
+  app_service_plan_id = module.push_notif_function[0].app_service_plan_id
   health_check_path   = "/api/v1/info"
 
-  storage_account_name       = module.push_notif_function.storage_account.name
-  storage_account_access_key = module.push_notif_function.storage_account.primary_access_key
+  storage_account_name       = module.push_notif_function[0].storage_account.name
+  storage_account_access_key = module.push_notif_function[0].storage_account.primary_access_key
 
   os_type                                  = "linux"
   runtime_version                          = "~4"
@@ -229,10 +229,10 @@ module "push_notif_function_staging_slot" {
 
 resource "azurerm_monitor_autoscale_setting" "push_notif_function" {
   count               = var.push_notif_enabled ? 1 : 0
-  name                = format("%s-autoscale", module.push_notif_function.name)
+  name                = format("%s-autoscale", module.push_notif_function[0].name)
   resource_group_name = azurerm_resource_group.push_notif_rg.name
   location            = var.location
-  target_resource_id  = module.push_notif_function.app_service_plan_id
+  target_resource_id  = module.push_notif_function[0].app_service_plan_id
 
   profile {
     name = "default"
@@ -246,7 +246,7 @@ resource "azurerm_monitor_autoscale_setting" "push_notif_function" {
     rule {
       metric_trigger {
         metric_name              = "Requests"
-        metric_resource_id       = module.push_notif_function.id
+        metric_resource_id       = module.push_notif_function[0].id
         metric_namespace         = "microsoft.web/sites"
         time_grain               = "PT1M"
         statistic                = "Average"
@@ -268,7 +268,7 @@ resource "azurerm_monitor_autoscale_setting" "push_notif_function" {
     rule {
       metric_trigger {
         metric_name              = "CpuPercentage"
-        metric_resource_id       = module.push_notif_function.app_service_plan_id
+        metric_resource_id       = module.push_notif_function[0].app_service_plan_id
         metric_namespace         = "microsoft.web/serverfarms"
         time_grain               = "PT1M"
         statistic                = "Average"
@@ -290,7 +290,7 @@ resource "azurerm_monitor_autoscale_setting" "push_notif_function" {
     rule {
       metric_trigger {
         metric_name              = "Requests"
-        metric_resource_id       = module.push_notif_function.id
+        metric_resource_id       = module.push_notif_function[0].id
         metric_namespace         = "microsoft.web/sites"
         time_grain               = "PT1M"
         statistic                = "Average"
@@ -312,7 +312,7 @@ resource "azurerm_monitor_autoscale_setting" "push_notif_function" {
     rule {
       metric_trigger {
         metric_name              = "CpuPercentage"
-        metric_resource_id       = module.push_notif_function.app_service_plan_id
+        metric_resource_id       = module.push_notif_function[0].app_service_plan_id
         metric_namespace         = "microsoft.web/serverfarms"
         time_grain               = "PT1M"
         statistic                = "Average"
