@@ -64,7 +64,7 @@ locals {
       NH1_PARTITION_REGEX = "^[0-3]"
       NH1_NAME            = data.azurerm_notification_hub.common_partition[0].name
       NH2_PARTITION_REGEX = "^[4-7]"
-      NH2_NAME            = ddata.azurerm_notification_hub.common_partition[1].name
+      NH2_NAME            = data.azurerm_notification_hub.common_partition[1].name
       NH3_PARTITION_REGEX = "^[8-b]"
       NH3_NAME            = data.azurerm_notification_hub.common_partition[2].name
       NH4_PARTITION_REGEX = "^[c-f]"
