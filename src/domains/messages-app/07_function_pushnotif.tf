@@ -108,7 +108,7 @@ module "push_notif_function" {
   source = "git::https://github.com/pagopa/azurerm.git//function_app?ref=v3.8.1"
 
   resource_group_name = azurerm_resource_group.push_notif_rg.name
-  name                = format("%s-push-notif-fn", local.project)
+  name                = format("%s-push-notif-fn", local.product)
   domain              = upper(var.domain)
   location            = var.location
   health_check_path   = "/api/v1/info"
