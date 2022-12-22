@@ -1067,10 +1067,14 @@ resource "azurerm_monitor_metric_alert" "too_many_http_5xx" {
     alert_sensitivity        = "Low"
     evaluation_total_count   = 4
     evaluation_failure_count = 4
+    skip_metric_validation   = false
 
   }
 
   action {
-    action_group_id = azurerm_monitor_action_group.error_action_group.id
+    action_group_id    = azurerm_monitor_action_group.error_action_group.id
+    webhook_properties = null
   }
+
+  tags = var.tags
 }
