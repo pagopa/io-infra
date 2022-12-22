@@ -169,6 +169,13 @@ eventhubs = [
   },
 ]
 
+## Notification Hub
+
+nh_resource_group_name = "io-p-rg-common"
+nh_name_prefix         = "io-p-ntf"
+nh_namespace_prefix    = "io-p-ntfns"
+nh_partition_count     = 4
+
 ###############################
 # Push Notification
 ###############################

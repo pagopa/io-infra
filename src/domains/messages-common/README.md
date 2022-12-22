@@ -114,10 +114,6 @@
 | <a name="input_log_analytics_workspace_name"></a> [log\_analytics\_workspace\_name](#input\_log\_analytics\_workspace\_name) | Specifies the name of the Log Analytics Workspace. | `string` | n/a | yes |
 | <a name="input_log_analytics_workspace_resource_group_name"></a> [log\_analytics\_workspace\_resource\_group\_name](#input\_log\_analytics\_workspace\_resource\_group\_name) | The name of the resource group in which the Log Analytics workspace is located in. | `string` | n/a | yes |
 | <a name="input_monitor_resource_group_name"></a> [monitor\_resource\_group\_name](#input\_monitor\_resource\_group\_name) | Monitor resource group name | `string` | n/a | yes |
-| <a name="input_nh_name_prefix"></a> [nh\_name\_prefix](#input\_nh\_name\_prefix) | Notification Hub name prefix | `string` | n/a | yes |
-| <a name="input_nh_namespace_prefix"></a> [nh\_namespace\_prefix](#input\_nh\_namespace\_prefix) | Notification Hub namespace prefix | `string` | n/a | yes |
-| <a name="input_nh_partition_count"></a> [nh\_partition\_count](#input\_nh\_partition\_count) | Notification Hub partition count | `number` | `4` | no |
-| <a name="input_nh_resource_group_name"></a> [nh\_resource\_group\_name](#input\_nh\_resource\_group\_name) | Notification Hub resource group name | `string` | n/a | yes |
 | <a name="input_prefix"></a> [prefix](#input\_prefix) | n/a | `string` | n/a | yes |
 | <a name="input_tags"></a> [tags](#input\_tags) | n/a | `map(any)` | <pre>{<br>  "CreatedBy": "Terraform"<br>}</pre> | no |
 

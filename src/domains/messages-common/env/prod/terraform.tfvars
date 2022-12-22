@@ -20,7 +20,3 @@ monitor_resource_group_name                 = "io-p-rg-common"
 log_analytics_workspace_name                = "io-p-law-common"
 log_analytics_workspace_resource_group_name = "io-p-rg-common"
 application_insights_name                   = "io-p-ai-common"
-nh_resource_group_name                      = "io-p-rg-common"
-nh_name_prefix                              = "io-p-ntf"
-nh_namespace_prefix                         = "io-p-ntfns"
-nh_partition_count                          = 4

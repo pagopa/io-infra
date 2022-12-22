@@ -69,26 +69,6 @@ variable "monitor_resource_group_name" {
   description = "Monitor resource group name"
 }
 
-variable "nh_resource_group_name" {
-  type        = string
-  description = "Notification Hub resource group name"
-}
-
-variable "nh_name_prefix" {
-  type        = string
-  description = "Notification Hub name prefix"
-}
-variable "nh_namespace_prefix" {
-  type        = string
-  description = "Notification Hub namespace prefix"
-}
-
-variable "nh_partition_count" {
-  type        = number
-  description = "Notification Hub partition count"
-  default     = 4
-}
-
 variable "log_analytics_workspace_name" {
   type        = string
   description = "Specifies the name of the Log Analytics Workspace."

@@ -42,3 +42,10 @@ tls_cert_check_helm = {
 ### Aks
 
 ingress_load_balancer_ip = "10.10.100.250"
+
+## Notification Hub
+
+nh_resource_group_name = "io-p-rg-common"
+nh_name_prefix         = "io-p-ntf"
+nh_namespace_prefix    = "io-p-ntfns"
+nh_partition_count     = 4
