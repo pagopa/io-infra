@@ -114,3 +114,8 @@ variable "enable_azdoa" {
   description = "Specifies Azure Devops Agent enabling"
   default     = true
 }
+
+variable "cidr_subnet_push_notif" {
+  type        = list(string)
+  description = "Function push-notif address space."
+}
