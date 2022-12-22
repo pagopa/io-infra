@@ -83,7 +83,7 @@ module "push_notif_snet" {
   source                                         = "git::https://github.com/pagopa/azurerm.git//subnet?ref=v1.0.51"
   name                                           = format("%s-push-notif-snet", local.project)
   address_prefixes                               = var.cidr_subnet_push_notif
-  resource_group_name                            = azurerm_resource_group.push_notif_rg.name
+  resource_group_name                            = data.azurerm_virtual_network.vnet_common.resource_group_name
   virtual_network_name                           = data.azurerm_virtual_network.vnet_common.name
   enforce_private_link_endpoint_network_policies = true
 
