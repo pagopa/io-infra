@@ -47,3 +47,8 @@ module "push_notifications_storage" {
 
   tags = var.tags
 }
+
+resource "azurerm_storage_queue" "push_notifications_queue" {
+  name                 = "push-notifications"
+  storage_account_name = module.push_notifications_storage.name
+}

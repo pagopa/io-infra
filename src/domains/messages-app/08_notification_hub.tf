@@ -10,8 +10,3 @@ data "azurerm_notification_hub" "common_partition" {
   namespace_name      = format("%s-common-partition-%d", var.nh_namespace_prefix, count.index + 1)
   resource_group_name = var.nh_resource_group_name
 }
-
-resource "azurerm_storage_queue" "push_notifications_queue" {
-  name                 = "push-notifications"
-  storage_account_name = module.push_notifications_storage.name
-}

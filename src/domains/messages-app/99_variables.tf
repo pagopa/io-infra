@@ -230,6 +230,12 @@ EOD
 ###############################
 # Push Notification
 ###############################
+
+variable "cidr_subnet_push_notif" {
+  type        = list(string)
+  description = "Function push-notif address space."
+}
+
 variable "push_notif_enabled" {
   type        = bool
   default     = false
