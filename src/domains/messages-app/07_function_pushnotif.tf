@@ -53,7 +53,6 @@ locals {
       // activity default retry attempts
       RETRY_ATTEMPT_NUMBER = 10
 
-      APPINSIGHTS_SAMPLING_PERCENTAGE = 5
 
       # ------------------------------------------------------------------------------
       # Notification Hubs variables
