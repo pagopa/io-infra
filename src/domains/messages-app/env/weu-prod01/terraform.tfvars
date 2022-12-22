@@ -42,7 +42,7 @@ tls_cert_check_helm = {
 #################################
 # CIDRS
 #################################
-cidr_subnet_push_notif = ["10.0.140.0/26"]
+cidr_subnet_push_notif = ["10.0.141.0/26"]
 
 ### Aks
 
