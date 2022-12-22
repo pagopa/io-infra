@@ -83,11 +83,6 @@ variable "nh_namespace_prefix" {
   description = "Notification Hub namespace prefix"
 }
 
-variable "monitor_resource_group_name" {
-  type        = string
-  description = "Monitor resource group name"
-}
-
 variable "nh_partition_count" {
   type        = number
   description = "Notification Hub partition count"
