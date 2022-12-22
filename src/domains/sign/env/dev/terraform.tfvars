@@ -8,7 +8,5 @@ tags = {
   Environment = "Prod"
   Owner       = "IO"
   Source      = "https://github.com/pagopa/io-infra/src/sign"
-  CostCenter  = "TS310 - PAGAMENTI & SERVIZI"
+  CostCenter  = "BD100 - STRATEGIC INNOVATION"
 }
-
-lock_enable = false

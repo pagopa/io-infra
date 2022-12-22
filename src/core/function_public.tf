@@ -1,51 +1,16 @@
 #
-# SECRETS
-#
-
-data "azurerm_key_vault_secret" "fn_cgn_SERVICES_API_KEY" {
-  name         = "apim-CGN-SERVICE-KEY"
-  key_vault_id = data.azurerm_key_vault.common.id
-}
-
-data "azurerm_key_vault_secret" "fn_cgn_EYCA_API_USERNAME" {
-  name         = "funccgn-EYCA-API-USERNAME"
-  key_vault_id = data.azurerm_key_vault.common.id
-}
-
-data "azurerm_key_vault_secret" "fn_cgn_EYCA_API_PASSWORD" {
-  name         = "funccgn-EYCA-API-PASSWORD"
-  key_vault_id = data.azurerm_key_vault.common.id
-}
-
-data "azurerm_key_vault_secret" "fn_cgn_CGN_SERVICE_ID" {
-  name         = "funccgn-CGN-SERVICE-ID"
-  key_vault_id = data.azurerm_key_vault.common.id
-}
-
-data "azurerm_key_vault_secret" "fn_cgn_CGN_DATA_BACKUP_CONNECTION" {
-  name         = "cgn-legalbackup-storage-connection-string"
-  key_vault_id = data.azurerm_key_vault.common.id
-}
-
-#
 # APP CONFIGURATION
 #
 
 locals {
-  function_cgn = {
+  function_public = {
     app_settings_common = {
       FUNCTIONS_WORKER_RUNTIME       = "node"
-      WEBSITE_NODE_DEFAULT_VERSION   = "14.16.0"
       WEBSITE_RUN_FROM_PACKAGE       = "1"
       WEBSITE_VNET_ROUTE_ALL         = "1"
       WEBSITE_DNS_SERVER             = "168.63.129.16"
       FUNCTIONS_WORKER_PROCESS_COUNT = 4
       NODE_ENV                       = "production"
-
-      COSMOSDB_CGN_URI           = data.azurerm_cosmosdb_account.cosmos_cgn.endpoint
-      COSMOSDB_CGN_KEY           = data.azurerm_cosmosdb_account.cosmos_cgn.primary_master_key
-      COSMOSDB_CGN_DATABASE_NAME = "db"
-      COSMOSDB_CONNECTION_STRING = format("AccountEndpoint=%s;AccountKey=%s;", data.azurerm_cosmosdb_account.cosmos_cgn.endpoint, data.azurerm_cosmosdb_account.cosmos_cgn.primary_master_key)
 
       // Keepalive fields are all optionals
       FETCH_KEEPALIVE_ENABLED             = "true"
@@ -55,51 +20,25 @@ locals {
       FETCH_KEEPALIVE_FREE_SOCKET_TIMEOUT = "30000"
       FETCH_KEEPALIVE_TIMEOUT             = "60000"
 
-      CGN_EXPIRATION_TABLE_NAME  = "cardexpiration"
-      EYCA_EXPIRATION_TABLE_NAME = "eycacardexpiration"
+      COSMOSDB_URI      = data.azurerm_cosmosdb_account.cosmos_api.endpoint
+      COSMOSDB_KEY      = data.azurerm_cosmosdb_account.cosmos_api.primary_master_key
+      COSMOSDB_NAME     = "db"
+      StorageConnection = data.azurerm_storage_account.api.primary_connection_string
 
-      # Storage account connection string:
-      CGN_STORAGE_CONNECTION_STRING = data.azurerm_storage_account.iopstcgn.primary_connection_string
-
-      SERVICES_API_URL = "http://api-app.internal.io.pagopa.it/"
-
-      WEBSITE_TIME_ZONE = local.cet_time_zone_win
-      EYCA_API_BASE_URL = "https://ccdb.eyca.org/api"
-
-      // REDIS
-      REDIS_URL      = data.azurerm_redis_cache.redis_cgn.hostname
-      REDIS_PORT     = data.azurerm_redis_cache.redis_cgn.ssl_port
-      REDIS_PASSWORD = data.azurerm_redis_cache.redis_cgn.primary_access_key
-
-      OTP_TTL_IN_SECONDS = 600
-
-      CGN_UPPER_BOUND_AGE  = 36
-      EYCA_UPPER_BOUND_AGE = 31
-
-      CGN_CARDS_DATA_BACKUP_CONTAINER_NAME = "cgn-legalbackup-blob"
-      CGN_CARDS_DATA_BACKUP_FOLDER_NAME    = "cgn"
-
-      #
-      # SECRETS VALUES
-      #
-      SERVICES_API_KEY           = data.azurerm_key_vault_secret.fn_cgn_SERVICES_API_KEY.value
-      EYCA_API_USERNAME          = data.azurerm_key_vault_secret.fn_cgn_EYCA_API_USERNAME.value
-      EYCA_API_PASSWORD          = data.azurerm_key_vault_secret.fn_cgn_EYCA_API_PASSWORD.value
-      CGN_SERVICE_ID             = data.azurerm_key_vault_secret.fn_cgn_CGN_SERVICE_ID.value
-      CGN_DATA_BACKUP_CONNECTION = data.azurerm_key_vault_secret.fn_cgn_CGN_DATA_BACKUP_CONNECTION.value
+      VALIDATION_CALLBACK_URL = "https://api-app.io.pagopa.it/email_verification.html"
     }
   }
 }
 
 #tfsec:ignore:azure-storage-queue-services-logging-enabled:exp:2022-05-01 # already ignored, maybe a bug in tfsec
-module "function_cgn" {
+module "function_public" {
   source = "git::https://github.com/pagopa/azurerm.git//function_app?ref=v3.4.0"
 
-  resource_group_name = azurerm_resource_group.cgn_be_rg.name
-  name                = format("%s-cgn-fn", local.project)
+  resource_group_name = azurerm_resource_group.shared_rg.name
+  name                = format("%s-public-fn", local.project)
   location            = var.location
-  app_service_plan_id = azurerm_app_service_plan.cgn_common.id
-  health_check_path   = "/api/v1/cgn/info"
+  app_service_plan_id = azurerm_app_service_plan.shared_1_plan.id
+  health_check_path   = "/info"
 
   os_type          = "linux"
   linux_fx_version = "NODE|14"
@@ -109,11 +48,7 @@ module "function_cgn" {
   application_insights_instrumentation_key = data.azurerm_application_insights.application_insights.instrumentation_key
 
   app_settings = merge(
-    local.function_cgn.app_settings_common, {
-      "AzureWebJobs.ContinueEycaActivation.Disabled" = "0",
-      "AzureWebJobs.UpdateExpiredCgn.Disabled"       = "0",
-      "AzureWebJobs.UpdateExpiredEyca.Disabled"      = "0"
-    }
+    local.function_public.app_settings_common,
   )
 
   internal_storage = {
@@ -127,34 +62,31 @@ module "function_cgn" {
     "blobs_retention_days"       = 0,
   }
 
-  subnet_id = module.cgn_snet.id
+  subnet_id = module.shared_1_snet.id
 
   allowed_subnets = [
-    module.cgn_snet.id,
-    module.app_backendl1_snet.id,
-    module.app_backendl2_snet.id,
-    module.app_backendli_snet.id,
+    module.shared_1_snet.id,
     module.apim_snet.id,
   ]
 
   tags = var.tags
 }
 
-module "function_cgn_staging_slot" {
+module "function_public_staging_slot" {
   source = "git::https://github.com/pagopa/azurerm.git//function_app_slot?ref=v3.4.0"
 
   name                = "staging"
   location            = var.location
-  resource_group_name = azurerm_resource_group.cgn_be_rg.name
-  function_app_name   = module.function_cgn.name
-  function_app_id     = module.function_cgn.id
-  app_service_plan_id = azurerm_app_service_plan.cgn_common.id
-  health_check_path   = "/api/v1/cgn/info"
+  resource_group_name = azurerm_resource_group.shared_rg.name
+  function_app_name   = module.function_public.name
+  function_app_id     = module.function_public.id
+  app_service_plan_id = azurerm_app_service_plan.shared_1_plan.id
+  health_check_path   = "/info"
 
-  storage_account_name       = module.function_cgn.storage_account.name
-  storage_account_access_key = module.function_cgn.storage_account.primary_access_key
+  storage_account_name       = module.function_public.storage_account.name
+  storage_account_access_key = module.function_public.storage_account.primary_access_key
 
-  internal_storage_connection_string = module.function_cgn.storage_account_internal_function.primary_connection_string
+  internal_storage_connection_string = module.function_public.storage_account_internal_function.primary_connection_string
 
   os_type                                  = "linux"
   linux_fx_version                         = "NODE|14"
@@ -163,46 +95,39 @@ module "function_cgn_staging_slot" {
   application_insights_instrumentation_key = data.azurerm_application_insights.application_insights.instrumentation_key
 
   app_settings = merge(
-    local.function_cgn.app_settings_common, {
-      "AzureWebJobs.ContinueEycaActivation.Disabled" = "1",
-      "AzureWebJobs.UpdateExpiredCgn.Disabled"       = "1",
-      "AzureWebJobs.UpdateExpiredEyca.Disabled"      = "1"
-    }
+    local.function_public.app_settings_common,
   )
 
-  subnet_id = module.cgn_snet.id
+  subnet_id = module.shared_1_snet.id
 
   allowed_subnets = [
-    module.cgn_snet.id,
+    module.shared_1_snet.id,
     data.azurerm_subnet.azdoa_snet[0].id,
-    module.app_backendl1_snet.id,
-    module.app_backendl2_snet.id,
-    module.app_backendli_snet.id,
     module.apim_snet.id,
   ]
 
   tags = var.tags
 }
 
-resource "azurerm_monitor_autoscale_setting" "function_cgn" {
-  name                = format("%s-autoscale", module.function_cgn.name)
-  resource_group_name = azurerm_resource_group.cgn_be_rg.name
+resource "azurerm_monitor_autoscale_setting" "function_public" {
+  name                = format("%s-autoscale", module.function_public.name)
+  resource_group_name = azurerm_resource_group.shared_rg.name
   location            = var.location
-  target_resource_id  = module.function_cgn.app_service_plan_id
+  target_resource_id  = module.function_public.app_service_plan_id
 
   profile {
     name = "default"
 
     capacity {
-      default = var.function_cgn_autoscale_default
-      minimum = var.function_cgn_autoscale_minimum
-      maximum = var.function_cgn_autoscale_maximum
+      default = var.function_public_autoscale_default
+      minimum = var.function_public_autoscale_minimum
+      maximum = var.function_public_autoscale_maximum
     }
 
     rule {
       metric_trigger {
         metric_name              = "Requests"
-        metric_resource_id       = module.function_cgn.id
+        metric_resource_id       = module.function_public.id
         metric_namespace         = "microsoft.web/sites"
         time_grain               = "PT1M"
         statistic                = "Average"
@@ -224,7 +149,7 @@ resource "azurerm_monitor_autoscale_setting" "function_cgn" {
     rule {
       metric_trigger {
         metric_name              = "CpuPercentage"
-        metric_resource_id       = module.function_cgn.app_service_plan_id
+        metric_resource_id       = module.function_public.app_service_plan_id
         metric_namespace         = "microsoft.web/serverfarms"
         time_grain               = "PT1M"
         statistic                = "Average"
@@ -246,7 +171,7 @@ resource "azurerm_monitor_autoscale_setting" "function_cgn" {
     rule {
       metric_trigger {
         metric_name              = "Requests"
-        metric_resource_id       = module.function_cgn.id
+        metric_resource_id       = module.function_public.id
         metric_namespace         = "microsoft.web/sites"
         time_grain               = "PT1M"
         statistic                = "Average"
@@ -268,7 +193,7 @@ resource "azurerm_monitor_autoscale_setting" "function_cgn" {
     rule {
       metric_trigger {
         metric_name              = "CpuPercentage"
-        metric_resource_id       = module.function_cgn.app_service_plan_id
+        metric_resource_id       = module.function_public.app_service_plan_id
         metric_namespace         = "microsoft.web/serverfarms"
         time_grain               = "PT1M"
         statistic                = "Average"
@@ -291,15 +216,15 @@ resource "azurerm_monitor_autoscale_setting" "function_cgn" {
 
 ## Alerts
 
-resource "azurerm_monitor_metric_alert" "function_cgn_health_check" {
-  name                = "${module.function_cgn.name}-health-check-failed"
-  resource_group_name = azurerm_resource_group.cgn_be_rg.name
-  scopes              = [module.function_cgn.id]
-  description         = "${module.function_cgn.name} health check failed"
+resource "azurerm_monitor_metric_alert" "function_public_health_check" {
+  name                = "${module.function_public.name}-health-check-failed"
+  resource_group_name = azurerm_resource_group.shared_rg.name
+  scopes              = [module.function_public.id]
+  description         = "${module.function_public.name} health check failed"
   severity            = 1
   frequency           = "PT5M"
   auto_mitigate       = false
-  enabled             = true
+  enabled             = false # todo enable after deploy
 
   criteria {
     metric_namespace = "Microsoft.Web/sites"

@@ -8,7 +8,8 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v2
+      # from https://github.com/actions/checkout/commits/main
+      - uses: actions/checkout@1f9a0c22da41e6ebfa534300ef656657ea2c6707
 
       - name: init_terraform_folders
         env:
@@ -52,5 +53,5 @@ jobs:
 
       - name: run_pre_commit_terraform
         run: |
-          TAG=v1.74.1
+          TAG="v1.77.0@sha256:64ce1e4b99d85497fe646db0724669039b079b45fa8cd503b4dc23dbdca490ae"
           docker run -v $(pwd):/lint -w /lint ghcr.io/antonbabenko/pre-commit-terraform:$TAG run -a

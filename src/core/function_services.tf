@@ -164,7 +164,9 @@ resource "azurerm_resource_group" "services_rg" {
 #tfsec:ignore:azure-storage-queue-services-logging-enabled:exp:2022-05-01 # already ignored, maybe a bug in tfsec
 module "function_services" {
   count  = var.function_services_count
-  source = "git::https://github.com/pagopa/azurerm.git//function_app?ref=v3.6.1"
+  source = "git::https://github.com/pagopa/azurerm.git//function_app?ref=v3.8.1"
+
+  domain = "IO-COMMONS"
 
   resource_group_name = azurerm_resource_group.services_rg[count.index].name
   name                = format("%s-services-fn-%d", local.project, count.index + 1)
@@ -229,12 +231,22 @@ module "function_services" {
     data.azurerm_subnet.fnapp_eucovidcert_subnet_out.id,
   ]
 
+
+  # Action groups for alerts
+  action = [
+    {
+      action_group_id    = azurerm_monitor_action_group.error_action_group.id
+      webhook_properties = null
+    }
+  ]
+
+
   tags = var.tags
 }
 
 module "function_services_staging_slot" {
   count  = var.function_services_count
-  source = "git::https://github.com/pagopa/azurerm.git//function_app_slot?ref=v3.6.1"
+  source = "git::https://github.com/pagopa/azurerm.git//function_app_slot?ref=v3.8.1"
 
   name                = "staging"
   location            = var.location
@@ -312,7 +324,7 @@ resource "azurerm_monitor_autoscale_setting" "function_services_autoscale" {
       scale_action {
         direction = "Increase"
         type      = "ChangeCount"
-        value     = "5"
+        value     = "3"
         cooldown  = "PT5M"
       }
     }
@@ -334,7 +346,7 @@ resource "azurerm_monitor_autoscale_setting" "function_services_autoscale" {
       scale_action {
         direction = "Increase"
         type      = "ChangeCount"
-        value     = "5"
+        value     = "3"
         cooldown  = "PT5M"
       }
     }
@@ -357,7 +369,7 @@ resource "azurerm_monitor_autoscale_setting" "function_services_autoscale" {
         direction = "Decrease"
         type      = "ChangeCount"
         value     = "1"
-        cooldown  = "PT20M"
+        cooldown  = "PT10M"
       }
     }
 
@@ -379,48 +391,8 @@ resource "azurerm_monitor_autoscale_setting" "function_services_autoscale" {
         direction = "Decrease"
         type      = "ChangeCount"
         value     = "1"
-        cooldown  = "PT20M"
+        cooldown  = "PT10M"
       }
     }
   }
 }
-
-## Alerts
-
-resource "azurerm_monitor_metric_alert" "function_services_health_check" {
-  count = var.function_services_count
-
-  name                = "${module.function_services[count.index].name}-health-check-failed"
-  resource_group_name = azurerm_resource_group.services_rg[count.index].name
-  scopes              = [module.function_services[count.index].id]
-  description         = "${module.function_services[count.index].name} health check failed"
-  severity            = 1
-  frequency           = "PT5M"
-  auto_mitigate       = false
-  enabled             = true
-
-  criteria {
-    metric_namespace = "Microsoft.Web/sites"
-    metric_name      = "HealthCheckStatus"
-    aggregation      = "Average"
-    operator         = "LessThan"
-    threshold        = 50
-  }
-
-  action {
-    action_group_id = azurerm_monitor_action_group.email.id
-  }
-
-  action {
-    action_group_id = azurerm_monitor_action_group.slack.id
-  }
-}
-
-# ## Containers
-
-# resource "azurerm_storage_container" "container_processing_messages" {
-#   count                 = var.function_services_count
-#   name                  = "processing-messages"
-#   storage_account_name  = module.function_services[count.index].storage_account_internal_function.name
-#   container_access_type = "private"
-# }
