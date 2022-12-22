@@ -188,7 +188,7 @@ module "app_messages_function" {
   action = [
     {
       action_group_id    = azurerm_monitor_action_group.error_action_group.id
-      webhook_properties = null
+      webhook_properties = {}
     }
   ]
 

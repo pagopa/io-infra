@@ -203,3 +203,89 @@ data "azurerm_key_vault_secret" "apim_services_subscription_key" {
   name         = "apim-IO-SERVICE-KEY"
   key_vault_id = data.azurerm_key_vault.common.id
 }
+
+
+# -----------------------------------------------
+# Alerts
+# -----------------------------------------------
+
+resource "azurerm_monitor_metric_alert" "cosmos_api_throttling_alert" {
+
+  name                = "[IO-COMMONS | ${data.azurerm_cosmosdb_account.cosmos_api.name}] Throttling"
+  resource_group_name = azurerm_resource_group.rg_linux.name
+  scopes              = [data.azurerm_cosmosdb_account.cosmos_api.id]
+  # TODO: add Runbook for checking errors
+  description   = "One or more collections consumed throughput (RU/s) exceed provisioned throughput. Please, consider to increase RU for these collections. Runbook: not needed."
+  severity      = 0
+  window_size   = "PT5M"
+  frequency     = "PT5M"
+  auto_mitigate = false
+
+  # Metric info
+  # https://learn.microsoft.com/en-us/azure/azure-monitor/essentials/metrics-supported#microsoftdocumentdbdatabaseaccounts
+  criteria {
+    metric_namespace       = "Microsoft.DocumentDB/databaseAccounts"
+    metric_name            = "TotalRequestUnits"
+    aggregation            = "Total"
+    operator               = "GreaterThan"
+    threshold              = 0
+    skip_metric_validation = false
+
+
+    dimension {
+      name     = "Region"
+      operator = "Include"
+      values   = ["West Europe"]
+    }
+    dimension {
+      name     = "StatusCode"
+      operator = "Include"
+      values   = ["429"]
+    }
+    dimension {
+      name     = "CollectionName"
+      operator = "Include"
+      values   = ["*"]
+    }
+
+  }
+
+  action {
+    action_group_id    = azurerm_monitor_action_group.error_action_group.id
+    webhook_properties = {}
+  }
+
+  tags = var.tags
+}
+
+
+resource "azurerm_monitor_metric_alert" "iopstapi_throttling_low_availability" {
+
+  name                = "[IO-COMMONS | ${data.azurerm_storage_account.api.name}] Low Availability"
+  resource_group_name = azurerm_resource_group.rg_linux.name
+  scopes              = [data.azurerm_storage_account.api.id]
+  # TODO: add Runbook for checking errors
+  description   = "The average availability is less than 99.8%. Runbook: not needed."
+  severity      = 0
+  window_size   = "PT5M"
+  frequency     = "PT5M"
+  auto_mitigate = false
+
+  # Metric info
+  # https://learn.microsoft.com/en-us/azure/azure-monitor/essentials/metrics-supported#microsoftstoragestorageaccounts
+  criteria {
+    metric_namespace       = "Microsoft.Storage/storageAccounts"
+    metric_name            = "Availability"
+    aggregation            = "Average"
+    operator               = "LessThan"
+    threshold              = 99.8
+    skip_metric_validation = false
+  }
+
+  action {
+    action_group_id    = azurerm_monitor_action_group.error_action_group.id
+    webhook_properties = {}
+  }
+
+  tags = var.tags
+}

@@ -136,16 +136,18 @@ data "azurerm_storage_account" "api_replica" {
 
 #tfsec:ignore:azure-storage-queue-services-logging-enabled:exp:2022-05-01 # already ignored, maybe a bug in tfsec
 module "function_elt" {
-  source = "git::https://github.com/pagopa/azurerm.git//function_app?ref=v2.9.1"
+  source = "git::https://github.com/pagopa/azurerm.git//function_app?ref=v3.8.1"
 
   resource_group_name                      = azurerm_resource_group.elt_rg.name
   name                                     = "${local.project}-fn-elt"
+  domain                                   = "IO-COMMONS"
   storage_account_name                     = "${replace(local.project, "-", "")}stfnelt"
   app_service_plan_name                    = "${local.project}-plan-fnelt"
   location                                 = var.location
   health_check_path                        = "/api/v1/info"
   subnet_id                                = module.function_elt_snetout.id
-  runtime_version                          = "~3"
+  runtime_version                          = "~4"
+  linux_fx_version                         = null
   application_insights_instrumentation_key = data.azurerm_application_insights.application_insights.instrumentation_key
 
   app_service_plan_info = {
@@ -157,11 +159,25 @@ module "function_elt" {
 
   app_settings = merge(
     local.function_elt.app_settings, {
-      "AzureWebJobs.CosmosApiServicesChangeFeed.Disabled"      = "1"
-      "AzureWebJobs.CosmosApiMessageStatusChangeFeed.Disabled" = "1"
-      "AzureWebJobs.CosmosApiMessagesChangeFeed.Disabled"      = "1"
+      "AzureWebJobs.CosmosApiServicesChangeFeed.Disabled"                             = "1"
+      "AzureWebJobs.CosmosApiMessageStatusChangeFeed.Disabled"                        = "1"
+      "AzureWebJobs.CosmosApiMessagesChangeFeed.Disabled"                             = "1"
+      "AzureWebJobs.AnalyticsMessagesChangeFeedInboundProcessorAdapter.Disabled"      = "0"
+      "AzureWebJobs.AnalyticsMessagesStorageQueueInboundProcessorAdapter.Disabled"    = "0"
+      "AzureWebJobs.AnalyticsMessageStatusChangeFeedInboundProcessorAdapter.Disabled" = "0"
+      "AzureWebJobs.AnalyticsMessageStatusStorageQueueInbloundAdapter.Disabled"       = "0"
+      "AzureWebJobs.AnalyticsServiceChangeFeedInboundProcessorAdapter.Disabled"       = "0"
+      "AzureWebJobs.AnalyticsServiceStorageQueueInboundProcessorAdapter.Disabled"     = "0"
     }
   )
+
+  storage_account_info = {
+    account_kind                      = "StorageV2"
+    account_tier                      = "Standard"
+    account_replication_type          = "LRS"
+    access_tier                       = "Hot"
+    advanced_threat_protection_enable = true
+  }
 
   internal_storage = {
     "enable"                     = true,
@@ -186,6 +202,14 @@ module "function_elt" {
   ]
 
   allowed_ips = local.app_insights_ips_west_europe
+
+  # Action groups for alerts
+  action = [
+    {
+      action_group_id    = azurerm_monitor_action_group.error_action_group.id
+      webhook_properties = {}
+    }
+  ]
 
   tags = var.tags
 }
