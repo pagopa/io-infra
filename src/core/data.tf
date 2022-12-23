@@ -107,6 +107,15 @@ locals {
 # Notifications resources
 #
 
+data "azurerm_resource_group" "notifications_rg" {
+  name = format("%s-weu-messages-notifications-rg", local.project)
+}
+
+data "azurerm_storage_account" "push_notifications_storage" {
+  name                = replace(format("%s-weu-messages-notifst", local.project), "-", "")
+  resource_group_name = data.azurerm_resource_group.notifications_rg.name
+}
+
 data "azurerm_storage_account" "notifications" {
   name                = replace(format("%s-stnotifications", local.project), "-", "")
   resource_group_name = format("%s-rg-internal", local.project)
