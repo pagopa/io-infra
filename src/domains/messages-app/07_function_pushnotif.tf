@@ -5,6 +5,8 @@ resource "azurerm_resource_group" "push_notif_rg" {
   tags = var.tags
 }
 
+
+
 locals {
   function_push_notif = {
     app_settings_common = {
@@ -47,6 +49,12 @@ locals {
       NH3_NAME            = data.azurerm_notification_hub.common_partition[2].name
       NH4_PARTITION_REGEX = "^[c-f]"
       NH4_NAME            = data.azurerm_notification_hub.common_partition[3].name
+
+      AZURE_NH_ENDPOINT = data.azurerm_key_vault_secret.azure_nh_endpoint.value
+      NH1_ENDPOINT      = data.azurerm_key_vault_secret.azure_nh_partition1_endpoint.value
+      NH2_ENDPOINT      = data.azurerm_key_vault_secret.azure_nh_partition2_endpoint.value
+      NH3_ENDPOINT      = data.azurerm_key_vault_secret.azure_nh_partition3_endpoint.value
+      NH4_ENDPOINT      = data.azurerm_key_vault_secret.azure_nh_partition4_endpoint.value
       # ------------------------------------------------------------------------------
 
 

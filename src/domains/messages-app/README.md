@@ -62,7 +62,13 @@
 | [azuread_group.adgroup_security](https://registry.terraform.io/providers/hashicorp/azuread/2.21.0/docs/data-sources/group) | data source |
 | [azurerm_application_insights.application_insights](https://registry.terraform.io/providers/hashicorp/azurerm/2.98.0/docs/data-sources/application_insights) | data source |
 | [azurerm_client_config.current](https://registry.terraform.io/providers/hashicorp/azurerm/2.98.0/docs/data-sources/client_config) | data source |
+| [azurerm_key_vault.common](https://registry.terraform.io/providers/hashicorp/azurerm/2.98.0/docs/data-sources/key_vault) | data source |
 | [azurerm_key_vault.kv](https://registry.terraform.io/providers/hashicorp/azurerm/2.98.0/docs/data-sources/key_vault) | data source |
+| [azurerm_key_vault_secret.azure_nh_endpoint](https://registry.terraform.io/providers/hashicorp/azurerm/2.98.0/docs/data-sources/key_vault_secret) | data source |
+| [azurerm_key_vault_secret.azure_nh_partition1_endpoint](https://registry.terraform.io/providers/hashicorp/azurerm/2.98.0/docs/data-sources/key_vault_secret) | data source |
+| [azurerm_key_vault_secret.azure_nh_partition2_endpoint](https://registry.terraform.io/providers/hashicorp/azurerm/2.98.0/docs/data-sources/key_vault_secret) | data source |
+| [azurerm_key_vault_secret.azure_nh_partition3_endpoint](https://registry.terraform.io/providers/hashicorp/azurerm/2.98.0/docs/data-sources/key_vault_secret) | data source |
+| [azurerm_key_vault_secret.azure_nh_partition4_endpoint](https://registry.terraform.io/providers/hashicorp/azurerm/2.98.0/docs/data-sources/key_vault_secret) | data source |
 | [azurerm_kubernetes_cluster.aks](https://registry.terraform.io/providers/hashicorp/azurerm/2.98.0/docs/data-sources/kubernetes_cluster) | data source |
 | [azurerm_log_analytics_workspace.log_analytics](https://registry.terraform.io/providers/hashicorp/azurerm/2.98.0/docs/data-sources/log_analytics_workspace) | data source |
 | [azurerm_monitor_action_group.email](https://registry.terraform.io/providers/hashicorp/azurerm/2.98.0/docs/data-sources/monitor_action_group) | data source |
