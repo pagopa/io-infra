@@ -83,3 +83,9 @@ variable "application_insights_name" {
   type        = string
   description = "Specifies the name of the Application Insights."
 }
+
+variable "enable_azdoa" {
+  type        = bool
+  description = "Specifies Azure Devops Agent enabling"
+  default     = true
+}
