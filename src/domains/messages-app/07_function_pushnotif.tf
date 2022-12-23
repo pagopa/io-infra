@@ -71,9 +71,6 @@ locals {
       CANARY_USERS_REGEX = "^([(0-9)|(a-f)|(A-F)]{63}0)$"
       # ------------------------------------------------------------------------------
 
-      // Disable functions
-      "AzureWebJobs.HandleNHNotificationCall.Disabled" = "1"
-
       AzureFunctionsJobHost__extensions__durableTask__storageProvider__partitionCount = "8"
 
     }
@@ -146,7 +143,9 @@ module "push_notif_function" {
   }
 
   app_settings = merge(
-    local.function_push_notif.app_settings_common,
+    local.function_push_notif.app_settings_common, {
+      "AzureWebJobs.HandleNHNotificationCall.Disabled" = "0"
+    }
   )
 
   subnet_id = module.push_notif_snet.id
@@ -195,7 +194,9 @@ module "push_notif_function_staging_slot" {
   application_insights_instrumentation_key = data.azurerm_application_insights.application_insights.instrumentation_key
 
   app_settings = merge(
-    local.function_push_notif.app_settings_common,
+    local.function_push_notif.app_settings_common, {
+      "AzureWebJobs.HandleNHNotificationCall.Disabled" = "1"
+    }
   )
 
   subnet_id = module.push_notif_snet.id
