@@ -32,12 +32,13 @@ locals {
 
 #tfsec:ignore:azure-storage-queue-services-logging-enabled:exp:2022-05-01 # already ignored, maybe a bug in tfsec
 module "function_public" {
-  source = "git::https://github.com/pagopa/azurerm.git//function_app?ref=v3.4.0"
+  source = "git::https://github.com/pagopa/azurerm.git//function_app?ref=v3.9.1"
 
   resource_group_name = azurerm_resource_group.shared_rg.name
   name                = format("%s-public-fn", local.project)
   location            = var.location
   app_service_plan_id = azurerm_app_service_plan.shared_1_plan.id
+  domain              = "PROFILE"
   health_check_path   = "/info"
 
   os_type          = "linux"
@@ -52,7 +53,7 @@ module "function_public" {
   )
 
   internal_storage = {
-    "enable"                     = true,
+    "enable"                     = false,
     "private_endpoint_subnet_id" = data.azurerm_subnet.private_endpoints_subnet.id,
     "private_dns_zone_blob_ids"  = [data.azurerm_private_dns_zone.privatelink_blob_core_windows_net.id],
     "private_dns_zone_queue_ids" = [data.azurerm_private_dns_zone.privatelink_queue_core_windows_net.id],
@@ -73,7 +74,7 @@ module "function_public" {
 }
 
 module "function_public_staging_slot" {
-  source = "git::https://github.com/pagopa/azurerm.git//function_app_slot?ref=v3.4.0"
+  source = "git::https://github.com/pagopa/azurerm.git//function_app_slot?ref=v3.9.1"
 
   name                = "staging"
   location            = var.location
@@ -85,8 +86,6 @@ module "function_public_staging_slot" {
 
   storage_account_name       = module.function_public.storage_account.name
   storage_account_access_key = module.function_public.storage_account.primary_access_key
-
-  internal_storage_connection_string = module.function_public.storage_account_internal_function.primary_connection_string
 
   os_type                                  = "linux"
   linux_fx_version                         = "NODE|14"
@@ -104,6 +103,14 @@ module "function_public_staging_slot" {
     module.shared_1_snet.id,
     data.azurerm_subnet.azdoa_snet[0].id,
     module.apim_snet.id,
+  ]
+
+  # Action groups for alerts
+  action = [
+    {
+      action_group_id    = azurerm_monitor_action_group.error_action_group.id
+      webhook_properties = {}
+    }
   ]
 
   tags = var.tags
@@ -211,34 +218,5 @@ resource "azurerm_monitor_autoscale_setting" "function_public" {
         cooldown  = "PT20M"
       }
     }
-  }
-}
-
-## Alerts
-
-resource "azurerm_monitor_metric_alert" "function_public_health_check" {
-  name                = "${module.function_public.name}-health-check-failed"
-  resource_group_name = azurerm_resource_group.shared_rg.name
-  scopes              = [module.function_public.id]
-  description         = "${module.function_public.name} health check failed"
-  severity            = 1
-  frequency           = "PT5M"
-  auto_mitigate       = false
-  enabled             = false # todo enable after deploy
-
-  criteria {
-    metric_namespace = "Microsoft.Web/sites"
-    metric_name      = "HealthCheckStatus"
-    aggregation      = "Average"
-    operator         = "LessThan"
-    threshold        = 50
-  }
-
-  action {
-    action_group_id = azurerm_monitor_action_group.email.id
-  }
-
-  action {
-    action_group_id = azurerm_monitor_action_group.slack.id
   }
 }
