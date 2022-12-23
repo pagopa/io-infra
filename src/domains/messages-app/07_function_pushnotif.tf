@@ -143,8 +143,9 @@ module "push_notif_function" {
   }
 
   app_settings = merge(
-    local.function_push_notif.app_settings_common,
-    "AzureWebJobs.HandleNHNotificationCall.Disabled" = "0"
+    local.function_push_notif.app_settings_common, {
+      "AzureWebJobs.HandleNHNotificationCall.Disabled" = "0"
+    }
   )
 
   subnet_id = module.push_notif_snet.id
@@ -193,8 +194,9 @@ module "push_notif_function_staging_slot" {
   application_insights_instrumentation_key = data.azurerm_application_insights.application_insights.instrumentation_key
 
   app_settings = merge(
-    local.function_push_notif.app_settings_common,
-    "AzureWebJobs.HandleNHNotificationCall.Disabled" = "1"
+    local.function_push_notif.app_settings_common, {
+      "AzureWebJobs.HandleNHNotificationCall.Disabled" = "1"
+    }
   )
 
   subnet_id = module.push_notif_snet.id
