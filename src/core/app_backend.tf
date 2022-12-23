@@ -120,9 +120,8 @@ locals {
       NOTIFICATIONS_QUEUE_NAME                = local.storage_account_notifications_queue_push_notifications
       NOTIFICATIONS_STORAGE_CONNECTION_STRING = data.azurerm_storage_account.notifications.primary_connection_string
 
-      // TODO
-      PUSH_NOTIFICATIONS_STORAGE_CONNECTION_STRING = foobar
-      PUSH_NOTIFICATIONS_QUEUE_NAME                = nqueuename
+      PUSH_NOTIFICATIONS_STORAGE_CONNECTION_STRING = data.azurerm_storage_account.push_notifications_storage.primary_connection_string
+      PUSH_NOTIFICATIONS_QUEUE_NAME                = local.storage_account_notifications_queue_push_notifications
 
 
       // USERSLOGIN
