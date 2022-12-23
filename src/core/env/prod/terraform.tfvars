@@ -46,11 +46,15 @@ cidr_subnet_vpn                            = ["10.0.133.0/24"]
 cidr_subnet_selfcare_be                    = ["10.0.137.0/24"]
 cidr_subnet_devportalservicedata_db_server = ["10.0.138.0/24"]
 cidr_subnet_services                       = ["10.0.139.0/26", "10.0.139.64/26"]
-cidr_subnet_appbackendl1                   = ["10.0.152.0/24"]
-cidr_subnet_appbackendl2                   = ["10.0.153.0/24"]
-cidr_subnet_appbackendli                   = ["10.0.154.0/24"]
-cidr_subnet_azdoa                          = ["10.0.250.0/24"]
-cidr_subnet_dnsforwarder                   = ["10.0.252.8/29"]
+# new push notif is related to messages domain ###############
+cidr_subnet_push_notif        = ["10.0.140.0/26"]
+cidr_subnet_prod01_push_notif = ["10.0.141.0/26"]
+##############################################################
+cidr_subnet_appbackendl1 = ["10.0.152.0/24"]
+cidr_subnet_appbackendl2 = ["10.0.153.0/24"]
+cidr_subnet_appbackendli = ["10.0.154.0/24"]
+cidr_subnet_azdoa        = ["10.0.250.0/24"]
+cidr_subnet_dnsforwarder = ["10.0.252.8/29"]
 
 app_gateway_api_certificate_name                                  = "api-io-pagopa-it"
 app_gateway_api_mtls_certificate_name                             = "api-mtls-io-pagopa-it"
