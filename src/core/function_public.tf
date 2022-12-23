@@ -70,6 +70,14 @@ module "function_public" {
     module.apim_snet.id,
   ]
 
+  # Action groups for alerts
+  action = [
+    {
+      action_group_id    = azurerm_monitor_action_group.error_action_group.id
+      webhook_properties = {}
+    }
+  ]
+
   tags = var.tags
 }
 
@@ -103,14 +111,6 @@ module "function_public_staging_slot" {
     module.shared_1_snet.id,
     data.azurerm_subnet.azdoa_snet[0].id,
     module.apim_snet.id,
-  ]
-
-  # Action groups for alerts
-  action = [
-    {
-      action_group_id    = azurerm_monitor_action_group.error_action_group.id
-      webhook_properties = {}
-    }
   ]
 
   tags = var.tags
