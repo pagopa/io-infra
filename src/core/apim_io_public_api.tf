@@ -6,7 +6,7 @@ module "apim_product_public" {
   resource_group_name   = module.apim.resource_group_name
   display_name          = "IO PUBLIC API"
   description           = "PUBLIC API for IO platform."
-  subscription_required = true
+  subscription_required = false
   approval_required     = false
   published             = true
 
@@ -52,7 +52,7 @@ module "api_public" {
 
   service_url = null
 
-  subscription_required = true
+  subscription_required = false
 
   content_format = "swagger-json"
   content_value = templatefile("./api/io_public/v1/_swagger.json.tpl",
