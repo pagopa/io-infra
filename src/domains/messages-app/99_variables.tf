@@ -226,3 +226,91 @@ EOD
     ))
   }))
 }
+
+
+variable "nh_resource_group_name" {
+  type        = string
+  description = "Notification Hub resource group name"
+}
+
+variable "nh_name_prefix" {
+  type        = string
+  description = "Notification Hub name prefix"
+}
+variable "nh_namespace_prefix" {
+  type        = string
+  description = "Notification Hub namespace prefix"
+}
+
+variable "nh_partition_count" {
+  type        = number
+  description = "Notification Hub partition count"
+  default     = 4
+}
+
+variable "enable_azdoa" {
+  type        = bool
+  description = "Specifies Azure Devops Agent enabling"
+  default     = true
+}
+
+###############################
+# Push Notification
+###############################
+
+variable "cidr_subnet_push_notif" {
+  type        = list(string)
+  description = "Function push-notif address space."
+}
+
+variable "push_notif_enabled" {
+  type        = bool
+  default     = false
+  description = "Push Notif function enabled?"
+}
+
+variable "push_notif_count" {
+  type    = number
+  default = 2
+}
+
+variable "push_notif_function_always_on" {
+  type    = bool
+  default = false
+}
+
+variable "push_notif_function_kind" {
+  type        = string
+  description = "App service plan kind"
+  default     = null
+}
+
+variable "push_notif_function_sku_tier" {
+  type        = string
+  description = "App service plan sku tier"
+  default     = null
+}
+
+variable "push_notif_function_sku_size" {
+  type        = string
+  description = "App service plan sku size"
+  default     = null
+}
+
+variable "push_notif_function_autoscale_minimum" {
+  type        = number
+  description = "The minimum number of instances for this resource."
+  default     = 1
+}
+
+variable "push_notif_function_autoscale_maximum" {
+  type        = number
+  description = "The maximum number of instances for this resource."
+  default     = 3
+}
+
+variable "push_notif_function_autoscale_default" {
+  type        = number
+  description = "The number of instances that are available for scaling if metrics are not available for evaluation."
+  default     = 1
+}

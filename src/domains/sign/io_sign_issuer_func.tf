@@ -18,7 +18,6 @@ locals {
       StorageAccountConnectionString                  = module.io_sign_storage.primary_connection_string
       IssuerUploadedBlobContainerName                 = azurerm_storage_container.uploaded_documents.name
       IssuerValidatedBlobContainerName                = azurerm_storage_container.validated_documents.name
-      WaitingMessageQueueName                         = azurerm_storage_queue.waiting_message.name
       IoServicesApiBasePath                           = "https://api.io.pagopa.it"
       IoServicesSubscriptionKey                       = module.key_vault_secrets.values["IOApiSubscriptionKey"].value
       PdvTokenizerApiBasePath                         = "https://api.uat.tokenizer.pdv.pagopa.it"
