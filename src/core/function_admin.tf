@@ -183,6 +183,7 @@ module "function_admin" {
   resource_group_name = azurerm_resource_group.admin_rg.name
   name                = format("%s-admin-fn", local.project)
   location            = var.location
+  domain              = "IO-COMMONS"
   health_check_path   = "/info"
 
   os_type          = "linux"
@@ -219,6 +220,14 @@ module "function_admin" {
   allowed_subnets = [
     module.admin_snet.id,
     module.apim_snet.id,
+  ]
+
+  # Action groups for alerts
+  action = [
+    {
+      action_group_id    = azurerm_monitor_action_group.error_action_group.id
+      webhook_properties = {}
+    }
   ]
 
   tags = var.tags
