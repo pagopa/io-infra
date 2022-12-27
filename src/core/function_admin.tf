@@ -376,32 +376,3 @@ resource "azurerm_monitor_autoscale_setting" "function_admin" {
     }
   }
 }
-
-## Alerts
-
-resource "azurerm_monitor_metric_alert" "function_admin_health_check" {
-
-  name                = "${module.function_admin.name}-health-check-failed"
-  resource_group_name = azurerm_resource_group.admin_rg.name
-  scopes              = [module.function_admin.id]
-  description         = "${module.function_admin.name} health check failed"
-  severity            = 1
-  frequency           = "PT5M"
-  auto_mitigate       = false
-
-  criteria {
-    metric_namespace = "Microsoft.Web/sites"
-    metric_name      = "HealthCheckStatus"
-    aggregation      = "Average"
-    operator         = "LessThan"
-    threshold        = 50
-  }
-
-  action {
-    action_group_id = azurerm_monitor_action_group.email.id
-  }
-
-  action {
-    action_group_id = azurerm_monitor_action_group.slack.id
-  }
-}
