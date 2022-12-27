@@ -201,7 +201,10 @@ module "function_admin" {
   }
 
   app_settings = merge(
-    local.function_admin.app_settings_common
+    local.function_admin.app_settings_common, {
+      # Disabled CosmosDB Trigger Activity on slot prod until old functions are dismissed
+      "AzureWebJobs.UserDataProcessingTrigger.Disabled" = "1",
+    }
   )
 
   internal_storage = {
