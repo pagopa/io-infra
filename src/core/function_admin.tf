@@ -225,7 +225,7 @@ module "function_admin" {
 }
 
 module "function_admin_staging_slot" {
-  source = "git::https://github.com/pagopa/azurerm.git//function_app_slot?ref=v3.4.0"
+  source = "git::https://github.com/pagopa/azurerm.git//function_app_slot?ref=v3.9.2"
 
   name                = "staging"
   location            = var.location
