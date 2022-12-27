@@ -178,7 +178,7 @@ module "admin_snet" {
 }
 
 module "function_admin" {
-  source = "git::https://github.com/pagopa/azurerm.git//function_app?ref=v3.4.0"
+  source = "git::https://github.com/pagopa/azurerm.git//function_app?ref=v3.9.2"
 
   resource_group_name = azurerm_resource_group.admin_rg.name
   name                = format("%s-admin-fn", local.project)
