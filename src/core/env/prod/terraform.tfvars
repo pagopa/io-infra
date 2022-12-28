@@ -35,6 +35,7 @@ cidr_subnet_fnpblevtdispatcher             = ["10.0.12.0/24"]
 cidr_subnet_appgateway                     = ["10.0.13.0/24"]
 cidr_subnet_redis_apim                     = ["10.0.14.0/24"]
 cidr_subnet_shared_1                       = ["10.0.16.0/26"]
+cidr_subnet_fnadmin                        = ["10.0.15.0/26"]
 cidr_subnet_apim                           = ["10.0.101.0/24"]
 cidr_subnet_appmessages                    = ["10.0.127.0/24", "10.0.128.0/24"]
 cidr_subnet_fnmessagescqrs                 = ["10.0.129.0/24"]
@@ -186,6 +187,14 @@ function_app_async_sku_size          = "P1v3"
 function_app_async_autoscale_minimum = 1
 function_app_async_autoscale_maximum = 30
 function_app_async_autoscale_default = 10
+
+# Functions Admin
+function_admin_kind              = "Linux"
+function_admin_sku_tier          = "PremiumV3"
+function_admin_sku_size          = "P1v3"
+function_admin_autoscale_minimum = 1
+function_admin_autoscale_maximum = 3
+function_admin_autoscale_default = 1
 
 # Functions Cgn
 plan_cgn_kind                  = "Linux"

@@ -17,7 +17,7 @@ locals {
       MESSAGE_VIEW_UPDATE_FAILURE_QUEUE_NAME         = "message-view-update-failures"
       MESSAGE_VIEW_PAYMENT_UPDATE_FAILURE_QUEUE_NAME = "message-view-paymentupdate-failures"
       MESSAGE_PAYMENT_UPDATER_FAILURE_QUEUE_NAME     = "message-paymentupdater-failures"
-      MESSAGE_CONTAINER_NAME                         = "message-content"
+      MESSAGE_CONTAINER_NAME                         = local.message_content_container_name
       MESSAGE_CONTENT_STORAGE_CONNECTION             = data.azurerm_storage_account.api.primary_connection_string
       QueueStorageConnection                         = data.azurerm_storage_account.api.primary_connection_string
 

@@ -213,6 +213,27 @@ data "azurerm_key_vault_secret" "apim_services_subscription_key" {
   key_vault_id = data.azurerm_key_vault.common.id
 }
 
+# MAILUP
+
+data "azurerm_key_vault_secret" "common_MAILUP_USERNAME" {
+  name         = "common-MAILUP2-USERNAME"
+  key_vault_id = data.azurerm_key_vault.common.id
+}
+
+data "azurerm_key_vault_secret" "common_MAILUP_SECRET" {
+  name         = "common-MAILUP2-SECRET"
+  key_vault_id = data.azurerm_key_vault.common.id
+}
+
+#
+# App Backend shared resources
+#
+
+data "azurerm_key_vault_secret" "app_backend_PRE_SHARED_KEY" {
+  name         = "appbackend-PRE-SHARED-KEY"
+  key_vault_id = data.azurerm_key_vault.common.id
+}
+
 
 # -----------------------------------------------
 # Alerts
@@ -298,3 +319,4 @@ resource "azurerm_monitor_metric_alert" "iopstapi_throttling_low_availability" {
 
   tags = var.tags
 }
+
