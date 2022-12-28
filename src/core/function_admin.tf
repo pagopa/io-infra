@@ -105,7 +105,7 @@ locals {
       PUBLIC_API_URL           = local.service_api_url
       PUBLIC_DOWNLOAD_BASE_URL = "https://${data.azurerm_storage_account.userdatadownload.primary_blob_host}/user-data-download"
 
-      SESSION_API_URL                 = module.appservice_app_backendli.default_site_hostname # https://io-p-app-appbackendli.azurewebsites.net
+      SESSION_API_URL                 = "https://${module.appservice_app_backendli.default_site_hostname}" # https://io-p-app-appbackendli.azurewebsites.net
       UserDataBackupStorageConnection = data.azurerm_storage_account.userbackups.primary_connection_string
       USER_DATA_BACKUP_CONTAINER_NAME = "user-data-backup"
       USER_DATA_DELETE_DELAY_DAYS     = 6
