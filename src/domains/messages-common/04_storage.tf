@@ -74,3 +74,11 @@ resource "azurerm_storage_table" "notificationhub_beta_test_users_table" {
   name                 = "notificationhub"
   storage_account_name = module.push_notif_beta_storage.name
 }
+
+resource "azurerm_key_vault_secret" "push_notifications_storage_connection_string" {
+  name         = "${module.push_notifications_storage.name}-connection-string"
+  value        = module.push_notifications_storage.primary_connection_string
+  content_type = "text/plain"
+
+  key_vault_id = module.key_vault.id
+}
