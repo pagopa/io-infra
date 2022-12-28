@@ -422,10 +422,8 @@ module "app_backendl1_snet" {
   }
 }
 
-#tfsec:ignore:azure-appservice-authentication-enabled:exp:2022-05-01 # already ignored, maybe a bug in tfsec
-#tfsec:ignore:azure-appservice-require-client-cert:exp:2022-05-01 # already ignored, maybe a bug in tfsec
 module "appservice_app_backendl1" {
-  source = "git::https://github.com/pagopa/azurerm.git//app_service?ref=v3.2.1"
+  source = "git::https://github.com/pagopa/azurerm.git//app_service?ref=v3.12.0"
 
   # App service plan
   plan_type     = "internal"
@@ -471,7 +469,7 @@ module "appservice_app_backendl1" {
 }
 
 module "appservice_app_backendl1_slot_staging" {
-  source = "git::https://github.com/pagopa/azurerm.git//app_service_slot?ref=v3.2.1"
+  source = "git::https://github.com/pagopa/azurerm.git//app_service_slot?ref=v3.12.0"
 
   # App service plan
   app_service_plan_id = module.appservice_app_backendl1.plan_id
@@ -640,10 +638,8 @@ module "app_backendl2_snet" {
   }
 }
 
-#tfsec:ignore:azure-appservice-authentication-enabled:exp:2022-05-01 # already ignored, maybe a bug in tfsec
-#tfsec:ignore:azure-appservice-require-client-cert:exp:2022-05-01 # already ignored, maybe a bug in tfsec
 module "appservice_app_backendl2" {
-  source = "git::https://github.com/pagopa/azurerm.git//app_service?ref=v3.2.1"
+  source = "git::https://github.com/pagopa/azurerm.git//app_service?ref=v3.12.0"
 
   # App service plan
   plan_type     = "internal"
@@ -689,7 +685,7 @@ module "appservice_app_backendl2" {
 }
 
 module "appservice_app_backendl2_slot_staging" {
-  source = "git::https://github.com/pagopa/azurerm.git//app_service_slot?ref=v3.2.1"
+  source = "git::https://github.com/pagopa/azurerm.git//app_service_slot?ref=v3.12.0"
 
   # App service plan
   app_service_plan_id = module.appservice_app_backendl2.plan_id
@@ -858,10 +854,8 @@ module "app_backendli_snet" {
   }
 }
 
-#tfsec:ignore:azure-appservice-authentication-enabled:exp:2022-05-01 # already ignored, maybe a bug in tfsec
-#tfsec:ignore:azure-appservice-require-client-cert:exp:2022-05-01 # already ignored, maybe a bug in tfsec
 module "appservice_app_backendli" {
-  source = "git::https://github.com/pagopa/azurerm.git//app_service?ref=v3.2.1"
+  source = "git::https://github.com/pagopa/azurerm.git//app_service?ref=v3.12.0"
 
   # App service plan
   plan_type     = "internal"
@@ -891,6 +885,7 @@ module "appservice_app_backendli" {
     data.azurerm_subnet.fnapp_services_subnet_out.id,
     module.services_snet[0].id,
     module.services_snet[1].id,
+    module.admin_snet.id,
   ]
 
   allowed_ips = concat(
@@ -906,7 +901,7 @@ module "appservice_app_backendli" {
 }
 
 module "appservice_app_backendli_slot_staging" {
-  source = "git::https://github.com/pagopa/azurerm.git//app_service_slot?ref=v3.2.1"
+  source = "git::https://github.com/pagopa/azurerm.git//app_service_slot?ref=v3.12.0"
 
   # App service plan
   app_service_plan_id = module.appservice_app_backendli.plan_id
@@ -934,6 +929,7 @@ module "appservice_app_backendli_slot_staging" {
     data.azurerm_subnet.fnapp_services_subnet_out.id,
     module.services_snet[0].id,
     module.services_snet[1].id,
+    module.admin_snet.id,
   ]
 
   allowed_ips = concat(
