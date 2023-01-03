@@ -483,7 +483,7 @@ module "appservice_app_backendl1_slot_staging" {
 
   always_on         = true
   linux_fx_version  = "NODE|14-lts"
-  app_command_line  = "node /home/site/wwwroot/src/server.js"
+  app_command_line  = "npm run start"
   health_check_path = "/ping"
 
   app_settings = merge(
@@ -699,7 +699,7 @@ module "appservice_app_backendl2_slot_staging" {
 
   always_on         = true
   linux_fx_version  = "NODE|14-lts"
-  app_command_line  = "node /home/site/wwwroot/src/server.js"
+  app_command_line  = "npm run start"
   health_check_path = "/ping"
 
   app_settings = merge(
@@ -915,7 +915,7 @@ module "appservice_app_backendli_slot_staging" {
 
   always_on         = true
   linux_fx_version  = "NODE|14-lts"
-  app_command_line  = "node /home/site/wwwroot/src/server.js"
+  app_command_line  = "npm run start"
   health_check_path = "/ping"
 
   app_settings = merge(
