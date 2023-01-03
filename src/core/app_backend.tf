@@ -2,6 +2,7 @@
 
 locals {
   app_backend = {
+    app_command_line = "npm run start"
     app_settings_common = {
       # No downtime on slots swap
       WEBSITE_ADD_SITENAME_BINDINGS_IN_APPHOST_CONFIG = "1"
@@ -440,7 +441,7 @@ module "appservice_app_backendl1" {
 
   always_on         = true
   linux_fx_version  = "NODE|14-lts"
-  app_command_line  = "node /home/site/wwwroot/src/server.js"
+  app_command_line  = locals.app_backend.app_command_line
   health_check_path = "/ping"
 
   app_settings = merge(
@@ -483,7 +484,7 @@ module "appservice_app_backendl1_slot_staging" {
 
   always_on         = true
   linux_fx_version  = "NODE|14-lts"
-  app_command_line  = "npm run start"
+  app_command_line  = locals.app_backend.app_command_line
   health_check_path = "/ping"
 
   app_settings = merge(
@@ -656,7 +657,7 @@ module "appservice_app_backendl2" {
 
   always_on         = true
   linux_fx_version  = "NODE|14-lts"
-  app_command_line  = "node /home/site/wwwroot/src/server.js"
+  app_command_line  = locals.app_backend.app_command_line
   health_check_path = "/ping"
 
   app_settings = merge(
@@ -699,7 +700,7 @@ module "appservice_app_backendl2_slot_staging" {
 
   always_on         = true
   linux_fx_version  = "NODE|14-lts"
-  app_command_line  = "npm run start"
+  app_command_line  = locals.app_backend.app_command_line
   health_check_path = "/ping"
 
   app_settings = merge(
@@ -872,7 +873,7 @@ module "appservice_app_backendli" {
 
   always_on         = true
   linux_fx_version  = "NODE|14-lts"
-  app_command_line  = "node /home/site/wwwroot/src/server.js"
+  app_command_line  = locals.app_backend.app_command_line
   health_check_path = "/ping"
 
   app_settings = merge(
@@ -915,7 +916,7 @@ module "appservice_app_backendli_slot_staging" {
 
   always_on         = true
   linux_fx_version  = "NODE|14-lts"
-  app_command_line  = "npm run start"
+  app_command_line  = locals.app_backend.app_command_line
   health_check_path = "/ping"
 
   app_settings = merge(
