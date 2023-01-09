@@ -1,4 +1,3 @@
-## Api Operator Search
 module "apim_product_services" {
   source = "git::https://github.com/pagopa/azurerm.git//api_management_product?ref=v2.1.20"
 
