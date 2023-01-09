@@ -2,6 +2,16 @@
 # SECRETS
 #
 
+data "azurerm_key_vault_secret" "fn_eucovidcert_API_KEY_APPBACKEND" {
+  name         = "funceucovidcert-KEY-APPBACKEND"
+  key_vault_id = data.azurerm_key_vault.common.id
+}
+
+data "azurerm_key_vault_secret" "fn_eucovidcert_API_KEY_PUBLICIOEVENTDISPATCHER" {
+  name         = "funceucovidcert-KEY-PUBLICIOEVENTDISPATCHER"
+  key_vault_id = data.azurerm_key_vault.common.id
+}
+
 data "azurerm_key_vault_secret" "fn_eucovidcert_DGC_PROD_CLIENT_CERT" {
   name         = "eucovidcert-DGC-PROD-CLIENT-CERT"
   key_vault_id = data.azurerm_key_vault.common.id

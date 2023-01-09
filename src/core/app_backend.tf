@@ -58,7 +58,7 @@ locals {
       CGN_OPERATOR_SEARCH_API_URL = "https://cgnonboardingportal-p-op.azurewebsites.net" # prod subscription
       CGN_OPERATOR_SEARCH_API_KEY = data.azurerm_key_vault_secret.app_backend_CGN_OPERATOR_SEARCH_API_KEY_PROD.value
       EUCOVIDCERT_API_URL         = "http://${data.azurerm_function_app.fnapp_eucovidcert.default_hostname}/api/v1"
-      EUCOVIDCERT_API_KEY         = data.azurerm_key_vault_secret.app_backend_EUCOVIDCERT_API_KEY.value
+      EUCOVIDCERT_API_KEY         = data.azurerm_key_vault_secret.fn_eucovidcert_API_KEY_APPBACKEND.value
       APP_MESSAGES_API_KEY        = data.azurerm_key_vault_secret.app_backend_APP_MESSAGES_API_KEY.value
 
       // EXPOSED API
@@ -298,11 +298,6 @@ data "azurerm_key_vault_secret" "app_backend_CGN_OPERATOR_SEARCH_API_KEY_PROD" {
 
 data "azurerm_key_vault_secret" "app_backend_CGN_OPERATOR_SEARCH_API_KEY_UAT" {
   name         = "funccgnoperatorsearch-KEY-UAT-APPBACKEND"
-  key_vault_id = data.azurerm_key_vault.common.id
-}
-
-data "azurerm_key_vault_secret" "app_backend_EUCOVIDCERT_API_KEY" {
-  name         = "funceucovidcert-KEY-APPBACKEND"
   key_vault_id = data.azurerm_key_vault.common.id
 }
 
