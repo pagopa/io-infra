@@ -1,7 +1,22 @@
-module "key_vault" {
-  source = "git::https://github.com/pagopa/azurerm.git//key_vault?ref=v2.13.1"
+module "key_vault_secrets" {
+  source = "git::https://github.com/pagopa/azurerm.git//key_vault_secrets_query?ref=v2.7.2"
 
-  name                       = "${local.product}-${var.domain}-kv"
+  resource_group = azurerm_resource_group.sec_rg.name
+  key_vault_name = module.key_vault.name
+
+  secrets = [
+    "IOApiSubscriptionKey",
+    "TokenizerApiSubscriptionKey",
+    "io-fn-sign-issuer-key",
+    "NamirialPassword",
+    "SpidAssertionMock",
+  ]
+}
+
+module "key_vault" {
+  source = "git::https://github.com/pagopa/azurerm.git//key_vault?ref=v2.7.2"
+
+  name                       = format("%s-%s-kv", local.product, var.domain)
   location                   = azurerm_resource_group.sec_rg.location
   resource_group_name        = azurerm_resource_group.sec_rg.name
   tenant_id                  = data.azurerm_client_config.current.tenant_id
@@ -68,7 +83,7 @@ resource "azurerm_key_vault_access_policy" "adgroup_sign" {
 
 #pagopaspa-io-platform-iac-projects-{subscription}
 data "azuread_service_principal" "platform_iac_sp" {
-  display_name = "pagopaspa-io-platform-iac-projects-${data.azurerm_subscription.current.subscription_id}"
+  display_name = format("pagopaspa-io-platform-iac-projects-%s", data.azurerm_subscription.current.subscription_id)
 }
 
 resource "azurerm_key_vault_access_policy" "azdevops_platform_iac_policy" {

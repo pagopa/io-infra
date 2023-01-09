@@ -19,6 +19,10 @@ common_rg = "io-p-rg-common"
 
 # networking
 vnet_name = "io-p-vnet-common"
+ddos_protection_plan = {
+  id     = "/subscriptions/0da48c97-355f-4050-a520-f11a18b8be90/resourceGroups/sec-p-ddos/providers/Microsoft.Network/ddosProtectionPlans/sec-p-ddos-protection"
+  enable = true
+}
 # cidr_vnet         = ["10.0.0.0/16"]
 cidr_weu_beta_vnet   = ["10.10.0.0/16"]
 cidr_weu_prod01_vnet = ["10.11.0.0/16"]
@@ -30,6 +34,8 @@ cidr_subnet_fnelt                          = ["10.0.11.0/24"]
 cidr_subnet_fnpblevtdispatcher             = ["10.0.12.0/24"]
 cidr_subnet_appgateway                     = ["10.0.13.0/24"]
 cidr_subnet_redis_apim                     = ["10.0.14.0/24"]
+cidr_subnet_shared_1                       = ["10.0.16.0/26"]
+cidr_subnet_fnadmin                        = ["10.0.15.0/26"]
 cidr_subnet_apim                           = ["10.0.101.0/24"]
 cidr_subnet_appmessages                    = ["10.0.127.0/24", "10.0.128.0/24"]
 cidr_subnet_fnmessagescqrs                 = ["10.0.129.0/24"]
@@ -41,11 +47,15 @@ cidr_subnet_vpn                            = ["10.0.133.0/24"]
 cidr_subnet_selfcare_be                    = ["10.0.137.0/24"]
 cidr_subnet_devportalservicedata_db_server = ["10.0.138.0/24"]
 cidr_subnet_services                       = ["10.0.139.0/26", "10.0.139.64/26"]
-cidr_subnet_appbackendl1                   = ["10.0.152.0/24"]
-cidr_subnet_appbackendl2                   = ["10.0.153.0/24"]
-cidr_subnet_appbackendli                   = ["10.0.154.0/24"]
-cidr_subnet_azdoa                          = ["10.0.250.0/24"]
-cidr_subnet_dnsforwarder                   = ["10.0.252.8/29"]
+# new push notif is related to messages domain ###############
+cidr_subnet_push_notif        = ["10.0.140.0/26"]
+cidr_subnet_prod01_push_notif = ["10.0.141.0/26"]
+##############################################################
+cidr_subnet_appbackendl1 = ["10.0.152.0/24"]
+cidr_subnet_appbackendl2 = ["10.0.153.0/24"]
+cidr_subnet_appbackendli = ["10.0.154.0/24"]
+cidr_subnet_azdoa        = ["10.0.250.0/24"]
+cidr_subnet_dnsforwarder = ["10.0.252.8/29"]
 
 app_gateway_api_certificate_name                                  = "api-io-pagopa-it"
 app_gateway_api_mtls_certificate_name                             = "api-mtls-io-pagopa-it"
@@ -54,7 +64,7 @@ app_gateway_api_io_italia_it_certificate_name                     = "api-io-ital
 app_gateway_app_backend_io_italia_it_certificate_name             = "app-backend-io-italia-it"
 app_gateway_developerportal_backend_io_italia_it_certificate_name = "developerportal-backend-io-italia-it"
 app_gateway_api_io_selfcare_pagopa_it_certificate_name            = "api-io-selfcare-pagopa-it"
-app_gateway_min_capacity                                          = 10 # 4 capacity=baseline, 10 capacity=high volume event, 15 capacity=very high volume event
+app_gateway_min_capacity                                          = 4 # 4 capacity=baseline, 10 capacity=high volume event, 15 capacity=very high volume event
 app_gateway_max_capacity                                          = 50
 app_gateway_alerts_enabled                                        = true
 
@@ -178,6 +188,14 @@ function_app_async_autoscale_minimum = 1
 function_app_async_autoscale_maximum = 30
 function_app_async_autoscale_default = 10
 
+# Functions Admin
+function_admin_kind              = "Linux"
+function_admin_sku_tier          = "PremiumV3"
+function_admin_sku_size          = "P1v3"
+function_admin_autoscale_minimum = 1
+function_admin_autoscale_maximum = 3
+function_admin_autoscale_default = 1
+
 # Functions Cgn
 plan_cgn_kind                  = "Linux"
 plan_cgn_sku_tier              = "PremiumV3"
@@ -185,6 +203,14 @@ plan_cgn_sku_size              = "P1v3"
 function_cgn_autoscale_minimum = 1
 function_cgn_autoscale_maximum = 30
 function_cgn_autoscale_default = 10
+
+# Functions shared
+plan_shared_1_kind                = "Linux"
+plan_shared_1_sku_tier            = "PremiumV3"
+plan_shared_1_sku_size            = "P1v3"
+function_public_autoscale_minimum = 1
+function_public_autoscale_maximum = 30
+function_public_autoscale_default = 10
 
 # App Messages
 app_messages_function_always_on = true

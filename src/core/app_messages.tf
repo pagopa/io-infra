@@ -19,7 +19,7 @@ locals {
       COSMOSDB_KEY                 = data.azurerm_cosmosdb_account.cosmos_api.primary_master_key
       COSMOS_API_CONNECTION_STRING = format("AccountEndpoint=%s;AccountKey=%s;", data.azurerm_cosmosdb_account.cosmos_api.endpoint, data.azurerm_cosmosdb_account.cosmos_api.primary_master_key)
 
-      MESSAGE_CONTAINER_NAME = "message-content"
+      MESSAGE_CONTAINER_NAME = local.message_content_container_name
       QueueStorageConnection = data.azurerm_storage_account.api.primary_connection_string
 
       // Keepalive fields are all optionals
@@ -137,15 +137,16 @@ module "app_messages_snet" {
 #tfsec:ignore:azure-storage-queue-services-logging-enabled:exp:2022-05-01 # already ignored, maybe a bug in tfsec
 module "app_messages_function" {
   count  = var.app_messages_count
-  source = "git::https://github.com/pagopa/azurerm.git//function_app?ref=v3.4.0"
+  source = "git::https://github.com/pagopa/azurerm.git//function_app?ref=v3.8.1"
 
   resource_group_name = azurerm_resource_group.app_messages_rg[count.index].name
   name                = format("%s-app-messages-fn-%d", local.project, count.index + 1)
+  domain              = "MESSAGES"
   location            = var.location
   health_check_path   = "/api/v1/info"
 
   os_type                                  = "linux"
-  runtime_version                          = "~3"
+  runtime_version                          = "~4"
   linux_fx_version                         = "NODE|14"
   always_on                                = var.app_messages_function_always_on
   application_insights_instrumentation_key = data.azurerm_application_insights.application_insights.instrumentation_key
@@ -183,12 +184,20 @@ module "app_messages_function" {
     local.app_insights_ips_west_europe,
   )
 
+  # Action groups for alerts
+  action = [
+    {
+      action_group_id    = azurerm_monitor_action_group.error_action_group.id
+      webhook_properties = {}
+    }
+  ]
+
   tags = var.tags
 }
 
 module "app_messages_function_staging_slot" {
   count  = var.app_messages_count
-  source = "git::https://github.com/pagopa/azurerm.git//function_app_slot?ref=v3.4.0"
+  source = "git::https://github.com/pagopa/azurerm.git//function_app_slot?ref=v3.8.1"
 
   name                = "staging"
   location            = var.location
@@ -202,7 +211,7 @@ module "app_messages_function_staging_slot" {
   storage_account_access_key = module.app_messages_function[count.index].storage_account.primary_access_key
 
   os_type                                  = "linux"
-  runtime_version                          = "~3"
+  runtime_version                          = "~4"
   linux_fx_version                         = "NODE|14"
   always_on                                = var.app_messages_function_always_on
   application_insights_instrumentation_key = data.azurerm_application_insights.application_insights.instrumentation_key
@@ -215,6 +224,8 @@ module "app_messages_function_staging_slot" {
 
   allowed_subnets = [
     module.app_messages_snet[count.index].id,
+    module.app_backendl1_snet.id,
+    module.app_backendl2_snet.id,
     data.azurerm_subnet.azdoa_snet[0].id,
   ]
 

@@ -2,6 +2,7 @@
 
 locals {
   app_backend = {
+    app_command_line = "npm run start"
     app_settings_common = {
       # No downtime on slots swap
       WEBSITE_ADD_SITENAME_BINDINGS_IN_APPHOST_CONFIG = "1"
@@ -120,6 +121,10 @@ locals {
       NOTIFICATIONS_QUEUE_NAME                = local.storage_account_notifications_queue_push_notifications
       NOTIFICATIONS_STORAGE_CONNECTION_STRING = data.azurerm_storage_account.notifications.primary_connection_string
 
+      PUSH_NOTIFICATIONS_STORAGE_CONNECTION_STRING = data.azurerm_storage_account.push_notifications_storage.primary_connection_string
+      PUSH_NOTIFICATIONS_QUEUE_NAME                = local.storage_account_notifications_queue_push_notifications
+
+
       // USERSLOGIN
       USERS_LOGIN_QUEUE_NAME                = local.storage_account_notifications_queue_userslogin
       USERS_LOGIN_STORAGE_CONNECTION_STRING = data.azurerm_storage_account.logs.primary_connection_string
@@ -132,9 +137,9 @@ locals {
       FF_USER_AGE_LIMIT_ENABLED = 1
       FF_IO_SIGN_ENABLED        = 1
 
-      FF_MESSAGES_TYPE               = "prod" # possible values are: beta, canary, prod, none
-      FF_MESSAGES_BETA_TESTER_LIST   = data.azurerm_key_vault_secret.app_backend_APP_MESSAGES_BETA_FISCAL_CODES.value
-      FF_MESSAGES_CANARY_USERS_REGEX = "XYZ"
+      FF_ROUTING_PUSH_NOTIF                        = "BETA" # possible values are: BETA, CANARY, PROD, NONE
+      FF_ROUTING_PUSH_NOTIF_BETA_TESTER_SHA_LIST   = data.azurerm_key_vault_secret.app_backend_APP_MESSAGES_BETA_FISCAL_CODES.value
+      FF_ROUTING_PUSH_NOTIF_CANARY_SHA_USERS_REGEX = "XYZ"
 
       FF_PN_ACTIVATION_ENABLED = "1"
 
@@ -301,11 +306,6 @@ data "azurerm_key_vault_secret" "app_backend_EUCOVIDCERT_API_KEY" {
   key_vault_id = data.azurerm_key_vault.common.id
 }
 
-data "azurerm_key_vault_secret" "app_backend_PRE_SHARED_KEY" {
-  name         = "appbackend-PRE-SHARED-KEY"
-  key_vault_id = data.azurerm_key_vault.common.id
-}
-
 data "azurerm_key_vault_secret" "app_backend_ALLOW_PAGOPA_IP_SOURCE_RANGE" {
   name         = "appbackend-ALLOW-PAGOPA-IP-SOURCE-RANGE"
   key_vault_id = data.azurerm_key_vault.common.id
@@ -423,10 +423,8 @@ module "app_backendl1_snet" {
   }
 }
 
-#tfsec:ignore:azure-appservice-authentication-enabled:exp:2022-05-01 # already ignored, maybe a bug in tfsec
-#tfsec:ignore:azure-appservice-require-client-cert:exp:2022-05-01 # already ignored, maybe a bug in tfsec
 module "appservice_app_backendl1" {
-  source = "git::https://github.com/pagopa/azurerm.git//app_service?ref=v3.2.1"
+  source = "git::https://github.com/pagopa/azurerm.git//app_service?ref=v3.12.0"
 
   # App service plan
   plan_type     = "internal"
@@ -443,7 +441,7 @@ module "appservice_app_backendl1" {
 
   always_on         = true
   linux_fx_version  = "NODE|14-lts"
-  app_command_line  = "node /home/site/wwwroot/src/server.js"
+  app_command_line  = local.app_backend.app_command_line
   health_check_path = "/ping"
 
   app_settings = merge(
@@ -472,7 +470,7 @@ module "appservice_app_backendl1" {
 }
 
 module "appservice_app_backendl1_slot_staging" {
-  source = "git::https://github.com/pagopa/azurerm.git//app_service_slot?ref=v3.2.1"
+  source = "git::https://github.com/pagopa/azurerm.git//app_service_slot?ref=v3.12.0"
 
   # App service plan
   app_service_plan_id = module.appservice_app_backendl1.plan_id
@@ -486,7 +484,7 @@ module "appservice_app_backendl1_slot_staging" {
 
   always_on         = true
   linux_fx_version  = "NODE|14-lts"
-  app_command_line  = "node /home/site/wwwroot/src/server.js"
+  app_command_line  = local.app_backend.app_command_line
   health_check_path = "/ping"
 
   app_settings = merge(
@@ -641,10 +639,8 @@ module "app_backendl2_snet" {
   }
 }
 
-#tfsec:ignore:azure-appservice-authentication-enabled:exp:2022-05-01 # already ignored, maybe a bug in tfsec
-#tfsec:ignore:azure-appservice-require-client-cert:exp:2022-05-01 # already ignored, maybe a bug in tfsec
 module "appservice_app_backendl2" {
-  source = "git::https://github.com/pagopa/azurerm.git//app_service?ref=v3.2.1"
+  source = "git::https://github.com/pagopa/azurerm.git//app_service?ref=v3.12.0"
 
   # App service plan
   plan_type     = "internal"
@@ -661,7 +657,7 @@ module "appservice_app_backendl2" {
 
   always_on         = true
   linux_fx_version  = "NODE|14-lts"
-  app_command_line  = "node /home/site/wwwroot/src/server.js"
+  app_command_line  = local.app_backend.app_command_line
   health_check_path = "/ping"
 
   app_settings = merge(
@@ -690,7 +686,7 @@ module "appservice_app_backendl2" {
 }
 
 module "appservice_app_backendl2_slot_staging" {
-  source = "git::https://github.com/pagopa/azurerm.git//app_service_slot?ref=v3.2.1"
+  source = "git::https://github.com/pagopa/azurerm.git//app_service_slot?ref=v3.12.0"
 
   # App service plan
   app_service_plan_id = module.appservice_app_backendl2.plan_id
@@ -704,7 +700,7 @@ module "appservice_app_backendl2_slot_staging" {
 
   always_on         = true
   linux_fx_version  = "NODE|14-lts"
-  app_command_line  = "node /home/site/wwwroot/src/server.js"
+  app_command_line  = local.app_backend.app_command_line
   health_check_path = "/ping"
 
   app_settings = merge(
@@ -859,10 +855,8 @@ module "app_backendli_snet" {
   }
 }
 
-#tfsec:ignore:azure-appservice-authentication-enabled:exp:2022-05-01 # already ignored, maybe a bug in tfsec
-#tfsec:ignore:azure-appservice-require-client-cert:exp:2022-05-01 # already ignored, maybe a bug in tfsec
 module "appservice_app_backendli" {
-  source = "git::https://github.com/pagopa/azurerm.git//app_service?ref=v3.2.1"
+  source = "git::https://github.com/pagopa/azurerm.git//app_service?ref=v3.12.0"
 
   # App service plan
   plan_type     = "internal"
@@ -879,7 +873,7 @@ module "appservice_app_backendli" {
 
   always_on         = true
   linux_fx_version  = "NODE|14-lts"
-  app_command_line  = "node /home/site/wwwroot/src/server.js"
+  app_command_line  = local.app_backend.app_command_line
   health_check_path = "/ping"
 
   app_settings = merge(
@@ -892,6 +886,7 @@ module "appservice_app_backendli" {
     data.azurerm_subnet.fnapp_services_subnet_out.id,
     module.services_snet[0].id,
     module.services_snet[1].id,
+    module.admin_snet.id,
   ]
 
   allowed_ips = concat(
@@ -907,7 +902,7 @@ module "appservice_app_backendli" {
 }
 
 module "appservice_app_backendli_slot_staging" {
-  source = "git::https://github.com/pagopa/azurerm.git//app_service_slot?ref=v3.2.1"
+  source = "git::https://github.com/pagopa/azurerm.git//app_service_slot?ref=v3.12.0"
 
   # App service plan
   app_service_plan_id = module.appservice_app_backendli.plan_id
@@ -921,7 +916,7 @@ module "appservice_app_backendli_slot_staging" {
 
   always_on         = true
   linux_fx_version  = "NODE|14-lts"
-  app_command_line  = "node /home/site/wwwroot/src/server.js"
+  app_command_line  = local.app_backend.app_command_line
   health_check_path = "/ping"
 
   app_settings = merge(
@@ -935,6 +930,7 @@ module "appservice_app_backendli_slot_staging" {
     data.azurerm_subnet.fnapp_services_subnet_out.id,
     module.services_snet[0].id,
     module.services_snet[1].id,
+    module.admin_snet.id,
   ]
 
   allowed_ips = concat(
@@ -1067,10 +1063,14 @@ resource "azurerm_monitor_metric_alert" "too_many_http_5xx" {
     alert_sensitivity        = "Low"
     evaluation_total_count   = 4
     evaluation_failure_count = 4
+    skip_metric_validation   = false
 
   }
 
   action {
-    action_group_id = azurerm_monitor_action_group.error_action_group.id
+    action_group_id    = azurerm_monitor_action_group.error_action_group.id
+    webhook_properties = null
   }
+
+  tags = var.tags
 }

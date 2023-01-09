@@ -39,6 +39,11 @@ tls_cert_check_helm = {
   image_tag     = "v1.2.2@sha256:22f4b53177cc8891bf10cbd0deb39f60e1cd12877021c3048a01e7738f63e0f9"
 }
 
+#################################
+# CIDRS
+#################################
+cidr_subnet_push_notif = ["10.0.141.0/26"]
+
 ### Aks
 
 ingress_load_balancer_ip = "10.11.100.250"
@@ -163,3 +168,24 @@ eventhubs = [
     ]
   },
 ]
+
+## Notification Hub
+
+nh_resource_group_name = "io-p-rg-common"
+nh_name_prefix         = "io-p-ntf"
+nh_namespace_prefix    = "io-p-ntfns"
+nh_partition_count     = 4
+
+###############################
+# Push Notification
+###############################
+push_notif_enabled = true
+# App Messages
+push_notif_function_always_on = true
+
+push_notif_function_kind              = "Linux"
+push_notif_function_sku_tier          = "PremiumV3"
+push_notif_function_sku_size          = "P1v3"
+push_notif_function_autoscale_minimum = 1
+push_notif_function_autoscale_maximum = 15
+push_notif_function_autoscale_default = 10

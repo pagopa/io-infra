@@ -1,4 +1,3 @@
-## Api Operator Search
 module "apim_product_services" {
   source = "git::https://github.com/pagopa/azurerm.git//api_management_product?ref=v2.1.20"
 
@@ -30,6 +29,15 @@ resource "azurerm_api_management_api_operation_policy" "submit_message_for_user_
   operation_id        = "submitMessageforUserWithFiscalCodeInBody"
 
   xml_content = file("./api/io_services/v1/post_submitmessageforuserwithfiscalcodeinbody_policy/policy.xml")
+}
+
+resource "azurerm_api_management_api_operation_policy" "create_service_policy" {
+  api_name            = "io-services-api"
+  api_management_name = module.apim.name
+  resource_group_name = module.apim.resource_group_name
+  operation_id        = "createService"
+
+  xml_content = file("./api/io_services/v1/post_createservice_policy/policy.xml")
 }
 
 # Named Value fn3-services
