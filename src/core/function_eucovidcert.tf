@@ -9,7 +9,7 @@ data "azurerm_key_vault_secret" "fn_eucovidcert_API_KEY_APPBACKEND" {
 
 data "azurerm_key_vault_secret" "fn_eucovidcert_API_KEY_PUBLICIOEVENTDISPATCHER" {
   name         = "funceucovidcert-KEY-PUBLICIOEVENTDISPATCHER"
-  key_vault_id = data.azurerm_key_vault.common.id
+  key_vault_id = module.key_vault.id
 }
 
 data "azurerm_key_vault_secret" "fn_eucovidcert_DGC_PROD_CLIENT_CERT" {
