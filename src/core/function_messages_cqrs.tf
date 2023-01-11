@@ -15,7 +15,6 @@ locals {
       COSMOSDB_CONNECTION_STRING = format("AccountEndpoint=%s;AccountKey=%s;", data.azurerm_cosmosdb_account.cosmos_api.endpoint, data.azurerm_cosmosdb_account.cosmos_api.primary_master_key)
 
       LEASE_COLLECTION_PREFIX          = "bulk-status-update-00"
-      MESSAGE_CHANGE_FEED_LEASE_PREFIX = "CosmosApiMessageChangeFeedForPaymentUpdater"
 
       MESSAGE_VIEW_UPDATE_FAILURE_QUEUE_NAME         = "message-view-update-failures"
       MESSAGE_VIEW_PAYMENT_UPDATE_FAILURE_QUEUE_NAME = "message-view-paymentupdate-failures"
