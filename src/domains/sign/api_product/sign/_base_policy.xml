@@ -1,5 +1,11 @@
 <policies>
     <inbound>
+        <rate-limit-by-key
+            calls="150"
+            renewal-period="5"
+            remaining-calls-header-name="x-rate-limit-remaining" retry-after-header-name="x-rate-limit-retry-after"
+            counter-key="@(context.Subscription.Id)"
+        />
         <base />
     </inbound>
     <backend>
