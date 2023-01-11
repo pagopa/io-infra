@@ -27,6 +27,9 @@ locals {
       MESSAGE_STATUS_FOR_VIEW_TOPIC_PRODUCER_CONNECTION_STRING = module.event_hub.keys["io-cosmosdb-message-status-for-view.io-cdc"].primary_connection_string
       MESSAGE_STATUS_FOR_VIEW_BROKERS                          = "${local.io-p-evh-ns.hostname}:${local.io-p-evh-ns.port}"
 
+      MESSAGE_CHANGE_FEED_LEASE_PREFIX = "CosmosApiMessageChangeFeed-00"
+      // This must be expressed as ISO Date string
+      MESSAGE_CHANGE_FEED_START_TIME = "2022-10-01T00:00:00Z"
 
       MESSAGES_TOPIC_CONNECTION_STRING = data.azurerm_eventhub_authorization_rule.io-p-messages-weu-prod01-evh-ns_messages_io-fn-messages-cqrs.primary_connection_string
       MESSAGES_TOPIC_NAME              = "messages"
