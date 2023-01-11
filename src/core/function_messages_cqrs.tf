@@ -138,6 +138,7 @@ module "function_messages_cqrs" {
       "AzureWebJobs.HandlePaymentUpdateFailures.Disabled"                 = "0"
       "AzureWebJobs.CosmosApiMessagesChangeFeed.Disabled"                 = "0"
       "AzureWebJobs.HandleMessageChangeFeedPublishFailures.Disabled"      = "0"
+      "AzureWebJobs.CosmosApiChangeFeedForMessageRetention.Disabled"      = "0"
     }
   )
 
@@ -206,6 +207,7 @@ module "function_messages_cqrs_staging_slot" {
       "AzureWebJobs.HandlePaymentUpdateFailures.Disabled"                 = "1"
       "AzureWebJobs.CosmosApiMessagesChangeFeed.Disabled"                 = "1"
       "AzureWebJobs.HandleMessageChangeFeedPublishFailures.Disabled"      = "1"
+      "AzureWebJobs.CosmosApiChangeFeedForMessageRetention.Disabled"      = "1"
     }
   )
 
