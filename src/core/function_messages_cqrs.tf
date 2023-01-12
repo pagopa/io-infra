@@ -14,6 +14,8 @@ locals {
       COSMOSDB_KEY               = data.azurerm_cosmosdb_account.cosmos_api.primary_master_key
       COSMOSDB_CONNECTION_STRING = format("AccountEndpoint=%s;AccountKey=%s;", data.azurerm_cosmosdb_account.cosmos_api.endpoint, data.azurerm_cosmosdb_account.cosmos_api.primary_master_key)
 
+      LEASE_COLLECTION_PREFIX = "bulk-status-update-00"
+
       MESSAGE_VIEW_UPDATE_FAILURE_QUEUE_NAME         = "message-view-update-failures"
       MESSAGE_VIEW_PAYMENT_UPDATE_FAILURE_QUEUE_NAME = "message-view-paymentupdate-failures"
       MESSAGE_PAYMENT_UPDATER_FAILURE_QUEUE_NAME     = "message-paymentupdater-failures"
@@ -139,6 +141,7 @@ module "function_messages_cqrs" {
       "AzureWebJobs.HandlePaymentUpdateFailures.Disabled"                 = "0"
       "AzureWebJobs.CosmosApiMessagesChangeFeed.Disabled"                 = "0"
       "AzureWebJobs.HandleMessageChangeFeedPublishFailures.Disabled"      = "0"
+      "AzureWebJobs.CosmosApiChangeFeedForMessageRetention.Disabled"      = "0"
     }
   )
 
@@ -207,6 +210,7 @@ module "function_messages_cqrs_staging_slot" {
       "AzureWebJobs.HandlePaymentUpdateFailures.Disabled"                 = "1"
       "AzureWebJobs.CosmosApiMessagesChangeFeed.Disabled"                 = "1"
       "AzureWebJobs.HandleMessageChangeFeedPublishFailures.Disabled"      = "1"
+      "AzureWebJobs.CosmosApiChangeFeedForMessageRetention.Disabled"      = "1"
     }
   )
 
