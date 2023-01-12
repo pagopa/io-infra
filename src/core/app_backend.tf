@@ -207,7 +207,7 @@ locals {
       ])
 
       // LolliPOP
-      LOLLIPOP_ALLOWED_USER_AGENTS = "IO-App/2.23"
+      LOLLIPOP_ALLOWED_USER_AGENTS = "IO-App/2.23.0"
     }
     app_settings_l1 = {
       IS_APPBACKENDLI = "false"
