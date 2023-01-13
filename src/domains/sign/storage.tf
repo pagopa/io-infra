@@ -1,5 +1,5 @@
 module "io_sign_storage" {
-  source                     = "git::https://github.com/pagopa/azurerm.git//storage_account?ref=v2.18.0"
+  source                     = "git::https://github.com/pagopa/azurerm.git//storage_account?ref=v4.1.0"
   name                       = replace(format("%s-st", local.project), "-", "")
   account_kind               = "StorageV2"
   account_tier               = "Standard"
@@ -22,6 +22,17 @@ module "io_sign_storage" {
     ]
     virtual_network_subnet_ids = []
   }
+
+  action = var.storage.enable_low_availability_alert ? [
+    {
+      action_group_id    = data.azurerm_monitor_action_group.email.id
+      webhook_properties = {}
+    },
+    {
+      action_group_id    = data.azurerm_monitor_action_group.slack.id
+      webhook_properties = {}
+    },
+  ] : []
 
   tags = var.tags
 }

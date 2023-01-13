@@ -12,9 +12,10 @@ tags = {
 }
 
 storage = {
-  enable_versioning = false
-  delete_after_days = 90
-  replication_type  = "GZRS"
+  enable_versioning             = false
+  delete_after_days             = 90
+  replication_type              = "GZRS"
+  enable_low_availability_alert = true
 }
 
 cosmos = {
