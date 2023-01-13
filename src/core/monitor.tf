@@ -38,6 +38,11 @@ data "azurerm_key_vault_secret" "alert_error_notification_slack" {
   key_vault_id = module.key_vault.id
 }
 
+data "azurerm_key_vault_secret" "alert_quarantine_error_notification_slack" {
+  name         = "alert-quarantine-error-notification-slack"
+  key_vault_id = module.key_vault.id
+}
+
 #
 # Actions Groups
 #
