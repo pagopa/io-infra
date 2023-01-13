@@ -69,7 +69,7 @@ resource "azurerm_monitor_action_group" "error_action_group" {
 resource "azurerm_monitor_action_group" "quarantine_error_action_group" {
   resource_group_name = data.azurerm_resource_group.monitor_rg.name
   name                = "${var.prefix}${var.env_short}quarantineerror"
-  short_name          = "${var.prefix}${var.env_short}quarantineerror"
+  short_name          = "${var.prefix}${var.env_short}qerr"
 
   email_receiver {
     name                    = "slack"
