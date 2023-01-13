@@ -28,6 +28,17 @@ module "io_sign_storage" {
     use_subdomain = false
   }
 
+  action = var.storage.enable_low_availability_alert ? [
+    {
+      action_group_id    = data.azurerm_monitor_action_group.email.id
+      webhook_properties = {}
+    },
+    {
+      action_group_id    = data.azurerm_monitor_action_group.slack.id
+      webhook_properties = {}
+    },
+  ] : []
+
   tags = var.tags
 }
 

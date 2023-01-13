@@ -12,10 +12,11 @@ tags = {
 }
 
 storage = {
-  enable_versioning = false
-  delete_after_days = 90
-  replication_type  = "GZRS"
-  custom_domain     = "documents.sign.io.pagopa.it"
+  enable_versioning             = false
+  delete_after_days             = 90
+  replication_type              = "GZRS"
+  custom_domain                 = "documents.sign.io.pagopa.it"
+  enable_low_availability_alert = true
 }
 
 cosmos = {

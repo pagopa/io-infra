@@ -45,10 +45,11 @@ variable "tags" {
 
 variable "storage" {
   type = object({
-    enable_versioning = bool
-    delete_after_days = number
-    replication_type  = string
-    custom_domain     = string
+    enable_versioning             = bool
+    delete_after_days             = number
+    replication_type              = string
+    custom_domain                 = string
+    enable_low_availability_alert = bool
   })
 }
 
