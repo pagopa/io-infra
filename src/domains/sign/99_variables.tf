@@ -48,6 +48,7 @@ variable "storage" {
     enable_versioning = bool
     delete_after_days = number
     replication_type  = string
+    custom_domain     = string
   })
 }
 

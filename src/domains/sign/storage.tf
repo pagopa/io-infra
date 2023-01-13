@@ -1,5 +1,5 @@
 module "io_sign_storage" {
-  source                     = "git::https://github.com/pagopa/azurerm.git//storage_account?ref=v2.18.0"
+  source                     = "git::https://github.com/pagopa/azurerm.git//storage_account?ref=v4.1.0"
   name                       = replace(format("%s-st", local.project), "-", "")
   account_kind               = "StorageV2"
   account_tier               = "Standard"
@@ -21,6 +21,11 @@ module "io_sign_storage" {
       "AzureServices",
     ]
     virtual_network_subnet_ids = []
+  }
+
+  custom_domain = {
+    name          = var.storage.custom_domain
+    use_subdomain = false
   }
 
   tags = var.tags
