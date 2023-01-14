@@ -47,7 +47,7 @@ module "api_admin" {
   description         = "ADMIN API for IO platform."
 
   path        = "adm"
-  protocols   = ["https"]
+  protocols   = ["http", "https"]
   product_ids = [module.apim_product_admin.product_id]
 
   service_url = null
