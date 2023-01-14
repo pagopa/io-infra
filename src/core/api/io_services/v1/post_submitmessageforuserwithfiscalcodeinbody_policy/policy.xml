@@ -6,7 +6,7 @@
                 <!-- Progressive rollout of the instance io-fn3-eucovidcert-url-alt -->
                 <set-variable name="urlWeight" value="@{
                   Random rnd = new Random();
-                  int urlWeight = rnd.Next(1, 1001);
+                  int urlWeight = rnd.Next(1, 101);
                   return urlWeight;}" />
                 <choose>
                     <when condition="@(context.Variables.GetValueOrDefault<int>("urlWeight") <= 1)">
