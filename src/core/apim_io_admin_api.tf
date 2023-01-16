@@ -19,7 +19,7 @@ resource "azurerm_api_management_named_value" "io_fn3_admin_url" {
   api_management_name = module.apim.name
   resource_group_name = module.apim.resource_group_name
   display_name        = "io-fn3-admin-url"
-  value               = "https://io-p-fn3-admin.azurewebsites.net"
+  value               = "https://io-p-admin-fn.azurewebsites.net"
 }
 
 data "azurerm_key_vault_secret" "io_fn3_admin_key_secret" {
