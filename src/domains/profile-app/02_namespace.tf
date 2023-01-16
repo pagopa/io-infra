@@ -103,7 +103,7 @@ resource "helm_release" "cert-mounter" {
   name       = "cert-mounter-blueprint"
   chart      = "cert-mounter-blueprint"
   repository = "https://pagopa.github.io/aks-helm-cert-mounter-blueprint"
-  version    = "1.0.3"
+  version    = "1.0.4"
   namespace  = kubernetes_namespace.namespace.metadata[0].name
 
   set {
