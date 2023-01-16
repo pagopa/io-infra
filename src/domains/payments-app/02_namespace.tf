@@ -97,3 +97,36 @@ resource "azurerm_monitor_metric_alert" "tls_cert_check" {
     action_group_id = data.azurerm_monitor_action_group.email.id
   }
 }
+
+resource "helm_release" "cert-mounter" {
+  name       = "cert-mounter-blueprint"
+  chart      = "cert-mounter-blueprint"
+  repository = "https://pagopa.github.io/aks-helm-cert-mounter-blueprint"
+  version    = "1.0.3"
+  namespace  = kubernetes_namespace.namespace.metadata[0].name
+
+  set {
+    name  = "namespace"
+    value = kubernetes_namespace.namespace.metadata[0].name
+  }
+
+  set {
+    name  = "deployment.create"
+    value = "true"
+  }
+
+  set {
+    name  = "kvCertificatesName[0]"
+    value = "${var.location_short}${var.instance}.${var.domain}.internal.io.pagopa.it"
+  }
+
+  set {
+    name  = "keyvault.name"
+    value = data.azurerm_key_vault.kv.name
+  }
+
+  set {
+    name  = "keyvault.tenantId"
+    value = data.azurerm_client_config.current.tenant_id
+  }
+}
