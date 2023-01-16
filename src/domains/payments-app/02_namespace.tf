@@ -117,7 +117,7 @@ resource "helm_release" "cert-mounter" {
 
   set {
     name  = "kvCertificatesName[0]"
-    value = "${var.location_short}${var.instance}.${var.domain}.internal.io.pagopa.it"
+    value = replace("${local.ingress_hostname}.${local.internal_dns_zone_name}", ".", "-")
   }
 
   set {
