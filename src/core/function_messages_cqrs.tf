@@ -138,10 +138,9 @@ module "function_messages_cqrs" {
       "AzureWebJobs.HandlePaymentUpdateFailures.Disabled"                 = "0"
       "AzureWebJobs.CosmosApiMessagesChangeFeed.Disabled"                 = "0"
       "AzureWebJobs.HandleMessageChangeFeedPublishFailures.Disabled"      = "0"
-      "AzureWebJobs.CosmosApiChangeFeedForMessageRetention.Disabled"      = "0"
+      "AzureWebJobs.CosmosApiChangeFeedForMessageRetention.Disabled"      = "1"
     }
   )
-
   subnet_id = module.function_messages_cqrs_snet.id
 
   internal_storage = {
