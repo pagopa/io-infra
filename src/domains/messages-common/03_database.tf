@@ -115,6 +115,10 @@ module "mongdb_collection_reminder" {
       unique = false
     },
     {
+      keys   = ["insertionDate"]
+      unique = false
+    },
+    {
       keys   = ["content_paymentData_noticeNumber", "content_paymentData_payeeFiscalCode"]
       unique = false
     },
