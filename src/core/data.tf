@@ -322,8 +322,8 @@ resource "azurerm_monitor_metric_alert" "iopstapi_throttling_low_availability" {
 
 resource "azurerm_monitor_metric_alert" "cosmos_cgn_throttling_alert" {
 
-  name                = "[IO-COMMONS | ${data.azurerm_cosmosdb_account.cosmos_cgn.name}] Throttling"
-  resource_group_name = azurerm_resource_group.rg_linux.name
+  name                = "[CGN | ${data.azurerm_cosmosdb_account.cosmos_cgn.name}] Throttling"
+  resource_group_name = azurerm_resource_group.cgn_be_rg.name
   scopes              = [data.azurerm_cosmosdb_account.cosmos_cgn.id]
   # TODO: add Runbook for checking errors
   description   = "One or more collections consumed throughput (RU/s) exceed provisioned throughput. Please, consider to increase RU for these collections. Runbook: https://pagopa.atlassian.net/wiki/spaces/IC/pages/608632903/Throttling+su+risorsa+Cosmos."
