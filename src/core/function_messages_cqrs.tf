@@ -136,7 +136,7 @@ module "function_messages_cqrs" {
       "AzureWebJobs.UpdateCosmosMessageView.Disabled"                     = "0"
       "AzureWebJobs.UpdatePaymentOnMessageView.Disabled"                  = "0"
       "AzureWebJobs.HandlePaymentUpdateFailures.Disabled"                 = "0"
-      "AzureWebJobs.CosmosApiMessagesChangeFeed.Disabled"                 = "0"
+      "AzureWebJobs.CosmosApiMessagesChangeFeed.Disabled"                 = "1"
       "AzureWebJobs.HandleMessageChangeFeedPublishFailures.Disabled"      = "0"
       "AzureWebJobs.CosmosApiChangeFeedForMessageRetention.Disabled"      = "1"
     }
