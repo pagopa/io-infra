@@ -137,9 +137,10 @@ locals {
       FF_USER_AGE_LIMIT_ENABLED = 1
       FF_IO_SIGN_ENABLED        = 1
 
-      FF_ROUTING_PUSH_NOTIF                        = "BETA" # possible values are: BETA, CANARY, PROD, NONE
-      FF_ROUTING_PUSH_NOTIF_BETA_TESTER_SHA_LIST   = data.azurerm_key_vault_secret.app_backend_APP_MESSAGES_BETA_FISCAL_CODES.value
-      FF_ROUTING_PUSH_NOTIF_CANARY_SHA_USERS_REGEX = "XYZ"
+      FF_ROUTING_PUSH_NOTIF                      = "CANARY" # possible values are: BETA, CANARY, PROD, NONE
+      FF_ROUTING_PUSH_NOTIF_BETA_TESTER_SHA_LIST = data.azurerm_key_vault_secret.app_backend_APP_MESSAGES_BETA_FISCAL_CODES.value
+      # ~31% of users
+      FF_ROUTING_PUSH_NOTIF_CANARY_SHA_USERS_REGEX = "^([(0-9)|(a-f)|(A-F)]{63}[(0-4)]{1})$"
 
       FF_PN_ACTIVATION_ENABLED = "1"
 
@@ -206,6 +207,8 @@ locals {
         }
       ])
 
+      // LolliPOP
+      LOLLIPOP_ALLOWED_USER_AGENTS = "IO-App/2.23.0"
     }
     app_settings_l1 = {
       IS_APPBACKENDLI = "false"
