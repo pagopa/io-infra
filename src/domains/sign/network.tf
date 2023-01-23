@@ -20,7 +20,7 @@ module "io_sign_snet" {
   name                 = format("%s-snet", local.project)
   resource_group_name  = data.azurerm_virtual_network.vnet_common.resource_group_name
   virtual_network_name = data.azurerm_virtual_network.vnet_common.name
-  address_prefixes     = ["10.0.102.0/24"]
+  address_prefixes     = var.subnets.issuer
 
   enforce_private_link_endpoint_network_policies = true
 
@@ -49,20 +49,12 @@ resource "azurerm_network_security_group" "io_sign_issuer_nsg" {
   tags = var.tags
 }
 
-resource "azurerm_network_security_group" "io_sign_user_nsg" {
-  name                = format("%s-user-nsg", local.project)
-  location            = data.azurerm_virtual_network.vnet_common.location
-  resource_group_name = data.azurerm_virtual_network.vnet_common.resource_group_name
-
-  tags = var.tags
-}
-
 module "io_sign_user_snet" {
   source               = "git::https://github.com/pagopa/azurerm.git//subnet?ref=v2.7.2"
   name                 = format("%s-user-snet", local.project)
   resource_group_name  = data.azurerm_virtual_network.vnet_common.resource_group_name
   virtual_network_name = data.azurerm_virtual_network.vnet_common.name
-  address_prefixes     = ["10.0.103.0/24"]
+  address_prefixes     = var.subnets.user
 
   enforce_private_link_endpoint_network_policies = true
 
@@ -83,6 +75,34 @@ module "io_sign_user_snet" {
   }
 }
 
+resource "azurerm_network_security_group" "io_sign_user_nsg" {
+  name                = format("%s-user-nsg", local.project)
+  location            = data.azurerm_virtual_network.vnet_common.location
+  resource_group_name = data.azurerm_virtual_network.vnet_common.resource_group_name
+
+  tags = var.tags
+}
+
+module "io_sign_eventhub_snet" {
+  source               = "git::https://github.com/pagopa/azurerm.git//subnet?ref=v2.18.6"
+  name                 = format("%s-eventhub-snet", local.project)
+  resource_group_name  = data.azurerm_virtual_network.vnet_common.resource_group_name
+  virtual_network_name = data.azurerm_virtual_network.vnet_common.name
+  address_prefixes     = var.subnets.eventhub
+
+  enforce_private_link_endpoint_network_policies = true
+
+  service_endpoints = ["Microsoft.EventHub"]
+}
+
+resource "azurerm_network_security_group" "io_sign_eventhub_nsg" {
+  name                = format("%s-eventhub-nsg", local.project)
+  location            = data.azurerm_virtual_network.vnet_common.location
+  resource_group_name = data.azurerm_virtual_network.vnet_common.resource_group_name
+
+  tags = var.tags
+}
+
 data "azurerm_private_dns_zone" "privatelink_documents_azure_com" {
   name                = "privatelink.documents.azure.com"
   resource_group_name = "io-p-rg-common"
@@ -101,6 +121,11 @@ data "azurerm_private_dns_zone" "privatelink_queue_core_windows_net" {
 data "azurerm_private_dns_zone" "privatelink_azurewebsites_net" {
   name                = "privatelink.azurewebsites.net"
   resource_group_name = "io-p-rg-common"
+}
+
+data "azurerm_private_dns_zone" "privatelink_servicebus_windows_net" {
+  name                = "privatelink.servicebus.windows.net"
+  resource_group_name = "io-p-evt-rg"
 }
 
 # Unused at the moment

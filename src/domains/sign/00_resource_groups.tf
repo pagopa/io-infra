@@ -18,3 +18,10 @@ resource "azurerm_resource_group" "sec_rg" {
 
   tags = var.tags
 }
+
+resource "azurerm_resource_group" "integration_rg" {
+  name     = format("%s-integration-rg", local.project)
+  location = var.location
+
+  tags = var.tags
+}
