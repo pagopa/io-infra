@@ -43,6 +43,12 @@ variable "tags" {
 
 # domain specific
 
+variable "subnets" {
+  type = map(
+    list(string)
+  )
+}
+
 variable "storage" {
   type = object({
     enable_versioning             = bool
@@ -93,5 +99,32 @@ variable "io_sign_user_func" {
     autoscale_default = number
     autoscale_minimum = number
     autoscale_maximum = number
+  })
+}
+
+variable "integration_hub" {
+  type = object({
+    auto_inflate_enabled     = bool
+    sku_name                 = string
+    capacity                 = number
+    maximum_throughput_units = number
+    zone_redundant           = bool
+    alerts_enabled           = bool
+    ip_rules = list(object({
+      ip_mask = string
+      action  = string
+    }))
+    hubs = list(object({
+      name              = string
+      partitions        = number
+      message_retention = number
+      consumers         = list(string)
+      keys = list(object({
+        name   = string
+        listen = bool
+        send   = bool
+        manage = bool
+      }))
+    }))
   })
 }
