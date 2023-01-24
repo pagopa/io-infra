@@ -4,11 +4,11 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "service_availability_man
   location            = azurerm_resource_group.rg_external.location
 
   action {
-    action_group = azurerm_monitor_action_group.quarantine_error_action_group
+    action_group = [azurerm_monitor_action_group.quarantine_error_action_group]
   }
 
   data_source_id          = var.env_short == "p" ? data.azurerm_key_vault_secret.sec_workspace_id[0].value : data.azurerm_log_analytics_workspace.monitor_rg.id
-  description             = "Availability for get and manage services is less than or equal to 99%, check ${module.app_gw.name}. RunBook: https://pagopa.atlassian.net/wiki/spaces/IOPAE/pages/621740253/Enti+-+Gestione+dei+servizi+-+Availability"
+  description             = "Availability for get and manage services is less than or equal to 99%, check ${module.app_gw.name}."
   enabled                 = var.service_alerts_enabled
   auto_mitigation_enabled = true
 
