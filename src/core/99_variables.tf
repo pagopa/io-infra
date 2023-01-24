@@ -480,6 +480,13 @@ EOD
   }))
 }
 
+# services
+variable "service_alerts_enabled" {
+  description = "Enable services alerts"
+  type        = bool
+  default     = true
+}
+
 # eucovidcert
 variable "eucovidcert_alerts_enabled" {
   description = "Enable eucovidcert alerts"
