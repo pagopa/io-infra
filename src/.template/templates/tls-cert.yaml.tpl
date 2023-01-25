@@ -10,6 +10,14 @@ ingress:
 service:
   create: false
 
+readinessProbe:
+  httpGet:
+    port: 8080
+
+livenessProbe:
+  httpGet:
+    port: 8080
+
 resources:
   requests:
     memory: '96Mi'
