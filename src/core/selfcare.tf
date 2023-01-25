@@ -206,7 +206,7 @@ module "appservice_selfcare_be" {
 
     # Apim connection
     APIM_PRODUCT_NAME           = "io-services-api"
-    APIM_USER_GROUPS            = "apilimitedmessagewrite,apiinforead,apimessageread,apilimitedprofileread"
+    APIM_USER_GROUPS            = "apimessagewrite,apiinforead,apimessageread,apilimitedprofileread"
     ARM_APIM                    = "io-p-apim-api"
     ARM_RESOURCE_GROUP          = "io-p-rg-internal"
     ARM_SUBSCRIPTION_ID         = data.azurerm_subscription.current.subscription_id
