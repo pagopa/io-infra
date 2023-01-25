@@ -14,10 +14,10 @@
 
 | Name | Version |
 |------|---------|
-| <a name="provider_azuread"></a> [azuread](#provider\_azuread) | <= 2.33.0 |
-| <a name="provider_azurerm"></a> [azurerm](#provider\_azurerm) | <= 3.40.0 |
-| <a name="provider_helm"></a> [helm](#provider\_helm) | = 2.8.0 |
-| <a name="provider_kubernetes"></a> [kubernetes](#provider\_kubernetes) | = 2.17.0 |
+| <a name="provider_azuread"></a> [azuread](#provider\_azuread) | 2.33.0 |
+| <a name="provider_azurerm"></a> [azurerm](#provider\_azurerm) | 3.40.0 |
+| <a name="provider_helm"></a> [helm](#provider\_helm) | 2.8.0 |
+| <a name="provider_kubernetes"></a> [kubernetes](#provider\_kubernetes) | 2.17.0 |
 
 ## Modules
 
