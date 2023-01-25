@@ -8,7 +8,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "service_availability_man
   }
 
   data_source_id          = data.azurerm_log_analytics_workspace.monitor_rg.id
-  description             = "Availability for get and manage services is less than or equal to 99%, check ${module.app_gw.name}."
+  description             = "Availability for get and manage services is less than or equal to 99%."
   enabled                 = var.service_alerts_enabled
   auto_mitigation_enabled = true
 
