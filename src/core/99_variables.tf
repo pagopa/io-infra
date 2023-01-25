@@ -487,6 +487,12 @@ variable "service_alerts_enabled" {
   default     = true
 }
 
+variable "service_availability_alerts_threshold" {
+  description = "Threshold availability services alert"
+  type        = number
+  default     = 99.0
+}
+
 # eucovidcert
 variable "eucovidcert_alerts_enabled" {
   description = "Enable eucovidcert alerts"
