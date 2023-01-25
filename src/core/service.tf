@@ -4,7 +4,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "service_availability_man
   location            = azurerm_resource_group.rg_external.location
 
   action {
-    action_group = [azurerm_monitor_action_group.quarantine_error_action_group]
+    action_group = [azurerm_monitor_action_group.quarantine_error_action_group.id]
   }
 
   data_source_id          = data.azurerm_log_analytics_workspace.monitor_rg.id
