@@ -52,7 +52,7 @@ resource "azurerm_api_management_group" "apipaymentupdater" {
 }
 
 module "apim_product_notifications" {
-  source = "git::https://github.com/pagopa/azurerm.git//api_management_product?ref=v1.0.16"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3//api_management_product?ref=v4.1.5"
 
   product_id   = "io-notifications-api"
   display_name = "IO NOTIFICATIONS API"
@@ -69,7 +69,7 @@ module "apim_product_notifications" {
 }
 
 module "apim_service_messages_api_v1" {
-  source = "git::https://github.com/pagopa/azurerm.git//api_management_api?ref=v1.0.16"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3//api_management_api?ref=v4.1.5"
 
   name                  = format("%s-service-messages-api", local.product)
   api_management_name   = data.azurerm_api_management.apim_api.name
