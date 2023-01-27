@@ -183,6 +183,7 @@ locals {
 
       // Third Party Services
       THIRD_PARTY_CONFIG_LIST = jsonencode([
+        # Piattaforma Notifiche
         {
           serviceId  = var.pn_service_id,
           schemaKind = "PN",
@@ -202,6 +203,20 @@ locals {
               type            = "API_KEY",
               header_key_name = "x-api-key",
               key             = data.azurerm_key_vault_secret.app_backend_PN_API_KEY_UAT.value
+            }
+          }
+        },
+        # Mock Service
+        {
+          serviceId  = var.third_party_mock_service_id,
+          schemaKind = "Mock",
+          jsonSchema = "unused",
+          prodEnvironment = {
+            baseUrl = "https://pagopa.github.io/third-party-mock",
+            detailsAuthentication = {
+              type            = "API_KEY",
+              header_key_name = "x-api-key",
+              key             = "unused"
             }
           }
         }

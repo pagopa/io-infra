@@ -1019,3 +1019,11 @@ variable "function_public_autoscale_default" {
   description = "The number of instances that are available for scaling if metrics are not available for evaluation."
   default     = 1
 }
+
+# Third Party Mock
+
+variable "third_party_mock_service_id" {
+  type        = string
+  description = "The Service ID of the Third Party Mock service"
+  default     = "01GQQDPM127KFGG6T3660D5TXD"
+}
