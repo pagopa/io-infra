@@ -4,7 +4,7 @@ data "azurerm_api_management" "apim_api" {
 }
 
 module "apim_product_payments" {
-  source = "git::https://github.com/pagopa/azurerm.git//api_management_product?ref=v1.0.16"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_product?ref=v4.1.8"
 
   product_id   = "io-payments-api"
   display_name = "IO PAYMENTS API"
@@ -21,7 +21,7 @@ module "apim_product_payments" {
 }
 
 module "apim_payments_updater_api_v1" {
-  source = "git::https://github.com/pagopa/azurerm.git//api_management_api?ref=v1.0.16"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api?ref=v4.1.8"
 
   name                  = format("%s-payments-updater-api", local.product)
   api_management_name   = data.azurerm_api_management.apim_api.name
