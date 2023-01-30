@@ -538,7 +538,7 @@ resource "azurerm_monitor_autoscale_setting" "appservice_app_backendl1" {
 
     capacity {
       default = var.app_backend_autoscale_default
-      minimum = var.app_backend_autoscale_minimum
+      minimum = 2 # var.app_backend_autoscale_minimum
       maximum = var.app_backend_autoscale_maximum
     }
 
