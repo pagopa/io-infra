@@ -15,4 +15,6 @@ locals {
   acr_resource_group_name = "${local.product}-container-registry-rg"
 
   aks_name = "${local.project}-aks"
+
+  security_log_analytics_workspace_id = "/subscriptions/0da48c97-355f-4050-a520-f11a18b8be90/resourceGroups/sec-p-sentinel/providers/Microsoft.OperationalInsights/workspaces/sec-p-law"
 }
