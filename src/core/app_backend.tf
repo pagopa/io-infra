@@ -7,7 +7,6 @@ locals {
       # No downtime on slots swap
       WEBSITE_ADD_SITENAME_BINDINGS_IN_APPHOST_CONFIG = "1"
       WEBSITE_RUN_FROM_PACKAGE                        = "1"
-      WEBSITE_VNET_ROUTE_ALL                          = "1"
       WEBSITE_DNS_SERVER                              = "168.63.129.16"
       WEBSITE_HEALTHCHECK_MAXPINGFAILURES             = "3"
 
@@ -442,7 +441,7 @@ module "app_backendl1_snet" {
 }
 
 module "appservice_app_backendl1" {
-  source = "git::https://github.com/pagopa/azurerm.git//app_service?ref=v3.12.0"
+  source = "git::https://github.com/pagopa/azurerm.git//app_service?ref=v4.3.2"
 
   # App service plan
   plan_type     = "internal"
@@ -487,7 +486,7 @@ module "appservice_app_backendl1" {
 }
 
 module "appservice_app_backendl1_slot_staging" {
-  source = "git::https://github.com/pagopa/azurerm.git//app_service_slot?ref=v3.12.0"
+  source = "git::https://github.com/pagopa/azurerm.git//app_service_slot?ref=v4.3.2"
 
   # App service plan
   app_service_plan_id = module.appservice_app_backendl1.plan_id
@@ -553,7 +552,7 @@ resource "azurerm_monitor_autoscale_setting" "appservice_app_backendl1" {
         time_window              = "PT5M"
         time_aggregation         = "Average"
         operator                 = "GreaterThan"
-        threshold                = 3500
+        threshold                = 4000
         divide_by_instance_count = false
       }
 
@@ -575,7 +574,7 @@ resource "azurerm_monitor_autoscale_setting" "appservice_app_backendl1" {
         time_window              = "PT5M"
         time_aggregation         = "Average"
         operator                 = "GreaterThan"
-        threshold                = 45
+        threshold                = 50
         divide_by_instance_count = false
       }
 
@@ -597,7 +596,7 @@ resource "azurerm_monitor_autoscale_setting" "appservice_app_backendl1" {
         time_window              = "PT5M"
         time_aggregation         = "Average"
         operator                 = "LessThan"
-        threshold                = 2500
+        threshold                = 1000
         divide_by_instance_count = false
       }
 
@@ -605,7 +604,7 @@ resource "azurerm_monitor_autoscale_setting" "appservice_app_backendl1" {
         direction = "Decrease"
         type      = "ChangeCount"
         value     = "1"
-        cooldown  = "PT20M"
+        cooldown  = "PT1H"
       }
     }
 
@@ -619,7 +618,7 @@ resource "azurerm_monitor_autoscale_setting" "appservice_app_backendl1" {
         time_window              = "PT5M"
         time_aggregation         = "Average"
         operator                 = "LessThan"
-        threshold                = 25
+        threshold                = 10
         divide_by_instance_count = false
       }
 
@@ -627,7 +626,7 @@ resource "azurerm_monitor_autoscale_setting" "appservice_app_backendl1" {
         direction = "Decrease"
         type      = "ChangeCount"
         value     = "1"
-        cooldown  = "PT20M"
+        cooldown  = "PT1H"
       }
     }
   }
@@ -656,7 +655,7 @@ module "app_backendl2_snet" {
 }
 
 module "appservice_app_backendl2" {
-  source = "git::https://github.com/pagopa/azurerm.git//app_service?ref=v3.12.0"
+  source = "git::https://github.com/pagopa/azurerm.git//app_service?ref=v4.3.2"
 
   # App service plan
   plan_type     = "internal"
@@ -701,7 +700,7 @@ module "appservice_app_backendl2" {
 }
 
 module "appservice_app_backendl2_slot_staging" {
-  source = "git::https://github.com/pagopa/azurerm.git//app_service_slot?ref=v3.12.0"
+  source = "git::https://github.com/pagopa/azurerm.git//app_service_slot?ref=v4.3.2"
 
   # App service plan
   app_service_plan_id = module.appservice_app_backendl2.plan_id
@@ -767,7 +766,7 @@ resource "azurerm_monitor_autoscale_setting" "appservice_app_backendl2" {
         time_window              = "PT5M"
         time_aggregation         = "Average"
         operator                 = "GreaterThan"
-        threshold                = 3500
+        threshold                = 4000
         divide_by_instance_count = false
       }
 
@@ -789,7 +788,7 @@ resource "azurerm_monitor_autoscale_setting" "appservice_app_backendl2" {
         time_window              = "PT5M"
         time_aggregation         = "Average"
         operator                 = "GreaterThan"
-        threshold                = 45
+        threshold                = 50
         divide_by_instance_count = false
       }
 
@@ -811,7 +810,7 @@ resource "azurerm_monitor_autoscale_setting" "appservice_app_backendl2" {
         time_window              = "PT5M"
         time_aggregation         = "Average"
         operator                 = "LessThan"
-        threshold                = 2500
+        threshold                = 1000
         divide_by_instance_count = false
       }
 
@@ -819,7 +818,7 @@ resource "azurerm_monitor_autoscale_setting" "appservice_app_backendl2" {
         direction = "Decrease"
         type      = "ChangeCount"
         value     = "1"
-        cooldown  = "PT20M"
+        cooldown  = "PT1H"
       }
     }
 
@@ -833,7 +832,7 @@ resource "azurerm_monitor_autoscale_setting" "appservice_app_backendl2" {
         time_window              = "PT5M"
         time_aggregation         = "Average"
         operator                 = "LessThan"
-        threshold                = 25
+        threshold                = 10
         divide_by_instance_count = false
       }
 
@@ -841,7 +840,7 @@ resource "azurerm_monitor_autoscale_setting" "appservice_app_backendl2" {
         direction = "Decrease"
         type      = "ChangeCount"
         value     = "1"
-        cooldown  = "PT20M"
+        cooldown  = "PT1H"
       }
     }
   }
@@ -870,7 +869,7 @@ module "app_backendli_snet" {
 }
 
 module "appservice_app_backendli" {
-  source = "git::https://github.com/pagopa/azurerm.git//app_service?ref=v3.12.0"
+  source = "git::https://github.com/pagopa/azurerm.git//app_service?ref=v4.3.2"
 
   # App service plan
   plan_type     = "internal"
@@ -915,7 +914,7 @@ module "appservice_app_backendli" {
 }
 
 module "appservice_app_backendli_slot_staging" {
-  source = "git::https://github.com/pagopa/azurerm.git//app_service_slot?ref=v3.12.0"
+  source = "git::https://github.com/pagopa/azurerm.git//app_service_slot?ref=v4.3.2"
 
   # App service plan
   app_service_plan_id = module.appservice_app_backendli.plan_id
@@ -980,7 +979,7 @@ resource "azurerm_monitor_autoscale_setting" "appservice_app_backendli" {
         time_window              = "PT5M"
         time_aggregation         = "Average"
         operator                 = "GreaterThan"
-        threshold                = 3500
+        threshold                = 4000
         divide_by_instance_count = false
       }
 
@@ -1002,7 +1001,7 @@ resource "azurerm_monitor_autoscale_setting" "appservice_app_backendli" {
         time_window              = "PT5M"
         time_aggregation         = "Average"
         operator                 = "LessThan"
-        threshold                = 2500
+        threshold                = 1000
         divide_by_instance_count = false
       }
 
@@ -1010,7 +1009,7 @@ resource "azurerm_monitor_autoscale_setting" "appservice_app_backendli" {
         direction = "Decrease"
         type      = "ChangeCount"
         value     = "1"
-        cooldown  = "PT20M"
+        cooldown  = "PT1H"
       }
     }
   }
