@@ -7,7 +7,7 @@ resource "azurerm_resource_group" "data_rg" {
 
 
 module "cosmosdb_account_mongodb" {
-  source = "git::https://github.com/pagopa/azurerm.git//cosmosdb_account?ref=v2.15.1"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//cosmosdb_account?ref=v4.1.8"
 
   name                 = "${local.product}-${var.domain}-mongodb-account"
   location             = azurerm_resource_group.data_rg.location
@@ -17,6 +17,7 @@ module "cosmosdb_account_mongodb" {
   kind                 = "MongoDB"
   capabilities         = ["EnableMongo"]
   mongo_server_version = "4.0"
+  domain               = "PAYMENTS"
 
   public_network_access_enabled     = false
   private_endpoint_enabled          = true
@@ -46,13 +47,13 @@ resource "azurerm_cosmosdb_mongo_database" "db" {
   account_name        = module.cosmosdb_account_mongodb.name
 
   autoscale_settings {
-    max_throughput = 4000
+    max_throughput = 2000
   }
 }
 
 # Collections
 module "mongdb_collection_payment" {
-  source = "git::https://github.com/pagopa/azurerm.git//cosmosdb_mongodb_collection?ref=v2.3.0"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//cosmosdb_mongodb_collection?ref=v4.1.8"
 
   name                = "payment"
   resource_group_name = azurerm_resource_group.data_rg.name
@@ -79,7 +80,7 @@ module "mongdb_collection_payment" {
 }
 
 module "mongdb_collection_payment_retry" {
-  source = "git::https://github.com/pagopa/azurerm.git//cosmosdb_mongodb_collection?ref=v2.3.0"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//cosmosdb_mongodb_collection?ref=v4.1.8"
 
   name                = "payment-retry"
   resource_group_name = azurerm_resource_group.data_rg.name
