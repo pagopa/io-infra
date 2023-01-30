@@ -28,6 +28,10 @@ locals {
       NamirialUsername                                = "api"
       NamirialPassword                                = module.key_vault_secrets.values["NamirialPassword"].value
       SpidAssertionMock                               = module.key_vault_secrets.values["SpidAssertionMock"].value
+      AnalyticsEventHubConnectionString               = module.event_hub.keys["analytics.io-sign-func-user"].primary_connection_string
+
+      # TODO Remove after release
+      EventHubsConnectionString = module.key_vault_secrets.values["EventHubsConnectionString"].value
     }
   }
 }
