@@ -100,10 +100,6 @@ locals {
       // This way we can safely deploy fn-services without enabling ADVANCED functionalities
       MIN_APP_VERSION_WITH_READ_AUTH = "2.14.0"
 
-      # this app settings is required to solve the issue:
-      # https://github.com/terraform-providers/terraform-provider-azurerm/issues/10499
-      WEBSITE_PROACTIVE_AUTOHEAL_ENABLED = "True"
-
       // the duration of message and message-status for those messages sent to user not registered on IO.
       TTL_FOR_USER_NOT_FOUND = "${60 * 60 * 24 * 365 * 3}" //3 years in seconds
       FEATURE_FLAG           = "ALL"
