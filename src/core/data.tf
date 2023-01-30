@@ -45,21 +45,6 @@ data "azurerm_subnet" "fnapp_services_subnet_out" {
 }
 
 #
-# Function admin resources
-#
-
-data "azurerm_function_app" "fnapp_admin" {
-  name                = format("%s-fn3-admin", local.project)
-  resource_group_name = format("%s-rg-internal", local.project)
-}
-
-data "azurerm_subnet" "fnapp_admin_subnet_out" {
-  name                 = "fn3admin"
-  virtual_network_name = format("%s-vnet-common", local.project)
-  resource_group_name  = format("%s-rg-common", local.project)
-}
-
-#
 # Bonus vacanze resources
 #
 

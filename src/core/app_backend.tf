@@ -77,10 +77,10 @@ locals {
 
       // PUSH NOTIFICATIONS
       PRE_SHARED_KEY               = data.azurerm_key_vault_secret.app_backend_PRE_SHARED_KEY.value
-      ALLOW_NOTIFY_IP_SOURCE_RANGE = data.azurerm_subnet.fnapp_services_subnet_out.address_prefixes[0]
+      ALLOW_NOTIFY_IP_SOURCE_RANGE = data.azurerm_subnet.fnapp_services_subnet_out.address_prefix
 
       // LOCK / UNLOCK SESSION ENDPOINTS
-      ALLOW_SESSION_HANDLER_IP_SOURCE_RANGE = data.azurerm_subnet.fnapp_admin_subnet_out.address_prefixes[0]
+      ALLOW_SESSION_HANDLER_IP_SOURCE_RANGE = module.apim_snet.address_prefix
 
       // PAGOPA
       PAGOPA_API_URL_PROD          = "https://api.platform.pagopa.it/checkout/auth/payments/v1"
@@ -183,6 +183,7 @@ locals {
 
       // Third Party Services
       THIRD_PARTY_CONFIG_LIST = jsonencode([
+        # Piattaforma Notifiche
         {
           serviceId  = var.pn_service_id,
           schemaKind = "PN",
@@ -202,6 +203,20 @@ locals {
               type            = "API_KEY",
               header_key_name = "x-api-key",
               key             = data.azurerm_key_vault_secret.app_backend_PN_API_KEY_UAT.value
+            }
+          }
+        },
+        # Mock Service
+        {
+          serviceId  = var.third_party_mock_service_id,
+          schemaKind = "Mock",
+          jsonSchema = "unused",
+          prodEnvironment = {
+            baseUrl = "https://pagopa.github.io/third-party-mock",
+            detailsAuthentication = {
+              type            = "API_KEY",
+              header_key_name = "x-api-key",
+              key             = "unused"
             }
           }
         }
@@ -453,7 +468,6 @@ module "appservice_app_backendl1" {
   )
 
   allowed_subnets = [
-    data.azurerm_subnet.fnapp_admin_subnet_out.id,
     data.azurerm_subnet.fnapp_services_subnet_out.id,
     module.services_snet[0].id,
     module.services_snet[1].id,
@@ -497,7 +511,6 @@ module "appservice_app_backendl1_slot_staging" {
 
   allowed_subnets = [
     data.azurerm_subnet.azdoa_snet[0].id,
-    data.azurerm_subnet.fnapp_admin_subnet_out.id,
     data.azurerm_subnet.fnapp_services_subnet_out.id,
     module.services_snet[0].id,
     module.services_snet[1].id,
@@ -669,7 +682,6 @@ module "appservice_app_backendl2" {
   )
 
   allowed_subnets = [
-    data.azurerm_subnet.fnapp_admin_subnet_out.id,
     data.azurerm_subnet.fnapp_services_subnet_out.id,
     module.services_snet[0].id,
     module.services_snet[1].id,
@@ -713,7 +725,6 @@ module "appservice_app_backendl2_slot_staging" {
 
   allowed_subnets = [
     data.azurerm_subnet.azdoa_snet[0].id,
-    data.azurerm_subnet.fnapp_admin_subnet_out.id,
     data.azurerm_subnet.fnapp_services_subnet_out.id,
     module.services_snet[0].id,
     module.services_snet[1].id,
@@ -885,7 +896,6 @@ module "appservice_app_backendli" {
   )
 
   allowed_subnets = [
-    data.azurerm_subnet.fnapp_admin_subnet_out.id,
     data.azurerm_subnet.fnapp_services_subnet_out.id,
     module.services_snet[0].id,
     module.services_snet[1].id,
@@ -929,7 +939,6 @@ module "appservice_app_backendli_slot_staging" {
 
   allowed_subnets = [
     data.azurerm_subnet.azdoa_snet[0].id,
-    data.azurerm_subnet.fnapp_admin_subnet_out.id,
     data.azurerm_subnet.fnapp_services_subnet_out.id,
     module.services_snet[0].id,
     module.services_snet[1].id,

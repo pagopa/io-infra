@@ -419,4 +419,8 @@ eventhubs = [
 pn_service_id = "01G40DWQGKY5GRWSNM4303VNRP"
 
 
+# TP Mock Service Id
+third_party_mock_service_id = "01GQQDPM127KFGG6T3660D5TXD"
+
+
 app_backend_names = ["appbackendl1", "appbackendl2", "appbackendli"]
