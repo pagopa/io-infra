@@ -164,6 +164,15 @@ data "azurerm_storage_account" "api" {
   resource_group_name = azurerm_resource_group.rg_internal.name
 }
 
+#
+# Redis
+#
+
+data "azurerm_redis_cache" "common" {
+  name                = "io-p-redis-common"
+  resource_group_name = "io-p-rg-common"
+}
+
 # CDN Assets storage account
 data "azurerm_storage_account" "cdnassets" {
   name                = "iopstcdnassets"
