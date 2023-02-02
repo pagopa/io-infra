@@ -5,14 +5,11 @@ module "key_vault_secrets" {
   key_vault_name = module.key_vault.name
 
   secrets = [
-    "IOApiSubscriptionKey",
+    "IoServicesSubscriptionKey",
     "TokenizerApiSubscriptionKey",
     "io-fn-sign-issuer-key",
     "NamirialPassword",
     "SpidAssertionMock",
-
-    # TODO remove after release
-    "EventHubsConnectionString",
   ]
 }
 
