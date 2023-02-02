@@ -430,7 +430,7 @@ resource "azurerm_key_vault_secret" "appbackend-REDIS-PASSWORD" {
 resource "azurerm_key_vault_secret" "appbackend-SPID-LOG-STORAGE" {
   name         = "appbackend-SPID-LOG-STORAGE"
   value        = data.azurerm_storage_account.logs.primary_connection_string
-  key_vault_id = data.azurerm_key_vault.common.
+  key_vault_id = data.azurerm_key_vault.common.id
   content_type = "string"
 }
 
