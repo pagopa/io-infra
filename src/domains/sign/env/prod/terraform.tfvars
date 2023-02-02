@@ -88,7 +88,12 @@ integration_hub = {
   maximum_throughput_units = 5
   zone_redundant           = true
   alerts_enabled           = true
-  ip_rules = []
+  ip_rules = [
+    {
+      ip_mask = "18.192.147.151", # PDND-DATALAKE
+      action  = "Allow"
+    }
+  ]
   hubs = [
     {
       name              = "billing"
