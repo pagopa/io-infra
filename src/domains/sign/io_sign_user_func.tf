@@ -21,7 +21,7 @@ locals {
       userUploadedBlobContainerName                   = azurerm_storage_container.uploaded_documents.name
       userValidatedBlobContainerName                  = azurerm_storage_container.validated_documents.name
       IoServicesApiBasePath                           = "https://api.io.pagopa.it"
-      IoServicesSubscriptionKey                       = module.key_vault_secrets.values["IOApiSubscriptionKey"].value
+      IoServicesSubscriptionKey                       = module.key_vault_secrets.values["IoServicesSubscriptionKey"].value
       PdvTokenizerApiBasePath                         = "https://api.uat.tokenizer.pdv.pagopa.it"
       PdvTokenizerApiKey                              = module.key_vault_secrets.values["TokenizerApiSubscriptionKey"].value
       NamirialApiBasePath                             = "https://pagopa.demo.bit4id.org"
@@ -29,9 +29,6 @@ locals {
       NamirialPassword                                = module.key_vault_secrets.values["NamirialPassword"].value
       SpidAssertionMock                               = module.key_vault_secrets.values["SpidAssertionMock"].value
       AnalyticsEventHubConnectionString               = module.event_hub.keys["analytics.io-sign-func-user"].primary_connection_string
-
-      # TODO Remove after release
-      EventHubsConnectionString = module.key_vault_secrets.values["EventHubsConnectionString"].value
     }
   }
 }
