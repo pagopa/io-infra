@@ -19,6 +19,16 @@ module "pod_identity" {
   secret_permissions = ["Get"]
 }
 
+resource "azurerm_key_vault_access_policy" "common" {
+  key_vault_id = data.azurerm_key_vault.common.id
+  tenant_id    = data.azurerm_subscription.current.tenant_id
+
+  # The object ID of a user, service principal or security group in the Azure Active Directory tenant for the vault.
+  object_id = module.pod_identity.identity.principal_id
+
+  secret_permissions = ["Get"]
+}
+
 resource "helm_release" "reloader" {
   name       = "reloader"
   repository = "https://stakater.github.io/stakater-charts"

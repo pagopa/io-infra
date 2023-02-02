@@ -16,6 +16,11 @@ data "azurerm_key_vault_secret" "fn_services_webhook_channel_url" {
   key_vault_id = data.azurerm_key_vault.common.id
 }
 
+data "azurerm_key_vault_secret" "fn_services_webhook_channel_aks_url" {
+  name         = "appbackend-WEBHOOK-CHANNEL-AKS-URL"
+  key_vault_id = data.azurerm_key_vault.common.id
+}
+
 data "azurerm_key_vault_secret" "fn_services_sandbox_fiscal_code" {
   name         = "io-SANDBOX-FISCAL-CODE"
   key_vault_id = data.azurerm_key_vault.common.id
@@ -118,8 +123,10 @@ locals {
       BETA_USERS                             = data.azurerm_key_vault_secret.fn_services_beta_users.value
     }
     app_settings_1 = {
+      WEBHOOK_CHANNEL_URL = data.azurerm_key_vault_secret.fn_services_webhook_channel_url.value
     }
     app_settings_2 = {
+      WEBHOOK_CHANNEL_URL = data.azurerm_key_vault_secret.fn_services_webhook_channel_aks_url.value
     }
   }
 }
@@ -184,7 +191,10 @@ module "function_services" {
   }
 
   app_settings = merge(
-    local.function_services.app_settings_common, {
+    local.function_services.app_settings_common,
+    count.index == 0 ? local.function_services.app_settings_1 : {},
+    count.index == 1 ? local.function_services.app_settings_2 : {},
+    {
       # Disabled functions on slot - trigger, queue and timer
       # mark this configurations as slot settings
       "AzureWebJobs.CreateNotification.Disabled"     = "0"
