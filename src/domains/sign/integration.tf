@@ -18,9 +18,14 @@ module "event_hub" {
 
   network_rulesets = [
     {
-      default_action       = "Deny",
-      virtual_network_rule = [],
-      ip_rule              = var.integration_hub.ip_rules
+      default_action = "Deny",
+      virtual_network_rule = [
+        {
+          subnet_id                                       = module.io_sign_eventhub_snet.id,
+          ignore_missing_virtual_network_service_endpoint = false
+        }
+      ],
+      ip_rule = var.integration_hub.ip_rules
     }
   ]
 
