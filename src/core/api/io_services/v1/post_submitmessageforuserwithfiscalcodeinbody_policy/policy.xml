@@ -9,10 +9,10 @@
                   int urlWeight = rnd.Next(1, 101);
                   return urlWeight;}" />
                 <choose>
-                    <when condition="@(context.Variables.GetValueOrDefault<int>("urlWeight") <= 100)">
+                    <when condition="@(context.Variables.GetValueOrDefault<int>("urlWeight") <= 1)">
                         <set-backend-service base-url="{{io-fn3-eucovidcert-url}}/api/v1" />
                     </when>
-                    <when condition="@(context.Variables.GetValueOrDefault<int>("urlWeight") > 100)">
+                    <when condition="@(context.Variables.GetValueOrDefault<int>("urlWeight") > 1)">
                         <set-backend-service base-url="{{io-fn3-eucovidcert-url-alt}}/api/v1" />
                     </when>
                     <otherwise>
