@@ -1,12 +1,12 @@
 module "cosmosdb_sql_database_issuer" {
-  source              = "git::https://github.com/pagopa/azurerm.git//cosmosdb_sql_database?ref=v2.7.2"
+  source              = "git::https://github.com/pagopa/terraform-azurerm-v3.git//cosmosdb_sql_database?ref=v4.1.3"
   name                = "issuer"
   resource_group_name = azurerm_resource_group.data_rg.name
   account_name        = module.cosmosdb_account.name
 }
 
 module "cosmosdb_sql_container_issuer-dossiers" {
-  source              = "git::https://github.com/pagopa/azurerm.git//cosmosdb_sql_container?ref=v3.2.5"
+  source              = "git::https://github.com/pagopa/terraform-azurerm-v3.git//cosmosdb_sql_container?ref=v4.1.3"
   name                = "dossiers"
   resource_group_name = azurerm_resource_group.data_rg.name
   account_name        = module.cosmosdb_account.name
@@ -22,7 +22,7 @@ module "cosmosdb_sql_container_issuer-dossiers" {
 }
 
 module "cosmosdb_sql_container_issuer-signature-requests" {
-  source              = "git::https://github.com/pagopa/azurerm.git//cosmosdb_sql_container?ref=v3.2.5"
+  source              = "git::https://github.com/pagopa/terraform-azurerm-v3.git//cosmosdb_sql_container?ref=v4.1.3"
   name                = "signature-requests"
   resource_group_name = azurerm_resource_group.data_rg.name
   account_name        = module.cosmosdb_account.name
@@ -38,7 +38,7 @@ module "cosmosdb_sql_container_issuer-signature-requests" {
 }
 
 module "cosmosdb_sql_container_issuer-uploads" {
-  source              = "git::https://github.com/pagopa/azurerm.git//cosmosdb_sql_container?ref=v3.2.5"
+  source              = "git::https://github.com/pagopa/terraform-azurerm-v3.git//cosmosdb_sql_container?ref=v4.1.3"
   name                = "uploads"
   resource_group_name = azurerm_resource_group.data_rg.name
   account_name        = module.cosmosdb_account.name
@@ -54,7 +54,7 @@ module "cosmosdb_sql_container_issuer-uploads" {
 }
 
 module "cosmosdb_sql_container_issuer-issuers" {
-  source              = "git::https://github.com/pagopa/azurerm.git//cosmosdb_sql_container?ref=v3.2.5"
+  source              = "git::https://github.com/pagopa/terraform-azurerm-v3.git//cosmosdb_sql_container?ref=v4.1.3"
   name                = "issuers"
   resource_group_name = azurerm_resource_group.data_rg.name
   account_name        = module.cosmosdb_account.name

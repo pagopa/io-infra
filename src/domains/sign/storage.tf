@@ -1,5 +1,5 @@
 module "io_sign_storage" {
-  source                     = "git::https://github.com/pagopa/azurerm.git//storage_account?ref=v4.1.0"
+  source                     = "git::https://github.com/pagopa/terraform-azurerm-v3.git//storage_account?ref=v4.1.5"
   name                       = replace(format("%s-st", local.project), "-", "")
   account_kind               = "StorageV2"
   account_tier               = "Standard"

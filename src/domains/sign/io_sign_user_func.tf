@@ -34,7 +34,7 @@ locals {
 }
 
 module "io_sign_user_func" {
-  source = "git::https://github.com/pagopa/azurerm.git//function_app?ref=v3.3.1"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app?ref=v4.1.6"
 
   name                = format("%s-user-func", local.project)
   location            = azurerm_resource_group.backend_rg.location
@@ -75,7 +75,7 @@ module "io_sign_user_func" {
 
 module "io_sign_user_func_staging_slot" {
   count  = var.io_sign_user_func.sku_tier == "PremiumV3" ? 1 : 0
-  source = "git::https://github.com/pagopa/azurerm.git//function_app_slot?ref=v3.4.0"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app_slot?ref=v4.1.3"
 
   name                = "staging"
   location            = azurerm_resource_group.backend_rg.location
