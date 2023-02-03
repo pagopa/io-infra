@@ -1,16 +1,15 @@
 module "io_sign_storage" {
-  source                     = "git::https://github.com/pagopa/terraform-azurerm-v3.git//storage_account?ref=v4.1.5"
-  name                       = replace(format("%s-st", local.project), "-", "")
-  account_kind               = "StorageV2"
-  account_tier               = "Standard"
-  account_replication_type   = var.storage.replication_type
-  access_tier                = "Hot"
-  enable_versioning          = var.storage.enable_versioning
-  versioning_name            = "versioning"
-  resource_group_name        = azurerm_resource_group.data_rg.name
-  location                   = azurerm_resource_group.data_rg.location
-  advanced_threat_protection = true
-  allow_blob_public_access   = false
+  source                          = "git::https://github.com/pagopa/terraform-azurerm-v3.git//storage_account?ref=v4.1.5"
+  name                            = replace(format("%s-st", local.project), "-", "")
+  account_kind                    = "StorageV2"
+  account_tier                    = "Standard"
+  account_replication_type        = var.storage.replication_type
+  access_tier                     = "Hot"
+  blob_versioning_enabled         = var.storage.enable_versioning
+  resource_group_name             = azurerm_resource_group.data_rg.name
+  location                        = azurerm_resource_group.data_rg.location
+  advanced_threat_protection      = true
+  allow_nested_items_to_be_public = false
 
   network_rules = {
     default_action = "Allow"
@@ -53,9 +52,7 @@ resource "azurerm_storage_management_policy" "io_sign_storage_management_policy"
     }
     actions {
       base_blob {
-        tier_to_cool_after_days_since_modification_greater_than    = 0
-        tier_to_archive_after_days_since_modification_greater_than = 0
-        delete_after_days_since_modification_greater_than          = var.storage.delete_after_days
+        delete_after_days_since_modification_greater_than = var.storage.delete_after_days
       }
     }
   }

@@ -16,6 +16,7 @@ module "event_hub" {
 
   eventhubs = var.integration_hub.hubs
 
+  public_network_access_enabled = true
   network_rulesets = [
     {
       default_action = "Deny",

@@ -31,22 +31,18 @@ cosmos = {
 
 io_sign_database_issuer = {
   dossiers = {
-    # TODO [SFEQS-1200] Refactor terraform provider to v3
     max_throughput = 1000
     ttl            = null
   }
   signature_requests = {
-    # TODO [SFEQS-1200] Refactor terraform provider to v3
     max_throughput = 1000
     ttl            = null
   }
   uploads = {
-    # TODO [SFEQS-1200] Refactor terraform provider to v3
     max_throughput = 1000
     ttl            = 604800
   }
   issuers = {
-    # TODO [SFEQS-1200] Refactor terraform provider to v3
     max_throughput = 1000
     ttl            = null
   }
@@ -54,12 +50,10 @@ io_sign_database_issuer = {
 
 io_sign_database_user = {
   signature_requests = {
-    # TODO [SFEQS-1200] Refactor terraform provider to v3
     max_throughput = 1000
     ttl            = null
   }
   signatures = {
-    # TODO [SFEQS-1200] Refactor terraform provider to v3
     max_throughput = 1000
     ttl            = null
   }

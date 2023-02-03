@@ -22,7 +22,7 @@ module "io_sign_snet" {
   virtual_network_name = data.azurerm_virtual_network.vnet_common.name
   address_prefixes     = var.subnets.issuer
 
-  enforce_private_link_endpoint_network_policies = true
+  private_endpoint_network_policies_enabled = false
 
   # network_security_group_id = azurerm_network_security_group.io_sign_issuer_nsg.id
 
@@ -56,7 +56,7 @@ module "io_sign_user_snet" {
   virtual_network_name = data.azurerm_virtual_network.vnet_common.name
   address_prefixes     = var.subnets.user
 
-  enforce_private_link_endpoint_network_policies = true
+  private_endpoint_network_policies_enabled = false
 
   # network_security_group_id = azurerm_network_security_group.io_sign_user_nsg.id
 
@@ -90,7 +90,7 @@ module "io_sign_eventhub_snet" {
   virtual_network_name = data.azurerm_virtual_network.vnet_common.name
   address_prefixes     = var.subnets.eventhub
 
-  enforce_private_link_endpoint_network_policies = true
+  private_endpoint_network_policies_enabled = false
 
   service_endpoints = ["Microsoft.EventHub"]
 }
