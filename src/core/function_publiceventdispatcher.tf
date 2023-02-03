@@ -150,8 +150,7 @@ module "function_pblevtdispatcher_v4" {
     ])
 
     # Keep listener unactive until the legacy instance isn't dismissed
-    "AzureWebJobs.NotifyNewProfileToDGC.Disabled" = "1"
-    "AzureWebJobs.OnProfileCreatedEvent.Disabled" = "1"
+    "AzureWebJobs.OnIncomingEvent.Disabled" = "1"
 
   }
 
