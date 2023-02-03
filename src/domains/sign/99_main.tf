@@ -12,7 +12,8 @@ terraform {
 
   backend "azurerm" {}
 
-  required_version = ">= 1.1.7"
+  # Commented due to precommit check update required
+  # required_version = ">= 1.3.7"
 }
 
 provider "azurerm" {
