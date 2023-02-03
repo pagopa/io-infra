@@ -33,6 +33,7 @@ module "function_pblevtdispatcher_snetout" {
   }
 }
 
+# Function App running on engine v3 - to be dismissed once traffic has been moved to v4 instance
 #tfsec:ignore:azure-storage-queue-services-logging-enabled:exp:2022-05-01 # already ignored, maybe a bug in tfsec
 module "function_pblevtdispatcher" {
   source = "git::https://github.com/pagopa/azurerm.git//function_app?ref=v2.9.1"
@@ -88,6 +89,77 @@ module "function_pblevtdispatcher" {
   ]
 
   allowed_ips = local.app_insights_ips_west_europe
+
+  tags = var.tags
+}
+
+module "function_pblevtdispatcher_v4" {
+  source = "git::https://github.com/pagopa/azurerm.git//function_app?ref=v3.4.0"
+
+  resource_group_name = azurerm_resource_group.pblevtdispatcher_rg.name
+  name                = format("%s-pblevtdispatcher-fn", local.project)
+  location            = var.location
+  health_check_path   = "/api/v1/info"
+
+  os_type          = "linux"
+  linux_fx_version = "NODE|14"
+  runtime_version  = "~4"
+
+  always_on                                = "true"
+  application_insights_instrumentation_key = data.azurerm_application_insights.application_insights.instrumentation_key
+
+  app_service_plan_info = {
+    kind                         = var.plan_shared_1_kind
+    sku_tier                     = var.plan_shared_1_sku_tier
+    sku_size                     = var.plan_shared_1_sku_size
+    maximum_elastic_worker_count = 0
+  }
+
+  app_settings = {
+    FUNCTIONS_WORKER_RUNTIME       = "node"
+    WEBSITE_NODE_DEFAULT_VERSION   = "14.16.0"
+    FUNCTIONS_WORKER_PROCESS_COUNT = 4
+    NODE_ENV                       = "production"
+
+    // Keepalive fields are all optionals
+    FETCH_KEEPALIVE_ENABLED             = "true"
+    FETCH_KEEPALIVE_SOCKET_ACTIVE_TTL   = "110000"
+    FETCH_KEEPALIVE_MAX_SOCKETS         = "40"
+    FETCH_KEEPALIVE_MAX_FREE_SOCKETS    = "10"
+    FETCH_KEEPALIVE_FREE_SOCKET_TIMEOUT = "30000"
+    FETCH_KEEPALIVE_TIMEOUT             = "60000"
+
+    COSMOS_API_CONNECTION_STRING = format("AccountEndpoint=%s;AccountKey=%s;", data.azurerm_cosmosdb_account.cosmos_api.endpoint, data.azurerm_cosmosdb_account.cosmos_api.primary_master_key)
+
+    QUEUESTORAGE_APIEVENTS_CONNECTION_STRING = data.azurerm_storage_account.storage_apievents.primary_connection_string
+    QUEUESTORAGE_APIEVENTS_EVENTS_QUEUE_NAME = azurerm_storage_queue.storage_account_apievents_events_queue.name
+
+    # queue storage used by this function app to run async jobs
+    QueueStorageConnection = module.storage_account_pblevtdispatcher.primary_connection_string
+
+    HTTP_CALL_JOB_QUEUE_NAME = azurerm_storage_queue.storage_account_pblevtdispatcher_http_call_jobs_queue.name
+
+    webhooks = jsonencode([
+      # EUCovidCert PROD
+      {
+        url           = format("https://%s/api/v1/io-events-webhook", module.function_eucovidcert.default_hostname),
+        headers       = { "X-Functions-Key" = data.azurerm_key_vault_secret.fnapp_eucovidcert_authtoken.value },
+        attributes    = { serviceId = "01F73DNTMJTCEZQKJDFNB53KEB" },
+        subscriptions = ["service:subscribed"]
+      }
+    ])
+
+    # Keep listener unactive until the legacy instance isn't dismissed
+    "AzureWebJobs.NotifyNewProfileToDGC.Disabled" = "1"
+    "AzureWebJobs.OnProfileCreatedEvent.Disabled" = "1"
+
+  }
+
+  subnet_id = module.function_pblevtdispatcher_snetout.id
+
+  allowed_subnets = [
+    data.azurerm_subnet.azdoa_snet[0].id,
+  ]
 
   tags = var.tags
 }
