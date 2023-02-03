@@ -97,17 +97,6 @@ module "event_hub" {
   tags = var.tags
 }
 
-# TODO remove
-resource "azurerm_eventhub_namespace_authorization_rule" "integration_event_hub_keys" {
-  name                = "io-sign-fn"
-  namespace_name      = "io-p-sign-eventhub-ns"
-  resource_group_name = "io-p-sign-integration-rg"
-
-  listen = true
-  send   = true
-  manage = false
-}
-
 #tfsec:ignore:AZU023
 resource "azurerm_key_vault_secret" "integration_event_hub_secrets" {
   for_each = module.event_hub.key_ids
