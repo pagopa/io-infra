@@ -133,7 +133,7 @@ locals {
       TableStorageConnection                          = module.eucovidcert_storage_account.primary_connection_string
       EUCOVIDCERT_TRACE_NOTIFY_NEW_PROFILE_TABLE_NAME = "TraceNotifyNewProfile"
 
-      FNSERVICES_API_URL = join(",", formatList("https://%s/api/v1", module.function_services.*.default_hostname))
+      FNSERVICES_API_URL = join(",", formatlist("https://%s/api/v1", module.function_services.*.default_hostname))
       FNSERVICES_API_KEY = data.azurerm_key_vault_secret.fn_eucovidcert_FNSERVICES_API_KEY.value
 
     }
