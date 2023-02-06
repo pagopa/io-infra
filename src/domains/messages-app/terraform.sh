@@ -24,6 +24,24 @@ source "./env/$env/backend.ini"
 
 az account set -s "${subscription}"
 
+if [ "$action" = "force-unlock" ]; then
+  echo "🧭 terraform INIT in env: ${env}"
+  terraform init -reconfigure -backend-config="./env/$env/backend.tfvars" $other
+  warn_message="You are about to unlock Terraform's remote state.
+  This is a dangerous task you want to be aware of before going on.
+  This operation won't affect your infrastructure directly.
+  However, please note that you may lose pieces of information about partially-applied configurations.
+
+  Please refer to the official Terraform documentation about the command:
+  https://developer.hashicorp.com/terraform/cli/commands/force-unlock"
+  printf "\n\e[33m%s\e[0m\n\n" "$warn_message"
+
+  read -r -p "Please enter the LOCK ID: " lock_id
+  terraform force-unlock "$lock_id"
+
+  exit 0 # this line prevents the script to go on
+fi
+
 if echo "init plan apply refresh import output state taint destroy" | grep -w "$action" > /dev/null; then
   if [ "$action" = "init" ]; then
     echo "🧭 terraform INIT in env: ${env}"

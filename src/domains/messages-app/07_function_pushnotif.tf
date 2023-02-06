@@ -85,12 +85,12 @@ locals {
 
 # Subnet to host push notif function
 module "push_notif_snet" {
-  source                                         = "git::https://github.com/pagopa/azurerm.git//subnet?ref=v1.0.51"
-  name                                           = format("%s-push-notif-snet", local.project)
-  address_prefixes                               = var.cidr_subnet_push_notif
-  resource_group_name                            = data.azurerm_virtual_network.vnet_common.resource_group_name
-  virtual_network_name                           = data.azurerm_virtual_network.vnet_common.name
-  enforce_private_link_endpoint_network_policies = true
+  source                                    = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v4.1.6"
+  name                                      = format("%s-push-notif-snet", local.project)
+  address_prefixes                          = var.cidr_subnet_push_notif
+  resource_group_name                       = data.azurerm_virtual_network.vnet_common.resource_group_name
+  virtual_network_name                      = data.azurerm_virtual_network.vnet_common.name
+  private_endpoint_network_policies_enabled = false
 
   service_endpoints = [
     "Microsoft.Web",
@@ -110,7 +110,7 @@ module "push_notif_snet" {
 #tfsec:ignore:azure-storage-queue-services-logging-enabled:exp:2022-05-01 # already ignored, maybe a bug in tfsec
 module "push_notif_function" {
   count  = var.push_notif_enabled ? 1 : 0
-  source = "git::https://github.com/pagopa/azurerm.git//function_app?ref=v3.8.1"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app?ref=v4.1.6"
 
   resource_group_name = azurerm_resource_group.push_notif_rg.name
   name                = format("%s-push-notif-fn", local.product)
@@ -156,7 +156,6 @@ module "push_notif_function" {
 
   allowed_ips = concat(
     [],
-    local.app_insights_ips_west_europe,
   )
 
   # Action groups for alerts
@@ -172,7 +171,7 @@ module "push_notif_function" {
 
 module "push_notif_function_staging_slot" {
   count  = var.push_notif_enabled ? 1 : 0
-  source = "git::https://github.com/pagopa/azurerm.git//function_app_slot?ref=v3.8.1"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app_slot?ref=v4.1.6"
 
   name                = "staging"
   location            = var.location
