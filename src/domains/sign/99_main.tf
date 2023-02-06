@@ -12,7 +12,8 @@ terraform {
 
   backend "azurerm" {}
 
-  # Commented due to precommit check update required
+  # tflint-ignore: terraform_required_version
+  # Due to precommit check update required
   # required_version = ">= 1.3.7"
 }
 
