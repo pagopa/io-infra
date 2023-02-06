@@ -480,6 +480,19 @@ EOD
   }))
 }
 
+# services
+variable "service_alerts_enabled" {
+  description = "Enable services alerts"
+  type        = bool
+  default     = true
+}
+
+variable "service_availability_alerts_threshold" {
+  description = "Threshold availability services alert"
+  type        = number
+  default     = 99.0
+}
+
 # eucovidcert
 variable "eucovidcert_alerts_enabled" {
   description = "Enable eucovidcert alerts"
@@ -1005,4 +1018,12 @@ variable "function_public_autoscale_default" {
   type        = number
   description = "The number of instances that are available for scaling if metrics are not available for evaluation."
   default     = 1
+}
+
+# Third Party Mock
+
+variable "third_party_mock_service_id" {
+  type        = string
+  description = "The Service ID of the Third Party Mock service"
+  default     = "01GQQDPM127KFGG6T3660D5TXD"
 }

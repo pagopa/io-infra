@@ -90,7 +90,7 @@ module "appservice_devportal_be" {
     LOGO_URL            = "https://assets.cdn.io.pagopa.it/logos"
 
     # Fn-Admin connection
-    ADMIN_API_URL = "http://${local.apim_hostname_api_app_internal}"
+    ADMIN_API_URL = "https://${local.apim_hostname_api_app_internal}"
     ADMIN_API_KEY = data.azurerm_key_vault_secret.devportal_apim_io_service_key.value
 
     # Apim connection

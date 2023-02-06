@@ -21,3 +21,21 @@ data "azurerm_key_vault" "common" {
   name                = format("%s-kv-common", local.project)
   resource_group_name = format("%s-rg-common", local.project)
 }
+
+#tfsec:ignore:AZU023
+resource "azurerm_key_vault_secret" "appinsights_instrumentation_key" {
+  name         = "appinsights-instrumentation-key"
+  value        = data.azurerm_application_insights.application_insights.instrumentation_key
+  content_type = "only instrumentation key"
+
+  key_vault_id = data.azurerm_key_vault.common.id
+}
+
+#tfsec:ignore:AZU023
+resource "azurerm_key_vault_secret" "appinsights_connection_string" {
+  name         = "appinsights-connection-string"
+  value        = data.azurerm_application_insights.application_insights.connection_string
+  content_type = "full connection string, example InstrumentationKey=XXXXX"
+
+  key_vault_id = data.azurerm_key_vault.common.id
+}

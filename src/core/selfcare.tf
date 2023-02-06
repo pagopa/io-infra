@@ -201,12 +201,12 @@ module "appservice_selfcare_be" {
     IDP = "selfcare"
 
     # Fn-Admin connection
-    ADMIN_API_URL = "http://${local.apim_hostname_api_app_internal}"
+    ADMIN_API_URL = "https://${local.apim_hostname_api_app_internal}"
     ADMIN_API_KEY = data.azurerm_key_vault_secret.selfcare_apim_io_service_key.value
 
     # Apim connection
     APIM_PRODUCT_NAME           = "io-services-api"
-    APIM_USER_GROUPS            = "apilimitedmessagewrite,apiinforead,apimessageread,apilimitedprofileread"
+    APIM_USER_GROUPS            = "apimessagewrite,apiinforead,apimessageread,apilimitedprofileread"
     ARM_APIM                    = "io-p-apim-api"
     ARM_RESOURCE_GROUP          = "io-p-rg-internal"
     ARM_SUBSCRIPTION_ID         = data.azurerm_subscription.current.subscription_id

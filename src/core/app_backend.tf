@@ -7,7 +7,6 @@ locals {
       # No downtime on slots swap
       WEBSITE_ADD_SITENAME_BINDINGS_IN_APPHOST_CONFIG = "1"
       WEBSITE_RUN_FROM_PACKAGE                        = "1"
-      WEBSITE_VNET_ROUTE_ALL                          = "1"
       WEBSITE_DNS_SERVER                              = "168.63.129.16"
       WEBSITE_HEALTHCHECK_MAXPINGFAILURES             = "3"
 
@@ -77,10 +76,10 @@ locals {
 
       // PUSH NOTIFICATIONS
       PRE_SHARED_KEY               = data.azurerm_key_vault_secret.app_backend_PRE_SHARED_KEY.value
-      ALLOW_NOTIFY_IP_SOURCE_RANGE = data.azurerm_subnet.fnapp_services_subnet_out.address_prefixes[0]
+      ALLOW_NOTIFY_IP_SOURCE_RANGE = data.azurerm_subnet.fnapp_services_subnet_out.address_prefix
 
       // LOCK / UNLOCK SESSION ENDPOINTS
-      ALLOW_SESSION_HANDLER_IP_SOURCE_RANGE = data.azurerm_subnet.fnapp_admin_subnet_out.address_prefixes[0]
+      ALLOW_SESSION_HANDLER_IP_SOURCE_RANGE = module.apim_snet.address_prefix
 
       // PAGOPA
       PAGOPA_API_URL_PROD          = "https://api.platform.pagopa.it/checkout/auth/payments/v1"
@@ -137,9 +136,10 @@ locals {
       FF_USER_AGE_LIMIT_ENABLED = 1
       FF_IO_SIGN_ENABLED        = 1
 
-      FF_ROUTING_PUSH_NOTIF                        = "BETA" # possible values are: BETA, CANARY, PROD, NONE
-      FF_ROUTING_PUSH_NOTIF_BETA_TESTER_SHA_LIST   = data.azurerm_key_vault_secret.app_backend_APP_MESSAGES_BETA_FISCAL_CODES.value
-      FF_ROUTING_PUSH_NOTIF_CANARY_SHA_USERS_REGEX = "XYZ"
+      FF_ROUTING_PUSH_NOTIF                      = "ALL" # possible values are: BETA, CANARY, ALL, NONE
+      FF_ROUTING_PUSH_NOTIF_BETA_TESTER_SHA_LIST = data.azurerm_key_vault_secret.app_backend_APP_MESSAGES_BETA_FISCAL_CODES.value
+      # ~31% of users
+      FF_ROUTING_PUSH_NOTIF_CANARY_SHA_USERS_REGEX = "^([(0-9)|(a-f)|(A-F)]{63}[(0-4)]{1})$"
 
       FF_PN_ACTIVATION_ENABLED = "1"
 
@@ -182,6 +182,7 @@ locals {
 
       // Third Party Services
       THIRD_PARTY_CONFIG_LIST = jsonencode([
+        # Piattaforma Notifiche
         {
           serviceId  = var.pn_service_id,
           schemaKind = "PN",
@@ -203,9 +204,25 @@ locals {
               key             = data.azurerm_key_vault_secret.app_backend_PN_API_KEY_UAT.value
             }
           }
+        },
+        # Mock Service
+        {
+          serviceId  = var.third_party_mock_service_id,
+          schemaKind = "Mock",
+          jsonSchema = "unused",
+          prodEnvironment = {
+            baseUrl = "https://pagopa.github.io/third-party-mock",
+            detailsAuthentication = {
+              type            = "API_KEY",
+              header_key_name = "x-api-key",
+              key             = "unused"
+            }
+          }
         }
       ])
 
+      // LolliPOP
+      LOLLIPOP_ALLOWED_USER_AGENTS = "IO-App/2.23.0"
     }
     app_settings_l1 = {
       IS_APPBACKENDLI = "false"
@@ -396,6 +413,47 @@ data "azurerm_key_vault_secret" "app_backend_PN_REAL_TEST_USERS" {
   key_vault_id = data.azurerm_key_vault.common.id
 }
 
+#tfsec:ignore:AZU023
+resource "azurerm_key_vault_secret" "appbackend-REDIS-PASSWORD" {
+  name         = "appbackend-REDIS-PASSWORD"
+  value        = data.azurerm_redis_cache.common.primary_access_key
+  key_vault_id = data.azurerm_key_vault.common.id
+  content_type = "string"
+}
+
+#tfsec:ignore:AZU023
+resource "azurerm_key_vault_secret" "appbackend-SPID-LOG-STORAGE" {
+  name         = "appbackend-SPID-LOG-STORAGE"
+  value        = data.azurerm_storage_account.logs.primary_connection_string
+  key_vault_id = data.azurerm_key_vault.common.id
+  content_type = "string"
+}
+
+#tfsec:ignore:AZU023
+resource "azurerm_key_vault_secret" "appbackend-PUSH-NOTIFICATIONS-STORAGE" {
+  name         = "appbackend-PUSH-NOTIFICATIONS-STORAGE"
+  value        = data.azurerm_storage_account.push_notifications_storage.primary_connection_string
+  key_vault_id = data.azurerm_key_vault.common.id
+  content_type = "string"
+}
+
+#tfsec:ignore:AZU023
+resource "azurerm_key_vault_secret" "appbackend-NORIFICATIONS-STORAGE" {
+  name         = "appbackend-NORIFICATIONS-STORAGE"
+  value        = data.azurerm_storage_account.notifications.primary_connection_string
+  key_vault_id = data.azurerm_key_vault.common.id
+  content_type = "string"
+}
+
+#tfsec:ignore:AZU023
+resource "azurerm_key_vault_secret" "appbackend-USERS-LOGIN-STORAGE" {
+  name         = "appbackend-USERS-LOGIN-STORAGE"
+  value        = data.azurerm_storage_account.logs.primary_connection_string
+  key_vault_id = data.azurerm_key_vault.common.id
+  content_type = "string"
+}
+
+
 ## app_backendl1
 
 module "app_backendl1_snet" {
@@ -419,7 +477,7 @@ module "app_backendl1_snet" {
 }
 
 module "appservice_app_backendl1" {
-  source = "git::https://github.com/pagopa/azurerm.git//app_service?ref=v3.12.0"
+  source = "git::https://github.com/pagopa/azurerm.git//app_service?ref=v4.3.2"
 
   # App service plan
   plan_type     = "internal"
@@ -445,7 +503,6 @@ module "appservice_app_backendl1" {
   )
 
   allowed_subnets = [
-    data.azurerm_subnet.fnapp_admin_subnet_out.id,
     data.azurerm_subnet.fnapp_services_subnet_out.id,
     module.services_snet[0].id,
     module.services_snet[1].id,
@@ -465,7 +522,7 @@ module "appservice_app_backendl1" {
 }
 
 module "appservice_app_backendl1_slot_staging" {
-  source = "git::https://github.com/pagopa/azurerm.git//app_service_slot?ref=v3.12.0"
+  source = "git::https://github.com/pagopa/azurerm.git//app_service_slot?ref=v4.3.2"
 
   # App service plan
   app_service_plan_id = module.appservice_app_backendl1.plan_id
@@ -489,7 +546,6 @@ module "appservice_app_backendl1_slot_staging" {
 
   allowed_subnets = [
     data.azurerm_subnet.azdoa_snet[0].id,
-    data.azurerm_subnet.fnapp_admin_subnet_out.id,
     data.azurerm_subnet.fnapp_services_subnet_out.id,
     module.services_snet[0].id,
     module.services_snet[1].id,
@@ -518,7 +574,7 @@ resource "azurerm_monitor_autoscale_setting" "appservice_app_backendl1" {
 
     capacity {
       default = var.app_backend_autoscale_default
-      minimum = var.app_backend_autoscale_minimum
+      minimum = 2 # var.app_backend_autoscale_minimum
       maximum = var.app_backend_autoscale_maximum
     }
 
@@ -532,7 +588,7 @@ resource "azurerm_monitor_autoscale_setting" "appservice_app_backendl1" {
         time_window              = "PT5M"
         time_aggregation         = "Average"
         operator                 = "GreaterThan"
-        threshold                = 3500
+        threshold                = 4000
         divide_by_instance_count = false
       }
 
@@ -554,7 +610,7 @@ resource "azurerm_monitor_autoscale_setting" "appservice_app_backendl1" {
         time_window              = "PT5M"
         time_aggregation         = "Average"
         operator                 = "GreaterThan"
-        threshold                = 45
+        threshold                = 50
         divide_by_instance_count = false
       }
 
@@ -576,7 +632,7 @@ resource "azurerm_monitor_autoscale_setting" "appservice_app_backendl1" {
         time_window              = "PT5M"
         time_aggregation         = "Average"
         operator                 = "LessThan"
-        threshold                = 2500
+        threshold                = 1000
         divide_by_instance_count = false
       }
 
@@ -584,7 +640,7 @@ resource "azurerm_monitor_autoscale_setting" "appservice_app_backendl1" {
         direction = "Decrease"
         type      = "ChangeCount"
         value     = "1"
-        cooldown  = "PT20M"
+        cooldown  = "PT1H"
       }
     }
 
@@ -598,7 +654,7 @@ resource "azurerm_monitor_autoscale_setting" "appservice_app_backendl1" {
         time_window              = "PT5M"
         time_aggregation         = "Average"
         operator                 = "LessThan"
-        threshold                = 25
+        threshold                = 10
         divide_by_instance_count = false
       }
 
@@ -606,7 +662,7 @@ resource "azurerm_monitor_autoscale_setting" "appservice_app_backendl1" {
         direction = "Decrease"
         type      = "ChangeCount"
         value     = "1"
-        cooldown  = "PT20M"
+        cooldown  = "PT1H"
       }
     }
   }
@@ -635,7 +691,7 @@ module "app_backendl2_snet" {
 }
 
 module "appservice_app_backendl2" {
-  source = "git::https://github.com/pagopa/azurerm.git//app_service?ref=v3.12.0"
+  source = "git::https://github.com/pagopa/azurerm.git//app_service?ref=v4.3.2"
 
   # App service plan
   plan_type     = "internal"
@@ -661,7 +717,6 @@ module "appservice_app_backendl2" {
   )
 
   allowed_subnets = [
-    data.azurerm_subnet.fnapp_admin_subnet_out.id,
     data.azurerm_subnet.fnapp_services_subnet_out.id,
     module.services_snet[0].id,
     module.services_snet[1].id,
@@ -681,7 +736,7 @@ module "appservice_app_backendl2" {
 }
 
 module "appservice_app_backendl2_slot_staging" {
-  source = "git::https://github.com/pagopa/azurerm.git//app_service_slot?ref=v3.12.0"
+  source = "git::https://github.com/pagopa/azurerm.git//app_service_slot?ref=v4.3.2"
 
   # App service plan
   app_service_plan_id = module.appservice_app_backendl2.plan_id
@@ -705,7 +760,6 @@ module "appservice_app_backendl2_slot_staging" {
 
   allowed_subnets = [
     data.azurerm_subnet.azdoa_snet[0].id,
-    data.azurerm_subnet.fnapp_admin_subnet_out.id,
     data.azurerm_subnet.fnapp_services_subnet_out.id,
     module.services_snet[0].id,
     module.services_snet[1].id,
@@ -748,7 +802,7 @@ resource "azurerm_monitor_autoscale_setting" "appservice_app_backendl2" {
         time_window              = "PT5M"
         time_aggregation         = "Average"
         operator                 = "GreaterThan"
-        threshold                = 3500
+        threshold                = 4000
         divide_by_instance_count = false
       }
 
@@ -770,7 +824,7 @@ resource "azurerm_monitor_autoscale_setting" "appservice_app_backendl2" {
         time_window              = "PT5M"
         time_aggregation         = "Average"
         operator                 = "GreaterThan"
-        threshold                = 45
+        threshold                = 50
         divide_by_instance_count = false
       }
 
@@ -792,7 +846,7 @@ resource "azurerm_monitor_autoscale_setting" "appservice_app_backendl2" {
         time_window              = "PT5M"
         time_aggregation         = "Average"
         operator                 = "LessThan"
-        threshold                = 2500
+        threshold                = 1000
         divide_by_instance_count = false
       }
 
@@ -800,7 +854,7 @@ resource "azurerm_monitor_autoscale_setting" "appservice_app_backendl2" {
         direction = "Decrease"
         type      = "ChangeCount"
         value     = "1"
-        cooldown  = "PT20M"
+        cooldown  = "PT1H"
       }
     }
 
@@ -814,7 +868,7 @@ resource "azurerm_monitor_autoscale_setting" "appservice_app_backendl2" {
         time_window              = "PT5M"
         time_aggregation         = "Average"
         operator                 = "LessThan"
-        threshold                = 25
+        threshold                = 10
         divide_by_instance_count = false
       }
 
@@ -822,7 +876,7 @@ resource "azurerm_monitor_autoscale_setting" "appservice_app_backendl2" {
         direction = "Decrease"
         type      = "ChangeCount"
         value     = "1"
-        cooldown  = "PT20M"
+        cooldown  = "PT1H"
       }
     }
   }
@@ -851,7 +905,7 @@ module "app_backendli_snet" {
 }
 
 module "appservice_app_backendli" {
-  source = "git::https://github.com/pagopa/azurerm.git//app_service?ref=v3.12.0"
+  source = "git::https://github.com/pagopa/azurerm.git//app_service?ref=v4.3.2"
 
   # App service plan
   plan_type     = "internal"
@@ -877,7 +931,6 @@ module "appservice_app_backendli" {
   )
 
   allowed_subnets = [
-    data.azurerm_subnet.fnapp_admin_subnet_out.id,
     data.azurerm_subnet.fnapp_services_subnet_out.id,
     module.services_snet[0].id,
     module.services_snet[1].id,
@@ -897,7 +950,7 @@ module "appservice_app_backendli" {
 }
 
 module "appservice_app_backendli_slot_staging" {
-  source = "git::https://github.com/pagopa/azurerm.git//app_service_slot?ref=v3.12.0"
+  source = "git::https://github.com/pagopa/azurerm.git//app_service_slot?ref=v4.3.2"
 
   # App service plan
   app_service_plan_id = module.appservice_app_backendli.plan_id
@@ -921,7 +974,6 @@ module "appservice_app_backendli_slot_staging" {
 
   allowed_subnets = [
     data.azurerm_subnet.azdoa_snet[0].id,
-    data.azurerm_subnet.fnapp_admin_subnet_out.id,
     data.azurerm_subnet.fnapp_services_subnet_out.id,
     module.services_snet[0].id,
     module.services_snet[1].id,
@@ -963,7 +1015,7 @@ resource "azurerm_monitor_autoscale_setting" "appservice_app_backendli" {
         time_window              = "PT5M"
         time_aggregation         = "Average"
         operator                 = "GreaterThan"
-        threshold                = 3500
+        threshold                = 4000
         divide_by_instance_count = false
       }
 
@@ -985,7 +1037,7 @@ resource "azurerm_monitor_autoscale_setting" "appservice_app_backendli" {
         time_window              = "PT5M"
         time_aggregation         = "Average"
         operator                 = "LessThan"
-        threshold                = 2500
+        threshold                = 1000
         divide_by_instance_count = false
       }
 
@@ -993,7 +1045,7 @@ resource "azurerm_monitor_autoscale_setting" "appservice_app_backendli" {
         direction = "Decrease"
         type      = "ChangeCount"
         value     = "1"
-        cooldown  = "PT20M"
+        cooldown  = "PT1H"
       }
     }
   }

@@ -38,6 +38,11 @@ data "azurerm_key_vault_secret" "alert_error_notification_slack" {
   key_vault_id = module.key_vault.id
 }
 
+data "azurerm_key_vault_secret" "alert_quarantine_error_notification_slack" {
+  name         = "alert-error-quarantine-notification-slack"
+  key_vault_id = module.key_vault.id
+}
+
 #
 # Actions Groups
 #
@@ -55,6 +60,20 @@ resource "azurerm_monitor_action_group" "error_action_group" {
   email_receiver {
     name                    = "slack"
     email_address           = data.azurerm_key_vault_secret.alert_error_notification_slack.value
+    use_common_alert_schema = true
+  }
+
+  tags = var.tags
+}
+
+resource "azurerm_monitor_action_group" "quarantine_error_action_group" {
+  resource_group_name = data.azurerm_resource_group.monitor_rg.name
+  name                = "${var.prefix}${var.env_short}quarantineerror"
+  short_name          = "${var.prefix}${var.env_short}qerr"
+
+  email_receiver {
+    name                    = "slack"
+    email_address           = data.azurerm_key_vault_secret.alert_quarantine_error_notification_slack.value
     use_common_alert_schema = true
   }
 

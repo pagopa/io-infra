@@ -2,15 +2,6 @@ locals {
   project = "${var.prefix}-${var.env_short}-${var.location_short}-${var.domain}"
   product = "${var.prefix}-${var.env_short}"
 
-  app_insights_ips_west_europe = [
-    "51.144.56.96/28",
-    "51.144.56.112/28",
-    "51.144.56.128/28",
-    "51.144.56.144/28",
-    "51.144.56.160/28",
-    "51.144.56.176/28",
-  ]
-
   monitor_action_group_slack_name = "SlackPagoPA"
   monitor_action_group_email_name = "EmailPagoPA"
 
@@ -24,4 +15,6 @@ locals {
   acr_resource_group_name = "${local.product}-container-registry-rg"
 
   aks_name = "${local.project}-aks"
+
+  security_log_analytics_workspace_id = "/subscriptions/0da48c97-355f-4050-a520-f11a18b8be90/resourceGroups/sec-p-sentinel/providers/Microsoft.OperationalInsights/workspaces/sec-p-law"
 }

@@ -6,7 +6,7 @@ resource "azurerm_resource_group" "aks_rg" {
 }
 
 module "aks" {
-  source = "git::https://github.com/pagopa/azurerm.git//kubernetes_cluster?ref=v2.17.0"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//kubernetes_cluster?ref=v4.1.9"
 
   name                       = local.aks_name
   location                   = var.location
@@ -72,6 +72,7 @@ module "aks" {
   addon_azure_policy_enabled                     = true
   addon_azure_key_vault_secrets_provider_enabled = true
   addon_azure_pod_identity_enabled               = true
+  microsoft_defender_log_analytics_workspace_id  = local.security_log_analytics_workspace_id
 
   custom_metric_alerts = null
   alerts_enabled       = true

@@ -45,21 +45,6 @@ data "azurerm_subnet" "fnapp_services_subnet_out" {
 }
 
 #
-# Function admin resources
-#
-
-data "azurerm_function_app" "fnapp_admin" {
-  name                = format("%s-fn3-admin", local.project)
-  resource_group_name = format("%s-rg-internal", local.project)
-}
-
-data "azurerm_subnet" "fnapp_admin_subnet_out" {
-  name                 = "fn3admin"
-  virtual_network_name = format("%s-vnet-common", local.project)
-  resource_group_name  = format("%s-rg-common", local.project)
-}
-
-#
 # Bonus vacanze resources
 #
 
@@ -174,6 +159,15 @@ data "azurerm_storage_account" "api" {
   resource_group_name = azurerm_resource_group.rg_internal.name
 }
 
+#
+# Redis
+#
+
+data "azurerm_redis_cache" "common" {
+  name                = "io-p-redis-common"
+  resource_group_name = "io-p-rg-common"
+}
+
 # CDN Assets storage account
 data "azurerm_storage_account" "cdnassets" {
   name                = "iopstcdnassets"
@@ -240,7 +234,7 @@ resource "azurerm_monitor_metric_alert" "cosmos_api_throttling_alert" {
   resource_group_name = azurerm_resource_group.rg_linux.name
   scopes              = [data.azurerm_cosmosdb_account.cosmos_api.id]
   # TODO: add Runbook for checking errors
-  description   = "One or more collections consumed throughput (RU/s) exceed provisioned throughput. Please, consider to increase RU for these collections. Runbook: not needed."
+  description   = "One or more collections consumed throughput (RU/s) exceed provisioned throughput. Please, consider to increase RU for these collections. Runbook: https://pagopa.atlassian.net/wiki/spaces/IC/pages/608632903/Throttling+su+risorsa+Cosmos."
   severity      = 0
   window_size   = "PT5M"
   frequency     = "PT5M"
@@ -315,3 +309,51 @@ resource "azurerm_monitor_metric_alert" "iopstapi_throttling_low_availability" {
   tags = var.tags
 }
 
+resource "azurerm_monitor_metric_alert" "cosmos_cgn_throttling_alert" {
+
+  name                = "[CGN | ${data.azurerm_cosmosdb_account.cosmos_cgn.name}] Throttling"
+  resource_group_name = azurerm_resource_group.cgn_be_rg.name
+  scopes              = [data.azurerm_cosmosdb_account.cosmos_cgn.id]
+  # TODO: add Runbook for checking errors
+  description   = "One or more collections consumed throughput (RU/s) exceed provisioned throughput. Please, consider to increase RU for these collections. Runbook: https://pagopa.atlassian.net/wiki/spaces/IC/pages/608632903/Throttling+su+risorsa+Cosmos."
+  severity      = 0
+  window_size   = "PT5M"
+  frequency     = "PT5M"
+  auto_mitigate = false
+
+  # Metric info
+  # https://learn.microsoft.com/en-us/azure/azure-monitor/essentials/metrics-supported#microsoftdocumentdbdatabaseaccounts
+  criteria {
+    metric_namespace       = "Microsoft.DocumentDB/databaseAccounts"
+    metric_name            = "TotalRequestUnits"
+    aggregation            = "Total"
+    operator               = "GreaterThan"
+    threshold              = 0
+    skip_metric_validation = false
+
+
+    dimension {
+      name     = "Region"
+      operator = "Include"
+      values   = ["West Europe"]
+    }
+    dimension {
+      name     = "StatusCode"
+      operator = "Include"
+      values   = ["429"]
+    }
+    dimension {
+      name     = "CollectionName"
+      operator = "Include"
+      values   = ["*"]
+    }
+
+  }
+
+  action {
+    action_group_id    = azurerm_monitor_action_group.error_action_group.id
+    webhook_properties = {}
+  }
+
+  tags = var.tags
+}

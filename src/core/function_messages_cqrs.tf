@@ -14,6 +14,8 @@ locals {
       COSMOSDB_KEY               = data.azurerm_cosmosdb_account.cosmos_api.primary_master_key
       COSMOSDB_CONNECTION_STRING = format("AccountEndpoint=%s;AccountKey=%s;", data.azurerm_cosmosdb_account.cosmos_api.endpoint, data.azurerm_cosmosdb_account.cosmos_api.primary_master_key)
 
+      LEASE_COLLECTION_PREFIX = "bulk-status-update-00"
+
       MESSAGE_VIEW_UPDATE_FAILURE_QUEUE_NAME         = "message-view-update-failures"
       MESSAGE_VIEW_PAYMENT_UPDATE_FAILURE_QUEUE_NAME = "message-view-paymentupdate-failures"
       MESSAGE_PAYMENT_UPDATER_FAILURE_QUEUE_NAME     = "message-paymentupdater-failures"
@@ -27,6 +29,10 @@ locals {
       MESSAGE_STATUS_FOR_VIEW_TOPIC_PRODUCER_CONNECTION_STRING = module.event_hub.keys["io-cosmosdb-message-status-for-view.io-cdc"].primary_connection_string
       MESSAGE_STATUS_FOR_VIEW_BROKERS                          = "${local.io-p-evh-ns.hostname}:${local.io-p-evh-ns.port}"
 
+      MESSAGE_CHANGE_FEED_LEASE_PREFIX = "CosmosApiMessageChangeFeed-00"
+      // This must be expressed as a Timestamp
+      // Saturday 1 October 2022 00:00:00
+      MESSAGE_CHANGE_FEED_START_TIME = 1664582400000
 
       MESSAGES_TOPIC_CONNECTION_STRING = data.azurerm_eventhub_authorization_rule.io-p-messages-weu-prod01-evh-ns_messages_io-fn-messages-cqrs.primary_connection_string
       MESSAGES_TOPIC_NAME              = "messages"
@@ -134,11 +140,11 @@ module "function_messages_cqrs" {
       "AzureWebJobs.UpdateCosmosMessageView.Disabled"                     = "0"
       "AzureWebJobs.UpdatePaymentOnMessageView.Disabled"                  = "0"
       "AzureWebJobs.HandlePaymentUpdateFailures.Disabled"                 = "0"
-      "AzureWebJobs.CosmosApiMessagesChangeFeed.Disabled"                 = "0"
+      "AzureWebJobs.CosmosApiMessagesChangeFeed.Disabled"                 = "1"
       "AzureWebJobs.HandleMessageChangeFeedPublishFailures.Disabled"      = "0"
+      "AzureWebJobs.CosmosApiChangeFeedForMessageRetention.Disabled"      = "1"
     }
   )
-
   subnet_id = module.function_messages_cqrs_snet.id
 
   internal_storage = {
@@ -204,6 +210,7 @@ module "function_messages_cqrs_staging_slot" {
       "AzureWebJobs.HandlePaymentUpdateFailures.Disabled"                 = "1"
       "AzureWebJobs.CosmosApiMessagesChangeFeed.Disabled"                 = "1"
       "AzureWebJobs.HandleMessageChangeFeedPublishFailures.Disabled"      = "1"
+      "AzureWebJobs.CosmosApiChangeFeedForMessageRetention.Disabled"      = "1"
     }
   )
 

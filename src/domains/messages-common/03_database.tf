@@ -5,7 +5,7 @@ data "azurerm_cosmosdb_account" "cosmos_api" {
 
 resource "azurerm_key_vault_secret" "cosmos_api_master_key" {
   name         = "${data.azurerm_cosmosdb_account.cosmos_api.name}-master-key"
-  value        = data.azurerm_cosmosdb_account.cosmos_api.primary_master_key
+  value        = data.azurerm_cosmosdb_account.cosmos_api.primary_key
   content_type = "text/plain"
 
   key_vault_id = module.key_vault.id
@@ -20,9 +20,10 @@ resource "azurerm_resource_group" "data_rg" {
 
 
 module "cosmosdb_account_mongodb_reminder" {
-  source = "git::https://github.com/pagopa/azurerm.git//cosmosdb_account?ref=v2.15.1"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3//cosmosdb_account?ref=v4.1.5"
 
   name                 = "${local.product}-${var.domain}-reminder-mongodb-account"
+  domain               = upper(var.domain)
   location             = azurerm_resource_group.data_rg.location
   resource_group_name  = azurerm_resource_group.data_rg.name
   offer_type           = "Standard"
@@ -65,7 +66,7 @@ resource "azurerm_cosmosdb_mongo_database" "db_reminder" {
 
 # Collections
 module "mongdb_collection_reminder" {
-  source = "git::https://github.com/pagopa/azurerm.git//cosmosdb_mongodb_collection?ref=v2.3.0"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3//cosmosdb_mongodb_collection?ref=v4.1.5"
 
   name                = "reminder"
   resource_group_name = azurerm_resource_group.data_rg.name
@@ -115,6 +116,10 @@ module "mongdb_collection_reminder" {
       unique = false
     },
     {
+      keys   = ["insertionDate"]
+      unique = false
+    },
+    {
       keys   = ["content_paymentData_noticeNumber", "content_paymentData_payeeFiscalCode"]
       unique = false
     },
@@ -145,13 +150,13 @@ data "azurerm_key_vault_secret" "reminder_mysql_db_server_adm_password" {
 }
 
 module "reminder_mysql_db_server_snet" {
-  source                                         = "git::https://github.com/pagopa/azurerm.git//subnet?ref=v1.0.51"
-  name                                           = format("%s-snet", "reminder-mysql")
-  address_prefixes                               = ["10.0.155.16/28"]
-  resource_group_name                            = data.azurerm_virtual_network.vnet_common.resource_group_name
-  virtual_network_name                           = data.azurerm_virtual_network.vnet_common.name
-  enforce_private_link_endpoint_network_policies = true
-  service_endpoints                              = ["Microsoft.Storage"]
+  source                                    = "git::https://github.com/pagopa/terraform-azurerm-v3//subnet?ref=v4.1.5"
+  name                                      = format("%s-snet", "reminder-mysql")
+  address_prefixes                          = ["10.0.155.16/28"]
+  resource_group_name                       = data.azurerm_virtual_network.vnet_common.resource_group_name
+  virtual_network_name                      = data.azurerm_virtual_network.vnet_common.name
+  private_endpoint_network_policies_enabled = false
+  service_endpoints                         = ["Microsoft.Storage"]
   delegation = {
     name = "fs"
     service_delegation = {
