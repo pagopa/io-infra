@@ -78,7 +78,7 @@ locals {
 
       COSMOSDB_NAME = "db"
       COSMOSDB_URI  = data.azurerm_cosmosdb_account.cosmos_api.endpoint
-      COSMOSDB_KEY  = data.azurerm_cosmosdb_account.cosmos_api.primary_master_key
+      COSMOSDB_KEY  = data.azurerm_cosmosdb_account.cosmos_api.primary_key
 
       MESSAGE_CONTENT_STORAGE_CONNECTION_STRING   = data.azurerm_storage_account.api.primary_connection_string
       SUBSCRIPTION_FEED_STORAGE_CONNECTION_STRING = data.azurerm_storage_account.api.primary_connection_string

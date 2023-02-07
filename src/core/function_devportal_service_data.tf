@@ -15,8 +15,8 @@ locals {
       FETCH_KEEPALIVE_TIMEOUT             = "60000"
 
       // connection to CosmosDB
-      COSMOSDB_CONNECTIONSTRING          = format("AccountEndpoint=%s;AccountKey=%s;", data.azurerm_cosmosdb_account.cosmos_api.endpoint, data.azurerm_cosmosdb_account.cosmos_api.primary_master_key),
-      COSMOSDB_KEY                       = data.azurerm_cosmosdb_account.cosmos_api.primary_master_key
+      COSMOSDB_CONNECTIONSTRING          = format("AccountEndpoint=%s;AccountKey=%s;", data.azurerm_cosmosdb_account.cosmos_api.endpoint, data.azurerm_cosmosdb_account.cosmos_api.primary_key),
+      COSMOSDB_KEY                       = data.azurerm_cosmosdb_account.cosmos_api.primary_key
       COSMOSDB_NAME                      = "db",
       COSMOSDB_SERVICES_COLLECTION       = "services",
       COSMOSDB_SERVICES_LEASE_COLLECTION = "services-devportalservicedata-leases-001",

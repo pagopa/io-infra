@@ -16,8 +16,8 @@ locals {
 
       COSMOSDB_NAME                = "db"
       COSMOSDB_URI                 = data.azurerm_cosmosdb_account.cosmos_api.endpoint
-      COSMOSDB_KEY                 = data.azurerm_cosmosdb_account.cosmos_api.primary_master_key
-      COSMOS_API_CONNECTION_STRING = format("AccountEndpoint=%s;AccountKey=%s;", data.azurerm_cosmosdb_account.cosmos_api.endpoint, data.azurerm_cosmosdb_account.cosmos_api.primary_master_key)
+      COSMOSDB_KEY                 = data.azurerm_cosmosdb_account.cosmos_api.primary_key
+      COSMOS_API_CONNECTION_STRING = format("AccountEndpoint=%s;AccountKey=%s;", data.azurerm_cosmosdb_account.cosmos_api.endpoint, data.azurerm_cosmosdb_account.cosmos_api.primary_key)
 
       TARGETKAFKA_clientId            = "IO_FUNCTIONS_ELT"
       TARGETKAFKA_brokers             = local.event_hub.connection
@@ -64,7 +64,7 @@ locals {
 
       COSMOSDB_REPLICA_NAME     = "db"
       COSMOSDB_REPLICA_URI      = replace(data.azurerm_cosmosdb_account.cosmos_api.endpoint, "io-p-cosmos-api", "io-p-cosmos-api-northeurope")
-      COSMOSDB_REPLICA_KEY      = data.azurerm_cosmosdb_account.cosmos_api.primary_master_key
+      COSMOSDB_REPLICA_KEY      = data.azurerm_cosmosdb_account.cosmos_api.primary_key
       COSMOSDB_REPLICA_LOCATION = "North Europe"
 
       MESSAGE_EXPORTS_COMMAND_TABLE       = azurerm_storage_table.fneltexports.name
