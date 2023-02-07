@@ -78,16 +78,16 @@ resource "azurerm_resource_group" "eucovidcert_rg" {
 module "eucovidcert_storage_account" {
   source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//storage_account?ref=v4.1.9"
 
-  name                       = "${replace(local.project, "-", "")}steucovidcert"
-  account_kind               = "StorageV2"
-  account_tier               = "Standard"
-  access_tier                = "Hot"
-  enable_versioning          = false
-  account_replication_type   = "GRS"
-  resource_group_name        = azurerm_resource_group.eucovidcert_rg.name
-  location                   = azurerm_resource_group.eucovidcert_rg.location
-  advanced_threat_protection = false
-  allow_blob_public_access   = false
+  name                            = "${replace(local.project, "-", "")}steucovidcert"
+  account_kind                    = "StorageV2"
+  account_tier                    = "Standard"
+  access_tier                     = "Hot"
+  blob_versioning_enabled         = false
+  account_replication_type        = "GRS"
+  resource_group_name             = azurerm_resource_group.eucovidcert_rg.name
+  location                        = azurerm_resource_group.eucovidcert_rg.location
+  advanced_threat_protection      = false
+  allow_nested_items_to_be_public = false
 
   tags = var.tags
 }
@@ -153,11 +153,11 @@ locals {
 
 # Subnet to host app function
 module "function_eucovidcert_snet" {
-  source                                         = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v4.1.9"
-  name                                           = format("%s-eucovidcert-snet", local.project)
-  address_prefixes                               = var.cidr_subnet_eucovidcert
-  resource_group_name                            = data.azurerm_resource_group.vnet_common_rg.name
-  virtual_network_name                           = data.azurerm_virtual_network.vnet_common.name
+  source                                    = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v4.1.9"
+  name                                      = format("%s-eucovidcert-snet", local.project)
+  address_prefixes                          = var.cidr_subnet_eucovidcert
+  resource_group_name                       = data.azurerm_resource_group.vnet_common_rg.name
+  virtual_network_name                      = data.azurerm_virtual_network.vnet_common.name
   private_endpoint_network_policies_enabled = true
 
   service_endpoints = [

@@ -6,12 +6,12 @@ resource "azurerm_resource_group" "event_rg" {
 }
 
 module "eventhub_snet" {
-  source                                         = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v4.1.9"
-  name                                           = format("%s-eventhub-snet", local.project)
-  address_prefixes                               = var.cidr_subnet_eventhub
-  resource_group_name                            = data.azurerm_resource_group.vnet_common_rg.name
-  virtual_network_name                           = data.azurerm_virtual_network.vnet_common.name
-  service_endpoints                              = ["Microsoft.EventHub"]
+  source                                    = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v4.1.9"
+  name                                      = format("%s-eventhub-snet", local.project)
+  address_prefixes                          = var.cidr_subnet_eventhub
+  resource_group_name                       = data.azurerm_resource_group.vnet_common_rg.name
+  virtual_network_name                      = data.azurerm_virtual_network.vnet_common.name
+  service_endpoints                         = ["Microsoft.EventHub"]
   private_endpoint_network_policies_enabled = true
 }
 

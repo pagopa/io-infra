@@ -143,11 +143,11 @@ resource "azurerm_app_service_plan" "selfcare_be_common" {
 
 # Subnet to host checkout function
 module "selfcare_be_common_snet" {
-  source                                         = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v4.1.9"
-  name                                           = format("%s-selfcare-be-common-snet", local.project)
-  address_prefixes                               = var.cidr_subnet_selfcare_be
-  resource_group_name                            = data.azurerm_resource_group.vnet_common_rg.name
-  virtual_network_name                           = data.azurerm_virtual_network.vnet_common.name
+  source                                    = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v4.1.9"
+  name                                      = format("%s-selfcare-be-common-snet", local.project)
+  address_prefixes                          = var.cidr_subnet_selfcare_be
+  resource_group_name                       = data.azurerm_resource_group.vnet_common_rg.name
+  virtual_network_name                      = data.azurerm_virtual_network.vnet_common.name
   private_endpoint_network_policies_enabled = true
   service_endpoints = [
     "Microsoft.Web",

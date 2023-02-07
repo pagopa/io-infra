@@ -111,12 +111,12 @@ resource "azurerm_resource_group" "app_messages_rg" {
 
 # Subnet to host app messages function
 module "app_messages_snet" {
-  count                                          = var.app_messages_count
-  source                                         = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v4.1.9"
-  name                                           = format("%s-app-messages-snet-%d", local.project, count.index + 1)
-  address_prefixes                               = [var.cidr_subnet_appmessages[count.index]]
-  resource_group_name                            = data.azurerm_resource_group.vnet_common_rg.name
-  virtual_network_name                           = data.azurerm_virtual_network.vnet_common.name
+  count                                     = var.app_messages_count
+  source                                    = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v4.1.9"
+  name                                      = format("%s-app-messages-snet-%d", local.project, count.index + 1)
+  address_prefixes                          = [var.cidr_subnet_appmessages[count.index]]
+  resource_group_name                       = data.azurerm_resource_group.vnet_common_rg.name
+  virtual_network_name                      = data.azurerm_virtual_network.vnet_common.name
   private_endpoint_network_policies_enabled = true
 
   service_endpoints = [
