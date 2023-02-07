@@ -12,7 +12,7 @@ resource "azurerm_resource_group" "pblevtdispatcher_rg" {
 }
 
 module "function_pblevtdispatcher_snetout" {
-  source               = "git::https://github.com/pagopa/azurerm.git//subnet?ref=v1.0.60"
+  source               = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v4.1.9"
   name                 = "fnpblevtdispatcherout"
   address_prefixes     = var.cidr_subnet_fnpblevtdispatcher
   resource_group_name  = data.azurerm_resource_group.vnet_common_rg.name
@@ -35,7 +35,7 @@ module "function_pblevtdispatcher_snetout" {
 
 #tfsec:ignore:azure-storage-queue-services-logging-enabled:exp:2022-05-01 # already ignored, maybe a bug in tfsec
 module "function_pblevtdispatcher" {
-  source = "git::https://github.com/pagopa/azurerm.git//function_app?ref=v2.9.1"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app?ref=v4.1.9"
 
   resource_group_name                      = azurerm_resource_group.pblevtdispatcher_rg.name
   name                                     = "${local.project}-fn-pblevtdispatcher"
@@ -95,7 +95,7 @@ module "function_pblevtdispatcher" {
 #tfsec:ignore:azure-storage-default-action-deny
 #tfsec:ignore:azure-storage-queue-services-logging-enabled:exp:2022-05-01 # already ignored, maybe a bug in tfsec
 module "storage_account_pblevtdispatcher" {
-  source = "git::https://github.com/pagopa/azurerm.git//storage_account?ref=v2.7.0"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//storage_account?ref=v4.1.9"
 
   name                       = replace(format("%s-stpblevtdispatcher", local.project), "-", "")
   account_kind               = "StorageV2"

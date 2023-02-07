@@ -22,7 +22,7 @@ resource "azurerm_resource_group" "selfcare_fe_rg" {
 ### Frontend resources
 #tfsec:ignore:azure-storage-queue-services-logging-enabled:exp:2022-05-01 # already ignored, maybe a bug in tfsec
 module "selfcare_cdn" {
-  source = "git::https://github.com/pagopa/azurerm.git//cdn?ref=v2.7.0"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//cdn?ref=v4.1.9"
 
   name                  = "selfcare"
   prefix                = local.project
@@ -115,7 +115,7 @@ data "azurerm_key_vault_secret" "selfcare_subsmigrations_apikey" {
 # JWT
 #tfsec:ignore:azure-keyvault-ensure-secret-expiry:exp:2022-05-01 # already ignored, maybe a bug in tfsec
 module "selfcare_jwt" {
-  source = "git::https://github.com/pagopa/azurerm.git//jwt_keys?ref=v3.11.0"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//jwt_keys?ref=v4.1.9"
 
   jwt_name         = "selfcare-jwt"
   key_vault_id     = data.azurerm_key_vault.common.id
@@ -143,7 +143,7 @@ resource "azurerm_app_service_plan" "selfcare_be_common" {
 
 # Subnet to host checkout function
 module "selfcare_be_common_snet" {
-  source                                         = "git::https://github.com/pagopa/azurerm.git//subnet?ref=v1.0.51"
+  source                                         = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v4.1.9"
   name                                           = format("%s-selfcare-be-common-snet", local.project)
   address_prefixes                               = var.cidr_subnet_selfcare_be
   resource_group_name                            = data.azurerm_resource_group.vnet_common_rg.name
@@ -175,7 +175,7 @@ resource "azurerm_app_service_virtual_network_swift_connection" "selfcare_be" {
 #tfsec:ignore:azure-appservice-authentication-enabled:exp:2022-05-01 # already ignored, maybe a bug in tfsec
 #tfsec:ignore:azure-appservice-require-client-cert:exp:2022-05-01 # already ignored, maybe a bug in tfsec
 module "appservice_selfcare_be" {
-  source = "git::https://github.com/pagopa/azurerm.git//app_service?ref=v3.2.1"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//app_service?ref=v4.1.9"
 
   name                = format("%s-app-selfcare-be", local.project)
   resource_group_name = azurerm_resource_group.selfcare_be_rg.name
