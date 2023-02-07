@@ -311,6 +311,7 @@ module "web_test_api" {
   request_url                       = format("https://%s%s", each.value.host, each.value.path)
   expected_http_status              = each.value.http_status
   ssl_cert_remaining_lifetime_check = each.value.ssl_cert_remaining_lifetime_check
+  application_insight_id            = data.azurerm_application_insights.application_insights.id
 
   actions = [
     {
