@@ -45,6 +45,7 @@ module "function_pblevtdispatcher" {
   health_check_path                        = "/api/v1/info"
   subnet_id                                = module.function_pblevtdispatcher_snetout.id
   runtime_version                          = "~3"
+  linux_fx_version                         = "" # windows function
   application_insights_instrumentation_key = data.azurerm_application_insights.application_insights.instrumentation_key
 
   app_settings = {
