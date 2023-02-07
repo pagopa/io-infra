@@ -171,17 +171,16 @@ module "cgn_cosmosdb_containers" {
 module "cgn_legalbackup_storage" {
   source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//storage_account?ref=v4.1.9"
 
-  name                       = replace(format("%s-cgn-legalbackup-storage", local.project), "-", "")
-  account_kind               = "StorageV2"
-  account_tier               = "Standard"
-  access_tier                = "Hot"
-  versioning_name            = "versioning"
-  enable_versioning          = var.cgn_legalbackup_enable_versioning
-  account_replication_type   = var.cgn_legalbackup_account_replication_type
-  resource_group_name        = data.azurerm_resource_group.rg_cgn.name
-  location                   = data.azurerm_resource_group.rg_cgn.location
-  advanced_threat_protection = false
-  allow_blob_public_access   = false
+  name                            = replace(format("%s-cgn-legalbackup-storage", local.project), "-", "")
+  account_kind                    = "StorageV2"
+  account_tier                    = "Standard"
+  access_tier                     = "Hot"
+  blob_versioning_enabled         = var.cgn_legalbackup_enable_versioning
+  account_replication_type        = var.cgn_legalbackup_account_replication_type
+  resource_group_name             = data.azurerm_resource_group.rg_cgn.name
+  location                        = data.azurerm_resource_group.rg_cgn.location
+  advanced_threat_protection      = false
+  allow_nested_items_to_be_public = false
 
   tags = var.tags
 }
