@@ -75,6 +75,7 @@ module "cosmos_cgn" {
   source   = "git::https://github.com/pagopa/terraform-azurerm-v3.git//cosmosdb_account?ref=v4.1.9"
   name     = format("%s-cosmos-cgn", local.project)
   location = var.location
+  domain   = "CGN"
 
   resource_group_name = data.azurerm_resource_group.rg_cgn.name
   offer_type          = "Standard"
