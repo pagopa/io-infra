@@ -39,7 +39,7 @@ module "function_assets_cdn_snet" {
   address_prefixes                               = var.cidr_subnet_fncdnassets
   resource_group_name                            = data.azurerm_resource_group.vnet_common_rg.name
   virtual_network_name                           = data.azurerm_virtual_network.vnet_common.name
-  enforce_private_link_endpoint_network_policies = true
+  private_endpoint_network_policies_enabled = true
 
   service_endpoints = [
     "Microsoft.Web",
