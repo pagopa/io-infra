@@ -93,6 +93,29 @@ module "function_pblevtdispatcher" {
   tags = var.tags
 }
 
+module "function_pblevtdispatcher_snetout_v4" {
+  source               = "git::https://github.com/pagopa/azurerm.git//subnet?ref=v1.0.60"
+  name                 = "fnpblevtdispatcherv4out"
+  address_prefixes     = var.cidr_subnet_fnpblevtdispatcher
+  resource_group_name  = data.azurerm_resource_group.vnet_common_rg.name
+  virtual_network_name = data.azurerm_virtual_network.vnet_common.name
+  service_endpoints = [
+    "Microsoft.EventHub",
+    "Microsoft.Storage",
+    "Microsoft.AzureCosmosDB",
+    "Microsoft.Web",
+  ]
+
+  delegation = {
+    name = "default"
+    service_delegation = {
+      name    = "Microsoft.Web/serverFarms"
+      actions = ["Microsoft.Network/virtualNetworks/subnets/action"]
+    }
+  }
+}
+
+
 module "function_pblevtdispatcher_v4" {
   source = "git::https://github.com/pagopa/azurerm.git//function_app?ref=v3.4.0"
 
@@ -154,7 +177,7 @@ module "function_pblevtdispatcher_v4" {
 
   }
 
-  subnet_id = module.function_pblevtdispatcher_snetout.id
+  subnet_id = module.function_pblevtdispatcher_snetout_v4.id
 
   allowed_subnets = [
     data.azurerm_subnet.azdoa_snet[0].id,
