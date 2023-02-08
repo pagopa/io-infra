@@ -119,7 +119,7 @@ module "function_messages_cqrs" {
   }
 
   os_type                                  = "linux"
-  linux_fx_version                         = "NODE|14"
+  linux_fx_version                         = "NODE|18"
   runtime_version                          = "~4"
   always_on                                = var.function_messages_cqrs_always_on
   application_insights_instrumentation_key = data.azurerm_application_insights.application_insights.instrumentation_key
