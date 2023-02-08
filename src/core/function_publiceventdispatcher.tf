@@ -96,7 +96,7 @@ module "function_pblevtdispatcher" {
 module "function_pblevtdispatcher_snetout_v4" {
   source               = "git::https://github.com/pagopa/azurerm.git//subnet?ref=v1.0.60"
   name                 = "fnpblevtdispatcherv4out"
-  address_prefixes     = var.cidr_subnet_fnpblevtdispatcher
+  address_prefixes     = var.cidr_subnet_fnpblevtdispatcherv4
   resource_group_name  = data.azurerm_resource_group.vnet_common_rg.name
   virtual_network_name = data.azurerm_virtual_network.vnet_common.name
   service_endpoints = [
