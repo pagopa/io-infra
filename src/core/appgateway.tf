@@ -319,7 +319,7 @@ module "app_gw" {
       rewrite_rules = [{
         name          = "http-headers-api"
         rule_sequence = 100
-        conditions    = null
+        conditions    = []
         url           = null
         request_header_configurations = [
           {
@@ -344,7 +344,7 @@ module "app_gw" {
       rewrite_rules = [{
         name          = "http-headers-api-mtls"
         rule_sequence = 100
-        conditions    = null
+        conditions    = []
         url           = null
         request_header_configurations = [
           {
@@ -369,7 +369,7 @@ module "app_gw" {
       rewrite_rules = [{
         name          = "http-headers-api-app"
         rule_sequence = 100
-        conditions    = null
+        conditions    = []
         url           = null
         request_header_configurations = [
           {
@@ -389,7 +389,7 @@ module "app_gw" {
       rewrite_rules = [{
         name          = "http-headers-developerportal-backend"
         rule_sequence = 100
-        conditions    = null
+        conditions    = []
         url           = null
         request_header_configurations = [
           {
@@ -409,7 +409,7 @@ module "app_gw" {
       rewrite_rules = [{
         name          = "http-headers-selfcare-backend"
         rule_sequence = 100
-        conditions    = null
+        conditions    = []
         url           = null
         request_header_configurations = [
           {

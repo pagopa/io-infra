@@ -39,7 +39,7 @@ module "azdoa_loadtest_li" {
 # azure devops policy
 data "azuread_service_principal" "iac_principal" {
   count        = var.enable_iac_pipeline ? 1 : 0
-  display_name = format("pagopaspa-io-iac-projects-%s", data.azurerm_subscription.current.subscription_id)
+  display_name = format("pagopaspa-io-platform-iac-projects-%s", data.azurerm_subscription.current.subscription_id)
 }
 
 # kv keyvault
