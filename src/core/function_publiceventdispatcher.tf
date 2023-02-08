@@ -103,7 +103,7 @@ module "function_pblevtdispatcher" {
 }
 
 module "function_pblevtdispatcher_snetout_v4" {
-  source               = "git::https://github.com/pagopa/azurerm.git//subnet?ref=v1.0.60"
+  source               = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v4.1.10"
   name                 = "fnpblevtdispatcherv4out"
   address_prefixes     = var.cidr_subnet_fnpblevtdispatcherv4
   resource_group_name  = data.azurerm_resource_group.vnet_common_rg.name
@@ -126,7 +126,7 @@ module "function_pblevtdispatcher_snetout_v4" {
 
 
 module "function_pblevtdispatcher_v4" {
-  source = "git::https://github.com/pagopa/azurerm.git//function_app?ref=v3.4.0"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app?ref=v4.1.10"
 
   resource_group_name = azurerm_resource_group.pblevtdispatcher_rg.name
   name                = format("%s-pblevtdispatcher-fn", local.project)
