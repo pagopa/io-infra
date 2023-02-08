@@ -12,11 +12,12 @@ resource "azurerm_resource_group" "pblevtdispatcher_rg" {
 }
 
 module "function_pblevtdispatcher_snetout" {
-  source               = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v4.1.10"
-  name                 = "fnpblevtdispatcherout"
-  address_prefixes     = var.cidr_subnet_fnpblevtdispatcher
-  resource_group_name  = data.azurerm_resource_group.vnet_common_rg.name
-  virtual_network_name = data.azurerm_virtual_network.vnet_common.name
+  source                                    = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v4.1.10"
+  name                                      = "fnpblevtdispatcherout"
+  address_prefixes                          = var.cidr_subnet_fnpblevtdispatcher
+  resource_group_name                       = data.azurerm_resource_group.vnet_common_rg.name
+  virtual_network_name                      = data.azurerm_virtual_network.vnet_common.name
+  private_endpoint_network_policies_enabled = true
   service_endpoints = [
     "Microsoft.EventHub",
     "Microsoft.Storage",
@@ -103,11 +104,12 @@ module "function_pblevtdispatcher" {
 }
 
 module "function_pblevtdispatcher_snetout_v4" {
-  source               = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v4.1.10"
-  name                 = "fnpblevtdispatcherv4out"
-  address_prefixes     = var.cidr_subnet_fnpblevtdispatcherv4
-  resource_group_name  = data.azurerm_resource_group.vnet_common_rg.name
-  virtual_network_name = data.azurerm_virtual_network.vnet_common.name
+  source                                    = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v4.1.10"
+  name                                      = "fnpblevtdispatcherv4out"
+  address_prefixes                          = var.cidr_subnet_fnpblevtdispatcherv4
+  resource_group_name                       = data.azurerm_resource_group.vnet_common_rg.name
+  virtual_network_name                      = data.azurerm_virtual_network.vnet_common.name
+  private_endpoint_network_policies_enabled = true
   service_endpoints = [
     "Microsoft.EventHub",
     "Microsoft.Storage",
