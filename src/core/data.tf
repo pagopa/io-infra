@@ -62,11 +62,6 @@ data "azurerm_function_app" "fnapp_eucovidcert" {
   resource_group_name = format("%s-rg-eucovidcert", local.project)
 }
 
-data "azurerm_key_vault_secret" "fnapp_eucovidcert_authtoken" {
-  name         = "funceucovidcert-KEY-PUBLICIOEVENTDISPATCHER"
-  key_vault_id = module.key_vault.id
-}
-
 data "azurerm_subnet" "fnapp_eucovidcert_subnet_out" {
   name                 = "fn3eucovidcert"
   virtual_network_name = format("%s-vnet-common", local.project)
@@ -162,6 +157,15 @@ data "azurerm_key_vault_secret" "services_exclusion_list" {
 data "azurerm_storage_account" "api" {
   name                = "iopstapi"
   resource_group_name = azurerm_resource_group.rg_internal.name
+}
+
+#
+# Redis
+#
+
+data "azurerm_redis_cache" "common" {
+  name                = "io-p-redis-common"
+  resource_group_name = "io-p-rg-common"
 }
 
 # CDN Assets storage account

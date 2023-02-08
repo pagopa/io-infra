@@ -56,8 +56,8 @@ locals {
       IO_SIGN_API_KEY             = data.azurerm_key_vault_secret.app_backend_IO_SIGN_API_KEY.value
       CGN_OPERATOR_SEARCH_API_URL = "https://cgnonboardingportal-p-op.azurewebsites.net" # prod subscription
       CGN_OPERATOR_SEARCH_API_KEY = data.azurerm_key_vault_secret.app_backend_CGN_OPERATOR_SEARCH_API_KEY_PROD.value
-      EUCOVIDCERT_API_URL         = "http://${data.azurerm_function_app.fnapp_eucovidcert.default_hostname}/api/v1"
-      EUCOVIDCERT_API_KEY         = data.azurerm_key_vault_secret.app_backend_EUCOVIDCERT_API_KEY.value
+      EUCOVIDCERT_API_URL         = "https://${module.function_eucovidcert.default_hostname}/api/v1"
+      EUCOVIDCERT_API_KEY         = data.azurerm_key_vault_secret.fn_eucovidcert_API_KEY_APPBACKEND.value
       APP_MESSAGES_API_KEY        = data.azurerm_key_vault_secret.app_backend_APP_MESSAGES_API_KEY.value
 
       // EXPOSED API
@@ -318,11 +318,6 @@ data "azurerm_key_vault_secret" "app_backend_CGN_OPERATOR_SEARCH_API_KEY_UAT" {
   key_vault_id = data.azurerm_key_vault.common.id
 }
 
-data "azurerm_key_vault_secret" "app_backend_EUCOVIDCERT_API_KEY" {
-  name         = "funceucovidcert-KEY-APPBACKEND"
-  key_vault_id = data.azurerm_key_vault.common.id
-}
-
 data "azurerm_key_vault_secret" "app_backend_ALLOW_PAGOPA_IP_SOURCE_RANGE" {
   name         = "appbackend-ALLOW-PAGOPA-IP-SOURCE-RANGE"
   key_vault_id = data.azurerm_key_vault.common.id
@@ -417,6 +412,47 @@ data "azurerm_key_vault_secret" "app_backend_PN_REAL_TEST_USERS" {
   name         = "appbackend-PN-REAL-TEST-USERS"
   key_vault_id = data.azurerm_key_vault.common.id
 }
+
+#tfsec:ignore:AZU023
+resource "azurerm_key_vault_secret" "appbackend-REDIS-PASSWORD" {
+  name         = "appbackend-REDIS-PASSWORD"
+  value        = data.azurerm_redis_cache.common.primary_access_key
+  key_vault_id = data.azurerm_key_vault.common.id
+  content_type = "string"
+}
+
+#tfsec:ignore:AZU023
+resource "azurerm_key_vault_secret" "appbackend-SPID-LOG-STORAGE" {
+  name         = "appbackend-SPID-LOG-STORAGE"
+  value        = data.azurerm_storage_account.logs.primary_connection_string
+  key_vault_id = data.azurerm_key_vault.common.id
+  content_type = "string"
+}
+
+#tfsec:ignore:AZU023
+resource "azurerm_key_vault_secret" "appbackend-PUSH-NOTIFICATIONS-STORAGE" {
+  name         = "appbackend-PUSH-NOTIFICATIONS-STORAGE"
+  value        = data.azurerm_storage_account.push_notifications_storage.primary_connection_string
+  key_vault_id = data.azurerm_key_vault.common.id
+  content_type = "string"
+}
+
+#tfsec:ignore:AZU023
+resource "azurerm_key_vault_secret" "appbackend-NORIFICATIONS-STORAGE" {
+  name         = "appbackend-NORIFICATIONS-STORAGE"
+  value        = data.azurerm_storage_account.notifications.primary_connection_string
+  key_vault_id = data.azurerm_key_vault.common.id
+  content_type = "string"
+}
+
+#tfsec:ignore:AZU023
+resource "azurerm_key_vault_secret" "appbackend-USERS-LOGIN-STORAGE" {
+  name         = "appbackend-USERS-LOGIN-STORAGE"
+  value        = data.azurerm_storage_account.logs.primary_connection_string
+  key_vault_id = data.azurerm_key_vault.common.id
+  content_type = "string"
+}
+
 
 ## app_backendl1
 
