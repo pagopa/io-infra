@@ -267,49 +267,49 @@ module "app_gw" {
       listener              = "api-io-pagopa-it"
       backend               = "apim"
       rewrite_rule_set_name = "rewrite-rule-set-api"
-      priority              = 1
+      priority              = 50
     }
 
     api-io-italia-it = {
       listener              = "api-io-italia-it"
       backend               = "apim"
       rewrite_rule_set_name = "rewrite-rule-set-api"
-      priority              = 2
+      priority              = 30
     }
 
     api-mtls-io-pagopa-it = {
       listener              = "api-mtls-io-pagopa-it"
       backend               = "apim"
       rewrite_rule_set_name = "rewrite-rule-set-api-mtls"
-      priority              = 2
+      priority              = 10
     }
 
     api-app-io-pagopa-it = {
       listener              = "api-app-io-pagopa-it"
       backend               = "appbackend-app"
       rewrite_rule_set_name = "rewrite-rule-set-api-app"
-      priority              = 3
+      priority              = 70
     }
 
     app-backend-io-italia-it = {
       listener              = "app-backend-io-italia-it"
       backend               = "appbackend-app"
       rewrite_rule_set_name = "rewrite-rule-set-api-app"
-      priority              = 4
+      priority              = 40
     }
 
     developerportal-backend-io-italia-it = {
       listener              = "developerportal-backend-io-italia-it"
       backend               = "developerportal-backend"
       rewrite_rule_set_name = "rewrite-rule-set-developerportal-backend"
-      priority              = 5
+      priority              = 20
     }
 
     api-io-selfcare-pagopa-it = {
       listener              = "api-io-selfcare-pagopa-it"
       backend               = "selfcare-backend"
       rewrite_rule_set_name = "rewrite-rule-set-selfcare-backend"
-      priority              = 6
+      priority              = 60
     }
 
   }

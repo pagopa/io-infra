@@ -462,7 +462,7 @@ module "app_backendl1_snet" {
   address_prefixes                          = var.cidr_subnet_appbackendl1
   resource_group_name                       = data.azurerm_resource_group.vnet_common_rg.name
   virtual_network_name                      = data.azurerm_virtual_network.vnet_common.name
-  private_endpoint_network_policies_enabled = false
+  private_endpoint_network_policies_enabled = true
 
   service_endpoints = [
     "Microsoft.Web",
@@ -677,7 +677,7 @@ module "app_backendl2_snet" {
   address_prefixes                          = var.cidr_subnet_appbackendl2
   resource_group_name                       = data.azurerm_resource_group.vnet_common_rg.name
   virtual_network_name                      = data.azurerm_virtual_network.vnet_common.name
-  private_endpoint_network_policies_enabled = false
+  private_endpoint_network_policies_enabled = true
 
   service_endpoints = [
     "Microsoft.Web",
@@ -892,7 +892,7 @@ module "app_backendli_snet" {
   address_prefixes                          = var.cidr_subnet_appbackendli
   resource_group_name                       = data.azurerm_resource_group.vnet_common_rg.name
   virtual_network_name                      = data.azurerm_virtual_network.vnet_common.name
-  private_endpoint_network_policies_enabled = false
+  private_endpoint_network_policies_enabled = true
 
   service_endpoints = [
     "Microsoft.Web",
