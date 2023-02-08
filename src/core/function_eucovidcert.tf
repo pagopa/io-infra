@@ -200,10 +200,10 @@ module "function_eucovidcert" {
   app_settings = merge(
     local.function_eucovidcert.app_settings_common,
     {
-      "AzureWebJobs.NotifyNewProfileToDGC.Disabled" = "1"
-      "AzureWebJobs.OnProfileCreatedEvent.Disabled" = "1"
+      "AzureWebJobs.NotifyNewProfileToDGC.Disabled" = "0"
     }
   )
+
 
   subnet_id = module.function_eucovidcert_snet.id
 
@@ -242,7 +242,6 @@ module "function_eucovidcert_staging_slot" {
     local.function_eucovidcert.app_settings_common,
     {
       "AzureWebJobs.NotifyNewProfileToDGC.Disabled" = "1"
-      "AzureWebJobs.OnProfileCreatedEvent.Disabled" = "1"
     }
   )
 
