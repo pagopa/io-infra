@@ -457,7 +457,7 @@ resource "azurerm_key_vault_secret" "appbackend-USERS-LOGIN-STORAGE" {
 ## app_backendl1
 
 module "app_backendl1_snet" {
-  source               = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v4.1.9"
+  source               = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v4.1.10"
   name                 = "appbackendl1"
   address_prefixes     = var.cidr_subnet_appbackendl1
   resource_group_name  = data.azurerm_resource_group.vnet_common_rg.name
@@ -477,7 +477,7 @@ module "app_backendl1_snet" {
 }
 
 module "appservice_app_backendl1" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//app_service?ref=v4.1.9"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//app_service?ref=v4.1.10"
 
   # App service plan
   plan_type     = "internal"
@@ -522,7 +522,7 @@ module "appservice_app_backendl1" {
 }
 
 module "appservice_app_backendl1_slot_staging" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//app_service_slot?ref=v4.1.9"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//app_service_slot?ref=v4.1.10"
 
   # App service plan
   app_service_plan_id = module.appservice_app_backendl1.plan_id
@@ -671,7 +671,7 @@ resource "azurerm_monitor_autoscale_setting" "appservice_app_backendl1" {
 ## app_backendl2
 
 module "app_backendl2_snet" {
-  source               = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v4.1.9"
+  source               = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v4.1.10"
   name                 = "appbackendl2"
   address_prefixes     = var.cidr_subnet_appbackendl2
   resource_group_name  = data.azurerm_resource_group.vnet_common_rg.name
@@ -691,7 +691,7 @@ module "app_backendl2_snet" {
 }
 
 module "appservice_app_backendl2" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//app_service?ref=v4.1.9"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//app_service?ref=v4.1.10"
 
   # App service plan
   plan_type     = "internal"
@@ -736,7 +736,7 @@ module "appservice_app_backendl2" {
 }
 
 module "appservice_app_backendl2_slot_staging" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//app_service_slot?ref=v4.1.9"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//app_service_slot?ref=v4.1.10"
 
   # App service plan
   app_service_plan_id = module.appservice_app_backendl2.plan_id
@@ -885,7 +885,7 @@ resource "azurerm_monitor_autoscale_setting" "appservice_app_backendl2" {
 ## app_backendli
 
 module "app_backendli_snet" {
-  source               = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v4.1.9"
+  source               = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v4.1.10"
   name                 = "appbackendli"
   address_prefixes     = var.cidr_subnet_appbackendli
   resource_group_name  = data.azurerm_resource_group.vnet_common_rg.name
@@ -905,7 +905,7 @@ module "app_backendli_snet" {
 }
 
 module "appservice_app_backendli" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//app_service?ref=v4.1.9"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//app_service?ref=v4.1.10"
 
   # App service plan
   plan_type     = "internal"
@@ -950,7 +950,7 @@ module "appservice_app_backendli" {
 }
 
 module "appservice_app_backendli_slot_staging" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//app_service_slot?ref=v4.1.9"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//app_service_slot?ref=v4.1.10"
 
   # App service plan
   app_service_plan_id = module.appservice_app_backendli.plan_id
@@ -1055,7 +1055,7 @@ resource "azurerm_monitor_autoscale_setting" "appservice_app_backendli" {
 ## web availabolity test
 module "app_backend_web_test_api" {
   for_each = { for v in local.app_backend_test_urls : v.name => v if v != null }
-  source   = "git::https://github.com/pagopa/terraform-azurerm-v3.git//application_insights_web_test_preview?ref=v4.1.9"
+  source   = "git::https://github.com/pagopa/terraform-azurerm-v3.git//application_insights_web_test_preview?ref=v4.1.10"
 
   subscription_id                   = data.azurerm_subscription.current.subscription_id
   name                              = format("%s-test", each.value.name)

@@ -34,7 +34,7 @@ locals {
 
 # Subnet to host fn cdn assets function
 module "function_assets_cdn_snet" {
-  source                                    = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v4.1.9"
+  source                                    = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v4.1.10"
   name                                      = format("%s-assets-cdn-fn-snet", local.project)
   address_prefixes                          = var.cidr_subnet_fncdnassets
   resource_group_name                       = data.azurerm_resource_group.vnet_common_rg.name
@@ -57,7 +57,7 @@ module "function_assets_cdn_snet" {
 }
 
 module "function_assets_cdn" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app?ref=v4.1.9"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app?ref=v4.1.10"
 
   resource_group_name = azurerm_resource_group.assets_cdn_rg.name
   name                = "${local.project}-assets-cdn-fn"
@@ -86,7 +86,7 @@ module "function_assets_cdn" {
 
 module "function_assets_cdn_staging_slot" {
   count  = var.function_assets_cdn_sku_tier == "PremiumV3" ? 1 : 0
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app_slot?ref=v4.1.9"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app_slot?ref=v4.1.10"
 
   name                = "staging"
   location            = var.location

@@ -9,7 +9,7 @@ data "azurerm_storage_account" "iopstcgn" {
 
 ## redis cgn subnet
 module "redis_cgn_snet" {
-  source                                    = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v4.1.9"
+  source                                    = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v4.1.10"
   name                                      = format("%s-redis-cgn-snet", local.project)
   address_prefixes                          = ["10.0.14.0/25"]
   resource_group_name                       = data.azurerm_resource_group.vnet_common_rg.name
@@ -18,7 +18,7 @@ module "redis_cgn_snet" {
 }
 
 module "redis_cgn" {
-  source                = "git::https://github.com/pagopa/terraform-azurerm-v3.git//redis_cache?ref=v4.1.9"
+  source                = "git::https://github.com/pagopa/terraform-azurerm-v3.git//redis_cache?ref=v4.1.10"
   name                  = format("%s-redis-cgn-std", local.project)
   resource_group_name   = data.azurerm_resource_group.rg_cgn.name
   location              = data.azurerm_resource_group.rg_cgn.location
@@ -72,7 +72,7 @@ data "azurerm_subnet" "fn3cgn" {
 ##################
 
 module "cosmos_cgn" {
-  source   = "git::https://github.com/pagopa/terraform-azurerm-v3.git//cosmosdb_account?ref=v4.1.9"
+  source   = "git::https://github.com/pagopa/terraform-azurerm-v3.git//cosmosdb_account?ref=v4.1.10"
   name     = format("%s-cosmos-cgn", local.project)
   location = var.location
   domain   = "CGN"
@@ -125,7 +125,7 @@ module "cosmos_cgn" {
 
 ## Database
 module "cgn_cosmos_db" {
-  source              = "git::https://github.com/pagopa/terraform-azurerm-v3.git//cosmosdb_sql_database?ref=v4.1.9"
+  source              = "git::https://github.com/pagopa/terraform-azurerm-v3.git//cosmosdb_sql_database?ref=v4.1.10"
   name                = "db"
   resource_group_name = data.azurerm_resource_group.rg_cgn.name
   account_name        = module.cosmos_cgn.name
@@ -152,7 +152,7 @@ locals {
 }
 
 module "cgn_cosmosdb_containers" {
-  source   = "git::https://github.com/pagopa/terraform-azurerm-v3.git//cosmosdb_sql_container?ref=v4.1.9"
+  source   = "git::https://github.com/pagopa/terraform-azurerm-v3.git//cosmosdb_sql_container?ref=v4.1.10"
   for_each = { for c in local.cgn_cosmosdb_containers : c.name => c }
 
   name                = each.value.name
@@ -170,7 +170,7 @@ module "cgn_cosmosdb_containers" {
 #tfsec:ignore:azure-storage-default-action-deny
 #tfsec:ignore:azure-storage-queue-services-logging-enabled:exp:2022-05-01 # already ignored, maybe a bug in tfsec
 module "cgn_legalbackup_storage" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//storage_account?ref=v4.1.9"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//storage_account?ref=v4.1.10"
 
   name                            = replace(format("%s-cgn-legalbackup-storage", local.project), "-", "")
   account_kind                    = "StorageV2"
@@ -240,7 +240,7 @@ resource "azurerm_private_endpoint" "cgn_legalbackup_storage" {
 
 ## Api merchant
 module "apim_product_merchant" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_product?ref=v4.1.9"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_product?ref=v4.1.10"
 
   product_id   = "cgnmerchant"
   display_name = "IO CGN API MERCHANT"
@@ -257,7 +257,7 @@ module "apim_product_merchant" {
 }
 
 module "api_cgn_merchant" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api?ref=v4.1.9"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api?ref=v4.1.10"
 
   name                = "io-cgn-merchant-api"
   api_management_name = module.apim.name
@@ -357,7 +357,7 @@ resource "azurerm_app_service_plan" "cgn_common" {
 
 # Subnet to host app function
 module "cgn_snet" {
-  source                                    = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v4.1.9"
+  source                                    = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v4.1.10"
   name                                      = format("%s-cgn-snet", local.project)
   address_prefixes                          = var.cidr_subnet_cgn
   resource_group_name                       = data.azurerm_resource_group.vnet_common_rg.name
