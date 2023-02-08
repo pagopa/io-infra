@@ -23,5 +23,12 @@ module "container_registry" {
     virtual_network_id   = null
   }
 
+  network_rule_set {
+    default_action  = "Allow"
+    ip_rule         = []
+    virtual_network = []
+  }
+}
+
   tags = var.tags
 }
