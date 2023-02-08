@@ -48,6 +48,14 @@ module "function_pblevtdispatcher" {
   linux_fx_version                         = "" # windows function
   application_insights_instrumentation_key = data.azurerm_application_insights.application_insights.instrumentation_key
 
+  storage_account_info = {
+    account_kind                      = "StorageV2"
+    account_tier                      = "Standard"
+    account_replication_type          = "LRS"
+    access_tier                       = "Hot"
+    advanced_threat_protection_enable = true
+  }
+
   app_settings = {
     FUNCTIONS_WORKER_RUNTIME       = "node"
     WEBSITE_NODE_DEFAULT_VERSION   = "14.16.0"

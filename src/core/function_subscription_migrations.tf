@@ -175,6 +175,14 @@ module "function_subscriptionmigrations" {
     module.selfcare_be_common_snet.id,
   ]
 
+  storage_account_info = {
+    account_kind                      = "StorageV2"
+    account_tier                      = "Standard"
+    account_replication_type          = "LRS"
+    access_tier                       = "Hot"
+    advanced_threat_protection_enable = true
+  }
+
   app_settings = merge(local.function_subscriptionmigrations.app_settings_commons, {
     // those are slot configs
     "AzureWebJobs.OnServiceChange.Disabled"                 = "0"
