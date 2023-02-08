@@ -5,6 +5,7 @@ resource "azurerm_public_ip" "appgateway_public_ip" {
   location            = azurerm_resource_group.rg_external.location
   sku                 = "Standard"
   allocation_method   = "Static"
+  zones               = [1, 2, 3]
 
   tags = var.tags
 }

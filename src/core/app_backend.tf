@@ -457,11 +457,12 @@ resource "azurerm_key_vault_secret" "appbackend-USERS-LOGIN-STORAGE" {
 ## app_backendl1
 
 module "app_backendl1_snet" {
-  source               = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v4.1.10"
-  name                 = "appbackendl1"
-  address_prefixes     = var.cidr_subnet_appbackendl1
-  resource_group_name  = data.azurerm_resource_group.vnet_common_rg.name
-  virtual_network_name = data.azurerm_virtual_network.vnet_common.name
+  source                                    = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v4.1.10"
+  name                                      = "appbackendl1"
+  address_prefixes                          = var.cidr_subnet_appbackendl1
+  resource_group_name                       = data.azurerm_resource_group.vnet_common_rg.name
+  virtual_network_name                      = data.azurerm_virtual_network.vnet_common.name
+  private_endpoint_network_policies_enabled = false
 
   service_endpoints = [
     "Microsoft.Web",
@@ -671,11 +672,12 @@ resource "azurerm_monitor_autoscale_setting" "appservice_app_backendl1" {
 ## app_backendl2
 
 module "app_backendl2_snet" {
-  source               = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v4.1.10"
-  name                 = "appbackendl2"
-  address_prefixes     = var.cidr_subnet_appbackendl2
-  resource_group_name  = data.azurerm_resource_group.vnet_common_rg.name
-  virtual_network_name = data.azurerm_virtual_network.vnet_common.name
+  source                                    = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v4.1.10"
+  name                                      = "appbackendl2"
+  address_prefixes                          = var.cidr_subnet_appbackendl2
+  resource_group_name                       = data.azurerm_resource_group.vnet_common_rg.name
+  virtual_network_name                      = data.azurerm_virtual_network.vnet_common.name
+  private_endpoint_network_policies_enabled = false
 
   service_endpoints = [
     "Microsoft.Web",
@@ -885,11 +887,12 @@ resource "azurerm_monitor_autoscale_setting" "appservice_app_backendl2" {
 ## app_backendli
 
 module "app_backendli_snet" {
-  source               = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v4.1.10"
-  name                 = "appbackendli"
-  address_prefixes     = var.cidr_subnet_appbackendli
-  resource_group_name  = data.azurerm_resource_group.vnet_common_rg.name
-  virtual_network_name = data.azurerm_virtual_network.vnet_common.name
+  source                                    = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v4.1.10"
+  name                                      = "appbackendli"
+  address_prefixes                          = var.cidr_subnet_appbackendli
+  resource_group_name                       = data.azurerm_resource_group.vnet_common_rg.name
+  virtual_network_name                      = data.azurerm_virtual_network.vnet_common.name
+  private_endpoint_network_policies_enabled = false
 
   service_endpoints = [
     "Microsoft.Web",

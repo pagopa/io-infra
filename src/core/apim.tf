@@ -6,7 +6,7 @@ module "apim_snet" {
   virtual_network_name = data.azurerm_virtual_network.vnet_common.name
   address_prefixes     = var.cidr_subnet_apim
 
-  private_endpoint_network_policies_enabled = false
+  private_endpoint_network_policies_enabled = true
 
   service_endpoints = [
     "Microsoft.Web",
