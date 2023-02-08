@@ -28,7 +28,6 @@ module "container_registry" {
     ip_rule         = []
     virtual_network = []
   }
-}
 
   tags = var.tags
 }
