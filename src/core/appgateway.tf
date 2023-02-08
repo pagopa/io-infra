@@ -266,42 +266,49 @@ module "app_gw" {
       listener              = "api-io-pagopa-it"
       backend               = "apim"
       rewrite_rule_set_name = "rewrite-rule-set-api"
+      priority              = 1
     }
 
     api-io-italia-it = {
       listener              = "api-io-italia-it"
       backend               = "apim"
       rewrite_rule_set_name = "rewrite-rule-set-api"
+      priority              = 2
     }
 
     api-mtls-io-pagopa-it = {
       listener              = "api-mtls-io-pagopa-it"
       backend               = "apim"
       rewrite_rule_set_name = "rewrite-rule-set-api-mtls"
+      priority              = 2
     }
 
     api-app-io-pagopa-it = {
       listener              = "api-app-io-pagopa-it"
       backend               = "appbackend-app"
       rewrite_rule_set_name = "rewrite-rule-set-api-app"
+      priority              = 3
     }
 
     app-backend-io-italia-it = {
       listener              = "app-backend-io-italia-it"
       backend               = "appbackend-app"
       rewrite_rule_set_name = "rewrite-rule-set-api-app"
+      priority              = 4
     }
 
     developerportal-backend-io-italia-it = {
       listener              = "developerportal-backend-io-italia-it"
       backend               = "developerportal-backend"
       rewrite_rule_set_name = "rewrite-rule-set-developerportal-backend"
+      priority              = 5
     }
 
     api-io-selfcare-pagopa-it = {
       listener              = "api-io-selfcare-pagopa-it"
       backend               = "selfcare-backend"
       rewrite_rule_set_name = "rewrite-rule-set-selfcare-backend"
+      priority              = 6
     }
 
   }
@@ -312,7 +319,8 @@ module "app_gw" {
       rewrite_rules = [{
         name          = "http-headers-api"
         rule_sequence = 100
-        condition     = null
+        conditions    = null
+        url           = null
         request_header_configurations = [
           {
             header_name  = "X-Forwarded-For"
@@ -336,7 +344,8 @@ module "app_gw" {
       rewrite_rules = [{
         name          = "http-headers-api-mtls"
         rule_sequence = 100
-        condition     = null
+        conditions    = null
+        url           = null
         request_header_configurations = [
           {
             header_name  = "X-Forwarded-For"
@@ -360,7 +369,8 @@ module "app_gw" {
       rewrite_rules = [{
         name          = "http-headers-api-app"
         rule_sequence = 100
-        condition     = null
+        conditions    = null
+        url           = null
         request_header_configurations = [
           {
             header_name  = "X-Forwarded-For"
@@ -379,7 +389,8 @@ module "app_gw" {
       rewrite_rules = [{
         name          = "http-headers-developerportal-backend"
         rule_sequence = 100
-        condition     = null
+        conditions    = null
+        url           = null
         request_header_configurations = [
           {
             header_name  = "X-Forwarded-For"
@@ -398,7 +409,8 @@ module "app_gw" {
       rewrite_rules = [{
         name          = "http-headers-selfcare-backend"
         rule_sequence = 100
-        condition     = null
+        conditions    = null
+        url           = null
         request_header_configurations = [
           {
             header_name  = "X-Forwarded-For"

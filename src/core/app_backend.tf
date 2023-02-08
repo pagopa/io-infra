@@ -79,7 +79,7 @@ locals {
       ALLOW_NOTIFY_IP_SOURCE_RANGE = data.azurerm_subnet.fnapp_services_subnet_out.address_prefix
 
       // LOCK / UNLOCK SESSION ENDPOINTS
-      ALLOW_SESSION_HANDLER_IP_SOURCE_RANGE = module.apim_snet.address_prefix
+      ALLOW_SESSION_HANDLER_IP_SOURCE_RANGE = module.apim_snet.address_prefixes
 
       // PAGOPA
       PAGOPA_API_URL_PROD          = "https://api.platform.pagopa.it/checkout/auth/payments/v1"
