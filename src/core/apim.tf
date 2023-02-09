@@ -41,6 +41,12 @@ module "apim" {
   hostname_configuration = {
     proxy = [
       {
+        # io-p-apim-api.azure-api.net
+        default_ssl_binding = false
+        host_name           = "io-p-apim-api.azure-api.net"
+        key_vault_id        = ""
+      },
+      {
         # api-app.internal.io.pagopa.it
         default_ssl_binding = false
         host_name           = local.apim_hostname_api_app_internal
