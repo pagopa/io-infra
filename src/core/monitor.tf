@@ -301,7 +301,7 @@ locals {
 
 module "web_test_api" {
   for_each = { for v in local.test_urls : v.name => v if v != null }
-  source   = "git::https://github.com/pagopa/azurerm.git//application_insights_web_test_preview?ref=v2.9.1"
+  source   = "git::https://github.com/pagopa/terraform-azurerm-v3.git//application_insights_web_test_preview?ref=v4.1.15"
 
   subscription_id                   = data.azurerm_subscription.current.subscription_id
   name                              = format("%s-test", each.value.name)
@@ -311,6 +311,7 @@ module "web_test_api" {
   request_url                       = format("https://%s%s", each.value.host, each.value.path)
   expected_http_status              = each.value.http_status
   ssl_cert_remaining_lifetime_check = each.value.ssl_cert_remaining_lifetime_check
+  application_insight_id            = data.azurerm_application_insights.application_insights.id
 
   actions = [
     {

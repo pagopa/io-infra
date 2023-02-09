@@ -16,8 +16,8 @@ locals {
 
       COSMOSDB_NAME                = "db"
       COSMOSDB_URI                 = data.azurerm_cosmosdb_account.cosmos_api.endpoint
-      COSMOSDB_KEY                 = data.azurerm_cosmosdb_account.cosmos_api.primary_master_key
-      COSMOS_API_CONNECTION_STRING = format("AccountEndpoint=%s;AccountKey=%s;", data.azurerm_cosmosdb_account.cosmos_api.endpoint, data.azurerm_cosmosdb_account.cosmos_api.primary_master_key)
+      COSMOSDB_KEY                 = data.azurerm_cosmosdb_account.cosmos_api.primary_key
+      COSMOS_API_CONNECTION_STRING = format("AccountEndpoint=%s;AccountKey=%s;", data.azurerm_cosmosdb_account.cosmos_api.endpoint, data.azurerm_cosmosdb_account.cosmos_api.primary_key)
 
       TARGETKAFKA_clientId            = "IO_FUNCTIONS_ELT"
       TARGETKAFKA_brokers             = local.event_hub.connection
@@ -64,7 +64,7 @@ locals {
 
       COSMOSDB_REPLICA_NAME     = "db"
       COSMOSDB_REPLICA_URI      = replace(data.azurerm_cosmosdb_account.cosmos_api.endpoint, "io-p-cosmos-api", "io-p-cosmos-api-northeurope")
-      COSMOSDB_REPLICA_KEY      = data.azurerm_cosmosdb_account.cosmos_api.primary_master_key
+      COSMOSDB_REPLICA_KEY      = data.azurerm_cosmosdb_account.cosmos_api.primary_key
       COSMOSDB_REPLICA_LOCATION = "North Europe"
 
       MESSAGE_EXPORTS_COMMAND_TABLE       = azurerm_storage_table.fneltexports.name
@@ -102,11 +102,13 @@ resource "azurerm_resource_group" "elt_rg" {
 }
 
 module "function_elt_snetout" {
-  source               = "git::https://github.com/pagopa/azurerm.git//subnet?ref=v1.0.60"
-  name                 = "fn3eltout"
-  address_prefixes     = var.cidr_subnet_fnelt
-  resource_group_name  = data.azurerm_resource_group.vnet_common_rg.name
-  virtual_network_name = data.azurerm_virtual_network.vnet_common.name
+  source                                    = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v4.1.15"
+  name                                      = "fn3eltout"
+  address_prefixes                          = var.cidr_subnet_fnelt
+  resource_group_name                       = data.azurerm_resource_group.vnet_common_rg.name
+  virtual_network_name                      = data.azurerm_virtual_network.vnet_common.name
+  private_endpoint_network_policies_enabled = true
+
   service_endpoints = [
     "Microsoft.EventHub",
     "Microsoft.Storage",
@@ -136,7 +138,7 @@ data "azurerm_storage_account" "api_replica" {
 
 #tfsec:ignore:azure-storage-queue-services-logging-enabled:exp:2022-05-01 # already ignored, maybe a bug in tfsec
 module "function_elt" {
-  source = "git::https://github.com/pagopa/azurerm.git//function_app?ref=v3.8.1"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app?ref=v4.1.15"
 
   resource_group_name                      = azurerm_resource_group.elt_rg.name
   name                                     = "${local.project}-fn-elt"
@@ -217,7 +219,7 @@ module "function_elt" {
 #tfsec:ignore:azure-storage-default-action-deny
 #tfsec:ignore:azure-storage-queue-services-logging-enabled:exp:2022-05-01 # already ignored, maybe a bug in tfsec
 module "storage_account_elt" {
-  source = "git::https://github.com/pagopa/azurerm.git//storage_account?ref=v2.7.0"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//storage_account?ref=v4.1.15"
 
   name                       = replace(format("%s-stelt", local.project), "-", "")
   account_kind               = "StorageV2"

@@ -34,8 +34,9 @@ cidr_subnet_fnelt                          = ["10.0.11.0/24"]
 cidr_subnet_fnpblevtdispatcher             = ["10.0.12.0/24"]
 cidr_subnet_appgateway                     = ["10.0.13.0/24"]
 cidr_subnet_redis_apim                     = ["10.0.14.0/24"]
-cidr_subnet_shared_1                       = ["10.0.16.0/26"]
 cidr_subnet_fnadmin                        = ["10.0.15.0/26"]
+cidr_subnet_fnpblevtdispatcherv4           = ["10.0.15.64/26"]
+cidr_subnet_shared_1                       = ["10.0.16.0/26"]
 cidr_subnet_apim                           = ["10.0.101.0/24"]
 cidr_subnet_appmessages                    = ["10.0.127.0/24", "10.0.128.0/24"]
 cidr_subnet_fnmessagescqrs                 = ["10.0.129.0/24"]
@@ -417,6 +418,10 @@ eventhubs = [
 
 # PN Service Id
 pn_service_id = "01G40DWQGKY5GRWSNM4303VNRP"
+
+
+# TP Mock Service Id
+third_party_mock_service_id = "01GQQDPM127KFGG6T3660D5TXD"
 
 
 app_backend_names = ["appbackendl1", "appbackendl2", "appbackendli"]

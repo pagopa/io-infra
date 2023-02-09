@@ -52,7 +52,7 @@ resource "azurerm_api_management_group" "apipaymentupdater" {
 }
 
 module "apim_product_notifications" {
-  source = "git::https://github.com/pagopa/azurerm.git//api_management_product?ref=v1.0.16"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3//api_management_product?ref=v4.1.5"
 
   product_id   = "io-notifications-api"
   display_name = "IO NOTIFICATIONS API"
@@ -69,7 +69,7 @@ module "apim_product_notifications" {
 }
 
 module "apim_service_messages_api_v1" {
-  source = "git::https://github.com/pagopa/azurerm.git//api_management_api?ref=v1.0.16"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3//api_management_api?ref=v4.1.5"
 
   name                  = format("%s-service-messages-api", local.product)
   api_management_name   = data.azurerm_api_management.apim_api.name
@@ -90,6 +90,27 @@ module "apim_service_messages_api_v1" {
   xml_content = file("./api/service-messages/v1/_base_policy.xml")
 }
 
+module "io-backend_notification_api_v1" {
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3//api_management_api?ref=v4.1.5"
+
+  name                  = format("%s-io-backend-notification-api", local.product)
+  api_management_name   = data.azurerm_api_management.apim_api.name
+  resource_group_name   = data.azurerm_api_management.apim_api.resource_group_name
+  product_ids           = [module.apim_product_notifications.product_id]
+  subscription_required = false
+  service_url           = null
+
+  description  = "IO Backend - Notification API"
+  display_name = "IO Backend - Notification API"
+  path         = "io-backend-notification/api/v1"
+  protocols    = ["https"]
+
+  content_format = "openapi"
+
+  content_value = file("./api/io-backend-notification/v1/_openapi.yaml")
+
+  xml_content = file("./api/io-backend-notification/v1/_base_policy.xml")
+}
 
 resource "azurerm_api_management_user" "reminder_user" {
   user_id             = "iopremiumreminderuser"

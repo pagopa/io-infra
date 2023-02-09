@@ -16,6 +16,11 @@ data "azurerm_key_vault_secret" "fn_services_webhook_channel_url" {
   key_vault_id = data.azurerm_key_vault.common.id
 }
 
+data "azurerm_key_vault_secret" "fn_services_webhook_channel_aks_url" {
+  name         = "appbackend-WEBHOOK-CHANNEL-AKS-URL"
+  key_vault_id = data.azurerm_key_vault.common.id
+}
+
 data "azurerm_key_vault_secret" "fn_services_sandbox_fiscal_code" {
   name         = "io-SANDBOX-FISCAL-CODE"
   key_vault_id = data.azurerm_key_vault.common.id
@@ -73,7 +78,7 @@ locals {
 
       COSMOSDB_NAME = "db"
       COSMOSDB_URI  = data.azurerm_cosmosdb_account.cosmos_api.endpoint
-      COSMOSDB_KEY  = data.azurerm_cosmosdb_account.cosmos_api.primary_master_key
+      COSMOSDB_KEY  = data.azurerm_cosmosdb_account.cosmos_api.primary_key
 
       MESSAGE_CONTENT_STORAGE_CONNECTION_STRING   = data.azurerm_storage_account.api.primary_connection_string
       SUBSCRIPTION_FEED_STORAGE_CONNECTION_STRING = data.azurerm_storage_account.api.primary_connection_string
@@ -100,10 +105,6 @@ locals {
       // This way we can safely deploy fn-services without enabling ADVANCED functionalities
       MIN_APP_VERSION_WITH_READ_AUTH = "2.14.0"
 
-      # this app settings is required to solve the issue:
-      # https://github.com/terraform-providers/terraform-provider-azurerm/issues/10499
-      WEBSITE_PROACTIVE_AUTOHEAL_ENABLED = "True"
-
       // the duration of message and message-status for those messages sent to user not registered on IO.
       TTL_FOR_USER_NOT_FOUND = "${60 * 60 * 24 * 365 * 3}" //3 years in seconds
       FEATURE_FLAG           = "ALL"
@@ -122,21 +123,23 @@ locals {
       BETA_USERS                             = data.azurerm_key_vault_secret.fn_services_beta_users.value
     }
     app_settings_1 = {
+      WEBHOOK_CHANNEL_URL = data.azurerm_key_vault_secret.fn_services_webhook_channel_url.value
     }
     app_settings_2 = {
+      WEBHOOK_CHANNEL_URL = data.azurerm_key_vault_secret.fn_services_webhook_channel_aks_url.value
     }
   }
 }
 
 # Subnet to host app function
 module "services_snet" {
-  count                                          = var.function_services_count
-  source                                         = "git::https://github.com/pagopa/azurerm.git//subnet?ref=v1.0.51"
-  name                                           = format("%s-services-snet-%d", local.project, count.index + 1)
-  address_prefixes                               = [var.cidr_subnet_services[count.index]]
-  resource_group_name                            = data.azurerm_resource_group.vnet_common_rg.name
-  virtual_network_name                           = data.azurerm_virtual_network.vnet_common.name
-  enforce_private_link_endpoint_network_policies = true
+  count                                     = var.function_services_count
+  source                                    = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v4.1.15"
+  name                                      = format("%s-services-snet-%d", local.project, count.index + 1)
+  address_prefixes                          = [var.cidr_subnet_services[count.index]]
+  resource_group_name                       = data.azurerm_resource_group.vnet_common_rg.name
+  virtual_network_name                      = data.azurerm_virtual_network.vnet_common.name
+  private_endpoint_network_policies_enabled = false
 
   service_endpoints = [
     "Microsoft.Web",
@@ -164,7 +167,7 @@ resource "azurerm_resource_group" "services_rg" {
 #tfsec:ignore:azure-storage-queue-services-logging-enabled:exp:2022-05-01 # already ignored, maybe a bug in tfsec
 module "function_services" {
   count  = var.function_services_count
-  source = "git::https://github.com/pagopa/azurerm.git//function_app?ref=v3.8.1"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app?ref=v4.1.15"
 
   domain = "IO-COMMONS"
 
@@ -188,7 +191,10 @@ module "function_services" {
   }
 
   app_settings = merge(
-    local.function_services.app_settings_common, {
+    local.function_services.app_settings_common,
+    count.index == 0 ? local.function_services.app_settings_1 : {},
+    count.index == 1 ? local.function_services.app_settings_2 : {},
+    {
       # Disabled functions on slot - trigger, queue and timer
       # mark this configurations as slot settings
       "AzureWebJobs.CreateNotification.Disabled"     = "0"
@@ -246,7 +252,7 @@ module "function_services" {
 
 module "function_services_staging_slot" {
   count  = var.function_services_count
-  source = "git::https://github.com/pagopa/azurerm.git//function_app_slot?ref=v3.8.1"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app_slot?ref=v4.1.15"
 
   name                = "staging"
   location            = var.location

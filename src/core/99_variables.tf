@@ -167,6 +167,11 @@ variable "cidr_subnet_fnpblevtdispatcher" {
   description = "function-publiceventdispatcher network address space."
 }
 
+variable "cidr_subnet_fnpblevtdispatcherv4" {
+  type        = list(string)
+  description = "function-publiceventdispatcher network address space."
+}
+
 variable "cidr_subnet_appgateway" {
   type        = list(string)
   description = "Application gateway address space."
@@ -478,6 +483,19 @@ EOD
       }
     ))
   }))
+}
+
+# services
+variable "service_alerts_enabled" {
+  description = "Enable services alerts"
+  type        = bool
+  default     = true
+}
+
+variable "service_availability_alerts_threshold" {
+  description = "Threshold availability services alert"
+  type        = number
+  default     = 99.0
 }
 
 # eucovidcert
@@ -1005,4 +1023,12 @@ variable "function_public_autoscale_default" {
   type        = number
   description = "The number of instances that are available for scaling if metrics are not available for evaluation."
   default     = 1
+}
+
+# Third Party Mock
+
+variable "third_party_mock_service_id" {
+  type        = string
+  description = "The Service ID of the Third Party Mock service"
+  default     = "01GQQDPM127KFGG6T3660D5TXD"
 }

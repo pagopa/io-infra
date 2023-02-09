@@ -6,7 +6,7 @@ resource "azurerm_resource_group" "container_registry_rg" {
 }
 
 module "container_registry" {
-  source                        = "git::https://github.com/pagopa/azurerm.git//container_registry?ref=v2.10.0"
+  source                        = "git::https://github.com/pagopa/terraform-azurerm-v3.git//container_registry?ref=v4.1.15"
   name                          = replace(format("%s-common-acr", local.project), "-", "")
   sku                           = "Premium"
   resource_group_name           = azurerm_resource_group.container_registry_rg.name
@@ -22,6 +22,12 @@ module "container_registry" {
     subnet_id            = null
     virtual_network_id   = null
   }
+
+  network_rule_set = [{
+    default_action  = "Allow"
+    ip_rule         = []
+    virtual_network = []
+  }]
 
   tags = var.tags
 }

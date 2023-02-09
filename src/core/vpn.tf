@@ -5,17 +5,17 @@ data "azuread_application" "vpn_app" {
 ## VPN
 
 module "vpn_snet" {
-  source                                         = "git::https://github.com/pagopa/azurerm.git//subnet?ref=v2.9.1"
-  name                                           = "GatewaySubnet"
-  address_prefixes                               = var.cidr_subnet_vpn
-  resource_group_name                            = data.azurerm_resource_group.vnet_common_rg.name
-  virtual_network_name                           = data.azurerm_virtual_network.vnet_common.name
-  service_endpoints                              = []
-  enforce_private_link_endpoint_network_policies = true
+  source                                    = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v4.1.15"
+  name                                      = "GatewaySubnet"
+  address_prefixes                          = var.cidr_subnet_vpn
+  resource_group_name                       = data.azurerm_resource_group.vnet_common_rg.name
+  virtual_network_name                      = data.azurerm_virtual_network.vnet_common.name
+  service_endpoints                         = []
+  private_endpoint_network_policies_enabled = false
 }
 
 module "vpn" {
-  source = "git::https://github.com/pagopa/azurerm.git//vpn_gateway?ref=v2.9.1"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//vpn_gateway?ref=v4.1.15"
 
   name                = format("%s-vpn", local.project)
   location            = var.location
@@ -43,12 +43,12 @@ module "vpn" {
 
 ## DNS FORWARDER
 module "dns_forwarder_snet" {
-  source                                         = "git::https://github.com/pagopa/azurerm.git//subnet?ref=v2.9.1"
-  name                                           = format("%s-dnsforwarder", local.project)
-  address_prefixes                               = var.cidr_subnet_dnsforwarder
-  resource_group_name                            = data.azurerm_resource_group.vnet_common_rg.name
-  virtual_network_name                           = data.azurerm_virtual_network.vnet_common.name
-  enforce_private_link_endpoint_network_policies = true
+  source                                    = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v4.1.15"
+  name                                      = format("%s-dnsforwarder", local.project)
+  address_prefixes                          = var.cidr_subnet_dnsforwarder
+  resource_group_name                       = data.azurerm_resource_group.vnet_common_rg.name
+  virtual_network_name                      = data.azurerm_virtual_network.vnet_common.name
+  private_endpoint_network_policies_enabled = false
 
   delegation = {
     name = "delegation"
@@ -60,7 +60,7 @@ module "dns_forwarder_snet" {
 }
 
 module "dns_forwarder" {
-  source              = "git::https://github.com/pagopa/azurerm.git//dns_forwarder?ref=v2.9.1"
+  source              = "git::https://github.com/pagopa/terraform-azurerm-v3.git//dns_forwarder?ref=v4.1.15"
   name                = format("%s-dns-forwarder", local.project)
   location            = var.location
   resource_group_name = data.azurerm_resource_group.vnet_common_rg.name

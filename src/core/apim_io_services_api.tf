@@ -1,5 +1,5 @@
 module "apim_product_services" {
-  source = "git::https://github.com/pagopa/azurerm.git//api_management_product?ref=v2.1.20"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_product?ref=v4.1.15"
 
   product_id            = "io-services-api"
   api_management_name   = module.apim.name
@@ -64,13 +64,6 @@ resource "azurerm_api_management_named_value" "io_fn3_services_key" {
 }
 
 # Named value fn3-eucovidcert
-resource "azurerm_api_management_named_value" "io_fn3_eucovidcert_url" {
-  name                = "io-fn3-eucovidcert-url"
-  api_management_name = module.apim.name
-  resource_group_name = module.apim.resource_group_name
-  display_name        = "io-fn3-eucovidcert-url"
-  value               = "https://io-p-fn3-eucovidcert.azurewebsites.net"
-}
 
 data "azurerm_key_vault_secret" "io_fn3_eucovidcert_key_secret" {
   name         = "io-fn3-eucovidcert-KEY-APIM"
@@ -111,7 +104,7 @@ resource "azurerm_api_management_named_value" "api_gad_client_certificate_verifi
 }
 
 module "api_services" {
-  source = "git::https://github.com/pagopa/azurerm.git//api_management_api?ref=v2.1.19"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api?ref=v4.1.15"
 
   name                = "io-services-api"
   api_management_name = module.apim.name
