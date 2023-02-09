@@ -24,7 +24,7 @@ resource "azurerm_resource_group" "weu_beta_vnet_rg" {
 }
 
 module "vnet_weu_beta" {
-  source               = "git::https://github.com/pagopa/terraform-azurerm-v3.git//virtual_network?ref=v4.1.10"
+  source               = "git::https://github.com/pagopa/terraform-azurerm-v3.git//virtual_network?ref=v4.1.12"
   name                 = "${local.project}-weu-beta-vnet"
   location             = azurerm_resource_group.weu_beta_vnet_rg.location
   resource_group_name  = azurerm_resource_group.weu_beta_vnet_rg.name
@@ -35,7 +35,7 @@ module "vnet_weu_beta" {
 }
 
 module "vnet_peering_common_weu_beta" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//virtual_network_peering?ref=v4.1.10"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//virtual_network_peering?ref=v4.1.12"
 
   location = var.location
 
@@ -57,7 +57,7 @@ resource "azurerm_resource_group" "weu_prod01_vnet_rg" {
 }
 
 module "vnet_weu_prod01" {
-  source               = "git::https://github.com/pagopa/terraform-azurerm-v3.git//virtual_network?ref=v4.1.10"
+  source               = "git::https://github.com/pagopa/terraform-azurerm-v3.git//virtual_network?ref=v4.1.12"
   name                 = "${local.project}-weu-prod01-vnet"
   location             = azurerm_resource_group.weu_prod01_vnet_rg.location
   resource_group_name  = azurerm_resource_group.weu_prod01_vnet_rg.name
@@ -68,7 +68,7 @@ module "vnet_weu_prod01" {
 }
 
 module "vnet_peering_common_weu_prod01" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//virtual_network_peering?ref=v4.1.10"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//virtual_network_peering?ref=v4.1.12"
 
   location = var.location
 
@@ -90,7 +90,7 @@ resource "azurerm_resource_group" "weu_prod02_vnet_rg" {
 }
 
 module "vnet_weu_prod02" {
-  source               = "git::https://github.com/pagopa/terraform-azurerm-v3.git//virtual_network?ref=v4.1.10"
+  source               = "git::https://github.com/pagopa/terraform-azurerm-v3.git//virtual_network?ref=v4.1.12"
   name                 = "${local.project}-weu-prod02-vnet"
   location             = azurerm_resource_group.weu_prod02_vnet_rg.location
   resource_group_name  = azurerm_resource_group.weu_prod02_vnet_rg.name
@@ -101,7 +101,7 @@ module "vnet_weu_prod02" {
 }
 
 module "vnet_peering_common_weu_prod02" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//virtual_network_peering?ref=v4.1.10"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//virtual_network_peering?ref=v4.1.12"
 
   location = var.location
 

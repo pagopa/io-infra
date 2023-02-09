@@ -1,6 +1,6 @@
 ## Api Operator Search
 module "apim_product_cgn_os" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_product?ref=v4.1.10"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_product?ref=v4.1.12"
 
   product_id   = "cgnoperatorsearch"
   display_name = "IO CGN API OPERATOR SEARCH"
@@ -17,7 +17,7 @@ module "apim_product_cgn_os" {
 }
 
 module "api_cgn_os" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api?ref=v4.1.10"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api?ref=v4.1.12"
 
   name                = "io-cgn-os-api"
   api_management_name = module.apim.name

@@ -139,7 +139,7 @@ locals {
 
 #tfsec:ignore:azure-storage-queue-services-logging-enabled:exp:2022-05-01 # already ignored, maybe a bug in tfsec
 module "function_devportalservicedata" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app?ref=v4.1.10"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app?ref=v4.1.12"
 
   name                = format("%s-%s-fn", local.project, local.function_devportalservicedata.app_context.name)
   location            = local.function_devportalservicedata.app_context.resource_group.location
@@ -191,7 +191,7 @@ module "function_devportalservicedata" {
 
 
 module "function_devportalservicedata_staging_slot" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app_slot?ref=v4.1.10"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app_slot?ref=v4.1.12"
 
   name                = "staging"
   location            = local.function_devportalservicedata.app_context.resource_group.location
@@ -253,7 +253,7 @@ data "azurerm_key_vault_secret" "devportalservicedata_db_server_fndevportalservi
 
 
 module "devportalservicedata_db_server_snet" {
-  source                                    = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v4.1.10"
+  source                                    = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v4.1.12"
   name                                      = format("%s-snet", local.function_devportalservicedata.db.name)
   address_prefixes                          = var.cidr_subnet_devportalservicedata_db_server
   resource_group_name                       = data.azurerm_resource_group.vnet_common_rg.name
@@ -271,7 +271,7 @@ module "devportalservicedata_db_server_snet" {
 }
 
 module "devportalservicedata_db_server" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//postgres_flexible_server?ref=v4.1.10"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//postgres_flexible_server?ref=v4.1.12"
 
   name                = local.function_devportalservicedata.db.name
   location            = var.location
