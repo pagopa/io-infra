@@ -44,7 +44,7 @@ module "apim" {
         # io-p-apim-api.azure-api.net
         default_ssl_binding = false
         host_name           = "io-p-apim-api.azure-api.net"
-        key_vault_id        = ""
+        key_vault_id        = null
       },
       {
         # api-app.internal.io.pagopa.it
