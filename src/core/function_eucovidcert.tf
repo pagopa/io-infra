@@ -2,6 +2,16 @@
 # SECRETS
 #
 
+data "azurerm_key_vault_secret" "fn_eucovidcert_API_KEY_APPBACKEND" {
+  name         = "funceucovidcert-KEY-APPBACKEND"
+  key_vault_id = data.azurerm_key_vault.common.id
+}
+
+data "azurerm_key_vault_secret" "fn_eucovidcert_API_KEY_PUBLICIOEVENTDISPATCHER" {
+  name         = "funceucovidcert-KEY-PUBLICIOEVENTDISPATCHER"
+  key_vault_id = module.key_vault.id
+}
+
 data "azurerm_key_vault_secret" "fn_eucovidcert_DGC_PROD_CLIENT_CERT" {
   name         = "eucovidcert-DGC-PROD-CLIENT-CERT"
   key_vault_id = data.azurerm_key_vault.common.id
@@ -62,22 +72,22 @@ resource "azurerm_resource_group" "eucovidcert_rg" {
   tags = var.tags
 }
 
-# 
+#
 # STORAGE
 #
 module "eucovidcert_storage_account" {
-  source = "git::https://github.com/pagopa/azurerm.git//storage_account?ref=v3.4.0"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//storage_account?ref=v4.1.15"
 
-  name                       = "${replace(local.project, "-", "")}steucovidcert"
-  account_kind               = "StorageV2"
-  account_tier               = "Standard"
-  access_tier                = "Hot"
-  enable_versioning          = false
-  account_replication_type   = "GRS"
-  resource_group_name        = azurerm_resource_group.eucovidcert_rg.name
-  location                   = azurerm_resource_group.eucovidcert_rg.location
-  advanced_threat_protection = false
-  allow_blob_public_access   = false
+  name                            = "${replace(local.project, "-", "")}steucovidcert"
+  account_kind                    = "StorageV2"
+  account_tier                    = "Standard"
+  access_tier                     = "Hot"
+  blob_versioning_enabled         = false
+  account_replication_type        = "GRS"
+  resource_group_name             = azurerm_resource_group.eucovidcert_rg.name
+  location                        = azurerm_resource_group.eucovidcert_rg.location
+  advanced_threat_protection      = false
+  allow_nested_items_to_be_public = false
 
   tags = var.tags
 }
@@ -133,7 +143,7 @@ locals {
       TableStorageConnection                          = module.eucovidcert_storage_account.primary_connection_string
       EUCOVIDCERT_TRACE_NOTIFY_NEW_PROFILE_TABLE_NAME = "TraceNotifyNewProfile"
 
-      FNSERVICES_API_URL = "https://io-p-fn3-services.azurewebsites.net/api/v1" # to be a reference once we migrate fn-services into this repository
+      FNSERVICES_API_URL = join(",", formatlist("https://%s/api/v1", module.function_services.*.default_hostname))
       FNSERVICES_API_KEY = data.azurerm_key_vault_secret.fn_eucovidcert_FNSERVICES_API_KEY.value
 
     }
@@ -143,12 +153,12 @@ locals {
 
 # Subnet to host app function
 module "function_eucovidcert_snet" {
-  source                                         = "git::https://github.com/pagopa/azurerm.git//subnet?ref=v1.0.51"
-  name                                           = format("%s-eucovidcert-snet", local.project)
-  address_prefixes                               = var.cidr_subnet_eucovidcert
-  resource_group_name                            = data.azurerm_resource_group.vnet_common_rg.name
-  virtual_network_name                           = data.azurerm_virtual_network.vnet_common.name
-  enforce_private_link_endpoint_network_policies = true
+  source                                    = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v4.1.15"
+  name                                      = format("%s-eucovidcert-snet", local.project)
+  address_prefixes                          = var.cidr_subnet_eucovidcert
+  resource_group_name                       = data.azurerm_resource_group.vnet_common_rg.name
+  virtual_network_name                      = data.azurerm_virtual_network.vnet_common.name
+  private_endpoint_network_policies_enabled = false
 
   service_endpoints = [
     "Microsoft.Web",
@@ -166,7 +176,7 @@ module "function_eucovidcert_snet" {
 
 #tfsec:ignore:azure-storage-queue-services-logging-enabled:exp:2022-05-01 # already ignored, maybe a bug in tfsec
 module "function_eucovidcert" {
-  source = "git::https://github.com/pagopa/azurerm.git//function_app?ref=v3.4.0"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app?ref=v4.1.15"
 
   resource_group_name = azurerm_resource_group.eucovidcert_rg.name
   name                = format("%s-eucovidcert-fn", local.project)
@@ -190,10 +200,10 @@ module "function_eucovidcert" {
   app_settings = merge(
     local.function_eucovidcert.app_settings_common,
     {
-      "AzureWebJobs.NotifyNewProfileToDGC.Disabled" = "1"
-      "AzureWebJobs.OnProfileCreatedEvent.Disabled" = "1"
+      "AzureWebJobs.NotifyNewProfileToDGC.Disabled" = "0"
     }
   )
+
 
   subnet_id = module.function_eucovidcert_snet.id
 
@@ -209,7 +219,7 @@ module "function_eucovidcert" {
 }
 
 module "function_eucovidcert_staging_slot" {
-  source = "git::https://github.com/pagopa/azurerm.git//function_app_slot?ref=v3.4.0"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app_slot?ref=v4.1.15"
 
   name                = "staging"
   location            = var.location
@@ -232,7 +242,6 @@ module "function_eucovidcert_staging_slot" {
     local.function_eucovidcert.app_settings_common,
     {
       "AzureWebJobs.NotifyNewProfileToDGC.Disabled" = "1"
-      "AzureWebJobs.OnProfileCreatedEvent.Disabled" = "1"
     }
   )
 
