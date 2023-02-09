@@ -17,8 +17,8 @@ locals {
       FETCH_KEEPALIVE_TIMEOUT             = "60000"
 
       // connection to CosmosDB
-      COSMOSDB_CONNECTIONSTRING          = format("AccountEndpoint=%s;AccountKey=%s;", data.azurerm_cosmosdb_account.cosmos_api.endpoint, data.azurerm_cosmosdb_account.cosmos_api.primary_master_key),
-      COSMOSDB_KEY                       = data.azurerm_cosmosdb_account.cosmos_api.primary_master_key
+      COSMOSDB_CONNECTIONSTRING          = format("AccountEndpoint=%s;AccountKey=%s;", data.azurerm_cosmosdb_account.cosmos_api.endpoint, data.azurerm_cosmosdb_account.cosmos_api.primary_key),
+      COSMOSDB_KEY                       = data.azurerm_cosmosdb_account.cosmos_api.primary_key
       COSMOSDB_NAME                      = "db",
       COSMOSDB_SERVICES_COLLECTION       = "services",
       COSMOSDB_SERVICES_LEASE_COLLECTION = "services-subsmigrations-leases-002",
@@ -140,7 +140,7 @@ locals {
 
 #tfsec:ignore:azure-storage-queue-services-logging-enabled:exp:2022-05-01 # already ignored, maybe a bug in tfsec
 module "function_subscriptionmigrations" {
-  source = "git::https://github.com/pagopa/azurerm.git//function_app?ref=v2.9.1"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app?ref=v4.1.15"
 
   name                = format("%s-%s-fn", local.project, local.function_subscriptionmigrations.app_context.name)
   location            = local.function_subscriptionmigrations.app_context.resource_group.location
@@ -167,12 +167,21 @@ module "function_subscriptionmigrations" {
   runtime_version   = "~3"
   os_type           = "linux"
   health_check_path = "/api/v1/info"
+  linux_fx_version  = "NODE|14-lts"
 
   subnet_id   = local.function_subscriptionmigrations.app_context.snet.id
   allowed_ips = local.app_insights_ips_west_europe
   allowed_subnets = [
     module.selfcare_be_common_snet.id,
   ]
+
+  storage_account_info = {
+    account_kind                      = "StorageV2"
+    account_tier                      = "Standard"
+    account_replication_type          = "LRS"
+    access_tier                       = "Hot"
+    advanced_threat_protection_enable = true
+  }
 
   app_settings = merge(local.function_subscriptionmigrations.app_settings_commons, {
     // those are slot configs
@@ -187,7 +196,7 @@ module "function_subscriptionmigrations" {
 
 
 module "function_subscriptionmigrations_staging_slot" {
-  source = "git::https://github.com/pagopa/azurerm.git//function_app_slot?ref=v2.9.1"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app_slot?ref=v4.1.15"
 
   name                = "staging"
   location            = local.function_subscriptionmigrations.app_context.resource_group.location
@@ -205,6 +214,7 @@ module "function_subscriptionmigrations_staging_slot" {
   runtime_version   = "~3"
   os_type           = "linux"
   health_check_path = "/api/v1/info"
+  linux_fx_version  = "NODE|14-lts"
 
   subnet_id = local.function_subscriptionmigrations.app_context.snet.id
   allowed_ips = concat(
@@ -246,7 +256,7 @@ data "azurerm_key_vault_secret" "subscriptionmigrations_db_server_fnsubsmigratio
 
 
 module "subscriptionmigrations_db_server" {
-  source = "git::https://github.com/pagopa/azurerm.git//postgresql_server?ref=v2.1.20"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//postgresql_server?ref=v4.1.15"
 
   name                = local.function_subscriptionmigrations.db.name
   location            = var.location
