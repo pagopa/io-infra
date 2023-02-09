@@ -12,11 +12,12 @@ resource "azurerm_resource_group" "pblevtdispatcher_rg" {
 }
 
 module "function_pblevtdispatcher_snetout" {
-  source               = "git::https://github.com/pagopa/azurerm.git//subnet?ref=v1.0.60"
-  name                 = "fnpblevtdispatcherout"
-  address_prefixes     = var.cidr_subnet_fnpblevtdispatcher
-  resource_group_name  = data.azurerm_resource_group.vnet_common_rg.name
-  virtual_network_name = data.azurerm_virtual_network.vnet_common.name
+  source                                    = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v4.1.15"
+  name                                      = "fnpblevtdispatcherout"
+  address_prefixes                          = var.cidr_subnet_fnpblevtdispatcher
+  resource_group_name                       = data.azurerm_resource_group.vnet_common_rg.name
+  virtual_network_name                      = data.azurerm_virtual_network.vnet_common.name
+  private_endpoint_network_policies_enabled = true
   service_endpoints = [
     "Microsoft.EventHub",
     "Microsoft.Storage",
@@ -36,7 +37,7 @@ module "function_pblevtdispatcher_snetout" {
 # Function App running on engine v3 - to be dismissed once traffic has been moved to v4 instance
 #tfsec:ignore:azure-storage-queue-services-logging-enabled:exp:2022-05-01 # already ignored, maybe a bug in tfsec
 module "function_pblevtdispatcher" {
-  source = "git::https://github.com/pagopa/azurerm.git//function_app?ref=v2.9.1"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app?ref=v4.1.15"
 
   resource_group_name                      = azurerm_resource_group.pblevtdispatcher_rg.name
   name                                     = "${local.project}-fn-pblevtdispatcher"
@@ -46,7 +47,16 @@ module "function_pblevtdispatcher" {
   health_check_path                        = "/api/v1/info"
   subnet_id                                = module.function_pblevtdispatcher_snetout.id
   runtime_version                          = "~3"
+  linux_fx_version                         = "" # windows function
   application_insights_instrumentation_key = data.azurerm_application_insights.application_insights.instrumentation_key
+
+  storage_account_info = {
+    account_kind                      = "StorageV2"
+    account_tier                      = "Standard"
+    account_replication_type          = "LRS"
+    access_tier                       = "Hot"
+    advanced_threat_protection_enable = true
+  }
 
   app_settings = {
     FUNCTIONS_WORKER_RUNTIME       = "node"
@@ -62,7 +72,7 @@ module "function_pblevtdispatcher" {
     FETCH_KEEPALIVE_FREE_SOCKET_TIMEOUT = "30000"
     FETCH_KEEPALIVE_TIMEOUT             = "60000"
 
-    COSMOS_API_CONNECTION_STRING = format("AccountEndpoint=%s;AccountKey=%s;", data.azurerm_cosmosdb_account.cosmos_api.endpoint, data.azurerm_cosmosdb_account.cosmos_api.primary_master_key)
+    COSMOS_API_CONNECTION_STRING = format("AccountEndpoint=%s;AccountKey=%s;", data.azurerm_cosmosdb_account.cosmos_api.endpoint, data.azurerm_cosmosdb_account.cosmos_api.primary_key)
 
     QUEUESTORAGE_APIEVENTS_CONNECTION_STRING = data.azurerm_storage_account.storage_apievents.primary_connection_string
     QUEUESTORAGE_APIEVENTS_EVENTS_QUEUE_NAME = azurerm_storage_queue.storage_account_apievents_events_queue.name
@@ -94,11 +104,12 @@ module "function_pblevtdispatcher" {
 }
 
 module "function_pblevtdispatcher_snetout_v4" {
-  source               = "git::https://github.com/pagopa/azurerm.git//subnet?ref=v1.0.60"
-  name                 = "fnpblevtdispatcherv4out"
-  address_prefixes     = var.cidr_subnet_fnpblevtdispatcherv4
-  resource_group_name  = data.azurerm_resource_group.vnet_common_rg.name
-  virtual_network_name = data.azurerm_virtual_network.vnet_common.name
+  source                                    = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v4.1.15"
+  name                                      = "fnpblevtdispatcherv4out"
+  address_prefixes                          = var.cidr_subnet_fnpblevtdispatcherv4
+  resource_group_name                       = data.azurerm_resource_group.vnet_common_rg.name
+  virtual_network_name                      = data.azurerm_virtual_network.vnet_common.name
+  private_endpoint_network_policies_enabled = true
   service_endpoints = [
     "Microsoft.EventHub",
     "Microsoft.Storage",
@@ -117,7 +128,7 @@ module "function_pblevtdispatcher_snetout_v4" {
 
 
 module "function_pblevtdispatcher_v4" {
-  source = "git::https://github.com/pagopa/azurerm.git//function_app?ref=v3.4.0"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app?ref=v4.1.15"
 
   resource_group_name = azurerm_resource_group.pblevtdispatcher_rg.name
   name                = format("%s-pblevtdispatcher-fn", local.project)
@@ -152,7 +163,7 @@ module "function_pblevtdispatcher_v4" {
     FETCH_KEEPALIVE_FREE_SOCKET_TIMEOUT = "30000"
     FETCH_KEEPALIVE_TIMEOUT             = "60000"
 
-    COSMOS_API_CONNECTION_STRING = format("AccountEndpoint=%s;AccountKey=%s;", data.azurerm_cosmosdb_account.cosmos_api.endpoint, data.azurerm_cosmosdb_account.cosmos_api.primary_master_key)
+    COSMOS_API_CONNECTION_STRING = format("AccountEndpoint=%s;AccountKey=%s;", data.azurerm_cosmosdb_account.cosmos_api.endpoint, data.azurerm_cosmosdb_account.cosmos_api.primary_key)
 
     QUEUESTORAGE_APIEVENTS_CONNECTION_STRING = data.azurerm_storage_account.storage_apievents.primary_connection_string
     QUEUESTORAGE_APIEVENTS_EVENTS_QUEUE_NAME = azurerm_storage_queue.storage_account_apievents_events_queue.name
@@ -189,7 +200,7 @@ module "function_pblevtdispatcher_v4" {
 #tfsec:ignore:azure-storage-default-action-deny
 #tfsec:ignore:azure-storage-queue-services-logging-enabled:exp:2022-05-01 # already ignored, maybe a bug in tfsec
 module "storage_account_pblevtdispatcher" {
-  source = "git::https://github.com/pagopa/azurerm.git//storage_account?ref=v2.7.0"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//storage_account?ref=v4.1.15"
 
   name                       = replace(format("%s-stpblevtdispatcher", local.project), "-", "")
   account_kind               = "StorageV2"

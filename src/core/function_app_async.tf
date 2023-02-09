@@ -21,12 +21,12 @@ resource "azurerm_resource_group" "app_async_rg" {
 
 # Subnet to host app function
 module "app_async_snet" {
-  source                                         = "git::https://github.com/pagopa/azurerm.git//subnet?ref=v1.0.51"
-  name                                           = format("%s-app-async-snet", local.project)
-  address_prefixes                               = var.cidr_subnet_app_async
-  resource_group_name                            = data.azurerm_resource_group.vnet_common_rg.name
-  virtual_network_name                           = data.azurerm_virtual_network.vnet_common.name
-  enforce_private_link_endpoint_network_policies = true
+  source                                    = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v4.1.15"
+  name                                      = format("%s-app-async-snet", local.project)
+  address_prefixes                          = var.cidr_subnet_app_async
+  resource_group_name                       = data.azurerm_resource_group.vnet_common_rg.name
+  virtual_network_name                      = data.azurerm_virtual_network.vnet_common.name
+  private_endpoint_network_policies_enabled = false
 
   service_endpoints = [
     "Microsoft.Web",
@@ -45,7 +45,7 @@ module "app_async_snet" {
 
 #tfsec:ignore:azure-storage-queue-services-logging-enabled:exp:2022-05-01 # already ignored, maybe a bug in tfsec
 module "function_app_async" {
-  source = "git::https://github.com/pagopa/azurerm.git//function_app?ref=v3.4.0"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app?ref=v4.1.15"
 
   resource_group_name = azurerm_resource_group.app_async_rg.name
   name                = format("%s-app-async-fn", local.project)
@@ -93,7 +93,7 @@ module "function_app_async" {
 }
 
 module "function_app_async_staging_slot" {
-  source = "git::https://github.com/pagopa/azurerm.git//function_app_slot?ref=v3.4.0"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app_slot?ref=v4.1.15"
 
   name                = "staging"
   location            = var.location

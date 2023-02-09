@@ -43,9 +43,9 @@ locals {
       NODE_ENV                       = "production"
 
       COSMOSDB_CGN_URI           = data.azurerm_cosmosdb_account.cosmos_cgn.endpoint
-      COSMOSDB_CGN_KEY           = data.azurerm_cosmosdb_account.cosmos_cgn.primary_master_key
+      COSMOSDB_CGN_KEY           = data.azurerm_cosmosdb_account.cosmos_cgn.primary_key
       COSMOSDB_CGN_DATABASE_NAME = "db"
-      COSMOSDB_CONNECTION_STRING = format("AccountEndpoint=%s;AccountKey=%s;", data.azurerm_cosmosdb_account.cosmos_cgn.endpoint, data.azurerm_cosmosdb_account.cosmos_cgn.primary_master_key)
+      COSMOSDB_CONNECTION_STRING = format("AccountEndpoint=%s;AccountKey=%s;", data.azurerm_cosmosdb_account.cosmos_cgn.endpoint, data.azurerm_cosmosdb_account.cosmos_cgn.primary_key)
 
       // Keepalive fields are all optionals
       FETCH_KEEPALIVE_ENABLED             = "true"
@@ -93,7 +93,7 @@ locals {
 
 #tfsec:ignore:azure-storage-queue-services-logging-enabled:exp:2022-05-01 # already ignored, maybe a bug in tfsec
 module "function_cgn" {
-  source = "git::https://github.com/pagopa/azurerm.git//function_app?ref=v3.4.0"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app?ref=v4.1.15"
 
   resource_group_name = azurerm_resource_group.cgn_be_rg.name
   name                = format("%s-cgn-fn", local.project)
@@ -141,7 +141,7 @@ module "function_cgn" {
 }
 
 module "function_cgn_staging_slot" {
-  source = "git::https://github.com/pagopa/azurerm.git//function_app_slot?ref=v3.4.0"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app_slot?ref=v4.1.15"
 
   name                = "staging"
   location            = var.location
