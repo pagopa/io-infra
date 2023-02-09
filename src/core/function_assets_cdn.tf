@@ -18,7 +18,7 @@ locals {
       FETCH_KEEPALIVE_TIMEOUT             = "60000"
 
       COSMOSDB_URI  = data.azurerm_cosmosdb_account.cosmos_api.endpoint
-      COSMOSDB_KEY  = data.azurerm_cosmosdb_account.cosmos_api.primary_master_key
+      COSMOSDB_KEY  = data.azurerm_cosmosdb_account.cosmos_api.primary_key
       COSMOSDB_NAME = "db"
 
       STATIC_WEB_ASSETS_ENDPOINT  = data.azurerm_storage_account.cdnassets.primary_web_host
@@ -34,12 +34,12 @@ locals {
 
 # Subnet to host fn cdn assets function
 module "function_assets_cdn_snet" {
-  source                                         = "git::https://github.com/pagopa/azurerm.git//subnet?ref=v1.0.51"
-  name                                           = format("%s-assets-cdn-fn-snet", local.project)
-  address_prefixes                               = var.cidr_subnet_fncdnassets
-  resource_group_name                            = data.azurerm_resource_group.vnet_common_rg.name
-  virtual_network_name                           = data.azurerm_virtual_network.vnet_common.name
-  enforce_private_link_endpoint_network_policies = true
+  source                                    = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v4.1.15"
+  name                                      = format("%s-assets-cdn-fn-snet", local.project)
+  address_prefixes                          = var.cidr_subnet_fncdnassets
+  resource_group_name                       = data.azurerm_resource_group.vnet_common_rg.name
+  virtual_network_name                      = data.azurerm_virtual_network.vnet_common.name
+  private_endpoint_network_policies_enabled = false
 
   service_endpoints = [
     "Microsoft.Web",
@@ -57,7 +57,7 @@ module "function_assets_cdn_snet" {
 }
 
 module "function_assets_cdn" {
-  source = "git::https://github.com/pagopa/azurerm.git//function_app?ref=v3.4.0"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app?ref=v4.1.15"
 
   resource_group_name = azurerm_resource_group.assets_cdn_rg.name
   name                = "${local.project}-assets-cdn-fn"
@@ -86,7 +86,7 @@ module "function_assets_cdn" {
 
 module "function_assets_cdn_staging_slot" {
   count  = var.function_assets_cdn_sku_tier == "PremiumV3" ? 1 : 0
-  source = "git::https://github.com/pagopa/azurerm.git//function_app_slot?ref=v3.4.0"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app_slot?ref=v4.1.15"
 
   name                = "staging"
   location            = var.location

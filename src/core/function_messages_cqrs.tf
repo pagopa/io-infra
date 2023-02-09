@@ -11,8 +11,8 @@ locals {
 
       COSMOSDB_NAME              = "db"
       COSMOSDB_URI               = data.azurerm_cosmosdb_account.cosmos_api.endpoint
-      COSMOSDB_KEY               = data.azurerm_cosmosdb_account.cosmos_api.primary_master_key
-      COSMOSDB_CONNECTION_STRING = format("AccountEndpoint=%s;AccountKey=%s;", data.azurerm_cosmosdb_account.cosmos_api.endpoint, data.azurerm_cosmosdb_account.cosmos_api.primary_master_key)
+      COSMOSDB_KEY               = data.azurerm_cosmosdb_account.cosmos_api.primary_key
+      COSMOSDB_CONNECTION_STRING = format("AccountEndpoint=%s;AccountKey=%s;", data.azurerm_cosmosdb_account.cosmos_api.endpoint, data.azurerm_cosmosdb_account.cosmos_api.primary_key)
 
       LEASE_COLLECTION_PREFIX = "bulk-status-update-00"
 
@@ -71,12 +71,12 @@ locals {
 
 # Subnet to host fn messages cqrs function
 module "function_messages_cqrs_snet" {
-  source                                         = "git::https://github.com/pagopa/azurerm.git//subnet?ref=v1.0.51"
-  name                                           = format("%s-fn-messages-cqrs-snet", local.project)
-  address_prefixes                               = var.cidr_subnet_fnmessagescqrs
-  resource_group_name                            = data.azurerm_resource_group.vnet_common_rg.name
-  virtual_network_name                           = data.azurerm_virtual_network.vnet_common.name
-  enforce_private_link_endpoint_network_policies = true
+  source                                    = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v4.1.15"
+  name                                      = format("%s-fn-messages-cqrs-snet", local.project)
+  address_prefixes                          = var.cidr_subnet_fnmessagescqrs
+  resource_group_name                       = data.azurerm_resource_group.vnet_common_rg.name
+  virtual_network_name                      = data.azurerm_virtual_network.vnet_common.name
+  private_endpoint_network_policies_enabled = false
 
   service_endpoints = [
     "Microsoft.Web",
@@ -95,7 +95,7 @@ module "function_messages_cqrs_snet" {
 
 #tfsec:ignore:azure-storage-queue-services-logging-enabled:exp:2022-05-01 # already ignored, maybe a bug in tfsec
 module "function_messages_cqrs" {
-  source = "git::https://github.com/pagopa/azurerm.git//function_app?ref=v3.8.1"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app?ref=v4.1.15"
 
   resource_group_name = azurerm_resource_group.backend_messages_rg.name
   name                = format("%s-messages-cqrs-fn", local.project)
@@ -179,7 +179,7 @@ module "function_messages_cqrs" {
 }
 
 module "function_messages_cqrs_staging_slot" {
-  source = "git::https://github.com/pagopa/azurerm.git//function_app_slot?ref=v3.8.1"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app_slot?ref=v4.1.15"
 
   name                = "staging"
   location            = var.location

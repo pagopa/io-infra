@@ -1,12 +1,12 @@
 # APIM subnet
 module "apim_snet" {
-  source               = "git::https://github.com/pagopa/azurerm.git//subnet?ref=v1.0.51"
+  source               = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v4.1.15"
   name                 = "apimapi"
   resource_group_name  = data.azurerm_resource_group.vnet_common_rg.name
   virtual_network_name = data.azurerm_virtual_network.vnet_common.name
   address_prefixes     = var.cidr_subnet_apim
 
-  enforce_private_link_endpoint_network_policies = false
+  private_endpoint_network_policies_enabled = true
 
   service_endpoints = [
     "Microsoft.Web",
@@ -19,7 +19,7 @@ module "apim_snet" {
 # ###########################
 
 module "apim" {
-  source = "git::https://github.com/pagopa/azurerm.git//api_management?ref=v2.5.0"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management?ref=v4.1.15"
 
   subnet_id                 = module.apim_snet.id
   location                  = azurerm_resource_group.rg_internal.location
@@ -40,6 +40,12 @@ module "apim" {
 
   hostname_configuration = {
     proxy = [
+      {
+        # io-p-apim-api.azure-api.net
+        default_ssl_binding = false
+        host_name           = "io-p-apim-api.azure-api.net"
+        key_vault_id        = null
+      },
       {
         # api-internal.io.italia.it
         default_ssl_binding = true

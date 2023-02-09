@@ -21,7 +21,7 @@ locals {
       FETCH_KEEPALIVE_TIMEOUT             = "60000"
 
       COSMOSDB_URI      = data.azurerm_cosmosdb_account.cosmos_api.endpoint
-      COSMOSDB_KEY      = data.azurerm_cosmosdb_account.cosmos_api.primary_master_key
+      COSMOSDB_KEY      = data.azurerm_cosmosdb_account.cosmos_api.primary_key
       COSMOSDB_NAME     = "db"
       StorageConnection = data.azurerm_storage_account.api.primary_connection_string
 
@@ -32,7 +32,7 @@ locals {
 
 #tfsec:ignore:azure-storage-queue-services-logging-enabled:exp:2022-05-01 # already ignored, maybe a bug in tfsec
 module "function_public" {
-  source = "git::https://github.com/pagopa/azurerm.git//function_app?ref=v3.9.2"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app?ref=v4.1.15"
 
   resource_group_name = azurerm_resource_group.shared_rg.name
   name                = format("%s-public-fn", local.project)
@@ -82,7 +82,7 @@ module "function_public" {
 }
 
 module "function_public_staging_slot" {
-  source = "git::https://github.com/pagopa/azurerm.git//function_app_slot?ref=v3.9.2"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app_slot?ref=v4.1.15"
 
   name                = "staging"
   location            = var.location
