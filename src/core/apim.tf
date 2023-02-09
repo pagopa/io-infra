@@ -47,22 +47,22 @@ module "apim" {
         key_vault_id        = null
       },
       {
-        # api-app.internal.io.pagopa.it
-        default_ssl_binding = false
-        host_name           = local.apim_hostname_api_app_internal
-        key_vault_id = replace(
-          data.azurerm_key_vault_certificate.api_app_internal_io_pagopa_it.secret_id,
-          "/${data.azurerm_key_vault_certificate.api_app_internal_io_pagopa_it.version}",
-          ""
-        )
-      },
-      {
-        # api-internal.io.italia.it
+        # api-internal.io.italia.it BA3DFF104DF58133390E62B5BBEB550C893700A0
         default_ssl_binding = true
         host_name           = local.apim_hostname_api_internal
         key_vault_id = replace(
           data.azurerm_key_vault_certificate.api_internal_io_italia_it.secret_id,
           "/${data.azurerm_key_vault_certificate.api_internal_io_italia_it.version}",
+          ""
+        )
+      },
+      {
+        # api-app.internal.io.pagopa.it CA486B553656C9A55919B72C582F2515F76C7B1E
+        default_ssl_binding = false
+        host_name           = local.apim_hostname_api_app_internal
+        key_vault_id = replace(
+          data.azurerm_key_vault_certificate.api_app_internal_io_pagopa_it.secret_id,
+          "/${data.azurerm_key_vault_certificate.api_app_internal_io_pagopa_it.version}",
           ""
         )
       },
