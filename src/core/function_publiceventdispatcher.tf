@@ -12,7 +12,7 @@ resource "azurerm_resource_group" "pblevtdispatcher_rg" {
 }
 
 module "function_pblevtdispatcher_snetout" {
-  source                                    = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v4.1.12"
+  source                                    = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v4.1.15"
   name                                      = "fnpblevtdispatcherout"
   address_prefixes                          = var.cidr_subnet_fnpblevtdispatcher
   resource_group_name                       = data.azurerm_resource_group.vnet_common_rg.name
@@ -37,7 +37,7 @@ module "function_pblevtdispatcher_snetout" {
 # Function App running on engine v3 - to be dismissed once traffic has been moved to v4 instance
 #tfsec:ignore:azure-storage-queue-services-logging-enabled:exp:2022-05-01 # already ignored, maybe a bug in tfsec
 module "function_pblevtdispatcher" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app?ref=v4.1.12"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app?ref=v4.1.15"
 
   resource_group_name                      = azurerm_resource_group.pblevtdispatcher_rg.name
   name                                     = "${local.project}-fn-pblevtdispatcher"
@@ -104,7 +104,7 @@ module "function_pblevtdispatcher" {
 }
 
 module "function_pblevtdispatcher_snetout_v4" {
-  source                                    = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v4.1.12"
+  source                                    = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v4.1.15"
   name                                      = "fnpblevtdispatcherv4out"
   address_prefixes                          = var.cidr_subnet_fnpblevtdispatcherv4
   resource_group_name                       = data.azurerm_resource_group.vnet_common_rg.name
@@ -128,7 +128,7 @@ module "function_pblevtdispatcher_snetout_v4" {
 
 
 module "function_pblevtdispatcher_v4" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app?ref=v4.1.12"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app?ref=v4.1.15"
 
   resource_group_name = azurerm_resource_group.pblevtdispatcher_rg.name
   name                = format("%s-pblevtdispatcher-fn", local.project)
@@ -200,7 +200,7 @@ module "function_pblevtdispatcher_v4" {
 #tfsec:ignore:azure-storage-default-action-deny
 #tfsec:ignore:azure-storage-queue-services-logging-enabled:exp:2022-05-01 # already ignored, maybe a bug in tfsec
 module "storage_account_pblevtdispatcher" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//storage_account?ref=v4.1.12"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//storage_account?ref=v4.1.15"
 
   name                       = replace(format("%s-stpblevtdispatcher", local.project), "-", "")
   account_kind               = "StorageV2"

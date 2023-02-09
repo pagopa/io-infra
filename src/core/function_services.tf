@@ -134,7 +134,7 @@ locals {
 # Subnet to host app function
 module "services_snet" {
   count                                     = var.function_services_count
-  source                                    = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v4.1.12"
+  source                                    = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v4.1.15"
   name                                      = format("%s-services-snet-%d", local.project, count.index + 1)
   address_prefixes                          = [var.cidr_subnet_services[count.index]]
   resource_group_name                       = data.azurerm_resource_group.vnet_common_rg.name
@@ -167,7 +167,7 @@ resource "azurerm_resource_group" "services_rg" {
 #tfsec:ignore:azure-storage-queue-services-logging-enabled:exp:2022-05-01 # already ignored, maybe a bug in tfsec
 module "function_services" {
   count  = var.function_services_count
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app?ref=v4.1.12"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app?ref=v4.1.15"
 
   domain = "IO-COMMONS"
 
@@ -252,7 +252,7 @@ module "function_services" {
 
 module "function_services_staging_slot" {
   count  = var.function_services_count
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app_slot?ref=v4.1.12"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app_slot?ref=v4.1.15"
 
   name                = "staging"
   location            = var.location
