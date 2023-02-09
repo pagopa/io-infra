@@ -119,7 +119,7 @@ resource "azurerm_dns_cname_record" "assets_cdn_io_pagopa_it" {
   zone_name           = azurerm_dns_zone.io_pagopa_it[0].name
   resource_group_name = azurerm_resource_group.rg_external.name
   ttl                 = var.dns_default_ttl_sec
-  record              = azurerm_cdn_endpoint.assets_cdn_endpoint.host_name
+  record              = azurerm_cdn_endpoint.assets_cdn_endpoint.fqdn
 
   tags = var.tags
 }
@@ -144,7 +144,7 @@ resource "azurerm_dns_cname_record" "assets_cdn_io_italia_it" {
   zone_name           = azurerm_dns_zone.io_italia_it.name
   resource_group_name = azurerm_resource_group.rg_external.name
   ttl                 = var.dns_default_ttl_sec
-  record              = azurerm_cdn_endpoint.assets_cdn_endpoint.host_name
+  record              = azurerm_cdn_endpoint.assets_cdn_endpoint.fqdn
 
   tags = var.tags
 }

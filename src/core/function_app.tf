@@ -17,7 +17,7 @@ data "azurerm_key_vault_secret" "fn_app_AZURE_NH_ENDPOINT" {
   key_vault_id = data.azurerm_key_vault.common.id
 }
 
-# 
+#
 # STORAGE
 #
 
@@ -43,7 +43,7 @@ locals {
 
       COSMOSDB_NAME = "db"
       COSMOSDB_URI  = data.azurerm_cosmosdb_account.cosmos_api.endpoint
-      COSMOSDB_KEY  = data.azurerm_cosmosdb_account.cosmos_api.primary_master_key
+      COSMOSDB_KEY  = data.azurerm_cosmosdb_account.cosmos_api.primary_key
 
       MESSAGE_CONTAINER_NAME = local.message_content_container_name
       QueueStorageConnection = data.azurerm_storage_account.api.primary_connection_string
@@ -123,13 +123,13 @@ resource "azurerm_resource_group" "app_rg" {
 
 # Subnet to host app function
 module "app_snet" {
-  count                                          = var.function_app_count
-  source                                         = "git::https://github.com/pagopa/azurerm.git//subnet?ref=v1.0.51"
-  name                                           = format("%s-app-snet-%d", local.project, count.index + 1)
-  address_prefixes                               = [var.cidr_subnet_app[count.index]]
-  resource_group_name                            = data.azurerm_resource_group.vnet_common_rg.name
-  virtual_network_name                           = data.azurerm_virtual_network.vnet_common.name
-  enforce_private_link_endpoint_network_policies = true
+  count                                     = var.function_app_count
+  source                                    = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v4.1.15"
+  name                                      = format("%s-app-snet-%d", local.project, count.index + 1)
+  address_prefixes                          = [var.cidr_subnet_app[count.index]]
+  resource_group_name                       = data.azurerm_resource_group.vnet_common_rg.name
+  virtual_network_name                      = data.azurerm_virtual_network.vnet_common.name
+  private_endpoint_network_policies_enabled = false
 
   service_endpoints = [
     "Microsoft.Web",
@@ -149,7 +149,7 @@ module "app_snet" {
 #tfsec:ignore:azure-storage-queue-services-logging-enabled:exp:2022-05-01 # already ignored, maybe a bug in tfsec
 module "function_app" {
   count  = var.function_app_count
-  source = "git::https://github.com/pagopa/azurerm.git//function_app?ref=v3.4.0"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app?ref=v4.1.15"
 
   resource_group_name = azurerm_resource_group.app_rg[count.index].name
   name                = format("%s-app-fn-%d", local.project, count.index + 1)
@@ -199,7 +199,7 @@ module "function_app" {
 
 module "function_app_staging_slot" {
   count  = var.function_app_count
-  source = "git::https://github.com/pagopa/azurerm.git//function_app_slot?ref=v3.4.0"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app_slot?ref=v4.1.15"
 
   name                = "staging"
   location            = var.location
