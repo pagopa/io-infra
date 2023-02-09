@@ -47,7 +47,7 @@ module "apim" {
         key_vault_id        = null
       },
       {
-        # api-internal.io.italia.it BA3DFF104DF58133390E62B5BBEB550C893700A0
+        # api-internal.io.italia.it
         default_ssl_binding = true
         host_name           = local.apim_hostname_api_internal
         key_vault_id = replace(
@@ -57,7 +57,7 @@ module "apim" {
         )
       },
       {
-        # api-app.internal.io.pagopa.it CA486B553656C9A55919B72C582F2515F76C7B1E
+        # api-app.internal.io.pagopa.it
         default_ssl_binding = false
         host_name           = local.apim_hostname_api_app_internal
         key_vault_id = replace(
