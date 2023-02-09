@@ -41,22 +41,22 @@ module "apim" {
   hostname_configuration = {
     proxy = [
       {
-        # api-internal.io.italia.it
-        default_ssl_binding = true
-        host_name           = local.apim_hostname_api_internal
-        key_vault_id = replace(
-          data.azurerm_key_vault_certificate.api_internal_io_italia_it.secret_id,
-          "/${data.azurerm_key_vault_certificate.api_internal_io_italia_it.version}",
-          ""
-        )
-      },
-      {
         # api-app.internal.io.pagopa.it
         default_ssl_binding = false
         host_name           = local.apim_hostname_api_app_internal
         key_vault_id = replace(
           data.azurerm_key_vault_certificate.api_app_internal_io_pagopa_it.secret_id,
           "/${data.azurerm_key_vault_certificate.api_app_internal_io_pagopa_it.version}",
+          ""
+        )
+      },
+      {
+        # api-internal.io.italia.it
+        default_ssl_binding = true
+        host_name           = local.apim_hostname_api_internal
+        key_vault_id = replace(
+          data.azurerm_key_vault_certificate.api_internal_io_italia_it.secret_id,
+          "/${data.azurerm_key_vault_certificate.api_internal_io_italia_it.version}",
           ""
         )
       },
