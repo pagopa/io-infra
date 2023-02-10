@@ -15,7 +15,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "eucovidcert_availability
   query = <<-QUERY
     AzureDiagnostics
     | where Resource == "${upper(module.app_gw.name)}"
-    | where host_s == "app-backend.io.italia.it"
+    | where host_s == "api-app.io.pagopa.it"
     | where requestUri_s == "/api/v1/eucovidcert/certificate"
     | summarize
         Total=count(),
