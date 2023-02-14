@@ -3,9 +3,9 @@ module "io_sign_storage" {
   name                            = replace(format("%s-st", local.project), "-", "")
   account_kind                    = "StorageV2"
   account_tier                    = "Standard"
-  account_replication_type        = var.storage.replication_type
+  account_replication_type        = var.storage_account.replication_type
   access_tier                     = "Hot"
-  blob_versioning_enabled         = var.storage.enable_versioning
+  blob_versioning_enabled         = var.storage_account.enable_versioning
   resource_group_name             = azurerm_resource_group.data_rg.name
   location                        = azurerm_resource_group.data_rg.location
   advanced_threat_protection      = true
@@ -22,7 +22,7 @@ module "io_sign_storage" {
     virtual_network_subnet_ids = []
   }
 
-  action = var.storage.enable_low_availability_alert ? [
+  action = var.storage_account.enable_low_availability_alert ? [
     {
       action_group_id    = data.azurerm_monitor_action_group.email.id
       webhook_properties = {}
@@ -52,7 +52,7 @@ resource "azurerm_storage_management_policy" "io_sign_storage_management_policy"
     }
     actions {
       base_blob {
-        delete_after_days_since_modification_greater_than = var.storage.delete_after_days
+        delete_after_days_since_modification_greater_than = var.storage_account.delete_after_days
       }
     }
   }

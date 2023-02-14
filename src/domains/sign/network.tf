@@ -20,7 +20,7 @@ module "io_sign_snet" {
   name                 = format("%s-snet", local.project)
   resource_group_name  = data.azurerm_virtual_network.vnet_common.resource_group_name
   virtual_network_name = data.azurerm_virtual_network.vnet_common.name
-  address_prefixes     = var.subnets.issuer
+  address_prefixes     = var.subnets_cidrs.issuer
 
   private_endpoint_network_policies_enabled = false
 
@@ -54,7 +54,7 @@ module "io_sign_user_snet" {
   name                 = format("%s-user-snet", local.project)
   resource_group_name  = data.azurerm_virtual_network.vnet_common.resource_group_name
   virtual_network_name = data.azurerm_virtual_network.vnet_common.name
-  address_prefixes     = var.subnets.user
+  address_prefixes     = var.subnets_cidrs.user
 
   private_endpoint_network_policies_enabled = false
 
@@ -88,7 +88,7 @@ module "io_sign_eventhub_snet" {
   name                 = format("%s-eventhub-snet", local.project)
   resource_group_name  = data.azurerm_virtual_network.vnet_common.resource_group_name
   virtual_network_name = data.azurerm_virtual_network.vnet_common.name
-  address_prefixes     = var.subnets.eventhub
+  address_prefixes     = var.subnets_cidrs.eventhub
 
   private_endpoint_network_policies_enabled = false
 

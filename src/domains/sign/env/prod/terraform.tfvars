@@ -11,13 +11,13 @@ tags = {
   CostCenter  = "BD100 - STRATEGIC INNOVATION"
 }
 
-subnets = {
+subnets_cidrs = {
   issuer   = ["10.0.102.0/24"]
   user     = ["10.0.103.0/24"]
   eventhub = ["10.0.104.0/24"]
 }
 
-storage = {
+storage_account = {
   enable_versioning             = false
   delete_after_days             = 90
   replication_type              = "GZRS"

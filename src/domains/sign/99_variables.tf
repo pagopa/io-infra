@@ -43,19 +43,21 @@ variable "tags" {
 
 # domain specific
 
-variable "subnets" {
+variable "subnets_cidrs" {
   type = map(
     list(string)
   )
+  description = "The CIDR address prefixes of the subnets"
 }
 
-variable "storage" {
+variable "storage_account" {
   type = object({
     enable_versioning             = bool
     delete_after_days             = number
     replication_type              = string
     enable_low_availability_alert = bool
   })
+  description = "The configuration of the storage account storing documents"
 }
 
 variable "cosmos" {
@@ -127,4 +129,5 @@ variable "integration_hub" {
       }))
     }))
   })
+  description = "The configuration, hubs and keys of the event hub relative to external integration"
 }
