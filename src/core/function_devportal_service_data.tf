@@ -162,7 +162,7 @@ module "function_devportalservicedata" {
   runtime_version   = "~3"
   os_type           = "linux"
   health_check_path = "/api/v1/info"
-  linux_fx_version  = "NODE|14-lts"
+  linux_fx_version  = "NODE|14"
 
   storage_account_info = {
     account_kind                      = "StorageV2"
@@ -209,7 +209,8 @@ module "function_devportalservicedata_staging_slot" {
   runtime_version   = "~3"
   os_type           = "linux"
   health_check_path = "/api/v1/info"
-  linux_fx_version  = "NODE|14-lts"
+  linux_fx_version  = "NODE|14"
+  always_on         = "true"
 
   subnet_id = local.function_devportalservicedata.app_context.snet.id
   allowed_ips = concat(
