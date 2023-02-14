@@ -210,6 +210,7 @@ module "function_devportalservicedata_staging_slot" {
   os_type           = "linux"
   health_check_path = "/api/v1/info"
   linux_fx_version  = "NODE|14"
+  always_on         = "true"
 
   subnet_id = local.function_devportalservicedata.app_context.snet.id
   allowed_ips = concat(
