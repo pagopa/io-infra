@@ -207,7 +207,7 @@ module "function_services" {
 
   internal_storage = {
     "enable"                     = true,
-    "private_endpoint_subnet_id" = data.azurerm_subnet.private_endpoints_subnet.id,
+    "private_endpoint_subnet_id" = module.private_endpoints_subnet.id,
     "private_dns_zone_blob_ids"  = [data.azurerm_private_dns_zone.privatelink_blob_core_windows_net.id],
     "private_dns_zone_queue_ids" = [data.azurerm_private_dns_zone.privatelink_queue_core_windows_net.id],
     "private_dns_zone_table_ids" = [data.azurerm_private_dns_zone.privatelink_table_core_windows_net.id],
@@ -234,7 +234,6 @@ module "function_services" {
     data.azurerm_subnet.azdoa_snet[0].id,
     module.apim_snet.id,
     module.function_eucovidcert_snet.id,
-    data.azurerm_subnet.fnapp_eucovidcert_subnet_out.id,
   ]
 
 
@@ -291,7 +290,6 @@ module "function_services_staging_slot" {
     data.azurerm_subnet.azdoa_snet[0].id,
     module.apim_snet.id,
     module.function_eucovidcert_snet.id,
-    data.azurerm_subnet.fnapp_eucovidcert_subnet_out.id,
   ]
 
   tags = var.tags
