@@ -116,7 +116,7 @@ module "cosmos_cgn" {
   # private endpoint
   private_endpoint_name    = format("%s-cosmos-cgn-sql-endpoint", local.project)
   private_endpoint_enabled = true
-  subnet_id                = data.azurerm_subnet.private_endpoints_subnet.id
+  subnet_id                = module.private_endpoints_subnet.id
   private_dns_zone_ids     = [data.azurerm_private_dns_zone.privatelink_documents_azure_com.id]
 
   tags = var.tags
@@ -223,7 +223,7 @@ resource "azurerm_private_endpoint" "cgn_legalbackup_storage" {
   name                = format("%s-cgn-legalbackup-storage", local.project)
   location            = data.azurerm_resource_group.rg_cgn.location
   resource_group_name = data.azurerm_resource_group.rg_cgn.name
-  subnet_id           = data.azurerm_subnet.private_endpoints_subnet.id
+  subnet_id           = module.private_endpoints_subnet.id
 
   private_service_connection {
     name                           = format("%s-cgn-legalbackup-storage-private-endpoint", local.project)

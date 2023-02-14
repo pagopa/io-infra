@@ -57,6 +57,7 @@ cidr_subnet_appbackendl2 = ["10.0.153.0/24"]
 cidr_subnet_appbackendli = ["10.0.154.0/24"]
 cidr_subnet_azdoa        = ["10.0.250.0/24"]
 cidr_subnet_dnsforwarder = ["10.0.252.8/29"]
+cidr_subnet_pendpoints   = ["10.0.240.0/23"]
 
 app_gateway_api_certificate_name                                  = "api-io-pagopa-it"
 app_gateway_api_mtls_certificate_name                             = "api-mtls-io-pagopa-it"
