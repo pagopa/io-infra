@@ -76,7 +76,7 @@ locals {
 
       // PUSH NOTIFICATIONS
       PRE_SHARED_KEY               = data.azurerm_key_vault_secret.app_backend_PRE_SHARED_KEY.value
-      ALLOW_NOTIFY_IP_SOURCE_RANGE = data.azurerm_subnet.fnapp_services_subnet_out.address_prefix
+      ALLOW_NOTIFY_IP_SOURCE_RANGE = "127.0.0.0/0"
 
       // LOCK / UNLOCK SESSION ENDPOINTS
       ALLOW_SESSION_HANDLER_IP_SOURCE_RANGE = module.apim_snet.address_prefixes[0]
@@ -504,7 +504,6 @@ module "appservice_app_backendl1" {
   )
 
   allowed_subnets = [
-    data.azurerm_subnet.fnapp_services_subnet_out.id,
     module.services_snet[0].id,
     module.services_snet[1].id,
     module.appgateway_snet.id,
@@ -547,7 +546,6 @@ module "appservice_app_backendl1_slot_staging" {
 
   allowed_subnets = [
     data.azurerm_subnet.azdoa_snet[0].id,
-    data.azurerm_subnet.fnapp_services_subnet_out.id,
     module.services_snet[0].id,
     module.services_snet[1].id,
     module.appgateway_snet.id,
@@ -719,7 +717,6 @@ module "appservice_app_backendl2" {
   )
 
   allowed_subnets = [
-    data.azurerm_subnet.fnapp_services_subnet_out.id,
     module.services_snet[0].id,
     module.services_snet[1].id,
     module.appgateway_snet.id,
@@ -762,7 +759,6 @@ module "appservice_app_backendl2_slot_staging" {
 
   allowed_subnets = [
     data.azurerm_subnet.azdoa_snet[0].id,
-    data.azurerm_subnet.fnapp_services_subnet_out.id,
     module.services_snet[0].id,
     module.services_snet[1].id,
     module.appgateway_snet.id,
@@ -934,7 +930,6 @@ module "appservice_app_backendli" {
   )
 
   allowed_subnets = [
-    data.azurerm_subnet.fnapp_services_subnet_out.id,
     module.services_snet[0].id,
     module.services_snet[1].id,
     module.admin_snet.id,
@@ -977,7 +972,6 @@ module "appservice_app_backendli_slot_staging" {
 
   allowed_subnets = [
     data.azurerm_subnet.azdoa_snet[0].id,
-    data.azurerm_subnet.fnapp_services_subnet_out.id,
     module.services_snet[0].id,
     module.services_snet[1].id,
     module.admin_snet.id,
