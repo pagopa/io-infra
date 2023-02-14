@@ -7,7 +7,7 @@ resource "azurerm_resource_group" "sec_rg" {
 
 #tfsec:ignore:azure-keyvault-specify-network-acl:exp:2022-05-01 # already ignored, maybe a bug in tfsec
 module "key_vault" {
-  source              = "git::https://github.com/pagopa/terraform-azurerm-v3.git//key_vault?ref=v4.1.15"
+  source              = "git::https://github.com/pagopa/terraform-azurerm-v3.git//key_vault?ref=v4.1.16"
   name                = format("%s-kv", local.project)
   location            = azurerm_resource_group.sec_rg.location
   resource_group_name = azurerm_resource_group.sec_rg.name

@@ -14,7 +14,7 @@ data "azurerm_subnet" "azdoa_snet" {
 }
 
 module "azdoa_li" {
-  source              = "git::https://github.com/pagopa/terraform-azurerm-v3.git//azure_devops_agent?ref=v4.1.15"
+  source              = "git::https://github.com/pagopa/terraform-azurerm-v3.git//azure_devops_agent?ref=v4.1.16"
   count               = var.enable_azdoa ? 1 : 0
   name                = format("%s-azdoa-vmss-li", local.project)
   resource_group_name = azurerm_resource_group.azdo_rg[0].name
@@ -25,7 +25,7 @@ module "azdoa_li" {
 }
 
 module "azdoa_loadtest_li" {
-  source              = "git::https://github.com/pagopa/terraform-azurerm-v3.git//azure_devops_agent?ref=v4.1.15"
+  source              = "git::https://github.com/pagopa/terraform-azurerm-v3.git//azure_devops_agent?ref=v4.1.16"
   count               = var.enable_azdoa ? 1 : 0
   name                = format("%s-azdoa-vmss-loadtest-li", local.project)
   resource_group_name = azurerm_resource_group.azdo_rg[0].name

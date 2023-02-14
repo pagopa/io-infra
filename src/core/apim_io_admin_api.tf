@@ -1,5 +1,5 @@
 module "apim_product_admin" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_product?ref=v4.1.15"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_product?ref=v4.1.16"
 
   product_id            = "io-admin-api"
   api_management_name   = module.apim.name
@@ -37,7 +37,7 @@ resource "azurerm_api_management_named_value" "io_fn3_admin_key" {
 }
 
 module "api_admin" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api?ref=v4.1.15"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api?ref=v4.1.16"
 
   name                = "io-admin-api"
   api_management_name = module.apim.name
