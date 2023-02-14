@@ -77,16 +77,6 @@ locals {
 }
 
 #
-# Private subnet
-#
-
-data "azurerm_subnet" "private_endpoints_subnet" {
-  name                 = "pendpoints"
-  virtual_network_name = format("%s-vnet-common", local.project)
-  resource_group_name  = format("%s-rg-common", local.project)
-}
-
-#
 # Private dns zones
 #
 

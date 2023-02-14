@@ -267,6 +267,11 @@ variable "cidr_subnet_fnadmin" {
   description = "Function Admin address space."
 }
 
+variable "cidr_subnet_pendpoints" {
+  type        = list(string)
+  description = "Private Endpoints address space."
+}
+
 ## VPN ##
 variable "vpn_sku" {
   type        = string
