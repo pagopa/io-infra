@@ -77,9 +77,7 @@ module "function_lollipop" {
   }
 
   app_settings = merge(
-    local.function_lollipop.app_settings_common, {
-      # add settings here
-    }
+    local.function_lollipop.app_settings,
   )
 
   internal_storage = {
@@ -135,9 +133,7 @@ module "function_lollipop_staging_slot" {
   application_insights_instrumentation_key = data.azurerm_application_insights.application_insights.instrumentation_key
 
   app_settings = merge(
-    local.function_lollipop.app_settings_common, {
-      # Disabled Queue Trigger Activity on slot
-    }
+    local.function_lollipop.app_settings,
   )
 
   subnet_id = module.lollipop_snet.id
