@@ -167,7 +167,7 @@ module "function_subscriptionmigrations" {
   runtime_version   = "~3"
   os_type           = "linux"
   health_check_path = "/api/v1/info"
-  linux_fx_version  = "NODE|14-lts"
+  linux_fx_version  = "NODE|14"
 
   subnet_id   = local.function_subscriptionmigrations.app_context.snet.id
   allowed_ips = local.app_insights_ips_west_europe
@@ -214,7 +214,7 @@ module "function_subscriptionmigrations_staging_slot" {
   runtime_version   = "~3"
   os_type           = "linux"
   health_check_path = "/api/v1/info"
-  linux_fx_version  = "NODE|14-lts"
+  linux_fx_version  = "NODE|14"
 
   subnet_id = local.function_subscriptionmigrations.app_context.snet.id
   allowed_ips = concat(
