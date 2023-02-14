@@ -30,42 +30,12 @@ data "azurerm_cosmosdb_account" "cosmos_cgn" {
 }
 
 #
-# Function services resources
-#
-
-data "azurerm_function_app" "fnapp_services" {
-  name                = format("%s-fn3-services", local.project)
-  resource_group_name = format("%s-rg-internal", local.project)
-}
-
-data "azurerm_subnet" "fnapp_services_subnet_out" {
-  name                 = "fn3services"
-  virtual_network_name = format("%s-vnet-common", local.project)
-  resource_group_name  = format("%s-rg-common", local.project)
-}
-
-#
 # Bonus vacanze resources
 #
 
 data "azurerm_function_app" "fnapp_bonus" {
   name                = format("%s-func-bonus", local.project)
   resource_group_name = format("%s-rg-internal", local.project)
-}
-
-#
-# EUCovicCert resources
-#
-
-data "azurerm_function_app" "fnapp_eucovidcert" {
-  name                = format("%s-fn3-eucovidcert", local.project)
-  resource_group_name = format("%s-rg-eucovidcert", local.project)
-}
-
-data "azurerm_subnet" "fnapp_eucovidcert_subnet_out" {
-  name                 = "fn3eucovidcert"
-  virtual_network_name = format("%s-vnet-common", local.project)
-  resource_group_name  = format("%s-rg-common", local.project)
 }
 
 #
@@ -104,16 +74,6 @@ data "azurerm_storage_account" "notifications" {
 # todo migrate storage account and related resources
 locals {
   storage_account_notifications_queue_push_notifications = "push-notifications"
-}
-
-#
-# Private subnet
-#
-
-data "azurerm_subnet" "private_endpoints_subnet" {
-  name                 = "pendpoints"
-  virtual_network_name = format("%s-vnet-common", local.project)
-  resource_group_name  = format("%s-rg-common", local.project)
 }
 
 #
