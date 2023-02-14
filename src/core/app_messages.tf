@@ -88,7 +88,7 @@ module "redis_messages" {
   private_endpoint = {
     enabled              = true
     virtual_network_id   = data.azurerm_virtual_network.vnet_common.id
-    subnet_id            = data.azurerm_subnet.private_endpoints_subnet.id
+    subnet_id            = module.private_endpoints_subnet.id
     private_dns_zone_ids = [azurerm_private_dns_zone.privatelink_redis_cache.id]
   }
 
