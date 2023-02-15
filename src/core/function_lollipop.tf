@@ -2,7 +2,7 @@ locals {
   function_lollipop = {
     app_settings = {
       FUNCTIONS_WORKER_RUNTIME       = "node"
-      WEBSITE_NODE_DEFAULT_VERSION   = "16.9.1"
+      WEBSITE_NODE_DEFAULT_VERSION   = "18.13.0"
       FUNCTIONS_WORKER_PROCESS_COUNT = 4
       NODE_ENV                       = "production"
 
@@ -63,7 +63,7 @@ module "function_lollipop" {
   health_check_path   = "/info"
 
   os_type          = "linux"
-  linux_fx_version = "NODE|16"
+  linux_fx_version = "NODE|18"
   runtime_version  = "~4"
 
   always_on                                = "true"
@@ -127,7 +127,7 @@ module "function_lollipop_staging_slot" {
   internal_storage_connection_string = module.function_lollipop.storage_account_internal_function.primary_connection_string
 
   os_type                                  = "linux"
-  linux_fx_version                         = "NODE|16"
+  linux_fx_version                         = "NODE|18"
   always_on                                = "true"
   runtime_version                          = "~4"
   application_insights_instrumentation_key = data.azurerm_application_insights.application_insights.instrumentation_key
