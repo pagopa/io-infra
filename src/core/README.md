@@ -119,8 +119,8 @@
 | <a name="module_function_subscriptionmigrations_staging_slot"></a> [function\_subscriptionmigrations\_staging\_slot](#module\_function\_subscriptionmigrations\_staging\_slot) | git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app_slot | v4.1.15 |
 | <a name="module_io_apist_replica"></a> [io\_apist\_replica](#module\_io\_apist\_replica) | git::https://github.com/pagopa/terraform-azurerm-v3.git//storage_object_replication | v4.1.15 |
 | <a name="module_key_vault"></a> [key\_vault](#module\_key\_vault) | git::https://github.com/pagopa/terraform-azurerm-v3.git//key_vault | v4.1.15 |
-| <a name="module_private_endpoints_subnet"></a> [private\_endpoints\_subnet](#module\_private\_endpoints\_subnet) | git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet | v4.1.4 |
 | <a name="module_lollipop_snet"></a> [lollipop\_snet](#module\_lollipop\_snet) | git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet | v4.1.15 |
+| <a name="module_private_endpoints_subnet"></a> [private\_endpoints\_subnet](#module\_private\_endpoints\_subnet) | git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet | v4.1.4 |
 | <a name="module_redis_cgn"></a> [redis\_cgn](#module\_redis\_cgn) | git::https://github.com/pagopa/terraform-azurerm-v3.git//redis_cache | v4.1.15 |
 | <a name="module_redis_cgn_snet"></a> [redis\_cgn\_snet](#module\_redis\_cgn\_snet) | git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet | v4.1.15 |
 | <a name="module_redis_messages"></a> [redis\_messages](#module\_redis\_messages) | git::https://github.com/pagopa/terraform-azurerm-v3.git//redis_cache | v4.1.15 |
