@@ -1,4 +1,4 @@
-resource "azurerm_api_management_group" "apilollipopassertionread" {
+resource "azurerm_api_management_group" "api_lollipop_assertion_read" {
   name                = "apilollipopassertionread"
   api_management_name = module.apim.name
   resource_group_name = module.apim.resource_group_name
@@ -85,7 +85,7 @@ resource "azurerm_api_management_group_user" "pagopa_group" {
   user_id             = azurerm_api_management_user.pagopa_user.user_id
   api_management_name = module.apim.name
   resource_group_name = module.apim.resource_group_name
-  group_name          = azurerm_api_management_group.apilollipopassertionread.name
+  group_name          = azurerm_api_management_group.api_lollipop_assertion_read.name
 }
 
 resource "azurerm_api_management_subscription" "pagopa" {
