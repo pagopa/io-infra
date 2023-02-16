@@ -44,7 +44,7 @@ resource "azurerm_api_management_group_user" "pagopa_group" {
 }
 
 resource "azurerm_api_management_subscription" "pagopa" {
-  user_id             = azurerm_api_management_user.reminder_user.id
+  user_id             = azurerm_api_management_user.pagopa_user.id
   api_management_name = module.apim.name
   resource_group_name = module.apim.resource_group_name
   product_id          = module.apim_product_lollipop.id
