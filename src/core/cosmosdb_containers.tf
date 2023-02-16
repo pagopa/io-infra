@@ -11,10 +11,6 @@ resource "azurerm_cosmosdb_sql_container" "lollipop_thumbprints" {
   partition_key_path    = "/thumbprintId"
   partition_key_version = 2
 
-  dynamic "autoscale_settings" {
-    max_throughput = 10000
-  }
-
   default_ttl = -1
 
 }
