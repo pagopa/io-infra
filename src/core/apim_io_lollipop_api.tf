@@ -46,7 +46,7 @@ module "apim_lollipop_api_v1" {
 }
 
 # Named Value fn-lollipop
-resource "azurerm_api_management_named_value" "io_fn3_services_url" {
+resource "azurerm_api_management_named_value" "io_fn_lollipop_url" {
   name                = "io-fn-lollipop-url"
   api_management_name = module.apim.name
   resource_group_name = module.apim.resource_group_name
