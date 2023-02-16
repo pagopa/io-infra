@@ -135,6 +135,9 @@ module "appservice_devportal_be" {
     JIRA_EMAIL_ID_FIELD        = "customfield_10084"
     JIRA_ORGANIZATION_ID_FIELD = "customfield_10088"
     JIRA_TOKEN                 = data.azurerm_key_vault_secret.devportal_jira_token.value
+
+    # Feature Flags
+    MANAGE_FLOW_ENABLE_USER_LIST = ""
   }
 
   allowed_subnets = [module.appgateway_snet.id]
