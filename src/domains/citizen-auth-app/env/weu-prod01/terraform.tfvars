@@ -43,3 +43,12 @@ tls_cert_check_helm = {
 ### Aks
 
 ingress_load_balancer_ip = "10.11.100.250"
+
+# Functions LolliPoP
+cidr_subnet_fnlollipop              = ["10.0.17.0/26"]
+function_lollipop_kind              = "Linux"
+function_lollipop_sku_tier          = "PremiumV3"
+function_lollipop_sku_size          = "P1v3"
+function_lollipop_autoscale_minimum = 1
+function_lollipop_autoscale_maximum = 3
+function_lollipop_autoscale_default = 1
