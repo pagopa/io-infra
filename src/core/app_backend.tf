@@ -205,6 +205,20 @@ locals {
             }
           }
         },
+        # Firma con IO (io-sign)
+        {
+          serviceId  = var.io_sign_service_id,
+          schemaKind = "IO-SIGN",
+          jsonSchema = "unused",
+          prodEnvironment = {
+            baseUrl = IO_SIGN_API_URL,
+            detailsAuthentication = {
+              type            = "API_KEY",
+              header_key_name = "X-Functions-Key",
+              key             = IO_SIGN_API_KEY
+            }
+          }
+        },
         # Mock Service
         {
           serviceId  = var.third_party_mock_service_id,
