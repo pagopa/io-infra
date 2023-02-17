@@ -143,7 +143,7 @@ module "appservice_devportal_be" {
     # The "Manage Flow" allows the use of a specific subscription (Manage Subscription) keys as API Key for Service create/update.
     # Note: The list below is for the user IDs only, not the full path APIM.id.
     # Example: "userId1,userId2,...,userIdN"
-    MANAGE_FLOW_ENABLE_USER_LIST = ""
+    MANAGE_FLOW_ENABLE_USER_LIST = join(", ", [])
   }
 
   allowed_subnets = [module.appgateway_snet.id]
