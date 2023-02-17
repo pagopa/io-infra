@@ -64,7 +64,7 @@ resource "azurerm_api_management_named_value" "io_fn_weu_lollipop_url" {
 
 data "azurerm_key_vault_secret" "io_fn_weu_lollipop_key_secret" {
   name         = "io-fn-weu-lollipop-KEY-APIM"
-  key_vault_id = module.key_vault.common.id
+  key_vault_id = module.key_vault.id
 }
 
 resource "azurerm_api_management_named_value" "io_fn_weu_lollipop_key" {
