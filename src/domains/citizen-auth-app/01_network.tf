@@ -53,13 +53,13 @@ data "azurerm_subnet" "private_endpoints_subnet" {
 }
 
 data "azurerm_subnet" "app_backend_l1_snet" {
-  name = "appbackendl1"
+  name                 = "appbackendl1"
   virtual_network_name = local.vnet_common_name
   resource_group_name  = local.vnet_common_resource_group_name
 }
 
 data "azurerm_subnet" "app_backend_l2_snet" {
-  name = "appbackendl2"
+  name                 = "appbackendl2"
   virtual_network_name = local.vnet_common_name
   resource_group_name  = local.vnet_common_resource_group_name
 }
