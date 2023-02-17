@@ -7,7 +7,7 @@ on:
     branches:
       - main
     paths:
-      - 'src/citizen-auth/**'
+      - 'src/domains/citizen-auth/**'
       - '.github/workflows/prod**'
 
 permissions:
@@ -15,7 +15,7 @@ permissions:
   contents: read
 
 env:
-  DIR: "src/citizen-auth"
+  DIR: "src/domains/citizen-auth"
   AZURE_ENVIRONMENT: prod
 
 jobs:
@@ -57,15 +57,35 @@ jobs:
         # https://github.com/pagopa/terraform-install-action/commits/main
         uses: pagopa/terraform-install-action@1f76f593176e58c423b88d72273a612ba7ba430b
 
-      - name: Terraform pre apply
+      - name: Terraform pre apply common
         # from https://github.com/pagopa/terraform-preapply-azure-action/commits/main
         uses: pagopa/terraform-preapply-azure-action@e84854118228b55e9c4c9e9c7c94bde4b2c27b9f
         with:
           client_id: ${{ secrets.AZURE_CLIENT_ID }}
           tenant_id: ${{ secrets.AZURE_TENANT_ID }}
           subscription_id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
-          dir: ${{ env.DIR }}
-          azure_environment: ${{ env.AZURE_ENVIRONMENT }}
+          dir: ${{ env.DIR }}-common
+          azure_environment: prod
+
+      - name: Terraform pre apply weu-beta
+        # from https://github.com/pagopa/terraform-preapply-azure-action/commits/main
+        uses: pagopa/terraform-preapply-azure-action@e84854118228b55e9c4c9e9c7c94bde4b2c27b9f
+        with:
+          client_id: ${{ secrets.AZURE_CLIENT_ID }}
+          tenant_id: ${{ secrets.AZURE_TENANT_ID }}
+          subscription_id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+          dir: ${{ env.DIR }}-app
+          azure_environment: weu-beta
+
+      - name: Terraform pre apply weu-prod01
+        # from https://github.com/pagopa/terraform-preapply-azure-action/commits/main
+        uses: pagopa/terraform-preapply-azure-action@e84854118228b55e9c4c9e9c7c94bde4b2c27b9f
+        with:
+          client_id: ${{ secrets.AZURE_CLIENT_ID }}
+          tenant_id: ${{ secrets.AZURE_TENANT_ID }}
+          subscription_id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+          dir: ${{ env.DIR }}-app
+          azure_environment: weu-prod01
 
   terraform_apply_job:
     name: Terraform Apply
@@ -73,15 +93,35 @@ jobs:
     environment: prod-cd
     needs: [create_runner, terraform_preapply_job]
     steps:
-      - name: Terraform apply
+      - name: Terraform apply common
         # from https://github.com/pagopa/terraform-apply-azure-action/commits/main
         uses: pagopa/terraform-apply-azure-action@5d25b7991a67c070b49356fbc073e339783096df
         with:
           client_id: ${{ secrets.AZURE_CLIENT_ID }}
           tenant_id: ${{ secrets.AZURE_TENANT_ID }}
           subscription_id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
-          dir: ${{ env.DIR }}
-          azure_environment: ${{ env.AZURE_ENVIRONMENT }}
+          dir: ${{ env.DIR }}-common
+          azure_environment: prod
+
+      - name: Terraform apply weu-beta
+        # from https://github.com/pagopa/terraform-apply-azure-action/commits/main
+        uses: pagopa/terraform-apply-azure-action@5d25b7991a67c070b49356fbc073e339783096df
+        with:
+          client_id: ${{ secrets.AZURE_CLIENT_ID }}
+          tenant_id: ${{ secrets.AZURE_TENANT_ID }}
+          subscription_id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+          dir: ${{ env.DIR }}-app
+          azure_environment: weu-beta
+
+      - name: Terraform apply weu-prod01
+        # from https://github.com/pagopa/terraform-apply-azure-action/commits/main
+        uses: pagopa/terraform-apply-azure-action@5d25b7991a67c070b49356fbc073e339783096df
+        with:
+          client_id: ${{ secrets.AZURE_CLIENT_ID }}
+          tenant_id: ${{ secrets.AZURE_TENANT_ID }}
+          subscription_id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+          dir: ${{ env.DIR }}-app
+          azure_environment: weu-prod01
 
   cleanup_runner:
     name: Cleanup Runner
