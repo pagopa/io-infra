@@ -10,7 +10,7 @@ permissions:
   contents: read
 
 env:
-  DIR: "src/citizen-auth"
+  DIR: "src/domains/citizen-auth"
   AZURE_ENVIRONMENT: prod
 
 jobs:
