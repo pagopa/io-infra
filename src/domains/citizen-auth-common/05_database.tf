@@ -1,3 +1,14 @@
+data "azurerm_cosmosdb_account" "cosmos_api" {
+  name                = format("%s-cosmos-api", local.product)
+  resource_group_name = format("%s-rg-internal", local.product)
+}
+
+data "azurerm_cosmosdb_sql_database" "db" {
+  name                = "db"
+  resource_group_name = data.azurerm_cosmosdb_account.cosmos_api.resource_group_name
+  account_name        = data.azurerm_cosmosdb_account.cosmos_api.name
+}
+
 #
 # LolliPOP containers
 #

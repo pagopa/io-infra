@@ -10,12 +10,6 @@ data "azurerm_cosmosdb_account" "cosmos_api" {
   resource_group_name = format("%s-rg-internal", local.project)
 }
 
-data "azurerm_cosmosdb_sql_database" "db" {
-  name                = "db"
-  resource_group_name = data.azurerm_cosmosdb_account.cosmos_api.resource_group_name
-  account_name        = data.azurerm_cosmosdb_account.cosmos_api.name
-}
-
 data "azurerm_redis_cache" "redis_common" {
   name                = format("%s-redis-common", local.project)
   resource_group_name = format("%s-rg-common", local.project)
