@@ -9,7 +9,7 @@ on:
       - synchronize
       - reopened
     paths:
-      - 'src/citizen-auth/**'
+      - 'src/domains/citizen-auth/**'
       - '.github/workflows/prod**'
 
 permissions:
@@ -17,7 +17,7 @@ permissions:
   contents: read
 
 env:
-  DIR: "src/citizen-auth"
+  DIR: "src/domains/citizen-auth"
   AZURE_ENVIRONMENT: prod
 
 jobs:
