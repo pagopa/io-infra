@@ -272,6 +272,11 @@ variable "cidr_subnet_pendpoints" {
   description = "Private Endpoints address space."
 }
 
+variable "cidr_subnet_fnlollipop" {
+  type        = list(string)
+  description = "Function Lollipop address space."
+}
+
 ## VPN ##
 variable "vpn_sku" {
   type        = string
