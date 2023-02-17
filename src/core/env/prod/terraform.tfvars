@@ -37,6 +37,7 @@ cidr_subnet_redis_apim                     = ["10.0.14.0/24"]
 cidr_subnet_fnadmin                        = ["10.0.15.0/26"]
 cidr_subnet_fnpblevtdispatcherv4           = ["10.0.15.64/26"]
 cidr_subnet_shared_1                       = ["10.0.16.0/26"]
+cidr_subnet_fnlollipop                     = ["10.0.17.0/26"]
 cidr_subnet_apim                           = ["10.0.101.0/24"]
 cidr_subnet_appmessages                    = ["10.0.127.0/24", "10.0.128.0/24"]
 cidr_subnet_fnmessagescqrs                 = ["10.0.129.0/24"]
@@ -197,6 +198,14 @@ function_admin_sku_size          = "P1v3"
 function_admin_autoscale_minimum = 1
 function_admin_autoscale_maximum = 3
 function_admin_autoscale_default = 1
+
+# Functions LolliPoP
+function_lollipop_kind              = "Linux"
+function_lollipop_sku_tier          = "PremiumV3"
+function_lollipop_sku_size          = "P1v3"
+function_lollipop_autoscale_minimum = 1
+function_lollipop_autoscale_maximum = 3
+function_lollipop_autoscale_default = 1
 
 # Functions Cgn
 plan_cgn_kind                  = "Linux"
