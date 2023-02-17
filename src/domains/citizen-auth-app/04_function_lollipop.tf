@@ -59,7 +59,7 @@ module "function_lollipop" {
   count  = var.lollipop_enabled ? 1 : 0
   source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app?ref=v4.1.15"
 
-  resource_group_name = azurerm_resource_group.lollipop_rg.name
+  resource_group_name = azurerm_resource_group.lollipop_rg[0].name
   name                = format("%s-lollipop-fn", local.common_project)
   location            = var.location
   domain              = "IO-COMMONS"
@@ -120,7 +120,7 @@ module "function_lollipop_staging_slot" {
 
   name                = "staging"
   location            = var.location
-  resource_group_name = azurerm_resource_group.lollipop_rg.name
+  resource_group_name = azurerm_resource_group.lollipop_rg[0].name
   function_app_name   = module.function_lollipop[0].name
   function_app_id     = module.function_lollipop[0].id
   app_service_plan_id = module.function_lollipop[0].app_service_plan_id
@@ -156,7 +156,7 @@ module "function_lollipop_staging_slot" {
 resource "azurerm_monitor_autoscale_setting" "function_lollipop" {
   count               = var.lollipop_enabled ? 1 : 0
   name                = format("%s-autoscale", module.function_lollipop[0].name)
-  resource_group_name = azurerm_resource_group.lollipop_rg.name
+  resource_group_name = azurerm_resource_group.lollipop_rg[0].name
   location            = var.location
   target_resource_id  = module.function_lollipop[0].app_service_plan_id
 
