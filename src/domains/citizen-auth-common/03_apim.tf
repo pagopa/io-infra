@@ -54,25 +54,25 @@ module "apim_lollipop_api_v1" {
 }
 
 # Named Value fn-lollipop
-resource "azurerm_api_management_named_value" "io_fn_lollipop_url" {
-  name                = "io-fn-lollipop-url"
+resource "azurerm_api_management_named_value" "io_fn_weu_lollipop_url" {
+  name                = "io_fn_weu_lollipop_url"
   api_management_name = data.azurerm_api_management.apim_api.name
   resource_group_name = data.azurerm_api_management.apim_api.resource_group_name
-  display_name        = "io-fn-lollipop-url"
-  value               = "https://io-p-lollipop-fn.azurewebsites.net"
+  display_name        = "io_fn_weu_lollipop_url"
+  value               = "https://io-p-weu-lollipop-fn.azurewebsites.net"
 }
 
-data "azurerm_key_vault_secret" "io_fn_lollipop_key_secret" {
-  name         = "fn-lollipop-KEY-APIM"
-  key_vault_id = data.azurerm_key_vault.common.id
+data "azurerm_key_vault_secret" "io_fn_weu_lollipop_key_secret" {
+  name         = "io-fn-weu-lollipop-KEY-APIM"
+  key_vault_id = module.key_vault.common.id
 }
 
-resource "azurerm_api_management_named_value" "io_fn_lollipop_key" {
-  name                = "io-fn-lollipop-key"
+resource "azurerm_api_management_named_value" "io_fn_weu_lollipop_key" {
+  name                = "io-fn-weu-lollipop-key"
   api_management_name = data.azurerm_api_management.apim_api.name
   resource_group_name = data.azurerm_api_management.apim_api.resource_group_name
-  display_name        = "io-fn-lollipop-key"
-  value               = data.azurerm_key_vault_secret.io_fn_lollipop_key_secret.value
+  display_name        = "io-fn-weu-lollipop-key"
+  value               = data.azurerm_key_vault_secret.io_fn_weu_lollipop_key_secret.value
   secret              = "true"
 }
 
