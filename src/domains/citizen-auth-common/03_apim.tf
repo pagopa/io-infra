@@ -34,7 +34,7 @@ module "apim_product_lollipop" {
 module "apim_lollipop_api_v1" {
   source = "git::https://github.com/pagopa/terraform-azurerm-v3//api_management_api?ref=v4.1.5"
 
-  name                  = format("%s-lollipop-api", local.project)
+  name                  = format("%s-lollipop-api", local.product)
   api_management_name   = data.azurerm_api_management.apim_api.name
   resource_group_name   = data.azurerm_api_management.apim_api.resource_group_name
   product_ids           = [module.apim_product_lollipop.product_id]
