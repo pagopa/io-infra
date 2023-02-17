@@ -9,8 +9,8 @@ on:
       - synchronize
       - reopened
     paths:
-      - 'src/domains/citizen-auth/**'
-      - '.github/workflows/prod**'
+      - "src/domains/citizen-auth**"
+      - ".github/workflows/prod**"
 
 permissions:
   id-token: write
