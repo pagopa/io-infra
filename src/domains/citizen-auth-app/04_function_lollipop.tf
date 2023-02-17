@@ -153,6 +153,7 @@ module "function_lollipop_staging_slot" {
 }
 
 resource "azurerm_monitor_autoscale_setting" "function_lollipop" {
+  count               = var.lollipop_enabled ? 1 : 0
   name                = format("%s-autoscale", module.function_lollipop[0].name)
   resource_group_name = azurerm_resource_group.lollipop_rg.name
   location            = var.location
