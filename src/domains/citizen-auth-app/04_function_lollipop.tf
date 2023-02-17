@@ -23,6 +23,7 @@ locals {
 }
 
 resource "azurerm_resource_group" "lollipop_rg" {
+  count    = var.lollipop_enabled ? 1 : 0
   name     = format("%s-lollipop-rg", local.common_project)
   location = var.location
 
