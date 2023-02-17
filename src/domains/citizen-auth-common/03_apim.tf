@@ -1,7 +1,15 @@
+data "azurerm_api_management" "apim_api" {
+  name                = local.apim_name
+  resource_group_name = local.apim_resource_group_name
+}
+
+####################################################################################
+# Lollipop APIM Product
+####################################################################################
 resource "azurerm_api_management_group" "api_lollipop_assertion_read" {
   name                = "apilollipopassertionread"
-  api_management_name = module.apim.name
-  resource_group_name = module.apim.resource_group_name
+  api_management_name = data.azurerm_api_management.apim_api.name
+  resource_group_name = data.azurerm_api_management.apim_api.resource_group_name
   display_name        = "ApiLollipopAssertionRead"
   description         = "A group that enables LC to retrieve user's assertion on a Lollipop flow"
 }
@@ -13,8 +21,8 @@ module "apim_product_lollipop" {
   display_name = "IO LOLLIPOP API"
   description  = "Product for IO Lollipop"
 
-  api_management_name = module.apim.name
-  resource_group_name = module.apim.resource_group_name
+  api_management_name = data.azurerm_api_management.apim_api.name
+  resource_group_name = data.azurerm_api_management.apim_api.resource_group_name
 
   published             = true
   subscription_required = true
@@ -27,8 +35,8 @@ module "apim_lollipop_api_v1" {
   source = "git::https://github.com/pagopa/terraform-azurerm-v3//api_management_api?ref=v4.1.5"
 
   name                  = format("%s-lollipop-api", local.project)
-  api_management_name   = module.apim.name
-  resource_group_name   = module.apim.resource_group_name
+  api_management_name   = data.azurerm_api_management.apim_api.name
+  resource_group_name   = data.azurerm_api_management.apim_api.resource_group_name
   product_ids           = [module.apim_product_lollipop.product_id]
   subscription_required = true
   service_url           = null
@@ -48,8 +56,8 @@ module "apim_lollipop_api_v1" {
 # Named Value fn-lollipop
 resource "azurerm_api_management_named_value" "io_fn_lollipop_url" {
   name                = "io-fn-lollipop-url"
-  api_management_name = module.apim.name
-  resource_group_name = module.apim.resource_group_name
+  api_management_name = data.azurerm_api_management.apim_api.name
+  resource_group_name = data.azurerm_api_management.apim_api.resource_group_name
   display_name        = "io-fn-lollipop-url"
   value               = "https://io-p-lollipop-fn.azurewebsites.net"
 }
@@ -61,8 +69,8 @@ data "azurerm_key_vault_secret" "io_fn_lollipop_key_secret" {
 
 resource "azurerm_api_management_named_value" "io_fn_lollipop_key" {
   name                = "io-fn-lollipop-key"
-  api_management_name = module.apim.name
-  resource_group_name = module.apim.resource_group_name
+  api_management_name = data.azurerm_api_management.apim_api.name
+  resource_group_name = data.azurerm_api_management.apim_api.resource_group_name
   display_name        = "io-fn-lollipop-key"
   value               = data.azurerm_key_vault_secret.io_fn_lollipop_key_secret.value
   secret              = "true"
@@ -73,8 +81,8 @@ resource "azurerm_api_management_named_value" "io_fn_lollipop_key" {
 ####################################################################################
 resource "azurerm_api_management_user" "pagopa_user" {
   user_id             = "iolollipoppagopauser"
-  api_management_name = module.apim.name
-  resource_group_name = module.apim.resource_group_name
+  api_management_name = data.azurerm_api_management.apim_api.name
+  resource_group_name = data.azurerm_api_management.apim_api.resource_group_name
   first_name          = "PagoPA"
   last_name           = "PagoPA"
   email               = "io-lollipop-pagopa@pagopa.it"
@@ -83,15 +91,15 @@ resource "azurerm_api_management_user" "pagopa_user" {
 
 resource "azurerm_api_management_group_user" "pagopa_group" {
   user_id             = azurerm_api_management_user.pagopa_user.user_id
-  api_management_name = module.apim.name
-  resource_group_name = module.apim.resource_group_name
+  api_management_name = data.azurerm_api_management.apim_api.name
+  resource_group_name = data.azurerm_api_management.apim_api.resource_group_name
   group_name          = azurerm_api_management_group.api_lollipop_assertion_read.name
 }
 
 resource "azurerm_api_management_subscription" "pagopa" {
   user_id             = azurerm_api_management_user.pagopa_user.id
-  api_management_name = module.apim.name
-  resource_group_name = module.apim.resource_group_name
+  api_management_name = data.azurerm_api_management.apim_api.name
+  resource_group_name = data.azurerm_api_management.apim_api.resource_group_name
   product_id          = module.apim_product_lollipop.id
   display_name        = "Lollipop API"
   state               = "active"
