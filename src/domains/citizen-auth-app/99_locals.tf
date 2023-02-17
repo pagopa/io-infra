@@ -1,6 +1,7 @@
 locals {
-  project = "${var.prefix}-${var.env_short}-${var.domain}-${var.location_short}-${var.instance}"
-  product = "${var.prefix}-${var.env_short}"
+  project        = "${var.prefix}-${var.env_short}-${var.domain}-${var.location_short}-${var.instance}"
+  product        = "${var.prefix}-${var.env_short}"
+  common_project = "${var.prefix}-${var.env_short}-${var.location_short}"
 
   monitor_action_group_slack_name = "SlackPagoPA"
   monitor_action_group_email_name = "EmailPagoPA"

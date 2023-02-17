@@ -67,6 +67,12 @@ variable "tags" {
   }
 }
 
+variable "lollipop_enabled" {
+  type        = bool
+  default     = false
+  description = "Lollipop function enabled?"
+}
+
 ### External resources
 
 variable "monitor_resource_group_name" {
@@ -116,4 +122,54 @@ variable "tls_cert_check_helm" {
     image_tag     = string
   })
   description = "tls cert helm chart configuration"
+}
+
+variable "enable_azdoa" {
+  type        = bool
+  description = "Specifies Azure Devops Agent enabling"
+  default     = true
+}
+
+
+# Function LolliPOP
+
+variable "cidr_subnet_fnlollipop" {
+  type        = list(string)
+  description = "Function Lollipop address space."
+}
+
+variable "function_lollipop_kind" {
+  type        = string
+  description = "App service plan kind"
+  default     = null
+}
+
+variable "function_lollipop_sku_tier" {
+  type        = string
+  description = "App service plan sku tier"
+  default     = null
+}
+
+variable "function_lollipop_sku_size" {
+  type        = string
+  description = "App service plan sku size"
+  default     = null
+}
+
+variable "function_lollipop_autoscale_minimum" {
+  type        = number
+  description = "The minimum number of instances for this resource."
+  default     = 1
+}
+
+variable "function_lollipop_autoscale_maximum" {
+  type        = number
+  description = "The maximum number of instances for this resource."
+  default     = 3
+}
+
+variable "function_lollipop_autoscale_default" {
+  type        = number
+  description = "The number of instances that are available for scaling if metrics are not available for evaluation."
+  default     = 1
 }

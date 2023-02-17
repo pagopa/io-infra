@@ -199,14 +199,6 @@ function_admin_autoscale_minimum = 1
 function_admin_autoscale_maximum = 3
 function_admin_autoscale_default = 1
 
-# Functions LolliPoP
-function_lollipop_kind              = "Linux"
-function_lollipop_sku_tier          = "PremiumV3"
-function_lollipop_sku_size          = "P1v3"
-function_lollipop_autoscale_minimum = 1
-function_lollipop_autoscale_maximum = 3
-function_lollipop_autoscale_default = 1
-
 # Functions Cgn
 plan_cgn_kind                  = "Linux"
 plan_cgn_sku_tier              = "PremiumV3"
