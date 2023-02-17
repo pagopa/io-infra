@@ -31,7 +31,7 @@ variable "github" {
   description = "GitHub Organization and repository name"
   default = {
     org        = "pagopa"
-    repository = "mil-infra"
+    repository = "io-infra"
   }
 }
 

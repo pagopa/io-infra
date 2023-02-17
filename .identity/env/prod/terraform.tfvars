@@ -2,6 +2,7 @@ prefix    = "io"
 env_short = "p"
 env       = "prod"
 
+# read-only permissions
 environment_ci_roles = {
   subscription = [
     "Reader",
@@ -22,6 +23,7 @@ github_repository_environment_ci = {
   custom_branch_policies = true
 }
 
+# read-write permissions
 environment_cd_roles = {
   subscription = [
     "Contributor",
