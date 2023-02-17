@@ -67,6 +67,12 @@ variable "tags" {
   }
 }
 
+variable "lollipop_enabled" {
+  type        = bool
+  default     = false
+  description = "Lollipop function enabled?"
+}
+
 ### External resources
 
 variable "monitor_resource_group_name" {

@@ -1,11 +1,12 @@
-prefix          = "io"
-env_short       = "p"
-env             = "prod"
-domain          = "citizen-auth"
-location        = "westeurope"
-location_short  = "weu"
-location_string = "West Europe"
-instance        = "prod01"
+prefix           = "io"
+env_short        = "p"
+env              = "prod"
+domain           = "citizen-auth"
+location         = "westeurope"
+location_short   = "weu"
+location_string  = "West Europe"
+instance         = "prod01"
+lollipop_enabled = true
 
 tags = {
   CreatedBy   = "Terraform"

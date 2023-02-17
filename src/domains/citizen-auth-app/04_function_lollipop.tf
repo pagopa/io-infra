@@ -54,6 +54,7 @@ module "lollipop_snet" {
 }
 
 module "function_lollipop" {
+  count  = var.lollipop_enabled ? 1 : 0
   source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app?ref=v4.1.15"
 
   resource_group_name = azurerm_resource_group.lollipop_rg.name
