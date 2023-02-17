@@ -10,4 +10,7 @@ locals {
 
   acr_name                = replace("${local.product}commonacr", "-", "")
   acr_resource_group_name = "${local.product}-container-registry-rg"
+
+  apim_name                = "${local.product}-apim-api"
+  apim_resource_group_name = "${local.product}-rg-internal"
 }
