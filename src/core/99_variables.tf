@@ -272,6 +272,11 @@ variable "cidr_subnet_pendpoints" {
   description = "Private Endpoints address space."
 }
 
+variable "cidr_subnet_fnlollipop" {
+  type        = list(string)
+  description = "Function Lollipop address space."
+}
+
 ## VPN ##
 variable "vpn_sku" {
   type        = string
@@ -901,6 +906,14 @@ variable "pn_service_id" {
   description = "The Service ID of PN service"
   default     = "01G40DWQGKY5GRWSNM4303VNRP"
 }
+
+# io-sign service Id
+variable "io_sign_service_id" {
+  type        = string
+  description = "The Service ID of io-sign service"
+  default     = "01GQQZ9HF5GAPRVKJM1VDAVFHM"
+}
+
 
 # Function CGN
 variable "plan_cgn_kind" {
