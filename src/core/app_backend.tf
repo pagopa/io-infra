@@ -211,7 +211,7 @@ locals {
           schemaKind = "IO-SIGN",
           jsonSchema = "unused",
           prodEnvironment = {
-            baseUrl = "https://io-p-sign-user-func.azurewebsites.net",
+            baseUrl = "https://io-p-sign-user-func.azurewebsites.net/api/v1/sign",
             detailsAuthentication = {
               type            = "API_KEY",
               header_key_name = "X-Functions-Key",
