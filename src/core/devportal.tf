@@ -135,6 +135,15 @@ module "appservice_devportal_be" {
     JIRA_EMAIL_ID_FIELD        = "customfield_10084"
     JIRA_ORGANIZATION_ID_FIELD = "customfield_10088"
     JIRA_TOKEN                 = data.azurerm_key_vault_secret.devportal_jira_token.value
+
+    # Feature Flags
+    # 
+    # List of (comma separated) APIM userId for whom we want to enable Manage Flow on Service Management.
+    # All users not listed below, will not be able to get (and also create) the manage subscription.
+    # The "Manage Flow" allows the use of a specific subscription (Manage Subscription) keys as API Key for Service create/update.
+    # Note: The list below is for the user IDs only, not the full path APIM.id.
+    # Example: "userId1,userId2,...,userIdN"
+    MANAGE_FLOW_ENABLE_USER_LIST = join(", ", [])
   }
 
   allowed_subnets = [module.appgateway_snet.id]
