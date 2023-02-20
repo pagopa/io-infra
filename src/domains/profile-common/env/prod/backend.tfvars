@@ -1,4 +1,4 @@
-resource_group_name  = "io-infra-rg"
-storage_account_name = "ioinfrastterraform"
-container_name       = "azurermstate"
-key                  = "profile-common-prod.terraform.tfstate"
+resource_group_name  = "terraform-state-rg"
+storage_account_name = "tfinfprodio"
+container_name       = "terraform-state"
+key                  = "io-infra.profile-common-prod.tfstate"
