@@ -8,12 +8,13 @@ resource "azurerm_resource_group" "data_rg" {
 module "cosmosdb_account" {
   source = "git::https://github.com/pagopa/terraform-azurerm-v3//cosmosdb_account?ref=v4.3.1"
 
-  name                 = "${local.product}-${var.domain}-account"
-  domain               = upper(var.domain)
-  location             = azurerm_resource_group.data_rg.location
-  resource_group_name  = azurerm_resource_group.data_rg.name
-  offer_type           = "Standard"
-  enable_free_tier     = false
+  name                = "${local.product}-${var.domain}-account"
+  domain              = upper(var.domain)
+  location            = azurerm_resource_group.data_rg.location
+  resource_group_name = azurerm_resource_group.data_rg.name
+  offer_type          = "Standard"
+  enable_free_tier    = false
+  kind                = "GlobalDocumentDB"
 
   public_network_access_enabled     = false
   private_endpoint_enabled          = true
