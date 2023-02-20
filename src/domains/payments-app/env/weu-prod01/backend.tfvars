@@ -1,4 +1,4 @@
-resource_group_name  = "io-infra-rg"
-storage_account_name = "ioinfrastterraform"
-container_name       = "azurermstate"
-key                  = "payments-weu-prod01.terraform.tfstate"
+resource_group_name  = "terraform-state-rg"
+storage_account_name = "tfinfprodio"
+container_name       = "terraform-state"
+key                  = "io-infra.payments-app-weu-prod01.tfstate"

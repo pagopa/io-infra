@@ -208,6 +208,20 @@ locals {
             }
           }
         },
+        # Firma con IO (io-sign)
+        {
+          serviceId  = var.io_sign_service_id,
+          schemaKind = "IO-SIGN",
+          jsonSchema = "unused",
+          prodEnvironment = {
+            baseUrl = "https://io-p-sign-user-func.azurewebsites.net",
+            detailsAuthentication = {
+              type            = "API_KEY",
+              header_key_name = "X-Functions-Key",
+              key             = data.azurerm_key_vault_secret.app_backend_IO_SIGN_API_KEY.value
+            }
+          }
+        },
         # Mock Service
         {
           serviceId  = var.third_party_mock_service_id,
