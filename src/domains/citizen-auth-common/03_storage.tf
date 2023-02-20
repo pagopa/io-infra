@@ -27,7 +27,7 @@ module "lollipop_assertions_storage_customer_managed_key" {
   location             = var.location
   resource_group_name  = azurerm_resource_group.lollipop_assertions_rg.name
   key_vault_id         = module.key_vault.id
-  key_name             = format("$s-key", module.lollipop_assertions_storage.name)
+  key_name             = format("%s-key", module.lollipop_assertions_storage.name)
   storage_id           = module.lollipop_assertions_storage.id
   storage_principal_id = module.lollipop_assertions_storage.identity.0.principal_id
 }
