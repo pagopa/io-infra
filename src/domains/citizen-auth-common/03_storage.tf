@@ -1,5 +1,5 @@
 resource "azurerm_resource_group" "lollipop_assertions_rg" {
-  name     = format("%s-lollipop-common-rg", local.common_project)
+  name     = format("%s-lollipop-common-rg", local.product)
   location = var.location
 
   tags = var.tags
