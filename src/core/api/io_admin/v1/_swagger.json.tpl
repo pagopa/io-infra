@@ -689,6 +689,45 @@
           }
         }
       }
+    },
+    "/subscriptions/{subscription_id}": {
+      "get": {   
+        "operationId": "getSubscription",
+        "summary": "Get Subscription",
+        "description": "Get a specific subscription information, that belongs to a particular subscription Id",
+        "responses": {
+          "200": {
+            "description": "Retrieved Subscription information.",
+            "schema": {
+              "$ref": "#/definitions/SubscriptionWithoutKeys"
+            }
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Subscription not found"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        },
+        "parameters": [
+          {
+            "name": "subscription_id",
+            "in": "path",
+            "type": "string",
+            "required": true,
+            "description": "The ID of an existing Subscription."
+          }
+        ]
+      }
     }
   },
   "definitions": {
@@ -1034,6 +1073,23 @@
           },
           "required": ["scope"]
         }
+      ]
+    },
+    "SubscriptionWithoutKeys": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "scope": {
+          "type": "string"
+        },
+        "owner_id": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "scope"
       ]
     },
     "SubscriptionState": {
