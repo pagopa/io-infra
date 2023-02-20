@@ -15,9 +15,9 @@ locals {
       FETCH_KEEPALIVE_TIMEOUT             = "60000"
 
       COSMOSDB_NAME                = "db"
-      COSMOSDB_URI                 = data.azurerm_cosmosdb_account.cosmos_api.endpoint
-      COSMOSDB_KEY                 = data.azurerm_cosmosdb_account.cosmos_api.primary_key
-      COSMOS_API_CONNECTION_STRING = format("AccountEndpoint=%s;AccountKey=%s;", data.azurerm_cosmosdb_account.cosmos_api.endpoint, data.azurerm_cosmosdb_account.cosmos_api.primary_key)
+      COSMOSDB_URI                 = data.azurerm_cosmosdb_account.cosmos_citizen_auth.endpoint
+      COSMOSDB_KEY                 = data.azurerm_cosmosdb_account.cosmos_citizen_auth.primary_key
+      COSMOS_API_CONNECTION_STRING = format("AccountEndpoint=%s;AccountKey=%s;", data.azurerm_cosmosdb_account.cosmos_citizen_auth.endpoint, data.azurerm_cosmosdb_account.cosmos_citizen_auth.primary_key)
     }
   }
 }
