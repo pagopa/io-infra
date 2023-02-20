@@ -6,7 +6,7 @@ resource "azurerm_resource_group" "lollipop_assertions_rg" {
 }
 
 module "lollipop_assertions_storage" {
-  source                     = "git::https://github.com/pagopa/terraform-azurerm-v3//storage_account?ref=v4.3.0"
+  source                     = "git::https://github.com/pagopa/terraform-azurerm-v3//storage_account?ref=v4.3.1"
   name                       = replace(format("%s-assertions", local.common_project), "-", "")
   domain                     = upper(var.domain)
   account_kind               = "StorageV2"
@@ -22,7 +22,7 @@ module "lollipop_assertions_storage" {
 }
 
 module "lollipop_assertions_storage_customer_managed_key" {
-  source               = "git::https://github.com/pagopa/terraform-azurerm-v3//storage_account_customer_managed_key?ref=v4.3.0"
+  source               = "git::https://github.com/pagopa/terraform-azurerm-v3//storage_account_customer_managed_key?ref=v4.3.1"
   tenant_id            = var.tenant_id
   location             = var.location
   resource_group_name  = var.resource_group_name
