@@ -63,7 +63,7 @@ resource "azurerm_cosmosdb_sql_container" "lollipop_pubkeys" {
       max_throughput = 1000
     }
   }
-2
+
   lifecycle {
     ignore_changes = [
       autoscale_settings
