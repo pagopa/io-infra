@@ -211,11 +211,11 @@ locals {
           schemaKind = "IO-SIGN",
           jsonSchema = "unused",
           prodEnvironment = {
-            baseUrl = IO_SIGN_API_URL,
+            baseUrl = "https://io-p-sign-user-func.azurewebsites.net",
             detailsAuthentication = {
               type            = "API_KEY",
               header_key_name = "X-Functions-Key",
-              key             = IO_SIGN_API_KEY
+              key             = data.azurerm_key_vault_secret.app_backend_IO_SIGN_API_KEY.value
             }
           }
         },
