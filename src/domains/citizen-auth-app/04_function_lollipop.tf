@@ -23,7 +23,8 @@ locals {
 }
 
 resource "azurerm_resource_group" "lollipop_rg" {
-  name     = format("%s-lollipop-rg", local.project)
+  count    = var.lollipop_enabled ? 1 : 0
+  name     = format("%s-lollipop-rg", local.common_project)
   location = var.location
 
   tags = var.tags
@@ -31,10 +32,11 @@ resource "azurerm_resource_group" "lollipop_rg" {
 
 # Subnet to host admin function
 module "lollipop_snet" {
+  count                                     = var.lollipop_enabled ? 1 : 0
   source                                    = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v4.1.15"
-  name                                      = format("%s-lollipop-snet", local.project)
+  name                                      = format("%s-lollipop-snet", local.common_project)
   address_prefixes                          = var.cidr_subnet_fnlollipop
-  resource_group_name                       = data.azurerm_resource_group.vnet_common_rg.name
+  resource_group_name                       = data.azurerm_virtual_network.vnet_common.resource_group_name
   virtual_network_name                      = data.azurerm_virtual_network.vnet_common.name
   private_endpoint_network_policies_enabled = false
 
@@ -54,10 +56,11 @@ module "lollipop_snet" {
 }
 
 module "function_lollipop" {
+  count  = var.lollipop_enabled ? 1 : 0
   source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app?ref=v4.1.15"
 
-  resource_group_name = azurerm_resource_group.lollipop_rg.name
-  name                = format("%s-lollipop-fn", local.project)
+  resource_group_name = azurerm_resource_group.lollipop_rg[0].name
+  name                = format("%s-lollipop-fn", local.common_project)
   location            = var.location
   domain              = "IO-COMMONS"
   health_check_path   = "/info"
@@ -82,7 +85,7 @@ module "function_lollipop" {
 
   internal_storage = {
     "enable"                     = true,
-    "private_endpoint_subnet_id" = module.private_endpoints_subnet.id,
+    "private_endpoint_subnet_id" = data.azurerm_subnet.private_endpoints_subnet.id,
     "private_dns_zone_blob_ids"  = [data.azurerm_private_dns_zone.privatelink_blob_core_windows_net.id],
     "private_dns_zone_queue_ids" = [data.azurerm_private_dns_zone.privatelink_queue_core_windows_net.id],
     "private_dns_zone_table_ids" = [data.azurerm_private_dns_zone.privatelink_table_core_windows_net.id],
@@ -91,19 +94,19 @@ module "function_lollipop" {
     "blobs_retention_days"       = 0,
   }
 
-  subnet_id = module.lollipop_snet.id
+  subnet_id = module.lollipop_snet[0].id
 
   allowed_subnets = [
-    module.lollipop_snet.id,
-    module.apim_snet.id,
-    module.app_backendl1_snet.id,
-    module.app_backendl2_snet.id,
+    module.lollipop_snet[0].id,
+    data.azurerm_subnet.apim_snet.id,
+    data.azurerm_subnet.app_backend_l1_snet.id,
+    data.azurerm_subnet.app_backend_l2_snet.id,
   ]
 
   # Action groups for alerts
   action = [
     {
-      action_group_id    = azurerm_monitor_action_group.error_action_group.id
+      action_group_id    = data.azurerm_monitor_action_group.error_action_group.id
       webhook_properties = {}
     }
   ]
@@ -112,19 +115,20 @@ module "function_lollipop" {
 }
 
 module "function_lollipop_staging_slot" {
+  count  = var.lollipop_enabled ? 1 : 0
   source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app_slot?ref=v4.1.15"
 
   name                = "staging"
   location            = var.location
-  resource_group_name = azurerm_resource_group.lollipop_rg.name
-  function_app_name   = module.function_lollipop.name
-  function_app_id     = module.function_lollipop.id
-  app_service_plan_id = module.function_lollipop.app_service_plan_id
+  resource_group_name = azurerm_resource_group.lollipop_rg[0].name
+  function_app_name   = module.function_lollipop[0].name
+  function_app_id     = module.function_lollipop[0].id
+  app_service_plan_id = module.function_lollipop[0].app_service_plan_id
   health_check_path   = "/info"
 
-  storage_account_name               = module.function_lollipop.storage_account.name
-  storage_account_access_key         = module.function_lollipop.storage_account.primary_access_key
-  internal_storage_connection_string = module.function_lollipop.storage_account_internal_function.primary_connection_string
+  storage_account_name               = module.function_lollipop[0].storage_account.name
+  storage_account_access_key         = module.function_lollipop[0].storage_account.primary_access_key
+  internal_storage_connection_string = module.function_lollipop[0].storage_account_internal_function.primary_connection_string
 
   os_type                                  = "linux"
   linux_fx_version                         = "NODE|18"
@@ -136,24 +140,25 @@ module "function_lollipop_staging_slot" {
     local.function_lollipop.app_settings,
   )
 
-  subnet_id = module.lollipop_snet.id
+  subnet_id = module.lollipop_snet[0].id
 
   allowed_subnets = [
-    module.lollipop_snet.id,
+    module.lollipop_snet[0].id,
     data.azurerm_subnet.azdoa_snet[0].id,
-    module.apim_snet.id,
-    module.app_backendl1_snet.id,
-    module.app_backendl2_snet.id,
+    data.azurerm_subnet.apim_snet.id,
+    data.azurerm_subnet.app_backend_l1_snet.id,
+    data.azurerm_subnet.app_backend_l2_snet.id,
   ]
 
   tags = var.tags
 }
 
 resource "azurerm_monitor_autoscale_setting" "function_lollipop" {
-  name                = format("%s-autoscale", module.function_lollipop.name)
-  resource_group_name = azurerm_resource_group.lollipop_rg.name
+  count               = var.lollipop_enabled ? 1 : 0
+  name                = format("%s-autoscale", module.function_lollipop[0].name)
+  resource_group_name = azurerm_resource_group.lollipop_rg[0].name
   location            = var.location
-  target_resource_id  = module.function_lollipop.app_service_plan_id
+  target_resource_id  = module.function_lollipop[0].app_service_plan_id
 
   profile {
     name = "default"
@@ -167,7 +172,7 @@ resource "azurerm_monitor_autoscale_setting" "function_lollipop" {
     rule {
       metric_trigger {
         metric_name              = "Requests"
-        metric_resource_id       = module.function_lollipop.id
+        metric_resource_id       = module.function_lollipop[0].id
         metric_namespace         = "microsoft.web/sites"
         time_grain               = "PT1M"
         statistic                = "Average"
@@ -189,7 +194,7 @@ resource "azurerm_monitor_autoscale_setting" "function_lollipop" {
     rule {
       metric_trigger {
         metric_name              = "CpuPercentage"
-        metric_resource_id       = module.function_lollipop.app_service_plan_id
+        metric_resource_id       = module.function_lollipop[0].app_service_plan_id
         metric_namespace         = "microsoft.web/serverfarms"
         time_grain               = "PT1M"
         statistic                = "Average"
@@ -211,7 +216,7 @@ resource "azurerm_monitor_autoscale_setting" "function_lollipop" {
     rule {
       metric_trigger {
         metric_name              = "Requests"
-        metric_resource_id       = module.function_lollipop.id
+        metric_resource_id       = module.function_lollipop[0].id
         metric_namespace         = "microsoft.web/sites"
         time_grain               = "PT1M"
         statistic                = "Average"
@@ -233,7 +238,7 @@ resource "azurerm_monitor_autoscale_setting" "function_lollipop" {
     rule {
       metric_trigger {
         metric_name              = "CpuPercentage"
-        metric_resource_id       = module.function_lollipop.app_service_plan_id
+        metric_resource_id       = module.function_lollipop[0].app_service_plan_id
         metric_namespace         = "microsoft.web/serverfarms"
         time_grain               = "PT1M"
         statistic                = "Average"

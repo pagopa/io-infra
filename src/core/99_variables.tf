@@ -773,44 +773,6 @@ variable "function_admin_autoscale_default" {
   default     = 1
 }
 
-# Function LolliPOP
-
-variable "function_lollipop_kind" {
-  type        = string
-  description = "App service plan kind"
-  default     = null
-}
-
-variable "function_lollipop_sku_tier" {
-  type        = string
-  description = "App service plan sku tier"
-  default     = null
-}
-
-variable "function_lollipop_sku_size" {
-  type        = string
-  description = "App service plan sku size"
-  default     = null
-}
-
-variable "function_lollipop_autoscale_minimum" {
-  type        = number
-  description = "The minimum number of instances for this resource."
-  default     = 1
-}
-
-variable "function_lollipop_autoscale_maximum" {
-  type        = number
-  description = "The maximum number of instances for this resource."
-  default     = 3
-}
-
-variable "function_lollipop_autoscale_default" {
-  type        = number
-  description = "The number of instances that are available for scaling if metrics are not available for evaluation."
-  default     = 1
-}
-
 # App Messages
 variable "app_messages_count" {
   type    = number
