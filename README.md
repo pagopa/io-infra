@@ -1,5 +1,8 @@
 [![Static Analysis](https://github.com/pagopa/io-infra/actions/workflows/static_analysis.yml/badge.svg?branch=main)](https://github.com/pagopa/io-infra/actions/workflows/static_analysis.yml)
 
+[![Continuous Delivery on prod citizen-auth](https://github.com/pagopa/io-infra/actions/workflows/prod_cd_citizen-auth.yml/badge.svg?branch=main)](https://github.com/pagopa/io-infra/actions/workflows/prod_cd_citizen-auth.yml)
+[![Drift Detection on prod citizen-auth](https://github.com/pagopa/io-infra/actions/workflows/prod_drift_citizen-auth.yml/badge.svg?branch=main)](https://github.com/pagopa/io-infra/actions/workflows/prod_drift_citizen-auth.yml)
+
 # IO-infrastructure
 
 IO project infrastructure
