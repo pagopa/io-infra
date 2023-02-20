@@ -50,7 +50,7 @@ module "cosmosdb_sql_database_citizen_auth" {
 resource "azurerm_cosmosdb_sql_container" "lollipop_pubkeys" {
 
   name                = "lollipop-pubkeys"
-  resource_group_name = module.cosmosdb_account.resource_group_name
+  resource_group_name = azurerm_resource_group.data_rg.name
   account_name        = module.cosmosdb_account.name
   database_name       = module.cosmosdb_sql_database_citizen_auth.name
 
@@ -63,7 +63,7 @@ resource "azurerm_cosmosdb_sql_container" "lollipop_pubkeys" {
       max_throughput = 1000
     }
   }
-
+2
   lifecycle {
     ignore_changes = [
       autoscale_settings
