@@ -7,7 +7,7 @@ resource "azurerm_resource_group" "lollipop_assertions_rg" {
 
 module "lollipop_assertions_storage" {
   source                     = "git::https://github.com/pagopa/terraform-azurerm-v3//storage_account?ref=v4.3.1"
-  name                       = replace(format("%s-assertions", local.common_project), "-", "")
+  name                       = replace(format("%s-assertions", local.product), "-", "")
   domain                     = upper(var.domain)
   account_kind               = "StorageV2"
   account_tier               = "Standard"
