@@ -103,4 +103,7 @@ resource "azurerm_key_vault_access_policy" "github_action_iac_ci_kv" {
   secret_permissions      = ["Get", "List", ]
   storage_permissions     = []
   certificate_permissions = ["Get", "List", ]
+  key_permissions = [
+    "Get",
+  ]
 }
