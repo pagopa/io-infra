@@ -57,17 +57,8 @@ resource "azurerm_cosmosdb_sql_container" "lollipop_pubkeys" {
   partition_key_path    = "/assertionRef"
   partition_key_version = 2
 
-  dynamic "autoscale_settings" {
-    for_each = [""]
-    content {
-      max_throughput = 1000
-    }
-  }
-
-  lifecycle {
-    ignore_changes = [
-      autoscale_settings
-    ]
+  autoscale_settings {
+    max_throughput = 1000
   }
 
   default_ttl = -1
