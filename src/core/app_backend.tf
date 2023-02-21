@@ -59,6 +59,8 @@ locals {
       EUCOVIDCERT_API_URL         = "https://${module.function_eucovidcert.default_hostname}/api/v1"
       EUCOVIDCERT_API_KEY         = data.azurerm_key_vault_secret.fn_eucovidcert_API_KEY_APPBACKEND.value
       APP_MESSAGES_API_KEY        = data.azurerm_key_vault_secret.app_backend_APP_MESSAGES_API_KEY.value
+      LOLLIPOP_API_URL            = "https://io-p-weu-lollipop-fn.azurewebsites.net"
+      LOLLIPOP_API_KEY            = data.azurerm_key_vault_secret.app_backend_LOLLIPOP_API_KEY.value
 
       // EXPOSED API
       API_BASE_PATH                     = "/api/v1"
@@ -68,6 +70,7 @@ locals {
       EUCOVIDCERT_API_BASE_PATH         = "/api/v1/eucovidcert"
       MIT_VOUCHER_API_BASE_PATH         = "/api/v1/mitvoucher/auth"
       IO_SIGN_API_BASE_PATH             = "/api/v1/sign"
+      LOLLIPOP_API_BASE_PATH            = "/api/v1"
 
       // REDIS
       REDIS_URL      = data.azurerm_redis_cache.redis_common.hostname
@@ -211,7 +214,7 @@ locals {
           schemaKind = "IO-SIGN",
           jsonSchema = "unused",
           prodEnvironment = {
-            baseUrl = "https://io-p-sign-user-func.azurewebsites.net",
+            baseUrl = "https://io-p-sign-user-func.azurewebsites.net/api/v1/sign",
             detailsAuthentication = {
               type            = "API_KEY",
               header_key_name = "X-Functions-Key",
@@ -424,6 +427,11 @@ data "azurerm_key_vault_secret" "app_backend_PN_API_KEY_UAT" {
 
 data "azurerm_key_vault_secret" "app_backend_PN_REAL_TEST_USERS" {
   name         = "appbackend-PN-REAL-TEST-USERS"
+  key_vault_id = data.azurerm_key_vault.common.id
+}
+
+data "azurerm_key_vault_secret" "app_backend_LOLLIPOP_API_KEY" {
+  name         = "appbackend-LOLLIPOP-API-KEY"
   key_vault_id = data.azurerm_key_vault.common.id
 }
 
