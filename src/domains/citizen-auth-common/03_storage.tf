@@ -51,3 +51,8 @@ resource "azurerm_storage_container" "lollipop_assertions_storage_assertions" {
   storage_account_name  = module.lollipop_assertions_storage.name
   container_access_type = "private"
 }
+
+resource "azurerm_storage_queue" "lollipop_assertions_storage_revoke_queue" {
+  name                 = "pubkeys-revoke"
+  storage_account_name = module.lollipop_assertions_storage.name
+}
