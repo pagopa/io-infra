@@ -20,3 +20,7 @@ data "github_organization_teams" "all" {
   root_teams_only = true
   summary_only    = true
 }
+
+output "teams" {
+  value = data.github_organization_teams.all
+}
