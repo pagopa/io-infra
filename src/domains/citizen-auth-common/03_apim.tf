@@ -55,10 +55,10 @@ module "apim_lollipop_api_v1" {
 
 # Named Value fn-lollipop
 resource "azurerm_api_management_named_value" "io_fn_weu_lollipop_url" {
-  name                = "io_fn_weu_lollipop_url"
+  name                = "io-fn-weu-lollipop-url"
   api_management_name = data.azurerm_api_management.apim_api.name
   resource_group_name = data.azurerm_api_management.apim_api.resource_group_name
-  display_name        = "io_fn_weu_lollipop_url"
+  display_name        = "io-fn-weu-lollipop-url"
   value               = "https://io-p-weu-lollipop-fn.azurewebsites.net"
 }
 
