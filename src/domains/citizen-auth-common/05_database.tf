@@ -23,7 +23,7 @@ module "cosmosdb_account" {
   is_virtual_network_filter_enabled = false
 
   main_geo_location_location       = azurerm_resource_group.data_rg.location
-  main_geo_location_zone_redundant = false
+  main_geo_location_zone_redundant = true
   additional_geo_locations = [{
     location          = "northeurope"
     failover_priority = 1
