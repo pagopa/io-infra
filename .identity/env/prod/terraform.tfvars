@@ -42,6 +42,6 @@ github_repository_environment_cd = {
   reviewers_teams = [
     "infrastructure-admins",
     "io-backend-admin",
-    # "io-backend-contributors",
+    "io-backend-contributors",
   ]
 }
