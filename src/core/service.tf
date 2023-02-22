@@ -1,3 +1,4 @@
+# TODO: To remove, this function han been removed
 resource "azurerm_monitor_scheduled_query_rules_alert" "service_availability_manageservices" {
   name                = format("[%s | %s] %s", upper("service"), "io-p-services-fn", "Service Availability below the threshold")
   resource_group_name = azurerm_resource_group.rg_external.name

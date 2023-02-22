@@ -87,7 +87,7 @@ resource "azurerm_key_vault_access_policy" "adgroup_security_policy" {
 }
 
 # Microsoft Azure WebSites
-
+# TODO: To remove, the old app service (api-gad) has been removed so app services not needs to access to key vaults
 resource "azurerm_key_vault_access_policy" "app_service" {
   key_vault_id = data.azurerm_key_vault.common.id
 
