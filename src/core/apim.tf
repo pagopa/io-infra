@@ -73,7 +73,7 @@ module "apim" {
   }
 
   application_insights = {
-    enabled = true
+    enabled             = true
     instrumentation_key = data.azurerm_application_insights.application_insights.instrumentation_key
   }
 
