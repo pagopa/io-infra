@@ -117,7 +117,7 @@ module "cosmos_cgn" {
   private_endpoint_name    = format("%s-cosmos-cgn-sql-endpoint", local.project)
   private_endpoint_enabled = true
   subnet_id                = module.private_endpoints_subnet.id
-  private_dns_zone_ids     = [data.azurerm_private_dns_zone.privatelink_documents_azure_com.id]
+  private_dns_zone_ids     = [azurerm_private_dns_zone.privatelink_documents.id]
 
   tags = var.tags
 
