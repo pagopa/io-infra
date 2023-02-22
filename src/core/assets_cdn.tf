@@ -22,7 +22,7 @@ resource "azurerm_management_lock" "assets_cdn_profile" {
 
 data "azurerm_key_vault_secret" "assets_cdn_fn_key_cdn" {
   name         = "${module.function_assets_cdn.name}-KEY-CDN"
-  key_vault_id = data.azurerm_key_vault.common.id
+  key_vault_id = module.key_vault_common.id
 }
 
 resource "azurerm_cdn_endpoint" "assets_cdn_endpoint" {

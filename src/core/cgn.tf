@@ -201,7 +201,7 @@ resource "azurerm_key_vault_secret" "cgn_legalbackup_storage_connection_string" 
   value        = module.cgn_legalbackup_storage.primary_connection_string
   content_type = "text/plain"
 
-  key_vault_id = data.azurerm_key_vault.common.id
+  key_vault_id = module.key_vault_common.id
 }
 
 #tfsec:ignore:azure-keyvault-ensure-secret-expiry
@@ -210,7 +210,7 @@ resource "azurerm_key_vault_secret" "cgn_legalbackup_storage_blob_connection_str
   value        = module.cgn_legalbackup_storage.primary_blob_connection_string
   content_type = "text/plain"
 
-  key_vault_id = data.azurerm_key_vault.common.id
+  key_vault_id = module.key_vault_common.id
 }
 
 resource "azurerm_storage_container" "cgn_legalbackup_container" {
@@ -293,7 +293,7 @@ resource "azurerm_api_management_named_value" "io_fn_cgnmerchant_url" {
 
 data "azurerm_key_vault_secret" "io_fn_cgnmerchant_key_secret" {
   name         = "io-fn-cgnmerchant-KEY-APIM"
-  key_vault_id = data.azurerm_key_vault.common.id
+  key_vault_id = module.key_vault_common.id
 }
 
 resource "azurerm_api_management_named_value" "io_fn_cgnmerchant_key" {
@@ -311,7 +311,7 @@ resource "azurerm_api_management_named_value" "io_fn_cgnmerchant_key" {
 ### cgnonboardingportal user identity
 data "azurerm_key_vault_secret" "cgn_onboarding_backend_identity" {
   name         = "cgn-onboarding-backend-PRINCIPALID"
-  key_vault_id = data.azurerm_key_vault.common.id
+  key_vault_id = module.key_vault_common.id
 }
 */
 
@@ -323,7 +323,7 @@ locals {
 ### cgnonboardingportal user identity
 data "azurerm_key_vault_secret" "cgn_onboarding_backend_identity" {
   name         = "cgn-onboarding-backend-PRINCIPALID"
-  key_vault_id = data.azurerm_key_vault.common.id
+  key_vault_id = module.key_vault_common.id
 }
 
 resource "azurerm_role_assignment" "service_contributor" {

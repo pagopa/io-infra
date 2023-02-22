@@ -4,7 +4,7 @@
 
 data "azurerm_key_vault_secret" "fn_eucovidcert_API_KEY_APPBACKEND" {
   name         = "funceucovidcert-KEY-APPBACKEND"
-  key_vault_id = data.azurerm_key_vault.common.id
+  key_vault_id = module.key_vault_common.id
 }
 
 data "azurerm_key_vault_secret" "fn_eucovidcert_API_KEY_PUBLICIOEVENTDISPATCHER" {
@@ -14,52 +14,52 @@ data "azurerm_key_vault_secret" "fn_eucovidcert_API_KEY_PUBLICIOEVENTDISPATCHER"
 
 data "azurerm_key_vault_secret" "fn_eucovidcert_DGC_PROD_CLIENT_CERT" {
   name         = "eucovidcert-DGC-PROD-CLIENT-CERT"
-  key_vault_id = data.azurerm_key_vault.common.id
+  key_vault_id = module.key_vault_common.id
 }
 
 data "azurerm_key_vault_secret" "fn_eucovidcert_DGC_PROD_CLIENT_KEY" {
   name         = "eucovidcert-DGC-PROD-CLIENT-KEY"
-  key_vault_id = data.azurerm_key_vault.common.id
+  key_vault_id = module.key_vault_common.id
 }
 
 data "azurerm_key_vault_secret" "fn_eucovidcert_DGC_PROD_SERVER_CA" {
   name         = "eucovidcert-DGC-PROD-SERVER-CA"
-  key_vault_id = data.azurerm_key_vault.common.id
+  key_vault_id = module.key_vault_common.id
 }
 
 data "azurerm_key_vault_secret" "fn_eucovidcert_DGC_UAT_CLIENT_CERT" {
   name         = "eucovidcert-DGC-UAT-CLIENT-CERT"
-  key_vault_id = data.azurerm_key_vault.common.id
+  key_vault_id = module.key_vault_common.id
 }
 
 data "azurerm_key_vault_secret" "fn_eucovidcert_DGC_UAT_CLIENT_KEY" {
   name         = "eucovidcert-DGC-UAT-CLIENT-KEY"
-  key_vault_id = data.azurerm_key_vault.common.id
+  key_vault_id = module.key_vault_common.id
 }
 
 data "azurerm_key_vault_secret" "fn_eucovidcert_DGC_UAT_SERVER_CA" {
   name         = "eucovidcert-DGC-UAT-SERVER-CA"
-  key_vault_id = data.azurerm_key_vault.common.id
+  key_vault_id = module.key_vault_common.id
 }
 
 data "azurerm_key_vault_secret" "fn_eucovidcert_DGC_LOAD_TEST_CLIENT_KEY" {
   name         = "eucovidcert-DGC-LOAD-TEST-CLIENT-KEY"
-  key_vault_id = data.azurerm_key_vault.common.id
+  key_vault_id = module.key_vault_common.id
 }
 
 data "azurerm_key_vault_secret" "fn_eucovidcert_DGC_LOAD_TEST_CLIENT_CERT" {
   name         = "eucovidcert-DGC-LOAD-TEST-CLIENT-CERT"
-  key_vault_id = data.azurerm_key_vault.common.id
+  key_vault_id = module.key_vault_common.id
 }
 
 data "azurerm_key_vault_secret" "fn_eucovidcert_DGC_LOAD_TEST_SERVER_CA" {
   name         = "eucovidcert-DGC-LOAD-TEST-SERVER-CA"
-  key_vault_id = data.azurerm_key_vault.common.id
+  key_vault_id = module.key_vault_common.id
 }
 
 data "azurerm_key_vault_secret" "fn_eucovidcert_FNSERVICES_API_KEY" {
   name         = "fn3services-KEY-EUCOVIDCERT"
-  key_vault_id = data.azurerm_key_vault.common.id
+  key_vault_id = module.key_vault_common.id
 }
 
 #

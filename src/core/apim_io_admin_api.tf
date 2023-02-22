@@ -24,7 +24,7 @@ resource "azurerm_api_management_named_value" "io_fn3_admin_url" {
 
 data "azurerm_key_vault_secret" "io_fn3_admin_key_secret" {
   name         = "fn3admin-KEY-APIM"
-  key_vault_id = data.azurerm_key_vault.common.id
+  key_vault_id = module.key_vault_common.id
 }
 
 resource "azurerm_api_management_named_value" "io_fn3_admin_key" {

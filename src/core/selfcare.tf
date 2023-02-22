@@ -84,32 +84,32 @@ resource "azurerm_resource_group" "selfcare_be_rg" {
 
 data "azurerm_key_vault_secret" "selfcare_apim_io_service_key" {
   name         = "apim-IO-SERVICE-KEY"
-  key_vault_id = data.azurerm_key_vault.common.id
+  key_vault_id = module.key_vault_common.id
 }
 
 data "azurerm_key_vault_secret" "selfcare_devportal_service_principal_client_id" {
   name         = "devportal-SERVICE-PRINCIPAL-CLIENT-ID"
-  key_vault_id = data.azurerm_key_vault.common.id
+  key_vault_id = module.key_vault_common.id
 }
 
 data "azurerm_key_vault_secret" "selfcare_devportal_service_principal_secret" {
   name         = "devportal-SERVICE-PRINCIPAL-SECRET"
-  key_vault_id = data.azurerm_key_vault.common.id
+  key_vault_id = module.key_vault_common.id
 }
 
 data "azurerm_key_vault_secret" "selfcare_io_sandbox_fiscal_code" {
   name         = "io-SANDBOX-FISCAL-CODE"
-  key_vault_id = data.azurerm_key_vault.common.id
+  key_vault_id = module.key_vault_common.id
 }
 
 data "azurerm_key_vault_secret" "selfcare_devportal_jira_token" {
   name         = "devportal-JIRA-TOKEN"
-  key_vault_id = data.azurerm_key_vault.common.id
+  key_vault_id = module.key_vault_common.id
 }
 
 data "azurerm_key_vault_secret" "selfcare_subsmigrations_apikey" {
   name         = "devportal-subsmigrations-APIKEY"
-  key_vault_id = data.azurerm_key_vault.common.id
+  key_vault_id = module.key_vault_common.id
 }
 
 # JWT
@@ -118,7 +118,7 @@ module "selfcare_jwt" {
   source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//jwt_keys?ref=v4.1.15"
 
   jwt_name         = "selfcare-jwt"
-  key_vault_id     = data.azurerm_key_vault.common.id
+  key_vault_id     = module.key_vault_common.id
   cert_common_name = "IO selfcare"
   cert_password    = ""
   tags             = var.tags

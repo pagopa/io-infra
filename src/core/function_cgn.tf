@@ -4,27 +4,27 @@
 
 data "azurerm_key_vault_secret" "fn_cgn_SERVICES_API_KEY" {
   name         = "apim-CGN-SERVICE-KEY"
-  key_vault_id = data.azurerm_key_vault.common.id
+  key_vault_id = module.key_vault_common.id
 }
 
 data "azurerm_key_vault_secret" "fn_cgn_EYCA_API_USERNAME" {
   name         = "funccgn-EYCA-API-USERNAME"
-  key_vault_id = data.azurerm_key_vault.common.id
+  key_vault_id = module.key_vault_common.id
 }
 
 data "azurerm_key_vault_secret" "fn_cgn_EYCA_API_PASSWORD" {
   name         = "funccgn-EYCA-API-PASSWORD"
-  key_vault_id = data.azurerm_key_vault.common.id
+  key_vault_id = module.key_vault_common.id
 }
 
 data "azurerm_key_vault_secret" "fn_cgn_CGN_SERVICE_ID" {
   name         = "funccgn-CGN-SERVICE-ID"
-  key_vault_id = data.azurerm_key_vault.common.id
+  key_vault_id = module.key_vault_common.id
 }
 
 data "azurerm_key_vault_secret" "fn_cgn_CGN_DATA_BACKUP_CONNECTION" {
   name         = "cgn-legalbackup-storage-connection-string"
-  key_vault_id = data.azurerm_key_vault.common.id
+  key_vault_id = module.key_vault_common.id
 }
 
 #

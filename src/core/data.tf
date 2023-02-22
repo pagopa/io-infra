@@ -108,7 +108,7 @@ data "azurerm_private_dns_zone" "privatelink_documents_azure_com" {
 # KeyVault values - start
 data "azurerm_key_vault_secret" "services_exclusion_list" {
   name         = "io-fn-services-SERVICEID-EXCLUSION-LIST"
-  key_vault_id = data.azurerm_key_vault.common.id
+  key_vault_id = module.key_vault_common.id
 }
 
 #
@@ -159,19 +159,19 @@ data "azurerm_eventhub_authorization_rule" "io-p-messages-weu-prod01-evh-ns_mess
 
 data "azurerm_key_vault_secret" "apim_services_subscription_key" {
   name         = "apim-IO-SERVICE-KEY"
-  key_vault_id = data.azurerm_key_vault.common.id
+  key_vault_id = module.key_vault_common.id
 }
 
 # MAILUP
 
 data "azurerm_key_vault_secret" "common_MAILUP_USERNAME" {
   name         = "common-MAILUP2-USERNAME"
-  key_vault_id = data.azurerm_key_vault.common.id
+  key_vault_id = module.key_vault_common.id
 }
 
 data "azurerm_key_vault_secret" "common_MAILUP_SECRET" {
   name         = "common-MAILUP2-SECRET"
-  key_vault_id = data.azurerm_key_vault.common.id
+  key_vault_id = module.key_vault_common.id
 }
 
 #
@@ -180,7 +180,7 @@ data "azurerm_key_vault_secret" "common_MAILUP_SECRET" {
 
 data "azurerm_key_vault_secret" "app_backend_PRE_SHARED_KEY" {
   name         = "appbackend-PRE-SHARED-KEY"
-  key_vault_id = data.azurerm_key_vault.common.id
+  key_vault_id = module.key_vault_common.id
 }
 
 

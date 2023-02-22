@@ -243,16 +243,16 @@ module "function_subscriptionmigrations_staging_slot" {
 // db admin user credentials
 data "azurerm_key_vault_secret" "subscriptionmigrations_db_server_adm_username" {
   name         = "selfcare-subsmigrations-DB-ADM-USERNAME"
-  key_vault_id = data.azurerm_key_vault.common.id
+  key_vault_id = module.key_vault_common.id
 }
 data "azurerm_key_vault_secret" "subscriptionmigrations_db_server_adm_password" {
   name         = "selfcare-subsmigrations-DB-ADM-PASSWORD"
-  key_vault_id = data.azurerm_key_vault.common.id
+  key_vault_id = module.key_vault_common.id
 }
 // db applicative user credentials
 data "azurerm_key_vault_secret" "subscriptionmigrations_db_server_fnsubsmigrations_password" {
   name         = "selfcare-subsmigrations-FNSUBSMIGRATIONS-PASSWORD"
-  key_vault_id = data.azurerm_key_vault.common.id
+  key_vault_id = module.key_vault_common.id
 }
 
 

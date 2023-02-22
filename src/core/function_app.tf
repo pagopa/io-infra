@@ -4,17 +4,17 @@
 
 data "azurerm_key_vault_secret" "fn_app_PUBLIC_API_KEY" {
   name         = "apim-IO-SERVICE-KEY"
-  key_vault_id = data.azurerm_key_vault.common.id
+  key_vault_id = module.key_vault_common.id
 }
 
 data "azurerm_key_vault_secret" "fn_app_SPID_LOGS_PUBLIC_KEY" {
   name         = "funcapp-KEY-SPIDLOGS-PUB"
-  key_vault_id = data.azurerm_key_vault.common.id
+  key_vault_id = module.key_vault_common.id
 }
 
 data "azurerm_key_vault_secret" "fn_app_AZURE_NH_ENDPOINT" {
   name         = "common-AZURE-NH-ENDPOINT"
-  key_vault_id = data.azurerm_key_vault.common.id
+  key_vault_id = module.key_vault_common.id
 }
 
 #

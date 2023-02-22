@@ -240,16 +240,16 @@ module "function_devportalservicedata_staging_slot" {
 // db admin user credentials
 data "azurerm_key_vault_secret" "devportalservicedata_db_server_adm_username" {
   name         = "devportal-servicedata-DB-ADM-USERNAME"
-  key_vault_id = data.azurerm_key_vault.common.id
+  key_vault_id = module.key_vault_common.id
 }
 data "azurerm_key_vault_secret" "devportalservicedata_db_server_adm_password" {
   name         = "devportal-servicedata-DB-ADM-PASSWORD"
-  key_vault_id = data.azurerm_key_vault.common.id
+  key_vault_id = module.key_vault_common.id
 }
 // db applicative user credentials
 data "azurerm_key_vault_secret" "devportalservicedata_db_server_fndevportalservicedata_password" {
   name         = "devportal-servicedata-FNDEVPORTALSERVICEDATA-PASSWORD"
-  key_vault_id = data.azurerm_key_vault.common.id
+  key_vault_id = module.key_vault_common.id
 }
 
 

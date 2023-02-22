@@ -177,7 +177,7 @@ data "azurerm_key_vault_secret" "apim_publisher_email" {
 
 data "azurerm_key_vault_certificate" "api_internal_io_italia_it" {
   name         = replace(local.apim_hostname_api_internal, ".", "-")
-  key_vault_id = data.azurerm_key_vault.common.id
+  key_vault_id = module.key_vault_common.id
 }
 
 data "azurerm_key_vault_certificate" "api_app_internal_io_pagopa_it" {
@@ -198,7 +198,7 @@ resource "azurerm_key_vault_access_policy" "apim_kv_policy" {
 }
 
 resource "azurerm_key_vault_access_policy" "common" {
-  key_vault_id = data.azurerm_key_vault.common.id
+  key_vault_id = module.key_vault_common.id
   tenant_id    = data.azurerm_client_config.current.tenant_id
   object_id    = module.apim.principal_id
 
@@ -209,12 +209,12 @@ resource "azurerm_key_vault_access_policy" "common" {
 }
 data "azurerm_key_vault_secret" "cgnonboardingportal_os_key" {
   name         = "funccgn-KEY-CGNOS"
-  key_vault_id = data.azurerm_key_vault.common.id
+  key_vault_id = module.key_vault_common.id
 }
 
 data "azurerm_key_vault_secret" "cgnonboardingportal_os_header_name" {
   name         = "funccgn-KEY-CGNOSHEADERNAME"
-  key_vault_id = data.azurerm_key_vault.common.id
+  key_vault_id = module.key_vault_common.id
 }
 
 resource "azurerm_api_management_named_value" "cgnonboardingportal_os_url_value" {
