@@ -74,7 +74,7 @@ module "apim" {
 
   application_insights = {
     enabled             = true
-    instrumentation_key = data.azurerm_application_insights.application_insights.instrumentation_key
+    instrumentation_key = azurerm_application_insights.application_insights.instrumentation_key
   }
 
   lock_enable = false # no lock

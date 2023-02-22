@@ -21,8 +21,8 @@ module "github_runner" {
   vnet_internal             = true
   subnet_id                 = azurerm_subnet.github_runner.id
   log_destination           = "log-analytics"
-  log_analytics_customer_id = data.azurerm_log_analytics_workspace.log_analytics_workspace.workspace_id
-  log_analytics_shared_key  = data.azurerm_log_analytics_workspace.log_analytics_workspace.primary_shared_key
+  log_analytics_customer_id = azurerm_log_analytics_workspace.log_analytics_workspace.workspace_id
+  log_analytics_shared_key  = azurerm_log_analytics_workspace.log_analytics_workspace.primary_shared_key
   zone_redundant            = true
 
   tags = var.tags

@@ -68,7 +68,7 @@ module "function_assets_cdn" {
   runtime_version                          = "~4"
   linux_fx_version                         = "NODE|14"
   always_on                                = true
-  application_insights_instrumentation_key = data.azurerm_application_insights.application_insights.instrumentation_key
+  application_insights_instrumentation_key = azurerm_application_insights.application_insights.instrumentation_key
 
   app_service_plan_info = {
     kind                         = var.function_assets_cdn_kind
@@ -103,7 +103,7 @@ module "function_assets_cdn_staging_slot" {
   runtime_version                          = "~4"
   linux_fx_version                         = "NODE|14"
   always_on                                = true
-  application_insights_instrumentation_key = data.azurerm_application_insights.application_insights.instrumentation_key
+  application_insights_instrumentation_key = azurerm_application_insights.application_insights.instrumentation_key
 
   app_settings = local.function_assets_cdn.app_settings
 

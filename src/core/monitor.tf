@@ -1,12 +1,25 @@
-data "azurerm_log_analytics_workspace" "monitor_rg" {
-  name                = var.log_analytics_workspace_name
+# Log Analytics workspace
+resource "azurerm_log_analytics_workspace" "log_analytics_workspace" {
+  name                = format("%s-law-common", local.project)
+  location            = azurerm_resource_group.rg_common.location
   resource_group_name = azurerm_resource_group.rg_common.name
+  sku                 = var.law_sku
+  retention_in_days   = var.law_retention_in_days
+  daily_quota_gb      = var.law_daily_quota_gb
+
+  tags = var.tags
 }
 
 # Application insights
-data "azurerm_application_insights" "application_insights" {
-  name                = var.application_insights_name
+resource "azurerm_application_insights" "application_insights" {
+  name                = format("%s-ai-common", local.project)
+  location            = azurerm_resource_group.rg_common.location
   resource_group_name = azurerm_resource_group.rg_common.name
+  application_type    = "other"
+
+  workspace_id = azurerm_log_analytics_workspace.log_analytics_workspace.id
+
+  tags = var.tags
 }
 
 data "azurerm_log_analytics_workspace" "log_analytics_workspace" {
@@ -303,11 +316,11 @@ module "web_test_api" {
   name                              = format("%s-test", each.value.name)
   location                          = azurerm_resource_group.rg_common.location
   resource_group                    = azurerm_resource_group.rg_common.name
-  application_insight_name          = data.azurerm_application_insights.application_insights.name
+  application_insight_name          = azurerm_application_insights.application_insights.name
   request_url                       = format("https://%s%s", each.value.host, each.value.path)
   expected_http_status              = each.value.http_status
   ssl_cert_remaining_lifetime_check = each.value.ssl_cert_remaining_lifetime_check
-  application_insight_id            = data.azurerm_application_insights.application_insights.id
+  application_insight_id            = azurerm_application_insights.application_insights.id
 
   actions = [
     {

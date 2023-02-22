@@ -10,7 +10,7 @@ locals {
       WEBSITE_DNS_SERVER                              = "168.63.129.16"
       WEBSITE_HEALTHCHECK_MAXPINGFAILURES             = "3"
 
-      APPINSIGHTS_INSTRUMENTATIONKEY = data.azurerm_application_insights.application_insights.instrumentation_key
+      APPINSIGHTS_INSTRUMENTATIONKEY = azurerm_application_insights.application_insights.instrumentation_key
 
       // ENVIRONMENT
       NODE_ENV = "production"
@@ -1080,11 +1080,11 @@ module "app_backend_web_test_api" {
   name                              = format("%s-test", each.value.name)
   location                          = azurerm_resource_group.rg_common.location
   resource_group                    = azurerm_resource_group.rg_common.name
-  application_insight_name          = data.azurerm_application_insights.application_insights.name
+  application_insight_name          = azurerm_application_insights.application_insights.name
   request_url                       = format("https://%s%s", each.value.host, each.value.path)
   expected_http_status              = each.value.http_status
   ssl_cert_remaining_lifetime_check = 7
-  application_insight_id            = data.azurerm_application_insights.application_insights.id
+  application_insight_id            = azurerm_application_insights.application_insights.id
 
   actions = [
     {

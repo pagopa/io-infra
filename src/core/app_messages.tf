@@ -149,7 +149,7 @@ module "app_messages_function" {
   runtime_version                          = "~4"
   linux_fx_version                         = "NODE|14"
   always_on                                = var.app_messages_function_always_on
-  application_insights_instrumentation_key = data.azurerm_application_insights.application_insights.instrumentation_key
+  application_insights_instrumentation_key = azurerm_application_insights.application_insights.instrumentation_key
 
   app_service_plan_info = {
     kind                         = var.app_messages_function_kind
@@ -214,7 +214,7 @@ module "app_messages_function_staging_slot" {
   runtime_version                          = "~4"
   linux_fx_version                         = "NODE|14"
   always_on                                = var.app_messages_function_always_on
-  application_insights_instrumentation_key = data.azurerm_application_insights.application_insights.instrumentation_key
+  application_insights_instrumentation_key = azurerm_application_insights.application_insights.instrumentation_key
 
   app_settings = merge(
     local.function_app_messages.app_settings_common,

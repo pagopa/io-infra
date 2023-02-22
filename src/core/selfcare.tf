@@ -190,7 +190,7 @@ module "appservice_selfcare_be" {
   app_settings = {
     WEBSITE_RUN_FROM_PACKAGE = "1"
 
-    APPINSIGHTS_INSTRUMENTATIONKEY = data.azurerm_application_insights.application_insights.instrumentation_key
+    APPINSIGHTS_INSTRUMENTATIONKEY = azurerm_application_insights.application_insights.instrumentation_key
 
     LOG_LEVEL = "info"
 

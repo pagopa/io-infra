@@ -122,7 +122,7 @@ module "function_messages_cqrs" {
   linux_fx_version                         = "NODE|14"
   runtime_version                          = "~4"
   always_on                                = var.function_messages_cqrs_always_on
-  application_insights_instrumentation_key = data.azurerm_application_insights.application_insights.instrumentation_key
+  application_insights_instrumentation_key = azurerm_application_insights.application_insights.instrumentation_key
 
   app_service_plan_info = {
     kind                         = var.function_messages_cqrs_kind
@@ -197,7 +197,7 @@ module "function_messages_cqrs_staging_slot" {
   linux_fx_version                         = "NODE|14"
   runtime_version                          = "~4"
   always_on                                = var.function_messages_cqrs_always_on
-  application_insights_instrumentation_key = data.azurerm_application_insights.application_insights.instrumentation_key
+  application_insights_instrumentation_key = azurerm_application_insights.application_insights.instrumentation_key
 
   app_settings = merge(
     local.function_messages_cqrs.app_settings, {

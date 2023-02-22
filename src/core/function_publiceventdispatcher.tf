@@ -48,7 +48,7 @@ module "function_pblevtdispatcher" {
   subnet_id                                = module.function_pblevtdispatcher_snetout.id
   runtime_version                          = "~3"
   linux_fx_version                         = "" # windows function
-  application_insights_instrumentation_key = data.azurerm_application_insights.application_insights.instrumentation_key
+  application_insights_instrumentation_key = azurerm_application_insights.application_insights.instrumentation_key
 
   storage_account_info = {
     account_kind                      = "StorageV2"
@@ -140,7 +140,7 @@ module "function_pblevtdispatcher_v4" {
   runtime_version  = "~4"
 
   always_on                                = "true"
-  application_insights_instrumentation_key = data.azurerm_application_insights.application_insights.instrumentation_key
+  application_insights_instrumentation_key = azurerm_application_insights.application_insights.instrumentation_key
 
   app_service_plan_info = {
     kind                         = var.plan_shared_1_kind
