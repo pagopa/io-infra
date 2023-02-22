@@ -12,7 +12,7 @@ module "redis_cgn_snet" {
   source                                    = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v4.1.15"
   name                                      = format("%s-redis-cgn-snet", local.project)
   address_prefixes                          = ["10.0.14.0/25"]
-  resource_group_name                       = data.azurerm_resource_group.vnet_common_rg.name
+  resource_group_name                       = azurerm_resource_group.rg_common.name
   virtual_network_name                      = data.azurerm_virtual_network.vnet_common.name
   private_endpoint_network_policies_enabled = false
 }
@@ -64,7 +64,7 @@ module "redis_cgn" {
 data "azurerm_subnet" "fn3cgn" {
   name                 = "fn3cgn"
   virtual_network_name = data.azurerm_virtual_network.vnet_common.name
-  resource_group_name  = data.azurerm_resource_group.vnet_common_rg.name
+  resource_group_name  = azurerm_resource_group.rg_common.name
 }
 
 ##################
@@ -360,7 +360,7 @@ module "cgn_snet" {
   source                                    = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v4.1.15"
   name                                      = format("%s-cgn-snet", local.project)
   address_prefixes                          = var.cidr_subnet_cgn
-  resource_group_name                       = data.azurerm_resource_group.vnet_common_rg.name
+  resource_group_name                       = azurerm_resource_group.rg_common.name
   virtual_network_name                      = data.azurerm_virtual_network.vnet_common.name
   private_endpoint_network_policies_enabled = false
 

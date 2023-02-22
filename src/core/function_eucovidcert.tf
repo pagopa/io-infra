@@ -156,7 +156,7 @@ module "function_eucovidcert_snet" {
   source                                    = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v4.1.15"
   name                                      = format("%s-eucovidcert-snet", local.project)
   address_prefixes                          = var.cidr_subnet_eucovidcert
-  resource_group_name                       = data.azurerm_resource_group.vnet_common_rg.name
+  resource_group_name                       = azurerm_resource_group.rg_common.name
   virtual_network_name                      = data.azurerm_virtual_network.vnet_common.name
   private_endpoint_network_policies_enabled = false
 

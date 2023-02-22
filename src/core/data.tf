@@ -12,7 +12,7 @@ data "azurerm_cosmosdb_account" "cosmos_api" {
 
 data "azurerm_redis_cache" "redis_common" {
   name                = format("%s-redis-common", local.project)
-  resource_group_name = format("%s-rg-common", local.project)
+  resource_group_name = azurerm_resource_group.rg_common.name
 }
 
 #
@@ -82,27 +82,27 @@ locals {
 
 data "azurerm_private_dns_zone" "privatelink_blob_core_windows_net" {
   name                = "privatelink.blob.core.windows.net"
-  resource_group_name = format("%s-rg-common", local.project)
+  resource_group_name = azurerm_resource_group.rg_common.name
 }
 
 data "azurerm_private_dns_zone" "privatelink_queue_core_windows_net" {
   name                = "privatelink.queue.core.windows.net"
-  resource_group_name = format("%s-rg-common", local.project)
+  resource_group_name = azurerm_resource_group.rg_common.name
 }
 
 data "azurerm_private_dns_zone" "privatelink_file_core_windows_net" {
   name                = "privatelink.file.core.windows.net"
-  resource_group_name = format("%s-rg-common", local.project)
+  resource_group_name = azurerm_resource_group.rg_common.name
 }
 
 data "azurerm_private_dns_zone" "privatelink_table_core_windows_net" {
   name                = "privatelink.table.core.windows.net"
-  resource_group_name = format("%s-rg-common", local.project)
+  resource_group_name = azurerm_resource_group.rg_common.name
 }
 
 data "azurerm_private_dns_zone" "privatelink_documents_azure_com" {
   name                = "privatelink.documents.azure.com"
-  resource_group_name = format("%s-rg-common", local.project)
+  resource_group_name = azurerm_resource_group.rg_common.name
 }
 
 # KeyVault values - start
@@ -125,13 +125,13 @@ data "azurerm_storage_account" "api" {
 
 data "azurerm_redis_cache" "common" {
   name                = "io-p-redis-common"
-  resource_group_name = "io-p-rg-common"
+  resource_group_name = azurerm_resource_group.rg_common.name
 }
 
 # CDN Assets storage account
 data "azurerm_storage_account" "cdnassets" {
   name                = "iopstcdnassets"
-  resource_group_name = var.common_rg
+  resource_group_name = azurerm_resource_group.rg_common.name
 }
 
 # Event hubs

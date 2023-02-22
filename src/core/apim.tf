@@ -2,7 +2,7 @@
 module "apim_snet" {
   source               = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v4.1.15"
   name                 = "apimapi"
-  resource_group_name  = data.azurerm_resource_group.vnet_common_rg.name
+  resource_group_name  = azurerm_resource_group.rg_common.name
   virtual_network_name = data.azurerm_virtual_network.vnet_common.name
   address_prefixes     = var.cidr_subnet_apim
 

@@ -60,14 +60,14 @@ resource "azurerm_private_dns_a_record" "api_app_internal_io" {
 
 resource "azurerm_private_dns_zone" "privatelink_redis_cache" {
   name                = "privatelink.redis.cache.windows.net"
-  resource_group_name = data.azurerm_resource_group.vnet_common_rg.name
+  resource_group_name = azurerm_resource_group.rg_common.name
 
   tags = var.tags
 }
 
 resource "azurerm_private_dns_zone_virtual_network_link" "redis_private_vnet_common" {
   name                  = format("%s-redis-common-common", local.project)
-  resource_group_name   = data.azurerm_resource_group.vnet_common_rg.name
+  resource_group_name   = azurerm_resource_group.rg_common.name
   private_dns_zone_name = azurerm_private_dns_zone.privatelink_redis_cache.name
   virtual_network_id    = data.azurerm_virtual_network.vnet_common.id
   registration_enabled  = false
@@ -77,7 +77,7 @@ resource "azurerm_private_dns_zone_virtual_network_link" "redis_private_vnet_com
 
 resource "azurerm_private_dns_zone_virtual_network_link" "redis_private_vnet_beta" {
   name                  = module.vnet_weu_beta.name
-  resource_group_name   = data.azurerm_resource_group.vnet_common_rg.name
+  resource_group_name   = azurerm_resource_group.rg_common.name
   private_dns_zone_name = azurerm_private_dns_zone.privatelink_redis_cache.name
   virtual_network_id    = module.vnet_weu_beta.id
   registration_enabled  = false
@@ -87,7 +87,7 @@ resource "azurerm_private_dns_zone_virtual_network_link" "redis_private_vnet_bet
 
 resource "azurerm_private_dns_zone_virtual_network_link" "redis_private_vnet_prod01" {
   name                  = module.vnet_weu_prod01.name
-  resource_group_name   = data.azurerm_resource_group.vnet_common_rg.name
+  resource_group_name   = azurerm_resource_group.rg_common.name
   private_dns_zone_name = azurerm_private_dns_zone.privatelink_redis_cache.name
   virtual_network_id    = module.vnet_weu_prod01.id
   registration_enabled  = false
@@ -97,7 +97,7 @@ resource "azurerm_private_dns_zone_virtual_network_link" "redis_private_vnet_pro
 
 resource "azurerm_private_dns_zone_virtual_network_link" "redis_private_vnet_prod02" {
   name                  = module.vnet_weu_prod02.name
-  resource_group_name   = data.azurerm_resource_group.vnet_common_rg.name
+  resource_group_name   = azurerm_resource_group.rg_common.name
   private_dns_zone_name = azurerm_private_dns_zone.privatelink_redis_cache.name
   virtual_network_id    = module.vnet_weu_prod02.id
   registration_enabled  = false
@@ -107,14 +107,14 @@ resource "azurerm_private_dns_zone_virtual_network_link" "redis_private_vnet_pro
 
 resource "azurerm_private_dns_zone" "privatelink_postgres_database_azure_com" {
   name                = "privatelink.postgres.database.azure.com"
-  resource_group_name = data.azurerm_resource_group.vnet_common_rg.name
+  resource_group_name = azurerm_resource_group.rg_common.name
 
   tags = var.tags
 }
 
 resource "azurerm_private_dns_zone_virtual_network_link" "privatelink_postgres_database_azure_com_vnet_common" {
   name                  = data.azurerm_virtual_network.vnet_common.name
-  resource_group_name   = data.azurerm_resource_group.vnet_common_rg.name
+  resource_group_name   = azurerm_resource_group.rg_common.name
   private_dns_zone_name = azurerm_private_dns_zone.privatelink_postgres_database_azure_com.name
   virtual_network_id    = data.azurerm_virtual_network.vnet_common.id
   registration_enabled  = false
@@ -124,7 +124,7 @@ resource "azurerm_private_dns_zone_virtual_network_link" "privatelink_postgres_d
 
 resource "azurerm_private_dns_zone_virtual_network_link" "privatelink_postgres_database_azure_com_vnet_beta" {
   name                  = module.vnet_weu_beta.name
-  resource_group_name   = data.azurerm_resource_group.vnet_common_rg.name
+  resource_group_name   = azurerm_resource_group.rg_common.name
   private_dns_zone_name = azurerm_private_dns_zone.privatelink_postgres_database_azure_com.name
   virtual_network_id    = module.vnet_weu_beta.id
   registration_enabled  = false
@@ -134,7 +134,7 @@ resource "azurerm_private_dns_zone_virtual_network_link" "privatelink_postgres_d
 
 resource "azurerm_private_dns_zone_virtual_network_link" "privatelink_postgres_database_azure_com_vnet_prod01" {
   name                  = module.vnet_weu_prod01.name
-  resource_group_name   = data.azurerm_resource_group.vnet_common_rg.name
+  resource_group_name   = azurerm_resource_group.rg_common.name
   private_dns_zone_name = azurerm_private_dns_zone.privatelink_postgres_database_azure_com.name
   virtual_network_id    = module.vnet_weu_prod01.id
   registration_enabled  = false
@@ -144,7 +144,7 @@ resource "azurerm_private_dns_zone_virtual_network_link" "privatelink_postgres_d
 
 resource "azurerm_private_dns_zone_virtual_network_link" "privatelink_postgres_database_azure_com_vnet_prod02" {
   name                  = module.vnet_weu_prod02.name
-  resource_group_name   = data.azurerm_resource_group.vnet_common_rg.name
+  resource_group_name   = azurerm_resource_group.rg_common.name
   private_dns_zone_name = azurerm_private_dns_zone.privatelink_postgres_database_azure_com.name
   virtual_network_id    = module.vnet_weu_prod02.id
   registration_enabled  = false
@@ -154,14 +154,14 @@ resource "azurerm_private_dns_zone_virtual_network_link" "privatelink_postgres_d
 
 resource "azurerm_private_dns_zone" "privatelink_mysql_database_azure_com" {
   name                = "privatelink.mysql.database.azure.com"
-  resource_group_name = data.azurerm_resource_group.vnet_common_rg.name
+  resource_group_name = azurerm_resource_group.rg_common.name
 
   tags = var.tags
 }
 
 resource "azurerm_private_dns_zone_virtual_network_link" "privatelink_mysql_database_azure_com_vnet_common" {
   name                  = data.azurerm_virtual_network.vnet_common.name
-  resource_group_name   = data.azurerm_resource_group.vnet_common_rg.name
+  resource_group_name   = azurerm_resource_group.rg_common.name
   private_dns_zone_name = azurerm_private_dns_zone.privatelink_mysql_database_azure_com.name
   virtual_network_id    = data.azurerm_virtual_network.vnet_common.id
   registration_enabled  = false
@@ -171,7 +171,7 @@ resource "azurerm_private_dns_zone_virtual_network_link" "privatelink_mysql_data
 
 resource "azurerm_private_dns_zone_virtual_network_link" "privatelink_mysql_database_azure_com_vnet_beta" {
   name                  = module.vnet_weu_beta.name
-  resource_group_name   = data.azurerm_resource_group.vnet_common_rg.name
+  resource_group_name   = azurerm_resource_group.rg_common.name
   private_dns_zone_name = azurerm_private_dns_zone.privatelink_mysql_database_azure_com.name
   virtual_network_id    = module.vnet_weu_beta.id
   registration_enabled  = false
@@ -181,7 +181,7 @@ resource "azurerm_private_dns_zone_virtual_network_link" "privatelink_mysql_data
 
 resource "azurerm_private_dns_zone_virtual_network_link" "privatelink_mysql_database_azure_com_vnet_prod01" {
   name                  = module.vnet_weu_prod01.name
-  resource_group_name   = data.azurerm_resource_group.vnet_common_rg.name
+  resource_group_name   = azurerm_resource_group.rg_common.name
   private_dns_zone_name = azurerm_private_dns_zone.privatelink_mysql_database_azure_com.name
   virtual_network_id    = module.vnet_weu_prod01.id
   registration_enabled  = false
@@ -192,14 +192,14 @@ resource "azurerm_private_dns_zone_virtual_network_link" "privatelink_mysql_data
 
 resource "azurerm_private_dns_zone" "privatelink_azurecr_io" {
   name                = "privatelink.azurecr.io"
-  resource_group_name = data.azurerm_resource_group.vnet_common_rg.name
+  resource_group_name = azurerm_resource_group.rg_common.name
 
   tags = var.tags
 }
 
 resource "azurerm_private_dns_zone_virtual_network_link" "privatelink_azurecr_io_vnet_common" {
   name                  = data.azurerm_virtual_network.vnet_common.name
-  resource_group_name   = data.azurerm_resource_group.vnet_common_rg.name
+  resource_group_name   = azurerm_resource_group.rg_common.name
   private_dns_zone_name = azurerm_private_dns_zone.privatelink_azurecr_io.name
   virtual_network_id    = data.azurerm_virtual_network.vnet_common.id
   registration_enabled  = false
@@ -209,7 +209,7 @@ resource "azurerm_private_dns_zone_virtual_network_link" "privatelink_azurecr_io
 
 resource "azurerm_private_dns_zone_virtual_network_link" "privatelink_azurecr_io_vnet_beta" {
   name                  = module.vnet_weu_beta.name
-  resource_group_name   = data.azurerm_resource_group.vnet_common_rg.name
+  resource_group_name   = azurerm_resource_group.rg_common.name
   private_dns_zone_name = azurerm_private_dns_zone.privatelink_azurecr_io.name
   virtual_network_id    = module.vnet_weu_beta.id
   registration_enabled  = false
@@ -219,7 +219,7 @@ resource "azurerm_private_dns_zone_virtual_network_link" "privatelink_azurecr_io
 
 resource "azurerm_private_dns_zone_virtual_network_link" "privatelink_azurecr_io_vnet_prod01" {
   name                  = module.vnet_weu_prod01.name
-  resource_group_name   = data.azurerm_resource_group.vnet_common_rg.name
+  resource_group_name   = azurerm_resource_group.rg_common.name
   private_dns_zone_name = azurerm_private_dns_zone.privatelink_azurecr_io.name
   virtual_network_id    = module.vnet_weu_prod01.id
   registration_enabled  = false
@@ -229,7 +229,7 @@ resource "azurerm_private_dns_zone_virtual_network_link" "privatelink_azurecr_io
 
 resource "azurerm_private_dns_zone_virtual_network_link" "privatelink_azurecr_io_vnet_prod02" {
   name                  = module.vnet_weu_prod02.name
-  resource_group_name   = data.azurerm_resource_group.vnet_common_rg.name
+  resource_group_name   = azurerm_resource_group.rg_common.name
   private_dns_zone_name = azurerm_private_dns_zone.privatelink_azurecr_io.name
   virtual_network_id    = module.vnet_weu_prod02.id
   registration_enabled  = false
@@ -239,14 +239,14 @@ resource "azurerm_private_dns_zone_virtual_network_link" "privatelink_azurecr_io
 
 resource "azurerm_private_dns_zone" "privatelink_mongo_cosmos" {
   name                = "privatelink.mongo.cosmos.azure.com"
-  resource_group_name = data.azurerm_resource_group.vnet_common_rg.name
+  resource_group_name = azurerm_resource_group.rg_common.name
 
   tags = var.tags
 }
 
 resource "azurerm_private_dns_zone_virtual_network_link" "mongo_cosmos_private_vnet_common" {
   name                  = data.azurerm_virtual_network.vnet_common.name
-  resource_group_name   = data.azurerm_resource_group.vnet_common_rg.name
+  resource_group_name   = azurerm_resource_group.rg_common.name
   private_dns_zone_name = azurerm_private_dns_zone.privatelink_mongo_cosmos.name
   virtual_network_id    = data.azurerm_virtual_network.vnet_common.id
   registration_enabled  = false
@@ -256,7 +256,7 @@ resource "azurerm_private_dns_zone_virtual_network_link" "mongo_cosmos_private_v
 
 resource "azurerm_private_dns_zone_virtual_network_link" "mongo_cosmos_private_vnet_beta" {
   name                  = module.vnet_weu_beta.name
-  resource_group_name   = data.azurerm_resource_group.vnet_common_rg.name
+  resource_group_name   = azurerm_resource_group.rg_common.name
   private_dns_zone_name = azurerm_private_dns_zone.privatelink_mongo_cosmos.name
   virtual_network_id    = module.vnet_weu_beta.id
   registration_enabled  = false
@@ -266,7 +266,7 @@ resource "azurerm_private_dns_zone_virtual_network_link" "mongo_cosmos_private_v
 
 resource "azurerm_private_dns_zone_virtual_network_link" "mongo_cosmos_private_vnet_prod01" {
   name                  = module.vnet_weu_prod01.name
-  resource_group_name   = data.azurerm_resource_group.vnet_common_rg.name
+  resource_group_name   = azurerm_resource_group.rg_common.name
   private_dns_zone_name = azurerm_private_dns_zone.privatelink_mongo_cosmos.name
   virtual_network_id    = module.vnet_weu_prod01.id
   registration_enabled  = false
@@ -276,7 +276,7 @@ resource "azurerm_private_dns_zone_virtual_network_link" "mongo_cosmos_private_v
 
 resource "azurerm_private_dns_zone_virtual_network_link" "mongo_cosmos_private_vnet_prod02" {
   name                  = module.vnet_weu_prod02.name
-  resource_group_name   = data.azurerm_resource_group.vnet_common_rg.name
+  resource_group_name   = azurerm_resource_group.rg_common.name
   private_dns_zone_name = azurerm_private_dns_zone.privatelink_mongo_cosmos.name
   virtual_network_id    = module.vnet_weu_prod02.id
   registration_enabled  = false
@@ -501,7 +501,7 @@ resource "azurerm_private_dns_zone" "privatelink_azurewebsites" {
 
 resource "azurerm_private_dns_zone_virtual_network_link" "azurewebsites_private_vnet_common" {
   name                  = data.azurerm_virtual_network.vnet_common.name
-  resource_group_name   = data.azurerm_resource_group.vnet_common_rg.name
+  resource_group_name   = azurerm_resource_group.rg_common.name
   private_dns_zone_name = azurerm_private_dns_zone.privatelink_azurewebsites.name
   virtual_network_id    = data.azurerm_virtual_network.vnet_common.id
   registration_enabled  = false
@@ -511,7 +511,7 @@ resource "azurerm_private_dns_zone_virtual_network_link" "azurewebsites_private_
 
 resource "azurerm_private_dns_zone_virtual_network_link" "azurewebsites_private_vnet_beta" {
   name                  = module.vnet_weu_beta.name
-  resource_group_name   = data.azurerm_resource_group.vnet_common_rg.name
+  resource_group_name   = azurerm_resource_group.rg_common.name
   private_dns_zone_name = azurerm_private_dns_zone.privatelink_azurewebsites.name
   virtual_network_id    = module.vnet_weu_beta.id
   registration_enabled  = false
@@ -521,7 +521,7 @@ resource "azurerm_private_dns_zone_virtual_network_link" "azurewebsites_private_
 
 resource "azurerm_private_dns_zone_virtual_network_link" "azurewebsites_private_vnet_prod01" {
   name                  = module.vnet_weu_prod01.name
-  resource_group_name   = data.azurerm_resource_group.vnet_common_rg.name
+  resource_group_name   = azurerm_resource_group.rg_common.name
   private_dns_zone_name = azurerm_private_dns_zone.privatelink_azurewebsites.name
   virtual_network_id    = module.vnet_weu_prod01.id
   registration_enabled  = false

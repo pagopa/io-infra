@@ -1,21 +1,17 @@
-data "azurerm_resource_group" "monitor_rg" {
-  name = var.common_rg
-}
-
 data "azurerm_log_analytics_workspace" "monitor_rg" {
   name                = var.log_analytics_workspace_name
-  resource_group_name = data.azurerm_resource_group.monitor_rg.name
+  resource_group_name = azurerm_resource_group.rg_common.name
 }
 
 # Application insights
 data "azurerm_application_insights" "application_insights" {
   name                = var.application_insights_name
-  resource_group_name = data.azurerm_resource_group.monitor_rg.name
+  resource_group_name = azurerm_resource_group.rg_common.name
 }
 
 data "azurerm_log_analytics_workspace" "log_analytics_workspace" {
   name                = format("%s-law-common", local.project)
-  resource_group_name = data.azurerm_resource_group.monitor_rg.name
+  resource_group_name = azurerm_resource_group.rg_common.name
 }
 
 data "azurerm_key_vault_secret" "monitor_notification_slack_email" {
@@ -47,7 +43,7 @@ data "azurerm_key_vault_secret" "alert_quarantine_error_notification_slack" {
 # Actions Groups
 #
 resource "azurerm_monitor_action_group" "error_action_group" {
-  resource_group_name = data.azurerm_resource_group.monitor_rg.name
+  resource_group_name = azurerm_resource_group.rg_common.name
   name                = "${var.prefix}${var.env_short}error"
   short_name          = "${var.prefix}${var.env_short}error"
 
@@ -67,7 +63,7 @@ resource "azurerm_monitor_action_group" "error_action_group" {
 }
 
 resource "azurerm_monitor_action_group" "quarantine_error_action_group" {
-  resource_group_name = data.azurerm_resource_group.monitor_rg.name
+  resource_group_name = azurerm_resource_group.rg_common.name
   name                = "${var.prefix}${var.env_short}quarantineerror"
   short_name          = "${var.prefix}${var.env_short}qerr"
 
@@ -82,7 +78,7 @@ resource "azurerm_monitor_action_group" "quarantine_error_action_group" {
 
 resource "azurerm_monitor_action_group" "email" {
   name                = "EmailPagoPA"
-  resource_group_name = data.azurerm_resource_group.monitor_rg.name
+  resource_group_name = azurerm_resource_group.rg_common.name
   short_name          = "EmailPagoPA"
 
   email_receiver {
@@ -96,7 +92,7 @@ resource "azurerm_monitor_action_group" "email" {
 
 resource "azurerm_monitor_action_group" "slack" {
   name                = "SlackPagoPA"
-  resource_group_name = data.azurerm_resource_group.monitor_rg.name
+  resource_group_name = azurerm_resource_group.rg_common.name
   short_name          = "SlackPagoPA"
 
   email_receiver {
@@ -305,8 +301,8 @@ module "web_test_api" {
 
   subscription_id                   = data.azurerm_subscription.current.subscription_id
   name                              = format("%s-test", each.value.name)
-  location                          = data.azurerm_resource_group.monitor_rg.location
-  resource_group                    = data.azurerm_resource_group.monitor_rg.name
+  location                          = azurerm_resource_group.rg_common.location
+  resource_group                    = azurerm_resource_group.rg_common.name
   application_insight_name          = data.azurerm_application_insights.application_insights.name
   request_url                       = format("https://%s%s", each.value.host, each.value.path)
   expected_http_status              = each.value.http_status

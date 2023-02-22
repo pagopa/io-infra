@@ -482,7 +482,7 @@ module "app_backendl1_snet" {
   source                                    = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v4.1.15"
   name                                      = "appbackendl1"
   address_prefixes                          = var.cidr_subnet_appbackendl1
-  resource_group_name                       = data.azurerm_resource_group.vnet_common_rg.name
+  resource_group_name                       = azurerm_resource_group.rg_common.name
   virtual_network_name                      = data.azurerm_virtual_network.vnet_common.name
   private_endpoint_network_policies_enabled = true
 
@@ -695,7 +695,7 @@ module "app_backendl2_snet" {
   source                                    = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v4.1.15"
   name                                      = "appbackendl2"
   address_prefixes                          = var.cidr_subnet_appbackendl2
-  resource_group_name                       = data.azurerm_resource_group.vnet_common_rg.name
+  resource_group_name                       = azurerm_resource_group.rg_common.name
   virtual_network_name                      = data.azurerm_virtual_network.vnet_common.name
   private_endpoint_network_policies_enabled = true
 
@@ -908,7 +908,7 @@ module "app_backendli_snet" {
   source                                    = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v4.1.15"
   name                                      = "appbackendli"
   address_prefixes                          = var.cidr_subnet_appbackendli
-  resource_group_name                       = data.azurerm_resource_group.vnet_common_rg.name
+  resource_group_name                       = azurerm_resource_group.rg_common.name
   virtual_network_name                      = data.azurerm_virtual_network.vnet_common.name
   private_endpoint_network_policies_enabled = true
 
@@ -1078,8 +1078,8 @@ module "app_backend_web_test_api" {
 
   subscription_id                   = data.azurerm_subscription.current.subscription_id
   name                              = format("%s-test", each.value.name)
-  location                          = data.azurerm_resource_group.monitor_rg.location
-  resource_group                    = data.azurerm_resource_group.monitor_rg.name
+  location                          = azurerm_resource_group.rg_common.location
+  resource_group                    = azurerm_resource_group.rg_common.name
   application_insight_name          = data.azurerm_application_insights.application_insights.name
   request_url                       = format("https://%s%s", each.value.host, each.value.path)
   expected_http_status              = each.value.http_status

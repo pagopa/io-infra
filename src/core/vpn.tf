@@ -8,7 +8,7 @@ module "vpn_snet" {
   source                                    = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v4.1.15"
   name                                      = "GatewaySubnet"
   address_prefixes                          = var.cidr_subnet_vpn
-  resource_group_name                       = data.azurerm_resource_group.vnet_common_rg.name
+  resource_group_name                       = azurerm_resource_group.rg_common.name
   virtual_network_name                      = data.azurerm_virtual_network.vnet_common.name
   service_endpoints                         = []
   private_endpoint_network_policies_enabled = false
@@ -19,7 +19,7 @@ module "vpn" {
 
   name                = format("%s-vpn", local.project)
   location            = var.location
-  resource_group_name = data.azurerm_resource_group.vnet_common_rg.name
+  resource_group_name = azurerm_resource_group.rg_common.name
   sku                 = var.vpn_sku
   pip_sku             = var.vpn_pip_sku
   subnet_id           = module.vpn_snet.id
@@ -46,7 +46,7 @@ module "dns_forwarder_snet" {
   source                                    = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v4.1.15"
   name                                      = format("%s-dnsforwarder", local.project)
   address_prefixes                          = var.cidr_subnet_dnsforwarder
-  resource_group_name                       = data.azurerm_resource_group.vnet_common_rg.name
+  resource_group_name                       = azurerm_resource_group.rg_common.name
   virtual_network_name                      = data.azurerm_virtual_network.vnet_common.name
   private_endpoint_network_policies_enabled = false
 
@@ -63,7 +63,7 @@ module "dns_forwarder" {
   source              = "git::https://github.com/pagopa/terraform-azurerm-v3.git//dns_forwarder?ref=v4.1.15"
   name                = format("%s-dns-forwarder", local.project)
   location            = var.location
-  resource_group_name = data.azurerm_resource_group.vnet_common_rg.name
+  resource_group_name = azurerm_resource_group.rg_common.name
   subnet_id           = module.dns_forwarder_snet.id
 
   tags = var.tags

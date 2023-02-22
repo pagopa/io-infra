@@ -19,7 +19,7 @@ module "key_vault" {
 
 data "azurerm_key_vault" "common" {
   name                = format("%s-kv-common", local.project)
-  resource_group_name = format("%s-rg-common", local.project)
+  resource_group_name = azurerm_resource_group.rg_common.name
 }
 
 #tfsec:ignore:AZU023
