@@ -234,7 +234,7 @@ resource "azurerm_private_endpoint" "cgn_legalbackup_storage" {
 
   private_dns_zone_group {
     name                 = "private-dns-zone-group"
-    private_dns_zone_ids = [data.azurerm_private_dns_zone.privatelink_blob_core_windows_net.id]
+    private_dns_zone_ids = [azurerm_private_dns_zone.privatelink_blob_core.id]
   }
 }
 

@@ -76,35 +76,6 @@ locals {
   storage_account_notifications_queue_push_notifications = "push-notifications"
 }
 
-#
-# Private dns zones
-#
-
-data "azurerm_private_dns_zone" "privatelink_blob_core_windows_net" {
-  name                = "privatelink.blob.core.windows.net"
-  resource_group_name = azurerm_resource_group.rg_common.name
-}
-
-data "azurerm_private_dns_zone" "privatelink_queue_core_windows_net" {
-  name                = "privatelink.queue.core.windows.net"
-  resource_group_name = azurerm_resource_group.rg_common.name
-}
-
-data "azurerm_private_dns_zone" "privatelink_file_core_windows_net" {
-  name                = "privatelink.file.core.windows.net"
-  resource_group_name = azurerm_resource_group.rg_common.name
-}
-
-data "azurerm_private_dns_zone" "privatelink_table_core_windows_net" {
-  name                = "privatelink.table.core.windows.net"
-  resource_group_name = azurerm_resource_group.rg_common.name
-}
-
-data "azurerm_private_dns_zone" "privatelink_documents_azure_com" {
-  name                = "privatelink.documents.azure.com"
-  resource_group_name = azurerm_resource_group.rg_common.name
-}
-
 # KeyVault values - start
 data "azurerm_key_vault_secret" "services_exclusion_list" {
   name         = "io-fn-services-SERVICEID-EXCLUSION-LIST"
