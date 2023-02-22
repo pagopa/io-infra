@@ -15,16 +15,12 @@ resource "azurerm_application_insights" "application_insights" {
   name                = format("%s-ai-common", local.project)
   location            = azurerm_resource_group.rg_common.location
   resource_group_name = azurerm_resource_group.rg_common.name
+  disable_ip_masking  = true
   application_type    = "other"
 
   workspace_id = azurerm_log_analytics_workspace.log_analytics_workspace.id
 
   tags = var.tags
-}
-
-data "azurerm_log_analytics_workspace" "log_analytics_workspace" {
-  name                = format("%s-law-common", local.project)
-  resource_group_name = azurerm_resource_group.rg_common.name
 }
 
 data "azurerm_key_vault_secret" "monitor_notification_slack_email" {
