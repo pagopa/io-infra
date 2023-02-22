@@ -19,7 +19,7 @@ module "apim_snet" {
 # ###########################
 
 module "apim" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management?ref=v4.1.15"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management?ref=v5.0.1"
 
   subnet_id                 = module.apim_snet.id
   location                  = azurerm_resource_group.rg_internal.location
@@ -72,7 +72,10 @@ module "apim" {
     portal           = null
   }
 
-  application_insights_instrumentation_key = data.azurerm_application_insights.application_insights.instrumentation_key
+  application_insights = {
+    enabled = true
+    instrumentation_key = data.azurerm_application_insights.application_insights.instrumentation_key
+  }
 
   lock_enable = false # no lock
 
