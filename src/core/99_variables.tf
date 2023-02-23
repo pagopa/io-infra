@@ -314,6 +314,9 @@ variable "redis_common" {
     family                        = string
     sku_name                      = string
     public_network_access_enabled = bool
+    rdb_backup_enabled            = bool
+    rdb_backup_frequency          = number
+    rdb_backup_max_snapshot_count = number
   })
   description = "Redis Common configuration"
 }

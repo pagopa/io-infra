@@ -79,6 +79,9 @@ redis_common = {
   family                        = "P"
   sku_name                      = "Premium"
   public_network_access_enabled = true
+  rdb_backup_enabled            = true
+  rdb_backup_frequency          = 60
+  rdb_backup_max_snapshot_count = 1
 }
 
 # apim

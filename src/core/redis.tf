@@ -7,6 +7,22 @@ module "redis_common_snet" {
   private_endpoint_network_policies_enabled = false
 }
 
+module "redis_common_backup" {
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//storage_account?ref=v4.1.15"
+
+  name                            = replace(format("%s-redis", local.project), "-", "")
+  account_kind                    = "StorageV2"
+  account_tier                    = "Premium"
+  access_tier                     = "Hot"
+  account_replication_type        = "LRS"
+  resource_group_name             = azurerm_resource_group.rg_common.name
+  location                        = azurerm_resource_group.rg_common.location
+  advanced_threat_protection      = true
+  allow_nested_items_to_be_public = false
+
+  tags = var.tags
+}
+
 module "redis_common" {
   source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//redis_cache?ref=v4.1.15"
 
@@ -19,6 +35,13 @@ module "redis_common" {
   sku_name                      = var.redis_common.sku_name
   subnet_id                     = module.redis_common_snet.id
   public_network_access_enabled = var.redis_common.public_network_access_enabled
+
+
+  backup_configuration = {
+    frequency                 = var.redis_common.rdb_backup_frequency
+    max_snapshot_count        = var.redis_common.rdb_backup_max_snapshot_count
+    storage_connection_string = module.redis_common_backup.primary_connection_string
+  }
 
   # when azure can apply patch?
   patch_schedules = [
