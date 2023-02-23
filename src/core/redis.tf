@@ -1,10 +1,11 @@
 module "redis_common_snet" {
-  source                                    = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v4.1.15"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v4.1.15"
+
   name                                      = "rediscommon"
   address_prefixes                          = var.cidr_subnet_redis_common
   resource_group_name                       = azurerm_resource_group.rg_common.name
   virtual_network_name                      = module.vnet_common.name
-  private_endpoint_network_policies_enabled = false
+  private_endpoint_network_policies_enabled = true
 }
 
 module "redis_common_backup" {
@@ -35,7 +36,6 @@ module "redis_common" {
   sku_name                      = var.redis_common.sku_name
   subnet_id                     = module.redis_common_snet.id
   public_network_access_enabled = var.redis_common.public_network_access_enabled
-
 
   backup_configuration = {
     frequency                 = var.redis_common.rdb_backup_frequency
