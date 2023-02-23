@@ -10,7 +10,7 @@ module "redis_common_snet" {
 module "redis_common_backup" {
   source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//storage_account?ref=v4.1.15"
 
-  name                            = replace(format("%s-redis", local.project), "-", "")
+  name                            = replace(format("%s-stredis", local.project), "-", "")
   account_kind                    = "StorageV2"
   account_tier                    = "Premium"
   access_tier                     = "Hot"
