@@ -10,11 +10,6 @@ data "azurerm_cosmosdb_account" "cosmos_api" {
   resource_group_name = format("%s-rg-internal", local.project)
 }
 
-data "azurerm_redis_cache" "redis_common" {
-  name                = format("%s-redis-common", local.project)
-  resource_group_name = azurerm_resource_group.rg_common.name
-}
-
 #
 # Function cgn
 #
@@ -88,15 +83,6 @@ data "azurerm_key_vault_secret" "services_exclusion_list" {
 data "azurerm_storage_account" "api" {
   name                = "iopstapi"
   resource_group_name = azurerm_resource_group.rg_internal.name
-}
-
-#
-# Redis
-#
-
-data "azurerm_redis_cache" "common" {
-  name                = "io-p-redis-common"
-  resource_group_name = azurerm_resource_group.rg_common.name
 }
 
 # CDN Assets storage account

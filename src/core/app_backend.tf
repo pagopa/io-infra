@@ -73,9 +73,9 @@ locals {
       LOLLIPOP_API_BASE_PATH            = "/api/v1"
 
       // REDIS
-      REDIS_URL      = data.azurerm_redis_cache.redis_common.hostname
-      REDIS_PORT     = data.azurerm_redis_cache.redis_common.ssl_port
-      REDIS_PASSWORD = data.azurerm_redis_cache.redis_common.primary_access_key
+      REDIS_URL      = module.redis_common.hostname
+      REDIS_PORT     = module.redis_common.ssl_port
+      REDIS_PASSWORD = module.redis_common.primary_access_key
 
       // PUSH NOTIFICATIONS
       PRE_SHARED_KEY               = data.azurerm_key_vault_secret.app_backend_PRE_SHARED_KEY.value
@@ -438,7 +438,7 @@ data "azurerm_key_vault_secret" "app_backend_LOLLIPOP_API_KEY" {
 #tfsec:ignore:AZU023
 resource "azurerm_key_vault_secret" "appbackend-REDIS-PASSWORD" {
   name         = "appbackend-REDIS-PASSWORD"
-  value        = data.azurerm_redis_cache.common.primary_access_key
+  value        = module.redis_common.primary_access_key
   key_vault_id = module.key_vault_common.id
   content_type = "string"
 }

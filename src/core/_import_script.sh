@@ -23,3 +23,7 @@
 # bash terraform.sh import prod 'azurerm_private_dns_zone.privatelink_queue_core' '/subscriptions/ec285037-c673-4f58-b594-d7c480da4e8b/resourceGroups/io-p-rg-common/providers/Microsoft.Network/privateDnsZones/privatelink.queue.core.windows.net'
 
 # bash terraform.sh import prod 'module.vnet_common.azurerm_virtual_network.this' '/subscriptions/ec285037-c673-4f58-b594-d7c480da4e8b/resourceGroups/io-p-rg-common/providers/Microsoft.Network/virtualNetworks/io-p-vnet-common'
+
+# bash terraform.sh import prod 'module.redis_common_snet.azurerm_subnet.this' '/subscriptions/ec285037-c673-4f58-b594-d7c480da4e8b/resourceGroups/io-p-rg-common/providers/Microsoft.Network/virtualNetworks/io-p-vnet-common/subnets/rediscommon'
+
+# bash terraform.sh import prod 'module.redis_common.azurerm_redis_cache.this' '/subscriptions/ec285037-c673-4f58-b594-d7c480da4e8b/resourceGroups/io-p-rg-common/providers/Microsoft.Cache/Redis/io-p-redis-common'

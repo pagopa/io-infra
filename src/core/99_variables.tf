@@ -176,6 +176,11 @@ variable "cidr_weu_prod02_vnet" {
 }
 
 ## Subnet CIRDS
+variable "cidr_subnet_redis_common" {
+  type        = list(string)
+  description = "Redis common network address space."
+}
+
 variable "cidr_subnet_eventhub" {
   type        = list(string)
   description = "Eventhub network address space."
@@ -299,6 +304,18 @@ variable "cidr_subnet_pendpoints" {
 variable "cidr_subnet_fnlollipop" {
   type        = list(string)
   description = "Function Lollipop address space."
+}
+
+## REDIS COMMON ##
+variable "redis_common" {
+  type = object({
+    capacity                      = number
+    shard_count                   = number
+    family                        = string
+    sku_name                      = string
+    public_network_access_enabled = bool
+  })
+  description = "Redis Common configuration"
 }
 
 ## VPN ##

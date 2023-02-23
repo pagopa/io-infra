@@ -56,6 +56,7 @@ cidr_subnet_prod01_push_notif = ["10.0.141.0/26"]
 cidr_subnet_appbackendl1 = ["10.0.152.0/24"]
 cidr_subnet_appbackendl2 = ["10.0.153.0/24"]
 cidr_subnet_appbackendli = ["10.0.154.0/24"]
+cidr_subnet_redis_common = ["10.0.200.0/24"]
 cidr_subnet_azdoa        = ["10.0.250.0/24"]
 cidr_subnet_dnsforwarder = ["10.0.252.8/29"]
 cidr_subnet_pendpoints   = ["10.0.240.0/23"]
@@ -71,9 +72,14 @@ app_gateway_min_capacity                                          = 4 # 4 capaci
 app_gateway_max_capacity                                          = 50
 app_gateway_alerts_enabled                                        = true
 
-# redis
-redis_apim_sku_name = "Premium"
-redis_apim_family   = "P"
+## REDIS COMMON ##
+redis_common = {
+  capacity                      = 2
+  shard_count                   = 4
+  family                        = "P"
+  sku_name                      = "Premium"
+  public_network_access_enabled = true
+}
 
 # apim
 apim_publisher_name = "IO"
