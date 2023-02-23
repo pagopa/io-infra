@@ -9,7 +9,7 @@ resource "azurerm_resource_group" "azdo_rg" {
 data "azurerm_subnet" "azdoa_snet" {
   count                = var.enable_azdoa ? 1 : 0
   name                 = "azure-devops"
-  virtual_network_name = data.azurerm_virtual_network.vnet_common.name
+  virtual_network_name = module.vnet_common.name
   resource_group_name  = azurerm_resource_group.rg_common.name
 }
 

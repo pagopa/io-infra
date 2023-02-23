@@ -57,7 +57,7 @@ locals {
       resource_group   = azurerm_resource_group.selfcare_be_rg
       app_service_plan = azurerm_app_service_plan.selfcare_be_common
       snet             = module.selfcare_be_common_snet
-      vnet             = data.azurerm_virtual_network.vnet_common
+      vnet             = module.vnet_common
     }
 
     db = {
@@ -258,7 +258,7 @@ module "devportalservicedata_db_server_snet" {
   name                                      = format("%s-snet", local.function_devportalservicedata.db.name)
   address_prefixes                          = var.cidr_subnet_devportalservicedata_db_server
   resource_group_name                       = azurerm_resource_group.rg_common.name
-  virtual_network_name                      = data.azurerm_virtual_network.vnet_common.name
+  virtual_network_name                      = module.vnet_common.name
   private_endpoint_network_policies_enabled = false
   service_endpoints                         = ["Microsoft.Sql"]
 

@@ -10,7 +10,7 @@ module "eventhub_snet" {
   name                                      = format("%s-eventhub-snet", local.project)
   address_prefixes                          = var.cidr_subnet_eventhub
   resource_group_name                       = azurerm_resource_group.rg_common.name
-  virtual_network_name                      = data.azurerm_virtual_network.vnet_common.name
+  virtual_network_name                      = module.vnet_common.name
   service_endpoints                         = ["Microsoft.EventHub"]
   private_endpoint_network_policies_enabled = false
 }
@@ -26,7 +26,7 @@ module "event_hub" {
   maximum_throughput_units = var.ehns_maximum_throughput_units
   zone_redundant           = var.ehns_zone_redundant
 
-  virtual_network_ids = [data.azurerm_virtual_network.vnet_common.id]
+  virtual_network_ids = [module.vnet_common.id]
   subnet_id           = module.eventhub_snet.id
 
   eventhubs = var.eventhubs

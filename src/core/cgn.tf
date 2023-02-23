@@ -13,7 +13,7 @@ module "redis_cgn_snet" {
   name                                      = format("%s-redis-cgn-snet", local.project)
   address_prefixes                          = ["10.0.14.0/25"]
   resource_group_name                       = azurerm_resource_group.rg_common.name
-  virtual_network_name                      = data.azurerm_virtual_network.vnet_common.name
+  virtual_network_name                      = module.vnet_common.name
   private_endpoint_network_policies_enabled = false
 }
 
@@ -53,7 +53,7 @@ module "redis_cgn" {
 
   private_endpoint = {
     enabled              = true
-    virtual_network_id   = data.azurerm_virtual_network.vnet_common.id
+    virtual_network_id   = module.vnet_common.id
     subnet_id            = module.redis_cgn_snet.id
     private_dns_zone_ids = [azurerm_private_dns_zone.privatelink_redis_cache.id]
   }
@@ -63,7 +63,7 @@ module "redis_cgn" {
 
 data "azurerm_subnet" "fn3cgn" {
   name                 = "fn3cgn"
-  virtual_network_name = data.azurerm_virtual_network.vnet_common.name
+  virtual_network_name = module.vnet_common.name
   resource_group_name  = azurerm_resource_group.rg_common.name
 }
 
@@ -361,7 +361,7 @@ module "cgn_snet" {
   name                                      = format("%s-cgn-snet", local.project)
   address_prefixes                          = var.cidr_subnet_cgn
   resource_group_name                       = azurerm_resource_group.rg_common.name
-  virtual_network_name                      = data.azurerm_virtual_network.vnet_common.name
+  virtual_network_name                      = module.vnet_common.name
   private_endpoint_network_policies_enabled = false
 
   service_endpoints = [

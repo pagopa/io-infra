@@ -10,7 +10,7 @@ resource "azurerm_private_dns_zone_virtual_network_link" "internal_io_pagopa_it_
   name                  = format("%s-private-vnet-common", local.project)
   resource_group_name   = azurerm_resource_group.rg_internal.name
   private_dns_zone_name = azurerm_private_dns_zone.internal_io_pagopa_it[0].name
-  virtual_network_id    = data.azurerm_virtual_network.vnet_common.id
+  virtual_network_id    = module.vnet_common.id
   registration_enabled  = false
 
   tags = var.tags
@@ -69,7 +69,7 @@ resource "azurerm_private_dns_zone_virtual_network_link" "redis_private_vnet_com
   name                  = format("%s-redis-common-common", local.project)
   resource_group_name   = azurerm_resource_group.rg_common.name
   private_dns_zone_name = azurerm_private_dns_zone.privatelink_redis_cache.name
-  virtual_network_id    = data.azurerm_virtual_network.vnet_common.id
+  virtual_network_id    = module.vnet_common.id
   registration_enabled  = false
 
   tags = var.tags
@@ -113,10 +113,10 @@ resource "azurerm_private_dns_zone" "privatelink_postgres_database_azure_com" {
 }
 
 resource "azurerm_private_dns_zone_virtual_network_link" "privatelink_postgres_database_azure_com_vnet_common" {
-  name                  = data.azurerm_virtual_network.vnet_common.name
+  name                  = module.vnet_common.name
   resource_group_name   = azurerm_resource_group.rg_common.name
   private_dns_zone_name = azurerm_private_dns_zone.privatelink_postgres_database_azure_com.name
-  virtual_network_id    = data.azurerm_virtual_network.vnet_common.id
+  virtual_network_id    = module.vnet_common.id
   registration_enabled  = false
 
   tags = var.tags
@@ -160,10 +160,10 @@ resource "azurerm_private_dns_zone" "privatelink_mysql_database_azure_com" {
 }
 
 resource "azurerm_private_dns_zone_virtual_network_link" "privatelink_mysql_database_azure_com_vnet_common" {
-  name                  = data.azurerm_virtual_network.vnet_common.name
+  name                  = module.vnet_common.name
   resource_group_name   = azurerm_resource_group.rg_common.name
   private_dns_zone_name = azurerm_private_dns_zone.privatelink_mysql_database_azure_com.name
-  virtual_network_id    = data.azurerm_virtual_network.vnet_common.id
+  virtual_network_id    = module.vnet_common.id
   registration_enabled  = false
 
   tags = var.tags
@@ -197,10 +197,10 @@ resource "azurerm_private_dns_zone" "privatelink_azurecr_io" {
 }
 
 resource "azurerm_private_dns_zone_virtual_network_link" "privatelink_azurecr_io_vnet_common" {
-  name                  = data.azurerm_virtual_network.vnet_common.name
+  name                  = module.vnet_common.name
   resource_group_name   = azurerm_resource_group.rg_common.name
   private_dns_zone_name = azurerm_private_dns_zone.privatelink_azurecr_io.name
-  virtual_network_id    = data.azurerm_virtual_network.vnet_common.id
+  virtual_network_id    = module.vnet_common.id
   registration_enabled  = false
 
   tags = var.tags
@@ -244,10 +244,10 @@ resource "azurerm_private_dns_zone" "privatelink_mongo_cosmos" {
 }
 
 resource "azurerm_private_dns_zone_virtual_network_link" "mongo_cosmos_private_vnet_common" {
-  name                  = data.azurerm_virtual_network.vnet_common.name
+  name                  = module.vnet_common.name
   resource_group_name   = azurerm_resource_group.rg_common.name
   private_dns_zone_name = azurerm_private_dns_zone.privatelink_mongo_cosmos.name
-  virtual_network_id    = data.azurerm_virtual_network.vnet_common.id
+  virtual_network_id    = module.vnet_common.id
   registration_enabled  = false
 
   tags = var.tags
@@ -511,10 +511,10 @@ resource "azurerm_private_dns_zone" "privatelink_azurewebsites" {
 }
 
 resource "azurerm_private_dns_zone_virtual_network_link" "azurewebsites_private_vnet_common" {
-  name                  = data.azurerm_virtual_network.vnet_common.name
+  name                  = module.vnet_common.name
   resource_group_name   = azurerm_resource_group.rg_common.name
   private_dns_zone_name = azurerm_private_dns_zone.privatelink_azurewebsites.name
-  virtual_network_id    = data.azurerm_virtual_network.vnet_common.id
+  virtual_network_id    = module.vnet_common.id
   registration_enabled  = false
 
   tags = var.tags

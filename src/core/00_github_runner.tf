@@ -8,7 +8,7 @@ resource "azurerm_resource_group" "github_runner" {
 resource "azurerm_subnet" "github_runner" {
   name                 = "${local.project}-github-runner-snet"
   resource_group_name  = azurerm_resource_group.rg_common.name
-  virtual_network_name = data.azurerm_virtual_network.vnet_common.name
+  virtual_network_name = module.vnet_common.name
   address_prefixes     = ["10.0.242.0/23"]
 }
 

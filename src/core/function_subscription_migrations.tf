@@ -58,7 +58,7 @@ locals {
       resource_group   = azurerm_resource_group.selfcare_be_rg
       app_service_plan = azurerm_app_service_plan.selfcare_be_common
       snet             = module.selfcare_be_common_snet
-      vnet             = data.azurerm_virtual_network.vnet_common
+      vnet             = module.vnet_common
     }
 
     db = {

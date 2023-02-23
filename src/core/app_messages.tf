@@ -87,7 +87,7 @@ module "redis_messages" {
 
   private_endpoint = {
     enabled              = true
-    virtual_network_id   = data.azurerm_virtual_network.vnet_common.id
+    virtual_network_id   = module.vnet_common.id
     subnet_id            = module.private_endpoints_subnet.id
     private_dns_zone_ids = [azurerm_private_dns_zone.privatelink_redis_cache.id]
   }
@@ -116,7 +116,7 @@ module "app_messages_snet" {
   name                                      = format("%s-app-messages-snet-%d", local.project, count.index + 1)
   address_prefixes                          = [var.cidr_subnet_appmessages[count.index]]
   resource_group_name                       = azurerm_resource_group.rg_common.name
-  virtual_network_name                      = data.azurerm_virtual_network.vnet_common.name
+  virtual_network_name                      = module.vnet_common.name
   private_endpoint_network_policies_enabled = false
 
   service_endpoints = [

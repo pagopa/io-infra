@@ -25,7 +25,7 @@ module "app_async_snet" {
   name                                      = format("%s-app-async-snet", local.project)
   address_prefixes                          = var.cidr_subnet_app_async
   resource_group_name                       = azurerm_resource_group.rg_common.name
-  virtual_network_name                      = data.azurerm_virtual_network.vnet_common.name
+  virtual_network_name                      = module.vnet_common.name
   private_endpoint_network_policies_enabled = false
 
   service_endpoints = [

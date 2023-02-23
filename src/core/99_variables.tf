@@ -155,6 +155,11 @@ variable "ddos_protection_plan" {
   default = null
 }
 
+variable "cidr_common_vnet" {
+  type        = list(string)
+  description = "Common Virtual network cidr."
+}
+
 variable "cidr_weu_beta_vnet" {
   type        = list(string)
   description = "Beta Virtual network cidr."
