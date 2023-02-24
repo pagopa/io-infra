@@ -70,14 +70,14 @@ module "function_lollipop" {
 
   # os_type          = "linux"
   # linux_fx_version = "NODE|18"
-  node_version     = "18"
-  runtime_version  = "~4"
+  node_version    = "18"
+  runtime_version = "~4"
 
   always_on                                = "true"
   application_insights_instrumentation_key = data.azurerm_application_insights.application_insights.instrumentation_key
 
   app_service_plan_info = {
-    kind                         = var.function_lollipop_kind
+    kind = var.function_lollipop_kind
     # sku_tier                     = var.function_lollipop_sku_tier
     sku_size                     = var.function_lollipop_sku_size
     maximum_elastic_worker_count = 0
