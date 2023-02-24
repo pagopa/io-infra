@@ -60,7 +60,7 @@ module "lollipop_snet" {
 
 module "function_lollipop" {
   count  = var.lollipop_enabled ? 1 : 0
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app?ref=v5.1.0"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app?ref=v5.2.0"
 
   resource_group_name = azurerm_resource_group.lollipop_rg[0].name
   name                = format("%s-lollipop-fn", local.common_project)
@@ -68,8 +68,6 @@ module "function_lollipop" {
   domain              = "IO-COMMONS"
   health_check_path   = "/info"
 
-  # os_type          = "linux"
-  # linux_fx_version = "NODE|18"
   node_version    = "18"
   runtime_version = "~4"
 
@@ -77,8 +75,7 @@ module "function_lollipop" {
   application_insights_instrumentation_key = data.azurerm_application_insights.application_insights.instrumentation_key
 
   app_service_plan_info = {
-    kind = var.function_lollipop_kind
-    # sku_tier                     = var.function_lollipop_sku_tier
+    kind                         = var.function_lollipop_kind
     sku_size                     = var.function_lollipop_sku_size
     maximum_elastic_worker_count = 0
   }
@@ -120,7 +117,7 @@ module "function_lollipop" {
 
 module "function_lollipop_staging_slot" {
   count  = var.lollipop_enabled ? 1 : 0
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app_slot?ref=v4.1.15"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app_slot?ref=v5.2.0"
 
   name                = "staging"
   location            = var.location
@@ -134,8 +131,7 @@ module "function_lollipop_staging_slot" {
   storage_account_access_key         = module.function_lollipop[0].storage_account.primary_access_key
   internal_storage_connection_string = module.function_lollipop[0].storage_account_internal_function.primary_connection_string
 
-  os_type                                  = "linux"
-  linux_fx_version                         = "NODE|18"
+  node_version                             = "18"
   always_on                                = "true"
   runtime_version                          = "~4"
   application_insights_instrumentation_key = data.azurerm_application_insights.application_insights.instrumentation_key
