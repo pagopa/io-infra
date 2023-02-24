@@ -60,7 +60,7 @@ module "lollipop_snet" {
 
 module "function_lollipop" {
   count  = var.lollipop_enabled ? 1 : 0
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app?ref=v4.1.15"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app?ref=v5.1.0"
 
   resource_group_name = azurerm_resource_group.lollipop_rg[0].name
   name                = format("%s-lollipop-fn", local.common_project)
@@ -68,8 +68,9 @@ module "function_lollipop" {
   domain              = "IO-COMMONS"
   health_check_path   = "/info"
 
-  os_type          = "linux"
-  linux_fx_version = "NODE|18"
+  # os_type          = "linux"
+  # linux_fx_version = "NODE|18"
+  node_version     = "18"
   runtime_version  = "~4"
 
   always_on                                = "true"
@@ -77,7 +78,7 @@ module "function_lollipop" {
 
   app_service_plan_info = {
     kind                         = var.function_lollipop_kind
-    sku_tier                     = var.function_lollipop_sku_tier
+    # sku_tier                     = var.function_lollipop_sku_tier
     sku_size                     = var.function_lollipop_sku_size
     maximum_elastic_worker_count = 0
   }
