@@ -142,8 +142,10 @@ module "appservice_devportal_be" {
     # All users not listed below, will not be able to get (and also create) the manage subscription.
     # The "Manage Flow" allows the use of a specific subscription (Manage Subscription) keys as API Key for Service create/update.
     # Note: The list below is for the user IDs only, not the full path APIM.id.
-    # First Rollout values: IDPay, Di Pinto Giuseppe Antonio
-    MANAGE_FLOW_ENABLE_USER_LIST = join(", ", ["01GC77MF2WYY52DCSQXVEDCE74", "01GJMF341BZQBP71Q39S1EHBH6"])
+    MANAGE_FLOW_ENABLE_USER_LIST = join(", ", [
+      "01GC77MF2WYY52DCSQXVEDCE74", # IDPay 
+      "01GJMF341BZQBP71Q39S1EHBH6"  # Di Pinto Giuseppe Antonio
+    ])
   }
 
   allowed_subnets = [module.appgateway_snet.id]
