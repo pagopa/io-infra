@@ -44,7 +44,7 @@ locals {
       WEBSITE_DNS_SERVER     = "168.63.129.16"
 
       # Path of blob on which we export the last visible service read model
-      AssetsStorageConnection                = data.azurerm_storage_account.cdnassets.primary_connection_string
+      AssetsStorageConnection                = module.assets_cdn.primary_connection_string
       VISIBLE_SERVICES_COMPACT_STORAGE_PATH  = "services/services-webview/visible-services-compact.json"
       VISIBLE_SERVICES_EXTENDED_STORAGE_PATH = "services/services-webview/visible-services-extended.json"
       SERVICE_QUALITY_EXCLUSION_LIST         = data.azurerm_key_vault_secret.services_exclusion_list.value

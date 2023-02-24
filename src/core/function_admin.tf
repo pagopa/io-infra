@@ -91,7 +91,7 @@ locals {
 
       StorageConnection = data.azurerm_storage_account.api.primary_connection_string
 
-      AssetsStorageConnection = data.azurerm_storage_account.cdnassets.primary_connection_string
+      AssetsStorageConnection = module.assets_cdn.primary_connection_string
 
       AZURE_APIM                = "io-p-apim-api"
       AZURE_APIM_HOST           = local.apim_hostname_api_internal

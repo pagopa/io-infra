@@ -57,7 +57,7 @@ locals {
       FETCH_KEEPALIVE_TIMEOUT             = "60000"
 
       LogsStorageConnection      = data.azurerm_storage_account.logs.primary_connection_string
-      AssetsStorageConnection    = data.azurerm_storage_account.cdnassets.primary_connection_string
+      AssetsStorageConnection    = module.assets_cdn.primary_connection_string
       STATUS_ENDPOINT_URL        = "https://api-app.io.pagopa.it/info"
       STATUS_REFRESH_INTERVAL_MS = "300000"
 

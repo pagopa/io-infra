@@ -83,7 +83,7 @@ locals {
       MessageContentPrimaryStorageConnection = data.azurerm_storage_account.iopstapi.primary_connection_string
       #iopstapireplica connection string
       MessageContentStorageConnection  = data.azurerm_storage_account.api_replica.primary_connection_string
-      ServiceInfoBlobStorageConnection = data.azurerm_storage_account.cdnassets.primary_connection_string
+      ServiceInfoBlobStorageConnection = module.assets_cdn.primary_connection_string
 
       MESSAGES_FAILURE_QUEUE_NAME       = "pdnd-io-cosmosdb-messages-failure"
       MESSAGE_STATUS_FAILURE_QUEUE_NAME = "pdnd-io-cosmosdb-message-status-failure"

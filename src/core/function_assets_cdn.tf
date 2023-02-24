@@ -21,11 +21,11 @@ locals {
       COSMOSDB_KEY  = data.azurerm_cosmosdb_account.cosmos_api.primary_key
       COSMOSDB_NAME = "db"
 
-      STATIC_WEB_ASSETS_ENDPOINT  = data.azurerm_storage_account.cdnassets.primary_web_host
-      STATIC_BLOB_ASSETS_ENDPOINT = data.azurerm_storage_account.cdnassets.primary_blob_host
+      STATIC_WEB_ASSETS_ENDPOINT  = module.assets_cdn.primary_web_host
+      STATIC_BLOB_ASSETS_ENDPOINT = module.assets_cdn.primary_blob_host
 
       CachedStorageConnection = data.azurerm_storage_account.api.primary_connection_string
-      AssetsStorageConnection = data.azurerm_storage_account.cdnassets.primary_connection_string
+      AssetsStorageConnection = module.assets_cdn.primary_connection_string
 
       AzureWebJobsFeatureFlags = "EnableProxies"
     }

@@ -85,12 +85,6 @@ data "azurerm_storage_account" "api" {
   resource_group_name = azurerm_resource_group.rg_internal.name
 }
 
-# CDN Assets storage account
-data "azurerm_storage_account" "cdnassets" {
-  name                = "iopstcdnassets"
-  resource_group_name = azurerm_resource_group.rg_common.name
-}
-
 # Event hubs
 
 data "azurerm_eventhub_authorization_rule" "io-p-payments-weu-prod01-evh-ns_payment-updates_io-fn-messages-cqrs" {

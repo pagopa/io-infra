@@ -1,5 +1,7 @@
 #!/bin/bash
 
+bash terraform.sh init prod
+
 # bash terraform.sh import prod 'azurerm_resource_group.rg_common' '/subscriptions/ec285037-c673-4f58-b594-d7c480da4e8b/resourceGroups/io-p-rg-common'
 
 # bash terraform.sh import prod 'module.key_vault_common.azurerm_key_vault.this' '/subscriptions/ec285037-c673-4f58-b594-d7c480da4e8b/resourceGroups/io-p-rg-common/providers/Microsoft.KeyVault/vaults/io-p-kv-common'
@@ -29,3 +31,9 @@
 # bash terraform.sh import prod 'module.redis_common.azurerm_redis_cache.this' '/subscriptions/ec285037-c673-4f58-b594-d7c480da4e8b/resourceGroups/io-p-rg-common/providers/Microsoft.Cache/Redis/io-p-redis-common'
 
 # bash terraform.sh import prod 'module.redis_common_backup.azurerm_storage_account.this' '/subscriptions/ec285037-c673-4f58-b594-d7c480da4e8b/resourceGroups/io-p-rg-common/providers/Microsoft.Storage/storageAccounts/iopstredis'
+
+# bash terraform.sh import prod 'module.assets_cdn.azurerm_storage_account.this' '/subscriptions/ec285037-c673-4f58-b594-d7c480da4e8b/resourceGroups/io-p-rg-common/providers/Microsoft.Storage/storageAccounts/iopstcdnassets'
+
+# terraform state rm azurerm_management_lock.assets_cdn_profile
+
+# terraform state rm azurerm_management_lock.assets_cdn_endpoint
