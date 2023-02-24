@@ -1,3 +1,4 @@
+# Needed to integrate Firma con IO with external domains, products or platforms (ie. eventhub for billing, ...)
 module "event_hub" {
   source                   = "git::https://github.com/pagopa/terraform-azurerm-v3.git//eventhub?ref=v4.1.7"
   name                     = format("%s-eventhub-ns", local.project)
@@ -16,7 +17,10 @@ module "event_hub" {
 
   eventhubs = var.integration_hub.hubs
 
+  # Configuration in accordance to the inttegration defined at
+  # https://pagopa.atlassian.net/wiki/search?text=firma%20con%20io%20fatturazione
   public_network_access_enabled = true
+
   network_rulesets = [
     {
       default_action = "Deny",

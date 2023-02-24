@@ -11,6 +11,9 @@ tags = {
   CostCenter  = "BD100 - STRATEGIC INNOVATION"
 }
 
+# You can retrieve the list of current defined subnets using the CLI command
+# az network vnet subnet list --subscription PROD-IO --vnet-name io-p-vnet-common --resource-group io-p-rg-common --output table
+# and thus define new CIDRs according to the unallocated address space
 subnets_cidrs = {
   issuer   = ["10.0.102.0/24"]
   user     = ["10.0.103.0/24"]
