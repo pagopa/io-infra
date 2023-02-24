@@ -7,23 +7,25 @@ resource "azurerm_resource_group" "sec_rg" {
 
 #tfsec:ignore:azure-keyvault-specify-network-acl:exp:2022-05-01 # already ignored, maybe a bug in tfsec
 module "key_vault" {
-  source              = "git::https://github.com/pagopa/terraform-azurerm-v3.git//key_vault?ref=v4.1.15"
-  name                = format("%s-kv", local.project)
-  location            = azurerm_resource_group.sec_rg.location
-  resource_group_name = azurerm_resource_group.sec_rg.name
-  tenant_id           = data.azurerm_client_config.current.tenant_id
-  lock_enable         = false
+  source                     = "git::https://github.com/pagopa/terraform-azurerm-v3.git//key_vault?ref=v4.1.15"
+  name                       = format("%s-kv", local.project)
+  location                   = azurerm_resource_group.sec_rg.location
+  resource_group_name        = azurerm_resource_group.sec_rg.name
+  tenant_id                  = data.azurerm_client_config.current.tenant_id
+  soft_delete_retention_days = 90
+  lock_enable                = false
 
   tags = var.tags
 }
 
 module "key_vault_common" {
-  source              = "git::https://github.com/pagopa/terraform-azurerm-v3.git//key_vault?ref=v4.1.15"
-  name                = format("%s-kv-common", local.project)
-  location            = azurerm_resource_group.rg_common.location
-  resource_group_name = azurerm_resource_group.rg_common.name
-  tenant_id           = data.azurerm_client_config.current.tenant_id
-  lock_enable         = false
+  source                     = "git::https://github.com/pagopa/terraform-azurerm-v3.git//key_vault?ref=v4.1.15"
+  name                       = format("%s-kv-common", local.project)
+  location                   = azurerm_resource_group.rg_common.location
+  resource_group_name        = azurerm_resource_group.rg_common.name
+  tenant_id                  = data.azurerm_client_config.current.tenant_id
+  soft_delete_retention_days = 15
+  lock_enable                = false
 
   tags = var.tags
 }
