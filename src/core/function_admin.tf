@@ -267,7 +267,7 @@ module "function_admin_staging_slot" {
 
   allowed_subnets = [
     module.admin_snet.id,
-    data.azurerm_subnet.azdoa_snet[0].id,
+    module.azdoa_snet[0].id,
     module.apim_snet.id,
   ]
 

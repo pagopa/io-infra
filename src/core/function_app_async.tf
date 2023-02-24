@@ -123,7 +123,7 @@ module "function_app_async_staging_slot" {
 
   allowed_subnets = [
     module.app_async_snet.id,
-    data.azurerm_subnet.azdoa_snet[0].id,
+    module.azdoa_snet[0].id,
   ]
 
   tags = var.tags

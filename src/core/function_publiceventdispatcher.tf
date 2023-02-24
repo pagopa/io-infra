@@ -95,7 +95,7 @@ module "function_pblevtdispatcher" {
   }
 
   allowed_subnets = [
-    data.azurerm_subnet.azdoa_snet[0].id,
+    module.azdoa_snet[0].id,
   ]
 
   allowed_ips = local.app_insights_ips_west_europe
@@ -191,7 +191,7 @@ module "function_pblevtdispatcher_v4" {
   subnet_id = module.function_pblevtdispatcher_snetout_v4.id
 
   allowed_subnets = [
-    data.azurerm_subnet.azdoa_snet[0].id,
+    module.azdoa_snet[0].id,
   ]
 
   tags = var.tags

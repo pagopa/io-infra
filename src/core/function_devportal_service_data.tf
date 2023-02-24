@@ -217,7 +217,7 @@ module "function_devportalservicedata_staging_slot" {
     [],
   )
   allowed_subnets = [
-    data.azurerm_subnet.azdoa_snet[0].id,
+    module.azdoa_snet[0].id,
   ]
 
   app_settings = merge(local.function_devportalservicedata.app_settings_commons, {

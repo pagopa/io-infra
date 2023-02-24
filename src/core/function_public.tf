@@ -109,7 +109,7 @@ module "function_public_staging_slot" {
 
   allowed_subnets = [
     module.shared_1_snet.id,
-    data.azurerm_subnet.azdoa_snet[0].id,
+    module.azdoa_snet[0].id,
     module.apim_snet.id,
   ]
 

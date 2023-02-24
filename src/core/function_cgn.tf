@@ -174,7 +174,7 @@ module "function_cgn_staging_slot" {
 
   allowed_subnets = [
     module.cgn_snet.id,
-    data.azurerm_subnet.azdoa_snet[0].id,
+    module.azdoa_snet[0].id,
     module.app_backendl1_snet.id,
     module.app_backendl2_snet.id,
     module.app_backendli_snet.id,

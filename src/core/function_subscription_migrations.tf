@@ -222,7 +222,7 @@ module "function_subscriptionmigrations_staging_slot" {
     [],
   )
   allowed_subnets = [
-    data.azurerm_subnet.azdoa_snet[0].id,
+    module.azdoa_snet[0].id,
   ]
 
   app_settings = merge(local.function_subscriptionmigrations.app_settings_commons, {

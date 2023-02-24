@@ -37,3 +37,5 @@ bash terraform.sh init prod
 # terraform state rm azurerm_management_lock.assets_cdn_profile
 
 # terraform state rm azurerm_management_lock.assets_cdn_endpoint
+
+# bash terraform.sh import prod 'module.azdoa_snet.azurerm_subnet.this' '/subscriptions/ec285037-c673-4f58-b594-d7c480da4e8b/resourceGroups/io-p-rg-common/providers/Microsoft.Network/virtualNetworks/io-p-vnet-common/subnets/azure-devops'

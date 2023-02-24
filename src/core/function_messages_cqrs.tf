@@ -218,7 +218,7 @@ module "function_messages_cqrs_staging_slot" {
 
   allowed_subnets = [
     module.function_messages_cqrs_snet.id,
-    data.azurerm_subnet.azdoa_snet[0].id,
+    module.azdoa_snet[0].id,
   ]
 
   allowed_ips = concat(

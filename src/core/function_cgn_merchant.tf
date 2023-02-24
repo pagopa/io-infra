@@ -95,7 +95,7 @@ module "function_cgn_merchant_staging_slot" {
 
   allowed_subnets = [
     module.cgn_snet.id,
-    data.azurerm_subnet.azdoa_snet[0].id,
+    module.azdoa_snet[0].id,
     module.apim_snet.id,
   ]
 
