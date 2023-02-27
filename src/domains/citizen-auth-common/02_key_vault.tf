@@ -88,7 +88,7 @@ resource "azurerm_key_vault_access_policy" "github_action_iac_cd_kv" {
 
   secret_permissions      = ["Get", "List", "Set", ]
   storage_permissions     = []
-  certificate_permissions = ["SetIssuers", "DeleteIssuers", "Purge", "List", "Get", "ManageContacts", ]
+  certificate_permissions = ["SetIssuers", "DeleteIssuers", "Purge", "List", "Get", "ManageContacts", "CreateCertificate", ]
 }
 
 data "azuread_service_principal" "github_action_iac_ci" {
