@@ -1,6 +1,6 @@
 module "lollipop_assertions_storage" {
   source                     = "git::https://github.com/pagopa/terraform-azurerm-v3//storage_account?ref=v4.3.1"
-  name                       = replace(format("%s-lollipop-assertions-st", local.product), "-", "")
+  name                       = replace(format("%s-lollipop-assertions-st", local.product), "-", "") # `lollipop-assertions-st` is used in src/core/99_variables.tf#citizen_auth_assertion_storage_name
   domain                     = upper(var.domain)
   account_kind               = "StorageV2"
   account_tier               = "Standard"
@@ -53,6 +53,6 @@ resource "azurerm_storage_container" "lollipop_assertions_storage_assertions" {
 }
 
 resource "azurerm_storage_queue" "lollipop_assertions_storage_revoke_queue" {
-  name                 = "pubkeys-revoke"
+  name                 = "pubkeys-revoke" # This value is used in src/core/99_variables.tf#citizen_auth_revoke_queue_name
   storage_account_name = module.lollipop_assertions_storage.name
 }
