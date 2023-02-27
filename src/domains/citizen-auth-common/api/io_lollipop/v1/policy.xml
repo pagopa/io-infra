@@ -1,7 +1,7 @@
 <policies>
     <inbound>
         <base />
-        <set-backend-service base-url="{{io-fn-weu-lollipop-url}}" />
+        <set-backend-service base-url="{{io-fn-weu-lollipop-url}}/api/v1" />
         <set-header name="x-functions-key" exists-action="override">
             <value>{{io-fn-weu-lollipop-key}}</value>
         </set-header>
