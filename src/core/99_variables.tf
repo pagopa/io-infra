@@ -1055,12 +1055,6 @@ variable "third_party_mock_service_id" {
 
 variable "citizen_auth_domain" {
   type = string
-  validation {
-    condition = (
-      length(var.domain) <= 12
-    )
-    error_message = "Max length is 12 chars."
-  }
   default = "citizen-auth"
 }
 
