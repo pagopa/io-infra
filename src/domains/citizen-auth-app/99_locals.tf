@@ -22,5 +22,5 @@ locals {
   aks_name                = "${local.product}-${var.location_short}-${var.instance}-aks"
   aks_resource_group_name = "${local.product}-${var.location_short}-${var.instance}-aks-rg"
 
-  lollipop_jwt_subject = "api.io.pagopa.it"
+  lollipop_jwt_host = "api.io.pagopa.it"
 }
