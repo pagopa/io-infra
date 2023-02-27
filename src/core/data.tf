@@ -77,7 +77,7 @@ data "azurerm_storage_account" "notifications" {
 
 data "azurerm_storage_account" "lollipop_assertions_storage" {
   name                = replace(format("%s-%s", var.citizen_auth_product, var.citizen_auth_assertion_storage_name), "-", "")
-  resource_group_name = format("%s-%s", var.citizen_auth_product, var.citizen_auth_domain)
+  resource_group_name = format("%s-%s-data-rg", var.citizen_auth_product, var.citizen_auth_domain)
 }
 
 # todo migrate storage account and related resources

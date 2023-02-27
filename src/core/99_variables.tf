@@ -1054,7 +1054,7 @@ variable "third_party_mock_service_id" {
 # Citizen auth
 
 variable "citizen_auth_domain" {
-  type = string
+  type    = string
   default = "citizen-auth"
 }
 
