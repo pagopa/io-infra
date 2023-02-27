@@ -17,21 +17,11 @@ resource "azurerm_key_vault_certificate" "lollipop_certificate_v1" {
       exportable = true
       key_size   = 2048
       key_type   = "RSA"
-      reuse_key  = true
-    }
-
-    lifetime_action {
-      action {
-        action_type = "AutoRenew"
-      }
-
-      trigger {
-        days_before_expiry = 90
-      }
+      reuse_key  = false
     }
 
     secret_properties {
-      content_type = "application/x-pkcs12"
+      content_type = "application/x-pem-file"
     }
 
     x509_certificate_properties {
@@ -44,8 +34,8 @@ resource "azurerm_key_vault_certificate" "lollipop_certificate_v1" {
         "keyEncipherment",
       ]
 
-      subject            = local.lollipop_jwt_issuer
-      validity_in_months = 24
+      subject            = local.lollipop_jwt_host
+      validity_in_months = 1200
     }
   }
 }

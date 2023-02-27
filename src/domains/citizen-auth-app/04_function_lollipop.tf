@@ -24,7 +24,7 @@ locals {
       // ------------
       // JWT Config
       // ------------
-      ISSUER = local.lollipop_jwt_issuer
+      ISSUER = local.lollipop_jwt_host
 
       PRIMARY_PRIVATE_KEY = data.azurerm_key_vault_certificate_data.lollipop_certificate_v1.pem 
       PRIMARY_PUBLIC_KEY = data.azurerm_key_vault_certificate_data.lollipop_certificate_v1.key
