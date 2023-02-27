@@ -21,7 +21,7 @@ resource "azurerm_api_management_named_value" "io_fn_sign_issuer_key" {
 }
 
 module "apim_io_sign_product" {
-  source = "git::https://github.com/pagopa/azurerm.git//api_management_product?ref=v2.7.2"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_product?ref=v4.1.3"
 
   product_id   = "io-sign-api"
   display_name = "IO SIGN API"
@@ -38,7 +38,7 @@ module "apim_io_sign_product" {
 }
 
 module "apim_io_sign_issuer_api_v1" {
-  source = "git::https://github.com/pagopa/azurerm.git//api_management_api?ref=v2.7.2"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api?ref=v4.1.3"
 
   name                  = format("%s-sign-issuer-api", local.product)
   api_management_name   = data.azurerm_api_management.apim_api.name

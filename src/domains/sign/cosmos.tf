@@ -1,6 +1,7 @@
 module "cosmosdb_account" {
-  source                           = "git::https://github.com/pagopa/azurerm.git//cosmosdb_account?ref=v2.15.1"
+  source                           = "git::https://github.com/pagopa/terraform-azurerm-v3.git//cosmosdb_account?ref=v4.1.8"
   name                             = format("%s-cosmos", local.project)
+  domain                           = var.domain
   location                         = azurerm_resource_group.data_rg.location
   resource_group_name              = azurerm_resource_group.data_rg.name
   kind                             = "GlobalDocumentDB"
