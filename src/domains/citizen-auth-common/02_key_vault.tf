@@ -138,7 +138,7 @@ resource "azurerm_key_vault_certificate" "lollipop_certificate_v1" {
         "keyEncipherment",
       ]
 
-      subject            = local.lollipop_jwt_host
+      subject            = "CN=${local.lollipop_jwt_host}"
       validity_in_months = 1200
     }
   }
