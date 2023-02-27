@@ -19,19 +19,6 @@ locals {
 
       LOLLIPOP_ASSERTION_STORAGE_CONNECTION_STRING = data.azurerm_storage_account.lollipop_assertion_storage.primary_connection_string
       LOLLIPOP_ASSERTION_REVOKE_QUEUE              = "pubkeys-revoke"
-
-
-      // ------------
-      // JWT Config
-      // ------------
-      ISSUER = local.lollipop_jwt_host
-
-      PRIMARY_PRIVATE_KEY = data.azurerm_key_vault_certificate_data.lollipop_certificate_v1.pem
-      PRIMARY_PUBLIC_KEY  = data.azurerm_key_vault_certificate_data.lollipop_certificate_v1.key
-
-      // Use it during rotation period. See https://pagopa.atlassian.net/wiki/spaces/IC/pages/645136398/LolliPoP+Procedura+di+rotazione+dei+certificati
-      //SECONDARY_PUBLIC_KEY = 
-
     }
   }
 }

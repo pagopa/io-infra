@@ -39,9 +39,3 @@ resource "azurerm_key_vault_certificate" "lollipop_certificate_v1" {
     }
   }
 }
-
-
-data "azurerm_key_vault_certificate_data" "lollipop_certificate_v1" {
-  name         = resource.azurerm_key_vault_certificate.lollipop_certificate_v1.name
-  key_vault_id = data.azurerm_key_vault.kv.id
-}
