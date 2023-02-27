@@ -1050,3 +1050,34 @@ variable "third_party_mock_service_id" {
   description = "The Service ID of the Third Party Mock service"
   default     = "01GQQDPM127KFGG6T3660D5TXD"
 }
+
+# Citizen auth
+
+variable "citizen_auth_domain" {
+  type = string
+  validation {
+    condition = (
+      length(var.domain) <= 12
+    )
+    error_message = "Max length is 12 chars."
+  }
+  default = "citizen-auth"
+}
+
+variable "citizen_auth_product" {
+  type        = string
+  description = "Use product name from citizen_auth domain locals"
+  default     = "io-p"
+}
+
+variable "citizen_auth_revoke_queue_name" {
+  type        = string
+  description = "Use queue storage name from citizen_auth domain storage"
+  default     = "pubkeys-revoke"
+}
+
+variable "citizen_auth_assertion_storage_name" {
+  type        = string
+  description = "Use storage name from citizen_auth domain"
+  default     = "lollipop-assertions-st"
+}
