@@ -61,12 +61,6 @@ module "redis_cgn" {
   tags = var.tags
 }
 
-data "azurerm_subnet" "fn3cgn" {
-  name                 = "fn3cgn"
-  virtual_network_name = module.vnet_common.name
-  resource_group_name  = azurerm_resource_group.rg_common.name
-}
-
 ##################
 ## CosmosDB cgn ##
 ##################
@@ -108,10 +102,6 @@ module "cosmos_cgn" {
   is_virtual_network_filter_enabled = true
 
   ip_range = ""
-
-  allowed_virtual_network_subnet_ids = [
-    data.azurerm_subnet.fn3cgn.id
-  ]
 
   # private endpoint
   private_endpoint_name    = format("%s-cosmos-cgn-sql-endpoint", local.project)
