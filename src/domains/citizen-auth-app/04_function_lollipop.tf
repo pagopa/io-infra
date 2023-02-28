@@ -1,8 +1,6 @@
 locals {
   function_lollipop = {
     app_settings = {
-      FUNCTIONS_WORKER_RUNTIME       = "node"
-      WEBSITE_NODE_DEFAULT_VERSION   = "18.13.0"
       FUNCTIONS_WORKER_PROCESS_COUNT = 4
       NODE_ENV                       = "production"
 
@@ -21,6 +19,19 @@ locals {
 
       LOLLIPOP_ASSERTION_STORAGE_CONNECTION_STRING = data.azurerm_storage_account.lollipop_assertion_storage.primary_connection_string
       LOLLIPOP_ASSERTION_REVOKE_QUEUE              = "pubkeys-revoke"
+
+
+      // ------------
+      // JWT Config
+      // ------------
+      ISSUER = local.lollipop_jwt_host
+
+      PRIMARY_PRIVATE_KEY = data.azurerm_key_vault_certificate_data.lollipop_certificate_v1.key
+      PRIMARY_PUBLIC_KEY  = data.azurerm_key_vault_certificate_data.lollipop_certificate_v1.pem
+
+      // Use it during rotation period. See https://pagopa.atlassian.net/wiki/spaces/IC/pages/645136398/LolliPoP+Procedura+di+rotazione+dei+certificati
+      //SECONDARY_PUBLIC_KEY = 
+
     }
   }
 }
@@ -60,7 +71,7 @@ module "lollipop_snet" {
 
 module "function_lollipop" {
   count  = var.lollipop_enabled ? 1 : 0
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app?ref=v4.1.15"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app?ref=v5.2.0"
 
   resource_group_name = azurerm_resource_group.lollipop_rg[0].name
   name                = format("%s-lollipop-fn", local.common_project)
@@ -68,23 +79,24 @@ module "function_lollipop" {
   domain              = "IO-COMMONS"
   health_check_path   = "/info"
 
-  os_type          = "linux"
-  linux_fx_version = "NODE|18"
-  runtime_version  = "~4"
+  node_version    = "18"
+  runtime_version = "~4"
 
   always_on                                = "true"
   application_insights_instrumentation_key = data.azurerm_application_insights.application_insights.instrumentation_key
 
   app_service_plan_info = {
     kind                         = var.function_lollipop_kind
-    sku_tier                     = var.function_lollipop_sku_tier
     sku_size                     = var.function_lollipop_sku_size
     maximum_elastic_worker_count = 0
   }
 
   app_settings = merge(
     local.function_lollipop.app_settings,
+    { "AzureWebJobs.HandlePubKeyRevoke.Disabled" = "0" },
   )
+
+  sticky_settings = ["AzureWebJobs.HandlePubKeyRevoke.Disabled"]
 
   internal_storage = {
     "enable"                     = true,
@@ -119,12 +131,12 @@ module "function_lollipop" {
 
 module "function_lollipop_staging_slot" {
   count  = var.lollipop_enabled ? 1 : 0
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app_slot?ref=v4.1.15"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app_slot?ref=v5.2.0"
 
   name                = "staging"
   location            = var.location
   resource_group_name = azurerm_resource_group.lollipop_rg[0].name
-  function_app_name   = module.function_lollipop[0].name
+  # function_app_name   = module.function_lollipop[0].name
   function_app_id     = module.function_lollipop[0].id
   app_service_plan_id = module.function_lollipop[0].app_service_plan_id
   health_check_path   = "/info"
@@ -133,14 +145,14 @@ module "function_lollipop_staging_slot" {
   storage_account_access_key         = module.function_lollipop[0].storage_account.primary_access_key
   internal_storage_connection_string = module.function_lollipop[0].storage_account_internal_function.primary_connection_string
 
-  os_type                                  = "linux"
-  linux_fx_version                         = "NODE|18"
+  node_version                             = "18"
   always_on                                = "true"
   runtime_version                          = "~4"
   application_insights_instrumentation_key = data.azurerm_application_insights.application_insights.instrumentation_key
 
   app_settings = merge(
     local.function_lollipop.app_settings,
+    { "AzureWebJobs.HandlePubKeyRevoke.Disabled" = "1" },
   )
 
   subnet_id = module.lollipop_snet[0].id
