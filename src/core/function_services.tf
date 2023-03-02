@@ -407,6 +407,6 @@ module "db_subscription_cidrs_container" {
   name                = "subscription-cidrs"
   resource_group_name = format("%s-rg-internal", local.project)
   account_name        = format("%s-cosmos-api", local.project)
-  database_name       = locals.function_services.app_settings_common.COSMOSDB_NAME
+  database_name       = local.function_services.app_settings_common.COSMOSDB_NAME
   partition_key_path  = "/subscriptionId"
 }
