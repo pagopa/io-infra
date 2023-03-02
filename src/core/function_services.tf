@@ -403,7 +403,7 @@ resource "azurerm_monitor_autoscale_setting" "function_services_autoscale" {
 
 # Cosmos container for subscription cidrs
 module "db_subscription_cidrs_container" {
-  source              = "git::https://github.com/pagopa/azurerm.git//cosmosdb_sql_container?ref=v2.15.1"
+  source              = "git::https://github.com/pagopa/azurerm.git//cosmosdb_sql_container?ref=v4.1.15"
   name                = "subscription-cidrs"
   resource_group_name = format("%s-rg-internal", local.project)
   account_name        = format("%s-cosmos-api", local.project)
