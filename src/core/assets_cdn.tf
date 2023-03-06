@@ -19,6 +19,9 @@ module "assets_cdn" {
   advanced_threat_protection      = false
   allow_nested_items_to_be_public = true
 
+  index_document     = "index.html"
+  error_404_document = "index.html"
+
   tags = var.tags
 }
 
