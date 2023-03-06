@@ -11,47 +11,47 @@ locals {
 
 data "azurerm_key_vault_secret" "devportal_apim_io_service_key" {
   name         = "apim-IO-SERVICE-KEY"
-  key_vault_id = data.azurerm_key_vault.common.id
+  key_vault_id = module.key_vault_common.id
 }
 
 data "azurerm_key_vault_secret" "devportal_service_principal_client_id" {
   name         = "devportal-SERVICE-PRINCIPAL-CLIENT-ID"
-  key_vault_id = data.azurerm_key_vault.common.id
+  key_vault_id = module.key_vault_common.id
 }
 
 data "azurerm_key_vault_secret" "devportal_service_principal_secret" {
   name         = "devportal-SERVICE-PRINCIPAL-SECRET"
-  key_vault_id = data.azurerm_key_vault.common.id
+  key_vault_id = module.key_vault_common.id
 }
 
 data "azurerm_key_vault_secret" "devportal_io_sandbox_fiscal_code" {
   name         = "io-SANDBOX-FISCAL-CODE"
-  key_vault_id = data.azurerm_key_vault.common.id
+  key_vault_id = module.key_vault_common.id
 }
 
 data "azurerm_key_vault_secret" "devportal_jira_token" {
   name         = "devportal-JIRA-TOKEN"
-  key_vault_id = data.azurerm_key_vault.common.id
+  key_vault_id = module.key_vault_common.id
 }
 
 data "azurerm_key_vault_secret" "devportal_client_id" {
   name         = "devportal-CLIENT-ID"
-  key_vault_id = data.azurerm_key_vault.common.id
+  key_vault_id = module.key_vault_common.id
 }
 
 data "azurerm_key_vault_secret" "devportal_client_secret" {
   name         = "devportal-CLIENT-SECRET"
-  key_vault_id = data.azurerm_key_vault.common.id
+  key_vault_id = module.key_vault_common.id
 }
 
 data "azurerm_key_vault_secret" "devportal_cookie_iv" {
   name         = "devportal-COOKIE-IV"
-  key_vault_id = data.azurerm_key_vault.common.id
+  key_vault_id = module.key_vault_common.id
 }
 
 data "azurerm_key_vault_secret" "devportal_cookie_key" {
   name         = "devportal-COOKIE-KEY"
-  key_vault_id = data.azurerm_key_vault.common.id
+  key_vault_id = module.key_vault_common.id
 }
 
 # Only 1 subnet can be associated to a service plan
@@ -80,7 +80,7 @@ module "appservice_devportal_be" {
   app_settings = {
     WEBSITE_RUN_FROM_PACKAGE = "1"
 
-    APPINSIGHTS_INSTRUMENTATIONKEY = data.azurerm_application_insights.application_insights.instrumentation_key
+    APPINSIGHTS_INSTRUMENTATIONKEY = azurerm_application_insights.application_insights.instrumentation_key
 
     LOG_LEVEL = "info"
 
@@ -137,7 +137,7 @@ module "appservice_devportal_be" {
     JIRA_TOKEN                 = data.azurerm_key_vault_secret.devportal_jira_token.value
 
     # Feature Flags
-    # 
+    #
     # List of (comma separated) APIM userId for whom we want to enable Manage Flow on Service Management.
     # All users not listed below, will not be able to get (and also create) the manage subscription.
     # The "Manage Flow" allows the use of a specific subscription (Manage Subscription) keys as API Key for Service create/update.

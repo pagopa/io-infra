@@ -4,57 +4,57 @@
 
 data "azurerm_key_vault_secret" "fn_admin_ASSETS_URL" {
   name         = "cdn-ASSETS-URL"
-  key_vault_id = data.azurerm_key_vault.common.id
+  key_vault_id = module.key_vault_common.id
 }
 
 data "azurerm_key_vault_secret" "fn_admin_AZURE_SUBSCRIPTION_ID" {
   name         = "common-AZURE-SUBSCRIPTION-ID"
-  key_vault_id = data.azurerm_key_vault.common.id
+  key_vault_id = module.key_vault_common.id
 }
 
 data "azurerm_key_vault_secret" "adb2c_TENANT_NAME" {
   name         = "adb2c-TENANT-NAME"
-  key_vault_id = data.azurerm_key_vault.common.id
+  key_vault_id = module.key_vault_common.id
 }
 
 data "azurerm_key_vault_secret" "devportal_CLIENT_ID" {
   name         = "devportal-CLIENT-ID"
-  key_vault_id = data.azurerm_key_vault.common.id
+  key_vault_id = module.key_vault_common.id
 }
 
 data "azurerm_key_vault_secret" "devportal_CLIENT_SECRET" {
   name         = "devportal-CLIENT-SECRET"
-  key_vault_id = data.azurerm_key_vault.common.id
+  key_vault_id = module.key_vault_common.id
 }
 
 data "azurerm_key_vault_secret" "adb2c_TOKEN_ATTRIBUTE_NAME" {
   name         = "adb2c-TOKEN-ATTRIBUTE-NAME"
-  key_vault_id = data.azurerm_key_vault.common.id
+  key_vault_id = module.key_vault_common.id
 }
 
 data "azurerm_key_vault_secret" "ad_APPCLIENT_APIM_ID" {
   name         = "ad-APPCLIENT-APIM-ID"
-  key_vault_id = data.azurerm_key_vault.common.id
+  key_vault_id = module.key_vault_common.id
 }
 
 data "azurerm_key_vault_secret" "ad_APPCLIENT_APIM_SECRET" {
   name         = "ad-APPCLIENT-APIM-SECRET"
-  key_vault_id = data.azurerm_key_vault.common.id
+  key_vault_id = module.key_vault_common.id
 }
 
 data "azurerm_key_vault_secret" "common_AZURE_TENANT_ID" {
   name         = "common-AZURE-TENANT-ID"
-  key_vault_id = data.azurerm_key_vault.common.id
+  key_vault_id = module.key_vault_common.id
 }
 
 data "azurerm_key_vault_secret" "apim_IO_GDPR_SERVICE_KEY" {
   name         = "apim-IO-GDPR-SERVICE-KEY"
-  key_vault_id = data.azurerm_key_vault.common.id
+  key_vault_id = module.key_vault_common.id
 }
 
 data "azurerm_key_vault_secret" "common_SENDGRID_APIKEY" {
   name         = "common-SENDGRID-APIKEY"
-  key_vault_id = data.azurerm_key_vault.common.id
+  key_vault_id = module.key_vault_common.id
 }
 
 #
@@ -91,7 +91,7 @@ locals {
 
       StorageConnection = data.azurerm_storage_account.api.primary_connection_string
 
-      AssetsStorageConnection = data.azurerm_storage_account.cdnassets.primary_connection_string
+      AssetsStorageConnection = module.assets_cdn.primary_connection_string
 
       AZURE_APIM                = "io-p-apim-api"
       AZURE_APIM_HOST           = local.apim_hostname_api_internal
@@ -158,8 +158,8 @@ module "admin_snet" {
   source                                    = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v4.1.15"
   name                                      = format("%s-admin-snet", local.project)
   address_prefixes                          = var.cidr_subnet_fnadmin
-  resource_group_name                       = data.azurerm_resource_group.vnet_common_rg.name
-  virtual_network_name                      = data.azurerm_virtual_network.vnet_common.name
+  resource_group_name                       = azurerm_resource_group.rg_common.name
+  virtual_network_name                      = module.vnet_common.name
   private_endpoint_network_policies_enabled = false
 
   service_endpoints = [
@@ -191,7 +191,7 @@ module "function_admin" {
   runtime_version  = "~4"
 
   always_on                                = "true"
-  application_insights_instrumentation_key = data.azurerm_application_insights.application_insights.instrumentation_key
+  application_insights_instrumentation_key = azurerm_application_insights.application_insights.instrumentation_key
 
   app_service_plan_info = {
     kind                         = var.function_admin_kind
@@ -209,9 +209,9 @@ module "function_admin" {
   internal_storage = {
     "enable"                     = true,
     "private_endpoint_subnet_id" = module.private_endpoints_subnet.id,
-    "private_dns_zone_blob_ids"  = [data.azurerm_private_dns_zone.privatelink_blob_core_windows_net.id],
-    "private_dns_zone_queue_ids" = [data.azurerm_private_dns_zone.privatelink_queue_core_windows_net.id],
-    "private_dns_zone_table_ids" = [data.azurerm_private_dns_zone.privatelink_table_core_windows_net.id],
+    "private_dns_zone_blob_ids"  = [azurerm_private_dns_zone.privatelink_blob_core.id],
+    "private_dns_zone_queue_ids" = [azurerm_private_dns_zone.privatelink_queue_core.id],
+    "private_dns_zone_table_ids" = [azurerm_private_dns_zone.privatelink_table_core.id],
     "queues"                     = [],
     "containers"                 = [],
     "blobs_retention_days"       = 0,
@@ -254,7 +254,7 @@ module "function_admin_staging_slot" {
   linux_fx_version                         = "NODE|14"
   always_on                                = "true"
   runtime_version                          = "~4"
-  application_insights_instrumentation_key = data.azurerm_application_insights.application_insights.instrumentation_key
+  application_insights_instrumentation_key = azurerm_application_insights.application_insights.instrumentation_key
 
   app_settings = merge(
     local.function_admin.app_settings_common, {
@@ -267,7 +267,7 @@ module "function_admin_staging_slot" {
 
   allowed_subnets = [
     module.admin_snet.id,
-    data.azurerm_subnet.azdoa_snet[0].id,
+    module.azdoa_snet[0].id,
     module.apim_snet.id,
   ]
 

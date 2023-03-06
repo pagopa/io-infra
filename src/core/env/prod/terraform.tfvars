@@ -23,7 +23,7 @@ ddos_protection_plan = {
   id     = "/subscriptions/0da48c97-355f-4050-a520-f11a18b8be90/resourceGroups/sec-p-ddos/providers/Microsoft.Network/ddosProtectionPlans/sec-p-ddos-protection"
   enable = true
 }
-# cidr_vnet         = ["10.0.0.0/16"]
+cidr_common_vnet     = ["10.0.0.0/16"]
 cidr_weu_beta_vnet   = ["10.10.0.0/16"]
 cidr_weu_prod01_vnet = ["10.11.0.0/16"]
 cidr_weu_prod02_vnet = ["10.12.0.0/16"]
@@ -56,9 +56,10 @@ cidr_subnet_prod01_push_notif = ["10.0.141.0/26"]
 cidr_subnet_appbackendl1 = ["10.0.152.0/24"]
 cidr_subnet_appbackendl2 = ["10.0.153.0/24"]
 cidr_subnet_appbackendli = ["10.0.154.0/24"]
+cidr_subnet_redis_common = ["10.0.200.0/24"]
+cidr_subnet_pendpoints   = ["10.0.240.0/23"]
 cidr_subnet_azdoa        = ["10.0.250.0/24"]
 cidr_subnet_dnsforwarder = ["10.0.252.8/29"]
-cidr_subnet_pendpoints   = ["10.0.240.0/23"]
 
 app_gateway_api_certificate_name                                  = "api-io-pagopa-it"
 app_gateway_api_mtls_certificate_name                             = "api-mtls-io-pagopa-it"
@@ -71,9 +72,17 @@ app_gateway_min_capacity                                          = 4 # 4 capaci
 app_gateway_max_capacity                                          = 50
 app_gateway_alerts_enabled                                        = true
 
-# redis
-redis_apim_sku_name = "Premium"
-redis_apim_family   = "P"
+## REDIS COMMON ##
+redis_common = {
+  capacity                      = 2
+  shard_count                   = 4
+  family                        = "P"
+  sku_name                      = "Premium"
+  public_network_access_enabled = true
+  rdb_backup_enabled            = true
+  rdb_backup_frequency          = 60
+  rdb_backup_max_snapshot_count = 1
+}
 
 # apim
 apim_publisher_name = "IO"

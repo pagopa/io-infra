@@ -12,8 +12,8 @@ module "redis_cgn_snet" {
   source                                    = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v4.1.15"
   name                                      = format("%s-redis-cgn-snet", local.project)
   address_prefixes                          = ["10.0.14.0/25"]
-  resource_group_name                       = data.azurerm_resource_group.vnet_common_rg.name
-  virtual_network_name                      = data.azurerm_virtual_network.vnet_common.name
+  resource_group_name                       = azurerm_resource_group.rg_common.name
+  virtual_network_name                      = module.vnet_common.name
   private_endpoint_network_policies_enabled = false
 }
 
@@ -53,7 +53,7 @@ module "redis_cgn" {
 
   private_endpoint = {
     enabled              = true
-    virtual_network_id   = data.azurerm_virtual_network.vnet_common.id
+    virtual_network_id   = module.vnet_common.id
     subnet_id            = module.redis_cgn_snet.id
     private_dns_zone_ids = [azurerm_private_dns_zone.privatelink_redis_cache.id]
   }
@@ -107,7 +107,7 @@ module "cosmos_cgn" {
   private_endpoint_name    = format("%s-cosmos-cgn-sql-endpoint", local.project)
   private_endpoint_enabled = true
   subnet_id                = module.private_endpoints_subnet.id
-  private_dns_zone_ids     = [data.azurerm_private_dns_zone.privatelink_documents_azure_com.id]
+  private_dns_zone_ids     = [azurerm_private_dns_zone.privatelink_documents.id]
 
   tags = var.tags
 
@@ -191,7 +191,7 @@ resource "azurerm_key_vault_secret" "cgn_legalbackup_storage_connection_string" 
   value        = module.cgn_legalbackup_storage.primary_connection_string
   content_type = "text/plain"
 
-  key_vault_id = data.azurerm_key_vault.common.id
+  key_vault_id = module.key_vault_common.id
 }
 
 #tfsec:ignore:azure-keyvault-ensure-secret-expiry
@@ -200,7 +200,7 @@ resource "azurerm_key_vault_secret" "cgn_legalbackup_storage_blob_connection_str
   value        = module.cgn_legalbackup_storage.primary_blob_connection_string
   content_type = "text/plain"
 
-  key_vault_id = data.azurerm_key_vault.common.id
+  key_vault_id = module.key_vault_common.id
 }
 
 resource "azurerm_storage_container" "cgn_legalbackup_container" {
@@ -224,7 +224,7 @@ resource "azurerm_private_endpoint" "cgn_legalbackup_storage" {
 
   private_dns_zone_group {
     name                 = "private-dns-zone-group"
-    private_dns_zone_ids = [data.azurerm_private_dns_zone.privatelink_blob_core_windows_net.id]
+    private_dns_zone_ids = [azurerm_private_dns_zone.privatelink_blob_core.id]
   }
 }
 
@@ -283,7 +283,7 @@ resource "azurerm_api_management_named_value" "io_fn_cgnmerchant_url" {
 
 data "azurerm_key_vault_secret" "io_fn_cgnmerchant_key_secret" {
   name         = "io-fn-cgnmerchant-KEY-APIM"
-  key_vault_id = data.azurerm_key_vault.common.id
+  key_vault_id = module.key_vault_common.id
 }
 
 resource "azurerm_api_management_named_value" "io_fn_cgnmerchant_key" {
@@ -301,7 +301,7 @@ resource "azurerm_api_management_named_value" "io_fn_cgnmerchant_key" {
 ### cgnonboardingportal user identity
 data "azurerm_key_vault_secret" "cgn_onboarding_backend_identity" {
   name         = "cgn-onboarding-backend-PRINCIPALID"
-  key_vault_id = data.azurerm_key_vault.common.id
+  key_vault_id = module.key_vault_common.id
 }
 */
 
@@ -313,7 +313,7 @@ locals {
 ### cgnonboardingportal user identity
 data "azurerm_key_vault_secret" "cgn_onboarding_backend_identity" {
   name         = "cgn-onboarding-backend-PRINCIPALID"
-  key_vault_id = data.azurerm_key_vault.common.id
+  key_vault_id = module.key_vault_common.id
 }
 
 resource "azurerm_role_assignment" "service_contributor" {
@@ -350,8 +350,8 @@ module "cgn_snet" {
   source                                    = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v4.1.15"
   name                                      = format("%s-cgn-snet", local.project)
   address_prefixes                          = var.cidr_subnet_cgn
-  resource_group_name                       = data.azurerm_resource_group.vnet_common_rg.name
-  virtual_network_name                      = data.azurerm_virtual_network.vnet_common.name
+  resource_group_name                       = azurerm_resource_group.rg_common.name
+  virtual_network_name                      = module.vnet_common.name
   private_endpoint_network_policies_enabled = false
 
   service_endpoints = [
