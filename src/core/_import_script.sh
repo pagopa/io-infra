@@ -2,6 +2,8 @@
 
 bash terraform.sh init prod
 
+### Step 1
+
 # bash terraform.sh import prod 'azurerm_resource_group.rg_common' '/subscriptions/ec285037-c673-4f58-b594-d7c480da4e8b/resourceGroups/io-p-rg-common'
 
 # bash terraform.sh import prod 'module.key_vault_common.azurerm_key_vault.this' '/subscriptions/ec285037-c673-4f58-b594-d7c480da4e8b/resourceGroups/io-p-rg-common/providers/Microsoft.KeyVault/vaults/io-p-kv-common'
@@ -39,3 +41,6 @@ bash terraform.sh init prod
 # terraform state rm azurerm_management_lock.assets_cdn_endpoint
 
 # bash terraform.sh import prod 'module.azdoa_snet[0].azurerm_subnet.this' '/subscriptions/ec285037-c673-4f58-b594-d7c480da4e8b/resourceGroups/io-p-rg-common/providers/Microsoft.Network/virtualNetworks/io-p-vnet-common/subnets/azure-devops'
+
+### Step 2
+
