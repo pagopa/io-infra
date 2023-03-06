@@ -6,7 +6,7 @@ locals {
       FUNCTIONS_WORKER_PROCESS_COUNT = 4
       NODE_ENV                       = "production"
 
-      APPINSIGHTS_INSTRUMENTATIONKEY = data.azurerm_application_insights.application_insights.instrumentation_key
+      APPINSIGHTS_INSTRUMENTATIONKEY = azurerm_application_insights.application_insights.instrumentation_key
 
       // Keepalive fields are all optionals
       FETCH_KEEPALIVE_ENABLED             = "true"
@@ -58,7 +58,7 @@ locals {
       resource_group   = azurerm_resource_group.selfcare_be_rg
       app_service_plan = azurerm_app_service_plan.selfcare_be_common
       snet             = module.selfcare_be_common_snet
-      vnet             = data.azurerm_virtual_network.vnet_common
+      vnet             = module.vnet_common
     }
 
     db = {
@@ -147,14 +147,14 @@ module "function_subscriptionmigrations" {
   resource_group_name = local.function_subscriptionmigrations.app_context.resource_group.name
   app_service_plan_id = local.function_subscriptionmigrations.app_context.app_service_plan.id
 
-  application_insights_instrumentation_key = data.azurerm_application_insights.application_insights.instrumentation_key
+  application_insights_instrumentation_key = azurerm_application_insights.application_insights.instrumentation_key
 
   internal_storage = {
     "enable"                     = true,
     "private_endpoint_subnet_id" = module.private_endpoints_subnet.id,
-    "private_dns_zone_blob_ids"  = [data.azurerm_private_dns_zone.privatelink_blob_core_windows_net.id],
-    "private_dns_zone_queue_ids" = [data.azurerm_private_dns_zone.privatelink_queue_core_windows_net.id],
-    "private_dns_zone_table_ids" = [data.azurerm_private_dns_zone.privatelink_table_core_windows_net.id],
+    "private_dns_zone_blob_ids"  = [azurerm_private_dns_zone.privatelink_blob_core.id],
+    "private_dns_zone_queue_ids" = [azurerm_private_dns_zone.privatelink_queue_core.id],
+    "private_dns_zone_table_ids" = [azurerm_private_dns_zone.privatelink_table_core.id],
     "queues" = [
       local.function_subscriptionmigrations.app_settings_commons.QUEUE_ADD_SERVICE_TO_MIGRATIONS,
       local.function_subscriptionmigrations.app_settings_commons.QUEUE_ALL_SUBSCRIPTIONS_TO_MIGRATE,
@@ -205,7 +205,7 @@ module "function_subscriptionmigrations_staging_slot" {
   function_app_id     = module.function_subscriptionmigrations.id
   app_service_plan_id = local.function_subscriptionmigrations.app_context.app_service_plan.id
 
-  application_insights_instrumentation_key = data.azurerm_application_insights.application_insights.instrumentation_key
+  application_insights_instrumentation_key = azurerm_application_insights.application_insights.instrumentation_key
 
   storage_account_name               = module.function_subscriptionmigrations.storage_account_name
   storage_account_access_key         = module.function_subscriptionmigrations.storage_account.primary_access_key
@@ -222,7 +222,7 @@ module "function_subscriptionmigrations_staging_slot" {
     [],
   )
   allowed_subnets = [
-    data.azurerm_subnet.azdoa_snet[0].id,
+    module.azdoa_snet[0].id,
   ]
 
   app_settings = merge(local.function_subscriptionmigrations.app_settings_commons, {
@@ -243,16 +243,16 @@ module "function_subscriptionmigrations_staging_slot" {
 // db admin user credentials
 data "azurerm_key_vault_secret" "subscriptionmigrations_db_server_adm_username" {
   name         = "selfcare-subsmigrations-DB-ADM-USERNAME"
-  key_vault_id = data.azurerm_key_vault.common.id
+  key_vault_id = module.key_vault_common.id
 }
 data "azurerm_key_vault_secret" "subscriptionmigrations_db_server_adm_password" {
   name         = "selfcare-subsmigrations-DB-ADM-PASSWORD"
-  key_vault_id = data.azurerm_key_vault.common.id
+  key_vault_id = module.key_vault_common.id
 }
 // db applicative user credentials
 data "azurerm_key_vault_secret" "subscriptionmigrations_db_server_fnsubsmigrations_password" {
   name         = "selfcare-subsmigrations-FNSUBSMIGRATIONS-PASSWORD"
-  key_vault_id = data.azurerm_key_vault.common.id
+  key_vault_id = module.key_vault_common.id
 }
 
 

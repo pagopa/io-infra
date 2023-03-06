@@ -34,15 +34,11 @@ override.tf.json
 *.DS_Store
 *.log
 *.h2.db
-settings.json
 __TMP
 .metals/
 *.log
 *.h2.db
-settings.json
 __TMP
 .metals/
 __azurite_*
 /.idea
-
-**/modules/**/.terraform.lock.hcl

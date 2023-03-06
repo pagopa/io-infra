@@ -2,8 +2,8 @@
 module "apim_snet" {
   source               = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v4.1.15"
   name                 = "apimapi"
-  resource_group_name  = data.azurerm_resource_group.vnet_common_rg.name
-  virtual_network_name = data.azurerm_virtual_network.vnet_common.name
+  resource_group_name  = azurerm_resource_group.rg_common.name
+  virtual_network_name = module.vnet_common.name
   address_prefixes     = var.cidr_subnet_apim
 
   private_endpoint_network_policies_enabled = true
@@ -19,7 +19,7 @@ module "apim_snet" {
 # ###########################
 
 module "apim" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management?ref=v4.1.15"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management?ref=v5.0.1"
 
   subnet_id                 = module.apim_snet.id
   location                  = azurerm_resource_group.rg_internal.location
@@ -72,7 +72,10 @@ module "apim" {
     portal           = null
   }
 
-  application_insights_instrumentation_key = data.azurerm_application_insights.application_insights.instrumentation_key
+  application_insights = {
+    enabled             = true
+    instrumentation_key = azurerm_application_insights.application_insights.instrumentation_key
+  }
 
   lock_enable = false # no lock
 
@@ -174,7 +177,7 @@ data "azurerm_key_vault_secret" "apim_publisher_email" {
 
 data "azurerm_key_vault_certificate" "api_internal_io_italia_it" {
   name         = replace(local.apim_hostname_api_internal, ".", "-")
-  key_vault_id = data.azurerm_key_vault.common.id
+  key_vault_id = module.key_vault_common.id
 }
 
 data "azurerm_key_vault_certificate" "api_app_internal_io_pagopa_it" {
@@ -195,7 +198,7 @@ resource "azurerm_key_vault_access_policy" "apim_kv_policy" {
 }
 
 resource "azurerm_key_vault_access_policy" "common" {
-  key_vault_id = data.azurerm_key_vault.common.id
+  key_vault_id = module.key_vault_common.id
   tenant_id    = data.azurerm_client_config.current.tenant_id
   object_id    = module.apim.principal_id
 
@@ -206,12 +209,12 @@ resource "azurerm_key_vault_access_policy" "common" {
 }
 data "azurerm_key_vault_secret" "cgnonboardingportal_os_key" {
   name         = "funccgn-KEY-CGNOS"
-  key_vault_id = data.azurerm_key_vault.common.id
+  key_vault_id = module.key_vault_common.id
 }
 
 data "azurerm_key_vault_secret" "cgnonboardingportal_os_header_name" {
   name         = "funccgn-KEY-CGNOSHEADERNAME"
-  key_vault_id = data.azurerm_key_vault.common.id
+  key_vault_id = module.key_vault_common.id
 }
 
 resource "azurerm_api_management_named_value" "cgnonboardingportal_os_url_value" {
