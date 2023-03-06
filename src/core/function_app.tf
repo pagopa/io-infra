@@ -4,17 +4,17 @@
 
 data "azurerm_key_vault_secret" "fn_app_PUBLIC_API_KEY" {
   name         = "apim-IO-SERVICE-KEY"
-  key_vault_id = data.azurerm_key_vault.common.id
+  key_vault_id = module.key_vault_common.id
 }
 
 data "azurerm_key_vault_secret" "fn_app_SPID_LOGS_PUBLIC_KEY" {
   name         = "funcapp-KEY-SPIDLOGS-PUB"
-  key_vault_id = data.azurerm_key_vault.common.id
+  key_vault_id = module.key_vault_common.id
 }
 
 data "azurerm_key_vault_secret" "fn_app_AZURE_NH_ENDPOINT" {
   name         = "common-AZURE-NH-ENDPOINT"
-  key_vault_id = data.azurerm_key_vault.common.id
+  key_vault_id = module.key_vault_common.id
 }
 
 #
@@ -57,7 +57,7 @@ locals {
       FETCH_KEEPALIVE_TIMEOUT             = "60000"
 
       LogsStorageConnection      = data.azurerm_storage_account.logs.primary_connection_string
-      AssetsStorageConnection    = data.azurerm_storage_account.cdnassets.primary_connection_string
+      AssetsStorageConnection    = module.assets_cdn.primary_connection_string
       STATUS_ENDPOINT_URL        = "https://api-app.io.pagopa.it/info"
       STATUS_REFRESH_INTERVAL_MS = "300000"
 
@@ -127,8 +127,8 @@ module "app_snet" {
   source                                    = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v4.1.15"
   name                                      = format("%s-app-snet-%d", local.project, count.index + 1)
   address_prefixes                          = [var.cidr_subnet_app[count.index]]
-  resource_group_name                       = data.azurerm_resource_group.vnet_common_rg.name
-  virtual_network_name                      = data.azurerm_virtual_network.vnet_common.name
+  resource_group_name                       = azurerm_resource_group.rg_common.name
+  virtual_network_name                      = module.vnet_common.name
   private_endpoint_network_policies_enabled = false
 
   service_endpoints = [
@@ -161,7 +161,7 @@ module "function_app" {
   runtime_version  = "~4"
 
   always_on                                = "true"
-  application_insights_instrumentation_key = data.azurerm_application_insights.application_insights.instrumentation_key
+  application_insights_instrumentation_key = azurerm_application_insights.application_insights.instrumentation_key
 
   app_service_plan_info = {
     kind                         = var.function_app_kind
@@ -177,9 +177,9 @@ module "function_app" {
   internal_storage = {
     "enable"                     = true,
     "private_endpoint_subnet_id" = module.private_endpoints_subnet.id,
-    "private_dns_zone_blob_ids"  = [data.azurerm_private_dns_zone.privatelink_blob_core_windows_net.id],
-    "private_dns_zone_queue_ids" = [data.azurerm_private_dns_zone.privatelink_queue_core_windows_net.id],
-    "private_dns_zone_table_ids" = [data.azurerm_private_dns_zone.privatelink_table_core_windows_net.id],
+    "private_dns_zone_blob_ids"  = [azurerm_private_dns_zone.privatelink_blob_core.id],
+    "private_dns_zone_queue_ids" = [azurerm_private_dns_zone.privatelink_queue_core.id],
+    "private_dns_zone_table_ids" = [azurerm_private_dns_zone.privatelink_table_core.id],
     "queues"                     = [],
     "containers"                 = [],
     "blobs_retention_days"       = 1,
@@ -217,7 +217,7 @@ module "function_app_staging_slot" {
   linux_fx_version                         = "NODE|14"
   always_on                                = "true"
   runtime_version                          = "~4"
-  application_insights_instrumentation_key = data.azurerm_application_insights.application_insights.instrumentation_key
+  application_insights_instrumentation_key = azurerm_application_insights.application_insights.instrumentation_key
 
   app_settings = merge(
     local.function_app.app_settings_common,
@@ -227,7 +227,7 @@ module "function_app_staging_slot" {
 
   allowed_subnets = [
     module.app_snet[count.index].id,
-    data.azurerm_subnet.azdoa_snet[0].id,
+    module.azdoa_snet[0].id,
     module.app_backendl1_snet.id,
     module.app_backendl2_snet.id,
     module.app_backendli_snet.id,

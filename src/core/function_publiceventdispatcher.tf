@@ -15,8 +15,8 @@ module "function_pblevtdispatcher_snetout" {
   source                                    = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v4.1.15"
   name                                      = "fnpblevtdispatcherout"
   address_prefixes                          = var.cidr_subnet_fnpblevtdispatcher
-  resource_group_name                       = data.azurerm_resource_group.vnet_common_rg.name
-  virtual_network_name                      = data.azurerm_virtual_network.vnet_common.name
+  resource_group_name                       = azurerm_resource_group.rg_common.name
+  virtual_network_name                      = module.vnet_common.name
   private_endpoint_network_policies_enabled = true
   service_endpoints = [
     "Microsoft.EventHub",
@@ -48,7 +48,7 @@ module "function_pblevtdispatcher" {
   subnet_id                                = module.function_pblevtdispatcher_snetout.id
   runtime_version                          = "~3"
   linux_fx_version                         = "" # windows function
-  application_insights_instrumentation_key = data.azurerm_application_insights.application_insights.instrumentation_key
+  application_insights_instrumentation_key = azurerm_application_insights.application_insights.instrumentation_key
 
   storage_account_info = {
     account_kind                      = "StorageV2"
@@ -95,7 +95,7 @@ module "function_pblevtdispatcher" {
   }
 
   allowed_subnets = [
-    data.azurerm_subnet.azdoa_snet[0].id,
+    module.azdoa_snet[0].id,
   ]
 
   allowed_ips = local.app_insights_ips_west_europe
@@ -107,8 +107,8 @@ module "function_pblevtdispatcher_snetout_v4" {
   source                                    = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v4.1.15"
   name                                      = "fnpblevtdispatcherv4out"
   address_prefixes                          = var.cidr_subnet_fnpblevtdispatcherv4
-  resource_group_name                       = data.azurerm_resource_group.vnet_common_rg.name
-  virtual_network_name                      = data.azurerm_virtual_network.vnet_common.name
+  resource_group_name                       = azurerm_resource_group.rg_common.name
+  virtual_network_name                      = module.vnet_common.name
   private_endpoint_network_policies_enabled = true
   service_endpoints = [
     "Microsoft.EventHub",
@@ -140,7 +140,7 @@ module "function_pblevtdispatcher_v4" {
   runtime_version  = "~4"
 
   always_on                                = "true"
-  application_insights_instrumentation_key = data.azurerm_application_insights.application_insights.instrumentation_key
+  application_insights_instrumentation_key = azurerm_application_insights.application_insights.instrumentation_key
 
   app_service_plan_info = {
     kind                         = var.plan_shared_1_kind
@@ -191,7 +191,7 @@ module "function_pblevtdispatcher_v4" {
   subnet_id = module.function_pblevtdispatcher_snetout_v4.id
 
   allowed_subnets = [
-    data.azurerm_subnet.azdoa_snet[0].id,
+    module.azdoa_snet[0].id,
   ]
 
   tags = var.tags

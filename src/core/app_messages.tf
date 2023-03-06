@@ -1,6 +1,6 @@
 data "azurerm_key_vault_secret" "fn_messages_APP_MESSAGES_BETA_FISCAL_CODES" {
   name         = "appbackend-APP-MESSAGES-BETA-FISCAL-CODES"
-  key_vault_id = data.azurerm_key_vault.common.id
+  key_vault_id = module.key_vault_common.id
 }
 
 locals {
@@ -87,7 +87,7 @@ module "redis_messages" {
 
   private_endpoint = {
     enabled              = true
-    virtual_network_id   = data.azurerm_virtual_network.vnet_common.id
+    virtual_network_id   = module.vnet_common.id
     subnet_id            = module.private_endpoints_subnet.id
     private_dns_zone_ids = [azurerm_private_dns_zone.privatelink_redis_cache.id]
   }
@@ -115,8 +115,8 @@ module "app_messages_snet" {
   source                                    = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v4.1.15"
   name                                      = format("%s-app-messages-snet-%d", local.project, count.index + 1)
   address_prefixes                          = [var.cidr_subnet_appmessages[count.index]]
-  resource_group_name                       = data.azurerm_resource_group.vnet_common_rg.name
-  virtual_network_name                      = data.azurerm_virtual_network.vnet_common.name
+  resource_group_name                       = azurerm_resource_group.rg_common.name
+  virtual_network_name                      = module.vnet_common.name
   private_endpoint_network_policies_enabled = false
 
   service_endpoints = [
@@ -149,7 +149,7 @@ module "app_messages_function" {
   runtime_version                          = "~4"
   linux_fx_version                         = "NODE|14"
   always_on                                = var.app_messages_function_always_on
-  application_insights_instrumentation_key = data.azurerm_application_insights.application_insights.instrumentation_key
+  application_insights_instrumentation_key = azurerm_application_insights.application_insights.instrumentation_key
 
   app_service_plan_info = {
     kind                         = var.app_messages_function_kind
@@ -214,7 +214,7 @@ module "app_messages_function_staging_slot" {
   runtime_version                          = "~4"
   linux_fx_version                         = "NODE|14"
   always_on                                = var.app_messages_function_always_on
-  application_insights_instrumentation_key = data.azurerm_application_insights.application_insights.instrumentation_key
+  application_insights_instrumentation_key = azurerm_application_insights.application_insights.instrumentation_key
 
   app_settings = merge(
     local.function_app_messages.app_settings_common,
@@ -226,7 +226,7 @@ module "app_messages_function_staging_slot" {
     module.app_messages_snet[count.index].id,
     module.app_backendl1_snet.id,
     module.app_backendl2_snet.id,
-    data.azurerm_subnet.azdoa_snet[0].id,
+    module.azdoa_snet[0].id,
   ]
 
   allowed_ips = concat(

@@ -18,6 +18,8 @@ jobs:
             src/.template-app
             src/.template-common
             src/aks-platform
+            src/domains/citizen-auth-app
+            src/domains/citizen-auth-common
             src/domains/messages-app
             src/domains/messages-common
             src/domains/payments-app
