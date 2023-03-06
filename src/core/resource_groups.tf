@@ -11,3 +11,10 @@ resource "azurerm_resource_group" "rg_external" {
 
   tags = var.tags
 }
+
+resource "azurerm_resource_group" "rg_common" {
+  name     = format("%s-rg-common", local.project)
+  location = var.location
+
+  tags = var.tags
+}

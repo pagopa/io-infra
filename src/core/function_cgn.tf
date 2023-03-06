@@ -4,27 +4,27 @@
 
 data "azurerm_key_vault_secret" "fn_cgn_SERVICES_API_KEY" {
   name         = "apim-CGN-SERVICE-KEY"
-  key_vault_id = data.azurerm_key_vault.common.id
+  key_vault_id = module.key_vault_common.id
 }
 
 data "azurerm_key_vault_secret" "fn_cgn_EYCA_API_USERNAME" {
   name         = "funccgn-EYCA-API-USERNAME"
-  key_vault_id = data.azurerm_key_vault.common.id
+  key_vault_id = module.key_vault_common.id
 }
 
 data "azurerm_key_vault_secret" "fn_cgn_EYCA_API_PASSWORD" {
   name         = "funccgn-EYCA-API-PASSWORD"
-  key_vault_id = data.azurerm_key_vault.common.id
+  key_vault_id = module.key_vault_common.id
 }
 
 data "azurerm_key_vault_secret" "fn_cgn_CGN_SERVICE_ID" {
   name         = "funccgn-CGN-SERVICE-ID"
-  key_vault_id = data.azurerm_key_vault.common.id
+  key_vault_id = module.key_vault_common.id
 }
 
 data "azurerm_key_vault_secret" "fn_cgn_CGN_DATA_BACKUP_CONNECTION" {
   name         = "cgn-legalbackup-storage-connection-string"
-  key_vault_id = data.azurerm_key_vault.common.id
+  key_vault_id = module.key_vault_common.id
 }
 
 #
@@ -106,7 +106,7 @@ module "function_cgn" {
   runtime_version  = "~4"
 
   always_on                                = "true"
-  application_insights_instrumentation_key = data.azurerm_application_insights.application_insights.instrumentation_key
+  application_insights_instrumentation_key = azurerm_application_insights.application_insights.instrumentation_key
 
   app_settings = merge(
     local.function_cgn.app_settings_common, {
@@ -119,9 +119,9 @@ module "function_cgn" {
   internal_storage = {
     "enable"                     = true,
     "private_endpoint_subnet_id" = module.private_endpoints_subnet.id,
-    "private_dns_zone_blob_ids"  = [data.azurerm_private_dns_zone.privatelink_blob_core_windows_net.id],
-    "private_dns_zone_queue_ids" = [data.azurerm_private_dns_zone.privatelink_queue_core_windows_net.id],
-    "private_dns_zone_table_ids" = [data.azurerm_private_dns_zone.privatelink_table_core_windows_net.id],
+    "private_dns_zone_blob_ids"  = [azurerm_private_dns_zone.privatelink_blob_core.id],
+    "private_dns_zone_queue_ids" = [azurerm_private_dns_zone.privatelink_queue_core.id],
+    "private_dns_zone_table_ids" = [azurerm_private_dns_zone.privatelink_table_core.id],
     "queues"                     = [],
     "containers"                 = [],
     "blobs_retention_days"       = 0,
@@ -160,7 +160,7 @@ module "function_cgn_staging_slot" {
   linux_fx_version                         = "NODE|14"
   always_on                                = "true"
   runtime_version                          = "~4"
-  application_insights_instrumentation_key = data.azurerm_application_insights.application_insights.instrumentation_key
+  application_insights_instrumentation_key = azurerm_application_insights.application_insights.instrumentation_key
 
   app_settings = merge(
     local.function_cgn.app_settings_common, {
@@ -174,7 +174,7 @@ module "function_cgn_staging_slot" {
 
   allowed_subnets = [
     module.cgn_snet.id,
-    data.azurerm_subnet.azdoa_snet[0].id,
+    module.azdoa_snet[0].id,
     module.app_backendl1_snet.id,
     module.app_backendl2_snet.id,
     module.app_backendli_snet.id,

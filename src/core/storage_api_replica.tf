@@ -1,6 +1,6 @@
 data "azurerm_key_vault_secret" "backup_storage_id" {
   name         = "backup-storage-id"
-  key_vault_id = data.azurerm_key_vault.common.id
+  key_vault_id = module.key_vault_common.id
 }
 
 #-----------------------------------------------------

@@ -21,11 +21,11 @@ locals {
       COSMOSDB_KEY  = data.azurerm_cosmosdb_account.cosmos_api.primary_key
       COSMOSDB_NAME = "db"
 
-      STATIC_WEB_ASSETS_ENDPOINT  = data.azurerm_storage_account.cdnassets.primary_web_host
-      STATIC_BLOB_ASSETS_ENDPOINT = data.azurerm_storage_account.cdnassets.primary_blob_host
+      STATIC_WEB_ASSETS_ENDPOINT  = module.assets_cdn.primary_web_host
+      STATIC_BLOB_ASSETS_ENDPOINT = module.assets_cdn.primary_blob_host
 
       CachedStorageConnection = data.azurerm_storage_account.api.primary_connection_string
-      AssetsStorageConnection = data.azurerm_storage_account.cdnassets.primary_connection_string
+      AssetsStorageConnection = module.assets_cdn.primary_connection_string
 
       AzureWebJobsFeatureFlags = "EnableProxies"
     }
@@ -37,8 +37,8 @@ module "function_assets_cdn_snet" {
   source                                    = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v4.1.15"
   name                                      = format("%s-assets-cdn-fn-snet", local.project)
   address_prefixes                          = var.cidr_subnet_fncdnassets
-  resource_group_name                       = data.azurerm_resource_group.vnet_common_rg.name
-  virtual_network_name                      = data.azurerm_virtual_network.vnet_common.name
+  resource_group_name                       = azurerm_resource_group.rg_common.name
+  virtual_network_name                      = module.vnet_common.name
   private_endpoint_network_policies_enabled = false
 
   service_endpoints = [
@@ -68,7 +68,7 @@ module "function_assets_cdn" {
   runtime_version                          = "~4"
   linux_fx_version                         = "NODE|14"
   always_on                                = true
-  application_insights_instrumentation_key = data.azurerm_application_insights.application_insights.instrumentation_key
+  application_insights_instrumentation_key = azurerm_application_insights.application_insights.instrumentation_key
 
   app_service_plan_info = {
     kind                         = var.function_assets_cdn_kind
@@ -103,7 +103,7 @@ module "function_assets_cdn_staging_slot" {
   runtime_version                          = "~4"
   linux_fx_version                         = "NODE|14"
   always_on                                = true
-  application_insights_instrumentation_key = data.azurerm_application_insights.application_insights.instrumentation_key
+  application_insights_instrumentation_key = azurerm_application_insights.application_insights.instrumentation_key
 
   app_settings = local.function_assets_cdn.app_settings
 

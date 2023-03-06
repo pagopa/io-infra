@@ -8,7 +8,7 @@ resource "github_repository_environment" "github_repository_environment_cd" {
     content {
       teams = matchkeys(
         data.github_organization_teams.all.teams.*.id,
-        data.github_organization_teams.all.teams.*.name,
+        data.github_organization_teams.all.teams.*.slug,
         var.github_repository_environment_cd.reviewers_teams
       )
     }
