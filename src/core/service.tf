@@ -1,3 +1,4 @@
+# TODO: To remove, this function han been removed
 resource "azurerm_monitor_scheduled_query_rules_alert" "service_availability_manageservices" {
   name                = format("[%s | %s] %s", upper("service"), "io-p-services-fn", "Service Availability below the threshold")
   resource_group_name = azurerm_resource_group.rg_external.name
@@ -7,7 +8,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "service_availability_man
     action_group = [azurerm_monitor_action_group.quarantine_error_action_group.id]
   }
 
-  data_source_id          = data.azurerm_log_analytics_workspace.monitor_rg.id
+  data_source_id          = azurerm_log_analytics_workspace.log_analytics_workspace.id
   description             = "Availability for get and manage services is less than or equal to ${var.service_availability_alerts_threshold}%."
   enabled                 = var.service_alerts_enabled
   auto_mitigation_enabled = true

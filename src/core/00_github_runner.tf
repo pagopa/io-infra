@@ -7,8 +7,8 @@ resource "azurerm_resource_group" "github_runner" {
 
 resource "azurerm_subnet" "github_runner" {
   name                 = "${local.project}-github-runner-snet"
-  resource_group_name  = data.azurerm_resource_group.vnet_common_rg.name
-  virtual_network_name = data.azurerm_virtual_network.vnet_common.name
+  resource_group_name  = azurerm_resource_group.rg_common.name
+  virtual_network_name = module.vnet_common.name
   address_prefixes     = ["10.0.242.0/23"]
 }
 
@@ -21,8 +21,8 @@ module "github_runner" {
   vnet_internal             = true
   subnet_id                 = azurerm_subnet.github_runner.id
   log_destination           = "log-analytics"
-  log_analytics_customer_id = data.azurerm_log_analytics_workspace.log_analytics_workspace.workspace_id
-  log_analytics_shared_key  = data.azurerm_log_analytics_workspace.log_analytics_workspace.primary_shared_key
+  log_analytics_customer_id = azurerm_log_analytics_workspace.log_analytics_workspace.workspace_id
+  log_analytics_shared_key  = azurerm_log_analytics_workspace.log_analytics_workspace.primary_shared_key
   zone_redundant            = true
 
   tags = var.tags

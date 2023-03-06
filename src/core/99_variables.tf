@@ -39,6 +39,25 @@ variable "tags" {
   }
 }
 
+## Monitor
+variable "law_sku" {
+  type        = string
+  description = "Sku of the Log Analytics Workspace"
+  default     = "PerGB2018"
+}
+
+variable "law_retention_in_days" {
+  type        = number
+  description = "The workspace data retention in days"
+  default     = 90
+}
+
+variable "law_daily_quota_gb" {
+  type        = number
+  description = "The workspace daily quota for ingestion in GB."
+  default     = -1
+}
+
 # DNS
 variable "dns_default_ttl_sec" {
   type        = number
@@ -136,6 +155,11 @@ variable "ddos_protection_plan" {
   default = null
 }
 
+variable "cidr_common_vnet" {
+  type        = list(string)
+  description = "Common Virtual network cidr."
+}
+
 variable "cidr_weu_beta_vnet" {
   type        = list(string)
   description = "Beta Virtual network cidr."
@@ -152,6 +176,11 @@ variable "cidr_weu_prod02_vnet" {
 }
 
 ## Subnet CIRDS
+variable "cidr_subnet_redis_common" {
+  type        = list(string)
+  description = "Redis common network address space."
+}
+
 variable "cidr_subnet_eventhub" {
   type        = list(string)
   description = "Eventhub network address space."
@@ -275,6 +304,21 @@ variable "cidr_subnet_pendpoints" {
 variable "cidr_subnet_fnlollipop" {
   type        = list(string)
   description = "Function Lollipop address space."
+}
+
+## REDIS COMMON ##
+variable "redis_common" {
+  type = object({
+    capacity                      = number
+    shard_count                   = number
+    family                        = string
+    sku_name                      = string
+    public_network_access_enabled = bool
+    rdb_backup_enabled            = bool
+    rdb_backup_frequency          = number
+    rdb_backup_max_snapshot_count = number
+  })
+  description = "Redis Common configuration"
 }
 
 ## VPN ##
@@ -1049,4 +1093,29 @@ variable "third_party_mock_service_id" {
   type        = string
   description = "The Service ID of the Third Party Mock service"
   default     = "01GQQDPM127KFGG6T3660D5TXD"
+}
+
+# Citizen auth
+
+variable "citizen_auth_domain" {
+  type    = string
+  default = "citizen-auth"
+}
+
+variable "citizen_auth_product" {
+  type        = string
+  description = "Use product name from citizen_auth domain locals"
+  default     = "io-p"
+}
+
+variable "citizen_auth_revoke_queue_name" {
+  type        = string
+  description = "Use queue storage name from citizen_auth domain storage"
+  default     = "pubkeys-revoke"
+}
+
+variable "citizen_auth_assertion_storage_name" {
+  type        = string
+  description = "Use storage name from citizen_auth domain"
+  default     = "lollipop-assertions-st"
 }

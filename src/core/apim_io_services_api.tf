@@ -51,7 +51,7 @@ resource "azurerm_api_management_named_value" "io_fn3_services_url" {
 
 data "azurerm_key_vault_secret" "io_fn3_services_key_secret" {
   name         = "fn3services-KEY-APIM"
-  key_vault_id = data.azurerm_key_vault.common.id
+  key_vault_id = module.key_vault_common.id
 }
 
 resource "azurerm_api_management_named_value" "io_fn3_services_key" {
@@ -67,7 +67,7 @@ resource "azurerm_api_management_named_value" "io_fn3_services_key" {
 
 data "azurerm_key_vault_secret" "io_fn3_eucovidcert_key_secret" {
   name         = "io-fn3-eucovidcert-KEY-APIM"
-  key_vault_id = data.azurerm_key_vault.common.id
+  key_vault_id = module.key_vault_common.id
 }
 
 resource "azurerm_api_management_named_value" "io_fn3_eucovidcert_key" {
@@ -91,7 +91,7 @@ resource "azurerm_api_management_named_value" "io_fn3_eucovidcert_url_alt" {
 # Named Value api gad certificate header
 data "azurerm_key_vault_secret" "api_gad_client_certificate_verified_header_secret" {
   name         = "apigad-GAD-CLIENT-CERTIFICATE-VERIFIED-HEADER"
-  key_vault_id = data.azurerm_key_vault.common.id
+  key_vault_id = module.key_vault_common.id
 }
 
 resource "azurerm_api_management_named_value" "api_gad_client_certificate_verified_header" {
