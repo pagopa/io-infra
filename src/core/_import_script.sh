@@ -42,5 +42,11 @@ bash terraform.sh init prod
 
 # bash terraform.sh import prod 'module.azdoa_snet[0].azurerm_subnet.this' '/subscriptions/ec285037-c673-4f58-b594-d7c480da4e8b/resourceGroups/io-p-rg-common/providers/Microsoft.Network/virtualNetworks/io-p-vnet-common/subnets/azure-devops'
 
+# bash terraform.sh import prod 'azurerm_private_dns_zone_virtual_network_link.servicebus_private_vnet_common' '/subscriptions/ec285037-c673-4f58-b594-d7c480da4e8b/resourceGroups/io-p-evt-rg/providers/Microsoft.Network/privateDnsZones/privatelink.servicebus.windows.net/virtualNetworkLinks/io-p-evh-ns-private-dns-zone-link-01'
+
+# terraform state rm 'module.event_hub.azurerm_private_dns_zone.eventhub[0]'
+
+# terraform state rm 'module.event_hub.azurerm_private_dns_zone_virtual_network_link.eventhub[0]'
+
 ### Step 2
 
