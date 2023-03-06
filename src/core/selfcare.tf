@@ -84,32 +84,32 @@ resource "azurerm_resource_group" "selfcare_be_rg" {
 
 data "azurerm_key_vault_secret" "selfcare_apim_io_service_key" {
   name         = "apim-IO-SERVICE-KEY"
-  key_vault_id = data.azurerm_key_vault.common.id
+  key_vault_id = module.key_vault_common.id
 }
 
 data "azurerm_key_vault_secret" "selfcare_devportal_service_principal_client_id" {
   name         = "devportal-SERVICE-PRINCIPAL-CLIENT-ID"
-  key_vault_id = data.azurerm_key_vault.common.id
+  key_vault_id = module.key_vault_common.id
 }
 
 data "azurerm_key_vault_secret" "selfcare_devportal_service_principal_secret" {
   name         = "devportal-SERVICE-PRINCIPAL-SECRET"
-  key_vault_id = data.azurerm_key_vault.common.id
+  key_vault_id = module.key_vault_common.id
 }
 
 data "azurerm_key_vault_secret" "selfcare_io_sandbox_fiscal_code" {
   name         = "io-SANDBOX-FISCAL-CODE"
-  key_vault_id = data.azurerm_key_vault.common.id
+  key_vault_id = module.key_vault_common.id
 }
 
 data "azurerm_key_vault_secret" "selfcare_devportal_jira_token" {
   name         = "devportal-JIRA-TOKEN"
-  key_vault_id = data.azurerm_key_vault.common.id
+  key_vault_id = module.key_vault_common.id
 }
 
 data "azurerm_key_vault_secret" "selfcare_subsmigrations_apikey" {
   name         = "devportal-subsmigrations-APIKEY"
-  key_vault_id = data.azurerm_key_vault.common.id
+  key_vault_id = module.key_vault_common.id
 }
 
 # JWT
@@ -118,7 +118,7 @@ module "selfcare_jwt" {
   source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//jwt_keys?ref=v4.1.15"
 
   jwt_name         = "selfcare-jwt"
-  key_vault_id     = data.azurerm_key_vault.common.id
+  key_vault_id     = module.key_vault_common.id
   cert_common_name = "IO selfcare"
   cert_password    = ""
   tags             = var.tags
@@ -146,8 +146,8 @@ module "selfcare_be_common_snet" {
   source                                    = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v4.1.15"
   name                                      = format("%s-selfcare-be-common-snet", local.project)
   address_prefixes                          = var.cidr_subnet_selfcare_be
-  resource_group_name                       = data.azurerm_resource_group.vnet_common_rg.name
-  virtual_network_name                      = data.azurerm_virtual_network.vnet_common.name
+  resource_group_name                       = azurerm_resource_group.rg_common.name
+  virtual_network_name                      = module.vnet_common.name
   private_endpoint_network_policies_enabled = false
   service_endpoints = [
     "Microsoft.Web",
@@ -190,7 +190,7 @@ module "appservice_selfcare_be" {
   app_settings = {
     WEBSITE_RUN_FROM_PACKAGE = "1"
 
-    APPINSIGHTS_INSTRUMENTATIONKEY = data.azurerm_application_insights.application_insights.instrumentation_key
+    APPINSIGHTS_INSTRUMENTATIONKEY = azurerm_application_insights.application_insights.instrumentation_key
 
     LOG_LEVEL = "info"
 

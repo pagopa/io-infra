@@ -44,7 +44,7 @@ locals {
       WEBSITE_DNS_SERVER     = "168.63.129.16"
 
       # Path of blob on which we export the last visible service read model
-      AssetsStorageConnection                = data.azurerm_storage_account.cdnassets.primary_connection_string
+      AssetsStorageConnection                = module.assets_cdn.primary_connection_string
       VISIBLE_SERVICES_COMPACT_STORAGE_PATH  = "services/services-webview/visible-services-compact.json"
       VISIBLE_SERVICES_EXTENDED_STORAGE_PATH = "services/services-webview/visible-services-extended.json"
       SERVICE_QUALITY_EXCLUSION_LIST         = data.azurerm_key_vault_secret.services_exclusion_list.value
@@ -57,7 +57,7 @@ locals {
       resource_group   = azurerm_resource_group.selfcare_be_rg
       app_service_plan = azurerm_app_service_plan.selfcare_be_common
       snet             = module.selfcare_be_common_snet
-      vnet             = data.azurerm_virtual_network.vnet_common
+      vnet             = module.vnet_common
     }
 
     db = {
@@ -146,14 +146,14 @@ module "function_devportalservicedata" {
   resource_group_name = local.function_devportalservicedata.app_context.resource_group.name
   app_service_plan_id = local.function_devportalservicedata.app_context.app_service_plan.id
 
-  application_insights_instrumentation_key = data.azurerm_application_insights.application_insights.instrumentation_key
+  application_insights_instrumentation_key = azurerm_application_insights.application_insights.instrumentation_key
 
   internal_storage = {
     "enable"                     = true,
     "private_endpoint_subnet_id" = module.private_endpoints_subnet.id,
-    "private_dns_zone_blob_ids"  = [data.azurerm_private_dns_zone.privatelink_blob_core_windows_net.id],
-    "private_dns_zone_queue_ids" = [data.azurerm_private_dns_zone.privatelink_queue_core_windows_net.id],
-    "private_dns_zone_table_ids" = [data.azurerm_private_dns_zone.privatelink_table_core_windows_net.id],
+    "private_dns_zone_blob_ids"  = [azurerm_private_dns_zone.privatelink_blob_core.id],
+    "private_dns_zone_queue_ids" = [azurerm_private_dns_zone.privatelink_queue_core.id],
+    "private_dns_zone_table_ids" = [azurerm_private_dns_zone.privatelink_table_core.id],
     "containers"                 = [],
     "blobs_retention_days"       = 1,
     "queues"                     = []
@@ -200,7 +200,7 @@ module "function_devportalservicedata_staging_slot" {
   function_app_id     = module.function_devportalservicedata.id
   app_service_plan_id = local.function_devportalservicedata.app_context.app_service_plan.id
 
-  application_insights_instrumentation_key = data.azurerm_application_insights.application_insights.instrumentation_key
+  application_insights_instrumentation_key = azurerm_application_insights.application_insights.instrumentation_key
 
   storage_account_name               = module.function_devportalservicedata.storage_account_name
   storage_account_access_key         = module.function_devportalservicedata.storage_account.primary_access_key
@@ -217,7 +217,7 @@ module "function_devportalservicedata_staging_slot" {
     [],
   )
   allowed_subnets = [
-    data.azurerm_subnet.azdoa_snet[0].id,
+    module.azdoa_snet[0].id,
   ]
 
   app_settings = merge(local.function_devportalservicedata.app_settings_commons, {
@@ -240,16 +240,16 @@ module "function_devportalservicedata_staging_slot" {
 // db admin user credentials
 data "azurerm_key_vault_secret" "devportalservicedata_db_server_adm_username" {
   name         = "devportal-servicedata-DB-ADM-USERNAME"
-  key_vault_id = data.azurerm_key_vault.common.id
+  key_vault_id = module.key_vault_common.id
 }
 data "azurerm_key_vault_secret" "devportalservicedata_db_server_adm_password" {
   name         = "devportal-servicedata-DB-ADM-PASSWORD"
-  key_vault_id = data.azurerm_key_vault.common.id
+  key_vault_id = module.key_vault_common.id
 }
 // db applicative user credentials
 data "azurerm_key_vault_secret" "devportalservicedata_db_server_fndevportalservicedata_password" {
   name         = "devportal-servicedata-FNDEVPORTALSERVICEDATA-PASSWORD"
-  key_vault_id = data.azurerm_key_vault.common.id
+  key_vault_id = module.key_vault_common.id
 }
 
 
@@ -257,8 +257,8 @@ module "devportalservicedata_db_server_snet" {
   source                                    = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v4.1.15"
   name                                      = format("%s-snet", local.function_devportalservicedata.db.name)
   address_prefixes                          = var.cidr_subnet_devportalservicedata_db_server
-  resource_group_name                       = data.azurerm_resource_group.vnet_common_rg.name
-  virtual_network_name                      = data.azurerm_virtual_network.vnet_common.name
+  resource_group_name                       = azurerm_resource_group.rg_common.name
+  virtual_network_name                      = module.vnet_common.name
   private_endpoint_network_policies_enabled = false
   service_endpoints                         = ["Microsoft.Sql"]
 

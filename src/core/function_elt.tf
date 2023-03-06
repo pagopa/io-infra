@@ -83,7 +83,7 @@ locals {
       MessageContentPrimaryStorageConnection = data.azurerm_storage_account.iopstapi.primary_connection_string
       #iopstapireplica connection string
       MessageContentStorageConnection  = data.azurerm_storage_account.api_replica.primary_connection_string
-      ServiceInfoBlobStorageConnection = data.azurerm_storage_account.cdnassets.primary_connection_string
+      ServiceInfoBlobStorageConnection = module.assets_cdn.primary_connection_string
 
       MESSAGES_FAILURE_QUEUE_NAME       = "pdnd-io-cosmosdb-messages-failure"
       MESSAGE_STATUS_FAILURE_QUEUE_NAME = "pdnd-io-cosmosdb-message-status-failure"
@@ -105,8 +105,8 @@ module "function_elt_snetout" {
   source                                    = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v4.1.15"
   name                                      = "fn3eltout"
   address_prefixes                          = var.cidr_subnet_fnelt
-  resource_group_name                       = data.azurerm_resource_group.vnet_common_rg.name
-  virtual_network_name                      = data.azurerm_virtual_network.vnet_common.name
+  resource_group_name                       = azurerm_resource_group.rg_common.name
+  virtual_network_name                      = module.vnet_common.name
   private_endpoint_network_policies_enabled = true
 
   service_endpoints = [
@@ -150,7 +150,7 @@ module "function_elt" {
   subnet_id                                = module.function_elt_snetout.id
   runtime_version                          = "~4"
   linux_fx_version                         = null
-  application_insights_instrumentation_key = data.azurerm_application_insights.application_insights.instrumentation_key
+  application_insights_instrumentation_key = azurerm_application_insights.application_insights.instrumentation_key
 
   app_service_plan_info = {
     kind                         = "elastic"
@@ -184,9 +184,9 @@ module "function_elt" {
   internal_storage = {
     "enable"                     = true,
     "private_endpoint_subnet_id" = module.private_endpoints_subnet.id,
-    "private_dns_zone_blob_ids"  = [data.azurerm_private_dns_zone.privatelink_blob_core_windows_net.id],
-    "private_dns_zone_queue_ids" = [data.azurerm_private_dns_zone.privatelink_queue_core_windows_net.id],
-    "private_dns_zone_table_ids" = [data.azurerm_private_dns_zone.privatelink_table_core_windows_net.id],
+    "private_dns_zone_blob_ids"  = [azurerm_private_dns_zone.privatelink_blob_core.id],
+    "private_dns_zone_queue_ids" = [azurerm_private_dns_zone.privatelink_queue_core.id],
+    "private_dns_zone_table_ids" = [azurerm_private_dns_zone.privatelink_table_core.id],
     "queues" = [
       local.function_elt.app_settings.MESSAGES_FAILURE_QUEUE_NAME,
       "${local.function_elt.app_settings.MESSAGES_FAILURE_QUEUE_NAME}-poison",
@@ -200,7 +200,7 @@ module "function_elt" {
   }
 
   allowed_subnets = [
-    data.azurerm_subnet.azdoa_snet[0].id,
+    module.azdoa_snet[0].id,
   ]
 
   allowed_ips = local.app_insights_ips_west_europe

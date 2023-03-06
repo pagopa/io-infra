@@ -15,8 +15,8 @@ module "appgateway_snet" {
   source                                    = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v4.1.15"
   name                                      = format("%s-appgateway-snet", local.project)
   address_prefixes                          = var.cidr_subnet_appgateway
-  resource_group_name                       = data.azurerm_resource_group.vnet_common_rg.name
-  virtual_network_name                      = data.azurerm_virtual_network.vnet_common.name
+  resource_group_name                       = azurerm_resource_group.rg_common.name
+  virtual_network_name                      = module.vnet_common.name
   private_endpoint_network_policies_enabled = true
 
   service_endpoints = [
@@ -580,7 +580,7 @@ resource "azurerm_key_vault_access_policy" "app_gateway_policy" {
 }
 
 resource "azurerm_key_vault_access_policy" "app_gateway_policy_common" {
-  key_vault_id            = data.azurerm_key_vault.common.id
+  key_vault_id            = module.key_vault_common.id
   tenant_id               = data.azurerm_client_config.current.tenant_id
   object_id               = azurerm_user_assigned_identity.appgateway.principal_id
   key_permissions         = []
@@ -595,7 +595,7 @@ data "azuread_service_principal" "app_gw_uai_kvreader" {
 }
 
 resource "azurerm_key_vault_access_policy" "app_gw_uai_kvreader_common" {
-  key_vault_id            = data.azurerm_key_vault.common.id
+  key_vault_id            = module.key_vault_common.id
   tenant_id               = data.azurerm_client_config.current.tenant_id
   object_id               = data.azuread_service_principal.app_gw_uai_kvreader.object_id
   key_permissions         = []
@@ -621,17 +621,17 @@ data "azurerm_key_vault_certificate" "app_gw_api_app" {
 
 data "azurerm_key_vault_certificate" "app_gw_api_io_italia_it" {
   name         = var.app_gateway_api_io_italia_it_certificate_name
-  key_vault_id = data.azurerm_key_vault.common.id
+  key_vault_id = module.key_vault_common.id
 }
 
 data "azurerm_key_vault_certificate" "app_gw_app_backend_io_italia_it" {
   name         = var.app_gateway_app_backend_io_italia_it_certificate_name
-  key_vault_id = data.azurerm_key_vault.common.id
+  key_vault_id = module.key_vault_common.id
 }
 
 data "azurerm_key_vault_certificate" "app_gw_developerportal_backend_io_italia_it" {
   name         = var.app_gateway_developerportal_backend_io_italia_it_certificate_name
-  key_vault_id = data.azurerm_key_vault.common.id
+  key_vault_id = module.key_vault_common.id
 }
 
 data "azurerm_key_vault_certificate" "app_gw_api_io_selfcare_pagopa_it" {

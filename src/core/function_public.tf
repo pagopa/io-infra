@@ -46,7 +46,7 @@ module "function_public" {
   runtime_version  = "~4"
 
   always_on                                = "true"
-  application_insights_instrumentation_key = data.azurerm_application_insights.application_insights.instrumentation_key
+  application_insights_instrumentation_key = azurerm_application_insights.application_insights.instrumentation_key
 
   app_settings = merge(
     local.function_public.app_settings_common,
@@ -55,9 +55,9 @@ module "function_public" {
   internal_storage = {
     "enable"                     = false,
     "private_endpoint_subnet_id" = module.private_endpoints_subnet.id,
-    "private_dns_zone_blob_ids"  = [data.azurerm_private_dns_zone.privatelink_blob_core_windows_net.id],
-    "private_dns_zone_queue_ids" = [data.azurerm_private_dns_zone.privatelink_queue_core_windows_net.id],
-    "private_dns_zone_table_ids" = [data.azurerm_private_dns_zone.privatelink_table_core_windows_net.id],
+    "private_dns_zone_blob_ids"  = [azurerm_private_dns_zone.privatelink_blob_core.id],
+    "private_dns_zone_queue_ids" = [azurerm_private_dns_zone.privatelink_queue_core.id],
+    "private_dns_zone_table_ids" = [azurerm_private_dns_zone.privatelink_table_core.id],
     "queues"                     = [],
     "containers"                 = [],
     "blobs_retention_days"       = 0,
@@ -99,7 +99,7 @@ module "function_public_staging_slot" {
   linux_fx_version                         = "NODE|14"
   always_on                                = "true"
   runtime_version                          = "~4"
-  application_insights_instrumentation_key = data.azurerm_application_insights.application_insights.instrumentation_key
+  application_insights_instrumentation_key = azurerm_application_insights.application_insights.instrumentation_key
 
   app_settings = merge(
     local.function_public.app_settings_common,
@@ -109,7 +109,7 @@ module "function_public_staging_slot" {
 
   allowed_subnets = [
     module.shared_1_snet.id,
-    data.azurerm_subnet.azdoa_snet[0].id,
+    module.azdoa_snet[0].id,
     module.apim_snet.id,
   ]
 

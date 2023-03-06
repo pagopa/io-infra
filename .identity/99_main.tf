@@ -24,7 +24,9 @@ provider "azurerm" {
 }
 
 provider "github" {
-  owner = var.github.org
+  owner          = var.github.org
+  write_delay_ms = "200"
+  read_delay_ms  = "200"
 }
 
 data "azurerm_subscription" "current" {}
