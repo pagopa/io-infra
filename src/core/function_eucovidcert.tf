@@ -4,7 +4,7 @@
 
 data "azurerm_key_vault_secret" "fn_eucovidcert_API_KEY_APPBACKEND" {
   name         = "funceucovidcert-KEY-APPBACKEND"
-  key_vault_id = data.azurerm_key_vault.common.id
+  key_vault_id = module.key_vault_common.id
 }
 
 data "azurerm_key_vault_secret" "fn_eucovidcert_API_KEY_PUBLICIOEVENTDISPATCHER" {
@@ -14,52 +14,52 @@ data "azurerm_key_vault_secret" "fn_eucovidcert_API_KEY_PUBLICIOEVENTDISPATCHER"
 
 data "azurerm_key_vault_secret" "fn_eucovidcert_DGC_PROD_CLIENT_CERT" {
   name         = "eucovidcert-DGC-PROD-CLIENT-CERT"
-  key_vault_id = data.azurerm_key_vault.common.id
+  key_vault_id = module.key_vault_common.id
 }
 
 data "azurerm_key_vault_secret" "fn_eucovidcert_DGC_PROD_CLIENT_KEY" {
   name         = "eucovidcert-DGC-PROD-CLIENT-KEY"
-  key_vault_id = data.azurerm_key_vault.common.id
+  key_vault_id = module.key_vault_common.id
 }
 
 data "azurerm_key_vault_secret" "fn_eucovidcert_DGC_PROD_SERVER_CA" {
   name         = "eucovidcert-DGC-PROD-SERVER-CA"
-  key_vault_id = data.azurerm_key_vault.common.id
+  key_vault_id = module.key_vault_common.id
 }
 
 data "azurerm_key_vault_secret" "fn_eucovidcert_DGC_UAT_CLIENT_CERT" {
   name         = "eucovidcert-DGC-UAT-CLIENT-CERT"
-  key_vault_id = data.azurerm_key_vault.common.id
+  key_vault_id = module.key_vault_common.id
 }
 
 data "azurerm_key_vault_secret" "fn_eucovidcert_DGC_UAT_CLIENT_KEY" {
   name         = "eucovidcert-DGC-UAT-CLIENT-KEY"
-  key_vault_id = data.azurerm_key_vault.common.id
+  key_vault_id = module.key_vault_common.id
 }
 
 data "azurerm_key_vault_secret" "fn_eucovidcert_DGC_UAT_SERVER_CA" {
   name         = "eucovidcert-DGC-UAT-SERVER-CA"
-  key_vault_id = data.azurerm_key_vault.common.id
+  key_vault_id = module.key_vault_common.id
 }
 
 data "azurerm_key_vault_secret" "fn_eucovidcert_DGC_LOAD_TEST_CLIENT_KEY" {
   name         = "eucovidcert-DGC-LOAD-TEST-CLIENT-KEY"
-  key_vault_id = data.azurerm_key_vault.common.id
+  key_vault_id = module.key_vault_common.id
 }
 
 data "azurerm_key_vault_secret" "fn_eucovidcert_DGC_LOAD_TEST_CLIENT_CERT" {
   name         = "eucovidcert-DGC-LOAD-TEST-CLIENT-CERT"
-  key_vault_id = data.azurerm_key_vault.common.id
+  key_vault_id = module.key_vault_common.id
 }
 
 data "azurerm_key_vault_secret" "fn_eucovidcert_DGC_LOAD_TEST_SERVER_CA" {
   name         = "eucovidcert-DGC-LOAD-TEST-SERVER-CA"
-  key_vault_id = data.azurerm_key_vault.common.id
+  key_vault_id = module.key_vault_common.id
 }
 
 data "azurerm_key_vault_secret" "fn_eucovidcert_FNSERVICES_API_KEY" {
   name         = "fn3services-KEY-EUCOVIDCERT"
-  key_vault_id = data.azurerm_key_vault.common.id
+  key_vault_id = module.key_vault_common.id
 }
 
 #
@@ -156,8 +156,8 @@ module "function_eucovidcert_snet" {
   source                                    = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v4.1.15"
   name                                      = format("%s-eucovidcert-snet", local.project)
   address_prefixes                          = var.cidr_subnet_eucovidcert
-  resource_group_name                       = data.azurerm_resource_group.vnet_common_rg.name
-  virtual_network_name                      = data.azurerm_virtual_network.vnet_common.name
+  resource_group_name                       = azurerm_resource_group.rg_common.name
+  virtual_network_name                      = module.vnet_common.name
   private_endpoint_network_policies_enabled = false
 
   service_endpoints = [
@@ -188,7 +188,7 @@ module "function_eucovidcert" {
   runtime_version  = "~4"
 
   always_on                                = "true"
-  application_insights_instrumentation_key = data.azurerm_application_insights.application_insights.instrumentation_key
+  application_insights_instrumentation_key = azurerm_application_insights.application_insights.instrumentation_key
 
   app_service_plan_info = {
     kind                         = var.function_eucovidcert_kind
@@ -236,7 +236,7 @@ module "function_eucovidcert_staging_slot" {
   linux_fx_version                         = "NODE|14"
   always_on                                = "true"
   runtime_version                          = "~4"
-  application_insights_instrumentation_key = data.azurerm_application_insights.application_insights.instrumentation_key
+  application_insights_instrumentation_key = azurerm_application_insights.application_insights.instrumentation_key
 
   app_settings = merge(
     local.function_eucovidcert.app_settings_common,
@@ -248,7 +248,7 @@ module "function_eucovidcert_staging_slot" {
   subnet_id = module.function_eucovidcert_snet.id
 
   allowed_subnets = [
-    data.azurerm_subnet.azdoa_snet[0].id,
+    module.azdoa_snet[0].id,
     module.function_eucovidcert_snet.id,
     module.app_backendl1_snet.id,
     module.app_backendl2_snet.id,
