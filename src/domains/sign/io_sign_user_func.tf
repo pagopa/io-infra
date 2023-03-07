@@ -29,6 +29,9 @@ locals {
       NamirialPassword                                = module.key_vault_secrets.values["NamirialPassword"].value
       SpidAssertionMock                               = module.key_vault_secrets.values["SpidAssertionMock"].value
       AnalyticsEventHubConnectionString               = module.event_hub.keys["analytics.io-sign-func-user"].primary_connection_string
+      SelfCareEventHubConnectionString                = module.key_vault_secrets.values["SelfCareEventHubConnectionString"].value
+      SelfCareApiBasePath                             = "https://api.selfcare.pagopa.it"
+      SelfCareApiKey                                  = module.key_vault_secrets.values["SelfCareApiKey"].value
     }
   }
 }
