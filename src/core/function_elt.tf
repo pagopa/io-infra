@@ -80,7 +80,7 @@ locals {
       PN_SERVICE_ID = var.pn_service_id
 
       #iopstapi connection string
-      MessageContentPrimaryStorageConnection = data.azurerm_storage_account.iopstapi.primary_connection_string
+      MessageContentPrimaryStorageConnection = module.storage_api.primary_connection_string
       #iopstapireplica connection string
       MessageContentStorageConnection  = data.azurerm_storage_account.api_replica.primary_connection_string
       ServiceInfoBlobStorageConnection = module.assets_cdn.primary_connection_string
@@ -122,12 +122,6 @@ module "function_elt_snetout" {
       actions = ["Microsoft.Network/virtualNetworks/subnets/action"]
     }
   }
-}
-
-# Storage iopstapi
-data "azurerm_storage_account" "iopstapi" {
-  name                = "iopstapi"
-  resource_group_name = azurerm_resource_group.rg_internal.name
 }
 
 # Storage iopstapi replica

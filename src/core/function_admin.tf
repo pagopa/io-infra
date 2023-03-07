@@ -89,7 +89,7 @@ locals {
       COSMOSDB_KEY               = data.azurerm_cosmosdb_account.cosmos_api.primary_key
       COSMOSDB_CONNECTION_STRING = format("AccountEndpoint=%s;AccountKey=%s;", data.azurerm_cosmosdb_account.cosmos_api.endpoint, data.azurerm_cosmosdb_account.cosmos_api.primary_key)
 
-      StorageConnection = data.azurerm_storage_account.api.primary_connection_string
+      StorageConnection = module.storage_api.primary_connection_string
 
       AssetsStorageConnection = module.assets_cdn.primary_connection_string
 
@@ -114,11 +114,11 @@ locals {
       MAIL_FROM = "IO - l'app dei servizi pubblici <no-reply@io.italia.it>"
 
       SUBSCRIPTIONS_FEED_TABLE          = "SubscriptionsFeedByDay"
-      SubscriptionFeedStorageConnection = data.azurerm_storage_account.api.primary_connection_string
+      SubscriptionFeedStorageConnection = module.storage_api.primary_connection_string
 
       // table for saving failed user data processing requests
       FAILED_USER_DATA_PROCESSING_TABLE         = "FailedUserDataProcessing"
-      FailedUserDataProcessingStorageConnection = data.azurerm_storage_account.api.primary_connection_string
+      FailedUserDataProcessingStorageConnection = module.storage_api.primary_connection_string
 
       # SECRETS
       LOGOS_URL = data.azurerm_key_vault_secret.fn_admin_ASSETS_URL.value

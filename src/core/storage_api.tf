@@ -59,7 +59,7 @@ data "azurerm_key_vault_secret" "backup_storage_id" {
 module "io_apist_replica" {
   source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//storage_object_replication?ref=v4.1.15"
 
-  source_storage_account_id      = data.azurerm_storage_account.api.id
+  source_storage_account_id      = module.storage_api.id
   destination_storage_account_id = data.azurerm_key_vault_secret.backup_storage_id.value
 
   rules = [{
