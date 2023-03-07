@@ -29,6 +29,8 @@ locals {
       SelfCareEventHubConnectionString                = module.key_vault_secrets.values["SelfCareEventHubConnectionString"].value
       SelfCareApiBasePath                             = "https://api.selfcare.pagopa.it"
       SelfCareApiKey                                  = module.key_vault_secrets.values["SelfCareApiKey"].value
+      SlackApiBasePath                                = "https://slack.com/api"
+      SlackApiToken                                   = module.key_vault_secrets.values["SlackApiToken"].value
     }
   }
 }

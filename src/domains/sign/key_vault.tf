@@ -11,7 +11,8 @@ module "key_vault_secrets" {
     "NamirialPassword",
     "SpidAssertionMock",
     "SelfCareEventHubConnectionString",
-    "SelfCareApiKey"
+    "SelfCareApiKey",
+    "SlackApiToken"
   ]
 }
 
