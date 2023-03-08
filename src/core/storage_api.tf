@@ -1,15 +1,16 @@
 module "storage_api" {
   source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//storage_account?ref=v5.6.0"
 
-  name                            = replace("${local.project}stapi", "-", "")
-  account_kind                    = "StorageV2"
-  account_tier                    = "Standard"
-  access_tier                     = "Hot"
-  account_replication_type        = "GRS"
-  resource_group_name             = azurerm_resource_group.rg_internal.name
-  location                        = azurerm_resource_group.rg_internal.location
-  advanced_threat_protection      = true
-  allow_nested_items_to_be_public = false
+  name                             = replace("${local.project}stapi", "-", "")
+  account_kind                     = "StorageV2"
+  account_tier                     = "Standard"
+  access_tier                      = "Hot"
+  account_replication_type         = "GRS"
+  resource_group_name              = azurerm_resource_group.rg_internal.name
+  location                         = azurerm_resource_group.rg_internal.location
+  advanced_threat_protection       = true
+  allow_nested_items_to_be_public  = false
+  cross_tenant_replication_enabled = true
 
   blob_versioning_enabled              = true
   blob_container_delete_retention_days = 7
@@ -54,20 +55,25 @@ data "azurerm_key_vault_secret" "backup_storage_id" {
   key_vault_id = module.key_vault_common.id
 }
 
-#-----------------------------------------------------
-
-module "io_apist_replica" {
+module "storage_api_object_replication_to_replica" {
   source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//storage_object_replication?ref=v4.1.15"
 
   source_storage_account_id      = module.storage_api.id
   destination_storage_account_id = data.azurerm_key_vault_secret.backup_storage_id.value
 
   rules = [{
-    source_container_name      = "message-content"
-    destination_container_name = "message-content"
+    source_container_name      = azurerm_storage_container.storage_api_message_content.name
+    destination_container_name = azurerm_storage_container.storage_api_message_content.name
     copy_blobs_created_after   = "Everything"
   }]
 }
+
+moved {
+  from = module.io_apist_replica.azurerm_storage_object_replication.this
+  to   = module.storage_api_object_replication_to_replica.azurerm_storage_object_replication.this
+}
+
+#-----------------------------------------------------
 
 data "azurerm_storage_account" "storage_apievents" {
   name                = replace(format("%s-stapievents", local.project), "-", "")
