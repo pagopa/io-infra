@@ -61,3 +61,5 @@ bash terraform.sh init prod
 # bash terraform.sh import prod 'azurerm_storage_table.storage_api_faileduserdataprocessing' "https://iopstapi.table.core.windows.net/Tables('FailedUserDataProcessing')"
 
 # bash terraform.sh import prod 'azurerm_storage_table.storage_api_validationtokens' "https://iopstapi.table.core.windows.net/Tables('ValidationTokens')"
+
+bash terraform.sh import prod 'module.storage_api_replica.azurerm_storage_account.this' '/subscriptions/ec285037-c673-4f58-b594-d7c480da4e8b/resourceGroups/io-p-rg-internal/providers/Microsoft.Storage/storageAccounts/iopstapireplica'

@@ -82,7 +82,7 @@ locals {
       #iopstapi connection string
       MessageContentPrimaryStorageConnection = module.storage_api.primary_connection_string
       #iopstapireplica connection string
-      MessageContentStorageConnection  = data.azurerm_storage_account.api_replica.primary_connection_string
+      MessageContentStorageConnection  = module.storage_api_replica.primary_connection_string
       ServiceInfoBlobStorageConnection = module.assets_cdn.primary_connection_string
 
       MESSAGES_FAILURE_QUEUE_NAME       = "pdnd-io-cosmosdb-messages-failure"
@@ -122,12 +122,6 @@ module "function_elt_snetout" {
       actions = ["Microsoft.Network/virtualNetworks/subnets/action"]
     }
   }
-}
-
-# Storage iopstapi replica
-data "azurerm_storage_account" "api_replica" {
-  name                = "iopstapireplica"
-  resource_group_name = azurerm_resource_group.rg_internal.name
 }
 
 #tfsec:ignore:azure-storage-queue-services-logging-enabled:exp:2022-05-01 # already ignored, maybe a bug in tfsec
