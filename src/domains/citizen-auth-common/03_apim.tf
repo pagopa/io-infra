@@ -104,13 +104,4 @@ resource "azurerm_api_management_subscription" "pagopa" {
   display_name        = "Lollipop API"
   state               = "active"
 }
-
-####################################################################################
-# PagoPA General Lollipop Secret
-####################################################################################
-resource "azurerm_key_vault_secret" "first_lollipop_consumer_subscription_key" {
-  name         = "first-lollipop-consumer-pagopa-subscription-key"
-  value        = azurerm_api_management_subscription.pagopa.primary_key
-  key_vault_id = module.key_vault.id
-}
 ####################################################################################
