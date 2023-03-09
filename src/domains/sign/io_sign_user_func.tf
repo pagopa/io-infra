@@ -60,6 +60,10 @@ module "io_sign_user_func" {
   app_settings = merge(
     local.io_sign_user_func.app_settings,
     {
+      # This is temporary to collect detailed logging
+      WEBSITE_HTTPLOGGING_RETENTION_DAYS = "7"
+    },
+    {
       # Enable functions on production triggered by queue and timer
       # They had to be disabled in slots
       for to_disable in local.io_sign_user_func.staging_disabled :
