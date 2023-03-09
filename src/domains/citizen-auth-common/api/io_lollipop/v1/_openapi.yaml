@@ -8,7 +8,7 @@ info:
     Documentation of the IO Lollipop Function API exposed to Lollipop
     Consumerhere.
 servers:
-  - url: https://api.pagopa.it/api/v1/lollipop
+  - url: https://api.pagopa.it/lollipop/api/v1
 security:
   - ApiKeyAuth: []
 paths:
