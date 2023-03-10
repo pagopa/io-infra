@@ -345,17 +345,6 @@ resource "azurerm_app_service_plan" "cgn_common" {
   tags = var.tags
 }
 
-# resource "azurerm_service_plan" "cgn_common" {
-#   name                = format("%s-plan-cgn-common", local.project)
-#   location            = azurerm_resource_group.cgn_be_rg.location
-#   resource_group_name = azurerm_resource_group.cgn_be_rg.name
-
-#   sku_name     = var.plan_cgn_sku_size
-#   worker_count = var.plan_cgn_sku_capacity
-
-#   tags = var.tags
-# }
-
 # Subnet to host app function
 module "cgn_snet" {
   source                                    = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v4.1.15"
