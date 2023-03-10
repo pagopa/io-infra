@@ -124,19 +124,14 @@ module "selfcare_jwt" {
   tags             = var.tags
 }
 
-resource "azurerm_app_service_plan" "selfcare_be_common" {
+resource "azurerm_service_plan" "selfcare_be_common" {
   name                = format("%s-plan-selfcare-be-common", local.project)
   location            = azurerm_resource_group.selfcare_be_rg.location
   resource_group_name = azurerm_resource_group.selfcare_be_rg.name
 
-  kind     = "Linux"
-  reserved = true
-
-  sku {
-    tier     = var.selfcare_plan_sku_tier
-    size     = var.selfcare_plan_sku_size
-    capacity = var.selfcare_plan_sku_capacity
-  }
+  os_type      = "Linux"
+  sku_name     = var.selfcare_plan_sku_size
+  worker_count = var.selfcare_plan_sku_capacity
 
   tags = var.tags
 }
@@ -181,7 +176,7 @@ module "appservice_selfcare_be" {
   resource_group_name = azurerm_resource_group.selfcare_be_rg.name
 
   plan_type = "external"
-  plan_id   = azurerm_app_service_plan.selfcare_be_common.id
+  plan_id   = azurerm_service_plan.selfcare_be_common.id
 
   app_command_line = "node /home/site/wwwroot/build/src/app.js"
   ###
@@ -248,9 +243,6 @@ module "appservice_selfcare_be" {
 
     SUBSCRIPTION_MIGRATIONS_URL    = format("https://%s.azurewebsites.net/api/v1", module.function_subscriptionmigrations.name)
     SUBSCRIPTION_MIGRATIONS_APIKEY = data.azurerm_key_vault_secret.selfcare_subsmigrations_apikey.value
-
-    WEBSITE_VNET_ROUTE_ALL = "1"
-    WEBSITE_DNS_SERVER     = "168.63.129.16"
   }
 
   allowed_subnets = [module.appgateway_snet.id]
@@ -259,10 +251,10 @@ module "appservice_selfcare_be" {
 }
 
 resource "azurerm_monitor_autoscale_setting" "appservice_selfcare_be_common" {
-  name                = format("%s-autoscale", azurerm_app_service_plan.selfcare_be_common.name)
+  name                = format("%s-autoscale", azurerm_service_plan.selfcare_be_common.name)
   resource_group_name = azurerm_resource_group.selfcare_be_rg.name
   location            = azurerm_resource_group.selfcare_be_rg.location
-  target_resource_id  = azurerm_app_service_plan.selfcare_be_common.id
+  target_resource_id  = azurerm_service_plan.selfcare_be_common.id
 
   profile {
     name = "default"
@@ -276,7 +268,7 @@ resource "azurerm_monitor_autoscale_setting" "appservice_selfcare_be_common" {
     rule {
       metric_trigger {
         metric_name              = "CpuPercentage"
-        metric_resource_id       = azurerm_app_service_plan.selfcare_be_common.id
+        metric_resource_id       = azurerm_service_plan.selfcare_be_common.id
         metric_namespace         = "microsoft.web/serverfarms"
         time_grain               = "PT1M"
         statistic                = "Average"
@@ -298,7 +290,7 @@ resource "azurerm_monitor_autoscale_setting" "appservice_selfcare_be_common" {
     rule {
       metric_trigger {
         metric_name              = "CpuPercentage"
-        metric_resource_id       = azurerm_app_service_plan.selfcare_be_common.id
+        metric_resource_id       = azurerm_service_plan.selfcare_be_common.id
         metric_namespace         = "microsoft.web/serverfarms"
         time_grain               = "PT1M"
         statistic                = "Average"

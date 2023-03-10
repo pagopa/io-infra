@@ -71,7 +71,7 @@ module "appservice_devportal_be" {
   resource_group_name = azurerm_resource_group.selfcare_be_rg.name
 
   plan_type = "external"
-  plan_id   = azurerm_app_service_plan.selfcare_be_common.id
+  plan_id   = azurerm_service_plan.selfcare_be_common.id
 
   app_command_line = "node /home/site/wwwroot/build/src/app.js"
   ###
@@ -146,7 +146,7 @@ module "appservice_devportal_be" {
     # The "Manage Flow" allows the use of a specific subscription (Manage Subscription) keys as API Key for Service create/update.
     # Note: The list below is for the user IDs only, not the full path APIM.id.
     MANAGE_FLOW_ENABLE_USER_LIST = join(",", [
-      "01GC77MF2WYY52DCSQXVEDCE74", # IDPay 
+      "01GC77MF2WYY52DCSQXVEDCE74", # IDPay
       "01GJMF341BZQBP71Q39S1EHBH6"  # Di Pinto Giuseppe Antonio
     ])
   }
