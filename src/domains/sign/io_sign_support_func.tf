@@ -39,15 +39,7 @@ module "io_sign_support_func" {
     maximum_elastic_worker_count = 0
   }
 
-  app_settings = merge(
-    local.io_sign_support_func.app_settings,
-    {
-      # Enable functions on production triggered by queue and timer
-      # They had to be disabled in slots
-      for to_disable in local.io_sign_support_func.staging_disabled :
-      format("AzureWebJobs.%s.Disabled", to_disable) => "false"
-    }
-  )
+  app_settings = local.io_sign_support_func.app_settings
 
   subnet_id       = module.io_sign_snet.id
   allowed_subnets = [module.io_sign_snet.id, data.azurerm_subnet.apim.id]
