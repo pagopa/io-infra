@@ -72,15 +72,7 @@ module "io_sign_support_func_staging_slot" {
   linux_fx_version                         = "NODE|18"
   application_insights_instrumentation_key = data.azurerm_application_insights.application_insights.instrumentation_key
 
-  app_settings = merge(
-    local.io_sign_support_func.app_settings,
-    {
-      # Disabled functions on slot triggered by queue and timer
-      # Manualy mark this configurations as slot settings
-      for to_disable in local.io_sign_support_func.staging_disabled :
-      format("AzureWebJobs.%s.Disabled", to_disable) => "true"
-    }
-  )
+  app_settings = local.io_sign_support_func.app_settings
 
   subnet_id = module.io_sign_snet.id
 
