@@ -64,3 +64,18 @@ module "cosmosdb_sql_container_issuer-issuers" {
 
   default_ttl = var.io_sign_database_issuer.issuers.ttl
 }
+
+module "cosmosdb_sql_container_issuer-issuers-by-vat-number" {
+  source              = "git::https://github.com/pagopa/terraform-azurerm-v3.git//cosmosdb_sql_container?ref=v4.1.11"
+  name                = "issuers-by-vat-number"
+  resource_group_name = azurerm_resource_group.data_rg.name
+  account_name        = module.cosmosdb_account.name
+  database_name       = module.cosmosdb_sql_database_issuer.name
+  partition_key_path  = "/id"
+
+  autoscale_settings = {
+    max_throughput = var.io_sign_database_issuer.uploads.max_throughput
+  }
+
+  default_ttl = var.io_sign_database_issuer.issuers.ttl
+}
