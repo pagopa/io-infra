@@ -26,6 +26,11 @@ locals {
       PdvTokenizerApiKey                              = module.key_vault_secrets.values["TokenizerApiSubscriptionKey"].value
       AnalyticsEventHubConnectionString               = module.event_hub.keys["analytics.io-sign-func-issuer"].primary_connection_string
       BillingEventHubConnectionString                 = module.event_hub.keys["billing.io-sign-func-issuer"].primary_connection_string
+      SelfCareEventHubConnectionString                = module.key_vault_secrets.values["SelfCareEventHubConnectionString"].value
+      SelfCareApiBasePath                             = "https://api.selfcare.pagopa.it"
+      SelfCareApiKey                                  = module.key_vault_secrets.values["SelfCareApiKey"].value
+      SlackApiBasePath                                = "https://slack.com"
+      SlackApiToken                                   = module.key_vault_secrets.values["SlackApiToken"].value
     }
   }
 }

@@ -10,6 +10,11 @@ module "key_vault_secrets" {
     "io-fn-sign-issuer-key",
     "NamirialPassword",
     "SpidAssertionMock",
+    "SelfCareEventHubConnectionString",
+    "SelfCareApiKey",
+    "SlackApiToken",
+    "LollipopPrimaryApiKey",
+    "LollipopSecondaryApiKey"
   ]
 }
 

@@ -176,6 +176,9 @@ locals {
       // Service ID PN
       PN_SERVICE_ID = var.pn_service_id
 
+      // Service ID IO-SIGN
+      IO_SIGN_SERVICE_ID = var.io_sign_service_id
+
       // PN Service Activation
       PN_ACTIVATION_BASE_PATH = "/api/v1/pn"
       PN_API_KEY              = data.azurerm_key_vault_secret.app_backend_PN_API_KEY.value
