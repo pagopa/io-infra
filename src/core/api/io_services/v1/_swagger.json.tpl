@@ -25,6 +25,9 @@
   "paths": {
     "/legal-messages/{legalmail}": {
       "post": {
+        "tags": [
+          "use"
+        ],
         "operationId": "submitLegalMessageforUserWithFiscalCodeInBodyOnBehalfOfService",
         "summary": "Submit a Legal Message passing the user fiscal_code in the request body",
         "description": "Submits a legal message to a user on behalf of a service identitfied by legalMail\nOn error, the reason is returned in the response payload.",
@@ -97,6 +100,9 @@
     },
     "/messages": {
       "post": {
+        "tags": [
+          "use"
+        ],
         "operationId": "submitMessageforUserWithFiscalCodeInBody",
         "summary": "Submit a Message passing the user fiscal_code in the request body",
         "description": "Submits a message to a user.\nOn error, the reason is returned in the response payload.\nIn order to call `submitMessageforUser`, before sending any message,\nthe sender MUST call `getProfile` and check that the profile exists\n(for the specified fiscal code) and that the `sender_allowed` field\nof the user's profile it set to `true`.",
@@ -163,6 +169,9 @@
     },
     "/messages/{fiscal_code}": {
       "post": {
+        "tags": [
+          "use"
+        ],
         "operationId": "submitMessageforUser",
         "summary": "Submit a Message passing the user fiscal_code as path parameter",
         "description": "Submits a message to a user.\nOn error, the reason is returned in the response payload.\nIn order to call `submitMessageforUser`, before sending any message,\nthe sender MUST call `getProfile` and check that the profile exists\n(for the specified fiscal code) and that the `sender_allowed` field\nof the user's profile it set to `true`.",
@@ -238,6 +247,9 @@
     },
     "/messages/{fiscal_code}/{id}": {
       "get": {
+        "tags": [
+          "use"
+        ],
         "operationId": "getMessage",
         "summary": "Get Message",
         "description": "The previously created message with the provided message ID is\nreturned.",
@@ -297,6 +309,9 @@
     },
     "/profiles": {
       "post": {
+        "tags": [
+          "use"
+        ],
         "operationId": "getProfileByPOST",
         "summary": "Get a User Profile using POST",
         "description": "Returns the preferences for the user identified by the\nfiscal code provided in the request body. The field `sender_allowed` is set fo `false` in case\nthe service which is calling the API has been disabled by the user.",
@@ -342,6 +357,9 @@
     },
     "/profiles/{fiscal_code}": {
       "get": {
+        "tags": [
+          "use"
+        ],
         "operationId": "getProfile",
         "summary": "Get a User Profile",
         "description": "Returns the preferences for the user identified by the provided\nfiscal code. The field `sender_allowed` is set fo `false` in case\nthe service which is calling the API has been disabled by the user.",
@@ -383,6 +401,9 @@
     },
     "/subscriptions-feed/{date}": {
       "get": {
+        "tags": [
+          "use"
+        ],
         "operationId": "getSubscriptionsFeedForDate",
         "summary": "Get Subscriptions Feed",
         "description": "Returns the **hashed fiscal codes** of users that **subscribed to** or\n**unsubscribed from** your service **on the provided date** (UTC).\n\nBy querying this feed on each day, you will be able to retrieve the\n\"delta\" of users that subscribed and unsubscribed fom your service.\nYou will have to keep a list of users somewhere in your infrastructure\nthat you will update each day by adding the subscribed users and\nremoving the unsunbscribed users.\n\nYou will then be able to query this local list to know which users you\ncan send messages, to without having to query `getProfile` for each message.\n\nTo avoid sharing the citizens fiscal codes, the API will\nprovide the hex encoding of the SHA256 hash of the upper case fiscal code.\nIn pseudo code `CF_HASH = LOWERCASE(HEX(SHA256(UPPERCASE(CF))))`.\n\nNote that this is an optimization for those services that need to send very high\nvolumes of messages per day, to avoid having to make two API calls for each message.",
@@ -427,6 +448,9 @@
     },
     "/services": {
       "post": {
+        "tags": [
+          "manage"
+        ],
         "operationId": "createService",
         "summary": "Create Service",
         "description": "Create a new Service with the attributes provided in the request payload.\n",
@@ -471,6 +495,9 @@
         }
       },
       "get": {
+        "tags": [
+          "manage"
+        ],
         "operationId": "getUserServices",
         "summary": "Get User Services",
         "description": "Retrieve the identifiers of the services owned by the calling user\n",
@@ -501,6 +528,9 @@
         }
       ],
       "get": {
+        "tags": [
+          "manage"
+        ],
         "operationId": "getService",
         "summary": "Get Service",
         "description": "Retrieve a previously created service with the provided service ID.\nThis API operation needs the same API key of the service being retrieved\notherwise 403 forbidden will be returned to the caller.\n",
@@ -526,6 +556,9 @@
         }
       },
       "put": {
+        "tags": [
+          "manage"
+        ],
         "operationId": "updateService",
         "summary": "Update Service",
         "description": "Update a previously created service with the provided service ID\nThis API operation needs the same API key of the service being retrieved\notherwise 403 forbidden will be returned to the caller.",
@@ -578,6 +611,9 @@
         }
       ],
       "put": {
+        "tags": [
+          "manage"
+        ],
         "summary": "Upload service logo.",
         "description": "Upsert a logo for an existing service.\nThis API operation needs the same API key of the service being retrieved\notherwise 403 forbidden will be returned to the caller.\n",
         "operationId": "uploadServiceLogo",
@@ -622,6 +658,9 @@
     },
     "/services/{service_id}/keys": {
       "put": {
+        "tags": [
+          "manage"
+        ],
         "summary": "Regenerate Service Key",
         "description": "Regenerate the specified key for the Service identified by the provided id.\nThis API operation needs the same API key of the service being retrieved\notherwise 403 forbidden will be returned to the caller.",
         "operationId": "regenerateServiceKey",
@@ -678,6 +717,9 @@
         }
       ],
       "put": {
+        "tags": [
+          "manage"
+        ],
         "summary": "Upload organization logo.",
         "description": "Upsert a logo for an Organization.\n",
         "operationId": "uploadOrganizationLogo",
@@ -722,6 +764,9 @@
     },
     "/activations": {
       "post": {
+        "tags": [
+          "use"
+        ],
         "operationId": "getServiceActivationByPOST",
         "summary": "Get a Service Activation for a User",
         "description": "Returns the current Activation for a couple Service/User",
@@ -773,6 +818,9 @@
         ]
       },
       "put": {
+        "tags": [
+          "use"
+        ],
         "operationId": "upsertServiceActivation",
         "summary": "Upsert a Service Activation for a User",
         "description": "Create or update an Activation for a couple Service/User",
