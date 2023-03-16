@@ -28,8 +28,14 @@ storage_account = {
 }
 
 cosmos = {
-  # TODO Temporarely disabled due to ServiceUnavailable error
   zone_redundant = false
+  additional_geo_locations = [
+    {
+      location          = "northeurope"
+      failover_priority = 1
+      zone_redundant    = false
+    }
+  ]
 }
 
 io_sign_database_issuer = {
