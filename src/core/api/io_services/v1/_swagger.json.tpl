@@ -1,18 +1,18 @@
 {
   "swagger": "2.0",
   "info": {
-    "version": "3.3.0",
+    "version": "3.3.1",
     "title": "IO API for Public Administration Services",
     "contact": {
-      "name": "Digital Transformation Team",
-      "url": "https://forum.italia.it/c/progetto-io"
+      "name": "PagoPA S.p.A",
+      "url": "https://pagopa.it"
     },
     "x-logo": {
       "url": "https://io.italia.it/assets/img/io-logo-blue.svg"
     },
-    "description": "# Warning\n**This is an experimental API that is (most probably) going to change as we evolve the IO platform.**\n# Introduction\nThis is the documentation of the IO API for 3rd party services. This API enables Public Administration services to integrate with the IO platform. IO enables services to communicate with Italian citizens via the [IO app](https://io.italia.it/).\n# How to get an API key\nTo get access to this API, you'll need to register on the [IO Developer Portal](https://developer.io.italia.it/).\nAfter the registration step, you have to click on the button that says `subscribe to the digital citizenship api` to receive the API key that you will use to authenticate the API calls.\nYou will also receive an email with further instructions, including a fake Fiscal Code that you will be able to use to send test messages. Messages sent to the fake Fiscal Code will be notified to the email address used during the registration process on the developer portal.\n# Messages\n## What is a message\nMessages are the primary form of communication enabled by the IO APIs. Messages are **personal** communications directed to a **specific citizen**. You will not be able to use this API to broadcast a message to a group of citizens, you will have to create and send a specific, personalized message to each citizen you want to communicate to.\nThe recipient of the message (i.e. a citizen) is identified trough his [Fiscal Code](https://it.wikipedia.org/wiki/Codice_fiscale).\n## Message format\nA message is conceptually very similar to an email and, in its simplest form, is composed of the following attributes:\n\n  * A required `subject`: a short description of the topic.\n  * A required `markdown` body: a Markdown representation of the body (see\n    below on what Markdown tags are allowed).\n  * An optional `payment_data`: in case the message is a payment request,\n    the _payment data_ will enable the recipient to pay the requested amount\n    via [PagoPA](https://www.agid.gov.it/it/piattaforme/pagopa).\n  * An optional `due_date`: a _due date_ that let the recipient\n    add a reminder when receiving the message. The format for all\n    dates is [ISO8601](https://it.wikipedia.org/wiki/ISO_8601) with time\n    information and UTC timezone (ie. \"2018-10-13T00:00:00.000Z\").\n\n## Allowed Markdown formatting\nNot all Markdown formatting is currently available. Currently you can use the following formatting:\n\n  * Headings\n  * Text stylings (bold, italic, etc...)\n  * Lists (bullet and numbered)\n\n## Sending a message to a citizen\nNot every citizen will be interested in what you have to say and not every citizen you want to communicate to will be registered on IO. For this reason, before sending a message you need to check whether the recipient is registered on the platform and that he has not yet opted out from receiving messages from you.\nThe process for sending a message is made of 3 steps:\n\n  1. Call [getProfile](#operation/getProfile): if the profile does not exist\n     (i.e. you get a 404 response) or if the recipient has opted-out from\n     your service (the response contains `sender_allowed: false`), you\n     cannot send the message and you must stop here.\n  1. Call [submitMessageforUser](#operation/submitMessageforUser) to submit\n     a new message.\n  1. (optional) Call [getMessage](#operation/getMessage) to check whether\n     the message has been notified to the recipient.\n"
+    "description": "This is the specification of the API to integrate 3rd party services into [IO app](https://io.italia.it/). This API enables Public Administration services to integrate with the IO platform. IO enables services to communicate with Italian citizens via the [IO app](https://io.italia.it/).\n\nFurther informations about how to join the platform, technical documentation, tutorial and examples can be found at https://docs.pagopa.it/io-guida-tecnica."
   },
-  "host": "${host}",
+  "host": "${host}", 
   "basePath": "/api/v1",
   "schemes": [
     "https"
@@ -76,7 +76,7 @@
           },
           "401": {
             "description": "Unauthorized"
-          },
+          },  
           "403": {
             "description": "Forbidden."
           },
