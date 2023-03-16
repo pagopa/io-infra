@@ -1,15 +1,17 @@
 module "lollipop_assertions_storage" {
-  source                     = "git::https://github.com/pagopa/terraform-azurerm-v3//storage_account?ref=v4.3.1"
-  name                       = replace(format("%s-lollipop-assertions-st", local.product), "-", "") # `lollipop-assertions-st` is used in src/core/99_variables.tf#citizen_auth_assertion_storage_name
-  domain                     = upper(var.domain)
-  account_kind               = "StorageV2"
-  account_tier               = "Standard"
-  access_tier                = "Hot"
-  account_replication_type   = "GZRS"
-  resource_group_name        = azurerm_resource_group.data_rg.name
-  location                   = var.location
-  advanced_threat_protection = true
-  enable_identity            = true
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3//storage_account?ref=v6.1.0"
+
+  name                          = replace(format("%s-lollipop-assertions-st", local.product), "-", "") # `lollipop-assertions-st` is used in src/core/99_variables.tf#citizen_auth_assertion_storage_name
+  domain                        = upper(var.domain)
+  account_kind                  = "StorageV2"
+  account_tier                  = "Standard"
+  access_tier                   = "Hot"
+  account_replication_type      = "GZRS"
+  resource_group_name           = azurerm_resource_group.data_rg.name
+  location                      = var.location
+  advanced_threat_protection    = true
+  enable_identity               = true
+  public_network_access_enabled = false
 
   tags = var.tags
 }
