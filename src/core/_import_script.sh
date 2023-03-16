@@ -50,3 +50,16 @@ bash terraform.sh init prod
 
 ### Step 2
 
+# bash terraform.sh import prod 'module.storage_api.azurerm_storage_account.this' '/subscriptions/ec285037-c673-4f58-b594-d7c480da4e8b/resourceGroups/io-p-rg-internal/providers/Microsoft.Storage/storageAccounts/iopstapi'
+
+# bash terraform.sh import prod 'azurerm_storage_container.storage_api_message_content' 'https://iopstapi.blob.core.windows.net/message-content'
+
+# bash terraform.sh import prod 'azurerm_storage_container.storage_api_cached' 'https://iopstapi.blob.core.windows.net/cached'
+
+# bash terraform.sh import prod 'azurerm_storage_table.storage_api_subscriptionsfeedbyday' "https://iopstapi.table.core.windows.net/Tables('SubscriptionsFeedByDay')"
+
+# bash terraform.sh import prod 'azurerm_storage_table.storage_api_faileduserdataprocessing' "https://iopstapi.table.core.windows.net/Tables('FailedUserDataProcessing')"
+
+# bash terraform.sh import prod 'azurerm_storage_table.storage_api_validationtokens' "https://iopstapi.table.core.windows.net/Tables('ValidationTokens')"
+
+# bash terraform.sh import prod 'module.storage_api_replica.azurerm_storage_account.this' '/subscriptions/ec285037-c673-4f58-b594-d7c480da4e8b/resourceGroups/io-p-rg-internal/providers/Microsoft.Storage/storageAccounts/iopstapireplica'

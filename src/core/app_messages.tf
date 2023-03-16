@@ -20,7 +20,7 @@ locals {
       COSMOS_API_CONNECTION_STRING = format("AccountEndpoint=%s;AccountKey=%s;", data.azurerm_cosmosdb_account.cosmos_api.endpoint, data.azurerm_cosmosdb_account.cosmos_api.primary_key)
 
       MESSAGE_CONTAINER_NAME = local.message_content_container_name
-      QueueStorageConnection = data.azurerm_storage_account.api.primary_connection_string
+      QueueStorageConnection = module.storage_api.primary_connection_string
 
       // Keepalive fields are all optionals
       FETCH_KEEPALIVE_ENABLED             = "true"
