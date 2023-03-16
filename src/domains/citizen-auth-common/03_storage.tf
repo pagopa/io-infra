@@ -48,6 +48,27 @@ resource "azurerm_private_endpoint" "lollipop_assertion_storage_blob" {
   tags = var.tags
 }
 
+resource "azurerm_private_endpoint" "lollipop_assertion_storage_queue" {
+  name                = "${module.lollipop_assertions_storage.name}-queue-endpoint"
+  location            = var.location
+  resource_group_name = azurerm_resource_group.data_rg.name
+  subnet_id           = data.azurerm_subnet.private_endpoints_subnet.id
+
+  private_service_connection {
+    name                           = "${module.lollipop_assertions_storage.name}-queue"
+    private_connection_resource_id = module.lollipop_assertions_storage.id
+    is_manual_connection           = false
+    subresource_names              = ["queue"]
+  }
+
+  private_dns_zone_group {
+    name                 = "private-dns-zone-group"
+    private_dns_zone_ids = [data.azurerm_private_dns_zone.privatelink_queue_core_windows_net.id]
+  }
+
+  tags = var.tags
+}
+
 resource "azurerm_storage_container" "lollipop_assertions_storage_assertions" {
   name                  = "assertions"
   storage_account_name  = module.lollipop_assertions_storage.name
