@@ -12,7 +12,7 @@
     },
     "description": "This is the specification of the API to integrate 3rd party services into [IO app](https://io.italia.it/). This API enables Public Administration services to integrate with the IO platform. IO enables services to communicate with Italian citizens via the [IO app](https://io.italia.it/).\n\nFurther informations about how to join the platform, technical documentation, tutorial and examples can be found at https://docs.pagopa.it/io-guida-tecnica."
   },
-  "host": "${host}", 
+  "host": "${host}",
   "basePath": "/api/v1",
   "schemes": [
     "https"
@@ -56,7 +56,7 @@
           "400": {
             "description": "Invalid payload.",
             "schema": {
-              "$ref": "#/definitions/ProblemJson"
+              "$ref": "#/definitions/ValidationError"
             },
             "examples": {}
           },
@@ -72,7 +72,7 @@
           "500": {
             "description": "The message cannot be delivered.",
             "schema": {
-              "$ref": "#/definitions/ProblemJson"
+              "$ref": "#/definitions/ServerError"
             }
           }
         }
@@ -114,7 +114,7 @@
           "400": {
             "description": "Invalid payload.",
             "schema": {
-              "$ref": "#/definitions/ProblemJson"
+              "$ref": "#/definitions/ValidationError"
             },
             "examples": {}
           },
@@ -130,7 +130,7 @@
           "500": {
             "description": "The message cannot be delivered.",
             "schema": {
-              "$ref": "#/definitions/ProblemJson"
+              "$ref": "#/definitions/ServerError"
             }
           }
         }
@@ -172,7 +172,7 @@
           "404": {
             "description": "No message found for the provided ID.",
             "schema": {
-              "$ref": "#/definitions/ProblemJson"
+              "$ref": "#/definitions/NotAvailableError"
             }
           },
           "429": {
@@ -194,12 +194,6 @@
             "description": "Found.",
             "schema": {
               "$ref": "#/definitions/LimitedProfile"
-            },
-            "examples": {
-              "application/json": {
-                "email": "foobar@example.com",
-                "version": 1
-              }
             }
           },
           "401": {
@@ -211,7 +205,7 @@
           "404": {
             "description": "No user found for the provided fiscal code.",
             "schema": {
-              "$ref": "#/definitions/ProblemJson"
+              "$ref": "#/definitions/NotAvailableError"
             }
           },
           "429": {
@@ -242,12 +236,6 @@
             "description": "Found.",
             "schema": {
               "$ref": "#/definitions/LimitedProfile"
-            },
-            "examples": {
-              "application/json": {
-                "email": "foobar@example.com",
-                "version": 1
-              }
             }
           },
           "401": {
@@ -259,7 +247,7 @@
           "404": {
             "description": "No user found for the provided fiscal code.",
             "schema": {
-              "$ref": "#/definitions/ProblemJson"
+              "$ref": "#/definitions/NotAvailableError"
             }
           },
           "429": {
@@ -306,7 +294,7 @@
           "404": {
             "description": "Subscriptions feed not available yet.",
             "schema": {
-              "$ref": "#/definitions/ProblemJson"
+              "$ref": "#/definitions/NotAvailableError"
             }
           },
           "429": {
@@ -348,7 +336,7 @@
           "400": {
             "description": "Invalid payload.",
             "schema": {
-              "$ref": "#/definitions/ProblemJson"
+              "$ref": "#/definitions/ValidationError"
             }
           },
           "401": {
@@ -363,7 +351,7 @@
           "500": {
             "description": "The service cannot be created.",
             "schema": {
-              "$ref": "#/definitions/ProblemJson"
+              "$ref": "#/definitions/ServerError"
             }
           }
         }
@@ -468,7 +456,7 @@
           "500": {
             "description": "The service cannot be updated.",
             "schema": {
-              "$ref": "#/definitions/ProblemJson"
+              "$ref": "#/definitions/ServerError"
             }
           }
         }
@@ -509,7 +497,7 @@
           "400": {
             "description": "Invalid payload.",
             "schema": {
-              "$ref": "#/definitions/ProblemJson"
+              "$ref": "#/definitions/ValidationError"
             }
           },
           "401": {
@@ -524,7 +512,7 @@
           "500": {
             "description": "The service logo cannot be uploaded.",
             "schema": {
-              "$ref": "#/definitions/ProblemJson"
+              "$ref": "#/definitions/ServerError"
             }
           }
         }
@@ -566,7 +554,7 @@
           "400": {
             "description": "Invalid payload.",
             "schema": {
-              "$ref": "#/definitions/ProblemJson"
+              "$ref": "#/definitions/ValidationError"
             }
           },
           "403": {
@@ -578,7 +566,7 @@
           "500": {
             "description": "Cannot regenerate service key.",
             "schema": {
-              "$ref": "#/definitions/ProblemJson"
+              "$ref": "#/definitions/ServerError"
             }
           }
         }
@@ -615,7 +603,7 @@
           "400": {
             "description": "Invalid payload.",
             "schema": {
-              "$ref": "#/definitions/ProblemJson"
+              "$ref": "#/definitions/ValidationError"
             }
           },
           "401": {
@@ -630,7 +618,7 @@
           "500": {
             "description": "The organization logo cannot be uploaded.",
             "schema": {
-              "$ref": "#/definitions/ProblemJson"
+              "$ref": "#/definitions/ServerError"
             }
           }
         }
@@ -668,7 +656,7 @@
           "404": {
             "description": "No user activation found for the provided fiscal code.",
             "schema": {
-              "$ref": "#/definitions/ProblemJson"
+              "$ref": "#/definitions/NotAvailableError"
             }
           },
           "429": {
@@ -677,7 +665,7 @@
           "500": {
             "description": "Internal server error retrieving the Activation",
             "schema": {
-              "$ref": "#/definitions/ProblemJson"
+              "$ref": "#/definitions/ServerError"
             }
           }
         },
@@ -722,7 +710,7 @@
           "404": {
             "description": "No user activation found for the provided fiscal code.",
             "schema": {
-              "$ref": "#/definitions/ProblemJson"
+              "$ref": "#/definitions/NotAvailableError"
             }
           },
           "429": {
@@ -731,7 +719,7 @@
           "500": {
             "description": "The activation cannot be created or updated",
             "schema": {
-              "$ref": "#/definitions/ProblemJson"
+              "$ref": "#/definitions/ServerError"
             }
           }
         },
@@ -867,8 +855,7 @@
           "description": "The HTTP status code generated by the origin server for this occurrence\nof the problem.",
           "minimum": 100,
           "maximum": 600,
-          "exclusiveMaximum": true,
-          "example": 200
+          "exclusiveMaximum": true
         },
         "detail": {
           "type": "string",
@@ -881,6 +868,60 @@
           "description": "An absolute URI that identifies the specific occurrence of the problem.\nIt may or may not yield further information if dereferenced."
         }
       }
+    },
+    "ValidationError": {
+      "allOf": [
+        {
+          "$ref": "#/definitions/ProblemJson"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "status": {
+              "type": "integer",
+              "enum": [
+                400
+              ]
+            }
+          }
+        }
+      ]
+    },
+    "ServerError": {
+      "allOf": [
+        {
+          "$ref": "#/definitions/ProblemJson"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "status": {
+              "type": "integer",
+              "enum": [
+                500
+              ]
+            }
+          }
+        }
+      ]
+    },
+    "NotAvailableError": {
+      "allOf": [
+        {
+          "$ref": "#/definitions/ProblemJson"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "status": {
+              "type": "integer",
+              "enum": [
+                404
+              ]
+            }
+          }
+        }
+      ]
     },
     "NotificationChannelStatusValue": {
       "type": "string",
@@ -993,7 +1034,7 @@
           "type": "array",
           "items": {
             "type": "string",
-            "x-extensible-enum": [
+            "enum": [
               "it_IT",
               "en_GB",
               "es_ES",
