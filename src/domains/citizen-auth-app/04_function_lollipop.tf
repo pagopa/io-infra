@@ -1,5 +1,5 @@
 data "azurerm_key_vault_secret" "first_lollipop_consumer_subscription_key" {
-  name         = "first-lollipop-consumer-subscription-key"
+  name         = "first-lollipop-consumer-pagopa-subscription-key"
   key_vault_id = data.azurerm_key_vault.kv.id
 }
 
