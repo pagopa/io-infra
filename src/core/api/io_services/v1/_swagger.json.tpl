@@ -945,9 +945,6 @@
             "fiscal_code": {
               "$ref": "#/definitions/FiscalCode"
             },
-            "time_to_live": {
-              "$ref": "#/definitions/TimeToLiveSeconds"
-            },
             "created_at": {
               "$ref": "#/definitions/Timestamp"
             },
@@ -1181,9 +1178,6 @@
     "NewMessage": {
       "type": "object",
       "properties": {
-        "time_to_live": {
-          "$ref": "#/definitions/TimeToLiveSeconds"
-        },
         "content": {
           "$ref": "#/definitions/MessageContent"
         },
