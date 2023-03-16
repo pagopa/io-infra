@@ -63,6 +63,11 @@ variable "storage_account" {
 variable "cosmos" {
   type = object({
     zone_redundant = bool
+    additional_geo_locations = list(object({
+      location          = string
+      failover_priority = number
+      zone_redundant    = bool
+    }))
   })
 }
 
