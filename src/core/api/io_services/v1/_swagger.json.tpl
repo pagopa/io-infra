@@ -30,22 +30,13 @@
         ],
         "operationId": "submitMessageforUserWithFiscalCodeInBody",
         "summary": "Submit a Message passing the user fiscal_code in the request body",
-        "description": "Submits a message to a user.\nOn error, the reason is returned in the response payload.\nIn order to call `submitMessageforUser`, before sending any message,\nthe sender MUST call `getProfile` and check that the profile exists\n(for the specified fiscal code) and that the `sender_allowed` field\nof the user's profile it set to `true`.",
+        "description": "Submits a message to a user.\nThe simplest message contains subject and markdown as content; additional informations, such as payment data, can be provided to enrich the message. Please refer to https://docs.pagopa.it/io-guida-tecnica for a detailed explanation on how and when using additional content attributes.",
         "parameters": [
           {
             "name": "message",
             "in": "body",
             "schema": {
               "$ref": "#/definitions/NewMessage"
-            },
-            "x-examples": {
-              "application/json": {
-                "time_to_live": 3600,
-                "content": {
-                  "subject": "ipsum labore deserunt fugiat",
-                  "markdown": "Nullam dapibus metus sed elementum efficitur. Curabitur facilisis sagittis risus nec sodales.\nVestibulum in eros sapien. Donec ac odio sit amet dui semper ornare eget nec odio. Pellentesque habitant\nmorbi tristique senectus et netus et malesuada fames ac turpis egestas. Praesent nibh ex, mattis sit amet\nfelis id, sodales euismod velit. Lorem ipsum dolor sit amet, consectetur adipiscing elit."
-                }
-              }
             }
           }
         ],
@@ -60,11 +51,6 @@
                 "type": "string",
                 "description": "Location (URL) of created message resource.\nA GET request to this URL returns the message status and details."
               }
-            },
-            "examples": {
-              "application/json": {
-                "id": "01BX9NSMKVXXS5PSP2FATZMYYY"
-              }
             }
           },
           "400": {
@@ -76,7 +62,7 @@
           },
           "401": {
             "description": "Unauthorized"
-          },  
+          },
           "403": {
             "description": "Forbidden."
           },
@@ -99,7 +85,7 @@
         ],
         "operationId": "submitMessageforUser",
         "summary": "Submit a Message passing the user fiscal_code as path parameter",
-        "description": "Submits a message to a user.\nOn error, the reason is returned in the response payload.\nIn order to call `submitMessageforUser`, before sending any message,\nthe sender MUST call `getProfile` and check that the profile exists\n(for the specified fiscal code) and that the `sender_allowed` field\nof the user's profile it set to `true`.",
+        "description": "Submits a message to a user.\nThe simplest message contains subject and markdown as content; additional informations, such as payment data, can be provided to enrich the message. Please refer to https://docs.pagopa.it/io-guida-tecnica for a detailed explanation on how and when using additional content attributes.",
         "parameters": [
           {
             "$ref": "#/parameters/FiscalCode"
@@ -109,15 +95,6 @@
             "in": "body",
             "schema": {
               "$ref": "#/definitions/NewMessage"
-            },
-            "x-examples": {
-              "application/json": {
-                "time_to_live": 3600,
-                "content": {
-                  "subject": "ipsum labore deserunt fugiat",
-                  "markdown": "Nullam dapibus metus sed elementum efficitur. Curabitur facilisis sagittis risus nec sodales.\nVestibulum in eros sapien. Donec ac odio sit amet dui semper ornare eget nec odio. Pellentesque habitant\nmorbi tristique senectus et netus et malesuada fames ac turpis egestas. Praesent nibh ex, mattis sit amet\nfelis id, sodales euismod velit. Lorem ipsum dolor sit amet, consectetur adipiscing elit."
-                }
-              }
             }
           }
         ],
@@ -125,23 +102,12 @@
           "201": {
             "description": "Message created.",
             "schema": {
-              "type": "object",
-              "properties": {
-                "id": {
-                  "type": "string",
-                  "description": "The identifier of the created message."
-                }
-              }
+              "$ref": "#/definitions/CreatedMessage"
             },
             "headers": {
               "Location": {
                 "type": "string",
                 "description": "Location (URL) of created message resource.\nA GET request to this URL returns the message status and details."
-              }
-            },
-            "examples": {
-              "application/json": {
-                "id": "01BX9NSMKVXXS5PSP2FATZMYYY"
               }
             }
           },
@@ -195,23 +161,6 @@
             "description": "Message found.",
             "schema": {
               "$ref": "#/definitions/MessageResponseWithContent"
-            },
-            "examples": {
-              "application/json": {
-                "message": {
-                  "id": "01BX9NSMKAAAS5PSP2FATZM6BQ",
-                  "fiscal_code": "QXJNTX9RCRVD6V4O",
-                  "time_to_live": 3600,
-                  "content": {
-                    "subject": "message subject, aliquip sint nulla in estinut",
-                    "markdown": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas et mollis felis.\nVivamus orci nisl, commodo ut sodales ut, eleifend a libero. Donec dapibus, turpis in mattis tempor,\nrisus nunc malesuada ex, non aliquet metus nunc a lacus. Aenean in arcu vitae nisl porta\nfermentum nec non nibh. Phasellus tortor tellus, semper in metus eget, eleifend\nlaoreet nibh. Aenean feugiat lectus ut nisl eleifend gravida."
-                  },
-                  "sender_service_id": "01BX9NSMKVXXS5PSP2FATZM6QX"
-                },
-                "notification": {
-                  "email": "QUEUED"
-                }
-              }
             }
           },
           "401": {
@@ -694,7 +643,7 @@
         ],
         "operationId": "getServiceActivationByPOST",
         "summary": "Get a Service Activation for a User",
-        "description": "Returns the current Activation for a couple Service/User",
+        "description": "Returns the current Activation for a couple Service/User. The operations uses post to not show User's id in the request path.",
         "responses": {
           "200": {
             "description": "Found.",
@@ -978,6 +927,7 @@
           ]
         },
         "notification": {
+          "description": "Whether the user has been notified on its channels",
           "type": "object",
           "properties": {
             "email": {
@@ -1702,21 +1652,14 @@
           "type": "string",
           "description": "The identifier of the created message."
         }
+      },
+      "example": {
+        "id": "01BX9NSMKVXXS5PSP2FATZMYYY"
       }
     }
   },
   "responses": {},
   "parameters": {
-    "LegalMail": {
-      "name": "legalmail",
-      "in": "path",
-      "type": "string",
-      "required": true,
-      "description": "The legal mail related to a legal message' s sender.",
-      "format": "EmailString",
-      "x-example": "demo@pec.it",
-      "x-import": "italia-ts-commons/lib/strings"
-    },
     "FiscalCode": {
       "name": "fiscal_code",
       "in": "path",
