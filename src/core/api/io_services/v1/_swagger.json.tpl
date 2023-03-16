@@ -1187,17 +1187,6 @@
         "content": {
           "$ref": "#/definitions/MessageContent"
         },
-        "default_addresses": {
-          "type": "object",
-          "description": "Default addresses for notifying the recipient of the message in case\nno address for the related channel is set in his profile.",
-          "properties": {
-            "email": {
-              "type": "string",
-              "format": "email",
-              "example": "foobar@example.com"
-            }
-          }
-        },
         "fiscal_code": {
           "$ref": "#/definitions/FiscalCode"
         }
