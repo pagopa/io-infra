@@ -1,3 +1,8 @@
+data "azurerm_key_vault_secret" "first_lollipop_consumer_subscription_key" {
+  name         = "first-lollipop-consumer-pagopa-subscription-key"
+  key_vault_id = data.azurerm_key_vault.kv.id
+}
+
 locals {
   function_lollipop = {
     app_settings = {
@@ -32,6 +37,12 @@ locals {
       // Use it during rotation period. See https://pagopa.atlassian.net/wiki/spaces/IC/pages/645136398/LolliPoP+Procedura+di+rotazione+dei+certificati
       //SECONDARY_PUBLIC_KEY = 
 
+
+      // -------------------------
+      // First LolliPoP Consumer 
+      // -------------------------
+      FIRST_LC_ASSERTION_CLIENT_BASE_URL         = "https://api.io.pagopa.it"
+      FIRST_LC_ASSERTION_CLIENT_SUBSCRIPTION_KEY = data.azurerm_key_vault_secret.first_lollipop_consumer_subscription_key.value
     }
   }
 }
