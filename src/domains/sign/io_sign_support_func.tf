@@ -18,7 +18,7 @@ locals {
 }
 
 module "io_sign_support_func" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app?ref=v6.0.1"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app?ref=v6.1.0"
 
   name                = format("%s-support-func", local.project)
   location            = azurerm_resource_group.backend_rg.location
