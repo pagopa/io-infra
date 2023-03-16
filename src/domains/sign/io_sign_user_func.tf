@@ -32,6 +32,8 @@ locals {
       SelfCareEventHubConnectionString                = module.key_vault_secrets.values["SelfCareEventHubConnectionString"].value
       SelfCareApiBasePath                             = "https://api.selfcare.pagopa.it"
       SelfCareApiKey                                  = module.key_vault_secrets.values["SelfCareApiKey"].value
+      LollipopApiBasePath                             = "https://api.io.pagopa.it"
+      LollipopApiKey                                  = module.key_vault_secrets.values["LollipopPrimaryApiKey"].value
     }
   }
 }
