@@ -1,11 +1,126 @@
 <policies>
     <inbound>
-        <rate-limit-by-key
-            calls="150"
-            renewal-period="5"
-            remaining-calls-header-name="x-rate-limit-remaining" retry-after-header-name="x-rate-limit-retry-after"
-            counter-key="@(context.Subscription.Id)"
-        />
+        <choose>
+            <!-- When called from the outside -->
+            <when condition="@(context.Request.Headers.ContainsKey("X-Forwarded-For"))">
+                <!-- Save the X-Forwarded-For value -->
+                <set-variable
+                    name="originalXForwardedForValue"
+                    value="@(context.Request.Headers.GetValueOrDefault("X-Forwarded-For"))"
+                />
+
+                <!-- Check the client IP value in the X-Forwarded-For header -->
+                <set-header
+                    name="X-Forwarded-For"
+                    exists-action="override"
+                >
+                    <value>@{
+                        int HostToNetworkOrder(int host) {
+                            return (((int)HostToNetworkOrderShort((short)host) & 0xFFFF) << 16)
+                                | ((int)HostToNetworkOrderShort((short)(host >> 16)) & 0xFFFF);
+                        }
+
+                        short HostToNetworkOrderShort(short host) {
+                            return (short)((((int)host & 0xFF) << 8) | (int)((host >> 8) & 0xFF));
+                        }
+
+                        string ipAddress = context.Request.Headers.GetValueOrDefault("x-forwarded-for","");
+                        if (!string.IsNullOrEmpty(ipAddress)) {
+
+                            string[] tokens = ipAddress.Split(':');
+                            if(tokens.Length == 2) {
+                                ipAddress = tokens[0];
+                            }
+
+                            //Place IP Ranges into this list in CIDR notation
+                            // (e.g. "0.0.0.0/0") and separate with commas
+                            List<string> cidrList = new List<string>(){
+                                // Dev Innovation
+                                "51.144.224.93/32",
+                                "51.145.159.13/32",
+                                "52.136.236.15/32",
+                                "52.178.92.96/32",
+                                "52.232.4.132/32",
+                                "52.232.64.246/32",
+                                "52.232.70.142/32",
+
+                                // UniMiB
+                                "51.144.182.201/32",
+                                "149.132.187.0/24",
+
+                                // UniBo
+                                "137.204.0.0/16",
+
+                                // PoliMi
+                                "131.175.148.35/32"
+                            };
+
+                            foreach (string cidrAddress in cidrList) {
+                                string[] cidrParts = cidrAddress.Split('/');
+                                string[] inputIPParts = ipAddress.Split('.');
+                                string[] cidrIPArray = cidrParts[0].Split('.');
+
+                                if (inputIPParts.Length == 4 && cidrIPArray.Length == 4) {
+                                    byte[] inputIPBytes = new byte[] {Convert.ToByte(int.Parse(inputIPParts[0])),
+                                        Convert.ToByte(int.Parse(inputIPParts[1])),
+                                        Convert.ToByte(int.Parse(inputIPParts[2])),
+                                        Convert.ToByte(int.Parse(inputIPParts[3])), };
+                                    byte[] cidrIPBytes = new byte[] {Convert.ToByte(int.Parse(cidrIPArray[0])),
+                                        Convert.ToByte(int.Parse(cidrIPArray[1])),
+                                        Convert.ToByte(int.Parse(cidrIPArray[2])),
+                                        Convert.ToByte(int.Parse(cidrIPArray[3])), };
+
+                                    int cidrAddr = BitConverter.ToInt32(inputIPBytes,0);
+                                    int ipAddr = BitConverter.ToInt32(cidrIPBytes,0);
+
+                                    var host = int.Parse(cidrParts[1]);
+                                    host = -1 << (32-host);
+                                    var mask = HostToNetworkOrder(host);
+
+                                    if (((ipAddr & mask) == (cidrAddr & mask))) {
+                                        return "{{io-sign-ip-validated}}";
+                                    }
+                                }
+                            }
+                        }
+
+                        return ipAddress;
+                    }</value>
+                </set-header>
+
+                <check-header
+                    name="x-forwarded-for"
+                    failed-check-httpcode="403"
+                    failed-check-error-message="Forbidden"
+                    ignore-case="true"
+                >
+                    <value>{{io-sign-ip-validated}}</value>
+                </check-header>
+
+                <!-- Revert X-Forwarded-For to its original value -->
+                <set-header name="X-Forwarded-For" exists-action="override">
+                    <value>@{
+                            return context.Variables.GetValueOrDefault<string>("originalXForwardedForValue");
+                        }
+                    </value>
+                </set-header>
+
+                <rate-limit-by-key
+                    calls="150"
+                    renewal-period="5"
+                    remaining-calls-header-name="x-rate-limit-remaining" retry-after-header-name="x-rate-limit-retry-after"
+                    counter-key="@(context.Subscription.Id)"
+                />
+            </when>
+
+            <otherwise>
+                <!-- Allow direct call only from internal -->
+                <ip-filter action="allow">
+                    <address-range from="172.16.2.1" to="172.16.2.254" />
+                </ip-filter>
+            </otherwise>
+        </choose>
+
         <base />
     </inbound>
     <backend>

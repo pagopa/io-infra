@@ -56,7 +56,7 @@ locals {
     app_context = {
       name             = "subsmigrations"
       resource_group   = azurerm_resource_group.selfcare_be_rg
-      app_service_plan = azurerm_app_service_plan.selfcare_be_common
+      app_service_plan = azurerm_service_plan.selfcare_be_common
       snet             = module.selfcare_be_common_snet
       vnet             = module.vnet_common
     }

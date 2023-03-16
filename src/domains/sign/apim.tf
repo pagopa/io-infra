@@ -20,6 +20,15 @@ resource "azurerm_api_management_named_value" "io_fn_sign_issuer_key" {
   secret              = true
 }
 
+resource "azurerm_api_management_named_value" "io_sign_ip_validated" {
+  name                = "io-sign-ip-validated"
+  api_management_name = data.azurerm_api_management.apim_api.name
+  resource_group_name = data.azurerm_api_management.apim_api.resource_group_name
+  display_name        = "io-sign-ip-validated"
+  value               = "1"
+  secret              = true
+}
+
 module "apim_io_sign_product" {
   source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_product?ref=v4.1.3"
 

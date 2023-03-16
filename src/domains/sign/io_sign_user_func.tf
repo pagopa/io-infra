@@ -29,6 +29,11 @@ locals {
       NamirialPassword                                = module.key_vault_secrets.values["NamirialPassword"].value
       SpidAssertionMock                               = module.key_vault_secrets.values["SpidAssertionMock"].value
       AnalyticsEventHubConnectionString               = module.event_hub.keys["analytics.io-sign-func-user"].primary_connection_string
+      SelfCareEventHubConnectionString                = module.key_vault_secrets.values["SelfCareEventHubConnectionString"].value
+      SelfCareApiBasePath                             = "https://api.selfcare.pagopa.it"
+      SelfCareApiKey                                  = module.key_vault_secrets.values["SelfCareApiKey"].value
+      LollipopApiBasePath                             = "https://api.io.pagopa.it"
+      LollipopApiKey                                  = module.key_vault_secrets.values["LollipopPrimaryApiKey"].value
     }
   }
 }
@@ -56,6 +61,10 @@ module "io_sign_user_func" {
 
   app_settings = merge(
     local.io_sign_user_func.app_settings,
+    {
+      # This is temporary to collect detailed logging
+      WEBSITE_HTTPLOGGING_RETENTION_DAYS = "7"
+    },
     {
       # Enable functions on production triggered by queue and timer
       # They had to be disabled in slots
