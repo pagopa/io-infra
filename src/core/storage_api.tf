@@ -22,6 +22,34 @@ module "storage_api" {
   tags = var.tags
 }
 
+resource "azurerm_storage_container" "storage_api_message_content" {
+  name                  = "message-content"
+  storage_account_name  = module.storage_api.name
+  container_access_type = "private"
+}
+
+resource "azurerm_storage_container" "storage_api_cached" {
+  name                  = "cached"
+  storage_account_name  = module.storage_api.name
+  container_access_type = "private"
+}
+
+resource "azurerm_storage_table" "storage_api_subscriptionsfeedbyday" {
+  name                 = "SubscriptionsFeedByDay"
+  storage_account_name = module.storage_api.name
+}
+
+resource "azurerm_storage_table" "storage_api_faileduserdataprocessing" {
+  name                 = "FailedUserDataProcessing"
+  storage_account_name = module.storage_api.name
+}
+
+resource "azurerm_storage_table" "storage_api_validationtokens" {
+  name                 = "ValidationTokens"
+  storage_account_name = module.storage_api.name
+}
+
+# Storage replica
 module "storage_api_replica" {
   source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//storage_account?ref=v5.6.0"
 
@@ -51,39 +79,6 @@ module "storage_api_replica" {
   }
 
   tags = var.tags
-}
-
-resource "azurerm_storage_container" "storage_api_message_content" {
-  name                  = "message-content"
-  storage_account_name  = module.storage_api.name
-  container_access_type = "private"
-}
-
-resource "azurerm_storage_container" "storage_api_cached" {
-  name                  = "cached"
-  storage_account_name  = module.storage_api.name
-  container_access_type = "private"
-}
-
-resource "azurerm_storage_table" "storage_api_subscriptionsfeedbyday" {
-  name                 = "SubscriptionsFeedByDay"
-  storage_account_name = module.storage_api.name
-}
-
-resource "azurerm_storage_table" "storage_api_faileduserdataprocessing" {
-  name                 = "FailedUserDataProcessing"
-  storage_account_name = module.storage_api.name
-}
-
-resource "azurerm_storage_table" "storage_api_validationtokens" {
-  name                 = "ValidationTokens"
-  storage_account_name = module.storage_api.name
-}
-
-# storage replica
-data "azurerm_key_vault_secret" "backup_storage_id" {
-  name         = "backup-storage-id"
-  key_vault_id = module.key_vault_common.id
 }
 
 module "storage_api_object_replication_to_replica" {
