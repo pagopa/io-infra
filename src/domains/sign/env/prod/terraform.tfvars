@@ -17,7 +17,8 @@ tags = {
 subnets_cidrs = {
   issuer   = ["10.0.102.0/24"]
   user     = ["10.0.103.0/24"]
-  eventhub = ["10.0.104.0/24"]
+  eventhub = ["10.0.104.0/24"],
+  support = ["10.0.147.0/24"]
 }
 
 storage_account = {

@@ -1,7 +1,6 @@
 locals {
   io_sign_support_func = {
     app_settings = {
-      FUNCTIONS_WORKER_RUNTIME                        = "node"
       WEBSITE_VNET_ROUTE_ALL                          = "1"
       WEBSITE_ADD_SITENAME_BINDINGS_IN_APPHOST_CONFIG = "1"
       WEBSITE_DNS_SERVER                              = "168.63.129.16"
@@ -19,7 +18,7 @@ locals {
 }
 
 module "io_sign_support_func" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app?ref=v4.1.6"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app?ref=v6.0.1"
 
   name                = format("%s-support-func", local.project)
   location            = azurerm_resource_group.backend_rg.location
@@ -27,10 +26,10 @@ module "io_sign_support_func" {
 
   health_check_path = "/api/v1/sign/support/info"
 
-  os_type          = "linux"
-  runtime_version  = "~4"
-  always_on        = true
-  linux_fx_version = "NODE|18"
+  always_on = true
+
+  runtime_version = "~4"
+  node_version    = "18"
 
   app_service_plan_info = {
     kind                         = "Linux"
@@ -41,8 +40,8 @@ module "io_sign_support_func" {
 
   app_settings = local.io_sign_support_func.app_settings
 
-  subnet_id       = module.io_sign_snet.id
-  allowed_subnets = [module.io_sign_snet.id, data.azurerm_subnet.apim.id]
+  subnet_id       = module.io_sign_support_func.id
+  allowed_subnets = [module.io_sign_support_func.id, data.azurerm_subnet.apim.id]
 
   application_insights_instrumentation_key = data.azurerm_application_insights.application_insights.instrumentation_key
   system_identity_enabled                  = true
@@ -66,15 +65,14 @@ module "io_sign_support_func_staging_slot" {
   storage_account_name       = module.io_sign_support_func.storage_account.name
   storage_account_access_key = module.io_sign_support_func.storage_account.primary_access_key
 
-  os_type                                  = "linux"
   runtime_version                          = "~4"
   always_on                                = true
-  linux_fx_version                         = "NODE|18"
+  node_version                             = "18"
   application_insights_instrumentation_key = data.azurerm_application_insights.application_insights.instrumentation_key
 
   app_settings = local.io_sign_support_func.app_settings
 
-  subnet_id = module.io_sign_snet.id
+  subnet_id = module.io_sign_support_func.id
 
   tags = var.tags
 }
