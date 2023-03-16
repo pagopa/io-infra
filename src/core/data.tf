@@ -86,14 +86,6 @@ data "azurerm_key_vault_secret" "services_exclusion_list" {
   key_vault_id = module.key_vault_common.id
 }
 
-#
-# Storage Accounts
-#
-data "azurerm_storage_account" "api" {
-  name                = "iopstapi"
-  resource_group_name = azurerm_resource_group.rg_internal.name
-}
-
 # Event hubs
 
 data "azurerm_eventhub_authorization_rule" "io-p-payments-weu-prod01-evh-ns_payment-updates_io-fn-messages-cqrs" {
@@ -200,9 +192,9 @@ resource "azurerm_monitor_metric_alert" "cosmos_api_throttling_alert" {
 
 resource "azurerm_monitor_metric_alert" "iopstapi_throttling_low_availability" {
 
-  name                = "[IO-COMMONS | ${data.azurerm_storage_account.api.name}] Low Availability"
+  name                = "[IO-COMMONS | ${module.storage_api.name}] Low Availability"
   resource_group_name = azurerm_resource_group.rg_linux.name
-  scopes              = [data.azurerm_storage_account.api.id]
+  scopes              = [module.storage_api.id]
   # TODO: add Runbook for checking errors
   description   = "The average availability is less than 99.8%. Runbook: not needed."
   severity      = 0
