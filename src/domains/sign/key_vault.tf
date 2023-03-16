@@ -14,7 +14,8 @@ module "key_vault_secrets" {
     "SelfCareApiKey",
     "SlackApiToken",
     "LollipopPrimaryApiKey",
-    "LollipopSecondaryApiKey"
+    "LollipopSecondaryApiKey",
+    "PdvTokenizerApiKey"
   ]
 }
 
