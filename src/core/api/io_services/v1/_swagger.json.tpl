@@ -320,7 +320,6 @@
           {
             "in": "body",
             "name": "body",
-            "description": "A service can invoke the IO API by providing the relative API key\n(every service has an associated primary and secondary API key).\nThrough the API a service can send messages to the IO users\nthat haven't opted out from it. Service metadata are used\nto qualify the sender of these messages to the recipient.",
             "schema": {
               "$ref": "#/definitions/ServicePayload"
             }
