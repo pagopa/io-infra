@@ -20,8 +20,8 @@ locals {
       MESSAGE_VIEW_PAYMENT_UPDATE_FAILURE_QUEUE_NAME = "message-view-paymentupdate-failures"
       MESSAGE_PAYMENT_UPDATER_FAILURE_QUEUE_NAME     = "message-paymentupdater-failures"
       MESSAGE_CONTAINER_NAME                         = local.message_content_container_name
-      MESSAGE_CONTENT_STORAGE_CONNECTION             = data.azurerm_storage_account.api.primary_connection_string
-      QueueStorageConnection                         = data.azurerm_storage_account.api.primary_connection_string
+      MESSAGE_CONTENT_STORAGE_CONNECTION             = module.storage_api.primary_connection_string
+      QueueStorageConnection                         = module.storage_api.primary_connection_string
 
       MESSAGE_STATUS_FOR_VIEW_TOPIC_CONSUMER_CONNECTION_STRING = module.event_hub.keys["io-cosmosdb-message-status-for-view.io-messages"].primary_connection_string
       MESSAGE_STATUS_FOR_VIEW_TOPIC_CONSUMER_GROUP             = "io-messages"

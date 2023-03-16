@@ -80,8 +80,8 @@ locals {
       COSMOSDB_URI  = data.azurerm_cosmosdb_account.cosmos_api.endpoint
       COSMOSDB_KEY  = data.azurerm_cosmosdb_account.cosmos_api.primary_key
 
-      MESSAGE_CONTENT_STORAGE_CONNECTION_STRING   = data.azurerm_storage_account.api.primary_connection_string
-      SUBSCRIPTION_FEED_STORAGE_CONNECTION_STRING = data.azurerm_storage_account.api.primary_connection_string
+      MESSAGE_CONTENT_STORAGE_CONNECTION_STRING   = module.storage_api.primary_connection_string
+      SUBSCRIPTION_FEED_STORAGE_CONNECTION_STRING = module.storage_api.primary_connection_string
 
       MAIL_FROM = "IO - l'app dei servizi pubblici <no-reply@io.italia.it>"
       // we keep this while we wait for new app version to be deployed
