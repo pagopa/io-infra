@@ -1,10 +1,6 @@
 locals {
   io_sign_support_func = {
     app_settings = {
-      WEBSITE_VNET_ROUTE_ALL                          = "1"
-      WEBSITE_ADD_SITENAME_BINDINGS_IN_APPHOST_CONFIG = "1"
-      WEBSITE_DNS_SERVER                              = "168.63.129.16"
-      WEBSITE_RUN_FROM_PACKAGE                        = "1"
       FUNCTIONS_WORKER_PROCESS_COUNT                  = 4
       AzureWebJobsDisableHomepage                     = "true"
       NODE_ENV                                        = "production"
@@ -40,8 +36,8 @@ module "io_sign_support_func" {
 
   app_settings = local.io_sign_support_func.app_settings
 
-  subnet_id       = module.io_sign_support_func.id
-  allowed_subnets = [module.io_sign_support_func.id, data.azurerm_subnet.apim.id]
+  subnet_id       = module.io_sign_support_snet.id
+  allowed_subnets = [module.io_sign_support_snet.id, data.azurerm_subnet.apim.id]
 
   application_insights_instrumentation_key = data.azurerm_application_insights.application_insights.instrumentation_key
   system_identity_enabled                  = true
