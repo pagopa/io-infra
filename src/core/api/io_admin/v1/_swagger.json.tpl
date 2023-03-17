@@ -691,7 +691,7 @@
       }
     },
     "/subscriptions/{subscription_id}": {
-      "get": {   
+      "get": {
         "operationId": "getSubscription",
         "summary": "Get Subscription",
         "description": "Get a specific subscription information, that belongs to a particular subscription Id",
@@ -727,6 +727,90 @@
             "description": "The ID of an existing Subscription."
           }
         ]
+      }
+    }
+  },
+  "/subscriptions/{subscription_id}/cidrs": {
+    "put": {
+      "summary": "Update Subscription CIDRs",
+      "description": "Update authorized cidrs for a Subscription",
+      "operationId": "updateSubscriptionCidrs",
+      "parameters": [
+        {
+          "name": "subscription_id",
+          "in": "path",
+          "type": "string",
+          "required": true,
+          "description": "The id of the Subscription"
+        },
+        {
+          "name": "body",
+          "in": "body",
+          "required": true,
+          "schema": {
+            "$ref": "#/definitions/CIDRsPayload"
+          }
+        }
+      ],
+      "responses": {
+        "200": {
+          "description": "The updated CIDRs",
+          "schema": {
+            "$ref": "#/definitions/CIDRsPayload"
+          }
+        },
+        "400": {
+          "description": "Bad request"
+        },
+        "401": {
+          "description": "Unauthorized"
+        },
+        "403": {
+          "description": "Forbidden"
+        },
+        "404": {
+          "description": "Resource (User or Product) not found"
+        },
+        "500": {
+          "description": "Internal server error"
+        }
+      }
+    },
+    "get": {
+      "summary": "Get Subscription CIDRs",
+      "description": "Get authorized cidrs for a Subscription",
+      "operationId": "getSubscriptionCidrs",
+      "parameters": [
+        {
+          "name": "subscriptionId",
+          "in": "path",
+          "type": "string",
+          "required": true,
+          "description": "The id of the Subscription"
+        }
+      ],
+      "responses": {
+        "200": {
+          "description": "CIDRs",
+          "schema": {
+            "$ref": "#/definitions/CIDRsPayload"
+          }
+        },
+        "400": {
+          "description": "Bad request"
+        },
+        "401": {
+          "description": "Unauthorized"
+        },
+        "403": {
+          "description": "Forbidden"
+        },
+        "404": {
+          "description": "Resource (User or Product) not found"
+        },
+        "500": {
+          "description": "Internal server error"
+        }
       }
     }
   },
@@ -1091,6 +1175,12 @@
       "required": [
         "scope"
       ]
+    },
+    "CIDRsPayload": {
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/CIDR"
+      }
     },
     "SubscriptionState": {
       "type": "string",
