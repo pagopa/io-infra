@@ -63,3 +63,25 @@ bash terraform.sh init prod
 # bash terraform.sh import prod 'azurerm_storage_table.storage_api_validationtokens' "https://iopstapi.table.core.windows.net/Tables('ValidationTokens')"
 
 # bash terraform.sh import prod 'module.storage_api_replica.azurerm_storage_account.this' '/subscriptions/ec285037-c673-4f58-b594-d7c480da4e8b/resourceGroups/io-p-rg-internal/providers/Microsoft.Storage/storageAccounts/iopstapireplica'
+
+### Step 3
+
+# bash terraform.sh import prod 'module.nat_gateway.azurerm_nat_gateway.this' '/subscriptions/ec285037-c673-4f58-b594-d7c480da4e8b/resourceGroups/io-p-rg-common/providers/Microsoft.Network/natGateways/io-p-natgw'
+
+# bash terraform.sh import prod 'module.nat_gateway.azurerm_public_ip.this[0]' '/subscriptions/ec285037-c673-4f58-b594-d7c480da4e8b/resourceGroups/io-p-rg-common/providers/Microsoft.Network/publicIPAddresses/io-p-natgw-pip-01'
+
+# bash terraform.sh import prod 'module.nat_gateway.azurerm_public_ip.this[1]' '/subscriptions/ec285037-c673-4f58-b594-d7c480da4e8b/resourceGroups/io-p-rg-common/providers/Microsoft.Network/publicIPAddresses/io-p-natgw-pip-02'
+
+# bash terraform.sh import prod 'module.nat_gateway.azurerm_nat_gateway_public_ip_association.this[0]' '/subscriptions/ec285037-c673-4f58-b594-d7c480da4e8b/resourceGroups/io-p-rg-common/providers/Microsoft.Network/natGateways/io-p-natgw|/subscriptions/ec285037-c673-4f58-b594-d7c480da4e8b/resourceGroups/io-p-rg-common/providers/Microsoft.Network/publicIPAddresses/io-p-natgw-pip-01'
+
+# bash terraform.sh import prod 'module.nat_gateway.azurerm_nat_gateway_public_ip_association.this[1]' '/subscriptions/ec285037-c673-4f58-b594-d7c480da4e8b/resourceGroups/io-p-rg-common/providers/Microsoft.Network/natGateways/io-p-natgw|/subscriptions/ec285037-c673-4f58-b594-d7c480da4e8b/resourceGroups/io-p-rg-common/providers/Microsoft.Network/publicIPAddresses/io-p-natgw-pip-02'
+
+# bash terraform.sh import prod 'azurerm_subnet_nat_gateway_association.app_backendl1_snet' '/subscriptions/ec285037-c673-4f58-b594-d7c480da4e8b/resourceGroups/io-p-rg-common/providers/Microsoft.Network/virtualNetworks/io-p-vnet-common/subnets/appbackendl1'
+
+# bash terraform.sh import prod 'azurerm_subnet_nat_gateway_association.app_backendl2_snet' '/subscriptions/ec285037-c673-4f58-b594-d7c480da4e8b/resourceGroups/io-p-rg-common/providers/Microsoft.Network/virtualNetworks/io-p-vnet-common/subnets/appbackendl2'
+
+# bash terraform.sh import prod 'azurerm_subnet_nat_gateway_association.app_backendli_snet' '/subscriptions/ec285037-c673-4f58-b594-d7c480da4e8b/resourceGroups/io-p-rg-common/providers/Microsoft.Network/virtualNetworks/io-p-vnet-common/subnets/appbackendli'
+
+# bash terraform.sh import prod 'azurerm_subnet_nat_gateway_association.function_eucovidcert_snet' '/subscriptions/ec285037-c673-4f58-b594-d7c480da4e8b/resourceGroups/io-p-rg-common/providers/Microsoft.Network/virtualNetworks/io-p-vnet-common/subnets/io-p-eucovidcert-snet'
+
+# bash terraform.sh import prod 'azurerm_subnet_nat_gateway_association.cgn_snet' '/subscriptions/ec285037-c673-4f58-b594-d7c480da4e8b/resourceGroups/io-p-rg-common/providers/Microsoft.Network/virtualNetworks/io-p-vnet-common/subnets/io-p-cgn-snet'
