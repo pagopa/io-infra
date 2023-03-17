@@ -34,6 +34,7 @@ locals {
       SelfCareApiKey                                  = module.key_vault_secrets.values["SelfCareApiKey"].value
       LollipopApiBasePath                             = "https://api.io.pagopa.it"
       LollipopApiKey                                  = module.key_vault_secrets.values["LollipopPrimaryApiKey"].value
+      SlackWebhookUrl                                 = module.key_vault_secrets.values["SlackWebhookUrl"].value
     }
   }
 }

@@ -14,7 +14,9 @@
   },
   "host": "${host}",
   "basePath": "/adm",
-  "schemes": ["https"],
+  "schemes": [
+    "https"
+  ],
   "security": [
     {
       "SubscriptionKey": []
@@ -44,7 +46,9 @@
             "examples": {
               "application/json": {
                 "id": "2b3e728c1a5d1efa035c-0000000000000001",
-                "authorized_recipients": ["XXXYYY79A95Y000X"],
+                "authorized_recipients": [
+                  "XXXYYY79A95Y000X"
+                ],
                 "department_name": "dept",
                 "organization_name": "org",
                 "service_id": "2b3e728c1a5d1efa035c",
@@ -73,7 +77,9 @@
             "examples": {
               "application/json": {
                 "id": "2b3e728c1a5d1efa035c-0000000000000001",
-                "authorized_recipients": ["XXXYYY79A95Y000X"],
+                "authorized_recipients": [
+                  "XXXYYY79A95Y000X"
+                ],
                 "department_name": "dept",
                 "organization_name": "org",
                 "service_id": "2b3e728c1a5d1efa035c",
@@ -103,7 +109,9 @@
             "description": "The Service payload.",
             "x-examples": {
               "application/json": {
-                "authorized_recipients": ["XXXYYY79A95Y000X"],
+                "authorized_recipients": [
+                  "XXXYYY79A95Y000X"
+                ],
                 "department_name": "dept",
                 "organization_name": "org",
                 "service_id": "2b3e728c1a5d1efa035c",
@@ -197,7 +205,9 @@
             "examples": {
               "application/json": {
                 "id": "2b3e728c1a5d1efa035c-0000000000000001",
-                "authorized_recipients": ["XXXYYY79A95Y000X"],
+                "authorized_recipients": [
+                  "XXXYYY79A95Y000X"
+                ],
                 "department_name": "dept",
                 "organization_name": "org",
                 "service_id": "2b3e728c1a5d1efa035c",
@@ -224,7 +234,9 @@
             "description": "The Service payload.",
             "x-examples": {
               "application/json": {
-                "authorized_recipients": ["XXXYYY79A95Y000X"],
+                "authorized_recipients": [
+                  "XXXYYY79A95Y000X"
+                ],
                 "department_name": "dept",
                 "organization_name": "org",
                 "service_id": "2b3e728c1a5d1efa035c",
@@ -291,7 +303,9 @@
     },
     "/development-profiles/{fiscal_code}": {
       "post": {
-        "tags": ["restricted"],
+        "tags": [
+          "restricted"
+        ],
         "description": "Create a development profile for the user identified by the\nprovided fiscal code.",
         "operationId": "createDevelopmentProfile",
         "summary": "Create DevelopmentProfile",
@@ -691,7 +705,7 @@
       }
     },
     "/subscriptions/{subscription_id}": {
-      "get": {   
+      "get": {
         "operationId": "getSubscription",
         "summary": "Get Subscription",
         "description": "Get a specific subscription information, that belongs to a particular subscription Id",
@@ -728,6 +742,90 @@
           }
         ]
       }
+    },
+    "/subscriptions/{subscription_id}/cidrs": {
+      "put": {
+        "summary": "Update Subscription CIDRs",
+        "description": "Update authorized cidrs for a Subscription",
+        "operationId": "updateSubscriptionCidrs",
+        "parameters": [
+          {
+            "name": "subscription_id",
+            "in": "path",
+            "type": "string",
+            "required": true,
+            "description": "The id of the Subscription"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/CIDRsPayload"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The updated CIDRs",
+            "schema": {
+              "$ref": "#/definitions/CIDRsPayload"
+            }
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Resource (User or Product) not found"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      },
+      "get": {
+        "summary": "Get Subscription CIDRs",
+        "description": "Get authorized cidrs for a Subscription",
+        "operationId": "getSubscriptionCidrs",
+        "parameters": [
+          {
+            "name": "subscription_id",
+            "in": "path",
+            "type": "string",
+            "required": true,
+            "description": "The id of the Subscription"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "CIDRs",
+            "schema": {
+              "$ref": "#/definitions/CIDRsPayload"
+            }
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Resource (User or Product) not found"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      }
     }
   },
   "definitions": {
@@ -738,7 +836,9 @@
           "$ref": "#/definitions/EmailAddress"
         }
       },
-      "required": ["email"]
+      "required": [
+        "email"
+      ]
     },
     "EmailAddress": {
       "$ref": "https://raw.githubusercontent.com/pagopa/io-functions-commons/master/openapi/definitions.yaml#/EmailAddress"
@@ -756,7 +856,10 @@
           "type": "number"
         }
       },
-      "required": ["items", "page_size"]
+      "required": [
+        "items",
+        "page_size"
+      ]
     },
     "ProblemJson": {
       "$ref": "https://raw.githubusercontent.com/pagopa/io-functions-commons/master/openapi/definitions.yaml#/ProblemJson"
@@ -846,9 +949,15 @@
           }
         }
       },
-      "required": ["groups"],
+      "required": [
+        "groups"
+      ],
       "example": {
-        "groups": ["ApiInfoRead", "ApiLimitedMessageWrite", "ApiMessageRead"]
+        "groups": [
+          "ApiInfoRead",
+          "ApiLimitedMessageWrite",
+          "ApiMessageRead"
+        ]
       }
     },
     "UserPayload": {
@@ -870,7 +979,11 @@
           "minLength": 1
         }
       },
-      "required": ["email", "first_name", "last_name"]
+      "required": [
+        "email",
+        "first_name",
+        "last_name"
+      ]
     },
     "UserUpdatePayload": {
       "type": "object",
@@ -901,7 +1014,9 @@
               "type": "string"
             }
           },
-          "required": ["id"]
+          "required": [
+            "id"
+          ]
         }
       ]
     },
@@ -937,7 +1052,9 @@
           }
         }
       },
-      "required": ["items"]
+      "required": [
+        "items"
+      ]
     },
     "Logo": {
       "type": "object",
@@ -948,7 +1065,9 @@
           "minLength": 1
         }
       },
-      "required": ["logo"]
+      "required": [
+        "logo"
+      ]
     },
     "ProductNamePayload": {
       "type": "object",
@@ -958,7 +1077,9 @@
           "minLength": 1
         }
       },
-      "required": ["product_name"]
+      "required": [
+        "product_name"
+      ]
     },
     "SubscriptionKeyTypePayload": {
       "type": "object",
@@ -967,11 +1088,16 @@
           "$ref": "#/definitions/SubscriptionKeyType"
         }
       },
-      "required": ["key_type"]
+      "required": [
+        "key_type"
+      ]
     },
     "SubscriptionKeyType": {
       "type": "string",
-      "x-extensible-enum": ["PRIMARY_KEY", "SECONDARY_KEY"]
+      "x-extensible-enum": [
+        "PRIMARY_KEY",
+        "SECONDARY_KEY"
+      ]
     },
     "SubscriptionKeys": {
       "type": "object",
@@ -983,7 +1109,10 @@
           "type": "string"
         }
       },
-      "required": ["primary_key", "secondary_key"]
+      "required": [
+        "primary_key",
+        "secondary_key"
+      ]
     },
     "User": {
       "type": "object",
@@ -1039,7 +1168,9 @@
           "format": "url"
         }
       },
-      "required": ["items"]
+      "required": [
+        "items"
+      ]
     },
     "Group": {
       "type": "object",
@@ -1054,7 +1185,9 @@
           "type": "string"
         }
       },
-      "required": ["display_name"]
+      "required": [
+        "display_name"
+      ]
     },
     "Subscription": {
       "allOf": [
@@ -1071,7 +1204,9 @@
               "type": "string"
             }
           },
-          "required": ["scope"]
+          "required": [
+            "scope"
+          ]
         }
       ]
     },
@@ -1091,6 +1226,12 @@
       "required": [
         "scope"
       ]
+    },
+    "CIDRsPayload": {
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/CIDR"
+      }
     },
     "SubscriptionState": {
       "type": "string",
@@ -1137,7 +1278,12 @@
     },
     "UserState": {
       "type": "string",
-      "x-extensible-enum": ["active", "blocked", "pending", "deleted"]
+      "x-extensible-enum": [
+        "active",
+        "blocked",
+        "pending",
+        "deleted"
+      ]
     },
     "ServiceIdWithVersion": {
       "type": "object",
@@ -1177,8 +1323,12 @@
       "x-example": "SPNDNL80A13Y555X"
     }
   },
-  "consumes": ["application/json"],
-  "produces": ["application/json"],
+  "consumes": [
+    "application/json"
+  ],
+  "produces": [
+    "application/json"
+  ],
   "securityDefinitions": {
     "SubscriptionKey": {
       "type": "apiKey",

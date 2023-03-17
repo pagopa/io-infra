@@ -174,6 +174,11 @@ module "function_eucovidcert_snet" {
   }
 }
 
+resource "azurerm_subnet_nat_gateway_association" "function_eucovidcert_snet" {
+  nat_gateway_id = module.nat_gateway.id
+  subnet_id      = module.function_eucovidcert_snet.id
+}
+
 #tfsec:ignore:azure-storage-queue-services-logging-enabled:exp:2022-05-01 # already ignored, maybe a bug in tfsec
 module "function_eucovidcert" {
   source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app?ref=v4.1.15"
