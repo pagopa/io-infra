@@ -795,7 +795,7 @@
         "operationId": "getSubscriptionCidrs",
         "parameters": [
           {
-            "name": "subscriptionId",
+            "name": "subscription_id",
             "in": "path",
             "type": "string",
             "required": true,
