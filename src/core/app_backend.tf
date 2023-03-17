@@ -506,6 +506,11 @@ module "app_backendl1_snet" {
   }
 }
 
+resource "azurerm_subnet_nat_gateway_association" "app_backendl1_snet" {
+  nat_gateway_id = module.nat_gateway.id
+  subnet_id      = module.app_backendl1_snet.id
+}
+
 module "appservice_app_backendl1" {
   source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//app_service?ref=v4.1.15"
 
@@ -719,6 +724,11 @@ module "app_backendl2_snet" {
   }
 }
 
+resource "azurerm_subnet_nat_gateway_association" "app_backendl2_snet" {
+  nat_gateway_id = module.nat_gateway.id
+  subnet_id      = module.app_backendl2_snet.id
+}
+
 module "appservice_app_backendl2" {
   source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//app_service?ref=v4.1.15"
 
@@ -930,6 +940,11 @@ module "app_backendli_snet" {
       actions = ["Microsoft.Network/virtualNetworks/subnets/action"]
     }
   }
+}
+
+resource "azurerm_subnet_nat_gateway_association" "app_backendli_snet" {
+  nat_gateway_id = module.nat_gateway.id
+  subnet_id      = module.app_backendli_snet.id
 }
 
 module "appservice_app_backendli" {
