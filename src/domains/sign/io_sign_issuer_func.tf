@@ -5,6 +5,8 @@ locals {
       "MarkAsSigned",
       "MarkAsWaitForSignature",
       "ValidateUpload",
+      "CreateIssuer",
+      "CreateIssuerByVatNumberView"
     ]
     app_settings = {
       FUNCTIONS_WORKER_RUNTIME                        = "node"
