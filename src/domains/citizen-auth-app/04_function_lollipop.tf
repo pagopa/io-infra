@@ -31,15 +31,15 @@ locals {
       // ------------
       ISSUER = local.lollipop_jwt_host
 
-      PRIMARY_PRIVATE_KEY = data.azurerm_key_vault_certificate_data.lollipop_certificate_v1.key
-      PRIMARY_PUBLIC_KEY  = data.azurerm_key_vault_certificate_data.lollipop_certificate_v1.pem
+      PRIMARY_PRIVATE_KEY = trimspace(data.azurerm_key_vault_certificate_data.lollipop_certificate_v1.key)
+      PRIMARY_PUBLIC_KEY  = trimspace(data.azurerm_key_vault_certificate_data.lollipop_certificate_v1.pem)
 
       // Use it during rotation period. See https://pagopa.atlassian.net/wiki/spaces/IC/pages/645136398/LolliPoP+Procedura+di+rotazione+dei+certificati
-      //SECONDARY_PUBLIC_KEY = 
+      //SECONDARY_PUBLIC_KEY =
 
 
       // -------------------------
-      // First LolliPoP Consumer 
+      // First LolliPoP Consumer
       // -------------------------
       FIRST_LC_ASSERTION_CLIENT_BASE_URL         = "https://api.io.pagopa.it"
       FIRST_LC_ASSERTION_CLIENT_SUBSCRIPTION_KEY = data.azurerm_key_vault_secret.first_lollipop_consumer_subscription_key.value
