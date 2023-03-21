@@ -64,3 +64,51 @@ resource "azurerm_cosmosdb_sql_container" "lollipop_pubkeys" {
   default_ttl = var.citizen_auth_database.lollipop_pubkeys.ttl
 
 }
+
+// ----------------------------------------------------
+// Alerts
+// ----------------------------------------------------
+
+resource "azurerm_monitor_metric_alert" "cosmosdb_sql_database_citizen_auth_normalized_RU_consumption_exceeded" {
+
+  name                = "[${var.domain} | ${module.cosmosdb_sql_database_citizen_auth.name}] Normalized RU Consumption Exceeded"
+  resource_group_name = azurerm_resource_group.data_rg.name
+  scopes              = [module.cosmosdb_sql_database_citizen_auth.id]
+  description         = "A collection Normalized RU Consumption exceed the threshold, see dimensions. Please, consider to increase RU. Runbook: not needed."
+  severity            = 1
+  window_size         = "PT30M"
+  frequency           = "PT15M"
+  auto_mitigate       = false
+
+
+  # Metric info
+  # https://learn.microsoft.com/en-us/azure/azure-monitor/essentials/metrics-supported#microsoftdocumentdbdatabaseaccounts
+  criteria {
+    metric_namespace       = "Microsoft.DocumentDB/databaseAccounts"
+    metric_name            = "NormalizedRUConsumption"
+    aggregation            = "Average"
+    operator               = "GreaterThan"
+    threshold              = 90 #percentage
+    skip_metric_validation = false
+
+
+    dimension {
+      name     = "Region"
+      operator = "Include"
+      values   = [azurerm_resource_group.data_rg.location]
+    }
+    dimension {
+      name     = "CollectionName"
+      operator = "Include"
+      values   = ["*"]
+    }
+
+  }
+
+  # Action groups for alerts
+  action {
+    action_group_id = data.azurerm_monitor_action_group.error_action_group.id
+  }
+
+  tags = var.tags
+}
