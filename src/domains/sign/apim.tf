@@ -29,11 +29,11 @@ resource "azurerm_api_management_named_value" "io_sign_cosmosdb_name" {
   secret              = false
 }
 
-resource "azurerm_api_management_named_value" "io_sign_cosmosdb_primary_key" {
-  name                = "io-sign-cosmosdb-primary-key"
+resource "azurerm_api_management_named_value" "io_sign_cosmosdb_key" {
+  name                = "io-sign-cosmosdb-key"
   api_management_name = data.azurerm_api_management.apim_api.name
   resource_group_name = data.azurerm_api_management.apim_api.resource_group_name
-  display_name        = "io-sign-cosmosdb-primary-key"
+  display_name        = "io-sign-cosmosdb-key"
   value               = module.cosmosdb_account.primary_readonly_key
   secret              = true
 }

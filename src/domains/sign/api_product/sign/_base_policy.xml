@@ -17,7 +17,7 @@
                                     var verb = "post";
                                     var resourceType = "docs";
                                     var resourceLink = "dbs/{{io-sign-cosmosdb-issuer-container-name}}/colls/{{io-sign-cosmosdb-issuer-whitelist-ip-collection-name}}";
-                                    var key = "{{io-sign-cosmosdb-primary-key}}";
+                                    var key = "{{io-sign-cosmosdb-key}}";
                                     var keyType = "master";
                                     var tokenVersion = "1.0";
                                     var date = context.Variables.GetValueOrDefault<string>("requestDateString");
