@@ -58,7 +58,7 @@
                         </send-request>
                         <!-- Save response in issuerWhitelist var -->
                         <set-variable name="issuerWhitelist" value="@(((IResponse)context.Variables["response"]).Body.As<JObject>())" />
-                        <!-- Cache the query result for 60s to avoid another call to cosmosDB -->
+                        <!-- Cache the query result for 60s to reduce the number of calls to cosmosDb -->
                         <cache-store-value key="@(context.Subscription.Id+"_whitelist")" value="@((JObject)context.Variables["issuerWhitelist"])" duration="60" />
                     </when>
                 </choose>
