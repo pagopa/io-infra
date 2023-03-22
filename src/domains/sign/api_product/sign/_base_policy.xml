@@ -63,10 +63,10 @@
                     </when>
                 </choose>
                 <!--
-                    Get the client ip from the X-Forwarded-For header and check if it is in the issuer's whitelist
-                    then set the support header X-ClientIp-Allowed
+                    Get the client ip from the X-Forwarded-For header and check if it is in the issuer's whitelist.
+                    In the positive case it returns the same source ip otherwise it returns 127.0.0.1
                 -->
-                <set-header name="X-ClientIp-Allowed" exists-action="override">
+                <check-header name="X-Forwarded-For" failed-check-httpcode="403" failed-check-error-message="Forbidden" ignore-case="true">
                     <value>@{
                         int HostToNetworkOrder(int host) {
                             return (((int)HostToNetworkOrderShort((short)host) & 0xFFFF) << 16)
@@ -96,8 +96,7 @@
                                             string cidrAddress = (string)cidr;
                                             // Avoid checking in this case because all IPs are enabled
                                             if(cidrAddress=="0.0.0.0/0"){
-                                                // The return value for the header value must be a string
-                                                return "true";
+                                                return ipAddress;
                                             }
 
                                             string[] cidrParts = cidrAddress.Split('/');
@@ -122,7 +121,7 @@
                                                 var mask = HostToNetworkOrder(host);
 
                                                 if (((ipAddr & mask) == (cidrAddr & mask))) {
-                                                    return "true";
+                                                    return ipAddress;
                                                 }
                                             }
                                         }
@@ -131,15 +130,10 @@
                             }
                         }
 
-                        return "false";
+                        return "127.0.0.1";
                     }</value>
-                </set-header>
-                <!-- Check if the ip is authorized (X-ClientIp-Allowed=="true") -->
-                <check-header name="X-ClientIp-Allowed" failed-check-httpcode="403" failed-check-error-message="Forbidden" ignore-case="true">
-                    <value>true</value>
                 </check-header>
-                <!-- Remove the support header X-ClientIp-Allowed -->
-                <set-header name="X-ClientIp-Allowed" exists-action="delete" />
+
 
                 <rate-limit-by-key calls="150" renewal-period="5" counter-key="@(context.Subscription.Id)" retry-after-header-name="x-rate-limit-retry-after" remaining-calls-header-name="x-rate-limit-remaining" />
             </when>
