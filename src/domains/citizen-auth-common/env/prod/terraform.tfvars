@@ -14,6 +14,15 @@ tags = {
   CostCenter  = "TS310 - PAGAMENTI & SERVIZI"
 }
 
+### Cosmos DB
+
+citizen_auth_database = {
+  lollipop_pubkeys = {
+    max_throughput = 3000
+    ttl            = -1
+  }
+}
+
 ### External resources
 
 monitor_resource_group_name                 = "io-p-rg-common"
