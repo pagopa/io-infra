@@ -5,6 +5,7 @@
             <when condition="@(context.Request.Headers.ContainsKey("X-Forwarded-For"))">
                 <set-variable name="originalXForwardedForValue" value="@(context.Request.Headers.GetValueOrDefault("X-Forwarded-For"))" />
                 <set-variable name="requestDateString" value="@(DateTime.UtcNow.ToString("r"))" />
+                <!-- Check if the IP whitelist is in cache -->
                 <cache-lookup-value key="@(context.Subscription.Id+"_whitelist")" variable-name="issuerWhitelist" />
                 <choose>
                     <when condition="@(!context.Variables.ContainsKey("issuerWhitelist"))">
