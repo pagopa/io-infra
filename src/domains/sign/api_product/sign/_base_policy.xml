@@ -62,11 +62,11 @@
                         <cache-store-value key="@(context.Subscription.Id+"_whitelist")" value="@((JObject)context.Variables["issuerWhitelist"])" duration="60" />
                     </when>
                 </choose>
-                <!--
-                    Get the client ip from the X-Forwarded-For header and check if it is in the issuer's whitelist.
-                    In the positive case it returns the same source ip otherwise it returns 127.0.0.1
-                -->
                 <check-header name="X-Forwarded-For" failed-check-httpcode="403" failed-check-error-message="Forbidden" ignore-case="true">
+                     <!--
+                        Get the client ip from the X-Forwarded-For header and check if it is in the issuer's whitelist.
+                        In the positive case it returns the same source ip otherwise it returns 127.0.0.1
+                    -->
                     <value>@{
                         int HostToNetworkOrder(int host) {
                             return (((int)HostToNetworkOrderShort((short)host) & 0xFFFF) << 16)
