@@ -63,7 +63,7 @@
                     </when>
                 </choose>
                 <check-header name="X-Forwarded-For" failed-check-httpcode="403" failed-check-error-message="Forbidden" ignore-case="true">
-                     <!--
+                    <!--
                         Get the client ip from the X-Forwarded-For header and check if it is in the issuer's whitelist.
                         In the positive case it returns the same source ip otherwise localhost ip: 127.0.0.1.
                         (The choice to return 127.0.0.1 in the negative case is not mandatory, it is possible to return any string that differs from the source IP).
@@ -134,8 +134,6 @@
                         return "127.0.0.1";
                     }</value>
                 </check-header>
-
-
                 <rate-limit-by-key calls="150" renewal-period="5" counter-key="@(context.Subscription.Id)" retry-after-header-name="x-rate-limit-retry-after" remaining-calls-header-name="x-rate-limit-remaining" />
             </when>
             <otherwise>
