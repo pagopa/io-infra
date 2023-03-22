@@ -7,7 +7,7 @@
                 <choose>
                     <!-- Check if the IP whitelist is in cache -->
                     <when condition="@(!context.Variables.ContainsKey("issuerWhitelist"))">
-                        <!-- Executes a query on CosmosDb via REST API to obtain the list of whitelisted IPs for each issuers (subscriptionId) -->
+                        <!-- Executes a query on CosmosDb via REST API to obtain the list of whitelisted IPs for single issuer (subscriptionId) -->
                         <set-variable name="requestDateString" value="@(DateTime.UtcNow.ToString("r"))" />
                         <send-request mode="new" response-variable-name="response" timeout="10" ignore-error="false">
                             <set-url>https://{{io-sign-cosmosdb-name}}.documents.azure.com/dbs/{{io-sign-cosmosdb-issuer-container-name}}/colls/{{io-sign-cosmosdb-issuer-whitelist-ip-collection-name}}/docs</set-url>
