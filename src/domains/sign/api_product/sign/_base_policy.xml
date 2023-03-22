@@ -3,9 +3,9 @@
         <choose>
             <!-- When called from the outside -->
             <when condition="@(context.Request.Headers.ContainsKey("X-Forwarded-For"))">
-                <!-- Check if the IP whitelist is in cache -->
                 <cache-lookup-value key="@(context.Subscription.Id+"_whitelist")" variable-name="issuerWhitelist" />
                 <choose>
+                    <!-- Check if the IP whitelist is in cache -->
                     <when condition="@(!context.Variables.ContainsKey("issuerWhitelist"))">
                         <!-- Executes a query on CosmosDb via REST API to obtain the list of whitelisted IPs for each issuers (subscriptionId) -->
                         <set-variable name="requestDateString" value="@(DateTime.UtcNow.ToString("r"))" />
