@@ -62,6 +62,17 @@ variable "tags" {
   }
 }
 
+### Cosmos DB
+
+variable "citizen_auth_database" {
+  type = map(
+    object({
+      max_throughput = number
+      ttl            = number
+    })
+  )
+}
+
 ### External resources
 
 variable "monitor_resource_group_name" {
