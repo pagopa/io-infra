@@ -67,7 +67,7 @@ module "io_sign_support_func_staging_slot" {
 
   app_settings = local.io_sign_support_func.app_settings
 
-  subnet_id = module.io_sign_support_func.id
+  subnet_id = module.io_sign_support_snet.id
 
   tags = var.tags
 }
