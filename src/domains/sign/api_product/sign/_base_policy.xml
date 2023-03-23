@@ -7,7 +7,10 @@
                 <choose>
                     <!-- Check if the IP whitelist is in cache -->
                     <when condition="@(!context.Variables.ContainsKey("issuerWhitelist"))">
-                        <!-- Executes a query on CosmosDb via REST API to obtain the list of whitelisted IPs for single issuer (subscriptionId) -->
+                        <!--
+                            Executes a query on CosmosDb via REST API to obtain the list of whitelisted IPs for single issuer (subscriptionId).
+                            The connection to cosmosdb is explained here: https://learn.microsoft.com/en-us/rest/api/cosmos-db/access-control-on-cosmosdb-resources
+                        -->
                         <set-variable name="requestDateString" value="@(DateTime.UtcNow.ToString("r"))" />
                         <send-request mode="new" response-variable-name="response" timeout="10" ignore-error="false">
                             <set-url>https://{{io-sign-cosmosdb-name}}.documents.azure.com/dbs/{{io-sign-cosmosdb-issuer-container-name}}/colls/{{io-sign-cosmosdb-issuer-whitelist-ip-collection-name}}/docs</set-url>
@@ -62,11 +65,10 @@
                         <cache-store-value key="@(context.Subscription.Id+"_whitelist")" value="@((JObject)context.Variables["issuerWhitelist"])" duration="60" />
                     </when>
                 </choose>
-                <check-header name="X-Forwarded-For" failed-check-httpcode="403" failed-check-error-message="Forbidden" ignore-case="true">
+                <set-header name="X-Allowed" exists-action="override">
                     <!--
                         Get the client ip from the X-Forwarded-For header and check if it is in the issuer's whitelist.
-                        In the positive case it returns the same source ip otherwise localhost ip: 127.0.0.1.
-                        (The choice to return 127.0.0.1 in the negative case is not mandatory, it is possible to return any string that differs from the source IP).
+                        In the positive case it place "true" in the "X-Allowed" header otherwise "false"
                     -->
                     <value>@{
                         int HostToNetworkOrder(int host) {
@@ -77,52 +79,58 @@
                             return (short)((((int)host & 0xFF) << 8) | (int)((host >> 8) & 0xFF));
                         }
 
-                        string ipAddress = context.Request.Headers.GetValueOrDefault("x-forwarded-for","");
-                        if (!string.IsNullOrEmpty(ipAddress)) {
+                        string forwardedFor = context.Request.Headers.GetValueOrDefault("x-forwarded-for","");
 
-                            string[] tokens = ipAddress.Split(':');
-                            if(tokens.Length == 2) {
-                                ipAddress = tokens[0];
-                            }
-
-                            var queryResponse = context.Variables.GetValueOrDefault<JObject>("issuerWhitelist");
-                            if (queryResponse != null && queryResponse.ContainsKey("Documents"))
+                        if (!string.IsNullOrEmpty(forwardedFor)) {
+                            string[] ipAddressList = forwardedFor.Split(',');
+                            foreach (string ip in ipAddressList)
                             {
-                                JArray documents = (JArray) queryResponse["Documents"];
-                                if (documents.Count > 0){
-                                    JObject firstDocument = (JObject) documents[0];
-                                    if(firstDocument.ContainsKey("cidrs")){
-                                        JArray whiteListCidrs = (JArray)firstDocument["cidrs"];
-                                        foreach (var cidr in whiteListCidrs) {
-                                            string cidrAddress = (string)cidr;
-                                            // Avoid checking in this case because all IPs are enabled
-                                            if(cidrAddress=="0.0.0.0/0"){
-                                                return ipAddress;
-                                            }
+                                string ipAddress = String.Concat(ip.Where(c => !Char.IsWhiteSpace(c)));
+                                string[] tokens = ipAddress.Split(':');
+                                if(tokens.Length == 2) {
+                                    ipAddress = tokens[0];
+                                }
 
-                                            string[] cidrParts = cidrAddress.Split('/');
-                                            string[] inputIPParts = ipAddress.Split('.');
-                                            string[] cidrIPArray = cidrParts[0].Split('.');
+                                var queryResponse = context.Variables.GetValueOrDefault<JObject>("issuerWhitelist");
+                                if (queryResponse != null && queryResponse.ContainsKey("Documents"))
+                                {
+                                    JArray documents = (JArray) queryResponse["Documents"];
+                                    if (documents.Count > 0){
+                                        JObject firstDocument = (JObject) documents[0];
+                                        if(firstDocument.ContainsKey("cidrs")){
+                                            JArray whiteListCidrs = (JArray)firstDocument["cidrs"];
+                                            foreach (var cidr in whiteListCidrs) {
+                                                string cidrAddress = (string)cidr;
+                                                // Avoid checking in this case because all IPs are enabled
+                                                if(cidrAddress=="0.0.0.0/0"){
+                                                    //We can return only a string for "set-header" policy
+                                                    return "true";
+                                                }
 
-                                            if (inputIPParts.Length == 4 && cidrIPArray.Length == 4) {
-                                                byte[] inputIPBytes = new byte[] {Convert.ToByte(int.Parse(inputIPParts[0])),
-                                                    Convert.ToByte(int.Parse(inputIPParts[1])),
-                                                    Convert.ToByte(int.Parse(inputIPParts[2])),
-                                                    Convert.ToByte(int.Parse(inputIPParts[3])), };
-                                                byte[] cidrIPBytes = new byte[] {Convert.ToByte(int.Parse(cidrIPArray[0])),
-                                                    Convert.ToByte(int.Parse(cidrIPArray[1])),
-                                                    Convert.ToByte(int.Parse(cidrIPArray[2])),
-                                                    Convert.ToByte(int.Parse(cidrIPArray[3])), };
+                                                string[] cidrParts = cidrAddress.Split('/');
+                                                string[] inputIPParts = ipAddress.Split('.');
+                                                string[] cidrIPArray = cidrParts[0].Split('.');
 
-                                                int cidrAddr = BitConverter.ToInt32(inputIPBytes,0);
-                                                int ipAddr = BitConverter.ToInt32(cidrIPBytes,0);
+                                                if (inputIPParts.Length == 4 && cidrIPArray.Length == 4) {
+                                                    byte[] inputIPBytes = new byte[] {Convert.ToByte(int.Parse(inputIPParts[0])),
+                                                        Convert.ToByte(int.Parse(inputIPParts[1])),
+                                                        Convert.ToByte(int.Parse(inputIPParts[2])),
+                                                        Convert.ToByte(int.Parse(inputIPParts[3])), };
+                                                    byte[] cidrIPBytes = new byte[] {Convert.ToByte(int.Parse(cidrIPArray[0])),
+                                                        Convert.ToByte(int.Parse(cidrIPArray[1])),
+                                                        Convert.ToByte(int.Parse(cidrIPArray[2])),
+                                                        Convert.ToByte(int.Parse(cidrIPArray[3])), };
 
-                                                var host = int.Parse(cidrParts[1]);
-                                                host = -1 << (32-host);
-                                                var mask = HostToNetworkOrder(host);
+                                                    int cidrAddr = BitConverter.ToInt32(inputIPBytes,0);
+                                                    int ipAddr = BitConverter.ToInt32(cidrIPBytes,0);
 
-                                                if (((ipAddr & mask) == (cidrAddr & mask))) {
-                                                    return ipAddress;
+                                                    var host = int.Parse(cidrParts[1]);
+                                                    host = -1 << (32-host);
+                                                    var mask = HostToNetworkOrder(host);
+
+                                                    if (((ipAddr & mask) == (cidrAddr & mask))) {
+                                                        return "true";
+                                                    }
                                                 }
                                             }
                                         }
@@ -130,9 +138,11 @@
                                 }
                             }
                         }
-
-                        return "127.0.0.1";
+                        return "false";
                     }</value>
+                </set-header>
+                <check-header name="X-Allowed" failed-check-httpcode="403" failed-check-error-message="Forbidden" ignore-case="true">
+                    <value>true</value>
                 </check-header>
                 <rate-limit-by-key calls="150" renewal-period="5" counter-key="@(context.Subscription.Id)" retry-after-header-name="x-rate-limit-retry-after" remaining-calls-header-name="x-rate-limit-remaining" />
             </when>
