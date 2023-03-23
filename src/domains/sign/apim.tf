@@ -20,6 +20,23 @@ resource "azurerm_api_management_named_value" "io_fn_sign_issuer_key" {
   secret              = true
 }
 
+resource "azurerm_api_management_named_value" "io_fn_sign_support_url" {
+  name                = "io-fn-sign-support-url"
+  api_management_name = data.azurerm_api_management.apim_api.name
+  resource_group_name = data.azurerm_api_management.apim_api.resource_group_name
+  display_name        = "io-fn-sign-support-url"
+  value               = format("https://%s-sign-support-func.azurewebsites.net", local.product)
+}
+
+resource "azurerm_api_management_named_value" "io_fn_sign_support_key" {
+  name                = "io-fn-sign-support-key"
+  api_management_name = data.azurerm_api_management.apim_api.name
+  resource_group_name = data.azurerm_api_management.apim_api.resource_group_name
+  display_name        = "io-fn-sign-support-key"
+  value               = module.key_vault_secrets.values["io-fn-sign-support-key"].value
+  secret              = true
+}
+
 resource "azurerm_api_management_named_value" "io_sign_ip_validated" {
   name                = "io-sign-ip-validated"
   api_management_name = data.azurerm_api_management.apim_api.name
@@ -63,7 +80,46 @@ module "apim_io_sign_issuer_api_v1" {
 
   content_format = "openapi"
 
-  content_value = file("./api/issuer/v1/_openapi.yaml")
+  content_value = file("./api/issuer/v1/openapi.yaml")
 
-  xml_content = file("./api/issuer/v1/_base_policy.xml")
+  xml_content = file("./api/issuer/v1/base_policy.xml")
+}
+
+module "apim_io_sign_support_product" {
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_product?ref=v4.1.3"
+
+  product_id   = "io-sign-support-api"
+  display_name = "IO SIGN SUPPORT Product"
+  description  = "Support Product for IO SIGN"
+
+  api_management_name = data.azurerm_api_management.apim_api.name
+  resource_group_name = data.azurerm_api_management.apim_api.resource_group_name
+
+  published             = true
+  subscription_required = true
+  approval_required     = false
+
+  policy_xml = file("./api_product/sign/_base_policy.xml")
+}
+
+module "apim_io_sign_support_api_v1" {
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api?ref=v4.1.3"
+
+  name                  = format("%s-sign-support-api", local.product)
+  api_management_name   = data.azurerm_api_management.apim_api.name
+  resource_group_name   = data.azurerm_api_management.apim_api.resource_group_name
+  product_ids           = [module.apim_io_sign_product.product_id]
+  subscription_required = true
+  service_url           = null
+
+  description  = "IO Sign - Support API"
+  display_name = "IO Sign - Support API"
+  path         = "api/v1/sign/support"
+  protocols    = ["https"]
+
+  content_format = "openapi"
+
+  content_value = file("./api/support/v1/openapi.yaml")
+
+  xml_content = file("./api/support/v1/base_policy.xml")
 }

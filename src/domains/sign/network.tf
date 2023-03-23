@@ -83,6 +83,39 @@ resource "azurerm_network_security_group" "io_sign_user_nsg" {
   tags = var.tags
 }
 
+module "io_sign_support_snet" {
+  source               = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v4.1.4"
+  name                 = format("%s-support-snet", local.project)
+  resource_group_name  = data.azurerm_virtual_network.vnet_common.resource_group_name
+  virtual_network_name = data.azurerm_virtual_network.vnet_common.name
+  address_prefixes     = var.subnets_cidrs.support
+
+  private_endpoint_network_policies_enabled = false
+
+  # network_security_group_id = azurerm_network_security_group.io_sign_user_nsg.id
+
+  service_endpoints = [
+    "Microsoft.Web",
+    "Microsoft.AzureCosmosDB",
+  ]
+
+  delegation = {
+    name = "default"
+    service_delegation = {
+      name    = "Microsoft.Web/serverFarms"
+      actions = ["Microsoft.Network/virtualNetworks/subnets/action"]
+    }
+  }
+}
+
+resource "azurerm_network_security_group" "io_sign_support_nsg" {
+  name                = format("%s-support-nsg", local.project)
+  location            = data.azurerm_virtual_network.vnet_common.location
+  resource_group_name = data.azurerm_virtual_network.vnet_common.resource_group_name
+
+  tags = var.tags
+}
+
 module "io_sign_eventhub_snet" {
   source               = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v4.1.4"
   name                 = format("%s-eventhub-snet", local.project)
@@ -212,6 +245,27 @@ resource "azurerm_private_endpoint" "io_sign_issuer_func" {
   private_service_connection {
     name                           = format("%s-endpoint", module.io_sign_issuer_func.name)
     private_connection_resource_id = module.io_sign_issuer_func.id
+    is_manual_connection           = false
+    subresource_names              = ["sites"]
+  }
+
+  private_dns_zone_group {
+    name                 = "private-dns-zone-group"
+    private_dns_zone_ids = [data.azurerm_private_dns_zone.privatelink_azurewebsites_net.id]
+  }
+
+  tags = var.tags
+}
+
+resource "azurerm_private_endpoint" "io_sign_support_func" {
+  name                = format("%s-endpoint", module.io_sign_support_func.name)
+  location            = azurerm_resource_group.data_rg.location
+  resource_group_name = azurerm_resource_group.data_rg.name
+  subnet_id           = data.azurerm_subnet.private_endpoints_subnet.id
+
+  private_service_connection {
+    name                           = format("%s-endpoint", module.io_sign_support_func.name)
+    private_connection_resource_id = module.io_sign_support_func.id
     is_manual_connection           = false
     subresource_names              = ["sites"]
   }
