@@ -8,6 +8,7 @@ module "key_vault_secrets" {
     "IoServicesSubscriptionKey",
     "TokenizerApiSubscriptionKey",
     "io-fn-sign-issuer-key",
+    "io-fn-sign-support-key",
     "NamirialPassword",
     "SpidAssertionMock",
     "SelfCareEventHubConnectionString",
