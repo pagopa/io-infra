@@ -119,7 +119,7 @@ module "function_messages_cqrs" {
   }
 
   os_type                                  = "linux"
-  linux_fx_version                         = "NODE|18"
+  linux_fx_version                         = "NODE|14"
   runtime_version                          = "~4"
   always_on                                = var.function_messages_cqrs_always_on
   application_insights_instrumentation_key = azurerm_application_insights.application_insights.instrumentation_key
@@ -194,7 +194,7 @@ module "function_messages_cqrs_staging_slot" {
   internal_storage_connection_string = module.function_messages_cqrs.storage_account_internal_function.primary_connection_string
 
   os_type                                  = "linux"
-  linux_fx_version                         = "NODE|14"
+  linux_fx_version                         = "NODE|18"
   runtime_version                          = "~4"
   always_on                                = var.function_messages_cqrs_always_on
   application_insights_instrumentation_key = azurerm_application_insights.application_insights.instrumentation_key
