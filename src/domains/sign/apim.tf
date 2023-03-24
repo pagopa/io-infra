@@ -46,6 +46,42 @@ resource "azurerm_api_management_named_value" "io_sign_ip_validated" {
   secret              = true
 }
 
+resource "azurerm_api_management_named_value" "io_sign_cosmosdb_name" {
+  name                = "io-sign-cosmosdb-name"
+  api_management_name = data.azurerm_api_management.apim_api.name
+  resource_group_name = data.azurerm_api_management.apim_api.resource_group_name
+  display_name        = "io-sign-cosmosdb-name"
+  value               = module.cosmosdb_account.name
+  secret              = false
+}
+
+resource "azurerm_api_management_named_value" "io_sign_cosmosdb_key" {
+  name                = "io-sign-cosmosdb-key"
+  api_management_name = data.azurerm_api_management.apim_api.name
+  resource_group_name = data.azurerm_api_management.apim_api.resource_group_name
+  display_name        = "io-sign-cosmosdb-key"
+  value               = module.cosmosdb_account.primary_readonly_key
+  secret              = true
+}
+
+resource "azurerm_api_management_named_value" "io_sign_cosmosdb_issuer_container_name" {
+  name                = "io-sign-cosmosdb-issuer-container-name"
+  api_management_name = data.azurerm_api_management.apim_api.name
+  resource_group_name = data.azurerm_api_management.apim_api.resource_group_name
+  display_name        = "io-sign-cosmosdb-issuer-container-name"
+  value               = module.cosmosdb_sql_database_issuer.name
+  secret              = false
+}
+
+resource "azurerm_api_management_named_value" "io_sign_cosmosdb_issuer_whitelist_collection_name" {
+  name                = "io-sign-cosmosdb-issuer-whitelist-ip-collection-name"
+  api_management_name = data.azurerm_api_management.apim_api.name
+  resource_group_name = data.azurerm_api_management.apim_api.resource_group_name
+  display_name        = "io-sign-cosmosdb-issuer-whitelist-ip-collection-name"
+  value               = module.cosmosdb_sql_container_issuer-issuers-ip-whitelist.name
+  secret              = false
+}
+
 module "apim_io_sign_product" {
   source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_product?ref=v4.1.3"
 
