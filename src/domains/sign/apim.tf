@@ -37,6 +37,15 @@ resource "azurerm_api_management_named_value" "io_fn_sign_support_key" {
   secret              = true
 }
 
+resource "azurerm_api_management_named_value" "io_sign_ip_validated" {
+  name                = "io-sign-ip-validated"
+  api_management_name = data.azurerm_api_management.apim_api.name
+  resource_group_name = data.azurerm_api_management.apim_api.resource_group_name
+  display_name        = "io-sign-ip-validated"
+  value               = "1"
+  secret              = true
+}
+
 resource "azurerm_api_management_named_value" "io_sign_cosmosdb_name" {
   name                = "io-sign-cosmosdb-name"
   api_management_name = data.azurerm_api_management.apim_api.name
