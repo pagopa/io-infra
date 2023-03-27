@@ -135,7 +135,7 @@ module "apim_io_sign_support_product" {
   subscription_required = true
   approval_required     = false
 
-  policy_xml = file("./api_product/sign/_base_policy.xml")
+  policy_xml = file("./api_product/support/_base_policy.xml")
 }
 
 module "apim_io_sign_support_api_v1" {
