@@ -1,0 +1,336 @@
+openapi: 3.0.3
+info:
+  title: Firma con IO - Support API
+  version: 1.0.0
+servers:
+  - url: https://api.io.pagopa.it/api/v1/sign/support
+    description: production
+  - url: http://localhost:7071/api/v1/sign/support
+    description: local
+paths:
+  /signature-requests/{id}:
+    post:
+      operationId: getSignatureRequestById
+      tags:
+        - signature request
+      summary: Find Signature Request by Id
+      requestBody:
+        $ref: "#/components/requestBodies/GetSignatureRequestById"
+      parameters:
+        - in: path
+          name: id
+          description: the signature request id
+          required: true
+          schema:
+            $ref: "#/components/schemas/Id"
+      responses:
+        200:
+          description: the signature request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SignatureRequest"
+        400:
+          $ref: "#/components/responses/ValidationProblem"
+        401:
+          $ref: "#/components/responses/HttpUnauthorized"
+        404:
+          $ref: "#/components/responses/HttpNotFound"
+        500:
+          $ref: "#/components/responses/HttpInternalServerError"
+
+components:
+  requestBodies:
+    GetSignatureRequestById:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/RequireFiscalCodeOrVatNumber"
+
+  responses:
+    HttpNotFound:
+      description: The specified resource was not found
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              title:
+                type: string
+                enum: ["Not found"]
+              status:
+                type: number
+                enum: [404]
+            required:
+              - title
+              - status
+
+    HttpInternalServerError:
+      description: Internal Server Error
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              title:
+                type: string
+                enum: ["Internal Server Error"]
+              status:
+                type: number
+                enum: [500]
+              detail:
+                type: string
+            required:
+              - title
+              - status
+
+    HttpUnauthorized:
+      description: Internal Server Error
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              title:
+                type: string
+                enum: ["Unauthorized"]
+              status:
+                type: number
+                enum: [401]
+              detail:
+                type: string
+                enum:
+                  ["You must provide a valid API key to access this resource."]
+            required:
+              - title
+              - status
+              - detail
+
+    ValidationProblem:
+      description: Error on request validation
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              type:
+                type: string
+                enum: ["/problems/validation-error"]
+              title:
+                type: string
+              detail:
+                type: string
+              status:
+                type: number
+                enum: [400]
+              violations:
+                type: array
+                items:
+                  type: string
+            required:
+              - type
+              - title
+              - detail
+              - status
+
+  schemas:
+    FiscalCode:
+      type: string
+      description: User's fiscal code.
+      format: FiscalCode
+      x-import: "@pagopa/ts-commons/lib/strings"
+      example: SPNDNL80R13C555X
+
+    Id:
+      type: string
+      description: Entity Id
+      format: NonEmptyString
+      example: 01ARZ3NDEKTSV4RRFFQ69G5FAV
+      x-import: "@pagopa/ts-commons/lib/strings"
+
+    Timestamp:
+      type: string
+      format: UTCISODateFromString
+      description: A date-time field in ISO-8601 format and UTC timezone.
+      x-import: "@pagopa/ts-commons/lib/dates"
+      example: "2018-10-13T00:00:00.000Z"
+
+    RequireFiscalCodeOrVatNumber:
+      oneOf:
+        - type: object
+          properties:
+            fiscal_code:
+              $ref: "#/components/schemas/FiscalCode"
+          required:
+            - fiscal_code
+        - type: object
+          properties:
+            vat_number:
+              type: string
+          required:
+            - vat_number
+
+    Clause:
+      type: object
+      properties:
+        title:
+          type: string
+          minLength: 5
+          maxLength: 80
+        type:
+          type: string
+          enum: ["REQUIRED", "UNFAIR", "OPTIONAL"]
+      required:
+        - title
+        - type
+
+    ExistingSignatureFieldAttrs:
+      type: object
+      properties:
+        unique_name:
+          type: string
+      required:
+        - unique_name
+
+    SignatureFieldToBeCreatedAttrs:
+      type: object
+      properties:
+        coordinates:
+          type: object
+          properties:
+            x: { type: number }
+            y: { type: number }
+          required: [x, y]
+        page:
+          type: number
+          minimum: 0
+        size:
+          type: object
+          properties:
+            w: { type: number, minimum: 0 }
+            h: { type: number, minimum: 0 }
+          required: [w, h]
+      required:
+        - coordinates
+        - page
+        - size
+
+    SignatureFieldAttrs:
+      oneOf:
+        - $ref: "#/components/schemas/ExistingSignatureFieldAttrs"
+        - $ref: "#/components/schemas/SignatureFieldToBeCreatedAttrs"
+
+    SignatureField:
+      type: object
+      properties:
+        attrs:
+          $ref: "#/components/schemas/SignatureFieldAttrs"
+        clause:
+          $ref: "#/components/schemas/Clause"
+      required:
+        - attrs
+        - clause
+
+    DocumentMetadata:
+      type: object
+      properties:
+        title:
+          type: string
+          minLength: 3
+          maxLength: 60
+        signature_fields:
+          type: array
+          items:
+            $ref: "#/components/schemas/SignatureField"
+      required:
+        - title
+
+    Document:
+      type: object
+      properties:
+        id:
+          $ref: "#/components/schemas/Id"
+        metadata:
+          $ref: "#/components/schemas/DocumentMetadata"
+        status:
+          type: string
+          enum:
+            - WAIT_FOR_UPLOAD
+            - WAIT_FOR_VALIDATION
+            - READY
+            - REJECTED
+        created_at:
+          $ref: "#/components/schemas/Timestamp"
+        url:
+          type: string
+          format: url
+        uploaded_at:
+          $ref: "#/components/schemas/Timestamp"
+        updated_at:
+          $ref: "#/components/schemas/Timestamp"
+        rejected_at:
+          $ref: "#/components/schemas/Timestamp"
+        reject_reason:
+          type: string
+      required:
+        - id
+        - metadata
+        - created_at
+        - status
+
+    Notification:
+      type: object
+      properties:
+        io_message_id:
+          $ref: "#/components/schemas/Id"
+      required:
+        - io_message_id
+
+    SignatureRequest:
+      type: object
+      properties:
+        id:
+          $ref: "#/components/schemas/Id"
+        issuer_id:
+          $ref: "#/components/schemas/Id"
+        signer_id:
+          $ref: "#/components/schemas/Id"
+        dossier_id:
+          $ref: "#/components/schemas/Id"
+        status:
+          type: string
+          enum:
+            - DRAFT
+            - READY
+            - WAIT_FOR_SIGNATURE
+            - WAIT_FOR_QTSP
+            - SIGNED
+            - REJECTED
+        created_at:
+          $ref: "#/components/schemas/Timestamp"
+        updated_at:
+          $ref: "#/components/schemas/Timestamp"
+        expires_at:
+          $ref: "#/components/schemas/Timestamp"
+        rejected_at:
+          $ref: "#/components/schemas/Timestamp"
+        signed_at:
+          $ref: "#/components/schemas/Timestamp"
+        reject_reason:
+          type: string
+        documents:
+          type: array
+          items:
+            $ref: "#/components/schemas/Document"
+        notification:
+          $ref: "#/components/schemas/Notification"
+      required:
+        - id
+        - issuer_id
+        - signer_id
+        - dossier_id
+        - status
+        - created_at
+        - updated_at
+        - expires_at

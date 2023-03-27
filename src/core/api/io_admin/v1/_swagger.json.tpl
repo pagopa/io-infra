@@ -769,7 +769,7 @@
           "200": {
             "description": "The updated CIDRs",
             "schema": {
-              "$ref": "#/definitions/CIDRsPayload"
+              "$ref": "#/definitions/SubscriptionCIDRs"
             }
           },
           "400": {
@@ -806,7 +806,7 @@
           "200": {
             "description": "CIDRs",
             "schema": {
-              "$ref": "#/definitions/CIDRsPayload"
+              "$ref": "#/definitions/SubscriptionCIDRs"
             }
           },
           "400": {
@@ -1225,6 +1225,24 @@
       },
       "required": [
         "scope"
+      ]
+    },
+    "SubscriptionCIDRs": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "cidrs": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/CIDR"
+          }
+        }
+      },
+      "required": [
+        "id",
+        "cidrs"
       ]
     },
     "CIDRsPayload": {
