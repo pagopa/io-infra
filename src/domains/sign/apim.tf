@@ -73,6 +73,15 @@ resource "azurerm_api_management_named_value" "io_sign_cosmosdb_issuer_container
   secret              = false
 }
 
+resource "azurerm_api_management_named_value" "io_sign_cosmosdb_issuer_whitelist_ip_collection_name" {
+  name                = "io-sign-cosmosdb-issuer-whitelist-ip-collection-name"
+  api_management_name = data.azurerm_api_management.apim_api.name
+  resource_group_name = data.azurerm_api_management.apim_api.resource_group_name
+  display_name        = "io-sign-cosmosdb-issuer-whitelist-ip-collection-name"
+  value               = module.cosmosdb_sql_container_issuer-issuers-ip-whitelist.name
+  secret              = false
+}
+
 resource "azurerm_api_management_named_value" "io_sign_cosmosdb_issuer_whitelist_collection_name" {
   name                = "io-sign-cosmosdb-issuer-whitelist-collection-name"
   api_management_name = data.azurerm_api_management.apim_api.name
