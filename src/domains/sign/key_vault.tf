@@ -10,7 +10,7 @@ module "key_vault_secrets" {
     "io-fn-sign-issuer-key",
     "io-fn-sign-support-key",
     "NamirialPassword",
-    "NamirialTestPassword"
+    "NamirialTestPassword",
     "SpidAssertionMock",
     "SelfCareEventHubConnectionString",
     "SelfCareApiKey",
