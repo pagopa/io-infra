@@ -11,7 +11,7 @@ module "key_vault_secrets" {
     "SpidAssertionMock",
     "SelfCareEventHubConnectionString",
     "SelfCareApiKey",
-    "SlackApiToken",
+    "SlackWebhookUrl",
     "LollipopPrimaryApiKey",
     "LollipopSecondaryApiKey",
     "PdvTokenizerApiKey"
