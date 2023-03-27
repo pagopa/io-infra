@@ -6,7 +6,6 @@ module "key_vault_secrets" {
 
   secrets = [
     "IoServicesSubscriptionKey",
-    "TokenizerApiSubscriptionKey",
     "io-fn-sign-issuer-key",
     "NamirialPassword",
     "SpidAssertionMock",
