@@ -78,7 +78,7 @@ resource "azurerm_api_management_named_value" "io_sign_cosmosdb_issuer_whitelist
   api_management_name = data.azurerm_api_management.apim_api.name
   resource_group_name = data.azurerm_api_management.apim_api.resource_group_name
   display_name        = "io-sign-cosmosdb-issuer-whitelist-ip-collection-name"
-  value               = module.cosmosdb_sql_container_issuer-issuers-ip-whitelist.name
+  value               = module.cosmosdb_sql_container_issuer-issuers-whitelist.name
   secret              = false
 }
 
