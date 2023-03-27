@@ -7,6 +7,7 @@ module "key_vault_secrets" {
   secrets = [
     "IoServicesSubscriptionKey",
     "io-fn-sign-issuer-key",
+    "io-fn-sign-support-key",
     "NamirialPassword",
     "SpidAssertionMock",
     "SelfCareEventHubConnectionString",

@@ -58,9 +58,9 @@ resource "azurerm_cosmosdb_sql_container" "lollipop_pubkeys" {
   partition_key_version = 2
 
   autoscale_settings {
-    max_throughput = 1000
+    max_throughput = var.citizen_auth_database.lollipop_pubkeys.max_throughput
   }
 
-  default_ttl = -1
+  default_ttl = var.citizen_auth_database.lollipop_pubkeys.ttl
 
 }
