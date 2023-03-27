@@ -144,7 +144,7 @@ module "apim_io_sign_support_api_v1" {
   name                  = format("%s-sign-support-api", local.product)
   api_management_name   = data.azurerm_api_management.apim_api.name
   resource_group_name   = data.azurerm_api_management.apim_api.resource_group_name
-  product_ids           = [module.apim_io_sign_product.product_id]
+  product_ids           = [module.apim_io_sign_support_product.product_id]
   subscription_required = true
   service_url           = null
 
