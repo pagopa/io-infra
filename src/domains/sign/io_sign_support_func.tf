@@ -20,7 +20,8 @@ module "io_sign_support_func" {
   location            = azurerm_resource_group.backend_rg.location
   resource_group_name = azurerm_resource_group.backend_rg.name
 
-  health_check_path = "/api/v1/sign/support/info"
+  # TODO Activate when in production
+  # health_check_path = "/api/v1/sign/support/info"
 
   always_on = true
 
@@ -55,7 +56,8 @@ module "io_sign_support_func_staging_slot" {
   function_app_id     = module.io_sign_support_func.id
   app_service_plan_id = module.io_sign_support_func.app_service_plan_id
 
-  health_check_path = "/api/v1/sign/support/info"
+  # TODO Activate when in production
+  # health_check_path = "/api/v1/sign/support/info"
 
   storage_account_name       = module.io_sign_support_func.storage_account.name
   storage_account_access_key = module.io_sign_support_func.storage_account.primary_access_key
