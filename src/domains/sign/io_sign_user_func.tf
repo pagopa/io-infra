@@ -27,6 +27,9 @@ locals {
       NamirialApiBasePath                             = "https://pagopa.demo.bit4id.org"
       NamirialUsername                                = "api"
       NamirialPassword                                = module.key_vault_secrets.values["NamirialPassword"].value
+      NamirialTestApiBasePath                         = "https://pagopa-test.namirial.com/"
+      NamirialTestUsername                            = "api"
+      NamirialTestPassword                            = module.key_vault_secrets.values["NamirialTestPassword"].value
       SpidAssertionMock                               = module.key_vault_secrets.values["SpidAssertionMock"].value
       AnalyticsEventHubConnectionString               = module.event_hub.keys["analytics.io-sign-func-user"].primary_connection_string
       BillingEventHubConnectionString                 = module.event_hub.keys["billing.io-sign-func-issuer"].primary_connection_string
