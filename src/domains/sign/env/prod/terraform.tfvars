@@ -17,7 +17,8 @@ tags = {
 subnets_cidrs = {
   issuer   = ["10.0.102.0/24"]
   user     = ["10.0.103.0/24"]
-  eventhub = ["10.0.104.0/24"]
+  eventhub = ["10.0.104.0/24"],
+  support  = ["10.0.147.0/24"]
 }
 
 storage_account = {
@@ -69,6 +70,14 @@ io_sign_database_user = {
 }
 
 io_sign_issuer_func = {
+  sku_tier          = "PremiumV3"
+  sku_size          = "P1v3"
+  autoscale_default = 1
+  autoscale_minimum = 1
+  autoscale_maximum = 5
+}
+
+io_sign_support_func = {
   sku_tier          = "PremiumV3"
   sku_size          = "P1v3"
   autoscale_default = 1
