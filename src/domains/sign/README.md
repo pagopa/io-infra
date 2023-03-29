@@ -42,8 +42,8 @@
 | <a name="module_io_sign_support_func"></a> [io\_sign\_support\_func](#module\_io\_sign\_support\_func) | git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app | v6.1.0 |
 | <a name="module_io_sign_support_func_staging_slot"></a> [io\_sign\_support\_func\_staging\_slot](#module\_io\_sign\_support\_func\_staging\_slot) | git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app_slot | v6.1.0 |
 | <a name="module_io_sign_support_snet"></a> [io\_sign\_support\_snet](#module\_io\_sign\_support\_snet) | git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet | v4.1.4 |
-| <a name="module_io_sign_user_func"></a> [io\_sign\_user\_func](#module\_io\_sign\_user\_func) | git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app | v4.1.6 |
-| <a name="module_io_sign_user_func_staging_slot"></a> [io\_sign\_user\_func\_staging\_slot](#module\_io\_sign\_user\_func\_staging\_slot) | git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app_slot | v4.1.3 |
+| <a name="module_io_sign_user_func"></a> [io\_sign\_user\_func](#module\_io\_sign\_user\_func) | git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app | v6.2.1 |
+| <a name="module_io_sign_user_func_staging_slot"></a> [io\_sign\_user\_func\_staging\_slot](#module\_io\_sign\_user\_func\_staging\_slot) | git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app_slot | v6.0.1 |
 | <a name="module_io_sign_user_snet"></a> [io\_sign\_user\_snet](#module\_io\_sign\_user\_snet) | git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet | v4.1.4 |
 | <a name="module_key_vault"></a> [key\_vault](#module\_key\_vault) | git::https://github.com/pagopa/terraform-azurerm-v3.git//key_vault | v4.1.3 |
 | <a name="module_key_vault_secrets"></a> [key\_vault\_secrets](#module\_key\_vault\_secrets) | git::https://github.com/pagopa/terraform-azurerm-v3.git//key_vault_secrets_query | v4.1.3 |
