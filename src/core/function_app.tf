@@ -19,7 +19,7 @@ data "azurerm_key_vault_secret" "fn_app_AZURE_NH_ENDPOINT" {
 
 data "azurerm_key_vault_secret" "fn_app_beta_users" {
   name         = "io-fn-services-BETA-USERS" # reuse common beta list (array of CF)
-  key_vault_id = data.azurerm_key_vault.common.id
+  key_vault_id = data.key_vault_common.id
 }
 
 #
