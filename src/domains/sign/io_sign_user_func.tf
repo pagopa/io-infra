@@ -24,7 +24,7 @@ locals {
       IoServicesSubscriptionKey                       = module.key_vault_secrets.values["IoServicesSubscriptionKey"].value
       PdvTokenizerApiBasePath                         = "https://api.uat.tokenizer.pdv.pagopa.it"
       PdvTokenizerApiKey                              = module.key_vault_secrets.values["TokenizerApiSubscriptionKey"].value
-      NamirialApiBasePath                             = "https://pagopa.namirial.com"
+      NamirialApiBasePath                             = "https://pagopa.demo.bit4id.org"
       NamirialUsername                                = "api"
       NamirialPassword                                = module.key_vault_secrets.values["NamirialPassword"].value
       NamirialTestApiBasePath                         = "https://pagopa-test.namirial.com"
