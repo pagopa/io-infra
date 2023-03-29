@@ -11,7 +11,6 @@ module "key_vault_secrets" {
     "io-fn-sign-support-key",
     "NamirialPassword",
     "NamirialTestPassword",
-    "SpidAssertionMock",
     "SelfCareEventHubConnectionString",
     "SelfCareApiKey",
     "SlackWebhookUrl",
