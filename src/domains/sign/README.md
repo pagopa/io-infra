@@ -20,9 +20,13 @@
 |------|--------|---------|
 | <a name="module_apim_io_sign_issuer_api_v1"></a> [apim\_io\_sign\_issuer\_api\_v1](#module\_apim\_io\_sign\_issuer\_api\_v1) | git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api | v4.1.3 |
 | <a name="module_apim_io_sign_product"></a> [apim\_io\_sign\_product](#module\_apim\_io\_sign\_product) | git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_product | v4.1.3 |
+| <a name="module_apim_io_sign_support_api_v1"></a> [apim\_io\_sign\_support\_api\_v1](#module\_apim\_io\_sign\_support\_api\_v1) | git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api | v4.1.3 |
+| <a name="module_apim_io_sign_support_product"></a> [apim\_io\_sign\_support\_product](#module\_apim\_io\_sign\_support\_product) | git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_product | v4.1.3 |
 | <a name="module_cosmosdb_account"></a> [cosmosdb\_account](#module\_cosmosdb\_account) | git::https://github.com/pagopa/terraform-azurerm-v3.git//cosmosdb_account | v4.1.8 |
 | <a name="module_cosmosdb_sql_container_issuer-dossiers"></a> [cosmosdb\_sql\_container\_issuer-dossiers](#module\_cosmosdb\_sql\_container\_issuer-dossiers) | git::https://github.com/pagopa/terraform-azurerm-v3.git//cosmosdb_sql_container | v4.1.11 |
 | <a name="module_cosmosdb_sql_container_issuer-issuers"></a> [cosmosdb\_sql\_container\_issuer-issuers](#module\_cosmosdb\_sql\_container\_issuer-issuers) | git::https://github.com/pagopa/terraform-azurerm-v3.git//cosmosdb_sql_container | v4.1.11 |
+| <a name="module_cosmosdb_sql_container_issuer-issuers-by-vat-number"></a> [cosmosdb\_sql\_container\_issuer-issuers-by-vat-number](#module\_cosmosdb\_sql\_container\_issuer-issuers-by-vat-number) | git::https://github.com/pagopa/terraform-azurerm-v3.git//cosmosdb_sql_container | v4.1.11 |
+| <a name="module_cosmosdb_sql_container_issuer-issuers-whitelist"></a> [cosmosdb\_sql\_container\_issuer-issuers-whitelist](#module\_cosmosdb\_sql\_container\_issuer-issuers-whitelist) | git::https://github.com/pagopa/terraform-azurerm-v3.git//cosmosdb_sql_container | v4.1.11 |
 | <a name="module_cosmosdb_sql_container_issuer-signature-requests"></a> [cosmosdb\_sql\_container\_issuer-signature-requests](#module\_cosmosdb\_sql\_container\_issuer-signature-requests) | git::https://github.com/pagopa/terraform-azurerm-v3.git//cosmosdb_sql_container | v4.1.11 |
 | <a name="module_cosmosdb_sql_container_issuer-uploads"></a> [cosmosdb\_sql\_container\_issuer-uploads](#module\_cosmosdb\_sql\_container\_issuer-uploads) | git::https://github.com/pagopa/terraform-azurerm-v3.git//cosmosdb_sql_container | v4.1.11 |
 | <a name="module_cosmosdb_sql_container_user-signature-requests"></a> [cosmosdb\_sql\_container\_user-signature-requests](#module\_cosmosdb\_sql\_container\_user-signature-requests) | git::https://github.com/pagopa/terraform-azurerm-v3.git//cosmosdb_sql_container | v4.1.11 |
@@ -31,10 +35,13 @@
 | <a name="module_cosmosdb_sql_database_user"></a> [cosmosdb\_sql\_database\_user](#module\_cosmosdb\_sql\_database\_user) | git::https://github.com/pagopa/terraform-azurerm-v3.git//cosmosdb_sql_database | v4.1.3 |
 | <a name="module_event_hub"></a> [event\_hub](#module\_event\_hub) | git::https://github.com/pagopa/terraform-azurerm-v3.git//eventhub | v4.1.7 |
 | <a name="module_io_sign_eventhub_snet"></a> [io\_sign\_eventhub\_snet](#module\_io\_sign\_eventhub\_snet) | git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet | v4.1.4 |
-| <a name="module_io_sign_issuer_func"></a> [io\_sign\_issuer\_func](#module\_io\_sign\_issuer\_func) | git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app | v4.1.6 |
-| <a name="module_io_sign_issuer_func_staging_slot"></a> [io\_sign\_issuer\_func\_staging\_slot](#module\_io\_sign\_issuer\_func\_staging\_slot) | git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app_slot | v4.1.3 |
+| <a name="module_io_sign_issuer_func"></a> [io\_sign\_issuer\_func](#module\_io\_sign\_issuer\_func) | git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app | v6.2.1 |
+| <a name="module_io_sign_issuer_func_staging_slot"></a> [io\_sign\_issuer\_func\_staging\_slot](#module\_io\_sign\_issuer\_func\_staging\_slot) | git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app_slot | v6.0.1 |
 | <a name="module_io_sign_snet"></a> [io\_sign\_snet](#module\_io\_sign\_snet) | git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet | v4.1.4 |
 | <a name="module_io_sign_storage"></a> [io\_sign\_storage](#module\_io\_sign\_storage) | git::https://github.com/pagopa/terraform-azurerm-v3.git//storage_account | v4.1.5 |
+| <a name="module_io_sign_support_func"></a> [io\_sign\_support\_func](#module\_io\_sign\_support\_func) | git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app | v6.1.0 |
+| <a name="module_io_sign_support_func_staging_slot"></a> [io\_sign\_support\_func\_staging\_slot](#module\_io\_sign\_support\_func\_staging\_slot) | git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app_slot | v6.1.0 |
+| <a name="module_io_sign_support_snet"></a> [io\_sign\_support\_snet](#module\_io\_sign\_support\_snet) | git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet | v4.1.4 |
 | <a name="module_io_sign_user_func"></a> [io\_sign\_user\_func](#module\_io\_sign\_user\_func) | git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app | v4.1.6 |
 | <a name="module_io_sign_user_func_staging_slot"></a> [io\_sign\_user\_func\_staging\_slot](#module\_io\_sign\_user\_func\_staging\_slot) | git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app_slot | v4.1.3 |
 | <a name="module_io_sign_user_snet"></a> [io\_sign\_user\_snet](#module\_io\_sign\_user\_snet) | git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet | v4.1.4 |
@@ -47,7 +54,12 @@
 |------|------|
 | [azurerm_api_management_named_value.io_fn_sign_issuer_key](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_named_value) | resource |
 | [azurerm_api_management_named_value.io_fn_sign_issuer_url](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_named_value) | resource |
-| [azurerm_api_management_named_value.io_sign_ip_validated](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_named_value) | resource |
+| [azurerm_api_management_named_value.io_fn_sign_support_key](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_named_value) | resource |
+| [azurerm_api_management_named_value.io_fn_sign_support_url](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_named_value) | resource |
+| [azurerm_api_management_named_value.io_sign_cosmosdb_issuer_container_name](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_named_value) | resource |
+| [azurerm_api_management_named_value.io_sign_cosmosdb_issuer_whitelist_collection_name_new](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_named_value) | resource |
+| [azurerm_api_management_named_value.io_sign_cosmosdb_key](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_named_value) | resource |
+| [azurerm_api_management_named_value.io_sign_cosmosdb_name](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_named_value) | resource |
 | [azurerm_key_vault_access_policy.adgroup_admin](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_access_policy) | resource |
 | [azurerm_key_vault_access_policy.adgroup_contributors](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_access_policy) | resource |
 | [azurerm_key_vault_access_policy.adgroup_developers](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_access_policy) | resource |
@@ -56,16 +68,21 @@
 | [azurerm_key_vault_secret.integration_event_hub_jaas_connection_string](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_secret) | resource |
 | [azurerm_key_vault_secret.integration_event_hub_secrets](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_secret) | resource |
 | [azurerm_monitor_autoscale_setting.io_sign_issuer_func](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/monitor_autoscale_setting) | resource |
+| [azurerm_monitor_autoscale_setting.io_sign_support_func](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/monitor_autoscale_setting) | resource |
 | [azurerm_monitor_autoscale_setting.io_sign_user_func](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/monitor_autoscale_setting) | resource |
 | [azurerm_monitor_metric_alert.io_sign_issuer_http_server_errors](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/monitor_metric_alert) | resource |
 | [azurerm_monitor_metric_alert.io_sign_issuer_response_time](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/monitor_metric_alert) | resource |
+| [azurerm_monitor_metric_alert.io_sign_support_http_server_errors](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/monitor_metric_alert) | resource |
+| [azurerm_monitor_metric_alert.io_sign_support_response_time](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/monitor_metric_alert) | resource |
 | [azurerm_monitor_metric_alert.io_sign_user_http_server_errors](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/monitor_metric_alert) | resource |
 | [azurerm_monitor_metric_alert.io_sign_user_response_time](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/monitor_metric_alert) | resource |
 | [azurerm_network_security_group.io_sign_eventhub_nsg](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/network_security_group) | resource |
 | [azurerm_network_security_group.io_sign_issuer_nsg](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/network_security_group) | resource |
+| [azurerm_network_security_group.io_sign_support_nsg](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/network_security_group) | resource |
 | [azurerm_network_security_group.io_sign_user_nsg](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/network_security_group) | resource |
 | [azurerm_private_endpoint.blob](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/private_endpoint) | resource |
 | [azurerm_private_endpoint.io_sign_issuer_func](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/private_endpoint) | resource |
+| [azurerm_private_endpoint.io_sign_support_func](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/private_endpoint) | resource |
 | [azurerm_private_endpoint.io_sign_user_func](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/private_endpoint) | resource |
 | [azurerm_private_endpoint.queue](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/private_endpoint) | resource |
 | [azurerm_resource_group.backend_rg](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/resource_group) | resource |
@@ -83,6 +100,9 @@
 | [azurerm_storage_queue.on_signature_request_wait_for_signature](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/storage_queue) | resource |
 | [azurerm_storage_queue.waiting_for_documents_to_fill](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/storage_queue) | resource |
 | [azurerm_storage_queue.waiting_for_qtsp](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/storage_queue) | resource |
+| [azurerm_subnet_nat_gateway_association.io_sign_issuer_snet](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/subnet_nat_gateway_association) | resource |
+| [azurerm_subnet_nat_gateway_association.io_sign_support_snet](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/subnet_nat_gateway_association) | resource |
+| [azurerm_subnet_nat_gateway_association.io_sign_user_snet](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/subnet_nat_gateway_association) | resource |
 | [azuread_group.adgroup_admin](https://registry.terraform.io/providers/hashicorp/azuread/latest/docs/data-sources/group) | data source |
 | [azuread_group.adgroup_contributors](https://registry.terraform.io/providers/hashicorp/azuread/latest/docs/data-sources/group) | data source |
 | [azuread_group.adgroup_developers](https://registry.terraform.io/providers/hashicorp/azuread/latest/docs/data-sources/group) | data source |
@@ -95,11 +115,14 @@
 | [azurerm_client_config.current](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/client_config) | data source |
 | [azurerm_monitor_action_group.email](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/monitor_action_group) | data source |
 | [azurerm_monitor_action_group.slack](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/monitor_action_group) | data source |
+| [azurerm_nat_gateway.nat_gateway](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/nat_gateway) | data source |
 | [azurerm_private_dns_zone.privatelink_azurewebsites_net](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/private_dns_zone) | data source |
 | [azurerm_private_dns_zone.privatelink_blob_core_windows_net](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/private_dns_zone) | data source |
 | [azurerm_private_dns_zone.privatelink_documents_azure_com](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/private_dns_zone) | data source |
+| [azurerm_private_dns_zone.privatelink_file_core_windows_net](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/private_dns_zone) | data source |
 | [azurerm_private_dns_zone.privatelink_queue_core_windows_net](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/private_dns_zone) | data source |
 | [azurerm_private_dns_zone.privatelink_servicebus_windows_net](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/private_dns_zone) | data source |
+| [azurerm_private_dns_zone.privatelink_table_core_windows_net](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/private_dns_zone) | data source |
 | [azurerm_subnet.apim](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/subnet) | data source |
 | [azurerm_subnet.private_endpoints_subnet](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/subnet) | data source |
 | [azurerm_subscription.current](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/subscription) | data source |
@@ -116,6 +139,7 @@
 | <a name="input_io_sign_database_issuer"></a> [io\_sign\_database\_issuer](#input\_io\_sign\_database\_issuer) | n/a | <pre>map(<br>    object({<br>      max_throughput = number<br>      ttl            = number<br>    })<br>  )</pre> | n/a | yes |
 | <a name="input_io_sign_database_user"></a> [io\_sign\_database\_user](#input\_io\_sign\_database\_user) | n/a | <pre>map(<br>    object({<br>      max_throughput = number<br>      ttl            = number<br>    })<br>  )</pre> | n/a | yes |
 | <a name="input_io_sign_issuer_func"></a> [io\_sign\_issuer\_func](#input\_io\_sign\_issuer\_func) | n/a | <pre>object({<br>    sku_tier          = string<br>    sku_size          = string<br>    autoscale_default = number<br>    autoscale_minimum = number<br>    autoscale_maximum = number<br>  })</pre> | n/a | yes |
+| <a name="input_io_sign_support_func"></a> [io\_sign\_support\_func](#input\_io\_sign\_support\_func) | n/a | <pre>object({<br>    sku_tier          = string<br>    sku_size          = string<br>    autoscale_default = number<br>    autoscale_minimum = number<br>    autoscale_maximum = number<br>  })</pre> | n/a | yes |
 | <a name="input_io_sign_user_func"></a> [io\_sign\_user\_func](#input\_io\_sign\_user\_func) | n/a | <pre>object({<br>    sku_tier          = string<br>    sku_size          = string<br>    autoscale_default = number<br>    autoscale_minimum = number<br>    autoscale_maximum = number<br>  })</pre> | n/a | yes |
 | <a name="input_location"></a> [location](#input\_location) | n/a | `string` | n/a | yes |
 | <a name="input_prefix"></a> [prefix](#input\_prefix) | n/a | `string` | n/a | yes |
