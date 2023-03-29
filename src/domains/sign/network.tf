@@ -1,18 +1,23 @@
 data "azurerm_virtual_network" "vnet_common" {
-  name                = "io-p-vnet-common"
-  resource_group_name = "io-p-rg-common"
+  name                = format("%s-vnet-common", local.product)
+  resource_group_name = format("%s-rg-common", local.product)
 }
 
 data "azurerm_subnet" "private_endpoints_subnet" {
   name                 = "pendpoints"
-  virtual_network_name = "io-p-vnet-common"
-  resource_group_name  = "io-p-rg-common"
+  virtual_network_name = format("%s-vnet-common", local.product)
+  resource_group_name  = format("%s-rg-common", local.product)
 }
 
 data "azurerm_subnet" "apim" {
   name                 = "apimapi"
-  virtual_network_name = "io-p-vnet-common"
-  resource_group_name  = "io-p-rg-common"
+  virtual_network_name = format("%s-vnet-common", local.product)
+  resource_group_name  = format("%s-rg-common", local.product)
+}
+
+data "azurerm_nat_gateway" "nat_gateway" {
+  name                = format("%s-natgw", local.product)
+  resource_group_name = format("%s-rg-common", local.product)
 }
 
 module "io_sign_snet" {
@@ -39,6 +44,11 @@ module "io_sign_snet" {
       actions = ["Microsoft.Network/virtualNetworks/subnets/action"]
     }
   }
+}
+
+resource "azurerm_subnet_nat_gateway_association" "io_sign_issuer_snet" {
+  nat_gateway_id = data.azurerm_nat_gateway.nat_gateway.id
+  subnet_id      = module.io_sign_snet.id
 }
 
 resource "azurerm_network_security_group" "io_sign_issuer_nsg" {
@@ -75,6 +85,11 @@ module "io_sign_user_snet" {
   }
 }
 
+resource "azurerm_subnet_nat_gateway_association" "io_sign_user_snet" {
+  nat_gateway_id = data.azurerm_nat_gateway.nat_gateway.id
+  subnet_id      = module.io_sign_user_snet.id
+}
+
 resource "azurerm_network_security_group" "io_sign_user_nsg" {
   name                = format("%s-user-nsg", local.project)
   location            = data.azurerm_virtual_network.vnet_common.location
@@ -108,6 +123,11 @@ module "io_sign_support_snet" {
   }
 }
 
+resource "azurerm_subnet_nat_gateway_association" "io_sign_support_snet" {
+  nat_gateway_id = data.azurerm_nat_gateway.nat_gateway.id
+  subnet_id      = module.io_sign_support_snet.id
+}
+
 resource "azurerm_network_security_group" "io_sign_support_nsg" {
   name                = format("%s-support-nsg", local.project)
   location            = data.azurerm_virtual_network.vnet_common.location
@@ -138,40 +158,42 @@ resource "azurerm_network_security_group" "io_sign_eventhub_nsg" {
 
 data "azurerm_private_dns_zone" "privatelink_documents_azure_com" {
   name                = "privatelink.documents.azure.com"
-  resource_group_name = "io-p-rg-common"
+  resource_group_name = format("%s-rg-common", local.product)
 }
 
 data "azurerm_private_dns_zone" "privatelink_blob_core_windows_net" {
   name                = "privatelink.blob.core.windows.net"
-  resource_group_name = "io-p-rg-common"
+  resource_group_name = format("%s-rg-common", local.product)
 }
 
 data "azurerm_private_dns_zone" "privatelink_queue_core_windows_net" {
   name                = "privatelink.queue.core.windows.net"
-  resource_group_name = "io-p-rg-common"
+  resource_group_name = format("%s-rg-common", local.product)
 }
 
 data "azurerm_private_dns_zone" "privatelink_azurewebsites_net" {
   name                = "privatelink.azurewebsites.net"
-  resource_group_name = "io-p-rg-common"
+  resource_group_name = format("%s-rg-common", local.product)
 }
 
 data "azurerm_private_dns_zone" "privatelink_servicebus_windows_net" {
   name                = "privatelink.servicebus.windows.net"
-  resource_group_name = "io-p-evt-rg"
+  resource_group_name = format("%s-evt-rg", local.product)
 }
 
 # Unused at the moment
-# data "azurerm_private_dns_zone" "privatelink_file_core_windows_net" {
-#   name                = "privatelink.file.core.windows.net"
-#   resource_group_name = "io-p-rg-common"
-# }
+# tflint-ignore: terraform_unused_declarations
+data "azurerm_private_dns_zone" "privatelink_file_core_windows_net" {
+  name                = "privatelink.file.core.windows.net"
+  resource_group_name = format("%s-rg-common", local.product)
+}
 
 # Unused at the moment
-# data "azurerm_private_dns_zone" "privatelink_table_core_windows_net" {
-#   name                = "privatelink.table.core.windows.net"
-#   resource_group_name = "io-p-rg-common"
-# }
+# tflint-ignore: terraform_unused_declarations
+data "azurerm_private_dns_zone" "privatelink_table_core_windows_net" {
+  name                = "privatelink.table.core.windows.net"
+  resource_group_name = format("%s-rg-common", local.product)
+}
 
 resource "azurerm_private_endpoint" "blob" {
   name                = format("%s-blob-endpoint", module.io_sign_storage.name)
