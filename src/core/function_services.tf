@@ -101,7 +101,7 @@ locals {
       FF_PAYMENT_STATUS_ENABLED = "true"
       # setting to notify message via email using the template
       FF_TEMPLATE_EMAIL = "BETA"
-      
+
       // minimum app version that introduces read status opt-out
       // NOTE: right now is set to a non existing version, since it's not yet deployed
       // This way we can safely deploy fn-services without enabling ADVANCED functionalities
