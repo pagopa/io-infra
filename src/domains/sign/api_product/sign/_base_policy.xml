@@ -12,7 +12,7 @@
                             The connection to cosmosdb is explained here: https://learn.microsoft.com/en-us/rest/api/cosmos-db/access-control-on-cosmosdb-resources
                         -->
                         <set-variable name="requestDateString" value="@(DateTime.UtcNow.ToString("r"))" />
-                        <send-request mode="new" response-variable-name="response" timeout="10" ignore-error="false">
+                        <send-request mode="new" response-variable-name="response" timeout="1" ignore-error="false">
                             <set-url>https://{{io-sign-cosmosdb-name}}.documents.azure.com/dbs/{{io-sign-cosmosdb-issuer-container-name}}/colls/{{io-sign-cosmosdb-issuer-whitelist-collection-name}}/docs</set-url>
                             <set-method>POST</set-method>
                             <set-header name="Authorization" exists-action="override">
