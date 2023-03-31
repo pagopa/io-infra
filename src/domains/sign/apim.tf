@@ -74,6 +74,16 @@ resource "azurerm_api_management_named_value" "io_sign_cosmosdb_issuer_whitelist
   secret              = false
 }
 
+resource "azurerm_api_management_named_value" "io_sign_cosmosdb_issuer_issuers_collection_name" {
+  name                = "io-sign-cosmosdb-issuer-issuers-name"
+  api_management_name = data.azurerm_api_management.apim_api.name
+  resource_group_name = data.azurerm_api_management.apim_api.resource_group_name
+  display_name        = "io-sign-cosmosdb-issuer-issuers-name"
+  value               = module.cosmosdb_sql_container_issuer-issuers.name
+  secret              = false
+}
+
+
 module "apim_io_sign_product" {
   source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_product?ref=v4.1.3"
 
@@ -90,6 +100,7 @@ module "apim_io_sign_product" {
 
   policy_xml = file("./api_product/sign/_base_policy.xml")
 }
+
 
 module "apim_io_sign_issuer_api_v1" {
   source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api?ref=v4.1.3"
