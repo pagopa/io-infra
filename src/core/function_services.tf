@@ -37,7 +37,7 @@ data "azurerm_key_vault_secret" "fn_services_notification_service_blacklist_id" 
 }
 
 data "azurerm_key_vault_secret" "fn_services_beta_users" {
-  name         = "io-fn-services-BETA-USERS"
+  name         = "io-fn-services-BETA-USERS" # common beta list (array of CF)
   key_vault_id = module.key_vault_common.id
 }
 
