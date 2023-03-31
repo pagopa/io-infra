@@ -101,6 +101,14 @@ module "apim_io_sign_product" {
   policy_xml = file("./api_product/sign/_base_policy.xml")
 }
 
+resource "azurerm_api_management_api_operation_policy" "get_signer_by_fiscal_code_policy" {
+  api_name            = module.apim_io_sign_issuer_api_v1.name
+  api_management_name = data.azurerm_api_management.apim_api.name
+  resource_group_name = data.azurerm_api_management.apim_api.resource_group_name
+  operation_id        = "getSignerByFiscalCode"
+
+  xml_content = file("./api/issuer/v1/get_signer_by_fiscal_code_policy/policy.xml")
+}
 
 module "apim_io_sign_issuer_api_v1" {
   source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api?ref=v4.1.3"
