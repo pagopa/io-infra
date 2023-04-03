@@ -35,6 +35,14 @@ module "cosmosdb_account" {
     max_staleness_prefix    = null
   }
 
+  # Action groups for alerts
+  action = [
+    {
+      action_group_id    = data.azurerm_monitor_action_group.error_action_group.id
+      webhook_properties = {}
+    }
+  ]
+
   tags = var.tags
 }
 
