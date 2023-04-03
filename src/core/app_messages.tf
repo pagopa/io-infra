@@ -212,7 +212,7 @@ module "app_messages_function_staging_slot" {
 
   os_type                                  = "linux"
   runtime_version                          = "~4"
-  linux_fx_version                         = "NODE|14"
+  linux_fx_version                         = "NODE|18"
   always_on                                = var.app_messages_function_always_on
   application_insights_instrumentation_key = azurerm_application_insights.application_insights.instrumentation_key
 
