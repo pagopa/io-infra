@@ -94,7 +94,7 @@ resource "azurerm_monitor_metric_alert" "cosmosdb_sql_database_citizen_auth_norm
   criteria {
     metric_namespace       = "Microsoft.DocumentDB/databaseAccounts"
     metric_name            = "NormalizedRUConsumption"
-    aggregation            = "Average"
+    aggregation            = "Maximum"
     operator               = "GreaterThan"
     threshold              = 90 #percentage
     skip_metric_validation = false
