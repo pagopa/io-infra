@@ -92,7 +92,7 @@ resource "azurerm_monitor_metric_alert" "cosmosdb_sql_database_citizen_auth_norm
   # Metric info
   # https://learn.microsoft.com/en-us/azure/azure-monitor/essentials/metrics-supported#microsoftdocumentdbdatabaseaccounts
   criteria {
-    metric_namespace       = "Microsoft.DocumentDB/databaseAccounts"
+    metric_namespace       = "Microsoft.DocumentDB/databaseAccounts/sqlDatabases"
     metric_name            = "NormalizedRUConsumption"
     aggregation            = "Maximum"
     operator               = "GreaterThan"
