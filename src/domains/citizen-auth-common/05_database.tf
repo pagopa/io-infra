@@ -77,11 +77,11 @@ resource "azurerm_cosmosdb_sql_container" "lollipop_pubkeys" {
 // Alerts
 // ----------------------------------------------------
 
-resource "azurerm_monitor_metric_alert" "cosmosdb_sql_database_citizen_auth_normalized_RU_consumption_exceeded" {
+resource "azurerm_monitor_metric_alert" "cosmosdb_account_normalized_RU_consumption_exceeded" {
 
-  name                = "[${var.domain} | ${module.cosmosdb_sql_database_citizen_auth.name}] Normalized RU Consumption Exceeded"
+  name                = "[${upper(var.domain)} | ${module.cosmosdb_account.name}] Normalized RU Consumption Exceeded"
   resource_group_name = azurerm_resource_group.data_rg.name
-  scopes              = [module.cosmosdb_sql_database_citizen_auth.id]
+  scopes              = [module.cosmosdb_account.id]
   description         = "A collection Normalized RU Consumption exceed the threshold, see dimensions. Please, consider to increase RU. Runbook: not needed."
   severity            = 1
   window_size         = "PT30M"
@@ -92,7 +92,7 @@ resource "azurerm_monitor_metric_alert" "cosmosdb_sql_database_citizen_auth_norm
   # Metric info
   # https://learn.microsoft.com/en-us/azure/azure-monitor/essentials/metrics-supported#microsoftdocumentdbdatabaseaccounts
   criteria {
-    metric_namespace       = "microsoft.documentdb/databaseaccounts"
+    metric_namespace       = "Microsoft.DocumentDB/databaseAccounts"
     metric_name            = "NormalizedRUConsumption"
     aggregation            = "Maximum"
     operator               = "GreaterThan"
@@ -103,7 +103,7 @@ resource "azurerm_monitor_metric_alert" "cosmosdb_sql_database_citizen_auth_norm
     dimension {
       name     = "Region"
       operator = "Include"
-      values   = [azurerm_resource_group.data_rg.location]
+      values   = [var.location_full]
     }
     dimension {
       name     = "CollectionName"
