@@ -71,8 +71,10 @@ module "io_sign_user_func" {
     format("AzureWebJobs.%s.Disabled", to_disable)
   ]
 
-  subnet_id       = module.io_sign_user_snet.id
-  allowed_subnets = [module.io_sign_user_snet.id]
+  subnet_id = module.io_sign_user_snet.id
+  allowed_subnets = [
+    module.io_sign_user_snet.id,
+  ]
 
   application_insights_instrumentation_key = data.azurerm_application_insights.application_insights.instrumentation_key
   system_identity_enabled                  = true
@@ -110,6 +112,9 @@ module "io_sign_user_func_staging_slot" {
   )
 
   subnet_id = module.io_sign_user_snet.id
+  allowed_subnets = [
+    module.io_sign_user_snet.id,
+  ]
 
   tags = var.tags
 }
