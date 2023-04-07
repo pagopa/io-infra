@@ -67,7 +67,7 @@ module "io_sign_user_func" {
 
   sticky_settings = [
     # Sticky the settings enabling triggered by queue and timer
-    for to_disable in local.io_sign_issuer_func.staging_disabled :
+    for to_disable in local.io_sign_user_func.staging_disabled :
     format("AzureWebJobs.%s.Disabled", to_disable)
   ]
 

@@ -9,29 +9,24 @@ locals {
       "CreateIssuerByVatNumberView"
     ]
     app_settings = {
-      FUNCTIONS_WORKER_RUNTIME                        = "node"
-      WEBSITE_VNET_ROUTE_ALL                          = "1"
-      WEBSITE_ADD_SITENAME_BINDINGS_IN_APPHOST_CONFIG = "1"
-      WEBSITE_DNS_SERVER                              = "168.63.129.16"
-      WEBSITE_RUN_FROM_PACKAGE                        = "1"
-      FUNCTIONS_WORKER_PROCESS_COUNT                  = 4
-      AzureWebJobsDisableHomepage                     = "true"
-      NODE_ENV                                        = "production"
-      CosmosDbConnectionString                        = module.cosmosdb_account.connection_strings[0]
-      CosmosDbDatabaseName                            = module.cosmosdb_sql_database_issuer.name
-      StorageAccountConnectionString                  = module.io_sign_storage.primary_connection_string
-      IssuerUploadedBlobContainerName                 = azurerm_storage_container.uploaded_documents.name
-      IssuerValidatedBlobContainerName                = azurerm_storage_container.validated_documents.name
-      IoServicesApiBasePath                           = "https://api.io.pagopa.it"
-      IoServicesSubscriptionKey                       = module.key_vault_secrets.values["IoServicesSubscriptionKey"].value
-      PdvTokenizerApiBasePath                         = "https://api.tokenizer.pdv.pagopa.it"
-      PdvTokenizerApiKey                              = module.key_vault_secrets.values["PdvTokenizerApiKey"].value
-      AnalyticsEventHubConnectionString               = module.event_hub.keys["analytics.io-sign-func-issuer"].primary_connection_string
-      BillingEventHubConnectionString                 = module.event_hub.keys["billing.io-sign-func-issuer"].primary_connection_string
-      SelfCareEventHubConnectionString                = module.key_vault_secrets.values["SelfCareEventHubConnectionString"].value
-      SelfCareApiBasePath                             = "https://api.selfcare.pagopa.it"
-      SelfCareApiKey                                  = module.key_vault_secrets.values["SelfCareApiKey"].value
-      SlackWebhookUrl                                 = module.key_vault_secrets.values["SlackWebhookUrl"].value
+      FUNCTIONS_WORKER_PROCESS_COUNT    = 4
+      AzureWebJobsDisableHomepage       = "true"
+      NODE_ENV                          = "production"
+      CosmosDbConnectionString          = module.cosmosdb_account.connection_strings[0]
+      CosmosDbDatabaseName              = module.cosmosdb_sql_database_issuer.name
+      StorageAccountConnectionString    = module.io_sign_storage.primary_connection_string
+      IssuerUploadedBlobContainerName   = azurerm_storage_container.uploaded_documents.name
+      IssuerValidatedBlobContainerName  = azurerm_storage_container.validated_documents.name
+      IoServicesApiBasePath             = "https://api.io.pagopa.it"
+      IoServicesSubscriptionKey         = module.key_vault_secrets.values["IoServicesSubscriptionKey"].value
+      PdvTokenizerApiBasePath           = "https://api.tokenizer.pdv.pagopa.it"
+      PdvTokenizerApiKey                = module.key_vault_secrets.values["PdvTokenizerApiKey"].value
+      AnalyticsEventHubConnectionString = module.event_hub.keys["analytics.io-sign-func-issuer"].primary_connection_string
+      BillingEventHubConnectionString   = module.event_hub.keys["billing.io-sign-func-issuer"].primary_connection_string
+      SelfCareEventHubConnectionString  = module.key_vault_secrets.values["SelfCareEventHubConnectionString"].value
+      SelfCareApiBasePath               = "https://api.selfcare.pagopa.it"
+      SelfCareApiKey                    = module.key_vault_secrets.values["SelfCareApiKey"].value
+      SlackWebhookUrl                   = module.key_vault_secrets.values["SlackWebhookUrl"].value
     }
   }
 }
