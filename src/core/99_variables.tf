@@ -306,6 +306,11 @@ variable "cidr_subnet_fnlollipop" {
   description = "Function Lollipop address space."
 }
 
+variable "cidr_subnet_continua" {
+  type        = list(string)
+  description = "continua address space."
+}
+
 ## REDIS COMMON ##
 variable "redis_common" {
   type = object({
@@ -1106,4 +1111,14 @@ variable "citizen_auth_assertion_storage_name" {
   type        = string
   description = "Use storage name from citizen_auth domain"
   default     = "lollipop-assertions-st"
+}
+
+
+################################
+# App Continua - DynamicLink
+################################
+
+variable "continua_appservice_sku" {
+  type        = string
+  description = "The SKU for the AppService Plan relative to Continua"
 }

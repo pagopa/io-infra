@@ -60,6 +60,7 @@ cidr_subnet_redis_common = ["10.0.200.0/24"]
 cidr_subnet_pendpoints   = ["10.0.240.0/23"]
 cidr_subnet_azdoa        = ["10.0.250.0/24"]
 cidr_subnet_dnsforwarder = ["10.0.252.8/29"]
+cidr_subnet_continua     = ["10.0.17.64/26"]
 
 app_gateway_api_certificate_name                                  = "api-io-pagopa-it"
 app_gateway_api_mtls_certificate_name                             = "api-mtls-io-pagopa-it"
@@ -264,6 +265,12 @@ function_eucovidcert_sku_size          = "P1v3"
 function_eucovidcert_autoscale_minimum = 1
 function_eucovidcert_autoscale_maximum = 20
 function_eucovidcert_autoscale_default = 10
+
+# App Continua DynamicLynk
+
+# TODO remove when the terraform provider for Azure will support SKU P0v3
+# Up to then, the work-around is defining as P1v3 and changing via console
+continua_appservice_sku = "P1v3"
 
 eventhubs = [
   {
