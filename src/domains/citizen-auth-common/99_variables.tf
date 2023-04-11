@@ -50,6 +50,11 @@ variable "location_short" {
   description = "One of wue, neu"
 }
 
+variable "location_full" {
+  type        = string
+  description = "One of West Europe, North Europe"
+}
+
 variable "instance" {
   type        = string
   description = "One of beta, prod01, prod02"
@@ -60,6 +65,17 @@ variable "tags" {
   default = {
     CreatedBy = "Terraform"
   }
+}
+
+### Cosmos DB
+
+variable "citizen_auth_database" {
+  type = map(
+    object({
+      max_throughput = number
+      ttl            = number
+    })
+  )
 }
 
 ### External resources
