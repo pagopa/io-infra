@@ -6,7 +6,6 @@ module "key_vault_secrets" {
 
   secrets = [
     "IoServicesSubscriptionKey",
-    "TokenizerApiSubscriptionKey",
     "io-fn-sign-issuer-key",
     "io-fn-sign-support-key",
     "NamirialPassword",
@@ -15,7 +14,8 @@ module "key_vault_secrets" {
     "SelfCareApiKey",
     "SlackWebhookUrl",
     "LollipopPrimaryApiKey",
-    "LollipopSecondaryApiKey"
+    "LollipopSecondaryApiKey",
+    "PdvTokenizerApiKey"
   ]
 }
 
