@@ -101,7 +101,7 @@ module "function_assets_cdn_staging_slot" {
 
   os_type                                  = "linux"
   runtime_version                          = "~4"
-  linux_fx_version                         = "NODE|14"
+  linux_fx_version                         = "NODE|18"
   always_on                                = true
   application_insights_instrumentation_key = azurerm_application_insights.application_insights.instrumentation_key
 
