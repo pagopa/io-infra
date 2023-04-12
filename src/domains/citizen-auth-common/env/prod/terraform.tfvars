@@ -4,6 +4,7 @@ env            = "prod"
 domain         = "citizen-auth"
 location       = "westeurope"
 location_short = "weu"
+location_full  = "West Europe"
 instance       = "common"
 
 tags = {

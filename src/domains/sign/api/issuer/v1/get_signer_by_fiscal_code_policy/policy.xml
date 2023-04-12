@@ -1,0 +1,178 @@
+<policies>
+    <inbound>
+        <cache-lookup-value key="@(context.Subscription.Id+"_whitelist_cf")" variable-name="issuerWhitelistFiscalCodes" />
+        <choose>
+            <when condition="@(!context.Variables.ContainsKey("issuerWhitelistFiscalCodes"))">
+                <set-variable name="requestDateString" value="@(DateTime.UtcNow.ToString("r"))" />
+                <send-request mode="new" response-variable-name="response" timeout="1" ignore-error="false">
+                    <set-url>https://{{io-sign-cosmosdb-name}}.documents.azure.com/dbs/{{io-sign-cosmosdb-issuer-container-name}}/colls/{{io-sign-cosmosdb-issuer-whitelist-collection-name}}/docs</set-url>
+                    <set-method>POST</set-method>
+                    <set-header name="Authorization" exists-action="override">
+                        <value>@{
+                            var verb = "post";
+                            var resourceType = "docs";
+                            var resourceLink = "dbs/{{io-sign-cosmosdb-issuer-container-name}}/colls/{{io-sign-cosmosdb-issuer-whitelist-collection-name}}";
+                            var key = "{{io-sign-cosmosdb-key}}";
+                            var keyType = "master";
+                            var tokenVersion = "1.0";
+                            var date = context.Variables.GetValueOrDefault<string>("requestDateString");
+
+                            var hmacSha256 = new System.Security.Cryptography.HMACSHA256 { Key = Convert.FromBase64String(key) };
+
+                            string payLoad = string.Format("{0}\n{1}\n{2}\n{3}\n{4}\n",
+                                    verb.ToLowerInvariant(),
+                                    resourceType.ToLowerInvariant(),
+                                    resourceLink,
+                                    date.ToLowerInvariant(),
+                                    ""
+                            );
+
+                            byte[] hashPayLoad = hmacSha256.ComputeHash(System.Text.Encoding.UTF8.GetBytes(payLoad));
+                            string signature = Convert.ToBase64String(hashPayLoad);
+
+                            return System.Uri.EscapeDataString(String.Format("type={0}&ver={1}&sig={2}",
+                                keyType,
+                                tokenVersion,
+                                signature));
+                            }</value>
+                    </set-header>
+                    <set-header name="Content-Type" exists-action="override">
+                        <value>application/query+json</value>
+                    </set-header>
+                    <set-header name="x-ms-documentdb-isquery" exists-action="override">
+                        <value>True</value>
+                    </set-header>
+                    <set-header name="x-ms-date" exists-action="override">
+                        <value>@(context.Variables.GetValueOrDefault<string>("requestDateString"))</value>
+                    </set-header>
+                    <set-header name="x-ms-version" exists-action="override">
+                        <value>2018-12-31</value>
+                    </set-header>
+                    <set-body>@("{\"query\": \"SELECT w.test_fiscal_codes FROM whitelist w WHERE w.id = @id\", " +
+                                    "\"parameters\": [{ \"name\": \"@id\", \"value\": \"" + context.Subscription.Id + "\"}]}")</set-body>
+                </send-request>
+                <!-- Save response in issuerWhitelist var -->
+                <set-variable name="issuerWhitelistFiscalCodes" value="@(((IResponse)context.Variables["response"]).Body.As<JObject>())" />
+                <!-- Cache the query result for 60s to reduce the number of calls to cosmosDb -->
+                <cache-store-value key="@(context.Subscription.Id+"_whitelist_cf")" value="@((JObject)context.Variables["issuerWhitelistFiscalCodes"])" duration="60" />
+            </when>
+        </choose>
+        <cache-lookup-value key="@(context.Subscription.Id+"_issuer_environment")"  variable-name="issuerEnvironment" />
+        <choose>
+            <when condition="@(!context.Variables.ContainsKey("issuerEnvironment"))">
+                <set-variable name="requestDateString" value="@(DateTime.UtcNow.ToString("r"))" />
+                <send-request mode="new" response-variable-name="response" timeout="1" ignore-error="false">
+                    <set-url>https://{{io-sign-cosmosdb-name}}.documents.azure.com/dbs/{{io-sign-cosmosdb-issuer-container-name}}/colls/{{io-sign-cosmosdb-issuer-issuers-name}}/docs</set-url>
+                    <set-method>POST</set-method>
+                    <set-header name="Authorization" exists-action="override">
+                        <value>@{
+                            var verb = "post";
+                            var resourceType = "docs";
+                            var resourceLink = "dbs/{{io-sign-cosmosdb-issuer-container-name}}/colls/{{io-sign-cosmosdb-issuer-issuers-name}}";
+                            var key = "{{io-sign-cosmosdb-key}}";
+                            var keyType = "master";
+                            var tokenVersion = "1.0";
+                            var date = context.Variables.GetValueOrDefault<string>("requestDateString");
+
+                            var hmacSha256 = new System.Security.Cryptography.HMACSHA256 { Key = Convert.FromBase64String(key) };
+
+                            string payLoad = string.Format("{0}\n{1}\n{2}\n{3}\n{4}\n",
+                                    verb.ToLowerInvariant(),
+                                    resourceType.ToLowerInvariant(),
+                                    resourceLink,
+                                    date.ToLowerInvariant(),
+                                    ""
+                            );
+
+                            byte[] hashPayLoad = hmacSha256.ComputeHash(System.Text.Encoding.UTF8.GetBytes(payLoad));
+                            string signature = Convert.ToBase64String(hashPayLoad);
+
+                            return System.Uri.EscapeDataString(String.Format("type={0}&ver={1}&sig={2}",
+                                keyType,
+                                tokenVersion,
+                                signature));
+                            }</value>
+                    </set-header>
+                    <set-header name="Content-Type" exists-action="override">
+                        <value>application/query+json</value>
+                    </set-header>
+                    <set-header name="x-ms-documentdb-isquery" exists-action="override">
+                        <value>True</value>
+                    </set-header>
+                    <set-header name="x-ms-date" exists-action="override">
+                        <value>@(context.Variables.GetValueOrDefault<string>("requestDateString"))</value>
+                    </set-header>
+                    <set-header name="x-ms-version" exists-action="override">
+                        <value>2018-12-31</value>
+                    </set-header>
+                    <set-body>@("{\"query\": \"SELECT i.environment FROM issuers i WHERE i.subscriptionId = @subscriptionId\", " +
+                                    "\"parameters\": [{ \"name\": \"@subscriptionId\", \"value\": \"" + context.Subscription.Id + "\"}]}")</set-body>
+                </send-request>
+                <!-- Save response in issuerWhitelist var -->
+                <set-variable name="issuerEnvironment" value="@(((IResponse)context.Variables["response"]).Body.As<JObject>())" />
+                <!-- Cache the query result for 60s to reduce the number of calls to cosmosDb -->
+                <cache-store-value key="@(context.Subscription.Id+"_issuer_environment")" value="@((JObject)context.Variables["issuerEnvironment"])" duration="60" />
+            </when>
+        </choose>
+        <set-header name="X-Allowed" exists-action="override">
+            <!--
+                Get the Fiscal Code from the request body and check if it is in the fiscal code's whitelist and also if the issuer use a TEST environment.
+                In the positive case it place "true" in the "X-Allowed" header otherwise "false"
+            -->
+            <value>@{
+                var environmentQueryResponse = context.Variables.GetValueOrDefault<JObject>("issuerEnvironment");
+                if (environmentQueryResponse != null && environmentQueryResponse.ContainsKey("Documents")){
+                    JArray envDocuments = (JArray) environmentQueryResponse["Documents"];
+                    if (envDocuments.Count > 0){
+                        JObject envFirstDocument = (JObject) envDocuments[0];
+                        if(envFirstDocument.ContainsKey("environment")){
+                            string issuerEnvironment = (string)envFirstDocument["environment"];
+
+                            //If the issuer is not in the TEST environment then I do not perform any checks
+                            if (issuerEnvironment!="TEST"){
+                                return "true";
+                            }
+                        }
+                    }
+                }
+
+                var whitelistFiscalCodeQueryResponse = context.Variables.GetValueOrDefault<JObject>("issuerWhitelistFiscalCodes");
+                JObject requestBody = context.Request.Body.As<JObject>(preserveContent: true);
+                if(requestBody.ContainsKey("fiscal_code")){
+                    string requestFiscalCodeString = (string)requestBody["fiscal_code"];
+                    if (whitelistFiscalCodeQueryResponse != null && whitelistFiscalCodeQueryResponse.ContainsKey("Documents")){
+                        JArray documents = (JArray) whitelistFiscalCodeQueryResponse["Documents"];
+                        if (documents.Count > 0){
+                            JObject firstDocument = (JObject) documents[0];
+                            if(firstDocument.ContainsKey("test_fiscal_codes")){
+                                JArray whiteListFiscalCodes = (JArray)firstDocument["test_fiscal_codes"];
+                                foreach (var fiscalCode in whiteListFiscalCodes) {
+                                    string fiscalCodeString = (string)fiscalCode;
+                                    if(fiscalCodeString==requestFiscalCodeString){
+                                        return "true";
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+                return "false";
+            }</value>
+        </set-header>
+        <check-header name="X-Allowed" failed-check-httpcode="403" failed-check-error-message="Forbidden" ignore-case="true">
+            <value>true</value>
+        </check-header>
+        <!-- Delete temporary header -->
+        <set-header name="X-Allowed" exists-action="delete" />
+        <base />
+    </inbound>
+    <outbound>
+        <base />
+    </outbound>
+    <backend>
+        <base />
+    </backend>
+    <on-error>
+        <base />
+    </on-error>
+</policies>

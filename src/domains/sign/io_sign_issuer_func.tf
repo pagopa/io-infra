@@ -37,7 +37,7 @@ locals {
 }
 
 module "io_sign_issuer_func" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app?ref=v4.1.6"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app?ref=v6.2.1"
 
   name                = format("%s-issuer-func", local.project)
   location            = azurerm_resource_group.backend_rg.location
@@ -45,14 +45,12 @@ module "io_sign_issuer_func" {
 
   health_check_path = "/api/v1/sign/info"
 
-  os_type          = "linux"
-  runtime_version  = "~4"
-  always_on        = true
-  linux_fx_version = "NODE|16"
+  node_version    = "16"
+  runtime_version = "~4"
+  always_on       = true
 
   app_service_plan_info = {
     kind                         = "Linux"
-    sku_tier                     = var.io_sign_issuer_func.sku_tier
     sku_size                     = var.io_sign_issuer_func.sku_size
     maximum_elastic_worker_count = 0
   }
@@ -61,11 +59,16 @@ module "io_sign_issuer_func" {
     local.io_sign_issuer_func.app_settings,
     {
       # Enable functions on production triggered by queue and timer
-      # They had to be disabled in slots
       for to_disable in local.io_sign_issuer_func.staging_disabled :
       format("AzureWebJobs.%s.Disabled", to_disable) => "false"
     }
   )
+
+  sticky_settings = [
+    # Sticky the settings enabling triggered by queue and timer
+    for to_disable in local.io_sign_issuer_func.staging_disabled :
+    format("AzureWebJobs.%s.Disabled", to_disable)
+  ]
 
   subnet_id       = module.io_sign_snet.id
   allowed_subnets = [module.io_sign_snet.id, data.azurerm_subnet.apim.id]
@@ -78,12 +81,11 @@ module "io_sign_issuer_func" {
 
 module "io_sign_issuer_func_staging_slot" {
   count  = var.io_sign_issuer_func.sku_tier == "PremiumV3" ? 1 : 0
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app_slot?ref=v4.1.3"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app_slot?ref=v6.0.1"
 
   name                = "staging"
   location            = azurerm_resource_group.backend_rg.location
   resource_group_name = azurerm_resource_group.backend_rg.name
-  function_app_name   = module.io_sign_issuer_func.name
   function_app_id     = module.io_sign_issuer_func.id
   app_service_plan_id = module.io_sign_issuer_func.app_service_plan_id
 
@@ -92,17 +94,15 @@ module "io_sign_issuer_func_staging_slot" {
   storage_account_name       = module.io_sign_issuer_func.storage_account.name
   storage_account_access_key = module.io_sign_issuer_func.storage_account.primary_access_key
 
-  os_type                                  = "linux"
+  node_version                             = "16"
   runtime_version                          = "~4"
   always_on                                = true
-  linux_fx_version                         = "NODE|16"
   application_insights_instrumentation_key = data.azurerm_application_insights.application_insights.instrumentation_key
 
   app_settings = merge(
     local.io_sign_issuer_func.app_settings,
     {
       # Disabled functions on slot triggered by queue and timer
-      # Manualy mark this configurations as slot settings
       for to_disable in local.io_sign_issuer_func.staging_disabled :
       format("AzureWebJobs.%s.Disabled", to_disable) => "true"
     }

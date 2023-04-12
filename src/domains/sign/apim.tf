@@ -37,14 +37,6 @@ resource "azurerm_api_management_named_value" "io_fn_sign_support_key" {
   secret              = true
 }
 
-resource "azurerm_api_management_named_value" "io_sign_ip_validated" {
-  name                = "io-sign-ip-validated"
-  api_management_name = data.azurerm_api_management.apim_api.name
-  resource_group_name = data.azurerm_api_management.apim_api.resource_group_name
-  display_name        = "io-sign-ip-validated"
-  value               = "1"
-  secret              = true
-}
 
 resource "azurerm_api_management_named_value" "io_sign_cosmosdb_name" {
   name                = "io-sign-cosmosdb-name"
@@ -73,14 +65,24 @@ resource "azurerm_api_management_named_value" "io_sign_cosmosdb_issuer_container
   secret              = false
 }
 
-resource "azurerm_api_management_named_value" "io_sign_cosmosdb_issuer_whitelist_collection_name" {
-  name                = "io-sign-cosmosdb-issuer-whitelist-ip-collection-name"
+resource "azurerm_api_management_named_value" "io_sign_cosmosdb_issuer_whitelist_collection_name_new" {
+  name                = "io-sign-cosmosdb-issuer-whitelist-collection-name"
   api_management_name = data.azurerm_api_management.apim_api.name
   resource_group_name = data.azurerm_api_management.apim_api.resource_group_name
-  display_name        = "io-sign-cosmosdb-issuer-whitelist-ip-collection-name"
-  value               = module.cosmosdb_sql_container_issuer-issuers-ip-whitelist.name
+  display_name        = "io-sign-cosmosdb-issuer-whitelist-collection-name"
+  value               = module.cosmosdb_sql_container_issuer-issuers-whitelist.name
   secret              = false
 }
+
+resource "azurerm_api_management_named_value" "io_sign_cosmosdb_issuer_issuers_collection_name" {
+  name                = "io-sign-cosmosdb-issuer-issuers-name"
+  api_management_name = data.azurerm_api_management.apim_api.name
+  resource_group_name = data.azurerm_api_management.apim_api.resource_group_name
+  display_name        = "io-sign-cosmosdb-issuer-issuers-name"
+  value               = module.cosmosdb_sql_container_issuer-issuers.name
+  secret              = false
+}
+
 
 module "apim_io_sign_product" {
   source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_product?ref=v4.1.3"
@@ -97,6 +99,15 @@ module "apim_io_sign_product" {
   approval_required     = false
 
   policy_xml = file("./api_product/sign/_base_policy.xml")
+}
+
+resource "azurerm_api_management_api_operation_policy" "get_signer_by_fiscal_code_policy" {
+  api_name            = module.apim_io_sign_issuer_api_v1.name
+  api_management_name = data.azurerm_api_management.apim_api.name
+  resource_group_name = data.azurerm_api_management.apim_api.resource_group_name
+  operation_id        = "getSignerByFiscalCode"
+
+  xml_content = file("./api/issuer/v1/get_signer_by_fiscal_code_policy/policy.xml")
 }
 
 module "apim_io_sign_issuer_api_v1" {
@@ -135,7 +146,7 @@ module "apim_io_sign_support_product" {
   subscription_required = true
   approval_required     = false
 
-  policy_xml = file("./api_product/sign/_base_policy.xml")
+  policy_xml = file("./api_product/support/_base_policy.xml")
 }
 
 module "apim_io_sign_support_api_v1" {
@@ -144,7 +155,7 @@ module "apim_io_sign_support_api_v1" {
   name                  = format("%s-sign-support-api", local.product)
   api_management_name   = data.azurerm_api_management.apim_api.name
   resource_group_name   = data.azurerm_api_management.apim_api.resource_group_name
-  product_ids           = [module.apim_io_sign_product.product_id]
+  product_ids           = [module.apim_io_sign_support_product.product_id]
   subscription_required = true
   service_url           = null
 

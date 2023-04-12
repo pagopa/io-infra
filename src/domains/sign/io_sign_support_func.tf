@@ -20,12 +20,13 @@ module "io_sign_support_func" {
   location            = azurerm_resource_group.backend_rg.location
   resource_group_name = azurerm_resource_group.backend_rg.name
 
-  health_check_path = "/api/v1/sign/support/info"
+  # TODO Activate when in production
+  # health_check_path = "/api/v1/sign/support/info"
 
   always_on = true
 
   runtime_version = "~4"
-  node_version    = "18"
+  node_version    = "16"
 
   app_service_plan_info = {
     kind                         = "Linux"
@@ -55,14 +56,15 @@ module "io_sign_support_func_staging_slot" {
   function_app_id     = module.io_sign_support_func.id
   app_service_plan_id = module.io_sign_support_func.app_service_plan_id
 
-  health_check_path = "/api/v1/sign/support/info"
+  # TODO Activate when in production
+  # health_check_path = "/api/v1/sign/support/info"
 
   storage_account_name       = module.io_sign_support_func.storage_account.name
   storage_account_access_key = module.io_sign_support_func.storage_account.primary_access_key
 
   runtime_version                          = "~4"
   always_on                                = true
-  node_version                             = "18"
+  node_version                             = "16"
   application_insights_instrumentation_key = data.azurerm_application_insights.application_insights.instrumentation_key
 
   app_settings = local.io_sign_support_func.app_settings
