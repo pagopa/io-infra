@@ -17,8 +17,8 @@ locals {
       userValidatedBlobContainerName    = azurerm_storage_container.validated_documents.name
       IoServicesApiBasePath             = "https://api.io.pagopa.it"
       IoServicesSubscriptionKey         = module.key_vault_secrets.values["IoServicesSubscriptionKey"].value
-      PdvTokenizerApiBasePath           = "https://api.uat.tokenizer.pdv.pagopa.it"
-      PdvTokenizerApiKey                = module.key_vault_secrets.values["TokenizerApiSubscriptionKey"].value
+      PdvTokenizerApiBasePath           = "https://api.tokenizer.pdv.pagopa.it"
+      PdvTokenizerApiKey                = module.key_vault_secrets.values["PdvTokenizerApiKey"].value
       NamirialApiBasePath               = "https://pagopa.namirial.com"
       NamirialUsername                  = "api"
       NamirialPassword                  = module.key_vault_secrets.values["NamirialPassword"].value

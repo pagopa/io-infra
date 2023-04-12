@@ -7,8 +7,8 @@ locals {
       CosmosDbConnectionString       = module.cosmosdb_account.connection_strings[0]
       CosmosDbIssuerDatabaseName     = module.cosmosdb_sql_database_issuer.name
       CosmosDbUserDatabaseName       = module.cosmosdb_sql_database_user.name
-      PdvTokenizerApiBasePath        = "https://api.uat.tokenizer.pdv.pagopa.it"
-      PdvTokenizerApiKey             = module.key_vault_secrets.values["TokenizerApiSubscriptionKey"].value
+      PdvTokenizerApiBasePath        = "https://api.tokenizer.pdv.pagopa.it"
+      PdvTokenizerApiKey             = module.key_vault_secrets.values["PdvTokenizerApiKey"].value
     }
   }
 }
