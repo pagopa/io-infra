@@ -20,7 +20,7 @@ module "redis_common_backup" {
   location                        = azurerm_resource_group.rg_common.location
   advanced_threat_protection      = true
   allow_nested_items_to_be_public = false
-  public_network_access_enabled   = false
+  public_network_access_enabled   = true
 
   tags = var.tags
 }
