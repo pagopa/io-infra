@@ -258,6 +258,29 @@ resource "azurerm_private_endpoint" "io_sign_user_func" {
   tags = var.tags
 }
 
+resource "azurerm_private_endpoint" "io_sign_user_func_staging" {
+  count = var.io_sign_user_func.sku_tier == "PremiumV3" ? 1 : 0
+
+  name                = format("%s-staging-endpoint", module.io_sign_user_func.name)
+  location            = azurerm_resource_group.data_rg.location
+  resource_group_name = azurerm_resource_group.data_rg.name
+  subnet_id           = data.azurerm_subnet.private_endpoints_subnet.id
+
+  private_service_connection {
+    name                           = format("%s-staging-endpoint", module.io_sign_user_func.name)
+    private_connection_resource_id = module.io_sign_user_func.id
+    is_manual_connection           = false
+    subresource_names              = ["sites-staging"]
+  }
+
+  private_dns_zone_group {
+    name                 = "private-dns-zone-group"
+    private_dns_zone_ids = [data.azurerm_private_dns_zone.privatelink_azurewebsites_net.id]
+  }
+
+  tags = var.tags
+}
+
 resource "azurerm_private_endpoint" "io_sign_issuer_func" {
   name                = format("%s-endpoint", module.io_sign_issuer_func.name)
   location            = azurerm_resource_group.data_rg.location
@@ -279,6 +302,29 @@ resource "azurerm_private_endpoint" "io_sign_issuer_func" {
   tags = var.tags
 }
 
+resource "azurerm_private_endpoint" "io_sign_issuer_func_staging" {
+  count = var.io_sign_issuer_func.sku_tier == "PremiumV3" ? 1 : 0
+
+  name                = format("%s-staging-endpoint", module.io_sign_issuer_func.name)
+  location            = azurerm_resource_group.data_rg.location
+  resource_group_name = azurerm_resource_group.data_rg.name
+  subnet_id           = data.azurerm_subnet.private_endpoints_subnet.id
+
+  private_service_connection {
+    name                           = format("%s-staging-endpoint", module.io_sign_issuer_func.name)
+    private_connection_resource_id = module.io_sign_issuer_func.id
+    is_manual_connection           = false
+    subresource_names              = ["sites-staging"]
+  }
+
+  private_dns_zone_group {
+    name                 = "private-dns-zone-group"
+    private_dns_zone_ids = [data.azurerm_private_dns_zone.privatelink_azurewebsites_net.id]
+  }
+
+  tags = var.tags
+}
+
 resource "azurerm_private_endpoint" "io_sign_support_func" {
   name                = format("%s-endpoint", module.io_sign_support_func.name)
   location            = azurerm_resource_group.data_rg.location
@@ -290,6 +336,29 @@ resource "azurerm_private_endpoint" "io_sign_support_func" {
     private_connection_resource_id = module.io_sign_support_func.id
     is_manual_connection           = false
     subresource_names              = ["sites"]
+  }
+
+  private_dns_zone_group {
+    name                 = "private-dns-zone-group"
+    private_dns_zone_ids = [data.azurerm_private_dns_zone.privatelink_azurewebsites_net.id]
+  }
+
+  tags = var.tags
+}
+
+resource "azurerm_private_endpoint" "io_sign_support_func_staging" {
+  count = var.io_sign_support_func.sku_tier == "PremiumV3" ? 1 : 0
+
+  name                = format("%s-staging-endpoint", module.io_sign_support_func.name)
+  location            = azurerm_resource_group.data_rg.location
+  resource_group_name = azurerm_resource_group.data_rg.name
+  subnet_id           = data.azurerm_subnet.private_endpoints_subnet.id
+
+  private_service_connection {
+    name                           = format("%s-staging-endpoint", module.io_sign_support_func.name)
+    private_connection_resource_id = module.io_sign_support_func.id
+    is_manual_connection           = false
+    subresource_names              = ["sites-staging"]
   }
 
   private_dns_zone_group {
