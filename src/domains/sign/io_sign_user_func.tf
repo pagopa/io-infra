@@ -17,9 +17,9 @@ locals {
       userValidatedBlobContainerName    = azurerm_storage_container.validated_documents.name
       IoServicesApiBasePath             = "https://api.io.pagopa.it"
       IoServicesSubscriptionKey         = module.key_vault_secrets.values["IoServicesSubscriptionKey"].value
-      PdvTokenizerApiBasePath           = "https://api.uat.tokenizer.pdv.pagopa.it"
-      PdvTokenizerApiKey                = module.key_vault_secrets.values["TokenizerApiSubscriptionKey"].value
-      NamirialApiBasePath               = "https://pagopa.demo.bit4id.org"
+      PdvTokenizerApiBasePath           = "https://api.tokenizer.pdv.pagopa.it"
+      PdvTokenizerApiKey                = module.key_vault_secrets.values["PdvTokenizerApiKey"].value
+      NamirialApiBasePath               = "https://pagopa.namirial.com"
       NamirialUsername                  = "api"
       NamirialPassword                  = module.key_vault_secrets.values["NamirialPassword"].value
       NamirialTestApiBasePath           = "https://pagopa-test.namirial.com"
@@ -67,12 +67,14 @@ module "io_sign_user_func" {
 
   sticky_settings = [
     # Sticky the settings enabling triggered by queue and timer
-    for to_disable in local.io_sign_issuer_func.staging_disabled :
+    for to_disable in local.io_sign_user_func.staging_disabled :
     format("AzureWebJobs.%s.Disabled", to_disable)
   ]
 
-  subnet_id       = module.io_sign_user_snet.id
-  allowed_subnets = [module.io_sign_user_snet.id]
+  subnet_id = module.io_sign_user_snet.id
+  allowed_subnets = [
+    module.io_sign_user_snet.id,
+  ]
 
   application_insights_instrumentation_key = data.azurerm_application_insights.application_insights.instrumentation_key
   system_identity_enabled                  = true
@@ -110,6 +112,9 @@ module "io_sign_user_func_staging_slot" {
   )
 
   subnet_id = module.io_sign_user_snet.id
+  allowed_subnets = [
+    module.io_sign_user_snet.id,
+  ]
 
   tags = var.tags
 }

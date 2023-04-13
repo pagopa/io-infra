@@ -19,8 +19,8 @@ locals {
       IssuerValidatedBlobContainerName  = azurerm_storage_container.validated_documents.name
       IoServicesApiBasePath             = "https://api.io.pagopa.it"
       IoServicesSubscriptionKey         = module.key_vault_secrets.values["IoServicesSubscriptionKey"].value
-      PdvTokenizerApiBasePath           = "https://api.uat.tokenizer.pdv.pagopa.it"
-      PdvTokenizerApiKey                = module.key_vault_secrets.values["TokenizerApiSubscriptionKey"].value
+      PdvTokenizerApiBasePath           = "https://api.tokenizer.pdv.pagopa.it"
+      PdvTokenizerApiKey                = module.key_vault_secrets.values["PdvTokenizerApiKey"].value
       AnalyticsEventHubConnectionString = module.event_hub.keys["analytics.io-sign-func-issuer"].primary_connection_string
       BillingEventHubConnectionString   = module.event_hub.keys["billing.io-sign-func-issuer"].primary_connection_string
       SelfCareEventHubConnectionString  = module.key_vault_secrets.values["SelfCareEventHubConnectionString"].value
@@ -65,8 +65,11 @@ module "io_sign_issuer_func" {
     format("AzureWebJobs.%s.Disabled", to_disable)
   ]
 
-  subnet_id       = module.io_sign_snet.id
-  allowed_subnets = [module.io_sign_snet.id, data.azurerm_subnet.apim.id]
+  subnet_id = module.io_sign_snet.id
+  allowed_subnets = [
+    module.io_sign_snet.id,
+    data.azurerm_subnet.apim.id,
+  ]
 
   application_insights_instrumentation_key = data.azurerm_application_insights.application_insights.instrumentation_key
   system_identity_enabled                  = true
@@ -104,6 +107,10 @@ module "io_sign_issuer_func_staging_slot" {
   )
 
   subnet_id = module.io_sign_snet.id
+  allowed_subnets = [
+    module.io_sign_snet.id,
+    data.azurerm_subnet.apim.id,
+  ]
 
   tags = var.tags
 }
