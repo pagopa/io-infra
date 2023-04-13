@@ -317,6 +317,7 @@ variable "redis_common" {
     rdb_backup_enabled            = bool
     rdb_backup_frequency          = number
     rdb_backup_max_snapshot_count = number
+    redis_version                 = string
   })
   description = "Redis Common configuration"
 }
