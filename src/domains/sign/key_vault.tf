@@ -6,20 +6,21 @@ module "key_vault_secrets" {
 
   secrets = [
     "IoServicesSubscriptionKey",
-    "TokenizerApiSubscriptionKey",
     "io-fn-sign-issuer-key",
+    "io-fn-sign-support-key",
     "NamirialPassword",
-    "SpidAssertionMock",
+    "NamirialTestPassword",
     "SelfCareEventHubConnectionString",
     "SelfCareApiKey",
     "SlackWebhookUrl",
     "LollipopPrimaryApiKey",
-    "LollipopSecondaryApiKey"
+    "LollipopSecondaryApiKey",
+    "PdvTokenizerApiKey"
   ]
 }
 
 module "key_vault" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//key_vault?ref=v4.1.3"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//key_vault?ref=v6.2.2"
 
   name                       = format("%s-%s-kv", local.product, var.domain)
   location                   = azurerm_resource_group.sec_rg.location

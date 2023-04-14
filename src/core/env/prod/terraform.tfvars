@@ -82,6 +82,7 @@ redis_common = {
   rdb_backup_enabled            = true
   rdb_backup_frequency          = 60
   rdb_backup_max_snapshot_count = 1
+  redis_version                 = "6"
 }
 
 # apim
