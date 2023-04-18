@@ -17,6 +17,11 @@ data "azurerm_key_vault_secret" "fn_app_AZURE_NH_ENDPOINT" {
   key_vault_id = module.key_vault_common.id
 }
 
+data "azurerm_key_vault_secret" "fn_app_beta_users" {
+  name         = "io-fn-services-BETA-USERS" # reuse common beta list (array of CF)
+  key_vault_id = module.key_vault_common.id
+}
+
 #
 # STORAGE
 #
@@ -85,6 +90,9 @@ locals {
       "AzureWebJobs.StoreSpidLogs.Disabled"            = "1"
       "AzureWebJobs.HandleNHNotificationCall.Disabled" = "1"
 
+      BETA_USERS = data.azurerm_key_vault_secret.fn_app_beta_users.value
+      # Enable use of templated email
+      FF_TEMPLATE_EMAIL = "BETA"
       # Cashback welcome message
       IS_CASHBACK_ENABLED = "false"
       # Only national service
