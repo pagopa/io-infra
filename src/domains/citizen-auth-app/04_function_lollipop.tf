@@ -284,3 +284,55 @@ resource "azurerm_monitor_autoscale_setting" "function_lollipop" {
     }
   }
 }
+
+# ---------------------------------
+# Alerts
+# ---------------------------------
+
+resource "azurerm_monitor_scheduled_query_rules_alert_v2" "alert_function_lollipop_HandlePubKeyRevoke_failure" {
+  count = var.lollipop_enabled ? 1 : 0
+
+  name                = "[${upper(var.domain)}|${module.function_lollipop[0].name}] The revocation of one or more PubKeys has failed"
+  resource_group_name = data.azurerm_resource_group.monitor_rg.name
+  location            = data.azurerm_resource_group.monitor_rg.location
+
+  // check once per day
+  evaluation_frequency = "P1D"
+  window_duration      = "P1D"
+  scopes               = [data.azurerm_application_insights.application_insights.id]
+  severity             = 1
+  criteria {
+    query                   = <<-QUERY
+exceptions
+| where cloud_RoleName == "${module.function_lollipop[0].name}"
+| where outerMessage startswith "HandlePubKeyRevoke|"
+| extend 
+  event_name = tostring(customDimensions.name),
+  event_maxRetryCount = toint(customDimensions.maxRetryCount),
+  event_retryCount = toint(customDimensions.retryCount),
+  event_assertionRef = tostring(customDimensions.assertionRef),
+  event_detail = tostring(customDimensions.detail),
+  event_fatal = tostring(customDimensions.fatal), 
+  event_isSuccess = tostring(customDimensions.isSuccess), 
+  event_modelId = tostring(customDimensions.modelId)
+| where event_name == "lollipop.pubKeys.revoke.failure" and event_retryCount == event_maxRetryCount-1
+      QUERY
+    time_aggregation_method = "Count"
+    threshold               = 1
+    operator                = "GreaterThanOrEqual"
+
+    failing_periods {
+      minimum_failing_periods_to_trigger_alert = 1
+      number_of_evaluation_periods             = 1
+    }
+  }
+
+  auto_mitigation_enabled = false
+  description             = "One or more PubKey has not been revoked. Please, check the poison-queue and re-schedule the operation."
+  enabled                 = true
+  action {
+    action_groups = [data.azurerm_monitor_action_group.quarantine_error_action_group.id]
+  }
+
+  tags = var.tags
+}
