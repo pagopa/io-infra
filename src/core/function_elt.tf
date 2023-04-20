@@ -2,7 +2,6 @@ locals {
   function_elt = {
     app_settings = {
       FUNCTIONS_WORKER_RUNTIME       = "node"
-      WEBSITE_NODE_DEFAULT_VERSION   = "18.13.0"
       FUNCTIONS_WORKER_PROCESS_COUNT = 4
       NODE_ENV                       = "production"
 
@@ -137,7 +136,7 @@ module "function_elt" {
   health_check_path                        = "/api/v1/info"
   subnet_id                                = module.function_elt_snetout.id
   runtime_version                          = "~4"
-  linux_fx_version                         = null
+  linux_fx_version                         = "NODE|18"
   application_insights_instrumentation_key = azurerm_application_insights.application_insights.instrumentation_key
 
   app_service_plan_info = {
