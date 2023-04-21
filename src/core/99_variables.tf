@@ -306,6 +306,11 @@ variable "cidr_subnet_fnlollipop" {
   description = "Function Lollipop address space."
 }
 
+variable "cidr_subnet_continua" {
+  type        = list(string)
+  description = "continua address space."
+}
+
 ## REDIS COMMON ##
 variable "redis_common" {
   type = object({
@@ -369,6 +374,11 @@ variable "app_gateway_developerportal_backend_io_italia_it_certificate_name" {
 variable "app_gateway_api_io_selfcare_pagopa_it_certificate_name" {
   type        = string
   description = "Application gateway api certificate name on Key Vault"
+}
+
+variable "app_gateway_continua_io_pagopa_it_certificate_name" {
+  type        = string
+  description = "Application gateway continua certificate name on Key Vault"
 }
 
 variable "app_gateway_min_capacity" {
@@ -1106,4 +1116,14 @@ variable "citizen_auth_assertion_storage_name" {
   type        = string
   description = "Use storage name from citizen_auth domain"
   default     = "lollipop-assertions-st"
+}
+
+
+################################
+# App Continua - DynamicLink
+################################
+
+variable "continua_appservice_sku" {
+  type        = string
+  description = "The SKU for the AppService Plan relative to Continua"
 }
