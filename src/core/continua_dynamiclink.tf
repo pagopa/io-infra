@@ -11,7 +11,19 @@ locals {
     APPINSIGHTS_INSTRUMENTATIONKEY = azurerm_application_insights.application_insights.instrumentation_key
 
     NODE_ENV     = "production"
+    PORT         = "3000"
     FALLBACK_URL = "https://io.italia.it"
+
+    # iOS
+    FALLBACK_URL_ON_IOS = "https://apps.apple.com/it/app/io/id1501681835"
+    IOS_APP_ID          = "M2X5YQ4BJ7"
+    IOS_BUNDLE_ID       = "it.pagopa.app.io.rfc.linking"
+    IOS_APP_SCHEME      = "lkdemo://"
+
+    # Android
+    FALLBACK_URL_ON_ANDROID           = "https://play.google.com/store/apps/details?id=it.pagopa.io.app"
+    ANDROID_PACKAGE_NAME              = "com.linkingdemo"
+    ANDROID_SHA_256_CERT_FINGERPRINTS = "E3:2E:8F:45:1A:17:23:4E:39:24:AD:E6:F5:29:B7:F3:B8:10:76:D7:CD:65:0C:F0:19:B1:6D:9B:7F:CE:49:74,3D:85:05:98:3A:D0:C8:E0:16:DD:69:86:BB:BF:64:82:13:2B:72:46:C8:96:62:31:29:BF:12:3C:A2:CF:5F:5A"
   }
 }
 
@@ -69,7 +81,7 @@ module "appservice_continua" {
   resource_group_name = azurerm_resource_group.continua_rg.name
   location            = azurerm_resource_group.continua_rg.location
 
-  app_command_line  = "node /home/site/wwwroot/lib/index.js"
+  app_command_line  = "yarn start"
   health_check_path = "/health"
   node_version      = "18-lts"
   app_settings      = local.continua_appsvc_settings
@@ -100,7 +112,7 @@ module "appservice_continua_slot_staging" {
   app_service_id   = module.appservice_continua.id
   app_service_name = module.appservice_continua.name
 
-  app_command_line  = "node /home/site/wwwroot/lib/index.js"
+  app_command_line  = "yarn start"
   app_settings      = local.continua_appsvc_settings
   health_check_path = "/health"
   node_version      = "18-lts"
