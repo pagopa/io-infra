@@ -53,7 +53,7 @@ module "function_app_async" {
   health_check_path   = "/api/v1/info"
 
   os_type          = "linux"
-  linux_fx_version = "NODE|18"
+  linux_fx_version = "NODE|14"
   runtime_version  = "~4"
 
   always_on                                = "true"
