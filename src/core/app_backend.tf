@@ -569,7 +569,7 @@ module "appservice_app_backendl1_slot_staging" {
   location            = azurerm_resource_group.rg_linux.location
 
   always_on         = true
-  linux_fx_version  = "NODE|14-lts"
+  linux_fx_version  = "NODE|18-lts"
   app_command_line  = local.app_backend.app_command_line
   health_check_path = "/ping"
 
@@ -787,7 +787,7 @@ module "appservice_app_backendl2_slot_staging" {
   location            = azurerm_resource_group.rg_linux.location
 
   always_on         = true
-  linux_fx_version  = "NODE|14-lts"
+  linux_fx_version  = "NODE|18-lts"
   app_command_line  = local.app_backend.app_command_line
   health_check_path = "/ping"
 
@@ -1005,7 +1005,7 @@ module "appservice_app_backendli_slot_staging" {
   location            = azurerm_resource_group.rg_linux.location
 
   always_on         = true
-  linux_fx_version  = "NODE|14-lts"
+  linux_fx_version  = "NODE|18-lts"
   app_command_line  = local.app_backend.app_command_line
   health_check_path = "/ping"
 
