@@ -293,8 +293,8 @@ resource "azurerm_monitor_scheduled_query_rules_alert_v2" "alert_function_lollip
   count = var.lollipop_enabled ? 1 : 0
 
   name                = "[${upper(var.domain)}|${module.function_lollipop[0].name}] The revocation of one or more PubKeys has failed"
-  resource_group_name = data.azurerm_resource_group.monitor_rg.name
-  location            = data.azurerm_resource_group.monitor_rg.location
+  resource_group_name = azurerm_resource_group.lollipop_rg[0].name
+  location            = var.location
 
   // check once per day
   evaluation_frequency = "P1D"
