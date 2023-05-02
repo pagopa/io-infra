@@ -477,6 +477,10 @@ module "app_gw" {
             header_value = "{var_client_ip}"
           },
           {
+            header_name  = "X-Forwarded-Host"
+            header_value = "{var_host}"
+          },
+          {
             header_name  = "X-Client-Ip"
             header_value = "{var_client_ip}"
           },
