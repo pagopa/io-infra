@@ -3,6 +3,16 @@ data "azurerm_application_insights" "application_insights" {
   resource_group_name = "io-p-rg-common"
 }
 
+data "azurerm_key_vault_secret" "monitor_fci_tech_email" {
+  name         = "monitor-fci-tech-email"
+  key_vault_id = module.key_vault.id
+}
+
+data "azurerm_key_vault_secret" "monitor_fci_tech_slack_email" {
+  name         = "monitor-fci-tech-slack"
+  key_vault_id = module.key_vault.id
+}
+
 data "azurerm_monitor_action_group" "slack" {
   resource_group_name = "io-p-rg-common"
   name                = "SlackPagoPA"
@@ -11,6 +21,34 @@ data "azurerm_monitor_action_group" "slack" {
 data "azurerm_monitor_action_group" "email" {
   resource_group_name = "io-p-rg-common"
   name                = "EmailPagoPA"
+}
+
+resource "azurerm_monitor_action_group" "email_fci_tech" {
+  name                = "EmailFirmaConIoTech"
+  resource_group_name = azurerm_resource_group.integration_rg.name
+  short_name          = "EmailFCITech"
+
+  email_receiver {
+    name                    = "sendtooperations"
+    email_address           = data.azurerm_key_vault_secret.monitor_fci_tech_email.value
+    use_common_alert_schema = true
+  }
+
+  tags = var.tags
+}
+
+resource "azurerm_monitor_action_group" "slack_fci_tech" {
+  name                = "SlackFirmaConIoTech"
+  resource_group_name = azurerm_resource_group.integration_rg.name
+  short_name          = "SlackFCITech"
+
+  email_receiver {
+    name                    = "sendtoslack"
+    email_address           = data.azurerm_key_vault_secret.monitor_fci_tech_slack_email.value
+    use_common_alert_schema = true
+  }
+
+  tags = var.tags
 }
 
 # issuer
@@ -38,6 +76,14 @@ resource "azurerm_monitor_metric_alert" "io_sign_issuer_http_server_errors" {
   action {
     action_group_id = data.azurerm_monitor_action_group.slack.id
   }
+
+  action {
+    action_group_id = azurerm_monitor_action_group.email_fci_tech.id
+  }
+
+  action {
+    action_group_id = azurerm_monitor_action_group.slack_fci_tech.id
+  }
 }
 
 resource "azurerm_monitor_metric_alert" "io_sign_issuer_response_time" {
@@ -63,6 +109,14 @@ resource "azurerm_monitor_metric_alert" "io_sign_issuer_response_time" {
 
   action {
     action_group_id = data.azurerm_monitor_action_group.slack.id
+  }
+
+  action {
+    action_group_id = azurerm_monitor_action_group.email_fci_tech.id
+  }
+
+  action {
+    action_group_id = azurerm_monitor_action_group.slack_fci_tech.id
   }
 }
 
@@ -91,6 +145,14 @@ resource "azurerm_monitor_metric_alert" "io_sign_user_http_server_errors" {
   action {
     action_group_id = data.azurerm_monitor_action_group.slack.id
   }
+
+  action {
+    action_group_id = azurerm_monitor_action_group.email_fci_tech.id
+  }
+
+  action {
+    action_group_id = azurerm_monitor_action_group.slack_fci_tech.id
+  }
 }
 
 resource "azurerm_monitor_metric_alert" "io_sign_user_response_time" {
@@ -116,6 +178,14 @@ resource "azurerm_monitor_metric_alert" "io_sign_user_response_time" {
 
   action {
     action_group_id = data.azurerm_monitor_action_group.slack.id
+  }
+
+  action {
+    action_group_id = azurerm_monitor_action_group.email_fci_tech.id
+  }
+
+  action {
+    action_group_id = azurerm_monitor_action_group.slack_fci_tech.id
   }
 }
 
@@ -144,6 +214,14 @@ resource "azurerm_monitor_metric_alert" "io_sign_support_http_server_errors" {
   action {
     action_group_id = data.azurerm_monitor_action_group.slack.id
   }
+
+  action {
+    action_group_id = azurerm_monitor_action_group.email_fci_tech.id
+  }
+
+  action {
+    action_group_id = azurerm_monitor_action_group.slack_fci_tech.id
+  }
 }
 
 resource "azurerm_monitor_metric_alert" "io_sign_support_response_time" {
@@ -169,5 +247,13 @@ resource "azurerm_monitor_metric_alert" "io_sign_support_response_time" {
 
   action {
     action_group_id = data.azurerm_monitor_action_group.slack.id
+  }
+
+  action {
+    action_group_id = azurerm_monitor_action_group.email_fci_tech.id
+  }
+
+  action {
+    action_group_id = azurerm_monitor_action_group.slack_fci_tech.id
   }
 }
