@@ -130,6 +130,14 @@ ehns_ip_rules = [
   {
     ip_mask = "18.192.147.151", # PDND
     action  = "Allow"
+  },
+  {
+    ip_mask = "18.159.227.69", # PDND
+    action  = "Allow"
+  },
+  {
+    ip_mask = "3.126.198.129", # PDND
+    action  = "Allow"
   }
 ]
 
