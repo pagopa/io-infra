@@ -104,6 +104,14 @@ integration_hub = {
     {
       ip_mask = "18.192.147.151", # PDND-DATALAKE
       action  = "Allow"
+    },
+    {
+      ip_mask = "18.159.227.69", # PDND-DATALAKE
+      action  = "Allow"
+    },
+    {
+      ip_mask = "3.126.198.129", # PDND-DATALAKE
+      action  = "Allow"
     }
   ]
   hubs = [
