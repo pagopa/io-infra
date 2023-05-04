@@ -10,20 +10,22 @@ locals {
 
     APPINSIGHTS_INSTRUMENTATIONKEY = azurerm_application_insights.application_insights.instrumentation_key
 
-    NODE_ENV     = "production"
-    PORT         = "3000"
-    FALLBACK_URL = "https://io.italia.it"
+    NODE_ENV = "production"
+    PORT     = "3000"
+
+    # Fallback
+    FALLBACK_URL            = "https://io.italia.it"
+    FALLBACK_URL_ON_IOS     = "https://apps.apple.com/it/app/io/id1501681835"
+    FALLBACK_URL_ON_ANDROID = "https://play.google.com/store/apps/details?id=it.pagopa.io.app"
 
     # iOS
-    FALLBACK_URL_ON_IOS = "https://apps.apple.com/it/app/io/id1501681835"
-    IOS_APP_ID          = "M2X5YQ4BJ7"
-    IOS_BUNDLE_ID       = "it.pagopa.app.io.rfc.linking"
-    IOS_APP_SCHEME      = "lkdemo://"
+    IOS_APP_ID     = "M2X5YQ4BJ7"
+    IOS_BUNDLE_ID  = "it.pagopa.app.io"
+    IOS_APP_SCHEME = "ioit://"
 
     # Android
-    FALLBACK_URL_ON_ANDROID           = "https://play.google.com/store/apps/details?id=it.pagopa.io.app"
-    ANDROID_PACKAGE_NAME              = "com.linkingdemo"
-    ANDROID_SHA_256_CERT_FINGERPRINTS = "E3:2E:8F:45:1A:17:23:4E:39:24:AD:E6:F5:29:B7:F3:B8:10:76:D7:CD:65:0C:F0:19:B1:6D:9B:7F:CE:49:74,3D:85:05:98:3A:D0:C8:E0:16:DD:69:86:BB:BF:64:82:13:2B:72:46:C8:96:62:31:29:BF:12:3C:A2:CF:5F:5A"
+    ANDROID_PACKAGE_NAME              = "it.pagopa.io.app"
+    ANDROID_SHA_256_CERT_FINGERPRINTS = "7D:E4:FE:3E:AA:E0:83:FF:CD:8B:07:03:01:E8:65:02:D3:F1:EA:D1:DD:66:AC:14:2B:AD:7C:54:47:55:4F:82"
   }
 }
 
