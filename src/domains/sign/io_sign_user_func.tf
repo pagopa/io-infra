@@ -33,6 +33,7 @@ locals {
       LollipopApiBasePath               = "https://api.io.pagopa.it"
       LollipopApiKey                    = module.key_vault_secrets.values["LollipopPrimaryApiKey"].value
       SlackWebhookUrl                   = module.key_vault_secrets.values["SlackWebhookUrl"].value
+      IoLinkBaseUrl                     = "https://continua.io.pagopa.it"
     }
   }
 }
