@@ -92,7 +92,7 @@ locals {
 
       BETA_USERS = data.azurerm_key_vault_secret.fn_app_beta_users.value
       # Enable use of templated email
-      FF_TEMPLATE_EMAIL = "BETA"
+      FF_TEMPLATE_EMAIL = "ALL"
       # Cashback welcome message
       IS_CASHBACK_ENABLED = "false"
       # Only national service
