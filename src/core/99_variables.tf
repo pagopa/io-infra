@@ -83,6 +83,12 @@ variable "dns_zone_io_selfcare" {
   description = "The dns subdomain."
 }
 
+variable "dns_cname_mailup" {
+  type        = string
+  default     = "sender.io.italia.io"
+  description = "The cname used by Mailup for SPF authentication."
+}
+
 # azure devops
 variable "azdo_sp_tls_cert_enabled" {
   type        = string

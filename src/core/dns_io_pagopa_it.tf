@@ -77,3 +77,12 @@ resource "azurerm_dns_a_record" "continua_io_pagopa_it" {
 
   tags = var.tags
 }
+
+# mailup
+resource "azurerm_dns_cname_record" "mailup" {
+  name                = "mailup"
+  zone_name           = azurerm_dns_zone.io_pagopa_it[0].name
+  resource_group_name = azurerm_resource_group.rg_external.name
+  ttl                 = var.dns_default_ttl_sec
+  record              = var.dns_cname_mailup
+}
