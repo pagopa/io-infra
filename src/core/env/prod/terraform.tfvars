@@ -23,7 +23,7 @@ ddos_protection_plan = {
   id     = "/subscriptions/0da48c97-355f-4050-a520-f11a18b8be90/resourceGroups/sec-p-ddos/providers/Microsoft.Network/ddosProtectionPlans/sec-p-ddos-protection"
   enable = true
 }
-# cidr_vnet         = ["10.0.0.0/16"]
+cidr_common_vnet     = ["10.0.0.0/16"]
 cidr_weu_beta_vnet   = ["10.10.0.0/16"]
 cidr_weu_prod01_vnet = ["10.11.0.0/16"]
 cidr_weu_prod02_vnet = ["10.12.0.0/16"]
@@ -34,8 +34,10 @@ cidr_subnet_fnelt                          = ["10.0.11.0/24"]
 cidr_subnet_fnpblevtdispatcher             = ["10.0.12.0/24"]
 cidr_subnet_appgateway                     = ["10.0.13.0/24"]
 cidr_subnet_redis_apim                     = ["10.0.14.0/24"]
-cidr_subnet_shared_1                       = ["10.0.16.0/26"]
 cidr_subnet_fnadmin                        = ["10.0.15.0/26"]
+cidr_subnet_fnpblevtdispatcherv4           = ["10.0.15.64/26"]
+cidr_subnet_shared_1                       = ["10.0.16.0/26"]
+cidr_subnet_fnlollipop                     = ["10.0.17.0/26"]
 cidr_subnet_apim                           = ["10.0.101.0/24"]
 cidr_subnet_appmessages                    = ["10.0.127.0/24", "10.0.128.0/24"]
 cidr_subnet_fnmessagescqrs                 = ["10.0.129.0/24"]
@@ -54,8 +56,11 @@ cidr_subnet_prod01_push_notif = ["10.0.141.0/26"]
 cidr_subnet_appbackendl1 = ["10.0.152.0/24"]
 cidr_subnet_appbackendl2 = ["10.0.153.0/24"]
 cidr_subnet_appbackendli = ["10.0.154.0/24"]
+cidr_subnet_redis_common = ["10.0.200.0/24"]
+cidr_subnet_pendpoints   = ["10.0.240.0/23"]
 cidr_subnet_azdoa        = ["10.0.250.0/24"]
 cidr_subnet_dnsforwarder = ["10.0.252.8/29"]
+cidr_subnet_continua     = ["10.0.17.64/26"]
 
 app_gateway_api_certificate_name                                  = "api-io-pagopa-it"
 app_gateway_api_mtls_certificate_name                             = "api-mtls-io-pagopa-it"
@@ -64,13 +69,23 @@ app_gateway_api_io_italia_it_certificate_name                     = "api-io-ital
 app_gateway_app_backend_io_italia_it_certificate_name             = "app-backend-io-italia-it"
 app_gateway_developerportal_backend_io_italia_it_certificate_name = "developerportal-backend-io-italia-it"
 app_gateway_api_io_selfcare_pagopa_it_certificate_name            = "api-io-selfcare-pagopa-it"
+app_gateway_continua_io_pagopa_it_certificate_name                = "continua-io-pagopa-it"
 app_gateway_min_capacity                                          = 4 # 4 capacity=baseline, 10 capacity=high volume event, 15 capacity=very high volume event
 app_gateway_max_capacity                                          = 50
 app_gateway_alerts_enabled                                        = true
 
-# redis
-redis_apim_sku_name = "Premium"
-redis_apim_family   = "P"
+## REDIS COMMON ##
+redis_common = {
+  capacity                      = 2
+  shard_count                   = 4
+  family                        = "P"
+  sku_name                      = "Premium"
+  public_network_access_enabled = true
+  rdb_backup_enabled            = true
+  rdb_backup_frequency          = 60
+  rdb_backup_max_snapshot_count = 1
+  redis_version                 = "6"
+}
 
 # apim
 apim_publisher_name = "IO"
@@ -114,6 +129,14 @@ ehns_alerts_enabled           = true
 ehns_ip_rules = [
   {
     ip_mask = "18.192.147.151", # PDND
+    action  = "Allow"
+  },
+  {
+    ip_mask = "18.159.227.69", # PDND
+    action  = "Allow"
+  },
+  {
+    ip_mask = "3.126.198.129", # PDND
     action  = "Allow"
   }
 ]
@@ -251,6 +274,12 @@ function_eucovidcert_sku_size          = "P1v3"
 function_eucovidcert_autoscale_minimum = 1
 function_eucovidcert_autoscale_maximum = 20
 function_eucovidcert_autoscale_default = 10
+
+# App Continua DynamicLynk
+
+# TODO remove when the terraform provider for Azure will support SKU P0v3
+# Up to then, the work-around is defining as P1v3 and changing via console
+continua_appservice_sku = "P1v3"
 
 eventhubs = [
   {
@@ -417,6 +446,8 @@ eventhubs = [
 
 # PN Service Id
 pn_service_id = "01G40DWQGKY5GRWSNM4303VNRP"
+# PN Test Endpoint
+pn_test_endpoint = "https://api-io.uat.notifichedigitali.it"
 
 
 # TP Mock Service Id

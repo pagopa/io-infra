@@ -1,0 +1,110 @@
+name: Continuous Integration on prod citizen-auth
+
+on:
+  workflow_dispatch:
+  pull_request:
+    types:
+      - opened
+      - edited
+      - synchronize
+      - reopened
+    paths:
+      - "src/domains/citizen-auth**"
+      - ".github/workflows/prod**"
+
+permissions:
+  id-token: write
+  contents: read
+
+env:
+  DIR: "src/domains/citizen-auth"
+  AZURE_ENVIRONMENT: prod
+
+jobs:
+  create_runner:
+    name: Create Runner
+    runs-on: ubuntu-22.04
+    environment: prod-runner
+    outputs:
+      runner_name: ${{ steps.create_github_runner.outputs.runner_name }}
+    steps:
+      - name: Create GitHub Runner
+        id: create_github_runner
+        # from https://github.com/pagopa/github-self-hosted-runner-azure-create-action/commits/main
+        uses: pagopa/github-self-hosted-runner-azure-create-action@63534a04613b420ce6474ccbb52ac7884129ff6f
+        with:
+          client_id: ${{ secrets.AZURE_CLIENT_ID }}
+          tenant_id: ${{ secrets.AZURE_TENANT_ID }}
+          subscription_id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+          container_app_environment_name: ${{ secrets.AZURE_CONTAINER_APP_ENVIRONMENT_NAME }}
+          resource_group_name: ${{ secrets.AZURE_RESOURCE_GROUP_NAME }}
+          pat_token: ${{ secrets.BOT_TOKEN }}
+          self_hosted_runner_image_tag: v1.4.1@sha256:97aebedab1fe4ccfca0050726f37a76d18dcfa4165493ee2f823454897548ff9
+
+  terraform_plan_job:
+    name: Terraform Plan
+    runs-on: [self-hosted, "${{ needs.create_runner.outputs.runner_name }}"]
+    environment: prod-ci
+    needs: create_runner
+    steps:
+      - name: Checkout
+        id: checkout
+        # from https://github.com/actions/checkout/commits/main
+        uses: actions/checkout@1f9a0c22da41e6ebfa534300ef656657ea2c6707
+        with:
+          persist-credentials: false
+          fetch-depth: 0
+
+      - name: Setup terraform
+        id: setup-version
+        # https://github.com/pagopa/terraform-install-action/commits/main
+        uses: pagopa/terraform-install-action@1f76f593176e58c423b88d72273a612ba7ba430b
+
+      - name: Terraform plan common
+        # from https://github.com/pagopa/terraform-plan-azure-action/commits/main
+        uses: pagopa/terraform-plan-azure-action@392aca28cbb33f5dc28215dfb72385e136fd813b
+        with:
+          client_id: ${{ secrets.AZURE_CLIENT_ID }}
+          tenant_id: ${{ secrets.AZURE_TENANT_ID }}
+          subscription_id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+          dir: ${{ env.DIR }}-common
+          azure_environment: prod
+
+      - name: Terraform plan weu-beta
+        # from https://github.com/pagopa/terraform-plan-azure-action/commits/main
+        uses: pagopa/terraform-plan-azure-action@392aca28cbb33f5dc28215dfb72385e136fd813b
+        with:
+          client_id: ${{ secrets.AZURE_CLIENT_ID }}
+          tenant_id: ${{ secrets.AZURE_TENANT_ID }}
+          subscription_id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+          dir: ${{ env.DIR }}-app
+          azure_environment: weu-beta
+
+      - name: Terraform plan weu-prod01
+        # from https://github.com/pagopa/terraform-plan-azure-action/commits/main
+        uses: pagopa/terraform-plan-azure-action@392aca28cbb33f5dc28215dfb72385e136fd813b
+        with:
+          client_id: ${{ secrets.AZURE_CLIENT_ID }}
+          tenant_id: ${{ secrets.AZURE_TENANT_ID }}
+          subscription_id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+          dir: ${{ env.DIR }}-app
+          azure_environment: weu-prod01
+
+  cleanup_runner:
+    name: Cleanup Runner
+    if: always()
+    runs-on: ubuntu-22.04
+    environment: prod-runner
+    needs: [create_runner, terraform_plan_job]
+    steps:
+      - name: Cleanup GitHub Runner
+        id: cleanup_github_runner
+        # from https://github.com/pagopa/github-self-hosted-runner-azure-cleanup-action/commits/main
+        uses: pagopa/github-self-hosted-runner-azure-cleanup-action@97731a35e6ffc79b66c4dfd2aae5e4fd04e3ebb5
+        with:
+          client_id: ${{ secrets.AZURE_CLIENT_ID }}
+          tenant_id: ${{ secrets.AZURE_TENANT_ID }}
+          subscription_id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+          resource_group_name: ${{ secrets.AZURE_RESOURCE_GROUP_NAME }}
+          runner_name: ${{ needs.create_runner.outputs.runner_name }}
+          pat_token: ${{ secrets.BOT_TOKEN }}

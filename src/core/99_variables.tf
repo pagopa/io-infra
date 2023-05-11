@@ -39,6 +39,25 @@ variable "tags" {
   }
 }
 
+## Monitor
+variable "law_sku" {
+  type        = string
+  description = "Sku of the Log Analytics Workspace"
+  default     = "PerGB2018"
+}
+
+variable "law_retention_in_days" {
+  type        = number
+  description = "The workspace data retention in days"
+  default     = 90
+}
+
+variable "law_daily_quota_gb" {
+  type        = number
+  description = "The workspace daily quota for ingestion in GB."
+  default     = -1
+}
+
 # DNS
 variable "dns_default_ttl_sec" {
   type        = number
@@ -136,6 +155,11 @@ variable "ddos_protection_plan" {
   default = null
 }
 
+variable "cidr_common_vnet" {
+  type        = list(string)
+  description = "Common Virtual network cidr."
+}
+
 variable "cidr_weu_beta_vnet" {
   type        = list(string)
   description = "Beta Virtual network cidr."
@@ -152,6 +176,11 @@ variable "cidr_weu_prod02_vnet" {
 }
 
 ## Subnet CIRDS
+variable "cidr_subnet_redis_common" {
+  type        = list(string)
+  description = "Redis common network address space."
+}
+
 variable "cidr_subnet_eventhub" {
   type        = list(string)
   description = "Eventhub network address space."
@@ -163,6 +192,11 @@ variable "cidr_subnet_fnelt" {
 }
 
 variable "cidr_subnet_fnpblevtdispatcher" {
+  type        = list(string)
+  description = "function-publiceventdispatcher network address space."
+}
+
+variable "cidr_subnet_fnpblevtdispatcherv4" {
   type        = list(string)
   description = "function-publiceventdispatcher network address space."
 }
@@ -262,6 +296,37 @@ variable "cidr_subnet_fnadmin" {
   description = "Function Admin address space."
 }
 
+variable "cidr_subnet_pendpoints" {
+  type        = list(string)
+  description = "Private Endpoints address space."
+}
+
+variable "cidr_subnet_fnlollipop" {
+  type        = list(string)
+  description = "Function Lollipop address space."
+}
+
+variable "cidr_subnet_continua" {
+  type        = list(string)
+  description = "continua address space."
+}
+
+## REDIS COMMON ##
+variable "redis_common" {
+  type = object({
+    capacity                      = number
+    shard_count                   = number
+    family                        = string
+    sku_name                      = string
+    public_network_access_enabled = bool
+    rdb_backup_enabled            = bool
+    rdb_backup_frequency          = number
+    rdb_backup_max_snapshot_count = number
+    redis_version                 = string
+  })
+  description = "Redis Common configuration"
+}
+
 ## VPN ##
 variable "vpn_sku" {
   type        = string
@@ -309,6 +374,11 @@ variable "app_gateway_developerportal_backend_io_italia_it_certificate_name" {
 variable "app_gateway_api_io_selfcare_pagopa_it_certificate_name" {
   type        = string
   description = "Application gateway api certificate name on Key Vault"
+}
+
+variable "app_gateway_continua_io_pagopa_it_certificate_name" {
+  type        = string
+  description = "Application gateway continua certificate name on Key Vault"
 }
 
 variable "app_gateway_min_capacity" {
@@ -478,19 +548,6 @@ EOD
       }
     ))
   }))
-}
-
-# services
-variable "service_alerts_enabled" {
-  description = "Enable services alerts"
-  type        = bool
-  default     = true
-}
-
-variable "service_availability_alerts_threshold" {
-  description = "Threshold availability services alert"
-  type        = number
-  default     = 99.0
 }
 
 # eucovidcert
@@ -891,6 +948,19 @@ variable "pn_service_id" {
   description = "The Service ID of PN service"
   default     = "01G40DWQGKY5GRWSNM4303VNRP"
 }
+# PN Test Endpoint
+variable "pn_test_endpoint" {
+  type        = string
+  description = "The endpoint of PN (test env)"
+}
+
+# io-sign service Id
+variable "io_sign_service_id" {
+  type        = string
+  description = "The Service ID of io-sign service"
+  default     = "01GQQZ9HF5GAPRVKJM1VDAVFHM"
+}
+
 
 # Function CGN
 variable "plan_cgn_kind" {
@@ -1026,4 +1096,39 @@ variable "third_party_mock_service_id" {
   type        = string
   description = "The Service ID of the Third Party Mock service"
   default     = "01GQQDPM127KFGG6T3660D5TXD"
+}
+
+# Citizen auth
+
+variable "citizen_auth_domain" {
+  type    = string
+  default = "citizen-auth"
+}
+
+variable "citizen_auth_product" {
+  type        = string
+  description = "Use product name from citizen_auth domain locals"
+  default     = "io-p"
+}
+
+variable "citizen_auth_revoke_queue_name" {
+  type        = string
+  description = "Use queue storage name from citizen_auth domain storage"
+  default     = "pubkeys-revoke"
+}
+
+variable "citizen_auth_assertion_storage_name" {
+  type        = string
+  description = "Use storage name from citizen_auth domain"
+  default     = "lollipop-assertions-st"
+}
+
+
+################################
+# App Continua - DynamicLink
+################################
+
+variable "continua_appservice_sku" {
+  type        = string
+  description = "The SKU for the AppService Plan relative to Continua"
 }

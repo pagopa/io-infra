@@ -10,11 +10,6 @@ data "azurerm_cosmosdb_account" "cosmos_api" {
   resource_group_name = format("%s-rg-internal", local.project)
 }
 
-data "azurerm_redis_cache" "redis_common" {
-  name                = format("%s-redis-common", local.project)
-  resource_group_name = format("%s-rg-common", local.project)
-}
-
 #
 # Function cgn
 #
@@ -30,47 +25,12 @@ data "azurerm_cosmosdb_account" "cosmos_cgn" {
 }
 
 #
-# Function services resources
-#
-
-data "azurerm_function_app" "fnapp_services" {
-  name                = format("%s-fn3-services", local.project)
-  resource_group_name = format("%s-rg-internal", local.project)
-}
-
-data "azurerm_subnet" "fnapp_services_subnet_out" {
-  name                 = "fn3services"
-  virtual_network_name = format("%s-vnet-common", local.project)
-  resource_group_name  = format("%s-rg-common", local.project)
-}
-
-#
 # Bonus vacanze resources
 #
 
 data "azurerm_function_app" "fnapp_bonus" {
   name                = format("%s-func-bonus", local.project)
   resource_group_name = format("%s-rg-internal", local.project)
-}
-
-#
-# EUCovicCert resources
-#
-
-data "azurerm_function_app" "fnapp_eucovidcert" {
-  name                = format("%s-fn3-eucovidcert", local.project)
-  resource_group_name = format("%s-rg-eucovidcert", local.project)
-}
-
-data "azurerm_key_vault_secret" "fnapp_eucovidcert_authtoken" {
-  name         = "funceucovidcert-KEY-PUBLICIOEVENTDISPATCHER"
-  key_vault_id = module.key_vault.id
-}
-
-data "azurerm_subnet" "fnapp_eucovidcert_subnet_out" {
-  name                 = "fn3eucovidcert"
-  virtual_network_name = format("%s-vnet-common", local.project)
-  resource_group_name  = format("%s-rg-common", local.project)
 }
 
 #
@@ -106,77 +66,24 @@ data "azurerm_storage_account" "notifications" {
   resource_group_name = format("%s-rg-internal", local.project)
 }
 
+#
+# LOLLIPOP
+#
+
+data "azurerm_storage_account" "lollipop_assertions_storage" {
+  name                = replace(format("%s-%s", var.citizen_auth_product, var.citizen_auth_assertion_storage_name), "-", "")
+  resource_group_name = format("%s-%s-data-rg", var.citizen_auth_product, var.citizen_auth_domain)
+}
+
 # todo migrate storage account and related resources
 locals {
   storage_account_notifications_queue_push_notifications = "push-notifications"
 }
 
-#
-# Private subnet
-#
-
-data "azurerm_subnet" "private_endpoints_subnet" {
-  name                 = "pendpoints"
-  virtual_network_name = format("%s-vnet-common", local.project)
-  resource_group_name  = format("%s-rg-common", local.project)
-}
-
-#
-# Private dns zones
-#
-
-data "azurerm_private_dns_zone" "privatelink_blob_core_windows_net" {
-  name                = "privatelink.blob.core.windows.net"
-  resource_group_name = format("%s-rg-common", local.project)
-}
-
-data "azurerm_private_dns_zone" "privatelink_queue_core_windows_net" {
-  name                = "privatelink.queue.core.windows.net"
-  resource_group_name = format("%s-rg-common", local.project)
-}
-
-data "azurerm_private_dns_zone" "privatelink_file_core_windows_net" {
-  name                = "privatelink.file.core.windows.net"
-  resource_group_name = format("%s-rg-common", local.project)
-}
-
-data "azurerm_private_dns_zone" "privatelink_table_core_windows_net" {
-  name                = "privatelink.table.core.windows.net"
-  resource_group_name = format("%s-rg-common", local.project)
-}
-
-data "azurerm_private_dns_zone" "privatelink_documents_azure_com" {
-  name                = "privatelink.documents.azure.com"
-  resource_group_name = format("%s-rg-common", local.project)
-}
-
 # KeyVault values - start
 data "azurerm_key_vault_secret" "services_exclusion_list" {
   name         = "io-fn-services-SERVICEID-EXCLUSION-LIST"
-  key_vault_id = data.azurerm_key_vault.common.id
-}
-
-#
-# Storage Accounts
-#
-data "azurerm_storage_account" "api" {
-  name                = "iopstapi"
-  resource_group_name = azurerm_resource_group.rg_internal.name
-}
-
-#
-# Redis
-#
-
-data "azurerm_redis_cache" "common" {
-  name                = "io-p-redis-common"
-  resource_group_name = "io-p-rg-common"
-}
-
-# CDN Assets storage account
-data "azurerm_storage_account" "cdnassets" {
-  name                = "iopstcdnassets"
-  resource_group_name = var.common_rg
+  key_vault_id = module.key_vault_common.id
 }
 
 # Event hubs
@@ -204,19 +111,19 @@ data "azurerm_eventhub_authorization_rule" "io-p-messages-weu-prod01-evh-ns_mess
 
 data "azurerm_key_vault_secret" "apim_services_subscription_key" {
   name         = "apim-IO-SERVICE-KEY"
-  key_vault_id = data.azurerm_key_vault.common.id
+  key_vault_id = module.key_vault_common.id
 }
 
 # MAILUP
 
 data "azurerm_key_vault_secret" "common_MAILUP_USERNAME" {
   name         = "common-MAILUP2-USERNAME"
-  key_vault_id = data.azurerm_key_vault.common.id
+  key_vault_id = module.key_vault_common.id
 }
 
 data "azurerm_key_vault_secret" "common_MAILUP_SECRET" {
   name         = "common-MAILUP2-SECRET"
-  key_vault_id = data.azurerm_key_vault.common.id
+  key_vault_id = module.key_vault_common.id
 }
 
 #
@@ -225,7 +132,7 @@ data "azurerm_key_vault_secret" "common_MAILUP_SECRET" {
 
 data "azurerm_key_vault_secret" "app_backend_PRE_SHARED_KEY" {
   name         = "appbackend-PRE-SHARED-KEY"
-  key_vault_id = data.azurerm_key_vault.common.id
+  key_vault_id = module.key_vault_common.id
 }
 
 
@@ -285,9 +192,9 @@ resource "azurerm_monitor_metric_alert" "cosmos_api_throttling_alert" {
 
 resource "azurerm_monitor_metric_alert" "iopstapi_throttling_low_availability" {
 
-  name                = "[IO-COMMONS | ${data.azurerm_storage_account.api.name}] Low Availability"
+  name                = "[IO-COMMONS | ${module.storage_api.name}] Low Availability"
   resource_group_name = azurerm_resource_group.rg_linux.name
-  scopes              = [data.azurerm_storage_account.api.id]
+  scopes              = [module.storage_api.id]
   # TODO: add Runbook for checking errors
   description   = "The average availability is less than 99.8%. Runbook: not needed."
   severity      = 0

@@ -10,7 +10,7 @@ locals {
       WEBSITE_DNS_SERVER                              = "168.63.129.16"
       WEBSITE_HEALTHCHECK_MAXPINGFAILURES             = "3"
 
-      APPINSIGHTS_INSTRUMENTATIONKEY = data.azurerm_application_insights.application_insights.instrumentation_key
+      APPINSIGHTS_INSTRUMENTATIONKEY = azurerm_application_insights.application_insights.instrumentation_key
 
       // ENVIRONMENT
       NODE_ENV = "production"
@@ -56,9 +56,11 @@ locals {
       IO_SIGN_API_KEY             = data.azurerm_key_vault_secret.app_backend_IO_SIGN_API_KEY.value
       CGN_OPERATOR_SEARCH_API_URL = "https://cgnonboardingportal-p-op.azurewebsites.net" # prod subscription
       CGN_OPERATOR_SEARCH_API_KEY = data.azurerm_key_vault_secret.app_backend_CGN_OPERATOR_SEARCH_API_KEY_PROD.value
-      EUCOVIDCERT_API_URL         = "http://${data.azurerm_function_app.fnapp_eucovidcert.default_hostname}/api/v1"
-      EUCOVIDCERT_API_KEY         = data.azurerm_key_vault_secret.app_backend_EUCOVIDCERT_API_KEY.value
+      EUCOVIDCERT_API_URL         = "https://${module.function_eucovidcert.default_hostname}/api/v1"
+      EUCOVIDCERT_API_KEY         = data.azurerm_key_vault_secret.fn_eucovidcert_API_KEY_APPBACKEND.value
       APP_MESSAGES_API_KEY        = data.azurerm_key_vault_secret.app_backend_APP_MESSAGES_API_KEY.value
+      LOLLIPOP_API_URL            = "https://io-p-weu-lollipop-fn.azurewebsites.net"
+      LOLLIPOP_API_KEY            = data.azurerm_key_vault_secret.app_backend_LOLLIPOP_API_KEY.value
 
       // EXPOSED API
       API_BASE_PATH                     = "/api/v1"
@@ -68,18 +70,19 @@ locals {
       EUCOVIDCERT_API_BASE_PATH         = "/api/v1/eucovidcert"
       MIT_VOUCHER_API_BASE_PATH         = "/api/v1/mitvoucher/auth"
       IO_SIGN_API_BASE_PATH             = "/api/v1/sign"
+      LOLLIPOP_API_BASE_PATH            = "/api/v1"
 
       // REDIS
-      REDIS_URL      = data.azurerm_redis_cache.redis_common.hostname
-      REDIS_PORT     = data.azurerm_redis_cache.redis_common.ssl_port
-      REDIS_PASSWORD = data.azurerm_redis_cache.redis_common.primary_access_key
+      REDIS_URL      = module.redis_common.hostname
+      REDIS_PORT     = module.redis_common.ssl_port
+      REDIS_PASSWORD = module.redis_common.primary_access_key
 
       // PUSH NOTIFICATIONS
       PRE_SHARED_KEY               = data.azurerm_key_vault_secret.app_backend_PRE_SHARED_KEY.value
-      ALLOW_NOTIFY_IP_SOURCE_RANGE = data.azurerm_subnet.fnapp_services_subnet_out.address_prefix
+      ALLOW_NOTIFY_IP_SOURCE_RANGE = "127.0.0.0/0"
 
       // LOCK / UNLOCK SESSION ENDPOINTS
-      ALLOW_SESSION_HANDLER_IP_SOURCE_RANGE = module.apim_snet.address_prefix
+      ALLOW_SESSION_HANDLER_IP_SOURCE_RANGE = module.apim_snet.address_prefixes[0]
 
       // PAGOPA
       PAGOPA_API_URL_PROD          = "https://api.platform.pagopa.it/checkout/auth/payments/v1"
@@ -173,12 +176,15 @@ locals {
       // Service ID PN
       PN_SERVICE_ID = var.pn_service_id
 
+      // Service ID IO-SIGN
+      IO_SIGN_SERVICE_ID = var.io_sign_service_id
+
       // PN Service Activation
       PN_ACTIVATION_BASE_PATH = "/api/v1/pn"
       PN_API_KEY              = data.azurerm_key_vault_secret.app_backend_PN_API_KEY.value
-      PN_API_KEY_UAT          = data.azurerm_key_vault_secret.app_backend_PN_API_KEY_UAT.value
+      PN_API_KEY_UAT          = data.azurerm_key_vault_secret.app_backend_PN_API_KEY_UAT_V2.value
       PN_API_URL              = "https://api-io.pn.pagopa.it"
-      PN_API_URL_UAT          = "https://api-io.coll.pn.pagopa.it"
+      PN_API_URL_UAT          = var.pn_test_endpoint
 
       // Third Party Services
       THIRD_PARTY_CONFIG_LIST = jsonencode([
@@ -197,11 +203,25 @@ locals {
           },
           testEnvironment = {
             testUsers = concat(split(",", local.test_users), split(",", data.azurerm_key_vault_secret.app_backend_PN_REAL_TEST_USERS.value)),
-            baseUrl   = "https://api-io.coll.pn.pagopa.it",
+            baseUrl   = var.pn_test_endpoint,
             detailsAuthentication = {
               type            = "API_KEY",
               header_key_name = "x-api-key",
-              key             = data.azurerm_key_vault_secret.app_backend_PN_API_KEY_UAT.value
+              key             = data.azurerm_key_vault_secret.app_backend_PN_API_KEY_UAT_V2.value
+            }
+          }
+        },
+        # Firma con IO (io-sign)
+        {
+          serviceId  = var.io_sign_service_id,
+          schemaKind = "IO-SIGN",
+          jsonSchema = "unused",
+          prodEnvironment = {
+            baseUrl = "https://io-p-sign-user-func.azurewebsites.net/api/v1/sign",
+            detailsAuthentication = {
+              type            = "API_KEY",
+              header_key_name = "X-Functions-Key",
+              key             = data.azurerm_key_vault_secret.app_backend_IO_SIGN_API_KEY.value
             }
           }
         },
@@ -222,7 +242,11 @@ locals {
       ])
 
       // LolliPOP
-      LOLLIPOP_ALLOWED_USER_AGENTS = "IO-App/2.23.0"
+      LOLLIPOP_ALLOWED_USER_AGENTS              = "IO-App/2.23.0"
+      LOLLIPOP_REVOKE_STORAGE_CONNECTION_STRING = data.azurerm_storage_account.lollipop_assertions_storage.primary_connection_string
+      LOLLIPOP_REVOKE_QUEUE_NAME                = var.citizen_auth_revoke_queue_name
+
+      FF_LOLLIPOP_ENABLED = "1"
     }
     app_settings_l1 = {
       IS_APPBACKENDLI = "false"
@@ -280,149 +304,154 @@ resource "azurerm_resource_group" "rg_linux" {
 
 data "azurerm_key_vault_secret" "app_backend_SAML_CERT" {
   name         = "appbackend-SAML-CERT"
-  key_vault_id = data.azurerm_key_vault.common.id
+  key_vault_id = module.key_vault_common.id
 }
 
 data "azurerm_key_vault_secret" "app_backend_SAML_KEY" {
   name         = "appbackend-SAML-KEY"
-  key_vault_id = data.azurerm_key_vault.common.id
+  key_vault_id = module.key_vault_common.id
 }
 
 data "azurerm_key_vault_secret" "app_backend_API_KEY" {
   name         = "funcapp-KEY-APPBACKEND"
-  key_vault_id = data.azurerm_key_vault.common.id
+  key_vault_id = module.key_vault_common.id
 }
 
 data "azurerm_key_vault_secret" "app_backend_BONUS_API_KEY" {
   name         = "funcbonus-KEY-APPBACKEND"
-  key_vault_id = data.azurerm_key_vault.common.id
+  key_vault_id = module.key_vault_common.id
 }
 
 data "azurerm_key_vault_secret" "app_backend_CGN_API_KEY" {
   name         = "funccgn-KEY-APPBACKEND"
-  key_vault_id = data.azurerm_key_vault.common.id
+  key_vault_id = module.key_vault_common.id
 }
 
 data "azurerm_key_vault_secret" "app_backend_IO_SIGN_API_KEY" {
   name         = "funciosign-KEY-APPBACKEND"
-  key_vault_id = data.azurerm_key_vault.common.id
+  key_vault_id = module.key_vault_common.id
 }
 
 data "azurerm_key_vault_secret" "app_backend_CGN_OPERATOR_SEARCH_API_KEY_PROD" {
   name         = "funccgnoperatorsearch-KEY-PROD-APPBACKEND"
-  key_vault_id = data.azurerm_key_vault.common.id
+  key_vault_id = module.key_vault_common.id
 }
 
 data "azurerm_key_vault_secret" "app_backend_CGN_OPERATOR_SEARCH_API_KEY_UAT" {
   name         = "funccgnoperatorsearch-KEY-UAT-APPBACKEND"
-  key_vault_id = data.azurerm_key_vault.common.id
-}
-
-data "azurerm_key_vault_secret" "app_backend_EUCOVIDCERT_API_KEY" {
-  name         = "funceucovidcert-KEY-APPBACKEND"
-  key_vault_id = data.azurerm_key_vault.common.id
+  key_vault_id = module.key_vault_common.id
 }
 
 data "azurerm_key_vault_secret" "app_backend_ALLOW_PAGOPA_IP_SOURCE_RANGE" {
   name         = "appbackend-ALLOW-PAGOPA-IP-SOURCE-RANGE"
-  key_vault_id = data.azurerm_key_vault.common.id
+  key_vault_id = module.key_vault_common.id
 }
 
 data "azurerm_key_vault_secret" "app_backend_PAGOPA_API_KEY_PROD" {
   name         = "appbackend-PAGOPA-API-KEY-PROD-PRIMARY"
-  key_vault_id = data.azurerm_key_vault.common.id
+  key_vault_id = module.key_vault_common.id
 }
 
 data "azurerm_key_vault_secret" "app_backend_PAGOPA_API_KEY_UAT" {
   name         = "appbackend-PAGOPA-API-KEY-UAT-PRIMARY"
-  key_vault_id = data.azurerm_key_vault.common.id
+  key_vault_id = module.key_vault_common.id
 }
 
 data "azurerm_key_vault_secret" "app_backend_TEST_LOGIN_PASSWORD" {
   name         = "appbackend-TEST-LOGIN-PASSWORD"
-  key_vault_id = data.azurerm_key_vault.common.id
+  key_vault_id = module.key_vault_common.id
 }
 
 data "azurerm_key_vault_secret" "app_backend_ALLOW_MYPORTAL_IP_SOURCE_RANGE" {
   name         = "appbackend-ALLOW-MYPORTAL-IP-SOURCE-RANGE"
-  key_vault_id = data.azurerm_key_vault.common.id
+  key_vault_id = module.key_vault_common.id
 }
 
 data "azurerm_key_vault_secret" "app_backend_ALLOW_BPD_IP_SOURCE_RANGE" {
   name         = "appbackend-ALLOW-BPD-IP-SOURCE-RANGE"
-  key_vault_id = data.azurerm_key_vault.common.id
+  key_vault_id = module.key_vault_common.id
 }
 
 data "azurerm_key_vault_secret" "app_backend_JWT_SUPPORT_TOKEN_PRIVATE_RSA_KEY" {
   name         = "appbackend-JWT-SUPPORT-TOKEN-PRIVATE-RSA-KEY"
-  key_vault_id = data.azurerm_key_vault.common.id
+  key_vault_id = module.key_vault_common.id
 }
 
 data "azurerm_key_vault_secret" "app_backend_TEST_CGN_FISCAL_CODES" {
   name         = "appbackend-TEST-CGN-FISCAL-CODES"
-  key_vault_id = data.azurerm_key_vault.common.id
+  key_vault_id = module.key_vault_common.id
 }
 
 data "azurerm_key_vault_secret" "app_backend_JWT_MIT_VOUCHER_TOKEN_PRIVATE_ES_KEY" {
   name         = "appbackend-mitvoucher-JWT-PRIVATE-ES-KEY"
-  key_vault_id = data.azurerm_key_vault.common.id
+  key_vault_id = module.key_vault_common.id
 }
 
 data "azurerm_key_vault_secret" "app_backend_JWT_MIT_VOUCHER_TOKEN_AUDIENCE" {
   name         = "appbackend-mitvoucher-JWT-AUDIENCE"
-  key_vault_id = data.azurerm_key_vault.common.id
+  key_vault_id = module.key_vault_common.id
 }
 
 data "azurerm_key_vault_secret" "app_backend_ALLOW_ZENDESK_IP_SOURCE_RANGE" {
   name         = "appbackend-ALLOW-ZENDESK-IP-SOURCE-RANGE"
-  key_vault_id = data.azurerm_key_vault.common.id
+  key_vault_id = module.key_vault_common.id
 }
 
 data "azurerm_key_vault_secret" "app_backend_JWT_ZENDESK_SUPPORT_TOKEN_SECRET" {
   name         = "appbackend-JWT-ZENDESK-SUPPORT-TOKEN-SECRET"
-  key_vault_id = data.azurerm_key_vault.common.id
+  key_vault_id = module.key_vault_common.id
 }
 
 data "azurerm_key_vault_secret" "app_backend_PECSERVER_TOKEN_SECRET" {
   name         = "appbackend-PECSERVER-TOKEN-SECRET"
-  key_vault_id = data.azurerm_key_vault.common.id
+  key_vault_id = module.key_vault_common.id
 }
 
 data "azurerm_key_vault_secret" "app_backend_PECSERVER_ARUBA_TOKEN_SECRET" {
   name         = "appbackend-PECSERVER-ARUBA-TOKEN-SECRET"
-  key_vault_id = data.azurerm_key_vault.common.id
+  key_vault_id = module.key_vault_common.id
 }
 
 
 data "azurerm_key_vault_secret" "app_backend_APP_MESSAGES_API_KEY" {
   name         = "appbackend-APP-MESSAGES-API-KEY"
-  key_vault_id = data.azurerm_key_vault.common.id
+  key_vault_id = module.key_vault_common.id
 }
 data "azurerm_key_vault_secret" "app_backend_APP_MESSAGES_BETA_FISCAL_CODES" {
   name         = "appbackend-APP-MESSAGES-BETA-FISCAL-CODES"
-  key_vault_id = data.azurerm_key_vault.common.id
+  key_vault_id = module.key_vault_common.id
 }
 
 data "azurerm_key_vault_secret" "app_backend_PN_API_KEY" {
   name         = "appbackend-PN-API-KEY-ENV"
-  key_vault_id = data.azurerm_key_vault.common.id
+  key_vault_id = module.key_vault_common.id
 }
 
 data "azurerm_key_vault_secret" "app_backend_PN_API_KEY_UAT" {
   name         = "appbackend-PN-API-KEY-UAT-ENV"
-  key_vault_id = data.azurerm_key_vault.common.id
+  key_vault_id = module.key_vault_common.id
+}
+
+data "azurerm_key_vault_secret" "app_backend_PN_API_KEY_UAT_V2" {
+  name         = "appbackend-PN-API-KEY-UAT-ENV-V2"
+  key_vault_id = module.key_vault_common.id
 }
 
 data "azurerm_key_vault_secret" "app_backend_PN_REAL_TEST_USERS" {
   name         = "appbackend-PN-REAL-TEST-USERS"
-  key_vault_id = data.azurerm_key_vault.common.id
+  key_vault_id = module.key_vault_common.id
+}
+
+data "azurerm_key_vault_secret" "app_backend_LOLLIPOP_API_KEY" {
+  name         = "appbackend-LOLLIPOP-API-KEY"
+  key_vault_id = module.key_vault_common.id
 }
 
 #tfsec:ignore:AZU023
 resource "azurerm_key_vault_secret" "appbackend-REDIS-PASSWORD" {
   name         = "appbackend-REDIS-PASSWORD"
-  value        = data.azurerm_redis_cache.common.primary_access_key
-  key_vault_id = data.azurerm_key_vault.common.id
+  value        = module.redis_common.primary_access_key
+  key_vault_id = module.key_vault_common.id
   content_type = "string"
 }
 
@@ -430,7 +459,7 @@ resource "azurerm_key_vault_secret" "appbackend-REDIS-PASSWORD" {
 resource "azurerm_key_vault_secret" "appbackend-SPID-LOG-STORAGE" {
   name         = "appbackend-SPID-LOG-STORAGE"
   value        = data.azurerm_storage_account.logs.primary_connection_string
-  key_vault_id = data.azurerm_key_vault.common.id
+  key_vault_id = module.key_vault_common.id
   content_type = "string"
 }
 
@@ -438,7 +467,7 @@ resource "azurerm_key_vault_secret" "appbackend-SPID-LOG-STORAGE" {
 resource "azurerm_key_vault_secret" "appbackend-PUSH-NOTIFICATIONS-STORAGE" {
   name         = "appbackend-PUSH-NOTIFICATIONS-STORAGE"
   value        = data.azurerm_storage_account.push_notifications_storage.primary_connection_string
-  key_vault_id = data.azurerm_key_vault.common.id
+  key_vault_id = module.key_vault_common.id
   content_type = "string"
 }
 
@@ -446,7 +475,7 @@ resource "azurerm_key_vault_secret" "appbackend-PUSH-NOTIFICATIONS-STORAGE" {
 resource "azurerm_key_vault_secret" "appbackend-NORIFICATIONS-STORAGE" {
   name         = "appbackend-NORIFICATIONS-STORAGE"
   value        = data.azurerm_storage_account.notifications.primary_connection_string
-  key_vault_id = data.azurerm_key_vault.common.id
+  key_vault_id = module.key_vault_common.id
   content_type = "string"
 }
 
@@ -454,7 +483,7 @@ resource "azurerm_key_vault_secret" "appbackend-NORIFICATIONS-STORAGE" {
 resource "azurerm_key_vault_secret" "appbackend-USERS-LOGIN-STORAGE" {
   name         = "appbackend-USERS-LOGIN-STORAGE"
   value        = data.azurerm_storage_account.logs.primary_connection_string
-  key_vault_id = data.azurerm_key_vault.common.id
+  key_vault_id = module.key_vault_common.id
   content_type = "string"
 }
 
@@ -462,11 +491,12 @@ resource "azurerm_key_vault_secret" "appbackend-USERS-LOGIN-STORAGE" {
 ## app_backendl1
 
 module "app_backendl1_snet" {
-  source               = "git::https://github.com/pagopa/azurerm.git//subnet?ref=v2.0.28"
-  name                 = "appbackendl1"
-  address_prefixes     = var.cidr_subnet_appbackendl1
-  resource_group_name  = data.azurerm_resource_group.vnet_common_rg.name
-  virtual_network_name = data.azurerm_virtual_network.vnet_common.name
+  source                                    = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v4.1.15"
+  name                                      = "appbackendl1"
+  address_prefixes                          = var.cidr_subnet_appbackendl1
+  resource_group_name                       = azurerm_resource_group.rg_common.name
+  virtual_network_name                      = module.vnet_common.name
+  private_endpoint_network_policies_enabled = true
 
   service_endpoints = [
     "Microsoft.Web",
@@ -481,8 +511,13 @@ module "app_backendl1_snet" {
   }
 }
 
+resource "azurerm_subnet_nat_gateway_association" "app_backendl1_snet" {
+  nat_gateway_id = module.nat_gateway.id
+  subnet_id      = module.app_backendl1_snet.id
+}
+
 module "appservice_app_backendl1" {
-  source = "git::https://github.com/pagopa/azurerm.git//app_service?ref=v4.3.2"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//app_service?ref=v4.1.15"
 
   # App service plan
   plan_type     = "internal"
@@ -498,7 +533,7 @@ module "appservice_app_backendl1" {
   location            = azurerm_resource_group.rg_linux.location
 
   always_on         = true
-  linux_fx_version  = "NODE|14-lts"
+  linux_fx_version  = "NODE|18-lts"
   app_command_line  = local.app_backend.app_command_line
   health_check_path = "/ping"
 
@@ -508,7 +543,6 @@ module "appservice_app_backendl1" {
   )
 
   allowed_subnets = [
-    data.azurerm_subnet.fnapp_services_subnet_out.id,
     module.services_snet[0].id,
     module.services_snet[1].id,
     module.appgateway_snet.id,
@@ -527,7 +561,7 @@ module "appservice_app_backendl1" {
 }
 
 module "appservice_app_backendl1_slot_staging" {
-  source = "git::https://github.com/pagopa/azurerm.git//app_service_slot?ref=v4.3.2"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//app_service_slot?ref=v4.1.15"
 
   # App service plan
   app_service_plan_id = module.appservice_app_backendl1.plan_id
@@ -540,7 +574,7 @@ module "appservice_app_backendl1_slot_staging" {
   location            = azurerm_resource_group.rg_linux.location
 
   always_on         = true
-  linux_fx_version  = "NODE|14-lts"
+  linux_fx_version  = "NODE|18-lts"
   app_command_line  = local.app_backend.app_command_line
   health_check_path = "/ping"
 
@@ -550,8 +584,7 @@ module "appservice_app_backendl1_slot_staging" {
   )
 
   allowed_subnets = [
-    data.azurerm_subnet.azdoa_snet[0].id,
-    data.azurerm_subnet.fnapp_services_subnet_out.id,
+    module.azdoa_snet[0].id,
     module.services_snet[0].id,
     module.services_snet[1].id,
     module.appgateway_snet.id,
@@ -676,11 +709,12 @@ resource "azurerm_monitor_autoscale_setting" "appservice_app_backendl1" {
 ## app_backendl2
 
 module "app_backendl2_snet" {
-  source               = "git::https://github.com/pagopa/azurerm.git//subnet?ref=v2.0.28"
-  name                 = "appbackendl2"
-  address_prefixes     = var.cidr_subnet_appbackendl2
-  resource_group_name  = data.azurerm_resource_group.vnet_common_rg.name
-  virtual_network_name = data.azurerm_virtual_network.vnet_common.name
+  source                                    = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v4.1.15"
+  name                                      = "appbackendl2"
+  address_prefixes                          = var.cidr_subnet_appbackendl2
+  resource_group_name                       = azurerm_resource_group.rg_common.name
+  virtual_network_name                      = module.vnet_common.name
+  private_endpoint_network_policies_enabled = true
 
   service_endpoints = [
     "Microsoft.Web",
@@ -695,8 +729,13 @@ module "app_backendl2_snet" {
   }
 }
 
+resource "azurerm_subnet_nat_gateway_association" "app_backendl2_snet" {
+  nat_gateway_id = module.nat_gateway.id
+  subnet_id      = module.app_backendl2_snet.id
+}
+
 module "appservice_app_backendl2" {
-  source = "git::https://github.com/pagopa/azurerm.git//app_service?ref=v4.3.2"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//app_service?ref=v4.1.15"
 
   # App service plan
   plan_type     = "internal"
@@ -712,7 +751,7 @@ module "appservice_app_backendl2" {
   location            = azurerm_resource_group.rg_linux.location
 
   always_on         = true
-  linux_fx_version  = "NODE|14-lts"
+  linux_fx_version  = "NODE|18-lts"
   app_command_line  = local.app_backend.app_command_line
   health_check_path = "/ping"
 
@@ -722,7 +761,6 @@ module "appservice_app_backendl2" {
   )
 
   allowed_subnets = [
-    data.azurerm_subnet.fnapp_services_subnet_out.id,
     module.services_snet[0].id,
     module.services_snet[1].id,
     module.appgateway_snet.id,
@@ -741,7 +779,7 @@ module "appservice_app_backendl2" {
 }
 
 module "appservice_app_backendl2_slot_staging" {
-  source = "git::https://github.com/pagopa/azurerm.git//app_service_slot?ref=v4.3.2"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//app_service_slot?ref=v4.1.15"
 
   # App service plan
   app_service_plan_id = module.appservice_app_backendl2.plan_id
@@ -754,7 +792,7 @@ module "appservice_app_backendl2_slot_staging" {
   location            = azurerm_resource_group.rg_linux.location
 
   always_on         = true
-  linux_fx_version  = "NODE|14-lts"
+  linux_fx_version  = "NODE|18-lts"
   app_command_line  = local.app_backend.app_command_line
   health_check_path = "/ping"
 
@@ -764,8 +802,7 @@ module "appservice_app_backendl2_slot_staging" {
   )
 
   allowed_subnets = [
-    data.azurerm_subnet.azdoa_snet[0].id,
-    data.azurerm_subnet.fnapp_services_subnet_out.id,
+    module.azdoa_snet[0].id,
     module.services_snet[0].id,
     module.services_snet[1].id,
     module.appgateway_snet.id,
@@ -890,11 +927,12 @@ resource "azurerm_monitor_autoscale_setting" "appservice_app_backendl2" {
 ## app_backendli
 
 module "app_backendli_snet" {
-  source               = "git::https://github.com/pagopa/azurerm.git//subnet?ref=v2.0.28"
-  name                 = "appbackendli"
-  address_prefixes     = var.cidr_subnet_appbackendli
-  resource_group_name  = data.azurerm_resource_group.vnet_common_rg.name
-  virtual_network_name = data.azurerm_virtual_network.vnet_common.name
+  source                                    = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v4.1.15"
+  name                                      = "appbackendli"
+  address_prefixes                          = var.cidr_subnet_appbackendli
+  resource_group_name                       = azurerm_resource_group.rg_common.name
+  virtual_network_name                      = module.vnet_common.name
+  private_endpoint_network_policies_enabled = true
 
   service_endpoints = [
     "Microsoft.Web",
@@ -909,8 +947,13 @@ module "app_backendli_snet" {
   }
 }
 
+resource "azurerm_subnet_nat_gateway_association" "app_backendli_snet" {
+  nat_gateway_id = module.nat_gateway.id
+  subnet_id      = module.app_backendli_snet.id
+}
+
 module "appservice_app_backendli" {
-  source = "git::https://github.com/pagopa/azurerm.git//app_service?ref=v4.3.2"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//app_service?ref=v4.1.15"
 
   # App service plan
   plan_type     = "internal"
@@ -926,7 +969,7 @@ module "appservice_app_backendli" {
   location            = azurerm_resource_group.rg_linux.location
 
   always_on         = true
-  linux_fx_version  = "NODE|14-lts"
+  linux_fx_version  = "NODE|18-lts"
   app_command_line  = local.app_backend.app_command_line
   health_check_path = "/ping"
 
@@ -936,7 +979,6 @@ module "appservice_app_backendli" {
   )
 
   allowed_subnets = [
-    data.azurerm_subnet.fnapp_services_subnet_out.id,
     module.services_snet[0].id,
     module.services_snet[1].id,
     module.admin_snet.id,
@@ -955,7 +997,7 @@ module "appservice_app_backendli" {
 }
 
 module "appservice_app_backendli_slot_staging" {
-  source = "git::https://github.com/pagopa/azurerm.git//app_service_slot?ref=v4.3.2"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//app_service_slot?ref=v4.1.15"
 
   # App service plan
   app_service_plan_id = module.appservice_app_backendli.plan_id
@@ -968,7 +1010,7 @@ module "appservice_app_backendli_slot_staging" {
   location            = azurerm_resource_group.rg_linux.location
 
   always_on         = true
-  linux_fx_version  = "NODE|14-lts"
+  linux_fx_version  = "NODE|18-lts"
   app_command_line  = local.app_backend.app_command_line
   health_check_path = "/ping"
 
@@ -978,8 +1020,7 @@ module "appservice_app_backendli_slot_staging" {
   )
 
   allowed_subnets = [
-    data.azurerm_subnet.azdoa_snet[0].id,
-    data.azurerm_subnet.fnapp_services_subnet_out.id,
+    module.azdoa_snet[0].id,
     module.services_snet[0].id,
     module.services_snet[1].id,
     module.admin_snet.id,
@@ -1060,16 +1101,17 @@ resource "azurerm_monitor_autoscale_setting" "appservice_app_backendli" {
 ## web availabolity test
 module "app_backend_web_test_api" {
   for_each = { for v in local.app_backend_test_urls : v.name => v if v != null }
-  source   = "git::https://github.com/pagopa/azurerm.git//application_insights_web_test_preview?ref=v2.9.1"
+  source   = "git::https://github.com/pagopa/terraform-azurerm-v3.git//application_insights_web_test_preview?ref=v4.1.15"
 
   subscription_id                   = data.azurerm_subscription.current.subscription_id
   name                              = format("%s-test", each.value.name)
-  location                          = data.azurerm_resource_group.monitor_rg.location
-  resource_group                    = data.azurerm_resource_group.monitor_rg.name
-  application_insight_name          = data.azurerm_application_insights.application_insights.name
+  location                          = azurerm_resource_group.rg_common.location
+  resource_group                    = azurerm_resource_group.rg_common.name
+  application_insight_name          = azurerm_application_insights.application_insights.name
   request_url                       = format("https://%s%s", each.value.host, each.value.path)
   expected_http_status              = each.value.http_status
   ssl_cert_remaining_lifetime_check = 7
+  application_insight_id            = azurerm_application_insights.application_insights.id
 
   actions = [
     {
@@ -1086,14 +1128,16 @@ module "app_backend_web_test_api" {
 # Alerts
 # -----------------------------------------------
 
-data "azurerm_app_service" "app_backend_app_services" {
+data "azurerm_linux_web_app" "app_backend_app_services" {
   for_each            = toset(var.app_backend_names)
   name                = "${local.project}-app-${each.value}"
   resource_group_name = azurerm_resource_group.rg_linux.name
 }
 
 resource "azurerm_monitor_metric_alert" "too_many_http_5xx" {
-  for_each = { for key, name in data.azurerm_app_service.app_backend_app_services : key => name }
+  for_each = { for key, name in data.azurerm_linux_web_app.app_backend_app_services : key => name }
+
+  enabled = false
 
   name                = "[IO-COMMONS | ${each.value.name}] Too many 5xx"
   resource_group_name = azurerm_resource_group.rg_linux.name

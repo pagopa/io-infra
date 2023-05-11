@@ -1,5 +1,5 @@
 module "apim_product_public" {
-  source = "git::https://github.com/pagopa/azurerm.git//api_management_product?ref=v2.1.20"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_product?ref=v4.1.15"
 
   product_id            = "io-public-api"
   api_management_name   = module.apim.name
@@ -24,7 +24,7 @@ resource "azurerm_api_management_named_value" "io_fn3_public_url" {
 
 data "azurerm_key_vault_secret" "io_fn3_public_key_secret" {
   name         = "fn3public-KEY-APIM"
-  key_vault_id = data.azurerm_key_vault.common.id
+  key_vault_id = module.key_vault_common.id
 }
 
 resource "azurerm_api_management_named_value" "io_fn3_public_key" {
@@ -37,7 +37,7 @@ resource "azurerm_api_management_named_value" "io_fn3_public_key" {
 }
 
 module "api_public" {
-  source = "git::https://github.com/pagopa/azurerm.git//api_management_api?ref=v2.1.19"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api?ref=v4.1.15"
 
   name                = "io-public-api"
   api_management_name = module.apim.name

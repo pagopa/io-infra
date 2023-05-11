@@ -186,8 +186,8 @@ resource "azurerm_mysql_flexible_database" "reminder_mysql_db" {
   name                = "reminder"
   resource_group_name = azurerm_resource_group.data_rg.name
   server_name         = azurerm_mysql_flexible_server.reminder_mysql_server.name
-  charset             = "utf8"
-  collation           = "utf8_unicode_ci"
+  charset             = "utf8mb3"
+  collation           = "utf8mb3_unicode_ci"
 }
 
 resource "azurerm_mysql_flexible_server_configuration" "max_connections" {

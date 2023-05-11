@@ -11,35 +11,48 @@ tags = {
   CostCenter  = "BD100 - STRATEGIC INNOVATION"
 }
 
-storage = {
-  enable_versioning = false
-  delete_after_days = 90
-  replication_type  = "GZRS"
+# You can retrieve the list of current defined subnets using the CLI command
+# az network vnet subnet list --subscription PROD-IO --vnet-name io-p-vnet-common --resource-group io-p-rg-common --output table
+# and thus define new CIDRs according to the unallocated address space
+subnets_cidrs = {
+  issuer   = ["10.0.102.0/24"]
+  user     = ["10.0.103.0/24"]
+  eventhub = ["10.0.104.0/24"],
+  support  = ["10.0.147.0/24"]
+}
+
+storage_account = {
+  enable_versioning             = false
+  delete_after_days             = 90
+  replication_type              = "GZRS"
+  enable_low_availability_alert = true
 }
 
 cosmos = {
-  # TODO Temporarely disabled due to ServiceUnavailable error
   zone_redundant = false
+  additional_geo_locations = [
+    {
+      location          = "northeurope"
+      failover_priority = 1
+      zone_redundant    = false
+    }
+  ]
 }
 
 io_sign_database_issuer = {
   dossiers = {
-    # TODO [SFEQS-1200] Refactor terraform provider to v3
     max_throughput = 1000
     ttl            = null
   }
   signature_requests = {
-    # TODO [SFEQS-1200] Refactor terraform provider to v3
     max_throughput = 1000
     ttl            = null
   }
   uploads = {
-    # TODO [SFEQS-1200] Refactor terraform provider to v3
     max_throughput = 1000
     ttl            = 604800
   }
   issuers = {
-    # TODO [SFEQS-1200] Refactor terraform provider to v3
     max_throughput = 1000
     ttl            = null
   }
@@ -47,12 +60,10 @@ io_sign_database_issuer = {
 
 io_sign_database_user = {
   signature_requests = {
-    # TODO [SFEQS-1200] Refactor terraform provider to v3
     max_throughput = 1000
     ttl            = null
   }
   signatures = {
-    # TODO [SFEQS-1200] Refactor terraform provider to v3
     max_throughput = 1000
     ttl            = null
   }
@@ -66,10 +77,89 @@ io_sign_issuer_func = {
   autoscale_maximum = 5
 }
 
+io_sign_support_func = {
+  sku_tier          = "PremiumV3"
+  sku_size          = "P1v3"
+  autoscale_default = 1
+  autoscale_minimum = 1
+  autoscale_maximum = 5
+}
+
 io_sign_user_func = {
   sku_tier          = "PremiumV3"
   sku_size          = "P1v3"
   autoscale_default = 1
   autoscale_minimum = 1
   autoscale_maximum = 5
+}
+
+integration_hub = {
+  auto_inflate_enabled     = true
+  sku_name                 = "Standard"
+  capacity                 = 1
+  maximum_throughput_units = 5
+  zone_redundant           = true
+  alerts_enabled           = true
+  ip_rules = [
+    {
+      ip_mask = "18.192.147.151", # PDND-DATALAKE
+      action  = "Allow"
+    },
+    {
+      ip_mask = "18.159.227.69", # PDND-DATALAKE
+      action  = "Allow"
+    },
+    {
+      ip_mask = "3.126.198.129", # PDND-DATALAKE
+      action  = "Allow"
+    }
+  ]
+  hubs = [
+    {
+      name              = "billing"
+      partitions        = 3
+      message_retention = 7
+      consumers         = []
+      keys = [
+        {
+          name   = "io-sign-func-issuer"
+          listen = false
+          send   = true
+          manage = false
+        },
+        {
+          name   = "pdnd-invoicing"
+          listen = true
+          send   = false
+          manage = false
+        }
+      ]
+    },
+    {
+      name              = "analytics"
+      partitions        = 3
+      message_retention = 7
+      consumers         = []
+      keys = [
+        {
+          name   = "io-sign-func-user"
+          listen = false
+          send   = true
+          manage = false
+        },
+        {
+          name   = "io-sign-func-issuer"
+          listen = false
+          send   = true
+          manage = false
+        },
+        {
+          name   = "pdnd-invoicing"
+          listen = true
+          send   = false
+          manage = false
+        }
+      ]
+    }
+  ]
 }

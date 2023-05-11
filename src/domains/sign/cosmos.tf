@@ -1,20 +1,14 @@
 module "cosmosdb_account" {
-  source                           = "git::https://github.com/pagopa/azurerm.git//cosmosdb_account?ref=v2.15.1"
+  source                           = "git::https://github.com/pagopa/terraform-azurerm-v3.git//cosmosdb_account?ref=v4.1.8"
   name                             = format("%s-cosmos", local.project)
+  domain                           = var.domain
   location                         = azurerm_resource_group.data_rg.location
   resource_group_name              = azurerm_resource_group.data_rg.name
   kind                             = "GlobalDocumentDB"
   main_geo_location_location       = azurerm_resource_group.data_rg.location
   main_geo_location_zone_redundant = var.cosmos.zone_redundant
 
-  # TODO Temporarely disabled due to Azure Resouces not available in North EU
-  # additional_geo_locations = [
-  #   {
-  #     location          = "northeurope"
-  #     failover_priority = 1
-  #     zone_redundant    = true
-  #   }
-  # ]
+  additional_geo_locations = var.cosmos.additional_geo_locations
 
   # Having multiple region requires
   # maximum lag must be between 5 minutes and 1 day

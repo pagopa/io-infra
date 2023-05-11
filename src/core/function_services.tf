@@ -3,47 +3,47 @@
 ########################
 data "azurerm_key_vault_secret" "fn_services_mailup_username" {
   name         = "common-MAILUP-USERNAME"
-  key_vault_id = data.azurerm_key_vault.common.id
+  key_vault_id = module.key_vault_common.id
 }
 
 data "azurerm_key_vault_secret" "fn_services_mailup_secret" {
   name         = "common-MAILUP-SECRET"
-  key_vault_id = data.azurerm_key_vault.common.id
+  key_vault_id = module.key_vault_common.id
 }
 
 data "azurerm_key_vault_secret" "fn_services_webhook_channel_url" {
   name         = "appbackend-WEBHOOK-CHANNEL-URL"
-  key_vault_id = data.azurerm_key_vault.common.id
+  key_vault_id = module.key_vault_common.id
 }
 
 data "azurerm_key_vault_secret" "fn_services_webhook_channel_aks_url" {
   name         = "appbackend-WEBHOOK-CHANNEL-AKS-URL"
-  key_vault_id = data.azurerm_key_vault.common.id
+  key_vault_id = module.key_vault_common.id
 }
 
 data "azurerm_key_vault_secret" "fn_services_sandbox_fiscal_code" {
   name         = "io-SANDBOX-FISCAL-CODE"
-  key_vault_id = data.azurerm_key_vault.common.id
+  key_vault_id = module.key_vault_common.id
 }
 
 data "azurerm_key_vault_secret" "fn_services_email_service_blacklist_id" {
   name         = "io-EMAIL-SERVICE-BLACKLIST-ID"
-  key_vault_id = data.azurerm_key_vault.common.id
+  key_vault_id = module.key_vault_common.id
 }
 
 data "azurerm_key_vault_secret" "fn_services_notification_service_blacklist_id" {
   name         = "io-NOTIFICATION-SERVICE-BLACKLIST-ID"
-  key_vault_id = data.azurerm_key_vault.common.id
+  key_vault_id = module.key_vault_common.id
 }
 
 data "azurerm_key_vault_secret" "fn_services_beta_users" {
-  name         = "io-fn-services-BETA-USERS"
-  key_vault_id = data.azurerm_key_vault.common.id
+  name         = "io-fn-services-BETA-USERS" # common beta list (array of CF)
+  key_vault_id = module.key_vault_common.id
 }
 
 data "azurerm_key_vault_secret" "fn_services_io_service_key" {
   name         = "apim-IO-SERVICE-KEY"
-  key_vault_id = data.azurerm_key_vault.common.id
+  key_vault_id = module.key_vault_common.id
 }
 
 #
@@ -78,10 +78,10 @@ locals {
 
       COSMOSDB_NAME = "db"
       COSMOSDB_URI  = data.azurerm_cosmosdb_account.cosmos_api.endpoint
-      COSMOSDB_KEY  = data.azurerm_cosmosdb_account.cosmos_api.primary_master_key
+      COSMOSDB_KEY  = data.azurerm_cosmosdb_account.cosmos_api.primary_key
 
-      MESSAGE_CONTENT_STORAGE_CONNECTION_STRING   = data.azurerm_storage_account.api.primary_connection_string
-      SUBSCRIPTION_FEED_STORAGE_CONNECTION_STRING = data.azurerm_storage_account.api.primary_connection_string
+      MESSAGE_CONTENT_STORAGE_CONNECTION_STRING   = module.storage_api.primary_connection_string
+      SUBSCRIPTION_FEED_STORAGE_CONNECTION_STRING = module.storage_api.primary_connection_string
 
       MAIL_FROM = "IO - l'app dei servizi pubblici <no-reply@io.italia.it>"
       // we keep this while we wait for new app version to be deployed
@@ -99,6 +99,8 @@ locals {
 
       # setting to allow the retrieve of the payment status from payment-updater
       FF_PAYMENT_STATUS_ENABLED = "true"
+      # setting to notify message via email using the template
+      FF_TEMPLATE_EMAIL = "BETA"
 
       // minimum app version that introduces read status opt-out
       // NOTE: right now is set to a non existing version, since it's not yet deployed
@@ -123,23 +125,21 @@ locals {
       BETA_USERS                             = data.azurerm_key_vault_secret.fn_services_beta_users.value
     }
     app_settings_1 = {
-      WEBHOOK_CHANNEL_URL = data.azurerm_key_vault_secret.fn_services_webhook_channel_url.value
     }
     app_settings_2 = {
-      WEBHOOK_CHANNEL_URL = data.azurerm_key_vault_secret.fn_services_webhook_channel_aks_url.value
     }
   }
 }
 
 # Subnet to host app function
 module "services_snet" {
-  count                                          = var.function_services_count
-  source                                         = "git::https://github.com/pagopa/azurerm.git//subnet?ref=v1.0.51"
-  name                                           = format("%s-services-snet-%d", local.project, count.index + 1)
-  address_prefixes                               = [var.cidr_subnet_services[count.index]]
-  resource_group_name                            = data.azurerm_resource_group.vnet_common_rg.name
-  virtual_network_name                           = data.azurerm_virtual_network.vnet_common.name
-  enforce_private_link_endpoint_network_policies = true
+  count                                     = var.function_services_count
+  source                                    = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v4.1.15"
+  name                                      = format("%s-services-snet-%d", local.project, count.index + 1)
+  address_prefixes                          = [var.cidr_subnet_services[count.index]]
+  resource_group_name                       = azurerm_resource_group.rg_common.name
+  virtual_network_name                      = module.vnet_common.name
+  private_endpoint_network_policies_enabled = false
 
   service_endpoints = [
     "Microsoft.Web",
@@ -167,7 +167,7 @@ resource "azurerm_resource_group" "services_rg" {
 #tfsec:ignore:azure-storage-queue-services-logging-enabled:exp:2022-05-01 # already ignored, maybe a bug in tfsec
 module "function_services" {
   count  = var.function_services_count
-  source = "git::https://github.com/pagopa/azurerm.git//function_app?ref=v3.8.1"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app?ref=v4.1.15"
 
   domain = "IO-COMMONS"
 
@@ -177,11 +177,11 @@ module "function_services" {
   health_check_path   = "/api/info"
 
   os_type          = "linux"
-  linux_fx_version = "NODE|14"
+  linux_fx_version = "NODE|18"
   runtime_version  = "~4"
 
   always_on                                = "true"
-  application_insights_instrumentation_key = data.azurerm_application_insights.application_insights.instrumentation_key
+  application_insights_instrumentation_key = azurerm_application_insights.application_insights.instrumentation_key
 
   app_service_plan_info = {
     kind                         = var.function_services_kind
@@ -207,10 +207,10 @@ module "function_services" {
 
   internal_storage = {
     "enable"                     = true,
-    "private_endpoint_subnet_id" = data.azurerm_subnet.private_endpoints_subnet.id,
-    "private_dns_zone_blob_ids"  = [data.azurerm_private_dns_zone.privatelink_blob_core_windows_net.id],
-    "private_dns_zone_queue_ids" = [data.azurerm_private_dns_zone.privatelink_queue_core_windows_net.id],
-    "private_dns_zone_table_ids" = [data.azurerm_private_dns_zone.privatelink_table_core_windows_net.id],
+    "private_endpoint_subnet_id" = module.private_endpoints_subnet.id,
+    "private_dns_zone_blob_ids"  = [azurerm_private_dns_zone.privatelink_blob_core.id],
+    "private_dns_zone_queue_ids" = [azurerm_private_dns_zone.privatelink_queue_core.id],
+    "private_dns_zone_table_ids" = [azurerm_private_dns_zone.privatelink_table_core.id],
     "queues" = [
       "message-created",
       "message-created-poison",
@@ -231,10 +231,9 @@ module "function_services" {
 
   allowed_subnets = [
     module.services_snet[count.index].id,
-    data.azurerm_subnet.azdoa_snet[0].id,
+    module.azdoa_snet[0].id,
     module.apim_snet.id,
     module.function_eucovidcert_snet.id,
-    data.azurerm_subnet.fnapp_eucovidcert_subnet_out.id,
   ]
 
 
@@ -252,7 +251,7 @@ module "function_services" {
 
 module "function_services_staging_slot" {
   count  = var.function_services_count
-  source = "git::https://github.com/pagopa/azurerm.git//function_app_slot?ref=v3.8.1"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app_slot?ref=v4.1.15"
 
   name                = "staging"
   location            = var.location
@@ -267,10 +266,10 @@ module "function_services_staging_slot" {
   internal_storage_connection_string = module.function_services[count.index].storage_account_internal_function.primary_connection_string
 
   os_type                                  = "linux"
-  linux_fx_version                         = "NODE|14"
+  linux_fx_version                         = "NODE|18"
   always_on                                = "true"
   runtime_version                          = "~4"
-  application_insights_instrumentation_key = data.azurerm_application_insights.application_insights.instrumentation_key
+  application_insights_instrumentation_key = azurerm_application_insights.application_insights.instrumentation_key
 
   app_settings = merge(
     local.function_services.app_settings_common, {
@@ -288,10 +287,9 @@ module "function_services_staging_slot" {
 
   allowed_subnets = [
     module.services_snet[count.index].id,
-    data.azurerm_subnet.azdoa_snet[0].id,
+    module.azdoa_snet[0].id,
     module.apim_snet.id,
     module.function_eucovidcert_snet.id,
-    data.azurerm_subnet.fnapp_eucovidcert_subnet_out.id,
   ]
 
   tags = var.tags
@@ -401,4 +399,14 @@ resource "azurerm_monitor_autoscale_setting" "function_services_autoscale" {
       }
     }
   }
+}
+
+# Cosmos container for subscription cidrs
+module "db_subscription_cidrs_container" {
+  source              = "git::https://github.com/pagopa/terraform-azurerm-v3.git//cosmosdb_sql_container?ref=v4.1.15"
+  name                = "subscription-cidrs"
+  resource_group_name = format("%s-rg-internal", local.project)
+  account_name        = format("%s-cosmos-api", local.project)
+  database_name       = local.function_services.app_settings_common.COSMOSDB_NAME
+  partition_key_path  = "/subscriptionId"
 }

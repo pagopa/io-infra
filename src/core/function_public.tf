@@ -21,9 +21,9 @@ locals {
       FETCH_KEEPALIVE_TIMEOUT             = "60000"
 
       COSMOSDB_URI      = data.azurerm_cosmosdb_account.cosmos_api.endpoint
-      COSMOSDB_KEY      = data.azurerm_cosmosdb_account.cosmos_api.primary_master_key
+      COSMOSDB_KEY      = data.azurerm_cosmosdb_account.cosmos_api.primary_key
       COSMOSDB_NAME     = "db"
-      StorageConnection = data.azurerm_storage_account.api.primary_connection_string
+      StorageConnection = module.storage_api.primary_connection_string
 
       VALIDATION_CALLBACK_URL = "https://api-app.io.pagopa.it/email_verification.html"
     }
@@ -32,7 +32,7 @@ locals {
 
 #tfsec:ignore:azure-storage-queue-services-logging-enabled:exp:2022-05-01 # already ignored, maybe a bug in tfsec
 module "function_public" {
-  source = "git::https://github.com/pagopa/azurerm.git//function_app?ref=v3.9.2"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app?ref=v4.1.15"
 
   resource_group_name = azurerm_resource_group.shared_rg.name
   name                = format("%s-public-fn", local.project)
@@ -42,11 +42,11 @@ module "function_public" {
   health_check_path   = "/info"
 
   os_type          = "linux"
-  linux_fx_version = "NODE|14"
+  linux_fx_version = "NODE|18"
   runtime_version  = "~4"
 
   always_on                                = "true"
-  application_insights_instrumentation_key = data.azurerm_application_insights.application_insights.instrumentation_key
+  application_insights_instrumentation_key = azurerm_application_insights.application_insights.instrumentation_key
 
   app_settings = merge(
     local.function_public.app_settings_common,
@@ -54,10 +54,10 @@ module "function_public" {
 
   internal_storage = {
     "enable"                     = false,
-    "private_endpoint_subnet_id" = data.azurerm_subnet.private_endpoints_subnet.id,
-    "private_dns_zone_blob_ids"  = [data.azurerm_private_dns_zone.privatelink_blob_core_windows_net.id],
-    "private_dns_zone_queue_ids" = [data.azurerm_private_dns_zone.privatelink_queue_core_windows_net.id],
-    "private_dns_zone_table_ids" = [data.azurerm_private_dns_zone.privatelink_table_core_windows_net.id],
+    "private_endpoint_subnet_id" = module.private_endpoints_subnet.id,
+    "private_dns_zone_blob_ids"  = [azurerm_private_dns_zone.privatelink_blob_core.id],
+    "private_dns_zone_queue_ids" = [azurerm_private_dns_zone.privatelink_queue_core.id],
+    "private_dns_zone_table_ids" = [azurerm_private_dns_zone.privatelink_table_core.id],
     "queues"                     = [],
     "containers"                 = [],
     "blobs_retention_days"       = 0,
@@ -82,7 +82,7 @@ module "function_public" {
 }
 
 module "function_public_staging_slot" {
-  source = "git::https://github.com/pagopa/azurerm.git//function_app_slot?ref=v3.9.2"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app_slot?ref=v4.1.15"
 
   name                = "staging"
   location            = var.location
@@ -96,10 +96,10 @@ module "function_public_staging_slot" {
   storage_account_access_key = module.function_public.storage_account.primary_access_key
 
   os_type                                  = "linux"
-  linux_fx_version                         = "NODE|14"
+  linux_fx_version                         = "NODE|18"
   always_on                                = "true"
   runtime_version                          = "~4"
-  application_insights_instrumentation_key = data.azurerm_application_insights.application_insights.instrumentation_key
+  application_insights_instrumentation_key = azurerm_application_insights.application_insights.instrumentation_key
 
   app_settings = merge(
     local.function_public.app_settings_common,
@@ -109,7 +109,7 @@ module "function_public_staging_slot" {
 
   allowed_subnets = [
     module.shared_1_snet.id,
-    data.azurerm_subnet.azdoa_snet[0].id,
+    module.azdoa_snet[0].id,
     module.apim_snet.id,
   ]
 

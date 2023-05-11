@@ -11,47 +11,47 @@ locals {
 
 data "azurerm_key_vault_secret" "devportal_apim_io_service_key" {
   name         = "apim-IO-SERVICE-KEY"
-  key_vault_id = data.azurerm_key_vault.common.id
+  key_vault_id = module.key_vault_common.id
 }
 
 data "azurerm_key_vault_secret" "devportal_service_principal_client_id" {
   name         = "devportal-SERVICE-PRINCIPAL-CLIENT-ID"
-  key_vault_id = data.azurerm_key_vault.common.id
+  key_vault_id = module.key_vault_common.id
 }
 
 data "azurerm_key_vault_secret" "devportal_service_principal_secret" {
   name         = "devportal-SERVICE-PRINCIPAL-SECRET"
-  key_vault_id = data.azurerm_key_vault.common.id
+  key_vault_id = module.key_vault_common.id
 }
 
 data "azurerm_key_vault_secret" "devportal_io_sandbox_fiscal_code" {
   name         = "io-SANDBOX-FISCAL-CODE"
-  key_vault_id = data.azurerm_key_vault.common.id
+  key_vault_id = module.key_vault_common.id
 }
 
 data "azurerm_key_vault_secret" "devportal_jira_token" {
   name         = "devportal-JIRA-TOKEN"
-  key_vault_id = data.azurerm_key_vault.common.id
+  key_vault_id = module.key_vault_common.id
 }
 
 data "azurerm_key_vault_secret" "devportal_client_id" {
   name         = "devportal-CLIENT-ID"
-  key_vault_id = data.azurerm_key_vault.common.id
+  key_vault_id = module.key_vault_common.id
 }
 
 data "azurerm_key_vault_secret" "devportal_client_secret" {
   name         = "devportal-CLIENT-SECRET"
-  key_vault_id = data.azurerm_key_vault.common.id
+  key_vault_id = module.key_vault_common.id
 }
 
 data "azurerm_key_vault_secret" "devportal_cookie_iv" {
   name         = "devportal-COOKIE-IV"
-  key_vault_id = data.azurerm_key_vault.common.id
+  key_vault_id = module.key_vault_common.id
 }
 
 data "azurerm_key_vault_secret" "devportal_cookie_key" {
   name         = "devportal-COOKIE-KEY"
-  key_vault_id = data.azurerm_key_vault.common.id
+  key_vault_id = module.key_vault_common.id
 }
 
 # Only 1 subnet can be associated to a service plan
@@ -65,22 +65,25 @@ resource "azurerm_app_service_virtual_network_swift_connection" "devportal_be" {
 #tfsec:ignore:azure-appservice-authentication-enabled:exp:2022-05-01 # already ignored, maybe a bug in tfsec
 #tfsec:ignore:azure-appservice-require-client-cert:exp:2022-05-01 # already ignored, maybe a bug in tfsec
 module "appservice_devportal_be" {
-  source = "git::https://github.com/pagopa/azurerm.git//app_service?ref=v3.2.1"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//app_service?ref=v6.0.0"
 
   name                = format("%s-app-devportal-be", local.project)
   resource_group_name = azurerm_resource_group.selfcare_be_rg.name
 
   plan_type = "external"
-  plan_id   = azurerm_app_service_plan.selfcare_be_common.id
+  plan_id   = azurerm_service_plan.selfcare_be_common.id
 
-  app_command_line  = "node /home/site/wwwroot/build/src/app.js"
-  linux_fx_version  = "NODE|14-lts"
+  app_command_line = "node /home/site/wwwroot/build/src/app.js"
+  ###
+  node_version = "14-lts"
+  # linux_fx_version  = "NODE|14-lts"
+
   health_check_path = "/info"
 
   app_settings = {
     WEBSITE_RUN_FROM_PACKAGE = "1"
 
-    APPINSIGHTS_INSTRUMENTATIONKEY = data.azurerm_application_insights.application_insights.instrumentation_key
+    APPINSIGHTS_INSTRUMENTATIONKEY = azurerm_application_insights.application_insights.instrumentation_key
 
     LOG_LEVEL = "info"
 
@@ -135,6 +138,17 @@ module "appservice_devportal_be" {
     JIRA_EMAIL_ID_FIELD        = "customfield_10084"
     JIRA_ORGANIZATION_ID_FIELD = "customfield_10088"
     JIRA_TOKEN                 = data.azurerm_key_vault_secret.devportal_jira_token.value
+
+    # Feature Flags
+    #
+    # List of (comma separated) APIM userId for whom we want to enable Manage Flow on Service Management.
+    # All users not listed below, will not be able to get (and also create) the manage subscription.
+    # The "Manage Flow" allows the use of a specific subscription (Manage Subscription) keys as API Key for Service create/update.
+    # Note: The list below is for the user IDs only, not the full path APIM.id.
+    MANAGE_FLOW_ENABLE_USER_LIST = join(",", [
+      "01GC77MF2WYY52DCSQXVEDCE74", # IDPay
+      "01GJMF341BZQBP71Q39S1EHBH6"  # Di Pinto Giuseppe Antonio
+    ])
   }
 
   allowed_subnets = [module.appgateway_snet.id]

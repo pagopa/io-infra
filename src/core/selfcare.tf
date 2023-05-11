@@ -22,7 +22,7 @@ resource "azurerm_resource_group" "selfcare_fe_rg" {
 ### Frontend resources
 #tfsec:ignore:azure-storage-queue-services-logging-enabled:exp:2022-05-01 # already ignored, maybe a bug in tfsec
 module "selfcare_cdn" {
-  source = "git::https://github.com/pagopa/azurerm.git//cdn?ref=v2.7.0"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//cdn?ref=v4.1.15"
 
   name                  = "selfcare"
   prefix                = local.project
@@ -84,71 +84,66 @@ resource "azurerm_resource_group" "selfcare_be_rg" {
 
 data "azurerm_key_vault_secret" "selfcare_apim_io_service_key" {
   name         = "apim-IO-SERVICE-KEY"
-  key_vault_id = data.azurerm_key_vault.common.id
+  key_vault_id = module.key_vault_common.id
 }
 
 data "azurerm_key_vault_secret" "selfcare_devportal_service_principal_client_id" {
   name         = "devportal-SERVICE-PRINCIPAL-CLIENT-ID"
-  key_vault_id = data.azurerm_key_vault.common.id
+  key_vault_id = module.key_vault_common.id
 }
 
 data "azurerm_key_vault_secret" "selfcare_devportal_service_principal_secret" {
   name         = "devportal-SERVICE-PRINCIPAL-SECRET"
-  key_vault_id = data.azurerm_key_vault.common.id
+  key_vault_id = module.key_vault_common.id
 }
 
 data "azurerm_key_vault_secret" "selfcare_io_sandbox_fiscal_code" {
   name         = "io-SANDBOX-FISCAL-CODE"
-  key_vault_id = data.azurerm_key_vault.common.id
+  key_vault_id = module.key_vault_common.id
 }
 
 data "azurerm_key_vault_secret" "selfcare_devportal_jira_token" {
   name         = "devportal-JIRA-TOKEN"
-  key_vault_id = data.azurerm_key_vault.common.id
+  key_vault_id = module.key_vault_common.id
 }
 
 data "azurerm_key_vault_secret" "selfcare_subsmigrations_apikey" {
   name         = "devportal-subsmigrations-APIKEY"
-  key_vault_id = data.azurerm_key_vault.common.id
+  key_vault_id = module.key_vault_common.id
 }
 
 # JWT
 #tfsec:ignore:azure-keyvault-ensure-secret-expiry:exp:2022-05-01 # already ignored, maybe a bug in tfsec
 module "selfcare_jwt" {
-  source = "git::https://github.com/pagopa/azurerm.git//jwt_keys?ref=v3.11.0"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//jwt_keys?ref=v4.1.15"
 
   jwt_name         = "selfcare-jwt"
-  key_vault_id     = data.azurerm_key_vault.common.id
+  key_vault_id     = module.key_vault_common.id
   cert_common_name = "IO selfcare"
   cert_password    = ""
   tags             = var.tags
 }
 
-resource "azurerm_app_service_plan" "selfcare_be_common" {
+resource "azurerm_service_plan" "selfcare_be_common" {
   name                = format("%s-plan-selfcare-be-common", local.project)
   location            = azurerm_resource_group.selfcare_be_rg.location
   resource_group_name = azurerm_resource_group.selfcare_be_rg.name
 
-  kind     = "Linux"
-  reserved = true
-
-  sku {
-    tier     = var.selfcare_plan_sku_tier
-    size     = var.selfcare_plan_sku_size
-    capacity = var.selfcare_plan_sku_capacity
-  }
+  os_type      = "Linux"
+  sku_name     = var.selfcare_plan_sku_size
+  worker_count = var.selfcare_plan_sku_capacity
 
   tags = var.tags
 }
 
 # Subnet to host checkout function
 module "selfcare_be_common_snet" {
-  source                                         = "git::https://github.com/pagopa/azurerm.git//subnet?ref=v1.0.51"
-  name                                           = format("%s-selfcare-be-common-snet", local.project)
-  address_prefixes                               = var.cidr_subnet_selfcare_be
-  resource_group_name                            = data.azurerm_resource_group.vnet_common_rg.name
-  virtual_network_name                           = data.azurerm_virtual_network.vnet_common.name
-  enforce_private_link_endpoint_network_policies = true
+  source                                    = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v4.1.15"
+  name                                      = format("%s-selfcare-be-common-snet", local.project)
+  address_prefixes                          = var.cidr_subnet_selfcare_be
+  resource_group_name                       = azurerm_resource_group.rg_common.name
+  virtual_network_name                      = module.vnet_common.name
+  private_endpoint_network_policies_enabled = false
   service_endpoints = [
     "Microsoft.Web",
     "Microsoft.Storage",
@@ -175,22 +170,25 @@ resource "azurerm_app_service_virtual_network_swift_connection" "selfcare_be" {
 #tfsec:ignore:azure-appservice-authentication-enabled:exp:2022-05-01 # already ignored, maybe a bug in tfsec
 #tfsec:ignore:azure-appservice-require-client-cert:exp:2022-05-01 # already ignored, maybe a bug in tfsec
 module "appservice_selfcare_be" {
-  source = "git::https://github.com/pagopa/azurerm.git//app_service?ref=v3.2.1"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//app_service?ref=v6.0.0"
 
   name                = format("%s-app-selfcare-be", local.project)
   resource_group_name = azurerm_resource_group.selfcare_be_rg.name
 
   plan_type = "external"
-  plan_id   = azurerm_app_service_plan.selfcare_be_common.id
+  plan_id   = azurerm_service_plan.selfcare_be_common.id
 
-  app_command_line  = "node /home/site/wwwroot/build/src/app.js"
-  linux_fx_version  = "NODE|14-lts"
+  app_command_line = "node /home/site/wwwroot/build/src/app.js"
+  ###
+  node_version = "14-lts"
+  # linux_fx_version  = "NODE|14-lts"
+
   health_check_path = "/info"
 
   app_settings = {
     WEBSITE_RUN_FROM_PACKAGE = "1"
 
-    APPINSIGHTS_INSTRUMENTATIONKEY = data.azurerm_application_insights.application_insights.instrumentation_key
+    APPINSIGHTS_INSTRUMENTATIONKEY = azurerm_application_insights.application_insights.instrumentation_key
 
     LOG_LEVEL = "info"
 
@@ -245,9 +243,6 @@ module "appservice_selfcare_be" {
 
     SUBSCRIPTION_MIGRATIONS_URL    = format("https://%s.azurewebsites.net/api/v1", module.function_subscriptionmigrations.name)
     SUBSCRIPTION_MIGRATIONS_APIKEY = data.azurerm_key_vault_secret.selfcare_subsmigrations_apikey.value
-
-    WEBSITE_VNET_ROUTE_ALL = "1"
-    WEBSITE_DNS_SERVER     = "168.63.129.16"
   }
 
   allowed_subnets = [module.appgateway_snet.id]
@@ -256,10 +251,10 @@ module "appservice_selfcare_be" {
 }
 
 resource "azurerm_monitor_autoscale_setting" "appservice_selfcare_be_common" {
-  name                = format("%s-autoscale", azurerm_app_service_plan.selfcare_be_common.name)
+  name                = format("%s-autoscale", azurerm_service_plan.selfcare_be_common.name)
   resource_group_name = azurerm_resource_group.selfcare_be_rg.name
   location            = azurerm_resource_group.selfcare_be_rg.location
-  target_resource_id  = azurerm_app_service_plan.selfcare_be_common.id
+  target_resource_id  = azurerm_service_plan.selfcare_be_common.id
 
   profile {
     name = "default"
@@ -273,7 +268,7 @@ resource "azurerm_monitor_autoscale_setting" "appservice_selfcare_be_common" {
     rule {
       metric_trigger {
         metric_name              = "CpuPercentage"
-        metric_resource_id       = azurerm_app_service_plan.selfcare_be_common.id
+        metric_resource_id       = azurerm_service_plan.selfcare_be_common.id
         metric_namespace         = "microsoft.web/serverfarms"
         time_grain               = "PT1M"
         statistic                = "Average"
@@ -295,7 +290,7 @@ resource "azurerm_monitor_autoscale_setting" "appservice_selfcare_be_common" {
     rule {
       metric_trigger {
         metric_name              = "CpuPercentage"
-        metric_resource_id       = azurerm_app_service_plan.selfcare_be_common.id
+        metric_resource_id       = azurerm_service_plan.selfcare_be_common.id
         metric_namespace         = "microsoft.web/serverfarms"
         time_grain               = "PT1M"
         statistic                = "Average"

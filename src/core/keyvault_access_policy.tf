@@ -18,7 +18,7 @@ resource "azurerm_key_vault_access_policy" "ad_group_policy" {
 
 # kv access policy group adgroup-admin
 resource "azurerm_key_vault_access_policy" "policy_common_admin" {
-  key_vault_id = data.azurerm_key_vault.common.id
+  key_vault_id = module.key_vault_common.id
 
   tenant_id = data.azurerm_client_config.current.tenant_id
   object_id = data.azuread_group.adgroup_admin.object_id
@@ -87,9 +87,9 @@ resource "azurerm_key_vault_access_policy" "adgroup_security_policy" {
 }
 
 # Microsoft Azure WebSites
-
+# TODO: To remove, the old app service (api-gad) has been removed so app services not needs to access to key vaults
 resource "azurerm_key_vault_access_policy" "app_service" {
-  key_vault_id = data.azurerm_key_vault.common.id
+  key_vault_id = module.key_vault_common.id
 
   tenant_id = data.azurerm_client_config.current.tenant_id
   object_id = "bb319217-f6ab-45d9-833d-555ef1173316"
@@ -102,7 +102,7 @@ resource "azurerm_key_vault_access_policy" "app_service" {
 # Microsoft.AzureFrontDoor-Cdn Enterprise application.
 # Note: the application id is always the same in every tenant while the object id is different.
 resource "azurerm_key_vault_access_policy" "cdn_common" {
-  key_vault_id = data.azurerm_key_vault.common.id
+  key_vault_id = module.key_vault_common.id
 
   tenant_id = data.azurerm_client_config.current.tenant_id
   object_id = "f3b3f72f-4770-47a5-8c1e-aa298003be12"
@@ -155,11 +155,59 @@ resource "azurerm_key_vault_access_policy" "azdevops_platform_iac_policy_kv" {
 }
 
 resource "azurerm_key_vault_access_policy" "azdevops_platform_iac_policy_kv_common" {
-  key_vault_id = data.azurerm_key_vault.common.id
+  key_vault_id = module.key_vault_common.id
   tenant_id    = data.azurerm_client_config.current.tenant_id
   object_id    = data.azuread_service_principal.platform_iac_sp.object_id
 
   secret_permissions      = ["Get", "List", "Set", ]
   storage_permissions     = []
   certificate_permissions = ["SetIssuers", "DeleteIssuers", "Purge", "List", "Get", "ManageContacts", ]
+}
+
+data "azuread_service_principal" "github_action_iac_cd" {
+  display_name = "github-pagopa-io-infra-prod-cd"
+}
+
+resource "azurerm_key_vault_access_policy" "github_action_iac_cd_kv" {
+  key_vault_id = module.key_vault.id
+  tenant_id    = data.azurerm_client_config.current.tenant_id
+  object_id    = data.azuread_service_principal.github_action_iac_cd.object_id
+
+  secret_permissions      = ["Get", "List", "Set", ]
+  storage_permissions     = []
+  certificate_permissions = ["SetIssuers", "DeleteIssuers", "Purge", "List", "Get", "ManageContacts", ]
+}
+
+resource "azurerm_key_vault_access_policy" "github_action_iac_cd_kv_common" {
+  key_vault_id = module.key_vault_common.id
+  tenant_id    = data.azurerm_client_config.current.tenant_id
+  object_id    = data.azuread_service_principal.github_action_iac_cd.object_id
+
+  secret_permissions      = ["Get", "List", "Set", ]
+  storage_permissions     = []
+  certificate_permissions = ["SetIssuers", "DeleteIssuers", "Purge", "List", "Get", "ManageContacts", ]
+}
+
+data "azuread_service_principal" "github_action_iac_ci" {
+  display_name = "github-pagopa-io-infra-prod-ci"
+}
+
+resource "azurerm_key_vault_access_policy" "github_action_iac_ci_kv" {
+  key_vault_id = module.key_vault.id
+  tenant_id    = data.azurerm_client_config.current.tenant_id
+  object_id    = data.azuread_service_principal.github_action_iac_ci.object_id
+
+  secret_permissions      = ["Get", "List", ]
+  storage_permissions     = []
+  certificate_permissions = ["Get", "List", ]
+}
+
+resource "azurerm_key_vault_access_policy" "github_action_iac_ci_kv_common" {
+  key_vault_id = module.key_vault_common.id
+  tenant_id    = data.azurerm_client_config.current.tenant_id
+  object_id    = data.azuread_service_principal.github_action_iac_ci.object_id
+
+  secret_permissions      = ["Get", "List", ]
+  storage_permissions     = []
+  certificate_permissions = ["Get", "List", ]
 }

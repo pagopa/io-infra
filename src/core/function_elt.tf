@@ -2,7 +2,7 @@ locals {
   function_elt = {
     app_settings = {
       FUNCTIONS_WORKER_RUNTIME       = "node"
-      WEBSITE_NODE_DEFAULT_VERSION   = "14.16.0"
+      WEBSITE_NODE_DEFAULT_VERSION   = "~18"
       FUNCTIONS_WORKER_PROCESS_COUNT = 4
       NODE_ENV                       = "production"
 
@@ -16,8 +16,8 @@ locals {
 
       COSMOSDB_NAME                = "db"
       COSMOSDB_URI                 = data.azurerm_cosmosdb_account.cosmos_api.endpoint
-      COSMOSDB_KEY                 = data.azurerm_cosmosdb_account.cosmos_api.primary_master_key
-      COSMOS_API_CONNECTION_STRING = format("AccountEndpoint=%s;AccountKey=%s;", data.azurerm_cosmosdb_account.cosmos_api.endpoint, data.azurerm_cosmosdb_account.cosmos_api.primary_master_key)
+      COSMOSDB_KEY                 = data.azurerm_cosmosdb_account.cosmos_api.primary_key
+      COSMOS_API_CONNECTION_STRING = format("AccountEndpoint=%s;AccountKey=%s;", data.azurerm_cosmosdb_account.cosmos_api.endpoint, data.azurerm_cosmosdb_account.cosmos_api.primary_key)
 
       TARGETKAFKA_clientId            = "IO_FUNCTIONS_ELT"
       TARGETKAFKA_brokers             = local.event_hub.connection
@@ -64,7 +64,7 @@ locals {
 
       COSMOSDB_REPLICA_NAME     = "db"
       COSMOSDB_REPLICA_URI      = replace(data.azurerm_cosmosdb_account.cosmos_api.endpoint, "io-p-cosmos-api", "io-p-cosmos-api-northeurope")
-      COSMOSDB_REPLICA_KEY      = data.azurerm_cosmosdb_account.cosmos_api.primary_master_key
+      COSMOSDB_REPLICA_KEY      = data.azurerm_cosmosdb_account.cosmos_api.primary_key
       COSMOSDB_REPLICA_LOCATION = "North Europe"
 
       MESSAGE_EXPORTS_COMMAND_TABLE       = azurerm_storage_table.fneltexports.name
@@ -80,10 +80,10 @@ locals {
       PN_SERVICE_ID = var.pn_service_id
 
       #iopstapi connection string
-      MessageContentPrimaryStorageConnection = data.azurerm_storage_account.iopstapi.primary_connection_string
+      MessageContentPrimaryStorageConnection = module.storage_api.primary_connection_string
       #iopstapireplica connection string
-      MessageContentStorageConnection  = data.azurerm_storage_account.api_replica.primary_connection_string
-      ServiceInfoBlobStorageConnection = data.azurerm_storage_account.cdnassets.primary_connection_string
+      MessageContentStorageConnection  = module.storage_api_replica.primary_connection_string
+      ServiceInfoBlobStorageConnection = module.assets_cdn.primary_connection_string
 
       MESSAGES_FAILURE_QUEUE_NAME       = "pdnd-io-cosmosdb-messages-failure"
       MESSAGE_STATUS_FAILURE_QUEUE_NAME = "pdnd-io-cosmosdb-message-status-failure"
@@ -102,11 +102,13 @@ resource "azurerm_resource_group" "elt_rg" {
 }
 
 module "function_elt_snetout" {
-  source               = "git::https://github.com/pagopa/azurerm.git//subnet?ref=v1.0.60"
-  name                 = "fn3eltout"
-  address_prefixes     = var.cidr_subnet_fnelt
-  resource_group_name  = data.azurerm_resource_group.vnet_common_rg.name
-  virtual_network_name = data.azurerm_virtual_network.vnet_common.name
+  source                                    = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v4.1.15"
+  name                                      = "fn3eltout"
+  address_prefixes                          = var.cidr_subnet_fnelt
+  resource_group_name                       = azurerm_resource_group.rg_common.name
+  virtual_network_name                      = module.vnet_common.name
+  private_endpoint_network_policies_enabled = true
+
   service_endpoints = [
     "Microsoft.EventHub",
     "Microsoft.Storage",
@@ -122,21 +124,9 @@ module "function_elt_snetout" {
   }
 }
 
-# Storage iopstapi
-data "azurerm_storage_account" "iopstapi" {
-  name                = "iopstapi"
-  resource_group_name = azurerm_resource_group.rg_internal.name
-}
-
-# Storage iopstapi replica
-data "azurerm_storage_account" "api_replica" {
-  name                = "iopstapireplica"
-  resource_group_name = azurerm_resource_group.rg_internal.name
-}
-
 #tfsec:ignore:azure-storage-queue-services-logging-enabled:exp:2022-05-01 # already ignored, maybe a bug in tfsec
 module "function_elt" {
-  source = "git::https://github.com/pagopa/azurerm.git//function_app?ref=v3.8.1"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app?ref=v4.1.15"
 
   resource_group_name                      = azurerm_resource_group.elt_rg.name
   name                                     = "${local.project}-fn-elt"
@@ -148,7 +138,7 @@ module "function_elt" {
   subnet_id                                = module.function_elt_snetout.id
   runtime_version                          = "~4"
   linux_fx_version                         = null
-  application_insights_instrumentation_key = data.azurerm_application_insights.application_insights.instrumentation_key
+  application_insights_instrumentation_key = azurerm_application_insights.application_insights.instrumentation_key
 
   app_service_plan_info = {
     kind                         = "elastic"
@@ -181,10 +171,10 @@ module "function_elt" {
 
   internal_storage = {
     "enable"                     = true,
-    "private_endpoint_subnet_id" = data.azurerm_subnet.private_endpoints_subnet.id,
-    "private_dns_zone_blob_ids"  = [data.azurerm_private_dns_zone.privatelink_blob_core_windows_net.id],
-    "private_dns_zone_queue_ids" = [data.azurerm_private_dns_zone.privatelink_queue_core_windows_net.id],
-    "private_dns_zone_table_ids" = [data.azurerm_private_dns_zone.privatelink_table_core_windows_net.id],
+    "private_endpoint_subnet_id" = module.private_endpoints_subnet.id,
+    "private_dns_zone_blob_ids"  = [azurerm_private_dns_zone.privatelink_blob_core.id],
+    "private_dns_zone_queue_ids" = [azurerm_private_dns_zone.privatelink_queue_core.id],
+    "private_dns_zone_table_ids" = [azurerm_private_dns_zone.privatelink_table_core.id],
     "queues" = [
       local.function_elt.app_settings.MESSAGES_FAILURE_QUEUE_NAME,
       "${local.function_elt.app_settings.MESSAGES_FAILURE_QUEUE_NAME}-poison",
@@ -198,7 +188,7 @@ module "function_elt" {
   }
 
   allowed_subnets = [
-    data.azurerm_subnet.azdoa_snet[0].id,
+    module.azdoa_snet[0].id,
   ]
 
   allowed_ips = local.app_insights_ips_west_europe
@@ -217,7 +207,7 @@ module "function_elt" {
 #tfsec:ignore:azure-storage-default-action-deny
 #tfsec:ignore:azure-storage-queue-services-logging-enabled:exp:2022-05-01 # already ignored, maybe a bug in tfsec
 module "storage_account_elt" {
-  source = "git::https://github.com/pagopa/azurerm.git//storage_account?ref=v2.7.0"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//storage_account?ref=v4.1.15"
 
   name                       = replace(format("%s-stelt", local.project), "-", "")
   account_kind               = "StorageV2"

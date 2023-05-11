@@ -5,17 +5,19 @@ resource "azurerm_public_ip" "appgateway_public_ip" {
   location            = azurerm_resource_group.rg_external.location
   sku                 = "Standard"
   allocation_method   = "Static"
+  zones               = [1, 2, 3]
 
   tags = var.tags
 }
 
 # Subnet to host the application gateway
 module "appgateway_snet" {
-  source               = "git::https://github.com/pagopa/azurerm.git//subnet?ref=v1.0.51"
-  name                 = format("%s-appgateway-snet", local.project)
-  address_prefixes     = var.cidr_subnet_appgateway
-  resource_group_name  = data.azurerm_resource_group.vnet_common_rg.name
-  virtual_network_name = data.azurerm_virtual_network.vnet_common.name
+  source                                    = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v4.1.15"
+  name                                      = format("%s-appgateway-snet", local.project)
+  address_prefixes                          = var.cidr_subnet_appgateway
+  resource_group_name                       = azurerm_resource_group.rg_common.name
+  virtual_network_name                      = module.vnet_common.name
+  private_endpoint_network_policies_enabled = true
 
   service_endpoints = [
     "Microsoft.Web",
@@ -24,7 +26,7 @@ module "appgateway_snet" {
 
 ## Application gateway ##
 module "app_gw" {
-  source = "git::https://github.com/pagopa/azurerm.git//app_gateway?ref=v2.0.9"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//app_gateway?ref=v4.1.15"
 
   resource_group_name = azurerm_resource_group.rg_external.name
   location            = azurerm_resource_group.rg_external.location
@@ -93,6 +95,20 @@ module "app_gw" {
       probe                       = "/info"
       probe_name                  = "probe-selfcare-backend"
       request_timeout             = 180
+      pick_host_name_from_backend = true
+    }
+
+    continua-app = {
+      protocol     = "Https"
+      host         = null
+      port         = 443
+      ip_addresses = null # with null value use fqdns
+      fqdns = [
+        module.appservice_continua.default_site_hostname,
+      ]
+      probe                       = "/info"
+      probe_name                  = "probe-continua-app"
+      request_timeout             = 10
       pick_host_name_from_backend = true
     }
 
@@ -257,6 +273,23 @@ module "app_gw" {
         )
       }
     }
+
+    continua-io-pagopa-it = {
+      protocol           = "Https"
+      host               = format("continua.%s.%s", var.dns_zone_io, var.external_domain)
+      port               = 443
+      ssl_profile_name   = format("%s-ssl-profile", local.project)
+      firewall_policy_id = null
+
+      certificate = {
+        name = var.app_gateway_continua_io_pagopa_it_certificate_name
+        id = replace(
+          data.azurerm_key_vault_certificate.app_gw_continua.secret_id,
+          "/${data.azurerm_key_vault_certificate.app_gw_continua.version}",
+          ""
+        )
+      }
+    }
   }
 
   # maps listener to backend
@@ -266,42 +299,56 @@ module "app_gw" {
       listener              = "api-io-pagopa-it"
       backend               = "apim"
       rewrite_rule_set_name = "rewrite-rule-set-api"
+      priority              = 50
     }
 
     api-io-italia-it = {
       listener              = "api-io-italia-it"
       backend               = "apim"
       rewrite_rule_set_name = "rewrite-rule-set-api"
+      priority              = 30
     }
 
     api-mtls-io-pagopa-it = {
       listener              = "api-mtls-io-pagopa-it"
       backend               = "apim"
       rewrite_rule_set_name = "rewrite-rule-set-api-mtls"
+      priority              = 10
     }
 
     api-app-io-pagopa-it = {
       listener              = "api-app-io-pagopa-it"
       backend               = "appbackend-app"
       rewrite_rule_set_name = "rewrite-rule-set-api-app"
+      priority              = 70
     }
 
     app-backend-io-italia-it = {
       listener              = "app-backend-io-italia-it"
       backend               = "appbackend-app"
       rewrite_rule_set_name = "rewrite-rule-set-api-app"
+      priority              = 40
     }
 
     developerportal-backend-io-italia-it = {
       listener              = "developerportal-backend-io-italia-it"
       backend               = "developerportal-backend"
       rewrite_rule_set_name = "rewrite-rule-set-developerportal-backend"
+      priority              = 20
     }
 
     api-io-selfcare-pagopa-it = {
       listener              = "api-io-selfcare-pagopa-it"
       backend               = "selfcare-backend"
       rewrite_rule_set_name = "rewrite-rule-set-selfcare-backend"
+      priority              = 60
+    }
+
+    continua-io-pagopa-it = {
+      listener              = "continua-io-pagopa-it"
+      backend               = "continua-app"
+      rewrite_rule_set_name = "rewrite-rule-set-continua"
+      priority              = 80
     }
 
   }
@@ -312,7 +359,8 @@ module "app_gw" {
       rewrite_rules = [{
         name          = "http-headers-api"
         rule_sequence = 100
-        condition     = null
+        conditions    = []
+        url           = null
         request_header_configurations = [
           {
             header_name  = "X-Forwarded-For"
@@ -336,7 +384,8 @@ module "app_gw" {
       rewrite_rules = [{
         name          = "http-headers-api-mtls"
         rule_sequence = 100
-        condition     = null
+        conditions    = []
+        url           = null
         request_header_configurations = [
           {
             header_name  = "X-Forwarded-For"
@@ -360,7 +409,8 @@ module "app_gw" {
       rewrite_rules = [{
         name          = "http-headers-api-app"
         rule_sequence = 100
-        condition     = null
+        conditions    = []
+        url           = null
         request_header_configurations = [
           {
             header_name  = "X-Forwarded-For"
@@ -379,7 +429,8 @@ module "app_gw" {
       rewrite_rules = [{
         name          = "http-headers-developerportal-backend"
         rule_sequence = 100
-        condition     = null
+        conditions    = []
+        url           = null
         request_header_configurations = [
           {
             header_name  = "X-Forwarded-For"
@@ -398,11 +449,36 @@ module "app_gw" {
       rewrite_rules = [{
         name          = "http-headers-selfcare-backend"
         rule_sequence = 100
-        condition     = null
+        conditions    = []
+        url           = null
         request_header_configurations = [
           {
             header_name  = "X-Forwarded-For"
             header_value = "{var_client_ip}"
+          },
+          {
+            header_name  = "X-Client-Ip"
+            header_value = "{var_client_ip}"
+          },
+        ]
+        response_header_configurations = []
+      }]
+    },
+    {
+      name = "rewrite-rule-set-continua"
+      rewrite_rules = [{
+        name          = "http-headers-continua"
+        rule_sequence = 100
+        conditions    = []
+        url           = null
+        request_header_configurations = [
+          {
+            header_name  = "X-Forwarded-For"
+            header_value = "{var_client_ip}"
+          },
+          {
+            header_name  = "X-Forwarded-Host"
+            header_value = "{var_host}"
           },
           {
             header_name  = "X-Client-Ip"
@@ -566,7 +642,7 @@ resource "azurerm_key_vault_access_policy" "app_gateway_policy" {
 }
 
 resource "azurerm_key_vault_access_policy" "app_gateway_policy_common" {
-  key_vault_id            = data.azurerm_key_vault.common.id
+  key_vault_id            = module.key_vault_common.id
   tenant_id               = data.azurerm_client_config.current.tenant_id
   object_id               = azurerm_user_assigned_identity.appgateway.principal_id
   key_permissions         = []
@@ -581,7 +657,7 @@ data "azuread_service_principal" "app_gw_uai_kvreader" {
 }
 
 resource "azurerm_key_vault_access_policy" "app_gw_uai_kvreader_common" {
-  key_vault_id            = data.azurerm_key_vault.common.id
+  key_vault_id            = module.key_vault_common.id
   tenant_id               = data.azurerm_client_config.current.tenant_id
   object_id               = data.azuread_service_principal.app_gw_uai_kvreader.object_id
   key_permissions         = []
@@ -607,21 +683,26 @@ data "azurerm_key_vault_certificate" "app_gw_api_app" {
 
 data "azurerm_key_vault_certificate" "app_gw_api_io_italia_it" {
   name         = var.app_gateway_api_io_italia_it_certificate_name
-  key_vault_id = data.azurerm_key_vault.common.id
+  key_vault_id = module.key_vault_common.id
 }
 
 data "azurerm_key_vault_certificate" "app_gw_app_backend_io_italia_it" {
   name         = var.app_gateway_app_backend_io_italia_it_certificate_name
-  key_vault_id = data.azurerm_key_vault.common.id
+  key_vault_id = module.key_vault_common.id
 }
 
 data "azurerm_key_vault_certificate" "app_gw_developerportal_backend_io_italia_it" {
   name         = var.app_gateway_developerportal_backend_io_italia_it_certificate_name
-  key_vault_id = data.azurerm_key_vault.common.id
+  key_vault_id = module.key_vault_common.id
 }
 
 data "azurerm_key_vault_certificate" "app_gw_api_io_selfcare_pagopa_it" {
   name         = var.app_gateway_api_io_selfcare_pagopa_it_certificate_name
+  key_vault_id = module.key_vault.id
+}
+
+data "azurerm_key_vault_certificate" "app_gw_continua" {
+  name         = var.app_gateway_continua_io_pagopa_it_certificate_name
   key_vault_id = module.key_vault.id
 }
 

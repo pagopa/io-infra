@@ -5,6 +5,26 @@ resource "azurerm_resource_group" "assets_cdn_rg" {
   tags = var.tags
 }
 
+module "assets_cdn" {
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//storage_account?ref=v4.1.15"
+
+  name                            = replace(format("%s-stcdnassets", local.project), "-", "")
+  account_kind                    = "StorageV2"
+  account_tier                    = "Standard"
+  access_tier                     = "Hot"
+  blob_versioning_enabled         = true
+  account_replication_type        = "GRS"
+  resource_group_name             = azurerm_resource_group.rg_common.name
+  location                        = azurerm_resource_group.rg_common.location
+  advanced_threat_protection      = false
+  allow_nested_items_to_be_public = true
+
+  index_document     = "index.html"
+  error_404_document = "index.html"
+
+  tags = var.tags
+}
+
 resource "azurerm_cdn_profile" "assets_cdn_profile" {
   name                = "${local.project}-assets-cdn-profile"
   resource_group_name = azurerm_resource_group.assets_cdn_rg.name
@@ -14,15 +34,9 @@ resource "azurerm_cdn_profile" "assets_cdn_profile" {
   tags = var.tags
 }
 
-resource "azurerm_management_lock" "assets_cdn_profile" {
-  name       = azurerm_cdn_profile.assets_cdn_profile.name
-  scope      = azurerm_cdn_profile.assets_cdn_profile.id
-  lock_level = "CanNotDelete"
-}
-
 data "azurerm_key_vault_secret" "assets_cdn_fn_key_cdn" {
   name         = "${module.function_assets_cdn.name}-KEY-CDN"
-  key_vault_id = data.azurerm_key_vault.common.id
+  key_vault_id = module.key_vault_common.id
 }
 
 resource "azurerm_cdn_endpoint" "assets_cdn_endpoint" {
@@ -108,18 +122,12 @@ resource "azurerm_cdn_endpoint" "assets_cdn_endpoint" {
   tags = var.tags
 }
 
-resource "azurerm_management_lock" "assets_cdn_endpoint" {
-  name       = azurerm_cdn_endpoint.assets_cdn_endpoint.name
-  scope      = azurerm_cdn_endpoint.assets_cdn_endpoint.id
-  lock_level = "CanNotDelete"
-}
-
 resource "azurerm_dns_cname_record" "assets_cdn_io_pagopa_it" {
   name                = "assets.cdn"
   zone_name           = azurerm_dns_zone.io_pagopa_it[0].name
   resource_group_name = azurerm_resource_group.rg_external.name
   ttl                 = var.dns_default_ttl_sec
-  record              = azurerm_cdn_endpoint.assets_cdn_endpoint.host_name
+  record              = azurerm_cdn_endpoint.assets_cdn_endpoint.fqdn
 
   tags = var.tags
 }
@@ -144,7 +152,7 @@ resource "azurerm_dns_cname_record" "assets_cdn_io_italia_it" {
   zone_name           = azurerm_dns_zone.io_italia_it.name
   resource_group_name = azurerm_resource_group.rg_external.name
   ttl                 = var.dns_default_ttl_sec
-  record              = azurerm_cdn_endpoint.assets_cdn_endpoint.host_name
+  record              = azurerm_cdn_endpoint.assets_cdn_endpoint.fqdn
 
   tags = var.tags
 }

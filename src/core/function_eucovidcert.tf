@@ -2,54 +2,64 @@
 # SECRETS
 #
 
+data "azurerm_key_vault_secret" "fn_eucovidcert_API_KEY_APPBACKEND" {
+  name         = "funceucovidcert-KEY-APPBACKEND"
+  key_vault_id = module.key_vault_common.id
+}
+
+data "azurerm_key_vault_secret" "fn_eucovidcert_API_KEY_PUBLICIOEVENTDISPATCHER" {
+  name         = "funceucovidcert-KEY-PUBLICIOEVENTDISPATCHER"
+  key_vault_id = module.key_vault.id
+}
+
 data "azurerm_key_vault_secret" "fn_eucovidcert_DGC_PROD_CLIENT_CERT" {
   name         = "eucovidcert-DGC-PROD-CLIENT-CERT"
-  key_vault_id = data.azurerm_key_vault.common.id
+  key_vault_id = module.key_vault_common.id
 }
 
 data "azurerm_key_vault_secret" "fn_eucovidcert_DGC_PROD_CLIENT_KEY" {
   name         = "eucovidcert-DGC-PROD-CLIENT-KEY"
-  key_vault_id = data.azurerm_key_vault.common.id
+  key_vault_id = module.key_vault_common.id
 }
 
 data "azurerm_key_vault_secret" "fn_eucovidcert_DGC_PROD_SERVER_CA" {
   name         = "eucovidcert-DGC-PROD-SERVER-CA"
-  key_vault_id = data.azurerm_key_vault.common.id
+  key_vault_id = module.key_vault_common.id
 }
 
 data "azurerm_key_vault_secret" "fn_eucovidcert_DGC_UAT_CLIENT_CERT" {
   name         = "eucovidcert-DGC-UAT-CLIENT-CERT"
-  key_vault_id = data.azurerm_key_vault.common.id
+  key_vault_id = module.key_vault_common.id
 }
 
 data "azurerm_key_vault_secret" "fn_eucovidcert_DGC_UAT_CLIENT_KEY" {
   name         = "eucovidcert-DGC-UAT-CLIENT-KEY"
-  key_vault_id = data.azurerm_key_vault.common.id
+  key_vault_id = module.key_vault_common.id
 }
 
 data "azurerm_key_vault_secret" "fn_eucovidcert_DGC_UAT_SERVER_CA" {
   name         = "eucovidcert-DGC-UAT-SERVER-CA"
-  key_vault_id = data.azurerm_key_vault.common.id
+  key_vault_id = module.key_vault_common.id
 }
 
 data "azurerm_key_vault_secret" "fn_eucovidcert_DGC_LOAD_TEST_CLIENT_KEY" {
   name         = "eucovidcert-DGC-LOAD-TEST-CLIENT-KEY"
-  key_vault_id = data.azurerm_key_vault.common.id
+  key_vault_id = module.key_vault_common.id
 }
 
 data "azurerm_key_vault_secret" "fn_eucovidcert_DGC_LOAD_TEST_CLIENT_CERT" {
   name         = "eucovidcert-DGC-LOAD-TEST-CLIENT-CERT"
-  key_vault_id = data.azurerm_key_vault.common.id
+  key_vault_id = module.key_vault_common.id
 }
 
 data "azurerm_key_vault_secret" "fn_eucovidcert_DGC_LOAD_TEST_SERVER_CA" {
   name         = "eucovidcert-DGC-LOAD-TEST-SERVER-CA"
-  key_vault_id = data.azurerm_key_vault.common.id
+  key_vault_id = module.key_vault_common.id
 }
 
 data "azurerm_key_vault_secret" "fn_eucovidcert_FNSERVICES_API_KEY" {
   name         = "fn3services-KEY-EUCOVIDCERT"
-  key_vault_id = data.azurerm_key_vault.common.id
+  key_vault_id = module.key_vault_common.id
 }
 
 #
@@ -62,22 +72,22 @@ resource "azurerm_resource_group" "eucovidcert_rg" {
   tags = var.tags
 }
 
-# 
+#
 # STORAGE
 #
 module "eucovidcert_storage_account" {
-  source = "git::https://github.com/pagopa/azurerm.git//storage_account?ref=v3.4.0"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//storage_account?ref=v4.1.15"
 
-  name                       = "${replace(local.project, "-", "")}steucovidcert"
-  account_kind               = "StorageV2"
-  account_tier               = "Standard"
-  access_tier                = "Hot"
-  enable_versioning          = false
-  account_replication_type   = "GRS"
-  resource_group_name        = azurerm_resource_group.eucovidcert_rg.name
-  location                   = azurerm_resource_group.eucovidcert_rg.location
-  advanced_threat_protection = false
-  allow_blob_public_access   = false
+  name                            = "${replace(local.project, "-", "")}steucovidcert"
+  account_kind                    = "StorageV2"
+  account_tier                    = "Standard"
+  access_tier                     = "Hot"
+  blob_versioning_enabled         = false
+  account_replication_type        = "GRS"
+  resource_group_name             = azurerm_resource_group.eucovidcert_rg.name
+  location                        = azurerm_resource_group.eucovidcert_rg.location
+  advanced_threat_protection      = false
+  allow_nested_items_to_be_public = false
 
   tags = var.tags
 }
@@ -143,12 +153,12 @@ locals {
 
 # Subnet to host app function
 module "function_eucovidcert_snet" {
-  source                                         = "git::https://github.com/pagopa/azurerm.git//subnet?ref=v1.0.51"
-  name                                           = format("%s-eucovidcert-snet", local.project)
-  address_prefixes                               = var.cidr_subnet_eucovidcert
-  resource_group_name                            = data.azurerm_resource_group.vnet_common_rg.name
-  virtual_network_name                           = data.azurerm_virtual_network.vnet_common.name
-  enforce_private_link_endpoint_network_policies = true
+  source                                    = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v4.1.15"
+  name                                      = format("%s-eucovidcert-snet", local.project)
+  address_prefixes                          = var.cidr_subnet_eucovidcert
+  resource_group_name                       = azurerm_resource_group.rg_common.name
+  virtual_network_name                      = module.vnet_common.name
+  private_endpoint_network_policies_enabled = false
 
   service_endpoints = [
     "Microsoft.Web",
@@ -164,9 +174,14 @@ module "function_eucovidcert_snet" {
   }
 }
 
+resource "azurerm_subnet_nat_gateway_association" "function_eucovidcert_snet" {
+  nat_gateway_id = module.nat_gateway.id
+  subnet_id      = module.function_eucovidcert_snet.id
+}
+
 #tfsec:ignore:azure-storage-queue-services-logging-enabled:exp:2022-05-01 # already ignored, maybe a bug in tfsec
 module "function_eucovidcert" {
-  source = "git::https://github.com/pagopa/azurerm.git//function_app?ref=v3.4.0"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app?ref=v4.1.15"
 
   resource_group_name = azurerm_resource_group.eucovidcert_rg.name
   name                = format("%s-eucovidcert-fn", local.project)
@@ -178,7 +193,7 @@ module "function_eucovidcert" {
   runtime_version  = "~4"
 
   always_on                                = "true"
-  application_insights_instrumentation_key = data.azurerm_application_insights.application_insights.instrumentation_key
+  application_insights_instrumentation_key = azurerm_application_insights.application_insights.instrumentation_key
 
   app_service_plan_info = {
     kind                         = var.function_eucovidcert_kind
@@ -190,10 +205,10 @@ module "function_eucovidcert" {
   app_settings = merge(
     local.function_eucovidcert.app_settings_common,
     {
-      "AzureWebJobs.NotifyNewProfileToDGC.Disabled" = "1"
-      "AzureWebJobs.OnProfileCreatedEvent.Disabled" = "1"
+      "AzureWebJobs.NotifyNewProfileToDGC.Disabled" = "0"
     }
   )
+
 
   subnet_id = module.function_eucovidcert_snet.id
 
@@ -209,7 +224,7 @@ module "function_eucovidcert" {
 }
 
 module "function_eucovidcert_staging_slot" {
-  source = "git::https://github.com/pagopa/azurerm.git//function_app_slot?ref=v3.4.0"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app_slot?ref=v4.1.15"
 
   name                = "staging"
   location            = var.location
@@ -226,20 +241,19 @@ module "function_eucovidcert_staging_slot" {
   linux_fx_version                         = "NODE|14"
   always_on                                = "true"
   runtime_version                          = "~4"
-  application_insights_instrumentation_key = data.azurerm_application_insights.application_insights.instrumentation_key
+  application_insights_instrumentation_key = azurerm_application_insights.application_insights.instrumentation_key
 
   app_settings = merge(
     local.function_eucovidcert.app_settings_common,
     {
       "AzureWebJobs.NotifyNewProfileToDGC.Disabled" = "1"
-      "AzureWebJobs.OnProfileCreatedEvent.Disabled" = "1"
     }
   )
 
   subnet_id = module.function_eucovidcert_snet.id
 
   allowed_subnets = [
-    data.azurerm_subnet.azdoa_snet[0].id,
+    module.azdoa_snet[0].id,
     module.function_eucovidcert_snet.id,
     module.app_backendl1_snet.id,
     module.app_backendl2_snet.id,

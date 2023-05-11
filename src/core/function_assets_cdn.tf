@@ -18,14 +18,14 @@ locals {
       FETCH_KEEPALIVE_TIMEOUT             = "60000"
 
       COSMOSDB_URI  = data.azurerm_cosmosdb_account.cosmos_api.endpoint
-      COSMOSDB_KEY  = data.azurerm_cosmosdb_account.cosmos_api.primary_master_key
+      COSMOSDB_KEY  = data.azurerm_cosmosdb_account.cosmos_api.primary_key
       COSMOSDB_NAME = "db"
 
-      STATIC_WEB_ASSETS_ENDPOINT  = data.azurerm_storage_account.cdnassets.primary_web_host
-      STATIC_BLOB_ASSETS_ENDPOINT = data.azurerm_storage_account.cdnassets.primary_blob_host
+      STATIC_WEB_ASSETS_ENDPOINT  = module.assets_cdn.primary_web_host
+      STATIC_BLOB_ASSETS_ENDPOINT = module.assets_cdn.primary_blob_host
 
-      CachedStorageConnection = data.azurerm_storage_account.api.primary_connection_string
-      AssetsStorageConnection = data.azurerm_storage_account.cdnassets.primary_connection_string
+      CachedStorageConnection = module.storage_api.primary_connection_string
+      AssetsStorageConnection = module.assets_cdn.primary_connection_string
 
       AzureWebJobsFeatureFlags = "EnableProxies"
     }
@@ -34,12 +34,12 @@ locals {
 
 # Subnet to host fn cdn assets function
 module "function_assets_cdn_snet" {
-  source                                         = "git::https://github.com/pagopa/azurerm.git//subnet?ref=v1.0.51"
-  name                                           = format("%s-assets-cdn-fn-snet", local.project)
-  address_prefixes                               = var.cidr_subnet_fncdnassets
-  resource_group_name                            = data.azurerm_resource_group.vnet_common_rg.name
-  virtual_network_name                           = data.azurerm_virtual_network.vnet_common.name
-  enforce_private_link_endpoint_network_policies = true
+  source                                    = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v4.1.15"
+  name                                      = format("%s-assets-cdn-fn-snet", local.project)
+  address_prefixes                          = var.cidr_subnet_fncdnassets
+  resource_group_name                       = azurerm_resource_group.rg_common.name
+  virtual_network_name                      = module.vnet_common.name
+  private_endpoint_network_policies_enabled = false
 
   service_endpoints = [
     "Microsoft.Web",
@@ -57,7 +57,7 @@ module "function_assets_cdn_snet" {
 }
 
 module "function_assets_cdn" {
-  source = "git::https://github.com/pagopa/azurerm.git//function_app?ref=v3.4.0"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app?ref=v4.1.15"
 
   resource_group_name = azurerm_resource_group.assets_cdn_rg.name
   name                = "${local.project}-assets-cdn-fn"
@@ -66,9 +66,9 @@ module "function_assets_cdn" {
 
   os_type                                  = "linux"
   runtime_version                          = "~4"
-  linux_fx_version                         = "NODE|14"
+  linux_fx_version                         = "NODE|18"
   always_on                                = true
-  application_insights_instrumentation_key = data.azurerm_application_insights.application_insights.instrumentation_key
+  application_insights_instrumentation_key = azurerm_application_insights.application_insights.instrumentation_key
 
   app_service_plan_info = {
     kind                         = var.function_assets_cdn_kind
@@ -86,7 +86,7 @@ module "function_assets_cdn" {
 
 module "function_assets_cdn_staging_slot" {
   count  = var.function_assets_cdn_sku_tier == "PremiumV3" ? 1 : 0
-  source = "git::https://github.com/pagopa/azurerm.git//function_app_slot?ref=v3.4.0"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app_slot?ref=v4.1.15"
 
   name                = "staging"
   location            = var.location
@@ -101,9 +101,9 @@ module "function_assets_cdn_staging_slot" {
 
   os_type                                  = "linux"
   runtime_version                          = "~4"
-  linux_fx_version                         = "NODE|14"
+  linux_fx_version                         = "NODE|18"
   always_on                                = true
-  application_insights_instrumentation_key = data.azurerm_application_insights.application_insights.instrumentation_key
+  application_insights_instrumentation_key = azurerm_application_insights.application_insights.instrumentation_key
 
   app_settings = local.function_assets_cdn.app_settings
 

@@ -9,16 +9,16 @@ data "azurerm_storage_account" "iopstcgn" {
 
 ## redis cgn subnet
 module "redis_cgn_snet" {
-  source                                         = "git::https://github.com/pagopa/azurerm.git//subnet?ref=v2.0.26"
-  name                                           = format("%s-redis-cgn-snet", local.project)
-  address_prefixes                               = ["10.0.14.0/25"]
-  resource_group_name                            = data.azurerm_resource_group.vnet_common_rg.name
-  virtual_network_name                           = data.azurerm_virtual_network.vnet_common.name
-  enforce_private_link_endpoint_network_policies = true
+  source                                    = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v4.1.15"
+  name                                      = format("%s-redis-cgn-snet", local.project)
+  address_prefixes                          = ["10.0.14.0/25"]
+  resource_group_name                       = azurerm_resource_group.rg_common.name
+  virtual_network_name                      = module.vnet_common.name
+  private_endpoint_network_policies_enabled = false
 }
 
 module "redis_cgn" {
-  source                = "git::https://github.com/pagopa/azurerm.git//redis_cache?ref=v2.0.26"
+  source                = "git::https://github.com/pagopa/terraform-azurerm-v3.git//redis_cache?ref=v4.1.15"
   name                  = format("%s-redis-cgn-std", local.project)
   resource_group_name   = data.azurerm_resource_group.rg_cgn.name
   location              = data.azurerm_resource_group.rg_cgn.location
@@ -53,7 +53,7 @@ module "redis_cgn" {
 
   private_endpoint = {
     enabled              = true
-    virtual_network_id   = data.azurerm_virtual_network.vnet_common.id
+    virtual_network_id   = module.vnet_common.id
     subnet_id            = module.redis_cgn_snet.id
     private_dns_zone_ids = [azurerm_private_dns_zone.privatelink_redis_cache.id]
   }
@@ -61,20 +61,15 @@ module "redis_cgn" {
   tags = var.tags
 }
 
-data "azurerm_subnet" "fn3cgn" {
-  name                 = "fn3cgn"
-  virtual_network_name = data.azurerm_virtual_network.vnet_common.name
-  resource_group_name  = data.azurerm_resource_group.vnet_common_rg.name
-}
-
 ##################
 ## CosmosDB cgn ##
 ##################
 
 module "cosmos_cgn" {
-  source   = "git::https://github.com/pagopa/azurerm.git//cosmosdb_account?ref=v2.1.18"
+  source   = "git::https://github.com/pagopa/terraform-azurerm-v3.git//cosmosdb_account?ref=v4.1.15"
   name     = format("%s-cosmos-cgn", local.project)
   location = var.location
+  domain   = "CGN"
 
   resource_group_name = data.azurerm_resource_group.rg_cgn.name
   offer_type          = "Standard"
@@ -108,15 +103,11 @@ module "cosmos_cgn" {
 
   ip_range = ""
 
-  allowed_virtual_network_subnet_ids = [
-    data.azurerm_subnet.fn3cgn.id
-  ]
-
   # private endpoint
   private_endpoint_name    = format("%s-cosmos-cgn-sql-endpoint", local.project)
   private_endpoint_enabled = true
-  subnet_id                = data.azurerm_subnet.private_endpoints_subnet.id
-  private_dns_zone_ids     = [data.azurerm_private_dns_zone.privatelink_documents_azure_com.id]
+  subnet_id                = module.private_endpoints_subnet.id
+  private_dns_zone_ids     = [azurerm_private_dns_zone.privatelink_documents.id]
 
   tags = var.tags
 
@@ -124,7 +115,7 @@ module "cosmos_cgn" {
 
 ## Database
 module "cgn_cosmos_db" {
-  source              = "git::https://github.com/pagopa/azurerm.git//cosmosdb_sql_database?ref=v2.1.15"
+  source              = "git::https://github.com/pagopa/terraform-azurerm-v3.git//cosmosdb_sql_database?ref=v4.1.15"
   name                = "db"
   resource_group_name = data.azurerm_resource_group.rg_cgn.name
   account_name        = module.cosmos_cgn.name
@@ -137,21 +128,21 @@ locals {
       name               = "user-cgns"
       partition_key_path = "/fiscalCode"
       autoscale_settings = {
-        max_throughput = 4000
+        max_throughput = 1000
       },
     },
     {
       name               = "user-eyca-cards"
       partition_key_path = "/fiscalCode"
       autoscale_settings = {
-        max_throughput = 4000
+        max_throughput = 1000
       },
     },
   ]
 }
 
 module "cgn_cosmosdb_containers" {
-  source   = "git::https://github.com/pagopa/azurerm.git//cosmosdb_sql_container?ref=v2.18.1"
+  source   = "git::https://github.com/pagopa/terraform-azurerm-v3.git//cosmosdb_sql_container?ref=v4.1.15"
   for_each = { for c in local.cgn_cosmosdb_containers : c.name => c }
 
   name                = each.value.name
@@ -169,19 +160,18 @@ module "cgn_cosmosdb_containers" {
 #tfsec:ignore:azure-storage-default-action-deny
 #tfsec:ignore:azure-storage-queue-services-logging-enabled:exp:2022-05-01 # already ignored, maybe a bug in tfsec
 module "cgn_legalbackup_storage" {
-  source = "git::https://github.com/pagopa/azurerm.git//storage_account?ref=v2.7.0"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//storage_account?ref=v4.1.15"
 
-  name                       = replace(format("%s-cgn-legalbackup-storage", local.project), "-", "")
-  account_kind               = "StorageV2"
-  account_tier               = "Standard"
-  access_tier                = "Hot"
-  versioning_name            = "versioning"
-  enable_versioning          = var.cgn_legalbackup_enable_versioning
-  account_replication_type   = var.cgn_legalbackup_account_replication_type
-  resource_group_name        = data.azurerm_resource_group.rg_cgn.name
-  location                   = data.azurerm_resource_group.rg_cgn.location
-  advanced_threat_protection = false
-  allow_blob_public_access   = false
+  name                            = replace(format("%s-cgn-legalbackup-storage", local.project), "-", "")
+  account_kind                    = "StorageV2"
+  account_tier                    = "Standard"
+  access_tier                     = "Hot"
+  blob_versioning_enabled         = var.cgn_legalbackup_enable_versioning
+  account_replication_type        = var.cgn_legalbackup_account_replication_type
+  resource_group_name             = data.azurerm_resource_group.rg_cgn.name
+  location                        = data.azurerm_resource_group.rg_cgn.location
+  advanced_threat_protection      = false
+  allow_nested_items_to_be_public = false
 
   tags = var.tags
 }
@@ -201,7 +191,7 @@ resource "azurerm_key_vault_secret" "cgn_legalbackup_storage_connection_string" 
   value        = module.cgn_legalbackup_storage.primary_connection_string
   content_type = "text/plain"
 
-  key_vault_id = data.azurerm_key_vault.common.id
+  key_vault_id = module.key_vault_common.id
 }
 
 #tfsec:ignore:azure-keyvault-ensure-secret-expiry
@@ -210,7 +200,7 @@ resource "azurerm_key_vault_secret" "cgn_legalbackup_storage_blob_connection_str
   value        = module.cgn_legalbackup_storage.primary_blob_connection_string
   content_type = "text/plain"
 
-  key_vault_id = data.azurerm_key_vault.common.id
+  key_vault_id = module.key_vault_common.id
 }
 
 resource "azurerm_storage_container" "cgn_legalbackup_container" {
@@ -223,7 +213,7 @@ resource "azurerm_private_endpoint" "cgn_legalbackup_storage" {
   name                = format("%s-cgn-legalbackup-storage", local.project)
   location            = data.azurerm_resource_group.rg_cgn.location
   resource_group_name = data.azurerm_resource_group.rg_cgn.name
-  subnet_id           = data.azurerm_subnet.private_endpoints_subnet.id
+  subnet_id           = module.private_endpoints_subnet.id
 
   private_service_connection {
     name                           = format("%s-cgn-legalbackup-storage-private-endpoint", local.project)
@@ -234,13 +224,13 @@ resource "azurerm_private_endpoint" "cgn_legalbackup_storage" {
 
   private_dns_zone_group {
     name                 = "private-dns-zone-group"
-    private_dns_zone_ids = [data.azurerm_private_dns_zone.privatelink_blob_core_windows_net.id]
+    private_dns_zone_ids = [azurerm_private_dns_zone.privatelink_blob_core.id]
   }
 }
 
 ## Api merchant
 module "apim_product_merchant" {
-  source = "git::https://github.com/pagopa/azurerm.git//api_management_product?ref=v2.1.20"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_product?ref=v4.1.15"
 
   product_id   = "cgnmerchant"
   display_name = "IO CGN API MERCHANT"
@@ -257,7 +247,7 @@ module "apim_product_merchant" {
 }
 
 module "api_cgn_merchant" {
-  source = "git::https://github.com/pagopa/azurerm.git//api_management_api?ref=v2.1.19"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api?ref=v4.1.15"
 
   name                = "io-cgn-merchant-api"
   api_management_name = module.apim.name
@@ -293,7 +283,7 @@ resource "azurerm_api_management_named_value" "io_fn_cgnmerchant_url" {
 
 data "azurerm_key_vault_secret" "io_fn_cgnmerchant_key_secret" {
   name         = "io-fn-cgnmerchant-KEY-APIM"
-  key_vault_id = data.azurerm_key_vault.common.id
+  key_vault_id = module.key_vault_common.id
 }
 
 resource "azurerm_api_management_named_value" "io_fn_cgnmerchant_key" {
@@ -311,7 +301,7 @@ resource "azurerm_api_management_named_value" "io_fn_cgnmerchant_key" {
 ### cgnonboardingportal user identity
 data "azurerm_key_vault_secret" "cgn_onboarding_backend_identity" {
   name         = "cgn-onboarding-backend-PRINCIPALID"
-  key_vault_id = data.azurerm_key_vault.common.id
+  key_vault_id = module.key_vault_common.id
 }
 */
 
@@ -323,7 +313,7 @@ locals {
 ### cgnonboardingportal user identity
 data "azurerm_key_vault_secret" "cgn_onboarding_backend_identity" {
   name         = "cgn-onboarding-backend-PRINCIPALID"
-  key_vault_id = data.azurerm_key_vault.common.id
+  key_vault_id = module.key_vault_common.id
 }
 
 resource "azurerm_role_assignment" "service_contributor" {
@@ -357,12 +347,12 @@ resource "azurerm_app_service_plan" "cgn_common" {
 
 # Subnet to host app function
 module "cgn_snet" {
-  source                                         = "git::https://github.com/pagopa/azurerm.git//subnet?ref=v1.0.51"
-  name                                           = format("%s-cgn-snet", local.project)
-  address_prefixes                               = var.cidr_subnet_cgn
-  resource_group_name                            = data.azurerm_resource_group.vnet_common_rg.name
-  virtual_network_name                           = data.azurerm_virtual_network.vnet_common.name
-  enforce_private_link_endpoint_network_policies = true
+  source                                    = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v4.1.15"
+  name                                      = format("%s-cgn-snet", local.project)
+  address_prefixes                          = var.cidr_subnet_cgn
+  resource_group_name                       = azurerm_resource_group.rg_common.name
+  virtual_network_name                      = module.vnet_common.name
+  private_endpoint_network_policies_enabled = false
 
   service_endpoints = [
     "Microsoft.Web",
@@ -377,4 +367,9 @@ module "cgn_snet" {
       actions = ["Microsoft.Network/virtualNetworks/subnets/action"]
     }
   }
+}
+
+resource "azurerm_subnet_nat_gateway_association" "cgn_snet" {
+  nat_gateway_id = module.nat_gateway.id
+  subnet_id      = module.cgn_snet.id
 }

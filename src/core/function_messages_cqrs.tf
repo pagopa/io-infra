@@ -2,7 +2,7 @@ locals {
   function_messages_cqrs = {
     app_settings = {
       FUNCTIONS_WORKER_RUNTIME       = "node"
-      WEBSITE_NODE_DEFAULT_VERSION   = "14.16.0"
+      WEBSITE_NODE_DEFAULT_VERSION   = "18.13.0"
       WEBSITE_RUN_FROM_PACKAGE       = "1"
       WEBSITE_VNET_ROUTE_ALL         = "1"
       WEBSITE_DNS_SERVER             = "168.63.129.16"
@@ -11,8 +11,8 @@ locals {
 
       COSMOSDB_NAME              = "db"
       COSMOSDB_URI               = data.azurerm_cosmosdb_account.cosmos_api.endpoint
-      COSMOSDB_KEY               = data.azurerm_cosmosdb_account.cosmos_api.primary_master_key
-      COSMOSDB_CONNECTION_STRING = format("AccountEndpoint=%s;AccountKey=%s;", data.azurerm_cosmosdb_account.cosmos_api.endpoint, data.azurerm_cosmosdb_account.cosmos_api.primary_master_key)
+      COSMOSDB_KEY               = data.azurerm_cosmosdb_account.cosmos_api.primary_key
+      COSMOSDB_CONNECTION_STRING = format("AccountEndpoint=%s;AccountKey=%s;", data.azurerm_cosmosdb_account.cosmos_api.endpoint, data.azurerm_cosmosdb_account.cosmos_api.primary_key)
 
       LEASE_COLLECTION_PREFIX = "bulk-status-update-00"
 
@@ -20,8 +20,8 @@ locals {
       MESSAGE_VIEW_PAYMENT_UPDATE_FAILURE_QUEUE_NAME = "message-view-paymentupdate-failures"
       MESSAGE_PAYMENT_UPDATER_FAILURE_QUEUE_NAME     = "message-paymentupdater-failures"
       MESSAGE_CONTAINER_NAME                         = local.message_content_container_name
-      MESSAGE_CONTENT_STORAGE_CONNECTION             = data.azurerm_storage_account.api.primary_connection_string
-      QueueStorageConnection                         = data.azurerm_storage_account.api.primary_connection_string
+      MESSAGE_CONTENT_STORAGE_CONNECTION             = module.storage_api.primary_connection_string
+      QueueStorageConnection                         = module.storage_api.primary_connection_string
 
       MESSAGE_STATUS_FOR_VIEW_TOPIC_CONSUMER_CONNECTION_STRING = module.event_hub.keys["io-cosmosdb-message-status-for-view.io-messages"].primary_connection_string
       MESSAGE_STATUS_FOR_VIEW_TOPIC_CONSUMER_GROUP             = "io-messages"
@@ -71,12 +71,12 @@ locals {
 
 # Subnet to host fn messages cqrs function
 module "function_messages_cqrs_snet" {
-  source                                         = "git::https://github.com/pagopa/azurerm.git//subnet?ref=v1.0.51"
-  name                                           = format("%s-fn-messages-cqrs-snet", local.project)
-  address_prefixes                               = var.cidr_subnet_fnmessagescqrs
-  resource_group_name                            = data.azurerm_resource_group.vnet_common_rg.name
-  virtual_network_name                           = data.azurerm_virtual_network.vnet_common.name
-  enforce_private_link_endpoint_network_policies = true
+  source                                    = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v4.1.15"
+  name                                      = format("%s-fn-messages-cqrs-snet", local.project)
+  address_prefixes                          = var.cidr_subnet_fnmessagescqrs
+  resource_group_name                       = azurerm_resource_group.rg_common.name
+  virtual_network_name                      = module.vnet_common.name
+  private_endpoint_network_policies_enabled = false
 
   service_endpoints = [
     "Microsoft.Web",
@@ -95,7 +95,7 @@ module "function_messages_cqrs_snet" {
 
 #tfsec:ignore:azure-storage-queue-services-logging-enabled:exp:2022-05-01 # already ignored, maybe a bug in tfsec
 module "function_messages_cqrs" {
-  source = "git::https://github.com/pagopa/azurerm.git//function_app?ref=v3.8.1"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app?ref=v4.1.15"
 
   resource_group_name = azurerm_resource_group.backend_messages_rg.name
   name                = format("%s-messages-cqrs-fn", local.project)
@@ -119,10 +119,10 @@ module "function_messages_cqrs" {
   }
 
   os_type                                  = "linux"
-  linux_fx_version                         = "NODE|14"
+  linux_fx_version                         = "NODE|18"
   runtime_version                          = "~4"
   always_on                                = var.function_messages_cqrs_always_on
-  application_insights_instrumentation_key = data.azurerm_application_insights.application_insights.instrumentation_key
+  application_insights_instrumentation_key = azurerm_application_insights.application_insights.instrumentation_key
 
   app_service_plan_info = {
     kind                         = var.function_messages_cqrs_kind
@@ -149,10 +149,10 @@ module "function_messages_cqrs" {
 
   internal_storage = {
     "enable"                     = true,
-    "private_endpoint_subnet_id" = data.azurerm_subnet.private_endpoints_subnet.id,
-    "private_dns_zone_blob_ids"  = [data.azurerm_private_dns_zone.privatelink_blob_core_windows_net.id],
-    "private_dns_zone_queue_ids" = [data.azurerm_private_dns_zone.privatelink_queue_core_windows_net.id],
-    "private_dns_zone_table_ids" = [data.azurerm_private_dns_zone.privatelink_table_core_windows_net.id],
+    "private_endpoint_subnet_id" = module.private_endpoints_subnet.id,
+    "private_dns_zone_blob_ids"  = [azurerm_private_dns_zone.privatelink_blob_core.id],
+    "private_dns_zone_queue_ids" = [azurerm_private_dns_zone.privatelink_queue_core.id],
+    "private_dns_zone_table_ids" = [azurerm_private_dns_zone.privatelink_table_core.id],
     "queues" = [
       local.function_messages_cqrs.app_settings.MESSAGE_VIEW_UPDATE_FAILURE_QUEUE_NAME,
       format("%s-poison", local.function_messages_cqrs.app_settings.MESSAGE_VIEW_UPDATE_FAILURE_QUEUE_NAME),
@@ -179,7 +179,7 @@ module "function_messages_cqrs" {
 }
 
 module "function_messages_cqrs_staging_slot" {
-  source = "git::https://github.com/pagopa/azurerm.git//function_app_slot?ref=v3.8.1"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app_slot?ref=v4.1.15"
 
   name                = "staging"
   location            = var.location
@@ -194,10 +194,10 @@ module "function_messages_cqrs_staging_slot" {
   internal_storage_connection_string = module.function_messages_cqrs.storage_account_internal_function.primary_connection_string
 
   os_type                                  = "linux"
-  linux_fx_version                         = "NODE|14"
+  linux_fx_version                         = "NODE|18"
   runtime_version                          = "~4"
   always_on                                = var.function_messages_cqrs_always_on
-  application_insights_instrumentation_key = data.azurerm_application_insights.application_insights.instrumentation_key
+  application_insights_instrumentation_key = azurerm_application_insights.application_insights.instrumentation_key
 
   app_settings = merge(
     local.function_messages_cqrs.app_settings, {
@@ -218,7 +218,7 @@ module "function_messages_cqrs_staging_slot" {
 
   allowed_subnets = [
     module.function_messages_cqrs_snet.id,
-    data.azurerm_subnet.azdoa_snet[0].id,
+    module.azdoa_snet[0].id,
   ]
 
   allowed_ips = concat(

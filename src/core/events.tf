@@ -6,17 +6,17 @@ resource "azurerm_resource_group" "event_rg" {
 }
 
 module "eventhub_snet" {
-  source                                         = "git::https://github.com/pagopa/azurerm.git//subnet?ref=v1.0.7"
-  name                                           = format("%s-eventhub-snet", local.project)
-  address_prefixes                               = var.cidr_subnet_eventhub
-  resource_group_name                            = data.azurerm_resource_group.vnet_common_rg.name
-  virtual_network_name                           = data.azurerm_virtual_network.vnet_common.name
-  service_endpoints                              = ["Microsoft.EventHub"]
-  enforce_private_link_endpoint_network_policies = true
+  source                                    = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v4.1.15"
+  name                                      = format("%s-eventhub-snet", local.project)
+  address_prefixes                          = var.cidr_subnet_eventhub
+  resource_group_name                       = azurerm_resource_group.rg_common.name
+  virtual_network_name                      = module.vnet_common.name
+  service_endpoints                         = ["Microsoft.EventHub"]
+  private_endpoint_network_policies_enabled = false
 }
 
 module "event_hub" {
-  source                   = "git::https://github.com/pagopa/azurerm.git//eventhub?ref=v1.0.66"
+  source                   = "git::https://github.com/pagopa/terraform-azurerm-v3.git//eventhub?ref=v4.1.15"
   name                     = format("%s-evh-ns", local.project)
   location                 = var.location
   resource_group_name      = azurerm_resource_group.event_rg.name
@@ -26,11 +26,16 @@ module "event_hub" {
   maximum_throughput_units = var.ehns_maximum_throughput_units
   zone_redundant           = var.ehns_zone_redundant
 
-  virtual_network_ids = [data.azurerm_virtual_network.vnet_common.id]
+  virtual_network_ids = [module.vnet_common.id]
   subnet_id           = module.eventhub_snet.id
+  private_dns_zones = {
+    id   = [azurerm_private_dns_zone.privatelink_servicebus.id]
+    name = [azurerm_private_dns_zone.privatelink_servicebus.name]
+  }
 
   eventhubs = var.eventhubs
 
+  public_network_access_enabled = true
   network_rulesets = [
     {
       default_action = "Deny",
