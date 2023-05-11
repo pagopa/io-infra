@@ -1132,6 +1132,8 @@ data "azurerm_linux_web_app" "app_backend_app_services" {
 resource "azurerm_monitor_metric_alert" "too_many_http_5xx" {
   for_each = { for key, name in data.azurerm_linux_web_app.app_backend_app_services : key => name }
 
+  enabled = false
+
   name                = "[IO-COMMONS | ${each.value.name}] Too many 5xx"
   resource_group_name = azurerm_resource_group.rg_linux.name
   scopes              = [each.value.id]
