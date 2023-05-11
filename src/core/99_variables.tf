@@ -948,6 +948,11 @@ variable "pn_service_id" {
   description = "The Service ID of PN service"
   default     = "01G40DWQGKY5GRWSNM4303VNRP"
 }
+# PN Test Endpoint
+variable "pn_test_endpoint" {
+  type        = string
+  description = "The endpoint of PN (test env)"
+}
 
 # io-sign service Id
 variable "io_sign_service_id" {
