@@ -47,7 +47,7 @@ module "function_cgn_merchant" {
   health_check_path   = "/api/v1/cgn/merchant/info"
 
   os_type          = "linux"
-  linux_fx_version = "NODE|14"
+  linux_fx_version = "NODE|18"
   runtime_version  = "~4"
 
   always_on                                = "true"
