@@ -157,7 +157,7 @@ module "function_cgn_staging_slot" {
   internal_storage_connection_string = module.function_cgn.storage_account_internal_function.primary_connection_string
 
   os_type                                  = "linux"
-  linux_fx_version                         = "NODE|14"
+  linux_fx_version                         = "NODE|18"
   always_on                                = "true"
   runtime_version                          = "~4"
   application_insights_instrumentation_key = azurerm_application_insights.application_insights.instrumentation_key
