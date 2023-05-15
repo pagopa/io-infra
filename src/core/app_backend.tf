@@ -247,6 +247,10 @@ locals {
       LOLLIPOP_REVOKE_QUEUE_NAME                = var.citizen_auth_revoke_queue_name
 
       FF_LOLLIPOP_ENABLED = "1"
+
+      //IOLOGIN redirect
+      FF_IOLOGIN         = "BETA"
+      IOLOGIN_TEST_USERS = data.azurerm_key_vault_secret.app_backend_IOLOGIN_TEST_USERS.value
     }
     app_settings_l1 = {
       IS_APPBACKENDLI = "false"
@@ -444,6 +448,12 @@ data "azurerm_key_vault_secret" "app_backend_PN_REAL_TEST_USERS" {
 
 data "azurerm_key_vault_secret" "app_backend_LOLLIPOP_API_KEY" {
   name         = "appbackend-LOLLIPOP-API-KEY"
+  key_vault_id = module.key_vault_common.id
+}
+
+
+data "azurerm_key_vault_secret" "app_backend_IOLOGIN_TEST_USERS" {
+  name         = "appbackend-IOLOGIN-TEST-USERS"
   key_vault_id = module.key_vault_common.id
 }
 
