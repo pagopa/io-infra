@@ -99,6 +99,8 @@ locals {
 
       # setting to allow the retrieve of the payment status from payment-updater
       FF_PAYMENT_STATUS_ENABLED = "true"
+      # setting to notify message via email using the template
+      FF_TEMPLATE_EMAIL = "BETA"
 
       // minimum app version that introduces read status opt-out
       // NOTE: right now is set to a non existing version, since it's not yet deployed
@@ -175,7 +177,7 @@ module "function_services" {
   health_check_path   = "/api/info"
 
   os_type          = "linux"
-  linux_fx_version = "NODE|14"
+  linux_fx_version = "NODE|18"
   runtime_version  = "~4"
 
   always_on                                = "true"
@@ -264,7 +266,7 @@ module "function_services_staging_slot" {
   internal_storage_connection_string = module.function_services[count.index].storage_account_internal_function.primary_connection_string
 
   os_type                                  = "linux"
-  linux_fx_version                         = "NODE|14"
+  linux_fx_version                         = "NODE|18"
   always_on                                = "true"
   runtime_version                          = "~4"
   application_insights_instrumentation_key = azurerm_application_insights.application_insights.instrumentation_key

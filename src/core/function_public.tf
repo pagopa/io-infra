@@ -42,7 +42,7 @@ module "function_public" {
   health_check_path   = "/info"
 
   os_type          = "linux"
-  linux_fx_version = "NODE|14"
+  linux_fx_version = "NODE|18"
   runtime_version  = "~4"
 
   always_on                                = "true"
@@ -96,7 +96,7 @@ module "function_public_staging_slot" {
   storage_account_access_key = module.function_public.storage_account.primary_access_key
 
   os_type                                  = "linux"
-  linux_fx_version                         = "NODE|14"
+  linux_fx_version                         = "NODE|18"
   always_on                                = "true"
   runtime_version                          = "~4"
   application_insights_instrumentation_key = azurerm_application_insights.application_insights.instrumentation_key

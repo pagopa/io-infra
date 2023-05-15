@@ -306,6 +306,11 @@ variable "cidr_subnet_fnlollipop" {
   description = "Function Lollipop address space."
 }
 
+variable "cidr_subnet_continua" {
+  type        = list(string)
+  description = "continua address space."
+}
+
 ## REDIS COMMON ##
 variable "redis_common" {
   type = object({
@@ -317,6 +322,7 @@ variable "redis_common" {
     rdb_backup_enabled            = bool
     rdb_backup_frequency          = number
     rdb_backup_max_snapshot_count = number
+    redis_version                 = string
   })
   description = "Redis Common configuration"
 }
@@ -368,6 +374,11 @@ variable "app_gateway_developerportal_backend_io_italia_it_certificate_name" {
 variable "app_gateway_api_io_selfcare_pagopa_it_certificate_name" {
   type        = string
   description = "Application gateway api certificate name on Key Vault"
+}
+
+variable "app_gateway_continua_io_pagopa_it_certificate_name" {
+  type        = string
+  description = "Application gateway continua certificate name on Key Vault"
 }
 
 variable "app_gateway_min_capacity" {
@@ -937,6 +948,11 @@ variable "pn_service_id" {
   description = "The Service ID of PN service"
   default     = "01G40DWQGKY5GRWSNM4303VNRP"
 }
+# PN Test Endpoint
+variable "pn_test_endpoint" {
+  type        = string
+  description = "The endpoint of PN (test env)"
+}
 
 # io-sign service Id
 variable "io_sign_service_id" {
@@ -1105,4 +1121,14 @@ variable "citizen_auth_assertion_storage_name" {
   type        = string
   description = "Use storage name from citizen_auth domain"
   default     = "lollipop-assertions-st"
+}
+
+
+################################
+# App Continua - DynamicLink
+################################
+
+variable "continua_appservice_sku" {
+  type        = string
+  description = "The SKU for the AppService Plan relative to Continua"
 }

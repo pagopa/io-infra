@@ -60,6 +60,7 @@ cidr_subnet_redis_common = ["10.0.200.0/24"]
 cidr_subnet_pendpoints   = ["10.0.240.0/23"]
 cidr_subnet_azdoa        = ["10.0.250.0/24"]
 cidr_subnet_dnsforwarder = ["10.0.252.8/29"]
+cidr_subnet_continua     = ["10.0.17.64/26"]
 
 app_gateway_api_certificate_name                                  = "api-io-pagopa-it"
 app_gateway_api_mtls_certificate_name                             = "api-mtls-io-pagopa-it"
@@ -68,6 +69,7 @@ app_gateway_api_io_italia_it_certificate_name                     = "api-io-ital
 app_gateway_app_backend_io_italia_it_certificate_name             = "app-backend-io-italia-it"
 app_gateway_developerportal_backend_io_italia_it_certificate_name = "developerportal-backend-io-italia-it"
 app_gateway_api_io_selfcare_pagopa_it_certificate_name            = "api-io-selfcare-pagopa-it"
+app_gateway_continua_io_pagopa_it_certificate_name                = "continua-io-pagopa-it"
 app_gateway_min_capacity                                          = 4 # 4 capacity=baseline, 10 capacity=high volume event, 15 capacity=very high volume event
 app_gateway_max_capacity                                          = 50
 app_gateway_alerts_enabled                                        = true
@@ -82,6 +84,7 @@ redis_common = {
   rdb_backup_enabled            = true
   rdb_backup_frequency          = 60
   rdb_backup_max_snapshot_count = 1
+  redis_version                 = "6"
 }
 
 # apim
@@ -126,6 +129,14 @@ ehns_alerts_enabled           = true
 ehns_ip_rules = [
   {
     ip_mask = "18.192.147.151", # PDND
+    action  = "Allow"
+  },
+  {
+    ip_mask = "18.159.227.69", # PDND
+    action  = "Allow"
+  },
+  {
+    ip_mask = "3.126.198.129", # PDND
     action  = "Allow"
   }
 ]
@@ -263,6 +274,12 @@ function_eucovidcert_sku_size          = "P1v3"
 function_eucovidcert_autoscale_minimum = 1
 function_eucovidcert_autoscale_maximum = 20
 function_eucovidcert_autoscale_default = 10
+
+# App Continua DynamicLynk
+
+# TODO remove when the terraform provider for Azure will support SKU P0v3
+# Up to then, the work-around is defining as P1v3 and changing via console
+continua_appservice_sku = "P1v3"
 
 eventhubs = [
   {
@@ -429,6 +446,8 @@ eventhubs = [
 
 # PN Service Id
 pn_service_id = "01G40DWQGKY5GRWSNM4303VNRP"
+# PN Test Endpoint
+pn_test_endpoint = "https://api-io.uat.notifichedigitali.it"
 
 
 # TP Mock Service Id

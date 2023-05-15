@@ -182,9 +182,9 @@ locals {
       // PN Service Activation
       PN_ACTIVATION_BASE_PATH = "/api/v1/pn"
       PN_API_KEY              = data.azurerm_key_vault_secret.app_backend_PN_API_KEY.value
-      PN_API_KEY_UAT          = data.azurerm_key_vault_secret.app_backend_PN_API_KEY_UAT.value
+      PN_API_KEY_UAT          = data.azurerm_key_vault_secret.app_backend_PN_API_KEY_UAT_V2.value
       PN_API_URL              = "https://api-io.pn.pagopa.it"
-      PN_API_URL_UAT          = "https://api-io.coll.pn.pagopa.it"
+      PN_API_URL_UAT          = var.pn_test_endpoint
 
       // Third Party Services
       THIRD_PARTY_CONFIG_LIST = jsonencode([
@@ -203,11 +203,11 @@ locals {
           },
           testEnvironment = {
             testUsers = concat(split(",", local.test_users), split(",", data.azurerm_key_vault_secret.app_backend_PN_REAL_TEST_USERS.value)),
-            baseUrl   = "https://api-io.coll.pn.pagopa.it",
+            baseUrl   = var.pn_test_endpoint,
             detailsAuthentication = {
               type            = "API_KEY",
               header_key_name = "x-api-key",
-              key             = data.azurerm_key_vault_secret.app_backend_PN_API_KEY_UAT.value
+              key             = data.azurerm_key_vault_secret.app_backend_PN_API_KEY_UAT_V2.value
             }
           }
         },
@@ -432,6 +432,11 @@ data "azurerm_key_vault_secret" "app_backend_PN_API_KEY_UAT" {
   key_vault_id = module.key_vault_common.id
 }
 
+data "azurerm_key_vault_secret" "app_backend_PN_API_KEY_UAT_V2" {
+  name         = "appbackend-PN-API-KEY-UAT-ENV-V2"
+  key_vault_id = module.key_vault_common.id
+}
+
 data "azurerm_key_vault_secret" "app_backend_PN_REAL_TEST_USERS" {
   name         = "appbackend-PN-REAL-TEST-USERS"
   key_vault_id = module.key_vault_common.id
@@ -528,7 +533,7 @@ module "appservice_app_backendl1" {
   location            = azurerm_resource_group.rg_linux.location
 
   always_on         = true
-  linux_fx_version  = "NODE|14-lts"
+  linux_fx_version  = "NODE|18-lts"
   app_command_line  = local.app_backend.app_command_line
   health_check_path = "/ping"
 
@@ -569,7 +574,7 @@ module "appservice_app_backendl1_slot_staging" {
   location            = azurerm_resource_group.rg_linux.location
 
   always_on         = true
-  linux_fx_version  = "NODE|14-lts"
+  linux_fx_version  = "NODE|18-lts"
   app_command_line  = local.app_backend.app_command_line
   health_check_path = "/ping"
 
@@ -746,7 +751,7 @@ module "appservice_app_backendl2" {
   location            = azurerm_resource_group.rg_linux.location
 
   always_on         = true
-  linux_fx_version  = "NODE|14-lts"
+  linux_fx_version  = "NODE|18-lts"
   app_command_line  = local.app_backend.app_command_line
   health_check_path = "/ping"
 
@@ -787,7 +792,7 @@ module "appservice_app_backendl2_slot_staging" {
   location            = azurerm_resource_group.rg_linux.location
 
   always_on         = true
-  linux_fx_version  = "NODE|14-lts"
+  linux_fx_version  = "NODE|18-lts"
   app_command_line  = local.app_backend.app_command_line
   health_check_path = "/ping"
 
@@ -964,7 +969,7 @@ module "appservice_app_backendli" {
   location            = azurerm_resource_group.rg_linux.location
 
   always_on         = true
-  linux_fx_version  = "NODE|14-lts"
+  linux_fx_version  = "NODE|18-lts"
   app_command_line  = local.app_backend.app_command_line
   health_check_path = "/ping"
 
@@ -1005,7 +1010,7 @@ module "appservice_app_backendli_slot_staging" {
   location            = azurerm_resource_group.rg_linux.location
 
   always_on         = true
-  linux_fx_version  = "NODE|14-lts"
+  linux_fx_version  = "NODE|18-lts"
   app_command_line  = local.app_backend.app_command_line
   health_check_path = "/ping"
 
@@ -1131,6 +1136,8 @@ data "azurerm_linux_web_app" "app_backend_app_services" {
 
 resource "azurerm_monitor_metric_alert" "too_many_http_5xx" {
   for_each = { for key, name in data.azurerm_linux_web_app.app_backend_app_services : key => name }
+
+  enabled = false
 
   name                = "[IO-COMMONS | ${each.value.name}] Too many 5xx"
   resource_group_name = azurerm_resource_group.rg_linux.name
