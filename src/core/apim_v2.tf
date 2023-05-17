@@ -37,39 +37,39 @@ module "apim_v2" {
   # This enables the Username and Password Identity Provider
   sign_up_enabled = false
 
-  hostname_configuration = {
-    proxy = [
-      {
-        # io-p-apim-api.azure-api.net
-        default_ssl_binding = false
-        host_name           = "io-p-apim-v2-api.azure-api.net"
-        key_vault_id        = null
-      },
-      {
-        # api-internal.io.italia.it
-        default_ssl_binding = true
-        host_name           = local.apim_hostname_api_internal
-        key_vault_id = replace(
-          data.azurerm_key_vault_certificate.api_internal_io_italia_it.secret_id,
-          "/${data.azurerm_key_vault_certificate.api_internal_io_italia_it.version}",
-          ""
-        )
-      },
-      {
-        # api-app.internal.io.pagopa.it
-        default_ssl_binding = false
-        host_name           = local.apim_hostname_api_app_internal
-        key_vault_id = replace(
-          data.azurerm_key_vault_certificate.api_app_internal_io_pagopa_it.secret_id,
-          "/${data.azurerm_key_vault_certificate.api_app_internal_io_pagopa_it.version}",
-          ""
-        )
-      },
-    ]
-    developer_portal = null
-    management       = null
-    portal           = null
-  }
+  # hostname_configuration = {
+  #   proxy = [
+  #     {
+  #       # io-p-apim-api.azure-api.net
+  #       default_ssl_binding = false
+  #       host_name           = "io-p-apim-v2-api.azure-api.net"
+  #       key_vault_id        = null
+  #     },
+  #     {
+  #       # api-internal.io.italia.it
+  #       default_ssl_binding = true
+  #       host_name           = local.apim_hostname_api_internal
+  #       key_vault_id = replace(
+  #         data.azurerm_key_vault_certificate.api_internal_io_italia_it.secret_id,
+  #         "/${data.azurerm_key_vault_certificate.api_internal_io_italia_it.version}",
+  #         ""
+  #       )
+  #     },
+  #     {
+  #       # api-app.internal.io.pagopa.it
+  #       default_ssl_binding = false
+  #       host_name           = local.apim_hostname_api_app_internal
+  #       key_vault_id = replace(
+  #         data.azurerm_key_vault_certificate.api_app_internal_io_pagopa_it.secret_id,
+  #         "/${data.azurerm_key_vault_certificate.api_app_internal_io_pagopa_it.version}",
+  #         ""
+  #       )
+  #     },
+  #   ]
+  #   developer_portal = null
+  #   management       = null
+  #   portal           = null
+  # }
 
   application_insights = {
     enabled             = true
@@ -167,21 +167,6 @@ module "apim_v2" {
   }
 
   tags = var.tags
-}
-
-data "azurerm_key_vault_secret" "apim_v2_publisher_email" {
-  name         = "apim-publisher-email"
-  key_vault_id = module.key_vault.id
-}
-
-data "azurerm_key_vault_certificate" "api_v2_internal_io_italia_it" {
-  name         = replace(local.apim_hostname_api_internal, ".", "-")
-  key_vault_id = module.key_vault_common.id
-}
-
-data "azurerm_key_vault_certificate" "api_v2_app_internal_io_pagopa_it" {
-  name         = replace(local.apim_hostname_api_app_internal, ".", "-")
-  key_vault_id = module.key_vault.id
 }
 
 # ## api management key vault policy ##
