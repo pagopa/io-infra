@@ -251,6 +251,12 @@ locals {
       //IOLOGIN redirect
       FF_IOLOGIN         = "BETA"
       IOLOGIN_TEST_USERS = data.azurerm_key_vault_secret.app_backend_IOLOGIN_TEST_USERS.value
+      # Takes ~6,25% of users
+      IOLOGIN_CANARY_USERS_REGEX = "^([(0-9)|(a-f)|(A-F)]{63}0)$"
+
+      CLIENT_PROFILE_REDIRECTION_URL = "https://app-backend.io.italia.it/profile.html?token={token}"
+      CLIENT_ERROR_REDIRECTION_URL   = "https://app-backend.io.italia.it/error.html"
+
     }
     app_settings_l1 = {
       IS_APPBACKENDLI = "false"
