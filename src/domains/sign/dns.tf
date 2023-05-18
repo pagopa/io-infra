@@ -16,3 +16,41 @@ resource "azurerm_dns_cname_record" "ses_validation_firma_io_pagopa_it" {
   resource_group_name = azurerm_resource_group.integration_rg.name
   ttl                 = var.dns_default_ttl_sec
 }
+
+resource "azurerm_dns_txt_record" "spf1_mailup_firma_io_pagopa_it" {
+  name                = "@"
+  zone_name           = azurerm_dns_zone.firma_io_pagopa_it[0].name
+  resource_group_name = azurerm_resource_group.integration_rg.name
+  ttl                 = var.dns_default_ttl_sec
+
+  record {
+    value = "v=spf1 include:musvc.com -all"
+  }
+}
+
+resource "azurerm_dns_cname_record" "dkim1_mailup_firma_io_pagopa_it" {
+  name                = "ml01._domainkey"
+  record              = "ml01.dkim.musvc.com."
+  zone_name           = azurerm_dns_zone.firma_io_pagopa_it[0].name
+  resource_group_name = azurerm_resource_group.integration_rg.name
+  ttl                 = var.dns_default_ttl_sec
+}
+
+resource "azurerm_dns_cname_record" "dkim2_mailup_firma_io_pagopa_it" {
+  name                = "ml02._domainkey"
+  record              = "ml02.dkim.musvc.com."
+  zone_name           = azurerm_dns_zone.firma_io_pagopa_it[0].name
+  resource_group_name = azurerm_resource_group.integration_rg.name
+  ttl                 = var.dns_default_ttl_sec
+}
+
+resource "azurerm_dns_txt_record" "dmarc_mailup_firma_io_pagopa_it" {
+  name                = "_dmarc"
+  zone_name           = azurerm_dns_zone.firma_io_pagopa_it[0].name
+  resource_group_name = azurerm_resource_group.integration_rg.name
+  ttl                 = var.dns_default_ttl_sec
+
+  record {
+    value = "v=DMARC1; p=reject; pct=100; adkim=s; aspf=s"
+  }
+}
