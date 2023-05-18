@@ -43,6 +43,26 @@ variable "tags" {
 
 # domain specific
 
+# DNS
+variable "dns_ses_validation" {
+  type = list(object({
+    name   = string
+    record = string
+  }))
+  description = "CNAME records to validate SES domain identity"
+}
+
+variable "dns_default_ttl_sec" {
+  type        = number
+  description = "Default TTL for DNS"
+  default     = 3600
+}
+
+variable "dns_zone_name" {
+  type        = string
+  description = "The name for the DNS zone"
+}
+
 variable "subnets_cidrs" {
   type = map(
     list(string)
