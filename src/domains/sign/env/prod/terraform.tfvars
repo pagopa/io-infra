@@ -163,3 +163,22 @@ integration_hub = {
     }
   ]
 }
+
+# DNS
+
+dns_zone_name = "firma.io.pagopa.it"
+
+dns_ses_validation = [
+  {
+    name   = "usgxww7qq2vgfzl4da6yv4qb4f7ls5kq._domainkey.firma.io.pagopa.it"
+    record = "usgxww7qq2vgfzl4da6yv4qb4f7ls5kq.dkim.amazonses.com"
+  },
+  {
+    name   = "e4m2laccz356yraixvndjtoivkwf4sc2._domainkey.firma.io.pagopa.it"
+    record = "e4m2laccz356yraixvndjtoivkwf4sc2.dkim.amazonses.com"
+  },
+  {
+    name   = "43al7wmot7uxzzz6dfq7fnkcqilx6q6l._domainkey.firma.io.pagopa.it"
+    record = "43al7wmot7uxzzz6dfq7fnkcqilx6q6l.dkim.amazonses.com"
+  },
+]
