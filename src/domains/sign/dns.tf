@@ -7,6 +7,18 @@ resource "azurerm_dns_zone" "firma_io_pagopa_it" {
   tags = var.tags
 }
 
+resource "azurerm_dns_mx_record" "ses_mx_firma_io_pagopa_it" {
+  name                = "@"
+  zone_name           = azurerm_dns_zone.firma_io_pagopa_it[0].name
+  resource_group_name = azurerm_resource_group.integration_rg.name
+  ttl                 = var.dns_default_ttl_sec
+
+  record {
+    preference = 10
+    exchange   = "inbound-smtp.eu-west-1.amazonaws.com."
+  }
+}
+
 resource "azurerm_dns_cname_record" "ses_validation_firma_io_pagopa_it" {
   for_each = { for v in var.dns_ses_validation : v.name => v }
 
