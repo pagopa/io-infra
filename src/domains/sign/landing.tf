@@ -57,7 +57,7 @@ module "landing_cdn" {
       # Content-Security-Policy (in Report mode)
       {
         action = "Append"
-        name   = "Content-Security-Policy-Report-Only"
+        name   = "Content-Security-Policy"
         value  = "script-src 'self' 'unsafe-inline'; script-src-elem 'self' 'unsafe-inline' https://cdn.matomo.cloud/pagopa.matomo.cloud/ https://pagopa.matomo.cloud/ https://recaptcha.net/ https://www.recaptcha.net/recaptcha/ https://www.gstatic.com/recaptcha/; style-src 'self' 'unsafe-inline' recaptcha.net; worker-src 'none'; font-src data: 'self'; img-src data: 'self' recaptcha.net; object-src 'none'; "
       }
     ]
