@@ -126,7 +126,7 @@ resource "azurerm_cdn_endpoint" "assets_cdn_endpoint" {
       operator     = "BeginsWith"
       match_values = ["/sign"]
     }
-    modify_request_header_action {
+    modify_response_header_action {
       action = "Append"
       name   = "Access-Control-Allow-Origin"
       value  = "*"
