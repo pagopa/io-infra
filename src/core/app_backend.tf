@@ -251,6 +251,10 @@ locals {
       //IOLOGIN redirect
       FF_IOLOGIN         = "BETA"
       IOLOGIN_TEST_USERS = data.azurerm_key_vault_secret.app_backend_IOLOGIN_TEST_USERS.value
+      # Takes ~6,25% of users
+      IOLOGIN_CANARY_USERS_REGEX = "^([(0-9)|(a-f)|(A-F)]{63}0)$"
+
+      BACKEND_HOST = "https://${trimsuffix(azurerm_dns_a_record.api_app_io_pagopa_it.fqdn, ".")}"
     }
     app_settings_l1 = {
       IS_APPBACKENDLI = "false"
