@@ -125,6 +125,7 @@ resource "azurerm_cdn_endpoint" "assets_cdn_endpoint" {
     url_path_condition {
       operator     = "BeginsWith"
       match_values = ["/sign"]
+      transforms   = "Lowercase"
     }
     modify_response_header_action {
       action = "Append"
