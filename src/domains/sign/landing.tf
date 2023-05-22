@@ -58,7 +58,7 @@ module "landing_cdn" {
       {
         action = "Append"
         name   = "Content-Security-Policy-Report-Only"
-        value  = "script-src 'self' 'unsafe-inline'; script-src-elem 'self' 'unsafe-inline' https://cdn.matomo.cloud/pagopa.matomo.cloud/ https://pagopa.matomo.cloud/ https://recaptcha.net/ https://www.recaptcha.net/recaptcha/ https://www.gstatic.com/recaptcha/ https://www.google.com/recaptcha/; style-src 'self' 'unsafe-inline' recaptcha.net; worker-src 'none'; font-src data: 'self'; img-src data: 'self' recaptcha.net; object-src 'none'; "
+        value  = "script-src 'self' 'unsafe-inline'; script-src-elem 'self' 'unsafe-inline' https://cdn.matomo.cloud/pagopa.matomo.cloud/ https://pagopa.matomo.cloud/ https://recaptcha.net/ https://www.recaptcha.net/recaptcha/; style-src 'self' 'unsafe-inline' recaptcha.net; worker-src 'none'; font-src data: 'self'; img-src data: 'self' recaptcha.net; object-src 'none'; "
       }
     ]
   }
