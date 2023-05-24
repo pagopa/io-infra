@@ -1,7 +1,7 @@
 openapi: 3.0.3
 info:
   title: Firma con IO - Issuer API
-  version: 1.0.0
+  version: 1.2.1
 servers:
   - url: https://api.io.pagopa.it/api/v1/sign
     description: production
@@ -70,6 +70,50 @@ paths:
         default:
           $ref: "#/components/responses/Unexpected"
 
+  /dossiers/{id}/signature-requests:
+    get:
+      operationId: getRequestsByDossier
+      tags:
+        - Dossier
+      summary: Get the Signature Requests created from a Dossier
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            $ref: "#/components/schemas/Id"
+        - in: query
+          name: continuationToken
+          required: false
+          schema:
+            type: string
+        - in: query
+          name: limit
+          required: false
+          schema:
+            type: integer
+            minimum: 25
+            maximum: 100
+      responses:
+        "200":
+          description: The Dossier detail
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SignatureRequestList"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "404":
+          $ref: "#/components/responses/NotFound"
+        "429":
+          $ref: "#/components/responses/TooManyRequests"
+        default:
+          $ref: "#/components/responses/Unexpected"
+
   /signers:
     post:
       operationId: getSignerByFiscalCode
@@ -119,12 +163,12 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/SignatureRequestDetailView"
-        "400":
-          $ref: "#/components/responses/BadRequest"
         "401":
           $ref: "#/components/responses/Unauthorized"
         "403":
           $ref: "#/components/responses/Forbidden"
+        "422":
+          $ref: "#/components/responses/UnprocessableContent"
         "429":
           $ref: "#/components/responses/TooManyRequests"
         default:
@@ -155,6 +199,8 @@ paths:
           $ref: "#/components/responses/Unauthorized"
         "403":
           $ref: "#/components/responses/Forbidden"
+        "404":
+          $ref: "#/components/responses/NotFound"
         "429":
           $ref: "#/components/responses/TooManyRequests"
         default:
@@ -181,14 +227,14 @@ paths:
       responses:
         "204":
           description: Signature Request status successfully set
-        "400":
-          $ref: "#/components/responses/BadRequest"
         "401":
           $ref: "#/components/responses/Unauthorized"
         "403":
           $ref: "#/components/responses/Forbidden"
         "404":
           $ref: "#/components/responses/NotFound"
+        "422":
+          $ref: "#/components/responses/UnprocessableContent"
         "429":
           $ref: "#/components/responses/TooManyRequests"
         default:
@@ -250,9 +296,48 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/NotificationDetailView"
-        "409":
-          description: "If the notification has already been sent"
-          $ref: "#/components/responses/Conflict"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "429":
+          $ref: "#/components/responses/TooManyRequests"
+        default:
+          $ref: "#/components/responses/Unexpected"
+
+  /validate-document:
+    post:
+      operationId: validateDocument
+      tags:
+        - Utility
+      summary: Validate a PDF document against a list of signature fields
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                document:
+                  type: string
+                  format: binary
+                signature_fields:
+                  type: array
+                  items:
+                    $ref: "#/components/schemas/SignatureField"
+              required:
+                - document
+            encoding:
+              document:
+                contentType: application/pdf
+      responses:
+        "200":
+          description: the validation result
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DocumentValidationResult"
         "400":
           $ref: "#/components/responses/BadRequest"
         "401":
@@ -301,6 +386,13 @@ components:
           schema:
             $ref: "#/components/schemas/ProblemDetail"
 
+    UnprocessableContent:
+      description: Unprocessable Content
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/ProblemDetail"
+
     TooManyRequests:
       description: Too Many Requests
       content:
@@ -309,13 +401,6 @@ components:
             $ref: "#/components/schemas/ProblemDetail"
 
     Unexpected:
-      description: Unexpected error
-      content:
-        application/json:
-          schema:
-            $ref: "#/components/schemas/ProblemDetail"
-
-    Conflict:
       description: Unexpected error
       content:
         application/json:
@@ -367,16 +452,14 @@ components:
             An absolute URI that identifies the specific occurrence of the
             problem. It may or may not yield further information if
             dereferenced.
-      required:
-        - title
-        - status
-        - detail
 
     Clause:
       type: object
       properties:
         title:
           type: string
+          minLength: 5
+          maxLength: 80
         type:
           type: string
           enum: ["REQUIRED", "UNFAIR", "OPTIONAL"]
@@ -436,14 +519,14 @@ components:
       properties:
         title:
           type: string
+          minLength: 3
+          maxLength: 60
         signature_fields:
           type: array
           items:
             $ref: "#/components/schemas/SignatureField"
-
       required:
         - title
-        - signature_fields
 
     DocumentMetadataList:
       type: array
@@ -451,11 +534,23 @@ components:
         $ref: "#/components/schemas/DocumentMetadata"
       minLength: 1
 
+    DossierSupportEmail:
+      type: string
+      description: Issuer's support email for a specific dossier.
+      format: email
+      example: demo@example.com
+
+    DossierTitle:
+      type: string
+      minLength: 3
+
     CreateDossierBody:
       type: object
       properties:
         title:
-          type: string
+          $ref: "#/components/schemas/DossierTitle"
+        support_email:
+          $ref: "#/components/schemas/DossierSupportEmail"
         documents_metadata:
           $ref: "#/components/schemas/DocumentMetadataList"
       required:
@@ -466,6 +561,7 @@ components:
       type: string
       x-extensible-enum:
         - READY
+        - CANCELLED
 
     DossierDetailView:
       type: object
@@ -473,7 +569,9 @@ components:
         id:
           $ref: "#/components/schemas/Id"
         title:
-          type: string
+          $ref: "#/components/schemas/DossierTitle"
+        support_email:
+          $ref: "#/components/schemas/DossierSupportEmail"
         documents_metadata:
           $ref: "#/components/schemas/DocumentMetadataList"
         created_at:
@@ -542,13 +640,6 @@ components:
       properties:
         id:
           $ref: "#/components/schemas/Id"
-        status:
-          type: string
-          enum:
-            - WAIT_FOR_UPLOAD
-            - WAIT_FOR_VALIDATION
-            - READY
-            - REJECTED
         metadata:
           $ref: "#/components/schemas/DocumentMetadata"
         created_at:
@@ -557,7 +648,6 @@ components:
           $ref: "#/components/schemas/Timestamp"
       required:
         - id
-        - status
         - metadata
         - created_at
         - updated_at
@@ -566,28 +656,45 @@ components:
       allOf:
         - $ref: "#/components/schemas/Document"
         - type: object
+          properties:
+            status:
+              type: string
+              enum:
+                - WAIT_FOR_UPLOAD
+          required:
+            - status
 
     DocumentToBeValidated:
       allOf:
         - $ref: "#/components/schemas/Document"
         - type: object
           properties:
+            status:
+              type: string
+              enum:
+                - WAIT_FOR_VALIDATION
             uploaded_at:
               $ref: "#/components/schemas/Timestamp"
           required:
+            - status
             - uploaded_at
 
-    DocumentUploaded:
+    DocumentReady:
       allOf:
         - $ref: "#/components/schemas/Document"
         - type: object
           properties:
+            status:
+              type: string
+              enum:
+                - READY
             uploaded_at:
               $ref: "#/components/schemas/Timestamp"
             url:
               type: string
               format: uri
           required:
+            - status
             - uploaded_at
             - url
 
@@ -596,6 +703,10 @@ components:
         - $ref: "#/components/schemas/Document"
         - type: object
           properties:
+            status:
+              type: string
+              enum:
+                - REJECTED
             uploaded_at:
               $ref: "#/components/schemas/Timestamp"
             rejected_at:
@@ -603,6 +714,7 @@ components:
             reject_reason:
               type: string
           required:
+            - status
             - uploaded_at
             - rejected_at
             - reject_reason
@@ -611,8 +723,18 @@ components:
       oneOf:
         - $ref: "#/components/schemas/DocumentToBeUploaded"
         - $ref: "#/components/schemas/DocumentToBeValidated"
-        - $ref: "#/components/schemas/DocumentUploaded"
+        - $ref: "#/components/schemas/DocumentReady"
         - $ref: "#/components/schemas/DocumentRejected"
+
+    SignatureRequestStatus:
+      type: string
+      x-extensible-enum:
+        - DRAFT
+        - READY
+        - WAIT_FOR_SIGNATURE
+        - SIGNED
+        - REJECTED
+        - CANCELLED
 
     SignatureRequestDetailView:
       type: object
@@ -620,13 +742,7 @@ components:
         id:
           $ref: "#/components/schemas/Id"
         status:
-          type: string
-          x-extensible-enum:
-            - DRAFT
-            - READY
-            - WAIT_FOR_SIGNATURE
-            - WAIT_FOR_QTSP
-            - SIGNED
+          $ref: "#/components/schemas/SignatureRequestStatus"
         dossier_id:
           $ref: "#/components/schemas/Id"
         signer_id:
@@ -637,10 +753,18 @@ components:
           type: array
           items:
             $ref: "#/components/schemas/DocumentDetailView"
+        notification:
+          $ref: "#/components/schemas/NotificationDetailView"
         created_at:
           $ref: "#/components/schemas/Timestamp"
         updated_at:
           $ref: "#/components/schemas/Timestamp"
+        signed_at:
+          $ref: "#/components/schemas/Timestamp"
+        rejected_at:
+          $ref: "#/components/schemas/Timestamp"
+        reject_reason:
+          type: string
         qr_code_url:
           type: string
           format: uri
@@ -654,6 +778,44 @@ components:
         - created_at
         - updated_at
 
+    SignatureRequestListView:
+      type: object
+      properties:
+        id:
+          $ref: "#/components/schemas/Id"
+        signer_id:
+          $ref: "#/components/schemas/Id"
+        dossier_id:
+          $ref: "#/components/schemas/Id"
+        status:
+          $ref: "#/components/schemas/SignatureRequestStatus"
+        created_at:
+          $ref: "#/components/schemas/Timestamp"
+        updated_at:
+          $ref: "#/components/schemas/Timestamp"
+        expires_at:
+          $ref: "#/components/schemas/Timestamp"
+      required:
+        - id
+        - signer_id
+        - dossier_id
+        - status
+        - created_at
+        - updated_at
+        - expires_at
+
+    SignatureRequestList:
+      type: object
+      properties:
+        items:
+          type: array
+          items:
+            $ref: "#/components/schemas/SignatureRequestListView"
+        continuation_token:
+          type: string
+      required:
+        - items
+
     UploadUrl:
       type: string
       format: uri
@@ -665,3 +827,15 @@ components:
           type: string
       required:
         - io_message_id
+
+    DocumentValidationResult:
+      type: object
+      properties:
+        is_valid:
+          type: boolean
+        violations:
+          type: array
+          items:
+            type: string
+      required:
+        - is_valid
