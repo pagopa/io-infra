@@ -1,5 +1,3 @@
-<!-- markdownlint-disable -->
-<!-- BEGINNING OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
 ## Requirements
 
 | Name | Version |
@@ -15,144 +13,144 @@
 
 | Name | Version |
 |------|---------|
-| <a name="provider_azuread"></a> [azuread](#provider\_azuread) | 2.33.0 |
-| <a name="provider_azurerm"></a> [azurerm](#provider\_azurerm) | 3.40.0 |
+| <a name="provider_azuread"></a> [azuread](#provider\_azuread) | <= 2.33.0 |
+| <a name="provider_azurerm"></a> [azurerm](#provider\_azurerm) | <= 3.40.0 |
 
 ## Modules
 
 | Name | Source | Version |
 |------|--------|---------|
-| <a name="module_admin_snet"></a> [admin\_snet](#module\_admin\_snet) | git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet | v4.1.15 |
-| <a name="module_api_admin"></a> [api\_admin](#module\_api\_admin) | git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api | v4.1.15 |
-| <a name="module_api_cgn_merchant"></a> [api\_cgn\_merchant](#module\_api\_cgn\_merchant) | git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api | v4.1.15 |
-| <a name="module_api_cgn_os"></a> [api\_cgn\_os](#module\_api\_cgn\_os) | git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api | v4.1.15 |
-| <a name="module_api_public"></a> [api\_public](#module\_api\_public) | git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api | v4.1.15 |
-| <a name="module_api_services"></a> [api\_services](#module\_api\_services) | git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api | v4.1.15 |
-| <a name="module_apim"></a> [apim](#module\_apim) | git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management | v5.0.1 |
-| <a name="module_apim_io_backend_app_api_v1"></a> [apim\_io\_backend\_app\_api\_v1](#module\_apim\_io\_backend\_app\_api\_v1) | git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api | v4.1.15 |
-| <a name="module_apim_io_backend_auth_api_v1"></a> [apim\_io\_backend\_auth\_api\_v1](#module\_apim\_io\_backend\_auth\_api\_v1) | git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api | v4.1.15 |
-| <a name="module_apim_io_backend_bonus_api_v1"></a> [apim\_io\_backend\_bonus\_api\_v1](#module\_apim\_io\_backend\_bonus\_api\_v1) | git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api | v4.1.15 |
-| <a name="module_apim_io_backend_bpd_api_v1"></a> [apim\_io\_backend\_bpd\_api\_v1](#module\_apim\_io\_backend\_bpd\_api\_v1) | git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api | v4.1.15 |
-| <a name="module_apim_io_backend_cgn_api_v1"></a> [apim\_io\_backend\_cgn\_api\_v1](#module\_apim\_io\_backend\_cgn\_api\_v1) | git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api | v4.1.15 |
-| <a name="module_apim_io_backend_eucovidcert_api_v1"></a> [apim\_io\_backend\_eucovidcert\_api\_v1](#module\_apim\_io\_backend\_eucovidcert\_api\_v1) | git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api | v4.1.15 |
-| <a name="module_apim_io_backend_mitvoucher_api_v1"></a> [apim\_io\_backend\_mitvoucher\_api\_v1](#module\_apim\_io\_backend\_mitvoucher\_api\_v1) | git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api | v4.1.15 |
-| <a name="module_apim_io_backend_myportal_api_v1"></a> [apim\_io\_backend\_myportal\_api\_v1](#module\_apim\_io\_backend\_myportal\_api\_v1) | git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api | v4.1.15 |
-| <a name="module_apim_io_backend_notifications_api_v1"></a> [apim\_io\_backend\_notifications\_api\_v1](#module\_apim\_io\_backend\_notifications\_api\_v1) | git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api | v4.1.15 |
-| <a name="module_apim_io_backend_pagopa_api_v1"></a> [apim\_io\_backend\_pagopa\_api\_v1](#module\_apim\_io\_backend\_pagopa\_api\_v1) | git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api | v4.1.15 |
-| <a name="module_apim_io_backend_product"></a> [apim\_io\_backend\_product](#module\_apim\_io\_backend\_product) | git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_product | v4.1.15 |
-| <a name="module_apim_io_backend_public_api_v1"></a> [apim\_io\_backend\_public\_api\_v1](#module\_apim\_io\_backend\_public\_api\_v1) | git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api | v4.1.15 |
-| <a name="module_apim_io_backend_session_api_v1"></a> [apim\_io\_backend\_session\_api\_v1](#module\_apim\_io\_backend\_session\_api\_v1) | git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api | v4.1.15 |
-| <a name="module_apim_product_admin"></a> [apim\_product\_admin](#module\_apim\_product\_admin) | git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_product | v4.1.15 |
-| <a name="module_apim_product_cgn_os"></a> [apim\_product\_cgn\_os](#module\_apim\_product\_cgn\_os) | git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_product | v4.1.15 |
-| <a name="module_apim_product_merchant"></a> [apim\_product\_merchant](#module\_apim\_product\_merchant) | git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_product | v4.1.15 |
-| <a name="module_apim_product_public"></a> [apim\_product\_public](#module\_apim\_product\_public) | git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_product | v4.1.15 |
-| <a name="module_apim_product_services"></a> [apim\_product\_services](#module\_apim\_product\_services) | git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_product | v4.1.15 |
-| <a name="module_apim_snet"></a> [apim\_snet](#module\_apim\_snet) | git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet | v4.1.15 |
-| <a name="module_app_async_snet"></a> [app\_async\_snet](#module\_app\_async\_snet) | git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet | v4.1.15 |
-| <a name="module_app_backend_web_test_api"></a> [app\_backend\_web\_test\_api](#module\_app\_backend\_web\_test\_api) | git::https://github.com/pagopa/terraform-azurerm-v3.git//application_insights_web_test_preview | v4.1.15 |
-| <a name="module_app_backendl1_snet"></a> [app\_backendl1\_snet](#module\_app\_backendl1\_snet) | git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet | v4.1.15 |
-| <a name="module_app_backendl2_snet"></a> [app\_backendl2\_snet](#module\_app\_backendl2\_snet) | git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet | v4.1.15 |
-| <a name="module_app_backendli_snet"></a> [app\_backendli\_snet](#module\_app\_backendli\_snet) | git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet | v4.1.15 |
-| <a name="module_app_gw"></a> [app\_gw](#module\_app\_gw) | git::https://github.com/pagopa/terraform-azurerm-v3.git//app_gateway | v4.1.15 |
-| <a name="module_app_messages_function"></a> [app\_messages\_function](#module\_app\_messages\_function) | git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app | v4.1.15 |
-| <a name="module_app_messages_function_staging_slot"></a> [app\_messages\_function\_staging\_slot](#module\_app\_messages\_function\_staging\_slot) | git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app_slot | v4.1.15 |
-| <a name="module_app_messages_snet"></a> [app\_messages\_snet](#module\_app\_messages\_snet) | git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet | v4.1.15 |
-| <a name="module_app_snet"></a> [app\_snet](#module\_app\_snet) | git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet | v4.1.15 |
-| <a name="module_appgateway_snet"></a> [appgateway\_snet](#module\_appgateway\_snet) | git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet | v4.1.15 |
-| <a name="module_appservice_app_backendl1"></a> [appservice\_app\_backendl1](#module\_appservice\_app\_backendl1) | git::https://github.com/pagopa/terraform-azurerm-v3.git//app_service | v4.1.15 |
-| <a name="module_appservice_app_backendl1_slot_staging"></a> [appservice\_app\_backendl1\_slot\_staging](#module\_appservice\_app\_backendl1\_slot\_staging) | git::https://github.com/pagopa/terraform-azurerm-v3.git//app_service_slot | v4.1.15 |
-| <a name="module_appservice_app_backendl2"></a> [appservice\_app\_backendl2](#module\_appservice\_app\_backendl2) | git::https://github.com/pagopa/terraform-azurerm-v3.git//app_service | v4.1.15 |
-| <a name="module_appservice_app_backendl2_slot_staging"></a> [appservice\_app\_backendl2\_slot\_staging](#module\_appservice\_app\_backendl2\_slot\_staging) | git::https://github.com/pagopa/terraform-azurerm-v3.git//app_service_slot | v4.1.15 |
-| <a name="module_appservice_app_backendli"></a> [appservice\_app\_backendli](#module\_appservice\_app\_backendli) | git::https://github.com/pagopa/terraform-azurerm-v3.git//app_service | v4.1.15 |
-| <a name="module_appservice_app_backendli_slot_staging"></a> [appservice\_app\_backendli\_slot\_staging](#module\_appservice\_app\_backendli\_slot\_staging) | git::https://github.com/pagopa/terraform-azurerm-v3.git//app_service_slot | v4.1.15 |
-| <a name="module_appservice_continua"></a> [appservice\_continua](#module\_appservice\_continua) | git::https://github.com/pagopa/terraform-azurerm-v3.git//app_service | v6.2.2 |
-| <a name="module_appservice_continua_slot_staging"></a> [appservice\_continua\_slot\_staging](#module\_appservice\_continua\_slot\_staging) | git::https://github.com/pagopa/terraform-azurerm-v3.git//app_service_slot | v6.2.2 |
-| <a name="module_appservice_devportal_be"></a> [appservice\_devportal\_be](#module\_appservice\_devportal\_be) | git::https://github.com/pagopa/terraform-azurerm-v3.git//app_service | v6.0.0 |
-| <a name="module_appservice_selfcare_be"></a> [appservice\_selfcare\_be](#module\_appservice\_selfcare\_be) | git::https://github.com/pagopa/terraform-azurerm-v3.git//app_service | v6.0.0 |
-| <a name="module_assets_cdn"></a> [assets\_cdn](#module\_assets\_cdn) | git::https://github.com/pagopa/terraform-azurerm-v3.git//storage_account | v4.1.15 |
-| <a name="module_azdoa_li"></a> [azdoa\_li](#module\_azdoa\_li) | git::https://github.com/pagopa/terraform-azurerm-v3.git//azure_devops_agent | v4.1.15 |
-| <a name="module_azdoa_loadtest_li"></a> [azdoa\_loadtest\_li](#module\_azdoa\_loadtest\_li) | git::https://github.com/pagopa/terraform-azurerm-v3.git//azure_devops_agent | v4.1.15 |
-| <a name="module_azdoa_snet"></a> [azdoa\_snet](#module\_azdoa\_snet) | git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet | v4.1.15 |
-| <a name="module_cgn_cosmos_db"></a> [cgn\_cosmos\_db](#module\_cgn\_cosmos\_db) | git::https://github.com/pagopa/terraform-azurerm-v3.git//cosmosdb_sql_database | v4.1.15 |
-| <a name="module_cgn_cosmosdb_containers"></a> [cgn\_cosmosdb\_containers](#module\_cgn\_cosmosdb\_containers) | git::https://github.com/pagopa/terraform-azurerm-v3.git//cosmosdb_sql_container | v4.1.15 |
-| <a name="module_cgn_legalbackup_storage"></a> [cgn\_legalbackup\_storage](#module\_cgn\_legalbackup\_storage) | git::https://github.com/pagopa/terraform-azurerm-v3.git//storage_account | v4.1.15 |
-| <a name="module_cgn_snet"></a> [cgn\_snet](#module\_cgn\_snet) | git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet | v4.1.15 |
-| <a name="module_container_registry"></a> [container\_registry](#module\_container\_registry) | git::https://github.com/pagopa/terraform-azurerm-v3.git//container_registry | v4.1.15 |
-| <a name="module_continua_common_snet"></a> [continua\_common\_snet](#module\_continua\_common\_snet) | git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet | v5.5.1 |
-| <a name="module_cosmos_cgn"></a> [cosmos\_cgn](#module\_cosmos\_cgn) | git::https://github.com/pagopa/terraform-azurerm-v3.git//cosmosdb_account | v4.1.15 |
-| <a name="module_db_subscription_cidrs_container"></a> [db\_subscription\_cidrs\_container](#module\_db\_subscription\_cidrs\_container) | git::https://github.com/pagopa/terraform-azurerm-v3.git//cosmosdb_sql_container | v4.1.15 |
-| <a name="module_devportalservicedata_db_server"></a> [devportalservicedata\_db\_server](#module\_devportalservicedata\_db\_server) | git::https://github.com/pagopa/terraform-azurerm-v3.git//postgres_flexible_server | v4.1.15 |
-| <a name="module_devportalservicedata_db_server_snet"></a> [devportalservicedata\_db\_server\_snet](#module\_devportalservicedata\_db\_server\_snet) | git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet | v4.1.15 |
-| <a name="module_dns_forwarder"></a> [dns\_forwarder](#module\_dns\_forwarder) | git::https://github.com/pagopa/terraform-azurerm-v3.git//dns_forwarder | v4.1.15 |
-| <a name="module_dns_forwarder_snet"></a> [dns\_forwarder\_snet](#module\_dns\_forwarder\_snet) | git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet | v4.1.15 |
-| <a name="module_eucovidcert_storage_account"></a> [eucovidcert\_storage\_account](#module\_eucovidcert\_storage\_account) | git::https://github.com/pagopa/terraform-azurerm-v3.git//storage_account | v4.1.15 |
-| <a name="module_event_hub"></a> [event\_hub](#module\_event\_hub) | git::https://github.com/pagopa/terraform-azurerm-v3.git//eventhub | v4.1.15 |
-| <a name="module_eventhub_snet"></a> [eventhub\_snet](#module\_eventhub\_snet) | git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet | v4.1.15 |
-| <a name="module_function_admin"></a> [function\_admin](#module\_function\_admin) | git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app | v4.1.15 |
-| <a name="module_function_admin_staging_slot"></a> [function\_admin\_staging\_slot](#module\_function\_admin\_staging\_slot) | git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app_slot | v4.1.15 |
-| <a name="module_function_app"></a> [function\_app](#module\_function\_app) | git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app | v4.1.15 |
-| <a name="module_function_app_async"></a> [function\_app\_async](#module\_function\_app\_async) | git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app | v4.1.15 |
-| <a name="module_function_app_async_staging_slot"></a> [function\_app\_async\_staging\_slot](#module\_function\_app\_async\_staging\_slot) | git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app_slot | v4.1.15 |
-| <a name="module_function_app_staging_slot"></a> [function\_app\_staging\_slot](#module\_function\_app\_staging\_slot) | git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app_slot | v4.1.15 |
-| <a name="module_function_assets_cdn"></a> [function\_assets\_cdn](#module\_function\_assets\_cdn) | git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app | v4.1.15 |
-| <a name="module_function_assets_cdn_snet"></a> [function\_assets\_cdn\_snet](#module\_function\_assets\_cdn\_snet) | git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet | v4.1.15 |
-| <a name="module_function_assets_cdn_staging_slot"></a> [function\_assets\_cdn\_staging\_slot](#module\_function\_assets\_cdn\_staging\_slot) | git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app_slot | v4.1.15 |
-| <a name="module_function_cgn"></a> [function\_cgn](#module\_function\_cgn) | git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app | v4.1.15 |
-| <a name="module_function_cgn_merchant"></a> [function\_cgn\_merchant](#module\_function\_cgn\_merchant) | git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app | v4.1.15 |
-| <a name="module_function_cgn_merchant_staging_slot"></a> [function\_cgn\_merchant\_staging\_slot](#module\_function\_cgn\_merchant\_staging\_slot) | git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app_slot | v4.1.15 |
-| <a name="module_function_cgn_staging_slot"></a> [function\_cgn\_staging\_slot](#module\_function\_cgn\_staging\_slot) | git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app_slot | v4.1.15 |
-| <a name="module_function_devportalservicedata"></a> [function\_devportalservicedata](#module\_function\_devportalservicedata) | git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app | v4.1.15 |
-| <a name="module_function_devportalservicedata_staging_slot"></a> [function\_devportalservicedata\_staging\_slot](#module\_function\_devportalservicedata\_staging\_slot) | git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app_slot | v4.1.15 |
-| <a name="module_function_elt"></a> [function\_elt](#module\_function\_elt) | git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app | v4.1.15 |
-| <a name="module_function_elt_snetout"></a> [function\_elt\_snetout](#module\_function\_elt\_snetout) | git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet | v4.1.15 |
-| <a name="module_function_eucovidcert"></a> [function\_eucovidcert](#module\_function\_eucovidcert) | git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app | v4.1.15 |
-| <a name="module_function_eucovidcert_snet"></a> [function\_eucovidcert\_snet](#module\_function\_eucovidcert\_snet) | git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet | v4.1.15 |
-| <a name="module_function_eucovidcert_staging_slot"></a> [function\_eucovidcert\_staging\_slot](#module\_function\_eucovidcert\_staging\_slot) | git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app_slot | v4.1.15 |
-| <a name="module_function_messages_cqrs"></a> [function\_messages\_cqrs](#module\_function\_messages\_cqrs) | git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app | v4.1.15 |
-| <a name="module_function_messages_cqrs_snet"></a> [function\_messages\_cqrs\_snet](#module\_function\_messages\_cqrs\_snet) | git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet | v4.1.15 |
-| <a name="module_function_messages_cqrs_staging_slot"></a> [function\_messages\_cqrs\_staging\_slot](#module\_function\_messages\_cqrs\_staging\_slot) | git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app_slot | v4.1.15 |
-| <a name="module_function_pblevtdispatcher"></a> [function\_pblevtdispatcher](#module\_function\_pblevtdispatcher) | git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app | v4.1.15 |
-| <a name="module_function_pblevtdispatcher_snetout"></a> [function\_pblevtdispatcher\_snetout](#module\_function\_pblevtdispatcher\_snetout) | git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet | v4.1.15 |
-| <a name="module_function_pblevtdispatcher_snetout_v4"></a> [function\_pblevtdispatcher\_snetout\_v4](#module\_function\_pblevtdispatcher\_snetout\_v4) | git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet | v4.1.15 |
-| <a name="module_function_pblevtdispatcher_v4"></a> [function\_pblevtdispatcher\_v4](#module\_function\_pblevtdispatcher\_v4) | git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app | v4.1.15 |
-| <a name="module_function_public"></a> [function\_public](#module\_function\_public) | git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app | v4.1.15 |
-| <a name="module_function_public_staging_slot"></a> [function\_public\_staging\_slot](#module\_function\_public\_staging\_slot) | git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app_slot | v4.1.15 |
-| <a name="module_function_services"></a> [function\_services](#module\_function\_services) | git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app | v4.1.15 |
-| <a name="module_function_services_staging_slot"></a> [function\_services\_staging\_slot](#module\_function\_services\_staging\_slot) | git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app_slot | v4.1.15 |
-| <a name="module_function_subscriptionmigrations"></a> [function\_subscriptionmigrations](#module\_function\_subscriptionmigrations) | git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app | v4.1.15 |
-| <a name="module_function_subscriptionmigrations_staging_slot"></a> [function\_subscriptionmigrations\_staging\_slot](#module\_function\_subscriptionmigrations\_staging\_slot) | git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app_slot | v4.1.15 |
-| <a name="module_github_runner"></a> [github\_runner](#module\_github\_runner) | git::https://github.com/pagopa/terraform-azurerm-v3.git//container_app_environment | v4.1.18 |
-| <a name="module_key_vault"></a> [key\_vault](#module\_key\_vault) | git::https://github.com/pagopa/terraform-azurerm-v3.git//key_vault | v4.1.15 |
-| <a name="module_key_vault_common"></a> [key\_vault\_common](#module\_key\_vault\_common) | git::https://github.com/pagopa/terraform-azurerm-v3.git//key_vault | v4.1.15 |
-| <a name="module_nat_gateway"></a> [nat\_gateway](#module\_nat\_gateway) | git::https://github.com/pagopa/terraform-azurerm-v3.git//nat_gateway | v6.1.0 |
-| <a name="module_private_endpoints_subnet"></a> [private\_endpoints\_subnet](#module\_private\_endpoints\_subnet) | git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet | v4.1.4 |
-| <a name="module_redis_cgn"></a> [redis\_cgn](#module\_redis\_cgn) | git::https://github.com/pagopa/terraform-azurerm-v3.git//redis_cache | v4.1.15 |
-| <a name="module_redis_cgn_snet"></a> [redis\_cgn\_snet](#module\_redis\_cgn\_snet) | git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet | v4.1.15 |
-| <a name="module_redis_common"></a> [redis\_common](#module\_redis\_common) | git::https://github.com/pagopa/terraform-azurerm-v3.git//redis_cache | v6.3.0 |
-| <a name="module_redis_common_backup"></a> [redis\_common\_backup](#module\_redis\_common\_backup) | git::https://github.com/pagopa/terraform-azurerm-v3.git//storage_account | v6.3.0 |
-| <a name="module_redis_common_snet"></a> [redis\_common\_snet](#module\_redis\_common\_snet) | git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet | v6.3.0 |
-| <a name="module_redis_messages"></a> [redis\_messages](#module\_redis\_messages) | git::https://github.com/pagopa/terraform-azurerm-v3.git//redis_cache | v4.1.15 |
-| <a name="module_selfcare_be_common_snet"></a> [selfcare\_be\_common\_snet](#module\_selfcare\_be\_common\_snet) | git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet | v4.1.15 |
-| <a name="module_selfcare_cdn"></a> [selfcare\_cdn](#module\_selfcare\_cdn) | git::https://github.com/pagopa/terraform-azurerm-v3.git//cdn | v4.1.15 |
-| <a name="module_selfcare_jwt"></a> [selfcare\_jwt](#module\_selfcare\_jwt) | git::https://github.com/pagopa/terraform-azurerm-v3.git//jwt_keys | v4.1.15 |
-| <a name="module_services_snet"></a> [services\_snet](#module\_services\_snet) | git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet | v4.1.15 |
-| <a name="module_shared_1_snet"></a> [shared\_1\_snet](#module\_shared\_1\_snet) | git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet | v4.1.15 |
-| <a name="module_storage_account_elt"></a> [storage\_account\_elt](#module\_storage\_account\_elt) | git::https://github.com/pagopa/terraform-azurerm-v3.git//storage_account | v4.1.15 |
-| <a name="module_storage_account_pblevtdispatcher"></a> [storage\_account\_pblevtdispatcher](#module\_storage\_account\_pblevtdispatcher) | git::https://github.com/pagopa/terraform-azurerm-v3.git//storage_account | v4.1.15 |
-| <a name="module_storage_api"></a> [storage\_api](#module\_storage\_api) | git::https://github.com/pagopa/terraform-azurerm-v3.git//storage_account | v5.6.0 |
-| <a name="module_storage_api_object_replication_to_replica"></a> [storage\_api\_object\_replication\_to\_replica](#module\_storage\_api\_object\_replication\_to\_replica) | git::https://github.com/pagopa/terraform-azurerm-v3.git//storage_object_replication | v4.1.15 |
-| <a name="module_storage_api_replica"></a> [storage\_api\_replica](#module\_storage\_api\_replica) | git::https://github.com/pagopa/terraform-azurerm-v3.git//storage_account | v5.6.0 |
-| <a name="module_subscriptionmigrations_db_server"></a> [subscriptionmigrations\_db\_server](#module\_subscriptionmigrations\_db\_server) | git::https://github.com/pagopa/terraform-azurerm-v3.git//postgresql_server | v4.1.15 |
-| <a name="module_vnet_common"></a> [vnet\_common](#module\_vnet\_common) | git::https://github.com/pagopa/terraform-azurerm-v3.git//virtual_network | v4.1.15 |
-| <a name="module_vnet_peering_common_weu_beta"></a> [vnet\_peering\_common\_weu\_beta](#module\_vnet\_peering\_common\_weu\_beta) | git::https://github.com/pagopa/terraform-azurerm-v3.git//virtual_network_peering | v4.1.15 |
-| <a name="module_vnet_peering_common_weu_prod01"></a> [vnet\_peering\_common\_weu\_prod01](#module\_vnet\_peering\_common\_weu\_prod01) | git::https://github.com/pagopa/terraform-azurerm-v3.git//virtual_network_peering | v4.1.15 |
-| <a name="module_vnet_peering_common_weu_prod02"></a> [vnet\_peering\_common\_weu\_prod02](#module\_vnet\_peering\_common\_weu\_prod02) | git::https://github.com/pagopa/terraform-azurerm-v3.git//virtual_network_peering | v4.1.15 |
-| <a name="module_vnet_weu_beta"></a> [vnet\_weu\_beta](#module\_vnet\_weu\_beta) | git::https://github.com/pagopa/terraform-azurerm-v3.git//virtual_network | v4.1.15 |
-| <a name="module_vnet_weu_prod01"></a> [vnet\_weu\_prod01](#module\_vnet\_weu\_prod01) | git::https://github.com/pagopa/terraform-azurerm-v3.git//virtual_network | v4.1.15 |
-| <a name="module_vnet_weu_prod02"></a> [vnet\_weu\_prod02](#module\_vnet\_weu\_prod02) | git::https://github.com/pagopa/terraform-azurerm-v3.git//virtual_network | v4.1.15 |
-| <a name="module_vpn"></a> [vpn](#module\_vpn) | git::https://github.com/pagopa/terraform-azurerm-v3.git//vpn_gateway | v4.1.15 |
-| <a name="module_vpn_snet"></a> [vpn\_snet](#module\_vpn\_snet) | git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet | v4.1.15 |
-| <a name="module_web_test_api"></a> [web\_test\_api](#module\_web\_test\_api) | git::https://github.com/pagopa/terraform-azurerm-v3.git//application_insights_web_test_preview | v4.1.15 |
+| <a name="module_admin_snet"></a> [admin\_snet](#module\_admin\_snet) | git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v4.1.15 |  |
+| <a name="module_api_admin"></a> [api\_admin](#module\_api\_admin) | git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api?ref=v4.1.15 |  |
+| <a name="module_api_cgn_merchant"></a> [api\_cgn\_merchant](#module\_api\_cgn\_merchant) | git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api?ref=v4.1.15 |  |
+| <a name="module_api_cgn_os"></a> [api\_cgn\_os](#module\_api\_cgn\_os) | git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api?ref=v4.1.15 |  |
+| <a name="module_api_public"></a> [api\_public](#module\_api\_public) | git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api?ref=v4.1.15 |  |
+| <a name="module_api_services"></a> [api\_services](#module\_api\_services) | git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api?ref=v4.1.15 |  |
+| <a name="module_apim"></a> [apim](#module\_apim) | git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management?ref=v5.0.1 |  |
+| <a name="module_apim_io_backend_app_api_v1"></a> [apim\_io\_backend\_app\_api\_v1](#module\_apim\_io\_backend\_app\_api\_v1) | git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api?ref=v4.1.15 |  |
+| <a name="module_apim_io_backend_auth_api_v1"></a> [apim\_io\_backend\_auth\_api\_v1](#module\_apim\_io\_backend\_auth\_api\_v1) | git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api?ref=v4.1.15 |  |
+| <a name="module_apim_io_backend_bonus_api_v1"></a> [apim\_io\_backend\_bonus\_api\_v1](#module\_apim\_io\_backend\_bonus\_api\_v1) | git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api?ref=v4.1.15 |  |
+| <a name="module_apim_io_backend_bpd_api_v1"></a> [apim\_io\_backend\_bpd\_api\_v1](#module\_apim\_io\_backend\_bpd\_api\_v1) | git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api?ref=v4.1.15 |  |
+| <a name="module_apim_io_backend_cgn_api_v1"></a> [apim\_io\_backend\_cgn\_api\_v1](#module\_apim\_io\_backend\_cgn\_api\_v1) | git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api?ref=v4.1.15 |  |
+| <a name="module_apim_io_backend_eucovidcert_api_v1"></a> [apim\_io\_backend\_eucovidcert\_api\_v1](#module\_apim\_io\_backend\_eucovidcert\_api\_v1) | git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api?ref=v4.1.15 |  |
+| <a name="module_apim_io_backend_mitvoucher_api_v1"></a> [apim\_io\_backend\_mitvoucher\_api\_v1](#module\_apim\_io\_backend\_mitvoucher\_api\_v1) | git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api?ref=v4.1.15 |  |
+| <a name="module_apim_io_backend_myportal_api_v1"></a> [apim\_io\_backend\_myportal\_api\_v1](#module\_apim\_io\_backend\_myportal\_api\_v1) | git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api?ref=v4.1.15 |  |
+| <a name="module_apim_io_backend_notifications_api_v1"></a> [apim\_io\_backend\_notifications\_api\_v1](#module\_apim\_io\_backend\_notifications\_api\_v1) | git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api?ref=v4.1.15 |  |
+| <a name="module_apim_io_backend_pagopa_api_v1"></a> [apim\_io\_backend\_pagopa\_api\_v1](#module\_apim\_io\_backend\_pagopa\_api\_v1) | git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api?ref=v4.1.15 |  |
+| <a name="module_apim_io_backend_product"></a> [apim\_io\_backend\_product](#module\_apim\_io\_backend\_product) | git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_product?ref=v4.1.15 |  |
+| <a name="module_apim_io_backend_public_api_v1"></a> [apim\_io\_backend\_public\_api\_v1](#module\_apim\_io\_backend\_public\_api\_v1) | git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api?ref=v4.1.15 |  |
+| <a name="module_apim_io_backend_session_api_v1"></a> [apim\_io\_backend\_session\_api\_v1](#module\_apim\_io\_backend\_session\_api\_v1) | git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api?ref=v4.1.15 |  |
+| <a name="module_apim_product_admin"></a> [apim\_product\_admin](#module\_apim\_product\_admin) | git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_product?ref=v4.1.15 |  |
+| <a name="module_apim_product_cgn_os"></a> [apim\_product\_cgn\_os](#module\_apim\_product\_cgn\_os) | git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_product?ref=v4.1.15 |  |
+| <a name="module_apim_product_merchant"></a> [apim\_product\_merchant](#module\_apim\_product\_merchant) | git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_product?ref=v4.1.15 |  |
+| <a name="module_apim_product_public"></a> [apim\_product\_public](#module\_apim\_product\_public) | git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_product?ref=v4.1.15 |  |
+| <a name="module_apim_product_services"></a> [apim\_product\_services](#module\_apim\_product\_services) | git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_product?ref=v4.1.15 |  |
+| <a name="module_apim_snet"></a> [apim\_snet](#module\_apim\_snet) | git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v4.1.15 |  |
+| <a name="module_app_async_snet"></a> [app\_async\_snet](#module\_app\_async\_snet) | git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v4.1.15 |  |
+| <a name="module_app_backend_web_test_api"></a> [app\_backend\_web\_test\_api](#module\_app\_backend\_web\_test\_api) | git::https://github.com/pagopa/terraform-azurerm-v3.git//application_insights_web_test_preview?ref=v4.1.15 |  |
+| <a name="module_app_backendl1_snet"></a> [app\_backendl1\_snet](#module\_app\_backendl1\_snet) | git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v4.1.15 |  |
+| <a name="module_app_backendl2_snet"></a> [app\_backendl2\_snet](#module\_app\_backendl2\_snet) | git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v4.1.15 |  |
+| <a name="module_app_backendli_snet"></a> [app\_backendli\_snet](#module\_app\_backendli\_snet) | git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v4.1.15 |  |
+| <a name="module_app_gw"></a> [app\_gw](#module\_app\_gw) | git::https://github.com/pagopa/terraform-azurerm-v3.git//app_gateway?ref=v4.1.15 |  |
+| <a name="module_app_messages_function"></a> [app\_messages\_function](#module\_app\_messages\_function) | git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app?ref=v4.1.15 |  |
+| <a name="module_app_messages_function_staging_slot"></a> [app\_messages\_function\_staging\_slot](#module\_app\_messages\_function\_staging\_slot) | git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app_slot?ref=v4.1.15 |  |
+| <a name="module_app_messages_snet"></a> [app\_messages\_snet](#module\_app\_messages\_snet) | git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v4.1.15 |  |
+| <a name="module_app_snet"></a> [app\_snet](#module\_app\_snet) | git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v4.1.15 |  |
+| <a name="module_appgateway_snet"></a> [appgateway\_snet](#module\_appgateway\_snet) | git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v4.1.15 |  |
+| <a name="module_appservice_app_backendl1"></a> [appservice\_app\_backendl1](#module\_appservice\_app\_backendl1) | git::https://github.com/pagopa/terraform-azurerm-v3.git//app_service?ref=v4.1.15 |  |
+| <a name="module_appservice_app_backendl1_slot_staging"></a> [appservice\_app\_backendl1\_slot\_staging](#module\_appservice\_app\_backendl1\_slot\_staging) | git::https://github.com/pagopa/terraform-azurerm-v3.git//app_service_slot?ref=v4.1.15 |  |
+| <a name="module_appservice_app_backendl2"></a> [appservice\_app\_backendl2](#module\_appservice\_app\_backendl2) | git::https://github.com/pagopa/terraform-azurerm-v3.git//app_service?ref=v4.1.15 |  |
+| <a name="module_appservice_app_backendl2_slot_staging"></a> [appservice\_app\_backendl2\_slot\_staging](#module\_appservice\_app\_backendl2\_slot\_staging) | git::https://github.com/pagopa/terraform-azurerm-v3.git//app_service_slot?ref=v4.1.15 |  |
+| <a name="module_appservice_app_backendli"></a> [appservice\_app\_backendli](#module\_appservice\_app\_backendli) | git::https://github.com/pagopa/terraform-azurerm-v3.git//app_service?ref=v4.1.15 |  |
+| <a name="module_appservice_app_backendli_slot_staging"></a> [appservice\_app\_backendli\_slot\_staging](#module\_appservice\_app\_backendli\_slot\_staging) | git::https://github.com/pagopa/terraform-azurerm-v3.git//app_service_slot?ref=v4.1.15 |  |
+| <a name="module_appservice_continua"></a> [appservice\_continua](#module\_appservice\_continua) | git::https://github.com/pagopa/terraform-azurerm-v3.git//app_service?ref=v6.2.2 |  |
+| <a name="module_appservice_continua_slot_staging"></a> [appservice\_continua\_slot\_staging](#module\_appservice\_continua\_slot\_staging) | git::https://github.com/pagopa/terraform-azurerm-v3.git//app_service_slot?ref=v6.2.2 |  |
+| <a name="module_appservice_devportal_be"></a> [appservice\_devportal\_be](#module\_appservice\_devportal\_be) | git::https://github.com/pagopa/terraform-azurerm-v3.git//app_service?ref=v6.0.0 |  |
+| <a name="module_appservice_selfcare_be"></a> [appservice\_selfcare\_be](#module\_appservice\_selfcare\_be) | git::https://github.com/pagopa/terraform-azurerm-v3.git//app_service?ref=v6.0.0 |  |
+| <a name="module_assets_cdn"></a> [assets\_cdn](#module\_assets\_cdn) | git::https://github.com/pagopa/terraform-azurerm-v3.git//storage_account?ref=v4.1.15 |  |
+| <a name="module_azdoa_li"></a> [azdoa\_li](#module\_azdoa\_li) | git::https://github.com/pagopa/terraform-azurerm-v3.git//azure_devops_agent?ref=v4.1.15 |  |
+| <a name="module_azdoa_loadtest_li"></a> [azdoa\_loadtest\_li](#module\_azdoa\_loadtest\_li) | git::https://github.com/pagopa/terraform-azurerm-v3.git//azure_devops_agent?ref=v4.1.15 |  |
+| <a name="module_azdoa_snet"></a> [azdoa\_snet](#module\_azdoa\_snet) | git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v4.1.15 |  |
+| <a name="module_cgn_cosmos_db"></a> [cgn\_cosmos\_db](#module\_cgn\_cosmos\_db) | git::https://github.com/pagopa/terraform-azurerm-v3.git//cosmosdb_sql_database?ref=v4.1.15 |  |
+| <a name="module_cgn_cosmosdb_containers"></a> [cgn\_cosmosdb\_containers](#module\_cgn\_cosmosdb\_containers) | git::https://github.com/pagopa/terraform-azurerm-v3.git//cosmosdb_sql_container?ref=v4.1.15 |  |
+| <a name="module_cgn_legalbackup_storage"></a> [cgn\_legalbackup\_storage](#module\_cgn\_legalbackup\_storage) | git::https://github.com/pagopa/terraform-azurerm-v3.git//storage_account?ref=v4.1.15 |  |
+| <a name="module_cgn_snet"></a> [cgn\_snet](#module\_cgn\_snet) | git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v4.1.15 |  |
+| <a name="module_container_registry"></a> [container\_registry](#module\_container\_registry) | git::https://github.com/pagopa/terraform-azurerm-v3.git//container_registry?ref=v4.1.15 |  |
+| <a name="module_continua_common_snet"></a> [continua\_common\_snet](#module\_continua\_common\_snet) | git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v5.5.1 |  |
+| <a name="module_cosmos_cgn"></a> [cosmos\_cgn](#module\_cosmos\_cgn) | git::https://github.com/pagopa/terraform-azurerm-v3.git//cosmosdb_account?ref=v4.1.15 |  |
+| <a name="module_db_subscription_cidrs_container"></a> [db\_subscription\_cidrs\_container](#module\_db\_subscription\_cidrs\_container) | git::https://github.com/pagopa/terraform-azurerm-v3.git//cosmosdb_sql_container?ref=v4.1.15 |  |
+| <a name="module_devportalservicedata_db_server"></a> [devportalservicedata\_db\_server](#module\_devportalservicedata\_db\_server) | git::https://github.com/pagopa/terraform-azurerm-v3.git//postgres_flexible_server?ref=v4.1.15 |  |
+| <a name="module_devportalservicedata_db_server_snet"></a> [devportalservicedata\_db\_server\_snet](#module\_devportalservicedata\_db\_server\_snet) | git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v4.1.15 |  |
+| <a name="module_dns_forwarder"></a> [dns\_forwarder](#module\_dns\_forwarder) | git::https://github.com/pagopa/terraform-azurerm-v3.git//dns_forwarder?ref=v4.1.15 |  |
+| <a name="module_dns_forwarder_snet"></a> [dns\_forwarder\_snet](#module\_dns\_forwarder\_snet) | git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v4.1.15 |  |
+| <a name="module_eucovidcert_storage_account"></a> [eucovidcert\_storage\_account](#module\_eucovidcert\_storage\_account) | git::https://github.com/pagopa/terraform-azurerm-v3.git//storage_account?ref=v4.1.15 |  |
+| <a name="module_event_hub"></a> [event\_hub](#module\_event\_hub) | git::https://github.com/pagopa/terraform-azurerm-v3.git//eventhub?ref=v4.1.15 |  |
+| <a name="module_eventhub_snet"></a> [eventhub\_snet](#module\_eventhub\_snet) | git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v4.1.15 |  |
+| <a name="module_function_admin"></a> [function\_admin](#module\_function\_admin) | git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app?ref=v4.1.15 |  |
+| <a name="module_function_admin_staging_slot"></a> [function\_admin\_staging\_slot](#module\_function\_admin\_staging\_slot) | git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app_slot?ref=v4.1.15 |  |
+| <a name="module_function_app"></a> [function\_app](#module\_function\_app) | git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app?ref=v4.1.15 |  |
+| <a name="module_function_app_async"></a> [function\_app\_async](#module\_function\_app\_async) | git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app?ref=v4.1.15 |  |
+| <a name="module_function_app_async_staging_slot"></a> [function\_app\_async\_staging\_slot](#module\_function\_app\_async\_staging\_slot) | git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app_slot?ref=v4.1.15 |  |
+| <a name="module_function_app_staging_slot"></a> [function\_app\_staging\_slot](#module\_function\_app\_staging\_slot) | git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app_slot?ref=v4.1.15 |  |
+| <a name="module_function_assets_cdn"></a> [function\_assets\_cdn](#module\_function\_assets\_cdn) | git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app?ref=v4.1.15 |  |
+| <a name="module_function_assets_cdn_snet"></a> [function\_assets\_cdn\_snet](#module\_function\_assets\_cdn\_snet) | git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v4.1.15 |  |
+| <a name="module_function_assets_cdn_staging_slot"></a> [function\_assets\_cdn\_staging\_slot](#module\_function\_assets\_cdn\_staging\_slot) | git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app_slot?ref=v4.1.15 |  |
+| <a name="module_function_cgn"></a> [function\_cgn](#module\_function\_cgn) | git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app?ref=v4.1.15 |  |
+| <a name="module_function_cgn_merchant"></a> [function\_cgn\_merchant](#module\_function\_cgn\_merchant) | git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app?ref=v4.1.15 |  |
+| <a name="module_function_cgn_merchant_staging_slot"></a> [function\_cgn\_merchant\_staging\_slot](#module\_function\_cgn\_merchant\_staging\_slot) | git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app_slot?ref=v4.1.15 |  |
+| <a name="module_function_cgn_staging_slot"></a> [function\_cgn\_staging\_slot](#module\_function\_cgn\_staging\_slot) | git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app_slot?ref=v4.1.15 |  |
+| <a name="module_function_devportalservicedata"></a> [function\_devportalservicedata](#module\_function\_devportalservicedata) | git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app?ref=v4.1.15 |  |
+| <a name="module_function_devportalservicedata_staging_slot"></a> [function\_devportalservicedata\_staging\_slot](#module\_function\_devportalservicedata\_staging\_slot) | git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app_slot?ref=v4.1.15 |  |
+| <a name="module_function_elt"></a> [function\_elt](#module\_function\_elt) | git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app?ref=v4.1.15 |  |
+| <a name="module_function_elt_snetout"></a> [function\_elt\_snetout](#module\_function\_elt\_snetout) | git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v4.1.15 |  |
+| <a name="module_function_eucovidcert"></a> [function\_eucovidcert](#module\_function\_eucovidcert) | git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app?ref=v4.1.15 |  |
+| <a name="module_function_eucovidcert_snet"></a> [function\_eucovidcert\_snet](#module\_function\_eucovidcert\_snet) | git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v4.1.15 |  |
+| <a name="module_function_eucovidcert_staging_slot"></a> [function\_eucovidcert\_staging\_slot](#module\_function\_eucovidcert\_staging\_slot) | git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app_slot?ref=v4.1.15 |  |
+| <a name="module_function_messages_cqrs"></a> [function\_messages\_cqrs](#module\_function\_messages\_cqrs) | git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app?ref=v4.1.15 |  |
+| <a name="module_function_messages_cqrs_snet"></a> [function\_messages\_cqrs\_snet](#module\_function\_messages\_cqrs\_snet) | git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v4.1.15 |  |
+| <a name="module_function_messages_cqrs_staging_slot"></a> [function\_messages\_cqrs\_staging\_slot](#module\_function\_messages\_cqrs\_staging\_slot) | git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app_slot?ref=v4.1.15 |  |
+| <a name="module_function_pblevtdispatcher"></a> [function\_pblevtdispatcher](#module\_function\_pblevtdispatcher) | git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app?ref=v4.1.15 |  |
+| <a name="module_function_pblevtdispatcher_snetout"></a> [function\_pblevtdispatcher\_snetout](#module\_function\_pblevtdispatcher\_snetout) | git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v4.1.15 |  |
+| <a name="module_function_pblevtdispatcher_snetout_v4"></a> [function\_pblevtdispatcher\_snetout\_v4](#module\_function\_pblevtdispatcher\_snetout\_v4) | git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v4.1.15 |  |
+| <a name="module_function_pblevtdispatcher_v4"></a> [function\_pblevtdispatcher\_v4](#module\_function\_pblevtdispatcher\_v4) | git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app?ref=v4.1.15 |  |
+| <a name="module_function_public"></a> [function\_public](#module\_function\_public) | git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app?ref=v4.1.15 |  |
+| <a name="module_function_public_staging_slot"></a> [function\_public\_staging\_slot](#module\_function\_public\_staging\_slot) | git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app_slot?ref=v4.1.15 |  |
+| <a name="module_function_services"></a> [function\_services](#module\_function\_services) | git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app?ref=v4.1.15 |  |
+| <a name="module_function_services_staging_slot"></a> [function\_services\_staging\_slot](#module\_function\_services\_staging\_slot) | git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app_slot?ref=v4.1.15 |  |
+| <a name="module_function_subscriptionmigrations"></a> [function\_subscriptionmigrations](#module\_function\_subscriptionmigrations) | git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app?ref=v4.1.15 |  |
+| <a name="module_function_subscriptionmigrations_staging_slot"></a> [function\_subscriptionmigrations\_staging\_slot](#module\_function\_subscriptionmigrations\_staging\_slot) | git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app_slot?ref=v4.1.15 |  |
+| <a name="module_github_runner"></a> [github\_runner](#module\_github\_runner) | git::https://github.com/pagopa/terraform-azurerm-v3.git//container_app_environment?ref=v4.1.18 |  |
+| <a name="module_key_vault"></a> [key\_vault](#module\_key\_vault) | git::https://github.com/pagopa/terraform-azurerm-v3.git//key_vault?ref=v4.1.15 |  |
+| <a name="module_key_vault_common"></a> [key\_vault\_common](#module\_key\_vault\_common) | git::https://github.com/pagopa/terraform-azurerm-v3.git//key_vault?ref=v4.1.15 |  |
+| <a name="module_nat_gateway"></a> [nat\_gateway](#module\_nat\_gateway) | git::https://github.com/pagopa/terraform-azurerm-v3.git//nat_gateway?ref=v6.1.0 |  |
+| <a name="module_private_endpoints_subnet"></a> [private\_endpoints\_subnet](#module\_private\_endpoints\_subnet) | git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v4.1.4 |  |
+| <a name="module_redis_cgn"></a> [redis\_cgn](#module\_redis\_cgn) | git::https://github.com/pagopa/terraform-azurerm-v3.git//redis_cache?ref=v4.1.15 |  |
+| <a name="module_redis_cgn_snet"></a> [redis\_cgn\_snet](#module\_redis\_cgn\_snet) | git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v4.1.15 |  |
+| <a name="module_redis_common"></a> [redis\_common](#module\_redis\_common) | git::https://github.com/pagopa/terraform-azurerm-v3.git//redis_cache?ref=v6.3.0 |  |
+| <a name="module_redis_common_backup"></a> [redis\_common\_backup](#module\_redis\_common\_backup) | git::https://github.com/pagopa/terraform-azurerm-v3.git//storage_account?ref=v6.3.0 |  |
+| <a name="module_redis_common_snet"></a> [redis\_common\_snet](#module\_redis\_common\_snet) | git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v6.3.0 |  |
+| <a name="module_redis_messages"></a> [redis\_messages](#module\_redis\_messages) | git::https://github.com/pagopa/terraform-azurerm-v3.git//redis_cache?ref=v4.1.15 |  |
+| <a name="module_selfcare_be_common_snet"></a> [selfcare\_be\_common\_snet](#module\_selfcare\_be\_common\_snet) | git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v4.1.15 |  |
+| <a name="module_selfcare_cdn"></a> [selfcare\_cdn](#module\_selfcare\_cdn) | git::https://github.com/pagopa/terraform-azurerm-v3.git//cdn?ref=v4.1.15 |  |
+| <a name="module_selfcare_jwt"></a> [selfcare\_jwt](#module\_selfcare\_jwt) | git::https://github.com/pagopa/terraform-azurerm-v3.git//jwt_keys?ref=v4.1.15 |  |
+| <a name="module_services_snet"></a> [services\_snet](#module\_services\_snet) | git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v4.1.15 |  |
+| <a name="module_shared_1_snet"></a> [shared\_1\_snet](#module\_shared\_1\_snet) | git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v4.1.15 |  |
+| <a name="module_storage_account_elt"></a> [storage\_account\_elt](#module\_storage\_account\_elt) | git::https://github.com/pagopa/terraform-azurerm-v3.git//storage_account?ref=v4.1.15 |  |
+| <a name="module_storage_account_pblevtdispatcher"></a> [storage\_account\_pblevtdispatcher](#module\_storage\_account\_pblevtdispatcher) | git::https://github.com/pagopa/terraform-azurerm-v3.git//storage_account?ref=v4.1.15 |  |
+| <a name="module_storage_api"></a> [storage\_api](#module\_storage\_api) | git::https://github.com/pagopa/terraform-azurerm-v3.git//storage_account?ref=v5.6.0 |  |
+| <a name="module_storage_api_object_replication_to_replica"></a> [storage\_api\_object\_replication\_to\_replica](#module\_storage\_api\_object\_replication\_to\_replica) | git::https://github.com/pagopa/terraform-azurerm-v3.git//storage_object_replication?ref=v4.1.15 |  |
+| <a name="module_storage_api_replica"></a> [storage\_api\_replica](#module\_storage\_api\_replica) | git::https://github.com/pagopa/terraform-azurerm-v3.git//storage_account?ref=v5.6.0 |  |
+| <a name="module_subscriptionmigrations_db_server"></a> [subscriptionmigrations\_db\_server](#module\_subscriptionmigrations\_db\_server) | git::https://github.com/pagopa/terraform-azurerm-v3.git//postgresql_server?ref=v4.1.15 |  |
+| <a name="module_vnet_common"></a> [vnet\_common](#module\_vnet\_common) | git::https://github.com/pagopa/terraform-azurerm-v3.git//virtual_network?ref=v4.1.15 |  |
+| <a name="module_vnet_peering_common_weu_beta"></a> [vnet\_peering\_common\_weu\_beta](#module\_vnet\_peering\_common\_weu\_beta) | git::https://github.com/pagopa/terraform-azurerm-v3.git//virtual_network_peering?ref=v4.1.15 |  |
+| <a name="module_vnet_peering_common_weu_prod01"></a> [vnet\_peering\_common\_weu\_prod01](#module\_vnet\_peering\_common\_weu\_prod01) | git::https://github.com/pagopa/terraform-azurerm-v3.git//virtual_network_peering?ref=v4.1.15 |  |
+| <a name="module_vnet_peering_common_weu_prod02"></a> [vnet\_peering\_common\_weu\_prod02](#module\_vnet\_peering\_common\_weu\_prod02) | git::https://github.com/pagopa/terraform-azurerm-v3.git//virtual_network_peering?ref=v4.1.15 |  |
+| <a name="module_vnet_weu_beta"></a> [vnet\_weu\_beta](#module\_vnet\_weu\_beta) | git::https://github.com/pagopa/terraform-azurerm-v3.git//virtual_network?ref=v4.1.15 |  |
+| <a name="module_vnet_weu_prod01"></a> [vnet\_weu\_prod01](#module\_vnet\_weu\_prod01) | git::https://github.com/pagopa/terraform-azurerm-v3.git//virtual_network?ref=v4.1.15 |  |
+| <a name="module_vnet_weu_prod02"></a> [vnet\_weu\_prod02](#module\_vnet\_weu\_prod02) | git::https://github.com/pagopa/terraform-azurerm-v3.git//virtual_network?ref=v4.1.15 |  |
+| <a name="module_vpn"></a> [vpn](#module\_vpn) | git::https://github.com/pagopa/terraform-azurerm-v3.git//vpn_gateway?ref=v4.1.15 |  |
+| <a name="module_vpn_snet"></a> [vpn\_snet](#module\_vpn\_snet) | git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v4.1.15 |  |
+| <a name="module_web_test_api"></a> [web\_test\_api](#module\_web\_test\_api) | git::https://github.com/pagopa/terraform-azurerm-v3.git//application_insights_web_test_preview?ref=v4.1.15 |  |
 
 ## Resources
 
@@ -563,17 +561,9 @@
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
-| <a name="input_apim_alerts_enabled"></a> [apim\_alerts\_enabled](#input\_apim\_alerts\_enabled) | Enable alerts | `bool` | `true` | no |
 | <a name="input_apim_autoscale"></a> [apim\_autoscale](#input\_apim\_autoscale) | Configure Apim autoscale on capacity metric | <pre>object(<br>    {<br>      enabled                       = bool<br>      default_instances             = number<br>      minimum_instances             = number<br>      maximum_instances             = number<br>      scale_out_capacity_percentage = number<br>      scale_out_time_window         = string<br>      scale_out_value               = string<br>      scale_out_cooldown            = string<br>      scale_in_capacity_percentage  = number<br>      scale_in_time_window          = string<br>      scale_in_value                = string<br>      scale_in_cooldown             = string<br>    }<br>  )</pre> | n/a | yes |
 | <a name="input_apim_publisher_name"></a> [apim\_publisher\_name](#input\_apim\_publisher\_name) | # Apim | `string` | n/a | yes |
 | <a name="input_apim_sku"></a> [apim\_sku](#input\_apim\_sku) | n/a | `string` | n/a | yes |
-| <a name="input_app_backend_autoscale_default"></a> [app\_backend\_autoscale\_default](#input\_app\_backend\_autoscale\_default) | The number of instances that are available for scaling if metrics are not available for evaluation. | `number` | `10` | no |
-| <a name="input_app_backend_autoscale_maximum"></a> [app\_backend\_autoscale\_maximum](#input\_app\_backend\_autoscale\_maximum) | The maximum number of instances for this resource. | `number` | `30` | no |
-| <a name="input_app_backend_autoscale_minimum"></a> [app\_backend\_autoscale\_minimum](#input\_app\_backend\_autoscale\_minimum) | The minimum number of instances for this resource. | `number` | `1` | no |
-| <a name="input_app_backend_names"></a> [app\_backend\_names](#input\_app\_backend\_names) | App backend instance names | `list(string)` | `[]` | no |
-| <a name="input_app_backend_plan_sku_size"></a> [app\_backend\_plan\_sku\_size](#input\_app\_backend\_plan\_sku\_size) | App backend app plan sku size | `string` | `"P1v3"` | no |
-| <a name="input_app_backend_plan_sku_tier"></a> [app\_backend\_plan\_sku\_tier](#input\_app\_backend\_plan\_sku\_tier) | App backend app plan sku tier | `string` | `"PremiumV3"` | no |
-| <a name="input_app_gateway_alerts_enabled"></a> [app\_gateway\_alerts\_enabled](#input\_app\_gateway\_alerts\_enabled) | Enable alerts | `bool` | `true` | no |
 | <a name="input_app_gateway_api_app_certificate_name"></a> [app\_gateway\_api\_app\_certificate\_name](#input\_app\_gateway\_api\_app\_certificate\_name) | Application gateway api certificate name on Key Vault | `string` | n/a | yes |
 | <a name="input_app_gateway_api_certificate_name"></a> [app\_gateway\_api\_certificate\_name](#input\_app\_gateway\_api\_certificate\_name) | Application gateway api certificate name on Key Vault | `string` | n/a | yes |
 | <a name="input_app_gateway_api_io_italia_it_certificate_name"></a> [app\_gateway\_api\_io\_italia\_it\_certificate\_name](#input\_app\_gateway\_api\_io\_italia\_it\_certificate\_name) | Application gateway api certificate name on Key Vault | `string` | n/a | yes |
@@ -582,20 +572,6 @@
 | <a name="input_app_gateway_app_backend_io_italia_it_certificate_name"></a> [app\_gateway\_app\_backend\_io\_italia\_it\_certificate\_name](#input\_app\_gateway\_app\_backend\_io\_italia\_it\_certificate\_name) | Application gateway api certificate name on Key Vault | `string` | n/a | yes |
 | <a name="input_app_gateway_continua_io_pagopa_it_certificate_name"></a> [app\_gateway\_continua\_io\_pagopa\_it\_certificate\_name](#input\_app\_gateway\_continua\_io\_pagopa\_it\_certificate\_name) | Application gateway continua certificate name on Key Vault | `string` | n/a | yes |
 | <a name="input_app_gateway_developerportal_backend_io_italia_it_certificate_name"></a> [app\_gateway\_developerportal\_backend\_io\_italia\_it\_certificate\_name](#input\_app\_gateway\_developerportal\_backend\_io\_italia\_it\_certificate\_name) | Application gateway api certificate name on Key Vault | `string` | n/a | yes |
-| <a name="input_app_gateway_max_capacity"></a> [app\_gateway\_max\_capacity](#input\_app\_gateway\_max\_capacity) | n/a | `number` | `2` | no |
-| <a name="input_app_gateway_min_capacity"></a> [app\_gateway\_min\_capacity](#input\_app\_gateway\_min\_capacity) | n/a | `number` | `0` | no |
-| <a name="input_app_messages_count"></a> [app\_messages\_count](#input\_app\_messages\_count) | App Messages | `number` | `2` | no |
-| <a name="input_app_messages_function_always_on"></a> [app\_messages\_function\_always\_on](#input\_app\_messages\_function\_always\_on) | n/a | `bool` | `false` | no |
-| <a name="input_app_messages_function_autoscale_default"></a> [app\_messages\_function\_autoscale\_default](#input\_app\_messages\_function\_autoscale\_default) | The number of instances that are available for scaling if metrics are not available for evaluation. | `number` | `1` | no |
-| <a name="input_app_messages_function_autoscale_maximum"></a> [app\_messages\_function\_autoscale\_maximum](#input\_app\_messages\_function\_autoscale\_maximum) | The maximum number of instances for this resource. | `number` | `3` | no |
-| <a name="input_app_messages_function_autoscale_minimum"></a> [app\_messages\_function\_autoscale\_minimum](#input\_app\_messages\_function\_autoscale\_minimum) | The minimum number of instances for this resource. | `number` | `1` | no |
-| <a name="input_app_messages_function_kind"></a> [app\_messages\_function\_kind](#input\_app\_messages\_function\_kind) | App service plan kind | `string` | `null` | no |
-| <a name="input_app_messages_function_sku_size"></a> [app\_messages\_function\_sku\_size](#input\_app\_messages\_function\_sku\_size) | App service plan sku size | `string` | `null` | no |
-| <a name="input_app_messages_function_sku_tier"></a> [app\_messages\_function\_sku\_tier](#input\_app\_messages\_function\_sku\_tier) | App service plan sku tier | `string` | `null` | no |
-| <a name="input_application_insights_name"></a> [application\_insights\_name](#input\_application\_insights\_name) | The common Application Insights name | `string` | `""` | no |
-| <a name="input_azdo_sp_tls_cert_enabled"></a> [azdo\_sp\_tls\_cert\_enabled](#input\_azdo\_sp\_tls\_cert\_enabled) | Enable Azure DevOps connection for TLS cert management | `string` | `false` | no |
-| <a name="input_cgn_legalbackup_account_replication_type"></a> [cgn\_legalbackup\_account\_replication\_type](#input\_cgn\_legalbackup\_account\_replication\_type) | Legal backup replication type | `string` | `"GRS"` | no |
-| <a name="input_cgn_legalbackup_enable_versioning"></a> [cgn\_legalbackup\_enable\_versioning](#input\_cgn\_legalbackup\_enable\_versioning) | Enable legal backup versioning | `bool` | `false` | no |
 | <a name="input_cidr_common_vnet"></a> [cidr\_common\_vnet](#input\_cidr\_common\_vnet) | Common Virtual network cidr. | `list(string)` | n/a | yes |
 | <a name="input_cidr_subnet_apim"></a> [cidr\_subnet\_apim](#input\_cidr\_subnet\_apim) | Api Management address space. | `list(string)` | n/a | yes |
 | <a name="input_cidr_subnet_app"></a> [cidr\_subnet\_app](#input\_cidr\_subnet\_app) | Function app address space. | `list(string)` | n/a | yes |
@@ -620,7 +596,6 @@
 | <a name="input_cidr_subnet_fnpblevtdispatcher"></a> [cidr\_subnet\_fnpblevtdispatcher](#input\_cidr\_subnet\_fnpblevtdispatcher) | function-publiceventdispatcher network address space. | `list(string)` | n/a | yes |
 | <a name="input_cidr_subnet_fnpblevtdispatcherv4"></a> [cidr\_subnet\_fnpblevtdispatcherv4](#input\_cidr\_subnet\_fnpblevtdispatcherv4) | function-publiceventdispatcher network address space. | `list(string)` | n/a | yes |
 | <a name="input_cidr_subnet_pendpoints"></a> [cidr\_subnet\_pendpoints](#input\_cidr\_subnet\_pendpoints) | Private Endpoints address space. | `list(string)` | n/a | yes |
-| <a name="input_cidr_subnet_redis_apim"></a> [cidr\_subnet\_redis\_apim](#input\_cidr\_subnet\_redis\_apim) | Redis network address space. | `list(string)` | `[]` | no |
 | <a name="input_cidr_subnet_redis_common"></a> [cidr\_subnet\_redis\_common](#input\_cidr\_subnet\_redis\_common) | Redis common network address space. | `list(string)` | n/a | yes |
 | <a name="input_cidr_subnet_selfcare_be"></a> [cidr\_subnet\_selfcare\_be](#input\_cidr\_subnet\_selfcare\_be) | Selfcare IO frontend storage address space. | `list(string)` | n/a | yes |
 | <a name="input_cidr_subnet_services"></a> [cidr\_subnet\_services](#input\_cidr\_subnet\_services) | Function services address space. | `list(string)` | n/a | yes |
@@ -629,12 +604,41 @@
 | <a name="input_cidr_weu_beta_vnet"></a> [cidr\_weu\_beta\_vnet](#input\_cidr\_weu\_beta\_vnet) | Beta Virtual network cidr. | `list(string)` | n/a | yes |
 | <a name="input_cidr_weu_prod01_vnet"></a> [cidr\_weu\_prod01\_vnet](#input\_cidr\_weu\_prod01\_vnet) | Prod01 Virtual network cidr. | `list(string)` | n/a | yes |
 | <a name="input_cidr_weu_prod02_vnet"></a> [cidr\_weu\_prod02\_vnet](#input\_cidr\_weu\_prod02\_vnet) | Prod02 Virtual network cidr. | `list(string)` | n/a | yes |
+| <a name="input_continua_appservice_sku"></a> [continua\_appservice\_sku](#input\_continua\_appservice\_sku) | The SKU for the AppService Plan relative to Continua | `string` | n/a | yes |
+| <a name="input_enable_azdoa"></a> [enable\_azdoa](#input\_enable\_azdoa) | Enable Azure DevOps agent. | `bool` | n/a | yes |
+| <a name="input_env_short"></a> [env\_short](#input\_env\_short) | n/a | `string` | n/a | yes |
+| <a name="input_log_analytics_workspace_resource_group_name"></a> [log\_analytics\_workspace\_resource\_group\_name](#input\_log\_analytics\_workspace\_resource\_group\_name) | The name of the resource group in which the Log Analytics workspace is located in. | `string` | n/a | yes |
+| <a name="input_monitor_resource_group_name"></a> [monitor\_resource\_group\_name](#input\_monitor\_resource\_group\_name) | Monitor resource group name | `string` | n/a | yes |
+| <a name="input_pn_test_endpoint"></a> [pn\_test\_endpoint](#input\_pn\_test\_endpoint) | The endpoint of PN (test env) | `string` | n/a | yes |
+| <a name="input_redis_common"></a> [redis\_common](#input\_redis\_common) | Redis Common configuration | <pre>object({<br>    capacity                      = number<br>    shard_count                   = number<br>    family                        = string<br>    sku_name                      = string<br>    public_network_access_enabled = bool<br>    rdb_backup_enabled            = bool<br>    rdb_backup_frequency          = number<br>    rdb_backup_max_snapshot_count = number<br>    redis_version                 = string<br>  })</pre> | n/a | yes |
+| <a name="input_apim_alerts_enabled"></a> [apim\_alerts\_enabled](#input\_apim\_alerts\_enabled) | Enable alerts | `bool` | `true` | no |
+| <a name="input_app_backend_autoscale_default"></a> [app\_backend\_autoscale\_default](#input\_app\_backend\_autoscale\_default) | The number of instances that are available for scaling if metrics are not available for evaluation. | `number` | `10` | no |
+| <a name="input_app_backend_autoscale_maximum"></a> [app\_backend\_autoscale\_maximum](#input\_app\_backend\_autoscale\_maximum) | The maximum number of instances for this resource. | `number` | `30` | no |
+| <a name="input_app_backend_autoscale_minimum"></a> [app\_backend\_autoscale\_minimum](#input\_app\_backend\_autoscale\_minimum) | The minimum number of instances for this resource. | `number` | `1` | no |
+| <a name="input_app_backend_names"></a> [app\_backend\_names](#input\_app\_backend\_names) | App backend instance names | `list(string)` | `[]` | no |
+| <a name="input_app_backend_plan_sku_size"></a> [app\_backend\_plan\_sku\_size](#input\_app\_backend\_plan\_sku\_size) | App backend app plan sku size | `string` | `"P1v3"` | no |
+| <a name="input_app_backend_plan_sku_tier"></a> [app\_backend\_plan\_sku\_tier](#input\_app\_backend\_plan\_sku\_tier) | App backend app plan sku tier | `string` | `"PremiumV3"` | no |
+| <a name="input_app_gateway_alerts_enabled"></a> [app\_gateway\_alerts\_enabled](#input\_app\_gateway\_alerts\_enabled) | Enable alerts | `bool` | `true` | no |
+| <a name="input_app_gateway_max_capacity"></a> [app\_gateway\_max\_capacity](#input\_app\_gateway\_max\_capacity) | n/a | `number` | `2` | no |
+| <a name="input_app_gateway_min_capacity"></a> [app\_gateway\_min\_capacity](#input\_app\_gateway\_min\_capacity) | n/a | `number` | `0` | no |
+| <a name="input_app_messages_count"></a> [app\_messages\_count](#input\_app\_messages\_count) | App Messages | `number` | `2` | no |
+| <a name="input_app_messages_function_always_on"></a> [app\_messages\_function\_always\_on](#input\_app\_messages\_function\_always\_on) | n/a | `bool` | `false` | no |
+| <a name="input_app_messages_function_autoscale_default"></a> [app\_messages\_function\_autoscale\_default](#input\_app\_messages\_function\_autoscale\_default) | The number of instances that are available for scaling if metrics are not available for evaluation. | `number` | `1` | no |
+| <a name="input_app_messages_function_autoscale_maximum"></a> [app\_messages\_function\_autoscale\_maximum](#input\_app\_messages\_function\_autoscale\_maximum) | The maximum number of instances for this resource. | `number` | `3` | no |
+| <a name="input_app_messages_function_autoscale_minimum"></a> [app\_messages\_function\_autoscale\_minimum](#input\_app\_messages\_function\_autoscale\_minimum) | The minimum number of instances for this resource. | `number` | `1` | no |
+| <a name="input_app_messages_function_kind"></a> [app\_messages\_function\_kind](#input\_app\_messages\_function\_kind) | App service plan kind | `string` | `null` | no |
+| <a name="input_app_messages_function_sku_size"></a> [app\_messages\_function\_sku\_size](#input\_app\_messages\_function\_sku\_size) | App service plan sku size | `string` | `null` | no |
+| <a name="input_app_messages_function_sku_tier"></a> [app\_messages\_function\_sku\_tier](#input\_app\_messages\_function\_sku\_tier) | App service plan sku tier | `string` | `null` | no |
+| <a name="input_application_insights_name"></a> [application\_insights\_name](#input\_application\_insights\_name) | The common Application Insights name | `string` | `""` | no |
+| <a name="input_azdo_sp_tls_cert_enabled"></a> [azdo\_sp\_tls\_cert\_enabled](#input\_azdo\_sp\_tls\_cert\_enabled) | Enable Azure DevOps connection for TLS cert management | `string` | `false` | no |
+| <a name="input_cgn_legalbackup_account_replication_type"></a> [cgn\_legalbackup\_account\_replication\_type](#input\_cgn\_legalbackup\_account\_replication\_type) | Legal backup replication type | `string` | `"GRS"` | no |
+| <a name="input_cgn_legalbackup_enable_versioning"></a> [cgn\_legalbackup\_enable\_versioning](#input\_cgn\_legalbackup\_enable\_versioning) | Enable legal backup versioning | `bool` | `false` | no |
+| <a name="input_cidr_subnet_redis_apim"></a> [cidr\_subnet\_redis\_apim](#input\_cidr\_subnet\_redis\_apim) | Redis network address space. | `list(string)` | `[]` | no |
 | <a name="input_citizen_auth_assertion_storage_name"></a> [citizen\_auth\_assertion\_storage\_name](#input\_citizen\_auth\_assertion\_storage\_name) | Use storage name from citizen\_auth domain | `string` | `"lollipop-assertions-st"` | no |
 | <a name="input_citizen_auth_domain"></a> [citizen\_auth\_domain](#input\_citizen\_auth\_domain) | n/a | `string` | `"citizen-auth"` | no |
 | <a name="input_citizen_auth_product"></a> [citizen\_auth\_product](#input\_citizen\_auth\_product) | Use product name from citizen\_auth domain locals | `string` | `"io-p"` | no |
 | <a name="input_citizen_auth_revoke_queue_name"></a> [citizen\_auth\_revoke\_queue\_name](#input\_citizen\_auth\_revoke\_queue\_name) | Use queue storage name from citizen\_auth domain storage | `string` | `"pubkeys-revoke"` | no |
 | <a name="input_common_rg"></a> [common\_rg](#input\_common\_rg) | Common Virtual network resource group name. | `string` | `""` | no |
-| <a name="input_continua_appservice_sku"></a> [continua\_appservice\_sku](#input\_continua\_appservice\_sku) | The SKU for the AppService Plan relative to Continua | `string` | n/a | yes |
 | <a name="input_ddos_protection_plan"></a> [ddos\_protection\_plan](#input\_ddos\_protection\_plan) | n/a | <pre>object({<br>    id     = string<br>    enable = bool<br>  })</pre> | `null` | no |
 | <a name="input_dns_default_ttl_sec"></a> [dns\_default\_ttl\_sec](#input\_dns\_default\_ttl\_sec) | value | `number` | `3600` | no |
 | <a name="input_dns_zone_io"></a> [dns\_zone\_io](#input\_dns\_zone\_io) | The dns subdomain. | `string` | `null` | no |
@@ -647,9 +651,7 @@
 | <a name="input_ehns_metric_alerts"></a> [ehns\_metric\_alerts](#input\_ehns\_metric\_alerts) | Map of name = criteria objects | <pre>map(object({<br>    # criteria.*.aggregation to be one of [Average Count Minimum Maximum Total]<br>    aggregation = string<br>    metric_name = string<br>    description = string<br>    # criteria.0.operator to be one of [Equals NotEquals GreaterThan GreaterThanOrEqual LessThan LessThanOrEqual]<br>    operator  = string<br>    threshold = number<br>    # Possible values are PT1M, PT5M, PT15M, PT30M and PT1H<br>    frequency = string<br>    # Possible values are PT1M, PT5M, PT15M, PT30M, PT1H, PT6H, PT12H and P1D.<br>    window_size = string<br><br>    dimension = list(object(<br>      {<br>        name     = string<br>        operator = string<br>        values   = list(string)<br>      }<br>    ))<br>  }))</pre> | `{}` | no |
 | <a name="input_ehns_sku_name"></a> [ehns\_sku\_name](#input\_ehns\_sku\_name) | Defines which tier to use. | `string` | `"Basic"` | no |
 | <a name="input_ehns_zone_redundant"></a> [ehns\_zone\_redundant](#input\_ehns\_zone\_redundant) | Specifies if the EventHub Namespace should be Zone Redundant (created across Availability Zones). | `bool` | `false` | no |
-| <a name="input_enable_azdoa"></a> [enable\_azdoa](#input\_enable\_azdoa) | Enable Azure DevOps agent. | `bool` | n/a | yes |
 | <a name="input_enable_iac_pipeline"></a> [enable\_iac\_pipeline](#input\_enable\_iac\_pipeline) | If true create the key vault policy to allow used by azure devops iac pipelines. | `bool` | `false` | no |
-| <a name="input_env_short"></a> [env\_short](#input\_env\_short) | n/a | `string` | n/a | yes |
 | <a name="input_eucovidcert_alerts_enabled"></a> [eucovidcert\_alerts\_enabled](#input\_eucovidcert\_alerts\_enabled) | Enable eucovidcert alerts | `bool` | `true` | no |
 | <a name="input_eventhubs"></a> [eventhubs](#input\_eventhubs) | A list of event hubs to add to namespace. | <pre>list(object({<br>    name              = string<br>    partitions        = number<br>    message_retention = number<br>    consumers         = list(string)<br>    keys = list(object({<br>      name   = string<br>      listen = bool<br>      send   = bool<br>      manage = bool<br>    }))<br>  }))</pre> | `[]` | no |
 | <a name="input_external_domain"></a> [external\_domain](#input\_external\_domain) | Domain for delegation | `string` | `"pagopa.it"` | no |
@@ -712,8 +714,6 @@
 | <a name="input_location"></a> [location](#input\_location) | n/a | `string` | `"westeurope"` | no |
 | <a name="input_lock_enable"></a> [lock\_enable](#input\_lock\_enable) | Apply locks to block accedentaly deletions. | `bool` | `false` | no |
 | <a name="input_log_analytics_workspace_name"></a> [log\_analytics\_workspace\_name](#input\_log\_analytics\_workspace\_name) | The common Log Analytics Workspace name | `string` | `""` | no |
-| <a name="input_log_analytics_workspace_resource_group_name"></a> [log\_analytics\_workspace\_resource\_group\_name](#input\_log\_analytics\_workspace\_resource\_group\_name) | The name of the resource group in which the Log Analytics workspace is located in. | `string` | n/a | yes |
-| <a name="input_monitor_resource_group_name"></a> [monitor\_resource\_group\_name](#input\_monitor\_resource\_group\_name) | Monitor resource group name | `string` | n/a | yes |
 | <a name="input_plan_cgn_kind"></a> [plan\_cgn\_kind](#input\_plan\_cgn\_kind) | App service plan kind | `string` | `null` | no |
 | <a name="input_plan_cgn_sku_capacity"></a> [plan\_cgn\_sku\_capacity](#input\_plan\_cgn\_sku\_capacity) | Cgn app plan capacity | `number` | `1` | no |
 | <a name="input_plan_cgn_sku_size"></a> [plan\_cgn\_sku\_size](#input\_plan\_cgn\_sku\_size) | App service plan sku size | `string` | `null` | no |
@@ -723,12 +723,10 @@
 | <a name="input_plan_shared_1_sku_size"></a> [plan\_shared\_1\_sku\_size](#input\_plan\_shared\_1\_sku\_size) | App service plan sku size | `string` | `null` | no |
 | <a name="input_plan_shared_1_sku_tier"></a> [plan\_shared\_1\_sku\_tier](#input\_plan\_shared\_1\_sku\_tier) | App service plan sku tier | `string` | `null` | no |
 | <a name="input_pn_service_id"></a> [pn\_service\_id](#input\_pn\_service\_id) | The Service ID of PN service | `string` | `"01G40DWQGKY5GRWSNM4303VNRP"` | no |
-| <a name="input_pn_test_endpoint"></a> [pn\_test\_endpoint](#input\_pn\_test\_endpoint) | The endpoint of PN (test env) | `string` | n/a | yes |
 | <a name="input_prefix"></a> [prefix](#input\_prefix) | n/a | `string` | `"io"` | no |
 | <a name="input_redis_apim_capacity"></a> [redis\_apim\_capacity](#input\_redis\_apim\_capacity) | # Redis cache | `number` | `1` | no |
 | <a name="input_redis_apim_family"></a> [redis\_apim\_family](#input\_redis\_apim\_family) | n/a | `string` | `"C"` | no |
 | <a name="input_redis_apim_sku_name"></a> [redis\_apim\_sku\_name](#input\_redis\_apim\_sku\_name) | n/a | `string` | `"Standard"` | no |
-| <a name="input_redis_common"></a> [redis\_common](#input\_redis\_common) | Redis Common configuration | <pre>object({<br>    capacity                      = number<br>    shard_count                   = number<br>    family                        = string<br>    sku_name                      = string<br>    public_network_access_enabled = bool<br>    rdb_backup_enabled            = bool<br>    rdb_backup_frequency          = number<br>    rdb_backup_max_snapshot_count = number<br>    redis_version                 = string<br>  })</pre> | n/a | yes |
 | <a name="input_selfcare_external_hostname"></a> [selfcare\_external\_hostname](#input\_selfcare\_external\_hostname) | Selfcare external hostname | `string` | `"selfcare.pagopa.it"` | no |
 | <a name="input_selfcare_plan_sku_capacity"></a> [selfcare\_plan\_sku\_capacity](#input\_selfcare\_plan\_sku\_capacity) | Selfcare app plan capacity | `number` | `1` | no |
 | <a name="input_selfcare_plan_sku_size"></a> [selfcare\_plan\_sku\_size](#input\_selfcare\_plan\_sku\_size) | Selfcare app plan sku size | `string` | `"P1v3"` | no |
@@ -745,4 +743,3 @@
 |------|-------------|
 | <a name="output_sec_storage_id"></a> [sec\_storage\_id](#output\_sec\_storage\_id) | n/a |
 | <a name="output_sec_workspace_id"></a> [sec\_workspace\_id](#output\_sec\_workspace\_id) | n/a |
-<!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
