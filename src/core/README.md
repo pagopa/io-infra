@@ -130,6 +130,7 @@
 | <a name="module_redis_common_backup"></a> [redis\_common\_backup](#module\_redis\_common\_backup) | git::https://github.com/pagopa/terraform-azurerm-v3.git//storage_account?ref=v6.3.0 |  |
 | <a name="module_redis_common_snet"></a> [redis\_common\_snet](#module\_redis\_common\_snet) | git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v6.3.0 |  |
 | <a name="module_redis_messages"></a> [redis\_messages](#module\_redis\_messages) | git::https://github.com/pagopa/terraform-azurerm-v3.git//redis_cache?ref=v4.1.15 |  |
+| <a name="module_redis_messages_v6"></a> [redis\_messages\_v6](#module\_redis\_messages\_v6) | git::https://github.com/pagopa/terraform-azurerm-v3.git//redis_cache?ref=v6.11.2 |  |
 | <a name="module_selfcare_be_common_snet"></a> [selfcare\_be\_common\_snet](#module\_selfcare\_be\_common\_snet) | git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v4.1.15 |  |
 | <a name="module_selfcare_cdn"></a> [selfcare\_cdn](#module\_selfcare\_cdn) | git::https://github.com/pagopa/terraform-azurerm-v3.git//cdn?ref=v4.1.15 |  |
 | <a name="module_selfcare_jwt"></a> [selfcare\_jwt](#module\_selfcare\_jwt) | git::https://github.com/pagopa/terraform-azurerm-v3.git//jwt_keys?ref=v4.1.15 |  |
