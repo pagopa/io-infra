@@ -197,14 +197,6 @@ locals {
       ssl_cert_remaining_lifetime_check = 1,
     },
     {
-      # SpidL2-intesaid https://app-backend.io.italia.it/login?authLevel=SpidL2&entityID=intesaid
-      name                              = "SpidL2-intesaid",
-      host                              = trimsuffix(azurerm_dns_a_record.app_backend_io_italia_it.fqdn, "."),
-      path                              = "/login?authLevel=SpidL2&entityID=intesaid",
-      http_status                       = 200,
-      ssl_cert_remaining_lifetime_check = 1,
-    },
-    {
       # SpidL2-lepidaid https://app-backend.io.italia.it/login?authLevel=SpidL2&entityID=lepidaid
       name                              = "SpidL2-lepidaid",
       host                              = trimsuffix(azurerm_dns_a_record.app_backend_io_italia_it.fqdn, "."),
@@ -241,6 +233,22 @@ locals {
       name                              = "SpidL2-spiditalia",
       host                              = trimsuffix(azurerm_dns_a_record.app_backend_io_italia_it.fqdn, "."),
       path                              = "/login?authLevel=SpidL2&entityID=spiditalia",
+      http_status                       = 200,
+      ssl_cert_remaining_lifetime_check = 1,
+    },
+    {
+      # SpidL2-etna https://app-backend.io.italia.it/login?authLevel=SpidL2&entityID=ehtid
+      name                              = "SpidL2-etna",
+      host                              = trimsuffix(azurerm_dns_a_record.app_backend_io_italia_it.fqdn, "."),
+      path                              = "/login?authLevel=SpidL2&entityID=ehtid",
+      http_status                       = 200,
+      ssl_cert_remaining_lifetime_check = 1,
+    },
+    {
+      # SpidL2-infocamere https://app-backend.io.italia.it/login?authLevel=SpidL2&entityID=infocamereid
+      name                              = "SpidL2-infocamere",
+      host                              = trimsuffix(azurerm_dns_a_record.app_backend_io_italia_it.fqdn, "."),
+      path                              = "/login?authLevel=SpidL2&entityID=infocamereid",
       http_status                       = 200,
       ssl_cert_remaining_lifetime_check = 1,
     },
