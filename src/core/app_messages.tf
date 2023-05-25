@@ -51,6 +51,11 @@ locals {
   }
 }
 
+/**
+* [OLD REDIS V4]
+* Will be removed after the binding with the function-app-messages
+* migrate to the new Redis V6 instance.
+*/
 module "redis_messages" {
   source                = "git::https://github.com/pagopa/terraform-azurerm-v3.git//redis_cache?ref=v4.1.15"
   name                  = format("%s-redis-app-messages-std", local.project)
@@ -59,6 +64,54 @@ module "redis_messages" {
   capacity              = 0
   family                = "C"
   sku_name              = "Standard"
+  enable_authentication = true
+
+  // when azure can apply patch?
+  patch_schedules = [{
+    day_of_week    = "Sunday"
+    start_hour_utc = 23
+    },
+    {
+      day_of_week    = "Monday"
+      start_hour_utc = 23
+    },
+    {
+      day_of_week    = "Tuesday"
+      start_hour_utc = 23
+    },
+    {
+      day_of_week    = "Wednesday"
+      start_hour_utc = 23
+    },
+    {
+      day_of_week    = "Thursday"
+      start_hour_utc = 23
+    },
+  ]
+
+
+  private_endpoint = {
+    enabled              = true
+    virtual_network_id   = module.vnet_common.id
+    subnet_id            = module.private_endpoints_subnet.id
+    private_dns_zone_ids = [azurerm_private_dns_zone.privatelink_redis_cache.id]
+  }
+
+  tags = var.tags
+}
+
+/**
+* [REDIS V6]
+*/
+module "redis_messages_v6" {
+  source                = "git::https://github.com/pagopa/terraform-azurerm-v3.git//redis_cache?ref=v6.11.2"
+  name                  = format("%s-redis-app-messages-std-v6", local.project)
+  resource_group_name   = azurerm_resource_group.app_messages_common_rg.name
+  location              = azurerm_resource_group.app_messages_common_rg.location
+  capacity              = 0
+  family                = "C"
+  sku_name              = "Standard"
+  redis_version         = "6"
   enable_authentication = true
 
   // when azure can apply patch?
