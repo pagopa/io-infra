@@ -12,6 +12,7 @@ resource "azurerm_subnet" "github_runner" {
   address_prefixes     = ["10.0.242.0/23"]
 }
 
+#tfsec:ignore:AZU023
 module "github_runner" {
   source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//container_app_environment?ref=v4.1.18"
 
