@@ -125,8 +125,10 @@ locals {
       BETA_USERS                             = data.azurerm_key_vault_secret.fn_services_beta_users.value
     }
     app_settings_1 = {
+      WEBHOOK_CHANNEL_URL = data.azurerm_key_vault_secret.fn_services_webhook_channel_url.value
     }
     app_settings_2 = {
+      WEBHOOK_CHANNEL_URL = data.azurerm_key_vault_secret.fn_services_webhook_channel_aks_url.value
     }
   }
 }

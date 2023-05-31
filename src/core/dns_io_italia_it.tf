@@ -89,3 +89,12 @@ resource "azurerm_dns_txt_record" "io_italia_it" {
   }
   tags = var.tags
 }
+
+# CNAME for mailup sender
+resource "azurerm_dns_cname_record" "sender" {
+  name                = "sender"
+  zone_name           = azurerm_dns_zone.io_italia_it.name
+  resource_group_name = azurerm_resource_group.rg_external.name
+  ttl                 = var.dns_default_ttl_sec
+  record              = "bounce.musvc.com"
+}

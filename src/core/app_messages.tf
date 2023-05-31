@@ -31,9 +31,9 @@ locals {
       FETCH_KEEPALIVE_TIMEOUT             = "60000"
 
       // REDIS
-      REDIS_URL      = module.redis_messages.hostname
-      REDIS_PORT     = module.redis_messages.ssl_port
-      REDIS_PASSWORD = module.redis_messages.primary_access_key
+      REDIS_URL      = module.redis_messages_v6.hostname
+      REDIS_PORT     = module.redis_messages_v6.ssl_port
+      REDIS_PASSWORD = module.redis_messages_v6.primary_access_key
 
       PN_SERVICE_ID = var.pn_service_id
 
@@ -51,14 +51,18 @@ locals {
   }
 }
 
-module "redis_messages" {
-  source                = "git::https://github.com/pagopa/terraform-azurerm-v3.git//redis_cache?ref=v4.1.15"
-  name                  = format("%s-redis-app-messages-std", local.project)
+/**
+* [REDIS V6]
+*/
+module "redis_messages_v6" {
+  source                = "git::https://github.com/pagopa/terraform-azurerm-v3.git//redis_cache?ref=v6.11.2"
+  name                  = format("%s-redis-app-messages-std-v6", local.project)
   resource_group_name   = azurerm_resource_group.app_messages_common_rg.name
   location              = azurerm_resource_group.app_messages_common_rg.location
   capacity              = 0
   family                = "C"
   sku_name              = "Standard"
+  redis_version         = "6"
   enable_authentication = true
 
   // when azure can apply patch?
