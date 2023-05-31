@@ -100,7 +100,7 @@ locals {
       # setting to allow the retrieve of the payment status from payment-updater
       FF_PAYMENT_STATUS_ENABLED = "true"
       # setting to notify message via email using the template
-      FF_TEMPLATE_EMAIL = "BETA"
+      FF_TEMPLATE_EMAIL = "ALL"
 
       // minimum app version that introduces read status opt-out
       // NOTE: right now is set to a non existing version, since it's not yet deployed
