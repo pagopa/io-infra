@@ -3,6 +3,7 @@ locals {
     staging_disabled = [
       "CreateSignatureRequest",
       "FillDocument",
+      "UpdateSignatureRequest",
       "ValidateQtspSignature",
     ]
     app_settings = {

@@ -100,7 +100,7 @@ locals {
       # setting to allow the retrieve of the payment status from payment-updater
       FF_PAYMENT_STATUS_ENABLED = "true"
       # setting to notify message via email using the template
-      FF_TEMPLATE_EMAIL = "BETA"
+      FF_TEMPLATE_EMAIL = "ALL"
 
       // minimum app version that introduces read status opt-out
       // NOTE: right now is set to a non existing version, since it's not yet deployed
@@ -125,8 +125,10 @@ locals {
       BETA_USERS                             = data.azurerm_key_vault_secret.fn_services_beta_users.value
     }
     app_settings_1 = {
+      WEBHOOK_CHANNEL_URL = data.azurerm_key_vault_secret.fn_services_webhook_channel_url.value
     }
     app_settings_2 = {
+      WEBHOOK_CHANNEL_URL = data.azurerm_key_vault_secret.fn_services_webhook_channel_aks_url.value
     }
   }
 }

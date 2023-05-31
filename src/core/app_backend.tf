@@ -182,9 +182,9 @@ locals {
       // PN Service Activation
       PN_ACTIVATION_BASE_PATH = "/api/v1/pn"
       PN_API_KEY              = data.azurerm_key_vault_secret.app_backend_PN_API_KEY.value
-      PN_API_KEY_UAT          = data.azurerm_key_vault_secret.app_backend_PN_API_KEY_UAT.value
+      PN_API_KEY_UAT          = data.azurerm_key_vault_secret.app_backend_PN_API_KEY_UAT_V2.value
       PN_API_URL              = "https://api-io.pn.pagopa.it"
-      PN_API_URL_UAT          = "https://api-io.coll.pn.pagopa.it"
+      PN_API_URL_UAT          = var.pn_test_endpoint
 
       // Third Party Services
       THIRD_PARTY_CONFIG_LIST = jsonencode([
@@ -203,11 +203,11 @@ locals {
           },
           testEnvironment = {
             testUsers = concat(split(",", local.test_users), split(",", data.azurerm_key_vault_secret.app_backend_PN_REAL_TEST_USERS.value)),
-            baseUrl   = "https://api-io.coll.pn.pagopa.it",
+            baseUrl   = var.pn_test_endpoint,
             detailsAuthentication = {
               type            = "API_KEY",
               header_key_name = "x-api-key",
-              key             = data.azurerm_key_vault_secret.app_backend_PN_API_KEY_UAT.value
+              key             = data.azurerm_key_vault_secret.app_backend_PN_API_KEY_UAT_V2.value
             }
           }
         },
@@ -247,6 +247,14 @@ locals {
       LOLLIPOP_REVOKE_QUEUE_NAME                = var.citizen_auth_revoke_queue_name
 
       FF_LOLLIPOP_ENABLED = "1"
+
+      //IOLOGIN redirect
+      FF_IOLOGIN         = "BETA"
+      IOLOGIN_TEST_USERS = data.azurerm_key_vault_secret.app_backend_IOLOGIN_TEST_USERS.value
+      # Takes ~6,25% of users
+      IOLOGIN_CANARY_USERS_REGEX = "^([(0-9)|(a-f)|(A-F)]{63}0)$"
+
+      BACKEND_HOST = "https://${trimsuffix(azurerm_dns_a_record.api_app_io_pagopa_it.fqdn, ".")}"
     }
     app_settings_l1 = {
       IS_APPBACKENDLI = "false"
@@ -432,6 +440,11 @@ data "azurerm_key_vault_secret" "app_backend_PN_API_KEY_UAT" {
   key_vault_id = module.key_vault_common.id
 }
 
+data "azurerm_key_vault_secret" "app_backend_PN_API_KEY_UAT_V2" {
+  name         = "appbackend-PN-API-KEY-UAT-ENV-V2"
+  key_vault_id = module.key_vault_common.id
+}
+
 data "azurerm_key_vault_secret" "app_backend_PN_REAL_TEST_USERS" {
   name         = "appbackend-PN-REAL-TEST-USERS"
   key_vault_id = module.key_vault_common.id
@@ -439,6 +452,12 @@ data "azurerm_key_vault_secret" "app_backend_PN_REAL_TEST_USERS" {
 
 data "azurerm_key_vault_secret" "app_backend_LOLLIPOP_API_KEY" {
   name         = "appbackend-LOLLIPOP-API-KEY"
+  key_vault_id = module.key_vault_common.id
+}
+
+
+data "azurerm_key_vault_secret" "app_backend_IOLOGIN_TEST_USERS" {
+  name         = "appbackend-IOLOGIN-TEST-USERS"
   key_vault_id = module.key_vault_common.id
 }
 
@@ -482,6 +501,21 @@ resource "azurerm_key_vault_secret" "appbackend-USERS-LOGIN-STORAGE" {
   content_type = "string"
 }
 
+#tfsec:ignore:AZU023
+resource "azurerm_key_vault_secret" "appbackend_LOLLIPOP_ASSERTIONS_STORAGE" {
+  name         = "appbackend-LOLLIPOP-ASSERTIONS-STORAGE"
+  value        = data.azurerm_storage_account.lollipop_assertions_storage.primary_connection_string
+  key_vault_id = module.key_vault_common.id
+  content_type = "string"
+}
+
+#tfsec:ignore:AZU023
+resource "azurerm_key_vault_secret" "appbackend_THIRD_PARTY_CONFIG_LIST" {
+  name         = "appbackend-THIRD-PARTY-CONFIG-LIST"
+  value        = local.app_backend.app_settings_common.THIRD_PARTY_CONFIG_LIST
+  key_vault_id = module.key_vault_common.id
+  content_type = "string"
+}
 
 ## app_backendl1
 
@@ -1131,6 +1165,8 @@ data "azurerm_linux_web_app" "app_backend_app_services" {
 
 resource "azurerm_monitor_metric_alert" "too_many_http_5xx" {
   for_each = { for key, name in data.azurerm_linux_web_app.app_backend_app_services : key => name }
+
+  enabled = false
 
   name                = "[IO-COMMONS | ${each.value.name}] Too many 5xx"
   resource_group_name = azurerm_resource_group.rg_linux.name
