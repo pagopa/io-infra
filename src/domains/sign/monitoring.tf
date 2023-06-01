@@ -189,6 +189,44 @@ resource "azurerm_monitor_metric_alert" "io_sign_user_response_time" {
   }
 }
 
+resource "azurerm_monitor_metric_alert" "io_sign_user_helathcheck" {
+  name                = format("%s-helathcheck", module.io_sign_user_func.name)
+  resource_group_name = azurerm_resource_group.backend_rg.name
+  scopes              = [module.io_sign_user_func.id]
+  description         = format("%s health check status is less than 100", module.io_sign_user_func.name)
+  severity            = 1
+  frequency           = "PT5M"
+  auto_mitigate       = false
+
+  criteria {
+    metric_namespace = "Microsoft.Web/sites"
+    metric_name      = "HealthCheckStatus"
+    aggregation      = "Maximum"
+    operator         = "LessThan"
+    threshold        = 1
+  }
+
+  action {
+    action_group_id = azurerm_monitor_action_group.email_fci_tech.id
+  }
+
+  action {
+    action_group_id = azurerm_monitor_action_group.slack_fci_tech.id
+  }
+}
+
+resource "azurerm_portal_dashboard" "io_sign_user_dashboard" {
+  name                = "my-cool-dashboard"
+  resource_group_name = azurerm_resource_group.backend_rg.name
+  location            = azurerm_resource_group.backend_rg.location
+  dashboard_properties = templatefile("dashboards/user-api.json.tpl", {
+    website_name = module.io_sign_user_func.name
+    website_id   = module.io_sign_user_func.id
+  })
+
+  tags = var.tags
+}
+
 # support
 resource "azurerm_monitor_metric_alert" "io_sign_support_http_server_errors" {
   name                = format("%s-http-server-errors", module.io_sign_support_func.name)
