@@ -251,7 +251,7 @@ module "appservice_selfcare_be" {
     # The "Manage Flow" allows the use of a specific subscription (Manage Subscription) keys as API Key for Service create/update.
     # Note: The list below is for the user IDs only, not the full path APIM.id.
     # UPDATE: The new feature is that "If one of such strings is "*", we suddenly open the feature to everyone.".
-    MANAGE_FLOW_ENABLE_USER_LIST = join(",", ["*"])
+    MANAGE_FLOW_ENABLE_USER_LIST = "*"
   }
 
   allowed_subnets = [module.appgateway_snet.id]
