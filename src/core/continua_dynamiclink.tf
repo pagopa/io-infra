@@ -6,6 +6,8 @@ locals {
     WEBSITE_ADD_SITENAME_BINDINGS_IN_APPHOST_CONFIG = "1"
     WEBSITE_RUN_FROM_PACKAGE                        = "1"
     WEBSITE_HEALTHCHECK_MAXPINGFAILURES             = "3"
+    
+    WEBSITE_CORS_ALLOWED_ORIGINS                    = "*"
 
     APPINSIGHTS_INSTRUMENTATIONKEY = azurerm_application_insights.application_insights.instrumentation_key
 
