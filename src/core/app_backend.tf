@@ -193,6 +193,8 @@ locals {
           serviceId  = var.pn_service_id,
           schemaKind = "PN",
           jsonSchema = "unused",
+          isLollipopEnabled = "true",
+          disableLollipopFor = split(",", local.test_users),
           prodEnvironment = {
             baseUrl = "https://api-io.pn.pagopa.it",
             detailsAuthentication = {
@@ -216,6 +218,8 @@ locals {
           serviceId  = var.io_sign_service_id,
           schemaKind = "IO-SIGN",
           jsonSchema = "unused",
+          isLollipopEnabled = "true",
+          disableLollipopFor = [],
           prodEnvironment = {
             baseUrl = "https://io-p-sign-user-func.azurewebsites.net/api/v1/sign",
             detailsAuthentication = {
@@ -230,6 +234,8 @@ locals {
           serviceId  = var.third_party_mock_service_id,
           schemaKind = "Mock",
           jsonSchema = "unused",
+          isLollipopEnabled = "false",
+          disableLollipopFor = [],
           prodEnvironment = {
             baseUrl = "https://pagopa.github.io/third-party-mock",
             detailsAuthentication = {
