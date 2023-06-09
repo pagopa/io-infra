@@ -7,8 +7,8 @@
           "position": {
             "x": 0,
             "y": 0,
-            "colSpan": 12,
-            "rowSpan": 6
+            "colSpan": 9,
+            "rowSpan": 4
           },
           "metadata": {
             "inputs": [
@@ -66,6 +66,122 @@
               }
             }
           }
+        },
+        "1": {
+          "position": {
+            "x": 9,
+            "y": 0,
+            "colSpan": 9,
+            "rowSpan": 4
+          },
+          "metadata": {
+            "inputs": [
+              {
+                "name": "resourceTypeMode",
+                "isOptional": true
+              },
+              {
+                "name": "ComponentId",
+                "isOptional": true
+              },
+              {
+                "name": "Scope",
+                "value": {
+                  "resourceIds": [
+                    "/subscriptions/d7de83e0-0571-40ad-b63a-64c942385eae/resourceGroups/dev/providers/microsoft.insights/components/tracing-test"
+                  ]
+                },
+                "isOptional": true
+              },
+              {
+                "name": "PartId",
+                "value": "10ef96d0-047b-49e7-b232-17ca611752c9",
+                "isOptional": true
+              },
+              {
+                "name": "Version",
+                "value": "2.0",
+                "isOptional": true
+              },
+              {
+                "name": "TimeRange",
+                "value": "P1D",
+                "isOptional": true
+              },
+              {
+                "name": "DashboardId",
+                "isOptional": true
+              },
+              {
+                "name": "DraftRequestParameters",
+                "isOptional": true
+              },
+              {
+                "name": "Query",
+                "value": "customEvents\n| where name in (\"sr_start\", \"sr_end\")\n| summarize span = datetime_diff('second', max(timestamp), min(timestamp)), stamp = max(timestamp) by tostring(customDimensions[\"sr_id\"])\n| summarize avg(span) by bin(stamp, 10m)\n",
+                "isOptional": true
+              },
+              {
+                "name": "ControlType",
+                "value": "AnalyticsGrid",
+                "isOptional": true
+              },
+              {
+                "name": "SpecificChart",
+                "isOptional": true
+              },
+              {
+                "name": "PartTitle",
+                "value": "Analytics",
+                "isOptional": true
+              },
+              {
+                "name": "PartSubTitle",
+                "value": "tracing-test",
+                "isOptional": true
+              },
+              {
+                "name": "Dimensions",
+                "isOptional": true
+              },
+              {
+                "name": "LegendOptions",
+                "isOptional": true
+              },
+              {
+                "name": "IsQueryContainTimeRange",
+                "value": false,
+                "isOptional": true
+              }
+            ],
+            "type": "Extension/Microsoft_OperationsManagementSuite_Workspace/PartType/LogsDashboardPart",
+            "settings": {
+              "content": {
+                "Query": "customEvents\n| where name in (\"sr_start\", \"sr_end\")\n| summarize span = datetime_diff('second', max(timestamp), min(timestamp)), maxts = max(timestamp) by tostring(customDimensions[\"sr_id\"])\n| summarize avg(span) by bin(maxts, 10m)\n| render timechart with (xtitle = \"timestamp\", ytitle= \"span\")\n\n",
+                "ControlType": "FrameControlChart",
+                "SpecificChart": "Line",
+                "PartTitle": "Average time to signature (QTSP)",
+                "Dimensions": {
+                  "xAxis": {
+                    "name": "maxts",
+                    "type": "datetime"
+                  },
+                  "yAxis": [
+                    {
+                      "name": "avg_span",
+                      "type": "real"
+                    }
+                  ],
+                  "splitBy": [],
+                  "aggregation": "Sum"
+                },
+                "LegendOptions": {
+                  "isEnabled": true,
+                  "position": "Bottom"
+                }
+              }
+            }
+          }
         }
       }
     }
@@ -97,7 +213,8 @@
               "value": "Past 24 hours"
             },
             "filteredPartIds": [
-              "StartboardPart-MonitorChartPart-3c8da23f-ae8c-48a7-8619-e50aaeda9e4e"
+              "StartboardPart-MonitorChartPart-848751f8-b69f-4738-b901-8d7bd721c00a",
+              "StartboardPart-LogsDashboardPart-848751f8-b69f-4738-b901-8d7bd721c00e"
             ]
           }
         }
