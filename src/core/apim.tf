@@ -275,7 +275,7 @@ resource "azurerm_api_management_group_user" "pn_user_group" {
   group_name          = data.azurerm_api_management_group.api_lollipop_assertion_read.name
 }
 
-resource "azurerm_api_management_subscription" "pagopa" {
+resource "azurerm_api_management_subscription" "pn_lc_subscription" {
   user_id             = azurerm_api_management_user.pn_user.id
   api_management_name = module.apim.name
   resource_group_name = module.apim.resource_group_name
