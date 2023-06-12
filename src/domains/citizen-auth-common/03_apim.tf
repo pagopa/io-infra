@@ -110,7 +110,7 @@ resource "azurerm_api_management_subscription" "pagopa_fastlogin" {
   api_management_name = data.azurerm_api_management.apim_api.name
   resource_group_name = data.azurerm_api_management.apim_api.resource_group_name
   product_id          = module.apim_product_lollipop.id
-  display_name        = "Fast Login API"
+  display_name        = "Fast Login LC"
   state               = "active"
 }
 
