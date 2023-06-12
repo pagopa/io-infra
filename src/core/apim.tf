@@ -268,7 +268,7 @@ resource "azurerm_api_management_subscription" "pagopa" {
   api_management_name = module.apim.name
   resource_group_name = module.apim.resource_group_name
   product_id          = module.apim_product_lollipop.id
-  display_name        = "PN API"
+  display_name        = "PN LC"
   state               = "active"
 }
 ##################################################################
