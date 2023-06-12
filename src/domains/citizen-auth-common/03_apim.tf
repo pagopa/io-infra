@@ -105,6 +105,15 @@ resource "azurerm_api_management_subscription" "pagopa" {
   state               = "active"
 }
 
+resource "azurerm_api_management_subscription" "pagopa_fastlogin" {
+  user_id             = azurerm_api_management_user.pagopa_user.id
+  api_management_name = data.azurerm_api_management.apim_api.name
+  resource_group_name = data.azurerm_api_management.apim_api.resource_group_name
+  product_id          = module.apim_product_lollipop.id
+  display_name        = "Fast Login API"
+  state               = "active"
+}
+
 ####################################################################################
 # PagoPA General Lollipop Secret
 ####################################################################################
@@ -113,4 +122,14 @@ resource "azurerm_key_vault_secret" "first_lollipop_consumer_subscription_key" {
   value        = azurerm_api_management_subscription.pagopa.primary_key
   key_vault_id = module.key_vault.id
 }
+
 ####################################################################################
+# PagoPA Functions-fast-login Secrets
+####################################################################################
+
+# subscription key used for assertion retrieval
+resource "azurerm_key_vault_secret" "fast_login_subscription_key" {
+  name         = "fast-login-subscription-key"
+  value        = azurerm_api_management_subscription.pagopa_fastlogin.primary_key
+  key_vault_id = module.key_vault.id
+}
