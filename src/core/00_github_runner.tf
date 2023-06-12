@@ -10,10 +10,13 @@ resource "azurerm_subnet" "github_runner" {
   resource_group_name  = azurerm_resource_group.rg_common.name
   virtual_network_name = module.vnet_common.name
   address_prefixes     = ["10.0.242.0/23"]
+  service_endpoints = [
+    "Microsoft.Web",
+  ]
 }
 
 module "github_runner" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//container_app_environment?ref=v4.1.18"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//container_app_environment?ref=v6.15.0"
 
   name                      = "${local.project}-github-runner-cae"
   resource_group_name       = azurerm_resource_group.github_runner.name
