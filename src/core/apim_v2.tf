@@ -18,7 +18,7 @@ module "apim_v2_snet" {
 # ## Api Management (apim) ##
 # ###########################
 module "apim_v2" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management?ref=v6.10.0"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management?ref=v6.16.0"
 
   subnet_id                 = module.apim_v2_snet.id
   location                  = azurerm_resource_group.rg_internal.location
