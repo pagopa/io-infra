@@ -218,7 +218,7 @@ locals {
           serviceId          = var.io_sign_service_id,
           schemaKind         = "IO-SIGN",
           jsonSchema         = "unused",
-          isLollipopEnabled  = "true",
+          isLollipopEnabled  = "false",
           disableLollipopFor = [],
           prodEnvironment = {
             baseUrl = "https://io-p-sign-user-func.azurewebsites.net/api/v1/sign",
