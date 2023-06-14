@@ -243,3 +243,44 @@ resource "azurerm_api_management_named_value" "cgnonboardingportal_os_header_nam
   secret              = true
 }
 
+##################################################################
+# PN APIM User
+##################################################################
+data "azurerm_api_management_product" "apim_product_lollipop" {
+  product_id          = "io-lollipop-api"
+  api_management_name = module.apim.name
+  resource_group_name = module.apim.resource_group_name
+}
+
+data "azurerm_api_management_group" "api_lollipop_assertion_read" {
+  name                = "apilollipopassertionread"
+  api_management_name = module.apim.name
+  resource_group_name = module.apim.resource_group_name
+}
+
+resource "azurerm_api_management_user" "pn_user" {
+  user_id             = "pnapimuser"
+  api_management_name = module.apim.name
+  resource_group_name = module.apim.resource_group_name
+  first_name          = "PNAPIMuser"
+  last_name           = "PNAPIMuser"
+  email               = "pn-apim-user@pagopa.it"
+  state               = "active"
+}
+
+resource "azurerm_api_management_group_user" "pn_user_group" {
+  user_id             = azurerm_api_management_user.pn_user.user_id
+  api_management_name = module.apim.name
+  resource_group_name = module.apim.resource_group_name
+  group_name          = data.azurerm_api_management_group.api_lollipop_assertion_read.name
+}
+
+resource "azurerm_api_management_subscription" "pn_lc_subscription" {
+  user_id             = azurerm_api_management_user.pn_user.id
+  api_management_name = module.apim.name
+  resource_group_name = module.apim.resource_group_name
+  product_id          = data.azurerm_api_management_product.apim_product_lollipop.id
+  display_name        = "PN LC"
+  state               = "active"
+}
+##################################################################
