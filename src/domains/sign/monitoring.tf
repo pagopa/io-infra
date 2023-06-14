@@ -127,3 +127,43 @@ customEvents
 
   tags = var.tags
 }
+
+resource "azurerm_monitor_scheduled_query_rules_alert" "io_sign_qtsp_uncomplete" {
+  name                = format("%s-qtsp-uncomplete", local.project)
+  resource_group_name = azurerm_resource_group.backend_rg.name
+  location            = azurerm_resource_group.backend_rg.location
+
+  data_source_id          = data.azurerm_application_insights.application_insights.id
+  description             = format("%s QTSP number of uncomplete requests", local.project)
+  enabled                 = true
+  auto_mitigation_enabled = false
+
+  query = <<-QUERY
+
+customEvents
+| where name in ("sr_start", "sr_end")
+| summarize cnt = count(), mints = min(timestamp) by tostring(customDimensions["sr_id"])
+| project cnt, mints
+| where cnt != 2
+| summarize count() by bin(mints, 10m)
+| render timechart with (xtitle="timestamp", ytitle="count")
+
+  QUERY
+
+  severity    = 1
+  frequency   = 10
+  time_window = 20
+  trigger {
+    operator  = "GreaterThanOrEqual"
+    threshold = 1
+  }
+
+  action {
+    action_group = [
+      azurerm_monitor_action_group.email_fci_tech.id,
+      azurerm_monitor_action_group.slack_fci_tech.id,
+    ]
+  }
+
+  tags = var.tags
+}

@@ -182,6 +182,122 @@
               }
             }
           }
+        },
+        "2": {
+          "position": {
+            "x": 0,
+            "y": 4,
+            "colSpan": 9,
+            "rowSpan": 4
+          },
+          "metadata": {
+            "inputs": [
+              {
+                "name": "resourceTypeMode",
+                "isOptional": true
+              },
+              {
+                "name": "ComponentId",
+                "isOptional": true
+              },
+              {
+                "name": "Scope",
+                "value": {
+                  "resourceIds": [
+                    "${application_insights_id}"
+                  ]
+                },
+                "isOptional": true
+              },
+              {
+                "name": "PartId",
+                "value": "10ef96d0-047b-49e7-b232-17ca611752c9",
+                "isOptional": true
+              },
+              {
+                "name": "Version",
+                "value": "2.0",
+                "isOptional": true
+              },
+              {
+                "name": "TimeRange",
+                "value": "P1D",
+                "isOptional": true
+              },
+              {
+                "name": "DashboardId",
+                "isOptional": true
+              },
+              {
+                "name": "DraftRequestParameters",
+                "isOptional": true
+              },
+              {
+                "name": "Query",
+                "value": "customEvents\n| where name in (\"sr_start\", \"sr_end\")\n| summarize span = datetime_diff('second', max(timestamp), min(timestamp)), stamp = max(timestamp) by tostring(customDimensions[\"sr_id\"])\n| summarize avg(span) by bin(stamp, 10m)\n",
+                "isOptional": true
+              },
+              {
+                "name": "ControlType",
+                "value": "AnalyticsGrid",
+                "isOptional": true
+              },
+              {
+                "name": "SpecificChart",
+                "isOptional": true
+              },
+              {
+                "name": "PartTitle",
+                "value": "Analytics",
+                "isOptional": true
+              },
+              {
+                "name": "PartSubTitle",
+                "value": "tracing-test",
+                "isOptional": true
+              },
+              {
+                "name": "Dimensions",
+                "isOptional": true
+              },
+              {
+                "name": "LegendOptions",
+                "isOptional": true
+              },
+              {
+                "name": "IsQueryContainTimeRange",
+                "value": false,
+                "isOptional": true
+              }
+            ],
+            "type": "Extension/Microsoft_OperationsManagementSuite_Workspace/PartType/LogsDashboardPart",
+            "settings": {
+              "content": {
+                "Query": "customEvents\n| where name in (\"sr_start\", \"sr_end\")\n| summarize cnt = count(), mints = min(timestamp) by tostring(customDimensions[\"sr_id\"])\n| project cnt, mints\n| where cnt != 2\n| summarize count() by bin(mints, 10m)\n| render timechart with (xtitle=\"timestamp\", ytitle=\"uncomplete\")\n\n",
+                "ControlType": "FrameControlChart",
+                "SpecificChart": "Line",
+                "PartTitle": "Uncomplete requests (QTSP)",
+                "Dimensions": {
+                  "xAxis": {
+                    "name": "mints",
+                    "type": "datetime"
+                  },
+                  "yAxis": [
+                    {
+                      "name": "count_",
+                      "type": "long"
+                    }
+                  ],
+                  "splitBy": [],
+                  "aggregation": "Sum"
+                },
+                "LegendOptions": {
+                  "isEnabled": true,
+                  "position": "Bottom"
+                }
+              }
+            }
+          }
         }
       }
     }
@@ -213,8 +329,9 @@
               "value": "Past 24 hours"
             },
             "filteredPartIds": [
-              "StartboardPart-MonitorChartPart-848751f8-b69f-4738-b901-8d7bd721c00a",
-              "StartboardPart-LogsDashboardPart-848751f8-b69f-4738-b901-8d7bd721c00e"
+              "StartboardPart-MonitorChartPart-9a399e02-41d4-4990-83e3-fcb426cac3b3",
+              "StartboardPart-LogsDashboardPart-9a399e02-41d4-4990-83e3-fcb426cac3b5",
+              "StartboardPart-LogsDashboardPart-9a399e02-41d4-4990-83e3-fcb426cac433"
             ]
           }
         }
