@@ -77,13 +77,14 @@ resource "azurerm_monitor_metric_alert" "io_sign_user_helathcheck" {
   }
 }
 
-resource "azurerm_portal_dashboard" "io_sign_user_dashboard" {
-  name                = "my-cool-dashboard"
+resource "azurerm_portal_dashboard" "io_sign_qtsp_dashboard" {
+  name                = format("%s-qtsp-monitor", local.project)
   resource_group_name = azurerm_resource_group.backend_rg.name
   location            = azurerm_resource_group.backend_rg.location
   dashboard_properties = templatefile("dashboards/user-api.json.tpl", {
-    website_name = module.io_sign_user_func.name
-    website_id   = module.io_sign_user_func.id
+    website_name            = module.io_sign_user_func.name
+    website_id              = module.io_sign_user_func.id
+    application_insights_id = data.azurerm_application_insights.application_insights.id
   })
 
   tags = var.tags

@@ -88,7 +88,7 @@
                 "name": "Scope",
                 "value": {
                   "resourceIds": [
-                    "/subscriptions/d7de83e0-0571-40ad-b63a-64c942385eae/resourceGroups/dev/providers/microsoft.insights/components/tracing-test"
+                    "${application_insights_id}"
                   ]
                 },
                 "isOptional": true
