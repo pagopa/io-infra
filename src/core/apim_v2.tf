@@ -68,7 +68,7 @@ module "apim_v2" {
   virtual_network_type      = "Internal"
   zones                     = ["1", "2"]
 
-  public_ip_address_id      = azurerm_public_ip.public_ip_apim.id
+  public_ip_address_id = azurerm_public_ip.public_ip_apim.id
 
   # not used at the moment
   redis_connection_string = null # module.redis_apim.primary_connection_string
