@@ -173,3 +173,46 @@ variable "function_lollipop_autoscale_default" {
   description = "The number of instances that are available for scaling if metrics are not available for evaluation."
   default     = 1
 }
+
+# Function Fast Login
+
+variable "cidr_subnet_fnfastlogin" {
+  type        = list(string)
+  description = "Function Lollipop address space."
+}
+
+variable "function_fastlogin_kind" {
+  type        = string
+  description = "App service plan kind"
+  default     = null
+}
+
+variable "function_fastlogin_sku_tier" {
+  type        = string
+  description = "App service plan sku tier"
+  default     = null
+}
+
+variable "function_fastlogin_sku_size" {
+  type        = string
+  description = "App service plan sku size"
+  default     = null
+}
+
+variable "function_fastlogin_autoscale_minimum" {
+  type        = number
+  description = "The minimum number of instances for this resource."
+  default     = 1
+}
+
+variable "function_fastlogin_autoscale_maximum" {
+  type        = number
+  description = "The maximum number of instances for this resource."
+  default     = 3
+}
+
+variable "function_fastlogin_autoscale_default" {
+  type        = number
+  description = "The number of instances that are available for scaling if metrics are not available for evaluation."
+  default     = 1
+}

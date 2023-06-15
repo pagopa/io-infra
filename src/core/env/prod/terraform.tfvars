@@ -38,6 +38,8 @@ cidr_subnet_fnadmin                        = ["10.0.15.0/26"]
 cidr_subnet_fnpblevtdispatcherv4           = ["10.0.15.64/26"]
 cidr_subnet_shared_1                       = ["10.0.16.0/26"]
 cidr_subnet_fnlollipop                     = ["10.0.17.0/26"]
+cidr_subnet_continua                       = ["10.0.17.64/26"]
+cidr_subnet_fnfastlogin                    = ["10.0.17.128/26"]
 cidr_subnet_apim                           = ["10.0.101.0/24"]
 cidr_subnet_apim_v2                        = ["10.0.100.0/24"]
 cidr_subnet_appmessages                    = ["10.0.127.0/24", "10.0.128.0/24"]
@@ -61,7 +63,6 @@ cidr_subnet_redis_common = ["10.0.200.0/24"]
 cidr_subnet_pendpoints   = ["10.0.240.0/23"]
 cidr_subnet_azdoa        = ["10.0.250.0/24"]
 cidr_subnet_dnsforwarder = ["10.0.252.8/29"]
-cidr_subnet_continua     = ["10.0.17.64/26"]
 
 app_gateway_api_certificate_name                                  = "api-io-pagopa-it"
 app_gateway_api_mtls_certificate_name                             = "api-mtls-io-pagopa-it"
