@@ -44,7 +44,7 @@ resource "azurerm_public_ip" "public_ip_apim" {
   location            = azurerm_resource_group.rg_common.location
   allocation_method   = "Static"
   sku                 = "Standard"
-  domain_name_label   = "apim.io"
+  domain_name_label   = "apimio"
   zones               = ["1", "2", "3"]
 
   tags = var.tags
