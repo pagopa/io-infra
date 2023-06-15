@@ -21,7 +21,7 @@ locals {
 }
 
 resource "azurerm_resource_group" "fast_login_rg" {
-  count    = 1
+  count    = var.fastlogin_enabled ? 1 : 0
   name     = format("%s-fast-login-rg", local.common_project)
   location = var.location
 
@@ -30,7 +30,7 @@ resource "azurerm_resource_group" "fast_login_rg" {
 
 # Subnet to host admin function
 module "fast_login_snet" {
-  count                                     = 1
+  count                                     = var.fastlogin_enabled ? 1 : 0
   source                                    = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v4.1.15"
   name                                      = format("%s-fast-login-snet", local.common_project)
   address_prefixes                          = var.cidr_subnet_fnfastlogin
@@ -54,7 +54,7 @@ module "fast_login_snet" {
 }
 
 module "function_fast_login" {
-  count  = 1
+  count  = var.fastlogin_enabled ? 1 : 0
   source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app?ref=v5.2.0"
 
   resource_group_name = azurerm_resource_group.fast_login_rg[0].name
@@ -114,7 +114,7 @@ module "function_fast_login" {
 }
 
 module "function_fast_login_staging_slot" {
-  count  = 1
+  count  = var.fastlogin_enabled ? 1 : 0
   source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app_slot?ref=v5.2.0"
 
   name                = "staging"
@@ -152,7 +152,7 @@ module "function_fast_login_staging_slot" {
 }
 
 resource "azurerm_monitor_autoscale_setting" "function_fast_login" {
-  count               = 1
+  count               = var.fastlogin_enabled ? 1 : 0
   name                = format("%s-autoscale", module.function_fast_login[0].name)
   resource_group_name = azurerm_resource_group.fast_login_rg[0].name
   location            = var.location
