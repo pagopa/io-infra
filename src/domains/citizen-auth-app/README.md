@@ -82,6 +82,7 @@
 | <a name="input_enable_azdoa"></a> [enable\_azdoa](#input\_enable\_azdoa) | Specifies Azure Devops Agent enabling | `bool` | `true` | no |
 | <a name="input_env"></a> [env](#input\_env) | n/a | `string` | n/a | yes |
 | <a name="input_env_short"></a> [env\_short](#input\_env\_short) | n/a | `string` | n/a | yes |
+| <a name="input_fastlogin_enabled"></a> [fastlogin\_enabled](#input\_fastlogin\_enabled) | Lollipop function enabled? | `bool` | `false` | no |
 | <a name="input_function_fastlogin_autoscale_default"></a> [function\_fastlogin\_autoscale\_default](#input\_function\_fastlogin\_autoscale\_default) | The number of instances that are available for scaling if metrics are not available for evaluation. | `number` | `1` | no |
 | <a name="input_function_fastlogin_autoscale_maximum"></a> [function\_fastlogin\_autoscale\_maximum](#input\_function\_fastlogin\_autoscale\_maximum) | The maximum number of instances for this resource. | `number` | `3` | no |
 | <a name="input_function_fastlogin_autoscale_minimum"></a> [function\_fastlogin\_autoscale\_minimum](#input\_function\_fastlogin\_autoscale\_minimum) | The minimum number of instances for this resource. | `number` | `1` | no |
