@@ -71,6 +71,7 @@ module "function_fast_login" {
 
   app_service_plan_info = {
     kind                         = var.function_fastlogin_kind
+    sku_tier                     = var.function_fastlogin_sku_tier
     sku_size                     = var.function_fastlogin_sku_size
     maximum_elastic_worker_count = 0
   }
@@ -161,9 +162,9 @@ resource "azurerm_monitor_autoscale_setting" "function_fast_login" {
     name = "default"
 
     capacity {
-      default = var.function_fast_login_autoscale_default
-      minimum = var.function_fast_login_autoscale_minimum
-      maximum = var.function_fast_login_autoscale_maximum
+      default = var.function_fastlogin_autoscale_default
+      minimum = var.function_fastlogin_autoscale_minimum
+      maximum = var.function_fastlogin_autoscale_maximum
     }
 
     rule {
