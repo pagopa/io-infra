@@ -150,12 +150,6 @@ variable "function_lollipop_kind" {
   default     = null
 }
 
-variable "function_lollipop_sku_tier" {
-  type        = string
-  description = "App service plan sku tier"
-  default     = null
-}
-
 variable "function_lollipop_sku_size" {
   type        = string
   description = "App service plan sku size"

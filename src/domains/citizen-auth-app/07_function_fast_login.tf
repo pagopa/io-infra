@@ -80,7 +80,6 @@ module "function_fast_login" {
 
   app_service_plan_info = {
     kind                         = var.function_fastlogin_kind
-    sku_tier                     = var.function_fastlogin_sku_tier
     sku_size                     = var.function_fastlogin_sku_size
     maximum_elastic_worker_count = 0
   }
