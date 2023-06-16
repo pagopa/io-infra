@@ -64,7 +64,7 @@ module "apim_v2" {
   publisher_name            = var.apim_publisher_name
   publisher_email           = data.azurerm_key_vault_secret.apim_publisher_email.value
   notification_sender_email = data.azurerm_key_vault_secret.apim_publisher_email.value
-  sku_name                  = var.apim_sku
+  sku_name                  = var.apim_v2_sku
   virtual_network_type      = "Internal"
   zones                     = ["1", "2"]
 
