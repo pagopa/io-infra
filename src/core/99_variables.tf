@@ -412,6 +412,10 @@ variable "apim_sku" {
   type = string
 }
 
+variable "apim_v2_sku" {
+  type = string
+}
+
 variable "apim_autoscale" {
   type = object(
     {

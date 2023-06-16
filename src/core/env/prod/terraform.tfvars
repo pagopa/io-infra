@@ -91,6 +91,7 @@ redis_common = {
 # apim
 apim_publisher_name = "IO"
 apim_sku            = "Premium_1"
+apim_v2_sku         = "Premium_2"
 apim_autoscale = {
   enabled                       = true
   default_instances             = 1
