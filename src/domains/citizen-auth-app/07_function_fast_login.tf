@@ -90,7 +90,7 @@ module "function_fast_login" {
     {},
   )
 
-  sticky_settings = []
+  sticky_app_setting_names = []
 
   internal_storage = {
     "enable"                     = true,
@@ -129,7 +129,6 @@ module "function_fast_login_staging_slot" {
   name                = "staging"
   location            = var.location
   resource_group_name = azurerm_resource_group.fast_login_rg[0].name
-  # function_app_name   = module.function_fast_login[0].name
   function_app_id     = module.function_fast_login[0].id
   app_service_plan_id = module.function_fast_login[0].app_service_plan_id
   health_check_path   = "/info"
