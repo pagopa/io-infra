@@ -1,3 +1,8 @@
+data "azurerm_key_vault_secret" "fast_login_subscription_key" {
+  name         = "fast-login-subscription-key"
+  key_vault_id = data.azurerm_key_vault.kv.id
+}
+
 locals {
   function_fast_login = {
     app_settings = {
@@ -13,9 +18,13 @@ locals {
       FETCH_KEEPALIVE_TIMEOUT             = "60000"
 
       COSMOS_DB_NAME           = "citizen-auth"
-      COSMOS_DB_URI            = data.azurerm_cosmosdb_account.cosmos_citizen_auth.endpoint
-      COSMOS_DB_KEY            = data.azurerm_cosmosdb_account.cosmos_citizen_auth.primary_key
       COSMOS_CONNECTION_STRING = format("AccountEndpoint=%s;AccountKey=%s;", data.azurerm_cosmosdb_account.cosmos_citizen_auth.endpoint, data.azurerm_cosmosdb_account.cosmos_citizen_auth.primary_key)
+
+      // --------------------------
+      //  Config for getAssertion
+      // --------------------------
+      LC_ASSERTION_CLIENT_BASE_URL         = "https://api.io.pagopa.it"
+      LC_ASSERTION_CLIENT_SUBSCRIPTION_KEY = data.azurerm_key_vault_secret.fast_login_subscription_key.value
     }
   }
 }
@@ -31,7 +40,7 @@ resource "azurerm_resource_group" "fast_login_rg" {
 # Subnet to host admin function
 module "fast_login_snet" {
   count                                     = var.fastlogin_enabled ? 1 : 0
-  source                                    = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v4.1.15"
+  source                                    = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v6.19.1"
   name                                      = format("%s-fast-login-snet", local.common_project)
   address_prefixes                          = var.cidr_subnet_fnfastlogin
   resource_group_name                       = data.azurerm_virtual_network.vnet_common.resource_group_name
@@ -55,7 +64,7 @@ module "fast_login_snet" {
 
 module "function_fast_login" {
   count  = var.fastlogin_enabled ? 1 : 0
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app?ref=v5.2.0"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app?ref=v6.19.1"
 
   resource_group_name = azurerm_resource_group.fast_login_rg[0].name
   name                = format("%s-fast-login-fn", local.common_project)
@@ -115,7 +124,7 @@ module "function_fast_login" {
 
 module "function_fast_login_staging_slot" {
   count  = var.fastlogin_enabled ? 1 : 0
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app_slot?ref=v5.2.0"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app_slot?ref=v6.19.1"
 
   name                = "staging"
   location            = var.location
