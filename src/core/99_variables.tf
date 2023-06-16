@@ -211,6 +211,11 @@ variable "cidr_subnet_apim" {
   description = "Api Management address space."
 }
 
+variable "cidr_subnet_apim_v2" {
+  type        = list(string)
+  description = "Api Management address space."
+}
+
 variable "cidr_subnet_vpn" {
   type        = list(string)
   description = "VPN network address space."
@@ -404,6 +409,10 @@ variable "apim_publisher_name" {
 }
 
 variable "apim_sku" {
+  type = string
+}
+
+variable "apim_v2_sku" {
   type = string
 }
 
