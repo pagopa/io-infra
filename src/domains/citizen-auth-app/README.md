@@ -21,9 +21,9 @@
 
 | Name | Source | Version |
 |------|--------|---------|
-| <a name="module_fast_login_snet"></a> [fast\_login\_snet](#module\_fast\_login\_snet) | git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet | v4.1.15 |
-| <a name="module_function_fast_login"></a> [function\_fast\_login](#module\_function\_fast\_login) | git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app | v5.2.0 |
-| <a name="module_function_fast_login_staging_slot"></a> [function\_fast\_login\_staging\_slot](#module\_function\_fast\_login\_staging\_slot) | git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app_slot | v5.2.0 |
+| <a name="module_fast_login_snet"></a> [fast\_login\_snet](#module\_fast\_login\_snet) | git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet | v6.19.1 |
+| <a name="module_function_fast_login"></a> [function\_fast\_login](#module\_function\_fast\_login) | git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app | v6.19.1 |
+| <a name="module_function_fast_login_staging_slot"></a> [function\_fast\_login\_staging\_slot](#module\_function\_fast\_login\_staging\_slot) | git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app_slot | v6.19.1 |
 | <a name="module_function_lollipop"></a> [function\_lollipop](#module\_function\_lollipop) | git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app | v5.2.0 |
 | <a name="module_function_lollipop_staging_slot"></a> [function\_lollipop\_staging\_slot](#module\_function\_lollipop\_staging\_slot) | git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app_slot | v5.2.0 |
 | <a name="module_lollipop_snet"></a> [lollipop\_snet](#module\_lollipop\_snet) | git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet | v4.1.15 |
@@ -48,6 +48,7 @@
 | [azurerm_cosmosdb_account.cosmos_citizen_auth](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/cosmosdb_account) | data source |
 | [azurerm_key_vault.kv](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/key_vault) | data source |
 | [azurerm_key_vault_certificate_data.lollipop_certificate_v1](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/key_vault_certificate_data) | data source |
+| [azurerm_key_vault_secret.fast_login_subscription_key](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/key_vault_secret) | data source |
 | [azurerm_key_vault_secret.first_lollipop_consumer_subscription_key](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/key_vault_secret) | data source |
 | [azurerm_log_analytics_workspace.log_analytics](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/log_analytics_workspace) | data source |
 | [azurerm_monitor_action_group.email](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/monitor_action_group) | data source |
@@ -82,7 +83,7 @@
 | <a name="input_enable_azdoa"></a> [enable\_azdoa](#input\_enable\_azdoa) | Specifies Azure Devops Agent enabling | `bool` | `true` | no |
 | <a name="input_env"></a> [env](#input\_env) | n/a | `string` | n/a | yes |
 | <a name="input_env_short"></a> [env\_short](#input\_env\_short) | n/a | `string` | n/a | yes |
-| <a name="input_fastlogin_enabled"></a> [fastlogin\_enabled](#input\_fastlogin\_enabled) | Lollipop function enabled? | `bool` | `false` | no |
+| <a name="input_fastlogin_enabled"></a> [fastlogin\_enabled](#input\_fastlogin\_enabled) | Fast login LC creation flag | `bool` | `false` | no |
 | <a name="input_function_fastlogin_autoscale_default"></a> [function\_fastlogin\_autoscale\_default](#input\_function\_fastlogin\_autoscale\_default) | The number of instances that are available for scaling if metrics are not available for evaluation. | `number` | `1` | no |
 | <a name="input_function_fastlogin_autoscale_maximum"></a> [function\_fastlogin\_autoscale\_maximum](#input\_function\_fastlogin\_autoscale\_maximum) | The maximum number of instances for this resource. | `number` | `3` | no |
 | <a name="input_function_fastlogin_autoscale_minimum"></a> [function\_fastlogin\_autoscale\_minimum](#input\_function\_fastlogin\_autoscale\_minimum) | The minimum number of instances for this resource. | `number` | `1` | no |
