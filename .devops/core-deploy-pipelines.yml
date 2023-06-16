@@ -12,7 +12,7 @@ parameters:
       - True
 
 variables:
-  TIME_OUT: 30
+  TIME_OUT: 90
 
 pool:
   vmImage: "ubuntu-20.04"
