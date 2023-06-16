@@ -76,7 +76,7 @@ variable "lollipop_enabled" {
 variable "fastlogin_enabled" {
   type        = bool
   default     = false
-  description = "Lollipop function enabled?"
+  description = "Fast login LC creation flag"
 }
 
 ### External resources
