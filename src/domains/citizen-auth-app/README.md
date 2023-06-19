@@ -21,6 +21,9 @@
 
 | Name | Source | Version |
 |------|--------|---------|
+| <a name="module_appservice_fims"></a> [appservice\_fims](#module\_appservice\_fims) | git::https://github.com/pagopa/terraform-azurerm-v3.git//app_service | v4.1.15 |
+| <a name="module_appservice_fims_slot_staging"></a> [appservice\_fims\_slot\_staging](#module\_appservice\_fims\_slot\_staging) | git::https://github.com/pagopa/terraform-azurerm-v3.git//app_service_slot | v4.1.15 |
+| <a name="module_fims_snet"></a> [fims\_snet](#module\_fims\_snet) | git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet | v4.1.15 |
 | <a name="module_function_lollipop"></a> [function\_lollipop](#module\_function\_lollipop) | git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app | v5.2.0 |
 | <a name="module_function_lollipop_staging_slot"></a> [function\_lollipop\_staging\_slot](#module\_function\_lollipop\_staging\_slot) | git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app_slot | v5.2.0 |
 | <a name="module_lollipop_snet"></a> [lollipop\_snet](#module\_lollipop\_snet) | git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet | v4.1.15 |
@@ -29,10 +32,14 @@
 
 | Name | Type |
 |------|------|
+| [azurerm_monitor_autoscale_setting.appservice_fims](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/monitor_autoscale_setting) | resource |
 | [azurerm_monitor_autoscale_setting.function_lollipop](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/monitor_autoscale_setting) | resource |
+| [azurerm_monitor_metric_alert.too_many_http_5xx](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/monitor_metric_alert) | resource |
 | [azurerm_monitor_scheduled_query_rules_alert_v2.alert_function_lollipop_HandlePubKeyRevoke_failure](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/monitor_scheduled_query_rules_alert_v2) | resource |
 | [azurerm_private_dns_a_record.ingress](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/private_dns_a_record) | resource |
+| [azurerm_resource_group.fims_rg](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/resource_group) | resource |
 | [azurerm_resource_group.lollipop_rg](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/resource_group) | resource |
+| [azurerm_subnet_nat_gateway_association.fims_snet](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/subnet_nat_gateway_association) | resource |
 | [azuread_group.adgroup_admin](https://registry.terraform.io/providers/hashicorp/azuread/latest/docs/data-sources/group) | data source |
 | [azuread_group.adgroup_contributors](https://registry.terraform.io/providers/hashicorp/azuread/latest/docs/data-sources/group) | data source |
 | [azuread_group.adgroup_developers](https://registry.terraform.io/providers/hashicorp/azuread/latest/docs/data-sources/group) | data source |
@@ -71,11 +78,17 @@
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
 | <a name="input_application_insights_name"></a> [application\_insights\_name](#input\_application\_insights\_name) | Specifies the name of the Application Insights. | `string` | n/a | yes |
+| <a name="input_cidr_subnet_fims"></a> [cidr\_subnet\_fims](#input\_cidr\_subnet\_fims) | App service FIMS address space. | `list(string)` | n/a | yes |
 | <a name="input_cidr_subnet_fnlollipop"></a> [cidr\_subnet\_fnlollipop](#input\_cidr\_subnet\_fnlollipop) | Function Lollipop address space. | `list(string)` | n/a | yes |
 | <a name="input_domain"></a> [domain](#input\_domain) | n/a | `string` | n/a | yes |
 | <a name="input_enable_azdoa"></a> [enable\_azdoa](#input\_enable\_azdoa) | Specifies Azure Devops Agent enabling | `bool` | `true` | no |
 | <a name="input_env"></a> [env](#input\_env) | n/a | `string` | n/a | yes |
 | <a name="input_env_short"></a> [env\_short](#input\_env\_short) | n/a | `string` | n/a | yes |
+| <a name="input_fims_autoscale_default"></a> [fims\_autoscale\_default](#input\_fims\_autoscale\_default) | The number of instances that are available for scaling if metrics are not available for evaluation. | `number` | `1` | no |
+| <a name="input_fims_autoscale_maximum"></a> [fims\_autoscale\_maximum](#input\_fims\_autoscale\_maximum) | The maximum number of instances for this resource. | `number` | `3` | no |
+| <a name="input_fims_autoscale_minimum"></a> [fims\_autoscale\_minimum](#input\_fims\_autoscale\_minimum) | The minimum number of instances for this resource. | `number` | `1` | no |
+| <a name="input_fims_plan_sku_size"></a> [fims\_plan\_sku\_size](#input\_fims\_plan\_sku\_size) | App service plan sku size | `string` | `null` | no |
+| <a name="input_fims_plan_sku_tier"></a> [fims\_plan\_sku\_tier](#input\_fims\_plan\_sku\_tier) | App service plan sku tier | `string` | `null` | no |
 | <a name="input_function_lollipop_autoscale_default"></a> [function\_lollipop\_autoscale\_default](#input\_function\_lollipop\_autoscale\_default) | The number of instances that are available for scaling if metrics are not available for evaluation. | `number` | `1` | no |
 | <a name="input_function_lollipop_autoscale_maximum"></a> [function\_lollipop\_autoscale\_maximum](#input\_function\_lollipop\_autoscale\_maximum) | The maximum number of instances for this resource. | `number` | `3` | no |
 | <a name="input_function_lollipop_autoscale_minimum"></a> [function\_lollipop\_autoscale\_minimum](#input\_function\_lollipop\_autoscale\_minimum) | The minimum number of instances for this resource. | `number` | `1` | no |

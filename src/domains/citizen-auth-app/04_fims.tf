@@ -131,7 +131,7 @@ module "appservice_fims_slot_staging" {
   health_check_path = "/api/info"
 
   app_settings = local.fims.app_settings_common
-  
+
   allowed_subnets = [
     module.azdoa_snet[0].id,
     module.appgateway_snet.id,
