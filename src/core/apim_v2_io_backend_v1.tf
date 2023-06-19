@@ -185,7 +185,7 @@ resource "azurerm_api_management_api_version_set" "io_backend_auth_api_v2" {
   versioning_scheme   = "Segment"
 }
 
-module "apim_io_backend_auth_api_v1" {
+module "apim_v2_io_backend_auth_api_v1" {
   source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api?ref=v4.1.15"
 
   name                  = format("%s-io-backend-auth-api", var.env_short)
