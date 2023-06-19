@@ -52,3 +52,11 @@ function_lollipop_sku_size          = "P1v3"
 function_lollipop_autoscale_minimum = 1
 function_lollipop_autoscale_maximum = 3
 function_lollipop_autoscale_default = 1
+
+# FIMS App Service
+cidr_subnet_fims              = ["10.0.18.0/26"]
+fims_plan_sku_tier          = "PremiumV3"
+fims_plan_sku_size          = "P1v3"
+fims_autoscale_minimum = 1
+fims_autoscale_maximum = 3
+fims_autoscale_default = 1
