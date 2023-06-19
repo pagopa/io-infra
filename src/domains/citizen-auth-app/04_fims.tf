@@ -68,13 +68,13 @@ module "fims_snet" {
   }
 }
 
-data "nat_gateway" "nat_gateway" {
+data "azurerm_nat_gateway" "nat_gateway" {
   name                = "io-p-natgw"
   resource_group_name = "io-p-rg-common"
 }
 
 resource "azurerm_subnet_nat_gateway_association" "fims_snet" {
-  nat_gateway_id = data.nat_gateway.nat_gateway.id
+  nat_gateway_id = data.azurerm_nat_gateway.nat_gateway.id
   subnet_id      = module.fims_snet.id
 }
 
