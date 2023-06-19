@@ -12,8 +12,8 @@
     },
     "description": "This Specs are intended for all CGN operators that must integrate their e-commerce portal through CGN API discounts system.\n"
   },
-  "host": "${host}",
-  "basePath": "/api/v1/cgn/merchant",
+  "host": "api.io.italia.it",
+  "basePath": "/api/v1/merchant/cgn",
   "schemes": [
     "https"
   ],
@@ -80,16 +80,16 @@
   },
   "definitions": {
     "Timestamp": {
-      "$ref": "https://raw.githubusercontent.com/pagopa/io-functions-commons/v17.3.0/openapi/definitions.yaml#/Timestamp"
+      "$ref": "https://raw.githubusercontent.com/pagopa/io-functions-commons/v22.3.0/openapi/definitions.yaml#/Timestamp"
     },
     "ProblemJson": {
-      "$ref": "https://raw.githubusercontent.com/pagopa/io-functions-commons/v17.3.0/openapi/definitions.yaml#/ProblemJson"
+      "$ref": "https://raw.githubusercontent.com/pagopa/io-functions-commons/v22.3.0/openapi/definitions.yaml#/ProblemJson"
     },
     "OtpCode": {
-      "$ref": "https://raw.githubusercontent.com/pagopa/io-functions-cgn/v0.2.1/openapi/index.yaml#/definitions/OtpCode"
+      "$ref": "https://raw.githubusercontent.com/pagopa/io-functions-cgn/v1.0.0/openapi/index.yaml#/definitions/OtpCode"
     },
     "Otp": {
-      "$ref": "https://raw.githubusercontent.com/pagopa/io-functions-cgn/v0.2.1/openapi/index.yaml#/definitions/Otp"
+      "$ref": "https://raw.githubusercontent.com/pagopa/io-functions-cgn/v1.0.0/openapi/index.yaml#/definitions/Otp"
     },
     "OtpValidationResponse": {
       "type": "object",
