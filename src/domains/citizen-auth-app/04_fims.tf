@@ -256,6 +256,7 @@ resource "azurerm_monitor_metric_alert" "too_many_http_5xx" {
 
   name                = "[IO-COMMONS | FIMS] Too many 5xx"
   resource_group_name = azurerm_resource_group.fims_rg.name
+  scopes = 
 
   description   = "Whenever the total http server errors exceeds a dynamic threashold."
   severity      = 0
