@@ -15,7 +15,7 @@ locals {
       WEBSITE_DNS_SERVER                              = "168.63.129.16"
       WEBSITE_HEALTHCHECK_MAXPINGFAILURES             = "3"
 
-      APPINSIGHTS_INSTRUMENTATIONKEY = azurerm_application_insights.application_insights.instrumentation_key
+      APPINSIGHTS_INSTRUMENTATIONKEY = data.azurerm_application_insights.application_insights.instrumentation_key
 
       // ENVIRONMENT
       NODE_ENV = "production"
@@ -51,8 +51,8 @@ module "fims_snet" {
   source                                    = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v4.1.15"
   name                                      = "fims"
   address_prefixes                          = var.cidr_subnet_fims
-  resource_group_name                       = azurerm_resource_group.rg_common.name
-  virtual_network_name                      = module.vnet_common.name
+  resource_group_name                       = azurerm_resource_group.fims_rg.name
+  virtual_network_name                      = data.azurerm_virtual_network.vnet_common.name
   private_endpoint_network_policies_enabled = true
 
   service_endpoints = [
@@ -97,13 +97,12 @@ module "appservice_fims" {
   app_settings = local.fims.app_settings_common
 
   allowed_subnets = [
-    module.appgateway_snet.id,
-    module.apim_snet.id,
+    data.azurerm_subnet.appgateway_snet.id,
+    data.azurerm_subnet.apim_snet.id,
   ]
 
   allowed_ips = concat(
     [],
-    local.app_insights_ips_west_europe,
   )
 
   subnet_id        = module.fims_snet.id
@@ -133,9 +132,8 @@ module "appservice_fims_slot_staging" {
   app_settings = local.fims.app_settings_common
 
   allowed_subnets = [
-    module.azdoa_snet[0].id,
-    module.appgateway_snet.id,
-    module.apim_snet.id,
+    data.azurerm_subnet.appgateway_snet.id,
+    data.azurerm_subnet.apim_snet.id,
   ]
 
   allowed_ips = concat(
@@ -280,7 +278,7 @@ resource "azurerm_monitor_metric_alert" "too_many_http_5xx" {
   }
 
   action {
-    action_group_id    = azurerm_monitor_action_group.error_action_group.id
+    action_group_id    = data.azurerm_monitor_action_group.error_action_group.id
     webhook_properties = null
   }
 
