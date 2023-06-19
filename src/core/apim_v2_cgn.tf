@@ -51,7 +51,7 @@ resource "azurerm_api_management_named_value" "io_fn_cgnmerchant_url_v2" {
   value               = "https://${module.function_cgn_merchant.default_hostname}"
 }
 
-data "azurerm_key_vault_secret" "io_fn_cgnmerchant_key_secret" {
+data "azurerm_key_vault_secret" "io_fn_cgnmerchant_key_secret_v2" {
   name         = "io-fn-cgnmerchant-KEY-APIM"
   key_vault_id = module.key_vault_common.id
 }
@@ -61,14 +61,14 @@ resource "azurerm_api_management_named_value" "io_fn_cgnmerchant_key_v2" {
   api_management_name = module.apim_v2.name
   resource_group_name = module.apim_v2.resource_group_name
   display_name        = "io-fn-cgnmerchant-key"
-  value               = data.azurerm_key_vault_secret.io_fn_cgnmerchant_key_secret.value
+  value               = data.azurerm_key_vault_secret.io_fn_cgnmerchant_key_secret_v2.value
   secret              = "true"
 }
 
 ## App registration for cgn backend portal ##
 
 ### cgnonboardingportal user identity
-data "azurerm_key_vault_secret" "cgn_onboarding_backend_identity" {
+data "azurerm_key_vault_secret" "cgn_onboarding_backend_identity_v2" {
   name         = "cgn-onboarding-backend-PRINCIPALID"
   key_vault_id = module.key_vault_common.id
 }
@@ -77,5 +77,5 @@ resource "azurerm_role_assignment" "service_contributor_v2" {
   count                = var.env_short == "p" ? 1 : 0
   scope                = module.apim_v2.id
   role_definition_name = "API Management Service Contributor"
-  principal_id         = data.azurerm_key_vault_secret.cgn_onboarding_backend_identity.value
+  principal_id         = data.azurerm_key_vault_secret.cgn_onboarding_backend_identity_v2.value
 }

@@ -49,7 +49,7 @@ resource "azurerm_api_management_named_value" "io_fn3_services_url_v2" {
   value               = "https://io-p-fn3-services.azurewebsites.net"
 }
 
-data "azurerm_key_vault_secret" "io_fn3_services_key_secret" {
+data "azurerm_key_vault_secret" "io_fn3_services_key_secret_v2" {
   name         = "fn3services-KEY-APIM"
   key_vault_id = module.key_vault_common.id
 }
@@ -59,13 +59,13 @@ resource "azurerm_api_management_named_value" "io_fn3_services_key_v2" {
   api_management_name = module.apim_v2.name
   resource_group_name = module.apim_v2.resource_group_name
   display_name        = "io-fn3-services-key"
-  value               = data.azurerm_key_vault_secret.io_fn3_services_key_secret.value
+  value               = data.azurerm_key_vault_secret.io_fn3_services_key_secret_v2.value
   secret              = "true"
 }
 
 # Named value fn3-eucovidcert
 
-data "azurerm_key_vault_secret" "io_fn3_eucovidcert_key_secret" {
+data "azurerm_key_vault_secret" "io_fn3_eucovidcert_key_secret_v2" {
   name         = "io-fn3-eucovidcert-KEY-APIM"
   key_vault_id = module.key_vault_common.id
 }
@@ -75,7 +75,7 @@ resource "azurerm_api_management_named_value" "io_fn3_eucovidcert_key_v2" {
   api_management_name = module.apim_v2.name
   resource_group_name = module.apim_v2.resource_group_name
   display_name        = "io-fn3-eucovidcert-key"
-  value               = data.azurerm_key_vault_secret.io_fn3_eucovidcert_key_secret.value
+  value               = data.azurerm_key_vault_secret.io_fn3_eucovidcert_key_secret_v2.value
   secret              = "true"
 }
 
@@ -89,7 +89,7 @@ resource "azurerm_api_management_named_value" "io_fn3_eucovidcert_url_alt_v2" {
 }
 
 # Named Value api gad certificate header
-data "azurerm_key_vault_secret" "api_gad_client_certificate_verified_header_secret" {
+data "azurerm_key_vault_secret" "api_gad_client_certificate_verified_header_secret_v2" {
   name         = "apigad-GAD-CLIENT-CERTIFICATE-VERIFIED-HEADER"
   key_vault_id = module.key_vault_common.id
 }
@@ -99,7 +99,7 @@ resource "azurerm_api_management_named_value" "api_gad_client_certificate_verifi
   api_management_name = module.apim_v2.name
   resource_group_name = module.apim_v2.resource_group_name
   display_name        = "apigad-gad-client-certificate-verified-header"
-  value               = data.azurerm_key_vault_secret.api_gad_client_certificate_verified_header_secret.value
+  value               = data.azurerm_key_vault_secret.api_gad_client_certificate_verified_header_secret_v2.value
   secret              = "true"
 }
 

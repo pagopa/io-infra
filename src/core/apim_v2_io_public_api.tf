@@ -22,7 +22,7 @@ resource "azurerm_api_management_named_value" "io_fn3_public_url_v2" {
   value               = "https://io-p-public-fn.azurewebsites.net"
 }
 
-data "azurerm_key_vault_secret" "io_fn3_public_key_secret" {
+data "azurerm_key_vault_secret" "io_fn3_public_key_secret_v2" {
   name         = "fn3public-KEY-APIM"
   key_vault_id = module.key_vault_common.id
 }
@@ -32,7 +32,7 @@ resource "azurerm_api_management_named_value" "io_fn3_public_key_v2" {
   api_management_name = module.apim_v2.name
   resource_group_name = module.apim_v2.resource_group_name
   display_name        = "io-fn3-public-key"
-  value               = data.azurerm_key_vault_secret.io_fn3_public_key_secret.value
+  value               = data.azurerm_key_vault_secret.io_fn3_public_key_secret_v2.value
   secret              = "true"
 }
 
