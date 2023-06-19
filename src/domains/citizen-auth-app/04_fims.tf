@@ -137,6 +137,7 @@ module "appservice_fims_slot_staging" {
   app_settings = local.fims.app_settings_common
 
   allowed_subnets = [
+    data.azurerm_subnet.azdoa_snet[0].id,
     data.azurerm_subnet.appgateway_snet.id,
     data.azurerm_subnet.apim_snet.id,
   ]
