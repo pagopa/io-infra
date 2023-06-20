@@ -44,7 +44,7 @@ module "function_cgn_merchant" {
   name                = format("%s-cgn-merchant-fn", local.project)
   location            = var.location
   app_service_plan_id = azurerm_app_service_plan.cgn_common.id
-  health_check_path   = "/api/v1/cgn/merchant/info"
+  health_check_path   = "/api/v1/merchant/cgn/info"
 
   os_type          = "linux"
   linux_fx_version = "NODE|18"
