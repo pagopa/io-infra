@@ -76,7 +76,7 @@ module "function_cgn_merchant_staging_slot" {
   function_app_name   = module.function_cgn_merchant.name
   function_app_id     = module.function_cgn_merchant.id
   app_service_plan_id = azurerm_app_service_plan.cgn_common.id
-  health_check_path   = "/api/v1/cgn/merchant/info"
+  health_check_path   = "/api/v1/merchant/cgn/info"
 
   storage_account_name       = module.function_cgn_merchant.storage_account.name
   storage_account_access_key = module.function_cgn_merchant.storage_account.primary_access_key
