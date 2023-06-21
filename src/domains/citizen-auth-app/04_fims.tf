@@ -1,4 +1,5 @@
 resource "azurerm_resource_group" "fims_rg" {
+  count    = var.fims_enabled ? 1 : 0
   name     = format("%s-fims-rg", local.common_project)
   location = var.location
   tags     = var.tags
@@ -48,10 +49,11 @@ locals {
 }
 
 module "fims_snet" {
+  count = var.fims_enabled ? 1 : 0
   source                                    = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v4.1.15"
   name                                      = "fims"
   address_prefixes                          = var.cidr_subnet_fims
-  resource_group_name                       = azurerm_resource_group.fims_rg.name
+  resource_group_name                       = azurerm_resource_group.fims_rg[0].name
   virtual_network_name                      = data.azurerm_virtual_network.vnet_common.name
   private_endpoint_network_policies_enabled = true
 
@@ -74,8 +76,9 @@ data "azurerm_nat_gateway" "nat_gateway" {
 }
 
 resource "azurerm_subnet_nat_gateway_association" "fims_snet" {
+  count          = var.fims_enabled ? 1 : 0
   nat_gateway_id = data.azurerm_nat_gateway.nat_gateway.id
-  subnet_id      = module.fims_snet.id
+  subnet_id      = module.fims_snet[0].id
 }
 
 module "appservice_fims" {
@@ -92,8 +95,8 @@ module "appservice_fims" {
 
   # App service
   name                = format("%s-app-fims", local.project)
-  resource_group_name = azurerm_resource_group.fims_rg.name
-  location            = azurerm_resource_group.fims_rg.location
+  resource_group_name = azurerm_resource_group.fims_rg[0].name
+  location            = azurerm_resource_group.fims_rg[0].location
 
   always_on         = true
   linux_fx_version  = "NODE|18-lts"
@@ -111,7 +114,7 @@ module "appservice_fims" {
     [],
   )
 
-  subnet_id        = module.fims_snet.id
+  subnet_id        = module.fims_snet[0].id
   vnet_integration = true
 
   tags = var.tags
@@ -128,8 +131,8 @@ module "appservice_fims_slot_staging" {
 
   # App service
   name                = "staging"
-  resource_group_name = azurerm_resource_group.fims_rg.name
-  location            = azurerm_resource_group.fims_rg.location
+  resource_group_name = azurerm_resource_group.fims_rg[0].name
+  location            = azurerm_resource_group.fims_rg[0].location
 
   always_on         = true
   linux_fx_version  = "NODE|18-lts"
@@ -148,16 +151,17 @@ module "appservice_fims_slot_staging" {
     [],
   )
 
-  subnet_id        = module.fims_snet.id
+  subnet_id        = module.fims_snet[0].id
   vnet_integration = true
 
   tags = var.tags
 }
 
 resource "azurerm_monitor_autoscale_setting" "appservice_fims" {
+  count               = var.fims_enabled ? 1 : 0
   name                = format("%s-autoscale", module.appservice_fims[0].name)
-  resource_group_name = azurerm_resource_group.fims_rg.name
-  location            = azurerm_resource_group.fims_rg.location
+  resource_group_name = azurerm_resource_group.fims_rg[0].name
+  location            = azurerm_resource_group.fims_rg[0].location
   target_resource_id  = module.appservice_fims[0].plan_id
 
   profile {
@@ -260,10 +264,12 @@ resource "azurerm_monitor_autoscale_setting" "appservice_fims" {
 }
 
 resource "azurerm_monitor_metric_alert" "too_many_http_5xx" {
+  count = var.fims_enabled ? 1 : 0
+
   enabled = false
 
   name                = "[IO-COMMONS | FIMS] Too many 5xx"
-  resource_group_name = azurerm_resource_group.fims_rg.name
+  resource_group_name = azurerm_resource_group.fims_rg[0].name
   scopes              = [data.azurerm_application_insights.application_insights.id]
 
   description   = "Whenever the total http server errors exceeds a dynamic threashold."
