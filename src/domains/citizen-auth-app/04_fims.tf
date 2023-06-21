@@ -49,7 +49,7 @@ locals {
 }
 
 module "fims_snet" {
-  count = var.fims_enabled ? 1 : 0
+  count                                     = var.fims_enabled ? 1 : 0
   source                                    = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v4.1.15"
   name                                      = "fims"
   address_prefixes                          = var.cidr_subnet_fims
