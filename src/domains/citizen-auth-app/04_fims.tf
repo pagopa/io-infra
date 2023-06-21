@@ -122,9 +122,9 @@ module "appservice_fims_slot_staging" {
   source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//app_service_slot?ref=v4.1.15"
 
   # App service plan
-  app_service_plan_id = module.appservice_fims.plan_id
-  app_service_id      = module.appservice_fims.id
-  app_service_name    = module.appservice_fims.name
+  app_service_plan_id = module.appservice_fims[0].plan_id
+  app_service_id      = module.appservice_fims[0].id
+  app_service_name    = module.appservice_fims[0].name
 
   # App service
   name                = "staging"
@@ -155,10 +155,10 @@ module "appservice_fims_slot_staging" {
 }
 
 resource "azurerm_monitor_autoscale_setting" "appservice_fims" {
-  name                = format("%s-autoscale", module.appservice_fims.name)
+  name                = format("%s-autoscale", module.appservice_fims[0].name)
   resource_group_name = azurerm_resource_group.fims_rg.name
   location            = azurerm_resource_group.fims_rg.location
-  target_resource_id  = module.appservice_fims.plan_id
+  target_resource_id  = module.appservice_fims[0].plan_id
 
   profile {
     name = "default"
@@ -172,7 +172,7 @@ resource "azurerm_monitor_autoscale_setting" "appservice_fims" {
     rule {
       metric_trigger {
         metric_name              = "Requests"
-        metric_resource_id       = module.appservice_fims.id
+        metric_resource_id       = module.appservice_fims[0].id
         metric_namespace         = "microsoft.web/sites"
         time_grain               = "PT1M"
         statistic                = "Average"
@@ -194,7 +194,7 @@ resource "azurerm_monitor_autoscale_setting" "appservice_fims" {
     rule {
       metric_trigger {
         metric_name              = "CpuPercentage"
-        metric_resource_id       = module.appservice_fims.plan_id
+        metric_resource_id       = module.appservice_fims[0].plan_id
         metric_namespace         = "microsoft.web/serverfarms"
         time_grain               = "PT1M"
         statistic                = "Average"
@@ -216,7 +216,7 @@ resource "azurerm_monitor_autoscale_setting" "appservice_fims" {
     rule {
       metric_trigger {
         metric_name              = "Requests"
-        metric_resource_id       = module.appservice_fims.id
+        metric_resource_id       = module.appservice_fims[0].id
         metric_namespace         = "microsoft.web/sites"
         time_grain               = "PT1M"
         statistic                = "Average"
@@ -238,7 +238,7 @@ resource "azurerm_monitor_autoscale_setting" "appservice_fims" {
     rule {
       metric_trigger {
         metric_name              = "CpuPercentage"
-        metric_resource_id       = module.appservice_fims.plan_id
+        metric_resource_id       = module.appservice_fims[0].plan_id
         metric_namespace         = "microsoft.web/serverfarms"
         time_grain               = "PT1M"
         statistic                = "Average"
