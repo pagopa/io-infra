@@ -97,6 +97,7 @@
 | <a name="input_fims_autoscale_default"></a> [fims\_autoscale\_default](#input\_fims\_autoscale\_default) | The number of instances that are available for scaling if metrics are not available for evaluation. | `number` | `1` | no |
 | <a name="input_fims_autoscale_maximum"></a> [fims\_autoscale\_maximum](#input\_fims\_autoscale\_maximum) | The maximum number of instances for this resource. | `number` | `3` | no |
 | <a name="input_fims_autoscale_minimum"></a> [fims\_autoscale\_minimum](#input\_fims\_autoscale\_minimum) | The minimum number of instances for this resource. | `number` | `1` | no |
+| <a name="input_fims_enabled"></a> [fims\_enabled](#input\_fims\_enabled) | FIMS creation flag | `bool` | `false` | no |
 | <a name="input_fims_plan_sku_size"></a> [fims\_plan\_sku\_size](#input\_fims\_plan\_sku\_size) | App service plan sku size | `string` | `null` | no |
 | <a name="input_fims_plan_sku_tier"></a> [fims\_plan\_sku\_tier](#input\_fims\_plan\_sku\_tier) | App service plan sku tier | `string` | `null` | no |
 | <a name="input_function_fastlogin_autoscale_default"></a> [function\_fastlogin\_autoscale\_default](#input\_function\_fastlogin\_autoscale\_default) | The number of instances that are available for scaling if metrics are not available for evaluation. | `number` | `1` | no |

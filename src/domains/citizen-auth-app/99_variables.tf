@@ -79,6 +79,12 @@ variable "fastlogin_enabled" {
   description = "Fast login LC creation flag"
 }
 
+variable "fims_enabled" {
+  type        = bool
+  default     = false
+  description = "FIMS creation flag"
+}
+
 ### External resources
 
 variable "monitor_resource_group_name" {

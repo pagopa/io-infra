@@ -79,13 +79,14 @@ resource "azurerm_subnet_nat_gateway_association" "fims_snet" {
 }
 
 module "appservice_fims" {
+  count  = var.fims_enabled ? 1 : 0
   source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//app_service?ref=v4.1.15"
 
   # App service plan
   plan_type     = "internal"
   plan_name     = format("%s-plan-fims", local.project)
-  plan_kind     = "Linux"
   plan_reserved = true # Mandatory for Linux plan
+  plan_kind     = "Linux"
   plan_sku_tier = var.fims_plan_sku_tier
   plan_sku_size = var.fims_plan_sku_size
 
@@ -117,6 +118,7 @@ module "appservice_fims" {
 }
 
 module "appservice_fims_slot_staging" {
+  count  = var.fims_enabled ? 1 : 0
   source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//app_service_slot?ref=v4.1.15"
 
   # App service plan

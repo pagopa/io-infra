@@ -8,6 +8,7 @@ location_string   = "West Europe"
 instance          = "prod01"
 lollipop_enabled  = true
 fastlogin_enabled = true
+fims_enabled      = true
 
 tags = {
   CreatedBy   = "Terraform"
