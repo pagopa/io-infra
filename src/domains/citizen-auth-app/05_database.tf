@@ -59,5 +59,5 @@ resource "azurerm_key_vault_secret" "mongodb_connection_string_fims" {
   name         = "${module.cosmosdb_account_mongodb_fims.name}-connection-string"
   value        = module.cosmosdb_account_mongodb_fims.connection_strings[0]
   content_type = "full connection string"
-  key_vault_id = module.key_vault.id
+  key_vault_id = data.azurerm_key_vault.kv.id
 }
