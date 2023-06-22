@@ -8,7 +8,7 @@ data "azurerm_cosmosdb_account" "cosmos_citizen_auth" {
   resource_group_name = data.azurerm_resource_group.data_rg.name
 }
 
-# FIMS
+# FIMS mongo
 module "cosmosdb_account_mongodb_fims" {
   count  = var.fims_enabled ? 1 : 0
   source = "git::https://github.com/pagopa/terraform-azurerm-v3//cosmosdb_account?ref=v4.1.5"
