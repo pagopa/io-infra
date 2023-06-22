@@ -9,7 +9,7 @@ data "azurerm_cosmosdb_account" "cosmos_citizen_auth" {
 }
 
 # FIMS
-data "azurerm_cosmosdb_account" "cosmosdb_account_mongodb_fims" {
+data "azurerm_cosmosdb_account" "cosmosdb_mongo_fims" {
   name                = "io-p-fims-mongodb-account"
   resource_group_name = data.azurerm_resource_group.data_rg.name
 }

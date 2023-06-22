@@ -161,7 +161,7 @@ module "cosmosdb_account_mongodb_fims" {
 }
 
 resource "azurerm_cosmosdb_mongo_database" "db_fims" {
-  name                = "db"
+  name                = "mongodb_fims"
   resource_group_name = azurerm_resource_group.data_rg.name
   account_name        = module.cosmosdb_account_mongodb_fims.name
 
