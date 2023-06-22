@@ -59,7 +59,7 @@ resource "azurerm_cosmosdb_mongo_database" "db_fims" {
 #tfsec:ignore:AZU023
 resource "azurerm_key_vault_secret" "mongodb_connection_string_fims" {
   count        = var.fims_enabled ? 1 : 0
-  name         = "${module.cosmosdb_account_mongodb_fims[0].name}-connection-string"
+  name         = "io-p-fims-mongodb-account-connection-string"
   value        = module.cosmosdb_account_mongodb_fims[0].connection_strings[0]
   content_type = "full connection string"
   key_vault_id = data.azurerm_key_vault.kv.id
