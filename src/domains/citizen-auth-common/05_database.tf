@@ -130,8 +130,8 @@ module "cosmosdb_account_mongodb_fims" {
 
   name                 = "io-p-fims-mongodb-account"
   domain               = upper(var.domain)
-  location             = data.azurerm_resource_group.data_rg.location
-  resource_group_name  = data.azurerm_resource_group.data_rg.name
+  location             = azurerm_resource_group.data_rg.location
+  resource_group_name  = azurerm_resource_group.data_rg.name
   offer_type           = "Standard"
   enable_free_tier     = false
   kind                 = "MongoDB"
@@ -144,7 +144,7 @@ module "cosmosdb_account_mongodb_fims" {
   private_dns_zone_ids              = [data.azurerm_private_dns_zone.privatelink_mongo_cosmos_azure_com.id]
   is_virtual_network_filter_enabled = false
 
-  main_geo_location_location       = data.azurerm_resource_group.data_rg.location
+  main_geo_location_location       = azurerm_resource_group.data_rg.location
   main_geo_location_zone_redundant = false
   additional_geo_locations = [{
     location          = "northeurope"
@@ -163,7 +163,7 @@ module "cosmosdb_account_mongodb_fims" {
 resource "azurerm_cosmosdb_mongo_database" "db_fims" {
   count               = var.fims_enabled ? 1 : 0
   name                = "db"
-  resource_group_name = data.azurerm_resource_group.data_rg.name
+  resource_group_name = azurerm_resource_group.data_rg.name
   account_name        = module.cosmosdb_account_mongodb_fims.name
 
   autoscale_settings {
