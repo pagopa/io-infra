@@ -46,7 +46,7 @@ module "cosmosdb_account_mongodb_fims" {
 }
 
 resource "azurerm_cosmosdb_mongo_database" "db_fims" {
-  count    = var.fims_enabled ? 1 : 0
+  count               = var.fims_enabled ? 1 : 0
   name                = "db"
   resource_group_name = data.azurerm_resource_group.data_rg.name
   account_name        = module.cosmosdb_account_mongodb_fims[0].name
@@ -58,7 +58,7 @@ resource "azurerm_cosmosdb_mongo_database" "db_fims" {
 
 #tfsec:ignore:AZU023
 resource "azurerm_key_vault_secret" "mongodb_connection_string_fims" {
-  count    = var.fims_enabled ? 1 : 0
+  count        = var.fims_enabled ? 1 : 0
   name         = "${module.cosmosdb_account_mongodb_fims[0].name}-connection-string"
   value        = module.cosmosdb_account_mongodb_fims[0].connection_strings[0]
   content_type = "full connection string"
