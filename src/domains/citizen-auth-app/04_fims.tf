@@ -6,6 +6,7 @@ resource "azurerm_resource_group" "fims_rg" {
 }
 
 data "azurerm_key_vault_secret" "mongodb_connection_string_fims" {
+  count        = var.fims_enabled ? 1 : 0
   name         = "io-p-fims-mongodb-account-connection-string"
   key_vault_id = data.azurerm_key_vault.kv.id
 }
