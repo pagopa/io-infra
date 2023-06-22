@@ -38,6 +38,11 @@ data "azurerm_private_dns_zone" "privatelink_documents_azure_com" {
   resource_group_name = format("%s-rg-common", local.product)
 }
 
+data "azurerm_private_dns_zone" "privatelink_mongo_cosmos_azure_com" {
+  name                = "privatelink.mongo.cosmos.azure.com"
+  resource_group_name = format("%s-rg-common", local.product)
+}
+
 resource "azurerm_private_dns_a_record" "ingress" {
   name                = local.ingress_hostname
   zone_name           = data.azurerm_private_dns_zone.internal.name
