@@ -1,7 +1,5 @@
 data "azurerm_resource_group" "data_rg" {
   name     = format("%s-%s-data-rg", local.product, var.domain)
-  location = var.location
-  tags = var.tags
 }
 
 # CITIZEN AUTH
