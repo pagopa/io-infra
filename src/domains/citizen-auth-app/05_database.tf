@@ -1,5 +1,5 @@
 data "azurerm_resource_group" "data_rg" {
-  name     = format("%s-%s-data-rg", local.product, var.domain)
+  name = format("%s-%s-data-rg", local.product, var.domain)
 }
 
 # CITIZEN AUTH
@@ -10,6 +10,7 @@ data "azurerm_cosmosdb_account" "cosmos_citizen_auth" {
 
 # FIMS
 module "cosmosdb_account_mongodb_fims" {
+  count  = var.fims_enabled ? 1 : 0
   source = "git::https://github.com/pagopa/terraform-azurerm-v3//cosmosdb_account?ref=v4.1.5"
 
   name                 = "${local.product}-${var.domain}-fims-mongodb-account"
@@ -45,9 +46,10 @@ module "cosmosdb_account_mongodb_fims" {
 }
 
 resource "azurerm_cosmosdb_mongo_database" "db_fims" {
+  count    = var.fims_enabled ? 1 : 0
   name                = "db"
   resource_group_name = data.azurerm_resource_group.data_rg.name
-  account_name        = module.cosmosdb_account_mongodb_fims.name
+  account_name        = module.cosmosdb_account_mongodb_fims[0].name
 
   autoscale_settings {
     max_throughput = 5000
@@ -56,8 +58,9 @@ resource "azurerm_cosmosdb_mongo_database" "db_fims" {
 
 #tfsec:ignore:AZU023
 resource "azurerm_key_vault_secret" "mongodb_connection_string_fims" {
-  name         = "${module.cosmosdb_account_mongodb_fims.name}-connection-string"
-  value        = module.cosmosdb_account_mongodb_fims.connection_strings[0]
+  count    = var.fims_enabled ? 1 : 0
+  name         = "${module.cosmosdb_account_mongodb_fims[0].name}-connection-string"
+  value        = module.cosmosdb_account_mongodb_fims[0].connection_strings[0]
   content_type = "full connection string"
   key_vault_id = data.azurerm_key_vault.kv.id
 }
