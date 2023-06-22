@@ -33,16 +33,15 @@ locals {
       FETCH_KEEPALIVE_TIMEOUT             = "60000"
 
       SERVER_HOSTNAME               = "localhost"
-      PORT                          = "3001"
       LOG_LEVEL                     = "debug"
       APPLICATION_NAME              = "io-openid-provider"
       IO_BACKEND_BASE_URL           = "https://app-backend.io.pagopa.it"
-      VERSION                       = "0.0.0"
-      MONGODB_URL                   = "mongodb://root:randompassword@localhost:27017/testdb?authSource=admin"
-      AUTHENTICATION_COOKIE_KEY     = "X-IO-Federation-Token"
+      VERSION                       = "0.0.1"
+      MONGODB_URL                   = data.azurerm_key_vault_secret.mongodb_connection_string_fims.value
+      AUTHENTICATION_COOKIE_KEY     = "X-IO-FIMS-Token"
       GRANT_TTL_IN_SECONDS          = "86400"
-      ISSUER                        = "http://localhost:3001"
-      COOKIES_KEY                   = "just-for-testing-purposes"
+      ISSUER                        = "http://localhost:3001" #TBD with domain value
+      COOKIES_KEY                   = "just-for-testing-purposes" #TBD with vault value
       ENABLE_FEATURE_REMEMBER_GRANT = "true"
     }
   }
