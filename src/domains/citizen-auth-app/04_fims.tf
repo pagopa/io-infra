@@ -43,7 +43,7 @@ locals {
       APPLICATION_NAME              = "io-openid-provider"
       IO_BACKEND_BASE_URL           = "https://app-backend.io.pagopa.it"
       VERSION                       = "0.0.1"
-      MONGODB_URL                   = data.azurerm_key_vault_secret.mongodb_connection_string_fims.value
+      MONGODB_URL                   = var.fims_enabled ? data.azurerm_key_vault_secret.mongodb_connection_string_fims.value : ""
       AUTHENTICATION_COOKIE_KEY     = "X-IO-FIMS-Token"
       GRANT_TTL_IN_SECONDS          = "86400"
       ISSUER                        = "http://localhost:3001"     #TBD with domain value
