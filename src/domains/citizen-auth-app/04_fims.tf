@@ -5,6 +5,11 @@ resource "azurerm_resource_group" "fims_rg" {
   tags     = var.tags
 }
 
+data "azurerm_key_vault_secret" "mongodb_connection_string_fims" {
+  name         = "io-p-fims-mongodb-account-connection-string"
+  key_vault_id = data.azurerm_key_vault.kv.id
+}
+
 locals {
   fims = {
     app_command_line = "npm run start"
@@ -37,7 +42,7 @@ locals {
       APPLICATION_NAME              = "io-openid-provider"
       IO_BACKEND_BASE_URL           = "https://app-backend.io.pagopa.it"
       VERSION                       = "0.0.1"
-      MONGODB_URL                   = module.azurerm_key_vault_secret.mongodb_connection_string_fims.value
+      MONGODB_URL                   = data.azurerm_key_vault_secret.mongodb_connection_string_fims.value
       AUTHENTICATION_COOKIE_KEY     = "X-IO-FIMS-Token"
       GRANT_TTL_IN_SECONDS          = "86400"
       ISSUER                        = "http://localhost:3001"     #TBD with domain value

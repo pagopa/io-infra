@@ -13,7 +13,7 @@ module "cosmosdb_account_mongodb_fims" {
   count  = var.fims_enabled ? 1 : 0
   source = "git::https://github.com/pagopa/terraform-azurerm-v3//cosmosdb_account?ref=v4.1.5"
 
-  name                 = "${local.product}-${var.domain}-fims-mongodb-account"
+  name                 = "io-p-fims-mongodb-account"
   domain               = upper(var.domain)
   location             = data.azurerm_resource_group.data_rg.location
   resource_group_name  = data.azurerm_resource_group.data_rg.name
