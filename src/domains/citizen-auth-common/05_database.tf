@@ -52,6 +52,7 @@ module "cosmosdb_sql_database_citizen_auth" {
   resource_group_name = azurerm_resource_group.data_rg.name
   account_name        = module.cosmosdb_account.name
 }
+
 #
 # LolliPOP containers
 #
