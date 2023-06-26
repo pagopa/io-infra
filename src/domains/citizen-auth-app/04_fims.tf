@@ -57,7 +57,7 @@ module "fims_snet" {
   source                                    = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v4.1.15"
   name                                      = "fims"
   address_prefixes                          = var.cidr_subnet_fims
-  resource_group_name                       = azurerm_resource_group.fims_rg[0].name
+  resource_group_name                       = data.azurerm_virtual_network.vnet_common.resource_group_name
   virtual_network_name                      = data.azurerm_virtual_network.vnet_common.name
   private_endpoint_network_policies_enabled = true
 
@@ -274,7 +274,7 @@ resource "azurerm_monitor_metric_alert" "too_many_http_5xx" {
 
   name                = "[IO-COMMONS | FIMS] Too many 5xx"
   resource_group_name = azurerm_resource_group.fims_rg[0].name
-  scopes              = [data.azurerm_application_insights.application_insights.id]
+  scopes              = [module.appservice_fims[0].id]
 
   description   = "Whenever the total http server errors exceeds a dynamic threashold."
   severity      = 0
