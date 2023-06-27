@@ -147,7 +147,6 @@ module "function_lollipop_staging_slot" {
   name                = "staging"
   location            = var.location
   resource_group_name = azurerm_resource_group.lollipop_rg[0].name
-  # function_app_name   = module.function_lollipop[0].name
   function_app_id     = module.function_lollipop[0].id
   app_service_plan_id = module.function_lollipop[0].app_service_plan_id
   health_check_path   = "/info"

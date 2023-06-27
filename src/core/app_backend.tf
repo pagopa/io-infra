@@ -46,6 +46,8 @@ locals {
       AUTHENTICATION_BASE_PATH  = ""
       TOKEN_DURATION_IN_SECONDS = "2592000"
 
+      LV_TOKEN_DURATION_IN_SECONDS = "900"
+
       // FUNCTIONS
       API_KEY                     = data.azurerm_key_vault_secret.app_backend_API_KEY.value
       BONUS_API_URL               = "http://${data.azurerm_function_app.fnapp_bonus.default_hostname}/api/v1"
@@ -190,9 +192,11 @@ locals {
       THIRD_PARTY_CONFIG_LIST = jsonencode([
         # Piattaforma Notifiche
         {
-          serviceId  = var.pn_service_id,
-          schemaKind = "PN",
-          jsonSchema = "unused",
+          serviceId          = var.pn_service_id,
+          schemaKind         = "PN",
+          jsonSchema         = "unused",
+          isLollipopEnabled  = "true",
+          disableLollipopFor = split(",", local.test_users),
           prodEnvironment = {
             baseUrl = "https://api-io.pn.pagopa.it",
             detailsAuthentication = {
@@ -213,9 +217,11 @@ locals {
         },
         # Firma con IO (io-sign)
         {
-          serviceId  = var.io_sign_service_id,
-          schemaKind = "IO-SIGN",
-          jsonSchema = "unused",
+          serviceId          = var.io_sign_service_id,
+          schemaKind         = "IO-SIGN",
+          jsonSchema         = "unused",
+          isLollipopEnabled  = "false",
+          disableLollipopFor = [],
           prodEnvironment = {
             baseUrl = "https://io-p-sign-user-func.azurewebsites.net/api/v1/sign",
             detailsAuthentication = {
@@ -227,9 +233,11 @@ locals {
         },
         # Mock Service
         {
-          serviceId  = var.third_party_mock_service_id,
-          schemaKind = "Mock",
-          jsonSchema = "unused",
+          serviceId          = var.third_party_mock_service_id,
+          schemaKind         = "Mock",
+          jsonSchema         = "unused",
+          isLollipopEnabled  = "false",
+          disableLollipopFor = [],
           prodEnvironment = {
             baseUrl = "https://pagopa.github.io/third-party-mock",
             detailsAuthentication = {
@@ -253,6 +261,11 @@ locals {
       IOLOGIN_TEST_USERS = data.azurerm_key_vault_secret.app_backend_IOLOGIN_TEST_USERS.value
       # Takes ~6,25% of users
       IOLOGIN_CANARY_USERS_REGEX = "^([(0-9)|(a-f)|(A-F)]{63}0)$"
+
+
+      // FAST LOGIN
+      FF_FAST_LOGIN = "BETA"
+      LV_TEST_USERS = data.azurerm_key_vault_secret.app_backend_LV_TEST_USERS.value
 
       BACKEND_HOST = "https://${trimsuffix(azurerm_dns_a_record.api_app_io_pagopa_it.fqdn, ".")}"
     }
@@ -455,9 +468,13 @@ data "azurerm_key_vault_secret" "app_backend_LOLLIPOP_API_KEY" {
   key_vault_id = module.key_vault_common.id
 }
 
-
 data "azurerm_key_vault_secret" "app_backend_IOLOGIN_TEST_USERS" {
   name         = "appbackend-IOLOGIN-TEST-USERS"
+  key_vault_id = module.key_vault_common.id
+}
+
+data "azurerm_key_vault_secret" "app_backend_LV_TEST_USERS" {
+  name         = "appbackend-LV-TEST-USERS"
   key_vault_id = module.key_vault_common.id
 }
 

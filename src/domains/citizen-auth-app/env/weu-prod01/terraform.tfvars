@@ -1,12 +1,14 @@
-prefix           = "io"
-env_short        = "p"
-env              = "prod"
-domain           = "citizen-auth"
-location         = "westeurope"
-location_short   = "weu"
-location_string  = "West Europe"
-instance         = "prod01"
-lollipop_enabled = true
+prefix            = "io"
+env_short         = "p"
+env               = "prod"
+domain            = "citizen-auth"
+location          = "westeurope"
+location_short    = "weu"
+location_string   = "West Europe"
+instance          = "prod01"
+lollipop_enabled  = true
+fastlogin_enabled = true
+fims_enabled      = true
 
 tags = {
   CreatedBy   = "Terraform"
@@ -52,3 +54,19 @@ function_lollipop_sku_size          = "P1v3"
 function_lollipop_autoscale_minimum = 1
 function_lollipop_autoscale_maximum = 3
 function_lollipop_autoscale_default = 1
+
+# Functions Fast Login
+cidr_subnet_fnfastlogin              = ["10.0.17.128/26"]
+function_fastlogin_kind              = "Linux"
+function_fastlogin_sku_size          = "P1v3"
+function_fastlogin_autoscale_minimum = 2
+function_fastlogin_autoscale_maximum = 20
+function_fastlogin_autoscale_default = 10
+
+# FIMS App Service
+cidr_subnet_fims       = ["10.0.18.0/26"]
+fims_plan_sku_tier     = "PremiumV3"
+fims_plan_sku_size     = "P1v3"
+fims_autoscale_minimum = 1
+fims_autoscale_maximum = 3
+fims_autoscale_default = 1

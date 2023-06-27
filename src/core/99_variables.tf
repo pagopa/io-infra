@@ -211,6 +211,11 @@ variable "cidr_subnet_apim" {
   description = "Api Management address space."
 }
 
+variable "cidr_subnet_apim_v2" {
+  type        = list(string)
+  description = "Api Management address space."
+}
+
 variable "cidr_subnet_vpn" {
   type        = list(string)
   description = "VPN network address space."
@@ -311,6 +316,16 @@ variable "cidr_subnet_continua" {
   description = "continua address space."
 }
 
+variable "cidr_subnet_fnfastlogin" {
+  type        = list(string)
+  description = "Function Fast Login address space."
+}
+
+variable "cidr_subnet_fims" {
+  type        = list(string)
+  description = "FIMS app service address space."
+}
+
 ## REDIS COMMON ##
 variable "redis_common" {
   type = object({
@@ -404,6 +419,10 @@ variable "apim_publisher_name" {
 }
 
 variable "apim_sku" {
+  type = string
+}
+
+variable "apim_v2_sku" {
   type = string
 }
 
