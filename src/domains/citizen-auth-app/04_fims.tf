@@ -10,6 +10,11 @@ data "azurerm_key_vault_secret" "mongodb_connection_string_fims" {
   key_vault_id = data.azurerm_key_vault.kv.id
 }
 
+data "azurerm_key_vault_secret" "jwk_primary_key_fims" {
+  name         = "io-p-fims-jwk-primary-key"
+  key_vault_id = data.azurerm_key_vault.kv.id
+}
+
 locals {
   fims = {
     app_command_line = "npm run start"
@@ -20,6 +25,8 @@ locals {
       WEBSITE_RUN_FROM_PACKAGE                        = "1"
       WEBSITE_DNS_SERVER                              = "168.63.129.16"
       WEBSITE_HEALTHCHECK_MAXPINGFAILURES             = "3"
+      PORT                                            = "80"
+      JWK_PRIMARY                                     = data.azurerm_key_vault_secret.jwk_primary_key_fims.value
 
       APPINSIGHTS_INSTRUMENTATIONKEY = data.azurerm_application_insights.application_insights.instrumentation_key
 
