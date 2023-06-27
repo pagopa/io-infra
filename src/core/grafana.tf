@@ -21,14 +21,15 @@ resource "azurerm_dashboard_grafana" "grafana_dashboard" {
   tags = var.tags
 }
 
-resource "azurerm_role_assignment" "grafana_dashboard_monitoring_reader" {
-  scope                = data.azurerm_subscription.current.id
-  role_definition_name = "Monitoring Reader"
-  principal_id         = azurerm_dashboard_grafana.grafana_dashboard.identity[0].principal_id
-}
+# TODO: review pipeline permissions
+# resource "azurerm_role_assignment" "grafana_dashboard_monitoring_reader" {
+#   scope                = data.azurerm_subscription.current.id
+#   role_definition_name = "Monitoring Reader"
+#   principal_id         = azurerm_dashboard_grafana.grafana_dashboard.identity[0].principal_id
+# }
 
-resource "azurerm_role_assignment" "grafana_dashboard_monitoring_contributor" {
-  scope                = data.azurerm_subscription.current.id
-  role_definition_name = "Monitoring Contributor"
-  principal_id         = azurerm_dashboard_grafana.grafana_dashboard.identity[0].principal_id
-}
+# resource "azurerm_role_assignment" "grafana_dashboard_monitoring_contributor" {
+#   scope                = data.azurerm_subscription.current.id
+#   role_definition_name = "Monitoring Contributor"
+#   principal_id         = azurerm_dashboard_grafana.grafana_dashboard.identity[0].principal_id
+# }
