@@ -109,7 +109,9 @@ locals {
 
       // the duration of message and message-status for those messages sent to user not registered on IO.
       TTL_FOR_USER_NOT_FOUND = "${60 * 60 * 24 * 365 * 3}" //3 years in seconds
-      FEATURE_FLAG           = "ALL"
+      FEATURE_FLAG           = "CANARY"
+
+      PN_SERVICE_ID = var.pn_service_id
 
       #########################
       # Secrets
