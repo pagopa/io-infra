@@ -23,8 +23,8 @@ locals {
       // --------------------------
       //  Config for getAssertion
       // --------------------------
-      LC_ASSERTION_CLIENT_BASE_URL         = "https://api.io.pagopa.it"
-      LC_ASSERTION_CLIENT_SUBSCRIPTION_KEY = data.azurerm_key_vault_secret.fast_login_subscription_key.value
+      LOLLIPOP_GET_ASSERTION_BASE_URL = "https://api.io.pagopa.it"
+      LOLLIPOP_GET_ASSERTION_API_KEY  = data.azurerm_key_vault_secret.fast_login_subscription_key.value
     }
   }
 }
