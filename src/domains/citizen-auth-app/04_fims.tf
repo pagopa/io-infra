@@ -44,7 +44,7 @@ locals {
       FETCH_KEEPALIVE_FREE_SOCKET_TIMEOUT = "30000"
       FETCH_KEEPALIVE_TIMEOUT             = "60000"
 
-      EXPRESS_SERVER_HOSTNAME               = "0.0.0.0"
+      EXPRESS_SERVER_HOSTNAME       = "0.0.0.0"
       LOG_LEVEL                     = "debug"
       APPLICATION_NAME              = "io-openid-provider"
       IO_BACKEND_BASE_URL           = "https://app-backend.io.pagopa.it"
