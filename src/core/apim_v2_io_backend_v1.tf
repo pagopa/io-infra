@@ -58,7 +58,7 @@ module "apim_v2_io_backend_bpd_api_v1" {
 
   content_format = "swagger-json"
   content_value = templatefile("./api/io_backend/bpd/v1/_swagger.json.tpl", {
-    host = local.apim_v2_hostname_api_app_internal # api-app.internal.io.pagopa.it
+    host = local.apim_hostname_api_app_internal # api-app.internal.io.pagopa.it
   })
 
   xml_content = file("./api/io_backend/bpd/v1/_base_policy.xml")
@@ -93,7 +93,7 @@ module "apim_v2_io_backend_myportal_api_v1" {
 
   content_format = "swagger-json"
   content_value = templatefile("./api/io_backend/myportal/v1/_swagger.json.tpl", {
-    host = local.apim_v2_hostname_api_app_internal # api-app.internal.io.pagopa.it
+    host = local.apim_hostname_api_app_internal # api-app.internal.io.pagopa.it
   })
 
   xml_content = file("./api/io_backend/myportal/v1/_base_policy.xml")
@@ -128,7 +128,7 @@ module "apim_v2_io_backend_pagopa_api_v1" {
 
   content_format = "swagger-json"
   content_value = templatefile("./api/io_backend/pagopa/v1/_swagger.json.tpl", {
-    host = local.apim_v2_hostname_api_app_internal # api-app.internal.io.pagopa.it
+    host = local.apim_hostname_api_app_internal # api-app.internal.io.pagopa.it
   })
 
   xml_content = file("./api/io_backend/pagopa/v1/_base_policy.xml")
@@ -162,8 +162,8 @@ module "apim_v2_io_backend_app_api_v1" {
   protocols    = ["https"]
 
   content_format = "swagger-json"
-  content_value = templatefile("./api/io_backend/app/v1/_swagger.json.tpl", {
-    host = local.apim_v2_hostname_api_app_internal # api-app.internal.io.pagopa.it
+  content_value = templatefile("./api/io_backend/app/v1/_swagger_v2.json.tpl", {
+    host = local.apim_hostname_api_app_internal # api-app.internal.io.pagopa.it
   })
 
   xml_content = file("./api/io_backend/app/v1/_base_policy.xml")
@@ -204,7 +204,7 @@ module "apim_v2_io_backend_auth_api_v1" {
 
   content_format = "swagger-json"
   content_value = templatefile("./api/io_backend/auth/v1/_swagger.json.tpl", {
-    host = local.apim_v2_hostname_api_app_internal # api-app.internal.io.pagopa.it
+    host = local.apim_hostname_api_app_internal # api-app.internal.io.pagopa.it
   })
 
   xml_content = file("./api/io_backend/auth/v1/_base_policy.xml")
@@ -344,7 +344,7 @@ module "apim_v2_io_backend_mitvoucher_api_v1" {
 
   content_format = "swagger-json"
   content_value = templatefile("./api/io_backend/mitvoucher/v1/_swagger.json.tpl", {
-    host = local.apim_v2_hostname_api_app_internal # api-app.internal.io.pagopa.it
+    host = local.apim_hostname_api_app_internal # api-app.internal.io.pagopa.it
   })
 
   xml_content = file("./api/io_backend/mitvoucher/v1/_base_policy.xml")
@@ -414,7 +414,7 @@ module "apim_v2_io_backend_public_api_v1" {
 
   content_format = "swagger-json"
   content_value = templatefile("./api/io_backend/public/v1/_swagger.json.tpl", {
-    host = local.apim_v2_hostname_api_app_internal # api-app.internal.io.pagopa.it
+    host = local.apim_hostname_api_app_internal # api-app.internal.io.pagopa.it
   })
 
   xml_content = file("./api/io_backend/public/v1/_base_policy.xml")
@@ -449,7 +449,7 @@ module "apim_v2_io_backend_session_api_v1" {
 
   content_format = "swagger-json"
   content_value = templatefile("./api/io_backend/session/v1/_swagger.json.tpl", {
-    host = local.apim_v2_hostname_api_app_internal # api-app.internal.io.pagopa.it
+    host = local.apim_hostname_api_app_internal # api-app.internal.io.pagopa.it
   })
 
   xml_content = file("./api/io_backend/session/v1/_base_policy.xml")
