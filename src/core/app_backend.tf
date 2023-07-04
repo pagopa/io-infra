@@ -63,6 +63,9 @@ locals {
       APP_MESSAGES_API_KEY        = data.azurerm_key_vault_secret.app_backend_APP_MESSAGES_API_KEY.value
       LOLLIPOP_API_URL            = "https://io-p-weu-lollipop-fn.azurewebsites.net"
       LOLLIPOP_API_KEY            = data.azurerm_key_vault_secret.app_backend_LOLLIPOP_API_KEY.value
+      FAST_LOGIN_API_URL          = "https://io-p-weu-fast-login-fn.azurewebsites.net"
+      FAST_LOGIN_API_KEY          = data.azurerm_key_vault_secret.app_backend_FAST_LOGIN_API_KEY.value
+
 
       // EXPOSED API
       API_BASE_PATH                     = "/api/v1"
@@ -465,6 +468,11 @@ data "azurerm_key_vault_secret" "app_backend_PN_REAL_TEST_USERS" {
 
 data "azurerm_key_vault_secret" "app_backend_LOLLIPOP_API_KEY" {
   name         = "appbackend-LOLLIPOP-API-KEY"
+  key_vault_id = module.key_vault_common.id
+}
+
+data "azurerm_key_vault_secret" "app_backend_FAST_LOGIN_API_KEY" {
+  name         = "appbackend-FAST-LOGIN-API-KEY"
   key_vault_id = module.key_vault_common.id
 }
 
