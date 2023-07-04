@@ -39,7 +39,7 @@ resource "azurerm_subnet_network_security_group_association" "snet_nsg" {
 }
 
 resource "azurerm_public_ip" "public_ip_apim" {
-  name                = format("%s-apim-v2-pip", local.project)
+  name                = format("%s-apim-v2-public-ip", local.project)
   resource_group_name = azurerm_resource_group.rg_common.name
   location            = azurerm_resource_group.rg_common.location
   allocation_method   = "Static"
