@@ -25,7 +25,7 @@ locals {
       WEBSITE_RUN_FROM_PACKAGE                        = "1"
       WEBSITE_DNS_SERVER                              = "168.63.129.16"
       WEBSITE_HEALTHCHECK_MAXPINGFAILURES             = "3"
-      PORT                                            = "80"
+      PORT                                            = "3000"
       JWK_PRIMARY                                     = data.azurerm_key_vault_secret.jwk_primary_key_fims.value
 
       APPINSIGHTS_INSTRUMENTATIONKEY = data.azurerm_application_insights.application_insights.instrumentation_key
@@ -44,7 +44,7 @@ locals {
       FETCH_KEEPALIVE_FREE_SOCKET_TIMEOUT = "30000"
       FETCH_KEEPALIVE_TIMEOUT             = "60000"
 
-      SERVER_HOSTNAME               = "localhost"
+      EXPRESS_SERVER_HOSTNAME               = "0.0.0.0"
       LOG_LEVEL                     = "debug"
       APPLICATION_NAME              = "io-openid-provider"
       IO_BACKEND_BASE_URL           = "https://app-backend.io.pagopa.it"
