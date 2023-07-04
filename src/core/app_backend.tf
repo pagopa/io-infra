@@ -206,7 +206,7 @@ locals {
             }
           },
           testEnvironment = {
-            testUsers = concat(split(",", local.test_users), split(",", data.azurerm_key_vault_secret.app_backend_PN_REAL_TEST_USERS.value)),
+            testUsers = split(",", local.test_users),
             baseUrl   = var.pn_test_endpoint,
             detailsAuthentication = {
               type            = "API_KEY",
