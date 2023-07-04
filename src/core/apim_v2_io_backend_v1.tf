@@ -162,7 +162,7 @@ module "apim_v2_io_backend_app_api_v1" {
   protocols    = ["https"]
 
   content_format = "swagger-json"
-  content_value = templatefile("./api/io_backend/app/v1/_swagger.json.tpl", {
+  content_value = templatefile("./api/io_backend/app/v1/_swagger_v2.json.tpl", {
     host = local.apim_hostname_api_app_internal # api-app.internal.io.pagopa.it
   })
 
