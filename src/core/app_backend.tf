@@ -63,6 +63,9 @@ locals {
       APP_MESSAGES_API_KEY        = data.azurerm_key_vault_secret.app_backend_APP_MESSAGES_API_KEY.value
       LOLLIPOP_API_URL            = "https://io-p-weu-lollipop-fn.azurewebsites.net"
       LOLLIPOP_API_KEY            = data.azurerm_key_vault_secret.app_backend_LOLLIPOP_API_KEY.value
+      FAST_LOGIN_API_URL          = "https://io-p-weu-fast-login-fn.azurewebsites.net"
+      FAST_LOGIN_API_KEY          = data.azurerm_key_vault_secret.app_backend_FAST_LOGIN_API_KEY.value
+
 
       // EXPOSED API
       API_BASE_PATH                     = "/api/v1"
@@ -183,9 +186,9 @@ locals {
 
       // PN Service Activation
       PN_ACTIVATION_BASE_PATH = "/api/v1/pn"
-      PN_API_KEY              = data.azurerm_key_vault_secret.app_backend_PN_API_KEY.value
+      PN_API_KEY              = data.azurerm_key_vault_secret.app_backend_PN_API_KEY_PROD.value
       PN_API_KEY_UAT          = data.azurerm_key_vault_secret.app_backend_PN_API_KEY_UAT_V2.value
-      PN_API_URL              = "https://api-io.pn.pagopa.it"
+      PN_API_URL              = local.pn_api_url_prod
       PN_API_URL_UAT          = var.pn_test_endpoint
 
       // Third Party Services
@@ -198,15 +201,15 @@ locals {
           isLollipopEnabled  = "true",
           disableLollipopFor = split(",", local.test_users),
           prodEnvironment = {
-            baseUrl = "https://api-io.pn.pagopa.it",
+            baseUrl = local.pn_api_url_prod,
             detailsAuthentication = {
               type            = "API_KEY",
               header_key_name = "x-api-key",
-              key             = data.azurerm_key_vault_secret.app_backend_PN_API_KEY.value
+              key             = data.azurerm_key_vault_secret.app_backend_PN_API_KEY_PROD.value
             }
           },
           testEnvironment = {
-            testUsers = concat(split(",", local.test_users), split(",", data.azurerm_key_vault_secret.app_backend_PN_REAL_TEST_USERS.value)),
+            testUsers = split(",", local.test_users),
             baseUrl   = var.pn_test_endpoint,
             detailsAuthentication = {
               type            = "API_KEY",
@@ -312,6 +315,9 @@ locals {
       http_status = 200,
     },
   ]
+
+  pn_api_url_prod = "https://api-io.notifichedigitali.it"
+
 }
 
 resource "azurerm_resource_group" "rg_linux" {
@@ -443,13 +449,8 @@ data "azurerm_key_vault_secret" "app_backend_APP_MESSAGES_BETA_FISCAL_CODES" {
   key_vault_id = module.key_vault_common.id
 }
 
-data "azurerm_key_vault_secret" "app_backend_PN_API_KEY" {
-  name         = "appbackend-PN-API-KEY-ENV"
-  key_vault_id = module.key_vault_common.id
-}
-
-data "azurerm_key_vault_secret" "app_backend_PN_API_KEY_UAT" {
-  name         = "appbackend-PN-API-KEY-UAT-ENV"
+data "azurerm_key_vault_secret" "app_backend_PN_API_KEY_PROD" {
+  name         = "appbackend-PN-API-KEY-PROD-ENV"
   key_vault_id = module.key_vault_common.id
 }
 
@@ -465,6 +466,11 @@ data "azurerm_key_vault_secret" "app_backend_PN_REAL_TEST_USERS" {
 
 data "azurerm_key_vault_secret" "app_backend_LOLLIPOP_API_KEY" {
   name         = "appbackend-LOLLIPOP-API-KEY"
+  key_vault_id = module.key_vault_common.id
+}
+
+data "azurerm_key_vault_secret" "app_backend_FAST_LOGIN_API_KEY" {
+  name         = "appbackend-FAST-LOGIN-API-KEY"
   key_vault_id = module.key_vault_common.id
 }
 

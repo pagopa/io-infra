@@ -38,6 +38,11 @@ data "azurerm_private_dns_zone" "privatelink_documents_azure_com" {
   resource_group_name = format("%s-rg-common", local.product)
 }
 
+data "azurerm_private_dns_zone" "privatelink_mongo_cosmos_azure_com" {
+  name                = "privatelink.mongo.cosmos.azure.com"
+  resource_group_name = format("%s-rg-common", local.product)
+}
+
 resource "azurerm_private_dns_a_record" "ingress" {
   name                = local.ingress_hostname
   zone_name           = data.azurerm_private_dns_zone.internal.name
@@ -73,6 +78,12 @@ data "azurerm_subnet" "apim_snet" {
 data "azurerm_subnet" "azdoa_snet" {
   count                = var.enable_azdoa ? 1 : 0
   name                 = "azure-devops"
+  virtual_network_name = local.vnet_common_name
+  resource_group_name  = local.vnet_common_resource_group_name
+}
+
+data "azurerm_subnet" "appgateway_snet" {
+  name                 = "io-p-appgateway-snet"
   virtual_network_name = local.vnet_common_name
   resource_group_name  = local.vnet_common_resource_group_name
 }

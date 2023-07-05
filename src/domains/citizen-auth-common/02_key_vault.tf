@@ -143,4 +143,3 @@ resource "azurerm_key_vault_certificate" "lollipop_certificate_v1" {
     }
   }
 }
-

@@ -8,6 +8,7 @@ location_string   = "West Europe"
 instance          = "prod01"
 lollipop_enabled  = true
 fastlogin_enabled = true
+fims_enabled      = true
 
 tags = {
   CreatedBy   = "Terraform"
@@ -61,3 +62,11 @@ function_fastlogin_sku_size          = "P1v3"
 function_fastlogin_autoscale_minimum = 2
 function_fastlogin_autoscale_maximum = 20
 function_fastlogin_autoscale_default = 10
+
+# FIMS App Service
+cidr_subnet_fims       = ["10.0.18.0/26"]
+fims_plan_sku_tier     = "PremiumV3"
+fims_plan_sku_size     = "P1v3"
+fims_autoscale_minimum = 1
+fims_autoscale_maximum = 3
+fims_autoscale_default = 1
