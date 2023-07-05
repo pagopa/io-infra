@@ -30,7 +30,12 @@ terraform {
 }
 
 provider "azurerm" {
-  features {}
+  features {
+    api_management {
+      purge_soft_delete_on_destroy = true
+      recover_soft_deleted         = false
+    }
+}
 }
 
 data "azurerm_subscription" "current" {}
