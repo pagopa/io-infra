@@ -12,6 +12,7 @@ locals {
   acr_resource_group_name = "${local.product}-container-registry-rg"
 
   apim_name                = "${local.product}-apim-api"
+  apim_v2_name             = "${local.product}-apim-v2-api"
   apim_resource_group_name = "${local.product}-rg-internal"
 
   lollipop_jwt_host = "api.io.pagopa.it"

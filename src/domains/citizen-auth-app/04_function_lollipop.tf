@@ -125,6 +125,7 @@ module "function_lollipop" {
   allowed_subnets = [
     module.lollipop_snet[0].id,
     data.azurerm_subnet.apim_snet.id,
+    data.azurerm_subnet.apim_v2_snet.id,
     data.azurerm_subnet.app_backend_l1_snet.id,
     data.azurerm_subnet.app_backend_l2_snet.id,
   ]
@@ -171,6 +172,7 @@ module "function_lollipop_staging_slot" {
     module.lollipop_snet[0].id,
     data.azurerm_subnet.azdoa_snet[0].id,
     data.azurerm_subnet.apim_snet.id,
+    data.azurerm_subnet.apim_v2_snet.id,
     data.azurerm_subnet.app_backend_l1_snet.id,
     data.azurerm_subnet.app_backend_l2_snet.id,
   ]

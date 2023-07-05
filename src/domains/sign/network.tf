@@ -15,6 +15,12 @@ data "azurerm_subnet" "apim" {
   resource_group_name  = format("%s-rg-common", local.product)
 }
 
+data "azurerm_subnet" "apim_v2" {
+  name                 = "apimv2api"
+  virtual_network_name = format("%s-vnet-common", local.product)
+  resource_group_name  = format("%s-rg-common", local.product)
+}
+
 data "azurerm_nat_gateway" "nat_gateway" {
   name                = format("%s-natgw", local.product)
   resource_group_name = format("%s-rg-common", local.product)

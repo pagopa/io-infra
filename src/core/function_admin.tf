@@ -222,6 +222,7 @@ module "function_admin" {
   allowed_subnets = [
     module.admin_snet.id,
     module.apim_snet.id,
+    module.apim_v2_snet.id,
   ]
 
   # Action groups for alerts
@@ -269,6 +270,7 @@ module "function_admin_staging_slot" {
     module.admin_snet.id,
     module.azdoa_snet[0].id,
     module.apim_snet.id,
+    module.apim_v2_snet.id,
   ]
 
   tags = var.tags

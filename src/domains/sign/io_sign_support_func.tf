@@ -41,6 +41,7 @@ module "io_sign_support_func" {
   allowed_subnets = [
     module.io_sign_support_snet.id,
     data.azurerm_subnet.apim.id,
+    data.azurerm_subnet.apim_v2.id,
   ]
 
   application_insights_instrumentation_key = data.azurerm_application_insights.application_insights.instrumentation_key
@@ -76,6 +77,7 @@ module "io_sign_support_func_staging_slot" {
   allowed_subnets = [
     module.io_sign_support_snet.id,
     data.azurerm_subnet.apim.id,
+    data.azurerm_subnet.apim_v2.id,
   ]
 
   tags = var.tags
