@@ -113,6 +113,7 @@ apim_autoscale = {
 azdo_sp_tls_cert_enabled = true
 enable_azdoa             = true
 enable_iac_pipeline      = true
+azdoa_image_name         = "azdo-agent-ubuntu2204-image-v2"
 ##
 
 ## Monitor

@@ -95,6 +95,11 @@ variable "enable_azdoa" {
   description = "Enable Azure DevOps agent."
 }
 
+variable "azdoa_image_name" {
+  type        = string
+  description = "Azure DevOps Agent image name"
+}
+
 variable "cidr_subnet_azdoa" {
   type        = list(string)
   description = "Azure DevOps agent network address space."
