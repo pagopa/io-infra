@@ -41,3 +41,29 @@ module "api_v2_cgn_os" {
 
   xml_content = file("./api/cgn_os/v1/_base_policy.xml")
 }
+
+resource "azurerm_api_management_named_value" "cgnonboardingportal_os_url_value_v2" {
+  name                = "cgnonboardingportal-os-url"
+  api_management_name = module.apim_v2.name
+  resource_group_name = azurerm_resource_group.rg_internal.name
+  display_name        = "cgnonboardingportal-os-url"
+  value               = format("https://cgnonboardingportal-%s-op.azurewebsites.net", var.env_short)
+}
+
+resource "azurerm_api_management_named_value" "cgnonboardingportal_os_key_v2" {
+  name                = "cgnonboardingportal-os-key"
+  api_management_name = module.apim_v2.name
+  resource_group_name = azurerm_resource_group.rg_internal.name
+  display_name        = "cgnonboardingportal-os-key"
+  value               = data.azurerm_key_vault_secret.cgnonboardingportal_os_key.value
+  secret              = true
+}
+
+resource "azurerm_api_management_named_value" "cgnonboardingportal_os_header_name_v2" {
+  name                = "cgnonboardingportal-os-header-name"
+  api_management_name = module.apim_v2.name
+  resource_group_name = azurerm_resource_group.rg_internal.name
+  display_name        = "cgnonboardingportal-os-header-name"
+  value               = data.azurerm_key_vault_secret.cgnonboardingportal_os_header_name.value
+  secret              = true
+}

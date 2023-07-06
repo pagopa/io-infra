@@ -62,6 +62,7 @@ module "function_cgn_merchant" {
   allowed_subnets = [
     module.cgn_snet.id,
     module.apim_snet.id,
+    module.apim_v2_snet.id,
   ]
 
   tags = var.tags
@@ -97,6 +98,7 @@ module "function_cgn_merchant_staging_slot" {
     module.cgn_snet.id,
     module.azdoa_snet[0].id,
     module.apim_snet.id,
+    module.apim_v2_snet.id,
   ]
 
   tags = var.tags

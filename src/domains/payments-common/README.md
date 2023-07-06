@@ -21,6 +21,8 @@
 |------|--------|---------|
 | <a name="module_apim_payments_updater_api_v1"></a> [apim\_payments\_updater\_api\_v1](#module\_apim\_payments\_updater\_api\_v1) | git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api | v4.1.8 |
 | <a name="module_apim_product_payments"></a> [apim\_product\_payments](#module\_apim\_product\_payments) | git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_product | v4.1.8 |
+| <a name="module_apim_v2_payments_updater_api_v1"></a> [apim\_v2\_payments\_updater\_api\_v1](#module\_apim\_v2\_payments\_updater\_api\_v1) | git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api | v4.1.8 |
+| <a name="module_apim_v2_product_payments"></a> [apim\_v2\_product\_payments](#module\_apim\_v2\_product\_payments) | git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_product | v4.1.8 |
 | <a name="module_cosmosdb_account_mongodb"></a> [cosmosdb\_account\_mongodb](#module\_cosmosdb\_account\_mongodb) | git::https://github.com/pagopa/terraform-azurerm-v3.git//cosmosdb_account | v4.1.8 |
 | <a name="module_key_vault"></a> [key\_vault](#module\_key\_vault) | git::https://github.com/pagopa/terraform-azurerm-v3.git//key_vault | v4.1.8 |
 | <a name="module_mongdb_collection_payment"></a> [mongdb\_collection\_payment](#module\_mongdb\_collection\_payment) | git::https://github.com/pagopa/terraform-azurerm-v3.git//cosmosdb_mongodb_collection | v4.1.8 |
@@ -48,6 +50,7 @@
 | [azuread_group.adgroup_security](https://registry.terraform.io/providers/hashicorp/azuread/latest/docs/data-sources/group) | data source |
 | [azuread_service_principal.platform_iac_sp](https://registry.terraform.io/providers/hashicorp/azuread/latest/docs/data-sources/service_principal) | data source |
 | [azurerm_api_management.apim_api](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/api_management) | data source |
+| [azurerm_api_management.apim_v2_api](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/api_management) | data source |
 | [azurerm_application_insights.application_insights](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/application_insights) | data source |
 | [azurerm_client_config.current](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/client_config) | data source |
 | [azurerm_eventhub_authorization_rule.messages-weu-prod01-evh_messages_io-payment-updater](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/eventhub_authorization_rule) | data source |

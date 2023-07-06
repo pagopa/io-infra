@@ -181,6 +181,7 @@ module "app_messages_function" {
     module.app_backendl1_snet.id,
     module.app_backendl2_snet.id,
     module.apim_snet.id,
+    module.apim_v2_snet.id,
   ]
 
   allowed_ips = concat(

@@ -119,6 +119,7 @@ module "appservice_fims" {
   allowed_subnets = [
     data.azurerm_subnet.appgateway_snet.id,
     data.azurerm_subnet.apim_snet.id,
+    data.azurerm_subnet.apim_v2_snet.id,
   ]
 
   allowed_ips = concat(
@@ -156,6 +157,7 @@ module "appservice_fims_slot_staging" {
     data.azurerm_subnet.azdoa_snet[0].id,
     data.azurerm_subnet.appgateway_snet.id,
     data.azurerm_subnet.apim_snet.id,
+    data.azurerm_subnet.apim_v2_snet.id,
   ]
 
   allowed_ips = concat(
