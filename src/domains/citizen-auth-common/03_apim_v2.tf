@@ -118,7 +118,7 @@ resource "azurerm_api_management_subscription" "pagopa_fastlogin_v2" {
 # PagoPA General Lollipop Secret
 ####################################################################################
 resource "azurerm_key_vault_secret" "first_lollipop_consumer_subscription_key_v2" {
-  name         = "first-lollipop-consumer-pagopa-subscription-key"
+  name         = "first-lollipop-consumer-pagopa-subscription-key-v2"
   value        = azurerm_api_management_subscription.pagopa_v2.primary_key
   key_vault_id = module.key_vault.id
 }
@@ -129,7 +129,7 @@ resource "azurerm_key_vault_secret" "first_lollipop_consumer_subscription_key_v2
 
 # subscription key used for assertion retrieval
 resource "azurerm_key_vault_secret" "fast_login_subscription_key_v2" {
-  name         = "fast-login-subscription-key"
+  name         = "fast-login-subscription-key-v2"
   value        = azurerm_api_management_subscription.pagopa_fastlogin_v2.primary_key
   key_vault_id = module.key_vault.id
 }
