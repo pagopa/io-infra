@@ -140,8 +140,8 @@ resource "azurerm_api_management_group_user" "reminder_group_v2" {
 # }
 
 resource "azurerm_key_vault_secret" "reminder_subscription_primary_key_v2" {
-  name         = "${format("%s-reminder", local.product)}-subscription-key-v2"
-  value        = azurerm_api_management_subscription.reminder.primary_key
+  name  = "${format("%s-reminder", local.product)}-subscription-key-v2"
+  value = azurerm_api_management_subscription.reminder.primary_key
   #TODO import after migration value        = azurerm_api_management_subscription.reminder_v2.primary_key
   content_type = "subscription key"
   key_vault_id = module.key_vault.id
@@ -173,8 +173,8 @@ resource "azurerm_api_management_group_user" "payment_group_v2" {
 # }
 
 resource "azurerm_key_vault_secret" "reminder_paymentapi_subscription_primary_key_v2" {
-  name         = "${format("%s-reminder-payment-api", local.product)}-subscription-key-v2"
-  value        = azurerm_api_management_subscription.payment_updater_reminder.primary_key
+  name  = "${format("%s-reminder-payment-api", local.product)}-subscription-key-v2"
+  value = azurerm_api_management_subscription.payment_updater_reminder.primary_key
   #TODO import after migration value        = azurerm_api_management_subscription.payment_updater_reminder_v2.primary_key
   content_type = "subscription key"
   key_vault_id = module.key_vault.id

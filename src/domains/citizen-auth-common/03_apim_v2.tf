@@ -121,8 +121,8 @@ resource "azurerm_api_management_group_user" "pagopa_group_v2" {
 ####################################################################################
 
 resource "azurerm_key_vault_secret" "first_lollipop_consumer_subscription_key_v2" {
-  name         = "first-lollipop-consumer-pagopa-subscription-key-v2"
-  value        = azurerm_api_management_subscription.pagopa.primary_key
+  name  = "first-lollipop-consumer-pagopa-subscription-key-v2"
+  value = azurerm_api_management_subscription.pagopa.primary_key
   # TODO import after migration value        = azurerm_api_management_subscription.pagopa_v2.primary_key
 
   key_vault_id = module.key_vault.id
@@ -134,8 +134,8 @@ resource "azurerm_key_vault_secret" "first_lollipop_consumer_subscription_key_v2
 
 # subscription key used for assertion retrieval
 resource "azurerm_key_vault_secret" "fast_login_subscription_key_v2" {
-  name         = "fast-login-subscription-key-v2"
-  value        = azurerm_api_management_subscription.pagopa_fastlogin.primary_key
+  name  = "fast-login-subscription-key-v2"
+  value = azurerm_api_management_subscription.pagopa_fastlogin.primary_key
   # TODO import after migration value        = azurerm_api_management_subscription.pagopa_fastlogin_v2.primary_key
   key_vault_id = module.key_vault.id
 }
