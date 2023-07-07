@@ -96,30 +96,35 @@ resource "azurerm_api_management_group_user" "pagopa_group_v2" {
   group_name          = azurerm_api_management_group.api_lollipop_assertion_read_v2.name
 }
 
-resource "azurerm_api_management_subscription" "pagopa_v2" {
-  user_id             = azurerm_api_management_user.pagopa_user_v2.id
-  api_management_name = data.azurerm_api_management.apim_v2_api.name
-  resource_group_name = data.azurerm_api_management.apim_v2_api.resource_group_name
-  product_id          = module.apim_v2_product_lollipop.id
-  display_name        = "Lollipop API"
-  state               = "active"
-}
+# TODO import after migration
+# resource "azurerm_api_management_subscription" "pagopa_v2" {
+#   user_id             = azurerm_api_management_user.pagopa_user_v2.id
+#   api_management_name = data.azurerm_api_management.apim_v2_api.name
+#   resource_group_name = data.azurerm_api_management.apim_v2_api.resource_group_name
+#   product_id          = module.apim_v2_product_lollipop.id
+#   display_name        = "Lollipop API"
+#   state               = "active"
+# }
 
-resource "azurerm_api_management_subscription" "pagopa_fastlogin_v2" {
-  user_id             = azurerm_api_management_user.pagopa_user_v2.id
-  api_management_name = data.azurerm_api_management.apim_v2_api.name
-  resource_group_name = data.azurerm_api_management.apim_v2_api.resource_group_name
-  product_id          = module.apim_v2_product_lollipop.id
-  display_name        = "Fast Login LC"
-  state               = "active"
-}
+# TODO import after migration
+# resource "azurerm_api_management_subscription" "pagopa_fastlogin_v2" {
+#   user_id             = azurerm_api_management_user.pagopa_user_v2.id
+#   api_management_name = data.azurerm_api_management.apim_v2_api.name
+#   resource_group_name = data.azurerm_api_management.apim_v2_api.resource_group_name
+#   product_id          = module.apim_v2_product_lollipop.id
+#   display_name        = "Fast Login LC"
+#   state               = "active"
+# }
 
 ####################################################################################
 # PagoPA General Lollipop Secret
 ####################################################################################
+
 resource "azurerm_key_vault_secret" "first_lollipop_consumer_subscription_key_v2" {
   name         = "first-lollipop-consumer-pagopa-subscription-key-v2"
-  value        = azurerm_api_management_subscription.pagopa_v2.primary_key
+  value        = azurerm_api_management_subscription.pagopa.primary_key
+  # TODO import after migration value        = azurerm_api_management_subscription.pagopa_v2.primary_key
+
   key_vault_id = module.key_vault.id
 }
 
@@ -130,6 +135,7 @@ resource "azurerm_key_vault_secret" "first_lollipop_consumer_subscription_key_v2
 # subscription key used for assertion retrieval
 resource "azurerm_key_vault_secret" "fast_login_subscription_key_v2" {
   name         = "fast-login-subscription-key-v2"
-  value        = azurerm_api_management_subscription.pagopa_fastlogin_v2.primary_key
+  value        = azurerm_api_management_subscription.pagopa_fastlogin.primary_key
+  # TODO import after migration value        = azurerm_api_management_subscription.pagopa_fastlogin_v2.primary_key
   key_vault_id = module.key_vault.id
 }
