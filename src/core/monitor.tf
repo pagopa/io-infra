@@ -313,7 +313,7 @@ locals {
       name                              = trimsuffix(azurerm_dns_a_record.continua_io_pagopa_it.fqdn, "."),
       host                              = trimsuffix(azurerm_dns_a_record.continua_io_pagopa_it.fqdn, "."),
       path                              = "",
-      http_status                       = 404,
+      http_status                       = 302,
       ssl_cert_remaining_lifetime_check = 7,
     },
   ]
@@ -336,10 +336,7 @@ module "web_test_api" {
 
   actions = [
     {
-      action_group_id = azurerm_monitor_action_group.email.id,
-    },
-    {
-      action_group_id = azurerm_monitor_action_group.slack.id,
+      action_group_id = azurerm_monitor_action_group.error_action_group.id,
     },
   ]
 
