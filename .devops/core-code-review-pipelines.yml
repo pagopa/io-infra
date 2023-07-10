@@ -44,14 +44,6 @@ stages:
       - job: terraform_plan
         timeoutInMinutes: $[variables.TIME_OUT]
         steps:
-          - script: |
-              az extension add --name account
-              az extension add --name aks-preview
-              az extension add --name azure-devops
-              az extension add --name containerapp
-              az extension add --name storage-preview
-              export TF_LOG_PROVIDER="DEBUG"
-            displayName: 'Install az extension'
           # 1. Install terraform
           - template: templates/terraform-setup/template.yaml@terraform
           # 2. Run terragrunt plan
