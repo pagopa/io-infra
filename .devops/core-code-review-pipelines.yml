@@ -50,6 +50,7 @@ stages:
               az extension add --name azure-devops
               az extension add --name containerapp
               az extension add --name storage-preview
+              export TF_LOG_PROVIDER="DEBUG"
             displayName: 'Install az extension'
           # 1. Install terraform
           - template: templates/terraform-setup/template.yaml@terraform
