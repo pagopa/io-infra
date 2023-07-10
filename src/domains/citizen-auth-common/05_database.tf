@@ -169,3 +169,9 @@ resource "azurerm_cosmosdb_mongo_database" "db_fims" {
     max_throughput = 5000
   }
 }
+
+# mongodb connection string for fims provider
+data "azurerm_key_vault_secret" "mongodb_connection_string_fims" {
+  name         = "io-p-fims-mongodb-account-connection-string"
+  key_vault_id = module.key_vault.id
+}
