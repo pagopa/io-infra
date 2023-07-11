@@ -14,6 +14,10 @@ data "azurerm_key_vault_secret" "jwk_primary_key_fims" {
   name         = "io-p-fims-jwk-primary-key"
   key_vault_id = data.azurerm_key_vault.kv.id
 }
+data "azurerm_key_vault_secret" "cookies_key_fims" {
+  name         = "io-p-fims-cookies-key"
+  key_vault_id = data.azurerm_key_vault.kv.id
+}
 
 locals {
   fims = {
@@ -53,7 +57,7 @@ locals {
       AUTHENTICATION_COOKIE_KEY     = "X-IO-FIMS-Token"
       GRANT_TTL_IN_SECONDS          = "86400"
       ISSUER                        = "https://io-p-citizen-auth-weu-prod01-app-fims.azurewebsites.net"
-      COOKIES_KEY                   = "whatasecret" #TBD with vault value
+      COOKIES_KEY                   = data.azurerm_key_vault_secret.cookies_key_fims.value
       ENABLE_FEATURE_REMEMBER_GRANT = "true"
     }
   }
