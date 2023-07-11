@@ -42,6 +42,7 @@ module "azdoa_li_infra" {
   subscription_id     = data.azurerm_subscription.current.subscription_id
   location            = var.location
   source_image_name   = var.azdoa_image_name
+  vm_sku              = "Standard_B2als_v2"
 
   tags = var.tags
 }

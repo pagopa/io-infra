@@ -90,13 +90,10 @@ resource "helm_release" "reloader" {
 #     }
 #   }
 
-#   action {
-#     action_group_id = data.azurerm_monitor_action_group.slack.id
-#   }
+# action {
+#   action_group_id = data.azurerm_monitor_action_group.error_action_group.id
+# }
 
-#   action {
-#     action_group_id = data.azurerm_monitor_action_group.email.id
-#   }
 # }
 
 resource "helm_release" "cert-mounter" {
