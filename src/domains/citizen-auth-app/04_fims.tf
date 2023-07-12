@@ -51,7 +51,7 @@ locals {
       EXPRESS_SERVER_HOSTNAME       = "0.0.0.0"
       LOG_LEVEL                     = "debug"
       APPLICATION_NAME              = "io-openid-provider"
-      IO_BACKEND_BASE_URL           = "https://app-backend.io.pagopa.it"
+      IO_BACKEND_BASE_URL           = "https://api-app.io.pagopa.it"
       VERSION                       = "0.0.1"
       MONGODB_URL                   = data.azurerm_key_vault_secret.mongodb_connection_string_fims.value
       AUTHENTICATION_COOKIE_KEY     = "X-IO-FIMS-Token"
