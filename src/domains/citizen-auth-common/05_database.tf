@@ -136,7 +136,7 @@ module "cosmosdb_account_mongodb_fims" {
   enable_free_tier     = false
   kind                 = "MongoDB"
   capabilities         = ["EnableMongo"]
-  mongo_server_version = "4.0"
+  mongo_server_version = "4.2"
 
   public_network_access_enabled     = false
   private_endpoint_enabled          = true
