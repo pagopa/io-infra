@@ -111,7 +111,7 @@ locals {
       # Login Email variables
       # TODO: change those variables once the service has been created
       MAGIC_LINK_SERVICE_PUBLIC_URL = "https://example.com"
-      HELP_DESK_REF                 = "mailto:example@example.com"
+      HELP_DESK_REF                 = "#"
       #
 
       MAILUP_USERNAME      = data.azurerm_key_vault_secret.common_MAILUP_USERNAME.value
