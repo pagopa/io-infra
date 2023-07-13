@@ -59,7 +59,8 @@ locals {
       ISSUER                          = "https://io-p-citizen-auth-weu-prod01-app-fims.azurewebsites.net"
       COOKIES_KEY                     = data.azurerm_key_vault_secret.cookies_key_fims.value
       ENABLE_FEATURE_REMEMBER_GRANT   = "true",
-      APPINSIGHTS_SAMPLING_PERCENTAGE = 100
+      APPINSIGHTS_SAMPLING_PERCENTAGE = 100,
+      ENABLE_PROXY                    = "true"
     }
   }
 }
