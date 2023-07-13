@@ -108,6 +108,12 @@ locals {
 
       VISIBLE_SERVICE_BLOB_ID = "visible-services-national.json"
 
+      # Login Email variables
+      # TODO: change those variables once the service has been created
+      MAGIC_LINK_SERVICE_PUBLIC_URL = "https://example.com"
+      HELP_DESK_REF                 = "#"
+      #
+
       MAILUP_USERNAME      = data.azurerm_key_vault_secret.common_MAILUP_USERNAME.value
       MAILUP_SECRET        = data.azurerm_key_vault_secret.common_MAILUP_SECRET.value
       PUBLIC_API_KEY       = trimspace(data.azurerm_key_vault_secret.fn_app_PUBLIC_API_KEY.value)

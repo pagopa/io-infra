@@ -313,7 +313,7 @@ locals {
       name                              = trimsuffix(azurerm_dns_a_record.continua_io_pagopa_it.fqdn, "."),
       host                              = trimsuffix(azurerm_dns_a_record.continua_io_pagopa_it.fqdn, "."),
       path                              = "",
-      http_status                       = 200,
+      http_status                       = 302,
       ssl_cert_remaining_lifetime_check = 7,
     },
   ]
