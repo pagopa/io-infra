@@ -100,7 +100,7 @@ resource "azurerm_monitor_metric_alert" "tls_cert_check" {
   }
 
   action {
-    action_group_id = data.azurerm_monitor_action_group.error_action_group.id
+    action_group_id = data.azurerm_monitor_action_group.oncall_error_action_group.id
   }
 }
 
