@@ -214,7 +214,7 @@ resource "azurerm_monitor_metric_alert" "iopstapi_throttling_low_availability" {
   }
 
   action {
-    action_group_id    = azurerm_monitor_action_group.oncall_error_action_group.id
+    action_group_id    = azurerm_monitor_action_group.error_action_group.id
     webhook_properties = {}
   }
 
@@ -263,7 +263,7 @@ resource "azurerm_monitor_metric_alert" "cosmos_cgn_throttling_alert" {
   }
 
   action {
-    action_group_id    = azurerm_monitor_action_group.oncall_error_action_group.id
+    action_group_id    = azurerm_monitor_action_group.error_action_group.id
     webhook_properties = {}
   }
 

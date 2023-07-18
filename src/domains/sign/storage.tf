@@ -24,13 +24,9 @@ module "io_sign_storage" {
 
   action = var.storage_account.enable_low_availability_alert ? [
     {
-      action_group_id    = data.azurerm_monitor_action_group.email.id
+      action_group_id    = data.azurerm_monitor_action_group.error_action_group.id
       webhook_properties = {}
-    },
-    {
-      action_group_id    = data.azurerm_monitor_action_group.slack.id
-      webhook_properties = {}
-    },
+    }
   ] : []
 
   tags = var.tags
