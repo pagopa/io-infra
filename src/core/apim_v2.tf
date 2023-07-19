@@ -144,7 +144,7 @@ module "apim_v2" {
         metric_name            = "Capacity"
         aggregation            = "Average"
         operator               = "GreaterThan"
-        threshold              = 40
+        threshold              = 60
         skip_metric_validation = false
         dimension              = []
       }]
