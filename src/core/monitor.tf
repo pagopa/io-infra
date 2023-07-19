@@ -48,6 +48,11 @@ data "azurerm_key_vault_secret" "alert_quarantine_error_notification_slack" {
   key_vault_id = module.key_vault.id
 }
 
+data "azurerm_key_vault_secret" "alert_error_notification_opsgenie" {
+  name         = "alert-error-notification-opsgenie"
+  key_vault_id = module.key_vault.id
+}
+
 #
 # Actions Groups
 #
@@ -65,6 +70,12 @@ resource "azurerm_monitor_action_group" "error_action_group" {
   email_receiver {
     name                    = "slack"
     email_address           = data.azurerm_key_vault_secret.alert_error_notification_slack.value
+    use_common_alert_schema = true
+  }
+
+  webhook_receiver {
+    name                    = "sendtoopsgenie"
+    service_uri             = data.azurerm_key_vault_secret.alert_error_notification_opsgenie.value
     use_common_alert_schema = true
   }
 
@@ -113,7 +124,7 @@ resource "azurerm_monitor_action_group" "slack" {
   tags = var.tags
 }
 
-## web availabolity test
+## web availability test
 locals {
 
   test_urls = [

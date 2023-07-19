@@ -1171,11 +1171,8 @@ module "app_backend_web_test_api" {
 
   actions = [
     {
-      action_group_id = azurerm_monitor_action_group.email.id,
-    },
-    {
-      action_group_id = azurerm_monitor_action_group.slack.id,
-    },
+      action_group_id = azurerm_monitor_action_group.error_action_group.id,
+    }
   ]
 
 }
