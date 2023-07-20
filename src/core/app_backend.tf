@@ -42,6 +42,11 @@ locals {
       # CIE_METADATA_URL = "https://idserver.servizicie.interno.gov.it:443/idp/shibboleth"
       CIE_METADATA_URL = "https://api.is.eng.pagopa.it/idp-keys/cie/latest" # PagoPA internal cache
 
+      // CIE Test env
+      ALLOWED_CIE_TEST_FISCAL_CODES = data.azurerm_key_vault_secret.app_backend_ALLOWED_CIE_TEST_FISCAL_CODES.value
+      CIE_TEST_METADATA_URL         = "https://collaudo.idserver.servizicie.interno.gov.it/idp/shibboleth"
+
+
       // AUTHENTICATION
       AUTHENTICATION_BASE_PATH  = ""
       TOKEN_DURATION_IN_SECONDS = "2592000"
@@ -481,6 +486,11 @@ data "azurerm_key_vault_secret" "app_backend_IOLOGIN_TEST_USERS" {
 
 data "azurerm_key_vault_secret" "app_backend_LV_TEST_USERS" {
   name         = "appbackend-LV-TEST-USERS"
+  key_vault_id = module.key_vault_common.id
+}
+
+resource "azurerm_key_vault_secret" "app_backend_ALLOWED_CIE_TEST_FISCAL_CODES" {
+  name         = "appbackend-ALLOWED-CIE-TEST-FISCAL-CODES"
   key_vault_id = module.key_vault_common.id
 }
 
