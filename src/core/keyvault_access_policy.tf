@@ -11,9 +11,9 @@ resource "azurerm_key_vault_access_policy" "adgroup_admin" {
   object_id = data.azuread_group.adgroup_admin.object_id
 
   key_permissions         = ["Get", "List", "Update", "Create", "Import", "Delete", ]
-  secret_permissions      = ["Get", "List", "Set", "Delete", ]
+  secret_permissions      = ["Get", "List", "Set", "Delete", "Restore", "Recover", ]
   storage_permissions     = []
-  certificate_permissions = ["Get", "List", "Update", "Create", "Import", "Delete", "Restore", "Purge", "Recover", ]
+  certificate_permissions = ["Get", "List", "Update", "Create", "Import", "Delete", "Restore", "Recover", ]
 }
 
 # kv-common admin policy
@@ -24,16 +24,16 @@ resource "azurerm_key_vault_access_policy" "adgroup_admin_common" {
   object_id = data.azuread_group.adgroup_admin.object_id
 
   key_permissions         = ["Get", "List", "Update", "Create", "Import", "Delete", ]
-  secret_permissions      = ["Get", "List", "Set", "Delete", ]
+  secret_permissions      = ["Get", "List", "Set", "Delete", "Restore", "Recover", ]
   storage_permissions     = []
-  certificate_permissions = ["Get", "List", "Update", "Create", "Import", "Delete", "Restore", "Purge", "Recover", ]
+  certificate_permissions = ["Get", "List", "Update", "Create", "Import", "Delete", "Restore", "Recover", ]
 }
 
 data "azuread_group" "adgroup_developers" {
   display_name = format("%s-adgroup-developers", local.project)
 }
 
-# kv admin policy
+# kv developers policy
 resource "azurerm_key_vault_access_policy" "adgroup_developers" {
   key_vault_id = module.key_vault.id
 
@@ -41,12 +41,12 @@ resource "azurerm_key_vault_access_policy" "adgroup_developers" {
   object_id = data.azuread_group.adgroup_developers.object_id
 
   key_permissions         = ["Get", "List", "Update", "Create", "Import", "Delete", ]
-  secret_permissions      = ["Get", "List", "Set", "Delete", ]
+  secret_permissions      = ["Get", "List", "Set", "Delete", "Restore", "Recover", ]
   storage_permissions     = []
-  certificate_permissions = ["Get", "List", "Update", "Create", "Import", "Delete", "Restore", "Purge", "Recover", ]
+  certificate_permissions = ["Get", "List", "Update", "Create", "Import", "Delete", "Restore", "Recover", ]
 }
 
-# kv-common admin policy
+# kv-common developers policy
 resource "azurerm_key_vault_access_policy" "adgroup_developers_common" {
   key_vault_id = module.key_vault_common.id
 
@@ -54,9 +54,9 @@ resource "azurerm_key_vault_access_policy" "adgroup_developers_common" {
   object_id = data.azuread_group.adgroup_developers.object_id
 
   key_permissions         = ["Get", "List", "Update", "Create", "Import", "Delete", ]
-  secret_permissions      = ["Get", "List", "Set", "Delete", ]
+  secret_permissions      = ["Get", "List", "Set", "Delete", "Restore", "Recover", ]
   storage_permissions     = []
-  certificate_permissions = ["Get", "List", "Update", "Create", "Import", "Delete", "Restore", "Purge", "Recover", ]
+  certificate_permissions = ["Get", "List", "Update", "Create", "Import", "Delete", "Restore", "Recover", ]
 }
 
 # Microsoft Azure WebSites
