@@ -489,7 +489,7 @@ data "azurerm_key_vault_secret" "app_backend_LV_TEST_USERS" {
   key_vault_id = module.key_vault_common.id
 }
 
-resource "azurerm_key_vault_secret" "app_backend_ALLOWED_CIE_TEST_FISCAL_CODES" {
+data "azurerm_key_vault_secret" "app_backend_ALLOWED_CIE_TEST_FISCAL_CODES" {
   name         = "appbackend-ALLOWED-CIE-TEST-FISCAL-CODES"
   key_vault_id = module.key_vault_common.id
 }
