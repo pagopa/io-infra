@@ -1,7 +1,7 @@
 resource "azurerm_dns_zone" "firma_io_pagopa_it" {
   count = var.env_short == "p" ? 1 : 0
 
-  name                = var.dns_zone_name
+  name                = var.dns_zone_names.website
   resource_group_name = azurerm_resource_group.integration_rg.name
 
   tags = var.tags
@@ -65,4 +65,13 @@ resource "azurerm_dns_txt_record" "dmarc_mailup_firma_io_pagopa_it" {
   record {
     value = "v=DMARC1; p=reject; pct=100; adkim=s; aspf=s"
   }
+}
+
+resource "azurerm_dns_zone" "firmaconio_selfcare_pagopa_it" {
+  count = var.env_short == "p" ? 1 : 0
+
+  name                = var.dns_zone_names.backoffice
+  resource_group_name = var.io_external_resource_group_name
+
+  tags = var.tags
 }

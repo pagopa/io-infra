@@ -58,9 +58,12 @@ variable "dns_default_ttl_sec" {
   default     = 3600
 }
 
-variable "dns_zone_name" {
-  type        = string
-  description = "The name for the DNS zone"
+variable "dns_zone_names" {
+  type = object({
+    website    = string
+    backoffice = string
+  })
+  description = "The names for the DNS zones"
 }
 
 variable "subnets_cidrs" {
@@ -109,6 +112,15 @@ variable "io_sign_database_user" {
   )
 }
 
+variable "io_sign_database_backoffice" {
+  type = map(
+    object({
+      max_throughput = number
+      ttl            = number
+    })
+  )
+}
+
 variable "io_sign_issuer_func" {
   type = object({
     sku_tier          = string
@@ -140,6 +152,18 @@ variable "io_sign_user_func" {
   })
 }
 
+variable "io_sign_backoffice_ca" {
+  type = object({
+    cpu    = number
+    memory = string
+    env = optional(set(object({
+      name        = string
+      secret_name = optional(string)
+      value       = optional(string)
+    })))
+  })
+}
+
 variable "integration_hub" {
   type = object({
     auto_inflate_enabled     = bool
@@ -166,4 +190,17 @@ variable "integration_hub" {
     }))
   })
   description = "The configuration, hubs and keys of the event hub relative to external integration"
+}
+
+variable "io_common" {
+  type = object({
+    resource_group_name          = string
+    log_analytics_workspace_name = string
+  })
+  description = "Name of common resources of IO platform"
+}
+
+variable "io_external_resource_group_name" {
+  type = string 
+  descripname = "Name of the external resource group"
 }
