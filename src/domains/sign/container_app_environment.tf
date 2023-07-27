@@ -3,11 +3,15 @@ data "azurerm_log_analytics_workspace" "io_law_common" {
   resource_group_name = var.io_common.resource_group_name
 }
 
-resource "azurerm_container_app_environment" "io_sign_cae" {
-  name                       = format("%-cae", local.project)
-  location                   = azurerm_resource_group.backend_rg.location
-  resource_group_name        = azurerm_resource_group.backend_rg.name
-  log_analytics_workspace_id = azurerm_log_analytics_workspace.io_law_common.id
-  infrastructure_subnet_id   = module.io_sign_snet.id
-  tags                       = var.tags
+module "io_sign_container_app_environment" {
+  source                    = "git::https://github.com/pagopa/terraform-azurerm-v3.git//cosmosdb_account?ref=v6.20.2"
+  name                      = format("%-cae", local.project)
+  location                  = azurerm_resource_group.backend_rg.location
+  resource_group_name       = azurerm_resource_group.backend_rg.name
+  log_destination           = "log-analytics"
+  log_analytics_customer_id = azurerm_log_analytics_workspace.io_law_common.id
+  log_analytics_shared_key  = azurerm_log_analytics_workspace.io_law_common.id
+  subnet_id                 = module.io_sign_snet.id
+  zone_redundant            = true
+  tags                      = var.tags
 }

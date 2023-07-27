@@ -1,19 +1,12 @@
 resource "azurerm_container_app" "io_sign_backoffice_ca" {
   name                         = format("%s-backoffice-ca", local.project)
-  container_app_environment_id = azurerm_container_app_environment.io_sign_cae.id
+  container_app_environment_id = module.io_sign_container_app_environment.id
   resource_group_name          = azurerm_resource_group.backend_rg.name
   revision_mode                = "Single"
 
   ingress {
     external_enabled = false
   }
-
-  registry {
-    server               = "ghcr.io"
-    username             = "strategic-innovation-bot"
-    password_secret_name = "ghcr-registry-password"
-  }
-
   template {
     container {
       name   = "webapp"
@@ -30,6 +23,5 @@ resource "azurerm_container_app" "io_sign_backoffice_ca" {
       }
     }
   }
-
   tags = var.tags
 }

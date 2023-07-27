@@ -17,7 +17,7 @@ data "azurerm_dns_zone" "io_italia_it" {
 }
 
 module "landing_cdn" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//cdn?ref=v6.3.1"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//cdn?ref=v6.20.2"
 
   name                  = "landing"
   prefix                = local.project

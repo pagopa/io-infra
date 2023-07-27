@@ -32,7 +32,7 @@ locals {
 }
 
 module "io_sign_issuer_func" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app?ref=v6.2.1"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app?ref=v6.20.2"
 
   name                = format("%s-issuer-func", local.project)
   location            = azurerm_resource_group.backend_rg.location
@@ -80,7 +80,7 @@ module "io_sign_issuer_func" {
 
 module "io_sign_issuer_func_staging_slot" {
   count  = var.io_sign_issuer_func.sku_tier == "PremiumV3" ? 1 : 0
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app_slot?ref=v6.0.1"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app_slot?ref=v6.20.2"
 
   name                = "staging"
   location            = azurerm_resource_group.backend_rg.location
