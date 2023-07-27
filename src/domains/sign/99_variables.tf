@@ -201,6 +201,6 @@ variable "io_common" {
 }
 
 variable "io_external_resource_group_name" {
-  type = string 
-  descripname = "Name of the external resource group"
+  type        = string
+  description = "Name of the external resource group"
 }
