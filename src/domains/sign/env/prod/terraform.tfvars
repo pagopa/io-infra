@@ -100,19 +100,22 @@ io_sign_user_func = {
   autoscale_maximum = 5
 }
 
-io_sign_backoffice_ca = {
-  cpu    = 0.25
-  memory = "0.5Gi"
-  env = [
-    {
-      name: "NODE_ENV",
-      value = "production"
-    },
-    {
-      name: "AUTH_SESSION_SECRET",
-      secret_name = "auth-session-secret"
-    }
-  ]
+io_sign_backoffice_app = {
+    sku_name = "B1"
+    app_settings = [
+      {
+        name = "NODE_ENV",
+        value = "production"
+      },
+      {
+        port = "PORT",
+        value = "3000"
+      },
+      {
+        name = "AUTH_SESSION_SECRET",
+        key_vault_secret = "bo-auth-session-secret"
+      }
+    ]
 }
 
 integration_hub = {

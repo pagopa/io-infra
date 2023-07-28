@@ -204,3 +204,15 @@ variable "io_external_resource_group_name" {
   type        = string
   description = "Name of the external resource group"
 }
+
+variable "io_sign_backoffice_app" {
+  type = object({
+    sku_name = string
+    app_settings = list(object({
+      name             = string
+      value            = optional(string)
+      key_vault_secret = optional(string)
+    }))
+  })
+  description = "Configuration of the io-sign-backoffice service"
+}
