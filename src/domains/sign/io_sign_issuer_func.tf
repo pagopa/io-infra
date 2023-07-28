@@ -59,7 +59,7 @@ module "io_sign_issuer_func" {
     }
   )
 
-  sticky_app_settings = [
+  sticky_app_setting_names = [
     # Sticky the settings enabling triggered by queue and timer
     for to_disable in local.io_sign_issuer_func.staging_disabled :
     format("AzureWebJobs.%s.Disabled", to_disable)
