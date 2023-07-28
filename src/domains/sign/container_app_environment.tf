@@ -4,7 +4,7 @@ data "azurerm_log_analytics_workspace" "io_law_common" {
 }
 
 module "io_sign_container_app_environment" {
-  source                    = "git::https://github.com/pagopa/terraform-azurerm-v3.git//cosmosdb_account?ref=v6.20.2"
+  source                    = "git::https://github.com/pagopa/terraform-azurerm-v3.git//container_app_environment?ref=v6.20.2"
   name                      = format("%-cae", local.project)
   location                  = azurerm_resource_group.backend_rg.location
   resource_group_name       = azurerm_resource_group.backend_rg.name
