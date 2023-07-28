@@ -198,7 +198,7 @@ variable "io_sign_backoffice_app" {
     sku_name = string
     app_settings = list(object({
       name             = string
-      value            = optional(string)
+      value            = optional(string, "")
       key_vault_secret = optional(string)
     }))
   })
