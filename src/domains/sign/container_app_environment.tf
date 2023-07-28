@@ -13,5 +13,6 @@ module "io_sign_container_app_environment" {
   log_analytics_shared_key  = azurerm_log_analytics_workspace.io_law_common.id
   subnet_id                 = module.io_sign_snet.id
   zone_redundant            = true
+  vnet_internal             = true
   tags                      = var.tags
 }
