@@ -26,10 +26,6 @@ module "landing_cdn" {
   hostname              = "firma.io.italia.it"
   https_rewrite_enabled = true
 
-  # The argument `lock_enabled` is required by the module; however it must not
-  # be used any more, since locks are managed transparently via global policies.
-  lock_enabled = false
-
   index_document     = "index.html"
   error_404_document = "index.html"
 
