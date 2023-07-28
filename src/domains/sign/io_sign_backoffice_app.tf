@@ -5,16 +5,16 @@ module "io_sign_backoffice_app" {
   location            = azurerm_resource_group.backend_rg.location
   resource_group_name = azurerm_resource_group.backend_rg.name
 
-  plan_name = format("%-backoffice-service-plan", local.project)
+  plan_name = format("%s-backoffice-service-plan", local.project)
   sku_name  = var.io_sign_backoffice_app.sku_name
 
   docker_image = "ghcr.io/pagopa/io-sign-backoffice"
 
-  app_settings = [
-    for s in var.io_sign_backoffice_app.app_settings : s.key_vault_secret_name != null ?
+  app_settings = {
+    for s in var.io_sign_backoffice_app.app_settings : s.name => s.key_vault_secret_name != null ?
     "@Microsoft.KeyVault(VaultName=${module.key_vault.name};SecretName=${s.key_vault_secret_name}" :
     s.value
-  ]
+  }
 
   always_on        = true
   vnet_integration = true
