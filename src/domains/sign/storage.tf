@@ -10,7 +10,7 @@ module "io_sign_storage" {
   location                        = azurerm_resource_group.data_rg.location
   advanced_threat_protection      = true
   allow_nested_items_to_be_public = false
-  public_network_access_enabled   = false
+  public_network_access_enabled   = true
 
   network_rules = {
     default_action = "Allow"
