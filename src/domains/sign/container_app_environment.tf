@@ -9,8 +9,8 @@ module "io_sign_container_app_environment" {
   location                  = azurerm_resource_group.backend_rg.location
   resource_group_name       = azurerm_resource_group.backend_rg.name
   log_destination           = "log-analytics"
-  log_analytics_customer_id = azurerm_log_analytics_workspace.io_law_common.id
-  log_analytics_shared_key  = azurerm_log_analytics_workspace.io_law_common.id
+  log_analytics_customer_id = data.azurerm_log_analytics_workspace.io_law_common.id
+  log_analytics_shared_key  = data.azurerm_log_analytics_workspace.io_law_common.id
   subnet_id                 = module.io_sign_snet.id
   zone_redundant            = true
   vnet_internal             = true
