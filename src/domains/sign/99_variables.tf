@@ -152,18 +152,6 @@ variable "io_sign_user_func" {
   })
 }
 
-variable "io_sign_backoffice_ca" {
-  type = object({
-    cpu    = number
-    memory = string
-    env = optional(set(object({
-      name        = string
-      secret_name = optional(string)
-      value       = optional(string)
-    })))
-  })
-}
-
 variable "integration_hub" {
   type = object({
     auto_inflate_enabled     = bool
