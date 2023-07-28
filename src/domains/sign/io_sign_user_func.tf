@@ -40,7 +40,7 @@ locals {
 }
 
 module "io_sign_user_func" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app?ref=v6.20.2"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app?ref=v6.2.1"
 
   name                = format("%s-user-func", local.project)
   location            = azurerm_resource_group.backend_rg.location
@@ -67,7 +67,7 @@ module "io_sign_user_func" {
     }
   )
 
-  sticky_app_setting_names = [
+  sticky_settings = [
     # Sticky the settings enabling triggered by queue and timer
     for to_disable in local.io_sign_user_func.staging_disabled :
     format("AzureWebJobs.%s.Disabled", to_disable)
@@ -86,7 +86,7 @@ module "io_sign_user_func" {
 
 module "io_sign_user_func_staging_slot" {
   count  = var.io_sign_user_func.sku_tier == "PremiumV3" ? 1 : 0
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app_slot?ref=v6.20.2"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app_slot?ref=v6.2.1"
 
   name                = "staging"
   location            = azurerm_resource_group.backend_rg.location
