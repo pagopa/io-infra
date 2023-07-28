@@ -8,7 +8,8 @@ module "io_sign_backoffice_app" {
   plan_name = format("%s-backoffice-service-plan", local.project)
   sku_name  = var.io_sign_backoffice_app.sku_name
 
-  docker_image = "ghcr.io/pagopa/io-sign-backoffice"
+  docker_image     = "ghcr.io/pagopa/io-sign-backoffice"
+  docker_image_tag = "latest"
 
   app_settings = {
     for s in var.io_sign_backoffice_app.app_settings : s.name => s.key_vault_secret_name != null ?
