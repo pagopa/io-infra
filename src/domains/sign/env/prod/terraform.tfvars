@@ -113,7 +113,7 @@ io_sign_backoffice_app = {
       },
       {
         name = "AUTH_SESSION_SECRET",
-        key_vault_secret = "bo-auth-session-secret"
+        key_vault_secret_name = "bo-auth-session-secret"
       }
     ]
 }

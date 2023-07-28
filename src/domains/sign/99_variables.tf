@@ -197,9 +197,9 @@ variable "io_sign_backoffice_app" {
   type = object({
     sku_name = string
     app_settings = list(object({
-      name             = string
-      value            = optional(string, "")
-      key_vault_secret = optional(string)
+      name                  = string
+      value                 = optional(string, "")
+      key_vault_secret_name = optional(string)
     }))
   })
   description = "Configuration of the io-sign-backoffice service"
