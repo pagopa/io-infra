@@ -214,6 +214,8 @@ module "appservice_selfcare_be" {
     SERVICE_PRINCIPAL_TENANT_ID = data.azurerm_client_config.current.tenant_id
     USE_SERVICE_PRINCIPAL       = "1"
 
+    LOCK_SELFCARE_CREATE_NEW_APIM_USER = "true" # TODO set to false after apim-v2 migration
+
     FRONTEND_URL        = "https://${local.selfcare_io.frontend_hostname}"
     BACKEND_URL         = "${local.selfcare_io.backend_hostname}"
     LOGIN_URL           = "https://${local.selfcare_io.frontend_hostname}/login"
