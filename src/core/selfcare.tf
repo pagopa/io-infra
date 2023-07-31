@@ -253,8 +253,8 @@ module "appservice_selfcare_be" {
     # UPDATE: The new feature is that "If one of such strings is "*", we suddenly open the feature to everyone.".
     MANAGE_FLOW_ENABLE_USER_LIST = "*"
 
-    # Lock the creation of a new APIM user, when resolve SelfCareIdentity. (Temporary for APIM v2 migration, set to false or remove after migration)
-    LOCK_SELFCARE_CREATE_NEW_APIM_USER = "true"
+    # Lock the creation of a new APIM user, when resolve SelfCareIdentity.
+    LOCK_SELFCARE_CREATE_NEW_APIM_USER = "false"
 
   }
 
