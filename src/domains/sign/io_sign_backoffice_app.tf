@@ -58,7 +58,7 @@ data "azurerm_subnet" "appgateway_snet" {
   tags = var.tags
 }*/
 
-resource "azurerm_key_vault_access_policy" "backoffice_key_vault_access_policy" {
+/*resource "azurerm_key_vault_access_policy" "backoffice_key_vault_access_policy" {
   key_vault_id = module.key_vault.id
   tenant_id    = data.azurerm_client_config.current.tenant_id
   object_id    = module.io_sign_backoffice_app.principal_id
@@ -66,4 +66,4 @@ resource "azurerm_key_vault_access_policy" "backoffice_key_vault_access_policy" 
   secret_permissions      = ["Get"]
   storage_permissions     = []
   certificate_permissions = []
-}
+}*/
