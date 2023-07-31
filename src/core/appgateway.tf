@@ -99,9 +99,9 @@ module "app_gw" {
     }
 
     firmaconio-selfcare-backend = {
-      protocol = "Https"
-      host = null
-      port = 443
+      protocol     = "Https"
+      host         = null
+      port         = 443
       ip_addresses = null # with null value use fqdns
       fqdns = [
         data.azurerm_linux_web_app.firmaconio_selfcare_web_app.default_site_hostname,
@@ -289,9 +289,9 @@ module "app_gw" {
     }
 
     firmaconio-selfcare-pagopa-it = {
-      protocol = "Https"
-      host = "firmaconio.selfcare.pagopa.it"
-      port = 443
+      protocol           = "Https"
+      host               = "firmaconio.selfcare.pagopa.it"
+      port               = 443
       ssl_profile_name   = format("%s-ssl-profile", local.project)
       firewall_policy_id = null
 
