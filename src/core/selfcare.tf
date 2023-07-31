@@ -214,8 +214,6 @@ module "appservice_selfcare_be" {
     SERVICE_PRINCIPAL_TENANT_ID = data.azurerm_client_config.current.tenant_id
     USE_SERVICE_PRINCIPAL       = "1"
 
-    LOCK_SELFCARE_CREATE_NEW_APIM_USER = "true" # TODO set to false after apim-v2 migration
-
     FRONTEND_URL        = "https://${local.selfcare_io.frontend_hostname}"
     BACKEND_URL         = "${local.selfcare_io.backend_hostname}"
     LOGIN_URL           = "https://${local.selfcare_io.frontend_hostname}/login"
@@ -255,7 +253,7 @@ module "appservice_selfcare_be" {
     # UPDATE: The new feature is that "If one of such strings is "*", we suddenly open the feature to everyone.".
     MANAGE_FLOW_ENABLE_USER_LIST = "*"
 
-    # Lock the creation of a new APIM user, when resolve SelfCareIdentity. (Temporary for APIM v2 migration)
+    # Lock the creation of a new APIM user, when resolve SelfCareIdentity. (Temporary for APIM v2 migration, set to false or remove after migration)
     LOCK_SELFCARE_CREATE_NEW_APIM_USER = "true"
 
   }
