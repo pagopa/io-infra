@@ -9,9 +9,9 @@ tags = {
 }
 
 # dns
-external_domain      = "pagopa.it"
-dns_zone_io          = "io"
-dns_zone_io_selfcare = "io.selfcare"
+external_domain              = "pagopa.it"
+dns_zone_io                  = "io"
+dns_zone_io_selfcare         = "io.selfcare"
 dns_zone_firmaconio_selfcare = "firmaconio.selfcare"
 
 lock_enable = true

@@ -1,3 +1,32 @@
+module "io_sign_backoffice_snet" {
+  source               = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v6.20.2"
+  name                 = format("%s-backoffice-snet", local.project)
+  resource_group_name  = data.azurerm_virtual_network.vnet_common.resource_group_name
+  virtual_network_name = data.azurerm_virtual_network.vnet_common.name
+  address_prefixes     = var.subnets_cidrs.backoffice
+
+  private_endpoint_network_policies_enabled = false
+
+  service_endpoints = [
+    "Microsoft.Web",
+    "Microsoft.AzureCosmosDB",
+  ]
+
+  delegation = {
+    name = "default"
+    service_delegation = {
+      name    = "Microsoft.Web/serverFarms"
+      actions = ["Microsoft.Network/virtualNetworks/subnets/action"]
+    }
+  }
+}
+
+data "azurerm_subnet" "appgateway_snet" {
+  name                 = var.io_common.appgateway_snet_name
+  virtual_network_name = var.io_common.vnet_common_name
+  resource_group_name  = var.io_common.resource_group_name
+}
+
 module "io_sign_backoffice_app" {
   source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//app_service?ref=v6.20.2"
 
@@ -20,10 +49,10 @@ module "io_sign_backoffice_app" {
   always_on        = true
   vnet_integration = true
 
-  subnet_id = module.io_sign_snet.id
+  subnet_id = module.io_sign_backoffice_snet.id
 
   allowed_subnets = [
-    module.io_sign_snet.id,
+    data.azurerm_subnet.appgateway_snet
   ]
 
   tags = var.tags

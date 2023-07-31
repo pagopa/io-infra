@@ -60,7 +60,7 @@ variable "dns_default_ttl_sec" {
 
 variable "dns_zone_names" {
   type = object({
-    website    = string
+    website = string
   })
   description = "The names for the DNS zones"
 }
@@ -183,6 +183,8 @@ variable "io_common" {
   type = object({
     resource_group_name          = string
     log_analytics_workspace_name = string
+    appgateway_snet_name         = string
+    vnet_common_name             = string
   })
   description = "Name of common resources of IO platform"
 }

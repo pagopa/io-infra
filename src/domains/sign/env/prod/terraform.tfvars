@@ -213,4 +213,6 @@ dns_ses_validation = [
 io_common = {
   resource_group_name: "io-p-rg-common"
   log_analytics_workspace_name: "io-p-law-common"
+  appgateway_snet_name = "io-p-appgateway-snet"
+  vnet_common_name = "io-p-vnet-common"
 }
