@@ -27,7 +27,7 @@ data "azurerm_subnet" "appgateway_snet" {
   resource_group_name  = var.io_common.resource_group_name
 }
 
-module "io_sign_backoffice_app" {
+/*module "io_sign_backoffice_app" {
   source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//app_service?ref=v6.20.2"
 
   name                = format("%s-backoffice-app", local.project)
@@ -56,7 +56,7 @@ module "io_sign_backoffice_app" {
   ]
 
   tags = var.tags
-}
+}*/
 
 resource "azurerm_key_vault_access_policy" "backoffice_key_vault_access_policy" {
   key_vault_id = module.key_vault.id

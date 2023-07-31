@@ -288,7 +288,7 @@ module "app_gw" {
       }
     }
 
-    firmaconio-selfcare-pagopa-it = {
+    /*firmaconio-selfcare-pagopa-it = {
       protocol           = "Https"
       host               = format("%s.%s", var.dns_zone_firmaconio_selfcare, var.external_domain)
       port               = 443
@@ -303,7 +303,7 @@ module "app_gw" {
           ""
         )
       }
-    }
+    }*/
 
     continua-io-pagopa-it = {
       protocol           = "Https"
