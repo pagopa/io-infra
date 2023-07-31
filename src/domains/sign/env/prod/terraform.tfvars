@@ -193,7 +193,6 @@ integration_hub = {
 
 dns_zone_names = {
   website = "firma.io.pagopa.it"
-  backoffice = "firmaconio.selfcare.pagopa.it"
 }
 
 dns_ses_validation = [
@@ -215,5 +214,3 @@ io_common = {
   resource_group_name: "io-p-rg-common"
   log_analytics_workspace_name: "io-p-law-common"
 }
-
-io_external_resource_group_name = "io-p-rg-external"

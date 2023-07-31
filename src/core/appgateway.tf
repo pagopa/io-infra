@@ -290,7 +290,7 @@ module "app_gw" {
 
     firmaconio-selfcare-pagopa-it = {
       protocol           = "Https"
-      host               = "firmaconio.selfcare.pagopa.it"
+      host               = format("%s.%s", var.dns_zone_firmaconio_selfcare, var.external_domain)
       port               = 443
       ssl_profile_name   = format("%s-ssl-profile", local.project)
       firewall_policy_id = null

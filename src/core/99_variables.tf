@@ -83,6 +83,12 @@ variable "dns_zone_io_selfcare" {
   description = "The dns subdomain."
 }
 
+variable "dns_zone_firmaconio_selfcare" {
+  type        = string
+  default     = null
+  description = "The dns subdomain."
+}
+
 # azure devops
 variable "azdo_sp_tls_cert_enabled" {
   type        = string

@@ -61,7 +61,6 @@ variable "dns_default_ttl_sec" {
 variable "dns_zone_names" {
   type = object({
     website    = string
-    backoffice = string
   })
   description = "The names for the DNS zones"
 }
@@ -186,11 +185,6 @@ variable "io_common" {
     log_analytics_workspace_name = string
   })
   description = "Name of common resources of IO platform"
-}
-
-variable "io_external_resource_group_name" {
-  type        = string
-  description = "Name of the external resource group"
 }
 
 variable "io_sign_backoffice_app" {
