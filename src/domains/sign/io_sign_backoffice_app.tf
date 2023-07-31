@@ -34,7 +34,7 @@ module "io_sign_backoffice_app" {
   location            = azurerm_resource_group.backend_rg.location
   resource_group_name = azurerm_resource_group.backend_rg.name
 
-  plan_name = format("%s-backoffice-service-plan", local.project)
+  plan_name = format("%s-backoffice-plan", local.project)
   sku_name  = var.io_sign_backoffice_app.sku_name
 
   docker_image     = "ghcr.io/pagopa/io-sign-backoffice"
