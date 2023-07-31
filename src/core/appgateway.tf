@@ -98,6 +98,20 @@ module "app_gw" {
       pick_host_name_from_backend = true
     }
 
+    firmaconio-selfcare-backend = {
+      protocol = "Https"
+      host = null
+      port = 443
+      ip_addresses = null # with null value use fqdns
+      fqdns = [
+        data.azurerm_linux_web_app.firmaconio_selfcare_web_app.default_site_hostname,
+      ]
+      probe                       = "/health"
+      probe_name                  = "probe-firmaconio-selfcare-backend"
+      request_timeout             = 180
+      pick_host_name_from_backend = true
+    }
+
     continua-app = {
       protocol     = "Https"
       host         = null
@@ -274,6 +288,23 @@ module "app_gw" {
       }
     }
 
+    firmaconio-selfcare-pagopa-it = {
+      protocol = "Https"
+      host = "firmaconio.selfcare.pagopa.it"
+      port = 443
+      ssl_profile_name   = format("%s-ssl-profile", local.project)
+      firewall_policy_id = null
+
+      certificate = {
+        name = var.app_gateway_firmaconio_selfcare_pagopa_it_certificate_name
+        id = replace(
+          data.azurerm_key_vault_certificate.app_gw_firmaconio_selfcare_pagopa_it.secret_id,
+          "/${data.azurerm_key_vault_certificate.app_gw_firmaconio_selfcare_pagopa_it.version}",
+          ""
+        )
+      }
+    }
+
     continua-io-pagopa-it = {
       protocol           = "Https"
       host               = format("continua.%s.%s", var.dns_zone_io, var.external_domain)
@@ -342,6 +373,13 @@ module "app_gw" {
       backend               = "selfcare-backend"
       rewrite_rule_set_name = "rewrite-rule-set-selfcare-backend"
       priority              = 60
+    }
+
+    firmaconio-selfcare-pagopa-it = {
+      listener              = "firmaconio-selfcare-pagopa-it"
+      backend               = "firmaconio-selfcare-backend"
+      rewrite_rule_set_name = "rewrite-rule-set-firmaconio-selfcare-backend"
+      priority              = 90
     }
 
     continua-io-pagopa-it = {
@@ -448,6 +486,26 @@ module "app_gw" {
       name = "rewrite-rule-set-selfcare-backend"
       rewrite_rules = [{
         name          = "http-headers-selfcare-backend"
+        rule_sequence = 100
+        conditions    = []
+        url           = null
+        request_header_configurations = [
+          {
+            header_name  = "X-Forwarded-For"
+            header_value = "{var_client_ip}"
+          },
+          {
+            header_name  = "X-Client-Ip"
+            header_value = "{var_client_ip}"
+          },
+        ]
+        response_header_configurations = []
+      }]
+    },
+    {
+      name = "rewrite-rule-set-firmaconio-selfcare-backend"
+      rewrite_rules = [{
+        name          = "http-headers-firmaconio-selfcare-backend"
         rule_sequence = 100
         conditions    = []
         url           = null
@@ -694,6 +752,11 @@ data "azurerm_key_vault_certificate" "app_gw_developerportal_backend_io_italia_i
 
 data "azurerm_key_vault_certificate" "app_gw_api_io_selfcare_pagopa_it" {
   name         = var.app_gateway_api_io_selfcare_pagopa_it_certificate_name
+  key_vault_id = module.key_vault.id
+}
+
+data "azurerm_key_vault_certificate" "app_gw_firmaconio_selfcare_pagopa_it" {
+  name         = var.app_gateway_firmaconio_selfcare_pagopa_it_certificate_name
   key_vault_id = module.key_vault.id
 }
 
