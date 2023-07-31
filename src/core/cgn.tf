@@ -316,12 +316,13 @@ data "azurerm_key_vault_secret" "cgn_onboarding_backend_identity" {
   key_vault_id = module.key_vault_common.id
 }
 
-resource "azurerm_role_assignment" "service_contributor" {
-  count                = var.env_short == "p" ? 1 : 0
-  scope                = module.apim.id
-  role_definition_name = "API Management Service Contributor"
-  principal_id         = data.azurerm_key_vault_secret.cgn_onboarding_backend_identity.value
-}
+# TODO rollback after apim-v2 migration
+# resource "azurerm_role_assignment" "service_contributor" {
+#   count                = var.env_short == "p" ? 1 : 0
+#   scope                = module.apim.id
+#   role_definition_name = "API Management Service Contributor"
+#   principal_id         = data.azurerm_key_vault_secret.cgn_onboarding_backend_identity.value
+# }
 
 resource "azurerm_resource_group" "cgn_be_rg" {
   name     = format("%s-cgn-be-rg", local.project)
