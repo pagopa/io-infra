@@ -104,7 +104,7 @@ module "app_gw" {
       port         = 443
       ip_addresses = null # with null value use fqdns
       fqdns = [
-        data.azurerm_linux_web_app.firmaconio_selfcare_web_app.default_site_hostname,
+        data.azurerm_linux_web_app.firmaconio_selfcare_web_app.default_hostname,
       ]
       probe                       = "/health"
       probe_name                  = "probe-firmaconio-selfcare-backend"
