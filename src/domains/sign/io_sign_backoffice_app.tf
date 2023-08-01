@@ -1,6 +1,6 @@
 locals {
   backoffice_app_settings = merge({
-    AZURE_SUBSCRIPTION_ID       = data.azurerm_subscription.current.id
+    AZURE_SUBSCRIPTION_ID       = data.azurerm_subscription.current.subscription_id
     COSMOS_DB_CONNECTION_STRING = module.cosmosdb_account.connection_strings[0],
     COSMOS_DB_NAME              = module.cosmosdb_sql_database_backoffice.name
     COSMOS_DB_CONTAINER_NAME    = module.cosmosdb_sql_container_backoffice-api-keys.name
