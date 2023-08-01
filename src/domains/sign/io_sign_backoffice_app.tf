@@ -1,34 +1,17 @@
 locals {
-  computed_backoffice_app_settings = [
-    {
-      name = "AZURE_SUBSCRIPTION_ID",
-      value = data.azurerm_subscription.current.id
+  backoffice_app_settings = merge({
+    AZURE_SUBSCRIPTION_ID       = data.azurerm_subscription.current.id
+    COSMOS_DB_CONNECTION_STRING = module.cosmosdb_account.connection_strings[0],
+    COSMOS_DB_NAME              = module.cosmosdb_sql_database_backoffice.name
+    COSMOS_DB_CONTAINER_NAME    = module.cosmosdb_sql_container_backoffice-api-keys.name
+    APIM_RESOURCE_GROUP_NAME    = "io-p-rg-internal",
+    APIM_SERVICE_NAME           = "io-p-apim-api"
+    APIM_PRODUCT_NAME           = module.apim_io_sign_product.product_id
     },
     {
-      name = "COSMOS_DB_CONNECTION_STRING",
-      value = module.cosmosdb_account.connection_strings[0]
-    },
-    {
-      name = "COSMOS_DB_NAME",
-      value = module.cosmosdb_sql_database_backoffice.name
-    },
-    {
-      name = "COSMOS_DB_CONTAINER_NAME",
-      value = module.cosmosdb_sql_container_backoffice-api-keys.name
-    },
-    {
-      name = "APIM_RESOURCE_GROUP_NAME",
-      value = "io-p-rg-internal"
-    },
-    {
-      name = "APIM_SERVICE_NAME",
-      value = "io-p-apim-api"
-    },
-    {
-      name = "APIM_PRODUCT_NAME"
-      value = module.apim_io_sign_product.product_id
-    }
-  ]
+      for s in var.io_sign_backoffice_app.app_settings :
+      s.name => s.key_vault_secret_name != null ? "@Microsoft.KeyVault(VaultName=${module.key_vault.name};SecretName=${s.key_vault_secret_name})" : s.value
+  })
 }
 
 module "io_sign_backoffice_snet" {
@@ -72,14 +55,10 @@ module "io_sign_backoffice_app" {
 
   docker_image     = "ghcr.io/pagopa/io-sign-backoffice"
   docker_image_tag = "latest"
-
+ 
   health_check_path = "/health"
 
-  app_settings = {
-    for s in concat(var.io_sign_backoffice_app.app_settings, local.computed_backoffice_app_settings) : s.name => s.key_vault_secret_name != null ?
-    "@Microsoft.KeyVault(VaultName=${module.key_vault.name};SecretName=${s.key_vault_secret_name})" :
-    s.value
-  }
+  app_settings = local.backoffice_app_settings
 
   always_on        = true
   vnet_integration = true
