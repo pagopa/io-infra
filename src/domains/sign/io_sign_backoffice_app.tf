@@ -2,7 +2,7 @@ locals {
   computed_backoffice_app_settings = [
     {
       name = "AZURE_SUBSCRIPTION_ID",
-      value = data.azurerm_subscription.id
+      value = data.azurerm_subscription.current.id
     },
     {
       name = "COSMOS_DB_CONNECTION_STRING",
