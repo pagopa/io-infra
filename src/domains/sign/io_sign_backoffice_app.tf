@@ -66,7 +66,6 @@ module "io_sign_backoffice_app" {
   subnet_id = module.io_sign_backoffice_snet.id
 
   allowed_subnets = [
-    module.io_sign_backoffice_snet.id,
     data.azurerm_subnet.appgateway_snet.id
   ]
 
@@ -81,4 +80,25 @@ resource "azurerm_key_vault_access_policy" "backoffice_key_vault_access_policy" 
   secret_permissions      = ["Get"]
   storage_permissions     = []
   certificate_permissions = []
+}
+
+resource "azurerm_private_endpoint" "io_sign_issuer_func" {
+  name                = format("%s-backoffice-endpoint", local.project)
+  location            = azurerm_resource_group.data_rg.location
+  resource_group_name = azurerm_resource_group.data_rg.name
+  subnet_id           = data.azurerm_subnet.private_endpoints_subnet.id
+
+  private_service_connection {
+    name                           = format("%s-backoffice-endpoint", local.project)
+    private_connection_resource_id = module.io_sign_backoffice_app.id
+    is_manual_connection           = false
+    subresource_names              = ["sites"]
+  }
+
+  private_dns_zone_group {
+    name                 = "private-dns-zone-group"
+    private_dns_zone_ids = [data.azurerm_private_dns_zone.privatelink_azurewebsites_net.id]
+  }
+
+  tags = var.tags
 }
