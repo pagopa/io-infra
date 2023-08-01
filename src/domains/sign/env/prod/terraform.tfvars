@@ -109,7 +109,7 @@ io_sign_backoffice_app = {
         value = "production"
       },
       {
-        name = "PORT",
+        name = "WEBSITES_PORT",
         value = "3000"
       },
       {
