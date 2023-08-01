@@ -40,6 +40,8 @@ module "io_sign_backoffice_app" {
   docker_image     = "ghcr.io/pagopa/io-sign-backoffice"
   docker_image_tag = "latest"
 
+  health_check_path = "/health"
+
   app_settings = {
     for s in var.io_sign_backoffice_app.app_settings : s.name => s.key_vault_secret_name != null ?
     "@Microsoft.KeyVault(VaultName=${module.key_vault.name};SecretName=${s.key_vault_secret_name})" :
