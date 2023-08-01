@@ -82,7 +82,7 @@ resource "azurerm_key_vault_access_policy" "backoffice_key_vault_access_policy" 
   certificate_permissions = []
 }
 
-resource "azurerm_private_endpoint" "io_sign_issuer_func" {
+resource "azurerm_private_endpoint" "io_sign_backoffice_app" {
   name                = format("%s-backoffice-endpoint", local.project)
   location            = azurerm_resource_group.data_rg.location
   resource_group_name = azurerm_resource_group.data_rg.name
