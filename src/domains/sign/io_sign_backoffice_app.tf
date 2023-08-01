@@ -1,3 +1,36 @@
+locals {
+  computed_backoffice_app_settings = [
+    {
+      name = "AZURE_SUBSCRIPTION_ID",
+      value = data.azurerm_subscription.id
+    },
+    {
+      name = "COSMOS_DB_CONNECTION_STRING",
+      value = module.cosmosdb_account.connection_strings[0]
+    },
+    {
+      name = "COSMOS_DB_NAME",
+      value = module.cosmosdb_sql_database_backoffice.name
+    },
+    {
+      name = "COSMOS_DB_CONTAINER_NAME",
+      value = module.cosmosdb_sql_container_backoffice-api-keys.name
+    },
+    {
+      name = "APIM_RESOURCE_GROUP_NAME",
+      value = "io-p-rg-internal"
+    },
+    {
+      name = "APIM_SERVICE_NAME",
+      value = "io-p-apim-api"
+    },
+    {
+      name = "APIM_PRODUCT_NAME"
+      value = module.apim_io_sign_product.product_id
+    }
+  ]
+}
+
 module "io_sign_backoffice_snet" {
   source               = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v6.20.2"
   name                 = format("%s-backoffice-snet", local.project)
@@ -43,7 +76,7 @@ module "io_sign_backoffice_app" {
   health_check_path = "/health"
 
   app_settings = {
-    for s in var.io_sign_backoffice_app.app_settings : s.name => s.key_vault_secret_name != null ?
+    for s in concat(var.io_sign_backoffice_app.app_settings, computed_backoffice_app_settings) : s.name => s.key_vault_secret_name != null ?
     "@Microsoft.KeyVault(VaultName=${module.key_vault.name};SecretName=${s.key_vault_secret_name})" :
     s.value
   }
