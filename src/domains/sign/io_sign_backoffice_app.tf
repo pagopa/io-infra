@@ -52,6 +52,7 @@ module "io_sign_backoffice_app" {
   subnet_id = module.io_sign_backoffice_snet.id
 
   allowed_subnets = [
+    module.io_sign_backoffice_snet.id,
     data.azurerm_subnet.appgateway_snet.id
   ]
 
