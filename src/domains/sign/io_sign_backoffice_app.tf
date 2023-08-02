@@ -1,13 +1,13 @@
 locals {
   backoffice_app_settings = merge({
-    AZURE_SUBSCRIPTION_ID       = data.azurerm_subscription.current.subscription_id
-    COSMOS_DB_CONNECTION_STRING = module.cosmosdb_account.connection_strings[0],
-    COSMOS_DB_NAME              = module.cosmosdb_sql_database_backoffice.name
-    COSMOS_DB_CONTAINER_NAME    = module.cosmosdb_sql_container_backoffice-api-keys.name
-    APIM_RESOURCE_GROUP_NAME    = "io-p-rg-internal",
-    APIM_SERVICE_NAME           = "io-p-apim-api"
-    APIM_PRODUCT_NAME           = module.apim_io_sign_product.product_id
-    APPINSIGHTS_INSTRUMENTATIONKEY = data.azurerm_application_insights.application_insights.instrumentation_key
+    AZURE_SUBSCRIPTION_ID          = data.azurerm_subscription.current.subscription_id
+    COSMOS_DB_CONNECTION_STRING    = module.cosmosdb_account.connection_strings[0],
+    COSMOS_DB_NAME                 = module.cosmosdb_sql_database_backoffice.name
+    COSMOS_DB_CONTAINER_NAME       = module.cosmosdb_sql_container_backoffice-api-keys.name
+    APIM_RESOURCE_GROUP_NAME       = "io-p-rg-internal",
+    APIM_SERVICE_NAME              = "io-p-apim-api"
+    APIM_PRODUCT_NAME              = module.apim_io_sign_product.product_id
+    APPINSIGHTS_INSTRUMENTATIONKEY = sensitive(data.azurerm_application_insights.application_insights.instrumentation_key)
     },
     {
       for s in var.io_sign_backoffice_app.app_settings :
@@ -56,7 +56,7 @@ module "io_sign_backoffice_app" {
 
   docker_image     = "ghcr.io/pagopa/io-sign-backoffice"
   docker_image_tag = "latest"
- 
+
   health_check_path = "/health"
 
   app_settings = local.backoffice_app_settings
