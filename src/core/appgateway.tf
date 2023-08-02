@@ -98,7 +98,7 @@ module "app_gw" {
       pick_host_name_from_backend = true
     }
 
-    firmaconio-selfcare-backend = {
+    /*firmaconio-selfcare-backend = {
       protocol     = "Https"
       host         = null
       port         = 443
@@ -110,7 +110,7 @@ module "app_gw" {
       probe_name                  = "probe-firmaconio-selfcare-backend"
       request_timeout             = 180
       pick_host_name_from_backend = true
-    }
+    }*/
 
     continua-app = {
       protocol     = "Https"
@@ -375,12 +375,12 @@ module "app_gw" {
       priority              = 60
     }
 
-    firmaconio-selfcare-pagopa-it = {
+    /*firmaconio-selfcare-pagopa-it = {
       listener              = "firmaconio-selfcare-pagopa-it"
       backend               = "firmaconio-selfcare-backend"
       rewrite_rule_set_name = "rewrite-rule-set-firmaconio-selfcare-backend"
       priority              = 90
-    }
+    }*/
 
     continua-io-pagopa-it = {
       listener              = "continua-io-pagopa-it"
@@ -502,7 +502,7 @@ module "app_gw" {
         response_header_configurations = []
       }]
     },
-    {
+    /*{
       name = "rewrite-rule-set-firmaconio-selfcare-backend"
       rewrite_rules = [{
         name          = "http-headers-firmaconio-selfcare-backend"
@@ -521,7 +521,7 @@ module "app_gw" {
         ]
         response_header_configurations = []
       }]
-    },
+    },*/
     {
       name = "rewrite-rule-set-continua"
       rewrite_rules = [{
@@ -755,10 +755,10 @@ data "azurerm_key_vault_certificate" "app_gw_api_io_selfcare_pagopa_it" {
   key_vault_id = module.key_vault.id
 }
 
-data "azurerm_key_vault_certificate" "app_gw_firmaconio_selfcare_pagopa_it" {
+/*data "azurerm_key_vault_certificate" "app_gw_firmaconio_selfcare_pagopa_it" {
   name         = var.app_gateway_firmaconio_selfcare_pagopa_it_certificate_name
   key_vault_id = module.key_vault.id
-}
+}*/
 
 data "azurerm_key_vault_certificate" "app_gw_continua" {
   name         = var.app_gateway_continua_io_pagopa_it_certificate_name
