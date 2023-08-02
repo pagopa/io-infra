@@ -1,6 +1,6 @@
 resource "azurerm_dns_zone" "firmaconio_selfcare_pagopa_it" {
   count               = (var.dns_zone_firmaconio_selfcare == null || var.external_domain == null) ? 0 : 1
-  name                = join(".", [var.dns_zone_io_selfcare, var.external_domain])
+  name                = join(".", [var.dns_zone_firmaconio_selfcare, var.external_domain])
   resource_group_name = azurerm_resource_group.rg_external.name
 
   tags = var.tags
