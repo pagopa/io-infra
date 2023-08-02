@@ -334,8 +334,8 @@ locals {
     },
     {
       # https://firmaconio.selfcare.pagopa.it
-      name                              = trimsuffix(azurerm_dns_a_record.firmaconio_pagopa_it.fqdn, "."),
-      host                              = trimsuffix(azurerm_dns_a_record.firmaconio_pagopa_it.fqdn, "."),
+      name                              = trimsuffix(azurerm_dns_a_record.firmaconio_selfcare_pagopa_it.fqdn, "."),
+      host                              = trimsuffix(azurerm_dns_a_record.firmaconio_selfcare_pagopa_it.fqdn, "."),
       path                              = "/health",
       frequency                         = 300
       http_status                       = 200,
