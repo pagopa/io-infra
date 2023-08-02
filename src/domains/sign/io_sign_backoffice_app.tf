@@ -7,6 +7,7 @@ locals {
     APIM_RESOURCE_GROUP_NAME    = "io-p-rg-internal",
     APIM_SERVICE_NAME           = "io-p-apim-api"
     APIM_PRODUCT_NAME           = module.apim_io_sign_product.product_id
+    APPINSIGHTS_INSTRUMENTATIONKEY = data.azurerm_application_insights.application_insights.instrumentation_key
     },
     {
       for s in var.io_sign_backoffice_app.app_settings :
