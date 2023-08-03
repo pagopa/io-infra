@@ -333,6 +333,15 @@ locals {
       ssl_cert_remaining_lifetime_check = 7,
     },
     {
+      # https://firmaconio.selfcare.pagopa.it
+      name                              = trimsuffix(azurerm_dns_a_record.firmaconio_selfcare_pagopa_it.fqdn, "."),
+      host                              = trimsuffix(azurerm_dns_a_record.firmaconio_selfcare_pagopa_it.fqdn, "."),
+      path                              = "/health",
+      frequency                         = 300
+      http_status                       = 200,
+      ssl_cert_remaining_lifetime_check = 7,
+    },
+    {
       # https://raw.githubusercontent.com/pagopa/io-services-metadata/master/status/backend.json
       name                              = "github-raw-status-backend",
       host                              = "raw.githubusercontent.com",
