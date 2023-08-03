@@ -14,6 +14,7 @@ jobs:
       - name: init_terraform_folders
         env:
           FOLDERS: >
+            .identity
             src/core
             src/.template-app
             src/.template-common
