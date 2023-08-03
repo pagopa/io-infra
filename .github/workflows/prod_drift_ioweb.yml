@@ -62,15 +62,15 @@ jobs:
           dir: ${{ env.DIR }}-common
           azure_environment: prod
 
-      - name: Terraform drift detection weu-beta
-        # from https://github.com/pagopa/terraform-driftdetection-azure-action/commits/main
-        uses: pagopa/terraform-driftdetection-azure-action@71bd771b3a071c78b36e5e0ecbd666ac39b1113c
-        with:
-          client_id: ${{ secrets.AZURE_CLIENT_ID }}
-          tenant_id: ${{ secrets.AZURE_TENANT_ID }}
-          subscription_id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
-          dir: ${{ env.DIR }}-app
-          azure_environment: weu-beta
+      # - name: Terraform drift detection weu-beta
+      #   # from https://github.com/pagopa/terraform-driftdetection-azure-action/commits/main
+      #   uses: pagopa/terraform-driftdetection-azure-action@71bd771b3a071c78b36e5e0ecbd666ac39b1113c
+      #   with:
+      #     client_id: ${{ secrets.AZURE_CLIENT_ID }}
+      #     tenant_id: ${{ secrets.AZURE_TENANT_ID }}
+      #     subscription_id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+      #     dir: ${{ env.DIR }}-app
+      #     azure_environment: weu-beta
 
       - name: Terraform drift detection weu-prod01
         # from https://github.com/pagopa/terraform-driftdetection-azure-action/commits/main
