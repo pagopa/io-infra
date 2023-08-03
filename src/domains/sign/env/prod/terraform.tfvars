@@ -15,10 +15,10 @@ tags = {
 # az network vnet subnet list --subscription PROD-IO --vnet-name io-p-vnet-common --resource-group io-p-rg-common --output table
 # and thus define new CIDRs according to the unallocated address space
 subnets_cidrs = {
-  issuer   = ["10.0.102.0/24"]
-  user     = ["10.0.103.0/24"]
-  eventhub = ["10.0.104.0/24"],
-  support  = ["10.0.147.0/24"]
+  issuer     = ["10.0.102.0/24"]
+  user       = ["10.0.103.0/24"]
+  eventhub   = ["10.0.104.0/24"],
+  support    = ["10.0.147.0/24"]
   backoffice = ["10.0.115.0/24"]
 }
 
@@ -102,21 +102,21 @@ io_sign_user_func = {
 }
 
 io_sign_backoffice_app = {
-    sku_name = "B1"
-    app_settings = [
-      {
-        name = "NODE_ENV",
-        value = "production"
-      },
-      {
-        name = "WEBSITES_PORT",
-        value = "3000"
-      },
-      {
-        name = "AUTH_SESSION_SECRET",
-        key_vault_secret_name = "bo-auth-session-secret"
-      }
-    ]
+  sku_name = "B1"
+  app_settings = [
+    {
+      name  = "NODE_ENV",
+      value = "production"
+    },
+    {
+      name  = "WEBSITES_PORT",
+      value = "3000"
+    },
+    {
+      name                  = "AUTH_SESSION_SECRET",
+      key_vault_secret_name = "bo-auth-session-secret"
+    }
+  ]
 }
 
 integration_hub = {
@@ -212,8 +212,8 @@ dns_ses_validation = [
 ]
 
 io_common = {
-  resource_group_name: "io-p-rg-common"
-  log_analytics_workspace_name: "io-p-law-common"
+  resource_group_name : "io-p-rg-common"
+  log_analytics_workspace_name : "io-p-law-common"
   appgateway_snet_name = "io-p-appgateway-snet"
-  vnet_common_name = "io-p-vnet-common"
+  vnet_common_name     = "io-p-vnet-common"
 }

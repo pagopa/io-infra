@@ -27,6 +27,7 @@ jobs:
             src/domains/profile-app
             src/domains/profile-common
             src/domains/sign
+            src/packer
         run: |
           pids=()
 
