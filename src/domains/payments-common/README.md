@@ -27,6 +27,7 @@
 | <a name="module_key_vault"></a> [key\_vault](#module\_key\_vault) | git::https://github.com/pagopa/terraform-azurerm-v3.git//key_vault | v4.1.8 |
 | <a name="module_mongdb_collection_payment"></a> [mongdb\_collection\_payment](#module\_mongdb\_collection\_payment) | git::https://github.com/pagopa/terraform-azurerm-v3.git//cosmosdb_mongodb_collection | v4.1.8 |
 | <a name="module_mongdb_collection_payment_retry"></a> [mongdb\_collection\_payment\_retry](#module\_mongdb\_collection\_payment\_retry) | git::https://github.com/pagopa/terraform-azurerm-v3.git//cosmosdb_mongodb_collection | v4.1.8 |
+| <a name="module_mongdb_collection_payment_sharded"></a> [mongdb\_collection\_payment\_sharded](#module\_mongdb\_collection\_payment\_sharded) | git::https://github.com/pagopa/terraform-azurerm-v3.git//cosmosdb_mongodb_collection | v4.1.8 |
 
 ## Resources
 
