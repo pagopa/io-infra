@@ -40,43 +40,6 @@ resource "azurerm_api_management_api_operation_policy" "create_service_policy_v2
   xml_content = file("./api/io_services/v1/post_createservice_policy/policy.xml")
 }
 
-# Temporary policy resource for the time needed to upgrade apim to v2
-resource "azurerm_api_management_api_operation_policy" "regenerate_service_key_policy_v2" {
-  api_name            = "io-services-api"
-  api_management_name = module.apim_v2.name
-  resource_group_name = module.apim_v2.resource_group_name
-  operation_id        = "regenerateServiceKey"
-
-  xml_content = file("./api/io_services/v1/temp_mock_response_500_policy/policy.xml")
-}
-
-resource "azurerm_api_management_api_operation_policy" "update_service_policy_v2" {
-  api_name            = "io-services-api"
-  api_management_name = module.apim_v2.name
-  resource_group_name = module.apim_v2.resource_group_name
-  operation_id        = "updateService"
-
-  xml_content = file("./api/io_services/v1/temp_mock_response_500_policy/policy.xml")
-}
-
-resource "azurerm_api_management_api_operation_policy" "upload_organization_logo_policy_v2" {
-  api_name            = "io-services-api"
-  api_management_name = module.apim_v2.name
-  resource_group_name = module.apim_v2.resource_group_name
-  operation_id        = "uploadOrganizationLogo"
-
-  xml_content = file("./api/io_services/v1/temp_mock_response_500_policy/policy.xml")
-}
-
-resource "azurerm_api_management_api_operation_policy" "upload_service_logo_policy_v2" {
-  api_name            = "io-services-api"
-  api_management_name = module.apim_v2.name
-  resource_group_name = module.apim_v2.resource_group_name
-  operation_id        = "uploadServiceLogo"
-
-  xml_content = file("./api/io_services/v1/temp_mock_response_500_policy/policy.xml")
-}
-
 # Named Value fn3-services
 resource "azurerm_api_management_named_value" "io_fn3_services_url_v2" {
   name                = "io-fn3-services-url"
