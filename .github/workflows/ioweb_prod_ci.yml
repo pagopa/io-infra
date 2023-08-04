@@ -1,16 +1,23 @@
-name: Drift Detection on prod citizen-auth
+name: Continuous Integration on prod ioweb
 
 on:
   workflow_dispatch:
-  schedule:
-    - cron: '08 00 * * *'
+  pull_request:
+    types:
+      - opened
+      - edited
+      - synchronize
+      - reopened
+    paths:
+      - "src/domains/ioweb**"
+      - ".github/workflows/ioweb_prod**"
 
 permissions:
   id-token: write
   contents: read
 
 env:
-  DIR: "src/domains/citizen-auth"
+  DIR: "src/domains/ioweb"
   AZURE_ENVIRONMENT: prod
 
 jobs:
@@ -33,8 +40,8 @@ jobs:
           resource_group_name: ${{ secrets.AZURE_RESOURCE_GROUP_NAME }}
           pat_token: ${{ secrets.BOT_TOKEN }}
 
-  terraform_driftdetection_job:
-    name: Terraform Drift Detection
+  terraform_plan_job:
+    name: Terraform Plan
     runs-on: [self-hosted, "${{ needs.create_runner.outputs.runner_name }}"]
     environment: prod-ci
     needs: create_runner
@@ -52,9 +59,9 @@ jobs:
         # https://github.com/pagopa/terraform-install-action/commits/main
         uses: pagopa/terraform-install-action@1f76f593176e58c423b88d72273a612ba7ba430b
 
-      - name: Terraform drift detection common
-        # from https://github.com/pagopa/terraform-driftdetection-azure-action/commits/main
-        uses: pagopa/terraform-driftdetection-azure-action@71bd771b3a071c78b36e5e0ecbd666ac39b1113c
+      - name: Terraform plan common
+        # from https://github.com/pagopa/terraform-plan-azure-action/commits/main
+        uses: pagopa/terraform-plan-azure-action@392aca28cbb33f5dc28215dfb72385e136fd813b
         with:
           client_id: ${{ secrets.AZURE_CLIENT_ID }}
           tenant_id: ${{ secrets.AZURE_TENANT_ID }}
@@ -62,32 +69,32 @@ jobs:
           dir: ${{ env.DIR }}-common
           azure_environment: prod
 
-      - name: Terraform drift detection weu-beta
-        # from https://github.com/pagopa/terraform-driftdetection-azure-action/commits/main
-        uses: pagopa/terraform-driftdetection-azure-action@71bd771b3a071c78b36e5e0ecbd666ac39b1113c
-        with:
-          client_id: ${{ secrets.AZURE_CLIENT_ID }}
-          tenant_id: ${{ secrets.AZURE_TENANT_ID }}
-          subscription_id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
-          dir: ${{ env.DIR }}-app
-          azure_environment: weu-beta
+      # - name: Terraform plan app (weu-beta)
+      #   # from https://github.com/pagopa/terraform-plan-azure-action/commits/main
+      #   uses: pagopa/terraform-plan-azure-action@392aca28cbb33f5dc28215dfb72385e136fd813b
+      #   with:
+      #     client_id: ${{ secrets.AZURE_CLIENT_ID }}
+      #     tenant_id: ${{ secrets.AZURE_TENANT_ID }}
+      #     subscription_id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+      #     dir: ${{ env.DIR }}-app
+      #     azure_environment: weu-beta
 
-      - name: Terraform drift detection weu-prod01
-        # from https://github.com/pagopa/terraform-driftdetection-azure-action/commits/main
-        uses: pagopa/terraform-driftdetection-azure-action@71bd771b3a071c78b36e5e0ecbd666ac39b1113c
-        with:
-          client_id: ${{ secrets.AZURE_CLIENT_ID }}
-          tenant_id: ${{ secrets.AZURE_TENANT_ID }}
-          subscription_id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
-          dir: ${{ env.DIR }}-app
-          azure_environment: weu-prod01
+      # - name: Terraform plan app (weu-prod01)
+      #   # from https://github.com/pagopa/terraform-plan-azure-action/commits/main
+      #   uses: pagopa/terraform-plan-azure-action@392aca28cbb33f5dc28215dfb72385e136fd813b
+      #   with:
+      #     client_id: ${{ secrets.AZURE_CLIENT_ID }}
+      #     tenant_id: ${{ secrets.AZURE_TENANT_ID }}
+      #     subscription_id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+      #     dir: ${{ env.DIR }}-app
+      #     azure_environment: weu-prod01
 
   cleanup_runner:
     name: Cleanup Runner
     if: always()
     runs-on: ubuntu-22.04
     environment: prod-runner
-    needs: [create_runner, terraform_driftdetection_job]
+    needs: [create_runner, terraform_plan_job]
     steps:
       - name: Cleanup GitHub Runner
         id: cleanup_github_runner
@@ -100,4 +107,3 @@ jobs:
           resource_group_name: ${{ secrets.AZURE_RESOURCE_GROUP_NAME }}
           runner_name: ${{ needs.create_runner.outputs.runner_name }}
           pat_token: ${{ secrets.BOT_TOKEN }}
-

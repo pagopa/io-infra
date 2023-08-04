@@ -83,6 +83,12 @@ variable "dns_zone_io_selfcare" {
   description = "The dns subdomain."
 }
 
+variable "dns_zone_firmaconio_selfcare" {
+  type        = string
+  default     = null
+  description = "The dns subdomain."
+}
+
 # azure devops
 variable "azdo_sp_tls_cert_enabled" {
   type        = string
@@ -392,6 +398,11 @@ variable "app_gateway_developerportal_backend_io_italia_it_certificate_name" {
 }
 
 variable "app_gateway_api_io_selfcare_pagopa_it_certificate_name" {
+  type        = string
+  description = "Application gateway api certificate name on Key Vault"
+}
+
+variable "app_gateway_firmaconio_selfcare_pagopa_it_certificate_name" {
   type        = string
   description = "Application gateway api certificate name on Key Vault"
 }

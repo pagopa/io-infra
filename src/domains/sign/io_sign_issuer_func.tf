@@ -80,7 +80,7 @@ module "io_sign_issuer_func" {
 
 module "io_sign_issuer_func_staging_slot" {
   count  = var.io_sign_issuer_func.sku_tier == "PremiumV3" ? 1 : 0
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app_slot?ref=v6.0.1"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app_slot?ref=v6.2.1"
 
   name                = "staging"
   location            = azurerm_resource_group.backend_rg.location

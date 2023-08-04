@@ -8,17 +8,21 @@ terraform {
       source  = "hashicorp/azuread"
       version = "<= 2.33.0"
     }
+    null = {
+      source  = "hashicorp/null"
+      version = "<= 3.2.1"
+    }
   }
 
   backend "azurerm" {}
-
-  # tflint-ignore: terraform_required_version
-  # Due to precommit check update required
-  # required_version = ">= 1.3.7"
 }
 
 provider "azurerm" {
-  features {}
+  features {
+    key_vault {
+      purge_soft_delete_on_destroy = false
+    }
+  }
 }
 
 data "azurerm_subscription" "current" {}
