@@ -104,8 +104,6 @@ module "mongdb_collection_payment_sharded" {
       unique = false
     },
   ]
-
-  lock_enable = true
 }
 
 module "mongdb_collection_payment_retry" {
