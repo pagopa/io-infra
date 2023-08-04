@@ -37,6 +37,7 @@ jobs:
 
           for f in $FOLDERS; do
             pushd "$(pwd)/${f}"
+              echo "🔬 folder: $folder in under terraform: $(pwd)"
               sed -i -e 's/  backend "azurerm" {}//g' 99_main.tf # use local backend
               docker run -v $(pwd):/tmp -w /tmp hashicorp/terraform:$TAG init &
               pids+=($!)
