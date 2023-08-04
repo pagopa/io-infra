@@ -10,7 +10,7 @@ on:
       - reopened
     paths:
       - "src/domains/citizen-auth**"
-      - ".github/workflows/prod**"
+      - ".github/workflows/prod**citizen-auth.yml"
 
 permissions:
   id-token: write
