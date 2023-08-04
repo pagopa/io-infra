@@ -244,6 +244,10 @@ module "appservice_selfcare_be" {
     SUBSCRIPTION_MIGRATIONS_URL    = format("https://%s.azurewebsites.net/api/v1", module.function_subscriptionmigrations.name)
     SUBSCRIPTION_MIGRATIONS_APIKEY = data.azurerm_key_vault_secret.selfcare_subsmigrations_apikey.value
 
+    # Request Review Legacy Queue
+    REQUEST_REVIEW_LEGACY_QUEUE_CONNECTIONSTRING = data.azurerm_key_vault_secret.devportal_request_review_legacy_queue_connectionstring.value
+    REQUEST_REVIEW_LEGACY_QUEUE_NAME             = "request-review-legacy"
+
     # Feature Flags
     #
     # List of (comma separated) APIM userId for whom we want to enable Manage Flow on Service Management.
