@@ -15,22 +15,25 @@ pids=()
 ACTION="$1"
 
 array=(
-    'src/.template::weu-beta'
+    '.identity::prod'
+    'src/.template-app::weu-beta'
     'src/.template-common::prod'
-    'src/core::prod'
     'src/aks-platform::weu-beta'
+    'src/core::prod'
+    'src/domains/citizen-auth-app::weu-beta'
+    'src/domains/citizen-auth-common::prod'
     'src/domains/messages-app::weu-beta'
     'src/domains/messages-common::prod'
     'src/domains/payments-app::weu-beta'
     'src/domains/payments-common::prod'
     'src/domains/profile-app::weu-beta'
     'src/domains/profile-common::prod'
-    'src/domains/reminder::prod'
     'src/domains/sign::prod'
+    'src/packer::prod'
 )
 
 function rm_terraform {
-    find . \( -iname ".terraform*" ! -iname ".terraform-docs*" ! -iname ".terraform-version" \) -print0 | xargs -0 rm -rf
+    find . \( -iname ".terraform*" ! -iname ".terraform-docs*" ! -iname ".terraform-version" ! -iname ".terraform.lock.hcl" \) -print0 | xargs -0 rm -rf
 }
 
 echo "[INFO] 🪚  Delete all .terraform folders"
