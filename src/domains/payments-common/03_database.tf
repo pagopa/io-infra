@@ -79,6 +79,35 @@ module "mongdb_collection_payment" {
   lock_enable = true
 }
 
+module "mongdb_collection_payment_sharded" {
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//cosmosdb_mongodb_collection?ref=v4.1.8"
+
+  name                = "payment-sharded"
+  resource_group_name = azurerm_resource_group.data_rg.name
+
+  cosmosdb_mongo_account_name  = module.cosmosdb_account_mongodb.name
+  cosmosdb_mongo_database_name = azurerm_cosmosdb_mongo_database.db.name
+
+  shard_key = "rptId"
+
+  indexes = [
+    {
+      keys   = ["_id"]
+      unique = true
+    },
+    {
+      keys   = ["rptId"]
+      unique = false
+    },
+    {
+      keys   = ["content_paymentData_payeeFiscalCode", "content_paymentData_noticeNumber"]
+      unique = false
+    },
+  ]
+
+  lock_enable = true
+}
+
 module "mongdb_collection_payment_retry" {
   source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//cosmosdb_mongodb_collection?ref=v4.1.8"
 
