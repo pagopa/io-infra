@@ -258,7 +258,7 @@ module "appservice_selfcare_be" {
     MANAGE_FLOW_ENABLE_USER_LIST = "*"
 
     # Lock the creation of a new APIM user, when resolve SelfCareIdentity.
-    LOCK_SELFCARE_CREATE_NEW_APIM_USER = "false"
+    LOCK_SELFCARE_CREATE_NEW_APIM_USER = "true"
 
   }
 
