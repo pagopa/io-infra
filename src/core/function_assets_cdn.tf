@@ -238,11 +238,7 @@ resource "azurerm_monitor_metric_alert" "function_assets_health_check" {
   }
 
   action {
-    action_group_id = azurerm_monitor_action_group.email.id
-  }
-
-  action {
-    action_group_id = azurerm_monitor_action_group.slack.id
+    action_group_id = azurerm_monitor_action_group.error_action_group.id
   }
 }
 
@@ -264,11 +260,7 @@ resource "azurerm_monitor_metric_alert" "function_assets_http_server_errors" {
   }
 
   action {
-    action_group_id = azurerm_monitor_action_group.email.id
-  }
-
-  action {
-    action_group_id = azurerm_monitor_action_group.slack.id
+    action_group_id = azurerm_monitor_action_group.error_action_group.id
   }
 }
 
@@ -290,10 +282,6 @@ resource "azurerm_monitor_metric_alert" "function_assets_response_time" {
   }
 
   action {
-    action_group_id = azurerm_monitor_action_group.email.id
-  }
-
-  action {
-    action_group_id = azurerm_monitor_action_group.slack.id
+    action_group_id = azurerm_monitor_action_group.error_action_group.id
   }
 }

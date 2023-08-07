@@ -67,7 +67,7 @@ module "aks" {
   # end network
 
   rbac_enabled        = true
-  aad_admin_group_ids = [data.azuread_group.adgroup_admin.object_id, data.azuread_group.adgroup_contributors.object_id, data.azuread_group.adgroup_developers.object_id]
+  aad_admin_group_ids = [data.azuread_group.adgroup_admin.object_id, data.azuread_group.adgroup_developers.object_id]
 
   addon_azure_policy_enabled                     = true
   addon_azure_key_vault_secrets_provider_enabled = true
@@ -78,11 +78,7 @@ module "aks" {
   alerts_enabled       = true
   action = [
     {
-      action_group_id    = data.azurerm_monitor_action_group.slack.id
-      webhook_properties = null
-    },
-    {
-      action_group_id    = data.azurerm_monitor_action_group.email.id
+      action_group_id    = data.azurerm_monitor_action_group.error_action_group.id
       webhook_properties = null
     }
   ]

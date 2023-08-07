@@ -244,6 +244,10 @@ module "appservice_selfcare_be" {
     SUBSCRIPTION_MIGRATIONS_URL    = format("https://%s.azurewebsites.net/api/v1", module.function_subscriptionmigrations.name)
     SUBSCRIPTION_MIGRATIONS_APIKEY = data.azurerm_key_vault_secret.selfcare_subsmigrations_apikey.value
 
+    # Request Review Legacy Queue
+    REQUEST_REVIEW_LEGACY_QUEUE_CONNECTIONSTRING = data.azurerm_key_vault_secret.devportal_request_review_legacy_queue_connectionstring.value
+    REQUEST_REVIEW_LEGACY_QUEUE_NAME             = "request-review-legacy"
+
     # Feature Flags
     #
     # List of (comma separated) APIM userId for whom we want to enable Manage Flow on Service Management.
@@ -252,6 +256,10 @@ module "appservice_selfcare_be" {
     # Note: The list below is for the user IDs only, not the full path APIM.id.
     # UPDATE: The new feature is that "If one of such strings is "*", we suddenly open the feature to everyone.".
     MANAGE_FLOW_ENABLE_USER_LIST = "*"
+
+    # Lock the creation of a new APIM user, when resolve SelfCareIdentity.
+    LOCK_SELFCARE_CREATE_NEW_APIM_USER = "true"
+
   }
 
   allowed_subnets = [module.appgateway_snet.id]

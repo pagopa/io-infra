@@ -1,7 +1,7 @@
 resource "azurerm_dns_zone" "firma_io_pagopa_it" {
   count = var.env_short == "p" ? 1 : 0
 
-  name                = var.dns_zone_name
+  name                = var.dns_zone_names.website
   resource_group_name = azurerm_resource_group.integration_rg.name
 
   tags = var.tags

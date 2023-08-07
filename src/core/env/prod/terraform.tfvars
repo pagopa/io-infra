@@ -9,9 +9,10 @@ tags = {
 }
 
 # dns
-external_domain      = "pagopa.it"
-dns_zone_io          = "io"
-dns_zone_io_selfcare = "io.selfcare"
+external_domain              = "pagopa.it"
+dns_zone_io                  = "io"
+dns_zone_io_selfcare         = "io.selfcare"
+dns_zone_firmaconio_selfcare = "firmaconio.selfcare"
 
 lock_enable = true
 
@@ -72,6 +73,7 @@ app_gateway_api_io_italia_it_certificate_name                     = "api-io-ital
 app_gateway_app_backend_io_italia_it_certificate_name             = "app-backend-io-italia-it"
 app_gateway_developerportal_backend_io_italia_it_certificate_name = "developerportal-backend-io-italia-it"
 app_gateway_api_io_selfcare_pagopa_it_certificate_name            = "api-io-selfcare-pagopa-it"
+app_gateway_firmaconio_selfcare_pagopa_it_certificate_name        = "firmaconio-selfcare-pagopa-it"
 app_gateway_continua_io_pagopa_it_certificate_name                = "continua-io-pagopa-it"
 app_gateway_min_capacity                                          = 4 # 4 capacity=baseline, 10 capacity=high volume event, 15 capacity=very high volume event
 app_gateway_max_capacity                                          = 50

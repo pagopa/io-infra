@@ -282,11 +282,7 @@ module "subscriptionmigrations_db_server" {
   monitor_metric_alert_criteria = local.function_subscriptionmigrations.metric_alerts.db
   action = [
     {
-      action_group_id    = azurerm_monitor_action_group.email.id
-      webhook_properties = null
-    },
-    {
-      action_group_id    = azurerm_monitor_action_group.slack.id
+      action_group_id    = azurerm_monitor_action_group.error_action_group.id
       webhook_properties = null
     }
   ]

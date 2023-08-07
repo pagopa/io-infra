@@ -14,6 +14,10 @@ data "azurerm_key_vault_secret" "jwk_primary_key_fims" {
   name         = "io-p-fims-jwk-primary-key"
   key_vault_id = data.azurerm_key_vault.kv.id
 }
+data "azurerm_key_vault_secret" "cookies_key_fims" {
+  name         = "io-p-fims-cookies-key"
+  key_vault_id = data.azurerm_key_vault.kv.id
+}
 
 locals {
   fims = {
@@ -44,17 +48,19 @@ locals {
       FETCH_KEEPALIVE_FREE_SOCKET_TIMEOUT = "30000"
       FETCH_KEEPALIVE_TIMEOUT             = "60000"
 
-      EXPRESS_SERVER_HOSTNAME       = "0.0.0.0"
-      LOG_LEVEL                     = "debug"
-      APPLICATION_NAME              = "io-openid-provider"
-      IO_BACKEND_BASE_URL           = "https://app-backend.io.pagopa.it"
-      VERSION                       = "0.0.1"
-      MONGODB_URL                   = data.azurerm_key_vault_secret.mongodb_connection_string_fims.value
-      AUTHENTICATION_COOKIE_KEY     = "X-IO-FIMS-Token"
-      GRANT_TTL_IN_SECONDS          = "86400"
-      ISSUER                        = "http://localhost:3001"     #TBD with domain value
-      COOKIES_KEY                   = "just-for-testing-purposes" #TBD with vault value
-      ENABLE_FEATURE_REMEMBER_GRANT = "true"
+      EXPRESS_SERVER_HOSTNAME         = "0.0.0.0"
+      LOG_LEVEL                       = "debug"
+      APPLICATION_NAME                = "io-openid-provider"
+      IO_BACKEND_BASE_URL             = "https://api-app.io.pagopa.it"
+      VERSION                         = "0.0.1"
+      MONGODB_URL                     = data.azurerm_key_vault_secret.mongodb_connection_string_fims.value
+      AUTHENTICATION_COOKIE_KEY       = "X-IO-FIMS-Token"
+      GRANT_TTL_IN_SECONDS            = "86400"
+      ISSUER                          = "https://io-p-citizen-auth-weu-prod01-app-fims.azurewebsites.net"
+      COOKIES_KEY                     = data.azurerm_key_vault_secret.cookies_key_fims.value
+      ENABLE_FEATURE_REMEMBER_GRANT   = "true",
+      APPINSIGHTS_SAMPLING_PERCENTAGE = 100,
+      ENABLE_PROXY                    = "true"
     }
   }
 }

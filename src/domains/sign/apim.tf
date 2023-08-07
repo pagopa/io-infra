@@ -85,7 +85,7 @@ resource "azurerm_api_management_named_value" "io_sign_cosmosdb_issuer_issuers_c
 
 
 module "apim_io_sign_product" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_product?ref=v4.1.3"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_product?ref=v6.20.2"
 
   product_id   = "io-sign-api"
   display_name = "IO SIGN API"
@@ -111,7 +111,7 @@ resource "azurerm_api_management_api_operation_policy" "get_signer_by_fiscal_cod
 }
 
 module "apim_io_sign_issuer_api_v1" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api?ref=v4.1.3"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api?ref=v6.20.2"
 
   name                  = format("%s-sign-issuer-api", local.product)
   api_management_name   = data.azurerm_api_management.apim_api.name
@@ -133,7 +133,7 @@ module "apim_io_sign_issuer_api_v1" {
 }
 
 module "apim_io_sign_support_product" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_product?ref=v4.1.3"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_product?ref=v6.20.2"
 
   product_id   = "io-sign-support-api"
   display_name = "IO SIGN SUPPORT Product"
@@ -150,7 +150,7 @@ module "apim_io_sign_support_product" {
 }
 
 module "apim_io_sign_support_api_v1" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api?ref=v4.1.3"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api?ref=v6.20.2"
 
   name                  = format("%s-sign-support-api", local.product)
   api_management_name   = data.azurerm_api_management.apim_api.name

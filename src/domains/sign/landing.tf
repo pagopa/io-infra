@@ -17,7 +17,7 @@ data "azurerm_dns_zone" "io_italia_it" {
 }
 
 module "landing_cdn" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//cdn?ref=v6.3.1"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//cdn?ref=v6.20.2"
 
   name                  = "landing"
   prefix                = local.project
@@ -25,10 +25,6 @@ module "landing_cdn" {
   location              = azurerm_resource_group.integration_rg.location
   hostname              = "firma.io.italia.it"
   https_rewrite_enabled = true
-
-  # The argument `lock_enabled` is required by the module; however it must not
-  # be used any more, since locks are managed transparently via global policies.
-  lock_enabled = false
 
   index_document     = "index.html"
   error_404_document = "index.html"

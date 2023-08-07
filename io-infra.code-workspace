@@ -1,0 +1,12 @@
+{
+  "folders": [
+    {
+      "name": "core",
+      "path": "./src/core"
+    },
+    {
+      "name": "sign",
+      "path": "./src/domains/sign"
+    }
+  ]
+}

@@ -1,5 +1,5 @@
 module "key_vault_secrets" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//key_vault_secrets_query?ref=v4.1.3"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//key_vault_secrets_query?ref=v6.20.2"
 
   resource_group = azurerm_resource_group.sec_rg.name
   key_vault_name = module.key_vault.name
@@ -20,7 +20,7 @@ module "key_vault_secrets" {
 }
 
 module "key_vault" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//key_vault?ref=v6.2.2"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//key_vault?ref=v6.20.2"
 
   name                       = format("%s-%s-kv", local.product, var.domain)
   location                   = azurerm_resource_group.sec_rg.location
@@ -37,19 +37,6 @@ resource "azurerm_key_vault_access_policy" "adgroup_admin" {
 
   tenant_id = data.azurerm_client_config.current.tenant_id
   object_id = data.azuread_group.adgroup_admin.object_id
-
-  key_permissions         = ["Get", "List", "Update", "Create", "Import", "Delete", ]
-  secret_permissions      = ["Get", "List", "Set", "Delete", "Restore", "Recover", ]
-  storage_permissions     = []
-  certificate_permissions = ["Get", "List", "Update", "Create", "Import", "Delete", "Restore", "Recover", ]
-}
-
-## adgroup_developers group policy ##
-resource "azurerm_key_vault_access_policy" "adgroup_contributors" {
-  key_vault_id = module.key_vault.id
-
-  tenant_id = data.azurerm_client_config.current.tenant_id
-  object_id = data.azuread_group.adgroup_contributors.object_id
 
   key_permissions         = ["Get", "List", "Update", "Create", "Import", "Delete", ]
   secret_permissions      = ["Get", "List", "Set", "Delete", "Restore", "Recover", ]

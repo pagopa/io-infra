@@ -8,7 +8,7 @@ on:
       - main
     paths:
       - "src/domains/citizen-auth**"
-      - ".github/workflows/prod**"
+      - ".github/workflows/prod**citizen-auth.yml"
 
 permissions:
   id-token: write
@@ -29,7 +29,7 @@ jobs:
       - name: Create GitHub Runner
         id: create_github_runner
         # from https://github.com/pagopa/github-self-hosted-runner-azure-create-action/commits/main
-        uses: pagopa/github-self-hosted-runner-azure-create-action@63534a04613b420ce6474ccbb52ac7884129ff6f
+        uses: pagopa/github-self-hosted-runner-azure-create-action@13d5d0ae9550efdd5770b14029d346c7ad490d01
         with:
           client_id: ${{ secrets.AZURE_CLIENT_ID }}
           tenant_id: ${{ secrets.AZURE_TENANT_ID }}
@@ -37,7 +37,6 @@ jobs:
           container_app_environment_name: ${{ secrets.AZURE_CONTAINER_APP_ENVIRONMENT_NAME }}
           resource_group_name: ${{ secrets.AZURE_RESOURCE_GROUP_NAME }}
           pat_token: ${{ secrets.BOT_TOKEN }}
-          self_hosted_runner_image_tag: v1.4.1@sha256:97aebedab1fe4ccfca0050726f37a76d18dcfa4165493ee2f823454897548ff9
 
   terraform_preapply_job:
     name: Terraform Pre Apply

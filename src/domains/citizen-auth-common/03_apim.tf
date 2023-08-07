@@ -103,6 +103,7 @@ resource "azurerm_api_management_subscription" "pagopa" {
   product_id          = module.apim_product_lollipop.id
   display_name        = "Lollipop API"
   state               = "active"
+  allow_tracing       = false
 }
 
 resource "azurerm_api_management_subscription" "pagopa_fastlogin" {
@@ -112,6 +113,7 @@ resource "azurerm_api_management_subscription" "pagopa_fastlogin" {
   product_id          = module.apim_product_lollipop.id
   display_name        = "Fast Login LC"
   state               = "active"
+  allow_tracing       = false
 }
 
 ####################################################################################
