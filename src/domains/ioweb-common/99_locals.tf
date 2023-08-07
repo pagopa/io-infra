@@ -10,4 +10,9 @@ locals {
 
   acr_name                = replace("${local.product}commonacr", "-", "")
   acr_resource_group_name = "${local.product}-container-registry-rg"
+
+  apim_v2_name             = "${local.product}-apim-v2-api"
+  apim_resource_group_name = "${local.product}-rg-internal"
+
+  spid_login_base_path = "ioweb/auth/v1"
 }

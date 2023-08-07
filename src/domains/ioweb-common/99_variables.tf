@@ -83,3 +83,30 @@ variable "application_insights_name" {
   type        = string
   description = "Specifies the name of the Application Insights."
 }
+
+variable "subnets_cidrs" {
+  type = map(
+    list(string)
+  )
+  description = "The CIDR address prefixes of the subnets"
+}
+
+
+### IO WEB Auth
+
+variable "app_gateway_host_name" {
+  type        = string
+  description = "Application gateway host name"
+}
+
+variable "spid_login_plan_sku_tier" {
+  description = "App backend app plan sku tier"
+  type        = string
+  default     = "PremiumV3"
+}
+
+variable "spid_login_plan_sku_size" {
+  description = "App backend app plan sku size"
+  type        = string
+  default     = "P1v3"
+}
