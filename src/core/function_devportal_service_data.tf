@@ -26,7 +26,7 @@ locals {
       APIM_CLIENT_ID       = data.azurerm_key_vault_secret.devportal_service_principal_client_id.value
       APIM_RESOURCE_GROUP  = "io-p-rg-internal"
       APIM_SECRET          = data.azurerm_key_vault_secret.devportal_service_principal_secret.value
-      APIM_SERVICE_NAME    = "io-p-apim-api"
+      APIM_SERVICE_NAME    = "io-p-apim-v2-api"
       APIM_SUBSCRIPTION_ID = data.azurerm_subscription.current.subscription_id
       APIM_TENANT_ID       = data.azurerm_client_config.current.tenant_id
 
