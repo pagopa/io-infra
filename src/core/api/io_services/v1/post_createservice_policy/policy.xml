@@ -1,13 +1,11 @@
 <policies>
     <inbound>
-        <!--<base/> After migration to apim v2 we'll uncomment this line -->
-        <!--Temporary policy to mock a 500 internal server error response during the time needed for the migration to apim v2.-->
-        <mock-response status-code="500"/>
+        <base/>
         <!--Service creation implies subscription creation. 
             There is an hard-limit o APIM such as creations cannot happen concurrently on the same product
             (because every subscription creation modifies the arm resource).
             In order to mitigate so, we limit concurrency ourself.-->
-        <!--<limit-concurrency key="constant-key-all-users" max-count="10" />After migration to apim v2 we'll uncomment this line -->
+        <limit-concurrency key="constant-key-all-users" max-count="10" />
     </inbound>
     <outbound>
         <base />
