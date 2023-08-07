@@ -73,10 +73,9 @@ data "azurerm_key_vault_secret" "cgn_onboarding_backend_identity_v2" {
   key_vault_id = module.key_vault_common.id
 }
 
-# TODO rollback after apim-v2 migration
-# resource "azurerm_role_assignment" "service_contributor_v2" {
-#   count                = var.env_short == "p" ? 1 : 0
-#   scope                = module.apim_v2.id
-#   role_definition_name = "API Management Service Contributor"
-#   principal_id         = data.azurerm_key_vault_secret.cgn_onboarding_backend_identity_v2.value
-# }
+resource "azurerm_role_assignment" "service_contributor_v2" {
+  count                = var.env_short == "p" ? 1 : 0
+  scope                = module.apim_v2.id
+  role_definition_name = "API Management Service Contributor"
+  principal_id         = data.azurerm_key_vault_secret.cgn_onboarding_backend_identity_v2.value
+}
