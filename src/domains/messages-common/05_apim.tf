@@ -136,6 +136,7 @@ resource "azurerm_api_management_subscription" "reminder" {
   product_id          = module.apim_product_notifications.id
   display_name        = "Reminder API"
   state               = "active"
+  allow_tracing       = false
 }
 
 resource "azurerm_key_vault_secret" "reminder_subscription_primary_key" {
@@ -167,6 +168,7 @@ resource "azurerm_api_management_subscription" "payment_updater_reminder" {
   product_id          = data.azurerm_api_management_product.payment_updater_product.id
   display_name        = "Payment Updater API"
   state               = "active"
+  allow_tracing       = false
 }
 
 resource "azurerm_key_vault_secret" "reminder_paymentapi_subscription_primary_key" {
