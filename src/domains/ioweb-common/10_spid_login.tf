@@ -81,8 +81,8 @@ module "spid_login" {
     COMPANY_VAT_NUMBER               = 15376371009
 
     # TODO
-    METADATA_PUBLIC_CERT  = trimspace(data.azurerm_key_vault_secret.agid_spid_cert[0].value)
-    METADATA_PRIVATE_CERT = trimspace(data.azurerm_key_vault_secret.agid_spid_private_key[0].value)
+    METADATA_PUBLIC_CERT  = trimspace(data.azurerm_key_vault_secret.agid_spid_cert.value)
+    METADATA_PRIVATE_CERT = trimspace(data.azurerm_key_vault_secret.agid_spid_private_key.value)
 
     ENABLE_JWT                         = "true"
     INCLUDE_SPID_USER_ON_INTROSPECTION = "true"
@@ -108,10 +108,10 @@ module "spid_login" {
     # SPID_LOGS_PUBLIC_KEY                = trimspace(data.azurerm_key_vault_secret.spid_logs_public_key.value)
   }
 
-  allowed_subnets = [azurerm_subnet.subnet_apim.id]
+  allowed_subnets = [data.azurerm_subnet.apim_v2_snet.id]
   allowed_ips     = []
 
-  subnet_id = module.subnet_spid_login.id
+  subnet_id = module.spid_login_snet.id
 
   tags = var.tags
 }
