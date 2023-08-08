@@ -96,18 +96,12 @@ resource "tls_private_key" "jwt" {
 # ####################
 # ####################
 
-resource "azurerm_key_vault_secret" "agid_spid_private_key" {
+data "azurerm_key_vault_secret" "agid_spid_private_key" {
   name         = "spid-login-AGID-SPID-CERT-KEY"
-  value        = ""
-  content_type = "text/plain"
-
   key_vault_id = module.key_vault.id
 }
 
-resource "azurerm_key_vault_secret" "agid_spid_cert" {
+data "azurerm_key_vault_secret" "agid_spid_cert" {
   name         = "spid-login-AGID-SPID-CERT-PEM"
-  value        = ""
-  content_type = "text/plain"
-
   key_vault_id = module.key_vault.id
 }

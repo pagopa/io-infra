@@ -64,8 +64,8 @@ module "spid_login" {
 
     ENDPOINT_ACS   = "/acs"
     ENDPOINT_ERROR = "/error"
-    #TODO
-    ENDPOINT_SUCCESS  = "TODO"
+    #TODO: set static site success endpoint
+    ENDPOINT_SUCCESS  = "/success"
     ENDPOINT_LOGIN    = "/login"
     ENDPOINT_METADATA = "/metadata"
     ENDPOINT_LOGOUT   = "/logout"
@@ -80,8 +80,8 @@ module "spid_login" {
     COMPANY_NAME                     = "PagoPA S.p.A"
     COMPANY_VAT_NUMBER               = 15376371009
 
-    METADATA_PUBLIC_CERT  = trimspace(resource.azurerm_key_vault_secret.agid_spid_cert.value)
-    METADATA_PRIVATE_CERT = trimspace(resource.azurerm_key_vault_secret.agid_spid_private_key.value)
+    METADATA_PUBLIC_CERT  = trimspace(data.azurerm_key_vault_secret.agid_spid_cert.value)
+    METADATA_PRIVATE_CERT = trimspace(data.azurerm_key_vault_secret.agid_spid_private_key.value)
 
     ENABLE_JWT                         = "true"
     INCLUDE_SPID_USER_ON_INTROSPECTION = "true"
