@@ -39,7 +39,7 @@ module "redis_spid_login" {
 
   private_endpoint = {
     enabled              = true
-    virtual_network_id   = module.vnet_common.id
+    virtual_network_id   = data.azurerm_virtual_network.vnet_common.id
     subnet_id            = module.redis_spid_login_snet.id
     private_dns_zone_ids = [data.azurerm_private_dns_zone.privatelink_redis_cache.id]
   }

@@ -33,7 +33,7 @@ module "apim_v2_spid_login_api" {
   subscription_required = false
 
   # TODO
-  service_url           = format("https://%s", module.spid_login.default_site_hostname)
+  service_url = format("https://%s", module.spid_login.default_site_hostname)
 
   description  = "Login SPID Service Provider"
   display_name = "SPID"
@@ -43,7 +43,7 @@ module "apim_v2_spid_login_api" {
   content_format = "openapi"
 
   # NOTE: This openapi does not contains `upgradeToken` endpoint, since it's not necessary
-  content_value = file("./api/ioweb/spid-login/_openapi.yaml")
+  content_value = file("./api/ioweb/spid-login/_swagger.json")
 
   xml_content = file("./api/ioweb/spid-login/_base_policy.xml")
 }
@@ -54,5 +54,5 @@ resource "azurerm_api_management_api_operation_policy" "spid_acs" {
   resource_group_name = data.azurerm_api_management.apim_v2_api.resource_group_name
   operation_id        = "postACS"
 
-  xml_content = file("./api/ioweb/spid-login/postacs_policy.xml")
+  xml_content = file("./api/ioweb/spid-login/_postacs_policy.xml")
 }

@@ -62,8 +62,8 @@ module "spid_login" {
 
     AUTH_N_CONTEXT = "https://www.spid.gov.it/SpidL2"
 
-    ENDPOINT_ACS      = "/acs"
-    ENDPOINT_ERROR    = "/error"
+    ENDPOINT_ACS   = "/acs"
+    ENDPOINT_ERROR = "/error"
     #TODO
     ENDPOINT_SUCCESS  = var.enable_custom_dns ? local.custom_dns_frontend_url : local.cdn_frontend_url
     ENDPOINT_LOGIN    = "/login"
@@ -111,7 +111,7 @@ module "spid_login" {
   allowed_subnets = [azurerm_subnet.subnet_apim.id]
   allowed_ips     = []
 
-  subnet_id   = module.subnet_spid_login.id
+  subnet_id = module.subnet_spid_login.id
 
   tags = var.tags
 }
