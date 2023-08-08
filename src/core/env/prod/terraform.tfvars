@@ -69,6 +69,7 @@ cidr_subnet_dnsforwarder = ["10.0.252.8/29"]
 app_gateway_api_certificate_name                                  = "api-io-pagopa-it"
 app_gateway_api_mtls_certificate_name                             = "api-mtls-io-pagopa-it"
 app_gateway_api_app_certificate_name                              = "api-app-io-pagopa-it"
+app_gateway_api_web_certificate_name                              = "api-web-io-pagopa-it"
 app_gateway_api_io_italia_it_certificate_name                     = "api-io-italia-it"
 app_gateway_app_backend_io_italia_it_certificate_name             = "app-backend-io-italia-it"
 app_gateway_developerportal_backend_io_italia_it_certificate_name = "developerportal-backend-io-italia-it"

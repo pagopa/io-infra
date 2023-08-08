@@ -237,6 +237,23 @@ module "app_gw" {
       }
     }
 
+    api-web-io-pagopa-it = {
+      protocol           = "Https"
+      host               = format("api-web.%s.%s", var.dns_zone_io, var.external_domain)
+      port               = 443
+      ssl_profile_name   = format("%s-ssl-profile", local.project)
+      firewall_policy_id = azurerm_web_application_firewall_policy.api_app.id
+
+      certificate = {
+        name = var.app_gateway_api_app_certificate_name
+        id = replace(
+          data.azurerm_key_vault_certificate.app_gw_api_web.secret_id,
+          "/${data.azurerm_key_vault_certificate.app_gw_api_web.version}",
+          ""
+        )
+      }
+    }
+
     app-backend-io-italia-it = {
       protocol           = "Https"
       host               = "app-backend.io.italia.it"
@@ -732,6 +749,11 @@ data "azurerm_key_vault_certificate" "app_gw_api_mtls" {
 
 data "azurerm_key_vault_certificate" "app_gw_api_app" {
   name         = var.app_gateway_api_app_certificate_name
+  key_vault_id = module.key_vault.id
+}
+
+data "azurerm_key_vault_certificate" "app_gw_api_web" {
+  name         = var.app_gateway_api_web_certificate_name
   key_vault_id = module.key_vault.id
 }
 
