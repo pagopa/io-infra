@@ -81,8 +81,8 @@ module "spid_login" {
     COMPANY_VAT_NUMBER               = 15376371009
 
     # TODO
-    METADATA_PUBLIC_CERT  = var.agid_spid_public_cert != null ? trimspace(data.azurerm_key_vault_secret.agid_spid_cert[0].value) : trimspace(tls_self_signed_cert.spid_self.cert_pem)
-    METADATA_PRIVATE_CERT = var.agid_spid_private_key != null ? trimspace(data.azurerm_key_vault_secret.agid_spid_private_key[0].value) : trimspace(tls_private_key.spid.private_key_pem)
+    METADATA_PUBLIC_CERT  = trimspace(data.azurerm_key_vault_secret.agid_spid_cert[0].value)
+    METADATA_PRIVATE_CERT = trimspace(data.azurerm_key_vault_secret.agid_spid_private_key[0].value)
 
     ENABLE_JWT                         = "true"
     INCLUDE_SPID_USER_ON_INTROSPECTION = "true"
@@ -98,7 +98,7 @@ module "spid_login" {
 
     # application insights key
     APPINSIGHTS_DISABLED           = false
-    APPINSIGHTS_INSTRUMENTATIONKEY = azurerm_application_insights.application_insights.instrumentation_key
+    APPINSIGHTS_INSTRUMENTATIONKEY = data.azurerm_application_insights.application_insights.instrumentation_key
 
     # Spid logs
     #TODO: enable logs
