@@ -65,7 +65,7 @@ module "spid_login" {
     ENDPOINT_ACS   = "/acs"
     ENDPOINT_ERROR = "/error"
     #TODO
-    ENDPOINT_SUCCESS  = var.enable_custom_dns ? local.custom_dns_frontend_url : local.cdn_frontend_url
+    ENDPOINT_SUCCESS  = "TODO"
     ENDPOINT_LOGIN    = "/login"
     ENDPOINT_METADATA = "/metadata"
     ENDPOINT_LOGOUT   = "/logout"
@@ -80,16 +80,14 @@ module "spid_login" {
     COMPANY_NAME                     = "PagoPA S.p.A"
     COMPANY_VAT_NUMBER               = 15376371009
 
-    # TODO
-    METADATA_PUBLIC_CERT  = trimspace(data.azurerm_key_vault_secret.agid_spid_cert.value)
-    METADATA_PRIVATE_CERT = trimspace(data.azurerm_key_vault_secret.agid_spid_private_key.value)
+    METADATA_PUBLIC_CERT  = trimspace(resource.azurerm_key_vault_secret.agid_spid_cert.value)
+    METADATA_PRIVATE_CERT = trimspace(resource.azurerm_key_vault_secret.agid_spid_private_key.value)
 
     ENABLE_JWT                         = "true"
     INCLUDE_SPID_USER_ON_INTROSPECTION = "true"
 
-    TOKEN_EXPIRATION = "3600"
-    JWT_TOKEN_ISSUER = "SPID"
-    # TODO
+    TOKEN_EXPIRATION      = "3600"
+    JWT_TOKEN_ISSUER      = "SPID"
     JWT_TOKEN_PRIVATE_KEY = trimspace(tls_private_key.jwt.private_key_pem)
     TOKEN_EXPIRATION      = 3600
 

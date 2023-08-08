@@ -30,7 +30,7 @@ module "redis_spid_login_snet" {
 module "spid_login_snet" {
   source               = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v4.1.15"
   name                 = format("%s-spid-login-snet", local.project)
-  address_prefixes     = var.spid_login
+  address_prefixes     = var.subnets_cidrs.spid_login
   resource_group_name  = local.vnet_common_resource_group_name
   virtual_network_name = local.vnet_common_name
 
