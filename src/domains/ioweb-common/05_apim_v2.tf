@@ -32,7 +32,6 @@ module "apim_v2_spid_login_api" {
   product_ids           = [module.apim_v2_product_ioweb.product_id]
   subscription_required = false
 
-  # TODO
   service_url = format("https://%s", module.spid_login.default_site_hostname)
 
   description  = "Login SPID Service Provider"
