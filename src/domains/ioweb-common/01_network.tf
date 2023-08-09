@@ -9,6 +9,12 @@ data "azurerm_private_dns_zone" "privatelink_redis_cache" {
   tags                = var.tags
 }
 
+data "azurerm_subnet" "azdoa_snet" {
+  name                 = "azure-devops"
+  virtual_network_name = local.vnet_common_name
+  resource_group_name  = local.vnet_common_resource_group_name
+}
+
 data "azurerm_subnet" "apim_v2_snet" {
   name                 = "apimv2api"
   virtual_network_name = local.vnet_common_name

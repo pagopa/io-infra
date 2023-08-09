@@ -106,7 +106,7 @@ module "spid_login" {
     # SPID_LOGS_PUBLIC_KEY                = trimspace(data.azurerm_key_vault_secret.spid_logs_public_key.value)
   }
 
-  allowed_subnets = [data.azurerm_subnet.apim_v2_snet.id]
+  allowed_subnets = [data.azurerm_subnet.azdoa_snet.id, data.azurerm_subnet.apim_v2_snet.id]
   allowed_ips     = []
 
   subnet_id = module.spid_login_snet.id
