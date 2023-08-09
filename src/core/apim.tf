@@ -278,5 +278,6 @@ resource "azurerm_api_management_subscription" "pn_lc_subscription" {
   product_id          = data.azurerm_api_management_product.apim_product_lollipop.id
   display_name        = "PN LC"
   state               = "active"
+  allow_tracing       = false
 }
 ##################################################################

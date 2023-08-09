@@ -129,20 +129,19 @@ resource "azurerm_api_management_group_user" "reminder_group_v2" {
   api_management_name = azurerm_api_management_user.reminder_user_v2.api_management_name
 }
 
-# TODO import after migration
-# resource "azurerm_api_management_subscription" "reminder_v2" {
-#   api_management_name = data.azurerm_api_management.apim_v2_api.name
-#   resource_group_name = data.azurerm_api_management.apim_v2_api.resource_group_name
-#   user_id             = azurerm_api_management_user.reminder_user_v2.id
-#   product_id          = module.apim_v2_product_notifications.id
-#   display_name        = "Reminder API"
-#   state               = "active"
-# }
+resource "azurerm_api_management_subscription" "reminder_v2" {
+  api_management_name = data.azurerm_api_management.apim_v2_api.name
+  resource_group_name = data.azurerm_api_management.apim_v2_api.resource_group_name
+  user_id             = azurerm_api_management_user.reminder_user_v2.id
+  product_id          = module.apim_v2_product_notifications.id
+  display_name        = "Reminder API"
+  state               = "active"
+  allow_tracing       = false
+}
 
 resource "azurerm_key_vault_secret" "reminder_subscription_primary_key_v2" {
-  name  = "${format("%s-reminder", local.product)}-subscription-key-v2"
-  value = azurerm_api_management_subscription.reminder.primary_key
-  #TODO import after migration value        = azurerm_api_management_subscription.reminder_v2.primary_key
+  name         = "${format("%s-reminder", local.product)}-subscription-key-v2"
+  value        = azurerm_api_management_subscription.reminder_v2.primary_key
   content_type = "subscription key"
   key_vault_id = module.key_vault.id
 }
@@ -162,20 +161,19 @@ resource "azurerm_api_management_group_user" "payment_group_v2" {
   api_management_name = azurerm_api_management_user.reminder_user_v2.api_management_name
 }
 
-# TODO import after migration
-# resource "azurerm_api_management_subscription" "payment_updater_reminder_v2" {
-#   api_management_name = data.azurerm_api_management.apim_v2_api.name
-#   resource_group_name = data.azurerm_api_management.apim_v2_api.resource_group_name
-#   user_id             = azurerm_api_management_user.reminder_user_v2.id
-#   product_id          = data.azurerm_api_management_product.payment_updater_product_v2.id
-#   display_name        = "Payment Updater API"
-#   state               = "active"
-# }
+resource "azurerm_api_management_subscription" "payment_updater_reminder_v2" {
+  api_management_name = data.azurerm_api_management.apim_v2_api.name
+  resource_group_name = data.azurerm_api_management.apim_v2_api.resource_group_name
+  user_id             = azurerm_api_management_user.reminder_user_v2.id
+  product_id          = data.azurerm_api_management_product.payment_updater_product_v2.id
+  display_name        = "Payment Updater API"
+  state               = "active"
+  allow_tracing       = false
+}
 
 resource "azurerm_key_vault_secret" "reminder_paymentapi_subscription_primary_key_v2" {
-  name  = "${format("%s-reminder-payment-api", local.product)}-subscription-key-v2"
-  value = azurerm_api_management_subscription.payment_updater_reminder.primary_key
-  #TODO import after migration value        = azurerm_api_management_subscription.payment_updater_reminder_v2.primary_key
+  name         = "${format("%s-reminder-payment-api", local.product)}-subscription-key-v2"
+  value        = azurerm_api_management_subscription.payment_updater_reminder_v2.primary_key
   content_type = "subscription key"
   key_vault_id = module.key_vault.id
 }

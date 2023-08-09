@@ -53,7 +53,9 @@
 | [azurerm_api_management_group_user.reminder_group](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_group_user) | resource |
 | [azurerm_api_management_group_user.reminder_group_v2](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_group_user) | resource |
 | [azurerm_api_management_subscription.payment_updater_reminder](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_subscription) | resource |
+| [azurerm_api_management_subscription.payment_updater_reminder_v2](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_subscription) | resource |
 | [azurerm_api_management_subscription.reminder](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_subscription) | resource |
+| [azurerm_api_management_subscription.reminder_v2](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_subscription) | resource |
 | [azurerm_api_management_user.reminder_user](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_user) | resource |
 | [azurerm_api_management_user.reminder_user_v2](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_user) | resource |
 | [azurerm_cosmosdb_mongo_database.db_reminder](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/cosmosdb_mongo_database) | resource |
