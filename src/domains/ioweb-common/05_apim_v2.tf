@@ -35,7 +35,7 @@ module "apim_v2_spid_login_api" {
   service_url = format("https://%s", module.spid_login.default_site_hostname)
 
   description  = "Login SPID Service Provider"
-  display_name = "SPID"
+  display_name = "IO Web - Authentication"
   path         = local.spid_login_base_path
   protocols    = ["https"]
 
@@ -48,7 +48,7 @@ module "apim_v2_spid_login_api" {
 }
 
 resource "azurerm_api_management_api_operation_policy" "spid_acs" {
-  api_name            = format("%s-ioweb-auth-acs", local.project)
+  api_name            = format("%s-ioweb-auth", local.product)
   api_management_name = data.azurerm_api_management.apim_v2_api.name
   resource_group_name = data.azurerm_api_management.apim_v2_api.resource_group_name
   operation_id        = "postACS"
