@@ -109,7 +109,8 @@ module "spid_login" {
   allowed_subnets = [data.azurerm_subnet.azdoa_snet.id, data.azurerm_subnet.apim_v2_snet.id]
   allowed_ips     = []
 
-  subnet_id = module.spid_login_snet.id
+  subnet_id        = module.spid_login_snet.id
+  vnet_integration = true
 
   tags = var.tags
 }
