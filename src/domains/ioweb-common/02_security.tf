@@ -79,3 +79,29 @@ resource "azurerm_key_vault_access_policy" "github_action_iac_ci_kv" {
   ]
 }
 
+# ####################
+# ####################
+#       Keys         #
+# ####################
+# ####################
+
+resource "tls_private_key" "jwt" {
+  algorithm = "RSA"
+  rsa_bits  = 2048
+}
+
+# ####################
+# ####################
+#      Secrets       #
+# ####################
+# ####################
+
+data "azurerm_key_vault_secret" "agid_spid_private_key" {
+  name         = "spid-login-AGID-SPID-CERT-KEY"
+  key_vault_id = module.key_vault.id
+}
+
+data "azurerm_key_vault_secret" "agid_spid_cert" {
+  name         = "spid-login-AGID-SPID-CERT-PEM"
+  key_vault_id = module.key_vault.id
+}
