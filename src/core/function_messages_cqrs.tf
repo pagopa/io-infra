@@ -31,8 +31,8 @@ locals {
 
       MESSAGE_CHANGE_FEED_LEASE_PREFIX = "CosmosApiMessageChangeFeed-00"
       // This must be expressed as a Timestamp
-      // Saturday 1 October 2022 00:00:00
-      MESSAGE_CHANGE_FEED_START_TIME = 1664582400000
+      // Saturday 1 July 2023 00:00:00
+      MESSAGE_CHANGE_FEED_START_TIME = 1688169600000
 
       MESSAGES_TOPIC_CONNECTION_STRING = data.azurerm_eventhub_authorization_rule.io-p-messages-weu-prod01-evh-ns_messages_io-fn-messages-cqrs.primary_connection_string
       MESSAGES_TOPIC_NAME              = "messages"
