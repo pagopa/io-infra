@@ -47,12 +47,23 @@ variable "location_short" {
     )
     error_message = "Length must be 3 chars."
   }
-  description = "One of wue, neu"
+  description = "One of weu, neu"
+}
+
+variable "location_string" {
+  type        = string
+  description = "One of West Europe, North Europe"
 }
 
 variable "instance" {
   type        = string
   description = "One of beta, prod01, prod02"
+}
+
+variable "lock_enable" {
+  type        = bool
+  default     = false
+  description = "Apply locks to block accedentaly deletions."
 }
 
 variable "tags" {
@@ -84,29 +95,31 @@ variable "application_insights_name" {
   description = "Specifies the name of the Application Insights."
 }
 
-variable "subnets_cidrs" {
-  type = map(
-    list(string)
-  )
-  description = "The CIDR address prefixes of the subnets"
+### Aks
+
+variable "k8s_kube_config_path_prefix" {
+  type    = string
+  default = "~/.kube"
 }
 
-
-### IO WEB Auth
-
-variable "app_gateway_host_name" {
-  type        = string
-  description = "Application gateway host name"
+variable "ingress_load_balancer_ip" {
+  type = string
 }
 
-variable "spid_login_plan_sku_tier" {
-  description = "App backend app plan sku tier"
-  type        = string
-  default     = "PremiumV3"
+variable "reloader_helm" {
+  type = object({
+    chart_version = string,
+    image_name    = string,
+    image_tag     = string
+  })
+  description = "reloader helm chart configuration"
 }
 
-variable "spid_login_plan_sku_size" {
-  description = "App backend app plan sku size"
-  type        = string
-  default     = "P1v3"
+variable "tls_cert_check_helm" {
+  type = object({
+    chart_version = string,
+    image_name    = string,
+    image_tag     = string
+  })
+  description = "tls cert helm chart configuration"
 }
