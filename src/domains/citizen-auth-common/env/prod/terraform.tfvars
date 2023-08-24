@@ -32,6 +32,14 @@ fims_database = {
   grant = {
     max_throughput = 3000
     ttl            = -1
+  },
+  interaction = {
+    max_throughput = 3000
+    ttl            = -1
+  },
+  session = {
+    max_throughput = 3000
+    ttl            = -1
   }
 }
 
