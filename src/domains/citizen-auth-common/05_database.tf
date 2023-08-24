@@ -202,7 +202,7 @@ resource "azurerm_cosmosdb_sql_container" "fims_client" {
 
     composite_index {
       index {
-        path  = "/_id"
+        path  = "/id"
         order = "Descending"
       }
       index {
@@ -242,7 +242,7 @@ resource "azurerm_cosmosdb_sql_container" "fims_grant" {
 
     composite_index {
       index {
-        path  = "/_id"
+        path  = "/id"
         order = "Descending"
       }
       index {
@@ -260,7 +260,7 @@ resource "azurerm_cosmosdb_sql_container" "fims_interaction" {
   account_name        = module.cosmosdb_account_fims.name
   database_name       = module.cosmosdb_sql_database_fims.name
 
-  partition_key_path    = "/_id"
+  partition_key_path    = "/id"
   partition_key_version = 2
 
   autoscale_settings {
@@ -289,7 +289,7 @@ resource "azurerm_cosmosdb_sql_container" "fims_session" {
   account_name        = module.cosmosdb_account_fims.name
   database_name       = module.cosmosdb_sql_database_fims.name
 
-  partition_key_path    = "/_id"
+  partition_key_path    = "/id"
   partition_key_version = 2
 
   autoscale_settings {
