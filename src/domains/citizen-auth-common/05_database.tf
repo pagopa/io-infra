@@ -260,6 +260,8 @@ resource "azurerm_cosmosdb_sql_container" "fims_interaction" {
   account_name        = module.cosmosdb_account_fims.name
   database_name       = module.cosmosdb_sql_database_fims.name
 
+  partition_key_path    = "/_id"
+  partition_key_version = 2
 
   autoscale_settings {
     max_throughput = var.fims_database.interaction.max_throughput
@@ -287,6 +289,8 @@ resource "azurerm_cosmosdb_sql_container" "fims_session" {
   account_name        = module.cosmosdb_account_fims.name
   database_name       = module.cosmosdb_sql_database_fims.name
 
+  partition_key_path    = "/_id"
+  partition_key_version = 2
 
   autoscale_settings {
     max_throughput = var.fims_database.session.max_throughput
