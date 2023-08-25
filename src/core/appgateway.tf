@@ -752,10 +752,19 @@ data "azurerm_key_vault_certificate" "app_gw_api_app" {
   key_vault_id = module.key_vault.id
 }
 
+###
+# kv where the certificate for api-web domain is located
+###
+data "azurerm_key_vault" "profile_kv" {
+  name                = format("%s-profile-kv", local.project)
+  resource_group_name = format("%s-profile-sec-rg", local.project)
+}
+
 data "azurerm_key_vault_certificate" "app_gw_api_web" {
   name         = var.app_gateway_api_web_certificate_name
-  key_vault_id = module.key_vault.id
+  key_vault_id = data.azurerm_key_vault.profile_kv.id
 }
+###
 
 data "azurerm_key_vault_certificate" "app_gw_api_io_italia_it" {
   name         = var.app_gateway_api_io_italia_it_certificate_name
