@@ -27,6 +27,8 @@ jobs:
             src/domains/profile-app
             src/domains/profile-common
             src/domains/sign
+            src/domains/ioweb-app
+            src/domains/ioweb-common
         run: |
           pids=()
 
