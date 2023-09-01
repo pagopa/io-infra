@@ -8,6 +8,17 @@ data "azurerm_dns_zone" "ioapp_it" {
   resource_group_name = data.azurerm_resource_group.core_ext.name
 }
 
+# keyvault where the TLS certificate is stored
+data "azurerm_resource_group" "profile_rg" {
+  name = format("%s-profile-sec-rg", local.product)
+}
+
+data "azurerm_key_vault" "profile_kv" {
+  name                = format("%s-profile-kv", local.product)
+  resource_group_name = data.azurerm_resource_group.profile_rg.name
+}
+#
+
 module "landing_cdn" {
   source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//cdn?ref=v7.2.1"
 
@@ -24,9 +35,8 @@ module "landing_cdn" {
   dns_zone_name                = data.azurerm_dns_zone.ioapp_it.name
   dns_zone_resource_group_name = data.azurerm_resource_group.core_ext.name
 
-  # keyvault where the certificate is stored
-  keyvault_vault_name          = format("%s-profile-kv", local.product)
-  keyvault_resource_group_name = format("%s-profile-sec-rg", local.product)
+  keyvault_vault_name          = data.azurerm_key_vault.profile_kv.name
+  keyvault_resource_group_name = data.azurerm_resource_group.profile_rg.name
   keyvault_subscription_id     = data.azurerm_subscription.current.id
 
   querystring_caching_behaviour = "BypassCaching"
