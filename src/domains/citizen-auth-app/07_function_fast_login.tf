@@ -25,6 +25,12 @@ locals {
       // --------------------------
       LOLLIPOP_GET_ASSERTION_BASE_URL = "https://api.io.pagopa.it"
       LOLLIPOP_GET_ASSERTION_API_KEY  = data.azurerm_key_vault_secret.fast_login_subscription_key.value
+
+      // --------------------------
+      //  Fast login audit log storage
+      // --------------------------
+      // Wait the resource creation before enable data
+      //FAST_LOGIN_AUDIT_CONNECTION_STRING = data.azurerm_storage_account.lv_audit_logs_storage.primary_connection_string
     }
   }
 }
