@@ -24,8 +24,8 @@ module "landing_cdn" {
 
   name                  = "portal"
   prefix                = local.project
-  resource_group_name   = azurerm_resource_group.common_rg.name
-  location              = azurerm_resource_group.common_rg.location
+  resource_group_name   = azurerm_resource_group.fe_rg.name
+  location              = azurerm_resource_group.fe_rg.location
   hostname              = "ioapp.it"
   https_rewrite_enabled = true
 
