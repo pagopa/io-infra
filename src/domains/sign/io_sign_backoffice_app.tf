@@ -68,7 +68,6 @@ module "io_sign_backoffice_app" {
 
   allowed_subnets = [
     data.azurerm_subnet.appgateway_snet.id,
-    data.azurerm_subnet.apim.id,
     data.azurerm_subnet.apim_v2.id
   ]
 

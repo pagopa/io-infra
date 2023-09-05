@@ -75,6 +75,14 @@ io_sign_database_backoffice = {
     max_throughput = 1000
     ttl            = null
   }
+  issuers = {
+    max_throughput = 1000
+    ttl            = null
+  }
+  consents = {
+    max_throughput = 1000
+    ttl            = null
+  }
 }
 
 io_sign_issuer_func = {
@@ -102,7 +110,7 @@ io_sign_user_func = {
 }
 
 io_sign_backoffice_app = {
-  sku_name = "B1"
+  sku_name = "S1"
   app_settings = [
     {
       name  = "NODE_ENV",
@@ -115,6 +123,19 @@ io_sign_backoffice_app = {
     {
       name                  = "AUTH_SESSION_SECRET",
       key_vault_secret_name = "bo-auth-session-secret"
+    },
+    {
+      name                  = "SELFCARE_API_KEY",
+      key_vault_secret_name = "selfcare-prod-api-key"
+    },
+  ]
+}
+
+io_sign_backoffice_func = {
+  app_settings = [
+    {
+      name  = "NODE_ENV",
+      value = "production"
     }
   ]
 }
@@ -212,8 +233,8 @@ dns_ses_validation = [
 ]
 
 io_common = {
-  resource_group_name : "io-p-rg-common"
-  log_analytics_workspace_name : "io-p-law-common"
-  appgateway_snet_name = "io-p-appgateway-snet"
-  vnet_common_name     = "io-p-vnet-common"
+  resource_group_name          = "io-p-rg-common"
+  log_analytics_workspace_name = "io-p-law-common"
+  appgateway_snet_name         = "io-p-appgateway-snet"
+  vnet_common_name             = "io-p-vnet-common"
 }

@@ -198,5 +198,16 @@ variable "io_sign_backoffice_app" {
       key_vault_secret_name = optional(string)
     }))
   })
-  description = "Configuration of the io-sign-backoffice service"
+  description = "Configuration of the io-sign-backoffice app service"
+}
+
+variable "io_sign_backoffice_func" {
+  type = object({
+    app_settings = list(object({
+      name                  = string
+      value                 = optional(string, "")
+      key_vault_secret_name = optional(string)
+    }))
+  })
+  description = "Configuration of the io-sign-backoffice func app"
 }
