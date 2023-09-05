@@ -113,7 +113,7 @@ module "appservice_fims_plus" {
 
   # App service plan
   plan_type     = "internal"
-  plan_name     = format("%s-plan-fims", local.project)
+  plan_name     = format("%s-plan-fims-plus", local.project)
   plan_reserved = true # Mandatory for Linux plan
   plan_kind     = "Linux"
   plan_sku_tier = var.fims_plan_sku_tier
