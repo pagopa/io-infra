@@ -74,11 +74,16 @@ locals {
   }
 }
 
-module "fims_snet" {
+data "azurerm_nat_gateway" "nat_gateway" {
+  name                = "io-p-natgw"
+  resource_group_name = "io-p-rg-common"
+}
+
+module "fims_plus_snet" {
   count                                     = var.fims_enabled ? 1 : 0
   source                                    = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v4.1.15"
-  name                                      = "fims"
-  address_prefixes                          = var.cidr_subnet_fims
+  name                                      = "fims-plus"
+  address_prefixes                          = var.cidr_subnet_fims_plus
   resource_group_name                       = data.azurerm_virtual_network.vnet_common.resource_group_name
   virtual_network_name                      = data.azurerm_virtual_network.vnet_common.name
   private_endpoint_network_policies_enabled = true
@@ -96,16 +101,13 @@ module "fims_snet" {
   }
 }
 
-data "azurerm_nat_gateway" "nat_gateway" {
-  name                = "io-p-natgw"
-  resource_group_name = "io-p-rg-common"
-}
-
-resource "azurerm_subnet_nat_gateway_association" "fims_snet" {
+resource "azurerm_subnet_nat_gateway_association" "fims_plus_snet" {
   count          = var.fims_enabled ? 1 : 0
   nat_gateway_id = data.azurerm_nat_gateway.nat_gateway.id
-  subnet_id      = module.fims_snet[0].id
+  subnet_id      = module.fims_plus_snet[0].id
 }
+
+
 
 module "appservice_fims_plus" {
   count  = var.fims_enabled ? 1 : 0
@@ -141,7 +143,7 @@ module "appservice_fims_plus" {
     [],
   )
 
-  subnet_id        = module.fims_snet[0].id
+  subnet_id        = module.fims_plus_snet[0].id
   vnet_integration = true
 
   tags = var.tags
@@ -179,7 +181,7 @@ module "appservice_fims_plus_slot_staging" {
     [],
   )
 
-  subnet_id        = module.fims_snet[0].id
+  subnet_id        = module.fims_plus_snet[0].id
   vnet_integration = true
 
   tags = var.tags
@@ -331,6 +333,34 @@ resource "azurerm_monitor_metric_alert" "too_many_http_5xx" {
 ######################
 # OLD FIMS TO REMOVE #
 ######################
+
+module "fims_snet" {
+  count                                     = var.fims_enabled ? 1 : 0
+  source                                    = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v4.1.15"
+  name                                      = "fims"
+  address_prefixes                          = var.cidr_subnet_fims
+  resource_group_name                       = data.azurerm_virtual_network.vnet_common.resource_group_name
+  virtual_network_name                      = data.azurerm_virtual_network.vnet_common.name
+  private_endpoint_network_policies_enabled = true
+
+  service_endpoints = [
+    "Microsoft.Web",
+  ]
+
+  delegation = {
+    name = "default"
+    service_delegation = {
+      name    = "Microsoft.Web/serverFarms"
+      actions = ["Microsoft.Network/virtualNetworks/subnets/action"]
+    }
+  }
+}
+
+resource "azurerm_subnet_nat_gateway_association" "fims_snet" {
+  count          = var.fims_enabled ? 1 : 0
+  nat_gateway_id = data.azurerm_nat_gateway.nat_gateway.id
+  subnet_id      = module.fims_snet[0].id
+}
 
 module "appservice_fims" {
   count  = var.fims_enabled ? 1 : 0
