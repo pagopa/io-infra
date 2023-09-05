@@ -5,6 +5,11 @@ resource "azurerm_resource_group" "fims_rg" {
   tags     = var.tags
 }
 
+data "azurerm_cosmosdb_account" "cosmos_fims" {
+  name                = "io-p-citizen-auth-fims-account"
+  resource_group_name = "io-p-citizen-auth-data-rg"
+}
+
 data "azurerm_key_vault_secret" "mongodb_connection_string_fims" {
   name         = "io-p-fims-mongodb-account-connection-string"
   key_vault_id = data.azurerm_key_vault.kv.id
@@ -54,6 +59,10 @@ locals {
       IO_BACKEND_BASE_URL             = "https://api-app.io.pagopa.it"
       VERSION                         = "0.0.1"
       MONGODB_URL                     = data.azurerm_key_vault_secret.mongodb_connection_string_fims.value
+      COSMOSDB_NAME                   = "fims"
+      COSMOSDB_URI                    = data.azurerm_cosmosdb_account.cosmos_fims.endpoint
+      COSMOSDB_KEY                    = data.azurerm_cosmosdb_account.cosmos_fims.primary_key
+      COSMOSDB_CONNECTION_STRING      = format("AccountEndpoint=%s;AccountKey=%s;", data.azurerm_cosmosdb_account.cosmos_fims.endpoint, data.azurerm_cosmosdb_account.cosmos_fims.primary_key)
       AUTHENTICATION_COOKIE_KEY       = "X-IO-FIMS-Token"
       GRANT_TTL_IN_SECONDS            = "86400"
       ISSUER                          = "https://io-p-citizen-auth-weu-prod01-app-fims.azurewebsites.net"
@@ -97,6 +106,231 @@ resource "azurerm_subnet_nat_gateway_association" "fims_snet" {
   nat_gateway_id = data.azurerm_nat_gateway.nat_gateway.id
   subnet_id      = module.fims_snet[0].id
 }
+
+module "appservice_fims_plus" {
+  count  = var.fims_enabled ? 1 : 0
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//app_service?ref=v4.1.15"
+
+  # App service plan
+  plan_type     = "internal"
+  plan_name     = format("%s-plan-fims", local.project)
+  plan_reserved = true # Mandatory for Linux plan
+  plan_kind     = "Linux"
+  plan_sku_tier = var.fims_plan_sku_tier
+  plan_sku_size = var.fims_plan_sku_size
+
+  # App service
+  name                = format("%s-app-fims-plus", local.project)
+  resource_group_name = azurerm_resource_group.fims_rg[0].name
+  location            = azurerm_resource_group.fims_rg[0].location
+
+  always_on         = true
+  linux_fx_version  = "NODE|18-lts"
+  app_command_line  = local.fims.app_command_line
+  health_check_path = "/api/info"
+
+  app_settings = local.fims.app_settings_common
+
+  allowed_subnets = [
+    data.azurerm_subnet.appgateway_snet.id,
+    data.azurerm_subnet.apim_snet.id,
+    data.azurerm_subnet.apim_v2_snet.id,
+  ]
+
+  allowed_ips = concat(
+    [],
+  )
+
+  subnet_id        = module.fims_snet[0].id
+  vnet_integration = true
+
+  tags = var.tags
+}
+
+module "appservice_fims_plus_slot_staging" {
+  count  = var.fims_enabled ? 1 : 0
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//app_service_slot?ref=v4.1.15"
+
+  # App service plan
+  app_service_plan_id = module.appservice_fims_plus[0].plan_id
+  app_service_id      = module.appservice_fims_plus[0].id
+  app_service_name    = module.appservice_fims_plus[0].name
+
+  # App service
+  name                = "staging"
+  resource_group_name = azurerm_resource_group.fims_rg[0].name
+  location            = azurerm_resource_group.fims_rg[0].location
+
+  always_on         = true
+  linux_fx_version  = "NODE|18-lts"
+  app_command_line  = local.fims.app_command_line
+  health_check_path = "/api/info"
+
+  app_settings = local.fims.app_settings_common
+
+  allowed_subnets = [
+    data.azurerm_subnet.azdoa_snet[0].id,
+    data.azurerm_subnet.appgateway_snet.id,
+    data.azurerm_subnet.apim_snet.id,
+    data.azurerm_subnet.apim_v2_snet.id,
+  ]
+
+  allowed_ips = concat(
+    [],
+  )
+
+  subnet_id        = module.fims_snet[0].id
+  vnet_integration = true
+
+  tags = var.tags
+}
+
+resource "azurerm_monitor_autoscale_setting" "appservice_fims_plus" {
+  count               = var.fims_enabled ? 1 : 0
+  name                = format("%s-autoscale", module.appservice_fims_plus[0].name)
+  resource_group_name = azurerm_resource_group.fims_rg[0].name
+  location            = azurerm_resource_group.fims_rg[0].location
+  target_resource_id  = module.appservice_fims_plus[0].plan_id
+
+  profile {
+    name = "default"
+
+    capacity {
+      default = var.fims_autoscale_default
+      minimum = var.fims_autoscale_minimum
+      maximum = var.fims_autoscale_maximum
+    }
+
+    rule {
+      metric_trigger {
+        metric_name              = "Requests"
+        metric_resource_id       = module.appservice_fims_plus[0].id
+        metric_namespace         = "microsoft.web/sites"
+        time_grain               = "PT1M"
+        statistic                = "Average"
+        time_window              = "PT5M"
+        time_aggregation         = "Average"
+        operator                 = "GreaterThan"
+        threshold                = 4000
+        divide_by_instance_count = false
+      }
+
+      scale_action {
+        direction = "Increase"
+        type      = "ChangeCount"
+        value     = "2"
+        cooldown  = "PT5M"
+      }
+    }
+
+    rule {
+      metric_trigger {
+        metric_name              = "CpuPercentage"
+        metric_resource_id       = module.appservice_fims_plus[0].plan_id
+        metric_namespace         = "microsoft.web/serverfarms"
+        time_grain               = "PT1M"
+        statistic                = "Average"
+        time_window              = "PT5M"
+        time_aggregation         = "Average"
+        operator                 = "GreaterThan"
+        threshold                = 50
+        divide_by_instance_count = false
+      }
+
+      scale_action {
+        direction = "Increase"
+        type      = "ChangeCount"
+        value     = "2"
+        cooldown  = "PT5M"
+      }
+    }
+
+    rule {
+      metric_trigger {
+        metric_name              = "Requests"
+        metric_resource_id       = module.appservice_fims_plus[0].id
+        metric_namespace         = "microsoft.web/sites"
+        time_grain               = "PT1M"
+        statistic                = "Average"
+        time_window              = "PT5M"
+        time_aggregation         = "Average"
+        operator                 = "LessThan"
+        threshold                = 1000
+        divide_by_instance_count = false
+      }
+
+      scale_action {
+        direction = "Decrease"
+        type      = "ChangeCount"
+        value     = "1"
+        cooldown  = "PT1H"
+      }
+    }
+
+    rule {
+      metric_trigger {
+        metric_name              = "CpuPercentage"
+        metric_resource_id       = module.appservice_fims_plus[0].plan_id
+        metric_namespace         = "microsoft.web/serverfarms"
+        time_grain               = "PT1M"
+        statistic                = "Average"
+        time_window              = "PT5M"
+        time_aggregation         = "Average"
+        operator                 = "LessThan"
+        threshold                = 10
+        divide_by_instance_count = false
+      }
+
+      scale_action {
+        direction = "Decrease"
+        type      = "ChangeCount"
+        value     = "1"
+        cooldown  = "PT1H"
+      }
+    }
+  }
+}
+
+resource "azurerm_monitor_metric_alert" "too_many_http_5xx" {
+  count = var.fims_enabled ? 1 : 0
+
+  enabled = false
+
+  name                = "[IO-COMMONS | FIMS] Too many 5xx"
+  resource_group_name = azurerm_resource_group.fims_rg[0].name
+  scopes              = [module.appservice_fims_plus[0].id]
+
+  description   = "Whenever the total http server errors exceeds a dynamic threashold."
+  severity      = 0
+  window_size   = "PT5M"
+  frequency     = "PT5M"
+  auto_mitigate = false
+
+  # Metric info
+  # https://learn.microsoft.com/en-us/azure/azure-monitor/essentials/metrics-supported#microsoftwebsites
+  dynamic_criteria {
+    metric_namespace         = "Microsoft.Web/sites"
+    metric_name              = "Http5xx"
+    aggregation              = "Total"
+    operator                 = "GreaterThan"
+    alert_sensitivity        = "Low"
+    evaluation_total_count   = 4
+    evaluation_failure_count = 4
+    skip_metric_validation   = false
+
+  }
+
+  action {
+    action_group_id    = data.azurerm_monitor_action_group.error_action_group.id
+    webhook_properties = null
+  }
+
+  tags = var.tags
+}
+
+######################
+# OLD FIMS TO REMOVE #
+######################
 
 module "appservice_fims" {
   count  = var.fims_enabled ? 1 : 0
@@ -280,41 +514,4 @@ resource "azurerm_monitor_autoscale_setting" "appservice_fims" {
       }
     }
   }
-}
-
-resource "azurerm_monitor_metric_alert" "too_many_http_5xx" {
-  count = var.fims_enabled ? 1 : 0
-
-  enabled = false
-
-  name                = "[IO-COMMONS | FIMS] Too many 5xx"
-  resource_group_name = azurerm_resource_group.fims_rg[0].name
-  scopes              = [module.appservice_fims[0].id]
-
-  description   = "Whenever the total http server errors exceeds a dynamic threashold."
-  severity      = 0
-  window_size   = "PT5M"
-  frequency     = "PT5M"
-  auto_mitigate = false
-
-  # Metric info
-  # https://learn.microsoft.com/en-us/azure/azure-monitor/essentials/metrics-supported#microsoftwebsites
-  dynamic_criteria {
-    metric_namespace         = "Microsoft.Web/sites"
-    metric_name              = "Http5xx"
-    aggregation              = "Total"
-    operator                 = "GreaterThan"
-    alert_sensitivity        = "Low"
-    evaluation_total_count   = 4
-    evaluation_failure_count = 4
-    skip_metric_validation   = false
-
-  }
-
-  action {
-    action_group_id    = data.azurerm_monitor_action_group.error_action_group.id
-    webhook_properties = null
-  }
-
-  tags = var.tags
 }
