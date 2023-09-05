@@ -29,12 +29,10 @@ jobs:
             src/domains/profile-app
             src/domains/profile-common
             src/domains/sign
-            src/domains/ioweb-app
-            src/domains/ioweb-common
         run: |
           pids=()
 
-          TAG=1.5.6
+          TAG=$(cat .terraform-version)
           for f in $FOLDERS; do
             pushd "$(pwd)/${f}"
               sed -i -e 's/  backend "azurerm" {}//g' 99_main.tf # use local backend
