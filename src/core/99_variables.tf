@@ -417,6 +417,11 @@ variable "app_gateway_continua_io_pagopa_it_certificate_name" {
   description = "Application gateway continua certificate name on Key Vault"
 }
 
+variable "app_gateway_selfcare_io_pagopa_it_certificate_name" {
+  type        = string
+  description = "Application gateway selfcare-io certificate name on Key Vault"
+}
+
 variable "app_gateway_min_capacity" {
   type    = number
   default = 0

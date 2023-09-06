@@ -126,6 +126,20 @@ module "app_gw" {
       pick_host_name_from_backend = true
     }
 
+    selfcare-io-app = {
+      protocol     = "Https"
+      host         = null
+      port         = 443
+      ip_addresses = null # with null value use fqdns
+      fqdns = [
+        data.azurerm_linux_web_app.cms_backoffice_app.default_hostname,
+      ]
+      probe                       = "/api/info"
+      probe_name                  = "probe-selfcare-io-app"
+      request_timeout             = 10
+      pick_host_name_from_backend = true
+    }
+
   }
 
   ssl_profiles = [{
@@ -338,6 +352,23 @@ module "app_gw" {
         )
       }
     }
+
+    selfcare-io-pagopa-it = {
+      protocol           = "Https"
+      host               = format("selfcare.%s.%s", var.dns_zone_io, var.external_domain)
+      port               = 443
+      ssl_profile_name   = format("%s-ssl-profile", local.project)
+      firewall_policy_id = null
+
+      certificate = {
+        name = var.app_gateway_selfcare_io_pagopa_it_certificate_name
+        id = replace(
+          data.azurerm_key_vault_certificate.app_gw_selfcare_io.secret_id,
+          "/${data.azurerm_key_vault_certificate.app_gw_selfcare_io.version}",
+          ""
+        )
+      }
+    }
   }
 
   # maps listener to backend
@@ -411,6 +442,13 @@ module "app_gw" {
       backend               = "continua-app"
       rewrite_rule_set_name = "rewrite-rule-set-continua"
       priority              = 80
+    }
+
+    selfcare-io-pagopa-it = {
+      listener              = "selfcare-io-pagopa-it"
+      backend               = "selfcare-io-app"
+      rewrite_rule_set_name = "rewrite-rule-set-selfcare-io"
+      priority              = 100
     }
 
   }
@@ -581,6 +619,26 @@ module "app_gw" {
           {
             header_name  = "X-Forwarded-Host"
             header_value = "{var_host}"
+          },
+          {
+            header_name  = "X-Client-Ip"
+            header_value = "{var_client_ip}"
+          },
+        ]
+        response_header_configurations = []
+      }]
+    },
+    {
+      name = "rewrite-rule-set-selfcare-io"
+      rewrite_rules = [{
+        name          = "http-headers-selfcare-io"
+        rule_sequence = 100
+        conditions    = []
+        url           = null
+        request_header_configurations = [
+          {
+            header_name  = "X-Forwarded-For"
+            header_value = "{var_client_ip}"
           },
           {
             header_name  = "X-Client-Ip"
@@ -830,6 +888,11 @@ data "azurerm_key_vault_certificate" "app_gw_firmaconio_selfcare_pagopa_it" {
 
 data "azurerm_key_vault_certificate" "app_gw_continua" {
   name         = var.app_gateway_continua_io_pagopa_it_certificate_name
+  key_vault_id = module.key_vault.id
+}
+
+data "azurerm_key_vault_certificate" "app_gw_selfcare_io" {
+  name         = var.app_gateway_selfcare_io_pagopa_it_certificate_name
   key_vault_id = module.key_vault.id
 }
 
