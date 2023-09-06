@@ -24,8 +24,10 @@
 | <a name="module_apim_v2_lollipop_api_v1"></a> [apim\_v2\_lollipop\_api\_v1](#module\_apim\_v2\_lollipop\_api\_v1) | git::https://github.com/pagopa/terraform-azurerm-v3//api_management_api | v4.1.5 |
 | <a name="module_apim_v2_product_lollipop"></a> [apim\_v2\_product\_lollipop](#module\_apim\_v2\_product\_lollipop) | git::https://github.com/pagopa/terraform-azurerm-v3//api_management_product | v4.1.5 |
 | <a name="module_cosmosdb_account"></a> [cosmosdb\_account](#module\_cosmosdb\_account) | git::https://github.com/pagopa/terraform-azurerm-v3//cosmosdb_account | v4.3.1 |
+| <a name="module_cosmosdb_account_fims"></a> [cosmosdb\_account\_fims](#module\_cosmosdb\_account\_fims) | git::https://github.com/pagopa/terraform-azurerm-v3//cosmosdb_account | v4.3.1 |
 | <a name="module_cosmosdb_account_mongodb_fims"></a> [cosmosdb\_account\_mongodb\_fims](#module\_cosmosdb\_account\_mongodb\_fims) | git::https://github.com/pagopa/terraform-azurerm-v3//cosmosdb_account | v4.1.5 |
 | <a name="module_cosmosdb_sql_database_citizen_auth"></a> [cosmosdb\_sql\_database\_citizen\_auth](#module\_cosmosdb\_sql\_database\_citizen\_auth) | git::https://github.com/pagopa/terraform-azurerm-v3//cosmosdb_sql_database | v4.3.1 |
+| <a name="module_cosmosdb_sql_database_fims"></a> [cosmosdb\_sql\_database\_fims](#module\_cosmosdb\_sql\_database\_fims) | git::https://github.com/pagopa/terraform-azurerm-v3//cosmosdb_sql_database | v4.3.1 |
 | <a name="module_key_vault"></a> [key\_vault](#module\_key\_vault) | git::https://github.com/pagopa/terraform-azurerm-v3.git//key_vault | v4.1.3 |
 | <a name="module_lollipop_assertions_storage"></a> [lollipop\_assertions\_storage](#module\_lollipop\_assertions\_storage) | git::https://github.com/pagopa/terraform-azurerm-v3//storage_account | v6.1.0 |
 | <a name="module_lollipop_assertions_storage_customer_managed_key"></a> [lollipop\_assertions\_storage\_customer\_managed\_key](#module\_lollipop\_assertions\_storage\_customer\_managed\_key) | git::https://github.com/pagopa/terraform-azurerm-v3//storage_account_customer_managed_key | v4.3.1 |
@@ -51,6 +53,10 @@
 | [azurerm_api_management_user.pagopa_user](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_user) | resource |
 | [azurerm_api_management_user.pagopa_user_v2](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_user) | resource |
 | [azurerm_cosmosdb_mongo_database.db_fims](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/cosmosdb_mongo_database) | resource |
+| [azurerm_cosmosdb_sql_container.fims_client](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/cosmosdb_sql_container) | resource |
+| [azurerm_cosmosdb_sql_container.fims_grant](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/cosmosdb_sql_container) | resource |
+| [azurerm_cosmosdb_sql_container.fims_interaction](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/cosmosdb_sql_container) | resource |
+| [azurerm_cosmosdb_sql_container.fims_session](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/cosmosdb_sql_container) | resource |
 | [azurerm_cosmosdb_sql_container.lollipop_pubkeys](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/cosmosdb_sql_container) | resource |
 | [azurerm_key_vault_access_policy.adgroup_admin](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_access_policy) | resource |
 | [azurerm_key_vault_access_policy.adgroup_developers](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_access_policy) | resource |
@@ -112,6 +118,7 @@
 | <a name="input_enable_azdoa"></a> [enable\_azdoa](#input\_enable\_azdoa) | Specifies Azure Devops Agent enabling | `bool` | `true` | no |
 | <a name="input_env"></a> [env](#input\_env) | n/a | `string` | n/a | yes |
 | <a name="input_env_short"></a> [env\_short](#input\_env\_short) | n/a | `string` | n/a | yes |
+| <a name="input_fims_database"></a> [fims\_database](#input\_fims\_database) | n/a | <pre>map(<br>    object({<br>      max_throughput = number<br>      ttl            = number<br>    })<br>  )</pre> | n/a | yes |
 | <a name="input_instance"></a> [instance](#input\_instance) | One of beta, prod01, prod02 | `string` | n/a | yes |
 | <a name="input_location"></a> [location](#input\_location) | One of westeurope, northeurope | `string` | n/a | yes |
 | <a name="input_location_full"></a> [location\_full](#input\_location\_full) | One of West Europe, North Europe | `string` | n/a | yes |
