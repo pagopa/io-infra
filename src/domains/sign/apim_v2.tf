@@ -194,7 +194,7 @@ module "apim_v2_io_sign_backoffice_product" {
   source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_product?ref=v6.20.2"
 
   product_id   = format("%s-sign-backoffice-apim-product", local.product)
-  display_name = "(IO Sign) Backoffice"
+  display_name = "IO SIGN BACKOFFICE"
   description  = "Api Management product for io-sign-backoffice REST APIs"
 
   api_management_name = data.azurerm_api_management.apim_v2_api.name
@@ -217,7 +217,7 @@ module "apim_v2_io_sign_backoffice_api_v1" {
   subscription_required = true
   service_url           = null
 
-  display_name = "(IO Sign) Backoffice API"
+  display_name = "IO SIGN BACKOFFICE API"
   description  = "io-sign-backoffice REST APIs"
 
   path      = "api/v1/sign/backoffice"
