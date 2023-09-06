@@ -1,0 +1,204 @@
+openapi: 3.0.3
+info:
+  title: Firma con IO - Back office API
+  version: 1.0.0
+servers:
+  - url: https://api.io.pagopa.it/api/v1/sign/backoffice
+    description: production
+security:
+  - SubscriptionKey: []
+paths:
+  /issuers/{subscriptionId}:
+    get:
+      operationId: getIssuer
+      tags:
+        - Issuer
+      summary: Get an Issuer by subscriptionId
+      parameters:
+        - in: path
+          name: subscriptionId
+          required: true
+          schema:
+            $ref: "#/components/schemas/Id"
+        - in: query
+          name: include
+          required: false
+          schema:
+            type: string
+      responses:
+        "200":
+          description: The Issuer detail
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: string
+                    example: 01H9JXXD5T337TDQPDG9677ZRA
+                  institutionId:
+                    type: string
+                    example: 6fcd7f11-4284-4438-92f2-aa583ed8e212
+                  displayName:
+                    type: string
+                    example: displayName
+                  environment:
+                    type: string
+                    example: test
+                  cidrs:
+                    type: array
+                    items:
+                      type: string
+                  testers:
+                    type: array
+                    items:
+                      type: string
+                  status:
+                    type: string
+                    example: active
+                  createdAt:
+                    type: string
+                    example: "2023-09-05T15:03:28.701Z"
+                  institution:
+                    type: object
+                    properties:
+                      name:
+                        type: string
+                        example: Istituto Romano di San Michele di Roma
+                      productRole:
+                        type: string
+                        example: Operatore
+                      logo:
+                        type: string
+                  issuer:
+                    type: object
+                    properties:
+                      id:
+                        $ref: "#/components/schemas/Id"
+                      type:
+                        type: string
+                        example: PA
+                      supportEmail:
+                        type: string
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "404":
+          $ref: "#/components/responses/NotFound"
+        "429":
+          $ref: "#/components/responses/TooManyRequests"
+        default:
+          $ref: "#/components/responses/Unexpected"
+
+components:
+  securitySchemes:
+    SubscriptionKey:
+      type: apiKey
+      name: Ocp-Apim-Subscription-Key
+      in: header
+
+  responses:
+    NotFound:
+      description: The specified resource was not found
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/ProblemDetail"
+
+    BadRequest:
+      description: Validation error on body
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/ProblemDetail"
+
+    Forbidden:
+      description: You don't have enough privileges to perform this action
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/ProblemDetail"
+
+    Unauthorized:
+      description: Unauthorized
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/ProblemDetail"
+
+    UnprocessableContent:
+      description: Unprocessable Content
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/ProblemDetail"
+
+    TooManyRequests:
+      description: Too Many Requests
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/ProblemDetail"
+
+    Unexpected:
+      description: Unexpected error
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/ProblemDetail"
+
+  schemas:
+    ProblemDetail:
+      type: object
+      properties:
+        type:
+          type: string
+          format: uri
+          description: |-
+            An absolute URI that identifies the problem type. When dereferenced,
+            it SHOULD provide human-readable documentation for the problem type
+            (e.g., using HTML).
+          default: about:blank
+          example: https://example.com/problem/constraint-violation
+        title:
+          type: string
+          description: >-
+            A short, summary of the problem type. Written in english and
+            readable
+
+            for engineers (usually not suited for non technical stakeholders and
+
+            not localized); example: Service Unavailable
+        status:
+          type: integer
+          format: int32
+          description: >-
+            The HTTP status code generated by the origin server for this
+            occurrence of the problem.
+          minimum: 100
+          maximum: 600
+          exclusiveMaximum: true
+          example: 200
+        detail:
+          type: string
+          description: |-
+            A human readable explanation specific to this occurrence of the
+            problem.
+          example: There was an error processing the request
+        instance:
+          type: string
+          format: uri
+          description: >-
+            An absolute URI that identifies the specific occurrence of the
+            problem. It may or may not yield further information if
+            dereferenced.
+
+    Id:
+      type: string
+      description: Entity Id
+      format: NonEmptyString
+      example: 01ARZ3NDEKTSV4RRFFQ69G5FAV
+      x-import: "@pagopa/ts-commons/lib/strings"
