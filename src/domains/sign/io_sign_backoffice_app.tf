@@ -84,6 +84,12 @@ resource "azurerm_key_vault_access_policy" "backoffice_key_vault_access_policy" 
   certificate_permissions = []
 }
 
+resource "azurerm_role_assignment" "firmaconio_selfcare_apim_contributor_role" {
+  scope                = data.azurerm_api_management.apim_v2_api.id
+  role_definition_name = "API Management Service Contributor"
+  principal_id         = module.io_sign_backoffice_app.principal_id
+}
+
 resource "azurerm_private_endpoint" "io_sign_backoffice_app" {
   name                = format("%s-backoffice-endpoint", local.project)
   location            = azurerm_resource_group.data_rg.location
