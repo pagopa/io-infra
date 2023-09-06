@@ -4,8 +4,8 @@ locals {
     COSMOS_DB_CONNECTION_STRING    = module.cosmosdb_account.connection_strings[0],
     COSMOS_DB_NAME                 = module.cosmosdb_sql_database_backoffice.name
     COSMOS_CONTAINER_NAME          = module.cosmosdb_sql_container_backoffice-api-keys.name
-    APIM_RESOURCE_GROUP_NAME       = data.azurerm_api_management.apim_api.resource_group_name,
-    APIM_SERVICE_NAME              = data.azurerm_api_management.apim_api.name,
+    APIM_RESOURCE_GROUP_NAME       = data.azurerm_api_management.apim_v2_api.resource_group_name,
+    APIM_SERVICE_NAME              = data.azurerm_api_management.apim_v2_api.name,
     APIM_PRODUCT_NAME              = module.apim_io_sign_product.product_id
     APPINSIGHTS_INSTRUMENTATIONKEY = sensitive(data.azurerm_application_insights.application_insights.instrumentation_key)
     },
