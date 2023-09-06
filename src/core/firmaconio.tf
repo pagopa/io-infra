@@ -14,7 +14,7 @@ data "azurerm_linux_web_app" "firmaconio_selfcare_web_app" {
 }
 
 resource "azurerm_role_assignment" "firmaconio_selfcare_apim_contributor_role" {
-  scope                = module.apim.id
-  role_definition_name = "Contributor"
+  scope                = module.apim_v2.id
+  role_definition_name = "API Management Service Contributor"
   principal_id         = data.azurerm_linux_web_app.firmaconio_selfcare_web_app.identity.principal_id
 }
