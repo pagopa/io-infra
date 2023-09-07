@@ -223,8 +223,8 @@ module "apim_v2_io_sign_backoffice_api_v1" {
   path      = "api/v1/sign/backoffice"
   protocols = ["https"]
 
-  content_format = "openapi"
+  content_format = "openapi-link"
 
-  content_value = file("./api/backoffice/v1/openapi.yaml")
+  content_value = "https://raw.githubusercontent.com/pagopa/io-sign/main/apps/io-sign-backoffice-app/openapi.yml"
   xml_content   = file("./api/backoffice/v1/base_policy.xml")
 }
