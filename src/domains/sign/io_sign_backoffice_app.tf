@@ -3,9 +3,9 @@ locals {
     AZURE_SUBSCRIPTION_ID          = data.azurerm_subscription.current.subscription_id
     COSMOS_DB_CONNECTION_STRING    = module.cosmosdb_account.connection_strings[0],
     COSMOS_DB_NAME                 = module.cosmosdb_sql_database_backoffice.name
-    COSMOS_DB_CONTAINER_NAME       = module.cosmosdb_sql_container_backoffice-api-keys.name
-    APIM_RESOURCE_GROUP_NAME       = "io-p-rg-internal",
-    APIM_SERVICE_NAME              = "io-p-apim-api"
+    COSMOS_CONTAINER_NAME          = module.cosmosdb_sql_container_backoffice-api-keys.name
+    APIM_RESOURCE_GROUP_NAME       = data.azurerm_api_management.apim_v2_api.resource_group_name,
+    APIM_SERVICE_NAME              = data.azurerm_api_management.apim_v2_api.name,
     APIM_PRODUCT_NAME              = module.apim_io_sign_product.product_id
     APPINSIGHTS_INSTRUMENTATIONKEY = sensitive(data.azurerm_application_insights.application_insights.instrumentation_key)
     },
@@ -68,7 +68,6 @@ module "io_sign_backoffice_app" {
 
   allowed_subnets = [
     data.azurerm_subnet.appgateway_snet.id,
-    data.azurerm_subnet.apim.id,
     data.azurerm_subnet.apim_v2.id
   ]
 
@@ -83,6 +82,12 @@ resource "azurerm_key_vault_access_policy" "backoffice_key_vault_access_policy" 
   secret_permissions      = ["Get"]
   storage_permissions     = []
   certificate_permissions = []
+}
+
+resource "azurerm_role_assignment" "firmaconio_selfcare_apim_contributor_role" {
+  scope                = data.azurerm_api_management.apim_v2_api.id
+  role_definition_name = "API Management Service Contributor"
+  principal_id         = module.io_sign_backoffice_app.principal_id
 }
 
 resource "azurerm_private_endpoint" "io_sign_backoffice_app" {

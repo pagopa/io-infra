@@ -170,3 +170,61 @@ module "apim_v2_io_sign_support_api_v1" {
 
   xml_content = file("./api/support/v1/base_policy.xml")
 }
+
+# BACK OFFICE
+
+resource "azurerm_api_management_named_value" "io_fn_sign_backoffice_url_v2" {
+  name                = "io-fn-sign-backoffice-url"
+  api_management_name = data.azurerm_api_management.apim_v2_api.name
+  resource_group_name = data.azurerm_api_management.apim_v2_api.resource_group_name
+  display_name        = "io-fn-sign-backoffice-url"
+  value               = format("https://%s-sign-backoffice-app.azurewebsites.net", local.product)
+}
+
+resource "azurerm_api_management_named_value" "io_fn_sign_backoffice_key_v2" {
+  name                = "io-fn-sign-backoffice-key"
+  api_management_name = data.azurerm_api_management.apim_v2_api.name
+  resource_group_name = data.azurerm_api_management.apim_v2_api.resource_group_name
+  display_name        = "io-fn-sign-backoffice-key"
+  value               = module.key_vault_secrets.values["io-fn-sign-support-key"].value
+  secret              = true
+}
+
+module "apim_v2_io_sign_backoffice_product" {
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_product?ref=v6.20.2"
+
+  product_id   = format("%s-sign-backoffice-apim-product", local.product)
+  display_name = "IO SIGN BACKOFFICE"
+  description  = "Api Management product for io-sign-backoffice REST APIs"
+
+  api_management_name = data.azurerm_api_management.apim_v2_api.name
+  resource_group_name = data.azurerm_api_management.apim_v2_api.resource_group_name
+
+  published             = true
+  subscription_required = true
+  approval_required     = false
+
+  policy_xml = file("./api_product/backoffice/_base_policy.xml")
+}
+
+module "apim_v2_io_sign_backoffice_api_v1" {
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api?ref=v6.20.2"
+
+  name                  = format("%s-sign-backoffice-apim-api", local.product)
+  api_management_name   = data.azurerm_api_management.apim_v2_api.name
+  resource_group_name   = data.azurerm_api_management.apim_v2_api.resource_group_name
+  product_ids           = [module.apim_v2_io_sign_backoffice_product.product_id]
+  subscription_required = true
+  service_url           = null
+
+  display_name = "IO SIGN BACKOFFICE API"
+  description  = "io-sign-backoffice REST APIs"
+
+  path      = "api/v1/sign/backoffice"
+  protocols = ["https"]
+
+  content_format = "openapi-link"
+
+  content_value = "https://raw.githubusercontent.com/pagopa/io-sign/main/apps/io-sign-backoffice-app/openapi.yml"
+  xml_content   = file("./api/backoffice/v1/base_policy.xml")
+}
