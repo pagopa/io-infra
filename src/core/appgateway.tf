@@ -371,6 +371,13 @@ module "app_gw" {
       priority              = 70
     }
 
+    api-web-io-pagopa-it = {
+      listener              = "api-web-io-pagopa-it"
+      backend               = "apim"
+      rewrite_rule_set_name = "rewrite-rule-set-api-web"
+      priority              = 100
+    }
+
     app-backend-io-italia-it = {
       listener              = "app-backend-io-italia-it"
       backend               = "appbackend-app"
@@ -463,6 +470,26 @@ module "app_gw" {
       name = "rewrite-rule-set-api-app"
       rewrite_rules = [{
         name          = "http-headers-api-app"
+        rule_sequence = 100
+        conditions    = []
+        url           = null
+        request_header_configurations = [
+          {
+            header_name  = "X-Forwarded-For"
+            header_value = "{var_client_ip}"
+          },
+          {
+            header_name  = "X-Client-Ip"
+            header_value = "{var_client_ip}"
+          },
+        ]
+        response_header_configurations = []
+      }]
+    },
+    {
+      name = "rewrite-rule-set-api-web"
+      rewrite_rules = [{
+        name          = "http-headers-api-web"
         rule_sequence = 100
         conditions    = []
         url           = null
