@@ -26,7 +26,7 @@ module "landing_cdn" {
 
   keyvault_vault_name          = module.key_vault.name
   keyvault_resource_group_name = azurerm_resource_group.sec_rg.name
-  keyvault_subscription_id     = data.azurerm_subscription.current.id
+  keyvault_subscription_id     = data.azurerm_subscription.current.subscription_id
 
   querystring_caching_behaviour = "BypassCaching"
 
