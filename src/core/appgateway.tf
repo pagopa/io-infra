@@ -755,14 +755,14 @@ data "azurerm_key_vault_certificate" "app_gw_api_app" {
 ###
 # kv where the certificate for api-web domain is located
 ###
-data "azurerm_key_vault" "profile_kv" {
-  name                = format("%s-profile-kv", local.project)
-  resource_group_name = format("%s-profile-sec-rg", local.project)
+data "azurerm_key_vault" "ioweb_kv" {
+  name                = format("%s-ioweb-kv", local.project)
+  resource_group_name = format("%s-ioweb-sec-rg", local.project)
 }
 
 data "azurerm_key_vault_certificate" "app_gw_api_web" {
   name         = var.app_gateway_api_web_certificate_name
-  key_vault_id = data.azurerm_key_vault.profile_kv.id
+  key_vault_id = data.azurerm_key_vault.ioweb_kv.id
 }
 ###
 
