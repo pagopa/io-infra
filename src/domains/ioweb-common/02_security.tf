@@ -79,6 +79,35 @@ resource "azurerm_key_vault_access_policy" "github_action_iac_ci_kv" {
   ]
 }
 
+#
+# Azure DevOps policy
+#
+data "azuread_service_principal" "platform_iac_sp" {
+  display_name = "pagopaspa-io-platform-iac-projects-${data.azurerm_subscription.current.subscription_id}"
+}
+
+resource "azurerm_key_vault_access_policy" "azdevops_platform_iac_policy_ioweb_kv" {
+  key_vault_id = module.key_vault.id
+  tenant_id    = data.azurerm_client_config.current.tenant_id
+  object_id    = data.azuread_service_principal.platform_iac_sp.object_id
+
+  secret_permissions      = ["List", "Get"]
+  storage_permissions     = []
+  certificate_permissions = ["List", "Get"]
+}
+
+resource "azurerm_key_vault_access_policy" "policy_ioweb_cdn_kv" {
+  key_vault_id = module.key_vault.id
+
+  tenant_id = data.azurerm_client_config.current.tenant_id
+  # Microsoft.AzureFrontDoor-Cdn object-id
+  object_id = "f3b3f72f-4770-47a5-8c1e-aa298003be12"
+
+  secret_permissions      = ["Get", ]
+  storage_permissions     = []
+  certificate_permissions = ["Get", ]
+}
+
 # ####################
 # ####################
 #       Keys         #
