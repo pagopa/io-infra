@@ -582,8 +582,8 @@ module "app_gw" {
           metric_name              = "ComputeUnits"
           operator                 = "GreaterOrLessThan"
           alert_sensitivity        = "Low" # todo after api app migration change to High
-          evaluation_total_count   = 2
-          evaluation_failure_count = 2
+          evaluation_total_count   = 3
+          evaluation_failure_count = 3
           dimension                = []
         }
       ]
