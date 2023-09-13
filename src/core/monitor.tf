@@ -386,3 +386,41 @@ module "web_test_api" {
   ]
 
 }
+
+resource "azurerm_monitor_scheduled_query_rules_alert" "mailup_alert_rule" {
+  name                = "[SEND.MAILUP.COM] Many Failures"
+  resource_group_name = azurerm_resource_group.rg_common.name
+  location            = azurerm_resource_group.rg_common.location
+
+  data_source_id          = azurerm_application_insights.application_insights.id
+  description             = "Check in Application Insight - Dependencies the mailup calls. Runbook: https://pagopa.atlassian.net/wiki/spaces/IC/pages/777650829/MailUp+Communication+Failures"
+  enabled                 = true
+  auto_mitigation_enabled = false
+
+  query = <<-QUERY
+    let timeGrain=5m;
+    let dataset=dependencies
+        // additional filters can be applied here
+        | where client_Type != "Browser"
+        | where target contains "send.mailup.com"
+        | where success == false;
+    dataset
+    
+  QUERY
+
+  severity    = 1
+  frequency   = 5
+  time_window = 30
+  trigger {
+    operator  = "GreaterThan"
+    threshold = 10
+  }
+
+  action {
+    action_group = [
+      azurerm_monitor_action_group.error_action_group.id,
+    ]
+  }
+
+  tags = var.tags
+}
