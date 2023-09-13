@@ -99,11 +99,10 @@ module "spid_login" {
     APPINSIGHTS_INSTRUMENTATIONKEY = data.azurerm_application_insights.application_insights.instrumentation_key
 
     # Spid logs
-    #TODO: enable logs
-    ENABLE_SPID_ACCESS_LOGS = false
-    # SPID_LOGS_STORAGE_CONNECTION_STRING = "DefaultEndpointsProtocol=https;AccountName=${module.storage_account.name};AccountKey=${module.storage_account.primary_access_key};BlobEndpoint=${module.storage_account.primary_blob_endpoint};"
-    # SPID_LOGS_STORAGE_CONTAINER_NAME    = azurerm_storage_container.spid_logs.name
-    # SPID_LOGS_PUBLIC_KEY                = trimspace(data.azurerm_key_vault_secret.spid_logs_public_key.value)
+    ENABLE_SPID_ACCESS_LOGS             = true
+    SPID_LOGS_STORAGE_CONNECTION_STRING = "DefaultEndpointsProtocol=https;AccountName=${module.spid_logs_storage.name};AccountKey=${module.spid_logs_storage.primary_access_key};BlobEndpoint=${module.spid_logs_storage.primary_blob_endpoint};"
+    SPID_LOGS_STORAGE_CONTAINER_NAME    = azurerm_storage_container.spid_logs.name
+    SPID_LOGS_PUBLIC_KEY                = trimspace(tls_private_key.spid_logs_key.public_key_pem)
   }
 
   allowed_subnets = [data.azurerm_subnet.azdoa_snet.id, data.azurerm_subnet.apim_v2_snet.id]
