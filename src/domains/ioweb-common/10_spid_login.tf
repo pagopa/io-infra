@@ -87,7 +87,7 @@ module "spid_login" {
     INCLUDE_SPID_USER_ON_INTROSPECTION = "true"
 
     TOKEN_EXPIRATION      = "3600"
-    JWT_TOKEN_ISSUER      = "SPID"
+    JWT_TOKEN_ISSUER      = "api-web.io.pagopa.it/ioweb/auth"
     JWT_TOKEN_PRIVATE_KEY = trimspace(tls_private_key.jwt.private_key_pem)
     TOKEN_EXPIRATION      = 3600
 
