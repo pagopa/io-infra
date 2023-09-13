@@ -119,6 +119,11 @@ resource "tls_private_key" "jwt" {
   rsa_bits  = 2048
 }
 
+resource "tls_private_key" "spid_logs_key" {
+  algorithm = "RSA"
+  rsa_bits  = 2048
+}
+
 # ####################
 # ####################
 #      Secrets       #
