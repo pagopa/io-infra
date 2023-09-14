@@ -207,6 +207,10 @@ module "apim_v2_io_sign_backoffice_product" {
   policy_xml = file("./api_product/backoffice/_base_policy.xml")
 }
 
+data "http" "backoffice_openapi" {
+  url = "https://raw.githubusercontent.com/pagopa/io-sign/main/apps/io-sign-backoffice-app/openapi.yml"
+}
+
 module "apim_v2_io_sign_backoffice_api_v1" {
   source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api?ref=v6.20.2"
 
@@ -223,8 +227,8 @@ module "apim_v2_io_sign_backoffice_api_v1" {
   path      = "api/v1/sign/backoffice"
   protocols = ["https"]
 
-  content_format = "openapi-link"
+  content_format = "openapi"
+  content_value  = data.http.backoffice_openapi.body
 
-  content_value = "https://raw.githubusercontent.com/pagopa/io-sign/main/apps/io-sign-backoffice-app/openapi.yml"
-  xml_content   = file("./api/backoffice/v1/base_policy.xml")
+  xml_content = file("./api/backoffice/v1/base_policy.xml")
 }
