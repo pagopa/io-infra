@@ -1,7 +1,7 @@
 <policies>
     <inbound>
         <base />
-        <set-backend-service base-url="{{io-fn3-public-url}}" />
+        <set-backend-service base-url="{{fims-public-url}}" />
     </inbound>
     <outbound>
         <base />
