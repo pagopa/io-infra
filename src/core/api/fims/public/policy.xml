@@ -1,0 +1,9 @@
+<policies>
+    <inbound>
+        <base />
+        <set-backend-service base-url="{{io-fn3-public-url}}" />
+    </inbound>
+    <outbound>
+        <base />
+    </outbound>
+</policies>
