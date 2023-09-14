@@ -173,7 +173,7 @@ module "app_gw" {
       protocol           = "Https"
       host               = format("api.%s.%s", var.dns_zone_io, var.external_domain)
       port               = 443
-      ssl_profile_name   = format("%s-ssl-profile", local.project)
+      ssl_profile_name   = null
       firewall_policy_id = null
 
       certificate = {
@@ -224,7 +224,7 @@ module "app_gw" {
       protocol           = "Https"
       host               = format("api-app.%s.%s", var.dns_zone_io, var.external_domain)
       port               = 443
-      ssl_profile_name   = format("%s-ssl-profile", local.project)
+      ssl_profile_name   = null
       firewall_policy_id = azurerm_web_application_firewall_policy.api_app.id
 
       certificate = {
@@ -241,7 +241,7 @@ module "app_gw" {
       protocol           = "Https"
       host               = format("api-web.%s.%s", var.dns_zone_io, var.external_domain)
       port               = 443
-      ssl_profile_name   = format("%s-ssl-profile", local.project)
+      ssl_profile_name   = null
       firewall_policy_id = azurerm_web_application_firewall_policy.api_app.id
 
       certificate = {
@@ -275,7 +275,7 @@ module "app_gw" {
       protocol           = "Https"
       host               = "developerportal-backend.io.italia.it"
       port               = 443
-      ssl_profile_name   = format("%s-ssl-profile", local.project)
+      ssl_profile_name   = null
       firewall_policy_id = null
 
       certificate = {
@@ -292,7 +292,7 @@ module "app_gw" {
       protocol           = "Https"
       host               = local.selfcare_io.backend_hostname
       port               = 443
-      ssl_profile_name   = format("%s-ssl-profile", local.project)
+      ssl_profile_name   = null
       firewall_policy_id = null
 
       certificate = {
@@ -309,7 +309,7 @@ module "app_gw" {
       protocol           = "Https"
       host               = format("%s.%s", var.dns_zone_firmaconio_selfcare, var.external_domain)
       port               = 443
-      ssl_profile_name   = format("%s-ssl-profile", local.project)
+      ssl_profile_name   = null
       firewall_policy_id = null
 
       certificate = {
@@ -326,7 +326,7 @@ module "app_gw" {
       protocol           = "Https"
       host               = format("continua.%s.%s", var.dns_zone_io, var.external_domain)
       port               = 443
-      ssl_profile_name   = format("%s-ssl-profile", local.project)
+      ssl_profile_name   = null
       firewall_policy_id = null
 
       certificate = {
@@ -433,7 +433,7 @@ module "app_gw" {
             header_value = "{var_client_ip}"
           },
           {
-            # this header will be checked in apim policy
+            # this header will be checked in apim policy (only for MTLS check)
             header_name  = data.azurerm_key_vault_secret.app_gw_mtls_header_name.value
             header_value = "false"
           },
@@ -458,7 +458,7 @@ module "app_gw" {
             header_value = "{var_client_ip}"
           },
           {
-            # this header will be checked in apim policy
+            # this header will be checked in apim policy (only for MTLS check)
             header_name  = data.azurerm_key_vault_secret.app_gw_mtls_header_name.value
             header_value = "true"
           },
@@ -741,6 +741,16 @@ resource "azurerm_key_vault_access_policy" "app_gateway_policy" {
 
 resource "azurerm_key_vault_access_policy" "app_gateway_policy_common" {
   key_vault_id            = module.key_vault_common.id
+  tenant_id               = data.azurerm_client_config.current.tenant_id
+  object_id               = azurerm_user_assigned_identity.appgateway.principal_id
+  key_permissions         = []
+  secret_permissions      = ["Get", "List"]
+  certificate_permissions = ["Get", "List"]
+  storage_permissions     = []
+}
+
+resource "azurerm_key_vault_access_policy" "app_gateway_policy_ioweb" {
+  key_vault_id            = data.azurerm_key_vault.ioweb_kv.id
   tenant_id               = data.azurerm_client_config.current.tenant_id
   object_id               = azurerm_user_assigned_identity.appgateway.principal_id
   key_permissions         = []
