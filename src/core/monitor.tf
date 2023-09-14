@@ -306,6 +306,15 @@ locals {
       ssl_cert_remaining_lifetime_check = 7,
     },
     {
+      # https://api-web.io.pagopa.it
+      name                              = trimsuffix(azurerm_dns_a_record.api_web_io_pagopa_it.fqdn, "."),
+      host                              = trimsuffix(azurerm_dns_a_record.api_web_io_pagopa_it.fqdn, "."),
+      path                              = "",
+      frequency                         = 300
+      http_status                       = 404,
+      ssl_cert_remaining_lifetime_check = 7,
+    },
+    {
       # https://api-mtls.io.pagopa.it
       name                              = trimsuffix(azurerm_dns_a_record.api_mtls_io_pagopa_it.fqdn, "."),
       host                              = trimsuffix(azurerm_dns_a_record.api_mtls_io_pagopa_it.fqdn, "."),
