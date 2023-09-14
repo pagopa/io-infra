@@ -245,7 +245,7 @@ module "app_gw" {
       firewall_policy_id = azurerm_web_application_firewall_policy.api_app.id
 
       certificate = {
-        name = var.app_gateway_api_app_certificate_name
+        name = var.app_gateway_api_web_certificate_name
         id = replace(
           data.azurerm_key_vault_certificate.app_gw_api_web.secret_id,
           "/${data.azurerm_key_vault_certificate.app_gw_api_web.version}",
