@@ -133,7 +133,7 @@ locals {
       name                              = local.devportal.backend_hostname,
       host                              = local.devportal.backend_hostname,
       path                              = "/info",
-      frequency                         = 300
+      frequency                         = 900
       http_status                       = 200,
       ssl_cert_remaining_lifetime_check = 7,
     },
@@ -142,7 +142,7 @@ locals {
       name                              = trimsuffix(azurerm_dns_a_record.api_io_italia_it.fqdn, "."),
       host                              = trimsuffix(azurerm_dns_a_record.api_io_italia_it.fqdn, "."),
       path                              = "",
-      frequency                         = 300
+      frequency                         = 900
       http_status                       = 404,
       ssl_cert_remaining_lifetime_check = 7,
     },
@@ -151,7 +151,7 @@ locals {
       name                              = trimsuffix(azurerm_dns_a_record.app_backend_io_italia_it.fqdn, "."),
       host                              = trimsuffix(azurerm_dns_a_record.app_backend_io_italia_it.fqdn, "."),
       path                              = "/info",
-      frequency                         = 300
+      frequency                         = 900
       http_status                       = 200,
       ssl_cert_remaining_lifetime_check = 7,
     },
@@ -160,7 +160,7 @@ locals {
       name                              = "io.italia.it",
       host                              = "io.italia.it",
       path                              = "",
-      frequency                         = 300
+      frequency                         = 900
       http_status                       = 200,
       ssl_cert_remaining_lifetime_check = 7,
     },
@@ -169,7 +169,7 @@ locals {
       name                              = "assets.cdn.io.italia.it",
       host                              = "assets.cdn.io.italia.it",
       path                              = "/status/backend.json",
-      frequency                         = 300
+      frequency                         = 900
       http_status                       = 200,
       ssl_cert_remaining_lifetime_check = 7,
     },
@@ -178,7 +178,7 @@ locals {
       name                              = "assets.cdn.io.pagopa.it",
       host                              = "assets.cdn.io.pagopa.it",
       path                              = "/status/backend.json",
-      frequency                         = 300
+      frequency                         = 900
       http_status                       = 200,
       ssl_cert_remaining_lifetime_check = 7,
     },
@@ -292,7 +292,7 @@ locals {
       name                              = trimsuffix(azurerm_dns_a_record.api_io_pagopa_it.fqdn, "."),
       host                              = trimsuffix(azurerm_dns_a_record.api_io_pagopa_it.fqdn, "."),
       path                              = "",
-      frequency                         = 300
+      frequency                         = 900
       http_status                       = 404,
       ssl_cert_remaining_lifetime_check = 7,
     },
@@ -301,7 +301,7 @@ locals {
       name                              = trimsuffix(azurerm_dns_a_record.api_app_io_pagopa_it.fqdn, "."),
       host                              = trimsuffix(azurerm_dns_a_record.api_app_io_pagopa_it.fqdn, "."),
       path                              = "/info",
-      frequency                         = 300
+      frequency                         = 900
       http_status                       = 200,
       ssl_cert_remaining_lifetime_check = 7,
     },
@@ -310,7 +310,7 @@ locals {
       name                              = trimsuffix(azurerm_dns_a_record.api_web_io_pagopa_it.fqdn, "."),
       host                              = trimsuffix(azurerm_dns_a_record.api_web_io_pagopa_it.fqdn, "."),
       path                              = "",
-      frequency                         = 300
+      frequency                         = 900
       http_status                       = 404,
       ssl_cert_remaining_lifetime_check = 7,
     },
@@ -319,7 +319,7 @@ locals {
       name                              = trimsuffix(azurerm_dns_a_record.api_mtls_io_pagopa_it.fqdn, "."),
       host                              = trimsuffix(azurerm_dns_a_record.api_mtls_io_pagopa_it.fqdn, "."),
       path                              = "",
-      frequency                         = 300
+      frequency                         = 900
       http_status                       = 400,
       ssl_cert_remaining_lifetime_check = 7,
     },
@@ -328,7 +328,7 @@ locals {
       name                              = trimsuffix(azurerm_dns_a_record.api_io_selfcare_pagopa_it.fqdn, "."),
       host                              = trimsuffix(azurerm_dns_a_record.api_io_selfcare_pagopa_it.fqdn, "."),
       path                              = "/info",
-      frequency                         = 300
+      frequency                         = 900
       http_status                       = 200,
       ssl_cert_remaining_lifetime_check = 7,
     },
@@ -337,7 +337,7 @@ locals {
       name                              = module.selfcare_cdn.fqdn,
       host                              = module.selfcare_cdn.fqdn,
       path                              = "",
-      frequency                         = 300
+      frequency                         = 900
       http_status                       = 200,
       ssl_cert_remaining_lifetime_check = 7,
     },
@@ -346,7 +346,7 @@ locals {
       name                              = trimsuffix(azurerm_dns_a_record.firmaconio_selfcare_pagopa_it.fqdn, "."),
       host                              = trimsuffix(azurerm_dns_a_record.firmaconio_selfcare_pagopa_it.fqdn, "."),
       path                              = "/health",
-      frequency                         = 300
+      frequency                         = 900
       http_status                       = 200,
       ssl_cert_remaining_lifetime_check = 7,
     },
@@ -355,7 +355,7 @@ locals {
       name                              = "github-raw-status-backend",
       host                              = "raw.githubusercontent.com",
       path                              = "/pagopa/io-services-metadata/master/status/backend.json",
-      frequency                         = 300
+      frequency                         = 900
       http_status                       = 200,
       ssl_cert_remaining_lifetime_check = 7,
     },
@@ -364,7 +364,7 @@ locals {
       name                              = trimsuffix(azurerm_dns_a_record.continua_io_pagopa_it.fqdn, "."),
       host                              = trimsuffix(azurerm_dns_a_record.continua_io_pagopa_it.fqdn, "."),
       path                              = "",
-      frequency                         = 300
+      frequency                         = 900
       http_status                       = 302,
       ssl_cert_remaining_lifetime_check = 7,
     },
