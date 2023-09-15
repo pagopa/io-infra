@@ -6,18 +6,13 @@ data "azurerm_key_vault_secret" "api_beta_testers" {
   key_vault_id = data.azurerm_key_vault.kv.id
 }
 
-data "azurerm_key_vault_secret" "exchange_jwt_pub_key" {
-  name         = "ioweb-profile-exchange-jwt-pub-key"
+data "azurerm_key_vault_secret" "functions_fast_login_api_key" {
+  name         = "ioweb-profile-functions-fast-login-api-key"
   key_vault_id = data.azurerm_key_vault.kv.id
 }
 
-data "azurerm_key_vault_secret" "fast_login_api_key" {
-  name         = "ioweb-profile-fast-login-api-key"
-  key_vault_id = data.azurerm_key_vault.kv.id
-}
-
-data "azurerm_key_vault_secret" "functions_app_subscription_key" {
-  name         = "ioweb-profile-functions-app-subscription-key"
+data "azurerm_key_vault_secret" "functions_app_api_key" {
+  name         = "ioweb-profile-functions-app-api-key"
   key_vault_id = data.azurerm_key_vault.kv.id
 }
 
@@ -55,24 +50,27 @@ locals {
       // ------------
       // JWT Config
       // ------------
-      BEARER_AUTH_HEADER   = "authorization"
-      EXCHANGE_JWT_ISSUER  = "TOCHANGE"
-      EXCHANGE_JWT_PUB_KEY = data.azurerm_key_vault_secret.exchange_jwt_pub_key.value
+      BEARER_AUTH_HEADER         = "authorization"
+      EXCHANGE_JWT_ISSUER        = "api-web.io.pagopa.it/ioweb/auth"
+      EXCHANGE_JWT_PUB_KEY       = azurerm_key_vault_secret.exchange_jwt_pub_key.value
+      EXCHANGE_JWT_PRIVATE_KEY   = azurerm_key_vault_secret.exchange_jwt_private_key.value
+      MAGIC_LINK_JWE_PUB_KEY     = azurerm_key_vault_secret.magic_link_jwe_pub_key.value
+      MAGIC_LINK_JWE_PRIVATE_KEY = azurerm_key_vault_secret.magic_link_jwe_private_key.value
 
-      HUB_SPID_LOGIN_JWT_ISSUER  = "TOCHANGE"
+      HUB_SPID_LOGIN_JWT_ISSUER  = "api-web.io.pagopa.it/ioweb/auth"
       HUB_SPID_LOGIN_JWT_PUB_KEY = data.azurerm_key_vault_secret.spid_login_jwt_pub_key.value
 
       // -------------------------
       // Fast Login config
       // -------------------------
-      FAST_LOGIN_API_KEY         = data.azurerm_key_vault_secret.fast_login_api_key.value
+      FAST_LOGIN_API_KEY         = data.azurerm_key_vault_secret.functions_fast_login_api_key.value
       FAST_LOGIN_CLIENT_BASE_URL = "https://io-p-weu-fast-login-fn.azurewebsites.net"
 
       // -------------------------
       // Functions App config
       // -------------------------
-      FUNCTIONS_APP_SUBSCRIPTION_KEY = data.azurerm_key_vault_secret.functions_app_subscription_key.value
-      FUNCTIONS_APP_CLIENT_BASE_URL  = "https://io-p-app-fn-2.azurewebsites.net"
+      FUNCTIONS_APP_API_KEY         = data.azurerm_key_vault_secret.functions_app_api_key.value
+      FUNCTIONS_APP_CLIENT_BASE_URL = "https://io-p-app-fn-2.azurewebsites.net"
 
       // -------------------------
       // Hub Spid Login for ioweb config
