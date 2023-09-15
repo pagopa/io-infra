@@ -7,8 +7,8 @@ data "azurerm_key_vault" "kv" {
 # KEYS
 #######
 resource "tls_private_key" "ioweb_profile_jwe_key" {
-  algorithm = "RSA"
-  rsa_bits  = 2048
+  algorithm   = "ECDSA"
+  ecdsa_curve = "P256"
 }
 
 resource "tls_private_key" "ioweb_profile_jwt_key" {
