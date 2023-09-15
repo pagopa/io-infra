@@ -20,6 +20,18 @@ module "spid_logs_storage" {
   tags = var.tags
 }
 
+module "spid_logs_storage_customer_managed_key" {
+  source               = "git::https://github.com/pagopa/terraform-azurerm-v3//storage_account_customer_managed_key?ref=v6.1.0"
+  tenant_id            = data.azurerm_subscription.current.tenant_id
+  location             = var.location
+  resource_group_name  = azurerm_resource_group.storage_rg.name
+  key_vault_id         = module.key_vault.id
+  key_name             = format("%s-key", module.spid_logs_storage.name)
+  storage_id           = module.spid_logs_storage.id
+  storage_principal_id = module.spid_logs_storage.identity.0.principal_id
+}
+
+
 # Containers
 resource "azurerm_storage_container" "spid_logs" {
   depends_on            = [module.spid_logs_storage]

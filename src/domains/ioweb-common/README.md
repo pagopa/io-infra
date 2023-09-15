@@ -29,6 +29,7 @@
 | <a name="module_spid_login"></a> [spid\_login](#module\_spid\_login) | git::https://github.com/pagopa/terraform-azurerm-v3.git//app_service | v4.1.15 |
 | <a name="module_spid_login_snet"></a> [spid\_login\_snet](#module\_spid\_login\_snet) | git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet | v4.1.15 |
 | <a name="module_spid_logs_storage"></a> [spid\_logs\_storage](#module\_spid\_logs\_storage) | git::https://github.com/pagopa/terraform-azurerm-v3//storage_account | v6.1.0 |
+| <a name="module_spid_logs_storage_customer_managed_key"></a> [spid\_logs\_storage\_customer\_managed\_key](#module\_spid\_logs\_storage\_customer\_managed\_key) | git::https://github.com/pagopa/terraform-azurerm-v3//storage_account_customer_managed_key | v6.1.0 |
 
 ## Resources
 
