@@ -125,12 +125,6 @@ resource "tls_private_key" "jwt" {
 # ####################
 # ####################
 
-resource "azurerm_key_vault_secret" "spid_login_jwt_pub_key" {
-  name         = "ioweb-profile-spid-login-jwt-pub-key"
-  value        = tls_private_key.jwt.public_key_pem
-  key_vault_id = module.key_vault.id
-}
-
 data "azurerm_key_vault_secret" "agid_spid_private_key" {
   name         = "spid-login-AGID-SPID-CERT-KEY"
   key_vault_id = module.key_vault.id
