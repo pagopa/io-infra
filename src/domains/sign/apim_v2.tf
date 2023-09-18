@@ -83,7 +83,7 @@ resource "azurerm_api_management_named_value" "io_sign_cosmosdb_issuer_issuers_c
 }
 # end legacy
 
-resource "azurerm_api_management_named_value" "io_sign_cosmosdb_issuer_container_name_v2" {
+resource "azurerm_api_management_named_value" "backoffice-database-name" {
   name                = "backoffice-database-name"
   api_management_name = data.azurerm_api_management.apim_v2_api.name
   resource_group_name = data.azurerm_api_management.apim_v2_api.resource_group_name
@@ -92,7 +92,7 @@ resource "azurerm_api_management_named_value" "io_sign_cosmosdb_issuer_container
   secret              = false
 }
 
-resource "azurerm_api_management_named_value" "io_sign_cosmosdb_issuer_whitelist_collection_name_new_v2" {
+resource "azurerm_api_management_named_value" "backoffice-api-keys-collection-name" {
   name                = "backoffice-api-keys-collection-name"
   api_management_name = data.azurerm_api_management.apim_v2_api.name
   resource_group_name = data.azurerm_api_management.apim_v2_api.resource_group_name
