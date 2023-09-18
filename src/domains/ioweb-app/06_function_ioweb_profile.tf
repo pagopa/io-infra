@@ -50,12 +50,16 @@ locals {
       // ------------
       // JWT Config
       // ------------
-      BEARER_AUTH_HEADER         = "authorization"
-      EXCHANGE_JWT_ISSUER        = "api-web.io.pagopa.it/ioweb/auth"
-      EXCHANGE_JWT_PUB_KEY       = azurerm_key_vault_secret.exchange_jwt_pub_key.value
-      EXCHANGE_JWT_PRIVATE_KEY   = azurerm_key_vault_secret.exchange_jwt_private_key.value
+      BEARER_AUTH_HEADER       = "authorization"
+      EXCHANGE_JWT_ISSUER      = "api-web.io.pagopa.it/ioweb/auth"
+      EXCHANGE_JWT_PUB_KEY     = azurerm_key_vault_secret.exchange_jwt_pub_key.value
+      EXCHANGE_JWT_PRIVATE_KEY = azurerm_key_vault_secret.exchange_jwt_private_key.value
+      // 1 hour
+      EXCHANGE_JWT_TTL           = "3600"
       MAGIC_LINK_JWE_PUB_KEY     = azurerm_key_vault_secret.magic_link_jwe_pub_key.value
       MAGIC_LINK_JWE_PRIVATE_KEY = azurerm_key_vault_secret.magic_link_jwe_private_key.value
+      // TBD: more/less than 1 week?
+      MAGIC_LINK_JWE_TTL = "604800"
 
       HUB_SPID_LOGIN_JWT_ISSUER  = "api-web.io.pagopa.it/ioweb/auth"
       HUB_SPID_LOGIN_JWT_PUB_KEY = data.azurerm_key_vault_secret.spid_login_jwt_pub_key.value
