@@ -84,19 +84,19 @@ resource "azurerm_api_management_named_value" "io_sign_cosmosdb_issuer_issuers_c
 }
 
 resource "azurerm_api_management_named_value" "backoffice-database-name_apimv1" {
-  name                = "backoffice-database-name"
+  name                = "io-sign-backoffice-database-name"
   api_management_name = data.azurerm_api_management.apim_api.name
   resource_group_name = data.azurerm_api_management.apim_api.resource_group_name
-  display_name        = "backoffice_database_name"
+  display_name        = "io-sign-backoffice-database_name"
   value               = module.cosmosdb_sql_database_backoffice.name
   secret              = false
 }
 
 resource "azurerm_api_management_named_value" "backoffice-api-keys-collection-name_apimv1" {
-  name                = "backoffice-api-keys-collection-name"
+  name                = "io-sign-backoffice-api-keys-collection-name"
   api_management_name = data.azurerm_api_management.apim_api.name
   resource_group_name = data.azurerm_api_management.apim_api.resource_group_name
-  display_name        = "backoffice-api-keys-collection-name"
+  display_name        = "io-sign-backoffice-api-keys-collection-name"
   value               = module.cosmosdb_sql_container_backoffice-api-keys.name
   secret              = false
 }
