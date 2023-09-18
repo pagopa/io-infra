@@ -50,6 +50,9 @@
                             <set-header name="x-ms-documentdb-isquery" exists-action="override">
                                 <value>True</value>
                             </set-header>
+                            <set-header name="x-ms-documentdb-query-enablecrosspartition" exists-action="override">
+                                <value>True</value>
+                            </set-header>
                             <set-header name="x-ms-date" exists-action="override">
                                 <value>@(context.Variables.GetValueOrDefault<string>("requestDateString"))</value>
                             </set-header>
