@@ -85,12 +85,6 @@ locals {
   }
 }
 
-resource "azurerm_resource_group" "ioweb_profile_rg" {
-  name     = format("%s-ioweb-profile-rg", local.common_project)
-  location = var.location
-
-  tags = var.tags
-}
 
 # Subnet to host admin function
 module "ioweb_profile_snet" {
@@ -122,7 +116,7 @@ module "function_ioweb_profile" {
   resource_group_name = azurerm_resource_group.ioweb_profile_rg.name
   name                = format("%s-ioweb-profile-fn", local.common_project)
   location            = var.location
-  domain              = "IO-COMMONS"
+  domain              = "IO-AUTH"
   health_check_path   = "/api/v1/info"
 
   node_version    = "18"
@@ -156,8 +150,9 @@ module "function_ioweb_profile" {
 
   allowed_subnets = [
     module.ioweb_profile_snet.id,
-    data.azurerm_subnet.apim_snet.id,
     data.azurerm_subnet.apim_v2_snet.id,
+    data.azurerm_subnet.function_app_snet[0].id,
+    data.azurerm_subnet.function_app_snet[1].id,
   ]
 
   # Action groups for alerts
@@ -199,8 +194,9 @@ module "function_ioweb_profile_staging_slot" {
   allowed_subnets = [
     module.ioweb_profile_snet.id,
     data.azurerm_subnet.azdoa_snet[0].id,
-    data.azurerm_subnet.apim_snet.id,
     data.azurerm_subnet.apim_v2_snet.id,
+    data.azurerm_subnet.function_app_snet[0].id,
+    data.azurerm_subnet.function_app_snet[1].id,
   ]
 
   tags = var.tags

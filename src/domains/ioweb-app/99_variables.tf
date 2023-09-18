@@ -127,18 +127,6 @@ variable "tls_cert_check_helm" {
 ###################
 # ioweb-profile-fn
 ###################
-variable "function_ioweb_profile_kind" {
-  type        = string
-  description = "App service plan kind"
-  default     = null
-}
-
-variable "function_ioweb_profile_sku_size" {
-  type        = string
-  description = "App service plan sku size"
-  default     = null
-}
-
 variable "cidr_subnet_fniowebprofile" {
   type        = list(string)
   description = "Functions ioweb profile address space"
