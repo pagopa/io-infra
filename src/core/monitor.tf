@@ -424,3 +424,8 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "mailup_alert_rule" {
 
   tags = var.tags
 }
+
+import {
+  to = azurerm_monitor_scheduled_query_rules_alert.mailup_alert_rule
+  id = "/subscriptions/ec285037-c673-4f58-b594-d7c480da4e8b/resourceGroups/io-p-rg-common/providers/Microsoft.Insights/scheduledQueryRules/[SEND.MAILUP.COM] Many Failures"
+}
