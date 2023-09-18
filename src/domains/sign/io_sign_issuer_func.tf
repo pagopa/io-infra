@@ -27,7 +27,7 @@ locals {
       SelfCareApiBasePath               = "https://api.selfcare.pagopa.it"
       SelfCareApiKey                    = module.key_vault_secrets.values["SelfCareApiKey"].value
       SlackWebhookUrl                   = module.key_vault_secrets.values["SlackWebhookUrl"].value
-      BackOfficeApiBasePath             = "https://api.io.pagopa.it/api/vl/sign/backoffice"
+      BackOfficeApiBasePath             = "https://api.io.pagopa.it/api/v1/sign/backoffice"
       BackOfficeApiKey                  = module.key_vault_secrets.values["BackOfficeApiKey"].value
     }
   }
