@@ -5,13 +5,13 @@
             <when condition="@(!context.Variables.ContainsKey("issuerWhitelistFiscalCodes"))">
                 <set-variable name="requestDateString" value="@(DateTime.UtcNow.ToString("r"))" />
                 <send-request mode="new" response-variable-name="response" timeout="1" ignore-error="false">
-                    <set-url>https://{{io-sign-cosmosdb-name}}.documents.azure.com/dbs/{{io-sign-cosmosdb-issuer-container-name}}/colls/{{io-sign-cosmosdb-issuer-whitelist-collection-name}}/docs</set-url>
+                    <set-url>https://{{io-sign-cosmosdb-name}}.documents.azure.com/dbs/{{io-sign-backoffice-database-name}}/colls/{{io-sign-backoffice-api-keys-collection-name}}/docs</set-url>
                     <set-method>POST</set-method>
                     <set-header name="Authorization" exists-action="override">
                         <value>@{
                             var verb = "post";
                             var resourceType = "docs";
-                            var resourceLink = "dbs/{{io-sign-cosmosdb-issuer-container-name}}/colls/{{io-sign-cosmosdb-issuer-whitelist-collection-name}}";
+                            var resourceLink = "dbs/{{io-sign-backoffice-database-name}}/colls/{{io-sign-backoffice-api-keys-collection-name}}";
                             var key = "{{io-sign-cosmosdb-key}}";
                             var keyType = "master";
                             var tokenVersion = "1.0";
@@ -42,13 +42,16 @@
                     <set-header name="x-ms-documentdb-isquery" exists-action="override">
                         <value>True</value>
                     </set-header>
+                    <set-header name="x-ms-documentdb-query-enablecrosspartition" exists-action="override">
+                        <value>True</value>
+                    </set-header>
                     <set-header name="x-ms-date" exists-action="override">
                         <value>@(context.Variables.GetValueOrDefault<string>("requestDateString"))</value>
                     </set-header>
                     <set-header name="x-ms-version" exists-action="override">
                         <value>2018-12-31</value>
                     </set-header>
-                    <set-body>@("{\"query\": \"SELECT w.test_fiscal_codes FROM whitelist w WHERE w.id = @id\", " +
+                    <set-body>@("{\"query\": \"SELECT w.testers FROM whitelist w WHERE w.id = @id\", " +
                                     "\"parameters\": [{ \"name\": \"@id\", \"value\": \"" + context.Subscription.Id + "\"}]}")</set-body>
                 </send-request>
                 <!-- Save response in issuerWhitelist var -->
@@ -62,13 +65,13 @@
             <when condition="@(!context.Variables.ContainsKey("issuerEnvironment"))">
                 <set-variable name="requestDateString" value="@(DateTime.UtcNow.ToString("r"))" />
                 <send-request mode="new" response-variable-name="response" timeout="1" ignore-error="false">
-                    <set-url>https://{{io-sign-cosmosdb-name}}.documents.azure.com/dbs/{{io-sign-cosmosdb-issuer-container-name}}/colls/{{io-sign-cosmosdb-issuer-issuers-name}}/docs</set-url>
+                    <set-url>https://{{io-sign-cosmosdb-name}}.documents.azure.com/dbs/{{io-sign-backoffice-database-name}}/colls/{{io-sign-backoffice-api-keys-container-name}}/docs</set-url>
                     <set-method>POST</set-method>
                     <set-header name="Authorization" exists-action="override">
                         <value>@{
                             var verb = "post";
                             var resourceType = "docs";
-                            var resourceLink = "dbs/{{io-sign-cosmosdb-issuer-container-name}}/colls/{{io-sign-cosmosdb-issuer-issuers-name}}";
+                            var resourceLink = "dbs/{{io-sign-backoffice-database-name}}/colls/{{io-sign-backoffice-api-keys-container-name}}";
                             var key = "{{io-sign-cosmosdb-key}}";
                             var keyType = "master";
                             var tokenVersion = "1.0";
@@ -116,7 +119,7 @@
         </choose>
         <set-header name="X-Allowed" exists-action="override">
             <!--
-                Get the Fiscal Code from the request body and check if it is in the fiscal code's whitelist and also if the issuer use a TEST environment.
+                Get the Fiscal Code from the request body and check if it is in the fiscal code's whitelist and also if the issuer use a test environment.
                 In the positive case it place "true" in the "X-Allowed" header otherwise "false"
             -->
             <value>@{
@@ -128,8 +131,8 @@
                         if(envFirstDocument.ContainsKey("environment")){
                             string issuerEnvironment = (string)envFirstDocument["environment"];
 
-                            //If the issuer is not in the TEST environment then I do not perform any checks
-                            if (issuerEnvironment!="TEST"){
+                            //If the issuer is not in the test environment then I do not perform any checks
+                            if (issuerEnvironment!="test"){
                                 return "true";
                             }
                         }
@@ -144,8 +147,8 @@
                         JArray documents = (JArray) whitelistFiscalCodeQueryResponse["Documents"];
                         if (documents.Count > 0){
                             JObject firstDocument = (JObject) documents[0];
-                            if(firstDocument.ContainsKey("test_fiscal_codes")){
-                                JArray whiteListFiscalCodes = (JArray)firstDocument["test_fiscal_codes"];
+                            if(firstDocument.ContainsKey("testers")){
+                                JArray whiteListFiscalCodes = (JArray)firstDocument["testers"];
                                 foreach (var fiscalCode in whiteListFiscalCodes) {
                                     string fiscalCodeString = (string)fiscalCode;
                                     if(fiscalCodeString==requestFiscalCodeString){
