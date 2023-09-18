@@ -56,6 +56,7 @@ resource "azurerm_api_management_named_value" "io_sign_cosmosdb_key_v2" {
   secret              = true
 }
 
+# legacy, it can be removed once the backoffice is released
 resource "azurerm_api_management_named_value" "io_sign_cosmosdb_issuer_container_name_v2" {
   name                = "io-sign-cosmosdb-issuer-container-name"
   api_management_name = data.azurerm_api_management.apim_v2_api.name
@@ -64,7 +65,6 @@ resource "azurerm_api_management_named_value" "io_sign_cosmosdb_issuer_container
   value               = module.cosmosdb_sql_database_issuer.name
   secret              = false
 }
-
 resource "azurerm_api_management_named_value" "io_sign_cosmosdb_issuer_whitelist_collection_name_new_v2" {
   name                = "io-sign-cosmosdb-issuer-whitelist-collection-name"
   api_management_name = data.azurerm_api_management.apim_v2_api.name
@@ -73,7 +73,6 @@ resource "azurerm_api_management_named_value" "io_sign_cosmosdb_issuer_whitelist
   value               = module.cosmosdb_sql_container_issuer-issuers-whitelist.name
   secret              = false
 }
-
 resource "azurerm_api_management_named_value" "io_sign_cosmosdb_issuer_issuers_collection_name_v2" {
   name                = "io-sign-cosmosdb-issuer-issuers-name"
   api_management_name = data.azurerm_api_management.apim_v2_api.name
@@ -82,7 +81,25 @@ resource "azurerm_api_management_named_value" "io_sign_cosmosdb_issuer_issuers_c
   value               = module.cosmosdb_sql_container_issuer-issuers.name
   secret              = false
 }
+# end legacy
 
+resource "azurerm_api_management_named_value" "io_sign_cosmosdb_issuer_container_name_v2" {
+  name                = "backoffice-database-name"
+  api_management_name = data.azurerm_api_management.apim_v2_api.name
+  resource_group_name = data.azurerm_api_management.apim_v2_api.resource_group_name
+  display_name        = "backoffice_database_name"
+  value               = module.cosmosdb_sql_database_backoffice.name
+  secret              = false
+}
+
+resource "azurerm_api_management_named_value" "io_sign_cosmosdb_issuer_whitelist_collection_name_new_v2" {
+  name                = "backoffice-api-keys-collection-name"
+  api_management_name = data.azurerm_api_management.apim_v2_api.name
+  resource_group_name = data.azurerm_api_management.apim_v2_api.resource_group_name
+  display_name        = "backoffice-api-keys-collection-name"
+  value               = module.cosmosdb_sql_container_backoffice-api-keys.name
+  secret              = false
+}
 
 module "apim_v2_io_sign_product" {
   source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_product?ref=v6.20.2"
@@ -207,6 +224,10 @@ module "apim_v2_io_sign_backoffice_product" {
   policy_xml = file("./api_product/backoffice/_base_policy.xml")
 }
 
+data "http" "backoffice_openapi" {
+  url = "https://raw.githubusercontent.com/pagopa/io-sign/main/apps/io-sign-backoffice-app/openapi.yml"
+}
+
 module "apim_v2_io_sign_backoffice_api_v1" {
   source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api?ref=v6.20.2"
 
@@ -223,8 +244,8 @@ module "apim_v2_io_sign_backoffice_api_v1" {
   path      = "api/v1/sign/backoffice"
   protocols = ["https"]
 
-  content_format = "openapi-link"
+  content_format = "openapi"
+  content_value  = data.http.backoffice_openapi.body
 
-  content_value = "https://raw.githubusercontent.com/pagopa/io-sign/main/apps/io-sign-backoffice-app/openapi.yml"
-  xml_content   = file("./api/backoffice/v1/base_policy.xml")
+  xml_content = file("./api/backoffice/v1/base_policy.xml")
 }

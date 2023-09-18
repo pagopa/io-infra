@@ -13,13 +13,13 @@
                         -->
                         <set-variable name="requestDateString" value="@(DateTime.UtcNow.ToString("r"))" />
                         <send-request mode="new" response-variable-name="response" timeout="1" ignore-error="false">
-                            <set-url>https://{{io-sign-cosmosdb-name}}.documents.azure.com/dbs/{{io-sign-cosmosdb-issuer-container-name}}/colls/{{io-sign-cosmosdb-issuer-whitelist-collection-name}}/docs</set-url>
+                            <set-url>https://{{io-sign-cosmosdb-name}}.documents.azure.com/dbs/{{backoffice-database-name}}/colls/{{backoffice-api-keys-collection-name}}/docs</set-url>
                             <set-method>POST</set-method>
                             <set-header name="Authorization" exists-action="override">
                                 <value>@{
                                     var verb = "post";
                                     var resourceType = "docs";
-                                    var resourceLink = "dbs/{{io-sign-cosmosdb-issuer-container-name}}/colls/{{io-sign-cosmosdb-issuer-whitelist-collection-name}}";
+                                    var resourceLink = "dbs/{{backoffice-database-name}}/colls/{{backoffice-api-keys-collection-name}}";
                                     var key = "{{io-sign-cosmosdb-key}}";
                                     var keyType = "master";
                                     var tokenVersion = "1.0";
