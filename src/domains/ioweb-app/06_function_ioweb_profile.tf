@@ -17,7 +17,7 @@ data "azurerm_key_vault_secret" "functions_app_api_key" {
 }
 
 data "azurerm_key_vault_secret" "spid_login_jwt_pub_key" {
-  name         = "ioweb-profile-spid-login-jwt-pub-key"
+  name         = "spid-login-jwt-pub-key"
   key_vault_id = data.azurerm_key_vault.kv.id
 }
 
