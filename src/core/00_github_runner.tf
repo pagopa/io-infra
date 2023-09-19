@@ -38,6 +38,16 @@ locals {
   image_name              = "github-actions-runner:1.0"
 }
 
+data "azurerm_key_vault" "keyvault" {
+  name                = "io-p-kv-common"
+  resource_group_name = "io-p-rg-common"
+}
+
+data "azurerm_key_vault_secret" "github_pat" {
+  name         = "github-pat-io-infra"
+  key_vault_id = data.azurerm_key_vault.keyvault.id
+}
+
 resource "azapi_resource" "job" {
   type      = "Microsoft.App/jobs@2023-05-01"
   name      = "io-infra-github-runner-job"
@@ -63,29 +73,31 @@ resource "azapi_resource" "job" {
             maxExecutions   = 5
             minExecutions   = 0
             pollingInterval = 20
-            rules = {
-              name = "github-runner"
-              type = "github-runner"
-              metadata = {
-                github_runner             = "https://api.github.com"
-                owner                     = local.repo_owner
-                runnerScope               = "repo"
-                repos                     = local.repo_name
-                targetWorkflowQueueLength = "1"
-              }
-              auth = [
-                {
-                  secretRef        = "personal-access-token"
-                  triggerParameter = "personalAccessToken"
+            rules = [
+              {
+                name = "github-runner"
+                type = "github-runner"
+                metadata = {
+                  github_runner             = "https://api.github.com"
+                  owner                     = local.repo_owner
+                  runnerScope               = "repo"
+                  repos                     = local.repo_name
+                  targetWorkflowQueueLength = "1"
                 }
-              ]
-            }
+                auth = [
+                  {
+                    secretRef        = "personal-access-token"
+                    triggerParameter = "personalAccessToken"
+                  }
+                ]
+              }
+            ]
           }
         }
         secrets = [
           {
             name  = "personal-access-token"
-            value = "${var.TF_ACR_PASSWORD}"
+            value = "${azurerm_key_vault_secret.github_pat.value}"
           },
           {
             name = "${local.container_registry_name}azurecrio-${local.container_registry_name}"
@@ -96,30 +108,29 @@ resource "azapi_resource" "job" {
       environmentId = module.github_runner.id
       template = {
         containers = [
-          {
-            env = [
-              {
-                name      = "GITHUB_PAT"
-                secretRef = "personal-access-token"
-              },
-              {
-                name  = "REPO_URL"
-                value = "https://github.com/${local.repo_owner}/${repo_name}"
-              },
-              {
-                name  = "REGISTRATION_TOKEN_API_URL"
-                value = "https://api.github.com/repos/${local.repo_owner}/${repo_name}/actions/runners/registration-token"
-              }
-            ]
-            image = "${local.container_registry_name}.azurecr.io/${local.image_name}"
-            name  = "github-actions-runner-job"
-            resources = {
-              cpu    = "0.5"
-              memory = "1Gi"
+        {
+          env = [
+            {
+              name      = "GITHUB_PAT"
+              secretRef = "personal-access-token"
+            },
+            {
+              name  = "REPO_URL"
+              value = "https://github.com/${local.repo_owner}/${local.repo_name}"
+            },
+            {
+              name  = "REGISTRATION_TOKEN_API_URL"
+              value = "https://api.github.com/repos/${local.repo_owner}/${local.repo_name}/actions/runners/registration-token"
             }
+          ]
+          image = "${local.container_registry_name}.azurecr.io/${local.image_name}"
+          name  = "github-actions-runner-job"
+          resources = {
+            cpu    = 0.5
+            memory = "1Gi"
           }
-        ]
-      }
+        }
+      ]}
     }
   })
 }

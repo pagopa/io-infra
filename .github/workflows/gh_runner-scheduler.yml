@@ -9,13 +9,18 @@ on:
     - cron: '0 09 * * MON-FRI'
     - cron: '0 18 * * MON-FRI'
 
+permissions:
+  id-token: write
+  contents: read
+
 env:
   resource-group: 'dev-andreag' #'io-p-github-runner-rg'
   job-name: 'github-actions-runner-job'
 
 jobs:
-  turn_on:
+  scheduler:
     runs-on: ubuntu-latest
+    environment: prod-runner
     steps:
       - name: Azure Login
         id: login
