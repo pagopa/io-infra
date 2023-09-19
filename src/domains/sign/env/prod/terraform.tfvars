@@ -128,14 +128,9 @@ io_sign_backoffice_app = {
       name                  = "SELFCARE_API_KEY",
       key_vault_secret_name = "selfcare-prod-api-key"
     },
-  ]
-}
-
-io_sign_backoffice_func = {
-  app_settings = [
     {
-      name  = "NODE_ENV",
-      value = "production"
+      name                  = "PDV_TOKENIZER_API_KEY"
+      key_vault_secret_name = "pdv-tokenizer-api-key"
     }
   ]
 }

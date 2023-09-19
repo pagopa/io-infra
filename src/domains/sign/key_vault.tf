@@ -15,7 +15,8 @@ module "key_vault_secrets" {
     "SlackWebhookUrl",
     "LollipopPrimaryApiKey",
     "LollipopSecondaryApiKey",
-    "PdvTokenizerApiKey"
+    "PdvTokenizerApiKey",
+    "BackOfficeApiKey"
   ]
 }
 
