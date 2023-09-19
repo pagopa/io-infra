@@ -32,10 +32,10 @@ module "github_runner" {
 }
 
 locals {
-  repo_owner = "PagoPA"
-  repo_name = "io-infra"
+  repo_owner              = "PagoPA"
+  repo_name               = "io-infra"
   container_registry_name = "andreagacr01"
-  image_name = "github-actions-runner:1.0"
+  image_name              = "github-actions-runner:1.0"
 }
 
 resource "azapi_resource" "job" {
