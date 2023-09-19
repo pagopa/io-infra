@@ -22,7 +22,7 @@ data "azurerm_subnet" "apim_v2_snet" {
 }
 
 data "azurerm_subnet" "ioweb_profile_snet" {
-  name                 = format("%s-ioweb-profile-snet", local.product)
+  name                 = format("%s-%s-ioweb-profile-snet", local.product, var.location_short)
   virtual_network_name = local.vnet_common_name
   resource_group_name  = local.vnet_common_resource_group_name
 }

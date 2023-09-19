@@ -161,7 +161,7 @@ module "app_snet" {
 }
 
 data "azurerm_subnet" "ioweb_profile_snet" {
-  name                 = format("%s-ioweb-profile-snet", local.project)
+  name                 = format("%s-%s-ioweb-profile-snet", local.project, var.location_short)
   virtual_network_name = module.vnet_common.name
   resource_group_name  = azurerm_resource_group.rg_common.name
 }
