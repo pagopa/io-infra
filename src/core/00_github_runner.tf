@@ -97,7 +97,7 @@ resource "azapi_resource" "job" {
         secrets = [
           {
             name  = "personal-access-token"
-            value = "${azurerm_key_vault_secret.github_pat.value}"
+            value = "${data.azurerm_key_vault_secret.github_pat.value}"
           },
           {
             name = "${local.container_registry_name}azurecrio-${local.container_registry_name}"
