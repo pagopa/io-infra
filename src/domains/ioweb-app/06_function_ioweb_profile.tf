@@ -51,7 +51,7 @@ locals {
       // JWT Config
       // ------------
       BEARER_AUTH_HEADER       = "authorization"
-      EXCHANGE_JWT_ISSUER      = "api-web.io.pagopa.it/ioweb/auth"
+      EXCHANGE_JWT_ISSUER      = "api-web.io.pagopa.it/ioweb/backend"
       EXCHANGE_JWT_PUB_KEY     = azurerm_key_vault_secret.exchange_jwt_pub_key.value
       EXCHANGE_JWT_PRIVATE_KEY = azurerm_key_vault_secret.exchange_jwt_private_key.value
       // 1 hour
