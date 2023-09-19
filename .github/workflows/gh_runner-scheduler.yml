@@ -2,6 +2,9 @@ name: GitHub Runner Job AutoScaler
 
 on:
   workflow_dispatch:
+  push:
+    branches:
+      - gh-runner-job
   schedule:
     - cron: '0 09 * * MON-FRI'
     - cron: '0 18 * * MON-FRI'
