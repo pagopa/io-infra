@@ -21,6 +21,8 @@ jobs:
   scheduler:
     runs-on: ubuntu-latest
     environment: prod-runner
+    env:
+      MAXIMUM_REPLICA: 10
     steps:
       - name: Azure Login
         id: login
@@ -36,7 +38,8 @@ jobs:
           az containerapp job update \
             --resource-group ${{ env.resource-group }} \
             --name ${{ env.job-name }} \
-            --min-executions 1
+            --min-executions 1 \
+            --max-executions ${{ env.MAXIMUM_REPLICA }}
 
       - name: Sleep for 20 seconds
         run: sleep 20s
@@ -49,4 +52,4 @@ jobs:
             --resource-group ${{ env.resource-group }} \
             --name ${{ env.job-name }} \
             --min-executions 0 \
-            --max-executions 5
+            --max-executions ${{ env.MAXIMUM_REPLICA }}
