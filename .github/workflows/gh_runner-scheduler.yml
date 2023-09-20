@@ -31,15 +31,19 @@ jobs:
           subscription-id: 'a4e96bcd-59dc-4d66-b2f7-5547ad157c12' # ${{ secrets.AZURE_SUBSCRIPTION_ID }}
 
       - name: Increase minimum replicas
-        if: github.event.schedule == '0 09 * * *'
+        if: github.event.schedule != '0 09 * * *'
         run: |
           az containerapp job update \
             --resource-group ${{ env.resource-group }} \
             --name ${{ env.job-name }} \
             --min-executions 1
 
+      - name: Sleep for 120 seconds
+        run: sleep 120s
+        shell: bash
+
       - name: Decrease minimum replicas
-        if: github.event.schedule == '0 18 * * *'
+        if: github.event.schedule != '0 18 * * *'
         run: |
           az containerapp job update \
             --resource-group ${{ env.resource-group }} \
