@@ -48,4 +48,5 @@ jobs:
           az containerapp job update \
             --resource-group ${{ env.resource-group }} \
             --name ${{ env.job-name }} \
-            --min-executions "0"
+            --min-executions "0" \
+            --max-executions "5"
