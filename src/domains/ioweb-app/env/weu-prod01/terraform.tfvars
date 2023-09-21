@@ -22,6 +22,8 @@ log_analytics_workspace_name                = "io-p-law-common"
 log_analytics_workspace_resource_group_name = "io-p-rg-common"
 application_insights_name                   = "io-p-ai-common"
 
+enable_azdoa = true
+
 ### External tools
 
 # chart releases: https://github.com/stakater/Reloader/releases
@@ -42,3 +44,13 @@ tls_cert_check_helm = {
 ### Aks
 
 ingress_load_balancer_ip = "10.11.100.250"
+
+### Fn ioweb-profile
+cidr_subnet_fniowebprofile = ["10.0.117.0/24"]
+function_ioweb_profile = {
+  kind              = "Linux"
+  sku_size          = "P1v3"
+  autoscale_minimum = 1
+  autoscale_maximum = 30
+  autoscale_default = 1
+}

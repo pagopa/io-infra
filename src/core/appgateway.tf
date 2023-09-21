@@ -173,7 +173,7 @@ module "app_gw" {
       protocol           = "Https"
       host               = format("api.%s.%s", var.dns_zone_io, var.external_domain)
       port               = 443
-      ssl_profile_name   = format("%s-ssl-profile", local.project)
+      ssl_profile_name   = null
       firewall_policy_id = null
 
       certificate = {
@@ -224,7 +224,7 @@ module "app_gw" {
       protocol           = "Https"
       host               = format("api-app.%s.%s", var.dns_zone_io, var.external_domain)
       port               = 443
-      ssl_profile_name   = format("%s-ssl-profile", local.project)
+      ssl_profile_name   = null
       firewall_policy_id = azurerm_web_application_firewall_policy.api_app.id
 
       certificate = {
@@ -232,6 +232,23 @@ module "app_gw" {
         id = replace(
           data.azurerm_key_vault_certificate.app_gw_api_app.secret_id,
           "/${data.azurerm_key_vault_certificate.app_gw_api_app.version}",
+          ""
+        )
+      }
+    }
+
+    api-web-io-pagopa-it = {
+      protocol           = "Https"
+      host               = format("api-web.%s.%s", var.dns_zone_io, var.external_domain)
+      port               = 443
+      ssl_profile_name   = null
+      firewall_policy_id = azurerm_web_application_firewall_policy.api_app.id
+
+      certificate = {
+        name = var.app_gateway_api_web_certificate_name
+        id = replace(
+          data.azurerm_key_vault_certificate.app_gw_api_web.secret_id,
+          "/${data.azurerm_key_vault_certificate.app_gw_api_web.version}",
           ""
         )
       }
@@ -258,7 +275,7 @@ module "app_gw" {
       protocol           = "Https"
       host               = "developerportal-backend.io.italia.it"
       port               = 443
-      ssl_profile_name   = format("%s-ssl-profile", local.project)
+      ssl_profile_name   = null
       firewall_policy_id = null
 
       certificate = {
@@ -275,7 +292,7 @@ module "app_gw" {
       protocol           = "Https"
       host               = local.selfcare_io.backend_hostname
       port               = 443
-      ssl_profile_name   = format("%s-ssl-profile", local.project)
+      ssl_profile_name   = null
       firewall_policy_id = null
 
       certificate = {
@@ -292,7 +309,7 @@ module "app_gw" {
       protocol           = "Https"
       host               = format("%s.%s", var.dns_zone_firmaconio_selfcare, var.external_domain)
       port               = 443
-      ssl_profile_name   = format("%s-ssl-profile", local.project)
+      ssl_profile_name   = null
       firewall_policy_id = null
 
       certificate = {
@@ -309,7 +326,7 @@ module "app_gw" {
       protocol           = "Https"
       host               = format("continua.%s.%s", var.dns_zone_io, var.external_domain)
       port               = 443
-      ssl_profile_name   = format("%s-ssl-profile", local.project)
+      ssl_profile_name   = null
       firewall_policy_id = null
 
       certificate = {
@@ -352,6 +369,13 @@ module "app_gw" {
       backend               = "appbackend-app"
       rewrite_rule_set_name = "rewrite-rule-set-api-app"
       priority              = 70
+    }
+
+    api-web-io-pagopa-it = {
+      listener              = "api-web-io-pagopa-it"
+      backend               = "apim"
+      rewrite_rule_set_name = "rewrite-rule-set-api-web"
+      priority              = 100
     }
 
     app-backend-io-italia-it = {
@@ -409,7 +433,7 @@ module "app_gw" {
             header_value = "{var_client_ip}"
           },
           {
-            # this header will be checked in apim policy
+            # this header will be checked in apim policy (only for MTLS check)
             header_name  = data.azurerm_key_vault_secret.app_gw_mtls_header_name.value
             header_value = "false"
           },
@@ -434,7 +458,7 @@ module "app_gw" {
             header_value = "{var_client_ip}"
           },
           {
-            # this header will be checked in apim policy
+            # this header will be checked in apim policy (only for MTLS check)
             header_name  = data.azurerm_key_vault_secret.app_gw_mtls_header_name.value
             header_value = "true"
           },
@@ -446,6 +470,26 @@ module "app_gw" {
       name = "rewrite-rule-set-api-app"
       rewrite_rules = [{
         name          = "http-headers-api-app"
+        rule_sequence = 100
+        conditions    = []
+        url           = null
+        request_header_configurations = [
+          {
+            header_name  = "X-Forwarded-For"
+            header_value = "{var_client_ip}"
+          },
+          {
+            header_name  = "X-Client-Ip"
+            header_value = "{var_client_ip}"
+          },
+        ]
+        response_header_configurations = []
+      }]
+    },
+    {
+      name = "rewrite-rule-set-api-web"
+      rewrite_rules = [{
+        name          = "http-headers-api-web"
         rule_sequence = 100
         conditions    = []
         url           = null
@@ -705,6 +749,16 @@ resource "azurerm_key_vault_access_policy" "app_gateway_policy_common" {
   storage_permissions     = []
 }
 
+resource "azurerm_key_vault_access_policy" "app_gateway_policy_ioweb" {
+  key_vault_id            = data.azurerm_key_vault.ioweb_kv.id
+  tenant_id               = data.azurerm_client_config.current.tenant_id
+  object_id               = azurerm_user_assigned_identity.appgateway.principal_id
+  key_permissions         = []
+  secret_permissions      = ["Get", "List"]
+  certificate_permissions = ["Get", "List"]
+  storage_permissions     = []
+}
+
 ## user assined identity: (old application gateway) ##
 data "azuread_service_principal" "app_gw_uai_kvreader" {
   display_name = format("%s-uai-kvreader", local.project)
@@ -734,6 +788,20 @@ data "azurerm_key_vault_certificate" "app_gw_api_app" {
   name         = var.app_gateway_api_app_certificate_name
   key_vault_id = module.key_vault.id
 }
+
+###
+# kv where the certificate for api-web domain is located
+###
+data "azurerm_key_vault" "ioweb_kv" {
+  name                = format("%s-ioweb-kv", local.project)
+  resource_group_name = format("%s-ioweb-sec-rg", local.project)
+}
+
+data "azurerm_key_vault_certificate" "app_gw_api_web" {
+  name         = var.app_gateway_api_web_certificate_name
+  key_vault_id = data.azurerm_key_vault.ioweb_kv.id
+}
+###
 
 data "azurerm_key_vault_certificate" "app_gw_api_io_italia_it" {
   name         = var.app_gateway_api_io_italia_it_certificate_name
