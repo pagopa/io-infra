@@ -51,3 +51,23 @@ data "azurerm_subnet" "private_endpoints_subnet" {
   virtual_network_name = local.vnet_common_name
   resource_group_name  = local.vnet_common_resource_group_name
 }
+
+data "azurerm_subnet" "apim_v2_snet" {
+  name                 = "apimv2api"
+  virtual_network_name = local.vnet_common_name
+  resource_group_name  = local.vnet_common_resource_group_name
+}
+
+data "azurerm_subnet" "function_app_snet" {
+  count                = 2
+  name                 = format("%s-app-snet-%d", local.product, count.index + 1)
+  virtual_network_name = local.vnet_common_name
+  resource_group_name  = local.vnet_common_resource_group_name
+}
+
+data "azurerm_subnet" "azdoa_snet" {
+  count                = var.enable_azdoa ? 1 : 0
+  name                 = "azure-devops"
+  virtual_network_name = local.vnet_common_name
+  resource_group_name  = local.vnet_common_resource_group_name
+}
