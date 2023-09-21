@@ -600,6 +600,12 @@ resource "azurerm_subnet_nat_gateway_association" "app_backendl1_snet" {
   subnet_id      = module.app_backendl1_snet.id
 }
 
+data "azurerm_subnet" "functions_fast_login_snet" {
+  name                 = format("%s-%s-fast-login-snet", local.project, var.location_short)
+  virtual_network_name = module.vnet_common.name
+  resource_group_name  = azurerm_resource_group.rg_common.name
+}
+
 module "appservice_app_backendl1" {
   source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//app_service?ref=v4.1.15"
 
@@ -1070,6 +1076,7 @@ module "appservice_app_backendli" {
     module.services_snet[0].id,
     module.services_snet[1].id,
     module.admin_snet.id,
+    data.azurerm_subnet.functions_fast_login_snet.id,
   ]
 
   allowed_ips = concat(
