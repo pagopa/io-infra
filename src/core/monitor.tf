@@ -133,7 +133,7 @@ locals {
       name                              = local.devportal.backend_hostname,
       host                              = local.devportal.backend_hostname,
       path                              = "/info",
-      frequency                         = 300
+      frequency                         = 900
       http_status                       = 200,
       ssl_cert_remaining_lifetime_check = 7,
     },
@@ -142,7 +142,7 @@ locals {
       name                              = trimsuffix(azurerm_dns_a_record.api_io_italia_it.fqdn, "."),
       host                              = trimsuffix(azurerm_dns_a_record.api_io_italia_it.fqdn, "."),
       path                              = "",
-      frequency                         = 300
+      frequency                         = 900
       http_status                       = 404,
       ssl_cert_remaining_lifetime_check = 7,
     },
@@ -151,7 +151,7 @@ locals {
       name                              = trimsuffix(azurerm_dns_a_record.app_backend_io_italia_it.fqdn, "."),
       host                              = trimsuffix(azurerm_dns_a_record.app_backend_io_italia_it.fqdn, "."),
       path                              = "/info",
-      frequency                         = 300
+      frequency                         = 900
       http_status                       = 200,
       ssl_cert_remaining_lifetime_check = 7,
     },
@@ -160,7 +160,7 @@ locals {
       name                              = "io.italia.it",
       host                              = "io.italia.it",
       path                              = "",
-      frequency                         = 300
+      frequency                         = 900
       http_status                       = 200,
       ssl_cert_remaining_lifetime_check = 7,
     },
@@ -169,7 +169,7 @@ locals {
       name                              = "assets.cdn.io.italia.it",
       host                              = "assets.cdn.io.italia.it",
       path                              = "/status/backend.json",
-      frequency                         = 300
+      frequency                         = 900
       http_status                       = 200,
       ssl_cert_remaining_lifetime_check = 7,
     },
@@ -178,7 +178,7 @@ locals {
       name                              = "assets.cdn.io.pagopa.it",
       host                              = "assets.cdn.io.pagopa.it",
       path                              = "/status/backend.json",
-      frequency                         = 300
+      frequency                         = 900
       http_status                       = 200,
       ssl_cert_remaining_lifetime_check = 7,
     },
@@ -292,7 +292,7 @@ locals {
       name                              = trimsuffix(azurerm_dns_a_record.api_io_pagopa_it.fqdn, "."),
       host                              = trimsuffix(azurerm_dns_a_record.api_io_pagopa_it.fqdn, "."),
       path                              = "",
-      frequency                         = 300
+      frequency                         = 900
       http_status                       = 404,
       ssl_cert_remaining_lifetime_check = 7,
     },
@@ -301,8 +301,17 @@ locals {
       name                              = trimsuffix(azurerm_dns_a_record.api_app_io_pagopa_it.fqdn, "."),
       host                              = trimsuffix(azurerm_dns_a_record.api_app_io_pagopa_it.fqdn, "."),
       path                              = "/info",
-      frequency                         = 300
+      frequency                         = 900
       http_status                       = 200,
+      ssl_cert_remaining_lifetime_check = 7,
+    },
+    {
+      # https://api-web.io.pagopa.it
+      name                              = trimsuffix(azurerm_dns_a_record.api_web_io_pagopa_it.fqdn, "."),
+      host                              = trimsuffix(azurerm_dns_a_record.api_web_io_pagopa_it.fqdn, "."),
+      path                              = "",
+      frequency                         = 900
+      http_status                       = 404,
       ssl_cert_remaining_lifetime_check = 7,
     },
     {
@@ -310,7 +319,7 @@ locals {
       name                              = trimsuffix(azurerm_dns_a_record.api_mtls_io_pagopa_it.fqdn, "."),
       host                              = trimsuffix(azurerm_dns_a_record.api_mtls_io_pagopa_it.fqdn, "."),
       path                              = "",
-      frequency                         = 300
+      frequency                         = 900
       http_status                       = 400,
       ssl_cert_remaining_lifetime_check = 7,
     },
@@ -319,7 +328,7 @@ locals {
       name                              = trimsuffix(azurerm_dns_a_record.api_io_selfcare_pagopa_it.fqdn, "."),
       host                              = trimsuffix(azurerm_dns_a_record.api_io_selfcare_pagopa_it.fqdn, "."),
       path                              = "/info",
-      frequency                         = 300
+      frequency                         = 900
       http_status                       = 200,
       ssl_cert_remaining_lifetime_check = 7,
     },
@@ -328,7 +337,7 @@ locals {
       name                              = module.selfcare_cdn.fqdn,
       host                              = module.selfcare_cdn.fqdn,
       path                              = "",
-      frequency                         = 300
+      frequency                         = 900
       http_status                       = 200,
       ssl_cert_remaining_lifetime_check = 7,
     },
@@ -337,7 +346,7 @@ locals {
       name                              = trimsuffix(azurerm_dns_a_record.firmaconio_selfcare_pagopa_it.fqdn, "."),
       host                              = trimsuffix(azurerm_dns_a_record.firmaconio_selfcare_pagopa_it.fqdn, "."),
       path                              = "/health",
-      frequency                         = 300
+      frequency                         = 900
       http_status                       = 200,
       ssl_cert_remaining_lifetime_check = 7,
     },
@@ -346,7 +355,7 @@ locals {
       name                              = "github-raw-status-backend",
       host                              = "raw.githubusercontent.com",
       path                              = "/pagopa/io-services-metadata/master/status/backend.json",
-      frequency                         = 300
+      frequency                         = 900
       http_status                       = 200,
       ssl_cert_remaining_lifetime_check = 7,
     },
@@ -355,7 +364,7 @@ locals {
       name                              = trimsuffix(azurerm_dns_a_record.continua_io_pagopa_it.fqdn, "."),
       host                              = trimsuffix(azurerm_dns_a_record.continua_io_pagopa_it.fqdn, "."),
       path                              = "",
-      frequency                         = 300
+      frequency                         = 900
       http_status                       = 302,
       ssl_cert_remaining_lifetime_check = 7,
     },
@@ -385,4 +394,47 @@ module "web_test_api" {
     },
   ]
 
+}
+
+resource "azurerm_monitor_scheduled_query_rules_alert" "mailup_alert_rule" {
+  name                = "[SEND.MAILUP.COM] Many Failures"
+  resource_group_name = azurerm_resource_group.rg_common.name
+  location            = azurerm_resource_group.rg_common.location
+
+  data_source_id          = azurerm_application_insights.application_insights.id
+  description             = "Check in Application Insight - Dependencies the mailup calls. Runbook: https://pagopa.atlassian.net/wiki/spaces/IC/pages/777650829/MailUp+Communication+Failures"
+  enabled                 = true
+  auto_mitigation_enabled = false
+
+  query = <<-QUERY
+    let timeGrain=5m;
+    let dataset=dependencies
+        // additional filters can be applied here
+        | where client_Type != "Browser"
+        | where target contains "send.mailup.com"
+        | where success == false;
+    dataset
+    
+  QUERY
+
+  severity    = 1
+  frequency   = 5
+  time_window = 30
+  trigger {
+    operator  = "GreaterThan"
+    threshold = 10
+  }
+
+  action {
+    action_group = [
+      azurerm_monitor_action_group.error_action_group.id,
+    ]
+  }
+
+  tags = var.tags
+}
+
+import {
+  to = azurerm_monitor_scheduled_query_rules_alert.mailup_alert_rule
+  id = "/subscriptions/ec285037-c673-4f58-b594-d7c480da4e8b/resourceGroups/io-p-rg-common/providers/Microsoft.Insights/scheduledQueryRules/[SEND.MAILUP.COM] Many Failures"
 }

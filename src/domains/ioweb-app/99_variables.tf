@@ -123,3 +123,26 @@ variable "tls_cert_check_helm" {
   })
   description = "tls cert helm chart configuration"
 }
+
+###################
+# ioweb-profile-fn
+###################
+variable "cidr_subnet_fniowebprofile" {
+  type        = list(string)
+  description = "Functions ioweb profile address space"
+  default     = null
+}
+
+variable "function_ioweb_profile" {
+  type = object({
+    autoscale_minimum = number
+    autoscale_maximum = number
+    autoscale_default = number
+    sku_size          = string
+    kind              = string
+  })
+}
+
+variable "enable_azdoa" {
+  type = bool
+}
