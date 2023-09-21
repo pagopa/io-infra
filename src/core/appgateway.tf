@@ -448,7 +448,7 @@ module "app_gw" {
       listener              = "selfcare-io-pagopa-it"
       backend               = "selfcare-io-app"
       rewrite_rule_set_name = "rewrite-rule-set-selfcare-io"
-      priority              = 100
+      priority              = 110
     }
 
   }
