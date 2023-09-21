@@ -58,9 +58,11 @@ variable "dns_default_ttl_sec" {
   default     = 3600
 }
 
-variable "dns_zone_name" {
-  type        = string
-  description = "The name for the DNS zone"
+variable "dns_zone_names" {
+  type = object({
+    website = string
+  })
+  description = "The names for the DNS zones"
 }
 
 variable "subnets_cidrs" {
@@ -101,6 +103,15 @@ variable "io_sign_database_issuer" {
 }
 
 variable "io_sign_database_user" {
+  type = map(
+    object({
+      max_throughput = number
+      ttl            = number
+    })
+  )
+}
+
+variable "io_sign_database_backoffice" {
   type = map(
     object({
       max_throughput = number
@@ -166,4 +177,26 @@ variable "integration_hub" {
     }))
   })
   description = "The configuration, hubs and keys of the event hub relative to external integration"
+}
+
+variable "io_common" {
+  type = object({
+    resource_group_name          = string
+    log_analytics_workspace_name = string
+    appgateway_snet_name         = string
+    vnet_common_name             = string
+  })
+  description = "Name of common resources of IO platform"
+}
+
+variable "io_sign_backoffice_app" {
+  type = object({
+    sku_name = string
+    app_settings = list(object({
+      name                  = string
+      value                 = optional(string, "")
+      key_vault_secret_name = optional(string)
+    }))
+  })
+  description = "Configuration of the io-sign-backoffice app service"
 }

@@ -1,5 +1,5 @@
 module "io_sign_storage" {
-  source                          = "git::https://github.com/pagopa/terraform-azurerm-v3.git//storage_account?ref=v4.1.5"
+  source                          = "git::https://github.com/pagopa/terraform-azurerm-v3.git//storage_account?ref=v6.20.2"
   name                            = replace(format("%s-st", local.project), "-", "")
   account_kind                    = "StorageV2"
   account_tier                    = "Standard"
@@ -10,6 +10,7 @@ module "io_sign_storage" {
   location                        = azurerm_resource_group.data_rg.location
   advanced_threat_protection      = true
   allow_nested_items_to_be_public = false
+  public_network_access_enabled   = true
 
   network_rules = {
     default_action = "Allow"

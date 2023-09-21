@@ -9,9 +9,10 @@ tags = {
 }
 
 # dns
-external_domain      = "pagopa.it"
-dns_zone_io          = "io"
-dns_zone_io_selfcare = "io.selfcare"
+external_domain              = "pagopa.it"
+dns_zone_io                  = "io"
+dns_zone_io_selfcare         = "io.selfcare"
+dns_zone_firmaconio_selfcare = "firmaconio.selfcare"
 
 lock_enable = true
 
@@ -68,11 +69,14 @@ cidr_subnet_dnsforwarder = ["10.0.252.8/29"]
 app_gateway_api_certificate_name                                  = "api-io-pagopa-it"
 app_gateway_api_mtls_certificate_name                             = "api-mtls-io-pagopa-it"
 app_gateway_api_app_certificate_name                              = "api-app-io-pagopa-it"
+app_gateway_api_web_certificate_name                              = "api-web-io-pagopa-it"
 app_gateway_api_io_italia_it_certificate_name                     = "api-io-italia-it"
 app_gateway_app_backend_io_italia_it_certificate_name             = "app-backend-io-italia-it"
 app_gateway_developerportal_backend_io_italia_it_certificate_name = "developerportal-backend-io-italia-it"
 app_gateway_api_io_selfcare_pagopa_it_certificate_name            = "api-io-selfcare-pagopa-it"
+app_gateway_firmaconio_selfcare_pagopa_it_certificate_name        = "firmaconio-selfcare-pagopa-it"
 app_gateway_continua_io_pagopa_it_certificate_name                = "continua-io-pagopa-it"
+app_gateway_selfcare_io_pagopa_it_certificate_name                = "selfcare-io-pagopa-it"
 app_gateway_min_capacity                                          = 4 # 4 capacity=baseline, 10 capacity=high volume event, 15 capacity=very high volume event
 app_gateway_max_capacity                                          = 50
 app_gateway_alerts_enabled                                        = true
@@ -454,6 +458,9 @@ pn_service_id = "01G40DWQGKY5GRWSNM4303VNRP"
 # PN Test Endpoint
 pn_test_endpoint = "https://api-io.uat.notifichedigitali.it"
 
+# RECEIPT SERVICE
+io_receipt_service_id       = "01H4ZJ62C1CPGJ0PX8Q1BP7FAB"
+io_receipt_service_test_url = "https://api.uat.platform.pagopa.it/receipts/service/v1"
 
 # TP Mock Service Id
 third_party_mock_service_id = "01GQQDPM127KFGG6T3660D5TXD"

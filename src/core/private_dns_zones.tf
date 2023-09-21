@@ -53,7 +53,7 @@ resource "azurerm_private_dns_a_record" "api_app_internal_io" {
   zone_name           = azurerm_private_dns_zone.internal_io_pagopa_it[0].name
   resource_group_name = azurerm_resource_group.rg_internal.name
   ttl                 = "60" # var.dns_default_ttl_sec # TODO rollback after apim-v2 migration
-  records             = module.apim.*.private_ip_addresses[0]
+  records             = module.apim_v2.*.private_ip_addresses[0]
 
   tags = var.tags
 }

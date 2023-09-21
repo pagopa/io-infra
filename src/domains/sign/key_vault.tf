@@ -1,5 +1,5 @@
 module "key_vault_secrets" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//key_vault_secrets_query?ref=v4.1.3"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//key_vault_secrets_query?ref=v6.20.2"
 
   resource_group = azurerm_resource_group.sec_rg.name
   key_vault_name = module.key_vault.name
@@ -15,12 +15,13 @@ module "key_vault_secrets" {
     "SlackWebhookUrl",
     "LollipopPrimaryApiKey",
     "LollipopSecondaryApiKey",
-    "PdvTokenizerApiKey"
+    "PdvTokenizerApiKey",
+    "BackOfficeApiKey"
   ]
 }
 
 module "key_vault" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//key_vault?ref=v6.2.2"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//key_vault?ref=v6.20.2"
 
   name                       = format("%s-%s-kv", local.product, var.domain)
   location                   = azurerm_resource_group.sec_rg.location

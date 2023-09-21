@@ -83,6 +83,12 @@ variable "dns_zone_io_selfcare" {
   description = "The dns subdomain."
 }
 
+variable "dns_zone_firmaconio_selfcare" {
+  type        = string
+  default     = null
+  description = "The dns subdomain."
+}
+
 # azure devops
 variable "azdo_sp_tls_cert_enabled" {
   type        = string
@@ -371,6 +377,11 @@ variable "app_gateway_api_app_certificate_name" {
   description = "Application gateway api certificate name on Key Vault"
 }
 
+variable "app_gateway_api_web_certificate_name" {
+  type        = string
+  description = "Application gateway api certificate name on Key Vault"
+}
+
 variable "app_gateway_api_mtls_certificate_name" {
   type        = string
   description = "Application gateway api certificate name on Key Vault"
@@ -396,9 +407,19 @@ variable "app_gateway_api_io_selfcare_pagopa_it_certificate_name" {
   description = "Application gateway api certificate name on Key Vault"
 }
 
+variable "app_gateway_firmaconio_selfcare_pagopa_it_certificate_name" {
+  type        = string
+  description = "Application gateway api certificate name on Key Vault"
+}
+
 variable "app_gateway_continua_io_pagopa_it_certificate_name" {
   type        = string
   description = "Application gateway continua certificate name on Key Vault"
+}
+
+variable "app_gateway_selfcare_io_pagopa_it_certificate_name" {
+  type        = string
+  description = "Application gateway selfcare-io certificate name on Key Vault"
 }
 
 variable "app_gateway_min_capacity" {
@@ -985,6 +1006,17 @@ variable "io_sign_service_id" {
   default     = "01GQQZ9HF5GAPRVKJM1VDAVFHM"
 }
 
+# io-receipt service
+variable "io_receipt_service_id" {
+  type        = string
+  description = "The Service ID of io-receipt service"
+  default     = "01GQQZ9HF5GAPRVKJM1VDAVFHM"
+}
+
+variable "io_receipt_service_test_url" {
+  type        = string
+  description = "The endpoint of Receipt Service (test env)"
+}
 
 # Function CGN
 variable "plan_cgn_kind" {

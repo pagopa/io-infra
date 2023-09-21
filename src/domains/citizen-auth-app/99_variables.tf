@@ -229,6 +229,11 @@ variable "cidr_subnet_fims" {
   description = "App service FIMS address space."
 }
 
+variable "cidr_subnet_fims_plus" {
+  type        = list(string)
+  description = "App service FIMS+ address space."
+}
+
 variable "fims_plan_sku_tier" {
   type        = string
   description = "App service plan sku tier"

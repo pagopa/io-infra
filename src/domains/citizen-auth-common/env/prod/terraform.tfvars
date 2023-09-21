@@ -24,6 +24,25 @@ citizen_auth_database = {
   }
 }
 
+fims_database = {
+  client = {
+    max_throughput = 3000
+    ttl            = -1
+  },
+  grant = {
+    max_throughput = 3000
+    ttl            = -1
+  },
+  interaction = {
+    max_throughput = 3000
+    ttl            = -1
+  },
+  session = {
+    max_throughput = 3000
+    ttl            = -1
+  }
+}
+
 ### External resources
 
 monitor_resource_group_name                 = "io-p-rg-common"

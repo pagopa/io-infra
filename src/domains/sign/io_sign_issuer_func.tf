@@ -27,6 +27,8 @@ locals {
       SelfCareApiBasePath               = "https://api.selfcare.pagopa.it"
       SelfCareApiKey                    = module.key_vault_secrets.values["SelfCareApiKey"].value
       SlackWebhookUrl                   = module.key_vault_secrets.values["SlackWebhookUrl"].value
+      BackOfficeApiBasePath             = "https://api.io.pagopa.it/api/v1/sign/backoffice"
+      BackOfficeApiKey                  = module.key_vault_secrets.values["BackOfficeApiKey"].value
     }
   }
 }
@@ -80,7 +82,7 @@ module "io_sign_issuer_func" {
 
 module "io_sign_issuer_func_staging_slot" {
   count  = var.io_sign_issuer_func.sku_tier == "PremiumV3" ? 1 : 0
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app_slot?ref=v6.0.1"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app_slot?ref=v6.2.1"
 
   name                = "staging"
   location            = azurerm_resource_group.backend_rg.location
