@@ -97,7 +97,6 @@ module "ioweb_profile_snet" {
 
   service_endpoints = [
     "Microsoft.Web",
-    "Microsoft.AzureCosmosDB",
     "Microsoft.Storage",
   ]
 
