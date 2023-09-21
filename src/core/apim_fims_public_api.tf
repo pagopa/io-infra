@@ -1,4 +1,4 @@
-module "apim_product_public" {
+module "apim_product_fims_public" {
   source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_product?ref=v4.1.15"
 
   product_id            = "fims-public-api"
@@ -36,7 +36,7 @@ resource "azurerm_api_management_named_value" "fims_public_key" {
   secret              = "true"
 }
 
-module "api_public" {
+module "api_fims_public" {
   source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api?ref=v4.1.15"
 
   name                = "fims-public-api"
@@ -48,7 +48,7 @@ module "api_public" {
 
   path        = ""
   protocols   = ["https"]
-  product_ids = [module.apim_product_public.product_id]
+  product_ids = [module.apim_product_fims_public.product_id]
 
   service_url = null
 
