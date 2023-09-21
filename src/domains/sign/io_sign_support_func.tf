@@ -26,7 +26,7 @@ module "io_sign_support_func" {
   always_on = true
 
   runtime_version = "~4"
-  node_version    = "18"
+  node_version    = "16"
 
   app_service_plan_info = {
     kind                         = "Linux"

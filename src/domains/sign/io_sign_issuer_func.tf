@@ -42,7 +42,7 @@ module "io_sign_issuer_func" {
 
   health_check_path = "/api/v1/sign/info"
 
-  node_version    = "18"
+  node_version    = "16"
   runtime_version = "~4"
   always_on       = true
 
