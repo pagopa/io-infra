@@ -105,8 +105,12 @@ module "spid_login" {
     SPID_LOGS_STORAGE_CONTAINER_NAME    = azurerm_storage_container.spid_logs.name
   }
 
-  allowed_subnets = [data.azurerm_subnet.azdoa_snet.id, data.azurerm_subnet.apim_v2_snet.id]
-  allowed_ips     = []
+  allowed_subnets = [
+    data.azurerm_subnet.azdoa_snet.id,
+    data.azurerm_subnet.apim_v2_snet.id,
+    data.azurerm_subnet.ioweb_profile_snet.id,
+  ]
+  allowed_ips = []
 
   subnet_id        = module.spid_login_snet.id
   vnet_integration = true

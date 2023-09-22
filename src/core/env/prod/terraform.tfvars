@@ -8,6 +8,9 @@ tags = {
   CostCenter  = "TS310 - PAGAMENTI & SERVIZI"
 }
 
+location       = "westeurope"
+location_short = "weu"
+
 # dns
 external_domain              = "pagopa.it"
 dns_zone_io                  = "io"
@@ -65,6 +68,9 @@ cidr_subnet_redis_common = ["10.0.200.0/24"]
 cidr_subnet_pendpoints   = ["10.0.240.0/23"]
 cidr_subnet_azdoa        = ["10.0.250.0/24"]
 cidr_subnet_dnsforwarder = ["10.0.252.8/29"]
+
+# just for reminder: declared in https://github.com/pagopa/io-infra/blob/main/src/domains/ioweb-app/env/weu-prod01/terraform.tfvars
+# subnet for ioweb_profile -> cidr_subnet_fniowebprofile = ["10.0.117.0/24"]
 
 app_gateway_api_certificate_name                                  = "api-io-pagopa-it"
 app_gateway_api_mtls_certificate_name                             = "api-mtls-io-pagopa-it"
