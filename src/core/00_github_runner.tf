@@ -32,10 +32,9 @@ module "github_runner" {
 }
 
 locals {
-  repo_owner              = "PagoPA"
-  repo_name               = "io-infra"
-  container_registry_name = "andreagacr01"
-  image_name              = "github-actions-runner:1.0"
+  repo_owner = "PagoPA"
+  repo_name  = "io-infra"
+  image_name = "ghcr.io/pagopa/github-self-hosted-runner-azure:beta-runner-v2"
 }
 
 data "azurerm_key_vault" "keyvault" {
@@ -57,20 +56,13 @@ resource "azapi_resource" "job" {
   body = jsonencode({
     properties = {
       configuration = {
-        registries = [
-          {
-            server            = "${local.container_registry_name}.azurecr.io"
-            username          = local.container_registry_name
-            passwordSecretRef = "${local.container_registry_name}azurecrio-${local.container_registry_name}"
-          }
-        ]
         replicaRetryLimit = 1
         replicaTimeout    = 1800
         eventTriggerConfig = {
           parallelism            = 1
           replicaCompletionCount = 1
           scale = {
-            maxExecutions   = 5
+            maxExecutions   = 10
             minExecutions   = 0
             pollingInterval = 20
             rules = [
@@ -98,9 +90,6 @@ resource "azapi_resource" "job" {
           {
             name  = "personal-access-token"
             value = "${data.azurerm_key_vault_secret.github_pat.value}"
-          },
-          {
-            name = "${local.container_registry_name}azurecrio-${local.container_registry_name}"
           }
         ]
         triggerType = "Event"
@@ -108,29 +97,29 @@ resource "azapi_resource" "job" {
       environmentId = module.github_runner.id
       template = {
         containers = [
-        {
-          env = [
-            {
-              name      = "GITHUB_PAT"
-              secretRef = "personal-access-token"
-            },
-            {
-              name  = "REPO_URL"
-              value = "https://github.com/${local.repo_owner}/${local.repo_name}"
-            },
-            {
-              name  = "REGISTRATION_TOKEN_API_URL"
-              value = "https://api.github.com/repos/${local.repo_owner}/${local.repo_name}/actions/runners/registration-token"
+          {
+            env = [
+              {
+                name      = "GITHUB_PAT"
+                secretRef = "personal-access-token"
+              },
+              {
+                name  = "REPO_URL"
+                value = "https://github.com/${local.repo_owner}/${local.repo_name}"
+              },
+              {
+                name  = "REGISTRATION_TOKEN_API_URL"
+                value = "https://api.github.com/repos/${local.repo_owner}/${local.repo_name}/actions/runners/registration-token"
+              }
+            ]
+            image = local.image_name
+            name  = "github-actions-runner-job"
+            resources = {
+              cpu    = 0.5
+              memory = "1Gi"
             }
-          ]
-          image = "${local.container_registry_name}.azurecr.io/${local.image_name}"
-          name  = "github-actions-runner-job"
-          resources = {
-            cpu    = 0.5
-            memory = "1Gi"
           }
-        }
-      ]}
+      ] }
     }
   })
 }
