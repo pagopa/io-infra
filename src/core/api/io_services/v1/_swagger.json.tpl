@@ -1,18 +1,18 @@
 {
   "swagger": "2.0",
   "info": {
-    "version": "3.3.0",
+    "version": "3.32.0",
     "title": "IO API for Public Administration Services",
     "contact": {
-      "name": "Digital Transformation Team",
-      "url": "https://forum.italia.it/c/progetto-io"
+      "name": "PagoPA S.p.A.",
+      "url": "https://docs.pagopa.it/io-guida-tecnica/"
     },
     "x-logo": {
       "url": "https://io.italia.it/assets/img/io-logo-blue.svg"
     },
-    "description": "# Warning\n**This is an experimental API that is (most probably) going to change as we evolve the IO platform.**\n# Introduction\nThis is the documentation of the IO API for 3rd party services. This API enables Public Administration services to integrate with the IO platform. IO enables services to communicate with Italian citizens via the [IO app](https://io.italia.it/).\n# How to get an API key\nTo get access to this API, you'll need to register on the [IO Developer Portal](https://developer.io.italia.it/).\nAfter the registration step, you have to click on the button that says `subscribe to the digital citizenship api` to receive the API key that you will use to authenticate the API calls.\nYou will also receive an email with further instructions, including a fake Fiscal Code that you will be able to use to send test messages. Messages sent to the fake Fiscal Code will be notified to the email address used during the registration process on the developer portal.\n# Messages\n## What is a message\nMessages are the primary form of communication enabled by the IO APIs. Messages are **personal** communications directed to a **specific citizen**. You will not be able to use this API to broadcast a message to a group of citizens, you will have to create and send a specific, personalized message to each citizen you want to communicate to.\nThe recipient of the message (i.e. a citizen) is identified trough his [Fiscal Code](https://it.wikipedia.org/wiki/Codice_fiscale).\n## Message format\nA message is conceptually very similar to an email and, in its simplest form, is composed of the following attributes:\n\n  * A required `subject`: a short description of the topic.\n  * A required `markdown` body: a Markdown representation of the body (see\n    below on what Markdown tags are allowed).\n  * An optional `payment_data`: in case the message is a payment request,\n    the _payment data_ will enable the recipient to pay the requested amount\n    via [PagoPA](https://www.agid.gov.it/it/piattaforme/pagopa).\n  * An optional `due_date`: a _due date_ that let the recipient\n    add a reminder when receiving the message. The format for all\n    dates is [ISO8601](https://it.wikipedia.org/wiki/ISO_8601) with time\n    information and UTC timezone (ie. \"2018-10-13T00:00:00.000Z\").\n\n## Allowed Markdown formatting\nNot all Markdown formatting is currently available. Currently you can use the following formatting:\n\n  * Headings\n  * Text stylings (bold, italic, etc...)\n  * Lists (bullet and numbered)\n\n## Sending a message to a citizen\nNot every citizen will be interested in what you have to say and not every citizen you want to communicate to will be registered on IO. For this reason, before sending a message you need to check whether the recipient is registered on the platform and that he has not yet opted out from receiving messages from you.\nThe process for sending a message is made of 3 steps:\n\n  1. Call [getProfile](#operation/getProfile): if the profile does not exist\n     (i.e. you get a 404 response) or if the recipient has opted-out from\n     your service (the response contains `sender_allowed: false`), you\n     cannot send the message and you must stop here.\n  1. Call [submitMessageforUser](#operation/submitMessageforUser) to submit\n     a new message.\n  1. (optional) Call [getMessage](#operation/getMessage) to check whether\n     the message has been notified to the recipient.\n"
+    "description": "# Warning\n**This is an experimental API that is (most probably) going to change as we evolve the IO platform.**\n# Introduction\nThis is the documentation of the IO API for 3rd party services. This API enables Public Administration services to integrate with the IO platform. IO enables services to communicate with Italian citizens via the [IO app](https://io.italia.it/).\n# How to get an API key\nTo get access to this API, you'll need to register on the [IO Developer Portal](https://developer.io.italia.it/).\nAfter the registration step, you have to click on the button that says `subscribe to the digital citizenship api` to receive the API key that you will use to authenticate the API calls.\nYou will also receive an email with further instructions, including a fake Fiscal Code that you will be able to use to send test messages. Messages sent to the fake Fiscal Code will be notified to the email address used during the registration process on the developer portal.\n# Messages\n## What is a message\nMessages are the primary form of communication enabled by the IO APIs. Messages are **personal** communications directed to a **specific citizen**. You will not be able to use this API to broadcast a message to a group of citizens, you will have to create and send a specific, personalized message to each citizen you want to communicate to.\nThe recipient of the message (i.e. a citizen) is identified trough his [Fiscal Code](https://it.wikipedia.org/wiki/Codice_fiscale).\n## Message format\nA message is conceptually very similar to an email and, in its simplest form, is composed of the following attributes:\n\n  * A required `subject`: a short description of the topic.\n  * A required `markdown` body: a Markdown representation of the body (see\n    below on what Markdown tags are allowed).\n  * An optional `payment_data`: in case the message is a payment request,\n    the _payment data_ will enable the recipient to pay the requested amount\n    via [PagoPA](https://www.agid.gov.it/it/piattaforme/pagopa).\n  * An optional `due_date`: a _due date_ that let the recipient\n    add a reminder when receiving the message. The format for all\n    dates is [ISO8601](https://it.wikipedia.org/wiki/ISO_8601) with time\n    information and UTC timezone (ie. \"2018-10-13T00:00:00.000Z\").\n  * An optional `feature_level_type`: the kind of the submitted message.\n\n    It can be:\n    - `STANDARD` for normal messages;\n    - `ADVANCED` to enable premium features.\n\n    Default is `STANDARD`.\n\n## Allowed Markdown formatting\nNot all Markdown formatting is currently available. Currently you can use the following formatting:\n\n  * Headings\n  * Text stylings (bold, italic, etc...)\n  * Lists (bullet and numbered)\n\n## Sending a message to a citizen\nNot every citizen will be interested in what you have to say and not every citizen you want to communicate to will be registered on IO. For this reason, before sending a message you need to check whether the recipient is registered on the platform and that he has not yet opted out from receiving messages from you.\nThe process for sending a message is made of 3 steps:\n\n  1. Call [getProfile](#operation/getProfile): if the profile does not exist\n     (i.e. you get a 404 response) or if the recipient has opted-out from\n     your service (the response contains `sender_allowed: false`), you\n     cannot send the message and you must stop here.\n  1. Call [submitMessageforUser](#operation/submitMessageforUser) to submit\n     a new message.\n  1. (optional) Call [getMessage](#operation/getMessage) to check whether\n     the message has been notified to the recipient.\n"
   },
-  "host": "${host}",
+  "host": "api.io.pagopa.it",
   "basePath": "/api/v1",
   "schemes": [
     "https"
@@ -23,83 +23,11 @@
     }
   ],
   "paths": {
-    "/legal-messages/{legalmail}": {
-      "post": {
-        "operationId": "submitLegalMessageforUserWithFiscalCodeInBodyOnBehalfOfService",
-        "summary": "Submit a Legal Message passing the user fiscal_code in the request body",
-        "description": "Submits a legal message to a user on behalf of a service identitfied by legalMail\nOn error, the reason is returned in the response payload.",
-        "parameters": [
-          {
-            "$ref": "#/parameters/LegalMail"
-          },
-          {
-            "name": "message",
-            "in": "body",
-            "schema": {
-              "$ref": "#/definitions/NewMessage"
-            },
-            "x-examples": {
-              "application/json": {
-                "time_to_live": 3600,
-                "content": {
-                  "subject": "ipsum labore deserunt fugiat",
-                  "markdown": "Nullam dapibus metus sed elementum efficitur. Curabitur facilisis sagittis risus nec sodales.\nVestibulum in eros sapien. Donec ac odio sit amet dui semper ornare eget nec odio. Pellentesque habitant\nmorbi tristique senectus et netus et malesuada fames ac turpis egestas. Praesent nibh ex, mattis sit amet\nfelis id, sodales euismod velit. Lorem ipsum dolor sit amet, consectetur adipiscing elit."
-                }
-              }
-            }
-          }
-        ],
-        "responses": {
-          "201": {
-            "description": "Message created.",
-            "schema": {
-              "$ref": "#/definitions/CreatedMessage"
-            },
-            "headers": {
-              "Location": {
-                "type": "string",
-                "description": "Location (URL) of created message resource.\nA GET request to this URL returns the message status and details."
-              }
-            },
-            "examples": {
-              "application/json": {
-                "id": "01BX9NSMKVXXS5PSP2FATZMYYY"
-              }
-            }
-          },
-          "400": {
-            "description": "Invalid payload.",
-            "schema": {
-              "$ref": "#/definitions/ProblemJson"
-            },
-            "examples": {}
-          },
-          "401": {
-            "description": "Unauthorized"
-          },
-          "403": {
-            "description": "Forbidden."
-          },
-          "404": {
-            "description": "Not Found."
-          },
-          "429": {
-            "description": "Too many requests"
-          },
-          "500": {
-            "description": "The message cannot be delivered.",
-            "schema": {
-              "$ref": "#/definitions/ProblemJson"
-            }
-          }
-        }
-      }
-    },
     "/messages": {
       "post": {
         "operationId": "submitMessageforUserWithFiscalCodeInBody",
         "summary": "Submit a Message passing the user fiscal_code in the request body",
-        "description": "Submits a message to a user.\nOn error, the reason is returned in the response payload.\nIn order to call `submitMessageforUser`, before sending any message,\nthe sender MUST call `getProfile` and check that the profile exists\n(for the specified fiscal code) and that the `sender_allowed` field\nof the user's profile it set to `true`.",
+        "description": "Submits a message to a user with STANDARD or ADVANCED features based on `feature_level_type` value.\nOn error, the reason is returned in the response payload.\nIn order to call `submitMessageforUser`, before sending any message,\nthe sender MUST call `getProfile` and check that the profile exists\n(for the specified fiscal code) and that the `sender_allowed` field\nof the user's profile it set to `true`.",
         "parameters": [
           {
             "name": "message",
@@ -240,7 +168,7 @@
       "get": {
         "operationId": "getMessage",
         "summary": "Get Message",
-        "description": "The previously created message with the provided message ID is\nreturned.",
+        "description": "The previously created message with the provided message ID is\nreturned. With right permission and `ADVANCED` feature level type\nrelated to the previously submitted message, also read and payment\nstatus infos (when applicable) are returned.",
         "parameters": [
           {
             "$ref": "#/parameters/FiscalCode"
@@ -257,10 +185,11 @@
           "200": {
             "description": "Message found.",
             "schema": {
-              "$ref": "#/definitions/MessageResponseWithContent"
+              "$ref": "#/definitions/ExternalMessageResponseWithContent"
             },
             "examples": {
               "application/json": {
+                "status": "PROCESSED",
                 "message": {
                   "id": "01BX9NSMKAAAS5PSP2FATZM6BQ",
                   "fiscal_code": "QXJNTX9RCRVD6V4O",
@@ -385,7 +314,7 @@
       "get": {
         "operationId": "getSubscriptionsFeedForDate",
         "summary": "Get Subscriptions Feed",
-        "description": "Returns the **hashed fiscal codes** of users that **subscribed to** or\n**unsubscribed from** your service **on the provided date** (UTC).\n\nBy querying this feed on each day, you will be able to retrieve the\n\"delta\" of users that subscribed and unsubscribed fom your service.\nYou will have to keep a list of users somewhere in your infrastructure\nthat you will update each day by adding the subscribed users and\nremoving the unsunbscribed users.\n\nYou will then be able to query this local list to know which users you\ncan send messages, to without having to query `getProfile` for each message.\n\nTo avoid sharing the citizens fiscal codes, the API will\nprovide the hex encoding of the SHA256 hash of the upper case fiscal code.\nIn pseudo code `CF_HASH = LOWERCASE(HEX(SHA256(UPPERCASE(CF))))`.\n\nNote that this is an optimization for those services that need to send very high\nvolumes of messages per day, to avoid having to make two API calls for each message.",
+        "description": "Returns the **hashed fiscal codes** of users that **subscribed to** or\n**unsubscribed from** your service **on the provided date** (UTC).\n\nBy querying this feed everyday, you will be able to retrieve the\n\"delta\" of users that subscribed and unsubscribed from your service.\nYou will have to keep a list of users somewhere in your infrastructure\nthat you will keep updated at all times by adding the subscribed users and\nremoving the unsubscribed users.\n\nYou will then be able to query this local list to know which users you\ncan send messages, to without having to query `getProfile` for each message.\n\nTo avoid sharing the citizens fiscal codes, the API will\nprovide the hex encoding of the SHA256 hash of the upper case fiscal code.\nIn pseudo code `CF_HASH = LOWERCASE(HEX(SHA256(UPPERCASE(CF))))`.\n\nAccess to this feed is subject to case-by-case authorization, and it is\nprimarily intended for large-scale services, such as those pertaining\nto organizations that have an extensive user base (including geographically),\nand/or need to send very high volumes of messages per day.\n\nThis feed serves the purpose of minimizing data processing activities\nwhile preserving optimization of API calls and data accuracy.\nOrganizations allowed are required to query this feed everyday.",
         "responses": {
           "200": {
             "description": "Found.",
@@ -427,7 +356,16 @@
     },
     "/services": {
       "post": {
+        "deprecated": true,
         "operationId": "createService",
+        "security": [
+          {
+            "ManageSubscriptionKey": []
+          },
+          {
+            "SubscriptionKey": []
+          }
+        ],
         "summary": "Create Service",
         "description": "Create a new Service with the attributes provided in the request payload.\n",
         "parameters": [
@@ -471,7 +409,16 @@
         }
       },
       "get": {
+        "deprecated": true,
         "operationId": "getUserServices",
+        "security": [
+          {
+            "ManageSubscriptionKey": []
+          },
+          {
+            "SubscriptionKey": []
+          }
+        ],
         "summary": "Get User Services",
         "description": "Retrieve the identifiers of the services owned by the calling user\n",
         "responses": {
@@ -501,7 +448,16 @@
         }
       ],
       "get": {
+        "deprecated": true,
         "operationId": "getService",
+        "security": [
+          {
+            "ManageSubscriptionKey": []
+          },
+          {
+            "SubscriptionKey": []
+          }
+        ],
         "summary": "Get Service",
         "description": "Retrieve a previously created service with the provided service ID.\nThis API operation needs the same API key of the service being retrieved\notherwise 403 forbidden will be returned to the caller.\n",
         "responses": {
@@ -526,7 +482,16 @@
         }
       },
       "put": {
+        "deprecated": true,
         "operationId": "updateService",
+        "security": [
+          {
+            "ManageSubscriptionKey": []
+          },
+          {
+            "SubscriptionKey": []
+          }
+        ],
         "summary": "Update Service",
         "description": "Update a previously created service with the provided service ID\nThis API operation needs the same API key of the service being retrieved\notherwise 403 forbidden will be returned to the caller.",
         "parameters": [
@@ -578,9 +543,18 @@
         }
       ],
       "put": {
+        "deprecated": true,
         "summary": "Upload service logo.",
         "description": "Upsert a logo for an existing service.\nThis API operation needs the same API key of the service being retrieved\notherwise 403 forbidden will be returned to the caller.\n",
         "operationId": "uploadServiceLogo",
+        "security": [
+          {
+            "ManageSubscriptionKey": []
+          },
+          {
+            "SubscriptionKey": []
+          }
+        ],
         "parameters": [
           {
             "name": "body",
@@ -622,9 +596,18 @@
     },
     "/services/{service_id}/keys": {
       "put": {
+        "deprecated": true,
         "summary": "Regenerate Service Key",
         "description": "Regenerate the specified key for the Service identified by the provided id.\nThis API operation needs the same API key of the service being retrieved\notherwise 403 forbidden will be returned to the caller.",
         "operationId": "regenerateServiceKey",
+        "security": [
+          {
+            "ManageSubscriptionKey": []
+          },
+          {
+            "SubscriptionKey": []
+          }
+        ],
         "parameters": [
           {
             "name": "service_id",
@@ -720,7 +703,7 @@
         }
       }
     },
-    "/activations": {
+    "/activations/": {
       "post": {
         "operationId": "getServiceActivationByPOST",
         "summary": "Get a Service Activation for a User",
@@ -822,6 +805,656 @@
             }
           }
         ]
+      }
+    },
+    "/manage/services": {
+      "post": {
+        "tags": [
+          "manage"
+        ],
+        "summary": "Create a new service",
+        "description": "Create a new Service with the attributes provided in the request payload",
+        "operationId": "cmsCreateService",
+        "security": [
+          {
+            "ManageSubscriptionKey": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "A service body payload",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/CmsServicePayload"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Service created successfully",
+            "schema": {
+              "$ref": "#/definitions/CmsServiceLifecycle"
+            }
+          },
+          "400": {
+            "description": "Invalid payload.",
+            "schema": {
+              "$ref": "#/definitions/ProblemJson"
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "429": {
+            "description": "Too many requests"
+          },
+          "500": {
+            "description": "Internal server error",
+            "schema": {
+              "$ref": "#/definitions/ProblemJson"
+            }
+          }
+        }
+      },
+      "get": {
+        "tags": [
+          "manage"
+        ],
+        "summary": "Retrieve all services",
+        "description": "Retrieve all services owned by the calling user",
+        "operationId": "cmsGetServices",
+        "security": [
+          {
+            "ManageSubscriptionKey": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "limit",
+            "in": "query",
+            "description": "The number of services to return",
+            "required": false,
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 100,
+            "default": 20
+          },
+          {
+            "name": "offset",
+            "in": "query",
+            "description": "The number of services to skip before starting to collect the result set",
+            "required": false,
+            "type": "integer",
+            "minimum": 0,
+            "default": 0
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Services fetched successfully",
+            "schema": {
+              "$ref": "#/definitions/CmsServicePagination"
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "429": {
+            "description": "Too many requests"
+          },
+          "500": {
+            "description": "Internal server error",
+            "schema": {
+              "$ref": "#/definitions/ProblemJson"
+            }
+          }
+        }
+      }
+    },
+    "/manage/services/{serviceId}": {
+      "get": {
+        "tags": [
+          "manage"
+        ],
+        "summary": "Retrieve service",
+        "description": "Retrieve a service by ID",
+        "operationId": "cmsGetService",
+        "security": [
+          {
+            "ManageSubscriptionKey": []
+          },
+          {
+            "SubscriptionKey": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "serviceId",
+            "in": "path",
+            "description": "ID of the service",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Service fetched successfully",
+            "schema": {
+              "$ref": "#/definitions/CmsServiceLifecycle"
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not found"
+          },
+          "429": {
+            "description": "Too many requests"
+          },
+          "500": {
+            "description": "Internal server error",
+            "schema": {
+              "$ref": "#/definitions/ProblemJson"
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "manage"
+        ],
+        "summary": "Update service",
+        "description": "Update an existing service by ID",
+        "operationId": "cmsUpdateService",
+        "security": [
+          {
+            "ManageSubscriptionKey": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "serviceId",
+            "in": "path",
+            "description": "ID of the service",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "description": "Updated service payload",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/CmsServicePayload"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Service updated successfully",
+            "schema": {
+              "$ref": "#/definitions/CmsServiceLifecycle"
+            }
+          },
+          "400": {
+            "description": "Invalid payload.",
+            "schema": {
+              "$ref": "#/definitions/ProblemJson"
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not found"
+          },
+          "429": {
+            "description": "Too many requests"
+          },
+          "500": {
+            "description": "Internal server error",
+            "schema": {
+              "$ref": "#/definitions/ProblemJson"
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "manage"
+        ],
+        "summary": "Delete service",
+        "description": "Delete a service by ID",
+        "operationId": "cmsDeleteService",
+        "security": [
+          {
+            "ManageSubscriptionKey": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "serviceId",
+            "in": "path",
+            "description": "ID of the service",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Service deleted successfully"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not found"
+          },
+          "429": {
+            "description": "Too many requests"
+          },
+          "500": {
+            "description": "Internal server error",
+            "schema": {
+              "$ref": "#/definitions/ProblemJson"
+            }
+          }
+        }
+      }
+    },
+    "/manage/services/{serviceId}/logo": {
+      "put": {
+        "tags": [
+          "manage"
+        ],
+        "summary": "Upload service logo",
+        "description": "Upload service logo by service ID",
+        "operationId": "cmsUpdateServiceLogo",
+        "security": [
+          {
+            "ManageSubscriptionKey": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "serviceId",
+            "in": "path",
+            "description": "ID of the service",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "description": "Updated service payload",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Logo"
+            }
+          }
+        ],
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "204": {
+            "description": "Service logo updated successfully"
+          },
+          "400": {
+            "description": "Invalid payload.",
+            "schema": {
+              "$ref": "#/definitions/ProblemJson"
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not found"
+          },
+          "429": {
+            "description": "Too many requests"
+          },
+          "500": {
+            "description": "Internal server error",
+            "schema": {
+              "$ref": "#/definitions/ProblemJson"
+            }
+          }
+        }
+      }
+    },
+    "/manage/services/{serviceId}/keys": {
+      "get": {
+        "tags": [
+          "manage-authorization"
+        ],
+        "summary": "Retrieve service keys",
+        "description": "Retrieve service keys by service ID",
+        "operationId": "cmsGetServiceKeys",
+        "security": [
+          {
+            "ManageSubscriptionKey": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "serviceId",
+            "in": "path",
+            "description": "ID of the service",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Service keys fetched successfully",
+            "schema": {
+              "$ref": "#/definitions/CmsSubscriptionKeys"
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not found"
+          },
+          "429": {
+            "description": "Too many requests"
+          },
+          "500": {
+            "description": "Internal server error",
+            "schema": {
+              "$ref": "#/definitions/ProblemJson"
+            }
+          }
+        }
+      }
+    },
+    "/manage/services/{serviceId}/keys/{keyType}": {
+      "put": {
+        "tags": [
+          "manage-authorization"
+        ],
+        "summary": "Regenerate service key",
+        "description": "Regenerate service key by service ID and key type",
+        "operationId": "cmsRegenerateServiceKey",
+        "security": [
+          {
+            "ManageSubscriptionKey": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "serviceId",
+            "in": "path",
+            "description": "ID of the service",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "$ref": "#/parameters/CmsSubscriptionKeyType"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Service key regenerated successfully",
+            "schema": {
+              "$ref": "#/definitions/CmsSubscriptionKeys"
+            }
+          },
+          "400": {
+            "description": "Invalid payload.",
+            "schema": {
+              "$ref": "#/definitions/ProblemJson"
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not found"
+          },
+          "429": {
+            "description": "Too many requests"
+          },
+          "500": {
+            "description": "Internal server error",
+            "schema": {
+              "$ref": "#/definitions/ProblemJson"
+            }
+          }
+        }
+      }
+    },
+    "/manage/services/{serviceId}/review": {
+      "put": {
+        "tags": [
+          "manage-review"
+        ],
+        "summary": "Send service to review",
+        "description": "Send service to review by service ID",
+        "operationId": "cmsReviewService",
+        "security": [
+          {
+            "ManageSubscriptionKey": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "serviceId",
+            "in": "path",
+            "description": "ID of the service",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "schema": {
+              "$ref": "#/definitions/CmsReviewRequest"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Service revirew taken in charge"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not found"
+          },
+          "409": {
+            "description": "Service status is incompatible with review action request"
+          },
+          "429": {
+            "description": "Too many requests"
+          },
+          "500": {
+            "description": "Internal server error",
+            "schema": {
+              "$ref": "#/definitions/ProblemJson"
+            }
+          }
+        }
+      }
+    },
+    "/manage/services/{serviceId}/release": {
+      "post": {
+        "tags": [
+          "manage-release"
+        ],
+        "summary": "Publish service on IO",
+        "description": "Publish service by ID on __IO Platform__",
+        "operationId": "cmsReleaseService",
+        "security": [
+          {
+            "ManageSubscriptionKey": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "serviceId",
+            "in": "path",
+            "description": "ID of the service",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Service published successfully"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not found"
+          },
+          "409": {
+            "description": "Service status is incompatible with publish action request"
+          },
+          "429": {
+            "description": "Too many requests"
+          },
+          "500": {
+            "description": "Internal server error",
+            "schema": {
+              "$ref": "#/definitions/ProblemJson"
+            }
+          }
+        }
+      },
+      "get": {
+        "tags": [
+          "manage-release"
+        ],
+        "summary": "Retrieve last published version of service",
+        "description": "Retrieve last version of service published on __IO Platform__",
+        "operationId": "cmsGetPublishedService",
+        "security": [
+          {
+            "ManageSubscriptionKey": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "serviceId",
+            "in": "path",
+            "description": "ID of the service",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Fetched published service",
+            "schema": {
+              "$ref": "#/definitions/CmsServicePublication"
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not found"
+          },
+          "429": {
+            "description": "Too many requests"
+          },
+          "500": {
+            "description": "Internal server error",
+            "schema": {
+              "$ref": "#/definitions/ProblemJson"
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "manage-release"
+        ],
+        "summary": "Unpublish service from IO",
+        "description": "Unpublish service by ID from __IO Platform__",
+        "operationId": "cmsUnpublishService",
+        "security": [
+          {
+            "ManageSubscriptionKey": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "serviceId",
+            "in": "path",
+            "description": "ID of the service",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Service unpublished successfully"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not found"
+          },
+          "429": {
+            "description": "Too many requests"
+          },
+          "500": {
+            "description": "Internal server error",
+            "schema": {
+              "$ref": "#/definitions/ProblemJson"
+            }
+          }
+        }
       }
     }
   },
@@ -975,61 +1608,128 @@
       "type": "object",
       "properties": {
         "message": {
-          "type": "object",
-          "properties": {
-            "id": {
-              "type": "string"
-            },
-            "fiscal_code": {
-              "$ref": "#/definitions/FiscalCode"
-            },
-            "time_to_live": {
-              "$ref": "#/definitions/TimeToLiveSeconds"
-            },
-            "created_at": {
-              "$ref": "#/definitions/Timestamp"
-            },
-            "content": {
-              "$ref": "#/definitions/NewMessageContent"
-            },
-            "sender_service_id": {
-              "$ref": "#/definitions/ServiceId"
-            }
-          },
-          "required": [
-            "id",
-            "fiscal_code",
-            "created_at",
-            "content",
-            "sender_service_id"
-          ]
+          "$ref": "#/definitions/CreatedMessageWithContent"
         },
         "notification": {
-          "type": "object",
-          "properties": {
-            "email": {
-              "$ref": "#/definitions/NotificationChannelStatusValue"
-            },
-            "webhook": {
-              "$ref": "#/definitions/NotificationChannelStatusValue"
-            }
-          }
+          "$ref": "#/definitions/MessageResponseNotificationStatus"
         },
         "status": {
-          "type": "string",
-          "description": "The processing status of a message.\n\"ACCEPTED\": the message has been accepted and will be processed for delivery;\n  we'll try to store its content in the user's inbox and notify him on his preferred channels\n\"THROTTLED\": a temporary failure caused a retry during the message processing;\n  any notification associated with this message will be delayed for a maximum of 7 days\n\"FAILED\": a permanent failure caused the process to exit with an error, no notification will be sent for this message\n\"PROCESSED\": the message was succesfully processed and is now stored in the user's inbox;\n  we'll try to send a notification for each of the selected channels\n\"REJECTED\": either the recipient does not exist, or the sender has been blocked",
-          "x-extensible-enum": [
-            "ACCEPTED",
-            "THROTTLED",
-            "FAILED",
-            "PROCESSED",
-            "REJECTED"
-          ],
-          "example": "ACCEPTED"
+          "$ref": "#/definitions/MessageStatusValue"
         }
       },
       "required": [
         "message"
+      ]
+    },
+    "ExternalMessageResponseWithContent": {
+      "type": "object",
+      "properties": {
+        "message": {
+          "$ref": "#/definitions/ExternalCreatedMessageWithContent"
+        },
+        "notification": {
+          "$ref": "#/definitions/MessageResponseNotificationStatus"
+        },
+        "status": {
+          "$ref": "#/definitions/MessageStatusValue"
+        },
+        "read_status": {
+          "$ref": "#/definitions/ReadStatus",
+          "description": "Describes whether a user has read the message or not\nNOTE  : This value is only available for ADVANCED messages\nNOTE 2: `UNAVAILABLE` will be returned if user revoked the permission to access to read status"
+        },
+        "payment_status": {
+          "$ref": "#/definitions/PaymentStatus",
+          "description": "Describes the state of the related payment notice\nNOTE: This value is only available for ADVANCED payment messages"
+        }
+      },
+      "required": [
+        "message"
+      ]
+    },
+    "MessageResponseNotificationStatus": {
+      "type": "object",
+      "properties": {
+        "email": {
+          "$ref": "#/definitions/NotificationChannelStatusValue"
+        },
+        "webhook": {
+          "$ref": "#/definitions/NotificationChannelStatusValue"
+        }
+      }
+    },
+    "RejectedMessageStatusValue": {
+      "type": "string",
+      "x-extensible-enum": [
+        "REJECTED"
+      ]
+    },
+    "NotRejectedMessageStatusValue": {
+      "type": "string",
+      "x-extensible-enum": [
+        "ACCEPTED",
+        "THROTTLED",
+        "FAILED",
+        "PROCESSED"
+      ]
+    },
+    "MessageStatusValue": {
+      "x-one-of": true,
+      "allOf": [
+        {
+          "$ref": "#/definitions/RejectedMessageStatusValue"
+        },
+        {
+          "$ref": "#/definitions/NotRejectedMessageStatusValue"
+        }
+      ],
+      "description": "The processing status of a message.\n\"ACCEPTED\": the message has been accepted and will be processed for delivery;\n  we'll try to store its content in the user's inbox and notify him on his preferred channels\n\"THROTTLED\": a temporary failure caused a retry during the message processing;\n  any notification associated with this message will be delayed for a maximum of 7 days\n\"FAILED\": a permanent failure caused the process to exit with an error, no notification will be sent for this message\n\"PROCESSED\": the message was succesfully processed and is now stored in the user's inbox;\n  we'll try to send a notification for each of the selected channels\n\"REJECTED\": either the recipient does not exist, or the sender has been blocked"
+    },
+    "ExternalCreatedMessageWithContent": {
+      "allOf": [
+        {
+          "$ref": "#/definitions/CreatedMessageWithContent"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "feature_level_type": {
+              "$ref": "#/definitions/FeatureLevelType"
+            }
+          },
+          "required": [
+            "feature_level_type"
+          ]
+        }
+      ]
+    },
+    "CreatedMessageWithContent": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "fiscal_code": {
+          "$ref": "#/definitions/FiscalCode"
+        },
+        "time_to_live": {
+          "$ref": "#/definitions/TimeToLiveSeconds"
+        },
+        "created_at": {
+          "$ref": "#/definitions/Timestamp"
+        },
+        "content": {
+          "$ref": "#/definitions/NewMessageContent"
+        },
+        "sender_service_id": {
+          "$ref": "#/definitions/ServiceId"
+        }
+      },
+      "required": [
+        "id",
+        "fiscal_code",
+        "created_at",
+        "content",
+        "sender_service_id"
       ]
     },
     "EUCovidCert": {
@@ -1042,6 +1742,36 @@
       },
       "required": [
         "auth_code"
+      ]
+    },
+    "ThirdPartyData": {
+      "type": "object",
+      "description": "Payload containing all information needed to retrieve and visualize third party message details",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique id for retrieving third party enriched information about the message",
+          "minLength": 1
+        },
+        "original_sender": {
+          "type": "string",
+          "description": "Either a ServiceId or a simple string representing the sender name",
+          "minLength": 1
+        },
+        "original_receipt_date": {
+          "$ref": "#/definitions/Timestamp"
+        },
+        "has_attachments": {
+          "type": "boolean",
+          "default": false
+        },
+        "summary": {
+          "type": "string",
+          "minLength": 1
+        }
+      },
+      "required": [
+        "id"
       ]
     },
     "OrganizationFiscalCode": {
@@ -1181,6 +1911,9 @@
             "eu_covid_cert": {
               "$ref": "#/definitions/EUCovidCert"
             },
+            "third_party_data": {
+              "$ref": "#/definitions/ThirdPartyData"
+            },
             "due_date": {
               "$ref": "#/definitions/Timestamp"
             }
@@ -1207,6 +1940,9 @@
             },
             "eu_covid_cert": {
               "$ref": "#/definitions/EUCovidCert"
+            },
+            "third_party_data": {
+              "$ref": "#/definitions/ThirdPartyData"
             },
             "legal_data": {
               "$ref": "#/definitions/LegalData"
@@ -1237,11 +1973,42 @@
         },
         "fiscal_code": {
           "$ref": "#/definitions/FiscalCode"
+        },
+        "feature_level_type": {
+          "$ref": "#/definitions/FeatureLevelType"
         }
       },
       "required": [
         "content"
       ]
+    },
+    "FeatureLevelType": {
+      "type": "string",
+      "default": "STANDARD",
+      "x-extensible-enum": [
+        "STANDARD",
+        "ADVANCED"
+      ],
+      "example": "STANDARD"
+    },
+    "ReadStatus": {
+      "type": "string",
+      "x-extensible-enum": [
+        "UNAVAILABLE",
+        "UNREAD",
+        "READ"
+      ],
+      "example": "UNREAD",
+      "description": "Api definition of read status enumeration"
+    },
+    "PaymentStatus": {
+      "type": "string",
+      "description": "Payment status enumeration",
+      "x-extensible-enum": [
+        "PAID",
+        "NOT_PAID"
+      ],
+      "example": "NOT_PAID"
     },
     "CIDR": {
       "type": "string",
@@ -1644,6 +2411,9 @@
         "original_message_url": {
           "type": "string",
           "minLength": 1
+        },
+        "pec_server_service_id": {
+          "$ref": "#/definitions/ServiceId"
         }
       },
       "required": [
@@ -1730,6 +2500,292 @@
           "description": "The identifier of the created message."
         }
       }
+    },
+    "CmsServiceLifecycle": {
+      "description": "Service Lifecycle model data",
+      "allOf": [
+        {
+          "type": "object",
+          "properties": {
+            "id": {
+              "type": "string"
+            },
+            "status": {
+              "$ref": "#/definitions/CmsServiceLifecycleStatus"
+            },
+            "version": {
+              "type": "integer"
+            },
+            "last_update": {
+              "$ref": "#/definitions/Timestamp"
+            }
+          }
+        },
+        {
+          "$ref": "#/definitions/CmsServicePayload"
+        }
+      ],
+      "required": [
+        "id",
+        "status",
+        "last_update"
+      ]
+    },
+    "CmsServicePublication": {
+      "description": "Service Publication model data",
+      "allOf": [
+        {
+          "type": "object",
+          "properties": {
+            "id": {
+              "type": "string"
+            },
+            "status": {
+              "$ref": "#/definitions/CmsServicePublicationStatusType"
+            },
+            "version": {
+              "type": "integer"
+            },
+            "last_update": {
+              "$ref": "#/definitions/Timestamp"
+            }
+          }
+        },
+        {
+          "$ref": "#/definitions/CmsServicePayload"
+        }
+      ],
+      "required": [
+        "id",
+        "status",
+        "last_update"
+      ]
+    },
+    "CmsServicePayload": {
+      "type": "object",
+      "description": "Service basic data",
+      "properties": {
+        "name": {
+          "type": "string",
+          "minLength": 1
+        },
+        "description": {
+          "type": "string",
+          "minLength": 1
+        },
+        "organization": {
+          "$ref": "#/definitions/CmsOrganization"
+        },
+        "require_secure_channel": {
+          "type": "boolean"
+        },
+        "authorized_recipients": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/FiscalCode"
+          }
+        },
+        "authorized_cidrs": {
+          "description": "Allowed source IPs or CIDRs for this service.\nWhen empty, every IP address it's authorized to call the IO API on behalf of the service.",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/CIDR"
+          }
+        },
+        "max_allowed_payment_amount": {
+          "type": "integer",
+          "format": "int32",
+          "minimum": 0,
+          "maximum": 9999999999,
+          "default": 0
+        },
+        "metadata": {
+          "$ref": "#/definitions/CmsServiceMetadata"
+        }
+      },
+      "required": [
+        "name",
+        "description",
+        "organization",
+        "metadata"
+      ]
+    },
+    "CmsServiceMetadata": {
+      "type": "object",
+      "description": "A set of service metadata properties",
+      "properties": {
+        "web_url": {
+          "type": "string",
+          "minLength": 1
+        },
+        "app_ios": {
+          "type": "string",
+          "minLength": 1
+        },
+        "app_android": {
+          "type": "string",
+          "minLength": 1
+        },
+        "tos_url": {
+          "type": "string",
+          "minLength": 1
+        },
+        "privacy_url": {
+          "type": "string",
+          "minLength": 1
+        },
+        "address": {
+          "type": "string",
+          "minLength": 1
+        },
+        "phone": {
+          "type": "string",
+          "minLength": 1
+        },
+        "email": {
+          "type": "string",
+          "minLength": 1
+        },
+        "pec": {
+          "type": "string",
+          "minLength": 1
+        },
+        "cta": {
+          "type": "string",
+          "minLength": 1
+        },
+        "token_name": {
+          "type": "string",
+          "minLength": 1
+        },
+        "support_url": {
+          "type": "string",
+          "minLength": 1
+        },
+        "scope": {
+          "type": "string",
+          "enum": [
+            "NATIONAL",
+            "LOCAL"
+          ]
+        }
+      },
+      "required": [
+        "scope"
+      ]
+    },
+    "CmsServiceLifecycleStatus": {
+      "type": "object",
+      "properties": {
+        "value": {
+          "$ref": "#/definitions/CmsServiceLifecycleStatusType"
+        },
+        "reason": {
+          "description": "Reason for status value",
+          "type": "string"
+        }
+      },
+      "required": [
+        "value"
+      ]
+    },
+    "CmsServiceLifecycleStatusType": {
+      "description": "Service lifecycle status<br>\n- _draft_: A new draft of the service has been created, filled in completely or partially and saved by the system.\n- _submitted_: The draft has been sent for internal validation to PagoPA and the response is awaited. In this state, the service is\nimmutable and is frozen in the shipped version.\n- _approved_: The service has been approved by the _PagoPA S.p.A._ internal validation process, it is correct and suitable for publication.\n- _rejected_: The service goes back to the draft but cannot be resubmitted for validation unless it is modified by the institution in\nat least one of its fields.\n- _deleted_: The service is permanently deleted from the Back-Office.\n",
+      "type": "string",
+      "enum": [
+        "draft",
+        "submitted",
+        "approved",
+        "rejected",
+        "deleted"
+      ]
+    },
+    "CmsServicePublicationStatusType": {
+      "description": "Service publication status<br>\n- _published_: The service is visible in _IO App_ to users\n- _unpublished_: The service is no longer visible in _IO App_ to users, but remains in the institution's Back-Office, which can\nlater choose to publish it again.\n",
+      "type": "string",
+      "enum": [
+        "published",
+        "unpublished"
+      ]
+    },
+    "CmsServicePagination": {
+      "type": "object",
+      "properties": {
+        "value": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/CmsServiceLifecycle"
+          }
+        },
+        "pagination": {
+          "$ref": "#/definitions/CmsPaginationResultSet"
+        }
+      }
+    },
+    "CmsPaginationResultSet": {
+      "type": "object",
+      "properties": {
+        "offset": {
+          "type": "number",
+          "description": "result set offset"
+        },
+        "limit": {
+          "type": "number",
+          "description": "result set size"
+        },
+        "count": {
+          "type": "number",
+          "description": "total record count"
+        }
+      }
+    },
+    "CmsOrganization": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "minLength": 1
+        },
+        "fiscal_code": {
+          "$ref": "#/definitions/OrganizationFiscalCode"
+        },
+        "department_name": {
+          "type": "string",
+          "minLength": 1
+        }
+      },
+      "required": [
+        "name",
+        "fiscal_code"
+      ]
+    },
+    "CmsSubscriptionKeys": {
+      "type": "object",
+      "properties": {
+        "primary_key": {
+          "type": "string"
+        },
+        "secondary_key": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "primary_key",
+        "secondary_key"
+      ]
+    },
+    "CmsReviewRequest": {
+      "type": "object",
+      "properties": {
+        "auto_publish": {
+          "type": "boolean",
+          "description": "Flag to request an automatic service publication on service approval.",
+          "example": true
+        }
+      },
+      "required": [
+        "auto_publish"
+      ]
     }
   },
   "responses": {},
@@ -1774,6 +2830,17 @@
       "description": "Organization fiscal code.",
       "format": "OrganizationFiscalCode",
       "x-import": "italia-ts-commons/lib/strings"
+    },
+    "CmsSubscriptionKeyType": {
+      "name": "keyType",
+      "in": "path",
+      "description": "Key type",
+      "required": true,
+      "type": "string",
+      "enum": [
+        "primary",
+        "secondary"
+      ]
     }
   },
   "consumes": [
@@ -1787,7 +2854,13 @@
       "type": "apiKey",
       "name": "Ocp-Apim-Subscription-Key",
       "in": "header",
-      "description": "The API key obtained through the developer portal or the getService operation."
+      "description": "The API key obtained through the Backoffice IO or both getService or cmsGetServiceKeys operation."
+    },
+    "ManageSubscriptionKey": {
+      "type": "apiKey",
+      "name": "Ocp-Apim-Subscription-Key",
+      "in": "header",
+      "description": "The `manage` API key obtained through the Backoffice IO."
     }
   }
 }
