@@ -115,6 +115,7 @@ module "function_fast_login" {
     module.fast_login_snet[0].id,
     data.azurerm_subnet.app_backend_l1_snet.id,
     data.azurerm_subnet.app_backend_l2_snet.id,
+    data.azurerm_subnet.ioweb_profile_snet.id,
   ]
 
   # Action groups for alerts
