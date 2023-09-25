@@ -25,7 +25,7 @@ terraform {
       version = "<= 3.4.3"
     }
     azapi = {
-      source = "azure/azapi"
+      source  = "azure/azapi"
       version = "<= 1.9.0"
     }
   }
