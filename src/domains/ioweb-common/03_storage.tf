@@ -56,6 +56,7 @@ resource "azurerm_private_endpoint" "spid_logs_storage_blob" {
 
 # Containers
 resource "azurerm_storage_container" "spid_logs" {
+  depends_on            = [module.spid_logs_storage]
   name                  = "spidlogs"
   storage_account_name  = module.spid_logs_storage.name
   container_access_type = "private"
