@@ -32,6 +32,28 @@ module "spid_logs_storage_customer_managed_key" {
 }
 
 
+resource "azurerm_private_endpoint" "spid_logs_storage_blob" {
+  name                = "${module.spid_logs_storage.name}-blob-endpoint"
+  location            = var.location
+  resource_group_name = azurerm_resource_group.storage_rg.name
+  subnet_id           = data.azurerm_subnet.private_endpoints_subnet.id
+
+  private_service_connection {
+    name                           = "${module.spid_logs_storage.name}-blob"
+    private_connection_resource_id = module.spid_logs_storage.id
+    is_manual_connection           = false
+    subresource_names              = ["blob"]
+  }
+
+  private_dns_zone_group {
+    name                 = "private-dns-zone-group"
+    private_dns_zone_ids = [data.azurerm_private_dns_zone.privatelink_blob_core_windows_net.id]
+  }
+
+  tags = var.tags
+}
+
+
 # Containers
 resource "azurerm_storage_container" "spid_logs" {
   depends_on            = [module.spid_logs_storage]
