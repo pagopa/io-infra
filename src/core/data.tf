@@ -269,3 +269,12 @@ resource "azurerm_monitor_metric_alert" "cosmos_cgn_throttling_alert" {
 
   tags = var.tags
 }
+
+#
+# IO Services CMS BackOffice App
+#
+
+data "azurerm_linux_web_app" "cms_backoffice_app" {
+  name                = format("%s-services-cms-backoffice-app", local.project)
+  resource_group_name = format("%s-services-cms-rg", local.project)
+}

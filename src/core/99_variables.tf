@@ -26,6 +26,17 @@ variable "location" {
   default = "westeurope"
 }
 
+variable "location_short" {
+  type = string
+  validation {
+    condition = (
+      length(var.location_short) == 3
+    )
+    error_message = "Length must be 3 chars."
+  }
+  description = "One of weu, neu"
+}
+
 variable "lock_enable" {
   type        = bool
   default     = false
@@ -415,6 +426,11 @@ variable "app_gateway_firmaconio_selfcare_pagopa_it_certificate_name" {
 variable "app_gateway_continua_io_pagopa_it_certificate_name" {
   type        = string
   description = "Application gateway continua certificate name on Key Vault"
+}
+
+variable "app_gateway_selfcare_io_pagopa_it_certificate_name" {
+  type        = string
+  description = "Application gateway selfcare-io certificate name on Key Vault"
 }
 
 variable "app_gateway_min_capacity" {

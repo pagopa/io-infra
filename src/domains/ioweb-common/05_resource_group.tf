@@ -11,3 +11,10 @@ resource "azurerm_resource_group" "fe_rg" {
 
   tags = var.tags
 }
+
+resource "azurerm_resource_group" "storage_rg" {
+  name     = "${local.project}-storage-rg"
+  location = var.location
+
+  tags = var.tags
+}

@@ -8,6 +8,9 @@ tags = {
   CostCenter  = "TS310 - PAGAMENTI & SERVIZI"
 }
 
+location       = "westeurope"
+location_short = "weu"
+
 # dns
 external_domain = "pagopa.it"
 dns_zone_io     = "dev.io"
