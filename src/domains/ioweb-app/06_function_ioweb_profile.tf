@@ -154,6 +154,8 @@ module "function_ioweb_profile" {
     data.azurerm_subnet.function_app_snet[1].id,
   ]
 
+  enable_healthcheck = false
+
   # Action groups for alerts
   action = [
     {
