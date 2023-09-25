@@ -89,6 +89,17 @@ resource "azurerm_dns_a_record" "continua_io_pagopa_it" {
   tags = var.tags
 }
 
+# selfcare.io.pagopa.it
+resource "azurerm_dns_a_record" "selfcare_io_pagopa_it" {
+  name                = "selfcare"
+  zone_name           = azurerm_dns_zone.io_pagopa_it[0].name
+  resource_group_name = azurerm_resource_group.rg_external.name
+  ttl                 = var.dns_default_ttl_sec
+  records             = [azurerm_public_ip.appgateway_public_ip.ip_address]
+
+  tags = var.tags
+}
+
 # firma.io.pagopa.it
 resource "azurerm_dns_ns_record" "firma_io_pagopa_it_ns" {
   name                = "firma"

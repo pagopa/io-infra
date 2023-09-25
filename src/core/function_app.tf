@@ -160,6 +160,12 @@ module "app_snet" {
   }
 }
 
+data "azurerm_subnet" "ioweb_profile_snet" {
+  name                 = format("%s-%s-ioweb-profile-snet", local.project, var.location_short)
+  virtual_network_name = module.vnet_common.name
+  resource_group_name  = azurerm_resource_group.rg_common.name
+}
+
 #tfsec:ignore:azure-storage-queue-services-logging-enabled:exp:2022-05-01 # already ignored, maybe a bug in tfsec
 module "function_app" {
   count  = var.function_app_count
@@ -206,6 +212,7 @@ module "function_app" {
     module.app_backendl1_snet.id,
     module.app_backendl2_snet.id,
     module.app_backendli_snet.id,
+    data.azurerm_subnet.ioweb_profile_snet.id,
   ]
 
   tags = var.tags
