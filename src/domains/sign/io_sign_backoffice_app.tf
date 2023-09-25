@@ -140,7 +140,7 @@ module "io_sign_backoffice_app_staging_slot" {
   tags = var.tags
 }
 
-resource "azurerm_key_vault_access_policy" "backoffice_key_vault_access_policy" {
+resource "azurerm_key_vault_access_policy" "backoffice_staging_key_vault_access_policy" {
   key_vault_id = module.key_vault.id
   tenant_id    = data.azurerm_client_config.current.tenant_id
   object_id    = module.io_sign_backoffice_app_staging_slot.principal_id
@@ -150,13 +150,13 @@ resource "azurerm_key_vault_access_policy" "backoffice_key_vault_access_policy" 
   certificate_permissions = []
 }
 
-resource "azurerm_role_assignment" "firmaconio_selfcare_apim_contributor_role" {
+resource "azurerm_role_assignment" "firmaconio_selfcare_staging_apim_contributor_role" {
   scope                = data.azurerm_api_management.apim_v2_api.id
   role_definition_name = "API Management Service Contributor"
   principal_id         = module.io_sign_backoffice_app_staging_slot.principal_id
 }
 
-resource "azurerm_private_endpoint" "io_sign_backoffice_app" {
+resource "azurerm_private_endpoint" "io_sign_backoffice_app_staging_slot" {
   name                = format("%s-backoffice-staging-endpoint", local.project)
   location            = azurerm_resource_group.data_rg.location
   resource_group_name = azurerm_resource_group.data_rg.name
