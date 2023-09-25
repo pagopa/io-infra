@@ -80,7 +80,7 @@ module "io_sign_backoffice_app_staging_slot" {
   location            = azurerm_resource_group.backend_rg.location
   resource_group_name = azurerm_resource_group.backend_rg.name
 
-  app_service_id = module.io_sign_backoffice_app.id 
+  app_service_id   = module.io_sign_backoffice_app.id
   app_service_name = module.io_sign_backoffice_app.name
 
   docker_image     = "ghcr.io/pagopa/io-sign-backoffice"
