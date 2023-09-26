@@ -164,9 +164,9 @@ resource "azurerm_private_endpoint" "io_sign_backoffice_app_staging_slot" {
 
   private_service_connection {
     name                           = format("%s-backoffice-staging-endpoint", local.project)
-    private_connection_resource_id = module.io_sign_backoffice_app_staging_slot.id
+    private_connection_resource_id = module.io_sign_backoffice_app.id
     is_manual_connection           = false
-    subresource_names              = ["sites"]
+    subresource_names              = ["sites-staging"]
   }
 
   private_dns_zone_group {
