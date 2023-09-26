@@ -49,7 +49,7 @@ data "azurerm_key_vault_secret" "github_pat" {
 
 resource "azapi_resource" "github_runner_job" {
   type      = "Microsoft.App/jobs@2023-05-01"
-  name      = "io-infra-github-runner-job"
+  name      = "${local.project}-infra-github-runner-job"
   location  = var.location
   parent_id = azurerm_resource_group.github_runner.id
 
