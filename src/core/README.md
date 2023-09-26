@@ -4,19 +4,13 @@
 
 | Name | Version |
 |------|---------|
+| <a name="requirement_azapi"></a> [azapi](#requirement\_azapi) | <= 1.9.0 |
 | <a name="requirement_azuread"></a> [azuread](#requirement\_azuread) | <= 2.33.0 |
 | <a name="requirement_azurerm"></a> [azurerm](#requirement\_azurerm) | <= 3.40.0 |
 | <a name="requirement_local"></a> [local](#requirement\_local) | <= 2.3.0 |
 | <a name="requirement_null"></a> [null](#requirement\_null) | <= 3.2.1 |
 | <a name="requirement_random"></a> [random](#requirement\_random) | <= 3.4.3 |
 | <a name="requirement_tls"></a> [tls](#requirement\_tls) | <= 4.0.4 |
-
-## Providers
-
-| Name | Version |
-|------|---------|
-| <a name="provider_azuread"></a> [azuread](#provider\_azuread) | 2.33.0 |
-| <a name="provider_azurerm"></a> [azurerm](#provider\_azurerm) | 3.40.0 |
 
 ## Modules
 
@@ -184,6 +178,7 @@
 
 | Name | Type |
 |------|------|
+| [azapi_resource.github_runner_job](https://registry.terraform.io/providers/azure/azapi/latest/docs/resources/resource) | resource |
 | [azurerm_api_management_api_operation_policy.create_service_policy](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_api_operation_policy) | resource |
 | [azurerm_api_management_api_operation_policy.create_service_policy_v2](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_api_operation_policy) | resource |
 | [azurerm_api_management_api_operation_policy.submit_message_for_user_policy](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_api_operation_policy) | resource |
@@ -615,6 +610,7 @@
 | [azurerm_key_vault_secret.fn_services_sandbox_fiscal_code](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/key_vault_secret) | data source |
 | [azurerm_key_vault_secret.fn_services_webhook_channel_aks_url](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/key_vault_secret) | data source |
 | [azurerm_key_vault_secret.fn_services_webhook_channel_url](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/key_vault_secret) | data source |
+| [azurerm_key_vault_secret.github_pat_io_infra](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/key_vault_secret) | data source |
 | [azurerm_key_vault_secret.io_fn3_admin_key_secret](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/key_vault_secret) | data source |
 | [azurerm_key_vault_secret.io_fn3_admin_key_secret_v2](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/key_vault_secret) | data source |
 | [azurerm_key_vault_secret.io_fn3_eucovidcert_key_secret](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/key_vault_secret) | data source |
