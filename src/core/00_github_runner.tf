@@ -47,7 +47,7 @@ data "azurerm_key_vault_secret" "github_pat" {
   key_vault_id = data.azurerm_key_vault.keyvault.id
 }
 
-resource "azapi_resource" "job" {
+resource "azapi_resource" "github_runner_job" {
   type      = "Microsoft.App/jobs@2023-05-01"
   name      = "io-infra-github-runner-job"
   location  = var.location
