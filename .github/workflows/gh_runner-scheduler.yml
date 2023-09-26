@@ -13,13 +13,12 @@ permissions:
 env:
   resource-group: 'io-p-github-runner-rg'
   job-name: 'io-infra-github-runner-job'
+  maximum_replica: 10
 
 jobs:
   scheduler:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     environment: prod-runner
-    env:
-      MAXIMUM_REPLICA: 10
     steps:
       - name: Azure Login
         id: login
@@ -36,7 +35,7 @@ jobs:
             --resource-group ${{ env.resource-group }} \
             --name ${{ env.job-name }} \
             --min-executions 1 \
-            --max-executions ${{ env.MAXIMUM_REPLICA }}
+            --max-executions ${{ env.maximum_replica }}
 
       - name: Decrease minimum replicas
         if: github.event.schedule == '0 18 * * *'
@@ -45,4 +44,4 @@ jobs:
             --resource-group ${{ env.resource-group }} \
             --name ${{ env.job-name }} \
             --min-executions 0 \
-            --max-executions ${{ env.MAXIMUM_REPLICA }}
+            --max-executions ${{ env.maximum_replica }}
