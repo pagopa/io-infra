@@ -89,7 +89,7 @@ resource "azapi_resource" "github_runner_job" {
         secrets = [
           {
             name  = "personal-access-token"
-            value = "${data.azurerm_key_vault_secret.github_pat.value}"
+            value = "${data.azurerm_key_vault_secret.github_pat_io_infra.value}"
           }
         ]
         triggerType = "Event"
