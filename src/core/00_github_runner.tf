@@ -34,7 +34,7 @@ module "github_runner" {
 locals {
   repo_owner = "PagoPA"
   repo_name  = "io-infra"
-  image_name = "ghcr.io/pagopa/github-self-hosted-runner-azure:beta-runner-v2"
+  image_name = "ghcr.io/pagopa/github-self-hosted-runner-azure:beta-dockerfile-v2"
 }
 
 data "azurerm_key_vault_secret" "github_pat_io_infra" {
