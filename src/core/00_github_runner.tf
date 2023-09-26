@@ -37,14 +37,9 @@ locals {
   image_name = "ghcr.io/pagopa/github-self-hosted-runner-azure:beta-runner-v2"
 }
 
-data "azurerm_key_vault" "keyvault" {
-  name                = "io-p-kv-common"
-  resource_group_name = "io-p-rg-common"
-}
-
 data "azurerm_key_vault_secret" "github_pat_io_infra" {
   name         = "github-pat-io-infra"
-  key_vault_id = data.azurerm_key_vault.keyvault.id
+  key_vault_id = module.key_vault_common.id
 }
 
 resource "azapi_resource" "github_runner_job" {
