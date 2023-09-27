@@ -133,7 +133,7 @@ module "apim_v2" {
   # https://docs.microsoft.com/en-us/azure/azure-monitor/essentials/metrics-supported#microsoftapimanagementservice
   metric_alerts = {
     capacity = {
-      description   = "Apim used capacity is too high"
+      description   = "Apim used capacity is too high. Runbook: https://pagopa.atlassian.net/wiki/spaces/IC/pages/791642113/APIM+Capacity"
       frequency     = "PT5M"
       window_size   = "PT5M"
       severity      = 1

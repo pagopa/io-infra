@@ -109,3 +109,70 @@ resource "azurerm_private_endpoint" "io_sign_backoffice_app" {
 
   tags = var.tags
 }
+
+module "io_sign_backoffice_app_staging_slot" {
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//app_service_slot?ref=v7.7.0"
+
+  name                = "staging"
+  location            = azurerm_resource_group.backend_rg.location
+  resource_group_name = azurerm_resource_group.backend_rg.name
+
+  app_service_id   = module.io_sign_backoffice_app.id
+  app_service_name = module.io_sign_backoffice_app.name
+
+  docker_image     = "ghcr.io/pagopa/io-sign-backoffice"
+  docker_image_tag = "latest"
+
+  health_check_path = "/health"
+
+  app_settings = local.backoffice_app_settings
+
+  always_on        = true
+  vnet_integration = true
+
+  subnet_id = module.io_sign_backoffice_snet.id
+
+  allowed_subnets = [
+    data.azurerm_subnet.appgateway_snet.id,
+    data.azurerm_subnet.apim_v2.id
+  ]
+
+  tags = var.tags
+}
+
+resource "azurerm_key_vault_access_policy" "backoffice_staging_key_vault_access_policy" {
+  key_vault_id = module.key_vault.id
+  tenant_id    = data.azurerm_client_config.current.tenant_id
+  object_id    = module.io_sign_backoffice_app_staging_slot.principal_id
+
+  secret_permissions      = ["Get"]
+  storage_permissions     = []
+  certificate_permissions = []
+}
+
+resource "azurerm_role_assignment" "firmaconio_selfcare_staging_apim_contributor_role" {
+  scope                = data.azurerm_api_management.apim_v2_api.id
+  role_definition_name = "API Management Service Contributor"
+  principal_id         = module.io_sign_backoffice_app_staging_slot.principal_id
+}
+
+resource "azurerm_private_endpoint" "io_sign_backoffice_app_staging_slot" {
+  name                = format("%s-backoffice-staging-endpoint", local.project)
+  location            = azurerm_resource_group.data_rg.location
+  resource_group_name = azurerm_resource_group.data_rg.name
+  subnet_id           = data.azurerm_subnet.private_endpoints_subnet.id
+
+  private_service_connection {
+    name                           = format("%s-backoffice-staging-endpoint", local.project)
+    private_connection_resource_id = module.io_sign_backoffice_app.id
+    is_manual_connection           = false
+    subresource_names              = ["sites-staging"]
+  }
+
+  private_dns_zone_group {
+    name                 = "private-dns-zone-group"
+    private_dns_zone_ids = [data.azurerm_private_dns_zone.privatelink_azurewebsites_net.id]
+  }
+
+  tags = var.tags
+}
