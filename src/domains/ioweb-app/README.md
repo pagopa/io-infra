@@ -14,6 +14,7 @@
 
 | Name | Source | Version |
 |------|--------|---------|
+| <a name="module_apim_v2_bff_api"></a> [apim\_v2\_bff\_api](#module\_apim\_v2\_bff\_api) | git::https://github.com/pagopa/terraform-azurerm-v3//api_management_api | v4.1.5 |
 | <a name="module_function_ioweb_profile"></a> [function\_ioweb\_profile](#module\_function\_ioweb\_profile) | git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app | v5.2.0 |
 | <a name="module_function_ioweb_profile_staging_slot"></a> [function\_ioweb\_profile\_staging\_slot](#module\_function\_ioweb\_profile\_staging\_slot) | git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app_slot | v5.2.0 |
 | <a name="module_ioweb_profile_snet"></a> [ioweb\_profile\_snet](#module\_ioweb\_profile\_snet) | git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet | v4.1.15 |
@@ -36,6 +37,7 @@
 | [azuread_group.adgroup_developers](https://registry.terraform.io/providers/hashicorp/azuread/latest/docs/data-sources/group) | data source |
 | [azuread_group.adgroup_externals](https://registry.terraform.io/providers/hashicorp/azuread/latest/docs/data-sources/group) | data source |
 | [azuread_group.adgroup_security](https://registry.terraform.io/providers/hashicorp/azuread/latest/docs/data-sources/group) | data source |
+| [azurerm_api_management.apim_v2_api](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/api_management) | data source |
 | [azurerm_application_insights.application_insights](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/application_insights) | data source |
 | [azurerm_client_config.current](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/client_config) | data source |
 | [azurerm_key_vault.kv](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/key_vault) | data source |

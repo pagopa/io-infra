@@ -21,4 +21,8 @@ locals {
 
   aks_name                = "${local.product}-${var.location_short}-${var.instance}-aks"
   aks_resource_group_name = "${local.product}-${var.location_short}-${var.instance}-aks-rg"
+
+  apim_v2_name             = "${local.product}-apim-v2-api"
+  apim_resource_group_name = "${local.product}-rg-internal"
+  bff_base_path            = "ioweb/backend/v1"
 }
