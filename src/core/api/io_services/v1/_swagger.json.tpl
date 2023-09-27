@@ -1,16 +1,16 @@
 {
   "swagger": "2.0",
   "info": {
-    "version": "3.3.0",
+    "version": "3.3.1",
     "title": "IO API for Public Administration Services",
     "contact": {
-      "name": "Digital Transformation Team",
-      "url": "https://forum.italia.it/c/progetto-io"
+      "name": "PagoPA S.p.A",
+      "url": "https://pagopa.it"
     },
     "x-logo": {
       "url": "https://io.italia.it/assets/img/io-logo-blue.svg"
     },
-    "description": "# Warning\n**This is an experimental API that is (most probably) going to change as we evolve the IO platform.**\n# Introduction\nThis is the documentation of the IO API for 3rd party services. This API enables Public Administration services to integrate with the IO platform. IO enables services to communicate with Italian citizens via the [IO app](https://io.italia.it/).\n# How to get an API key\nTo get access to this API, you'll need to register on the [IO Developer Portal](https://developer.io.italia.it/).\nAfter the registration step, you have to click on the button that says `subscribe to the digital citizenship api` to receive the API key that you will use to authenticate the API calls.\nYou will also receive an email with further instructions, including a fake Fiscal Code that you will be able to use to send test messages. Messages sent to the fake Fiscal Code will be notified to the email address used during the registration process on the developer portal.\n# Messages\n## What is a message\nMessages are the primary form of communication enabled by the IO APIs. Messages are **personal** communications directed to a **specific citizen**. You will not be able to use this API to broadcast a message to a group of citizens, you will have to create and send a specific, personalized message to each citizen you want to communicate to.\nThe recipient of the message (i.e. a citizen) is identified trough his [Fiscal Code](https://it.wikipedia.org/wiki/Codice_fiscale).\n## Message format\nA message is conceptually very similar to an email and, in its simplest form, is composed of the following attributes:\n\n  * A required `subject`: a short description of the topic.\n  * A required `markdown` body: a Markdown representation of the body (see\n    below on what Markdown tags are allowed).\n  * An optional `payment_data`: in case the message is a payment request,\n    the _payment data_ will enable the recipient to pay the requested amount\n    via [PagoPA](https://www.agid.gov.it/it/piattaforme/pagopa).\n  * An optional `due_date`: a _due date_ that let the recipient\n    add a reminder when receiving the message. The format for all\n    dates is [ISO8601](https://it.wikipedia.org/wiki/ISO_8601) with time\n    information and UTC timezone (ie. \"2018-10-13T00:00:00.000Z\").\n\n## Allowed Markdown formatting\nNot all Markdown formatting is currently available. Currently you can use the following formatting:\n\n  * Headings\n  * Text stylings (bold, italic, etc...)\n  * Lists (bullet and numbered)\n\n## Sending a message to a citizen\nNot every citizen will be interested in what you have to say and not every citizen you want to communicate to will be registered on IO. For this reason, before sending a message you need to check whether the recipient is registered on the platform and that he has not yet opted out from receiving messages from you.\nThe process for sending a message is made of 3 steps:\n\n  1. Call [getProfile](#operation/getProfile): if the profile does not exist\n     (i.e. you get a 404 response) or if the recipient has opted-out from\n     your service (the response contains `sender_allowed: false`), you\n     cannot send the message and you must stop here.\n  1. Call [submitMessageforUser](#operation/submitMessageforUser) to submit\n     a new message.\n  1. (optional) Call [getMessage](#operation/getMessage) to check whether\n     the message has been notified to the recipient.\n"
+    "description": "This is the specification of the API to integrate 3rd party services into [IO app](https://io.italia.it/). This API enables Public Administration services to integrate with the IO platform. IO enables services to communicate with Italian citizens via the [IO app](https://io.italia.it/).\n\nFurther informations about how to join the platform, technical documentation, tutorial and examples can be found at https://docs.pagopa.it/io-guida-tecnica."
   },
   "host": "${host}",
   "basePath": "/api/v1",
@@ -23,98 +23,20 @@
     }
   ],
   "paths": {
-    "/legal-messages/{legalmail}": {
-      "post": {
-        "operationId": "submitLegalMessageforUserWithFiscalCodeInBodyOnBehalfOfService",
-        "summary": "Submit a Legal Message passing the user fiscal_code in the request body",
-        "description": "Submits a legal message to a user on behalf of a service identitfied by legalMail\nOn error, the reason is returned in the response payload.",
-        "parameters": [
-          {
-            "$ref": "#/parameters/LegalMail"
-          },
-          {
-            "name": "message",
-            "in": "body",
-            "schema": {
-              "$ref": "#/definitions/NewMessage"
-            },
-            "x-examples": {
-              "application/json": {
-                "time_to_live": 3600,
-                "content": {
-                  "subject": "ipsum labore deserunt fugiat",
-                  "markdown": "Nullam dapibus metus sed elementum efficitur. Curabitur facilisis sagittis risus nec sodales.\nVestibulum in eros sapien. Donec ac odio sit amet dui semper ornare eget nec odio. Pellentesque habitant\nmorbi tristique senectus et netus et malesuada fames ac turpis egestas. Praesent nibh ex, mattis sit amet\nfelis id, sodales euismod velit. Lorem ipsum dolor sit amet, consectetur adipiscing elit."
-                }
-              }
-            }
-          }
-        ],
-        "responses": {
-          "201": {
-            "description": "Message created.",
-            "schema": {
-              "$ref": "#/definitions/CreatedMessage"
-            },
-            "headers": {
-              "Location": {
-                "type": "string",
-                "description": "Location (URL) of created message resource.\nA GET request to this URL returns the message status and details."
-              }
-            },
-            "examples": {
-              "application/json": {
-                "id": "01BX9NSMKVXXS5PSP2FATZMYYY"
-              }
-            }
-          },
-          "400": {
-            "description": "Invalid payload.",
-            "schema": {
-              "$ref": "#/definitions/ProblemJson"
-            },
-            "examples": {}
-          },
-          "401": {
-            "description": "Unauthorized"
-          },
-          "403": {
-            "description": "Forbidden."
-          },
-          "404": {
-            "description": "Not Found."
-          },
-          "429": {
-            "description": "Too many requests"
-          },
-          "500": {
-            "description": "The message cannot be delivered.",
-            "schema": {
-              "$ref": "#/definitions/ProblemJson"
-            }
-          }
-        }
-      }
-    },
     "/messages": {
       "post": {
+        "tags": [
+          "use"
+        ],
         "operationId": "submitMessageforUserWithFiscalCodeInBody",
         "summary": "Submit a Message passing the user fiscal_code in the request body",
-        "description": "Submits a message to a user.\nOn error, the reason is returned in the response payload.\nIn order to call `submitMessageforUser`, before sending any message,\nthe sender MUST call `getProfile` and check that the profile exists\n(for the specified fiscal code) and that the `sender_allowed` field\nof the user's profile it set to `true`.",
+        "description": "Submits a message to a user.\nThe simplest message contains subject and markdown as content; additional informations, such as payment data, can be provided to enrich the message. Please refer to https://docs.pagopa.it/io-guida-tecnica for a detailed explanation on how and when using additional content attributes.",
         "parameters": [
           {
             "name": "message",
             "in": "body",
             "schema": {
               "$ref": "#/definitions/NewMessage"
-            },
-            "x-examples": {
-              "application/json": {
-                "time_to_live": 3600,
-                "content": {
-                  "subject": "ipsum labore deserunt fugiat",
-                  "markdown": "Nullam dapibus metus sed elementum efficitur. Curabitur facilisis sagittis risus nec sodales.\nVestibulum in eros sapien. Donec ac odio sit amet dui semper ornare eget nec odio. Pellentesque habitant\nmorbi tristique senectus et netus et malesuada fames ac turpis egestas. Praesent nibh ex, mattis sit amet\nfelis id, sodales euismod velit. Lorem ipsum dolor sit amet, consectetur adipiscing elit."
-                }
-              }
             }
           }
         ],
@@ -129,17 +51,12 @@
                 "type": "string",
                 "description": "Location (URL) of created message resource.\nA GET request to this URL returns the message status and details."
               }
-            },
-            "examples": {
-              "application/json": {
-                "id": "01BX9NSMKVXXS5PSP2FATZMYYY"
-              }
             }
           },
           "400": {
             "description": "Invalid payload.",
             "schema": {
-              "$ref": "#/definitions/ProblemJson"
+              "$ref": "#/definitions/ValidationError"
             },
             "examples": {}
           },
@@ -155,7 +72,7 @@
           "500": {
             "description": "The message cannot be delivered.",
             "schema": {
-              "$ref": "#/definitions/ProblemJson"
+              "$ref": "#/definitions/ServerError"
             }
           }
         }
@@ -163,9 +80,12 @@
     },
     "/messages/{fiscal_code}": {
       "post": {
+        "tags": [
+          "use"
+        ],
         "operationId": "submitMessageforUser",
         "summary": "Submit a Message passing the user fiscal_code as path parameter",
-        "description": "Submits a message to a user.\nOn error, the reason is returned in the response payload.\nIn order to call `submitMessageforUser`, before sending any message,\nthe sender MUST call `getProfile` and check that the profile exists\n(for the specified fiscal code) and that the `sender_allowed` field\nof the user's profile it set to `true`.",
+        "description": "Submits a message to a user.\nThe simplest message contains subject and markdown as content; additional informations, such as payment data, can be provided to enrich the message. Please refer to https://docs.pagopa.it/io-guida-tecnica for a detailed explanation on how and when using additional content attributes.",
         "parameters": [
           {
             "$ref": "#/parameters/FiscalCode"
@@ -175,15 +95,6 @@
             "in": "body",
             "schema": {
               "$ref": "#/definitions/NewMessage"
-            },
-            "x-examples": {
-              "application/json": {
-                "time_to_live": 3600,
-                "content": {
-                  "subject": "ipsum labore deserunt fugiat",
-                  "markdown": "Nullam dapibus metus sed elementum efficitur. Curabitur facilisis sagittis risus nec sodales.\nVestibulum in eros sapien. Donec ac odio sit amet dui semper ornare eget nec odio. Pellentesque habitant\nmorbi tristique senectus et netus et malesuada fames ac turpis egestas. Praesent nibh ex, mattis sit amet\nfelis id, sodales euismod velit. Lorem ipsum dolor sit amet, consectetur adipiscing elit."
-                }
-              }
             }
           }
         ],
@@ -191,30 +102,19 @@
           "201": {
             "description": "Message created.",
             "schema": {
-              "type": "object",
-              "properties": {
-                "id": {
-                  "type": "string",
-                  "description": "The identifier of the created message."
-                }
-              }
+              "$ref": "#/definitions/CreatedMessage"
             },
             "headers": {
               "Location": {
                 "type": "string",
                 "description": "Location (URL) of created message resource.\nA GET request to this URL returns the message status and details."
               }
-            },
-            "examples": {
-              "application/json": {
-                "id": "01BX9NSMKVXXS5PSP2FATZMYYY"
-              }
             }
           },
           "400": {
             "description": "Invalid payload.",
             "schema": {
-              "$ref": "#/definitions/ProblemJson"
+              "$ref": "#/definitions/ValidationError"
             },
             "examples": {}
           },
@@ -230,7 +130,7 @@
           "500": {
             "description": "The message cannot be delivered.",
             "schema": {
-              "$ref": "#/definitions/ProblemJson"
+              "$ref": "#/definitions/ServerError"
             }
           }
         }
@@ -238,6 +138,9 @@
     },
     "/messages/{fiscal_code}/{id}": {
       "get": {
+        "tags": [
+          "use"
+        ],
         "operationId": "getMessage",
         "summary": "Get Message",
         "description": "The previously created message with the provided message ID is\nreturned.",
@@ -258,23 +161,6 @@
             "description": "Message found.",
             "schema": {
               "$ref": "#/definitions/MessageResponseWithContent"
-            },
-            "examples": {
-              "application/json": {
-                "message": {
-                  "id": "01BX9NSMKAAAS5PSP2FATZM6BQ",
-                  "fiscal_code": "QXJNTX9RCRVD6V4O",
-                  "time_to_live": 3600,
-                  "content": {
-                    "subject": "message subject, aliquip sint nulla in estinut",
-                    "markdown": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas et mollis felis.\nVivamus orci nisl, commodo ut sodales ut, eleifend a libero. Donec dapibus, turpis in mattis tempor,\nrisus nunc malesuada ex, non aliquet metus nunc a lacus. Aenean in arcu vitae nisl porta\nfermentum nec non nibh. Phasellus tortor tellus, semper in metus eget, eleifend\nlaoreet nibh. Aenean feugiat lectus ut nisl eleifend gravida."
-                  },
-                  "sender_service_id": "01BX9NSMKVXXS5PSP2FATZM6QX"
-                },
-                "notification": {
-                  "email": "QUEUED"
-                }
-              }
             }
           },
           "401": {
@@ -286,7 +172,7 @@
           "404": {
             "description": "No message found for the provided ID.",
             "schema": {
-              "$ref": "#/definitions/ProblemJson"
+              "$ref": "#/definitions/NotAvailableError"
             }
           },
           "429": {
@@ -297,6 +183,9 @@
     },
     "/profiles": {
       "post": {
+        "tags": [
+          "use"
+        ],
         "operationId": "getProfileByPOST",
         "summary": "Get a User Profile using POST",
         "description": "Returns the preferences for the user identified by the\nfiscal code provided in the request body. The field `sender_allowed` is set fo `false` in case\nthe service which is calling the API has been disabled by the user.",
@@ -305,12 +194,6 @@
             "description": "Found.",
             "schema": {
               "$ref": "#/definitions/LimitedProfile"
-            },
-            "examples": {
-              "application/json": {
-                "email": "foobar@example.com",
-                "version": 1
-              }
             }
           },
           "401": {
@@ -322,7 +205,7 @@
           "404": {
             "description": "No user found for the provided fiscal code.",
             "schema": {
-              "$ref": "#/definitions/ProblemJson"
+              "$ref": "#/definitions/NotAvailableError"
             }
           },
           "429": {
@@ -342,6 +225,9 @@
     },
     "/profiles/{fiscal_code}": {
       "get": {
+        "tags": [
+          "use"
+        ],
         "operationId": "getProfile",
         "summary": "Get a User Profile",
         "description": "Returns the preferences for the user identified by the provided\nfiscal code. The field `sender_allowed` is set fo `false` in case\nthe service which is calling the API has been disabled by the user.",
@@ -350,12 +236,6 @@
             "description": "Found.",
             "schema": {
               "$ref": "#/definitions/LimitedProfile"
-            },
-            "examples": {
-              "application/json": {
-                "email": "foobar@example.com",
-                "version": 1
-              }
             }
           },
           "401": {
@@ -367,7 +247,7 @@
           "404": {
             "description": "No user found for the provided fiscal code.",
             "schema": {
-              "$ref": "#/definitions/ProblemJson"
+              "$ref": "#/definitions/NotAvailableError"
             }
           },
           "429": {
@@ -383,6 +263,9 @@
     },
     "/subscriptions-feed/{date}": {
       "get": {
+        "tags": [
+          "use"
+        ],
         "operationId": "getSubscriptionsFeedForDate",
         "summary": "Get Subscriptions Feed",
         "description": "Returns the **hashed fiscal codes** of users that **subscribed to** or\n**unsubscribed from** your service **on the provided date** (UTC).\n\nBy querying this feed on each day, you will be able to retrieve the\n\"delta\" of users that subscribed and unsubscribed fom your service.\nYou will have to keep a list of users somewhere in your infrastructure\nthat you will update each day by adding the subscribed users and\nremoving the unsunbscribed users.\n\nYou will then be able to query this local list to know which users you\ncan send messages, to without having to query `getProfile` for each message.\n\nTo avoid sharing the citizens fiscal codes, the API will\nprovide the hex encoding of the SHA256 hash of the upper case fiscal code.\nIn pseudo code `CF_HASH = LOWERCASE(HEX(SHA256(UPPERCASE(CF))))`.\n\nNote that this is an optimization for those services that need to send very high\nvolumes of messages per day, to avoid having to make two API calls for each message.",
@@ -411,7 +294,7 @@
           "404": {
             "description": "Subscriptions feed not available yet.",
             "schema": {
-              "$ref": "#/definitions/ProblemJson"
+              "$ref": "#/definitions/NotAvailableError"
             }
           },
           "429": {
@@ -427,6 +310,9 @@
     },
     "/services": {
       "post": {
+        "tags": [
+          "manage"
+        ],
         "operationId": "createService",
         "summary": "Create Service",
         "description": "Create a new Service with the attributes provided in the request payload.\n",
@@ -434,7 +320,6 @@
           {
             "in": "body",
             "name": "body",
-            "description": "A service can invoke the IO API by providing the relative API key\n(every service has an associated primary and secondary API key).\nThrough the API a service can send messages to the IO users\nthat haven't opted out from it. Service metadata are used\nto qualify the sender of these messages to the recipient.",
             "schema": {
               "$ref": "#/definitions/ServicePayload"
             }
@@ -450,7 +335,7 @@
           "400": {
             "description": "Invalid payload.",
             "schema": {
-              "$ref": "#/definitions/ProblemJson"
+              "$ref": "#/definitions/ValidationError"
             }
           },
           "401": {
@@ -465,12 +350,15 @@
           "500": {
             "description": "The service cannot be created.",
             "schema": {
-              "$ref": "#/definitions/ProblemJson"
+              "$ref": "#/definitions/ServerError"
             }
           }
         }
       },
       "get": {
+        "tags": [
+          "manage"
+        ],
         "operationId": "getUserServices",
         "summary": "Get User Services",
         "description": "Retrieve the identifiers of the services owned by the calling user\n",
@@ -501,6 +389,9 @@
         }
       ],
       "get": {
+        "tags": [
+          "manage"
+        ],
         "operationId": "getService",
         "summary": "Get Service",
         "description": "Retrieve a previously created service with the provided service ID.\nThis API operation needs the same API key of the service being retrieved\notherwise 403 forbidden will be returned to the caller.\n",
@@ -526,6 +417,9 @@
         }
       },
       "put": {
+        "tags": [
+          "manage"
+        ],
         "operationId": "updateService",
         "summary": "Update Service",
         "description": "Update a previously created service with the provided service ID\nThis API operation needs the same API key of the service being retrieved\notherwise 403 forbidden will be returned to the caller.",
@@ -561,7 +455,7 @@
           "500": {
             "description": "The service cannot be updated.",
             "schema": {
-              "$ref": "#/definitions/ProblemJson"
+              "$ref": "#/definitions/ServerError"
             }
           }
         }
@@ -578,6 +472,9 @@
         }
       ],
       "put": {
+        "tags": [
+          "manage"
+        ],
         "summary": "Upload service logo.",
         "description": "Upsert a logo for an existing service.\nThis API operation needs the same API key of the service being retrieved\notherwise 403 forbidden will be returned to the caller.\n",
         "operationId": "uploadServiceLogo",
@@ -599,7 +496,7 @@
           "400": {
             "description": "Invalid payload.",
             "schema": {
-              "$ref": "#/definitions/ProblemJson"
+              "$ref": "#/definitions/ValidationError"
             }
           },
           "401": {
@@ -614,7 +511,7 @@
           "500": {
             "description": "The service logo cannot be uploaded.",
             "schema": {
-              "$ref": "#/definitions/ProblemJson"
+              "$ref": "#/definitions/ServerError"
             }
           }
         }
@@ -622,6 +519,9 @@
     },
     "/services/{service_id}/keys": {
       "put": {
+        "tags": [
+          "manage"
+        ],
         "summary": "Regenerate Service Key",
         "description": "Regenerate the specified key for the Service identified by the provided id.\nThis API operation needs the same API key of the service being retrieved\notherwise 403 forbidden will be returned to the caller.",
         "operationId": "regenerateServiceKey",
@@ -653,7 +553,7 @@
           "400": {
             "description": "Invalid payload.",
             "schema": {
-              "$ref": "#/definitions/ProblemJson"
+              "$ref": "#/definitions/ValidationError"
             }
           },
           "403": {
@@ -665,7 +565,7 @@
           "500": {
             "description": "Cannot regenerate service key.",
             "schema": {
-              "$ref": "#/definitions/ProblemJson"
+              "$ref": "#/definitions/ServerError"
             }
           }
         }
@@ -678,6 +578,9 @@
         }
       ],
       "put": {
+        "tags": [
+          "manage"
+        ],
         "summary": "Upload organization logo.",
         "description": "Upsert a logo for an Organization.\n",
         "operationId": "uploadOrganizationLogo",
@@ -699,7 +602,7 @@
           "400": {
             "description": "Invalid payload.",
             "schema": {
-              "$ref": "#/definitions/ProblemJson"
+              "$ref": "#/definitions/ValidationError"
             }
           },
           "401": {
@@ -714,7 +617,7 @@
           "500": {
             "description": "The organization logo cannot be uploaded.",
             "schema": {
-              "$ref": "#/definitions/ProblemJson"
+              "$ref": "#/definitions/ServerError"
             }
           }
         }
@@ -722,9 +625,12 @@
     },
     "/activations": {
       "post": {
+        "tags": [
+          "use"
+        ],
         "operationId": "getServiceActivationByPOST",
         "summary": "Get a Service Activation for a User",
-        "description": "Returns the current Activation for a couple Service/User",
+        "description": "Returns the current Activation for a couple Service/User. The operations uses post to not show User's id in the request path.",
         "responses": {
           "200": {
             "description": "Found.",
@@ -749,7 +655,7 @@
           "404": {
             "description": "No user activation found for the provided fiscal code.",
             "schema": {
-              "$ref": "#/definitions/ProblemJson"
+              "$ref": "#/definitions/NotAvailableError"
             }
           },
           "429": {
@@ -758,7 +664,7 @@
           "500": {
             "description": "Internal server error retrieving the Activation",
             "schema": {
-              "$ref": "#/definitions/ProblemJson"
+              "$ref": "#/definitions/ServerError"
             }
           }
         },
@@ -773,6 +679,9 @@
         ]
       },
       "put": {
+        "tags": [
+          "use"
+        ],
         "operationId": "upsertServiceActivation",
         "summary": "Upsert a Service Activation for a User",
         "description": "Create or update an Activation for a couple Service/User",
@@ -800,7 +709,7 @@
           "404": {
             "description": "No user activation found for the provided fiscal code.",
             "schema": {
-              "$ref": "#/definitions/ProblemJson"
+              "$ref": "#/definitions/NotAvailableError"
             }
           },
           "429": {
@@ -809,7 +718,7 @@
           "500": {
             "description": "The activation cannot be created or updated",
             "schema": {
-              "$ref": "#/definitions/ProblemJson"
+              "$ref": "#/definitions/ServerError"
             }
           }
         },
@@ -945,8 +854,7 @@
           "description": "The HTTP status code generated by the origin server for this occurrence\nof the problem.",
           "minimum": 100,
           "maximum": 600,
-          "exclusiveMaximum": true,
-          "example": 200
+          "exclusiveMaximum": true
         },
         "detail": {
           "type": "string",
@@ -960,12 +868,65 @@
         }
       }
     },
+    "ValidationError": {
+      "allOf": [
+        {
+          "$ref": "#/definitions/ProblemJson"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "status": {
+              "type": "integer",
+              "enum": [
+                400
+              ]
+            }
+          }
+        }
+      ]
+    },
+    "ServerError": {
+      "allOf": [
+        {
+          "$ref": "#/definitions/ProblemJson"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "status": {
+              "type": "integer",
+              "enum": [
+                500
+              ]
+            }
+          }
+        }
+      ]
+    },
+    "NotAvailableError": {
+      "allOf": [
+        {
+          "$ref": "#/definitions/ProblemJson"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "status": {
+              "type": "integer",
+              "enum": [
+                404
+              ]
+            }
+          }
+        }
+      ]
+    },
     "NotificationChannelStatusValue": {
       "type": "string",
-      "description": "The status of a notification (one for each channel).\n\"SENT\": the notification was succesfully sent to the channel (ie. email or push notification)\n\"THROTTLED\": a temporary failure caused a retry during the notification processing;\n  the notification associated with this channel will be delayed for a maximum of 7 days or until the message expires\n\"EXPIRED\": the message expired before the notification could be sent;\n  this means that the maximum message time to live was reached; no notification will be sent to this channel\n\"FAILED\": a permanent failure caused the process to exit with an error, no notification will be sent to this channel",
+      "description": "The status of a notification (one for each channel).\n\"SENT\": the notification was succesfully sent to the channel (ie. email or push notification)\n\"EXPIRED\": the message expired before the notification could be sent;\n  this means that the maximum message time to live was reached; no notification will be sent to this channel\n\"FAILED\": a permanent failure caused the process to exit with an error, no notification will be sent to this channel",
       "x-extensible-enum": [
         "SENT",
-        "THROTTLED",
         "EXPIRED",
         "FAILED"
       ],
@@ -982,9 +943,6 @@
             },
             "fiscal_code": {
               "$ref": "#/definitions/FiscalCode"
-            },
-            "time_to_live": {
-              "$ref": "#/definitions/TimeToLiveSeconds"
             },
             "created_at": {
               "$ref": "#/definitions/Timestamp"
@@ -1005,6 +963,7 @@
           ]
         },
         "notification": {
+          "description": "Whether the user has been notified on its channels",
           "type": "object",
           "properties": {
             "email": {
@@ -1017,10 +976,9 @@
         },
         "status": {
           "type": "string",
-          "description": "The processing status of a message.\n\"ACCEPTED\": the message has been accepted and will be processed for delivery;\n  we'll try to store its content in the user's inbox and notify him on his preferred channels\n\"THROTTLED\": a temporary failure caused a retry during the message processing;\n  any notification associated with this message will be delayed for a maximum of 7 days\n\"FAILED\": a permanent failure caused the process to exit with an error, no notification will be sent for this message\n\"PROCESSED\": the message was succesfully processed and is now stored in the user's inbox;\n  we'll try to send a notification for each of the selected channels\n\"REJECTED\": either the recipient does not exist, or the sender has been blocked",
+          "description": "The processing status of a message.\n\"ACCEPTED\": the message has been accepted and will be processed for delivery;\n  we'll try to store its content in the user's inbox and notify him on his preferred channels\n\"FAILED\": a permanent failure caused the process to exit with an error, no notification will be sent for this message\n\"PROCESSED\": the message was succesfully processed and is now stored in the user's inbox;\n  we'll try to send a notification for each of the selected channels\n\"REJECTED\": either the recipient does not exist, or the sender has been blocked",
           "x-extensible-enum": [
             "ACCEPTED",
-            "THROTTLED",
             "FAILED",
             "PROCESSED",
             "REJECTED"
@@ -1070,7 +1028,7 @@
           "type": "array",
           "items": {
             "type": "string",
-            "x-extensible-enum": [
+            "enum": [
               "it_IT",
               "en_GB",
               "es_ES",
@@ -1218,22 +1176,8 @@
     "NewMessage": {
       "type": "object",
       "properties": {
-        "time_to_live": {
-          "$ref": "#/definitions/TimeToLiveSeconds"
-        },
         "content": {
           "$ref": "#/definitions/MessageContent"
-        },
-        "default_addresses": {
-          "type": "object",
-          "description": "Default addresses for notifying the recipient of the message in case\nno address for the related channel is set in his profile.",
-          "properties": {
-            "email": {
-              "type": "string",
-              "format": "email",
-              "example": "foobar@example.com"
-            }
-          }
         },
         "fiscal_code": {
           "$ref": "#/definitions/FiscalCode"
@@ -1567,7 +1511,7 @@
           "maximum": 9999999999
         },
         "notice_number": {
-          "description": "The field [\"Numero Avviso\"](https://pagopa-specifichepagamenti.readthedocs.io/it/latest/_docs/Capitolo7.html#il-numero-avviso-e-larchivio-dei-pagamenti-in-attesa) of pagoPa, needed to identify the payment. Format is `<aux digit (1n)>[<application code> (2n)]<codice IUV (15|17n)>`. See [pagoPa specs](https://www.agid.gov.it/sites/default/files/repository_files/specifiche_attuative_pagamenti_1_3_1_0.pdf) for more info on this field and the IUV.",
+          "description": "The field \"Numero Avviso\" of pagoPA, needed to identify the payment. Format is `<aux digit (1n)>[<application code> (2n)]<codice IUV (15|17n)>`. See [pagoPa specs](https://docs.pagopa.it/saci) for more info on this field and the IUV.",
           "type": "string",
           "pattern": "^[0123][0-9]{17}$"
         },
@@ -1729,21 +1673,14 @@
           "type": "string",
           "description": "The identifier of the created message."
         }
+      },
+      "example": {
+        "id": "01BX9NSMKVXXS5PSP2FATZMYYY"
       }
     }
   },
   "responses": {},
   "parameters": {
-    "LegalMail": {
-      "name": "legalmail",
-      "in": "path",
-      "type": "string",
-      "required": true,
-      "description": "The legal mail related to a legal message' s sender.",
-      "format": "EmailString",
-      "x-example": "demo@pec.it",
-      "x-import": "italia-ts-commons/lib/strings"
-    },
     "FiscalCode": {
       "name": "fiscal_code",
       "in": "path",
