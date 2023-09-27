@@ -140,7 +140,7 @@ resource "azurerm_monitor_metric_alert" "tls_cert_check_api-app_internal_io_pago
   name                = "${var.domain}-tls-cert-check-api-app.internal.io.pagopa.it"
   resource_group_name = data.azurerm_resource_group.monitor_rg.name
   scopes              = [data.azurerm_application_insights.application_insights.id]
-  description         = "Whenever the average availabilityresults/availabilitypercentage is less than 100%"
+  description         = "Whenever the average availabilityresults/availabilitypercentage is less than 100%. Runbook: https://pagopa.atlassian.net/wiki/spaces/IC/pages/792133633/APIM+Availability"
   severity            = 0
   frequency           = "PT5M"
   auto_mitigate       = false
@@ -160,11 +160,7 @@ resource "azurerm_monitor_metric_alert" "tls_cert_check_api-app_internal_io_pago
   }
 
   action {
-    action_group_id = data.azurerm_monitor_action_group.slack.id
-  }
-
-  action {
-    action_group_id = data.azurerm_monitor_action_group.email.id
+    action_group_id = data.azurerm_monitor_action_group.error_action_group.id
   }
 }
 
@@ -196,7 +192,7 @@ resource "azurerm_monitor_metric_alert" "tls_cert_check_api-internal_io_italia_i
   name                = "${var.domain}-tls-cert-check-api-internal.io.italia.it"
   resource_group_name = data.azurerm_resource_group.monitor_rg.name
   scopes              = [data.azurerm_application_insights.application_insights.id]
-  description         = "Whenever the average availabilityresults/availabilitypercentage is less than 100%"
+  description         = "Whenever the average availabilityresults/availabilitypercentage is less than 100%. Runbook: https://pagopa.atlassian.net/wiki/spaces/IC/pages/792133633/APIM+Availability"
   severity            = 0
   frequency           = "PT5M"
   auto_mitigate       = false
@@ -216,10 +212,6 @@ resource "azurerm_monitor_metric_alert" "tls_cert_check_api-internal_io_italia_i
   }
 
   action {
-    action_group_id = data.azurerm_monitor_action_group.slack.id
-  }
-
-  action {
-    action_group_id = data.azurerm_monitor_action_group.email.id
+    action_group_id = data.azurerm_monitor_action_group.error_action_group.id
   }
 }

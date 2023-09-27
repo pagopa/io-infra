@@ -42,6 +42,11 @@ locals {
       # CIE_METADATA_URL = "https://idserver.servizicie.interno.gov.it:443/idp/shibboleth"
       CIE_METADATA_URL = "https://api.is.eng.pagopa.it/idp-keys/cie/latest" # PagoPA internal cache
 
+      // CIE Test env
+      ALLOWED_CIE_TEST_FISCAL_CODES = data.azurerm_key_vault_secret.app_backend_ALLOWED_CIE_TEST_FISCAL_CODES.value
+      CIE_TEST_METADATA_URL         = "https://collaudo.idserver.servizicie.interno.gov.it/idp/shibboleth"
+
+
       // AUTHENTICATION
       AUTHENTICATION_BASE_PATH  = ""
       TOKEN_DURATION_IN_SECONDS = "2592000"
@@ -231,6 +236,23 @@ locals {
               type            = "API_KEY",
               header_key_name = "X-Functions-Key",
               key             = data.azurerm_key_vault_secret.app_backend_IO_SIGN_API_KEY.value
+            }
+          }
+        },
+        # Receipt Service
+        {
+          serviceId          = var.io_receipt_service_id,
+          schemaKind         = "ReceiptService",
+          jsonSchema         = "unused",
+          isLollipopEnabled  = "false",
+          disableLollipopFor = [],
+          testEnvironment = {
+            testUsers = [],
+            baseUrl   = var.io_receipt_service_test_url,
+            detailsAuthentication = {
+              type            = "API_KEY",
+              header_key_name = "Ocp-Apim-Subscription-Key",
+              key             = data.azurerm_key_vault_secret.app_backend_RECEIPT_SERVICE_TEST_API_KEY.value
             }
           }
         },
@@ -484,6 +506,16 @@ data "azurerm_key_vault_secret" "app_backend_LV_TEST_USERS" {
   key_vault_id = module.key_vault_common.id
 }
 
+data "azurerm_key_vault_secret" "app_backend_ALLOWED_CIE_TEST_FISCAL_CODES" {
+  name         = "appbackend-ALLOWED-CIE-TEST-FISCAL-CODES"
+  key_vault_id = module.key_vault_common.id
+}
+
+data "azurerm_key_vault_secret" "app_backend_RECEIPT_SERVICE_TEST_API_KEY" {
+  name         = "appbackend-RECEIPT-SERVICE-TEST-API-KEY"
+  key_vault_id = module.key_vault_common.id
+}
+
 #tfsec:ignore:AZU023
 resource "azurerm_key_vault_secret" "appbackend-REDIS-PASSWORD" {
   name         = "appbackend-REDIS-PASSWORD"
@@ -566,6 +598,12 @@ module "app_backendl1_snet" {
 resource "azurerm_subnet_nat_gateway_association" "app_backendl1_snet" {
   nat_gateway_id = module.nat_gateway.id
   subnet_id      = module.app_backendl1_snet.id
+}
+
+data "azurerm_subnet" "functions_fast_login_snet" {
+  name                 = format("%s-%s-fast-login-snet", local.project, var.location_short)
+  virtual_network_name = module.vnet_common.name
+  resource_group_name  = azurerm_resource_group.rg_common.name
 }
 
 module "appservice_app_backendl1" {
@@ -1038,6 +1076,7 @@ module "appservice_app_backendli" {
     module.services_snet[0].id,
     module.services_snet[1].id,
     module.admin_snet.id,
+    data.azurerm_subnet.functions_fast_login_snet.id,
   ]
 
   allowed_ips = concat(
@@ -1171,11 +1210,8 @@ module "app_backend_web_test_api" {
 
   actions = [
     {
-      action_group_id = azurerm_monitor_action_group.email.id,
-    },
-    {
-      action_group_id = azurerm_monitor_action_group.slack.id,
-    },
+      action_group_id = azurerm_monitor_action_group.error_action_group.id,
+    }
   ]
 
 }

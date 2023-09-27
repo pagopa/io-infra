@@ -48,6 +48,11 @@ data "azurerm_key_vault_secret" "alert_quarantine_error_notification_slack" {
   key_vault_id = module.key_vault.id
 }
 
+data "azurerm_key_vault_secret" "alert_error_notification_opsgenie" {
+  name         = "alert-error-notification-opsgenie"
+  key_vault_id = module.key_vault.id
+}
+
 #
 # Actions Groups
 #
@@ -65,6 +70,12 @@ resource "azurerm_monitor_action_group" "error_action_group" {
   email_receiver {
     name                    = "slack"
     email_address           = data.azurerm_key_vault_secret.alert_error_notification_slack.value
+    use_common_alert_schema = true
+  }
+
+  webhook_receiver {
+    name                    = "sendtoopsgenie"
+    service_uri             = data.azurerm_key_vault_secret.alert_error_notification_opsgenie.value
     use_common_alert_schema = true
   }
 
@@ -113,7 +124,7 @@ resource "azurerm_monitor_action_group" "slack" {
   tags = var.tags
 }
 
-## web availabolity test
+## web availability test
 locals {
 
   test_urls = [
@@ -122,6 +133,7 @@ locals {
       name                              = local.devportal.backend_hostname,
       host                              = local.devportal.backend_hostname,
       path                              = "/info",
+      frequency                         = 900
       http_status                       = 200,
       ssl_cert_remaining_lifetime_check = 7,
     },
@@ -130,6 +142,7 @@ locals {
       name                              = trimsuffix(azurerm_dns_a_record.api_io_italia_it.fqdn, "."),
       host                              = trimsuffix(azurerm_dns_a_record.api_io_italia_it.fqdn, "."),
       path                              = "",
+      frequency                         = 900
       http_status                       = 404,
       ssl_cert_remaining_lifetime_check = 7,
     },
@@ -138,6 +151,7 @@ locals {
       name                              = trimsuffix(azurerm_dns_a_record.app_backend_io_italia_it.fqdn, "."),
       host                              = trimsuffix(azurerm_dns_a_record.app_backend_io_italia_it.fqdn, "."),
       path                              = "/info",
+      frequency                         = 900
       http_status                       = 200,
       ssl_cert_remaining_lifetime_check = 7,
     },
@@ -146,6 +160,7 @@ locals {
       name                              = "io.italia.it",
       host                              = "io.italia.it",
       path                              = "",
+      frequency                         = 900
       http_status                       = 200,
       ssl_cert_remaining_lifetime_check = 7,
     },
@@ -154,6 +169,7 @@ locals {
       name                              = "assets.cdn.io.italia.it",
       host                              = "assets.cdn.io.italia.it",
       path                              = "/status/backend.json",
+      frequency                         = 900
       http_status                       = 200,
       ssl_cert_remaining_lifetime_check = 7,
     },
@@ -162,6 +178,7 @@ locals {
       name                              = "assets.cdn.io.pagopa.it",
       host                              = "assets.cdn.io.pagopa.it",
       path                              = "/status/backend.json",
+      frequency                         = 900
       http_status                       = 200,
       ssl_cert_remaining_lifetime_check = 7,
     },
@@ -170,6 +187,7 @@ locals {
       name                              = "CIE",
       host                              = trimsuffix(azurerm_dns_a_record.app_backend_io_italia_it.fqdn, "."),
       path                              = "/login?authLevel=SpidL2&entityID=xx_servizicie",
+      frequency                         = 900
       http_status                       = 200,
       ssl_cert_remaining_lifetime_check = 1,
     },
@@ -177,6 +195,7 @@ locals {
       name                              = "Spid-registry",
       host                              = "registry.spid.gov.it",
       path                              = "/metadata/idp/spid-entities-idps.xml",
+      frequency                         = 900
       http_status                       = 200,
       ssl_cert_remaining_lifetime_check = 1,
     },
@@ -185,6 +204,7 @@ locals {
       name                              = "SpidL2-arubaid",
       host                              = trimsuffix(azurerm_dns_a_record.app_backend_io_italia_it.fqdn, "."),
       path                              = "/login?authLevel=SpidL2&entityID=arubaid",
+      frequency                         = 900
       http_status                       = 200,
       ssl_cert_remaining_lifetime_check = 1,
     },
@@ -193,6 +213,7 @@ locals {
       name                              = "SpidL2-infocertid",
       host                              = trimsuffix(azurerm_dns_a_record.app_backend_io_italia_it.fqdn, "."),
       path                              = "/login?authLevel=SpidL2&entityID=infocertid",
+      frequency                         = 900
       http_status                       = 200,
       ssl_cert_remaining_lifetime_check = 1,
     },
@@ -201,6 +222,7 @@ locals {
       name                              = "SpidL2-lepidaid",
       host                              = trimsuffix(azurerm_dns_a_record.app_backend_io_italia_it.fqdn, "."),
       path                              = "/login?authLevel=SpidL2&entityID=lepidaid",
+      frequency                         = 900
       http_status                       = 200,
       ssl_cert_remaining_lifetime_check = 1,
     },
@@ -209,6 +231,7 @@ locals {
       name                              = "SpidL2-namirialid",
       host                              = trimsuffix(azurerm_dns_a_record.app_backend_io_italia_it.fqdn, "."),
       path                              = "/login?authLevel=SpidL2&entityID=namirialid",
+      frequency                         = 900
       http_status                       = 200,
       ssl_cert_remaining_lifetime_check = 1,
     },
@@ -217,6 +240,7 @@ locals {
       name                              = "SpidL2-posteid",
       host                              = trimsuffix(azurerm_dns_a_record.app_backend_io_italia_it.fqdn, "."),
       path                              = "/login?authLevel=SpidL2&entityID=posteid",
+      frequency                         = 900
       http_status                       = 200,
       ssl_cert_remaining_lifetime_check = 1,
     },
@@ -225,6 +249,7 @@ locals {
       name                              = "SpidL2-sielteid",
       host                              = trimsuffix(azurerm_dns_a_record.app_backend_io_italia_it.fqdn, "."),
       path                              = "/login?authLevel=SpidL2&entityID=sielteid",
+      frequency                         = 900
       http_status                       = 200,
       ssl_cert_remaining_lifetime_check = 1,
     },
@@ -233,6 +258,7 @@ locals {
       name                              = "SpidL2-spiditalia",
       host                              = trimsuffix(azurerm_dns_a_record.app_backend_io_italia_it.fqdn, "."),
       path                              = "/login?authLevel=SpidL2&entityID=spiditalia",
+      frequency                         = 900
       http_status                       = 200,
       ssl_cert_remaining_lifetime_check = 1,
     },
@@ -249,6 +275,7 @@ locals {
       name                              = "SpidL2-infocamere",
       host                              = trimsuffix(azurerm_dns_a_record.app_backend_io_italia_it.fqdn, "."),
       path                              = "/login?authLevel=SpidL2&entityID=infocamereid",
+      frequency                         = 900
       http_status                       = 200,
       ssl_cert_remaining_lifetime_check = 1,
     },
@@ -265,6 +292,7 @@ locals {
       name                              = trimsuffix(azurerm_dns_a_record.api_io_pagopa_it.fqdn, "."),
       host                              = trimsuffix(azurerm_dns_a_record.api_io_pagopa_it.fqdn, "."),
       path                              = "",
+      frequency                         = 900
       http_status                       = 404,
       ssl_cert_remaining_lifetime_check = 7,
     },
@@ -273,7 +301,17 @@ locals {
       name                              = trimsuffix(azurerm_dns_a_record.api_app_io_pagopa_it.fqdn, "."),
       host                              = trimsuffix(azurerm_dns_a_record.api_app_io_pagopa_it.fqdn, "."),
       path                              = "/info",
+      frequency                         = 900
       http_status                       = 200,
+      ssl_cert_remaining_lifetime_check = 7,
+    },
+    {
+      # https://api-web.io.pagopa.it
+      name                              = trimsuffix(azurerm_dns_a_record.api_web_io_pagopa_it.fqdn, "."),
+      host                              = trimsuffix(azurerm_dns_a_record.api_web_io_pagopa_it.fqdn, "."),
+      path                              = "",
+      frequency                         = 900
+      http_status                       = 404,
       ssl_cert_remaining_lifetime_check = 7,
     },
     {
@@ -281,6 +319,7 @@ locals {
       name                              = trimsuffix(azurerm_dns_a_record.api_mtls_io_pagopa_it.fqdn, "."),
       host                              = trimsuffix(azurerm_dns_a_record.api_mtls_io_pagopa_it.fqdn, "."),
       path                              = "",
+      frequency                         = 900
       http_status                       = 400,
       ssl_cert_remaining_lifetime_check = 7,
     },
@@ -289,6 +328,7 @@ locals {
       name                              = trimsuffix(azurerm_dns_a_record.api_io_selfcare_pagopa_it.fqdn, "."),
       host                              = trimsuffix(azurerm_dns_a_record.api_io_selfcare_pagopa_it.fqdn, "."),
       path                              = "/info",
+      frequency                         = 900
       http_status                       = 200,
       ssl_cert_remaining_lifetime_check = 7,
     },
@@ -297,6 +337,16 @@ locals {
       name                              = module.selfcare_cdn.fqdn,
       host                              = module.selfcare_cdn.fqdn,
       path                              = "",
+      frequency                         = 900
+      http_status                       = 200,
+      ssl_cert_remaining_lifetime_check = 7,
+    },
+    {
+      # https://firmaconio.selfcare.pagopa.it
+      name                              = trimsuffix(azurerm_dns_a_record.firmaconio_selfcare_pagopa_it.fqdn, "."),
+      host                              = trimsuffix(azurerm_dns_a_record.firmaconio_selfcare_pagopa_it.fqdn, "."),
+      path                              = "/health",
+      frequency                         = 900
       http_status                       = 200,
       ssl_cert_remaining_lifetime_check = 7,
     },
@@ -305,6 +355,7 @@ locals {
       name                              = "github-raw-status-backend",
       host                              = "raw.githubusercontent.com",
       path                              = "/pagopa/io-services-metadata/master/status/backend.json",
+      frequency                         = 900
       http_status                       = 200,
       ssl_cert_remaining_lifetime_check = 7,
     },
@@ -313,7 +364,8 @@ locals {
       name                              = trimsuffix(azurerm_dns_a_record.continua_io_pagopa_it.fqdn, "."),
       host                              = trimsuffix(azurerm_dns_a_record.continua_io_pagopa_it.fqdn, "."),
       path                              = "",
-      http_status                       = 200,
+      frequency                         = 900
+      http_status                       = 302,
       ssl_cert_remaining_lifetime_check = 7,
     },
   ]
@@ -322,7 +374,7 @@ locals {
 
 module "web_test_api" {
   for_each = { for v in local.test_urls : v.name => v if v != null }
-  source   = "git::https://github.com/pagopa/terraform-azurerm-v3.git//application_insights_web_test_preview?ref=v4.1.15"
+  source   = "git::https://github.com/pagopa/terraform-azurerm-v3.git//application_insights_web_test_preview?ref=v7.0.0"
 
   subscription_id                   = data.azurerm_subscription.current.subscription_id
   name                              = format("%s-test", each.value.name)
@@ -332,7 +384,9 @@ module "web_test_api" {
   request_url                       = format("https://%s%s", each.value.host, each.value.path)
   expected_http_status              = each.value.http_status
   ssl_cert_remaining_lifetime_check = each.value.ssl_cert_remaining_lifetime_check
+  frequency                         = each.value.frequency
   application_insight_id            = azurerm_application_insights.application_insights.id
+  alert_description                 = "Web availability check alert triggered when it fails. Runbook: https://pagopa.atlassian.net/wiki/spaces/IC/pages/762347521/Web+Availability+Test+-+TLS+Probe+Check"
 
   actions = [
     {
@@ -340,4 +394,47 @@ module "web_test_api" {
     },
   ]
 
+}
+
+resource "azurerm_monitor_scheduled_query_rules_alert" "mailup_alert_rule" {
+  name                = "[SEND.MAILUP.COM] Many Failures"
+  resource_group_name = azurerm_resource_group.rg_common.name
+  location            = azurerm_resource_group.rg_common.location
+
+  data_source_id          = azurerm_application_insights.application_insights.id
+  description             = "Check in Application Insight - Dependencies the mailup calls. Runbook: https://pagopa.atlassian.net/wiki/spaces/IC/pages/777650829/MailUp+Communication+Failures"
+  enabled                 = true
+  auto_mitigation_enabled = false
+
+  query = <<-QUERY
+    let timeGrain=5m;
+    let dataset=dependencies
+        // additional filters can be applied here
+        | where client_Type != "Browser"
+        | where target contains "send.mailup.com"
+        | where success == false;
+    dataset
+    
+  QUERY
+
+  severity    = 1
+  frequency   = 5
+  time_window = 30
+  trigger {
+    operator  = "GreaterThan"
+    threshold = 10
+  }
+
+  action {
+    action_group = [
+      azurerm_monitor_action_group.error_action_group.id,
+    ]
+  }
+
+  tags = var.tags
+}
+
+import {
+  to = azurerm_monitor_scheduled_query_rules_alert.mailup_alert_rule
+  id = "/subscriptions/ec285037-c673-4f58-b594-d7c480da4e8b/resourceGroups/io-p-rg-common/providers/Microsoft.Insights/scheduledQueryRules/[SEND.MAILUP.COM] Many Failures"
 }

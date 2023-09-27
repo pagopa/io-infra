@@ -124,11 +124,7 @@ module "apim_v2" {
 
   action = [
     {
-      action_group_id    = azurerm_monitor_action_group.slack.id
-      webhook_properties = null
-    },
-    {
-      action_group_id    = azurerm_monitor_action_group.email.id
+      action_group_id    = azurerm_monitor_action_group.error_action_group.id
       webhook_properties = null
     }
   ]
@@ -137,7 +133,7 @@ module "apim_v2" {
   # https://docs.microsoft.com/en-us/azure/azure-monitor/essentials/metrics-supported#microsoftapimanagementservice
   metric_alerts = {
     capacity = {
-      description   = "Apim used capacity is too high"
+      description   = "Apim used capacity is too high. Runbook: https://pagopa.atlassian.net/wiki/spaces/IC/pages/791642113/APIM+Capacity"
       frequency     = "PT5M"
       window_size   = "PT5M"
       severity      = 1
@@ -148,7 +144,7 @@ module "apim_v2" {
         metric_name            = "Capacity"
         aggregation            = "Average"
         operator               = "GreaterThan"
-        threshold              = 40
+        threshold              = 60
         skip_metric_validation = false
         dimension              = []
       }]
@@ -231,3 +227,46 @@ resource "azurerm_key_vault_access_policy" "v2_common" {
   certificate_permissions = ["Get", "List"]
   storage_permissions     = []
 }
+
+##################################################################
+# PN APIM User
+##################################################################
+data "azurerm_api_management_product" "apim_v2_product_lollipop" {
+  product_id          = "io-lollipop-api"
+  api_management_name = module.apim_v2.name
+  resource_group_name = module.apim_v2.resource_group_name
+}
+
+data "azurerm_api_management_group" "api_v2_lollipop_assertion_read" {
+  name                = "apilollipopassertionread"
+  api_management_name = module.apim_v2.name
+  resource_group_name = module.apim_v2.resource_group_name
+}
+
+resource "azurerm_api_management_user" "pn_user_v2" {
+  user_id             = "pnapimuser"
+  api_management_name = module.apim_v2.name
+  resource_group_name = module.apim_v2.resource_group_name
+  first_name          = "PNAPIMuser"
+  last_name           = "PNAPIMuser"
+  email               = "pn-apim-user@pagopa.it"
+  state               = "active"
+}
+
+resource "azurerm_api_management_group_user" "pn_user_group_v2" {
+  user_id             = azurerm_api_management_user.pn_user_v2.user_id
+  api_management_name = module.apim_v2.name
+  resource_group_name = module.apim_v2.resource_group_name
+  group_name          = data.azurerm_api_management_group.api_v2_lollipop_assertion_read.name
+}
+
+resource "azurerm_api_management_subscription" "pn_lc_subscription_v2" {
+  user_id             = azurerm_api_management_user.pn_user_v2.id
+  api_management_name = module.apim_v2.name
+  resource_group_name = module.apim_v2.resource_group_name
+  product_id          = data.azurerm_api_management_product.apim_v2_product_lollipop.id
+  display_name        = "PN LC"
+  state               = "active"
+  allow_tracing       = false
+}
+##################################################################

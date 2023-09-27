@@ -25,6 +25,11 @@ locals {
       // --------------------------
       LOLLIPOP_GET_ASSERTION_BASE_URL = "https://api.io.pagopa.it"
       LOLLIPOP_GET_ASSERTION_API_KEY  = data.azurerm_key_vault_secret.fast_login_subscription_key.value
+
+      // --------------------------
+      //  Fast login audit log storage
+      // --------------------------
+      FAST_LOGIN_AUDIT_CONNECTION_STRING = data.azurerm_storage_account.lv_audit_logs_storage.primary_connection_string
     }
   }
 }
@@ -110,6 +115,7 @@ module "function_fast_login" {
     module.fast_login_snet[0].id,
     data.azurerm_subnet.app_backend_l1_snet.id,
     data.azurerm_subnet.app_backend_l2_snet.id,
+    data.azurerm_subnet.ioweb_profile_snet.id,
   ]
 
   # Action groups for alerts

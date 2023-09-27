@@ -93,7 +93,7 @@ locals {
 
       AssetsStorageConnection = module.assets_cdn.primary_connection_string
 
-      AZURE_APIM                = "io-p-apim-api"
+      AZURE_APIM                = "io-p-apim-v2-api"
       AZURE_APIM_HOST           = local.apim_hostname_api_internal
       AZURE_APIM_RESOURCE_GROUP = "io-p-rg-internal"
 

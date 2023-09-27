@@ -54,6 +54,11 @@ data "azurerm_key_vault_secret" "devportal_cookie_key" {
   key_vault_id = module.key_vault_common.id
 }
 
+data "azurerm_key_vault_secret" "devportal_request_review_legacy_queue_connectionstring" {
+  name         = "devportal-REQUEST-REVIEW-LEGACY-QUEUE-CONNECTIONSTRING"
+  key_vault_id = module.key_vault_common.id
+}
+
 # Only 1 subnet can be associated to a service plan
 # azurerm_app_service_virtual_network_swift_connection requires an app service id
 # so we choose one of the app service in the app service plan
@@ -99,7 +104,7 @@ module "appservice_devportal_be" {
     # Apim connection
     APIM_PRODUCT_NAME           = "io-services-api"
     APIM_USER_GROUPS            = "apilimitedmessagewrite,apiinforead,apimessageread,apilimitedprofileread"
-    ARM_APIM                    = "io-p-apim-api"
+    ARM_APIM                    = "io-p-apim-v2-api"
     ARM_RESOURCE_GROUP          = "io-p-rg-internal"
     ARM_SUBSCRIPTION_ID         = data.azurerm_subscription.current.subscription_id
     ARM_TENANT_ID               = data.azurerm_client_config.current.tenant_id
@@ -138,6 +143,10 @@ module "appservice_devportal_be" {
     JIRA_EMAIL_ID_FIELD        = "customfield_10084"
     JIRA_ORGANIZATION_ID_FIELD = "customfield_10088"
     JIRA_TOKEN                 = data.azurerm_key_vault_secret.devportal_jira_token.value
+
+    # Request Review Legacy Queue
+    REQUEST_REVIEW_LEGACY_QUEUE_CONNECTIONSTRING = data.azurerm_key_vault_secret.devportal_request_review_legacy_queue_connectionstring.value
+    REQUEST_REVIEW_LEGACY_QUEUE_NAME             = "request-review-legacy"
 
     # Feature Flags
     #

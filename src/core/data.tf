@@ -146,7 +146,7 @@ resource "azurerm_monitor_metric_alert" "cosmos_api_throttling_alert" {
   resource_group_name = azurerm_resource_group.rg_linux.name
   scopes              = [data.azurerm_cosmosdb_account.cosmos_api.id]
   # TODO: add Runbook for checking errors
-  description   = "One or more collections consumed throughput (RU/s) exceed provisioned throughput. Please, consider to increase RU for these collections. Runbook: https://pagopa.atlassian.net/wiki/spaces/IC/pages/608632903/Throttling+su+risorsa+Cosmos."
+  description   = "One or more collections consumed throughput (RU/s) exceed provisioned throughput. Please, consider to increase RU for these collections. Runbook: https://pagopa.atlassian.net/wiki/spaces/IC/pages/723452380/CosmosDB+-+Increase+Max+RU"
   severity      = 0
   window_size   = "PT5M"
   frequency     = "PT5M"
@@ -227,7 +227,7 @@ resource "azurerm_monitor_metric_alert" "cosmos_cgn_throttling_alert" {
   resource_group_name = azurerm_resource_group.cgn_be_rg.name
   scopes              = [data.azurerm_cosmosdb_account.cosmos_cgn.id]
   # TODO: add Runbook for checking errors
-  description   = "One or more collections consumed throughput (RU/s) exceed provisioned throughput. Please, consider to increase RU for these collections. Runbook: https://pagopa.atlassian.net/wiki/spaces/IC/pages/608632903/Throttling+su+risorsa+Cosmos."
+  description   = "One or more collections consumed throughput (RU/s) exceed provisioned throughput. Please, consider to increase RU for these collections. Runbook: https://pagopa.atlassian.net/wiki/spaces/IC/pages/723452380/CosmosDB+-+Increase+Max+RU"
   severity      = 0
   window_size   = "PT5M"
   frequency     = "PT5M"
@@ -268,4 +268,13 @@ resource "azurerm_monitor_metric_alert" "cosmos_cgn_throttling_alert" {
   }
 
   tags = var.tags
+}
+
+#
+# IO Services CMS BackOffice App
+#
+
+data "azurerm_linux_web_app" "cms_backoffice_app" {
+  name                = format("%s-services-cms-backoffice-app", local.project)
+  resource_group_name = format("%s-services-cms-rg", local.project)
 }

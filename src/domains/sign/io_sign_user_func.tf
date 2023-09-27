@@ -48,7 +48,7 @@ module "io_sign_user_func" {
 
   health_check_path = "/api/v1/sign/info"
 
-  node_version    = "16"
+  node_version    = "18"
   runtime_version = "~4"
   always_on       = true
 
@@ -86,7 +86,7 @@ module "io_sign_user_func" {
 
 module "io_sign_user_func_staging_slot" {
   count  = var.io_sign_user_func.sku_tier == "PremiumV3" ? 1 : 0
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app_slot?ref=v6.0.1"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app_slot?ref=v6.2.1"
 
   name                = "staging"
   location            = azurerm_resource_group.backend_rg.location
@@ -99,7 +99,7 @@ module "io_sign_user_func_staging_slot" {
   storage_account_name       = module.io_sign_user_func.storage_account.name
   storage_account_access_key = module.io_sign_user_func.storage_account.primary_access_key
 
-  node_version                             = "16"
+  node_version                             = "18"
   runtime_version                          = "~4"
   always_on                                = true
   application_insights_instrumentation_key = data.azurerm_application_insights.application_insights.instrumentation_key
