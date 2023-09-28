@@ -118,13 +118,13 @@ module "apim_v2_io_sign_product" {
   policy_xml = file("./api_product/sign/_base_policy.xml")
 }
 
-resource "azurerm_api_management_api_operation_policy" "get_signer_by_fiscal_code_policy_v2" {
+resource "azurerm_api_management_api_operation_policy" "create_signature_request_policy_v2" {
   api_name            = module.apim_v2_io_sign_issuer_api_v1.name
   api_management_name = data.azurerm_api_management.apim_v2_api.name
   resource_group_name = data.azurerm_api_management.apim_v2_api.resource_group_name
-  operation_id        = "getSignerByFiscalCode"
+  operation_id        = "createSignatureRequest"
 
-  xml_content = file("./api/issuer/v1/get_signer_by_fiscal_code_policy/policy.xml")
+  xml_content = file("./api/issuer/v1/create_signature_request_policy/policy.xml")
 }
 
 module "apim_v2_io_sign_issuer_api_v1" {
