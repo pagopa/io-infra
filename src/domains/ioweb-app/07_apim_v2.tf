@@ -25,3 +25,22 @@ module "apim_v2_bff_api" {
 
   xml_content = file("./api/bff/_base_policy.xml")
 }
+
+data "azurerm_key_vault" "key_vault_common" {
+  name                = format("%s-kv-common", local.product)
+  resource_group_name = format("%s-rg-common", local.product)
+}
+
+data "azurerm_key_vault_secret" "io_fn3_services_key_secret" {
+  name         = "ioweb-profile-api-key-apim"
+  key_vault_id = data.azurerm_key_vault.key_vault_common.id
+}
+
+resource "azurerm_api_management_named_value" "io_fn3_services_key_v2" {
+  name                = "ioweb-profile-api-key"
+  api_management_name = data.azurerm_api_management.apim_v2_api.name
+  resource_group_name = data.azurerm_api_management.apim_v2_api.resource_group_name
+  display_name        = "ioweb-profile-api-key"
+  value               = data.azurerm_key_vault_secret.io_fn3_services_key_secret.value
+  secret              = "true"
+}
