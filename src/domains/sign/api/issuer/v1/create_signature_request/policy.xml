@@ -144,8 +144,8 @@
 
                 var whitelistFiscalCodeQueryResponse = context.Variables.GetValueOrDefault<JObject>("issuerWhitelistFiscalCodes");
                 JObject requestBody = context.Request.Body.As<JObject>(preserveContent: true);
-                if(requestBody.ContainsKey("fiscal_code")){
-                    string requestFiscalCodeString = (string)requestBody["fiscal_code"];
+                if(requestBody.ContainsKey("signer_id")){
+                    string requestFiscalCodeString = (string)requestBody["signer_id"];
                     if (whitelistFiscalCodeQueryResponse != null && whitelistFiscalCodeQueryResponse.ContainsKey("Documents")){
                         JArray documents = (JArray) whitelistFiscalCodeQueryResponse["Documents"];
                         if (documents.Count > 0){
