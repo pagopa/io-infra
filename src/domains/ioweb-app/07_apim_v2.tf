@@ -23,12 +23,12 @@ module "apim_v2_bff_api" {
 
   content_value = "https://raw.githubusercontent.com/pagopa/io-web-profile-backend/58bea7cee89ed2f3e91415ef238b3beac1baa2f9/openapi/external.yaml"
 
-  xml_content = file("./api/bff/_base_policy.xml")
+  xml_content = file("./api/bff/policy.xml")
 }
 
 data "azurerm_key_vault" "key_vault_common" {
-  name                = format("%s-kv-common", local.product)
-  resource_group_name = format("%s-rg-common", local.product)
+  name                = format("%s-ioweb-kv", local.product)
+  resource_group_name = format("%s-ioweb-sec-rg", local.product)
 }
 
 data "azurerm_key_vault_secret" "io_fn3_services_key_secret" {
