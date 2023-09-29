@@ -24,5 +24,5 @@ locals {
 
   apim_v2_name             = "${local.product}-apim-v2-api"
   apim_resource_group_name = "${local.product}-rg-internal"
-  bff_base_path            = "ioweb/backend/v1"
+  bff_base_path            = "ioweb/backend/api/v1"
 }
