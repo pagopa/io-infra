@@ -136,6 +136,8 @@ locals {
       PUSH_NOTIFICATIONS_STORAGE_CONNECTION_STRING = data.azurerm_storage_account.push_notifications_storage.primary_connection_string
       PUSH_NOTIFICATIONS_QUEUE_NAME                = local.storage_account_notifications_queue_push_notifications
 
+      LOCKED_PROFILES_STORAGE_CONNECTION_STRING = module.locked_profiles_storage.primary_connection_string
+      LOCKED_PROFILES_TABLE_NAME                = azurerm_storage_table.locked_profiles.name
 
       // USERSLOGIN
       USERS_LOGIN_QUEUE_NAME                = local.storage_account_notifications_queue_userslogin
