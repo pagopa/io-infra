@@ -21,7 +21,7 @@ module "apim_v2_bff_api" {
 
   content_format = "openapi-link"
 
-  content_value = "https://raw.githubusercontent.com/pagopa/io-web-profile-backend/58bea7cee89ed2f3e91415ef238b3beac1baa2f9/openapi/external.yaml"
+  content_value = "https://raw.githubusercontent.com/pagopa/io-web-profile-backend/a2a6be1434e75089fb46e1aba50678cbbe32afd1/openapi/external.yaml"
 
   xml_content = file("./api/bff/policy.xml")
 }
