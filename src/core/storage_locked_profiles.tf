@@ -25,7 +25,7 @@ resource "azurerm_private_endpoint" "locked_profiles_storage_table" {
   depends_on          = [module.locked_profiles_storage]
   name                = "${module.locked_profiles_storage.name}-table-endpoint"
   location            = azurerm_resource_group.rg_internal.location
-  resource_group_name = azurerm_resource_group.rg_internal.location
+  resource_group_name = azurerm_resource_group.rg_internal.name
   subnet_id           = module.private_endpoints_subnet.id
 
   private_service_connection {
