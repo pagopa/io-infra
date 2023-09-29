@@ -12,7 +12,7 @@ module "apim_v2_bff_api" {
   product_ids           = ["io-web-api"]
   subscription_required = false
 
-  service_url = format("https://%s", module.function_ioweb_profile.default_hostname)
+  service_url = format("https://%s/api/v1", module.function_ioweb_profile.default_hostname)
 
   description  = "Bff API for IO Web platform"
   display_name = "IO Web - Bff"
