@@ -1,7 +1,7 @@
 {
   "swagger": "2.0",
   "info": {
-    "version": "3.32.0",
+    "version": "3.33.0",
     "title": "IO API for Public Administration Services",
     "contact": {
       "name": "PagoPA S.p.A.",
@@ -1114,6 +1114,14 @@
         "has_attachments": {
           "type": "boolean",
           "default": false
+        },
+        "has_precondition": {
+          "type": "string",
+          "x-extensible-enum": [
+            "ALWAYS",
+            "ONCE",
+            "NEVER"
+          ]
         },
         "summary": {
           "type": "string",
