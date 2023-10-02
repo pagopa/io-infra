@@ -122,7 +122,7 @@ module "io_sign_backoffice_app_staging_slot" {
 
   node_version = "18-lts"
 
-  health_check_path = "/health"
+  #health_check_path = "/health"
 
   app_settings = local.backoffice_app_settings
 
