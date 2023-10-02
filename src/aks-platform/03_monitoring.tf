@@ -71,7 +71,7 @@ resource "helm_release" "prometheus" {
     name  = "alertmanager.pushgateway.image.tag"
     value = var.prometheus_helm.pushgateway.image_tag
   }
- }
+}
 
 # resource "helm_release" "grafana" {
 #   name       = "grafana"
