@@ -78,57 +78,57 @@ nginx_helm = {
 # keda image tags: https://github.com/kedacore/keda/pkgs/container/keda/versions
 # keda-metrics-apiserver image tags: https://github.com/kedacore/keda/pkgs/container/keda-metrics-apiserver/versions
 keda_helm = {
-  chart_version = "2.9.1"
+  chart_version = "2.12.0"
   keda = {
     image_name = "ghcr.io/kedacore/keda"
-    image_tag  = "2.9.1@sha256:52c41dbbc0cb7ba41800201f5140ec87bd942c04207143615474060a0662fa01"
+    image_tag  = "2.12.0@sha256:01a232774016f186ff91983521323a80ead047b42d695fc0236b43c296b6cff8"
   }
   metrics_api_server = {
     image_name = "ghcr.io/kedacore/keda-metrics-apiserver"
-    image_tag  = "2.9.1@sha256:8bd2410409fc6554a0e4e8fc1e08704b05ce98ed6158d6d6c9746241a55e0730"
+    image_tag  = "2.12.0@sha256:1c254dcf859b93bbcaa532fcb5d6de5ff14b67f904a7ae1068ab1dbc19f60479"
   }
 }
 
 # chart releases: https://github.com/stakater/Reloader/releases
 # image tags: https://hub.docker.com/r/stakater/reloader/tags
 reloader_helm = {
-  chart_version = "v0.0.118"
+  chart_version = "v1.0.41"
   image_name    = "stakater/reloader"
-  image_tag     = "v0.0.118@sha256:2d423cab8d0e83d1428ebc70c5c5cafc44bd92a597bff94007f93cddaa607b02"
+  image_tag     = "v1.0.41@sha256:eb7e816f4c38d9c9c25fd8743919075d8ea699d8593f261c7c2e0b52080c6c47"
 }
 
-# chart releases: https://github.com/prometheus-community/helm-charts/releases?q=tag%3Aprometheus-15&expanded=true
+# chart releases: https://github.com/prometheus-community/helm-charts/releases?q=tag%3Aprometheus-25&expanded=true
 # quay.io/prometheus/alertmanager image tags: https://quay.io/repository/prometheus/alertmanager?tab=tags
 # jimmidyson/configmap-reload image tags: https://hub.docker.com/r/jimmidyson/configmap-reload/tags
 # quay.io/prometheus/node-exporter image tags: https://quay.io/repository/prometheus/node-exporter?tab=tags
 # quay.io/prometheus/prometheus image tags: https://quay.io/repository/prometheus/prometheus?tab=tags
 # prom/pushgateway image tags:https://hub.docker.com/r/prom/pushgateway/tags
 prometheus_helm = {
-  chart_version = "15.12.0"
-  alertmanager = {
-    image_name = "quay.io/prometheus/alertmanager"
-    image_tag  = "v0.24.0@sha256:088464f949de8065b9da7dfce7302a633d700e9d598e2bebc03310712f083b31"
-  }
-  configmap_reload_prometheus = {
-    image_name = "jimmidyson/configmap-reload"
-    image_tag  = "v0.5.0@sha256:91467ba755a0c41199a63fe80a2c321c06edc4d3affb4f0ab6b3d20a49ed88d1"
-  }
-  configmap_reload_alertmanager = {
-    image_name = "jimmidyson/configmap-reload"
-    image_tag  = "v0.5.0@sha256:91467ba755a0c41199a63fe80a2c321c06edc4d3affb4f0ab6b3d20a49ed88d1"
-  }
-  node_exporter = {
-    image_name = "quay.io/prometheus/node-exporter"
-    image_tag  = "v1.3.1@sha256:f2269e73124dd0f60a7d19a2ce1264d33d08a985aed0ee6b0b89d0be470592cd"
-  }
-  server = {
-    image_name = "quay.io/prometheus/prometheus"
-    image_tag  = "v2.36.2@sha256:df0cd5887887ec393c1934c36c1977b69ef3693611932c3ddeae8b7a412059b9"
-  }
-  pushgateway = {
-    image_name = "prom/pushgateway"
-    image_tag  = "v1.4.3@sha256:9e4e2396009751f1dc66ebb2b59e07d5abb009eb26d637eb0cf89b9a3738f146"
-  }
+  chart_version = "25.0.0"
+  # alertmanager = {
+  #   image_name = "quay.io/prometheus/alertmanager"
+  #   image_tag  = "v0.26.0@sha256:361db356b33041437517f1cd298462055580585f26555c317df1a3caf2868552"
+  # }
+  # configmap_reload_prometheus = {
+  #   image_name = "quay.io/prometheus-operator/prometheus-config-reloader"
+  #   image_tag  = "v0.67.0@sha256:14feefde1b8015de2cbdee008a19891c2af09f91b650af854e584feda9869a39"
+  # }
+  # configmap_reload_alertmanager = {
+  #   image_name = "jimmidyson/configmap-reload"
+  #   image_tag  = "v0.67.0@sha256:14feefde1b8015de2cbdee008a19891c2af09f91b650af854e584feda9869a39"
+  # }
+  # node_exporter = {
+  #   image_name = "quay.io/prometheus/node-exporter"
+  #   image_tag  = "v1.6.1@sha256:81f94e50ea37a88dfee849d0f4acad25b96b397061f59e5095905f6bc5829637"
+  # }
+  # server = {
+  #   image_name = "quay.io/prometheus/prometheus"
+  #   image_tag  = "v2.47.0@sha256:c5dd3503828713c4949ae1bccd1d8d69f382c33d441954674a6b78ebe69c3331"
+  # }
+  # pushgateway = {
+  #   image_name = "prom/pushgateway"
+  #   image_tag  = "v1.6.1@sha256:75955233a240f0c456e58c86ffc6e734deac02cd1dc7332f54a57eb931c6d5d9"
+  # }
 }
 
 # chart releases: https://github.com/pagopa/aks-microservice-chart-blueprint/releases
