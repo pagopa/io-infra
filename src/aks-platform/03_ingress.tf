@@ -77,6 +77,10 @@ module "nginx_ingress" {
     {
       name  = "controller.ingressClassResource.default"
       value = "true"
+    },
+    {
+      name  = "controller.service.annotations.service\\.beta\\.kubernetes\\.io/azure-load-balancer-health-probe-request-path"
+      value = "/healthz"
     }
   ]
 }
