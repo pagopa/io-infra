@@ -120,8 +120,7 @@ module "io_sign_backoffice_app_staging_slot" {
   app_service_id   = module.io_sign_backoffice_app.id
   app_service_name = module.io_sign_backoffice_app.name
 
-  docker_image     = "ghcr.io/pagopa/io-sign-backoffice"
-  docker_image_tag = "latest"
+  node_version = "18-lts"
 
   health_check_path = "/health"
 
