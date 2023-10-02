@@ -3,6 +3,16 @@ data "azurerm_key_vault_secret" "fast_login_subscription_key" {
   key_vault_id = data.azurerm_key_vault.kv.id
 }
 
+data "azurerm_key_vault_secret" "backendli_api_key" {
+  name         = "appbackend-PRE-SHARED-KEY"
+  key_vault_id = data.azurerm_key_vault.kv_common.id
+}
+
+data "azurerm_app_service" "app_backend_li" {
+  name                = format("%s-app-appbackendli", local.product)
+  resource_group_name = format("%s-rg-linux", local.product)
+}
+
 locals {
   function_fast_login = {
     app_settings = {
@@ -30,6 +40,14 @@ locals {
       //  Fast login audit log storage
       // --------------------------
       FAST_LOGIN_AUDIT_CONNECTION_STRING = data.azurerm_storage_account.lv_audit_logs_storage.primary_connection_string
+
+
+      // --------------------------
+      //  Config for backendli connection
+      // --------------------------
+      BACKEND_INTERNAL_API_KEY  = data.azurerm_key_vault_secret.backendli_api_key.value
+      BACKEND_INTERNAL_BASE_URL = "https://${data.azurerm_app_service.app_backend_li.default_site_hostname}"
+
     }
   }
 }
@@ -115,6 +133,7 @@ module "function_fast_login" {
     module.fast_login_snet[0].id,
     data.azurerm_subnet.app_backend_l1_snet.id,
     data.azurerm_subnet.app_backend_l2_snet.id,
+    data.azurerm_subnet.ioweb_profile_snet.id,
   ]
 
   # Action groups for alerts

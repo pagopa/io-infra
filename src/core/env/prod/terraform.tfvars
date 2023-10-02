@@ -8,6 +8,9 @@ tags = {
   CostCenter  = "TS310 - PAGAMENTI & SERVIZI"
 }
 
+location       = "westeurope"
+location_short = "weu"
+
 # dns
 external_domain              = "pagopa.it"
 dns_zone_io                  = "io"
@@ -66,6 +69,9 @@ cidr_subnet_pendpoints   = ["10.0.240.0/23"]
 cidr_subnet_azdoa        = ["10.0.250.0/24"]
 cidr_subnet_dnsforwarder = ["10.0.252.8/29"]
 
+# just for reminder: declared in https://github.com/pagopa/io-infra/blob/main/src/domains/ioweb-app/env/weu-prod01/terraform.tfvars
+# subnet for ioweb_profile -> cidr_subnet_fniowebprofile = ["10.0.117.0/24"]
+
 app_gateway_api_certificate_name                                  = "api-io-pagopa-it"
 app_gateway_api_mtls_certificate_name                             = "api-mtls-io-pagopa-it"
 app_gateway_api_app_certificate_name                              = "api-app-io-pagopa-it"
@@ -76,6 +82,7 @@ app_gateway_developerportal_backend_io_italia_it_certificate_name = "developerpo
 app_gateway_api_io_selfcare_pagopa_it_certificate_name            = "api-io-selfcare-pagopa-it"
 app_gateway_firmaconio_selfcare_pagopa_it_certificate_name        = "firmaconio-selfcare-pagopa-it"
 app_gateway_continua_io_pagopa_it_certificate_name                = "continua-io-pagopa-it"
+app_gateway_selfcare_io_pagopa_it_certificate_name                = "selfcare-io-pagopa-it"
 app_gateway_min_capacity                                          = 4 # 4 capacity=baseline, 10 capacity=high volume event, 15 capacity=very high volume event
 app_gateway_max_capacity                                          = 50
 app_gateway_alerts_enabled                                        = true
