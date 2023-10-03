@@ -1,0 +1,11 @@
+# io-pagopa-payment-updater-ms
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: io-pagopa-payment-updater-ms-pdb
+  namespace: payments
+spec:
+  minAvailable: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/instance: io-pagopa-payment-updater-ms

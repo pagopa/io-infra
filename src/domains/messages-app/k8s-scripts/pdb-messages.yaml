@@ -1,0 +1,23 @@
+# io-functions-service-messages
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: io-functions-service-messages-pdb
+  namespace: messages
+spec:
+  minAvailable: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/instance: io-functions-service-messages
+---
+# io-premium-reminder-ms
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: io-premium-reminder-ms-pdb
+  namespace: messages
+spec:
+  minAvailable: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/instance: io-premium-reminder-ms
