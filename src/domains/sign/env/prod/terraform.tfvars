@@ -135,6 +135,15 @@ io_sign_backoffice_app = {
   ]
 }
 
+io_sign_backoffice_func = {
+  app_settings = [
+    {
+      name  = "NODE_ENV",
+      value = "production"
+    }
+  ]
+}
+
 integration_hub = {
   auto_inflate_enabled     = true
   sku_name                 = "Standard"
