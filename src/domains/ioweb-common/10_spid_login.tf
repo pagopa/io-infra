@@ -1,4 +1,8 @@
 
+locals {
+  fe_domain = "https://ioapp.it"
+}
+
 ############################
 ## App service spid login ##
 ############################
@@ -55,20 +59,22 @@ module "spid_login" {
 
     # SPID
     ORG_ISSUER       = "https://api-web.pagopa.it/ioweb/auth"
-    ORG_URL          = "https://pagopa.gov.it"
+    ORG_URL          = "https://www.pagopa.it"
     ACS_BASE_URL     = format("https://%s/%s", var.app_gateway_host_name, local.spid_login_base_path)
     ORG_DISPLAY_NAME = "PagoPA S.p.A"
-    ORG_NAME         = "PagoPA"
+    ORG_NAME         = "PagoPA S.p.A"
+
+    SPID_VALIDATOR_URL = "https://validator.spid.gov.it"
 
     AUTH_N_CONTEXT = "https://www.spid.gov.it/SpidL2"
 
-    ENDPOINT_ACS   = "/acs"
-    ENDPOINT_ERROR = "/error"
-    #TODO: set static site success endpoint
-    ENDPOINT_SUCCESS  = "/success"
+    ENDPOINT_ACS      = "/acs"
+    ENDPOINT_ERROR    = "/error"
     ENDPOINT_LOGIN    = "/login"
     ENDPOINT_METADATA = "/metadata"
-    ENDPOINT_LOGOUT   = "/logout"
+
+    ENDPOINT_SUCCESS = "${local.fe_domain}/it/accedi/"
+    ENDPOINT_LOGOUT  = "${local.fe_domain}/it/accedi/errore/"
 
     SPID_ATTRIBUTES = "name,familyName,fiscalNumber"
 
@@ -76,9 +82,9 @@ module "spid_login" {
     ENABLE_FULL_OPERATOR_METADATA    = true
     COMPANY_EMAIL                    = "pagopa@pec.governo.it"
     COMPANY_FISCAL_CODE              = 15376371009
-    COMPANY_IPA_CODE                 = "PagoPA"
+    COMPANY_IPA_CODE                 = "5N2TR557"
     COMPANY_NAME                     = "PagoPA S.p.A"
-    COMPANY_VAT_NUMBER               = 15376371009
+    COMPANY_VAT_NUMBER               = "IT15376371009"
 
     METADATA_PUBLIC_CERT  = trimspace(data.azurerm_key_vault_secret.agid_spid_cert.value)
     METADATA_PRIVATE_CERT = trimspace(data.azurerm_key_vault_secret.agid_spid_private_key.value)
