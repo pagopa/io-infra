@@ -151,17 +151,6 @@ variable "io_sign_user_func" {
   })
 }
 
-
-variable "io_sign_backoffice_func" {
-  type = object({
-    sku_tier          = string
-    sku_size          = string
-    autoscale_default = number
-    autoscale_minimum = number
-    autoscale_maximum = number
-  })
-}
-
 variable "integration_hub" {
   type = object({
     auto_inflate_enabled     = bool
@@ -219,6 +208,11 @@ variable "io_sign_backoffice_func" {
       value                 = optional(string, "")
       key_vault_secret_name = optional(string)
     }))
+    sku_tier          = string
+    sku_size          = string
+    autoscale_default = number
+    autoscale_minimum = number
+    autoscale_maximum = number
   })
   description = "Configuration of the io-sign-backoffice func app"
 }
