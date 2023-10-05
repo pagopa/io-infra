@@ -60,7 +60,7 @@ locals {
       MAGIC_LINK_JWE_PRIMARY_PRIVATE_KEY = azurerm_key_vault_secret.magic_link_jwe_private_key.value
       MAGIC_LINK_JWE_PRIMARY_PUB_KEY     = azurerm_key_vault_secret.magic_link_jwe_pub_key.value
       MAGIC_LINK_JWE_ISSUER              = local.function_JWT_issuer
-      MAGIC_LINK_BASE_URL                = "https://ioapp.it/blocco-accesso/magic-link"
+      MAGIC_LINK_BASE_URL                = "https://ioapp.it/it/blocco-accesso/magic-link"
       // TBD: more/less than 1 week?
       MAGIC_LINK_JWE_TTL = "604800"
 
