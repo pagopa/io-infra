@@ -14,7 +14,7 @@ module "io_sign_backoffice_func" {
 
   health_check_path = "/health"
 
-  node_version    = "16"
+  node_version    = "18"
   runtime_version = "~4"
   always_on       = true
 
