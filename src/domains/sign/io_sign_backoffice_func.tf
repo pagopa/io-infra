@@ -20,8 +20,7 @@ module "io_sign_backoffice_func" {
 
   app_settings = local.backoffice_func_settings
 
-  private_endpoint_enabled = true
-  subnet_id                = module.io_sign_backoffice_snet.id
+  subnet_id = module.io_sign_backoffice_snet.id
 
   allowed_subnets = [
     module.io_sign_snet.id
