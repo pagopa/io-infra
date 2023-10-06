@@ -62,7 +62,7 @@ module "spid_login" {
     ORG_URL          = "https://www.pagopa.it"
     ACS_BASE_URL     = format("https://%s/%s", var.app_gateway_host_name, local.spid_login_base_path)
     ORG_DISPLAY_NAME = "PagoPA S.p.A"
-    ORG_NAME         = "PagoPA S.p.A"
+    ORG_NAME         = "PagoPA"
 
     SPID_ATTRIBUTES = "name,familyName,fiscalNumber"
 
@@ -71,7 +71,7 @@ module "spid_login" {
     COMPANY_EMAIL                    = "pagopa@pec.governo.it"
     COMPANY_FISCAL_CODE              = 15376371009
     COMPANY_IPA_CODE                 = "5N2TR557"
-    COMPANY_NAME                     = "PagoPA S.p.A"
+    COMPANY_NAME                     = "PagoPA"
     COMPANY_VAT_NUMBER               = "IT15376371009"
 
     SPID_VALIDATOR_URL = "https://validator.spid.gov.it"
