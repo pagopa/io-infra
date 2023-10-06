@@ -64,6 +64,16 @@ module "spid_login" {
     ORG_DISPLAY_NAME = "PagoPA S.p.A"
     ORG_NAME         = "PagoPA S.p.A"
 
+    SPID_ATTRIBUTES = "name,familyName,fiscalNumber"
+
+    REQUIRED_ATTRIBUTES_SERVICE_NAME = "IO Web Onboarding Portal"
+    ENABLE_FULL_OPERATOR_METADATA    = true
+    COMPANY_EMAIL                    = "pagopa@pec.governo.it"
+    COMPANY_FISCAL_CODE              = 15376371009
+    COMPANY_IPA_CODE                 = "5N2TR557"
+    COMPANY_NAME                     = "PagoPA S.p.A"
+    COMPANY_VAT_NUMBER               = "IT15376371009"
+
     SPID_VALIDATOR_URL = "https://validator.spid.gov.it"
 
     AUTH_N_CONTEXT = "https://www.spid.gov.it/SpidL2"
@@ -75,16 +85,6 @@ module "spid_login" {
 
     ENDPOINT_SUCCESS = "${local.fe_domain}/it/accedi/"
     ENDPOINT_LOGOUT  = "${local.fe_domain}/it/accedi/errore/"
-
-    SPID_ATTRIBUTES = "name,familyName,fiscalNumber"
-
-    REQUIRED_ATTRIBUTES_SERVICE_NAME = "IO Web Onboarding Portal"
-    ENABLE_FULL_OPERATOR_METADATA    = true
-    COMPANY_EMAIL                    = "pagopa@pec.governo.it"
-    COMPANY_FISCAL_CODE              = 15376371009
-    COMPANY_IPA_CODE                 = "5N2TR557"
-    COMPANY_NAME                     = "PagoPA S.p.A"
-    COMPANY_VAT_NUMBER               = "IT15376371009"
 
     METADATA_PUBLIC_CERT  = trimspace(data.azurerm_key_vault_secret.agid_spid_cert.value)
     METADATA_PRIVATE_CERT = trimspace(data.azurerm_key_vault_secret.agid_spid_private_key.value)
