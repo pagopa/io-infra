@@ -58,7 +58,7 @@ module "spid_login" {
     REDIS_PASSWORD = module.redis_spid_login.primary_access_key
 
     # SPID
-    ORG_ISSUER       = "https://api-web.pagopa.it/ioweb/auth"
+    ORG_ISSUER       = "https://api-web.pagopa.it"
     ORG_URL          = "https://www.pagopa.it"
     ACS_BASE_URL     = format("https://%s/%s", var.app_gateway_host_name, local.spid_login_base_path)
     ORG_DISPLAY_NAME = "PagoPA S.p.A"
