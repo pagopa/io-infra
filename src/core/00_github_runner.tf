@@ -35,11 +35,11 @@ locals {
   repo_owner         = "pagopa"
   io_infra_repo_name = "io-infra"
   io_sign_repo_name  = "io-sign"
-  image_name         = "ghcr.io/pagopa/github-self-hosted-runner-azure:beta-dockerfile-v2@sha256:ed51ac419d78b6410be96ecaa8aa8dbe645aa0309374132886412178e2739a47"
+  image_name         = "ghcr.io/pagopa/github-self-hosted-runner-azure:beta-dockerfile-v2@sha256:3fdfa88297d5c3509f87c37109766578ceb1f69a86642149bd70fb0c4f6974ce"
 }
 
-data "azurerm_key_vault_secret" "github_pat_io_infra" {
-  name         = "github-pat-io-infra"
+data "azurerm_key_vault_secret" "github_runner_pat" {
+  name         = "github-runner-pat"
   key_vault_id = module.key_vault_common.id
 }
 
@@ -85,7 +85,7 @@ resource "azapi_resource" "github_runner_job" {
         secrets = [
           {
             name  = "personal-access-token"
-            value = "${data.azurerm_key_vault_secret.github_pat_io_infra.value}"
+            value = "${data.azurerm_key_vault_secret.github_runner_pat.value}"
           }
         ]
         triggerType = "Event"
@@ -162,7 +162,7 @@ resource "azapi_resource" "github_runner_job_io_sign" {
         secrets = [
           {
             name  = "personal-access-token"
-            value = "${data.azurerm_key_vault_secret.github_pat_io_infra.value}"
+            value = "${data.azurerm_key_vault_secret.github_runner_pat.value}"
           }
         ]
         triggerType = "Event"
