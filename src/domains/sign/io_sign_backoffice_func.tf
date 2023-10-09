@@ -141,7 +141,7 @@ resource "azurerm_monitor_autoscale_setting" "io_sign_backoffice_func" {
 }
 
 resource "azurerm_private_endpoint" "io_sign_backoffice_func" {
-  name                = format("%s-backoffice-endpoint", local.project)
+  name                = format("%s-backoffice-func-endpoint", local.project)
   location            = azurerm_resource_group.data_rg.location
   resource_group_name = azurerm_resource_group.data_rg.name
   subnet_id           = data.azurerm_subnet.private_endpoints_subnet.id
