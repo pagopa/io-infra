@@ -1,7 +1,6 @@
 <policies>
     <inbound>
         <base />
-        <set-backend-service base-url="{{fims-admin-url}}" />
     </inbound>
     <outbound>
         <base />
