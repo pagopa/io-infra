@@ -10,7 +10,7 @@
     "https"
   ],
   "paths": {
-    "/oauth/authorize": {
+    "fims/oauth/authorize": {
       "get": {
         "operationId": "authorize",
         "summary": "Initialize an OAuth 2.0 flow",

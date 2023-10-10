@@ -10,7 +10,7 @@
     "https"
   ],
   "paths": {
-    "/admin/clients": {
+    "fims/admin/clients": {
       "post": {
         "operationId": "createClients",
         "summary": "Create a client",
