@@ -480,8 +480,25 @@ module "app_gw" {
           response_header_configurations = []
         },
         {
-          name          = "url-rewrite-openid-provider"
-          rule_sequence = 100
+          name          = "url-rewrite-openid-provider-private"
+          rule_sequence = 200
+          conditions = [
+            {
+              ignore_case = true
+              pattern     = "\\/openid-provider\\/admin\\/(.*)"
+              negate      = false
+              variable    = "uri_path"
+          }]
+          url = [{
+            path       = "fims"
+            components = "path_only"
+          }]
+          request_header_configurations  = []
+          response_header_configurations = []
+        },
+        {
+          name          = "url-rewrite-openid-provider-public"
+          rule_sequence = 201
           conditions = [
             {
               ignore_case = true
@@ -490,7 +507,7 @@ module "app_gw" {
               variable    = "uri_path"
           }]
           url = [{
-            path       = "fims/public/{var_uri_path_1}"
+            path       = "fims/{var_uri_path_1}"
             components = "path_only"
           }]
           request_header_configurations  = []
