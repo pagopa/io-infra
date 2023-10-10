@@ -456,28 +456,47 @@ module "app_gw" {
   rewrite_rule_sets = [
     {
       name = "rewrite-rule-set-api"
-      rewrite_rules = [{
-        name          = "http-headers-api"
-        rule_sequence = 100
-        conditions    = []
-        url           = null
-        request_header_configurations = [
-          {
-            header_name  = "X-Forwarded-For"
-            header_value = "{var_client_ip}"
-          },
-          {
-            header_name  = "X-Client-Ip"
-            header_value = "{var_client_ip}"
-          },
-          {
-            # this header will be checked in apim policy (only for MTLS check)
-            header_name  = data.azurerm_key_vault_secret.app_gw_mtls_header_name.value
-            header_value = "false"
-          },
-        ]
-        response_header_configurations = []
-      }]
+      rewrite_rules = [
+        {
+          name          = "http-headers-api"
+          rule_sequence = 100
+          conditions    = []
+          url           = null
+          request_header_configurations = [
+            {
+              header_name  = "X-Forwarded-For"
+              header_value = "{var_client_ip}"
+            },
+            {
+              header_name  = "X-Client-Ip"
+              header_value = "{var_client_ip}"
+            },
+            {
+              # this header will be checked in apim policy (only for MTLS check)
+              header_name  = data.azurerm_key_vault_secret.app_gw_mtls_header_name.value
+              header_value = "false"
+            },
+          ]
+          response_header_configurations = []
+        },
+        {
+          name          = "fims"
+          rule_sequence = 100
+          conditions = [
+            {
+              ignore_case = true
+              pattern     = "\\/openid-provider\\/(.*)"
+              negate      = false
+              variable    = "uri_path"
+          }]
+          url = [{
+            path       = "fims/public/{var_uri_path_1}"
+            components = "path_only"
+          }]
+          request_header_configurations  = []
+          response_header_configurations = []
+        }
+      ]
     },
     {
       name = "rewrite-rule-set-api-mtls"
@@ -647,7 +666,7 @@ module "app_gw" {
         ]
         response_header_configurations = []
       }]
-    },
+    }
   ]
 
   # TLS
