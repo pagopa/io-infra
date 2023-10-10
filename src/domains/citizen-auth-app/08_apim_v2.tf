@@ -33,7 +33,7 @@ module "api_fims_admin" {
 
   path        = ""
   protocols   = ["https"]
-  product_ids = [module.apim_product_fims_admin.product_id]
+  product_ids = [module.apim_product_fims_admin[0].product_id]
 
   service_url = format("https://%s", module.appservice_fims[0].default_site_hostname)
 
@@ -79,7 +79,7 @@ module "api_fims_public" {
 
   path        = ""
   protocols   = ["https"]
-  product_ids = [module.apim_product_fims_public.product_id]
+  product_ids = [module.apim_product_fims_public[0].product_id]
 
   service_url = format("https://%s", module.appservice_fims[0].default_site_hostname)
 
