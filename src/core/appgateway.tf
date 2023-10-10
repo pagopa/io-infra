@@ -480,7 +480,7 @@ module "app_gw" {
           response_header_configurations = []
         },
         {
-          name          = "fims"
+          name          = "url-rewrite-openid-provider"
           rule_sequence = 100
           conditions = [
             {

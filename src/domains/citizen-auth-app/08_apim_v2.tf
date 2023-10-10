@@ -5,6 +5,7 @@ data "azurerm_api_management" "apim_v2_api" {
 
 ## admin API
 module "apim_product_fims_admin" {
+  count  = var.fims_enabled ? 1 : 0
   source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_product?ref=v4.1.15"
 
   product_id            = "fims-admin-api"
@@ -50,6 +51,7 @@ module "api_fims_admin" {
 
 ## public API
 module "apim_product_fims_public" {
+  count  = var.fims_enabled ? 1 : 0
   source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_product?ref=v4.1.15"
 
   product_id            = "fims-public-api"
