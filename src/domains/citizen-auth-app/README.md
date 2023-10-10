@@ -14,6 +14,10 @@
 
 | Name | Source | Version |
 |------|--------|---------|
+| <a name="module_api_fims_admin"></a> [api\_fims\_admin](#module\_api\_fims\_admin) | git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api | v4.1.15 |
+| <a name="module_api_fims_public"></a> [api\_fims\_public](#module\_api\_fims\_public) | git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api | v4.1.15 |
+| <a name="module_apim_product_fims_admin"></a> [apim\_product\_fims\_admin](#module\_apim\_product\_fims\_admin) | git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_product | v4.1.15 |
+| <a name="module_apim_product_fims_public"></a> [apim\_product\_fims\_public](#module\_apim\_product\_fims\_public) | git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_product | v4.1.15 |
 | <a name="module_appservice_fims"></a> [appservice\_fims](#module\_appservice\_fims) | git::https://github.com/pagopa/terraform-azurerm-v3.git//app_service | v4.1.15 |
 | <a name="module_appservice_fims_plus"></a> [appservice\_fims\_plus](#module\_appservice\_fims\_plus) | git::https://github.com/pagopa/terraform-azurerm-v3.git//app_service | v4.1.15 |
 | <a name="module_appservice_fims_plus_slot_staging"></a> [appservice\_fims\_plus\_slot\_staging](#module\_appservice\_fims\_plus\_slot\_staging) | git::https://github.com/pagopa/terraform-azurerm-v3.git//app_service_slot | v4.1.15 |
@@ -47,6 +51,7 @@
 | [azuread_group.adgroup_developers](https://registry.terraform.io/providers/hashicorp/azuread/latest/docs/data-sources/group) | data source |
 | [azuread_group.adgroup_externals](https://registry.terraform.io/providers/hashicorp/azuread/latest/docs/data-sources/group) | data source |
 | [azuread_group.adgroup_security](https://registry.terraform.io/providers/hashicorp/azuread/latest/docs/data-sources/group) | data source |
+| [azurerm_api_management.apim_v2_api](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/api_management) | data source |
 | [azurerm_app_service.app_backend_li](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/app_service) | data source |
 | [azurerm_application_insights.application_insights](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/application_insights) | data source |
 | [azurerm_client_config.current](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/client_config) | data source |
