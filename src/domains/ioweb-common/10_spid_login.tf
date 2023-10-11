@@ -66,6 +66,9 @@ module "spid_login" {
 
     SPID_ATTRIBUTES = "name,familyName,fiscalNumber"
 
+    CIE_URL          = "https://api.is.eng.pagopa.it/idp-keys/cie/latest"
+    IDP_METADATA_URL = "https://api.is.eng.pagopa.it/idp-keys/spid/latest"
+
     REQUIRED_ATTRIBUTES_SERVICE_NAME = "IO Web Onboarding Portal"
     ENABLE_FULL_OPERATOR_METADATA    = true
     COMPANY_EMAIL                    = "pagopa@pec.governo.it"
