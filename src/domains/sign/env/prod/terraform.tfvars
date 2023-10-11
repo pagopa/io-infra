@@ -110,7 +110,7 @@ io_sign_user_func = {
 }
 
 io_sign_backoffice_app = {
-  sku_name = "P0v3"
+  sku_name          = "P0v3"
   autoscale_default = 1
   autoscale_minimum = 1
   autoscale_maximum = 3
@@ -120,11 +120,11 @@ io_sign_backoffice_app = {
       value = "production"
     },
     {
-      name = "HOSTNAME",
+      name  = "HOSTNAME",
       value = "0.0.0.0"
     },
     {
-      name = "WEBSITE_RUN_FROM_PACKAGE",
+      name  = "WEBSITE_RUN_FROM_PACKAGE",
       value = "1"
     },
     {
