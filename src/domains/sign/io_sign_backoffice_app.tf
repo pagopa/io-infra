@@ -53,9 +53,9 @@ module "io_sign_backoffice_app" {
   plan_name = format("%s-backoffice-plan", local.project)
   sku_name  = var.io_sign_backoffice_app.sku_name
 
-  node_version = "18-lts"
-
+  node_version      = "18-lts"
   health_check_path = "/health"
+  app_command_line  = "node server.js"
 
   app_settings = local.backoffice_app_settings
 
@@ -121,6 +121,7 @@ module "io_sign_backoffice_app_staging_slot" {
 
   node_version      = "18-lts"
   health_check_path = "/health"
+  app_command_line  = "node server.js"
 
   app_settings = local.backoffice_app_settings
 
