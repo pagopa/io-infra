@@ -110,7 +110,7 @@ io_sign_user_func = {
 }
 
 io_sign_backoffice_app = {
-  sku_name          = "P1v3"
+  sku_name = "P1v3"
   app_settings = [
     {
       name  = "NODE_ENV",
