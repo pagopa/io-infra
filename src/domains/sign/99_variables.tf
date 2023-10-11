@@ -203,8 +203,6 @@ variable "io_sign_backoffice_app" {
 
 variable "io_sign_backoffice_func" {
   type = object({
-    sku_tier          = string
-    sku_size          = string
     autoscale_default = number
     autoscale_minimum = number
     autoscale_maximum = number
