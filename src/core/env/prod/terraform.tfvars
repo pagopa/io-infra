@@ -86,6 +86,7 @@ app_gateway_selfcare_io_pagopa_it_certificate_name                = "selfcare-io
 app_gateway_min_capacity                                          = 4 # 4 capacity=baseline, 10 capacity=high volume event, 15 capacity=very high volume event
 app_gateway_max_capacity                                          = 50
 app_gateway_alerts_enabled                                        = true
+app_gateway_deny_paths                                            = ["\\/openid-provider\\/admin\\/(.*)"]
 
 ## REDIS COMMON ##
 redis_common = {

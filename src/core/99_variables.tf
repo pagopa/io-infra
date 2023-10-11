@@ -448,6 +448,11 @@ variable "app_gateway_alerts_enabled" {
   description = "Enable alerts"
   default     = true
 }
+
+variable "app_gateway_deny_paths" {
+  type = list(string)
+  description = "Regex patterns to deny requests"
+}
 ##
 
 ## Apim

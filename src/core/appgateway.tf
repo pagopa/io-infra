@@ -480,14 +480,14 @@ module "app_gw" {
           response_header_configurations = []
         },
         {
-          name          = "url-rewrite-openid-provider-private"
+          name          = "url-rewrite-private"
           rule_sequence = 200
           conditions = [
             {
               ignore_case = true
-              pattern     = "\\/openid-provider\\/admin\\/(.*)"
+              pattern     = join("|", var.app_gateway_deny_paths)
               negate      = false
-              variable    = "uri_path"
+              variable    = "var_uri_path"
           }]
           url = [{
             path       = "fims"
