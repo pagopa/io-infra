@@ -73,6 +73,28 @@ resource "azurerm_monitor_autoscale_setting" "io_sign_backoffice_func" {
 
     rule {
       metric_trigger {
+        metric_name              = "Requests"
+        metric_resource_id       = module.io_sign_backoffice_app.id
+        metric_namespace         = "microsoft.web/sites"
+        time_grain               = "PT1M"
+        statistic                = "Average"
+        time_window              = "PT5M"
+        time_aggregation         = "Average"
+        operator                 = "GreaterThan"
+        threshold                = 3500
+        divide_by_instance_count = false
+      }
+
+      scale_action {
+        direction = "Increase"
+        type      = "ChangeCount"
+        value     = "2"
+        cooldown  = "PT5M"
+      }
+    }
+
+    rule {
+      metric_trigger {
         metric_name              = "CpuPercentage"
         metric_resource_id       = module.io_sign_backoffice_func.app_service_plan_id
         metric_namespace         = "microsoft.web/serverfarms"
@@ -97,6 +119,28 @@ resource "azurerm_monitor_autoscale_setting" "io_sign_backoffice_func" {
       metric_trigger {
         metric_name              = "Requests"
         metric_resource_id       = module.io_sign_backoffice_func.id
+        metric_namespace         = "microsoft.web/sites"
+        time_grain               = "PT1M"
+        statistic                = "Average"
+        time_window              = "PT5M"
+        time_aggregation         = "Average"
+        operator                 = "LessThan"
+        threshold                = 2500
+        divide_by_instance_count = false
+      }
+
+      scale_action {
+        direction = "Decrease"
+        type      = "ChangeCount"
+        value     = "1"
+        cooldown  = "PT20M"
+      }
+    }
+
+    rule {
+      metric_trigger {
+        metric_name              = "Requests"
+        metric_resource_id       = module.io_sign_backoffice_app.id
         metric_namespace         = "microsoft.web/sites"
         time_grain               = "PT1M"
         statistic                = "Average"
