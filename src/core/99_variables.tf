@@ -450,7 +450,7 @@ variable "app_gateway_alerts_enabled" {
 }
 
 variable "app_gateway_deny_paths" {
-  type = list(string)
+  type        = list(string)
   description = "Regex patterns to deny requests"
 }
 ##
