@@ -53,9 +53,8 @@ module "io_sign_backoffice_app" {
   plan_name = format("%s-backoffice-plan", local.project)
   sku_name  = var.io_sign_backoffice_app.sku_name
 
-  docker_image     = "ghcr.io/pagopa/io-sign-backoffice"
-  docker_image_tag = "latest"
-
+  node_version = "18-lts"
+  
   health_check_path = "/health"
 
   app_settings = local.backoffice_app_settings
@@ -121,8 +120,7 @@ module "io_sign_backoffice_app_staging_slot" {
   app_service_name = module.io_sign_backoffice_app.name
 
   node_version = "18-lts"
-
-  #health_check_path = "/health"
+  health_check_path = "/health"
 
   app_settings = local.backoffice_app_settings
 
@@ -174,4 +172,109 @@ resource "azurerm_private_endpoint" "io_sign_backoffice_app_staging_slot" {
   }
 
   tags = var.tags
+}
+
+resource "azurerm_monitor_autoscale_setting" "io_sign_backoffice_func" {
+  name                = format("%s-autoscale", module.io_sign_backoffice_app.name)
+  resource_group_name = azurerm_resource_group.backend_rg.name
+  location            = azurerm_resource_group.backend_rg.location
+  target_resource_id  = module.io_sign_backoffice_app.app_service_plan_id
+
+  profile {
+    name = "default"
+
+    capacity {
+      default = var.io_sign_backoffice_app.autoscale_default
+      minimum = var.io_sign_backoffice_app.autoscale_minimum
+      maximum = var.io_sign_backoffice_app.autoscale_maximum
+    }
+
+    rule {
+      metric_trigger {
+        metric_name              = "Requests"
+        metric_resource_id       = module.io_sign_backoffice_app.id
+        metric_namespace         = "microsoft.web/sites"
+        time_grain               = "PT1M"
+        statistic                = "Average"
+        time_window              = "PT5M"
+        time_aggregation         = "Average"
+        operator                 = "GreaterThan"
+        threshold                = 3500
+        divide_by_instance_count = false
+      }
+
+      scale_action {
+        direction = "Increase"
+        type      = "ChangeCount"
+        value     = "2"
+        cooldown  = "PT5M"
+      }
+    }
+
+    rule {
+      metric_trigger {
+        metric_name              = "CpuPercentage"
+        metric_resource_id       = module.io_sign_backoffice_app.app_service_plan_id
+        metric_namespace         = "microsoft.web/serverfarms"
+        time_grain               = "PT1M"
+        statistic                = "Average"
+        time_window              = "PT5M"
+        time_aggregation         = "Average"
+        operator                 = "GreaterThan"
+        threshold                = 60
+        divide_by_instance_count = false
+      }
+
+      scale_action {
+        direction = "Increase"
+        type      = "ChangeCount"
+        value     = "2"
+        cooldown  = "PT5M"
+      }
+    }
+
+    rule {
+      metric_trigger {
+        metric_name              = "Requests"
+        metric_resource_id       = module.io_sign_backoffice_app.id
+        metric_namespace         = "microsoft.web/sites"
+        time_grain               = "PT1M"
+        statistic                = "Average"
+        time_window              = "PT5M"
+        time_aggregation         = "Average"
+        operator                 = "LessThan"
+        threshold                = 2500
+        divide_by_instance_count = false
+      }
+
+      scale_action {
+        direction = "Decrease"
+        type      = "ChangeCount"
+        value     = "1"
+        cooldown  = "PT20M"
+      }
+    }
+
+    rule {
+      metric_trigger {
+        metric_name              = "CpuPercentage"
+        metric_resource_id       = module.io_sign_backoffice_app.app_service_plan_id
+        metric_namespace         = "microsoft.web/serverfarms"
+        time_grain               = "PT1M"
+        statistic                = "Average"
+        time_window              = "PT5M"
+        time_aggregation         = "Average"
+        operator                 = "LessThan"
+        threshold                = 30
+        divide_by_instance_count = false
+      }
+
+      scale_action {
+        direction = "Decrease"
+        type      = "ChangeCount"
+        value     = "1"
+        cooldown  = "PT20M"
+      }
+    }
+  }
 }

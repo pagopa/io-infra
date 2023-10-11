@@ -35,7 +35,6 @@ module "io_sign_backoffice_func" {
 }
 
 resource "azurerm_monitor_autoscale_setting" "io_sign_backoffice_func" {
-  count               = var.io_sign_backoffice_func.sku_tier == "PremiumV3" ? 1 : 0
   name                = format("%s-autoscale", module.io_sign_backoffice_func.name)
   resource_group_name = azurerm_resource_group.backend_rg.name
   location            = azurerm_resource_group.backend_rg.location
