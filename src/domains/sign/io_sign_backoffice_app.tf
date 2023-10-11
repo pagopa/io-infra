@@ -174,7 +174,7 @@ resource "azurerm_private_endpoint" "io_sign_backoffice_app_staging_slot" {
   tags = var.tags
 }
 
-resource "azurerm_monitor_autoscale_setting" "io_sign_backoffice_func" {
+resource "azurerm_monitor_autoscale_setting" "io_sign_backoffice_app" {
   name                = format("%s-autoscale", module.io_sign_backoffice_app.name)
   resource_group_name = azurerm_resource_group.backend_rg.name
   location            = azurerm_resource_group.backend_rg.location
