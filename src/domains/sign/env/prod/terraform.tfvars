@@ -117,8 +117,12 @@ io_sign_backoffice_app = {
       value = "production"
     },
     {
-      name  = "WEBSITES_PORT",
-      value = "3000"
+      name  = "HOSTNAME",
+      value = "0.0.0.0"
+    },
+    {
+      name  = "WEBSITE_RUN_FROM_PACKAGE",
+      value = "1"
     },
     {
       name                  = "AUTH_SESSION_SECRET",
@@ -136,11 +140,9 @@ io_sign_backoffice_app = {
 }
 
 io_sign_backoffice_func = {
-  sku_tier          = "PremiumV3"
-  sku_size          = "P1v3"
   autoscale_default = 1
   autoscale_minimum = 1
-  autoscale_maximum = 5
+  autoscale_maximum = 3
   app_settings = [
     {
       name  = "NODE_ENV",
