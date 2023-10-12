@@ -145,6 +145,10 @@ io_sign_backoffice_func = {
     {
       name  = "NODE_ENV",
       value = "production"
+    },
+    {
+      name                  = "SelfCareEventHubConnectionString",
+      key_vault_secret_name = "SelfCareEventHubConnectionString"
     }
   ]
 }
