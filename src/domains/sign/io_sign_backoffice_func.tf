@@ -3,6 +3,9 @@ locals {
     for s in var.io_sign_backoffice_func.app_settings :
     s.name => s.key_vault_secret_name != null ? "@Microsoft.KeyVault(VaultName=${module.key_vault.name};SecretName=${s.key_vault_secret_name})" : s.value
   }
+  io_sign_backoffice_func = {
+    staging_disabled = ["onSelfcareContractsMessage"]
+  }
 }
 
 module "io_sign_backoffice_func" {
@@ -12,7 +15,7 @@ module "io_sign_backoffice_func" {
   location            = azurerm_resource_group.backend_rg.location
   resource_group_name = azurerm_resource_group.backend_rg.name
 
-  health_check_path = "/health"
+  #health_check_path = "/health"
 
   node_version    = "18"
   runtime_version = "~4"
@@ -30,6 +33,44 @@ module "io_sign_backoffice_func" {
 
   application_insights_instrumentation_key = data.azurerm_application_insights.application_insights.instrumentation_key
   system_identity_enabled                  = true
+
+  tags = var.tags
+}
+
+module "io_sign_backoffie_func_staging_slot" {
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app_slot?ref=v6.2.1"
+
+  name                = "staging"
+  location            = azurerm_resource_group.backend_rg.location
+  resource_group_name = azurerm_resource_group.backend_rg.name
+
+  function_app_id     = module.io_sign_backoffice_func.id
+  app_service_plan_id = module.io_sign_backoffice_func.app_service_plan_id
+
+  #health_check_path = "/api/v1/sign/info"
+
+  storage_account_name       = module.io_sign_backoffice_func.storage_account.name
+  storage_account_access_key = module.io_sign_backoffice_func.storage_account.primary_access_key
+
+  node_version                             = "18"
+  runtime_version                          = "~4"
+  always_on                                = true
+  application_insights_instrumentation_key = data.azurerm_application_insights.application_insights.instrumentation_key
+
+  app_settings = merge(
+    local.backoffice_func_settings,
+    {
+      # Disabled functions on slot triggered by queue and timer
+      for to_disable in local.io_sign_backoffice_func.staging_disabled :
+      format("AzureWebJobs.%s.Disabled", to_disable) => "true"
+    }
+  )
+
+  subnet_id = module.io_sign_backoffice_snet.id
+
+  allowed_subnets = [
+    module.io_sign_snet.id
+  ]
 
   tags = var.tags
 }
