@@ -22,6 +22,11 @@ data "azurerm_key_vault_secret" "fn_app_beta_users" {
   key_vault_id = module.key_vault_common.id
 }
 
+data "azurerm_key_vault_secret" "ioweb_profile_function_api_key" {
+  name         = "ioweb-profile-api-key"
+  key_vault_id = data.azurerm_key_vault.ioweb_kv.id
+}
+
 #
 # STORAGE
 #
@@ -109,8 +114,8 @@ locals {
       VISIBLE_SERVICE_BLOB_ID = "visible-services-national.json"
 
       # Login Email variables
-      # TODO: change those variables once the service has been created
-      MAGIC_LINK_SERVICE_PUBLIC_URL = "https://example.com"
+      MAGIC_LINK_SERVICE_API_KEY    = data.azurerm_key_vault_secret.ioweb_profile_function_api_key.value
+      MAGIC_LINK_SERVICE_PUBLIC_URL = format("https://%s-%s-%s-ioweb-profile-fn.azurewebsites.net", var.prefix, var.env_short, var.location_short)
       HELP_DESK_REF                 = "mailto:beta.loginveloce@pagopa.it"
       #
 
