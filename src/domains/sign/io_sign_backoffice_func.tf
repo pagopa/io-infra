@@ -15,7 +15,7 @@ module "io_sign_backoffice_func" {
   location            = azurerm_resource_group.backend_rg.location
   resource_group_name = azurerm_resource_group.backend_rg.name
 
-  #health_check_path = "/health"
+  health_check_path = "/health"
 
   node_version    = "18"
   runtime_version = "~4"
@@ -47,7 +47,7 @@ module "io_sign_backoffie_func_staging_slot" {
   function_app_id     = module.io_sign_backoffice_func.id
   app_service_plan_id = module.io_sign_backoffice_func.app_service_plan_id
 
-  #health_check_path = "/api/v1/sign/info"
+  health_check_path = "/health"
 
   storage_account_name       = module.io_sign_backoffice_func.storage_account.name
   storage_account_access_key = module.io_sign_backoffice_func.storage_account.primary_access_key
