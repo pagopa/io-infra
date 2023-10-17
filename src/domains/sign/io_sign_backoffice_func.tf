@@ -61,7 +61,7 @@ resource "azurerm_private_endpoint" "io_sign_backoffice_func" {
 resource "azurerm_key_vault_access_policy" "backoffice_func_key_vault_access_policy" {
   key_vault_id = module.key_vault.id
   tenant_id    = data.azurerm_client_config.current.tenant_id
-  object_id    = module.io_sign_backoffice_func.principal_id
+  object_id    = module.io_sign_backoffice_func.system_identity_principal
 
   secret_permissions      = ["Get"]
   storage_permissions     = []
@@ -125,14 +125,4 @@ resource "azurerm_private_endpoint" "io_sign_backoffice_func_staging_slot" {
   }
 
   tags = var.tags
-}
-
-resource "azurerm_key_vault_access_policy" "backoffice_func_staging_key_vault_access_policy" {
-  key_vault_id = module.key_vault.id
-  tenant_id    = data.azurerm_client_config.current.tenant_id
-  object_id    = module.io_sign_backoffice_func_staging_slot.principal_id
-
-  secret_permissions      = ["Get"]
-  storage_permissions     = []
-  certificate_permissions = []
 }
