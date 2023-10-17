@@ -23,7 +23,7 @@ application_insights_name                   = "io-p-ai-common"
 
 ### Aks
 
-aks_kubernetes_version = "1.23.12"
+aks_kubernetes_version = "1.25.11"
 
 aks_sku_tier = "Free"
 
@@ -62,14 +62,14 @@ ingress_load_balancer_ip  = "10.10.100.250"
 # ingress-nginx helm charts releases 4.X.X: https://github.com/kubernetes/ingress-nginx/releases?expanded=true&page=1&q=tag%3Ahelm-chart-4
 # Pinned versions from "4.1.0" release: https://github.com/kubernetes/ingress-nginx/blob/helm-chart-4.1.0/charts/ingress-nginx/values.yaml
 nginx_helm = {
-  version = "4.4.2"
+  version = "4.7.2"
   controller = {
     image = {
-      registry     = "registry.k8s.io"
+      registry     = "k8s.gcr.io"
       image        = "ingress-nginx/controller"
-      tag          = "v1.5.1"
-      digest       = "sha256:4ba73c697770664c1e00e9f968de14e08f606ff961c76e5d7033a4a9c593c629"
-      digestchroot = "sha256:c1c091b88a6c936a83bd7b098662760a87868d12452529bad0d178fb36147345"
+      tag          = "v1.8.1"
+      digest       = "sha256:e5c4824e7375fcf2a393e1c03c293b69759af37a9ca6abdb91b13d78a93da8bd"
+      digestchroot = "sha256:e0d4121e3c5e39de9122e55e331a32d5ebf8d4d257227cb93ab54a1b912a7627"
     }
   }
 }
