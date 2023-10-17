@@ -45,7 +45,6 @@ cidr_subnet_fnlollipop                     = ["10.0.17.0/26"]
 cidr_subnet_continua                       = ["10.0.17.64/26"]
 cidr_subnet_fnfastlogin                    = ["10.0.17.128/26"]
 cidr_subnet_fims                           = ["10.0.18.0/26"]
-cidr_subnet_apim                           = ["10.0.101.0/24"]
 cidr_subnet_apim_v2                        = ["10.0.100.0/24"]
 cidr_subnet_appmessages                    = ["10.0.127.0/24", "10.0.128.0/24"]
 cidr_subnet_fnmessagescqrs                 = ["10.0.129.0/24"]
@@ -102,7 +101,6 @@ redis_common = {
 
 # apim
 apim_publisher_name = "IO"
-apim_sku            = "Premium_1"
 apim_v2_sku         = "Premium_2"
 apim_autoscale = {
   enabled                       = true

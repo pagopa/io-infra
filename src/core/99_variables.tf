@@ -228,11 +228,6 @@ variable "cidr_subnet_appgateway" {
   description = "Application gateway address space."
 }
 
-variable "cidr_subnet_apim" {
-  type        = list(string)
-  description = "Api Management address space."
-}
-
 variable "cidr_subnet_apim_v2" {
   type        = list(string)
   description = "Api Management address space."
@@ -452,10 +447,6 @@ variable "app_gateway_alerts_enabled" {
 
 ## Apim
 variable "apim_publisher_name" {
-  type = string
-}
-
-variable "apim_sku" {
   type = string
 }
 

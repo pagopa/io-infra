@@ -40,7 +40,6 @@ module "io_sign_support_func" {
   subnet_id = module.io_sign_support_snet.id
   allowed_subnets = [
     module.io_sign_support_snet.id,
-    data.azurerm_subnet.apim.id,
     data.azurerm_subnet.apim_v2.id,
   ]
 
@@ -76,7 +75,6 @@ module "io_sign_support_func_staging_slot" {
   subnet_id = module.io_sign_support_snet.id
   allowed_subnets = [
     module.io_sign_support_snet.id,
-    data.azurerm_subnet.apim.id,
     data.azurerm_subnet.apim_v2.id,
   ]
 

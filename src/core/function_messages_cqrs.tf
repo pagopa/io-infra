@@ -167,7 +167,6 @@ module "function_messages_cqrs" {
 
   allowed_subnets = [
     module.function_messages_cqrs_snet.id,
-    module.apim_snet.id,
     module.apim_v2_snet.id,
   ]
 
