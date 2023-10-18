@@ -153,7 +153,7 @@ io_sign_backoffice_func = {
       value = "production"
     },
     {
-      name                  = "EVENTHUBCONNSTR_SELFCARE",
+      name                  = "SelfCareEventHubConnectionString",
       key_vault_secret_name = "SelfCareEventHubConnectionString"
     },
     {
