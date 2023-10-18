@@ -15,7 +15,7 @@ module "io_sign_backoffice_func" {
   location            = azurerm_resource_group.backend_rg.location
   resource_group_name = azurerm_resource_group.backend_rg.name
 
-  #health_check_path = "/health"
+  health_check_path = "/health"
 
   node_version    = "18"
   runtime_version = "~4"
@@ -37,7 +37,38 @@ module "io_sign_backoffice_func" {
   tags = var.tags
 }
 
-module "io_sign_backoffie_func_staging_slot" {
+resource "azurerm_private_endpoint" "io_sign_backoffice_func" {
+  name                = format("%s-backoffice-func-endpoint", local.project)
+  location            = azurerm_resource_group.data_rg.location
+  resource_group_name = azurerm_resource_group.data_rg.name
+  subnet_id           = data.azurerm_subnet.private_endpoints_subnet.id
+
+  private_service_connection {
+    name                           = format("%s-backoffice-endpoint", local.project)
+    private_connection_resource_id = module.io_sign_backoffice_func.id
+    is_manual_connection           = false
+    subresource_names              = ["sites"]
+  }
+
+  private_dns_zone_group {
+    name                 = "private-dns-zone-group"
+    private_dns_zone_ids = [data.azurerm_private_dns_zone.privatelink_azurewebsites_net.id]
+  }
+
+  tags = var.tags
+}
+
+resource "azurerm_key_vault_access_policy" "backoffice_func_key_vault_access_policy" {
+  key_vault_id = module.key_vault.id
+  tenant_id    = data.azurerm_client_config.current.tenant_id
+  object_id    = module.io_sign_backoffice_func.system_identity_principal
+
+  secret_permissions      = ["Get"]
+  storage_permissions     = []
+  certificate_permissions = []
+}
+
+module "io_sign_backoffice_func_staging_slot" {
   source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app_slot?ref=v6.2.1"
 
   name                = "staging"
@@ -47,7 +78,7 @@ module "io_sign_backoffie_func_staging_slot" {
   function_app_id     = module.io_sign_backoffice_func.id
   app_service_plan_id = module.io_sign_backoffice_func.app_service_plan_id
 
-  #health_check_path = "/api/v1/sign/info"
+  health_check_path = "/health"
 
   storage_account_name       = module.io_sign_backoffice_func.storage_account.name
   storage_account_access_key = module.io_sign_backoffice_func.storage_account.primary_access_key
@@ -71,27 +102,6 @@ module "io_sign_backoffie_func_staging_slot" {
   allowed_subnets = [
     module.io_sign_snet.id
   ]
-
-  tags = var.tags
-}
-
-resource "azurerm_private_endpoint" "io_sign_backoffice_func" {
-  name                = format("%s-backoffice-func-endpoint", local.project)
-  location            = azurerm_resource_group.data_rg.location
-  resource_group_name = azurerm_resource_group.data_rg.name
-  subnet_id           = data.azurerm_subnet.private_endpoints_subnet.id
-
-  private_service_connection {
-    name                           = format("%s-backoffice-endpoint", local.project)
-    private_connection_resource_id = module.io_sign_backoffice_func.id
-    is_manual_connection           = false
-    subresource_names              = ["sites"]
-  }
-
-  private_dns_zone_group {
-    name                 = "private-dns-zone-group"
-    private_dns_zone_ids = [data.azurerm_private_dns_zone.privatelink_azurewebsites_net.id]
-  }
 
   tags = var.tags
 }
