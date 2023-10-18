@@ -58,15 +58,16 @@ module "spid_login" {
     REDIS_PASSWORD = module.redis_spid_login.primary_access_key
 
     # SPID
-    ORG_ISSUER       = "https://api-web.pagopa.it"
+    ORG_ISSUER       = "https://ioapp.it"
     ORG_URL          = "https://www.pagopa.it"
     ACS_BASE_URL     = format("https://%s/%s", var.app_gateway_host_name, local.spid_login_base_path)
-    ORG_DISPLAY_NAME = "PagoPA S.p.A"
-    ORG_NAME         = "PagoPA"
+    ORG_DISPLAY_NAME = "PagoPA S.p.A."
+    ORG_NAME         = "PagoPA S.p.A."
 
     SPID_ATTRIBUTES = "name,familyName,fiscalNumber"
 
-    CIE_URL          = "https://api.is.eng.pagopa.it/idp-keys/cie/latest"
+    # Commented for using pre-prod environment
+    #CIE_URL          = "https://api.is.eng.pagopa.it/idp-keys/cie/latest"
     IDP_METADATA_URL = "https://api.is.eng.pagopa.it/idp-keys/spid/latest"
 
     REQUIRED_ATTRIBUTES_SERVICE_NAME = "IO Web Onboarding Portal"
@@ -74,7 +75,7 @@ module "spid_login" {
     COMPANY_EMAIL                    = "pagopa@pec.governo.it"
     COMPANY_FISCAL_CODE              = 15376371009
     COMPANY_IPA_CODE                 = "5N2TR557"
-    COMPANY_NAME                     = "PagoPA"
+    COMPANY_NAME                     = "PagoPA S.p.A."
     COMPANY_VAT_NUMBER               = "IT15376371009"
 
     SPID_VALIDATOR_URL = "https://validator.spid.gov.it"
@@ -82,12 +83,13 @@ module "spid_login" {
     AUTH_N_CONTEXT = "https://www.spid.gov.it/SpidL2"
 
     ENDPOINT_ACS      = "/acs"
-    ENDPOINT_ERROR    = "/error"
+    ENDPOINT_LOGOUT   = "/logout"
     ENDPOINT_LOGIN    = "/login"
     ENDPOINT_METADATA = "/metadata"
 
+    
     ENDPOINT_SUCCESS = "${local.fe_domain}/it/accedi/"
-    ENDPOINT_LOGOUT  = "${local.fe_domain}/it/accedi/errore/"
+    ENDPOINT_ERROR   = "${local.fe_domain}/it/accedi/errore/"
 
     METADATA_PUBLIC_CERT  = trimspace(data.azurerm_key_vault_secret.agid_spid_cert.value)
     METADATA_PRIVATE_CERT = trimspace(data.azurerm_key_vault_secret.agid_spid_private_key.value)
