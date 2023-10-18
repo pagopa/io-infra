@@ -153,8 +153,12 @@ io_sign_backoffice_func = {
       value = "production"
     },
     {
-      name                  = "SelfCareEventHubConnectionString",
+      name                  = "EVENTHUBCONNSTR_SELFCARE",
       key_vault_secret_name = "SelfCareEventHubConnectionString"
+    },
+    {
+      name                  = "SELFCARE_API_KEY",
+      key_vault_secret_name = "selfcare-prod-api-key"
     },
     {
       name                  = "SLACK_WEB_HOOK_URL",
