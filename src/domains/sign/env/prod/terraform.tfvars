@@ -135,6 +135,10 @@ io_sign_backoffice_app = {
     {
       name                  = "PDV_TOKENIZER_API_KEY"
       key_vault_secret_name = "pdv-tokenizer-api-key"
+    },
+    {
+      name                  = "SLACK_WEB_HOOK_URL",
+      key_vault_secret_name = "slack-webhook-url"
     }
   ]
 }
@@ -151,6 +155,10 @@ io_sign_backoffice_func = {
     {
       name                  = "SelfCareEventHubConnectionString",
       key_vault_secret_name = "SelfCareEventHubConnectionString"
+    },
+    {
+      name                  = "SLACK_WEB_HOOK_URL",
+      key_vault_secret_name = "slack-webhook-url"
     }
   ]
 }
