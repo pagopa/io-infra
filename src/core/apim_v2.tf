@@ -285,3 +285,15 @@ resource "azurerm_api_management_subscription" "pn_lc_subscription_v2" {
   allow_tracing       = false
 }
 ##################################################################
+
+data "azurerm_api_management_product" "apim_product_lollipop" {
+  product_id          = "io-lollipop-api"
+  api_management_name = module.apim_v2.name
+  resource_group_name = module.apim_v2.resource_group_name
+}
+
+data "azurerm_api_management_group" "api_lollipop_assertion_read" {
+  name                = "apilollipopassertionread"
+  api_management_name = module.apim_v2.name
+  resource_group_name = module.apim_v2.resource_group_name
+}
