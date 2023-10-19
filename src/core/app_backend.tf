@@ -92,7 +92,7 @@ locals {
       ALLOW_NOTIFY_IP_SOURCE_RANGE = "127.0.0.0/0"
 
       // LOCK / UNLOCK SESSION ENDPOINTS
-      ALLOW_SESSION_HANDLER_IP_SOURCE_RANGE = module.apim_snet.address_prefixes[0]
+      ALLOW_SESSION_HANDLER_IP_SOURCE_RANGE = module.apim_v2_snet.address_prefixes[0]
 
       // PAGOPA
       PAGOPA_API_URL_PROD          = "https://api.platform.pagopa.it/checkout/auth/payments/v1"
