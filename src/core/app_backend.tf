@@ -92,7 +92,7 @@ locals {
       ALLOW_NOTIFY_IP_SOURCE_RANGE = "127.0.0.0/0"
 
       // LOCK / UNLOCK SESSION ENDPOINTS
-      ALLOW_SESSION_HANDLER_IP_SOURCE_RANGE = module.apim_snet.address_prefixes[0]
+      ALLOW_SESSION_HANDLER_IP_SOURCE_RANGE = module.apim_v2_snet.address_prefixes[0]
 
       // PAGOPA
       PAGOPA_API_URL_PROD          = "https://api.platform.pagopa.it/checkout/auth/payments/v1"
@@ -638,7 +638,6 @@ module "appservice_app_backendl1" {
     module.services_snet[0].id,
     module.services_snet[1].id,
     module.appgateway_snet.id,
-    module.apim_snet.id,
     module.apim_v2_snet.id,
   ]
 
@@ -681,7 +680,6 @@ module "appservice_app_backendl1_slot_staging" {
     module.services_snet[0].id,
     module.services_snet[1].id,
     module.appgateway_snet.id,
-    module.apim_snet.id,
     module.apim_v2_snet.id,
   ]
 
@@ -858,7 +856,6 @@ module "appservice_app_backendl2" {
     module.services_snet[0].id,
     module.services_snet[1].id,
     module.appgateway_snet.id,
-    module.apim_snet.id,
     module.apim_v2_snet.id,
   ]
 
@@ -901,7 +898,6 @@ module "appservice_app_backendl2_slot_staging" {
     module.services_snet[0].id,
     module.services_snet[1].id,
     module.appgateway_snet.id,
-    module.apim_snet.id,
     module.apim_v2_snet.id,
   ]
 

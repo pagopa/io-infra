@@ -5,7 +5,7 @@ locals {
     COSMOS_DB_NAME                 = module.cosmosdb_sql_database_backoffice.name
     APIM_RESOURCE_GROUP_NAME       = data.azurerm_api_management.apim_v2_api.resource_group_name,
     APIM_SERVICE_NAME              = data.azurerm_api_management.apim_v2_api.name,
-    APIM_PRODUCT_NAME              = module.apim_io_sign_product.product_id
+    APIM_PRODUCT_NAME              = module.apim_v2_io_sign_product.product_id
     APPINSIGHTS_INSTRUMENTATIONKEY = sensitive(data.azurerm_application_insights.application_insights.instrumentation_key)
     },
     {

@@ -124,3 +124,18 @@ module "private_endpoints_subnet" {
 
   private_endpoint_network_policies_enabled = false
 }
+
+# TODO OLD APIM subnet to REMOVE
+module "apim_snet" {
+  source               = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v4.1.15"
+  name                 = "apimapi"
+  resource_group_name  = azurerm_resource_group.rg_common.name
+  virtual_network_name = module.vnet_common.name
+  address_prefixes     = var.cidr_subnet_apim
+
+  private_endpoint_network_policies_enabled = true
+
+  service_endpoints = [
+    "Microsoft.Web",
+  ]
+}

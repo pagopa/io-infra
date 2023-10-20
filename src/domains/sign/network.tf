@@ -9,12 +9,6 @@ data "azurerm_subnet" "private_endpoints_subnet" {
   resource_group_name  = format("%s-rg-common", local.product)
 }
 
-data "azurerm_subnet" "apim" {
-  name                 = "apimapi"
-  virtual_network_name = format("%s-vnet-common", local.product)
-  resource_group_name  = format("%s-rg-common", local.product)
-}
-
 data "azurerm_subnet" "apim_v2" {
   name                 = "apimv2api"
   virtual_network_name = format("%s-vnet-common", local.product)
