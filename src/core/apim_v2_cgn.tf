@@ -1,3 +1,13 @@
+data "azurerm_key_vault_secret" "cgnonboardingportal_os_key" {
+  name         = "funccgn-KEY-CGNOS"
+  key_vault_id = module.key_vault_common.id
+}
+
+data "azurerm_key_vault_secret" "cgnonboardingportal_os_header_name" {
+  name         = "funccgn-KEY-CGNOSHEADERNAME"
+  key_vault_id = module.key_vault_common.id
+}
+
 ## Api merchant
 module "apim_v2_product_merchant" {
   source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_product?ref=v4.1.15"

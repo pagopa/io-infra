@@ -217,7 +217,6 @@ module "function_eucovidcert" {
     module.app_backendl1_snet.id,
     module.app_backendl2_snet.id,
     module.function_pblevtdispatcher_snetout.id,
-    module.apim_snet.id,
     module.apim_v2_snet.id,
   ]
 
@@ -259,7 +258,6 @@ module "function_eucovidcert_staging_slot" {
     module.app_backendl1_snet.id,
     module.app_backendl2_snet.id,
     module.function_pblevtdispatcher_snetout.id,
-    module.apim_snet.id,
     module.apim_v2_snet.id,
   ]
 
