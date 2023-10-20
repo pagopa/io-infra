@@ -87,7 +87,7 @@ module "spid_login" {
     ENDPOINT_LOGIN    = "/login"
     ENDPOINT_METADATA = "/metadata"
 
-    
+
     ENDPOINT_SUCCESS = "${local.fe_domain}/it/accedi/"
     ENDPOINT_ERROR   = "${local.fe_domain}/it/accedi/errore/"
 
