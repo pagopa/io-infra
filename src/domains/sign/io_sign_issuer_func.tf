@@ -80,7 +80,7 @@ module "io_sign_issuer_func" {
 }
 
 resource "azurerm_role_assignment" "issuer_func_api_keys_queue_processor_role" {
-  scope                = azurerm_storage_queue.api_keys.id
+  scope                = azurerm_storage_queue.api_keys.resource_manager_id
   role_definition_name = "Storage Queue Data Message Processor"
   principal_id         = module.io_sign_issuer_func.system_identity_principal
 }
