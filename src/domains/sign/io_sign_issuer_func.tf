@@ -79,6 +79,12 @@ module "io_sign_issuer_func" {
   tags = var.tags
 }
 
+resource "azurerm_role_assignment" "issuer_func_api_keys_queue_processor_role" {
+  scope                = azurerm_storage_queue.api_keys.id
+  role_definition_name = "Storage Queue Data Message Processor"
+  principal_id         = module.io_sign_issuer_func.system_identity_principal
+}
+
 module "io_sign_issuer_func_staging_slot" {
   count  = var.io_sign_issuer_func.sku_tier == "PremiumV3" ? 1 : 0
   source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app_slot?ref=v6.2.1"
