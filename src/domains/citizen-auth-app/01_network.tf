@@ -43,6 +43,12 @@ data "azurerm_private_dns_zone" "privatelink_mongo_cosmos_azure_com" {
   resource_group_name = format("%s-rg-common", local.product)
 }
 
+data "azurerm_private_dns_zone" "privatelink_redis_cache" {
+  name                = "privatelink.redis.cache.windows.net"
+  resource_group_name = format("%s-rg-common", local.product)
+  tags                = var.tags
+}
+
 resource "azurerm_private_dns_a_record" "ingress" {
   name                = local.ingress_hostname
   zone_name           = data.azurerm_private_dns_zone.internal.name
@@ -92,4 +98,16 @@ data "azurerm_subnet" "appgateway_snet" {
   name                 = "io-p-appgateway-snet"
   virtual_network_name = local.vnet_common_name
   resource_group_name  = local.vnet_common_resource_group_name
+}
+
+
+## Redis Common subnet
+module "redis_common_snet" {
+  source               = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v7.14.0"
+  name                 = format("%s-redis-common-snet", local.project)
+  address_prefixes     = var.cidr_subnet_redis_common
+  resource_group_name  = local.vnet_common_resource_group_name
+  virtual_network_name = local.vnet_common_name
+
+  private_endpoint_network_policies_enabled = false
 }
