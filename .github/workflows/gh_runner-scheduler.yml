@@ -1,0 +1,47 @@
+name: GitHub Runner Job AutoScaler
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '0 07 * * MON-FRI'
+    - cron: '0 16 * * MON-FRI'
+
+permissions:
+  id-token: write
+  contents: read
+
+env:
+  resource-group: 'io-p-github-runner-rg'
+  job-name: 'io-p-infra-github-runner-job'
+  maximum_replica: 10
+
+jobs:
+  scheduler:
+    runs-on: ubuntu-22.04
+    environment: prod-runner
+    steps:
+      - name: Azure Login
+        id: login
+        uses: azure/login@92a5484dfaf04ca78a94597f4f19fea633851fa2
+        with:
+          client-id: ${{ secrets.AZURE_CLIENT_ID }}
+          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+
+      - name: Increase minimum replicas
+        if: github.event.schedule == '0 07 * * MON-FRI'
+        run: |
+          az containerapp job update \
+            --resource-group ${{ env.resource-group }} \
+            --name ${{ env.job-name }} \
+            --min-executions 1 \
+            --max-executions ${{ env.maximum_replica }}
+
+      - name: Decrease minimum replicas
+        if: github.event.schedule == '0 16 * * MON-FRI'
+        run: |
+          az containerapp job update \
+            --resource-group ${{ env.resource-group }} \
+            --name ${{ env.job-name }} \
+            --min-executions 0 \
+            --max-executions ${{ env.maximum_replica }}

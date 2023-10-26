@@ -134,7 +134,6 @@ module "function_cgn" {
     module.app_backendl1_snet.id,
     module.app_backendl2_snet.id,
     module.app_backendli_snet.id,
-    module.apim_snet.id,
     module.apim_v2_snet.id,
   ]
 
@@ -179,7 +178,6 @@ module "function_cgn_staging_slot" {
     module.app_backendl1_snet.id,
     module.app_backendl2_snet.id,
     module.app_backendli_snet.id,
-    module.apim_snet.id,
     module.apim_v2_snet.id,
   ]
 

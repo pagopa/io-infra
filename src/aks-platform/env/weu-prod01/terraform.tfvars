@@ -62,14 +62,14 @@ ingress_load_balancer_ip  = "10.11.100.250"
 # ingress-nginx helm charts releases 4.X.X: https://github.com/kubernetes/ingress-nginx/releases?expanded=true&page=1&q=tag%3Ahelm-chart-4
 # Pinned versions from "4.1.0" release: https://github.com/kubernetes/ingress-nginx/blob/helm-chart-4.1.0/charts/ingress-nginx/values.yaml
 nginx_helm = {
-  version = "4.1.0"
+  version = "4.4.2"
   controller = {
     image = {
-      registry     = "k8s.gcr.io"
+      registry     = "registry.k8s.io"
       image        = "ingress-nginx/controller"
-      tag          = "v1.2.0"
-      digest       = "sha256:d8196e3bc1e72547c5dec66d6556c0ff92a23f6d0919b206be170bc90d5f9185"
-      digestchroot = "sha256:fb17f1700b77d4fcc52ca6f83ffc2821861ae887dbb87149cf5cbc52bea425e5"
+      tag          = "v1.5.1"
+      digest       = "sha256:4ba73c697770664c1e00e9f968de14e08f606ff961c76e5d7033a4a9c593c629"
+      digestchroot = "sha256:c1c091b88a6c936a83bd7b098662760a87868d12452529bad0d178fb36147345"
     }
   }
 }
@@ -78,23 +78,23 @@ nginx_helm = {
 # keda image tags: https://github.com/kedacore/keda/pkgs/container/keda/versions
 # keda-metrics-apiserver image tags: https://github.com/kedacore/keda/pkgs/container/keda-metrics-apiserver/versions
 keda_helm = {
-  chart_version = "2.9.1"
+  chart_version = "2.12.0"
   keda = {
     image_name = "ghcr.io/kedacore/keda"
-    image_tag  = "2.9.1@sha256:52c41dbbc0cb7ba41800201f5140ec87bd942c04207143615474060a0662fa01"
+    image_tag  = "2.12.0@sha256:01a232774016f186ff91983521323a80ead047b42d695fc0236b43c296b6cff8"
   }
   metrics_api_server = {
     image_name = "ghcr.io/kedacore/keda-metrics-apiserver"
-    image_tag  = "2.9.1@sha256:8bd2410409fc6554a0e4e8fc1e08704b05ce98ed6158d6d6c9746241a55e0730"
+    image_tag  = "2.12.0@sha256:1c254dcf859b93bbcaa532fcb5d6de5ff14b67f904a7ae1068ab1dbc19f60479"
   }
 }
 
 # chart releases: https://github.com/stakater/Reloader/releases
 # image tags: https://hub.docker.com/r/stakater/reloader/tags
 reloader_helm = {
-  chart_version = "v0.0.118"
+  chart_version = "v1.0.41"
   image_name    = "stakater/reloader"
-  image_tag     = "v0.0.118@sha256:2d423cab8d0e83d1428ebc70c5c5cafc44bd92a597bff94007f93cddaa607b02"
+  image_tag     = "v1.0.41@sha256:eb7e816f4c38d9c9c25fd8743919075d8ea699d8593f261c7c2e0b52080c6c47"
 }
 
 # chart releases: https://github.com/prometheus-community/helm-charts/releases?q=tag%3Aprometheus-15&expanded=true

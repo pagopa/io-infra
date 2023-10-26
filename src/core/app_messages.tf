@@ -38,10 +38,11 @@ locals {
       PN_SERVICE_ID = var.pn_service_id
 
       // View Features Flag
-      USE_FALLBACK          = false
-      FF_TYPE               = "beta"
-      FF_BETA_TESTER_LIST   = data.azurerm_key_vault_secret.fn_messages_APP_MESSAGES_BETA_FISCAL_CODES.value
-      FF_CANARY_USERS_REGEX = "XYZ"
+      USE_FALLBACK        = false
+      FF_TYPE             = "canary"
+      FF_BETA_TESTER_LIST = data.azurerm_key_vault_secret.fn_messages_APP_MESSAGES_BETA_FISCAL_CODES.value
+      # Takes ~0,4% of users
+      FF_CANARY_USERS_REGEX = "^([(0-9)|(a-f)|(A-F)]{62}00)$"
 
     }
     app_settings_1 = {
@@ -180,7 +181,6 @@ module "app_messages_function" {
     module.app_messages_snet[count.index].id,
     module.app_backendl1_snet.id,
     module.app_backendl2_snet.id,
-    module.apim_snet.id,
     module.apim_v2_snet.id,
   ]
 

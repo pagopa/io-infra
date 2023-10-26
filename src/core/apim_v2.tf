@@ -1,3 +1,18 @@
+data "azurerm_key_vault_secret" "apim_publisher_email" {
+  name         = "apim-publisher-email"
+  key_vault_id = module.key_vault.id
+}
+
+data "azurerm_key_vault_certificate" "api_internal_io_italia_it" {
+  name         = replace(local.apim_hostname_api_internal, ".", "-")
+  key_vault_id = module.key_vault_common.id
+}
+
+data "azurerm_key_vault_certificate" "api_app_internal_io_pagopa_it" {
+  name         = replace(local.apim_hostname_api_app_internal, ".", "-")
+  key_vault_id = module.key_vault.id
+}
+
 # APIM subnet
 module "apim_v2_snet" {
   source               = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v4.1.15"
@@ -133,7 +148,7 @@ module "apim_v2" {
   # https://docs.microsoft.com/en-us/azure/azure-monitor/essentials/metrics-supported#microsoftapimanagementservice
   metric_alerts = {
     capacity = {
-      description   = "Apim used capacity is too high"
+      description   = "Apim used capacity is too high. Runbook: https://pagopa.atlassian.net/wiki/spaces/IC/pages/791642113/APIM+Capacity"
       frequency     = "PT5M"
       window_size   = "PT5M"
       severity      = 1

@@ -26,6 +26,17 @@ variable "location" {
   default = "westeurope"
 }
 
+variable "location_short" {
+  type = string
+  validation {
+    condition = (
+      length(var.location_short) == 3
+    )
+    error_message = "Length must be 3 chars."
+  }
+  description = "One of weu, neu"
+}
+
 variable "lock_enable" {
   type        = bool
   default     = false
@@ -219,12 +230,12 @@ variable "cidr_subnet_appgateway" {
 
 variable "cidr_subnet_apim" {
   type        = list(string)
-  description = "Api Management address space."
+  description = "Old Api Management address space."
 }
 
 variable "cidr_subnet_apim_v2" {
   type        = list(string)
-  description = "Api Management address space."
+  description = "Api Management V2 address space."
 }
 
 variable "cidr_subnet_vpn" {
@@ -441,10 +452,6 @@ variable "app_gateway_alerts_enabled" {
 
 ## Apim
 variable "apim_publisher_name" {
-  type = string
-}
-
-variable "apim_sku" {
   type = string
 }
 

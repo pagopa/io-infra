@@ -42,7 +42,7 @@ module "io_sign_issuer_func" {
 
   health_check_path = "/api/v1/sign/info"
 
-  node_version    = "16"
+  node_version    = "18"
   runtime_version = "~4"
   always_on       = true
 
@@ -70,7 +70,6 @@ module "io_sign_issuer_func" {
   subnet_id = module.io_sign_snet.id
   allowed_subnets = [
     module.io_sign_snet.id,
-    data.azurerm_subnet.apim.id,
     data.azurerm_subnet.apim_v2.id,
   ]
 
@@ -95,7 +94,7 @@ module "io_sign_issuer_func_staging_slot" {
   storage_account_name       = module.io_sign_issuer_func.storage_account.name
   storage_account_access_key = module.io_sign_issuer_func.storage_account.primary_access_key
 
-  node_version                             = "16"
+  node_version                             = "18"
   runtime_version                          = "~4"
   always_on                                = true
   application_insights_instrumentation_key = data.azurerm_application_insights.application_insights.instrumentation_key
@@ -112,7 +111,6 @@ module "io_sign_issuer_func_staging_slot" {
   subnet_id = module.io_sign_snet.id
   allowed_subnets = [
     module.io_sign_snet.id,
-    data.azurerm_subnet.apim.id,
     data.azurerm_subnet.apim_v2.id,
   ]
 

@@ -92,7 +92,7 @@ locals {
       ALLOW_NOTIFY_IP_SOURCE_RANGE = "127.0.0.0/0"
 
       // LOCK / UNLOCK SESSION ENDPOINTS
-      ALLOW_SESSION_HANDLER_IP_SOURCE_RANGE = module.apim_snet.address_prefixes[0]
+      ALLOW_SESSION_HANDLER_IP_SOURCE_RANGE = module.apim_v2_snet.address_prefixes[0]
 
       // PAGOPA
       PAGOPA_API_URL_PROD          = "https://api.platform.pagopa.it/checkout/auth/payments/v1"
@@ -136,6 +136,8 @@ locals {
       PUSH_NOTIFICATIONS_STORAGE_CONNECTION_STRING = data.azurerm_storage_account.push_notifications_storage.primary_connection_string
       PUSH_NOTIFICATIONS_QUEUE_NAME                = local.storage_account_notifications_queue_push_notifications
 
+      LOCKED_PROFILES_STORAGE_CONNECTION_STRING = module.locked_profiles_storage.primary_connection_string
+      LOCKED_PROFILES_TABLE_NAME                = azurerm_storage_table.locked_profiles.name
 
       // USERSLOGIN
       USERS_LOGIN_QUEUE_NAME                = local.storage_account_notifications_queue_userslogin
@@ -600,6 +602,12 @@ resource "azurerm_subnet_nat_gateway_association" "app_backendl1_snet" {
   subnet_id      = module.app_backendl1_snet.id
 }
 
+data "azurerm_subnet" "functions_fast_login_snet" {
+  name                 = format("%s-%s-fast-login-snet", local.project, var.location_short)
+  virtual_network_name = module.vnet_common.name
+  resource_group_name  = azurerm_resource_group.rg_common.name
+}
+
 module "appservice_app_backendl1" {
   source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//app_service?ref=v4.1.15"
 
@@ -630,7 +638,6 @@ module "appservice_app_backendl1" {
     module.services_snet[0].id,
     module.services_snet[1].id,
     module.appgateway_snet.id,
-    module.apim_snet.id,
     module.apim_v2_snet.id,
   ]
 
@@ -673,7 +680,6 @@ module "appservice_app_backendl1_slot_staging" {
     module.services_snet[0].id,
     module.services_snet[1].id,
     module.appgateway_snet.id,
-    module.apim_snet.id,
     module.apim_v2_snet.id,
   ]
 
@@ -850,7 +856,6 @@ module "appservice_app_backendl2" {
     module.services_snet[0].id,
     module.services_snet[1].id,
     module.appgateway_snet.id,
-    module.apim_snet.id,
     module.apim_v2_snet.id,
   ]
 
@@ -893,7 +898,6 @@ module "appservice_app_backendl2_slot_staging" {
     module.services_snet[0].id,
     module.services_snet[1].id,
     module.appgateway_snet.id,
-    module.apim_snet.id,
     module.apim_v2_snet.id,
   ]
 
@@ -1070,6 +1074,7 @@ module "appservice_app_backendli" {
     module.services_snet[0].id,
     module.services_snet[1].id,
     module.admin_snet.id,
+    data.azurerm_subnet.functions_fast_login_snet.id,
   ]
 
   allowed_ips = concat(

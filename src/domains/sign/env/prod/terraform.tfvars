@@ -117,8 +117,12 @@ io_sign_backoffice_app = {
       value = "production"
     },
     {
-      name  = "WEBSITES_PORT",
-      value = "3000"
+      name  = "HOSTNAME",
+      value = "0.0.0.0"
+    },
+    {
+      name  = "WEBSITE_RUN_FROM_PACKAGE",
+      value = "1"
     },
     {
       name                  = "AUTH_SESSION_SECRET",
@@ -131,6 +135,34 @@ io_sign_backoffice_app = {
     {
       name                  = "PDV_TOKENIZER_API_KEY"
       key_vault_secret_name = "pdv-tokenizer-api-key"
+    },
+    {
+      name                  = "SLACK_WEB_HOOK_URL",
+      key_vault_secret_name = "slack-webhook-url"
+    }
+  ]
+}
+
+io_sign_backoffice_func = {
+  autoscale_default = 1
+  autoscale_minimum = 1
+  autoscale_maximum = 3
+  app_settings = [
+    {
+      name  = "NODE_ENV",
+      value = "production"
+    },
+    {
+      name                  = "SelfCareEventHubConnectionString",
+      key_vault_secret_name = "SelfCareEventHubConnectionString"
+    },
+    {
+      name                  = "SELFCARE_API_KEY",
+      key_vault_secret_name = "selfcare-prod-api-key"
+    },
+    {
+      name                  = "SLACK_WEB_HOOK_URL",
+      key_vault_secret_name = "slack-webhook-url"
     }
   ]
 }

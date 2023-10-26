@@ -1,4 +1,8 @@
 
+locals {
+  fe_domain = "https://ioapp.it"
+}
+
 ############################
 ## App service spid login ##
 ############################
@@ -54,31 +58,38 @@ module "spid_login" {
     REDIS_PASSWORD = module.redis_spid_login.primary_access_key
 
     # SPID
-    ORG_ISSUER       = "https://api-web.pagopa.it/ioweb/auth"
-    ORG_URL          = "https://pagopa.gov.it"
+    ORG_ISSUER       = "https://ioapp.it/pub-op-full"
+    ORG_URL          = "https://www.pagopa.it"
     ACS_BASE_URL     = format("https://%s/%s", var.app_gateway_host_name, local.spid_login_base_path)
-    ORG_DISPLAY_NAME = "PagoPA S.p.A"
-    ORG_NAME         = "PagoPA"
-
-    AUTH_N_CONTEXT = "https://www.spid.gov.it/SpidL2"
-
-    ENDPOINT_ACS   = "/acs"
-    ENDPOINT_ERROR = "/error"
-    #TODO: set static site success endpoint
-    ENDPOINT_SUCCESS  = "/success"
-    ENDPOINT_LOGIN    = "/login"
-    ENDPOINT_METADATA = "/metadata"
-    ENDPOINT_LOGOUT   = "/logout"
+    ORG_DISPLAY_NAME = "PagoPA S.p.A."
+    ORG_NAME         = "PagoPA S.p.A."
 
     SPID_ATTRIBUTES = "name,familyName,fiscalNumber"
+
+    # Commented for using pre-prod environment
+    #CIE_URL          = "https://api.is.eng.pagopa.it/idp-keys/cie/latest"
+    IDP_METADATA_URL = "https://api.is.eng.pagopa.it/idp-keys/spid/latest"
 
     REQUIRED_ATTRIBUTES_SERVICE_NAME = "IO Web Onboarding Portal"
     ENABLE_FULL_OPERATOR_METADATA    = true
     COMPANY_EMAIL                    = "pagopa@pec.governo.it"
     COMPANY_FISCAL_CODE              = 15376371009
-    COMPANY_IPA_CODE                 = "PagoPA"
-    COMPANY_NAME                     = "PagoPA S.p.A"
-    COMPANY_VAT_NUMBER               = 15376371009
+    COMPANY_IPA_CODE                 = "5N2TR557"
+    COMPANY_NAME                     = "PagoPA S.p.A."
+    COMPANY_VAT_NUMBER               = "IT15376371009"
+
+    SPID_VALIDATOR_URL = "https://validator.spid.gov.it"
+
+    AUTH_N_CONTEXT = "https://www.spid.gov.it/SpidL2"
+
+    ENDPOINT_ACS      = "/acs"
+    ENDPOINT_LOGOUT   = "/logout"
+    ENDPOINT_LOGIN    = "/login"
+    ENDPOINT_METADATA = "/metadata"
+
+
+    ENDPOINT_SUCCESS = "${local.fe_domain}/it/accedi/"
+    ENDPOINT_ERROR   = "${local.fe_domain}/it/accedi/errore/"
 
     METADATA_PUBLIC_CERT  = trimspace(data.azurerm_key_vault_secret.agid_spid_cert.value)
     METADATA_PRIVATE_CERT = trimspace(data.azurerm_key_vault_secret.agid_spid_private_key.value)
@@ -87,7 +98,7 @@ module "spid_login" {
     INCLUDE_SPID_USER_ON_INTROSPECTION = "true"
 
     TOKEN_EXPIRATION      = "3600"
-    JWT_TOKEN_ISSUER      = "SPID"
+    JWT_TOKEN_ISSUER      = "api-web.io.pagopa.it/ioweb/auth"
     JWT_TOKEN_PRIVATE_KEY = trimspace(tls_private_key.jwt.private_key_pem)
     TOKEN_EXPIRATION      = 3600
 
@@ -99,15 +110,18 @@ module "spid_login" {
     APPINSIGHTS_INSTRUMENTATIONKEY = data.azurerm_application_insights.application_insights.instrumentation_key
 
     # Spid logs
-    #TODO: enable logs
-    ENABLE_SPID_ACCESS_LOGS = false
-    # SPID_LOGS_STORAGE_CONNECTION_STRING = "DefaultEndpointsProtocol=https;AccountName=${module.storage_account.name};AccountKey=${module.storage_account.primary_access_key};BlobEndpoint=${module.storage_account.primary_blob_endpoint};"
-    # SPID_LOGS_STORAGE_CONTAINER_NAME    = azurerm_storage_container.spid_logs.name
-    # SPID_LOGS_PUBLIC_KEY                = trimspace(data.azurerm_key_vault_secret.spid_logs_public_key.value)
+    ENABLE_SPID_ACCESS_LOGS             = true
+    SPID_LOGS_ENABLE_PAYLOAD_ENCRYPTION = false
+    SPID_LOGS_STORAGE_CONNECTION_STRING = module.spid_logs_storage.primary_connection_string
+    SPID_LOGS_STORAGE_CONTAINER_NAME    = azurerm_storage_container.spid_logs.name
   }
 
-  allowed_subnets = [data.azurerm_subnet.azdoa_snet.id, data.azurerm_subnet.apim_v2_snet.id]
-  allowed_ips     = []
+  allowed_subnets = [
+    data.azurerm_subnet.azdoa_snet.id,
+    data.azurerm_subnet.apim_v2_snet.id,
+    data.azurerm_subnet.ioweb_profile_snet.id,
+  ]
+  allowed_ips = []
 
   subnet_id        = module.spid_login_snet.id
   vnet_integration = true
