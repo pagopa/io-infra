@@ -234,11 +234,6 @@ variable "cidr_subnet_fims_plus" {
   description = "App service FIMS+ address space."
 }
 
-# Redis Common
-variable "cidr_subnet_redis_common" {
-  type        = list(string)
-  description = "Redis Common address space."
-}
 
 variable "fims_plan_sku_tier" {
   type        = string
