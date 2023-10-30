@@ -4,9 +4,9 @@
 */
 module "redis_common" {
   source                = "git::https://github.com/pagopa/terraform-azurerm-v3.git//redis_cache?ref=v7.14.0"
-  name                  = format("%s-redis-common-std-v6", local.project)
-  resource_group_name   = data.azurerm_resource_group.data_rg.name
-  location              = data.azurerm_resource_group.data_rg.location
+  name                  = format("%s-redis-std-v6", local.project)
+  resource_group_name   = azurerm_resource_group.data_rg.name
+  location              = azurerm_resource_group.data_rg.location
   capacity              = 0
   family                = "C"
   sku_name              = "Standard"
