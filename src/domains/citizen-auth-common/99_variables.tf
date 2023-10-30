@@ -114,3 +114,9 @@ variable "enable_azdoa" {
   description = "Specifies Azure Devops Agent enabling"
   default     = true
 }
+
+# Redis Common
+variable "cidr_subnet_redis_common" {
+  type        = list(string)
+  description = "Redis Common address space."
+}
