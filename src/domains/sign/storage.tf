@@ -113,3 +113,8 @@ resource "azurerm_storage_queue" "waiting_for_signature_request_updates" {
   name                 = "waiting-for-signature-request-updates"
   storage_account_name = module.io_sign_storage.name
 }
+
+resource "azurerm_storage_queue" "api_keys" {
+  name                 = "api-keys"
+  storage_account_name = module.io_sign_storage.name
+}

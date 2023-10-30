@@ -71,3 +71,9 @@ fims_plan_sku_size     = "P1v3"
 fims_autoscale_minimum = 1
 fims_autoscale_maximum = 3
 fims_autoscale_default = 1
+
+# Redis Common
+# You can retrieve the list of current defined subnets using the CLI command
+# az network vnet subnet list --subscription PROD-IO --vnet-name io-p-vnet-common --resource-group io-p-rg-common --output table
+# and thus define new CIDRs according to the unallocated address space
+cidr_subnet_redis_common = ["10.0.118.0/24"]

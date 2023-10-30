@@ -27,8 +27,14 @@ locals {
       FETCH_KEEPALIVE_FREE_SOCKET_TIMEOUT = "30000"
       FETCH_KEEPALIVE_TIMEOUT             = "60000"
 
+      # COSMOS
       COSMOS_DB_NAME           = "citizen-auth"
       COSMOS_CONNECTION_STRING = format("AccountEndpoint=%s;AccountKey=%s;", data.azurerm_cosmosdb_account.cosmos_citizen_auth.endpoint, data.azurerm_cosmosdb_account.cosmos_citizen_auth.primary_key)
+
+      # REDIS
+      REDIS_URL      = module.redis_common.hostname
+      REDIS_PORT     = module.redis_common.ssl_port
+      REDIS_PASSWORD = module.redis_common.primary_access_key
 
       // --------------------------
       //  Config for getAssertion
