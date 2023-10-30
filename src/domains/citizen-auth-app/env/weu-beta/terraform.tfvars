@@ -46,4 +46,5 @@ cidr_subnet_fnlollipop   = ["127.0.0.1/32"]
 cidr_subnet_fnfastlogin  = ["127.0.0.2/32"]
 cidr_subnet_fims         = ["127.0.0.3/32"]
 cidr_subnet_fims_plus    = ["127.0.0.4/32"]
-
+# Redis Common
+cidr_subnet_redis_common = ["127.0.0.5/32"]
