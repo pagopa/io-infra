@@ -11,7 +11,7 @@ module "keda_pod_identity" {
   location            = var.location
   identity_name       = "${kubernetes_namespace.keda.metadata[0].name}-pod-identity"
   tenant_id           = data.azurerm_subscription.current.tenant_id
-  cluster_name        = module.aks.name
+  cluster_name        = local.aks_name
   namespace           = kubernetes_namespace.keda.metadata[0].name
 }
 
