@@ -32,9 +32,9 @@ locals {
       COSMOS_CONNECTION_STRING = format("AccountEndpoint=%s;AccountKey=%s;", data.azurerm_cosmosdb_account.cosmos_citizen_auth.endpoint, data.azurerm_cosmosdb_account.cosmos_citizen_auth.primary_key)
 
       # REDIS
-      # REDIS_URL      = module.redis_common.hostname
-      # REDIS_PORT     = module.redis_common.ssl_port
-      # REDIS_PASSWORD = module.redis_common.primary_access_key
+      REDIS_URL      = data.azurerm_redis_cache.redis_common.hostname
+      REDIS_PORT     = data.azurerm_redis_cache.redis_common.ssl_port
+      REDIS_PASSWORD = data.azurerm_redis_cache.redis_common.primary_access_key
 
       // --------------------------
       //  Config for getAssertion
