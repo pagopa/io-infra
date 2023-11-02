@@ -34,7 +34,7 @@ resource "azurerm_public_ip" "aks_outbound" {
 # aks terrform module doesn't export private dns zone
 resource "null_resource" "create_vnet_commmon_aks_link" {
   triggers = {
-    cluster_name = module.aks.name
+    cluster_name = local.aks_name
     vnet_id      = data.azurerm_virtual_network.vnet_common.id
     vnet_name    = data.azurerm_virtual_network.vnet_common.name
   }
