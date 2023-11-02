@@ -29,4 +29,6 @@ pagopa-p-evh-ns01.servicebus.windows.net:53 {
 EOT
     }
   }
+
+  depends_on = [ module.aks ]
 }

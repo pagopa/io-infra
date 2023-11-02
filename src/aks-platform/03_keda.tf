@@ -2,6 +2,8 @@ resource "kubernetes_namespace" "keda" {
   metadata {
     name = "keda"
   }
+
+  depends_on = [ module.aks ]
 }
 
 module "keda_pod_identity" {
