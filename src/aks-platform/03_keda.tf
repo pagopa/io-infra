@@ -3,7 +3,7 @@ resource "kubernetes_namespace" "keda" {
     name = "keda"
   }
 
-  depends_on = [ module.aks ]
+  depends_on = [module.aks]
 }
 
 module "keda_pod_identity" {

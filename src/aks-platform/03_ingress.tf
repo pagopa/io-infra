@@ -3,7 +3,7 @@ resource "kubernetes_namespace" "ingress" {
     name = "ingress"
   }
 
-  depends_on = [ module.aks ]
+  depends_on = [module.aks]
 }
 
 # from Microsoft docs https://docs.microsoft.com/it-it/azure/aks/ingress-internal-ip

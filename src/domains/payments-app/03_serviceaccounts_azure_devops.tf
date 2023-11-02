@@ -28,7 +28,7 @@ resource "kubernetes_secret" "azure_devops_secret" {
 }
 
 data "kubernetes_secret" "azure_devops_secret" {
-  depends_on = [ kubernetes_secret.azure_devops_secret ]
+  depends_on = [kubernetes_secret.azure_devops_secret]
   metadata {
     name      = kubernetes_service_account.azure_devops.metadata[0].name
     namespace = kubernetes_namespace.namespace_system.metadata[0].name
