@@ -9,12 +9,28 @@ resource "kubernetes_service_account" "azure_devops" {
     name      = "azure-devops"
     namespace = kubernetes_namespace.namespace_system.metadata[0].name
   }
+  secret {
+    name = "azure-devops"
+  }
   automount_service_account_token = false
 }
 
-data "kubernetes_secret" "azure_devops_secret" {
+resource "kubernetes_secret" "azure_devops_secret" {
   metadata {
-    name      = kubernetes_service_account.azure_devops.default_secret_name
+    name      = kubernetes_service_account.azure_devops.metadata[0].name
+    namespace = kubernetes_namespace.namespace_system.metadata[0].name
+    annotations = {
+      "kubernetes.io/service-account.name" = kubernetes_service_account.azure_devops.metadata[0].name
+    }
+  }
+
+  type = "kubernetes.io/service-account-token"
+}
+
+data "kubernetes_secret" "azure_devops_secret" {
+  depends_on = [ kubernetes_secret.azure_devops_secret ]
+  metadata {
+    name      = kubernetes_service_account.azure_devops.metadata[0].name
     namespace = kubernetes_namespace.namespace_system.metadata[0].name
   }
   binary_data = {
