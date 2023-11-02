@@ -80,6 +80,21 @@ module "cosmosdb_sql_container_issuer-issuers-by-vat-number" {
   default_ttl = var.io_sign_database_issuer.issuers.ttl
 }
 
+module "cosmosdb_sql_container_issuer-issuers-by-subscription-id" {
+  source              = "git::https://github.com/pagopa/terraform-azurerm-v3.git//cosmosdb_sql_container?ref=v6.20.2"
+  name                = "issuers-by-subscription-id"
+  resource_group_name = azurerm_resource_group.data_rg.name
+  account_name        = module.cosmosdb_account.name
+  database_name       = module.cosmosdb_sql_database_issuer.name
+  partition_key_path  = "/id"
+
+  autoscale_settings = {
+    max_throughput = var.io_sign_database_issuer.uploads.max_throughput
+  }
+
+  default_ttl = var.io_sign_database_issuer.issuers.ttl
+}
+
 module "cosmosdb_sql_container_issuer-issuers-whitelist" {
   source              = "git::https://github.com/pagopa/terraform-azurerm-v3.git//cosmosdb_sql_container?ref=v6.20.2"
   name                = "issuers-whitelist"
