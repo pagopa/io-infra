@@ -1,3 +1,8 @@
+import {
+  to = kubernetes_manifest.coredns_custom
+  id = "apiVersion=v1,kind=ConfigMap,namespace=kube-system,name=coredns-custom"
+}
+
 resource "kubernetes_manifest" "coredns_custom" {
   manifest = {
     "apiVersion" = "v1"
