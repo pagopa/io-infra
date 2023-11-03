@@ -1,8 +1,7 @@
 <policies>
     <inbound>
         <base />
-        <set-backend-service base-url="https://weuprod01.messages.internal.io.pagopa.it/io-backend/api/v1" />
-        <!-- <choose>
+        <choose>
             <when condition="@(context.Request.Headers.GetValueOrDefault("environment", "false").Equals("beta"))">
                 <set-backend-service base-url="https://weubeta.messages.internal.io.pagopa.it/io-backend/api/v1" />
             </when>
@@ -10,7 +9,7 @@
                 <set-backend-service base-url="https://weuprod01.messages.internal.io.pagopa.it/io-backend/api/v1" />
             </when>
             <otherwise>
-                https://docs.microsoft.com/en-us/dotnet/api/system.random.next?view=net-6.0#system-random-next(system-int32-system-int32)
+                <!-- https://docs.microsoft.com/en-us/dotnet/api/system.random.next?view=net-6.0#system-random-next(system-int32-system-int32) -->
                 <set-variable name="urlWeight" value="@{
                   Random rnd = new Random();
                   int urlWeight = rnd.Next(1, 1001);
@@ -36,7 +35,7 @@
                     </otherwise>
                 </choose>
             </otherwise>
-        </choose> -->
+        </choose>
         <set-header name="x-user-groups" exists-action="override">
             <value>@(String.Join(",", context.User.Groups.Select(g => g.Name)))</value>
         </set-header>
