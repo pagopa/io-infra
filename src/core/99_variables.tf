@@ -1025,6 +1025,11 @@ variable "io_receipt_service_test_url" {
   description = "The endpoint of Receipt Service (test env)"
 }
 
+variable "io_receipt_service_url" {
+  type        = string
+  description = "The endpoint of Receipt Service (prod env)"
+}
+
 # Function CGN
 variable "plan_cgn_kind" {
   type        = string
