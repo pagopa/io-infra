@@ -464,7 +464,7 @@ pn_service_id = "01G40DWQGKY5GRWSNM4303VNRP"
 pn_test_endpoint = "https://api-io.uat.notifichedigitali.it"
 
 # RECEIPT SERVICE
-io_receipt_service_id       = "01H4ZJ62C1CPGJ0PX8Q1BP7FAB"
+io_receipt_service_id       = "01HD63674XJ1R6XCNHH24PCRR2"
 io_receipt_service_test_url = "https://api.uat.platform.pagopa.it/receipts/service/v1"
 io_receipt_service_url      = "https://api.platform.pagopa.it/receipts/service/v1"
 
