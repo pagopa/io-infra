@@ -241,9 +241,9 @@ locals {
             }
           }
         },
-        # Receipt Service
+        # Receipt Service TEST
         {
-          serviceId          = var.io_receipt_service_id,
+          serviceId          = var.io_receipt_service_test_id,
           schemaKind         = "ReceiptService",
           jsonSchema         = "unused",
           isLollipopEnabled  = "false",
@@ -255,6 +255,22 @@ locals {
               type            = "API_KEY",
               header_key_name = "Ocp-Apim-Subscription-Key",
               key             = data.azurerm_key_vault_secret.app_backend_RECEIPT_SERVICE_TEST_API_KEY.value
+            }
+          }
+        },
+        # Receipt Service PROD
+        {
+          serviceId          = var.io_receipt_service_id,
+          schemaKind         = "ReceiptService",
+          jsonSchema         = "unused",
+          isLollipopEnabled  = "false",
+          disableLollipopFor = [],
+          prodEnvironment = {
+            baseUrl = var.io_receipt_service_url,
+            detailsAuthentication = {
+              type            = "API_KEY",
+              header_key_name = "Ocp-Apim-Subscription-Key",
+              key             = data.azurerm_key_vault_secret.app_backend_RECEIPT_SERVICE_API_KEY.value
             }
           }
         },
@@ -515,6 +531,11 @@ data "azurerm_key_vault_secret" "app_backend_ALLOWED_CIE_TEST_FISCAL_CODES" {
 
 data "azurerm_key_vault_secret" "app_backend_RECEIPT_SERVICE_TEST_API_KEY" {
   name         = "appbackend-RECEIPT-SERVICE-TEST-API-KEY"
+  key_vault_id = module.key_vault_common.id
+}
+
+data "azurerm_key_vault_secret" "app_backend_RECEIPT_SERVICE_API_KEY" {
+  name         = "appbackend-RECEIPT-SERVICE-API-KEY"
   key_vault_id = module.key_vault_common.id
 }
 

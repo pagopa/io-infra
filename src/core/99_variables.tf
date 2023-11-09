@@ -1017,7 +1017,16 @@ variable "io_sign_service_id" {
 variable "io_receipt_service_id" {
   type        = string
   description = "The Service ID of io-receipt service"
-  default     = "01GQQZ9HF5GAPRVKJM1VDAVFHM"
+}
+
+variable "io_receipt_service_url" {
+  type        = string
+  description = "The endpoint of Receipt Service (prod env)"
+}
+
+variable "io_receipt_service_test_id" {
+  type        = string
+  description = "The Service ID of io-receipt service"
 }
 
 variable "io_receipt_service_test_url" {
