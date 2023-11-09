@@ -241,7 +241,24 @@ locals {
             }
           }
         },
-        # Receipt Service
+        # Receipt Service TEST
+        {
+          serviceId          = var.io_receipt_service_test_id,
+          schemaKind         = "ReceiptService",
+          jsonSchema         = "unused",
+          isLollipopEnabled  = "false",
+          disableLollipopFor = [],
+          testEnvironment = {
+            testUsers = [],
+            baseUrl   = var.io_receipt_service_test_url,
+            detailsAuthentication = {
+              type            = "API_KEY",
+              header_key_name = "Ocp-Apim-Subscription-Key",
+              key             = data.azurerm_key_vault_secret.app_backend_RECEIPT_SERVICE_TEST_API_KEY.value
+            }
+          }
+        },
+        # Receipt Service PROD
         {
           serviceId          = var.io_receipt_service_id,
           schemaKind         = "ReceiptService",
@@ -254,15 +271,6 @@ locals {
               type            = "API_KEY",
               header_key_name = "Ocp-Apim-Subscription-Key",
               key             = data.azurerm_key_vault_secret.app_backend_RECEIPT_SERVICE_API_KEY.value
-            }
-          },
-          testEnvironment = {
-            testUsers = [],
-            baseUrl   = var.io_receipt_service_test_url,
-            detailsAuthentication = {
-              type            = "API_KEY",
-              header_key_name = "Ocp-Apim-Subscription-Key",
-              key             = data.azurerm_key_vault_secret.app_backend_RECEIPT_SERVICE_TEST_API_KEY.value
             }
           }
         },

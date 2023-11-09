@@ -465,8 +465,9 @@ pn_test_endpoint = "https://api-io.uat.notifichedigitali.it"
 
 # RECEIPT SERVICE
 io_receipt_service_id       = "01HD63674XJ1R6XCNHH24PCRR2"
-io_receipt_service_test_url = "https://api.uat.platform.pagopa.it/receipts/service/v1"
 io_receipt_service_url      = "https://api.platform.pagopa.it/receipts/service/v1"
+io_receipt_service_test_id  = "01H4ZJ62C1CPGJ0PX8Q1BP7FAB"
+io_receipt_service_test_url = "https://api.uat.platform.pagopa.it/receipts/service/v1"
 
 # TP Mock Service Id
 third_party_mock_service_id = "01GQQDPM127KFGG6T3660D5TXD"
