@@ -173,6 +173,7 @@ module "function_subscriptionmigrations" {
   allowed_ips = local.app_insights_ips_west_europe
   allowed_subnets = [
     module.selfcare_be_common_snet.id,
+    data.azurerm_subnet.services_cms_backoffice_snet.id
   ]
 
   storage_account_info = {
