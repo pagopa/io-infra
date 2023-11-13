@@ -278,3 +278,10 @@ data "azurerm_linux_web_app" "cms_backoffice_app" {
   name                = format("%s-services-cms-backoffice-app", local.project)
   resource_group_name = format("%s-services-cms-rg", local.project)
 }
+
+
+data "azurerm_subnet" "services_cms_backoffice_snet" {
+  name                 = format("%s-services-cms-backoffice-snet", local.project)
+  virtual_network_name = module.vnet_common.name
+  resource_group_name  = azurerm_resource_group.rg_common.name
+}
