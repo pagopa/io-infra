@@ -308,7 +308,7 @@ locals {
 
       // FAST LOGIN
       FF_FAST_LOGIN = "BETA"
-      LV_TEST_USERS = data.azurerm_key_vault_secret.app_backend_LV_TEST_USERS.value
+      LV_TEST_USERS = join(",", [data.azurerm_key_vault_secret.app_backend_LV_TEST_USERS.value, local.test_users])
 
       BACKEND_HOST = "https://${trimsuffix(azurerm_dns_a_record.api_app_io_pagopa_it.fqdn, ".")}"
     }
