@@ -8,10 +8,21 @@ data "azurerm_virtual_network" "vnet_common" {
   resource_group_name = local.vnet_common_resource_group_name
 }
 
+# System Node Pool Subnet
 module "aks_snet" {
   source                                    = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v4.1.4"
   name                                      = "${local.project}-aks-snet"
-  address_prefixes                          = var.aks_cidr_subnet
+  address_prefixes                          = var.aks_system_cidr_subnet
+  resource_group_name                       = data.azurerm_virtual_network.vnet.resource_group_name
+  virtual_network_name                      = data.azurerm_virtual_network.vnet.name
+  private_endpoint_network_policies_enabled = false
+}
+
+# User Node Pool Subnet
+module "aks_user_snet" {
+  source                                    = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v4.1.4"
+  name                                      = "${local.project}-aks-user-snet"
+  address_prefixes                          = var.aks_user_cidr_subnet
   resource_group_name                       = data.azurerm_virtual_network.vnet.resource_group_name
   virtual_network_name                      = data.azurerm_virtual_network.vnet.name
   private_endpoint_network_policies_enabled = false
