@@ -51,6 +51,8 @@ https://www.terraform.io/docs/cli/commands/providers/lock.html#specifying-target
 So we need to specify this in terraform lock providers:
 
 ```sh
+rm .terraform.lock.hcl
+
 ./terraform.sh init [dev|uat|prod]
 
 rm .terraform.lock.hcl
