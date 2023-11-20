@@ -10,7 +10,7 @@ data "azurerm_virtual_network" "vnet_common" {
 
 # System Node Pool Subnet
 module "aks_snet" {
-  source                                    = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v4.1.4"
+  source                                    = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v7.26.0"
   name                                      = "${local.project}-aks-snet"
   address_prefixes                          = var.aks_system_cidr_subnet
   resource_group_name                       = data.azurerm_virtual_network.vnet.resource_group_name
@@ -20,7 +20,7 @@ module "aks_snet" {
 
 # User Node Pool Subnet
 module "aks_user_snet" {
-  source                                    = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v4.1.4"
+  source                                    = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v7.26.0"
   name                                      = "${local.project}-aks-user-snet"
   address_prefixes                          = var.aks_user_cidr_subnet
   resource_group_name                       = data.azurerm_virtual_network.vnet.resource_group_name
@@ -43,7 +43,8 @@ resource "azurerm_public_ip" "aks_outbound" {
 
 # vnet_common needs a vnet link with aks private dns zone
 # aks terrform module doesn't export private dns zone
-resource "null_resource" "create_vnet_commmon_aks_link" {
+resource "null_resource" "create_vnet_common_aks_link" {
+  depends_on = [ module.aks ]
   triggers = {
     cluster_name = local.aks_name
     vnet_id      = data.azurerm_virtual_network.vnet_common.id

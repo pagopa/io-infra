@@ -25,7 +25,7 @@ application_insights_name                   = "io-p-ai-common"
 
 aks_kubernetes_version = "1.27.3"
 
-aks_sku_tier = "Paid"
+aks_sku_tier = "Standard"
 
 aks_system_node_pool = {
   name                         = "system01"
@@ -53,6 +53,7 @@ aks_user_node_pool = {
 }
 
 aks_system_cidr_subnet = ["10.11.0.0/24"]
+aks_cidr_subnet        = ["10.11.0.0/24"]
 aks_user_cidr_subnet   = ["10.11.1.0/24"]
 aks_num_outbound_ips   = 1
 
@@ -61,7 +62,7 @@ ingress_max_replica_count = "30"
 ingress_load_balancer_ip  = "10.11.100.250"
 
 # ingress-nginx helm charts releases 4.X.X: https://github.com/kubernetes/ingress-nginx/releases?expanded=true&page=1&q=tag%3Ahelm-chart-4
-# Pinned versions from "4.1.0" release: https://github.com/kubernetes/ingress-nginx/blob/helm-chart-4.1.0/charts/ingress-nginx/values.yaml
+# Pinned versions from "4.8.3" release: https://github.com/kubernetes/ingress-nginx/blob/helm-chart-4.8.3/charts/ingress-nginx/values.yaml
 nginx_helm = {
   version = "4.8.3"
   controller = {

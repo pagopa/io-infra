@@ -6,7 +6,7 @@ resource "azurerm_resource_group" "aks_rg" {
 }
 
 module "aks" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//kubernetes_cluster?ref=v7.26.0"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//kubernetes_cluster?ref=v7.27.2"
 
   name                       = local.aks_name
   location                   = var.location
@@ -61,7 +61,7 @@ module "aks" {
     docker_bridge_cidr  = "172.17.0.1/16"
     dns_service_ip      = "10.2.0.10"
     network_plugin      = "azure"
-    network_plugin_mode = "Overlay"
+    network_plugin_mode = "overlay"
     network_policy      = "azure"
     outbound_type       = "loadBalancer"
     service_cidr        = "10.2.0.0/16"
