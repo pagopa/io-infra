@@ -5,7 +5,7 @@
 | Name | Version |
 |------|---------|
 | <a name="requirement_azuread"></a> [azuread](#requirement\_azuread) | <= 2.33.0 |
-| <a name="requirement_azurerm"></a> [azurerm](#requirement\_azurerm) | <= 3.40.0 |
+| <a name="requirement_azurerm"></a> [azurerm](#requirement\_azurerm) | <= 3.71.0 |
 | <a name="requirement_helm"></a> [helm](#requirement\_helm) | = 2.8.0 |
 | <a name="requirement_kubernetes"></a> [kubernetes](#requirement\_kubernetes) | = 2.17.0 |
 | <a name="requirement_null"></a> [null](#requirement\_null) | <= 3.2.1 |
@@ -14,10 +14,10 @@
 
 | Name | Source | Version |
 |------|--------|---------|
-| <a name="module_aks"></a> [aks](#module\_aks) | git::https://github.com/pagopa/terraform-azurerm-v3.git//kubernetes_cluster | v7.26.0 |
-| <a name="module_aks_snet"></a> [aks\_snet](#module\_aks\_snet) | git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet | v4.1.4 |
-| <a name="module_aks_user_snet"></a> [aks\_user\_snet](#module\_aks\_user\_snet) | git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet | v4.1.4 |
-| <a name="module_keda_pod_identity"></a> [keda\_pod\_identity](#module\_keda\_pod\_identity) | git::https://github.com/pagopa/terraform-azurerm-v3.git//kubernetes_pod_identity | v4.1.3 |
+| <a name="module_aks"></a> [aks](#module\_aks) | git::https://github.com/pagopa/terraform-azurerm-v3.git//kubernetes_cluster | v7.27.2 |
+| <a name="module_aks_snet"></a> [aks\_snet](#module\_aks\_snet) | git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet | v7.26.0 |
+| <a name="module_aks_user_snet"></a> [aks\_user\_snet](#module\_aks\_user\_snet) | git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet | v7.26.0 |
+| <a name="module_keda_pod_identity"></a> [keda\_pod\_identity](#module\_keda\_pod\_identity) | git::https://github.com/pagopa/terraform-azurerm-v3.git//kubernetes_pod_identity | v7.26.0 |
 | <a name="module_nginx_ingress"></a> [nginx\_ingress](#module\_nginx\_ingress) | terraform-module/release/helm | 2.8.0 |
 
 ## Resources
@@ -41,7 +41,7 @@
 | [kubernetes_namespace.ingress](https://registry.terraform.io/providers/hashicorp/kubernetes/2.17.0/docs/resources/namespace) | resource |
 | [kubernetes_namespace.keda](https://registry.terraform.io/providers/hashicorp/kubernetes/2.17.0/docs/resources/namespace) | resource |
 | [kubernetes_namespace.monitoring](https://registry.terraform.io/providers/hashicorp/kubernetes/2.17.0/docs/resources/namespace) | resource |
-| [null_resource.create_vnet_commmon_aks_link](https://registry.terraform.io/providers/hashicorp/null/latest/docs/resources/resource) | resource |
+| [null_resource.create_vnet_common_aks_link](https://registry.terraform.io/providers/hashicorp/null/latest/docs/resources/resource) | resource |
 | [azuread_group.adgroup_admin](https://registry.terraform.io/providers/hashicorp/azuread/latest/docs/data-sources/group) | data source |
 | [azuread_group.adgroup_developers](https://registry.terraform.io/providers/hashicorp/azuread/latest/docs/data-sources/group) | data source |
 | [azuread_group.adgroup_externals](https://registry.terraform.io/providers/hashicorp/azuread/latest/docs/data-sources/group) | data source |
