@@ -138,6 +138,15 @@ variable "aks_cidr_subnet" {
   description = "Aks network address space."
 }
 
+variable "aks_system_cidr_subnet" {
+  type        = list(string)
+  description = "Aks network address space."
+}
+variable "aks_user_cidr_subnet" {
+  type        = list(string)
+  description = "Aks network address space."
+}
+
 variable "aks_num_outbound_ips" {
   type        = number
   default     = 1
