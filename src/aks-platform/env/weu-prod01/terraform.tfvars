@@ -59,7 +59,7 @@ aks_num_outbound_ips   = 1
 
 ingress_min_replica_count = "2"
 ingress_max_replica_count = "30"
-ingress_load_balancer_ip  = "10.11.100.250"
+ingress_load_balancer_ip  = "10.11.0.254"
 
 # ingress-nginx helm charts releases 4.X.X: https://github.com/kubernetes/ingress-nginx/releases?expanded=true&page=1&q=tag%3Ahelm-chart-4
 # Pinned versions from "4.8.3" release: https://github.com/kubernetes/ingress-nginx/blob/helm-chart-4.8.3/charts/ingress-nginx/values.yaml
