@@ -86,7 +86,6 @@ resource "azurerm_storage_queue" "lollipop_assertions_storage_revoke_queue" {
 ###
 # LV Audit Log Storage
 ###
-
 module "lv_audit_logs_storage" {
   source = "git::https://github.com/pagopa/terraform-azurerm-v3//storage_account?ref=v6.1.0"
 
@@ -141,4 +140,53 @@ resource "azurerm_storage_container" "lv_audit_logs_storage_logs" {
   name                  = "logs"
   storage_account_name  = module.lv_audit_logs_storage.name
   container_access_type = "private"
+}
+
+###
+# Unique Emails Storage
+###
+module "unique_emails_storage" {
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3//storage_account?ref=v6.1.0"
+
+  name                          = replace(format("%s-unique-emails-st", local.product), "-", "")
+  domain                        = upper(var.domain)
+  account_kind                  = "StorageV2"
+  account_tier                  = "Standard"
+  access_tier                   = "Hot"
+  account_replication_type      = "GZRS"
+  resource_group_name           = azurerm_resource_group.data_rg.name
+  location                      = var.location
+  advanced_threat_protection    = true
+  enable_identity               = true
+  public_network_access_enabled = false
+
+  tags = var.tags
+}
+
+resource "azurerm_private_endpoint" "unique_emails_storage_table" {
+  depends_on          = [module.unique_emails_storage]
+  name                = "${module.unique_emails_storage.name}-table-endpoint"
+  location            = var.location
+  resource_group_name = azurerm_resource_group.data_rg.name
+  subnet_id           = data.azurerm_subnet.private_endpoints_subnet.id
+
+  private_service_connection {
+    name                           = "${module.unique_emails_storage.name}-table"
+    private_connection_resource_id = module.unique_emails_storage.id
+    is_manual_connection           = false
+    subresource_names              = ["table"]
+  }
+
+  private_dns_zone_group {
+    name                 = "private-dns-zone-group"
+    private_dns_zone_ids = [data.azurerm_private_dns_zone.privatelink_table_core.id]
+  }
+
+  tags = var.tags
+}
+
+resource "azurerm_storage_table" "unique_emails_storage_unique_emails_table" {
+  depends_on           = [module.unique_emails_storage]
+  name                 = "uniqueemails"
+  storage_account_name = module.unique_emails_storage.name
 }
