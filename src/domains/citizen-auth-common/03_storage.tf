@@ -187,6 +187,6 @@ resource "azurerm_private_endpoint" "unique_emails_storage_table" {
 
 resource "azurerm_storage_table" "unique_emails_storage_unique_emails_table" {
   depends_on           = [module.unique_emails_storage]
-  name                 = "uniqueemails"
+  name                 = "uniqueEmails"
   storage_account_name = module.unique_emails_storage.name
 }
