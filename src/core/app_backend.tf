@@ -311,6 +311,9 @@ locals {
       LV_TEST_USERS = join(",", [data.azurerm_key_vault_secret.app_backend_LV_TEST_USERS.value, local.test_users])
 
       BACKEND_HOST = "https://${trimsuffix(azurerm_dns_a_record.api_app_io_pagopa_it.fqdn, ".")}"
+
+      // CLOCK SKEW LOG EVENT
+      HAS_CLOCK_SKEW_LOG_EVENT = "true"
     }
     app_settings_l1 = {
       IS_APPBACKENDLI = "false"
