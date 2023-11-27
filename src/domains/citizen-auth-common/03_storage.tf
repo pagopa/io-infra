@@ -186,7 +186,7 @@ resource "azurerm_private_endpoint" "table" {
 }
 
 resource "azurerm_storage_table" "unique_emails" {
-  depends_on           = [module.io_citizen_auth_storage]
+  depends_on           = [module.io_citizen_auth_storage, azurerm_private_endpoint.table]
   name                 = "uniqueEmails"
   storage_account_name = module.io_citizen_auth_storage.name
 }
