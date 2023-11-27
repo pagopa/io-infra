@@ -41,6 +41,11 @@ data "azurerm_private_dns_zone" "privatelink_redis_cache" {
   resource_group_name = local.vnet_common_resource_group_name
 }
 
+data "azurerm_private_dns_zone" "privatelink_table_core" {
+  name                = "privatelink.table.core.windows.net"
+  resource_group_name = local.vnet_common_resource_group_name
+}
+
 
 ## Redis Common subnet
 module "redis_common_snet" {
