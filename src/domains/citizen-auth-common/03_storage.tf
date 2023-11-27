@@ -148,7 +148,7 @@ resource "azurerm_storage_container" "lv_audit_logs_storage_logs" {
 module "io_citizen_auth_storage" {
   source = "git::https://github.com/pagopa/terraform-azurerm-v3//storage_account?ref=v6.1.0"
 
-  name                          = replace(format("%s-st", local.product), "-", "")
+  name                          = replace(format("%s-st", local.project), "-", "")
   domain                        = upper(var.domain)
   account_kind                  = "StorageV2"
   account_tier                  = "Standard"
@@ -186,7 +186,7 @@ resource "azurerm_private_endpoint" "table" {
 }
 
 resource "azurerm_storage_table" "unique_emails" {
-  depends_on           = [module.io_citizen_auth_storage]
+  depends_on           = [module.io_citizen_auth_storage, azurerm_private_endpoint.table]
   name                 = "uniqueEmails"
   storage_account_name = module.io_citizen_auth_storage.name
 }
