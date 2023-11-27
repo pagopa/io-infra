@@ -841,7 +841,7 @@
       ]
     },
     "EmailAddress": {
-      "$ref": "https://raw.githubusercontent.com/pagopa/io-functions-commons/master/openapi/definitions.yaml#/EmailAddress"
+      "$ref": "https://raw.githubusercontent.com/pagopa/io-functions-commons/v28.7.1/openapi/definitions.yaml#/EmailAddress"
     },
     "ServiceCollection": {
       "type": "object",
@@ -862,79 +862,79 @@
       ]
     },
     "ProblemJson": {
-      "$ref": "https://raw.githubusercontent.com/pagopa/io-functions-commons/master/openapi/definitions.yaml#/ProblemJson"
+      "$ref": "https://raw.githubusercontent.com/pagopa/io-functions-commons/v28.7.1/openapi/definitions.yaml#/ProblemJson"
     },
     "Service": {
-      "$ref": "https://raw.githubusercontent.com/pagopa/io-functions-commons/master/openapi/definitions.yaml#/Service"
+      "$ref": "https://raw.githubusercontent.com/pagopa/io-functions-commons/v28.7.1/openapi/definitions.yaml#/Service"
     },
     "ServiceMetadata": {
-      "$ref": "https://raw.githubusercontent.com/pagopa/io-functions-commons/master/openapi/definitions.yaml#/ServiceMetadata"
+      "$ref": "https://raw.githubusercontent.com/pagopa/io-functions-commons/v28.7.1/openapi/definitions.yaml#/ServiceMetadata"
     },
     "CommonServiceMetadata": {
-      "$ref": "https://raw.githubusercontent.com/pagopa/io-functions-commons/master/openapi/definitions.yaml#/CommonServiceMetadata"
+      "$ref": "https://raw.githubusercontent.com/pagopa/io-functions-commons/v28.7.1/openapi/definitions.yaml#/CommonServiceMetadata"
     },
     "StandardServiceMetadata": {
-      "$ref": "https://raw.githubusercontent.com/pagopa/io-functions-commons/master/openapi/definitions.yaml#/StandardServiceMetadata"
+      "$ref": "https://raw.githubusercontent.com/pagopa/io-functions-commons/v28.7.1/openapi/definitions.yaml#/StandardServiceMetadata"
     },
     "SpecialServiceMetadata": {
-      "$ref": "https://raw.githubusercontent.com/pagopa/io-functions-commons/master/openapi/definitions.yaml#/SpecialServiceMetadata"
+      "$ref": "https://raw.githubusercontent.com/pagopa/io-functions-commons/v28.7.1/openapi/definitions.yaml#/SpecialServiceMetadata"
     },
     "ServiceScope": {
-      "$ref": "https://raw.githubusercontent.com/pagopa/io-functions-commons/master/openapi/definitions.yaml#/ServiceScope"
+      "$ref": "https://raw.githubusercontent.com/pagopa/io-functions-commons/v28.7.1/openapi/definitions.yaml#/ServiceScope"
     },
     "ServiceCategory": {
-      "$ref": "https://raw.githubusercontent.com/pagopa/io-functions-commons/master/openapi/definitions.yaml#/ServiceCategory"
+      "$ref": "https://raw.githubusercontent.com/pagopa/io-functions-commons/v28.7.1/openapi/definitions.yaml#/ServiceCategory"
     },
     "SpecialServiceCategory": {
-      "$ref": "https://raw.githubusercontent.com/pagopa/io-functions-commons/master/openapi/definitions.yaml#/SpecialServiceCategory"
+      "$ref": "https://raw.githubusercontent.com/pagopa/io-functions-commons/v28.7.1/openapi/definitions.yaml#/SpecialServiceCategory"
     },
     "StandardServiceCategory": {
-      "$ref": "https://raw.githubusercontent.com/pagopa/io-functions-commons/master/openapi/definitions.yaml#/StandardServiceCategory"
+      "$ref": "https://raw.githubusercontent.com/pagopa/io-functions-commons/v28.7.1/openapi/definitions.yaml#/StandardServiceCategory"
     },
     "ServicePayload": {
-      "$ref": "https://raw.githubusercontent.com/pagopa/io-functions-commons/master/openapi/definitions.yaml#/ServicePayload"
+      "$ref": "https://raw.githubusercontent.com/pagopa/io-functions-commons/v28.7.1/openapi/definitions.yaml#/ServicePayload"
     },
     "ExtendedServicePayload": {
-      "$ref": "https://raw.githubusercontent.com/pagopa/io-functions-commons/master/openapi/definitions.yaml#/ExtendedServicePayload"
+      "$ref": "https://raw.githubusercontent.com/pagopa/io-functions-commons/v28.7.1/openapi/definitions.yaml#/ExtendedServicePayload"
     },
     "HiddenServicePayload": {
-      "$ref": "https://raw.githubusercontent.com/pagopa/io-functions-commons/master/openapi/definitions.yaml#/HiddenServicePayload"
+      "$ref": "https://raw.githubusercontent.com/pagopa/io-functions-commons/v28.7.1/openapi/definitions.yaml#/HiddenServicePayload"
     },
     "VisibleServicePayload": {
-      "$ref": "https://raw.githubusercontent.com/pagopa/io-functions-commons/master/openapi/definitions.yaml#/VisibleServicePayload"
+      "$ref": "https://raw.githubusercontent.com/pagopa/io-functions-commons/v28.7.1/openapi/definitions.yaml#/VisibleServicePayload"
     },
     "CommonServicePayload": {
-      "$ref": "https://raw.githubusercontent.com/pagopa/io-functions-commons/master/openapi/definitions.yaml#/CommonServicePayload"
+      "$ref": "https://raw.githubusercontent.com/pagopa/io-functions-commons/v28.7.1/openapi/definitions.yaml#/CommonServicePayload"
     },
     "ServiceId": {
-      "$ref": "https://raw.githubusercontent.com/pagopa/io-functions-commons/master/openapi/definitions.yaml#/ServiceId"
+      "$ref": "https://raw.githubusercontent.com/pagopa/io-functions-commons/v28.7.1/openapi/definitions.yaml#/ServiceId"
     },
     "ServiceName": {
-      "$ref": "https://raw.githubusercontent.com/pagopa/io-functions-commons/master/openapi/definitions.yaml#/ServiceName"
+      "$ref": "https://raw.githubusercontent.com/pagopa/io-functions-commons/v28.7.1/openapi/definitions.yaml#/ServiceName"
     },
     "OrganizationName": {
-      "$ref": "https://raw.githubusercontent.com/pagopa/io-functions-commons/master/openapi/definitions.yaml#/OrganizationName"
+      "$ref": "https://raw.githubusercontent.com/pagopa/io-functions-commons/v28.7.1/openapi/definitions.yaml#/OrganizationName"
     },
     "DepartmentName": {
-      "$ref": "https://raw.githubusercontent.com/pagopa/io-functions-commons/master/openapi/definitions.yaml#/DepartmentName"
+      "$ref": "https://raw.githubusercontent.com/pagopa/io-functions-commons/v28.7.1/openapi/definitions.yaml#/DepartmentName"
     },
     "CIDR": {
-      "$ref": "https://raw.githubusercontent.com/pagopa/io-functions-commons/master/openapi/definitions.yaml#/CIDR"
+      "$ref": "https://raw.githubusercontent.com/pagopa/io-functions-commons/v28.7.1/openapi/definitions.yaml#/CIDR"
     },
     "MaxAllowedPaymentAmount": {
-      "$ref": "https://raw.githubusercontent.com/pagopa/io-functions-commons/master/openapi/definitions.yaml#/MaxAllowedPaymentAmount"
+      "$ref": "https://raw.githubusercontent.com/pagopa/io-functions-commons/v28.7.1/openapi/definitions.yaml#/MaxAllowedPaymentAmount"
     },
     "OrganizationFiscalCode": {
-      "$ref": "https://raw.githubusercontent.com/pagopa/io-functions-commons/master/openapi/definitions.yaml#/OrganizationFiscalCode"
+      "$ref": "https://raw.githubusercontent.com/pagopa/io-functions-commons/v28.7.1/openapi/definitions.yaml#/OrganizationFiscalCode"
     },
     "FiscalCode": {
-      "$ref": "https://raw.githubusercontent.com/pagopa/io-functions-commons/master/openapi/definitions.yaml#/FiscalCode"
+      "$ref": "https://raw.githubusercontent.com/pagopa/io-functions-commons/v28.7.1/openapi/definitions.yaml#/FiscalCode"
     },
     "ExtendedProfile": {
-      "$ref": "https://raw.githubusercontent.com/pagopa/io-functions-commons/master/openapi/definitions.yaml#/ExtendedProfile"
+      "$ref": "https://raw.githubusercontent.com/pagopa/io-functions-commons/v28.7.1/openapi/definitions.yaml#/ExtendedProfile"
     },
     "ImpersonatedService": {
-      "$ref": "https://raw.githubusercontent.com/pagopa/io-functions-commons/master/openapi/definitions.yaml#/ImpersonatedService"
+      "$ref": "https://raw.githubusercontent.com/pagopa/io-functions-commons/v28.7.1/openapi/definitions.yaml#/ImpersonatedService"
     },
     "UserGroupsPayload": {
       "description": "All the groups with which the user must be associated.\nThe already existing associations with groups which are not included in this object will be deleted.",
