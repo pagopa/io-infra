@@ -143,12 +143,12 @@ resource "azurerm_storage_container" "lv_audit_logs_storage_logs" {
 }
 
 ###
-# Unique Emails Storage
+# Citizen Auth Storage
 ###
-module "unique_emails_storage" {
+module "io_citizen_auth_storage" {
   source = "git::https://github.com/pagopa/terraform-azurerm-v3//storage_account?ref=v6.1.0"
 
-  name                          = replace(format("%s-unique-emails-st", local.product), "-", "")
+  name                          = replace(format("%s-st", local.product), "-", "")
   domain                        = upper(var.domain)
   account_kind                  = "StorageV2"
   account_tier                  = "Standard"
@@ -163,16 +163,16 @@ module "unique_emails_storage" {
   tags = var.tags
 }
 
-resource "azurerm_private_endpoint" "unique_emails_storage_table" {
-  depends_on          = [module.unique_emails_storage]
-  name                = "${module.unique_emails_storage.name}-table-endpoint"
+resource "azurerm_private_endpoint" "table" {
+  depends_on          = [module.io_citizen_auth_storage]
+  name                = format("%s-table-endpoint", module.io_citizen_auth_storage.name)
   location            = var.location
   resource_group_name = azurerm_resource_group.data_rg.name
   subnet_id           = data.azurerm_subnet.private_endpoints_subnet.id
 
   private_service_connection {
-    name                           = "${module.unique_emails_storage.name}-table"
-    private_connection_resource_id = module.unique_emails_storage.id
+    name                           = format("%s-table", module.io_citizen_auth_storage.name)
+    private_connection_resource_id = module.io_citizen_auth_storage.id
     is_manual_connection           = false
     subresource_names              = ["table"]
   }
@@ -185,8 +185,8 @@ resource "azurerm_private_endpoint" "unique_emails_storage_table" {
   tags = var.tags
 }
 
-resource "azurerm_storage_table" "unique_emails_storage_unique_emails_table" {
-  depends_on           = [module.unique_emails_storage]
+resource "azurerm_storage_table" "unique_emails" {
+  depends_on           = [module.io_citizen_auth_storage]
   name                 = "uniqueEmails"
-  storage_account_name = module.unique_emails_storage.name
+  storage_account_name = module.io_citizen_auth_storage.name
 }
