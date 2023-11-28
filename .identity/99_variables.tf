@@ -1,7 +1,11 @@
 variable "tags" {
   type = map(any)
   default = {
-    CreatedBy = "Terraform"
+    CreatedBy   = "Terraform"
+    Environment = "Prod"
+    Owner       = "IO"
+    Source      = "https://github.com/pagopa/io-infra"
+    CostCenter  = "TS310 - PAGAMENTI & SERVIZI"
   }
 }
 
@@ -53,13 +57,6 @@ variable "github_token" {
   description = "GitHub Organization and repository name"
 }
 
-# variable "environment_ci_roles" {
-#   type = object({
-#     subscription = list(string)
-#   })
-#   description = "GitHub Continous Integration roles"
-# }
-
 variable "github_repository_environment_ci" {
   type = object({
     protected_branches     = bool
@@ -67,13 +64,6 @@ variable "github_repository_environment_ci" {
   })
   description = "GitHub Continous Integration roles"
 }
-
-# variable "environment_cd_roles" {
-#   type = object({
-#     subscription = list(string)
-#   })
-#   description = "GitHub Continous Delivery roles"
-# }
 
 variable "github_repository_environment_cd" {
   type = object({
@@ -83,8 +73,6 @@ variable "github_repository_environment_cd" {
   })
   description = "GitHub Continous Integration roles"
 }
-
-# --- Managed Identities (new)
 
 variable "ci_github_federations" {
   type = list(object({
