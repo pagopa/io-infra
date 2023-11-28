@@ -60,22 +60,22 @@ github_repository_environment_cd = {
 ci_github_federations = [
   {
     repository = "io-infra"
-    subject    = "dev-ci"
+    subject    = "prod-ci"
   },
   {
     repository = "io-sign"
-    subject    = "dev-ci"
+    subject    = "prod-ci"
   }
 ]
 
 cd_github_federations = [
   {
     repository = "io-infra"
-    subject    = "dev-ci"
+    subject    = "prod-ci"
   },
   {
     repository = "io-sign"
-    subject    = "dev-ci"
+    subject    = "prod-ci"
   }
 ]
 
