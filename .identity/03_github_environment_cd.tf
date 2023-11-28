@@ -43,6 +43,13 @@ resource "github_actions_environment_secret" "azure_cd_client_id" {
   plaintext_value = azuread_service_principal.environment_cd.application_id
 }
 
+resource "github_actions_environment_secret" "azure_client_id_cd" {
+  repository      = var.github.repository
+  environment     = "${var.env}-cd"
+  secret_name     = "AZURE_CLIENT_ID_CD"
+  plaintext_value = module.identity_cd.identity_client_id
+}
+
 #tfsec:ignore:github-actions-no-plain-text-action-secrets # not real secret
 resource "github_actions_environment_secret" "azure_cd_container_app_environment_name" {
   repository      = var.github.repository
