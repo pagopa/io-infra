@@ -313,7 +313,7 @@ locals {
       BACKEND_HOST = "https://${trimsuffix(azurerm_dns_a_record.api_app_io_pagopa_it.fqdn, ".")}"
 
       // CLOCK SKEW LOG EVENT
-      HAS_CLOCK_SKEW_LOG_EVENT = "true"
+      HAS_CLOCK_SKEW_LOG_EVENT = "false"
     }
     app_settings_l1 = {
       IS_APPBACKENDLI = "false"
