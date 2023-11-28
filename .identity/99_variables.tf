@@ -1,3 +1,10 @@
+variable "tags" {
+  type = map(any)
+  default = {
+    CreatedBy = "Terraform"
+  }
+}
+
 variable "prefix" {
   type = string
   validation {
@@ -6,6 +13,11 @@ variable "prefix" {
     )
     error_message = "Max length is 6 chars."
   }
+}
+
+variable "location" {
+  type        = string
+  description = "One of westeurope, northeurope"
 }
 
 variable "env" {
@@ -71,3 +83,39 @@ variable "github_repository_environment_cd" {
   })
   description = "GitHub Continous Integration roles"
 }
+
+# --- Managed Identities (new)
+
+# variable "ci_github_federations" {
+#   type = list(object({
+#     repository        = string
+#     credentials_scope = optional(string, "environment")
+#     subject           = string
+#   }))
+#   description = "GitHub Organization, repository name and scope permissions"
+# }
+
+# variable "cd_github_federations" {
+#   type = list(object({
+#     repository        = string
+#     credentials_scope = optional(string, "environment")
+#     subject           = string
+#   }))
+#   description = "GitHub Organization, repository name and scope permissions"
+# }
+
+# variable "environment_ci_roles" {
+#   type = object({
+#     subscription    = list(string)
+#     resource_groups = map(list(string))
+#   })
+#   description = "GitHub Continous Integration roles"
+# }
+
+# variable "environment_cd_roles" {
+#   type = object({
+#     subscription    = list(string)
+#     resource_groups = map(list(string))
+#   })
+#   description = "GitHub Continous Delivery roles"
+# }
