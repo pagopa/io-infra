@@ -10,7 +10,7 @@ data "azurerm_key_vault_secret" "cgnonboardingportal_os_header_name" {
 
 ## Api merchant
 module "apim_v2_product_merchant" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_product?ref=v4.1.15"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_product?ref=v7.28.0"
 
   product_id   = "cgnmerchant"
   display_name = "IO CGN API MERCHANT"
@@ -27,7 +27,7 @@ module "apim_v2_product_merchant" {
 }
 
 module "api_v2_cgn_merchant" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api?ref=v4.1.15"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api?ref=v7.28.0"
 
   name                = "io-cgn-merchant-api"
   api_management_name = module.apim_v2.name
