@@ -1,5 +1,5 @@
 module "apim_v2_product_services" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_product?ref=v4.1.15"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_product?ref=v7.28.0"
 
   product_id            = "io-services-api"
   api_management_name   = module.apim_v2.name
@@ -95,7 +95,7 @@ resource "azurerm_api_management_named_value" "api_gad_client_certificate_verifi
 }
 
 module "api_v2_services" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api?ref=v4.1.15"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api?ref=v7.28.0"
 
   name                = "io-services-api"
   api_management_name = module.apim_v2.name
