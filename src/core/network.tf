@@ -6,7 +6,7 @@ resource "azurerm_resource_group" "rg_vnet" {
 }
 
 module "vnet_common" {
-  source               = "git::https://github.com/pagopa/terraform-azurerm-v3.git//virtual_network?ref=v4.1.15"
+  source               = "git::https://github.com/pagopa/terraform-azurerm-v3.git//virtual_network?ref=v7.28.0"
   name                 = "${local.project}-vnet-common"
   location             = azurerm_resource_group.rg_common.location
   resource_group_name  = azurerm_resource_group.rg_common.name
@@ -24,7 +24,7 @@ resource "azurerm_resource_group" "weu_beta_vnet_rg" {
 }
 
 module "vnet_weu_beta" {
-  source               = "git::https://github.com/pagopa/terraform-azurerm-v3.git//virtual_network?ref=v4.1.15"
+  source               = "git::https://github.com/pagopa/terraform-azurerm-v3.git//virtual_network?ref=v7.28.0"
   name                 = "${local.project}-weu-beta-vnet"
   location             = azurerm_resource_group.weu_beta_vnet_rg.location
   resource_group_name  = azurerm_resource_group.weu_beta_vnet_rg.name
@@ -35,9 +35,7 @@ module "vnet_weu_beta" {
 }
 
 module "vnet_peering_common_weu_beta" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//virtual_network_peering?ref=v4.1.15"
-
-  location = var.location
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//virtual_network_peering?ref=v7.28.0"
 
   source_resource_group_name       = azurerm_resource_group.rg_common.name
   source_virtual_network_name      = module.vnet_common.name
@@ -57,7 +55,7 @@ resource "azurerm_resource_group" "weu_prod01_vnet_rg" {
 }
 
 module "vnet_weu_prod01" {
-  source               = "git::https://github.com/pagopa/terraform-azurerm-v3.git//virtual_network?ref=v4.1.15"
+  source               = "git::https://github.com/pagopa/terraform-azurerm-v3.git//virtual_network?ref=v7.28.0"
   name                 = "${local.project}-weu-prod01-vnet"
   location             = azurerm_resource_group.weu_prod01_vnet_rg.location
   resource_group_name  = azurerm_resource_group.weu_prod01_vnet_rg.name
@@ -68,9 +66,7 @@ module "vnet_weu_prod01" {
 }
 
 module "vnet_peering_common_weu_prod01" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//virtual_network_peering?ref=v4.1.15"
-
-  location = var.location
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//virtual_network_peering?ref=v7.28.0"
 
   source_resource_group_name       = azurerm_resource_group.rg_common.name
   source_virtual_network_name      = module.vnet_common.name
@@ -90,7 +86,7 @@ resource "azurerm_resource_group" "weu_prod02_vnet_rg" {
 }
 
 module "vnet_weu_prod02" {
-  source               = "git::https://github.com/pagopa/terraform-azurerm-v3.git//virtual_network?ref=v4.1.15"
+  source               = "git::https://github.com/pagopa/terraform-azurerm-v3.git//virtual_network?ref=v7.28.0"
   name                 = "${local.project}-weu-prod02-vnet"
   location             = azurerm_resource_group.weu_prod02_vnet_rg.location
   resource_group_name  = azurerm_resource_group.weu_prod02_vnet_rg.name
@@ -101,9 +97,7 @@ module "vnet_weu_prod02" {
 }
 
 module "vnet_peering_common_weu_prod02" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//virtual_network_peering?ref=v4.1.15"
-
-  location = var.location
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//virtual_network_peering?ref=v7.28.0"
 
   source_resource_group_name       = azurerm_resource_group.rg_common.name
   source_virtual_network_name      = module.vnet_common.name
@@ -116,7 +110,7 @@ module "vnet_peering_common_weu_prod02" {
 }
 
 module "private_endpoints_subnet" {
-  source               = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v4.1.4"
+  source               = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v7.28.0"
   name                 = "pendpoints"
   address_prefixes     = var.cidr_subnet_pendpoints
   resource_group_name  = azurerm_resource_group.rg_common.name
@@ -127,7 +121,7 @@ module "private_endpoints_subnet" {
 
 # TODO OLD APIM subnet to REMOVE
 module "apim_snet" {
-  source               = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v4.1.15"
+  source               = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v7.28.0"
   name                 = "apimapi"
   resource_group_name  = azurerm_resource_group.rg_common.name
   virtual_network_name = module.vnet_common.name
