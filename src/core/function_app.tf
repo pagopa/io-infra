@@ -117,6 +117,7 @@ locals {
       MAGIC_LINK_SERVICE_API_KEY    = data.azurerm_key_vault_secret.ioweb_profile_function_api_key.value
       MAGIC_LINK_SERVICE_PUBLIC_URL = format("https://%s-%s-%s-ioweb-profile-fn.azurewebsites.net", var.prefix, var.env_short, var.location_short)
       HELP_DESK_REF                 = "mailto:beta.loginveloce@pagopa.it"
+      IOWEB_ACCESS_REF              = "https://ioapp.it"
       #
 
       MAILUP_USERNAME      = data.azurerm_key_vault_secret.common_MAILUP_USERNAME.value
