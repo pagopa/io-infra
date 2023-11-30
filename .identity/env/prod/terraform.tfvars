@@ -24,7 +24,7 @@ ci_github_federations = [
     subject    = "prod-ci"
   },
   {
-    repository = "io-sign"
+    repository = "io-sign" # TODO: move. https://github.com/pagopa/io-infra/pull/745#discussion_r1410721348
     subject    = "prod-ci"
   }
 ]
@@ -35,7 +35,7 @@ cd_github_federations = [
     subject    = "prod-ci"
   },
   {
-    repository = "io-sign"
+    repository = "io-sign" # TODO: move. https://github.com/pagopa/io-infra/pull/745#discussion_r1410721348
     subject    = "prod-ci"
   }
 ]
