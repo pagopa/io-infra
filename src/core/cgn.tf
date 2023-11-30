@@ -18,7 +18,7 @@ module "redis_cgn_snet" {
 }
 
 module "redis_cgn" {
-  source                = "git::https://github.com/pagopa/terraform-azurerm-v3.git//redis_cache?ref=v4.1.15"
+  source                = "git::https://github.com/pagopa/terraform-azurerm-v3.git//redis_cache?ref=v7.28.0"
   name                  = format("%s-redis-cgn-std", local.project)
   resource_group_name   = data.azurerm_resource_group.rg_cgn.name
   location              = data.azurerm_resource_group.rg_cgn.location
@@ -26,6 +26,8 @@ module "redis_cgn" {
   family                = "C"
   sku_name              = "Standard"
   enable_authentication = true
+  zones                 = null
+  redis_version         = "6"
 
   // when azure can apply patch?
   patch_schedules = [{
@@ -49,7 +51,6 @@ module "redis_cgn" {
       start_hour_utc = 23
     },
   ]
-
 
   private_endpoint = {
     enabled              = true
