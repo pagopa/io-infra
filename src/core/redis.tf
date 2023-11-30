@@ -1,5 +1,5 @@
 module "redis_common_snet" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v6.3.0"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v7.28.0"
 
   name                                      = "rediscommon"
   address_prefixes                          = var.cidr_subnet_redis_common
@@ -9,7 +9,7 @@ module "redis_common_snet" {
 }
 
 module "redis_common_backup" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//storage_account?ref=v6.3.0"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//storage_account?ref=v7.28.0"
 
   name                            = replace(format("%s-stredis", local.project), "-", "")
   account_kind                    = "StorageV2"
@@ -26,7 +26,7 @@ module "redis_common_backup" {
 }
 
 module "redis_common" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//redis_cache?ref=v6.3.0"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//redis_cache?ref=v7.28.0"
 
   name                          = format("%s-redis-common", local.project)
   resource_group_name           = azurerm_resource_group.rg_common.name
@@ -38,6 +38,7 @@ module "redis_common" {
   subnet_id                     = module.redis_common_snet.id
   public_network_access_enabled = var.redis_common.public_network_access_enabled
   redis_version                 = var.redis_common.redis_version
+  zones                         = null
 
   backup_configuration = {
     frequency                 = var.redis_common.rdb_backup_frequency
