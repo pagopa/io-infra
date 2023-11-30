@@ -62,7 +62,7 @@
 | <a name="module_appservice_app_backendli_slot_staging"></a> [appservice\_app\_backendli\_slot\_staging](#module\_appservice\_app\_backendli\_slot\_staging) | git::https://github.com/pagopa/terraform-azurerm-v3.git//app_service_slot | v4.1.15 |
 | <a name="module_appservice_continua"></a> [appservice\_continua](#module\_appservice\_continua) | git::https://github.com/pagopa/terraform-azurerm-v3.git//app_service | v7.28.0 |
 | <a name="module_appservice_continua_slot_staging"></a> [appservice\_continua\_slot\_staging](#module\_appservice\_continua\_slot\_staging) | git::https://github.com/pagopa/terraform-azurerm-v3.git//app_service_slot | v7.28.0 |
-| <a name="module_appservice_devportal_be"></a> [appservice\_devportal\_be](#module\_appservice\_devportal\_be) | git::https://github.com/pagopa/terraform-azurerm-v3.git//app_service | v6.0.0 |
+| <a name="module_appservice_devportal_be"></a> [appservice\_devportal\_be](#module\_appservice\_devportal\_be) | git::https://github.com/pagopa/terraform-azurerm-v3.git//app_service | v7.28.0 |
 | <a name="module_appservice_selfcare_be"></a> [appservice\_selfcare\_be](#module\_appservice\_selfcare\_be) | git::https://github.com/pagopa/terraform-azurerm-v3.git//app_service | v6.0.0 |
 | <a name="module_assets_cdn"></a> [assets\_cdn](#module\_assets\_cdn) | git::https://github.com/pagopa/terraform-azurerm-v3.git//storage_account | v7.28.0 |
 | <a name="module_azdoa_li"></a> [azdoa\_li](#module\_azdoa\_li) | git::https://github.com/pagopa/terraform-azurerm-v3.git//azure_devops_agent | v4.1.15 |

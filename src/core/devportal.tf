@@ -70,7 +70,7 @@ resource "azurerm_app_service_virtual_network_swift_connection" "devportal_be" {
 #tfsec:ignore:azure-appservice-authentication-enabled:exp:2022-05-01 # already ignored, maybe a bug in tfsec
 #tfsec:ignore:azure-appservice-require-client-cert:exp:2022-05-01 # already ignored, maybe a bug in tfsec
 module "appservice_devportal_be" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//app_service?ref=v6.0.0"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//app_service?ref=v7.28.0"
 
   name                = format("%s-app-devportal-be", local.project)
   resource_group_name = azurerm_resource_group.selfcare_be_rg.name
