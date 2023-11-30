@@ -1,8 +1,45 @@
 prefix    = "io"
 env_short = "p"
 env       = "prod"
+location  = "westeurope"
 
-# read-only permissions
+github_repository_environment_ci = {
+  protected_branches     = false
+  custom_branch_policies = true
+}
+
+github_repository_environment_cd = {
+  protected_branches     = true
+  custom_branch_policies = false
+  reviewers_teams = [
+    "infrastructure-admins",
+    "io-backend-admin",
+    "io-backend-contributors",
+  ]
+}
+
+ci_github_federations = [
+  {
+    repository = "io-infra"
+    subject    = "prod-ci"
+  },
+  {
+    repository = "io-sign" # TODO: move. https://github.com/pagopa/io-infra/pull/745#discussion_r1410721348
+    subject    = "prod-ci"
+  }
+]
+
+cd_github_federations = [
+  {
+    repository = "io-infra"
+    subject    = "prod-ci"
+  },
+  {
+    repository = "io-sign" # TODO: move. https://github.com/pagopa/io-infra/pull/745#discussion_r1410721348
+    subject    = "prod-ci"
+  }
+]
+
 environment_ci_roles = {
   subscription = [
     "Reader",
@@ -16,14 +53,13 @@ environment_ci_roles = {
     "DocumentDB Account Contributor",
     "API Management Service Contributor",
   ]
+  resource_groups = {
+    "terraform-state-rg" = [
+      "Storage Blob Data Contributor"
+    ]
+  }
 }
 
-github_repository_environment_ci = {
-  protected_branches     = false
-  custom_branch_policies = true
-}
-
-# read-write permissions
 environment_cd_roles = {
   subscription = [
     "Contributor",
@@ -34,14 +70,5 @@ environment_cd_roles = {
     "Storage Table Data Contributor",
     "Key Vault Contributor",
   ]
-}
-
-github_repository_environment_cd = {
-  protected_branches     = true
-  custom_branch_policies = false
-  reviewers_teams = [
-    "infrastructure-admins",
-    "io-backend-admin",
-    "io-backend-contributors",
-  ]
+  resource_groups = {}
 }
