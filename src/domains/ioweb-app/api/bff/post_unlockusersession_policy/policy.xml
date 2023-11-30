@@ -5,14 +5,14 @@
     <rate-limit-by-key calls="5" renewal-period="10" counter-key="@(context.Request.Headers.GetValueOrDefault("X-Forwarded-For"))" retry-after-header-name="x-rate-limit-retry-after" remaining-calls-header-name="x-rate-limit-remaining" />
     <!-- ApiRateLimit 10 requests/5seconds based on Access Token -->
     <rate-limit-by-key calls="5" renewal-period="10" counter-key="@(context.Request.Headers.GetValueOrDefault("Authorization").AsJwt()?.Claims.GetValueOrDefault("fiscal_number", ""))" retry-after-header-name="x-rate-limit-retry-after" remaining-calls-header-name="x-rate-limit-remaining" />
-</inbound>
-<backend>
-<base />
-</backend>
-<outbound>
-<base />
-</outbound>
-<on-error>
-<base />
-</on-error>
+  </inbound>
+  <backend>
+    <base />
+  </backend>
+  <outbound>
+    <base />
+  </outbound>
+  <on-error>
+    <base />
+  </on-error>
 </policies>
