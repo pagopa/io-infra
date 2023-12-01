@@ -41,4 +41,4 @@ tls_cert_check_helm = {
 
 ### Aks
 
-ingress_load_balancer_ip = "10.11.100.250"
+ingress_load_balancer_ip = "10.11.0.254"

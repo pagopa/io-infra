@@ -55,7 +55,7 @@ aks_user_node_pool = {
 aks_system_cidr_subnet = ["10.10.0.0/24"]
 aks_cidr_subnet        = ["10.10.0.0/24"]
 aks_user_cidr_subnet   = ["10.10.1.0/24"]
-aks_num_outbound_ips = 1
+aks_num_outbound_ips   = 1
 
 ingress_min_replica_count = "1"
 ingress_max_replica_count = "30"
