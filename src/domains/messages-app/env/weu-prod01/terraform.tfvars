@@ -46,7 +46,7 @@ cidr_subnet_push_notif = ["10.0.141.0/26"]
 
 ### Aks
 
-ingress_load_balancer_ip = "10.11.100.250"
+ingress_load_balancer_ip = "10.11.0.254"
 
 ## Event hub
 ehns_enabled                  = true
