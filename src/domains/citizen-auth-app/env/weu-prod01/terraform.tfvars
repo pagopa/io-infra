@@ -44,7 +44,7 @@ tls_cert_check_helm = {
 
 ### Aks
 
-ingress_load_balancer_ip = "10.11.100.250"
+ingress_load_balancer_ip = "10.11.0.254"
 
 # Functions LolliPoP
 cidr_subnet_fnlollipop              = ["10.0.17.0/26"]
