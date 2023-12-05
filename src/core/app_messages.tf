@@ -161,7 +161,7 @@ module "app_messages_function" {
     sku_tier                     = var.app_messages_function_sku_tier
     sku_size                     = var.app_messages_function_sku_size
     maximum_elastic_worker_count = 0
-    worker_count                 = 2
+    worker_count                 = count.index == 1 ? 1 : 2
     zone_balancing_enabled       = false
   }
 
@@ -199,7 +199,7 @@ module "app_messages_function" {
     }
   ]
 
-  client_certificate_mode = "Optional"
+  client_certificate_mode = count.index == 1 ? "Required" : "Optional"
 
   tags = var.tags
 }
