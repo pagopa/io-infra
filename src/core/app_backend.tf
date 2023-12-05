@@ -337,21 +337,21 @@ locals {
 
   app_backend_test_urls = [
     {
-      # https://io-p-app-appbackendl1.azurewebsites.net/info
+      id          = "io-p-app-appbackendl1.azurewebsites.net"
       name        = module.appservice_app_backendl1.default_site_hostname,
       host        = module.appservice_app_backendl1.default_site_hostname,
       path        = "/info",
       http_status = 200,
     },
     {
-      # https://io-p-app-appbackendl2.azurewebsites.net/info
+      id          = "io-p-app-appbackendl2.azurewebsites.net"
       name        = module.appservice_app_backendl2.default_site_hostname,
       host        = module.appservice_app_backendl2.default_site_hostname,
       path        = "/info",
       http_status = 200,
     },
     {
-      # https://io-p-app-appbackendli.azurewebsites.net/info
+      id          = "io-p-app-appbackendli.azurewebsites.net"
       name        = module.appservice_app_backendli.default_site_hostname,
       host        = module.appservice_app_backendli.default_site_hostname,
       path        = "/info",
@@ -821,7 +821,7 @@ resource "azurerm_monitor_autoscale_setting" "appservice_app_backendl1" {
 ## app_backendl2
 
 module "app_backendl2_snet" {
-  source                                    = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v4.1.15"
+  source                                    = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v7.28.0"
   name                                      = "appbackendl2"
   address_prefixes                          = var.cidr_subnet_appbackendl2
   resource_group_name                       = azurerm_resource_group.rg_common.name
@@ -847,15 +847,12 @@ resource "azurerm_subnet_nat_gateway_association" "app_backendl2_snet" {
 }
 
 module "appservice_app_backendl2" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//app_service?ref=v4.1.15"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//app_service?ref=v7.28.0"
 
   # App service plan
-  plan_type     = "internal"
-  plan_name     = format("%s-plan-appappbackendl2", local.project)
-  plan_kind     = "Linux"
-  plan_reserved = true # Mandatory for Linux plan
-  plan_sku_tier = var.app_backend_plan_sku_tier
-  plan_sku_size = var.app_backend_plan_sku_size
+  plan_type = "internal"
+  plan_name = format("%s-plan-appappbackendl2", local.project)
+  sku_name  = var.app_backend_plan_sku_size
 
   # App service
   name                = format("%s-app-appbackendl2", local.project)
@@ -863,7 +860,7 @@ module "appservice_app_backendl2" {
   location            = azurerm_resource_group.rg_linux.location
 
   always_on         = true
-  linux_fx_version  = "NODE|18-lts"
+  node_version      = "18-lts"
   app_command_line  = local.app_backend.app_command_line
   health_check_path = "/ping"
 
@@ -891,12 +888,11 @@ module "appservice_app_backendl2" {
 }
 
 module "appservice_app_backendl2_slot_staging" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//app_service_slot?ref=v4.1.15"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//app_service_slot?ref=v7.28.0"
 
   # App service plan
-  app_service_plan_id = module.appservice_app_backendl2.plan_id
-  app_service_id      = module.appservice_app_backendl2.id
-  app_service_name    = module.appservice_app_backendl2.name
+  app_service_id   = module.appservice_app_backendl2.id
+  app_service_name = module.appservice_app_backendl2.name
 
   # App service
   name                = "staging"
@@ -904,7 +900,7 @@ module "appservice_app_backendl2_slot_staging" {
   location            = azurerm_resource_group.rg_linux.location
 
   always_on         = true
-  linux_fx_version  = "NODE|18-lts"
+  node_version      = "18-lts"
   app_command_line  = local.app_backend.app_command_line
   health_check_path = "/ping"
 
@@ -1039,7 +1035,7 @@ resource "azurerm_monitor_autoscale_setting" "appservice_app_backendl2" {
 ## app_backendli
 
 module "app_backendli_snet" {
-  source                                    = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v4.1.15"
+  source                                    = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v7.28.0"
   name                                      = "appbackendli"
   address_prefixes                          = var.cidr_subnet_appbackendli
   resource_group_name                       = azurerm_resource_group.rg_common.name
@@ -1065,15 +1061,13 @@ resource "azurerm_subnet_nat_gateway_association" "app_backendli_snet" {
 }
 
 module "appservice_app_backendli" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//app_service?ref=v4.1.15"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//app_service?ref=v7.28.0"
 
   # App service plan
-  plan_type     = "internal"
-  plan_name     = format("%s-plan-appappbackendli", local.project)
-  plan_kind     = "Linux"
-  plan_reserved = true # Mandatory for Linux plan
-  plan_sku_tier = var.app_backend_plan_sku_tier
-  plan_sku_size = var.app_backend_plan_sku_size
+  plan_type = "internal"
+  plan_name = format("%s-plan-appappbackendli", local.project)
+  plan_kind = "Linux"
+  sku_name  = var.app_backend_plan_sku_size
 
   # App service
   name                = format("%s-app-appbackendli", local.project)
@@ -1081,7 +1075,7 @@ module "appservice_app_backendli" {
   location            = azurerm_resource_group.rg_linux.location
 
   always_on         = true
-  linux_fx_version  = "NODE|18-lts"
+  node_version      = "18-lts"
   app_command_line  = local.app_backend.app_command_line
   health_check_path = "/ping"
 
@@ -1110,12 +1104,11 @@ module "appservice_app_backendli" {
 }
 
 module "appservice_app_backendli_slot_staging" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//app_service_slot?ref=v4.1.15"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//app_service_slot?ref=v7.28.0"
 
   # App service plan
-  app_service_plan_id = module.appservice_app_backendli.plan_id
-  app_service_id      = module.appservice_app_backendli.id
-  app_service_name    = module.appservice_app_backendli.name
+  app_service_id   = module.appservice_app_backendli.id
+  app_service_name = module.appservice_app_backendli.name
 
   # App service
   name                = "staging"
@@ -1123,7 +1116,7 @@ module "appservice_app_backendli_slot_staging" {
   location            = azurerm_resource_group.rg_linux.location
 
   always_on         = true
-  linux_fx_version  = "NODE|18-lts"
+  node_version      = "18-lts"
   app_command_line  = local.app_backend.app_command_line
   health_check_path = "/ping"
 
@@ -1210,10 +1203,9 @@ resource "azurerm_monitor_autoscale_setting" "appservice_app_backendli" {
   }
 }
 
-
 ## web availabolity test
 module "app_backend_web_test_api" {
-  for_each = { for v in local.app_backend_test_urls : v.name => v if v != null }
+  for_each = { for v in local.app_backend_test_urls : v.id => v if v != null }
   source   = "git::https://github.com/pagopa/terraform-azurerm-v3.git//application_insights_web_test_preview?ref=v7.28.0"
 
   subscription_id                   = data.azurerm_subscription.current.subscription_id
@@ -1231,7 +1223,6 @@ module "app_backend_web_test_api" {
       action_group_id = azurerm_monitor_action_group.error_action_group.id,
     }
   ]
-
 }
 
 # -----------------------------------------------
