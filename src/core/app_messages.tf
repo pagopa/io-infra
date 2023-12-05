@@ -65,7 +65,7 @@ module "redis_messages_v6" {
   sku_name              = "Standard"
   redis_version         = "6"
   enable_authentication = true
-  zones = null
+  zones                 = null
 
   // when azure can apply patch?
   patch_schedules = [{
@@ -152,7 +152,7 @@ module "app_messages_function" {
   health_check_path   = "/api/v1/info"
 
   runtime_version                          = "~4"
-  node_version                         = "18"
+  node_version                             = "18"
   always_on                                = var.app_messages_function_always_on
   application_insights_instrumentation_key = azurerm_application_insights.application_insights.instrumentation_key
 
@@ -161,8 +161,8 @@ module "app_messages_function" {
     sku_tier                     = var.app_messages_function_sku_tier
     sku_size                     = var.app_messages_function_sku_size
     maximum_elastic_worker_count = 0
-    worker_count = 2
-    zone_balancing_enabled = false
+    worker_count                 = 2
+    zone_balancing_enabled       = false
   }
 
   storage_account_info = {
@@ -220,7 +220,7 @@ module "app_messages_function_staging_slot" {
 
   os_type                                  = "linux"
   runtime_version                          = "~4"
-  node_version                         = "18"
+  node_version                             = "18"
   always_on                                = var.app_messages_function_always_on
   application_insights_instrumentation_key = azurerm_application_insights.application_insights.instrumentation_key
 
