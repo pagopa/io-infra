@@ -1,7 +1,7 @@
 <policies>
     <inbound>
         <base />
-        <set-backend-service base-url="https://weuprod01.messages.internal.io.pagopa.it/service-messages/api/v1" />
+        <set-backend-service base-url="https://weubeta.messages.internal.io.pagopa.it/service-messages/api/v1" />
         <!-- <choose>
             <when condition="@(context.Request.Headers.GetValueOrDefault("environment", "false").Equals("beta"))">
                 <set-backend-service base-url="https://weubeta.messages.internal.io.pagopa.it/service-messages/api/v1" />
