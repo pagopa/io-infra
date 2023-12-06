@@ -20,11 +20,6 @@ locals {
   internal_dns_zone_name                = "${var.dns_zone_internal_prefix}.${var.external_domain}"
   internal_dns_zone_resource_group_name = "${local.product}-vnet-rg"
 
-  pagopa_apim_name = "${local.product}-apim"
-  pagopa_apim_rg   = "${local.product}-api-rg"
-
-  apim_hostname = "api.${var.apim_dns_zone_prefix}.${var.external_domain}"
-
   kibana_hostname       = var.env_short == "p" ? "weu${var.env}.kibana.internal.platform.pagopa.it" : "weu${var.env}.kibana.internal.${var.env}.platform.pagopa.it"
   kibana_hostname_short = "weu${var.env}.kibana"
 
