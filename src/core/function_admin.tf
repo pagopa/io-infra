@@ -235,8 +235,7 @@ module "function_admin" {
 
   client_certificate_mode = "Required"
   sticky_app_setting_names = [
-    "AzureWebJobs.UserDataProcessingTrigger.Disabled",
-    "SLOT_TASK_HUBNAME"
+    "AzureWebJobs.UserDataProcessingTrigger.Disabled"
   ]
 
   tags = var.tags
