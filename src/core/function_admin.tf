@@ -178,8 +178,7 @@ module "admin_snet" {
 }
 
 module "function_admin" {
-  # TODO: update when the PR will be merged: https://github.com/pagopa/terraform-azurerm-v3/pull/192
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app?ref=EC-21-variabile-network-access-modulo-function-app"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app?ref=v7.28.0"
 
   resource_group_name = azurerm_resource_group.admin_rg.name
   name                = format("%s-admin-fn", local.project)
@@ -238,8 +237,6 @@ module "function_admin" {
   sticky_app_setting_names = [
     "AzureWebJobs.UserDataProcessingTrigger.Disabled"
   ]
-
-  storage_durable_funcion_public_network_access_enabled = true
 
   tags = var.tags
 }
