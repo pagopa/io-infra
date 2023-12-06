@@ -142,20 +142,6 @@ variable "elastic_hot_storage" {
     initialStorageSize     = string
   })
 }
-variable "elastic_warm_storage" {
-  type = object({
-    storage_type           = string,
-    allow_volume_expansion = bool,
-    initialStorageSize     = string
-  })
-}
-variable "elastic_cold_storage" {
-  type = object({
-    storage_type           = string,
-    allow_volume_expansion = bool,
-    initialStorageSize     = string
-  })
-}
 
 variable "enable_iac_pipeline" {
   type        = bool
@@ -169,6 +155,15 @@ variable "ingress_load_balancer_ip" {
 variable "subscription_name" {
   type        = string
   description = "Subscription name"
+}
+
+variable "reloader_helm" {
+  type = object({
+    chart_version = string,
+    image_name    = string,
+    image_tag     = string
+  })
+  description = "reloader helm chart configuration"
 }
 
 variable "nginx_helm" {

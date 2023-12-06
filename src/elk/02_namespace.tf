@@ -1,8 +1,9 @@
-data "kubernetes_namespace" "namespace" {
+resource "kubernetes_namespace" "namespace" {
   metadata {
     name = local.elk_namespace
   }
 }
+
 
 module "pod_identity" {
   source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//kubernetes_pod_identity?ref=v7.28.0"
@@ -14,7 +15,7 @@ module "pod_identity" {
 
   identity_name = "${var.domain}-pod-identity"
   namespace     = kubernetes_namespace.namespace.metadata[0].name
-  key_vault_id  = data.azurerm_key_vault.kv.id
+  key_vault_id  = module.key_vault.id
 
   secret_permissions      = ["Get"]
   certificate_permissions = ["Get"]

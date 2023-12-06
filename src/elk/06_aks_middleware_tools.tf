@@ -18,7 +18,7 @@ resource "helm_release" "tls_cert_check" {
         expiration_delta_in_days       = "7"
         host                           = "${var.location_short}${var.instance}.${var.domain}.internal.io.pagopa.it"
         appinsights_instrumentationkey = "appinsights-connection-string"
-        keyvault_name                  = data.azurerm_key_vault.kv.name
+        keyvault_name                  = module.key_vault.name
         keyvault_tenantid              = data.azurerm_client_config.current.tenant_id
     })}",
   ]
@@ -28,7 +28,7 @@ module "letsencrypt_dev_elk" {
 
   prefix            = var.prefix
   env               = var.env_short
-  key_vault_name    = "${local.product}-${var.domain}-kv"
+  key_vault_name    = module.key_vault.name
   subscription_name = var.subscription_name
 }
 

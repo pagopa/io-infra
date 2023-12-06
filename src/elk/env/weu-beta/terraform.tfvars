@@ -82,6 +82,12 @@ nginx_helm = {
   }
 }
 
+reloader_helm = {
+  chart_version = "v1.0.41"
+  image_name    = "stakater/reloader"
+  image_tag     = "v1.0.41@sha256:eb7e816f4c38d9c9c25fd8743919075d8ea699d8593f261c7c2e0b52080c6c47"
+}
+
 nodeset_config = {
   balancer-nodes = {
     count            = "3"

@@ -13,7 +13,6 @@ resource "azurerm_resource_group" "elk_rg" {
 module "elastic_stack" {
   depends_on = [
     azurerm_kubernetes_cluster_node_pool.elastic,
-    kubernetes_secret.snapshot_secret
   ]
 
   source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//elastic_stack?ref=v7.29.0"
