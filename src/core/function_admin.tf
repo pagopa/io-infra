@@ -274,6 +274,8 @@ module "function_admin_staging_slot" {
     module.apim_v2_snet.id,
   ]
 
+  client_certificate_mode = "Optional"
+
   tags = var.tags
 }
 
