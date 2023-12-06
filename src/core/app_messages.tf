@@ -107,6 +107,7 @@ resource "azurerm_resource_group" "app_messages_common_rg" {
 
   tags = var.tags
 }
+
 resource "azurerm_resource_group" "app_messages_rg" {
   count    = var.app_messages_count
   name     = format("%s-app-messages-rg-%d", local.project, count.index + 1)
@@ -161,7 +162,7 @@ module "app_messages_function" {
     sku_tier                     = var.app_messages_function_sku_tier
     sku_size                     = var.app_messages_function_sku_size
     maximum_elastic_worker_count = 0
-    worker_count                 = count.index == 1 ? 1 : 2
+    worker_count                 = 1
     zone_balancing_enabled       = false
   }
 
@@ -199,7 +200,7 @@ module "app_messages_function" {
     }
   ]
 
-  client_certificate_mode = count.index == 1 ? "Required" : "Optional"
+  client_certificate_mode = "Required"
 
   tags = var.tags
 }
