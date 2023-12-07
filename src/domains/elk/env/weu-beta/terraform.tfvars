@@ -92,18 +92,18 @@ nodeset_config = {
     count            = "3"
     roles            = []
     storage          = "20Gi"
-    storageClassName = "io-p-weu-elk-elastic-aks-storage-hot"
+    storageClassName = "io-p-elk-weu-beta-elastic-aks-storage-hot"
   },
   master-nodes = {
     count            = "3"
     roles            = ["master"]
     storage          = "20Gi"
-    storageClassName = "io-p-weu-elk-elastic-aks-storage-hot"
+    storageClassName = "io-p-elk-weu-beta-elastic-aks-storage-hot"
   },
   data-hot-nodes = {
     count            = "3"
     roles            = ["ingest", "data_content", "data_hot"]
     storage          = "500Gi"
-    storageClassName = "io-p-weu-elk-elastic-aks-storage-hot"
+    storageClassName = "io-p-elk-weu-beta-elastic-aks-storage-hot"
   }
 }

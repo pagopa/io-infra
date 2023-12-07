@@ -10,6 +10,55 @@ resource "azurerm_resource_group" "elk_rg" {
   tags = var.tags
 }
 
+resource "azurerm_storage_account" "elk_snapshot_sa" {
+  name                     = replace(format("%s-sa", local.project), "-", "")
+  resource_group_name      = azurerm_resource_group.elk_rg.name
+  location                 = azurerm_resource_group.elk_rg.location
+  account_tier             = "Standard"
+  account_replication_type = "GZRS"
+
+  blob_properties {
+    change_feed_enabled = var.elk_snapshot_sa.backup_enabled
+    dynamic "container_delete_retention_policy" {
+      for_each = var.elk_snapshot_sa.backup_enabled ? [1] : []
+      content {
+        days = var.elk_snapshot_sa.blob_delete_retention_days
+      }
+
+    }
+    #    change_feed_retention_in_days = var.elk_snapshot_sa.backup_enabled ? var.elk_snapshot_sa.blob_delete_retention_days : null
+    #    restore_policy {
+    #      days = var.elk_snapshot_sa.blob_delete_retention_days
+    #    }
+    versioning_enabled = var.elk_snapshot_sa.backup_enabled
+    dynamic "delete_retention_policy" {
+      for_each = var.elk_snapshot_sa.backup_enabled ? [1] : []
+      content {
+        days = var.elk_snapshot_sa.blob_delete_retention_days
+      }
+
+    }
+  }
+}
+
+resource "azurerm_storage_container" "snapshot_container" {
+  name                  = local.deafult_snapshot_container_name
+  storage_account_name  = azurerm_storage_account.elk_snapshot_sa.name
+  container_access_type = "private"
+}
+
+resource "kubernetes_secret" "snapshot_secret" {
+  metadata {
+    name      = local.snapshot_secret_name
+    namespace = kubernetes_namespace.namespace.metadata[0].name
+  }
+  data = {
+    "azure.client.default.account" = replace(format("%s-sa", local.project), "-", "")
+    "azure.client.default.key"     = azurerm_storage_account.elk_snapshot_sa.primary_access_key
+  }
+
+}
+
 module "elastic_stack" {
   depends_on = [
     azurerm_kubernetes_cluster_node_pool.elastic,

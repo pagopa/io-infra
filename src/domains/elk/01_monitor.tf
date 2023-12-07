@@ -33,3 +33,21 @@ data "azurerm_subnet" "azdoa_snet" {
   virtual_network_name = local.vnet_common_name
   resource_group_name  = local.vnet_common_resource_group_name
 }
+
+#tfsec:ignore:AZU023
+resource "azurerm_key_vault_secret" "appinsights_instrumentation_key" {
+  name         = "appinsights-instrumentation-key"
+  value        = data.azurerm_application_insights.application_insights.instrumentation_key
+  content_type = "only instrumentation key"
+
+  key_vault_id = module.key_vault.id
+}
+
+#tfsec:ignore:AZU023
+resource "azurerm_key_vault_secret" "appinsights_connection_string" {
+  name         = "appinsights-connection-string"
+  value        = data.azurerm_application_insights.application_insights.connection_string
+  content_type = "full connection string, example InstrumentationKey=XXXXX"
+
+  key_vault_id = module.key_vault.id
+}
