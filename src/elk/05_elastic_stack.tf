@@ -17,7 +17,7 @@ module "elastic_stack" {
 
   source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//elastic_stack?ref=v7.29.0"
 
-  namespace      = local.elk_namespace
+  namespace      = kubernetes_namespace.namespace.metadata[0].name
   nodeset_config = var.nodeset_config
 
   dedicated_log_instance_name = []
@@ -45,7 +45,7 @@ data "kubernetes_secret" "get_elastic_credential" {
 
   metadata {
     name      = "quickstart-es-elastic-user"
-    namespace = local.elk_namespace
+    namespace = kubernetes_namespace.namespace.metadata[0].name
   }
 }
 

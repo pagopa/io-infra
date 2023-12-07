@@ -84,6 +84,11 @@ variable "log_analytics_workspace_resource_group_name" {
   description = "The name of the resource group in which the Log Analytics workspace is located in."
 }
 
+variable "application_insights_name" {
+  type        = string
+  description = "Specifies the name of the Application Insights."
+}
+
 ### Aks
 
 variable "k8s_kube_config_path_prefix" {
@@ -91,22 +96,17 @@ variable "k8s_kube_config_path_prefix" {
   default = "~/.kube"
 }
 
-variable "external_domain" {
-  type        = string
-  default     = null
-  description = "Domain for delegation"
+variable "ingress_load_balancer_ip" {
+  type = string
 }
 
-variable "dns_zone_internal_prefix" {
-  type        = string
-  default     = null
-  description = "The dns subdomain."
-}
-
-variable "apim_dns_zone_prefix" {
-  type        = string
-  default     = null
-  description = "The dns subdomain for apim."
+variable "reloader_helm" {
+  type = object({
+    chart_version = string,
+    image_name    = string,
+    image_tag     = string
+  })
+  description = "reloader helm chart configuration"
 }
 
 variable "tls_cert_check_helm" {
@@ -116,6 +116,121 @@ variable "tls_cert_check_helm" {
     image_tag     = string
   })
   description = "tls cert helm chart configuration"
+}
+
+## Event hub
+
+variable "ehns_enabled" {
+  type        = bool
+  description = "Enable event hub namespace"
+  default     = false
+}
+
+variable "ehns_sku_name" {
+  type        = string
+  description = "Defines which tier to use."
+  default     = "Basic"
+}
+
+variable "ehns_capacity" {
+  type        = number
+  description = "Specifies the Capacity / Throughput Units for a Standard SKU namespace."
+  default     = null
+}
+
+variable "ehns_maximum_throughput_units" {
+  type        = number
+  description = "Specifies the maximum number of throughput units when Auto Inflate is Enabled"
+  default     = null
+}
+
+variable "ehns_auto_inflate_enabled" {
+  type        = bool
+  description = "Is Auto Inflate enabled for the EventHub Namespace?"
+  default     = false
+}
+
+variable "ehns_zone_redundant" {
+  type        = bool
+  description = "Specifies if the EventHub Namespace should be Zone Redundant (created across Availability Zones)."
+  default     = false
+}
+
+variable "eventhubs" {
+  description = "A list of event hubs to add to namespace."
+  type = list(object({
+    name              = string
+    partitions        = number
+    message_retention = number
+    consumers         = list(string)
+    keys = list(object({
+      name   = string
+      listen = bool
+      send   = bool
+      manage = bool
+    }))
+  }))
+  default = []
+}
+
+variable "ehns_ip_rules" {
+  description = "eventhub network rules"
+  type = list(object({
+    ip_mask = string
+    action  = string
+  }))
+  default = []
+}
+
+variable "ehns_virtual_network_rules" {
+  description = "eventhub virtual network rules"
+  type = list(object({
+    ip_mask = string
+    action  = string
+  }))
+  default = []
+}
+
+variable "ehns_alerts_enabled" {
+  type        = bool
+  default     = true
+  description = "Event hub alerts enabled?"
+}
+
+variable "ehns_metric_alerts" {
+  default = {}
+
+  description = <<EOD
+Map of name = criteria objects
+EOD
+
+  type = map(object({
+    # criteria.*.aggregation to be one of [Average Count Minimum Maximum Total]
+    aggregation = string
+    metric_name = string
+    description = string
+    # criteria.0.operator to be one of [Equals NotEquals GreaterThan GreaterThanOrEqual LessThan LessThanOrEqual]
+    operator  = string
+    threshold = number
+    # Possible values are PT1M, PT5M, PT15M, PT30M and PT1H
+    frequency = string
+    # Possible values are PT1M, PT5M, PT15M, PT30M, PT1H, PT6H, PT12H and P1D.
+    window_size = string
+
+    dimension = list(object(
+      {
+        name     = string
+        operator = string
+        values   = list(string)
+      }
+    ))
+  }))
+}
+
+variable "enable_azdoa" {
+  type        = bool
+  description = "Specifies Azure Devops Agent enabling"
+  default     = true
 }
 
 variable "elastic_node_pool" {
@@ -143,27 +258,16 @@ variable "elastic_hot_storage" {
   })
 }
 
-variable "enable_iac_pipeline" {
-  type        = bool
-  description = "If true create the key vault policy to allow used by azure devops iac pipelines."
-  default     = false
-}
-variable "ingress_load_balancer_ip" {
+variable "ingress_elk_load_balancer_ip" {
   type = string
 }
 
-variable "subscription_name" {
-  type        = string
-  description = "Subscription name"
+variable "ingress_min_replica_count" {
+  type = string
 }
 
-variable "reloader_helm" {
-  type = object({
-    chart_version = string,
-    image_name    = string,
-    image_tag     = string
-  })
-  description = "reloader helm chart configuration"
+variable "ingress_max_replica_count" {
+  type = string
 }
 
 variable "nginx_helm" {
@@ -183,18 +287,6 @@ variable "nginx_helm" {
     })
   })
   description = "nginx ingress helm chart configuration"
-}
-
-variable "ingress_elk_load_balancer_ip" {
-  type = string
-}
-
-variable "ingress_min_replica_count" {
-  type = string
-}
-
-variable "ingress_max_replica_count" {
-  type = string
 }
 
 variable "nodeset_config" {
