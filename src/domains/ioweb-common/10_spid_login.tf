@@ -66,8 +66,8 @@ module "spid_login" {
 
     SPID_ATTRIBUTES = "name,familyName,fiscalNumber"
 
-    # Commented for using pre-prod environment
-    #CIE_URL          = "https://api.is.eng.pagopa.it/idp-keys/cie/latest"
+    # Comment for using CIE pre-prod environment
+    CIE_URL          = "https://api.is.eng.pagopa.it/idp-keys/cie/latest"
     IDP_METADATA_URL = "https://api.is.eng.pagopa.it/idp-keys/spid/latest"
 
     REQUIRED_ATTRIBUTES_SERVICE_NAME = "IO Web Onboarding Portal"
