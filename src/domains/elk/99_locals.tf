@@ -24,7 +24,7 @@ locals {
   aks_snet_name           = "${var.prefix}-${var.env_short}-${var.location_short}-${var.instance}-aks-user-snet"
 
   kibana_hostname       = var.env_short == "p" ? "weu${var.env}.kibana.internal.platform.pagopa.it" : "weu${var.env}.kibana.internal.${var.env}.platform.pagopa.it"
-  kibana_hostname_short = "weu${var.env}.kibana"
+  kibana_hostname_short = "weu${var.instance}.kibana"
 
 
 }
