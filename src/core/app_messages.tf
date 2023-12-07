@@ -8,7 +8,6 @@ locals {
     app_settings_common = {
       FUNCTIONS_WORKER_RUNTIME       = "node"
       WEBSITE_RUN_FROM_PACKAGE       = "1"
-      WEBSITE_VNET_ROUTE_ALL         = "1"
       WEBSITE_DNS_SERVER             = "168.63.129.16"
       FUNCTIONS_WORKER_PROCESS_COUNT = 4
       NODE_ENV                       = "production"
