@@ -8,12 +8,6 @@ data "azurerm_virtual_network" "vnet_common" {
   resource_group_name = local.vnet_common_resource_group_name
 }
 
-data "azurerm_subnet" "aks_snet" {
-  name                 = local.aks_snet_name
-  virtual_network_name = local.vnet_name
-  resource_group_name  = local.vnet_resource_group_name
-}
-
 data "azurerm_private_dns_zone" "internal" {
   name                = local.internal_dns_zone_name
   resource_group_name = local.internal_dns_zone_resource_group_name
@@ -69,4 +63,13 @@ resource "azurerm_private_dns_a_record" "kibana_ingress" {
   resource_group_name = local.internal_dns_zone_resource_group_name
   ttl                 = 3600
   records             = [var.ingress_elk_load_balancer_ip]
+}
+
+module "aks_elk_snet" {
+  source                                    = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v7.28.0"
+  name                                      = "${local.project}-aks-${var.domain}-snet"
+  address_prefixes                          = var.aks_elk_cidr_subnet
+  resource_group_name                       = data.azurerm_virtual_network.vnet.resource_group_name
+  virtual_network_name                      = data.azurerm_virtual_network.vnet.name
+  private_endpoint_network_policies_enabled = false
 }

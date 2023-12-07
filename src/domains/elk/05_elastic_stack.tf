@@ -28,12 +28,12 @@ module "elastic_stack" {
   env_short = var.env_short
   env       = var.env
 
-  kibana_external_domain = var.env_short == "p" ? "https://kibana.platform.pagopa.it/kibana" : "https://kibana.${var.env}.platform.pagopa.it/kibana"
+  kibana_external_domain = "https://kibana.${var.prefix}.pagopa.it/kibana"
 
-  secret_name   = var.env_short == "p" ? "${var.location_short}${var.env}-kibana-internal-platform-pagopa-it" : "${var.location_short}${var.env}-kibana-internal-${var.env}-platform-pagopa-it"
+  secret_name   = "${var.location_short}${var.instance}-kibana-internal-${var.prefix}-pagopa-it"
   keyvault_name = module.key_vault.name
 
-  kibana_internal_hostname = var.env_short == "p" ? "${var.location_short}${var.env}.kibana.internal.platform.pagopa.it" : "${var.location_short}${var.env}.kibana.internal.${var.env}.platform.pagopa.it"
+  kibana_internal_hostname = "${var.location_short}${var.instance}.kibana.internal.${var.prefix}.pagopa.it"
 
   snapshot_secret_name = local.snapshot_secret_name
 }
@@ -56,6 +56,7 @@ data "kubernetes_secret" "get_elastic_credential" {
 # }
 
 # workaround
+#TODO fix url values
 locals {
   kibana_url  = var.env_short == "d" ? "https://elastic:${data.kubernetes_secret.get_elastic_credential.data.elastic}@kibana.${var.env}.platform.pagopa.it/kibana" : "https://elastic:${data.kubernetes_secret.get_elastic_credential.data.elastic}@${local.kibana_hostname}/kibana"
   elastic_url = var.env_short == "d" ? "https://elastic:${data.kubernetes_secret.get_elastic_credential.data.elastic}@kibana.${var.env}.platform.pagopa.it/elastic" : "https://elastic:${data.kubernetes_secret.get_elastic_credential.data.elastic}@${local.kibana_hostname}/elastic"

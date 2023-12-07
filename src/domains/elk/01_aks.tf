@@ -39,7 +39,7 @@ resource "azurerm_kubernetes_cluster_node_pool" "elastic" {
   node_taints = var.elastic_node_pool.node_taints
 
   ### networking
-  vnet_subnet_id        = data.azurerm_subnet.aks_snet.id
+  vnet_subnet_id        = module.aks_elk_snet.id
   enable_node_public_ip = false
 
 

@@ -320,3 +320,8 @@ variable "elk_snapshot_sa" {
     advanced_threat_protection = true
   }
 }
+
+variable "aks_elk_cidr_subnet" {
+  type        = list(string)
+  description = "Aks network address space."
+}

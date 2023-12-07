@@ -1,6 +1,6 @@
 resource "kubernetes_namespace" "ingress" {
   metadata {
-    name = "ingress-elastic"
+    name = "ingress-${var.domain}"
   }
 }
 
@@ -12,7 +12,7 @@ module "nginx_ingress" {
   namespace  = kubernetes_namespace.ingress.metadata[0].name
   repository = "https://kubernetes.github.io/ingress-nginx"
   app = {
-    name          = "nginx-ingress-elastic"
+    name          = "nginx-ingress-${var.domain}"
     version       = var.nginx_helm.version
     chart         = "ingress-nginx"
     recreate_pods = false #https://github.com/helm/helm/issues/6378 -> fixed in k8s 1.22

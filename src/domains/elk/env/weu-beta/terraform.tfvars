@@ -39,7 +39,9 @@ tls_cert_check_helm = {
   image_tag     = "v1.3.4@sha256:c3d45736706c981493b6216451fc65e99a69d5d64409ccb1c4ca93fef57c921d"
 }
 
-### Aks
+### 
+
+aks_elk_cidr_subnet = ["10.10.2.0/24"]
 
 # ingress-nginx helm charts releases 4.X.X: https://github.com/kubernetes/ingress-nginx/releases?expanded=true&page=1&q=tag%3Ahelm-chart-4
 # Pinned versions from "4.1.0" release: https://github.com/kubernetes/ingress-nginx/blob/helm-chart-4.1.0/charts/ingress-nginx/values.yaml
@@ -59,7 +61,7 @@ nginx_helm = {
   }
 }
 
-ingress_load_balancer_ip     = "10.10.0.254"
+# ingress_load_balancer_ip     = "10.10.0.254"
 ingress_elk_load_balancer_ip = "10.10.0.253"
 ingress_min_replica_count    = "1"
 ingress_max_replica_count    = "3"
