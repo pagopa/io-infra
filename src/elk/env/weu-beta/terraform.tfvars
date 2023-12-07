@@ -59,7 +59,7 @@ nginx_helm = {
   }
 }
 
-ingress_load_balancer_ip = "10.10.0.254"
+ingress_load_balancer_ip     = "10.10.0.254"
 ingress_elk_load_balancer_ip = "10.10.0.253"
 ingress_min_replica_count    = "1"
 ingress_max_replica_count    = "3"
