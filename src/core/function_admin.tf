@@ -81,7 +81,7 @@ locals {
       FUNCTIONS_WORKER_PROCESS_COUNT = 4
 
       # DNS configuration to use private endpoint
-      WEBSITE_DNS_SERVER     = "168.63.129.16"
+      WEBSITE_DNS_SERVER = "168.63.129.16"
 
       COSMOSDB_NAME              = "db"
       COSMOSDB_URI               = data.azurerm_cosmosdb_account.cosmos_api.endpoint
