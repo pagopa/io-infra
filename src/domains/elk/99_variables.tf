@@ -258,10 +258,6 @@ variable "elastic_hot_storage" {
   })
 }
 
-variable "ingress_elk_load_balancer_ip" {
-  type = string
-}
-
 variable "ingress_min_replica_count" {
   type = string
 }
