@@ -10,7 +10,7 @@
                 <set-backend-service base-url="https://weuprod01.messages.internal.io.pagopa.it/io-backend/api/v1" />
             </when>
             <otherwise>
-                https://docs.microsoft.com/en-us/dotnet/api/system.random.next?view=net-6.0#system-random-next(system-int32-system-int32)
+                #https://docs.microsoft.com/en-us/dotnet/api/system.random.next?view=net-6.0#system-random-next(system-int32-system-int32)
                 <set-variable name="urlWeight" value="@{
                   Random rnd = new Random();
                   int urlWeight = rnd.Next(1, 1001);

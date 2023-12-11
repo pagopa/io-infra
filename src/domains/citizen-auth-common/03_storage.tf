@@ -86,7 +86,6 @@ resource "azurerm_storage_queue" "lollipop_assertions_storage_revoke_queue" {
 ###
 # LV Audit Log Storage
 ###
-
 module "lv_audit_logs_storage" {
   source = "git::https://github.com/pagopa/terraform-azurerm-v3//storage_account?ref=v6.1.0"
 
@@ -141,4 +140,53 @@ resource "azurerm_storage_container" "lv_audit_logs_storage_logs" {
   name                  = "logs"
   storage_account_name  = module.lv_audit_logs_storage.name
   container_access_type = "private"
+}
+
+###
+# Citizen Auth Storage
+###
+module "io_citizen_auth_storage" {
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3//storage_account?ref=v6.1.0"
+
+  name                          = replace(format("%s-st", local.project), "-", "")
+  domain                        = upper(var.domain)
+  account_kind                  = "StorageV2"
+  account_tier                  = "Standard"
+  access_tier                   = "Hot"
+  account_replication_type      = "GZRS"
+  resource_group_name           = azurerm_resource_group.data_rg.name
+  location                      = var.location
+  advanced_threat_protection    = true
+  enable_identity               = true
+  public_network_access_enabled = false
+
+  tags = var.tags
+}
+
+resource "azurerm_private_endpoint" "table" {
+  depends_on          = [module.io_citizen_auth_storage]
+  name                = format("%s-table-endpoint", module.io_citizen_auth_storage.name)
+  location            = var.location
+  resource_group_name = azurerm_resource_group.data_rg.name
+  subnet_id           = data.azurerm_subnet.private_endpoints_subnet.id
+
+  private_service_connection {
+    name                           = format("%s-table", module.io_citizen_auth_storage.name)
+    private_connection_resource_id = module.io_citizen_auth_storage.id
+    is_manual_connection           = false
+    subresource_names              = ["table"]
+  }
+
+  private_dns_zone_group {
+    name                 = "private-dns-zone-group"
+    private_dns_zone_ids = [data.azurerm_private_dns_zone.privatelink_table_core.id]
+  }
+
+  tags = var.tags
+}
+
+resource "azurerm_storage_table" "profile_emails" {
+  depends_on           = [module.io_citizen_auth_storage, azurerm_private_endpoint.table]
+  name                 = "profileEmails"
+  storage_account_name = module.io_citizen_auth_storage.name
 }

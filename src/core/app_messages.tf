@@ -7,9 +7,7 @@ locals {
   function_app_messages = {
     app_settings_common = {
       FUNCTIONS_WORKER_RUNTIME       = "node"
-      WEBSITE_NODE_DEFAULT_VERSION   = "14.16.0"
       WEBSITE_RUN_FROM_PACKAGE       = "1"
-      WEBSITE_VNET_ROUTE_ALL         = "1"
       WEBSITE_DNS_SERVER             = "168.63.129.16"
       FUNCTIONS_WORKER_PROCESS_COUNT = 4
       NODE_ENV                       = "production"
@@ -56,7 +54,7 @@ locals {
 * [REDIS V6]
 */
 module "redis_messages_v6" {
-  source                = "git::https://github.com/pagopa/terraform-azurerm-v3.git//redis_cache?ref=v6.11.2"
+  source                = "git::https://github.com/pagopa/terraform-azurerm-v3.git//redis_cache?ref=v7.28.0"
   name                  = format("%s-redis-app-messages-std-v6", local.project)
   resource_group_name   = azurerm_resource_group.app_messages_common_rg.name
   location              = azurerm_resource_group.app_messages_common_rg.location
@@ -65,6 +63,7 @@ module "redis_messages_v6" {
   sku_name              = "Standard"
   redis_version         = "6"
   enable_authentication = true
+  zones                 = null
 
   // when azure can apply patch?
   patch_schedules = [{
@@ -106,6 +105,7 @@ resource "azurerm_resource_group" "app_messages_common_rg" {
 
   tags = var.tags
 }
+
 resource "azurerm_resource_group" "app_messages_rg" {
   count    = var.app_messages_count
   name     = format("%s-app-messages-rg-%d", local.project, count.index + 1)
@@ -117,7 +117,7 @@ resource "azurerm_resource_group" "app_messages_rg" {
 # Subnet to host app messages function
 module "app_messages_snet" {
   count                                     = var.app_messages_count
-  source                                    = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v4.1.15"
+  source                                    = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v7.28.0"
   name                                      = format("%s-app-messages-snet-%d", local.project, count.index + 1)
   address_prefixes                          = [var.cidr_subnet_appmessages[count.index]]
   resource_group_name                       = azurerm_resource_group.rg_common.name
@@ -142,7 +142,7 @@ module "app_messages_snet" {
 #tfsec:ignore:azure-storage-queue-services-logging-enabled:exp:2022-05-01 # already ignored, maybe a bug in tfsec
 module "app_messages_function" {
   count  = var.app_messages_count
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app?ref=v4.1.15"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app?ref=v7.28.0"
 
   resource_group_name = azurerm_resource_group.app_messages_rg[count.index].name
   name                = format("%s-app-messages-fn-%d", local.project, count.index + 1)
@@ -150,9 +150,8 @@ module "app_messages_function" {
   location            = var.location
   health_check_path   = "/api/v1/info"
 
-  os_type                                  = "linux"
   runtime_version                          = "~4"
-  linux_fx_version                         = "NODE|18"
+  node_version                             = "18"
   always_on                                = var.app_messages_function_always_on
   application_insights_instrumentation_key = azurerm_application_insights.application_insights.instrumentation_key
 
@@ -161,6 +160,8 @@ module "app_messages_function" {
     sku_tier                     = var.app_messages_function_sku_tier
     sku_size                     = var.app_messages_function_sku_size
     maximum_elastic_worker_count = 0
+    worker_count                 = 1
+    zone_balancing_enabled       = false
   }
 
   storage_account_info = {
@@ -197,17 +198,18 @@ module "app_messages_function" {
     }
   ]
 
+  client_certificate_mode = "Required"
+
   tags = var.tags
 }
 
 module "app_messages_function_staging_slot" {
   count  = var.app_messages_count
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app_slot?ref=v4.1.15"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app_slot?ref=v7.28.0"
 
   name                = "staging"
   location            = var.location
   resource_group_name = azurerm_resource_group.app_messages_rg[count.index].name
-  function_app_name   = module.app_messages_function[count.index].name
   function_app_id     = module.app_messages_function[count.index].id
   app_service_plan_id = module.app_messages_function[count.index].app_service_plan_id
   health_check_path   = "/api/v1/info"
@@ -217,7 +219,7 @@ module "app_messages_function_staging_slot" {
 
   os_type                                  = "linux"
   runtime_version                          = "~4"
-  linux_fx_version                         = "NODE|18"
+  node_version                             = "18"
   always_on                                = var.app_messages_function_always_on
   application_insights_instrumentation_key = azurerm_application_insights.application_insights.instrumentation_key
 

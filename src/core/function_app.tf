@@ -117,6 +117,7 @@ locals {
       MAGIC_LINK_SERVICE_API_KEY    = data.azurerm_key_vault_secret.ioweb_profile_function_api_key.value
       MAGIC_LINK_SERVICE_PUBLIC_URL = format("https://%s-%s-%s-ioweb-profile-fn.azurewebsites.net", var.prefix, var.env_short, var.location_short)
       HELP_DESK_REF                 = "mailto:beta.loginveloce@pagopa.it"
+      IOWEB_ACCESS_REF              = "https://ioapp.it"
       #
 
       MAILUP_USERNAME      = data.azurerm_key_vault_secret.common_MAILUP_USERNAME.value
@@ -129,6 +130,9 @@ locals {
     }
     app_settings_2 = {
     }
+    staging_functions_disabled = [
+      "OnProfileUpdate"
+    ]
   }
 }
 
@@ -197,6 +201,9 @@ module "function_app" {
 
   app_settings = merge(
     local.function_app.app_settings_common,
+    {
+      "AzureWebJobs.OnProfileUpdate.Disabled" = "1"
+    }
   )
 
   internal_storage = {
@@ -247,6 +254,11 @@ module "function_app_staging_slot" {
 
   app_settings = merge(
     local.function_app.app_settings_common,
+    {
+      # Disabled functions on slot triggered by cosmosDB change feed
+      for to_disable in local.function_app.staging_functions_disabled :
+      format("AzureWebJobs.%s.Disabled", to_disable) => "1"
+    }
   )
 
   subnet_id = module.app_snet[count.index].id

@@ -58,7 +58,7 @@ module "spid_login" {
     REDIS_PASSWORD = module.redis_spid_login.primary_access_key
 
     # SPID
-    ORG_ISSUER       = "https://ioapp.it/pub-op-full"
+    ORG_ISSUER       = "https://ioapp.it/pub-op-full/"
     ORG_URL          = "https://www.pagopa.it"
     ACS_BASE_URL     = format("https://%s/%s", var.app_gateway_host_name, local.spid_login_base_path)
     ORG_DISPLAY_NAME = "PagoPA S.p.A."
@@ -66,8 +66,8 @@ module "spid_login" {
 
     SPID_ATTRIBUTES = "name,familyName,fiscalNumber"
 
-    # Commented for using pre-prod environment
-    #CIE_URL          = "https://api.is.eng.pagopa.it/idp-keys/cie/latest"
+    # Comment for using CIE pre-prod environment
+    CIE_URL          = "https://api.is.eng.pagopa.it/idp-keys/cie/latest"
     IDP_METADATA_URL = "https://api.is.eng.pagopa.it/idp-keys/spid/latest"
 
     REQUIRED_ATTRIBUTES_SERVICE_NAME = "IO Web Onboarding Portal"

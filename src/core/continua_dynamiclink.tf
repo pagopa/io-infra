@@ -36,7 +36,7 @@ resource "azurerm_resource_group" "continua_rg" {
 }
 
 module "continua_common_snet" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v5.5.1"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v7.28.0"
 
   name                                      = format("%s-continua-common-snet", local.project)
   address_prefixes                          = var.cidr_subnet_continua
@@ -76,7 +76,7 @@ resource "azurerm_service_plan" "continua" {
 }
 
 module "appservice_continua" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//app_service?ref=v6.2.2"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//app_service?ref=v7.28.0"
 
   name                = format("%s-app-continua", local.project)
   resource_group_name = azurerm_resource_group.continua_rg.name
@@ -103,7 +103,7 @@ module "appservice_continua" {
 
 module "appservice_continua_slot_staging" {
   count  = can(regex(local.app_service_plan_sku_premium_regex, var.continua_appservice_sku)) ? 1 : 0
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//app_service_slot?ref=v6.2.2"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//app_service_slot?ref=v7.28.0"
 
   name                = "staging"
   resource_group_name = azurerm_resource_group.continua_rg.name

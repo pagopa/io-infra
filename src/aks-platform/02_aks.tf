@@ -6,7 +6,7 @@ resource "azurerm_resource_group" "aks_rg" {
 }
 
 module "aks" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//kubernetes_cluster?ref=v4.1.9"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//kubernetes_cluster?ref=v7.27.2"
 
   name                       = local.aks_name
   location                   = var.location
@@ -51,18 +51,20 @@ module "aks" {
   #
   # ☁️ Network
   #
-  vnet_id        = data.azurerm_virtual_network.vnet.id
-  vnet_subnet_id = module.aks_snet.id
+  vnet_id             = data.azurerm_virtual_network.vnet.id
+  vnet_subnet_id      = module.aks_snet.id
+  vnet_user_subnet_id = module.aks_user_snet.id
 
   outbound_ip_address_ids = azurerm_public_ip.aks_outbound.*.id
   private_cluster_enabled = true
   network_profile = {
-    docker_bridge_cidr = "172.17.0.1/16"
-    dns_service_ip     = "10.2.0.10"
-    network_plugin     = "azure"
-    network_policy     = "azure"
-    outbound_type      = "loadBalancer"
-    service_cidr       = "10.2.0.0/16"
+    docker_bridge_cidr  = "172.17.0.1/16"
+    dns_service_ip      = "10.2.0.10"
+    network_plugin      = "azure"
+    network_plugin_mode = "overlay"
+    network_policy      = "azure"
+    outbound_type       = "loadBalancer"
+    service_cidr        = "10.2.0.0/16"
   }
   # end network
 
