@@ -99,7 +99,6 @@ resource "azurerm_monitor_metric_alert" "tls_cert_check" {
       values   = ["${var.location_short}${var.instance}.${var.domain}.internal.io.pagopa.it"]
     }
   }
-
   action {
     action_group_id = data.azurerm_monitor_action_group.error_action_group.id
   }
