@@ -214,7 +214,7 @@ resource "azurerm_key_vault_secret" "reminder_mysql_db_server_url" {
 module "cosmosdb_account_remote_content" {
   source = "git::https://github.com/pagopa/terraform-azurerm-v3//cosmosdb_account?ref=v4.3.1"
 
-  name                = "${local.product}-${var.domain}-remote_content-account"
+  name                = "${local.product}-${var.domain}-remote-content-account"
   domain              = upper(var.domain)
   location            = azurerm_resource_group.data_rg.location
   resource_group_name = azurerm_resource_group.data_rg.name
@@ -256,7 +256,7 @@ module "cosmosdb_account_remote_content" {
 
 module "cosmosdb_sql_database_remote_content" {
   source              = "git::https://github.com/pagopa/terraform-azurerm-v3//cosmosdb_sql_database?ref=v4.3.1"
-  name                = "remote_content"
+  name                = "remote-content"
   resource_group_name = azurerm_resource_group.data_rg.name
   account_name        = module.cosmosdb_account_remote_content.name
 }
