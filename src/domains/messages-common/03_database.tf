@@ -225,7 +225,7 @@ module "cosmosdb_account_remote_content" {
   public_network_access_enabled     = false
   private_endpoint_enabled          = true
   subnet_id                         = data.azurerm_subnet.private_endpoints_subnet.id
-  private_dns_zone_ids              = [data.azurerm_private_dns_zone.privatelink_documents_azure_com.id]
+  private_dns_zone_ids              = []
   is_virtual_network_filter_enabled = false
 
   main_geo_location_location       = azurerm_resource_group.data_rg.location
