@@ -235,6 +235,13 @@ locals {
     "LVTEST00A00A199X"
   ]
 
+  # A list of fiscal code to be used to test for Unique Email Enforcement initiative on IO
+  test_users_unique_email_test = [
+    "UEETST00A00A000X",
+    "UEETST00A00A001X",
+  ]
+
+
   # All previous sets, ensembled
   test_users = join(",",
     flatten([
@@ -242,7 +249,8 @@ locals {
       local.test_users_internal_load,
       local.test_users_store_review,
       local.test_users_eu_covid_cert,
-      local.test_users_fast_login_load_test
+      local.test_users_fast_login_load_test,
+      local.test_users_unique_email_test,
       ]
     )
   )
