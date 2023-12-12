@@ -1,4 +1,8 @@
 
+locals {
+  immutability_policy_days = 730
+}
+
 ######################
 # SPID LOGS Storage
 ######################
@@ -21,6 +25,10 @@ module "spid_logs_storage" {
     enable_immutability_policy = true
     blob_restore_policy_days   = 0
   }
+  immutability_policy_props = {
+    allow_protected_append_writes = false
+    period_since_creation_in_days = local.immutability_policy_days
+  }
 
   tags = var.tags
 }
@@ -34,6 +42,26 @@ module "spid_logs_storage_customer_managed_key" {
   key_name             = format("%s-key", module.spid_logs_storage.name)
   storage_id           = module.spid_logs_storage.id
   storage_principal_id = module.spid_logs_storage.identity.0.principal_id
+}
+
+resource "azurerm_storage_management_policy" "spid_logs_storage_management_policy" {
+  storage_account_id = module.spid_logs_storage.id
+
+  rule {
+    name    = "deleteafterdays"
+    enabled = true
+    filters {
+      prefix_match = [
+        "spidlogs",
+      ]
+      blob_types = ["blockBlob"]
+    }
+    actions {
+      base_blob {
+        delete_after_days_since_creation_greater_than = local.immutability_policy_days + 1
+      }
+    }
+  }
 }
 
 
