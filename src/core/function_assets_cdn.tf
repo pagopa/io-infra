@@ -34,7 +34,7 @@ locals {
 
 # Subnet to host fn cdn assets function
 module "function_assets_cdn_snet" {
-  source                                    = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v4.1.15"
+  source                                    = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v7.28.0"
   name                                      = format("%s-assets-cdn-fn-snet", local.project)
   address_prefixes                          = var.cidr_subnet_fncdnassets
   resource_group_name                       = azurerm_resource_group.rg_common.name
@@ -57,16 +57,15 @@ module "function_assets_cdn_snet" {
 }
 
 module "function_assets_cdn" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app?ref=v4.1.15"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app?ref=v7.28.0"
 
   resource_group_name = azurerm_resource_group.assets_cdn_rg.name
   name                = "${local.project}-assets-cdn-fn"
   location            = var.location
   health_check_path   = "/info"
 
-  os_type                                  = "linux"
   runtime_version                          = "~4"
-  linux_fx_version                         = "NODE|18"
+  node_version                             = "18"
   always_on                                = true
   application_insights_instrumentation_key = azurerm_application_insights.application_insights.instrumentation_key
 
@@ -75,6 +74,8 @@ module "function_assets_cdn" {
     sku_tier                     = var.function_assets_cdn_sku_tier
     sku_size                     = var.function_assets_cdn_sku_size
     maximum_elastic_worker_count = 0
+    worker_count                 = 1
+    zone_balancing_enabled       = null
   }
 
   app_settings = local.function_assets_cdn.app_settings
@@ -86,12 +87,11 @@ module "function_assets_cdn" {
 
 module "function_assets_cdn_staging_slot" {
   count  = var.function_assets_cdn_sku_tier == "PremiumV3" ? 1 : 0
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app_slot?ref=v4.1.15"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app_slot?ref=v7.28.0"
 
   name                = "staging"
   location            = var.location
   resource_group_name = azurerm_resource_group.assets_cdn_rg.name
-  function_app_name   = module.function_assets_cdn.name
   function_app_id     = module.function_assets_cdn.id
   app_service_plan_id = module.function_assets_cdn.app_service_plan_id
   health_check_path   = "/info"
@@ -99,9 +99,8 @@ module "function_assets_cdn_staging_slot" {
   storage_account_name       = module.function_assets_cdn.storage_account.name
   storage_account_access_key = module.function_assets_cdn.storage_account.primary_access_key
 
-  os_type                                  = "linux"
   runtime_version                          = "~4"
-  linux_fx_version                         = "NODE|18"
+  node_version                             = "18"
   always_on                                = true
   application_insights_instrumentation_key = azurerm_application_insights.application_insights.instrumentation_key
 
