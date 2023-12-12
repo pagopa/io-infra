@@ -136,7 +136,7 @@ locals {
 # Subnet to host app function
 module "services_snet" {
   count                                     = var.function_services_count
-  source                                    = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v4.1.15"
+  source                                    = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v7.28.0"
   name                                      = format("%s-services-snet-%d", local.project, count.index + 1)
   address_prefixes                          = [var.cidr_subnet_services[count.index]]
   resource_group_name                       = azurerm_resource_group.rg_common.name
@@ -169,7 +169,7 @@ resource "azurerm_resource_group" "services_rg" {
 #tfsec:ignore:azure-storage-queue-services-logging-enabled:exp:2022-05-01 # already ignored, maybe a bug in tfsec
 module "function_services" {
   count  = var.function_services_count
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app?ref=v4.1.15"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app?ref=v7.28.0"
 
   domain = "IO-COMMONS"
 
@@ -178,9 +178,8 @@ module "function_services" {
   location            = var.location
   health_check_path   = "/api/info"
 
-  os_type          = "linux"
-  linux_fx_version = "NODE|18"
-  runtime_version  = "~4"
+  node_version    = "18"
+  runtime_version = "~4"
 
   always_on                                = "true"
   application_insights_instrumentation_key = azurerm_application_insights.application_insights.instrumentation_key
@@ -190,6 +189,8 @@ module "function_services" {
     sku_tier                     = var.function_services_sku_tier
     sku_size                     = var.function_services_sku_size
     maximum_elastic_worker_count = 0
+    worker_count                 = 1
+    zone_balancing_enabled       = null
   }
 
   app_settings = merge(
@@ -238,7 +239,6 @@ module "function_services" {
     module.function_eucovidcert_snet.id,
   ]
 
-
   # Action groups for alerts
   action = [
     {
@@ -247,18 +247,24 @@ module "function_services" {
     }
   ]
 
+  sticky_app_setting_names = [
+    "AzureWebJobs.CreateNotification.Disabled",
+    "AzureWebJobs.EmailNotification.Disabled",
+    "AzureWebJobs.OnFailedProcessMessage.Disabled",
+    "AzureWebJobs.ProcessMessage.Disabled",
+    "AzureWebJobs.WebhookNotification.Disabled",
+  ]
 
   tags = var.tags
 }
 
 module "function_services_staging_slot" {
   count  = var.function_services_count
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app_slot?ref=v4.1.15"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app_slot?ref=v7.28.0"
 
   name                = "staging"
   location            = var.location
   resource_group_name = azurerm_resource_group.services_rg[count.index].name
-  function_app_name   = module.function_services[count.index].name
   function_app_id     = module.function_services[count.index].id
   app_service_plan_id = module.function_services[count.index].app_service_plan_id
   health_check_path   = "/api/info"
@@ -267,8 +273,7 @@ module "function_services_staging_slot" {
   storage_account_access_key         = module.function_services[count.index].storage_account.primary_access_key
   internal_storage_connection_string = module.function_services[count.index].storage_account_internal_function.primary_connection_string
 
-  os_type                                  = "linux"
-  linux_fx_version                         = "NODE|18"
+  node_version                             = "18"
   always_on                                = "true"
   runtime_version                          = "~4"
   application_insights_instrumentation_key = azurerm_application_insights.application_insights.instrumentation_key
@@ -405,7 +410,7 @@ resource "azurerm_monitor_autoscale_setting" "function_services_autoscale" {
 
 # Cosmos container for subscription cidrs
 module "db_subscription_cidrs_container" {
-  source              = "git::https://github.com/pagopa/terraform-azurerm-v3.git//cosmosdb_sql_container?ref=v4.1.15"
+  source              = "git::https://github.com/pagopa/terraform-azurerm-v3.git//cosmosdb_sql_container?ref=v7.28.0"
   name                = "subscription-cidrs"
   resource_group_name = format("%s-rg-internal", local.project)
   account_name        = format("%s-cosmos-api", local.project)
