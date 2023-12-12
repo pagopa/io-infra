@@ -3,7 +3,7 @@
 # SPID LOGS Storage
 ######################
 module "spid_logs_storage" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3//storage_account?ref=v6.1.0"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3//storage_account?ref=v7.32.1"
 
   name                          = replace(format("%s-spid-logs-st", local.project), "-", "")
   domain                        = upper(var.domain)
@@ -17,11 +17,16 @@ module "spid_logs_storage" {
   enable_identity               = true
   public_network_access_enabled = false
 
+  blob_storage_policy = {
+    enable_immutability_policy = true
+    blob_restore_policy_days   = 0
+  }
+
   tags = var.tags
 }
 
 module "spid_logs_storage_customer_managed_key" {
-  source               = "git::https://github.com/pagopa/terraform-azurerm-v3//storage_account_customer_managed_key?ref=v6.1.0"
+  source               = "git::https://github.com/pagopa/terraform-azurerm-v3//storage_account_customer_managed_key?ref=v7.32.1"
   tenant_id            = data.azurerm_subscription.current.tenant_id
   location             = var.location
   resource_group_name  = azurerm_resource_group.storage_rg.name
