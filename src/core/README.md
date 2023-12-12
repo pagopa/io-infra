@@ -52,7 +52,7 @@
 | <a name="module_app_messages_function"></a> [app\_messages\_function](#module\_app\_messages\_function) | git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app | v7.28.0 |
 | <a name="module_app_messages_function_staging_slot"></a> [app\_messages\_function\_staging\_slot](#module\_app\_messages\_function\_staging\_slot) | git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app_slot | v7.28.0 |
 | <a name="module_app_messages_snet"></a> [app\_messages\_snet](#module\_app\_messages\_snet) | git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet | v7.28.0 |
-| <a name="module_app_snet"></a> [app\_snet](#module\_app\_snet) | git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet | v4.1.15 |
+| <a name="module_app_snet"></a> [app\_snet](#module\_app\_snet) | git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet | v7.28.0 |
 | <a name="module_appgateway_snet"></a> [appgateway\_snet](#module\_appgateway\_snet) | git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet | v7.28.0 |
 | <a name="module_appservice_app_backendl1"></a> [appservice\_app\_backendl1](#module\_appservice\_app\_backendl1) | git::https://github.com/pagopa/terraform-azurerm-v3.git//app_service | v7.28.0 |
 | <a name="module_appservice_app_backendl1_slot_staging"></a> [appservice\_app\_backendl1\_slot\_staging](#module\_appservice\_app\_backendl1\_slot\_staging) | git::https://github.com/pagopa/terraform-azurerm-v3.git//app_service_slot | v7.28.0 |
@@ -85,10 +85,10 @@
 | <a name="module_eventhub_snet"></a> [eventhub\_snet](#module\_eventhub\_snet) | git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet | v7.28.0 |
 | <a name="module_function_admin"></a> [function\_admin](#module\_function\_admin) | git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app | v7.28.0 |
 | <a name="module_function_admin_staging_slot"></a> [function\_admin\_staging\_slot](#module\_function\_admin\_staging\_slot) | git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app_slot | v7.28.0 |
-| <a name="module_function_app"></a> [function\_app](#module\_function\_app) | git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app | v4.1.15 |
+| <a name="module_function_app"></a> [function\_app](#module\_function\_app) | git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app | v7.28.0 |
 | <a name="module_function_app_async"></a> [function\_app\_async](#module\_function\_app\_async) | git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app | v7.28.0 |
 | <a name="module_function_app_async_staging_slot"></a> [function\_app\_async\_staging\_slot](#module\_function\_app\_async\_staging\_slot) | git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app_slot | v7.28.0 |
-| <a name="module_function_app_staging_slot"></a> [function\_app\_staging\_slot](#module\_function\_app\_staging\_slot) | git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app_slot | v4.1.15 |
+| <a name="module_function_app_staging_slot"></a> [function\_app\_staging\_slot](#module\_function\_app\_staging\_slot) | git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app_slot | v7.28.0 |
 | <a name="module_function_assets_cdn"></a> [function\_assets\_cdn](#module\_function\_assets\_cdn) | git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app | v4.1.15 |
 | <a name="module_function_assets_cdn_snet"></a> [function\_assets\_cdn\_snet](#module\_function\_assets\_cdn\_snet) | git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet | v4.1.15 |
 | <a name="module_function_assets_cdn_staging_slot"></a> [function\_assets\_cdn\_staging\_slot](#module\_function\_assets\_cdn\_staging\_slot) | git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app_slot | v4.1.15 |
