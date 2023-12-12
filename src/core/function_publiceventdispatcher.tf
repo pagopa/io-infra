@@ -39,16 +39,16 @@ module "function_pblevtdispatcher_snetout" {
 module "function_pblevtdispatcher" {
   source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app?ref=v4.1.15"
 
-  resource_group_name                      = azurerm_resource_group.pblevtdispatcher_rg.name
-  name                                     = "${local.project}-fn-pblevtdispatcher"
-  storage_account_name                     = "${replace(local.project, "-", "")}stfnpblevtdispatcher"
-  app_service_plan_name                    = "${local.project}-plan-fnpblevtdispatcher"
-  location                                 = var.location
-  health_check_path                        = "/api/v1/info"
-  subnet_id                                = module.function_pblevtdispatcher_snetout.id
-  runtime_version                          = "~3"
+  resource_group_name   = azurerm_resource_group.pblevtdispatcher_rg.name
+  name                  = "${local.project}-fn-pblevtdispatcher"
+  storage_account_name  = "${replace(local.project, "-", "")}stfnpblevtdispatcher"
+  app_service_plan_name = "${local.project}-plan-fnpblevtdispatcher"
+  location              = var.location
+  health_check_path     = "/api/v1/info"
+  subnet_id             = module.function_pblevtdispatcher_snetout.id
+  runtime_version       = "~3"
   # node_version                             = "14"
-  linux_fx_version = ""
+  linux_fx_version                         = ""
   application_insights_instrumentation_key = azurerm_application_insights.application_insights.instrumentation_key
 
   # app_service_plan_info = {
