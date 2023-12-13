@@ -17,6 +17,11 @@ locals {
       COSMOSDB_KEY                 = data.azurerm_cosmosdb_account.cosmos_api.primary_key
       COSMOS_API_CONNECTION_STRING = format("AccountEndpoint=%s;AccountKey=%s;", data.azurerm_cosmosdb_account.cosmos_api.endpoint, data.azurerm_cosmosdb_account.cosmos_api.primary_key)
 
+      // Remote Content CosmosDB
+      REMOTE_CONTENT_COSMOSDB_NAME = "remote-content"
+      REMOTE_CONTENT_COSMOSDB_URI  = data.azurerm_cosmosdb_account.cosmos_remote_content.endpoint
+      REMOTE_CONTENT_COSMOSDB_KEY  = data.azurerm_cosmosdb_account.cosmos_remote_content.primary_key
+
       MESSAGE_CONTAINER_NAME = local.message_content_container_name
       QueueStorageConnection = module.storage_api.primary_connection_string
 
@@ -32,6 +37,9 @@ locals {
       REDIS_URL      = module.redis_messages_v6.hostname
       REDIS_PORT     = module.redis_messages_v6.ssl_port
       REDIS_PASSWORD = module.redis_messages_v6.primary_access_key
+
+      // CACHE TTLs
+      SERVICE_CACHE_TTL_DURATION = "28800" // 8 hours
 
       PN_SERVICE_ID = var.pn_service_id
 
@@ -160,7 +168,7 @@ module "app_messages_function" {
     sku_tier                     = var.app_messages_function_sku_tier
     sku_size                     = var.app_messages_function_sku_size
     maximum_elastic_worker_count = 0
-    worker_count                 = 1
+    worker_count                 = null
     zone_balancing_enabled       = false
   }
 
