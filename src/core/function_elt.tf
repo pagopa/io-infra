@@ -102,7 +102,7 @@ resource "azurerm_resource_group" "elt_rg" {
 }
 
 module "function_elt_snetout" {
-  source                                    = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v4.1.15"
+  source                                    = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v7.28.0"
   name                                      = "fn3eltout"
   address_prefixes                          = var.cidr_subnet_fnelt
   resource_group_name                       = azurerm_resource_group.rg_common.name
@@ -126,7 +126,7 @@ module "function_elt_snetout" {
 
 #tfsec:ignore:azure-storage-queue-services-logging-enabled:exp:2022-05-01 # already ignored, maybe a bug in tfsec
 module "function_elt" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app?ref=v4.1.15"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app?ref=v7.28.0"
 
   resource_group_name                      = azurerm_resource_group.elt_rg.name
   name                                     = "${local.project}-fn-elt"
@@ -137,7 +137,7 @@ module "function_elt" {
   health_check_path                        = "/api/v1/info"
   subnet_id                                = module.function_elt_snetout.id
   runtime_version                          = "~4"
-  linux_fx_version                         = null
+  node_version                             = "18"
   application_insights_instrumentation_key = azurerm_application_insights.application_insights.instrumentation_key
 
   app_service_plan_info = {
@@ -145,6 +145,8 @@ module "function_elt" {
     sku_tier                     = "ElasticPremium"
     sku_size                     = "EP1"
     maximum_elastic_worker_count = 1
+    worker_count                 = null
+    zone_balancing_enabled       = null
   }
 
   app_settings = merge(
@@ -207,29 +209,17 @@ module "function_elt" {
 #tfsec:ignore:azure-storage-default-action-deny
 #tfsec:ignore:azure-storage-queue-services-logging-enabled:exp:2022-05-01 # already ignored, maybe a bug in tfsec
 module "storage_account_elt" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//storage_account?ref=v4.1.15"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//storage_account?ref=v7.28.0"
 
-  name                       = replace(format("%s-stelt", local.project), "-", "")
-  account_kind               = "StorageV2"
-  account_tier               = "Standard"
-  account_replication_type   = "GRS"
-  access_tier                = "Hot"
-  resource_group_name        = azurerm_resource_group.elt_rg.name
-  location                   = var.location
-  advanced_threat_protection = true
-
-  # network_rules = {
-  #   default_action = "Deny"
-  #   ip_rules       = []
-  #   bypass = [
-  #     "Logging",
-  #     "Metrics",
-  #     "AzureServices",
-  #   ]
-  #   virtual_network_subnet_ids = [
-  #     module.function_elt_snetout.id
-  #   ]
-  # }
+  name                          = replace(format("%s-stelt", local.project), "-", "")
+  account_kind                  = "StorageV2"
+  account_tier                  = "Standard"
+  account_replication_type      = "GRS"
+  access_tier                   = "Hot"
+  resource_group_name           = azurerm_resource_group.elt_rg.name
+  location                      = var.location
+  advanced_threat_protection    = true
+  public_network_access_enabled = true
 
   tags = var.tags
 }
@@ -258,6 +248,7 @@ resource "azurerm_storage_table" "fneltcommands" {
   name                 = "fneltcommands"
   storage_account_name = module.storage_account_elt.name
 }
+
 resource "azurerm_storage_table" "fneltexports" {
   name                 = "fneltexports"
   storage_account_name = module.storage_account_elt.name

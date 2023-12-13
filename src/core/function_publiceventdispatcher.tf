@@ -12,7 +12,7 @@ resource "azurerm_resource_group" "pblevtdispatcher_rg" {
 }
 
 module "function_pblevtdispatcher_snetout" {
-  source                                    = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v4.1.15"
+  source                                    = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v7.28.0"
   name                                      = "fnpblevtdispatcherout"
   address_prefixes                          = var.cidr_subnet_fnpblevtdispatcher
   resource_group_name                       = azurerm_resource_group.rg_common.name
@@ -37,18 +37,27 @@ module "function_pblevtdispatcher_snetout" {
 # Function App running on engine v3 - to be dismissed once traffic has been moved to v4 instance
 #tfsec:ignore:azure-storage-queue-services-logging-enabled:exp:2022-05-01 # already ignored, maybe a bug in tfsec
 module "function_pblevtdispatcher" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app?ref=v4.1.15"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app?ref=v7.28.0"
 
-  resource_group_name                      = azurerm_resource_group.pblevtdispatcher_rg.name
-  name                                     = "${local.project}-fn-pblevtdispatcher"
-  storage_account_name                     = "${replace(local.project, "-", "")}stfnpblevtdispatcher"
-  app_service_plan_name                    = "${local.project}-plan-fnpblevtdispatcher"
-  location                                 = var.location
-  health_check_path                        = "/api/v1/info"
-  subnet_id                                = module.function_pblevtdispatcher_snetout.id
-  runtime_version                          = "~3"
-  linux_fx_version                         = "" # windows function
+  resource_group_name   = azurerm_resource_group.pblevtdispatcher_rg.name
+  name                  = "${local.project}-fn-pblevtdispatcher"
+  storage_account_name  = "${replace(local.project, "-", "")}stfnpblevtdispatcher"
+  app_service_plan_name = "${local.project}-plan-fnpblevtdispatcher"
+  location              = var.location
+  health_check_path     = "/api/v1/info"
+  subnet_id             = module.function_pblevtdispatcher_snetout.id
+  runtime_version       = "~3"
+  node_version          = "14"
+
   application_insights_instrumentation_key = azurerm_application_insights.application_insights.instrumentation_key
+
+  app_service_plan_info = {
+    kind                         = "Linux"
+    maximum_elastic_worker_count = 1
+    sku_size                     = "P1v2"
+    worker_count                 = null
+    zone_balancing_enabled       = null
+  }
 
   storage_account_info = {
     account_kind                      = "StorageV2"
@@ -104,7 +113,7 @@ module "function_pblevtdispatcher" {
 }
 
 module "function_pblevtdispatcher_snetout_v4" {
-  source                                    = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v4.1.15"
+  source                                    = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v7.28.0"
   name                                      = "fnpblevtdispatcherv4out"
   address_prefixes                          = var.cidr_subnet_fnpblevtdispatcherv4
   resource_group_name                       = azurerm_resource_group.rg_common.name
@@ -126,18 +135,16 @@ module "function_pblevtdispatcher_snetout_v4" {
   }
 }
 
-
 module "function_pblevtdispatcher_v4" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app?ref=v4.1.15"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app?ref=v7.28.0"
 
   resource_group_name = azurerm_resource_group.pblevtdispatcher_rg.name
   name                = format("%s-pblevtdispatcher-fn", local.project)
   location            = var.location
   health_check_path   = "/api/v1/info"
 
-  os_type          = "linux"
-  linux_fx_version = "NODE|14"
-  runtime_version  = "~4"
+  node_version    = "14"
+  runtime_version = "~4"
 
   always_on                                = "true"
   application_insights_instrumentation_key = azurerm_application_insights.application_insights.instrumentation_key
@@ -147,6 +154,8 @@ module "function_pblevtdispatcher_v4" {
     sku_tier                     = var.plan_shared_1_sku_tier
     sku_size                     = var.plan_shared_1_sku_size
     maximum_elastic_worker_count = 0
+    worker_count                 = null
+    zone_balancing_enabled       = false
   }
 
   app_settings = {
@@ -200,29 +209,17 @@ module "function_pblevtdispatcher_v4" {
 #tfsec:ignore:azure-storage-default-action-deny
 #tfsec:ignore:azure-storage-queue-services-logging-enabled:exp:2022-05-01 # already ignored, maybe a bug in tfsec
 module "storage_account_pblevtdispatcher" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//storage_account?ref=v4.1.15"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//storage_account?ref=v7.28.0"
 
-  name                       = replace(format("%s-stpblevtdispatcher", local.project), "-", "")
-  account_kind               = "StorageV2"
-  account_tier               = "Standard"
-  account_replication_type   = "GRS"
-  access_tier                = "Hot"
-  resource_group_name        = azurerm_resource_group.pblevtdispatcher_rg.name
-  location                   = var.location
-  advanced_threat_protection = false
-
-  # network_rules = {
-  #   default_action = "Deny"
-  #   ip_rules       = []
-  #   bypass = [
-  #     "Logging",
-  #     "Metrics",
-  #     "AzureServices",
-  #   ]
-  #   virtual_network_subnet_ids = [
-  #     module.function_pblevtdispatcher_snetout.id
-  #   ]
-  # }
+  name                          = replace(format("%s-stpblevtdispatcher", local.project), "-", "")
+  account_kind                  = "StorageV2"
+  account_tier                  = "Standard"
+  account_replication_type      = "GRS"
+  access_tier                   = "Hot"
+  resource_group_name           = azurerm_resource_group.pblevtdispatcher_rg.name
+  location                      = var.location
+  advanced_threat_protection    = false
+  public_network_access_enabled = true
 
   tags = var.tags
 }

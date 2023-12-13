@@ -44,7 +44,6 @@ locals {
   function_app = {
     app_settings_common = {
       FUNCTIONS_WORKER_RUNTIME       = "node"
-      WEBSITE_NODE_DEFAULT_VERSION   = "14.16.0"
       WEBSITE_RUN_FROM_PACKAGE       = "1"
       WEBSITE_VNET_ROUTE_ALL         = "1"
       WEBSITE_DNS_SERVER             = "168.63.129.16"
@@ -196,7 +195,7 @@ module "function_app" {
     sku_tier                     = var.function_app_sku_tier
     sku_size                     = var.function_app_sku_size
     maximum_elastic_worker_count = 0
-    worker_count                 = 2
+    worker_count                 = null
     zone_balancing_enabled       = null
   }
 
