@@ -72,7 +72,7 @@ resource "azurerm_storage_container" "spid_logs" {
 module "immutable_spid_logs_storage" {
   source = "git::https://github.com/pagopa/terraform-azurerm-v3//storage_account?ref=v7.32.1"
 
-  name                          = replace(format("%s-imm-spid-logs-st", local.project), "-", "")
+  name                          = replace(format("%s-spid-logs-imm-st", local.project), "-", "")
   domain                        = upper(var.domain)
   account_kind                  = "StorageV2"
   account_tier                  = "Standard"

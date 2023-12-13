@@ -154,7 +154,7 @@ resource "azurerm_storage_container" "lv_audit_logs_storage_logs" {
 module "immutable_lv_audit_logs_storage" {
   source = "git::https://github.com/pagopa/terraform-azurerm-v3//storage_account?ref=v7.32.1"
 
-  name                          = replace(format("%s-imm-lv-logs-st", local.product), "-", "")
+  name                          = replace(format("%s-lv-logs-imm-st", local.product), "-", "")
   domain                        = upper(var.domain)
   account_kind                  = "StorageV2"
   account_tier                  = "Standard"
