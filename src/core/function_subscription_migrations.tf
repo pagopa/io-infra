@@ -140,7 +140,7 @@ locals {
 
 #tfsec:ignore:azure-storage-queue-services-logging-enabled:exp:2022-05-01 # already ignored, maybe a bug in tfsec
 module "function_subscriptionmigrations" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app?ref=v4.1.15"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app?ref=v7.28.0"
 
   name                = format("%s-%s-fn", local.project, local.function_subscriptionmigrations.app_context.name)
   location            = local.function_subscriptionmigrations.app_context.resource_group.location
@@ -165,9 +165,8 @@ module "function_subscriptionmigrations" {
   }
 
   runtime_version   = "~3"
-  os_type           = "linux"
   health_check_path = "/api/v1/info"
-  linux_fx_version  = "NODE|14"
+  node_version      = "14"
 
   subnet_id   = local.function_subscriptionmigrations.app_context.snet.id
   allowed_ips = local.app_insights_ips_west_europe
@@ -192,17 +191,22 @@ module "function_subscriptionmigrations" {
     "AzureWebJobs.ChangeAllSubscriptionsOwnership.Disabled" = "0"
   })
 
+  sticky_app_setting_names = [
+    "AzureWebJobs.ChangeAllSubscriptionsOwnership.Disabled",
+    "AzureWebJobs.ChangeOneSubscriptionOwnership.Disabled",
+    "AzureWebJobs.OnServiceChange.Disabled",
+    "AzureWebJobs.UpsertSubscriptionToMigrate.Disabled"
+  ]
+
   tags = var.tags
 }
 
-
 module "function_subscriptionmigrations_staging_slot" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app_slot?ref=v4.1.15"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app_slot?ref=v7.28.0"
 
   name                = "staging"
   location            = local.function_subscriptionmigrations.app_context.resource_group.location
   resource_group_name = local.function_subscriptionmigrations.app_context.resource_group.name
-  function_app_name   = module.function_subscriptionmigrations.name
   function_app_id     = module.function_subscriptionmigrations.id
   app_service_plan_id = local.function_subscriptionmigrations.app_context.app_service_plan.id
 
@@ -213,9 +217,8 @@ module "function_subscriptionmigrations_staging_slot" {
   internal_storage_connection_string = module.function_subscriptionmigrations.storage_account_internal_function.primary_connection_string
 
   runtime_version   = "~3"
-  os_type           = "linux"
   health_check_path = "/api/v1/info"
-  linux_fx_version  = "NODE|14"
+  node_version      = "14"
   always_on         = "true"
 
   subnet_id = local.function_subscriptionmigrations.app_context.snet.id
@@ -256,9 +259,8 @@ data "azurerm_key_vault_secret" "subscriptionmigrations_db_server_fnsubsmigratio
   key_vault_id = module.key_vault_common.id
 }
 
-
 module "subscriptionmigrations_db_server" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//postgresql_server?ref=v4.1.15"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//postgresql_server?ref=v7.28.0"
 
   name                = local.function_subscriptionmigrations.db.name
   location            = var.location

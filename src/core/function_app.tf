@@ -147,7 +147,7 @@ resource "azurerm_resource_group" "app_rg" {
 # Subnet to host app function
 module "app_snet" {
   count                                     = var.function_app_count
-  source                                    = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v4.1.15"
+  source                                    = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v7.28.0"
   name                                      = format("%s-app-snet-%d", local.project, count.index + 1)
   address_prefixes                          = [var.cidr_subnet_app[count.index]]
   resource_group_name                       = azurerm_resource_group.rg_common.name
@@ -178,16 +178,15 @@ data "azurerm_subnet" "ioweb_profile_snet" {
 #tfsec:ignore:azure-storage-queue-services-logging-enabled:exp:2022-05-01 # already ignored, maybe a bug in tfsec
 module "function_app" {
   count  = var.function_app_count
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app?ref=v4.1.15"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app?ref=v7.28.0"
 
   resource_group_name = azurerm_resource_group.app_rg[count.index].name
   name                = format("%s-app-fn-%d", local.project, count.index + 1)
   location            = var.location
   health_check_path   = "/api/v1/info"
 
-  os_type          = "linux"
-  linux_fx_version = "NODE|18"
-  runtime_version  = "~4"
+  node_version    = "18"
+  runtime_version = "~4"
 
   always_on                                = "true"
   application_insights_instrumentation_key = azurerm_application_insights.application_insights.instrumentation_key
@@ -197,6 +196,8 @@ module "function_app" {
     sku_tier                     = var.function_app_sku_tier
     sku_size                     = var.function_app_sku_size
     maximum_elastic_worker_count = 0
+    worker_count                 = 2
+    zone_balancing_enabled       = null
   }
 
   app_settings = merge(
@@ -227,17 +228,21 @@ module "function_app" {
     data.azurerm_subnet.ioweb_profile_snet.id,
   ]
 
+  sticky_app_setting_names = [
+    "AzureWebJobs.HandleNHNotificationCall.Disabled",
+    "AzureWebJobs.StoreSpidLogs.Disabled"
+  ]
+
   tags = var.tags
 }
 
 module "function_app_staging_slot" {
   count  = var.function_app_count
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app_slot?ref=v4.1.15"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app_slot?ref=v7.28.0"
 
   name                = "staging"
   location            = var.location
   resource_group_name = azurerm_resource_group.app_rg[count.index].name
-  function_app_name   = module.function_app[count.index].name
   function_app_id     = module.function_app[count.index].id
   app_service_plan_id = module.function_app[count.index].app_service_plan_id
   health_check_path   = "/api/v1/info"
@@ -246,8 +251,7 @@ module "function_app_staging_slot" {
   storage_account_access_key         = module.function_app[count.index].storage_account.primary_access_key
   internal_storage_connection_string = module.function_app[count.index].storage_account_internal_function.primary_connection_string
 
-  os_type                                  = "linux"
-  linux_fx_version                         = "NODE|18"
+  node_version                             = "18"
   always_on                                = "true"
   runtime_version                          = "~4"
   application_insights_instrumentation_key = azurerm_application_insights.application_insights.instrumentation_key
