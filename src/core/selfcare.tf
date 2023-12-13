@@ -169,7 +169,7 @@ resource "azurerm_app_service_virtual_network_swift_connection" "selfcare_be" {
 #tfsec:ignore:azure-appservice-authentication-enabled:exp:2022-05-01 # already ignored, maybe a bug in tfsec
 #tfsec:ignore:azure-appservice-require-client-cert:exp:2022-05-01 # already ignored, maybe a bug in tfsec
 module "appservice_selfcare_be" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//app_service?ref=v6.0.0"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//app_service?ref=v7.28.0"
 
   name                = format("%s-app-selfcare-be", local.project)
   resource_group_name = azurerm_resource_group.selfcare_be_rg.name
@@ -178,9 +178,7 @@ module "appservice_selfcare_be" {
   plan_id   = azurerm_service_plan.selfcare_be_common.id
 
   app_command_line = "node /home/site/wwwroot/build/src/app.js"
-  ###
-  node_version = "14-lts"
-  # linux_fx_version  = "NODE|14-lts"
+  node_version     = "14-lts"
 
   health_check_path = "/info"
 
