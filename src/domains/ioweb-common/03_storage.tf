@@ -48,7 +48,7 @@ resource "azurerm_storage_management_policy" "spid_logs_storage_management_polic
   storage_account_id = module.spid_logs_storage.id
 
   rule {
-    name    = "deleteafterdays"
+    name    = "deleteafter2yrs"
     enabled = true
     filters {
       prefix_match = [
