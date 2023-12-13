@@ -135,7 +135,6 @@ module "function_pblevtdispatcher_snetout_v4" {
   }
 }
 
-
 module "function_pblevtdispatcher_v4" {
   source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app?ref=v7.28.0"
 
