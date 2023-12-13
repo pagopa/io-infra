@@ -168,7 +168,7 @@ module "app_messages_function" {
     sku_tier                     = var.app_messages_function_sku_tier
     sku_size                     = var.app_messages_function_sku_size
     maximum_elastic_worker_count = 0
-    worker_count                 = 1
+    worker_count                 = null
     zone_balancing_enabled       = false
   }
 

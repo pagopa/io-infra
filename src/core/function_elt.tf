@@ -145,7 +145,7 @@ module "function_elt" {
     sku_tier                     = "ElasticPremium"
     sku_size                     = "EP1"
     maximum_elastic_worker_count = 1
-    worker_count                 = 1
+    worker_count                 = null
     zone_balancing_enabled       = null
   }
 

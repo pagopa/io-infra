@@ -128,7 +128,7 @@ module "function_messages_cqrs" {
     sku_tier                     = var.function_messages_cqrs_sku_tier
     sku_size                     = var.function_messages_cqrs_sku_size
     maximum_elastic_worker_count = 0
-    worker_count                 = 1
+    worker_count                 = null
     zone_balancing_enabled       = null
   }
 

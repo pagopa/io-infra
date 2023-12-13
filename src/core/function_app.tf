@@ -195,7 +195,7 @@ module "function_app" {
     sku_tier                     = var.function_app_sku_tier
     sku_size                     = var.function_app_sku_size
     maximum_elastic_worker_count = 0
-    worker_count                 = 2
+    worker_count                 = null
     zone_balancing_enabled       = null
   }
 
