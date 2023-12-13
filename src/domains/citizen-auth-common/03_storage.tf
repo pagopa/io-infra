@@ -87,7 +87,7 @@ resource "azurerm_storage_queue" "lollipop_assertions_storage_revoke_queue" {
 # LV Audit Log Storage
 ###
 module "lv_audit_logs_storage" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3//storage_account?ref=v6.1.0"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3//storage_account?ref=v7.32.1"
 
   name                          = replace(format("%s-lv-logs-st", local.product), "-", "")
   domain                        = upper(var.domain)
@@ -100,6 +100,17 @@ module "lv_audit_logs_storage" {
   advanced_threat_protection    = true
   enable_identity               = true
   public_network_access_enabled = false
+
+  blob_storage_policy = {
+    enable_immutability_policy = true
+    blob_restore_policy_days   = 0
+  }
+
+  immutability_policy_props = {
+    allow_protected_append_writes = false
+    # a `deleteater2years` policy is defined, so we need to set this parameter accordingly
+    period_since_creation_in_days = 729
+  }
 
   tags = var.tags
 }
