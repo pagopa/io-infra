@@ -45,7 +45,7 @@ locals {
       // --------------------------
       //  Fast login audit log storage
       // --------------------------
-      FAST_LOGIN_AUDIT_CONNECTION_STRING = data.azurerm_storage_account.lv_audit_logs_storage.primary_connection_string
+      FAST_LOGIN_AUDIT_CONNECTION_STRING = data.azurerm_storage_account.immutable_lv_audit_logs_storage.primary_connection_string
 
 
       // --------------------------
