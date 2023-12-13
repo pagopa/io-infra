@@ -305,6 +305,9 @@ locals {
       # Takes ~6,25% of users
       IOLOGIN_CANARY_USERS_REGEX = "^([(0-9)|(a-f)|(A-F)]{63}0)$"
 
+      // UNIQUE EMAIL ENFORCEMENT
+      FF_UNIQUE_EMAIL_ENFORCEMENT    = "BETA"
+      UNIQUE_EMAIL_ENFORCEMENT_USERS = join(",", [data.azurerm_key_vault_secret.app_backend_UNIQUE_EMAIL_ENFORCEMENT_USER.value, local.test_users_unique_email_test[0]])
 
       // FAST LOGIN
       FF_FAST_LOGIN = "BETA"
@@ -519,6 +522,11 @@ data "azurerm_key_vault_secret" "app_backend_FAST_LOGIN_API_KEY" {
 
 data "azurerm_key_vault_secret" "app_backend_IOLOGIN_TEST_USERS" {
   name         = "appbackend-IOLOGIN-TEST-USERS"
+  key_vault_id = module.key_vault_common.id
+}
+
+data "azurerm_key_vault_secret" "app_backend_UNIQUE_EMAIL_ENFORCEMENT_USER" {
+  name         = "appbackend-UNIQUE-EMAIL-ENFORCEMENT-USER"
   key_vault_id = module.key_vault_common.id
 }
 
