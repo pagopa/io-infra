@@ -10,6 +10,11 @@ data "azurerm_cosmosdb_account" "cosmos_api" {
   resource_group_name = format("%s-rg-internal", local.project)
 }
 
+data "azurerm_cosmosdb_account" "cosmos_remote_content" {
+  name                = "io-p-messages-remote-content"
+  resource_group_name = "io-p-messages-data-rg"
+}
+
 #
 # Function cgn
 #
