@@ -74,7 +74,7 @@ module "function_assets_cdn" {
     sku_tier                     = var.function_assets_cdn_sku_tier
     sku_size                     = var.function_assets_cdn_sku_size
     maximum_elastic_worker_count = 0
-    worker_count                 = 1
+    worker_count                 = null
     zone_balancing_enabled       = null
   }
 

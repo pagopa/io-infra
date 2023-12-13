@@ -155,7 +155,7 @@ module "function_pblevtdispatcher_v4" {
     sku_tier                     = var.plan_shared_1_sku_tier
     sku_size                     = var.plan_shared_1_sku_size
     maximum_elastic_worker_count = 0
-    worker_count                 = 1
+    worker_count                 = null
     zone_balancing_enabled       = false
   }
 
