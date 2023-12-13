@@ -130,7 +130,7 @@ resource "azurerm_service_plan" "selfcare_be_common" {
 
   os_type      = "Linux"
   sku_name     = var.selfcare_plan_sku_size
-  worker_count = var.selfcare_plan_sku_capacity
+  worker_count = null
 
   tags = var.tags
 }
