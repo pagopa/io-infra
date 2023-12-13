@@ -23,7 +23,7 @@
 | <a name="module_key_vault"></a> [key\_vault](#module\_key\_vault) | git::https://github.com/pagopa/terraform-azurerm-v3.git//key_vault | v4.1.3 |
 | <a name="module_lollipop_assertions_storage"></a> [lollipop\_assertions\_storage](#module\_lollipop\_assertions\_storage) | git::https://github.com/pagopa/terraform-azurerm-v3//storage_account | v6.1.0 |
 | <a name="module_lollipop_assertions_storage_customer_managed_key"></a> [lollipop\_assertions\_storage\_customer\_managed\_key](#module\_lollipop\_assertions\_storage\_customer\_managed\_key) | git::https://github.com/pagopa/terraform-azurerm-v3//storage_account_customer_managed_key | v4.3.1 |
-| <a name="module_lv_audit_logs_storage"></a> [lv\_audit\_logs\_storage](#module\_lv\_audit\_logs\_storage) | git::https://github.com/pagopa/terraform-azurerm-v3//storage_account | v6.1.0 |
+| <a name="module_lv_audit_logs_storage"></a> [lv\_audit\_logs\_storage](#module\_lv\_audit\_logs\_storage) | git::https://github.com/pagopa/terraform-azurerm-v3//storage_account | v7.32.1 |
 | <a name="module_lv_audit_logs_storage_customer_managed_key"></a> [lv\_audit\_logs\_storage\_customer\_managed\_key](#module\_lv\_audit\_logs\_storage\_customer\_managed\_key) | git::https://github.com/pagopa/terraform-azurerm-v3//storage_account_customer_managed_key | v4.3.1 |
 | <a name="module_redis_common"></a> [redis\_common](#module\_redis\_common) | git::https://github.com/pagopa/terraform-azurerm-v3.git//redis_cache | v7.14.0 |
 | <a name="module_redis_common_snet"></a> [redis\_common\_snet](#module\_redis\_common\_snet) | git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet | v7.14.0 |
