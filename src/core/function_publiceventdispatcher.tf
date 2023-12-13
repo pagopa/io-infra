@@ -37,7 +37,7 @@ module "function_pblevtdispatcher_snetout" {
 # Function App running on engine v3 - to be dismissed once traffic has been moved to v4 instance
 #tfsec:ignore:azure-storage-queue-services-logging-enabled:exp:2022-05-01 # already ignored, maybe a bug in tfsec
 module "function_pblevtdispatcher" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app?ref=v4.1.15"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app?ref=v7.28.0"
 
   resource_group_name   = azurerm_resource_group.pblevtdispatcher_rg.name
   name                  = "${local.project}-fn-pblevtdispatcher"
@@ -47,17 +47,17 @@ module "function_pblevtdispatcher" {
   health_check_path     = "/api/v1/info"
   subnet_id             = module.function_pblevtdispatcher_snetout.id
   runtime_version       = "~3"
-  # node_version                             = "14"
-  linux_fx_version                         = ""
+  node_version          = "14"
+
   application_insights_instrumentation_key = azurerm_application_insights.application_insights.instrumentation_key
 
-  # app_service_plan_info = {
-  #   kind                         = "Linux"
-  #   maximum_elastic_worker_count = 1
-  #   sku_size                     = "P1v2"
-  #   worker_count                 = 1
-  #   zone_balancing_enabled       = null
-  # }
+  app_service_plan_info = {
+    kind                         = "Linux"
+    maximum_elastic_worker_count = 1
+    sku_size                     = "P1v2"
+    worker_count                 = null
+    zone_balancing_enabled       = null
+  }
 
   storage_account_info = {
     account_kind                      = "StorageV2"
