@@ -93,7 +93,7 @@ module "immutable_spid_logs_storage" {
   }
   immutability_policy_props = {
     allow_protected_append_writes = false
-    period_since_creation_in_days = 1
+    period_since_creation_in_days = local.immutability_policy_days
   }
 
   tags = var.tags
