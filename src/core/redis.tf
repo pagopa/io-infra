@@ -15,7 +15,7 @@ module "redis_common_backup" {
   account_kind                    = "StorageV2"
   account_tier                    = "Premium"
   access_tier                     = "Hot"
-  account_replication_type        = "LRS"
+  account_replication_type        = "GRS"
   resource_group_name             = azurerm_resource_group.rg_common.name
   location                        = azurerm_resource_group.rg_common.location
   advanced_threat_protection      = true
