@@ -8,7 +8,6 @@ locals {
       WEBSITE_ADD_SITENAME_BINDINGS_IN_APPHOST_CONFIG = "1"
       WEBSITE_RUN_FROM_PACKAGE                        = "1"
       WEBSITE_DNS_SERVER                              = "168.63.129.16"
-      WEBSITE_HEALTHCHECK_MAXPINGFAILURES             = "3"
 
       APPINSIGHTS_INSTRUMENTATIONKEY = azurerm_application_insights.application_insights.instrumentation_key
 
@@ -641,7 +640,7 @@ data "azurerm_subnet" "functions_fast_login_snet" {
 }
 
 module "appservice_app_backendl1" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//app_service?ref=v7.28.0"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//app_service?ref=v7.33.0"
 
   # App service plan
   plan_type = "internal"
@@ -653,10 +652,11 @@ module "appservice_app_backendl1" {
   resource_group_name = azurerm_resource_group.rg_linux.name
   location            = azurerm_resource_group.rg_linux.location
 
-  node_version      = "18-lts"
-  always_on         = true
-  app_command_line  = local.app_backend.app_command_line
-  health_check_path = "/ping"
+  node_version                 = "18-lts"
+  always_on                    = true
+  app_command_line             = local.app_backend.app_command_line
+  health_check_path            = "/ping"
+  health_check_maxpingfailures = 3
 
   app_settings = merge(
     local.app_backend.app_settings_common,
@@ -855,7 +855,7 @@ resource "azurerm_subnet_nat_gateway_association" "app_backendl2_snet" {
 }
 
 module "appservice_app_backendl2" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//app_service?ref=v7.28.0"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//app_service?ref=v7.33.0"
 
   # App service plan
   plan_type = "internal"
@@ -867,10 +867,11 @@ module "appservice_app_backendl2" {
   resource_group_name = azurerm_resource_group.rg_linux.name
   location            = azurerm_resource_group.rg_linux.location
 
-  always_on         = true
-  node_version      = "18-lts"
-  app_command_line  = local.app_backend.app_command_line
-  health_check_path = "/ping"
+  always_on                    = true
+  node_version                 = "18-lts"
+  app_command_line             = local.app_backend.app_command_line
+  health_check_path            = "/ping"
+  health_check_maxpingfailures = 3
 
   app_settings = merge(
     local.app_backend.app_settings_common,
@@ -1069,7 +1070,7 @@ resource "azurerm_subnet_nat_gateway_association" "app_backendli_snet" {
 }
 
 module "appservice_app_backendli" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//app_service?ref=v7.28.0"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//app_service?ref=v7.33.0"
 
   # App service plan
   plan_type = "internal"
@@ -1082,10 +1083,11 @@ module "appservice_app_backendli" {
   resource_group_name = azurerm_resource_group.rg_linux.name
   location            = azurerm_resource_group.rg_linux.location
 
-  always_on         = true
-  node_version      = "18-lts"
-  app_command_line  = local.app_backend.app_command_line
-  health_check_path = "/ping"
+  always_on                    = true
+  node_version                 = "18-lts"
+  app_command_line             = local.app_backend.app_command_line
+  health_check_path            = "/ping"
+  health_check_maxpingfailures = 3
 
   app_settings = merge(
     local.app_backend.app_settings_common,

@@ -276,7 +276,7 @@ module "devportalservicedata_db_server_snet" {
 }
 
 module "devportalservicedata_db_server" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//postgres_flexible_server?ref=v4.1.15"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//postgres_flexible_server?ref=v7.28.0"
 
   name                = local.function_devportalservicedata.db.name
   location            = var.location
@@ -288,6 +288,7 @@ module "devportalservicedata_db_server" {
   sku_name                     = "GP_Standard_D2s_v3"
   db_version                   = 13
   geo_redundant_backup_enabled = true
+  zone                         = 1
 
   private_endpoint_enabled = true
   private_dns_zone_id      = azurerm_private_dns_zone.privatelink_postgres_database_azure_com.id
