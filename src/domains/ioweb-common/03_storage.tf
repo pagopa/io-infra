@@ -72,7 +72,7 @@ resource "azurerm_storage_container" "spid_logs" {
 module "immutable_spid_logs_storage" {
   source = "git::https://github.com/pagopa/terraform-azurerm-v3//storage_account?ref=v7.32.1"
 
-  name                          = replace(format("%s-spid-logs-imm-st", local.project), "-", "")
+  name                          = replace(format("%s-spid-logs-im-st", local.project), "-", "")
   domain                        = upper(var.domain)
   account_kind                  = "StorageV2"
   account_tier                  = "Standard"
@@ -84,13 +84,16 @@ module "immutable_spid_logs_storage" {
   enable_identity               = true
   public_network_access_enabled = false
 
+  # Needed for immtability policy
+  blob_versioning_enabled = true
+
   blob_storage_policy = {
     enable_immutability_policy = true
     blob_restore_policy_days   = 0
   }
   immutability_policy_props = {
     allow_protected_append_writes = false
-    period_since_creation_in_days = local.immutability_policy_days
+    period_since_creation_in_days = 1
   }
 
   tags = var.tags
@@ -132,7 +135,7 @@ resource "azurerm_private_endpoint" "immutable_spid_logs_storage_blob" {
 
 # Containers
 resource "azurerm_storage_container" "immutable_spid_logs" {
-  depends_on            = [module.immutable_spid_logs_storage]
+  depends_on            = [module.immutable_spid_logs_storage, azurerm_private_endpoint.immutable_spid_logs_storage_blob]
   name                  = "spidlogs"
   storage_account_name  = module.immutable_spid_logs_storage.name
   container_access_type = "private"
