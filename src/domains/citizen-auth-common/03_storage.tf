@@ -154,7 +154,7 @@ resource "azurerm_storage_container" "lv_audit_logs_storage_logs" {
 module "immutable_lv_audit_logs_storage" {
   source = "git::https://github.com/pagopa/terraform-azurerm-v3//storage_account?ref=v7.32.1"
 
-  name                          = replace(format("%s-lv-logs-imm-st", local.product), "-", "")
+  name                          = replace(format("%s-lv-logs-im-st", local.product), "-", "")
   domain                        = upper(var.domain)
   account_kind                  = "StorageV2"
   account_tier                  = "Standard"
@@ -166,11 +166,13 @@ module "immutable_lv_audit_logs_storage" {
   enable_identity               = true
   public_network_access_enabled = false
 
+  # Needed for immtability policy
+  blob_versioning_enabled = true
+
   blob_storage_policy = {
     enable_immutability_policy = true
     blob_restore_policy_days   = 0
   }
-
   immutability_policy_props = {
     allow_protected_append_writes = false
     period_since_creation_in_days = local.lv_storage_immutability_policy_days
