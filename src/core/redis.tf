@@ -15,7 +15,24 @@ module "redis_common_backup" {
   account_kind                    = "StorageV2"
   account_tier                    = "Premium"
   access_tier                     = "Hot"
-  account_replication_type        = "LRS"
+  account_replication_type        = "GRS"
+  resource_group_name             = azurerm_resource_group.rg_common.name
+  location                        = azurerm_resource_group.rg_common.location
+  advanced_threat_protection      = true
+  allow_nested_items_to_be_public = false
+  public_network_access_enabled   = true
+
+  tags = var.tags
+}
+
+module "redis_common_backup_zrs" {
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//storage_account?ref=v7.28.0"
+
+  name                            = replace(format("%s-stredisbackup", local.project), "-", "")
+  account_kind                    = "StorageV2"
+  account_tier                    = "Premium"
+  access_tier                     = "Hot"
+  account_replication_type        = "ZRS"
   resource_group_name             = azurerm_resource_group.rg_common.name
   location                        = azurerm_resource_group.rg_common.location
   advanced_threat_protection      = true
@@ -43,7 +60,7 @@ module "redis_common" {
   backup_configuration = {
     frequency                 = var.redis_common.rdb_backup_frequency
     max_snapshot_count        = var.redis_common.rdb_backup_max_snapshot_count
-    storage_connection_string = module.redis_common_backup.primary_connection_string
+    storage_connection_string = module.redis_common_backup_zrs.primary_connection_string
   }
 
   # when azure can apply patch?

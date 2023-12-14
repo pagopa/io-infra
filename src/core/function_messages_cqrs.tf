@@ -113,7 +113,7 @@ module "function_messages_cqrs" {
   storage_account_info = {
     account_kind                      = "StorageV2"
     account_tier                      = "Standard"
-    account_replication_type          = "LRS"
+    account_replication_type          = "GRS"
     access_tier                       = "Hot"
     advanced_threat_protection_enable = true
   }
