@@ -5,7 +5,6 @@ locals {
     # Integration with private DNS (see more: https://docs.microsoft.com/en-us/answers/questions/85359/azure-app-service-unable-to-resolve-hostname-of-vi.html)
     WEBSITE_ADD_SITENAME_BINDINGS_IN_APPHOST_CONFIG = "1"
     WEBSITE_RUN_FROM_PACKAGE                        = "1"
-    WEBSITE_HEALTHCHECK_MAXPINGFAILURES             = "3"
 
     APPINSIGHTS_INSTRUMENTATIONKEY = azurerm_application_insights.application_insights.instrumentation_key
 
@@ -76,17 +75,18 @@ resource "azurerm_service_plan" "continua" {
 }
 
 module "appservice_continua" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//app_service?ref=v7.28.0"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//app_service?ref=v7.33.0"
 
   name                = format("%s-app-continua", local.project)
   resource_group_name = azurerm_resource_group.continua_rg.name
   location            = azurerm_resource_group.continua_rg.location
 
-  app_command_line  = "yarn start"
-  health_check_path = "/health"
-  node_version      = "18-lts"
-  app_settings      = local.continua_appsvc_settings
-  sticky_settings   = []
+  app_command_line             = "yarn start"
+  health_check_path            = "/health"
+  health_check_maxpingfailures = 3
+  node_version                 = "18-lts"
+  app_settings                 = local.continua_appsvc_settings
+  sticky_settings              = []
 
   always_on = true
   plan_id   = azurerm_service_plan.continua.id
