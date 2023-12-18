@@ -7,7 +7,6 @@ locals {
     app_settings_common = {
       FUNCTIONS_WORKER_RUNTIME       = "node"
       WEBSITE_RUN_FROM_PACKAGE       = "1"
-      WEBSITE_VNET_ROUTE_ALL         = "1"
       WEBSITE_DNS_SERVER             = "168.63.129.16"
       FUNCTIONS_WORKER_PROCESS_COUNT = 4
       NODE_ENV                       = "production"
@@ -19,6 +18,12 @@ locals {
       FETCH_KEEPALIVE_MAX_FREE_SOCKETS    = "10"
       FETCH_KEEPALIVE_FREE_SOCKET_TIMEOUT = "30000"
       FETCH_KEEPALIVE_TIMEOUT             = "60000"
+
+      # UNIQUE EMAIL ENFORCEMENT
+      FF_UNIQUE_EMAIL_ENFORCEMENT             = "BETA"
+      UNIQUE_EMAIL_ENFORCEMENT_USERS          = jsonencode(split(",", data.azurerm_key_vault_secret.app_backend_UNIQUE_EMAIL_ENFORCEMENT_USER.value))
+      PROFILE_EMAIL_STORAGE_CONNECTION_STRING = data.azurerm_storage_account.citizen_auth_common.primary_connection_string
+      PROFILE_EMAIL_STORAGE_TABLE_NAME        = "profileEmails"
 
       COSMOSDB_URI      = data.azurerm_cosmosdb_account.cosmos_api.endpoint
       COSMOSDB_KEY      = data.azurerm_cosmosdb_account.cosmos_api.primary_key
