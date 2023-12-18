@@ -121,7 +121,7 @@ locals {
 
       # UNIQUE EMAIL ENFORCEMENT
       FF_UNIQUE_EMAIL_ENFORCEMENT             = "BETA"
-      UNIQUE_EMAIL_ENFORCEMENT_USERS          = data.azurerm_key_vault_secret.functions_UNIQUE_EMAIL_ENFORCEMENT_USERS.value
+      UNIQUE_EMAIL_ENFORCEMENT_USERS          = jsonencode(split(",", data.azurerm_key_vault_secret.app_backend_UNIQUE_EMAIL_ENFORCEMENT_USER.value))
       PROFILE_EMAIL_STORAGE_CONNECTION_STRING = data.azurerm_storage_account.citizen_auth_common.primary_connection_string
       PROFILE_EMAIL_STORAGE_TABLE_NAME        = "profileEmails"
 

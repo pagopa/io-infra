@@ -295,11 +295,6 @@ data "azurerm_subnet" "services_cms_backoffice_snet" {
 # UNIQUE EMAIL ENFORCEMENT
 #
 
-data "azurerm_key_vault_secret" "functions_UNIQUE_EMAIL_ENFORCEMENT_USERS" {
-  name         = "functions-UNIQUE-EMAIL-ENFORCEMENT-USERS"
-  key_vault_id = module.key_vault_common.id
-}
-
 data "azurerm_storage_account" "citizen_auth_common" {
   name                = "iopweucitizenauthst"
   resource_group_name = "io-p-citizen-auth-data-rg"
