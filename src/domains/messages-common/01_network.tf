@@ -18,6 +18,11 @@ data "azurerm_private_dns_zone" "privatelink_mysql_azure_com" {
   resource_group_name = format("%s-rg-common", local.product)
 }
 
+data "azurerm_private_dns_zone" "privatelink_documents_azure_com" {
+  name                = "privatelink.documents.azure.com"
+  resource_group_name = "io-p-rg-common"
+}
+
 data "azurerm_subnet" "private_endpoints_subnet" {
   name                 = "pendpoints"
   virtual_network_name = local.vnet_common_name
