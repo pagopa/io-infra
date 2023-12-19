@@ -3,7 +3,7 @@ data "azurerm_storage_account" "lollipop_assertion_storage" {
   resource_group_name = format("%s-%s-data-rg", local.product, var.domain)
 }
 
-data "azurerm_storage_account" "lv_audit_logs_storage" {
-  name                = replace(format("%s-lv-logs-st", local.product), "-", "")
+data "azurerm_storage_account" "immutable_lv_audit_logs_storage" {
+  name                = replace(format("%s-lv-logs-im-st", local.product), "-", "")
   resource_group_name = format("%s-%s-data-rg", local.product, var.domain)
 }
