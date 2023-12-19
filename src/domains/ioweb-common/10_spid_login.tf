@@ -112,8 +112,8 @@ module "spid_login" {
     # Spid logs
     ENABLE_SPID_ACCESS_LOGS             = true
     SPID_LOGS_ENABLE_PAYLOAD_ENCRYPTION = false
-    SPID_LOGS_STORAGE_CONNECTION_STRING = module.spid_logs_storage.primary_connection_string
-    SPID_LOGS_STORAGE_CONTAINER_NAME    = azurerm_storage_container.spid_logs.name
+    SPID_LOGS_STORAGE_CONNECTION_STRING = module.immutable_spid_logs_storage.primary_connection_string
+    SPID_LOGS_STORAGE_CONTAINER_NAME    = azurerm_storage_container.immutable_spid_logs.name
   }
 
   allowed_subnets = [
