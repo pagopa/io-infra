@@ -45,7 +45,6 @@ locals {
     app_settings_common = {
       FUNCTIONS_WORKER_RUNTIME       = "node"
       WEBSITE_RUN_FROM_PACKAGE       = "1"
-      WEBSITE_VNET_ROUTE_ALL         = "1"
       WEBSITE_DNS_SERVER             = "168.63.129.16"
       FUNCTIONS_WORKER_PROCESS_COUNT = 4
       NODE_ENV                       = "production"
@@ -118,6 +117,12 @@ locals {
       HELP_DESK_REF                 = "mailto:beta.loginveloce@pagopa.it"
       IOWEB_ACCESS_REF              = "https://ioapp.it"
       #
+
+      # UNIQUE EMAIL ENFORCEMENT
+      FF_UNIQUE_EMAIL_ENFORCEMENT             = "BETA"
+      UNIQUE_EMAIL_ENFORCEMENT_USERS          = jsonencode(split(",", data.azurerm_key_vault_secret.app_backend_UNIQUE_EMAIL_ENFORCEMENT_USER.value))
+      PROFILE_EMAIL_STORAGE_CONNECTION_STRING = data.azurerm_storage_account.citizen_auth_common.primary_connection_string
+      PROFILE_EMAIL_STORAGE_TABLE_NAME        = "profileEmails"
 
       MAILUP_USERNAME      = data.azurerm_key_vault_secret.common_MAILUP_USERNAME.value
       MAILUP_SECRET        = data.azurerm_key_vault_secret.common_MAILUP_SECRET.value

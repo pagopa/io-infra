@@ -290,3 +290,12 @@ data "azurerm_subnet" "services_cms_backoffice_snet" {
   virtual_network_name = module.vnet_common.name
   resource_group_name  = azurerm_resource_group.rg_common.name
 }
+
+#
+# UNIQUE EMAIL ENFORCEMENT
+#
+
+data "azurerm_storage_account" "citizen_auth_common" {
+  name                = "iopweucitizenauthst"
+  resource_group_name = "io-p-citizen-auth-data-rg"
+}
