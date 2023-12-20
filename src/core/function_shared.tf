@@ -22,7 +22,7 @@ resource "azurerm_app_service_plan" "shared_1_plan" {
 
 # Subnet to host app function
 module "shared_1_snet" {
-  source                                    = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v7.28.0"
+  source                                    = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v7.34.3"
   name                                      = format("%s-shared-1-snet", local.project)
   address_prefixes                          = var.cidr_subnet_shared_1
   resource_group_name                       = azurerm_resource_group.rg_common.name

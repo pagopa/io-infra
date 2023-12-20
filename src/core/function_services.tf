@@ -135,7 +135,7 @@ locals {
 # Subnet to host app function
 module "services_snet" {
   count                                     = var.function_services_count
-  source                                    = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v7.28.0"
+  source                                    = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v7.34.3"
   name                                      = format("%s-services-snet-%d", local.project, count.index + 1)
   address_prefixes                          = [var.cidr_subnet_services[count.index]]
   resource_group_name                       = azurerm_resource_group.rg_common.name
@@ -168,7 +168,7 @@ resource "azurerm_resource_group" "services_rg" {
 #tfsec:ignore:azure-storage-queue-services-logging-enabled:exp:2022-05-01 # already ignored, maybe a bug in tfsec
 module "function_services" {
   count  = var.function_services_count
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app?ref=v7.28.0"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app?ref=function_app_auth_settings"
 
   domain = "IO-COMMONS"
 
@@ -259,7 +259,7 @@ module "function_services" {
 
 module "function_services_staging_slot" {
   count  = var.function_services_count
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app_slot?ref=v7.28.0"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app_slot?ref=v7.34.3"
 
   name                = "staging"
   location            = var.location
@@ -409,7 +409,7 @@ resource "azurerm_monitor_autoscale_setting" "function_services_autoscale" {
 
 # Cosmos container for subscription cidrs
 module "db_subscription_cidrs_container" {
-  source              = "git::https://github.com/pagopa/terraform-azurerm-v3.git//cosmosdb_sql_container?ref=v7.28.0"
+  source              = "git::https://github.com/pagopa/terraform-azurerm-v3.git//cosmosdb_sql_container?ref=v7.34.3"
   name                = "subscription-cidrs"
   resource_group_name = format("%s-rg-internal", local.project)
   account_name        = format("%s-cosmos-api", local.project)
