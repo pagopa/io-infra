@@ -36,7 +36,6 @@ locals {
     app_settings_common = {
       FUNCTIONS_WORKER_RUNTIME       = "node"
       WEBSITE_RUN_FROM_PACKAGE       = "1"
-      WEBSITE_VNET_ROUTE_ALL         = "1"
       WEBSITE_DNS_SERVER             = "168.63.129.16"
       FUNCTIONS_WORKER_PROCESS_COUNT = 4
       NODE_ENV                       = "production"
@@ -92,7 +91,7 @@ locals {
 
 #tfsec:ignore:azure-storage-queue-services-logging-enabled:exp:2022-05-01 # already ignored, maybe a bug in tfsec
 module "function_cgn" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app?ref=v7.28.0"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app?ref=v7.34.3"
 
   resource_group_name = azurerm_resource_group.cgn_be_rg.name
   name                = format("%s-cgn-fn", local.project)
@@ -145,7 +144,7 @@ module "function_cgn" {
 }
 
 module "function_cgn_staging_slot" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app_slot?ref=v7.28.0"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app_slot?ref=v7.34.3"
 
   name                = "staging"
   location            = var.location

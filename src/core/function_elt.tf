@@ -2,7 +2,6 @@ locals {
   function_elt = {
     app_settings = {
       FUNCTIONS_WORKER_RUNTIME       = "node"
-      WEBSITE_NODE_DEFAULT_VERSION   = "~18"
       FUNCTIONS_WORKER_PROCESS_COUNT = 4
       NODE_ENV                       = "production"
 
@@ -102,7 +101,7 @@ resource "azurerm_resource_group" "elt_rg" {
 }
 
 module "function_elt_snetout" {
-  source                                    = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v7.28.0"
+  source                                    = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v7.34.3"
   name                                      = "fn3eltout"
   address_prefixes                          = var.cidr_subnet_fnelt
   resource_group_name                       = azurerm_resource_group.rg_common.name
@@ -126,7 +125,7 @@ module "function_elt_snetout" {
 
 #tfsec:ignore:azure-storage-queue-services-logging-enabled:exp:2022-05-01 # already ignored, maybe a bug in tfsec
 module "function_elt" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app?ref=v7.28.0"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app?ref=v7.34.3"
 
   resource_group_name                      = azurerm_resource_group.elt_rg.name
   name                                     = "${local.project}-fn-elt"
@@ -209,7 +208,7 @@ module "function_elt" {
 #tfsec:ignore:azure-storage-default-action-deny
 #tfsec:ignore:azure-storage-queue-services-logging-enabled:exp:2022-05-01 # already ignored, maybe a bug in tfsec
 module "storage_account_elt" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//storage_account?ref=v7.28.0"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//storage_account?ref=v7.34.3"
 
   name                          = replace(format("%s-stelt", local.project), "-", "")
   account_kind                  = "StorageV2"

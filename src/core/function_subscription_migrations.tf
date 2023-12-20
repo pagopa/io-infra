@@ -2,11 +2,8 @@ locals {
   function_subscriptionmigrations = {
     app_settings_commons = {
       FUNCTIONS_WORKER_RUNTIME       = "node"
-      WEBSITE_NODE_DEFAULT_VERSION   = "14.16.0"
       FUNCTIONS_WORKER_PROCESS_COUNT = 4
       NODE_ENV                       = "production"
-
-      APPINSIGHTS_INSTRUMENTATIONKEY = azurerm_application_insights.application_insights.instrumentation_key
 
       // Keepalive fields are all optionals
       FETCH_KEEPALIVE_ENABLED             = "true"
@@ -47,8 +44,7 @@ locals {
       QUEUE_ALL_SUBSCRIPTIONS_TO_MIGRATE = "migrate-all-subscriptions-jobs" // when a migration is requested for all subscriptions
       QUEUE_SUBSCRIPTION_TO_MIGRATE      = "migrate-one-subscription-jobs"  // when a subscription is requested to migrate its ownership
 
-      WEBSITE_VNET_ROUTE_ALL = "1"
-      WEBSITE_DNS_SERVER     = "168.63.129.16"
+      WEBSITE_DNS_SERVER = "168.63.129.16"
     }
 
     // As we run this application under SelfCare IO logic subdomain,
@@ -140,7 +136,7 @@ locals {
 
 #tfsec:ignore:azure-storage-queue-services-logging-enabled:exp:2022-05-01 # already ignored, maybe a bug in tfsec
 module "function_subscriptionmigrations" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app?ref=v7.28.0"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app?ref=v7.34.3"
 
   name                = format("%s-%s-fn", local.project, local.function_subscriptionmigrations.app_context.name)
   location            = local.function_subscriptionmigrations.app_context.resource_group.location
@@ -202,7 +198,7 @@ module "function_subscriptionmigrations" {
 }
 
 module "function_subscriptionmigrations_staging_slot" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app_slot?ref=v7.28.0"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app_slot?ref=v7.34.3"
 
   name                = "staging"
   location            = local.function_subscriptionmigrations.app_context.resource_group.location
@@ -249,6 +245,7 @@ data "azurerm_key_vault_secret" "subscriptionmigrations_db_server_adm_username" 
   name         = "selfcare-subsmigrations-DB-ADM-USERNAME"
   key_vault_id = module.key_vault_common.id
 }
+
 data "azurerm_key_vault_secret" "subscriptionmigrations_db_server_adm_password" {
   name         = "selfcare-subsmigrations-DB-ADM-PASSWORD"
   key_vault_id = module.key_vault_common.id
