@@ -2,7 +2,6 @@ locals {
   function_devportalservicedata = {
     app_settings_commons = {
       FUNCTIONS_WORKER_RUNTIME       = "node"
-      WEBSITE_NODE_DEFAULT_VERSION   = "14.16.0"
       FUNCTIONS_WORKER_PROCESS_COUNT = 4
       NODE_ENV                       = "production"
 
@@ -40,7 +39,6 @@ locals {
       DB_USER         = format("%s", data.azurerm_key_vault_secret.devportalservicedata_db_server_adm_username.value)
       DB_PASSWORD     = data.azurerm_key_vault_secret.devportalservicedata_db_server_adm_password.value
 
-      WEBSITE_VNET_ROUTE_ALL = "1"
       WEBSITE_DNS_SERVER     = "168.63.129.16"
 
       # Path of blob on which we export the last visible service read model

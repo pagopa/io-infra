@@ -69,7 +69,6 @@ module "function_pblevtdispatcher" {
 
   app_settings = {
     FUNCTIONS_WORKER_RUNTIME       = "node"
-    WEBSITE_NODE_DEFAULT_VERSION   = "14.16.0"
     FUNCTIONS_WORKER_PROCESS_COUNT = 4
     NODE_ENV                       = "production"
 
@@ -160,7 +159,6 @@ module "function_pblevtdispatcher_v4" {
 
   app_settings = {
     FUNCTIONS_WORKER_RUNTIME       = "node"
-    WEBSITE_NODE_DEFAULT_VERSION   = "14.16.0"
     FUNCTIONS_WORKER_PROCESS_COUNT = 4
     NODE_ENV                       = "production"
 

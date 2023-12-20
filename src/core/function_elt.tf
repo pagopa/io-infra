@@ -2,7 +2,6 @@ locals {
   function_elt = {
     app_settings = {
       FUNCTIONS_WORKER_RUNTIME       = "node"
-      WEBSITE_NODE_DEFAULT_VERSION   = "~18"
       FUNCTIONS_WORKER_PROCESS_COUNT = 4
       NODE_ENV                       = "production"
 

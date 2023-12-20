@@ -2,9 +2,7 @@ locals {
   function_messages_cqrs = {
     app_settings = {
       FUNCTIONS_WORKER_RUNTIME       = "node"
-      WEBSITE_NODE_DEFAULT_VERSION   = "18.13.0"
       WEBSITE_RUN_FROM_PACKAGE       = "1"
-      WEBSITE_VNET_ROUTE_ALL         = "1"
       WEBSITE_DNS_SERVER             = "168.63.129.16"
       FUNCTIONS_WORKER_PROCESS_COUNT = 4
       NODE_ENV                       = "production"
