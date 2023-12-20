@@ -168,7 +168,7 @@ resource "azurerm_resource_group" "services_rg" {
 #tfsec:ignore:azure-storage-queue-services-logging-enabled:exp:2022-05-01 # already ignored, maybe a bug in tfsec
 module "function_services" {
   count  = var.function_services_count
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app?ref=function_app_auth_settings"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app?ref=v7.34.3"
 
   domain = "IO-COMMONS"
 
