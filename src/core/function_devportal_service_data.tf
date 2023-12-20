@@ -2,7 +2,6 @@ locals {
   function_devportalservicedata = {
     app_settings_commons = {
       FUNCTIONS_WORKER_RUNTIME       = "node"
-      WEBSITE_NODE_DEFAULT_VERSION   = "14.16.0"
       FUNCTIONS_WORKER_PROCESS_COUNT = 4
       NODE_ENV                       = "production"
 
@@ -40,8 +39,7 @@ locals {
       DB_USER         = format("%s", data.azurerm_key_vault_secret.devportalservicedata_db_server_adm_username.value)
       DB_PASSWORD     = data.azurerm_key_vault_secret.devportalservicedata_db_server_adm_password.value
 
-      WEBSITE_VNET_ROUTE_ALL = "1"
-      WEBSITE_DNS_SERVER     = "168.63.129.16"
+      WEBSITE_DNS_SERVER = "168.63.129.16"
 
       # Path of blob on which we export the last visible service read model
       AssetsStorageConnection                = module.assets_cdn.primary_connection_string
@@ -139,7 +137,7 @@ locals {
 
 #tfsec:ignore:azure-storage-queue-services-logging-enabled:exp:2022-05-01 # already ignored, maybe a bug in tfsec
 module "function_devportalservicedata" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app?ref=v7.28.0"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app?ref=v7.34.3"
 
   name                = format("%s-%s-fn", local.project, local.function_devportalservicedata.app_context.name)
   location            = local.function_devportalservicedata.app_context.resource_group.location
@@ -196,7 +194,7 @@ module "function_devportalservicedata" {
 }
 
 module "function_devportalservicedata_staging_slot" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app_slot?ref=v7.28.0"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app_slot?ref=v7.34.3"
 
   name                = "staging"
   location            = local.function_devportalservicedata.app_context.resource_group.location
@@ -258,7 +256,7 @@ data "azurerm_key_vault_secret" "devportalservicedata_db_server_fndevportalservi
 }
 
 module "devportalservicedata_db_server_snet" {
-  source                                    = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v7.28.0"
+  source                                    = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v7.34.3"
   name                                      = format("%s-snet", local.function_devportalservicedata.db.name)
   address_prefixes                          = var.cidr_subnet_devportalservicedata_db_server
   resource_group_name                       = azurerm_resource_group.rg_common.name
@@ -276,7 +274,7 @@ module "devportalservicedata_db_server_snet" {
 }
 
 module "devportalservicedata_db_server" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//postgres_flexible_server?ref=v7.28.0"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//postgres_flexible_server?ref=v7.34.3"
 
   name                = local.function_devportalservicedata.db.name
   location            = var.location

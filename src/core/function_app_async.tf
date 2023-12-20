@@ -21,7 +21,7 @@ resource "azurerm_resource_group" "app_async_rg" {
 
 # Subnet to host app function
 module "app_async_snet" {
-  source                                    = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v7.28.0"
+  source                                    = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v7.34.3"
   name                                      = format("%s-app-async-snet", local.project)
   address_prefixes                          = var.cidr_subnet_app_async
   resource_group_name                       = azurerm_resource_group.rg_common.name
@@ -45,7 +45,7 @@ module "app_async_snet" {
 
 #tfsec:ignore:azure-storage-queue-services-logging-enabled:exp:2022-05-01 # already ignored, maybe a bug in tfsec
 module "function_app_async" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app?ref=v7.28.0"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app?ref=v7.34.3"
 
   resource_group_name = azurerm_resource_group.app_async_rg.name
   name                = format("%s-app-async-fn", local.project)
@@ -99,7 +99,7 @@ module "function_app_async" {
 }
 
 module "function_app_async_staging_slot" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app_slot?ref=v7.28.0"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app_slot?ref=v7.34.3"
 
   name                = "staging"
   location            = var.location
