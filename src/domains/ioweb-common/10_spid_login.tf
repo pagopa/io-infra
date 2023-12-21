@@ -78,8 +78,6 @@ module "spid_login" {
     COMPANY_NAME                     = "PagoPA S.p.A."
     COMPANY_VAT_NUMBER               = "IT15376371009"
 
-    SPID_VALIDATOR_URL = "https://validator.spid.gov.it"
-
     AUTH_N_CONTEXT = "https://www.spid.gov.it/SpidL2"
 
     ENDPOINT_ACS      = "/acs"
