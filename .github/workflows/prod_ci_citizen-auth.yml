@@ -21,30 +21,11 @@ env:
   AZURE_ENVIRONMENT: prod
 
 jobs:
-  create_runner:
-    name: Create Runner
-    runs-on: ubuntu-22.04
-    environment: prod-runner
-    outputs:
-      runner_name: ${{ steps.create_github_runner.outputs.runner_name }}
-    steps:
-      - name: Create GitHub Runner
-        id: create_github_runner
-        # from https://github.com/pagopa/eng-github-actions-iac-template/tree/main/azure/github-self-hosted-runner-azure-create-action
-        uses: pagopa/eng-github-actions-iac-template/azure/github-self-hosted-runner-azure-create-action@main
-        with:
-          client_id: ${{ secrets.AZURE_CLIENT_ID }}
-          tenant_id: ${{ secrets.AZURE_TENANT_ID }}
-          subscription_id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
-          container_app_environment_name: ${{ secrets.AZURE_CONTAINER_APP_ENVIRONMENT_NAME }}
-          resource_group_name: ${{ secrets.AZURE_RESOURCE_GROUP_NAME }}
-          pat_token: ${{ secrets.BOT_TOKEN }}
 
   terraform_plan_job:
     name: Terraform Plan
-    runs-on: [self-hosted, "${{ needs.create_runner.outputs.runner_name }}"]
+    runs-on: self-hosted
     environment: prod-ci
-    needs: create_runner
     steps:
       - name: Checkout
         id: checkout
@@ -88,22 +69,3 @@ jobs:
           subscription_id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
           dir: ${{ env.DIR }}-app
           azure_environment: weu-prod01
-
-  cleanup_runner:
-    name: Cleanup Runner
-    if: always()
-    runs-on: ubuntu-22.04
-    environment: prod-runner
-    needs: [create_runner, terraform_plan_job]
-    steps:
-      - name: Cleanup GitHub Runner
-        id: cleanup_github_runner
-        # from https://github.com/pagopa/eng-github-actions-iac-template/tree/main/azure/github-self-hosted-runner-azure-cleanup-action
-        uses: pagopa/eng-github-actions-iac-template/azure/github-self-hosted-runner-azure-cleanup-action@main
-        with:
-          client_id: ${{ secrets.AZURE_CLIENT_ID }}
-          tenant_id: ${{ secrets.AZURE_TENANT_ID }}
-          subscription_id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
-          resource_group_name: ${{ secrets.AZURE_RESOURCE_GROUP_NAME }}
-          runner_name: ${{ needs.create_runner.outputs.runner_name }}
-          pat_token: ${{ secrets.BOT_TOKEN }}
