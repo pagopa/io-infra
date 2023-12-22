@@ -14,7 +14,7 @@ module "github_runner" {
   network = {
     vnet_resource_group_name = data.azurerm_resource_group.rg_common.name
     vnet_name                = data.azurerm_virtual_network.vnet_common.name
-    subnet_cidr_block        = var.github_runner.subnet_cidr_block
+    subnet_cidr_block = var.github_runner.subnet_cidr_block
   }
 
   environment = {
