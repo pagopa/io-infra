@@ -25,7 +25,7 @@ jobs:
   terraform_plan_job:
     name: Terraform Plan
     runs-on: self-hosted
-    environment: prod-ci
+    # environment: prod-ci
     steps:
       - name: Checkout
         id: checkout
