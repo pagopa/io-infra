@@ -38,5 +38,11 @@
 
 ## Outputs
 
-No outputs.
+| Name | Description |
+|------|-------------|
+| <a name="output_ca_id"></a> [ca\_id](#output\_ca\_id) | Container App job id |
+| <a name="output_ca_name"></a> [ca\_name](#output\_ca\_name) | Container App job name |
+| <a name="output_cae_id"></a> [cae\_id](#output\_cae\_id) | Container App Environment id |
+| <a name="output_cae_name"></a> [cae\_name](#output\_cae\_name) | Container App Environment name |
+| <a name="output_subnet_name"></a> [subnet\_name](#output\_subnet\_name) | Subnet name |
 <!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
