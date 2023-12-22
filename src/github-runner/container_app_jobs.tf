@@ -1,5 +1,5 @@
 module "github_runner" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//container_app_job_gh_runner?ref=EC-63-refactoring-modulo-container-app-job-gh-runner"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//container_app_job_gh_runner?ref=v7.35.0"
 
   location  = var.location
   prefix    = var.prefix
@@ -14,7 +14,7 @@ module "github_runner" {
   network = {
     vnet_resource_group_name = data.azurerm_resource_group.rg_common.name
     vnet_name                = data.azurerm_virtual_network.vnet_common.name
-    subnet_cidr_block = var.github_runner.subnet_cidr_block
+    subnet_cidr_block        = var.github_runner.subnet_cidr_block
   }
 
   environment = {
