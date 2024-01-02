@@ -8,6 +8,7 @@ on:
       - edited
       - synchronize
       - reopened
+      - ready_for_review
     paths:
       - "src/domains/citizen-auth**"
       - ".github/workflows/prod**citizen-auth.yml"
@@ -25,7 +26,7 @@ jobs:
   terraform_plan_job:
     name: Terraform Plan
     runs-on: self-hosted
-    # environment: prod-ci
+    environment: prod-ci
     steps:
       - name: Checkout
         id: checkout
@@ -44,7 +45,7 @@ jobs:
         # from https://github.com/pagopa/terraform-plan-azure-action/commits/main
         uses: pagopa/terraform-plan-azure-action@392aca28cbb33f5dc28215dfb72385e136fd813b
         with:
-          client_id: ${{ secrets.AZURE_CLIENT_ID }}
+          client_id: ${{ secrets.AZURE_CLIENT_ID_CI }}
           tenant_id: ${{ secrets.AZURE_TENANT_ID }}
           subscription_id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
           dir: ${{ env.DIR }}-common
@@ -54,7 +55,7 @@ jobs:
         # from https://github.com/pagopa/terraform-plan-azure-action/commits/main
         uses: pagopa/terraform-plan-azure-action@392aca28cbb33f5dc28215dfb72385e136fd813b
         with:
-          client_id: ${{ secrets.AZURE_CLIENT_ID }}
+          client_id: ${{ secrets.AZURE_CLIENT_ID_CI }}
           tenant_id: ${{ secrets.AZURE_TENANT_ID }}
           subscription_id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
           dir: ${{ env.DIR }}-app
@@ -64,7 +65,7 @@ jobs:
         # from https://github.com/pagopa/terraform-plan-azure-action/commits/main
         uses: pagopa/terraform-plan-azure-action@392aca28cbb33f5dc28215dfb72385e136fd813b
         with:
-          client_id: ${{ secrets.AZURE_CLIENT_ID }}
+          client_id: ${{ secrets.AZURE_CLIENT_ID_CI }}
           tenant_id: ${{ secrets.AZURE_TENANT_ID }}
           subscription_id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
           dir: ${{ env.DIR }}-app
