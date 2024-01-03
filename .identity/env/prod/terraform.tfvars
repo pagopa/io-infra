@@ -2,6 +2,7 @@ prefix    = "io"
 env_short = "p"
 env       = "prod"
 location  = "westeurope"
+domain    = "infra"
 
 github_repository_environment_ci = {
   protected_branches     = false

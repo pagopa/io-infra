@@ -6,10 +6,11 @@ resource "azurerm_resource_group" "identity_rg" {
 }
 
 module "identity_ci" {
-  source = "github.com/pagopa/terraform-azurerm-v3//github_federated_identity?ref=v7.34.0"
+  source = "github.com/pagopa/terraform-azurerm-v3//github_federated_identity?ref=v7.35.0"
 
   prefix    = var.prefix
   env_short = var.env_short
+  domain    = var.domain
 
   identity_role = "ci"
 
@@ -28,10 +29,11 @@ module "identity_ci" {
 }
 
 module "identity_cd" {
-  source = "github.com/pagopa/terraform-azurerm-v3//github_federated_identity?ref=v7.34.0"
+  source = "github.com/pagopa/terraform-azurerm-v3//github_federated_identity?ref=v7.28.0"
 
   prefix    = var.prefix
   env_short = var.env_short
+  domain    = var.domain
 
   identity_role = "cd"
 
