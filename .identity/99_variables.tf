@@ -19,6 +19,11 @@ variable "prefix" {
   }
 }
 
+variable "domain" {
+  type        = string
+  description = "Managed identities scope names"
+}
+
 variable "location" {
   type        = string
   description = "One of westeurope, northeurope"
