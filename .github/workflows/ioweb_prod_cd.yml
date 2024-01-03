@@ -41,7 +41,7 @@ jobs:
         # from https://github.com/pagopa/terraform-preapply-azure-action/commits/main
         uses: pagopa/terraform-preapply-azure-action@54ded8cda3437c3f6a9f46baf69cb321ce82f5cd
         with:
-          client_id: ${{ secrets.AZURE_CLIENT_ID }}
+          client_id: ${{ secrets.AZURE_CLIENT_ID_CI }}
           tenant_id: ${{ secrets.AZURE_TENANT_ID }}
           subscription_id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
           dir: ${{ env.DIR }}-common
@@ -51,7 +51,7 @@ jobs:
         # from https://github.com/pagopa/terraform-preapply-azure-action/commits/main
         uses: pagopa/terraform-preapply-azure-action@54ded8cda3437c3f6a9f46baf69cb321ce82f5cd
         with:
-          client_id: ${{ secrets.AZURE_CLIENT_ID }}
+          client_id: ${{ secrets.AZURE_CLIENT_ID_CI }}
           tenant_id: ${{ secrets.AZURE_TENANT_ID }}
           subscription_id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
           dir: ${{ env.DIR }}-app
@@ -67,7 +67,7 @@ jobs:
         # from https://github.com/pagopa/terraform-apply-azure-action/commits/main
         uses: pagopa/terraform-apply-azure-action@87efc4aa9b093b99ae5fd1915977e29cd80861ab
         with:
-          client_id: ${{ secrets.AZURE_CLIENT_ID }}
+          client_id: ${{ secrets.AZURE_CLIENT_ID_CD }}
           tenant_id: ${{ secrets.AZURE_TENANT_ID }}
           subscription_id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
           dir: ${{ env.DIR }}-common
@@ -77,7 +77,7 @@ jobs:
         # from https://github.com/pagopa/terraform-apply-azure-action/commits/main
         uses: pagopa/terraform-apply-azure-action@87efc4aa9b093b99ae5fd1915977e29cd80861ab
         with:
-          client_id: ${{ secrets.AZURE_CLIENT_ID }}
+          client_id: ${{ secrets.AZURE_CLIENT_ID_CD }}
           tenant_id: ${{ secrets.AZURE_TENANT_ID }}
           subscription_id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
           dir: ${{ env.DIR }}-app

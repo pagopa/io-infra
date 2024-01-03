@@ -8,6 +8,7 @@ on:
       - edited
       - synchronize
       - reopened
+      - ready_for_review
     paths:
       - "src/domains/ioweb**"
       - ".github/workflows/ioweb_prod**"
@@ -44,7 +45,7 @@ jobs:
         # from https://github.com/pagopa/terraform-plan-azure-action/commits/main
         uses: pagopa/terraform-plan-azure-action@392aca28cbb33f5dc28215dfb72385e136fd813b
         with:
-          client_id: ${{ secrets.AZURE_CLIENT_ID }}
+          client_id: ${{ secrets.AZURE_CLIENT_ID_CI }}
           tenant_id: ${{ secrets.AZURE_TENANT_ID }}
           subscription_id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
           dir: ${{ env.DIR }}-common
@@ -54,7 +55,7 @@ jobs:
         # from https://github.com/pagopa/terraform-plan-azure-action/commits/main
         uses: pagopa/terraform-plan-azure-action@392aca28cbb33f5dc28215dfb72385e136fd813b
         with:
-          client_id: ${{ secrets.AZURE_CLIENT_ID }}
+          client_id: ${{ secrets.AZURE_CLIENT_ID_CI }}
           tenant_id: ${{ secrets.AZURE_TENANT_ID }}
           subscription_id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
           dir: ${{ env.DIR }}-app

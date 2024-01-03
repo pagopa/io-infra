@@ -37,7 +37,7 @@ jobs:
         # from https://github.com/pagopa/terraform-driftdetection-azure-action/commits/main
         uses: pagopa/terraform-driftdetection-azure-action@71bd771b3a071c78b36e5e0ecbd666ac39b1113c
         with:
-          client_id: ${{ secrets.AZURE_CLIENT_ID }}
+          client_id: ${{ secrets.AZURE_CLIENT_ID_CI }}
           tenant_id: ${{ secrets.AZURE_TENANT_ID }}
           subscription_id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
           dir: ${{ env.DIR }}-common
@@ -47,7 +47,7 @@ jobs:
         # from https://github.com/pagopa/terraform-driftdetection-azure-action/commits/main
         uses: pagopa/terraform-driftdetection-azure-action@71bd771b3a071c78b36e5e0ecbd666ac39b1113c
         with:
-          client_id: ${{ secrets.AZURE_CLIENT_ID }}
+          client_id: ${{ secrets.AZURE_CLIENT_ID_CI }}
           tenant_id: ${{ secrets.AZURE_TENANT_ID }}
           subscription_id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
           dir: ${{ env.DIR }}-app
@@ -57,7 +57,7 @@ jobs:
         # from https://github.com/pagopa/terraform-driftdetection-azure-action/commits/main
         uses: pagopa/terraform-driftdetection-azure-action@71bd771b3a071c78b36e5e0ecbd666ac39b1113c
         with:
-          client_id: ${{ secrets.AZURE_CLIENT_ID }}
+          client_id: ${{ secrets.AZURE_CLIENT_ID_CI }}
           tenant_id: ${{ secrets.AZURE_TENANT_ID }}
           subscription_id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
           dir: ${{ env.DIR }}-app
