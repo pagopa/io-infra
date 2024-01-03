@@ -43,6 +43,18 @@ resource "azurerm_key_vault_access_policy" "adgroup_developers" {
   certificate_permissions = ["Get", "List", "Update", "Create", "Import", "Delete", "Restore", "Recover", ]
 }
 
+## adgroup_directory_readers group policy ##
+resource "azurerm_key_vault_access_policy" "adgroup_directory_readers" {
+  key_vault_id = module.key_vault.id
+
+  tenant_id = data.azurerm_client_config.current.tenant_id
+  object_id = data.azuread_group.adgroup_directory_readers.object_id
+
+  key_permissions         = ["Get", "List"]
+  secret_permissions      = ["Get", "List"]
+  certificate_permissions = ["Get", "List"]
+}
+
 # Access policy for CD pipeline
 
 data "azuread_service_principal" "github_action_iac_cd" {
