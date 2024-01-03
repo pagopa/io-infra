@@ -29,7 +29,7 @@ ci_github_federations = [
 cd_github_federations = [
   {
     repository = "io-infra"
-    subject    = "prod-ci"
+    subject    = "prod-cd"
   }
 ]
 
