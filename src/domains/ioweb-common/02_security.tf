@@ -43,7 +43,7 @@ resource "azurerm_key_vault_access_policy" "adgroup_developers" {
   certificate_permissions = ["Get", "List", "Update", "Create", "Import", "Delete", "Restore", "Recover", ]
 }
 
-## adgroup_directory_readers group policy ##
+## io-p-ioweb-kv adgroup_directory_readers group policy ##
 resource "azurerm_key_vault_access_policy" "adgroup_directory_readers" {
   key_vault_id = module.key_vault.id
 
