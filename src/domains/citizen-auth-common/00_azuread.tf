@@ -14,7 +14,3 @@ data "azuread_group" "adgroup_externals" {
 data "azuread_group" "adgroup_security" {
   display_name = format("%s-adgroup-security", local.product)
 }
-
-data "azuread_group" "adgroup_directory_readers" {
-  display_name = "directory-readers"
-}
