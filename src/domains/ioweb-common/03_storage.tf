@@ -78,6 +78,13 @@ resource "azurerm_storage_container" "immutable_spid_logs" {
   container_access_type = "private"
 }
 
+resource "azurerm_storage_container" "immutable_audit_logs" {
+  depends_on            = [module.immutable_spid_logs_storage, azurerm_private_endpoint.immutable_spid_logs_storage_blob]
+  name                  = "auditlogs"
+  storage_account_name  = module.immutable_spid_logs_storage.name
+  container_access_type = "private"
+}
+
 
 # Policies
 resource "azurerm_storage_management_policy" "immutable_spid_logs_storage_management_policy" {
@@ -103,6 +110,35 @@ resource "azurerm_storage_management_policy" "immutable_spid_logs_storage_manage
       }
       version {
         delete_after_days_since_creation = local.immutability_policy_days + 1
+      }
+    }
+  }
+}
+
+## Policy ONLY for audit logs
+resource "azurerm_storage_management_policy" "immutable_audit_logs_storage_management_policy" {
+  depends_on = [module.immutable_spid_logs_storage, azurerm_storage_container.immutable_spid_logs]
+
+  storage_account_id = module.immutable_spid_logs_storage.id
+
+  rule {
+    name    = "deleteafter2yrsplus1week"
+    enabled = true
+    filters {
+      prefix_match = [
+        azurerm_storage_container.immutable_audit_logs.name,
+      ]
+      blob_types = ["blockBlob"]
+    }
+    actions {
+      base_blob {
+        delete_after_days_since_creation_greater_than = local.immutability_policy_days + 8
+      }
+      snapshot {
+        delete_after_days_since_creation_greater_than = local.immutability_policy_days + 8
+      }
+      version {
+        delete_after_days_since_creation = local.immutability_policy_days + 8
       }
     }
   }
