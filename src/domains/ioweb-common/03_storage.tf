@@ -88,7 +88,7 @@ resource "azurerm_storage_container" "immutable_audit_logs" {
 
 # Policies
 resource "azurerm_storage_management_policy" "immutable_spid_logs_storage_management_policy" {
-  depends_on = [module.immutable_spid_logs_storage, azurerm_storage_container.immutable_spid_logs]
+  depends_on = [module.immutable_spid_logs_storage, azurerm_storage_container.immutable_audit_logs]
 
   storage_account_id = module.immutable_spid_logs_storage.id
 
