@@ -59,9 +59,10 @@ jobs:
           dir: ${{ env.DIR }}-app
           azure_environment: weu-prod01
 
-      - uses: actions/upload-artifact@v2
+      - uses: actions/upload-artifact@c7d193f32edcb7bfad88892161225aeda64e9392
         with:
           name: tfplan-output
+          if-no-files-found: error
           path: |
             **/tfplan-prod-*
             **/tfplan-weu-prod01-*
@@ -82,7 +83,7 @@ jobs:
           persist-credentials: false
           fetch-depth: 0
 
-      - uses: actions/download-artifact@v2
+      - uses: actions/download-artifact@f44cd7b40bfd40b6aa1cc1b9b5b7bf03d3c67110
         with:
           name: tfplan-output
 
