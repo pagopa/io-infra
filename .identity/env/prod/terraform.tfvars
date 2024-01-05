@@ -13,7 +13,6 @@ github_repository_environment_cd = {
   protected_branches     = true
   custom_branch_policies = false
   reviewers_teams = [
-    "infrastructure-admins",
     "io-backend-admin",
     "io-backend-contributors",
   ]
@@ -29,7 +28,7 @@ ci_github_federations = [
 cd_github_federations = [
   {
     repository = "io-infra"
-    subject    = "prod-ci"
+    subject    = "prod-cd"
   }
 ]
 

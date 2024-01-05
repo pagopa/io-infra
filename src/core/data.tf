@@ -299,3 +299,17 @@ data "azurerm_storage_account" "citizen_auth_common" {
   name                = "iopweucitizenauthst"
   resource_group_name = "io-p-citizen-auth-data-rg"
 }
+
+#
+# MANAGED IDENTITIES
+#
+
+data "azurerm_user_assigned_identity" "managed_identity_io_infra_ci" {
+  name                = "${local.project}-infra-github-ci-identity"
+  resource_group_name = "${local.project}-identity-rg"
+}
+
+data "azurerm_user_assigned_identity" "managed_identity_io_infra_cd" {
+  name                = "${local.project}-infra-github-cd-identity"
+  resource_group_name = "${local.project}-identity-rg"
+}

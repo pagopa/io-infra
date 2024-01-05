@@ -29,6 +29,29 @@ resource "azurerm_key_vault_access_policy" "adgroup_admin_common" {
   certificate_permissions = ["Get", "List", "Update", "Create", "Import", "Delete", "Restore", "Recover", ]
 }
 
+# kv-common managed identities reader policy
+resource "azurerm_key_vault_access_policy" "access_policy_io_infra_ci" {
+  key_vault_id = module.key_vault_common.id
+
+  tenant_id = data.azurerm_client_config.current.tenant_id
+  object_id = data.azurerm_user_assigned_identity.managed_identity_io_infra_ci.principal_id
+
+  key_permissions         = ["Get", "List"]
+  secret_permissions      = ["Get", "List"]
+  certificate_permissions = ["Get", "List"]
+}
+
+resource "azurerm_key_vault_access_policy" "access_policy_io_infra_cd" {
+  key_vault_id = module.key_vault_common.id
+
+  tenant_id = data.azurerm_client_config.current.tenant_id
+  object_id = data.azurerm_user_assigned_identity.managed_identity_io_infra_cd.principal_id
+
+  key_permissions         = ["Get", "List"]
+  secret_permissions      = ["Get", "List"]
+  certificate_permissions = ["Get", "List"]
+}
+
 data "azuread_group" "adgroup_developers" {
   display_name = format("%s-adgroup-developers", local.project)
 }
