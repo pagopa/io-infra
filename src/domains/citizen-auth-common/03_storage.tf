@@ -243,3 +243,9 @@ resource "azurerm_storage_table" "profile_emails" {
   name                 = "profileEmails"
   storage_account_name = module.io_citizen_auth_storage.name
 }
+
+resource "azurerm_storage_queue" "profiles_to_sanitize" {
+  depends_on           = [module.io_citizen_auth_storage, azurerm_private_endpoint.table]
+  name                 = "profiles-to-sanitize"
+  storage_account_name = module.io_citizen_auth_storage.name
+}

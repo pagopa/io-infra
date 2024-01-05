@@ -140,6 +140,10 @@ locals {
       __DISABLED__SENDGRID_API_KEY = data.azurerm_key_vault_secret.common_SENDGRID_APIKEY.value
       MAILUP_USERNAME              = data.azurerm_key_vault_secret.common_MAILUP_USERNAME.value
       MAILUP_SECRET                = data.azurerm_key_vault_secret.common_MAILUP_SECRET.value
+
+      # UNIQUE EMAIL ENFORCEMENT
+      CitizenAuthStorageConnection = data.azurerm_storage_account.citizen_auth_common.primary_connection_string
+      SanitizeUserProfileQueueName = "profiles-to-sanitize"
     }
   }
 }
