@@ -83,7 +83,7 @@ module "eucovidcert_storage_account" {
   account_tier                    = "Standard"
   access_tier                     = "Hot"
   blob_versioning_enabled         = false
-  account_replication_type        = "GRS"
+  account_replication_type        = "GZRS"
   resource_group_name             = azurerm_resource_group.eucovidcert_rg.name
   location                        = azurerm_resource_group.eucovidcert_rg.location
   advanced_threat_protection      = false
