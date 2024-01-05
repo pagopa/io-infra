@@ -23,7 +23,9 @@ jobs:
     name: Terraform Pre Apply
     runs-on: self-hosted
     environment: prod-ci
+
     steps:
+
       - name: Checkout
         id: checkout
         # from https://github.com/actions/checkout/commits/main
@@ -57,17 +59,22 @@ jobs:
           dir: ${{ env.DIR }}-app
           azure_environment: weu-prod01
 
-      - uses: actions/upload-artifact@v2
+      - uses: actions/upload-artifact@c7d193f32edcb7bfad88892161225aeda64e9392
         with:
           name: tfplan-output
-          path: tfplan-prod-*
+          if-no-files-found: error
+          path: |
+            **/tfplan-prod-*
+            **/tfplan-weu-prod01-*
 
   terraform_apply_job:
     name: Terraform Apply
     runs-on: self-hosted
     environment: prod-cd
     needs: [terraform_preapply_job]
+
     steps:
+
       - name: Checkout
         id: checkout
         # from https://github.com/actions/checkout/commits/main
@@ -75,13 +82,16 @@ jobs:
         with:
           persist-credentials: false
           fetch-depth: 0
-      - uses: actions/download-artifact@v2
+
+      - uses: actions/download-artifact@f44cd7b40bfd40b6aa1cc1b9b5b7bf03d3c67110
         with:
           name: tfplan-output
+
       - name: Setup terraform
         id: setup-version
         # https://github.com/pagopa/terraform-install-action/commits/main
         uses: pagopa/terraform-install-action@1f76f593176e58c423b88d72273a612ba7ba430b
+
       - name: Terraform apply common
         # from https://github.com/pagopa/terraform-apply-azure-action/commits/main
         uses: pagopa/terraform-apply-azure-action@87efc4aa9b093b99ae5fd1915977e29cd80861ab
