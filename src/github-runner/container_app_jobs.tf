@@ -25,18 +25,18 @@ module "github_runner" {
   app = {
     containers = [
       {
-        repo = "io-infra",
-        cpu = 0.5,
+        repo   = "io-infra",
+        cpu    = 0.5,
         memory = "1Gi"
       },
       {
-        repo = "io-sign",
-        cpu = 0.5,
+        repo   = "io-sign",
+        cpu    = 0.5,
         memory = "1Gi"
       },
       {
-        repo = "io-services-cms",
-        cpu = 0.5,
+        repo   = "io-services-cms",
+        cpu    = 0.5,
         memory = "1Gi"
       }
     ]
