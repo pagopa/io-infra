@@ -68,6 +68,11 @@ jobs:
           dir: ${{ env.DIR }}-app
           azure_environment: weu-prod01
 
+      - uses: actions/upload-artifact@v2
+        with:
+          name: tfplan-output
+          path: tfplan-prod-*
+
   terraform_apply_job:
     name: Terraform Apply
     runs-on: self-hosted
@@ -81,6 +86,9 @@ jobs:
         with:
           persist-credentials: false
           fetch-depth: 0
+      - uses: actions/download-artifact@v2
+        with:
+          name: tfplan-output
       - name: Setup terraform
         id: setup-version
         # https://github.com/pagopa/terraform-install-action/commits/main
