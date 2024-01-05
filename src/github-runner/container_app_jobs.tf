@@ -1,5 +1,5 @@
 module "github_runner" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//container_app_job_gh_runner?ref=v7.35.0"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//container_app_job_gh_runner?ref=v7.36.0"
 
   location  = var.location
   prefix    = var.prefix
@@ -23,10 +23,22 @@ module "github_runner" {
   }
 
   app = {
-    repos = [
-      "io-infra",
-      "io-sign",
-      "io-services-cms"
+    containers = [
+      {
+        repo = "io-infra",
+        cpu = 0.5,
+        memory = "1Gi"
+      },
+      {
+        repo = "io-sign",
+        cpu = 0.5,
+        memory = "1Gi"
+      },
+      {
+        repo = "io-services-cms",
+        cpu = 0.5,
+        memory = "1Gi"
+      }
     ]
   }
 
