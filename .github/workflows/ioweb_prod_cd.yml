@@ -92,6 +92,13 @@ jobs:
         # https://github.com/pagopa/terraform-install-action/commits/main
         uses: pagopa/terraform-install-action@1f76f593176e58c423b88d72273a612ba7ba430b
 
+      - name: Terraform Init
+        id: terraform_init_common
+        working-directory: ${{ env.DIR }}-common
+        shell: bash
+        run: |
+          bash ./terraform.sh init prod
+
       - name: Terraform apply common
         # from https://github.com/pagopa/terraform-apply-azure-action/commits/main
         uses: pagopa/terraform-apply-azure-action@87efc4aa9b093b99ae5fd1915977e29cd80861ab
@@ -101,6 +108,13 @@ jobs:
           subscription_id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
           dir: ${{ env.DIR }}-common
           azure_environment: prod
+
+      - name: Terraform Init
+        id: terraform_init_weu-prod01
+        working-directory: ${{ env.DIR }}-app
+        shell: bash
+        run: |
+          bash ./terraform.sh init weu-prod01
 
       - name: Terraform apply app (weu-prod01)
         # from https://github.com/pagopa/terraform-apply-azure-action/commits/main
