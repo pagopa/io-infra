@@ -2,7 +2,6 @@ name: Continuous Delivery on prod citizen-auth
 
 on:
   workflow_dispatch:
-  # Trigger the workflow on push on the main branch
   push:
     branches:
       - main
@@ -24,7 +23,9 @@ jobs:
     name: Terraform Pre Apply
     runs-on: self-hosted
     environment: prod-ci
+
     steps:
+
       - name: Checkout
         id: checkout
         # from https://github.com/actions/checkout/commits/main
@@ -82,7 +83,9 @@ jobs:
     runs-on: self-hosted
     environment: prod-cd
     needs: [terraform_preapply_job]
+
     steps:
+
       - name: Checkout
         id: checkout
         # from https://github.com/actions/checkout/commits/main
@@ -100,6 +103,13 @@ jobs:
         # https://github.com/pagopa/terraform-install-action/commits/main
         uses: pagopa/terraform-install-action@1f76f593176e58c423b88d72273a612ba7ba430b
 
+      - name: Terraform Init
+        id: terraform_init_common
+        working-directory: ${{ env.DIR }}-common
+        shell: bash
+        run: |
+          bash ./terraform.sh init prod
+
       - name: Terraform apply common
         # from https://github.com/pagopa/terraform-apply-azure-action/commits/main
         uses: pagopa/terraform-apply-azure-action@87efc4aa9b093b99ae5fd1915977e29cd80861ab
@@ -110,6 +120,13 @@ jobs:
           dir: ${{ env.DIR }}-common
           azure_environment: prod
 
+      - name: Terraform Init
+        id: terraform_init_weu-beta
+        working-directory: ${{ env.DIR }}-app
+        shell: bash
+        run: |
+          bash ./terraform.sh init weu-beta
+
       - name: Terraform apply weu-beta
         # from https://github.com/pagopa/terraform-apply-azure-action/commits/main
         uses: pagopa/terraform-apply-azure-action@87efc4aa9b093b99ae5fd1915977e29cd80861ab
@@ -119,6 +136,13 @@ jobs:
           subscription_id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
           dir: ${{ env.DIR }}-app
           azure_environment: weu-beta
+
+      - name: Terraform Init
+        id: terraform_init_weu-prod01
+        working-directory: ${{ env.DIR }}-app
+        shell: bash
+        run: |
+          bash ./terraform.sh init weu-prod01
 
       - name: Terraform apply weu-prod01
         # from https://github.com/pagopa/terraform-apply-azure-action/commits/main
