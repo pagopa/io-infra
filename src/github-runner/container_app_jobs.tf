@@ -25,7 +25,8 @@ module "github_runner" {
   app = {
     repos = [
       "io-infra",
-      "io-sign"
+      "io-sign",
+      "io-services-cms"
     ]
   }
 
