@@ -68,21 +68,21 @@ jobs:
         run: |
           bash ./terraform.sh plan ${{ env.AZURE_ENVIRONMENT }} -lock-timeout=3000s -out=tfplan-${{ env.AZURE_ENVIRONMENT }}-${{ github.sha }} -input=false
 
-      # - name: Terraform plan weu-beta
-      #   shell: bash
-      #   working-directory: ${{ env.DIR }}-app
-      #   env:
-      #     AZURE_ENVIRONMENT: weu-beta
-      #   run: |
-      #     bash ./terraform.sh plan ${{ env.AZURE_ENVIRONMENT }} -lock-timeout=3000s -out=tfplan-${{ env.AZURE_ENVIRONMENT }}-${{ github.sha }} -input=false
+      - name: Terraform plan weu-beta
+        shell: bash
+        working-directory: ${{ env.DIR }}-app
+        env:
+          AZURE_ENVIRONMENT: weu-beta
+        run: |
+          bash ./terraform.sh plan ${{ env.AZURE_ENVIRONMENT }} -lock-timeout=3000s -out=tfplan-${{ env.AZURE_ENVIRONMENT }}-${{ github.sha }} -input=false
 
-      # - name: Terraform plan weu-prod01
-      #   shell: bash
-      #   working-directory: ${{ env.DIR }}-app
-      #   env:
-      #     AZURE_ENVIRONMENT: weu-prod01
-      #   run: |
-      #     bash ./terraform.sh plan ${{ env.AZURE_ENVIRONMENT }} -lock-timeout=3000s -out=tfplan-${{ env.AZURE_ENVIRONMENT }}-${{ github.sha }} -input=false
+      - name: Terraform plan weu-prod01
+        shell: bash
+        working-directory: ${{ env.DIR }}-app
+        env:
+          AZURE_ENVIRONMENT: weu-prod01
+        run: |
+          bash ./terraform.sh plan ${{ env.AZURE_ENVIRONMENT }} -lock-timeout=3000s -out=tfplan-${{ env.AZURE_ENVIRONMENT }}-${{ github.sha }} -input=false
 
       - uses: actions/upload-artifact@c7d193f32edcb7bfad88892161225aeda64e9392
         with:
@@ -130,7 +130,7 @@ jobs:
         id: terraform_setup
         name: Setup Terraform
         with:
-          terraform_version: echo "${{ needs.terraform_plan_job.outputs.terraform_version }}"
+          terraform_version: ${{ needs.terraform_plan_job.outputs.terraform_version }}
           terraform_wrapper: true
 
       - name: Terraform apply common
@@ -140,26 +140,25 @@ jobs:
         env:
           AZURE_ENVIRONMENT: prod
         run: |
-          terraform -version
-          # bash ./terraform.sh apply -lock-timeout=3000s -auto-approve -input=false tfplan-${{ env.AZURE_ENVIRONMENT }}-${{ github.sha }}
-          # rm -rf tfplan-${{ env.AZURE_ENVIRONMENT }}-${{ github.sha }}
+          bash ./terraform.sh apply -lock-timeout=3000s -auto-approve -input=false tfplan-${{ env.AZURE_ENVIRONMENT }}-${{ github.sha }}
+          rm -rf tfplan-${{ env.AZURE_ENVIRONMENT }}-${{ github.sha }}
 
-      # - name: Terraform apply weu-beta
-      #   id: terraform_apply_weu-beta
-      #   shell: bash
-      #   working-directory: ${{ env.DIR }}-app
-      #   env:
-      #     AZURE_ENVIRONMENT: weu-beta
-      #   run: |
-      #     bash ./terraform.sh apply -lock-timeout=3000s -auto-approve -input=false tfplan-${{ env.AZURE_ENVIRONMENT }}-${{ github.sha }}
-      #     rm -rf tfplan-${{ env.AZURE_ENVIRONMENT }}-${{ github.sha }}
+      - name: Terraform apply weu-beta
+        id: terraform_apply_weu-beta
+        shell: bash
+        working-directory: ${{ env.DIR }}-app
+        env:
+          AZURE_ENVIRONMENT: weu-beta
+        run: |
+          bash ./terraform.sh apply -lock-timeout=3000s -auto-approve -input=false tfplan-${{ env.AZURE_ENVIRONMENT }}-${{ github.sha }}
+          rm -rf tfplan-${{ env.AZURE_ENVIRONMENT }}-${{ github.sha }}
 
-      # - name: Terraform apply weu-prod01
-      #   id: terraform_apply_weu-prod01
-      #   shell: bash
-      #   working-directory: ${{ env.DIR }}-app
-      #   env:
-      #     AZURE_ENVIRONMENT: weu-prod01
-      #   run: |
-      #     bash ./terraform.sh apply -lock-timeout=3000s -auto-approve -input=false tfplan-${{ env.AZURE_ENVIRONMENT }}-${{ github.sha }}
-      #     rm -rf tfplan-${{ env.AZURE_ENVIRONMENT }}-${{ github.sha }}
+      - name: Terraform apply weu-prod01
+        id: terraform_apply_weu-prod01
+        shell: bash
+        working-directory: ${{ env.DIR }}-app
+        env:
+          AZURE_ENVIRONMENT: weu-prod01
+        run: |
+          bash ./terraform.sh apply -lock-timeout=3000s -auto-approve -input=false tfplan-${{ env.AZURE_ENVIRONMENT }}-${{ github.sha }}
+          rm -rf tfplan-${{ env.AZURE_ENVIRONMENT }}-${{ github.sha }}
