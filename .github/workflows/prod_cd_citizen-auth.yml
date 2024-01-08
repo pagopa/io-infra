@@ -85,6 +85,7 @@ jobs:
           bash ./terraform.sh plan ${{ env.AZURE_ENVIRONMENT }} -lock-timeout=3000s -out=tfplan-${{ env.AZURE_ENVIRONMENT }}-${{ github.sha }} -input=false
 
       - uses: actions/upload-artifact@c7d193f32edcb7bfad88892161225aeda64e9392
+        name: Upload plans as artifacts
         with:
           name: tfplan-output
           if-no-files-found: error
