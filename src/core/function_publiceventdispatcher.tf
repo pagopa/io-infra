@@ -62,7 +62,7 @@ module "function_pblevtdispatcher" {
   storage_account_info = {
     account_kind                      = "StorageV2"
     account_tier                      = "Standard"
-    account_replication_type          = "GRS"
+    account_replication_type          = "GZRS"
     access_tier                       = "Hot"
     advanced_threat_protection_enable = true
   }
@@ -212,7 +212,7 @@ module "storage_account_pblevtdispatcher" {
   name                          = replace(format("%s-stpblevtdispatcher", local.project), "-", "")
   account_kind                  = "StorageV2"
   account_tier                  = "Standard"
-  account_replication_type      = "GRS"
+  account_replication_type      = "GZRS"
   access_tier                   = "Hot"
   resource_group_name           = azurerm_resource_group.pblevtdispatcher_rg.name
   location                      = var.location
