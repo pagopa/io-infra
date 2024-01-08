@@ -34,40 +34,72 @@ jobs:
           persist-credentials: false
           fetch-depth: 0
 
-      - name: Setup terraform
-        id: setup-version
-        # https://github.com/pagopa/terraform-install-action/commits/main
-        uses: pagopa/terraform-install-action@1f76f593176e58c423b88d72273a612ba7ba430b
+      - name: Azure Login
+        id: az_login
+        uses: azure/login@92a5484dfaf04ca78a94597f4f19fea633851fa2
+        with:
+          client-id: ${{ secrets.AZURE_CLIENT_ID_CI }}
+          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+
+      # - name: Set Terraform Version
+      #   id: env_tf_version
+      #   run: |
+      #     echo "terraform_version=$(cat .terraform-version)" >> $GITHUB_OUTPUT
+
+      - uses: hashicorp/setup-terraform@a1502cd9e758c50496cc9ac5308c4843bcd56d36
+        id: terraform_setup
+        name: Setup Terraform
+        continue-on-error: true
+        with:
+          terraform_version: $(cat .terraform-version)
+          terraform_wrapper: true
+
+      - uses: hashicorp/setup-terraform@a1502cd9e758c50496cc9ac5308c4843bcd56d36
+        id: terraform_setup_2
+        name: Setup Terraform
+        continue-on-error: true
+        with:
+          terraform_version: cat .terraform-version
+          terraform_wrapper: true
 
       - name: Terraform pre apply common
-        # from https://github.com/pagopa/terraform-preapply-azure-action/commits/main
-        uses: pagopa/terraform-preapply-azure-action@54ded8cda3437c3f6a9f46baf69cb321ce82f5cd
-        with:
-          client_id: ${{ secrets.AZURE_CLIENT_ID_CI }}
-          tenant_id: ${{ secrets.AZURE_TENANT_ID }}
-          subscription_id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
-          dir: ${{ env.DIR }}-common
+        shell: bash
+        working-directory: ${{ env.DIR }}-common
+        env:
           azure_environment: prod
+        run: |
+          bash ./terraform.sh plan ${{ env.azure_environment }} -lock-timeout=3000s -out=tfplan-${{ env.azure_environment }}-${{ github.sha }} -input=false
 
-      - name: Terraform pre apply weu-beta
-        # from https://github.com/pagopa/terraform-preapply-azure-action/commits/main
-        uses: pagopa/terraform-preapply-azure-action@54ded8cda3437c3f6a9f46baf69cb321ce82f5cd
-        with:
-          client_id: ${{ secrets.AZURE_CLIENT_ID_CI }}
-          tenant_id: ${{ secrets.AZURE_TENANT_ID }}
-          subscription_id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
-          dir: ${{ env.DIR }}-app
-          azure_environment: weu-beta
+      # - name: Terraform pre apply common
+      #   # from https://github.com/pagopa/terraform-preapply-azure-action/commits/main
+      #   uses: pagopa/terraform-preapply-azure-action@54ded8cda3437c3f6a9f46baf69cb321ce82f5cd
+      #   with:
+      #     client_id: ${{ secrets.AZURE_CLIENT_ID_CI }}
+      #     tenant_id: ${{ secrets.AZURE_TENANT_ID }}
+      #     subscription_id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+      #     dir: ${{ env.DIR }}-common
+      #     azure_environment: prod
 
-      - name: Terraform pre apply weu-prod01
-        # from https://github.com/pagopa/terraform-preapply-azure-action/commits/main
-        uses: pagopa/terraform-preapply-azure-action@54ded8cda3437c3f6a9f46baf69cb321ce82f5cd
-        with:
-          client_id: ${{ secrets.AZURE_CLIENT_ID_CI }}
-          tenant_id: ${{ secrets.AZURE_TENANT_ID }}
-          subscription_id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
-          dir: ${{ env.DIR }}-app
-          azure_environment: weu-prod01
+      # - name: Terraform pre apply weu-beta
+      #   # from https://github.com/pagopa/terraform-preapply-azure-action/commits/main
+      #   uses: pagopa/terraform-preapply-azure-action@54ded8cda3437c3f6a9f46baf69cb321ce82f5cd
+      #   with:
+      #     client_id: ${{ secrets.AZURE_CLIENT_ID_CI }}
+      #     tenant_id: ${{ secrets.AZURE_TENANT_ID }}
+      #     subscription_id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+      #     dir: ${{ env.DIR }}-app
+      #     azure_environment: weu-beta
+
+      # - name: Terraform pre apply weu-prod01
+      #   # from https://github.com/pagopa/terraform-preapply-azure-action/commits/main
+      #   uses: pagopa/terraform-preapply-azure-action@54ded8cda3437c3f6a9f46baf69cb321ce82f5cd
+      #   with:
+      #     client_id: ${{ secrets.AZURE_CLIENT_ID_CI }}
+      #     tenant_id: ${{ secrets.AZURE_TENANT_ID }}
+      #     subscription_id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+      #     dir: ${{ env.DIR }}-app
+      #     azure_environment: weu-prod01
 
       - uses: actions/upload-artifact@c7d193f32edcb7bfad88892161225aeda64e9392
         with:
@@ -84,9 +116,6 @@ jobs:
     environment: prod-cd
     needs: [terraform_preapply_job]
     env:
-      ARM_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID_CD }}
-      ARM_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
-      ARM_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
       ARM_USE_OIDC: true
       ARM_USE_AZUREAD: true
       ARM_STORAGE_USE_AZUREAD: true
@@ -112,11 +141,6 @@ jobs:
           client-id: ${{ secrets.AZURE_CLIENT_ID_CD }}
           tenant-id: ${{ secrets.AZURE_TENANT_ID }}
           subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
-
-      # - name: Setup terraform
-      #   id: setup-version
-      #   # https://github.com/pagopa/terraform-install-action/commits/main
-      #   uses: pagopa/terraform-install-action@1f76f593176e58c423b88d72273a612ba7ba430b
 
       - name: Set Terraform Version
         id: env_tf_version
@@ -144,7 +168,6 @@ jobs:
           azure_environment: prod
         run: |
           terraform apply -lock-timeout=3000s -auto-approve -input=false tfplan-${{ env.azure_environment }}-${{ github.sha }}
-          ls
           rm -rf tfplan-${{ env.azure_environment }}-${{ github.sha }}
 
         # with:
