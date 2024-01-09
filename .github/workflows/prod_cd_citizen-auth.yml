@@ -137,6 +137,15 @@ jobs:
           terraform_version: ${{ needs.terraform_plan_job.outputs.terraform_version }}
           terraform_wrapper: true
 
+      - name: Terraform init common
+        id: terraform_init_common
+        shell: bash
+        working-directory: ${{ env.DIR }}-common
+        env:
+          AZURE_ENVIRONMENT: prod
+        run: |
+          bash ./terraform.sh init ${{ env.AZURE_ENVIRONMENT }}
+
       - name: Terraform apply common
         id: terraform_apply_common
         shell: bash
@@ -144,8 +153,16 @@ jobs:
         env:
           AZURE_ENVIRONMENT: prod
         run: |
-          bash ./terraform.sh apply -lock-timeout=3000s -auto-approve -input=false tfplan-${{ env.AZURE_ENVIRONMENT }}-${{ github.sha }}
-          rm -rf tfplan-${{ env.AZURE_ENVIRONMENT }}-${{ github.sha }}
+          terraform apply -lock-timeout=3000s -auto-approve -input=false tfplan-${{ env.AZURE_ENVIRONMENT }}-${{ github.sha }}
+
+      - name: Terraform init weu-beta
+        id: terraform_init_weu-beta
+        shell: bash
+        working-directory: ${{ env.DIR }}-app
+        env:
+          AZURE_ENVIRONMENT: weu-beta
+        run: |
+          bash ./terraform.sh init ${{ env.AZURE_ENVIRONMENT }}
 
       - name: Terraform apply weu-beta
         id: terraform_apply_weu-beta
@@ -154,8 +171,16 @@ jobs:
         env:
           AZURE_ENVIRONMENT: weu-beta
         run: |
-          bash ./terraform.sh apply -lock-timeout=3000s -auto-approve -input=false tfplan-${{ env.AZURE_ENVIRONMENT }}-${{ github.sha }}
-          rm -rf tfplan-${{ env.AZURE_ENVIRONMENT }}-${{ github.sha }}
+          terraform apply -lock-timeout=3000s -auto-approve -input=false tfplan-${{ env.AZURE_ENVIRONMENT }}-${{ github.sha }}
+
+      - name: Terraform init weu-prod01
+        id: terraform_init_weu-prod01
+        shell: bash
+        working-directory: ${{ env.DIR }}-app
+        env:
+          AZURE_ENVIRONMENT: weu-prod01
+        run: |
+          bash ./terraform.sh init ${{ env.AZURE_ENVIRONMENT }}
 
       - name: Terraform apply weu-prod01
         id: terraform_apply_weu-prod01
@@ -164,5 +189,4 @@ jobs:
         env:
           AZURE_ENVIRONMENT: weu-prod01
         run: |
-          bash ./terraform.sh apply -lock-timeout=3000s -auto-approve -input=false tfplan-${{ env.AZURE_ENVIRONMENT }}-${{ github.sha }}
-          rm -rf tfplan-${{ env.AZURE_ENVIRONMENT }}-${{ github.sha }}
+          terraform apply -lock-timeout=3000s -auto-approve -input=false tfplan-${{ env.AZURE_ENVIRONMENT }}-${{ github.sha }}
