@@ -792,7 +792,7 @@ variable "function_services_autoscale_default" {
 
 variable "function_services_subscription_cidrs_max_thoughput" {
   type    = number
-  default = 600
+  default = 1000
 }
 
 
