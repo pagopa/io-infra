@@ -26,6 +26,8 @@ module "landing_cdn" {
   hostname              = "firma.io.italia.it"
   https_rewrite_enabled = true
 
+  storage_account_replication_type = "GZRS"
+
   index_document     = "index.html"
   error_404_document = "index.html"
 
