@@ -415,4 +415,8 @@ module "db_subscription_cidrs_container" {
   account_name        = format("%s-cosmos-api", local.project)
   database_name       = local.function_services.app_settings_common.COSMOSDB_NAME
   partition_key_path  = "/subscriptionId"
+
+  autoscale_settings {
+    max_throughput = var.function_services_subscription_cidrs_max_thoughput
+  }
 }
