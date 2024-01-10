@@ -137,7 +137,7 @@ locals {
 
 #tfsec:ignore:azure-storage-queue-services-logging-enabled:exp:2022-05-01 # already ignored, maybe a bug in tfsec
 module "function_devportalservicedata" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app?ref=v7.34.3"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app?ref=v7.40.1"
 
   name                = format("%s-%s-fn", local.project, local.function_devportalservicedata.app_context.name)
   location            = local.function_devportalservicedata.app_context.resource_group.location
@@ -165,6 +165,14 @@ module "function_devportalservicedata" {
     account_kind                      = "StorageV2"
     account_tier                      = "Standard"
     account_replication_type          = "GRS"
+    access_tier                       = "Hot"
+    advanced_threat_protection_enable = true
+  }
+
+  internal_storage_account_info = {
+    account_kind                      = "StorageV2"
+    account_tier                      = "Standard"
+    account_replication_type          = "GZRS"
     access_tier                       = "Hot"
     advanced_threat_protection_enable = true
   }
