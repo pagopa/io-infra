@@ -259,6 +259,9 @@ module "appservice_selfcare_be" {
     # Lock the creation of a new APIM user, when resolve SelfCareIdentity.
     LOCK_SELFCARE_CREATE_NEW_APIM_USER = "false"
 
+    API_SERVICES_CMS_URL       = "https://${data.azurerm_function_app.webapp_functions_app.default_hostname}"
+    API_SERVICES_CMS_BASE_PATH = "/api/v1"
+
   }
 
   allowed_subnets = [module.appgateway_snet.id]
