@@ -34,6 +34,8 @@ module "selfcare_cdn" {
   index_document     = "index.html"
   error_404_document = "404.html"
 
+  storage_account_replication_type = "GZRS"
+
   dns_zone_name                = azurerm_dns_zone.io_selfcare_pagopa_it[0].name
   dns_zone_resource_group_name = azurerm_dns_zone.io_selfcare_pagopa_it[0].resource_group_name
 
