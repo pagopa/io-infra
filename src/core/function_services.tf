@@ -416,7 +416,7 @@ module "db_subscription_cidrs_container" {
   database_name       = local.function_services.app_settings_common.COSMOSDB_NAME
   partition_key_path  = "/subscriptionId"
 
-  autoscale_settings {
+  autoscale_settings = {
     max_throughput = var.function_services_subscription_cidrs_max_thoughput
   }
 }
