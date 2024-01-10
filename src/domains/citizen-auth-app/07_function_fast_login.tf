@@ -111,7 +111,7 @@ module "function_fast_login" {
     kind                         = var.function_fastlogin_kind
     sku_size                     = var.function_fastlogin_sku_size
     maximum_elastic_worker_count = 0
-    worker_count                 = 1
+    worker_count                 = var.function_fastlogin_autoscale_minimum
     zone_balancing_enabled       = false
   }
 
