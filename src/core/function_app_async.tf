@@ -4,7 +4,13 @@
 
 locals {
   function_app_async = {
-    app_settings_common = local.function_app.app_settings_common
+    app_settings_common = merge(
+      local.function_app.app_settings_common,
+      {
+        # Disabled functions on slot triggered by cosmosDB change feed
+        for to_disable in local.function_app.staging_functions_disabled :
+        format("AzureWebJobs.%s.Disabled", to_disable) => "1"
+    })
     app_settings_1 = {
     }
     app_settings_2 = {
@@ -90,10 +96,15 @@ module "function_app_async" {
     module.app_async_snet.id,
   ]
 
-  sticky_app_setting_names = [
+  sticky_app_setting_names = concat([
     "AzureWebJobs.HandleNHNotificationCall.Disabled",
     "AzureWebJobs.StoreSpidLogs.Disabled"
-  ]
+    ],
+    [
+      for to_disable in local.function_app.staging_functions_disabled :
+      format("AzureWebJobs.%s.Disabled", to_disable)
+    ]
+  )
 
   tags = var.tags
 }

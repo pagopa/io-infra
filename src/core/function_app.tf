@@ -123,7 +123,7 @@ locals {
       UNIQUE_EMAIL_ENFORCEMENT_USERS          = jsonencode(split(",", data.azurerm_key_vault_secret.app_backend_UNIQUE_EMAIL_ENFORCEMENT_USER.value))
       PROFILE_EMAIL_STORAGE_CONNECTION_STRING = data.azurerm_storage_account.citizen_auth_common.primary_connection_string
       PROFILE_EMAIL_STORAGE_TABLE_NAME        = "profileEmails"
-      ON_PROFILE_UPDATE_LEASES_PREFIX         = "OnProfileUpdateLeasesPrefix"
+      ON_PROFILE_UPDATE_LEASES_PREFIX         = "OnProfileUpdateLeasesPrefix-001"
 
       MAILUP_USERNAME      = data.azurerm_key_vault_secret.common_MAILUP_USERNAME.value
       MAILUP_SECRET        = data.azurerm_key_vault_secret.common_MAILUP_SECRET.value
@@ -233,10 +233,15 @@ module "function_app" {
     data.azurerm_subnet.ioweb_profile_snet.id,
   ]
 
-  sticky_app_setting_names = [
+  sticky_app_setting_names = concat([
     "AzureWebJobs.HandleNHNotificationCall.Disabled",
     "AzureWebJobs.StoreSpidLogs.Disabled"
-  ]
+    ],
+    [
+      for to_disable in local.function_app.staging_functions_disabled :
+      format("AzureWebJobs.%s.Disabled", to_disable)
+    ]
+  )
 
   tags = var.tags
 }
