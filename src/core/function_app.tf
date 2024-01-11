@@ -49,9 +49,10 @@ locals {
       FUNCTIONS_WORKER_PROCESS_COUNT = 4
       NODE_ENV                       = "production"
 
-      COSMOSDB_NAME = "db"
-      COSMOSDB_URI  = data.azurerm_cosmosdb_account.cosmos_api.endpoint
-      COSMOSDB_KEY  = data.azurerm_cosmosdb_account.cosmos_api.primary_key
+      COSMOSDB_NAME              = "db"
+      COSMOSDB_URI               = data.azurerm_cosmosdb_account.cosmos_api.endpoint
+      COSMOSDB_KEY               = data.azurerm_cosmosdb_account.cosmos_api.primary_key
+      COSMOSDB_CONNECTION_STRING = format("AccountEndpoint=%s;AccountKey=%s;", data.azurerm_cosmosdb_account.cosmos_api.endpoint, data.azurerm_cosmosdb_account.cosmos_api.primary_key)
 
       MESSAGE_CONTAINER_NAME = local.message_content_container_name
       QueueStorageConnection = module.storage_api.primary_connection_string
@@ -122,6 +123,7 @@ locals {
       UNIQUE_EMAIL_ENFORCEMENT_USERS          = jsonencode(split(",", data.azurerm_key_vault_secret.app_backend_UNIQUE_EMAIL_ENFORCEMENT_USER.value))
       PROFILE_EMAIL_STORAGE_CONNECTION_STRING = data.azurerm_storage_account.citizen_auth_common.primary_connection_string
       PROFILE_EMAIL_STORAGE_TABLE_NAME        = "profileEmails"
+      ON_PROFILE_UPDATE_LEASES_PREFIX         = "OnProfileUpdateLeasesPrefix"
 
       MAILUP_USERNAME      = data.azurerm_key_vault_secret.common_MAILUP_USERNAME.value
       MAILUP_SECRET        = data.azurerm_key_vault_secret.common_MAILUP_SECRET.value
