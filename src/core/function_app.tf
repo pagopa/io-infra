@@ -206,10 +206,7 @@ module "function_app" {
   }
 
   app_settings = merge(
-    local.function_app.app_settings_common,
-    {
-      "AzureWebJobs.OnProfileUpdate.Disabled" = "1"
-    }
+    local.function_app.app_settings_common
   )
 
   internal_storage = {
