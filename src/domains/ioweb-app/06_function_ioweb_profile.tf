@@ -310,3 +310,38 @@ resource "azurerm_monitor_autoscale_setting" "function_ioweb_profile" {
     }
   }
 }
+
+// ----------------------------------------------------
+// Alerts
+// ----------------------------------------------------
+resource "azurerm_monitor_metric_alert" "alert_too_much_invalid_codes_call_on_unlock" {
+  name                = "[${upper(var.domain)} | ${module.function_ioweb_profile.name}] Unexpected number of invalid codes to unlock endpoint"
+  resource_group_name = azurerm_resource_group.ioweb_profile_rg.name
+  scopes              = [module.function_ioweb_profile.id]
+  description         = "A lot of invalid codes submitted to IO-WEB profile unlock functionality"
+  severity            = 3
+  window_size         = "PT30M"
+  frequency           = "PT15M"
+  auto_mitigate       = false
+
+
+  # Metric info
+  # https://learn.microsoft.com/en-us/azure/azure-monitor/reference/supported-metrics/microsoft-web-sites-metrics
+  dynamic_criteria {
+    metric_namespace         = "Microsoft.Web/sites"
+    metric_name              = "Http401"
+    aggregation              = "Total"
+    operator                 = "GreaterThan"
+    alert_sensitivity        = "Medium"
+    evaluation_total_count   = 4
+    evaluation_failure_count = 4
+    skip_metric_validation   = false
+  }
+
+  # Action groups for alerts
+  action {
+    action_group_id = data.azurerm_monitor_action_group.error_action_group.id
+  }
+
+  tags = var.tags
+}
