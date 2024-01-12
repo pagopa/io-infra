@@ -135,7 +135,9 @@ locals {
     }
     app_settings_2 = {
     }
-    staging_functions_disabled = [
+
+    #List of the functions'name to be disabled in both prod and slot
+    functions_disabled = [
       "OnProfileUpdate"
     ]
   }
@@ -206,7 +208,12 @@ module "function_app" {
   }
 
   app_settings = merge(
-    local.function_app.app_settings_common
+    local.function_app.app_settings_common,
+    {
+      # Disabled functions on slot triggered by cosmosDB change feed
+      for to_disable in local.function_app.functions_disabled :
+      format("AzureWebJobs.%s.Disabled", to_disable) => "1"
+    }
   )
 
   internal_storage = {
@@ -235,7 +242,7 @@ module "function_app" {
     "AzureWebJobs.StoreSpidLogs.Disabled"
     ],
     [
-      for to_disable in local.function_app.staging_functions_disabled :
+      for to_disable in local.function_app.functions_disabled :
       format("AzureWebJobs.%s.Disabled", to_disable)
     ]
   )
@@ -267,7 +274,7 @@ module "function_app_staging_slot" {
     local.function_app.app_settings_common,
     {
       # Disabled functions on slot triggered by cosmosDB change feed
-      for to_disable in local.function_app.staging_functions_disabled :
+      for to_disable in local.function_app.functions_disabled :
       format("AzureWebJobs.%s.Disabled", to_disable) => "1"
     }
   )
