@@ -219,7 +219,7 @@ function_services_autoscale_default = 10
 function_app_async_kind              = "Linux"
 function_app_async_sku_tier          = "PremiumV3"
 function_app_async_sku_size          = "P1v3"
-function_app_async_autoscale_minimum = 1
+function_app_async_autoscale_minimum = 8 # Update to 8 until unique email seeding is completed
 function_app_async_autoscale_maximum = 30
 function_app_async_autoscale_default = 10
 
