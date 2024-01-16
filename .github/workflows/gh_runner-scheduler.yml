@@ -12,7 +12,7 @@ permissions:
 
 env:
   resource-group: 'io-p-github-runner-rg'
-  job-name: 'io-infra-github-runner-job'
+  job-name: 'io-p-github-runner-job'
   maximum_replica: 10
 
 jobs:

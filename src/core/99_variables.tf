@@ -230,12 +230,12 @@ variable "cidr_subnet_appgateway" {
 
 variable "cidr_subnet_apim" {
   type        = list(string)
-  description = "Api Management address space."
+  description = "Old Api Management address space."
 }
 
 variable "cidr_subnet_apim_v2" {
   type        = list(string)
-  description = "Api Management address space."
+  description = "Api Management V2 address space."
 }
 
 variable "cidr_subnet_vpn" {
@@ -457,10 +457,6 @@ variable "app_gateway_deny_paths" {
 
 ## Apim
 variable "apim_publisher_name" {
-  type = string
-}
-
-variable "apim_sku" {
   type = string
 }
 
@@ -686,7 +682,7 @@ variable "selfcare_plan_sku_capacity" {
 variable "cgn_legalbackup_account_replication_type" {
   type        = string
   description = "Legal backup replication type"
-  default     = "GRS"
+  default     = "GZRS"
 }
 
 variable "cgn_legalbackup_enable_versioning" {
@@ -797,6 +793,11 @@ variable "function_services_autoscale_default" {
   type        = number
   description = "The number of instances that are available for scaling if metrics are not available for evaluation."
   default     = 1
+}
+
+variable "function_services_subscription_cidrs_max_thoughput" {
+  type    = number
+  default = 1000
 }
 
 
@@ -1026,7 +1027,16 @@ variable "io_sign_service_id" {
 variable "io_receipt_service_id" {
   type        = string
   description = "The Service ID of io-receipt service"
-  default     = "01GQQZ9HF5GAPRVKJM1VDAVFHM"
+}
+
+variable "io_receipt_service_url" {
+  type        = string
+  description = "The endpoint of Receipt Service (prod env)"
+}
+
+variable "io_receipt_service_test_id" {
+  type        = string
+  description = "The Service ID of io-receipt service"
 }
 
 variable "io_receipt_service_test_url" {

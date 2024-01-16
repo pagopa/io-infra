@@ -10,6 +10,11 @@ data "azurerm_cosmosdb_account" "cosmos_api" {
   resource_group_name = format("%s-rg-internal", local.project)
 }
 
+data "azurerm_cosmosdb_account" "cosmos_remote_content" {
+  name                = "io-p-messages-remote-content"
+  resource_group_name = "io-p-messages-data-rg"
+}
+
 #
 # Function cgn
 #
@@ -277,4 +282,34 @@ resource "azurerm_monitor_metric_alert" "cosmos_cgn_throttling_alert" {
 data "azurerm_linux_web_app" "cms_backoffice_app" {
   name                = format("%s-services-cms-backoffice-app", local.project)
   resource_group_name = format("%s-services-cms-rg", local.project)
+}
+
+
+data "azurerm_subnet" "services_cms_backoffice_snet" {
+  name                 = format("%s-services-cms-backoffice-snet", local.project)
+  virtual_network_name = module.vnet_common.name
+  resource_group_name  = azurerm_resource_group.rg_common.name
+}
+
+#
+# UNIQUE EMAIL ENFORCEMENT
+#
+
+data "azurerm_storage_account" "citizen_auth_common" {
+  name                = "iopweucitizenauthst"
+  resource_group_name = "io-p-citizen-auth-data-rg"
+}
+
+#
+# MANAGED IDENTITIES
+#
+
+data "azurerm_user_assigned_identity" "managed_identity_io_infra_ci" {
+  name                = "${local.project}-infra-github-ci-identity"
+  resource_group_name = "${local.project}-identity-rg"
+}
+
+data "azurerm_user_assigned_identity" "managed_identity_io_infra_cd" {
+  name                = "${local.project}-infra-github-cd-identity"
+  resource_group_name = "${local.project}-identity-rg"
 }

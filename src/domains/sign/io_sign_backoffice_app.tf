@@ -5,7 +5,7 @@ locals {
     COSMOS_DB_NAME                 = module.cosmosdb_sql_database_backoffice.name
     APIM_RESOURCE_GROUP_NAME       = data.azurerm_api_management.apim_v2_api.resource_group_name,
     APIM_SERVICE_NAME              = data.azurerm_api_management.apim_v2_api.name,
-    APIM_PRODUCT_NAME              = module.apim_io_sign_product.product_id
+    APIM_PRODUCT_NAME              = module.apim_v2_io_sign_product.product_id
     APPINSIGHTS_INSTRUMENTATIONKEY = sensitive(data.azurerm_application_insights.application_insights.instrumentation_key)
     },
     {
@@ -15,7 +15,7 @@ locals {
 }
 
 module "io_sign_backoffice_snet" {
-  source               = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v6.20.2"
+  source               = "github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v7.46.0"
   name                 = format("%s-backoffice-snet", local.project)
   resource_group_name  = data.azurerm_virtual_network.vnet_common.resource_group_name
   virtual_network_name = data.azurerm_virtual_network.vnet_common.name
@@ -44,7 +44,7 @@ data "azurerm_subnet" "appgateway_snet" {
 }
 
 module "io_sign_backoffice_app" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//app_service?ref=v6.20.2"
+  source = "github.com/pagopa/terraform-azurerm-v3.git//app_service?ref=v7.46.0"
 
   name                = format("%s-backoffice-app", local.project)
   location            = azurerm_resource_group.backend_rg.location
@@ -53,10 +53,9 @@ module "io_sign_backoffice_app" {
   plan_name = format("%s-backoffice-plan", local.project)
   sku_name  = var.io_sign_backoffice_app.sku_name
 
-  docker_image     = "ghcr.io/pagopa/io-sign-backoffice"
-  docker_image_tag = "latest"
-
+  node_version      = "18-lts"
   health_check_path = "/health"
+  app_command_line  = "node server.js"
 
   app_settings = local.backoffice_app_settings
 
@@ -89,6 +88,12 @@ resource "azurerm_role_assignment" "firmaconio_selfcare_apim_contributor_role" {
   principal_id         = module.io_sign_backoffice_app.principal_id
 }
 
+resource "azurerm_role_assignment" "backoffice_app_api_keys_queue_sender_role" {
+  scope                = azurerm_storage_queue.api_keys.resource_manager_id
+  role_definition_name = "Storage Queue Data Message Sender"
+  principal_id         = module.io_sign_backoffice_app.principal_id
+}
+
 resource "azurerm_private_endpoint" "io_sign_backoffice_app" {
   name                = format("%s-backoffice-endpoint", local.project)
   location            = azurerm_resource_group.data_rg.location
@@ -111,7 +116,7 @@ resource "azurerm_private_endpoint" "io_sign_backoffice_app" {
 }
 
 module "io_sign_backoffice_app_staging_slot" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//app_service_slot?ref=v7.7.0"
+  source = "github.com/pagopa/terraform-azurerm-v3.git//app_service_slot?ref=v7.46.0"
 
   name                = "staging"
   location            = azurerm_resource_group.backend_rg.location
@@ -120,10 +125,9 @@ module "io_sign_backoffice_app_staging_slot" {
   app_service_id   = module.io_sign_backoffice_app.id
   app_service_name = module.io_sign_backoffice_app.name
 
-  docker_image     = "ghcr.io/pagopa/io-sign-backoffice"
-  docker_image_tag = "latest"
-
+  node_version      = "18-lts"
   health_check_path = "/health"
+  app_command_line  = "node server.js"
 
   app_settings = local.backoffice_app_settings
 
@@ -153,6 +157,12 @@ resource "azurerm_key_vault_access_policy" "backoffice_staging_key_vault_access_
 resource "azurerm_role_assignment" "firmaconio_selfcare_staging_apim_contributor_role" {
   scope                = data.azurerm_api_management.apim_v2_api.id
   role_definition_name = "API Management Service Contributor"
+  principal_id         = module.io_sign_backoffice_app_staging_slot.principal_id
+}
+
+resource "azurerm_role_assignment" "backoffice_app_staging_api_keys_queue_sender_role" {
+  scope                = azurerm_storage_queue.api_keys.resource_manager_id
+  role_definition_name = "Storage Queue Data Message Sender"
   principal_id         = module.io_sign_backoffice_app_staging_slot.principal_id
 }
 

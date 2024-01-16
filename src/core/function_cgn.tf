@@ -35,9 +35,7 @@ locals {
   function_cgn = {
     app_settings_common = {
       FUNCTIONS_WORKER_RUNTIME       = "node"
-      WEBSITE_NODE_DEFAULT_VERSION   = "14.16.0"
       WEBSITE_RUN_FROM_PACKAGE       = "1"
-      WEBSITE_VNET_ROUTE_ALL         = "1"
       WEBSITE_DNS_SERVER             = "168.63.129.16"
       FUNCTIONS_WORKER_PROCESS_COUNT = 4
       NODE_ENV                       = "production"
@@ -93,7 +91,7 @@ locals {
 
 #tfsec:ignore:azure-storage-queue-services-logging-enabled:exp:2022-05-01 # already ignored, maybe a bug in tfsec
 module "function_cgn" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app?ref=v4.1.15"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app?ref=v7.34.3"
 
   resource_group_name = azurerm_resource_group.cgn_be_rg.name
   name                = format("%s-cgn-fn", local.project)
@@ -101,9 +99,8 @@ module "function_cgn" {
   app_service_plan_id = azurerm_app_service_plan.cgn_common.id
   health_check_path   = "/api/v1/cgn/info"
 
-  os_type          = "linux"
-  linux_fx_version = "NODE|18"
-  runtime_version  = "~4"
+  node_version    = "18"
+  runtime_version = "~4"
 
   always_on                                = "true"
   application_insights_instrumentation_key = azurerm_application_insights.application_insights.instrumentation_key
@@ -134,20 +131,24 @@ module "function_cgn" {
     module.app_backendl1_snet.id,
     module.app_backendl2_snet.id,
     module.app_backendli_snet.id,
-    module.apim_snet.id,
     module.apim_v2_snet.id,
+  ]
+
+  sticky_app_setting_names = [
+    "AzureWebJobs.ContinueEycaActivation.Disabled",
+    "AzureWebJobs.UpdateExpiredCgn.Disabled",
+    "AzureWebJobs.UpdateExpiredEyca.Disabled"
   ]
 
   tags = var.tags
 }
 
 module "function_cgn_staging_slot" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app_slot?ref=v4.1.15"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app_slot?ref=v7.34.3"
 
   name                = "staging"
   location            = var.location
   resource_group_name = azurerm_resource_group.cgn_be_rg.name
-  function_app_name   = module.function_cgn.name
   function_app_id     = module.function_cgn.id
   app_service_plan_id = azurerm_app_service_plan.cgn_common.id
   health_check_path   = "/api/v1/cgn/info"
@@ -157,8 +158,7 @@ module "function_cgn_staging_slot" {
 
   internal_storage_connection_string = module.function_cgn.storage_account_internal_function.primary_connection_string
 
-  os_type                                  = "linux"
-  linux_fx_version                         = "NODE|18"
+  node_version                             = "18"
   always_on                                = "true"
   runtime_version                          = "~4"
   application_insights_instrumentation_key = azurerm_application_insights.application_insights.instrumentation_key
@@ -179,7 +179,6 @@ module "function_cgn_staging_slot" {
     module.app_backendl1_snet.id,
     module.app_backendl2_snet.id,
     module.app_backendli_snet.id,
-    module.apim_snet.id,
     module.apim_v2_snet.id,
   ]
 

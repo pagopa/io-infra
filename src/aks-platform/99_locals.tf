@@ -16,5 +16,5 @@ locals {
 
   aks_name = "${local.project}-aks"
 
-  security_log_analytics_workspace_id = "/subscriptions/0da48c97-355f-4050-a520-f11a18b8be90/resourceGroups/sec-p-sentinel/providers/Microsoft.OperationalInsights/workspaces/sec-p-law"
+  security_log_analytics_workspace_id = "/subscriptions/ec285037-c673-4f58-b594-d7c480da4e8b/resourceGroups/io-p-rg-common/providers/Microsoft.OperationalInsights/workspaces/io-p-law-common"
 }

@@ -43,6 +43,22 @@ variable "tags" {
 
 # domain specific
 
+# Container App Job GitHub Runner
+variable "container_app_environment" {
+  type = object({
+    name                = string
+    resource_group_name = string
+  })
+}
+
+variable "key_vault_common" {
+  type = object({
+    resource_group_name = string
+    name                = string
+    pat_secret_name     = string
+  })
+}
+
 # DNS
 variable "dns_ses_validation" {
   type = list(object({
@@ -199,4 +215,18 @@ variable "io_sign_backoffice_app" {
     }))
   })
   description = "Configuration of the io-sign-backoffice app service"
+}
+
+variable "io_sign_backoffice_func" {
+  type = object({
+    autoscale_default = number
+    autoscale_minimum = number
+    autoscale_maximum = number
+    app_settings = list(object({
+      name                  = string
+      value                 = optional(string, "")
+      key_vault_secret_name = optional(string)
+    }))
+  })
+  description = "Configuration of the io-sign-backoffice func app"
 }

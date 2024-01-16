@@ -2,6 +2,7 @@ resource "kubernetes_namespace" "monitoring" {
   metadata {
     name = "monitoring"
   }
+  depends_on = [module.aks]
 }
 
 resource "helm_release" "prometheus" {

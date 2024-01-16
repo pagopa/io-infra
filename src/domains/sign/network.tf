@@ -9,12 +9,6 @@ data "azurerm_subnet" "private_endpoints_subnet" {
   resource_group_name  = format("%s-rg-common", local.product)
 }
 
-data "azurerm_subnet" "apim" {
-  name                 = "apimapi"
-  virtual_network_name = format("%s-vnet-common", local.product)
-  resource_group_name  = format("%s-rg-common", local.product)
-}
-
 data "azurerm_subnet" "apim_v2" {
   name                 = "apimv2api"
   virtual_network_name = format("%s-vnet-common", local.product)
@@ -27,7 +21,7 @@ data "azurerm_nat_gateway" "nat_gateway" {
 }
 
 module "io_sign_snet" {
-  source               = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v6.20.2"
+  source               = "github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v7.46.0"
   name                 = format("%s-snet", local.project)
   resource_group_name  = data.azurerm_virtual_network.vnet_common.resource_group_name
   virtual_network_name = data.azurerm_virtual_network.vnet_common.name
@@ -66,7 +60,7 @@ resource "azurerm_network_security_group" "io_sign_issuer_nsg" {
 }
 
 module "io_sign_user_snet" {
-  source               = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v6.20.2"
+  source               = "github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v7.46.0"
   name                 = format("%s-user-snet", local.project)
   resource_group_name  = data.azurerm_virtual_network.vnet_common.resource_group_name
   virtual_network_name = data.azurerm_virtual_network.vnet_common.name
@@ -105,7 +99,7 @@ resource "azurerm_network_security_group" "io_sign_user_nsg" {
 }
 
 module "io_sign_support_snet" {
-  source               = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v6.20.2"
+  source               = "github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v7.46.0"
   name                 = format("%s-support-snet", local.project)
   resource_group_name  = data.azurerm_virtual_network.vnet_common.resource_group_name
   virtual_network_name = data.azurerm_virtual_network.vnet_common.name
@@ -143,7 +137,7 @@ resource "azurerm_network_security_group" "io_sign_support_nsg" {
 }
 
 module "io_sign_eventhub_snet" {
-  source               = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v6.20.2"
+  source               = "github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v7.46.0"
   name                 = format("%s-eventhub-snet", local.project)
   resource_group_name  = data.azurerm_virtual_network.vnet_common.resource_group_name
   virtual_network_name = data.azurerm_virtual_network.vnet_common.name
@@ -374,3 +368,26 @@ resource "azurerm_private_endpoint" "io_sign_support_func_staging" {
 
   tags = var.tags
 }
+
+resource "azurerm_private_endpoint" "io_sign_backoffice_func_staging" {
+
+  name                = format("%s-staging-endpoint", module.io_sign_backoffice_func.name)
+  location            = azurerm_resource_group.data_rg.location
+  resource_group_name = azurerm_resource_group.data_rg.name
+  subnet_id           = data.azurerm_subnet.private_endpoints_subnet.id
+
+  private_service_connection {
+    name                           = format("%s-staging-endpoint", module.io_sign_backoffice_func.name)
+    private_connection_resource_id = module.io_sign_backoffice_func.id
+    is_manual_connection           = false
+    subresource_names              = ["sites-staging"]
+  }
+
+  private_dns_zone_group {
+    name                 = "private-dns-zone-group"
+    private_dns_zone_ids = [data.azurerm_private_dns_zone.privatelink_azurewebsites_net.id]
+  }
+
+  tags = var.tags
+}
+

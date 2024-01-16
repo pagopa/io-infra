@@ -34,7 +34,7 @@ locals {
 }
 
 module "io_sign_issuer_func" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app?ref=v6.2.1"
+  source = "github.com/pagopa/terraform-azurerm-v3.git//function_app?ref=v7.46.0"
 
   name                = format("%s-issuer-func", local.project)
   location            = azurerm_resource_group.backend_rg.location
@@ -50,6 +50,8 @@ module "io_sign_issuer_func" {
     kind                         = "Linux"
     sku_size                     = var.io_sign_issuer_func.sku_size
     maximum_elastic_worker_count = 0
+    worker_count                 = 1
+    zone_balancing_enabled       = false
   }
 
   app_settings = merge(
@@ -61,7 +63,7 @@ module "io_sign_issuer_func" {
     }
   )
 
-  sticky_settings = [
+  sticky_app_setting_names = [
     # Sticky the settings enabling triggered by queue and timer
     for to_disable in local.io_sign_issuer_func.staging_disabled :
     format("AzureWebJobs.%s.Disabled", to_disable)
@@ -70,7 +72,6 @@ module "io_sign_issuer_func" {
   subnet_id = module.io_sign_snet.id
   allowed_subnets = [
     module.io_sign_snet.id,
-    data.azurerm_subnet.apim.id,
     data.azurerm_subnet.apim_v2.id,
   ]
 
@@ -80,9 +81,15 @@ module "io_sign_issuer_func" {
   tags = var.tags
 }
 
+resource "azurerm_role_assignment" "issuer_func_api_keys_queue_processor_role" {
+  scope                = azurerm_storage_queue.api_keys.resource_manager_id
+  role_definition_name = "Storage Queue Data Message Processor"
+  principal_id         = module.io_sign_issuer_func.system_identity_principal
+}
+
 module "io_sign_issuer_func_staging_slot" {
   count  = var.io_sign_issuer_func.sku_tier == "PremiumV3" ? 1 : 0
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app_slot?ref=v6.2.1"
+  source = "github.com/pagopa/terraform-azurerm-v3.git//function_app_slot?ref=v7.46.0"
 
   name                = "staging"
   location            = azurerm_resource_group.backend_rg.location
@@ -112,7 +119,6 @@ module "io_sign_issuer_func_staging_slot" {
   subnet_id = module.io_sign_snet.id
   allowed_subnets = [
     module.io_sign_snet.id,
-    data.azurerm_subnet.apim.id,
     data.azurerm_subnet.apim_v2.id,
   ]
 

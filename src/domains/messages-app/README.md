@@ -15,7 +15,7 @@
 | Name | Source | Version |
 |------|--------|---------|
 | <a name="module_event_hub"></a> [event\_hub](#module\_event\_hub) | git::https://github.com/pagopa/terraform-azurerm-v3.git//eventhub | v4.1.7 |
-| <a name="module_pod_identity"></a> [pod\_identity](#module\_pod\_identity) | git::https://github.com/pagopa/terraform-azurerm-v3.git//kubernetes_pod_identity | v4.1.6 |
+| <a name="module_pod_identity"></a> [pod\_identity](#module\_pod\_identity) | git::https://github.com/pagopa/terraform-azurerm-v3.git//kubernetes_pod_identity | v7.28.0 |
 | <a name="module_push_notif_function"></a> [push\_notif\_function](#module\_push\_notif\_function) | git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app | v4.1.6 |
 | <a name="module_push_notif_function_staging_slot"></a> [push\_notif\_function\_staging\_slot](#module\_push\_notif\_function\_staging\_slot) | git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app_slot | v4.1.6 |
 | <a name="module_push_notif_snet"></a> [push\_notif\_snet](#module\_push\_notif\_snet) | git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet | v4.1.6 |
@@ -47,6 +47,7 @@
 | [kubernetes_namespace.namespace_system](https://registry.terraform.io/providers/hashicorp/kubernetes/2.17.0/docs/resources/namespace) | resource |
 | [kubernetes_role_binding.deployer_binding](https://registry.terraform.io/providers/hashicorp/kubernetes/2.17.0/docs/resources/role_binding) | resource |
 | [kubernetes_role_binding.system_deployer_binding](https://registry.terraform.io/providers/hashicorp/kubernetes/2.17.0/docs/resources/role_binding) | resource |
+| [kubernetes_secret.azure_devops_secret](https://registry.terraform.io/providers/hashicorp/kubernetes/2.17.0/docs/resources/secret) | resource |
 | [kubernetes_service_account.azure_devops](https://registry.terraform.io/providers/hashicorp/kubernetes/2.17.0/docs/resources/service_account) | resource |
 | [azuread_group.adgroup_admin](https://registry.terraform.io/providers/hashicorp/azuread/latest/docs/data-sources/group) | data source |
 | [azuread_group.adgroup_developers](https://registry.terraform.io/providers/hashicorp/azuread/latest/docs/data-sources/group) | data source |

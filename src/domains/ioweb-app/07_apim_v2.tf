@@ -26,6 +26,15 @@ module "apim_v2_bff_api" {
   xml_content = file("./api/bff/policy.xml")
 }
 
+resource "azurerm_api_management_api_operation_policy" "unlock_user_session_policy" {
+  api_name            = format("%s-ioweb-bff", local.product)
+  api_management_name = data.azurerm_api_management.apim_v2_api.name
+  resource_group_name = data.azurerm_api_management.apim_v2_api.resource_group_name
+  operation_id        = "unlockUserSession"
+
+  xml_content = file("./api/bff/post_unlockusersession_policy/policy.xml")
+}
+
 data "azurerm_key_vault" "key_vault_common" {
   name                = format("%s-ioweb-kv", local.product)
   resource_group_name = format("%s-ioweb-sec-rg", local.product)

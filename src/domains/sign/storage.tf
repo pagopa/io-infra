@@ -1,5 +1,5 @@
 module "io_sign_storage" {
-  source                          = "git::https://github.com/pagopa/terraform-azurerm-v3.git//storage_account?ref=v6.20.2"
+  source                          = "github.com/pagopa/terraform-azurerm-v3.git//storage_account?ref=v7.46.0"
   name                            = replace(format("%s-st", local.project), "-", "")
   account_kind                    = "StorageV2"
   account_tier                    = "Standard"
@@ -111,5 +111,10 @@ resource "azurerm_storage_queue" "waiting_for_qtsp" {
 
 resource "azurerm_storage_queue" "waiting_for_signature_request_updates" {
   name                 = "waiting-for-signature-request-updates"
+  storage_account_name = module.io_sign_storage.name
+}
+
+resource "azurerm_storage_queue" "api_keys" {
+  name                 = "api-keys"
   storage_account_name = module.io_sign_storage.name
 }

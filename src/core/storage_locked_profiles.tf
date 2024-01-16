@@ -3,7 +3,7 @@
 # Locked User Profiles Storage
 ##############################
 module "locked_profiles_storage" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3//storage_account?ref=v6.1.0"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3//storage_account?ref=v7.28.0"
 
   name                          = replace(format("%s-locked-profiles-st", local.project), "-", "")
   domain                        = "IO-AUTH"
@@ -19,7 +19,6 @@ module "locked_profiles_storage" {
 
   tags = var.tags
 }
-
 
 resource "azurerm_private_endpoint" "locked_profiles_storage_table" {
   depends_on          = [module.locked_profiles_storage]
@@ -42,7 +41,6 @@ resource "azurerm_private_endpoint" "locked_profiles_storage_table" {
 
   tags = var.tags
 }
-
 
 # Tables
 resource "azurerm_storage_table" "locked_profiles" {

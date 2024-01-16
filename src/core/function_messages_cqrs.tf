@@ -2,9 +2,7 @@ locals {
   function_messages_cqrs = {
     app_settings = {
       FUNCTIONS_WORKER_RUNTIME       = "node"
-      WEBSITE_NODE_DEFAULT_VERSION   = "18.13.0"
       WEBSITE_RUN_FROM_PACKAGE       = "1"
-      WEBSITE_VNET_ROUTE_ALL         = "1"
       WEBSITE_DNS_SERVER             = "168.63.129.16"
       FUNCTIONS_WORKER_PROCESS_COUNT = 4
       NODE_ENV                       = "production"
@@ -71,7 +69,7 @@ locals {
 
 # Subnet to host fn messages cqrs function
 module "function_messages_cqrs_snet" {
-  source                                    = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v4.1.15"
+  source                                    = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v7.34.3"
   name                                      = format("%s-fn-messages-cqrs-snet", local.project)
   address_prefixes                          = var.cidr_subnet_fnmessagescqrs
   resource_group_name                       = azurerm_resource_group.rg_common.name
@@ -95,7 +93,7 @@ module "function_messages_cqrs_snet" {
 
 #tfsec:ignore:azure-storage-queue-services-logging-enabled:exp:2022-05-01 # already ignored, maybe a bug in tfsec
 module "function_messages_cqrs" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app?ref=v4.1.15"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app?ref=v7.34.3"
 
   resource_group_name = azurerm_resource_group.backend_messages_rg.name
   name                = format("%s-messages-cqrs-fn", local.project)
@@ -113,13 +111,12 @@ module "function_messages_cqrs" {
   storage_account_info = {
     account_kind                      = "StorageV2"
     account_tier                      = "Standard"
-    account_replication_type          = "LRS"
+    account_replication_type          = "GZRS"
     access_tier                       = "Hot"
     advanced_threat_protection_enable = true
   }
 
-  os_type                                  = "linux"
-  linux_fx_version                         = "NODE|18"
+  node_version                             = "18"
   runtime_version                          = "~4"
   always_on                                = var.function_messages_cqrs_always_on
   application_insights_instrumentation_key = azurerm_application_insights.application_insights.instrumentation_key
@@ -129,6 +126,8 @@ module "function_messages_cqrs" {
     sku_tier                     = var.function_messages_cqrs_sku_tier
     sku_size                     = var.function_messages_cqrs_sku_size
     maximum_elastic_worker_count = 0
+    worker_count                 = null
+    zone_balancing_enabled       = null
   }
 
   app_settings = merge(
@@ -145,6 +144,7 @@ module "function_messages_cqrs" {
       "AzureWebJobs.CosmosApiChangeFeedForMessageRetention.Disabled"      = "1"
     }
   )
+
   subnet_id = module.function_messages_cqrs_snet.id
 
   internal_storage = {
@@ -167,7 +167,6 @@ module "function_messages_cqrs" {
 
   allowed_subnets = [
     module.function_messages_cqrs_snet.id,
-    module.apim_snet.id,
     module.apim_v2_snet.id,
   ]
 
@@ -176,16 +175,27 @@ module "function_messages_cqrs" {
     local.app_insights_ips_west_europe,
   )
 
+  sticky_app_setting_names = [
+    "AzureWebJobs.CosmosApiChangeFeedForMessageRetention.Disabled",
+    "AzureWebJobs.CosmosApiMessageStatusChangeFeedForReminder.Disabled",
+    "AzureWebJobs.CosmosApiMessageStatusChangeFeedForView.Disabled",
+    "AzureWebJobs.CosmosApiMessagesChangeFeed.Disabled",
+    "AzureWebJobs.HandleMessageChangeFeedPublishFailures.Disabled",
+    "AzureWebJobs.HandleMessageViewUpdateFailures.Disabled",
+    "AzureWebJobs.HandlePaymentUpdateFailures.Disabled",
+    "AzureWebJobs.UpdateCosmosMessageView.Disabled",
+    "AzureWebJobs.UpdatePaymentOnMessageView.Disabled"
+  ]
+
   tags = var.tags
 }
 
 module "function_messages_cqrs_staging_slot" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app_slot?ref=v4.1.15"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app_slot?ref=v7.34.3"
 
   name                = "staging"
   location            = var.location
   resource_group_name = azurerm_resource_group.backend_messages_rg.name
-  function_app_name   = module.function_messages_cqrs.name
   function_app_id     = module.function_messages_cqrs.id
   app_service_plan_id = module.function_messages_cqrs.app_service_plan_id
   health_check_path   = "/api/v1/info"
@@ -194,8 +204,7 @@ module "function_messages_cqrs_staging_slot" {
   storage_account_access_key         = module.function_messages_cqrs.storage_account.primary_access_key
   internal_storage_connection_string = module.function_messages_cqrs.storage_account_internal_function.primary_connection_string
 
-  os_type                                  = "linux"
-  linux_fx_version                         = "NODE|18"
+  node_version                             = "18"
   runtime_version                          = "~4"
   always_on                                = var.function_messages_cqrs_always_on
   application_insights_instrumentation_key = azurerm_application_insights.application_insights.instrumentation_key

@@ -58,8 +58,6 @@ cidr_subnet_selfcare_be                    = ["10.0.137.0/24"]
 cidr_subnet_devportalservicedata_db_server = ["10.0.138.0/24"]
 cidr_subnet_services                       = ["10.0.139.0/26", "10.0.139.64/26"]
 # new push notif is related to messages domain ###############
-cidr_subnet_push_notif        = ["10.0.140.0/26"]
-cidr_subnet_prod01_push_notif = ["10.0.141.0/26"]
 ##############################################################
 cidr_subnet_appbackendl1 = ["10.0.152.0/24"]
 cidr_subnet_appbackendl2 = ["10.0.153.0/24"]
@@ -103,7 +101,6 @@ redis_common = {
 
 # apim
 apim_publisher_name = "IO"
-apim_sku            = "Premium_1"
 apim_v2_sku         = "Premium_2"
 apim_autoscale = {
   enabled                       = true
@@ -223,7 +220,7 @@ function_services_autoscale_default = 10
 function_app_async_kind              = "Linux"
 function_app_async_sku_tier          = "PremiumV3"
 function_app_async_sku_size          = "P1v3"
-function_app_async_autoscale_minimum = 1
+function_app_async_autoscale_minimum = 8 # Update to 8 until unique email seeding is completed
 function_app_async_autoscale_maximum = 30
 function_app_async_autoscale_default = 10
 
@@ -466,7 +463,9 @@ pn_service_id = "01G40DWQGKY5GRWSNM4303VNRP"
 pn_test_endpoint = "https://api-io.uat.notifichedigitali.it"
 
 # RECEIPT SERVICE
-io_receipt_service_id       = "01H4ZJ62C1CPGJ0PX8Q1BP7FAB"
+io_receipt_service_id       = "01HD63674XJ1R6XCNHH24PCRR2"
+io_receipt_service_url      = "https://api.platform.pagopa.it/receipts/service/v1"
+io_receipt_service_test_id  = "01H4ZJ62C1CPGJ0PX8Q1BP7FAB"
 io_receipt_service_test_url = "https://api.uat.platform.pagopa.it/receipts/service/v1"
 
 # TP Mock Service Id

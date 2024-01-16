@@ -22,6 +22,11 @@ data "azurerm_key_vault_secret" "fn_app_beta_users" {
   key_vault_id = module.key_vault_common.id
 }
 
+data "azurerm_key_vault_secret" "ioweb_profile_function_api_key" {
+  name         = "ioweb-profile-api-key"
+  key_vault_id = data.azurerm_key_vault.ioweb_kv.id
+}
+
 #
 # STORAGE
 #
@@ -39,16 +44,15 @@ locals {
   function_app = {
     app_settings_common = {
       FUNCTIONS_WORKER_RUNTIME       = "node"
-      WEBSITE_NODE_DEFAULT_VERSION   = "14.16.0"
       WEBSITE_RUN_FROM_PACKAGE       = "1"
-      WEBSITE_VNET_ROUTE_ALL         = "1"
       WEBSITE_DNS_SERVER             = "168.63.129.16"
       FUNCTIONS_WORKER_PROCESS_COUNT = 4
       NODE_ENV                       = "production"
 
-      COSMOSDB_NAME = "db"
-      COSMOSDB_URI  = data.azurerm_cosmosdb_account.cosmos_api.endpoint
-      COSMOSDB_KEY  = data.azurerm_cosmosdb_account.cosmos_api.primary_key
+      COSMOSDB_NAME              = "db"
+      COSMOSDB_URI               = data.azurerm_cosmosdb_account.cosmos_api.endpoint
+      COSMOSDB_KEY               = data.azurerm_cosmosdb_account.cosmos_api.primary_key
+      COSMOSDB_CONNECTION_STRING = format("AccountEndpoint=%s;AccountKey=%s;", data.azurerm_cosmosdb_account.cosmos_api.endpoint, data.azurerm_cosmosdb_account.cosmos_api.primary_key)
 
       MESSAGE_CONTAINER_NAME = local.message_content_container_name
       QueueStorageConnection = module.storage_api.primary_connection_string
@@ -109,10 +113,17 @@ locals {
       VISIBLE_SERVICE_BLOB_ID = "visible-services-national.json"
 
       # Login Email variables
-      # TODO: change those variables once the service has been created
-      MAGIC_LINK_SERVICE_PUBLIC_URL = "https://example.com"
-      HELP_DESK_REF                 = "mailto:beta.loginveloce@pagopa.it"
+      MAGIC_LINK_SERVICE_API_KEY    = data.azurerm_key_vault_secret.ioweb_profile_function_api_key.value
+      MAGIC_LINK_SERVICE_PUBLIC_URL = format("https://%s-%s-%s-ioweb-profile-fn.azurewebsites.net", var.prefix, var.env_short, var.location_short)
+      IOWEB_ACCESS_REF              = "https://ioapp.it"
       #
+
+      # UNIQUE EMAIL ENFORCEMENT
+      FF_UNIQUE_EMAIL_ENFORCEMENT             = "BETA"
+      UNIQUE_EMAIL_ENFORCEMENT_USERS          = jsonencode(split(",", data.azurerm_key_vault_secret.app_backend_UNIQUE_EMAIL_ENFORCEMENT_USER.value))
+      PROFILE_EMAIL_STORAGE_CONNECTION_STRING = data.azurerm_storage_account.citizen_auth_common.primary_connection_string
+      PROFILE_EMAIL_STORAGE_TABLE_NAME        = "profileEmails"
+      ON_PROFILE_UPDATE_LEASES_PREFIX         = "OnProfileUpdateLeasesPrefix-001"
 
       MAILUP_USERNAME      = data.azurerm_key_vault_secret.common_MAILUP_USERNAME.value
       MAILUP_SECRET        = data.azurerm_key_vault_secret.common_MAILUP_SECRET.value
@@ -124,6 +135,11 @@ locals {
     }
     app_settings_2 = {
     }
+
+    #List of the functions'name to be disabled in both prod and slot
+    functions_disabled = [
+      "OnProfileUpdate"
+    ]
   }
 }
 
@@ -138,7 +154,7 @@ resource "azurerm_resource_group" "app_rg" {
 # Subnet to host app function
 module "app_snet" {
   count                                     = var.function_app_count
-  source                                    = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v4.1.15"
+  source                                    = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v7.34.3"
   name                                      = format("%s-app-snet-%d", local.project, count.index + 1)
   address_prefixes                          = [var.cidr_subnet_app[count.index]]
   resource_group_name                       = azurerm_resource_group.rg_common.name
@@ -169,16 +185,15 @@ data "azurerm_subnet" "ioweb_profile_snet" {
 #tfsec:ignore:azure-storage-queue-services-logging-enabled:exp:2022-05-01 # already ignored, maybe a bug in tfsec
 module "function_app" {
   count  = var.function_app_count
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app?ref=v4.1.15"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app?ref=v7.34.3"
 
   resource_group_name = azurerm_resource_group.app_rg[count.index].name
   name                = format("%s-app-fn-%d", local.project, count.index + 1)
   location            = var.location
   health_check_path   = "/api/v1/info"
 
-  os_type          = "linux"
-  linux_fx_version = "NODE|18"
-  runtime_version  = "~4"
+  node_version    = "18"
+  runtime_version = "~4"
 
   always_on                                = "true"
   application_insights_instrumentation_key = azurerm_application_insights.application_insights.instrumentation_key
@@ -188,10 +203,17 @@ module "function_app" {
     sku_tier                     = var.function_app_sku_tier
     sku_size                     = var.function_app_sku_size
     maximum_elastic_worker_count = 0
+    worker_count                 = null
+    zone_balancing_enabled       = null
   }
 
   app_settings = merge(
     local.function_app.app_settings_common,
+    {
+      # Disabled functions on slot triggered by cosmosDB change feed
+      for to_disable in local.function_app.functions_disabled :
+      format("AzureWebJobs.%s.Disabled", to_disable) => "1"
+    }
   )
 
   internal_storage = {
@@ -215,17 +237,26 @@ module "function_app" {
     data.azurerm_subnet.ioweb_profile_snet.id,
   ]
 
+  sticky_app_setting_names = concat([
+    "AzureWebJobs.HandleNHNotificationCall.Disabled",
+    "AzureWebJobs.StoreSpidLogs.Disabled"
+    ],
+    [
+      for to_disable in local.function_app.functions_disabled :
+      format("AzureWebJobs.%s.Disabled", to_disable)
+    ]
+  )
+
   tags = var.tags
 }
 
 module "function_app_staging_slot" {
   count  = var.function_app_count
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app_slot?ref=v4.1.15"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app_slot?ref=v7.34.3"
 
   name                = "staging"
   location            = var.location
   resource_group_name = azurerm_resource_group.app_rg[count.index].name
-  function_app_name   = module.function_app[count.index].name
   function_app_id     = module.function_app[count.index].id
   app_service_plan_id = module.function_app[count.index].app_service_plan_id
   health_check_path   = "/api/v1/info"
@@ -234,14 +265,18 @@ module "function_app_staging_slot" {
   storage_account_access_key         = module.function_app[count.index].storage_account.primary_access_key
   internal_storage_connection_string = module.function_app[count.index].storage_account_internal_function.primary_connection_string
 
-  os_type                                  = "linux"
-  linux_fx_version                         = "NODE|18"
+  node_version                             = "18"
   always_on                                = "true"
   runtime_version                          = "~4"
   application_insights_instrumentation_key = azurerm_application_insights.application_insights.instrumentation_key
 
   app_settings = merge(
     local.function_app.app_settings_common,
+    {
+      # Disabled functions on slot triggered by cosmosDB change feed
+      for to_disable in local.function_app.functions_disabled :
+      format("AzureWebJobs.%s.Disabled", to_disable) => "1"
+    }
   )
 
   subnet_id = module.app_snet[count.index].id

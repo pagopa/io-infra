@@ -41,9 +41,8 @@ tls_cert_check_helm = {
 
 ### Aks
 
-ingress_load_balancer_ip = "10.10.100.250"
+ingress_load_balancer_ip = "10.10.0.254"
 cidr_subnet_fnlollipop   = ["127.0.0.1/32"]
 cidr_subnet_fnfastlogin  = ["127.0.0.2/32"]
 cidr_subnet_fims         = ["127.0.0.3/32"]
 cidr_subnet_fims_plus    = ["127.0.0.4/32"]
-
