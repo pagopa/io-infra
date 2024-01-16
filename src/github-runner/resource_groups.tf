@@ -1,4 +1,4 @@
-resource "azurerm_resource_group" "github_runner" {
+resource "azurerm_resource_group" "rg_github_runner" {
   name     = "${local.project}-github-runner-rg"
   location = var.location
 
