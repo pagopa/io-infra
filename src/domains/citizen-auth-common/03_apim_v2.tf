@@ -158,7 +158,7 @@ module "apim_product_fims_admin" {
   approval_required     = false
   published             = true
 
-  policy_xml = file("./api_prduct/fims/_base_policy.xml")
+  policy_xml = file("./api_product/fims/_base_policy.xml")
 }
 
 module "api_fims_admin" {

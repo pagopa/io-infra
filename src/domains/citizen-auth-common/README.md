@@ -14,10 +14,8 @@
 |------|--------|---------|
 | <a name="module_api_fims_admin"></a> [api\_fims\_admin](#module\_api\_fims\_admin) | git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api | v4.1.15 |
 | <a name="module_api_fims_public"></a> [api\_fims\_public](#module\_api\_fims\_public) | git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api | v4.1.15 |
-| <a name="module_apim_lollipop_api_v1"></a> [apim\_lollipop\_api\_v1](#module\_apim\_lollipop\_api\_v1) | git::https://github.com/pagopa/terraform-azurerm-v3//api_management_api | v4.1.5 |
 | <a name="module_apim_product_fims_admin"></a> [apim\_product\_fims\_admin](#module\_apim\_product\_fims\_admin) | github.com/pagopa/terraform-azurerm-v3.git//api_management_product | v4.1.15 |
 | <a name="module_apim_product_fims_public"></a> [apim\_product\_fims\_public](#module\_apim\_product\_fims\_public) | git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_product | v4.1.15 |
-| <a name="module_apim_product_lollipop"></a> [apim\_product\_lollipop](#module\_apim\_product\_lollipop) | git::https://github.com/pagopa/terraform-azurerm-v3//api_management_product | v4.1.5 |
 | <a name="module_apim_v2_lollipop_api_v1"></a> [apim\_v2\_lollipop\_api\_v1](#module\_apim\_v2\_lollipop\_api\_v1) | git::https://github.com/pagopa/terraform-azurerm-v3//api_management_api | v4.1.5 |
 | <a name="module_apim_v2_product_lollipop"></a> [apim\_v2\_product\_lollipop](#module\_apim\_v2\_product\_lollipop) | git::https://github.com/pagopa/terraform-azurerm-v3//api_management_product | v4.1.5 |
 | <a name="module_cosmosdb_account"></a> [cosmosdb\_account](#module\_cosmosdb\_account) | git::https://github.com/pagopa/terraform-azurerm-v3//cosmosdb_account | v4.3.1 |
