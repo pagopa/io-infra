@@ -8,22 +8,22 @@ output "subnet_id" {
   description = "Subnet id"
 }
 
-# output "cae_id" {
-#   value       = module.github_runner.cae_id
-#   description = "Container App Environment id"
-# }
+output "cae_id" {
+  value       = module.container_app_environment_runner.id
+  description = "Container App Environment id"
+}
 
-# output "cae_name" {
-#   value       = module.github_runner.cae_name
-#   description = "Container App Environment name"
-# }
+output "cae_name" {
+  value       = module.container_app_environment_runner.name
+  description = "Container App Environment name"
+}
 
-# output "ca_id" {
-#   value       = module.github_runner.ca_id
-#   description = "Container App job id"
-# }
+output "ca_job_id" {
+  value       = module.container_app_job.id
+  description = "Container App job id"
+}
 
-# output "ca_name" {
-#   value       = module.github_runner.ca_name
-#   description = "Container App job name"
-# }
+output "ca_job_name" {
+  value       = module.container_app_job.name
+  description = "Container App job name"
+}
