@@ -12,7 +12,11 @@
 
 | Name | Source | Version |
 |------|--------|---------|
+| <a name="module_api_fims_admin"></a> [api\_fims\_admin](#module\_api\_fims\_admin) | git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api | v4.1.15 |
+| <a name="module_api_fims_public"></a> [api\_fims\_public](#module\_api\_fims\_public) | git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api | v4.1.15 |
 | <a name="module_apim_lollipop_api_v1"></a> [apim\_lollipop\_api\_v1](#module\_apim\_lollipop\_api\_v1) | git::https://github.com/pagopa/terraform-azurerm-v3//api_management_api | v4.1.5 |
+| <a name="module_apim_product_fims_admin"></a> [apim\_product\_fims\_admin](#module\_apim\_product\_fims\_admin) | github.com/pagopa/terraform-azurerm-v3.git//api_management_product | v4.1.15 |
+| <a name="module_apim_product_fims_public"></a> [apim\_product\_fims\_public](#module\_apim\_product\_fims\_public) | git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_product | v4.1.15 |
 | <a name="module_apim_product_lollipop"></a> [apim\_product\_lollipop](#module\_apim\_product\_lollipop) | git::https://github.com/pagopa/terraform-azurerm-v3//api_management_product | v4.1.5 |
 | <a name="module_apim_v2_lollipop_api_v1"></a> [apim\_v2\_lollipop\_api\_v1](#module\_apim\_v2\_lollipop\_api\_v1) | git::https://github.com/pagopa/terraform-azurerm-v3//api_management_api | v4.1.5 |
 | <a name="module_apim_v2_product_lollipop"></a> [apim\_v2\_product\_lollipop](#module\_apim\_v2\_product\_lollipop) | git::https://github.com/pagopa/terraform-azurerm-v3//api_management_product | v4.1.5 |
@@ -86,6 +90,7 @@
 | [azurerm_key_vault_secret.io_fn_weu_lollipop_key_secret](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/key_vault_secret) | data source |
 | [azurerm_key_vault_secret.io_fn_weu_lollipop_key_secret_v2](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/key_vault_secret) | data source |
 | [azurerm_key_vault_secret.mongodb_connection_string_fims](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/key_vault_secret) | data source |
+| [azurerm_linux_web_app.appservice_fims](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/linux_web_app) | data source |
 | [azurerm_log_analytics_workspace.log_analytics](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/log_analytics_workspace) | data source |
 | [azurerm_monitor_action_group.email](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/monitor_action_group) | data source |
 | [azurerm_monitor_action_group.error_action_group](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/monitor_action_group) | data source |

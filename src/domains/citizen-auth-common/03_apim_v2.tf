@@ -136,3 +136,101 @@ resource "azurerm_key_vault_secret" "fast_login_subscription_key_v2" {
   value        = azurerm_api_management_subscription.pagopa_fastlogin_v2.primary_key
   key_vault_id = module.key_vault.id
 }
+
+####################################################################################
+# FIMS admin API
+####################################################################################
+
+data "azurerm_linux_web_app" "appservice_fims" {
+  name                = "${local.product}-${var.domain}-${var.location_short}-${var.instance}-app-fims"
+  resource_group_name = "${local.common_project}-fims-rg"
+}
+
+module "apim_product_fims_admin" {
+  source = "github.com/pagopa/terraform-azurerm-v3.git//api_management_product?ref=v4.1.15"
+
+  product_id            = "fims-admin-api"
+  api_management_name   = data.azurerm_api_management.apim_v2_api.name
+  resource_group_name   = data.azurerm_api_management.apim_v2_api.resource_group_name
+  display_name          = "FIMS ADMIN API"
+  description           = "ADMIN API for FIMS openid provider."
+  subscription_required = true
+  approval_required     = false
+  published             = true
+
+  policy_xml = file("./api_prduct/fims/_base_policy.xml")
+}
+
+module "api_fims_admin" {
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api?ref=v4.1.15"
+
+  name                = "fims-admin-api"
+  api_management_name = data.azurerm_api_management.apim_v2_api.name
+  resource_group_name = data.azurerm_api_management.apim_v2_api.resource_group_name
+  revision            = "1"
+  display_name        = "FIMS ADMIN API"
+  description         = "ADMIN API for FIMS."
+
+  path        = ""
+  protocols   = ["https"]
+  product_ids = [module.apim_product_fims_admin[0].product_id]
+
+  service_url = format("https://%s", data.azurerm_linux_web_app.appservice_fims.default_hostname)
+
+  subscription_required = true
+
+  content_format = "swagger-json"
+  content_value = templatefile("./api/fims/admin/_swagger.json.tpl",
+    {
+      host = "api.io.pagopa.it"
+    }
+  )
+
+  xml_content = file("./api/fims/admin/policy.xml")
+}
+
+####################################################################################
+# FIMS public API
+####################################################################################
+module "apim_product_fims_public" {
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_product?ref=v4.1.15"
+
+  product_id            = "fims-public-api"
+  api_management_name   = data.azurerm_api_management.apim_v2_api.name
+  resource_group_name   = data.azurerm_api_management.apim_v2_api.resource_group_name
+  display_name          = "FIMS PUBLIC API"
+  description           = "PUBLIC API for FIMS openid provider."
+  subscription_required = false
+  approval_required     = false
+  published             = true
+
+  policy_xml = file("./api_product/fims/_base_policy.xml")
+}
+
+module "api_fims_public" {
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api?ref=v4.1.15"
+
+  name                = "fims-public-api"
+  api_management_name = data.azurerm_api_management.apim_v2_api.name
+  resource_group_name = data.azurerm_api_management.apim_v2_api.resource_group_name
+  revision            = "1"
+  display_name        = "FIMS PUBLIC API"
+  description         = "PUBLIC API for FIMS."
+
+  path        = ""
+  protocols   = ["https"]
+  product_ids = [module.apim_product_fims_public[0].product_id]
+
+  service_url = format("https://%s", data.azurerm_linux_web_app.appservice_fims.default_hostname)
+
+  subscription_required = false
+
+  content_format = "swagger-json"
+  content_value = templatefile("./api/fims/public/_swagger.json.tpl",
+    {
+      host = "api.io.pagopa.it"
+    }
+  )
+
+  xml_content = file("./api/fims/public/policy.xml")
+}
