@@ -87,11 +87,13 @@ resource "azurerm_storage_container" "immutable_audit_logs" {
 
 
 # Policies
+
 resource "azurerm_storage_management_policy" "immutable_spid_logs_storage_management_policy" {
   depends_on = [module.immutable_spid_logs_storage, azurerm_storage_container.immutable_spid_logs]
 
   storage_account_id = module.immutable_spid_logs_storage.id
 
+  ## Spid Logs Retention Policy
   rule {
     name    = "deleteafter2yrs"
     enabled = true
@@ -113,14 +115,8 @@ resource "azurerm_storage_management_policy" "immutable_spid_logs_storage_manage
       }
     }
   }
-}
 
-## Policy ONLY for audit logs
-resource "azurerm_storage_management_policy" "immutable_audit_logs_storage_management_policy" {
-  depends_on = [module.immutable_spid_logs_storage, azurerm_storage_container.immutable_audit_logs]
-
-  storage_account_id = module.immutable_spid_logs_storage.id
-
+  ## Audit Logs Retention Policy
   rule {
     name    = "deleteafter2yrsplus1week"
     enabled = true
