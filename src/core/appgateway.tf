@@ -26,7 +26,7 @@ module "appgateway_snet" {
 
 ## Application gateway ##
 module "app_gw" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//app_gateway?ref=v7.28.0"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//app_gateway?ref=v7.46.0"
 
   resource_group_name = azurerm_resource_group.rg_external.name
   location            = azurerm_resource_group.rg_external.location
@@ -139,7 +139,6 @@ module "app_gw" {
       request_timeout             = 10
       pick_host_name_from_backend = true
     }
-
   }
 
   ssl_profiles = [{
@@ -369,6 +368,23 @@ module "app_gw" {
         )
       }
     }
+
+    openid-provider-io-pagopa-it = {
+      protocol           = "Https"
+      host               = format("openid-provider.%s.%s", var.dns_zone_io, var.external_domain)
+      port               = 443
+      ssl_profile_name   = null
+      firewall_policy_id = null
+
+      certificate = {
+        name = var.app_gateway_openid_provider_io_pagopa_it_certificate_name
+        id = replace(
+          data.azurerm_key_vault_certificate.app_gw_openid_provider_io.secret_id,
+          "/${data.azurerm_key_vault_certificate.app_gw_openid_provider_io.version}",
+          ""
+        )
+      }
+    }
   }
 
   # maps listener to backend
@@ -451,69 +467,39 @@ module "app_gw" {
       priority              = 110
     }
 
+    # openid-provider-io-pagopa-it = {
+    #   listener              = "openid-provider-io-pagopa-it-listener"
+    #   backend               = "apim"
+    #   rewrite_rule_set_name = "rewrite-rule-set-openid-provider"
+    #   priority              = 120
+    # }
   }
 
   rewrite_rule_sets = [
     {
       name = "rewrite-rule-set-api"
-      rewrite_rules = [
-        {
-          name          = "http-headers-api"
-          rule_sequence = 100
-          conditions    = []
-          url           = null
-          request_header_configurations = [
-            {
-              header_name  = "X-Forwarded-For"
-              header_value = "{var_client_ip}"
-            },
-            {
-              header_name  = "X-Client-Ip"
-              header_value = "{var_client_ip}"
-            },
-            {
-              # this header will be checked in apim policy (only for MTLS check)
-              header_name  = data.azurerm_key_vault_secret.app_gw_mtls_header_name.value
-              header_value = "false"
-            },
-          ]
-          response_header_configurations = []
-        },
-        {
-          name          = "url-rewrite-private"
-          rule_sequence = 200
-          conditions = [
-            {
-              ignore_case = true
-              pattern     = join("|", var.app_gateway_deny_paths)
-              negate      = false
-              variable    = "var_uri_path"
-          }]
-          url = [{
-            path       = "fims"
-            components = "path_only"
-          }]
-          request_header_configurations  = []
-          response_header_configurations = []
-        },
-        {
-          name          = "url-rewrite-openid-provider-public"
-          rule_sequence = 201
-          conditions = [
-            {
-              ignore_case = true
-              pattern     = "\\/openid-provider\\/(.*)"
-              negate      = false
-              variable    = "uri_path"
-          }]
-          url = [{
-            path       = "fims/{var_uri_path_1}"
-            components = "path_only"
-          }]
-          request_header_configurations  = []
-          response_header_configurations = []
-        }
-      ]
+      rewrite_rules = [{
+        name          = "http-headers-api"
+        rule_sequence = 100
+        conditions    = []
+        url           = null
+        request_header_configurations = [
+          {
+            header_name  = "X-Forwarded-For"
+            header_value = "{var_client_ip}"
+          },
+          {
+            header_name  = "X-Client-Ip"
+            header_value = "{var_client_ip}"
+          },
+          {
+            # this header will be checked in apim policy (only for MTLS check)
+            header_name  = data.azurerm_key_vault_secret.app_gw_mtls_header_name.value
+            header_value = "false"
+          },
+        ]
+        response_header_configurations = []
+      }]
     },
     {
       name = "rewrite-rule-set-api-mtls"
@@ -929,6 +915,11 @@ data "azurerm_key_vault_certificate" "app_gw_continua" {
 
 data "azurerm_key_vault_certificate" "app_gw_selfcare_io" {
   name         = var.app_gateway_selfcare_io_pagopa_it_certificate_name
+  key_vault_id = module.key_vault.id
+}
+
+data "azurerm_key_vault_certificate" "app_gw_openid_provider_io" {
+  name         = var.app_gateway_openid_provider_io_pagopa_it_certificate_name
   key_vault_id = module.key_vault.id
 }
 

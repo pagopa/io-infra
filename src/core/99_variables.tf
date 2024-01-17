@@ -433,6 +433,11 @@ variable "app_gateway_selfcare_io_pagopa_it_certificate_name" {
   description = "Application gateway selfcare-io certificate name on Key Vault"
 }
 
+variable "app_gateway_openid_provider_io_pagopa_it_certificate_name" {
+  type        = string
+  description = "Application gateway openid-provider certificate name on Key Vault"
+}
+
 variable "app_gateway_min_capacity" {
   type    = number
   default = 0
