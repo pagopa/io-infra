@@ -34,6 +34,8 @@ module "selfcare_cdn" {
   index_document     = "index.html"
   error_404_document = "404.html"
 
+  storage_account_replication_type = "GZRS"
+
   dns_zone_name                = azurerm_dns_zone.io_selfcare_pagopa_it[0].name
   dns_zone_resource_group_name = azurerm_dns_zone.io_selfcare_pagopa_it[0].resource_group_name
 
@@ -256,6 +258,9 @@ module "appservice_selfcare_be" {
 
     # Lock the creation of a new APIM user, when resolve SelfCareIdentity.
     LOCK_SELFCARE_CREATE_NEW_APIM_USER = "false"
+
+    API_SERVICES_CMS_URL       = "https://${data.azurerm_function_app.webapp_functions_app.default_hostname}"
+    API_SERVICES_CMS_BASE_PATH = "/api/v1"
 
   }
 

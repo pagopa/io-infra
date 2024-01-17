@@ -9,7 +9,7 @@ locals {
 }
 
 module "io_sign_backoffice_func" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app?ref=v6.2.1"
+  source = "github.com/pagopa/terraform-azurerm-v3.git//function_app?ref=v7.46.0"
 
   name                = format("%s-backoffice-func", local.project)
   location            = azurerm_resource_group.backend_rg.location
@@ -69,7 +69,7 @@ resource "azurerm_key_vault_access_policy" "backoffice_func_key_vault_access_pol
 }
 
 module "io_sign_backoffice_func_staging_slot" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app_slot?ref=v6.2.1"
+  source = "github.com/pagopa/terraform-azurerm-v3.git//function_app_slot?ref=v7.46.0"
 
   name                = "staging"
   location            = azurerm_resource_group.backend_rg.location

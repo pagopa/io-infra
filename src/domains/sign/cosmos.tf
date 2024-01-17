@@ -1,5 +1,5 @@
 module "cosmosdb_account" {
-  source                           = "git::https://github.com/pagopa/terraform-azurerm-v3.git//cosmosdb_account?ref=v6.20.2"
+  source                           = "github.com/pagopa/terraform-azurerm-v3.git//cosmosdb_account?ref=v7.46.0"
   name                             = format("%s-cosmos", local.project)
   domain                           = var.domain
   location                         = azurerm_resource_group.data_rg.location
@@ -23,9 +23,11 @@ module "cosmosdb_account" {
 
   is_virtual_network_filter_enabled = true
 
-  private_endpoint_enabled = true
-  subnet_id                = data.azurerm_subnet.private_endpoints_subnet.id
-  private_dns_zone_ids     = [data.azurerm_private_dns_zone.privatelink_documents_azure_com.id]
+  private_endpoint_enabled            = true
+  subnet_id                           = data.azurerm_subnet.private_endpoints_subnet.id
+  private_dns_zone_sql_ids            = [data.azurerm_private_dns_zone.privatelink_documents_azure_com.id]
+  private_endpoint_sql_name           = "${local.project}-cosmos"
+  private_service_connection_sql_name = "${local.project}-cosmos-private-endpoint"
 
   tags = var.tags
 }

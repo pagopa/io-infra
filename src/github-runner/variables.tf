@@ -31,23 +31,22 @@ variable "location" {
   default = "westeurope"
 }
 
-variable "github_runner" {
-  type = object({
-    pat_secret_name   = string
-    subnet_cidr_block = string
-  })
-}
-
 variable "resource_group_common_name" {
   type = string
 }
 
-variable "key_vault_common_name" {
-  type = string
+variable "key_vault_common" {
+  type = object({
+    name            = string
+    pat_secret_name = string
+  })
 }
 
-variable "vnet_common_name" {
-  type = string
+variable "networking" {
+  type = object({
+    vnet_common_name  = string
+    subnet_cidr_block = string
+  })
 }
 
 variable "law_common_name" {

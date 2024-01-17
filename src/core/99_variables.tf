@@ -677,7 +677,7 @@ variable "selfcare_plan_sku_capacity" {
 variable "cgn_legalbackup_account_replication_type" {
   type        = string
   description = "Legal backup replication type"
-  default     = "GRS"
+  default     = "GZRS"
 }
 
 variable "cgn_legalbackup_enable_versioning" {
@@ -788,6 +788,11 @@ variable "function_services_autoscale_default" {
   type        = number
   description = "The number of instances that are available for scaling if metrics are not available for evaluation."
   default     = 1
+}
+
+variable "function_services_subscription_cidrs_max_thoughput" {
+  type    = number
+  default = 1000
 }
 
 
