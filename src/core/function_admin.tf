@@ -144,7 +144,7 @@ locals {
       # UNIQUE EMAIL ENFORCEMENT
       CitizenAuthStorageConnection = data.azurerm_storage_account.citizen_auth_common.primary_connection_string
       SanitizeUserProfileQueueName = "profiles-to-sanitize"
-      
+
       # Locked Profile Storage
       LOCKED_PROFILES_STORAGE_CONNECTION_STRING = module.locked_profiles_storage.primary_connection_string
       LOCKED_PROFILES_TABLE_NAME                = azurerm_storage_table.locked_profiles.name
