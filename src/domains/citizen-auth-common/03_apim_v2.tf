@@ -142,7 +142,7 @@ resource "azurerm_key_vault_secret" "fast_login_subscription_key_v2" {
 ####################################################################################
 
 data "azurerm_linux_web_app" "appservice_fims" {
-  name                = "${local.product}-${var.domain}-${var.location_short}-${var.instance}-app-fims"
+  name                = "${local.product}-${var.domain}-${var.location_short}-${var.env}01-app-fims"
   resource_group_name = "${local.common_project}-fims-rg"
 }
 
@@ -173,7 +173,7 @@ module "api_fims_admin" {
 
   path        = ""
   protocols   = ["https"]
-  product_ids = [module.apim_product_fims_admin[0].product_id]
+  product_ids = [module.apim_product_fims_admin.product_id]
 
   service_url = format("https://%s", data.azurerm_linux_web_app.appservice_fims.default_hostname)
 
@@ -219,7 +219,7 @@ module "api_fims_public" {
 
   path        = ""
   protocols   = ["https"]
-  product_ids = [module.apim_product_fims_public[0].product_id]
+  product_ids = [module.apim_product_fims_public.product_id]
 
   service_url = format("https://%s", data.azurerm_linux_web_app.appservice_fims.default_hostname)
 
