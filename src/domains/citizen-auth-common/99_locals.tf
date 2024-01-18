@@ -1,6 +1,7 @@
 locals {
-  project = "${var.prefix}-${var.env_short}-${var.location_short}-${var.domain}"
-  product = "${var.prefix}-${var.env_short}" # This value is used in src/core/99_variables.tf#citizen_auth_product
+  project        = "${var.prefix}-${var.env_short}-${var.location_short}-${var.domain}"
+  product        = "${var.prefix}-${var.env_short}" # This value is used in src/core/99_variables.tf#citizen_auth_product
+  common_project = "${var.prefix}-${var.env_short}-${var.location_short}"
 
   monitor_action_group_slack_name = "SlackPagoPA"
   monitor_action_group_email_name = "EmailPagoPA"
