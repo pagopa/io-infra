@@ -3,12 +3,12 @@ data "azurerm_resource_group" "rg_common" {
 }
 
 data "azurerm_key_vault" "key_vault_common" {
-  name                = var.key_vault_common_name
+  name                = var.key_vault_common.name
   resource_group_name = data.azurerm_resource_group.rg_common.name
 }
 
 data "azurerm_virtual_network" "vnet_common" {
-  name                = var.vnet_common_name
+  name                = var.networking.vnet_common_name
   resource_group_name = data.azurerm_resource_group.rg_common.name
 }
 

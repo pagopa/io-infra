@@ -84,6 +84,12 @@ locals {
       // -------------------------
       HUB_SPID_LOGIN_API_KEY         = data.azurerm_key_vault_secret.spid_login_api_key.value
       HUB_SPID_LOGIN_CLIENT_BASE_URL = "https://io-p-weu-ioweb-spid-login.azurewebsites.net"
+
+      // -------------------------
+      // Audit Logs config
+      // -------------------------
+      AUDIT_LOG_CONNECTION_STRING = data.azurerm_storage_account.immutable_spid_logs_storage.primary_connection_string
+      AUDIT_LOG_CONTAINER         = data.azurerm_storage_container.immutable_audit_logs.name
     }
   }
 }

@@ -69,7 +69,8 @@ module "function_app_async" {
 
   app_settings = merge(
     local.function_app_async.app_settings_common, {
-      "AzureWebJobs.StoreSpidLogs.Disabled" = "0",
+      "AzureWebJobs.StoreSpidLogs.Disabled"   = "0",
+      "AzureWebJobs.OnProfileUpdate.Disabled" = "0",
     }
   )
 
@@ -90,10 +91,12 @@ module "function_app_async" {
     module.app_async_snet.id,
   ]
 
-  sticky_app_setting_names = [
+  sticky_app_setting_names = concat([
     "AzureWebJobs.HandleNHNotificationCall.Disabled",
-    "AzureWebJobs.StoreSpidLogs.Disabled"
-  ]
+    "AzureWebJobs.StoreSpidLogs.Disabled",
+    "AzureWebJobs.OnProfileUpdate.Disabled"
+    ]
+  )
 
   tags = var.tags
 }
@@ -119,7 +122,8 @@ module "function_app_async_staging_slot" {
 
   app_settings = merge(
     local.function_app_async.app_settings_common, {
-      "AzureWebJobs.StoreSpidLogs.Disabled" = "1",
+      "AzureWebJobs.StoreSpidLogs.Disabled"   = "1",
+      "AzureWebJobs.OnProfileUpdate.Disabled" = "1",
     }
   )
 
@@ -259,5 +263,23 @@ resource "azurerm_monitor_metric_alert" "function_app_async_health_check" {
 
   action {
     action_group_id = azurerm_monitor_action_group.error_action_group.id
+  }
+}
+
+
+
+# Container
+
+# Cosmos container for subscription cidrs
+module "db_subscription_profileemails_container" {
+  source              = "git::https://github.com/pagopa/terraform-azurerm-v3.git//cosmosdb_sql_container?ref=v7.34.3"
+  name                = "profile-emails-leases"
+  resource_group_name = format("%s-rg-internal", local.project)
+  account_name        = format("%s-cosmos-api", local.project)
+  database_name       = local.function_app_async.app_settings_common.COSMOSDB_NAME
+  partition_key_path  = "/_partitionKey"
+
+  autoscale_settings = {
+    max_throughput = 1000
   }
 }

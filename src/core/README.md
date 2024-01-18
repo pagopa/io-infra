@@ -76,6 +76,7 @@
 | <a name="module_continua_common_snet"></a> [continua\_common\_snet](#module\_continua\_common\_snet) | git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet | v7.28.0 |
 | <a name="module_cosmos_cgn"></a> [cosmos\_cgn](#module\_cosmos\_cgn) | git::https://github.com/pagopa/terraform-azurerm-v3.git//cosmosdb_account | v7.28.0 |
 | <a name="module_db_subscription_cidrs_container"></a> [db\_subscription\_cidrs\_container](#module\_db\_subscription\_cidrs\_container) | git::https://github.com/pagopa/terraform-azurerm-v3.git//cosmosdb_sql_container | v7.34.3 |
+| <a name="module_db_subscription_profileemails_container"></a> [db\_subscription\_profileemails\_container](#module\_db\_subscription\_profileemails\_container) | git::https://github.com/pagopa/terraform-azurerm-v3.git//cosmosdb_sql_container | v7.34.3 |
 | <a name="module_devportalservicedata_db_server"></a> [devportalservicedata\_db\_server](#module\_devportalservicedata\_db\_server) | git::https://github.com/pagopa/terraform-azurerm-v3.git//postgres_flexible_server | v7.34.3 |
 | <a name="module_devportalservicedata_db_server_snet"></a> [devportalservicedata\_db\_server\_snet](#module\_devportalservicedata\_db\_server\_snet) | git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet | v7.34.3 |
 | <a name="module_dns_forwarder"></a> [dns\_forwarder](#module\_dns\_forwarder) | git::https://github.com/pagopa/terraform-azurerm-v3.git//dns_forwarder | v7.28.0 |
@@ -736,6 +737,7 @@
 | <a name="input_function_services_kind"></a> [function\_services\_kind](#input\_function\_services\_kind) | App service plan kind | `string` | `null` | no |
 | <a name="input_function_services_sku_size"></a> [function\_services\_sku\_size](#input\_function\_services\_sku\_size) | App service plan sku size | `string` | `null` | no |
 | <a name="input_function_services_sku_tier"></a> [function\_services\_sku\_tier](#input\_function\_services\_sku\_tier) | App service plan sku tier | `string` | `null` | no |
+| <a name="input_function_services_subscription_cidrs_max_thoughput"></a> [function\_services\_subscription\_cidrs\_max\_thoughput](#input\_function\_services\_subscription\_cidrs\_max\_thoughput) | n/a | `number` | `1000` | no |
 | <a name="input_io_receipt_service_id"></a> [io\_receipt\_service\_id](#input\_io\_receipt\_service\_id) | The Service ID of io-receipt service | `string` | n/a | yes |
 | <a name="input_io_receipt_service_test_id"></a> [io\_receipt\_service\_test\_id](#input\_io\_receipt\_service\_test\_id) | The Service ID of io-receipt service | `string` | n/a | yes |
 | <a name="input_io_receipt_service_test_url"></a> [io\_receipt\_service\_test\_url](#input\_io\_receipt\_service\_test\_url) | The endpoint of Receipt Service (test env) | `string` | n/a | yes |
