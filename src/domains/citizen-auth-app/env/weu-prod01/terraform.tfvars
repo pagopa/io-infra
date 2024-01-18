@@ -52,8 +52,8 @@ function_lollipop_kind              = "Linux"
 function_lollipop_sku_tier          = "PremiumV3"
 function_lollipop_sku_size          = "P1v3"
 function_lollipop_autoscale_minimum = 2
-function_lollipop_autoscale_maximum = 4
-function_lollipop_autoscale_default = 2
+function_lollipop_autoscale_maximum = 20
+function_lollipop_autoscale_default = 10
 
 # Functions Fast Login
 cidr_subnet_fnfastlogin              = ["10.0.17.128/26"]
