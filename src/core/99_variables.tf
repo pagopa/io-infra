@@ -790,6 +790,11 @@ variable "function_services_autoscale_default" {
   default     = 1
 }
 
+variable "function_services_subscription_cidrs_max_thoughput" {
+  type    = number
+  default = 1000
+}
+
 
 
 # Function App Async

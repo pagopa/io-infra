@@ -59,6 +59,11 @@ data "azurerm_key_vault_secret" "devportal_request_review_legacy_queue_connectio
   key_vault_id = module.key_vault_common.id
 }
 
+data "azurerm_function_app" "webapp_functions_app" {
+  name                = "${local.project}-services-cms-webapp-fn"
+  resource_group_name = "${local.project}-services-cms-rg"
+}
+
 # Only 1 subnet can be associated to a service plan
 # azurerm_app_service_virtual_network_swift_connection requires an app service id
 # so we choose one of the app service in the app service plan
@@ -156,6 +161,9 @@ module "appservice_devportal_be" {
     # Note: The list below is for the user IDs only, not the full path APIM.id.
     # UPDATE: The new feature is that "If one of such strings is "*", we suddenly open the feature to everyone.".
     MANAGE_FLOW_ENABLE_USER_LIST = "*"
+
+    API_SERVICES_CMS_URL       = "https://${data.azurerm_function_app.webapp_functions_app.default_hostname}"
+    API_SERVICES_CMS_BASE_PATH = "/api/v1"
   }
 
   allowed_subnets = [module.appgateway_snet.id]

@@ -17,7 +17,7 @@ data "azurerm_dns_zone" "io_italia_it" {
 }
 
 module "landing_cdn" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//cdn?ref=v6.20.2"
+  source = "github.com/pagopa/terraform-azurerm-v3.git//cdn?ref=v7.46.0"
 
   name                  = "landing"
   prefix                = local.project
@@ -25,6 +25,8 @@ module "landing_cdn" {
   location              = azurerm_resource_group.integration_rg.location
   hostname              = "firma.io.italia.it"
   https_rewrite_enabled = true
+
+  storage_account_replication_type = "GZRS"
 
   index_document     = "index.html"
   error_404_document = "index.html"
