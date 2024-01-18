@@ -380,7 +380,7 @@ module "appservice_fims" {
   always_on         = true
   linux_fx_version  = "NODE|18-lts"
   app_command_line  = local.fims.app_command_line
-  health_check_path = "/api/info"
+  health_check_path = "/info"
 
   app_settings = local.fims.app_settings_common
 
