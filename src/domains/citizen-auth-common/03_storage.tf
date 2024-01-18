@@ -238,8 +238,36 @@ resource "azurerm_private_endpoint" "table" {
   tags = var.tags
 }
 
+resource "azurerm_private_endpoint" "queue" {
+  depends_on          = [module.io_citizen_auth_storage]
+  name                = format("%s-queue-endpoint", module.io_citizen_auth_storage.name)
+  location            = var.location
+  resource_group_name = azurerm_resource_group.data_rg.name
+  subnet_id           = data.azurerm_subnet.private_endpoints_subnet.id
+
+  private_service_connection {
+    name                           = format("%s-queue", module.io_citizen_auth_storage.name)
+    private_connection_resource_id = module.io_citizen_auth_storage.id
+    is_manual_connection           = false
+    subresource_names              = ["queue"]
+  }
+
+  private_dns_zone_group {
+    name                 = "private-dns-zone-group"
+    private_dns_zone_ids = [data.azurerm_private_dns_zone.privatelink_queue_core_windows_net.id]
+  }
+
+  tags = var.tags
+}
+
 resource "azurerm_storage_table" "profile_emails" {
   depends_on           = [module.io_citizen_auth_storage, azurerm_private_endpoint.table]
   name                 = "profileEmails"
+  storage_account_name = module.io_citizen_auth_storage.name
+}
+
+resource "azurerm_storage_queue" "profiles_to_sanitize" {
+  depends_on           = [module.io_citizen_auth_storage, azurerm_private_endpoint.queue]
+  name                 = "profiles-to-sanitize"
   storage_account_name = module.io_citizen_auth_storage.name
 }
