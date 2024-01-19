@@ -39,6 +39,8 @@ tls_cert_check_helm = {
   image_tag     = "v1.3.4@sha256:c3d45736706c981493b6216451fc65e99a69d5d64409ccb1c4ca93fef57c921d"
 }
 
+tls_cert_check_enabled = false
+
 ### Aks
 
 ingress_load_balancer_ip = "10.10.0.254"
