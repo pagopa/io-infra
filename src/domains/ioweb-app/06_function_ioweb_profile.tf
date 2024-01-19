@@ -324,7 +324,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert_v2" "alert_too_much_invali
   enabled                 = true
   name                    = "[${upper(var.domain)} | ${module.function_ioweb_profile.name}] Unexpected number of invalid codes to unlock endpoint"
   resource_group_name     = azurerm_resource_group.ioweb_profile_rg.name
-  scopes                  = [module.function_ioweb_profile.id]
+  scopes                  = [data.azurerm_application_gateway.app_gateway.id]
   description             = "Too many invalid codes submitted to IO-WEB profile unlock functionality"
   severity                = 1
   auto_mitigation_enabled = false
@@ -363,7 +363,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert_v2" "alert_too_much_calls_
   enabled                 = true
   name                    = "[${upper(var.domain)} | ${module.function_ioweb_profile.name}] Unexpected number of calls to unlock endpoint"
   resource_group_name     = azurerm_resource_group.ioweb_profile_rg.name
-  scopes                  = [module.function_ioweb_profile.id]
+  scopes                  = [data.azurerm_application_gateway.app_gateway.id]
   description             = "Too many calls submitted to IO-WEB profile unlock functionality"
   severity                = 1
   auto_mitigation_enabled = false
