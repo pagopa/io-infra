@@ -1,3 +1,12 @@
+##########################
+# APP GATEWAY DATA SOURCE
+##########################
+data "azurerm_application_gateway" "app_gateway" {
+  name                = format("%s-appgateway", local.product)
+  resource_group_name = local.appgw_resource_group_name
+}
+##########################
+
 data "azurerm_virtual_network" "vnet" {
   name                = local.vnet_name
   resource_group_name = local.vnet_resource_group_name
