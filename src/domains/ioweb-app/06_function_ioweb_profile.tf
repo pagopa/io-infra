@@ -325,7 +325,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert_v2" "alert_too_much_invali
   name                    = "[${upper(var.domain)} | ${module.function_ioweb_profile.name}] Unexpected number of invalid codes to unlock endpoint"
   resource_group_name     = azurerm_resource_group.ioweb_profile_rg.name
   scopes                  = [module.function_ioweb_profile.id]
-  description             = "Too many invalid codes or calls submitted to IO-WEB profile unlock functionality"
+  description             = "Too many invalid codes submitted to IO-WEB profile unlock functionality"
   severity                = 1
   auto_mitigation_enabled = false
   location                = azurerm_resource_group.ioweb_profile_rg.location
@@ -340,11 +340,51 @@ resource "azurerm_monitor_scheduled_query_rules_alert_v2" "alert_too_much_invali
 requests
 | where cloud_RoleName == "${module.function_ioweb_profile.name}"
 | where url contains "unlock-session"
-| where resultCode == 403 or resultCode == 429
+| where resultCode == 403
     QUERY
     operator                = "GreaterThanOrEqual"
     time_aggregation_method = "Count"
     threshold               = 5
+    failing_periods {
+      minimum_failing_periods_to_trigger_alert = 1
+      number_of_evaluation_periods             = 1
+    }
+  }
+
+  # Action groups for alerts
+  action {
+    action_groups = [data.azurerm_monitor_action_group.error_action_group.id]
+  }
+
+  tags = var.tags
+}
+
+
+resource "azurerm_monitor_scheduled_query_rules_alert_v2" "alert_too_much_calls_on_unlock" {
+  enabled                 = true
+  name                    = "[${upper(var.domain)} | ${module.function_ioweb_profile.name}] Unexpected number of calls to unlock endpoint"
+  resource_group_name     = azurerm_resource_group.ioweb_profile_rg.name
+  scopes                  = [module.function_ioweb_profile.id]
+  description             = "Too many calls submitted to IO-WEB profile unlock functionality"
+  severity                = 1
+  auto_mitigation_enabled = false
+  location                = azurerm_resource_group.ioweb_profile_rg.location
+
+  // check once every minute(evaluation_frequency)
+  // on the last minute of data(window_duration)
+  evaluation_frequency = "PT1M"
+  window_duration      = "PT1M"
+
+  criteria {
+    query                   = <<-QUERY
+requests
+| where cloud_RoleName == "${module.function_ioweb_profile.name}"
+| where url contains "unlock-session"
+| where resultCode == 429
+    QUERY
+    operator                = "GreaterThanOrEqual"
+    time_aggregation_method = "Count"
+    threshold               = 1
     failing_periods {
       minimum_failing_periods_to_trigger_alert = 1
       number_of_evaluation_periods             = 1
