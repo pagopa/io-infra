@@ -288,8 +288,8 @@ resource "azurerm_cosmosdb_sql_container" "remote_content_configuration" {
   }
 }
 
-resource "azurerm_cosmosdb_sql_container" "configuration" {
-  name                = "configuration"
+resource "azurerm_cosmosdb_sql_container" "message-configuration" {
+  name                = "message-configuration"
   resource_group_name = azurerm_resource_group.data_rg.name
   account_name        = module.cosmosdb_account_remote_content.name
   database_name       = module.cosmosdb_sql_database_remote_content.name
