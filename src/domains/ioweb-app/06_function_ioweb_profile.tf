@@ -337,10 +337,9 @@ resource "azurerm_monitor_scheduled_query_rules_alert_v2" "alert_too_much_invali
 
   criteria {
     query                   = <<-QUERY
-requests
-| where cloud_RoleName == "${module.function_ioweb_profile.name}"
-| where url contains "unlock-session"
-| where resultCode == 403
+AzureDiagnostics
+| where requestUri_s == "/ioweb/backend/api/v1/unlock-session" and httpMethod_s == "POST"
+| where serverStatus_s == 403
     QUERY
     operator                = "GreaterThanOrEqual"
     time_aggregation_method = "Count"
@@ -377,10 +376,9 @@ resource "azurerm_monitor_scheduled_query_rules_alert_v2" "alert_too_much_calls_
 
   criteria {
     query                   = <<-QUERY
-requests
-| where cloud_RoleName == "${module.function_ioweb_profile.name}"
-| where url contains "unlock-session"
-| where resultCode == 429
+AzureDiagnostics
+| where requestUri_s == "/ioweb/backend/api/v1/unlock-session" and httpMethod_s == "POST"
+| where serverStatus_s == 429
     QUERY
     operator                = "GreaterThanOrEqual"
     time_aggregation_method = "Count"
