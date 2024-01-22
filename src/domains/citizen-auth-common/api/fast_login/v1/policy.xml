@@ -1,9 +1,9 @@
 <policies>
     <inbound>
         <base />
-        <set-backend-service base-url="{{io-fn-weu-fast-login-url}}/api/v1" />
+        <set-backend-service base-url="{{io-fn-weu-fast-login-operation-url}}/api/v1" />
         <set-header name="x-functions-key" exists-action="override">
-            <value>{{io-fn-weu-fast-login-key}}</value>
+            <value>{{io-fn-weu-fast-login-operation-key}}</value>
         </set-header>
         <set-header name="x-user-id" exists-action="override">
             <value>@(context.User.Id)</value>
