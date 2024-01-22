@@ -324,8 +324,8 @@ resource "azurerm_api_management_named_value" "io_fn_weu_fast_login_operation_ur
 }
 
 data "azurerm_key_vault_secret" "functions_fast_login_api_key" {
-  name         = "ioweb-profile-functions-fast-login-api-key"
-  key_vault_id = data.azurerm_key_vault.kv.id
+  name         = "io-fn-weu-fast-login-KEY-APIM"
+  key_vault_id = module.key_vault.id
 }
 
 resource "azurerm_api_management_named_value" "io_fn_weu_fast_login_operation_key_v2" {
