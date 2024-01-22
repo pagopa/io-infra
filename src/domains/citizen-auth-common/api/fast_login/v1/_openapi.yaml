@@ -7,8 +7,7 @@ info:
   description: |
     Documentation of the IO Fast Login Function API here.
 servers:
-  # TODO: Update public URL
-  - url: https://io-p-weu-fast-login-fn.azurewebsites.net/api/v1
+  - url: https://api.pagopa.it/fast-login/api/v1
 security:
   - ApiKeyAuth: []
 paths:
