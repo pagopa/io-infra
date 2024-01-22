@@ -234,3 +234,105 @@ module "api_fims_public" {
 
   xml_content = file("./api/fims/public/policy.xml")
 }
+
+####################################################################################
+# Fast-Login Operation's API
+####################################################################################
+resource "azurerm_api_management_group" "api_fast_login_operation_v2" {
+  name                = "apifastloginoperationwrite"
+  api_management_name = data.azurerm_api_management.apim_v2_api.name
+  resource_group_name = data.azurerm_api_management.apim_v2_api.resource_group_name
+  display_name        = "ApiFastLoginOperationWrite"
+  description         = "A group that enables PagoPa Operation to operate over session lock/unlock"
+}
+
+module "apim_v2_product_fast_login_operation" {
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3//api_management_product?ref=v4.1.5"
+
+  product_id   = "io-fast-login-operation-api"
+  display_name = "IO FAST-LOGIN OPERATION API"
+  description  = "Product for IO Fast Login Operation"
+
+  api_management_name = data.azurerm_api_management.apim_v2_api.name
+  resource_group_name = data.azurerm_api_management.apim_v2_api.resource_group_name
+
+  published             = true
+  subscription_required = true
+  approval_required     = false
+
+  policy_xml = file("./api_product/fast_login_operation/_base_policy.xml")
+}
+
+module "apim_v2_fast_login_operation_api_v1" {
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3//api_management_api?ref=v4.1.5"
+
+  name                  = format("%s-fast-login-operation-api", local.product)
+  api_management_name   = data.azurerm_api_management.apim_v2_api.name
+  resource_group_name   = data.azurerm_api_management.apim_v2_api.resource_group_name
+  product_ids           = [module.apim_v2_product_fast_login_operation.product_id]
+  subscription_required = true
+  service_url           = null
+
+  description  = "IO FAST-LOGIN OPERATION API"
+  display_name = "IO Fast-Login Operation API"
+  path         = "fast-login/api/v1"
+  protocols    = ["https"]
+
+  content_format = "openapi"
+
+  content_value = file("./api/fast_login/v1/_openapi.yaml")
+
+  xml_content = file("./api/fast_login/v1/policy.xml")
+}
+
+resource "azurerm_api_management_user" "fast_login_operation_user_v2" {
+  user_id             = "fastloginoperationuser"
+  api_management_name = data.azurerm_api_management.apim_v2_api.name
+  resource_group_name = data.azurerm_api_management.apim_v2_api.resource_group_name
+  first_name          = "PagoPA Operation"
+  last_name           = "PagoPA Operation"
+  email               = "area-assistenza-operations@pagopa.it"
+  state               = "active"
+}
+
+resource "azurerm_api_management_group_user" "pagopa_operation_group_v2" {
+  user_id             = azurerm_api_management_user.fast_login_operation_user_v2.user_id
+  api_management_name = data.azurerm_api_management.apim_v2_api.name
+  resource_group_name = data.azurerm_api_management.apim_v2_api.resource_group_name
+  group_name          = azurerm_api_management_group.api_fast_login_operation_v2.name
+}
+
+resource "azurerm_api_management_subscription" "pagopa_operation_v2" {
+  user_id             = azurerm_api_management_user.pagopa_user_v2.id
+  api_management_name = data.azurerm_api_management.apim_v2_api.name
+  resource_group_name = data.azurerm_api_management.apim_v2_api.resource_group_name
+  product_id          = module.apim_v2_product_fast_login_operation.id
+  display_name        = "Fast Login Operation API"
+  state               = "active"
+  allow_tracing       = false
+}
+
+
+
+# Named Value fn-fast-login
+resource "azurerm_api_management_named_value" "io_fn_weu_fast_login_operation_url_v2" {
+  name                = "io-fn-weu-fast-login-operation-url"
+  api_management_name = data.azurerm_api_management.apim_v2_api.name
+  resource_group_name = data.azurerm_api_management.apim_v2_api.resource_group_name
+  display_name        = "io-fn-weu-fast-login-operation-url"
+  value               = "https://io-p-weu-fast-login-fn.azurewebsites.net"
+}
+
+data "azurerm_key_vault_secret" "functions_fast_login_api_key" {
+  name         = "ioweb-profile-functions-fast-login-api-key"
+  key_vault_id = data.azurerm_key_vault.kv.id
+}
+
+resource "azurerm_api_management_named_value" "io_fn_weu_fast_login_operation_key_v2" {
+  name                = "io-fn-weu-fast-login-operation-key"
+  api_management_name = data.azurerm_api_management.apim_v2_api.name
+  resource_group_name = data.azurerm_api_management.apim_v2_api.resource_group_name
+  display_name        = "io-fn-weu-fast-login-operation-key"
+  value               = data.azurerm_key_vault_secret.functions_fast_login_api_key.value
+  secret              = "true"
+}
