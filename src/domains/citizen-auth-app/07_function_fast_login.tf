@@ -137,6 +137,7 @@ module "function_fast_login" {
 
   allowed_subnets = [
     module.fast_login_snet[0].id,
+    data.azurerm_subnet.apim_v2_snet.id,
     data.azurerm_subnet.app_backend_l1_snet.id,
     data.azurerm_subnet.app_backend_l2_snet.id,
     data.azurerm_subnet.ioweb_profile_snet.id,
@@ -183,6 +184,7 @@ module "function_fast_login_staging_slot" {
   allowed_subnets = [
     module.fast_login_snet[0].id,
     data.azurerm_subnet.azdoa_snet[0].id,
+    data.azurerm_subnet.apim_v2_snet.id,
     data.azurerm_subnet.app_backend_l1_snet.id,
     data.azurerm_subnet.app_backend_l2_snet.id,
   ]
