@@ -287,12 +287,8 @@ components:
       properties:
         fiscal_code:
           $ref: '#/components/schemas/FiscalCode'
-        unlock_code:
-          $ref: '#/components/schemas/UnlockCode'
       required:
         - fiscal_code
-        # TODO: Add this value with a policy remove from API
-        - unlock_code
     UnlockSessionData:
       type: object
       properties:
