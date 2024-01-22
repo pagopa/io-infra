@@ -118,6 +118,11 @@ variable "tls_cert_check_helm" {
   description = "tls cert helm chart configuration"
 }
 
+variable "tls_cert_check_enabled" {
+  type        = bool
+  description = "Enable tls cert check"
+}
+
 ## Event hub
 
 variable "ehns_enabled" {
