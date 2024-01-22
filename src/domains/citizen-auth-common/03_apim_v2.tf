@@ -336,3 +336,12 @@ resource "azurerm_api_management_named_value" "io_fn_weu_fast_login_operation_ke
   value               = data.azurerm_key_vault_secret.functions_fast_login_api_key.value
   secret              = "true"
 }
+
+resource "azurerm_api_management_named_value" "api_fast_login_operation_group_name" {
+  name                = "api-fast-login-operation-group-name"
+  api_management_name = data.azurerm_api_management.apim_v2_api.name
+  resource_group_name = data.azurerm_api_management.apim_v2_api.resource_group_name
+  display_name        = "api-fast-login-operation-group-name"
+  value               = azurerm_api_management_group.api_fast_login_operation_v2.display_name
+  secret              = "true"
+}
