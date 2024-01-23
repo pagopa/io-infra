@@ -308,7 +308,7 @@ resource "azurerm_api_management_group_user" "pagopa_operation_group_v2" {
 }
 
 resource "azurerm_api_management_subscription" "pagopa_operation_v2" {
-  user_id             = azurerm_api_management_user.pagopa_user_v2.id
+  user_id             = azurerm_api_management_user.fast_login_operation_user_v2.id
   api_management_name = data.azurerm_api_management.apim_v2_api.name
   resource_group_name = data.azurerm_api_management.apim_v2_api.resource_group_name
   product_id          = module.apim_v2_product_fast_login_operation.id
