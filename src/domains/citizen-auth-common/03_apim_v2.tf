@@ -340,5 +340,5 @@ resource "azurerm_api_management_named_value" "api_fast_login_operation_group_na
   resource_group_name = data.azurerm_api_management.apim_v2_api.resource_group_name
   display_name        = "api-fast-login-operation-group-name"
   value               = azurerm_api_management_group.api_fast_login_operation_v2.display_name
-  secret              = "true"
+  secret              = "false"
 }
