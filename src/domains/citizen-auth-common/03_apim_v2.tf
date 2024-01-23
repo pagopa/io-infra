@@ -263,6 +263,11 @@ module "apim_v2_product_fast_login_operation" {
   policy_xml = file("./api_product/fast_login_operation/_base_policy.xml")
 }
 
+data "azurerm_linux_function_app" "functions_fast_login" {
+  name                = local.fn_fast_login_name
+  resource_group_name = local.fn_fast_login_resource_group_name
+}
+
 module "apim_v2_fast_login_operation_api_v1" {
   source = "git::https://github.com/pagopa/terraform-azurerm-v3//api_management_api?ref=v4.1.5"
 
@@ -271,7 +276,7 @@ module "apim_v2_fast_login_operation_api_v1" {
   resource_group_name   = data.azurerm_api_management.apim_v2_api.resource_group_name
   product_ids           = [module.apim_v2_product_fast_login_operation.product_id]
   subscription_required = true
-  service_url           = null
+  service_url           = format(local.fast_login_backend_url, data.functions_fast_login.default_hostname)
 
   description  = "IO FAST-LOGIN OPERATION API"
   display_name = "IO Fast-Login Operation API"
@@ -315,14 +320,6 @@ resource "azurerm_api_management_subscription" "pagopa_operation_v2" {
 
 
 # Named Value fn-fast-login
-resource "azurerm_api_management_named_value" "io_fn_weu_fast_login_operation_url_v2" {
-  name                = "io-fn-weu-fast-login-operation-url"
-  api_management_name = data.azurerm_api_management.apim_v2_api.name
-  resource_group_name = data.azurerm_api_management.apim_v2_api.resource_group_name
-  display_name        = "io-fn-weu-fast-login-operation-url"
-  value               = "https://io-p-weu-fast-login-fn.azurewebsites.net"
-}
-
 data "azurerm_key_vault_secret" "functions_fast_login_api_key" {
   name         = "io-fn-weu-fast-login-KEY-APIM"
   key_vault_id = module.key_vault.id
