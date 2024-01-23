@@ -16,21 +16,6 @@
         <set-header name="x-user-email" exists-action="override">
             <value>@(context.User.Email)</value>
         </set-header>
-        <choose>
-            <!-- Calling the Lock profile API from the Operation endpoint generate a random unlock-code -->
-            <when condition="@(context.Request.Method == "POST" && context.Api.Path == "/fast-login/api/v1/lock-session")">
-                <set-body>
-                @{
-                    JObject inBody = context.Request.Body.As<JObject>();
-                    Random rng = new Random();
-                    int number = rng.Next(1, 1000000000);
-                    string secret = number.ToString("000000000");
-                    inBody.unlock_code = secret;
-                    return inBody.ToString();
-                }
-                </set-body>
-            </when>
-        </choose>
     </inbound>
     <outbound>
         <base />

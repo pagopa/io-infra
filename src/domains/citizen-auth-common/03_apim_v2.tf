@@ -290,6 +290,15 @@ module "apim_v2_fast_login_operation_api_v1" {
   xml_content = file("./api/fast_login/v1/policy.xml")
 }
 
+resource "azurerm_api_management_api_operation_policy" "lock_user_session_for_operation" {
+  api_name            = format("%s-fast-login-operation-api", local.product)
+  api_management_name   = data.azurerm_api_management.apim_v2_api.name
+  resource_group_name   = data.azurerm_api_management.apim_v2_api.resource_group_name
+  operation_id        = "lockUserSession"
+
+  xml_content = file("./api/fast_login/v1/post_lockusersession_policy/policy.xml")
+}
+
 resource "azurerm_api_management_user" "fast_login_operation_user_v2" {
   user_id             = "fastloginoperationuser"
   api_management_name = data.azurerm_api_management.apim_v2_api.name
