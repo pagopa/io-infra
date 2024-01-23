@@ -29,20 +29,6 @@
             }
             </set-body>
         </when>
-        <cors>
-            <allowed-origins>
-                <origin>*</origin>
-            </allowed-origins>
-            <allowed-methods>
-                <method>*</method>
-            </allowed-methods>
-            <allowed-headers>
-                <header>*</header>
-            </allowed-headers>
-            <expose-headers>
-                <header>*</header>
-            </expose-headers>
-        </cors>
     </inbound>
     <outbound>
         <base />
