@@ -11,7 +11,7 @@ servers:
 security:
   - ApiKeyAuth: []
 paths:
-  logout:
+  /logout:
     post:
       operationId: logoutFromIOApp
       summary: Logout User from IO App
@@ -46,7 +46,7 @@ paths:
           description: Bad Gateway
         '504':
           description: Gateway Timeout
-  lock-session:
+  /lock-session:
     post:
       operationId: lockUserSession
       summary: Lock User Session on IO App
@@ -83,7 +83,7 @@ paths:
           description: Bad Gateway
         '504':
           description: Gateway Timeout
-  unlock-session:
+  /unlock-session:
     post:
       operationId: unlockUserSession
       summary: Unlock User Session on IO App
@@ -125,7 +125,7 @@ paths:
           description: Bad Gateway
         '504':
           description: Gateway Timeout
-  session-state:
+  /session-state:
     post:
       operationId: getUserSessionState
       summary: Get User Session State on IO App
