@@ -247,7 +247,7 @@ resource "azurerm_api_management_group" "api_fast_login_operation_v2" {
 }
 
 module "apim_v2_product_fast_login_operation" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3//api_management_product?ref=v4.1.5"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3//api_management_product?ref=v7.47.0"
 
   product_id   = "io-fast-login-operation-api"
   display_name = "IO FAST-LOGIN OPERATION API"
@@ -269,7 +269,7 @@ data "azurerm_linux_function_app" "functions_fast_login" {
 }
 
 module "apim_v2_fast_login_operation_api_v1" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3//api_management_api?ref=v4.1.5"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3//api_management_api?ref=v7.47.0"
 
   name                  = format("%s-fast-login-operation-api", local.product)
   api_management_name   = data.azurerm_api_management.apim_v2_api.name
