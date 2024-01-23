@@ -667,6 +667,7 @@ module "appservice_app_backendl1" {
     module.services_snet[0].id,
     module.services_snet[1].id,
     module.appgateway_snet.id,
+    module.appgateway_temp_snet.id,
     module.apim_v2_snet.id,
   ]
 
@@ -708,6 +709,7 @@ module "appservice_app_backendl1_slot_staging" {
     module.services_snet[0].id,
     module.services_snet[1].id,
     module.appgateway_snet.id,
+    module.appgateway_temp_snet.id,
     module.apim_v2_snet.id,
   ]
 
@@ -882,6 +884,7 @@ module "appservice_app_backendl2" {
     module.services_snet[0].id,
     module.services_snet[1].id,
     module.appgateway_snet.id,
+    module.appgateway_temp_snet.id,
     module.apim_v2_snet.id,
   ]
 
@@ -923,6 +926,7 @@ module "appservice_app_backendl2_slot_staging" {
     module.services_snet[0].id,
     module.services_snet[1].id,
     module.appgateway_snet.id,
+    module.appgateway_temp_snet.id,
     module.apim_v2_snet.id,
   ]
 
