@@ -276,7 +276,7 @@ module "apim_v2_fast_login_operation_api_v1" {
   resource_group_name   = data.azurerm_api_management.apim_v2_api.resource_group_name
   product_ids           = [module.apim_v2_product_fast_login_operation.product_id]
   subscription_required = true
-  service_url           = format(local.fast_login_backend_url, data.functions_fast_login.default_hostname)
+  service_url           = format(local.fast_login_backend_url, data.azurerm_linux_function_app.functions_fast_login.default_hostname)
 
   description  = "IO FAST-LOGIN OPERATION API"
   display_name = "IO Fast-Login Operation API"
