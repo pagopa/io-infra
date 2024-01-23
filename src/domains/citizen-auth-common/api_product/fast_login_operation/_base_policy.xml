@@ -1,0 +1,21 @@
+<policies>
+    <inbound>
+        <base />
+        <choose>
+            <when condition="@(!context.User.Groups.Select(g => g.Name).Contains("{{api-fast-login-operation-group-name}}"))">
+                <return-response>
+                    <set-status code="403" reason="Unauthorized, the subscription used doesn't have the required permission" />
+                </return-response>
+            </when>
+        </choose>
+    </inbound>
+    <backend>
+        <base />
+    </backend>
+    <outbound>
+        <base />
+    </outbound>
+    <on-error>
+        <base />
+    </on-error>
+</policies>
