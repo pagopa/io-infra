@@ -705,7 +705,7 @@ module "app_gw" {
               variable    = "var_uri_path"
           }]
           url = {
-            path         = "fims/forbidden"
+            path         = "notfound"
             query_string = null
           }
           request_header_configurations  = []
