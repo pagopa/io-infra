@@ -85,6 +85,7 @@ resource "azurerm_monitor_metric_alert" "tls_cert_check" {
   severity            = 0
   frequency           = "PT5M"
   auto_mitigate       = false
+  enabled             = var.tls_cert_check_enabled
 
   criteria {
     metric_namespace = "microsoft.insights/components"

@@ -16,4 +16,10 @@ locals {
   apim_resource_group_name = "${local.product}-rg-internal"
 
   lollipop_jwt_host = "api.io.pagopa.it"
+
+  fast_login_backend_url = "https://%s/api/v1"
+
+  # Fast Login references refers to src/domains/citizen-auth-app/07_functions_fast_login.tf
+  fn_fast_login_name                = "${local.product}-weu-fast-login-fn"
+  fn_fast_login_resource_group_name = "${local.product}-weu-fast-login-rg"
 }
