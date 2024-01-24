@@ -468,9 +468,9 @@ module "app_gw" {
     }
 
     openid-provider-io-pagopa-it = {
-      listener              = "openid-provider-io-pagopa-it-listener"
+      listener              = "openid-provider-io-pagopa-it"
       backend               = "apim"
-      rewrite_rule_set_name = "rewrite-rule-set-openid-provider"
+      rewrite_rule_set_name = "rewrite-rule-set-openid-provider-io"
       priority              = 120
     }
   }
