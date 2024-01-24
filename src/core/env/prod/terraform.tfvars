@@ -81,9 +81,11 @@ app_gateway_api_io_selfcare_pagopa_it_certificate_name            = "api-io-self
 app_gateway_firmaconio_selfcare_pagopa_it_certificate_name        = "firmaconio-selfcare-pagopa-it"
 app_gateway_continua_io_pagopa_it_certificate_name                = "continua-io-pagopa-it"
 app_gateway_selfcare_io_pagopa_it_certificate_name                = "selfcare-io-pagopa-it"
+app_gateway_openid_provider_io_pagopa_it_certificate_name         = "openid-provider-io-pagopa-it"
 app_gateway_min_capacity                                          = 4 # 4 capacity=baseline, 10 capacity=high volume event, 15 capacity=very high volume event
 app_gateway_max_capacity                                          = 50
 app_gateway_alerts_enabled                                        = true
+app_gateway_deny_paths                                            = ["\\/admin\\/(.*)"]
 
 ## REDIS COMMON ##
 redis_common = {
