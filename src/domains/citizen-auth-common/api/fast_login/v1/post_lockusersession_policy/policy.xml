@@ -1,0 +1,22 @@
+<policies>
+  <inbound>
+      <base />
+        <set-body>@{
+            JObject inBody = context.Request.Body.As<JObject>();
+            Random rng = new Random();
+            int number = rng.Next(1, 1000000000);
+            string secret = number.ToString("000000000");
+            inBody.Add("unlock_code",secret);
+            return inBody.ToString();
+        }</set-body>
+  </inbound>
+  <backend>
+      <base />
+  </backend>
+  <outbound>
+      <base />
+  </outbound>
+  <on-error>
+      <base />
+  </on-error>
+</policies>

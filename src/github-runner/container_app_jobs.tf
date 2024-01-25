@@ -1,5 +1,5 @@
 module "container_app_job" {
-  source = "github.com/pagopa/terraform-azurerm-v3.git//container_app_job_gh_runner?ref=v7.46.0"
+  source = "github.com/pagopa/terraform-azurerm-v3.git//container_app_job_gh_runner?ref=v7.47.2"
 
   location  = var.location
   prefix    = var.prefix
@@ -17,11 +17,9 @@ module "container_app_job" {
   }
 
   job = {
-    name                 = "infra"
-    repo_owner           = "pagopa"
-    repo                 = "io-infra"
-    polling_interval     = 20
-    scale_max_executions = 5
+    name             = "infra"
+    repo             = "io-infra"
+    polling_interval = 20
   }
 
   tags = var.tags
