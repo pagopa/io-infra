@@ -45,7 +45,7 @@ locals {
       // --------------
       // FF AND TESTERS
       // --------------
-      FF_API_ENABLED = "BETA"
+      FF_API_ENABLED = "ALL"
       BETA_TESTERS   = data.azurerm_key_vault_secret.api_beta_testers.value
 
       // ------------
