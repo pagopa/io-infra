@@ -19,6 +19,7 @@ locals {
       IssuerValidatedBlobContainerName  = azurerm_storage_container.validated_documents.name
       IoServicesApiBasePath             = "https://api.io.pagopa.it"
       IoServicesSubscriptionKey         = module.key_vault_secrets.values["IoServicesSubscriptionKey"].value
+      IoServicesSubscriptionKey         = "@Microsoft.KeyVault(VaultName=${module.key_vault.name};SecretName=io-services-configuration-id"
       PdvTokenizerApiBasePath           = "https://api.tokenizer.pdv.pagopa.it"
       PdvTokenizerApiKey                = module.key_vault_secrets.values["PdvTokenizerApiKey"].value
       AnalyticsEventHubConnectionString = module.event_hub.keys["analytics.io-sign-func-issuer"].primary_connection_string
