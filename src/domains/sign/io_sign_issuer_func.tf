@@ -82,6 +82,16 @@ module "io_sign_issuer_func" {
   tags = var.tags
 }
 
+resource "azurerm_key_vault_access_policy" "io_sign_issuer_func_key_vault_access_policy" {
+  key_vault_id = module.key_vault.id
+  tenant_id    = data.azurerm_client_config.current.tenant_id
+  object_id    = module.io_sign_issuer_func.system_identity_principal
+
+  secret_permissions      = ["Get"]
+  storage_permissions     = []
+  certificate_permissions = []
+}
+
 resource "azurerm_role_assignment" "issuer_func_api_keys_queue_processor_role" {
   scope                = azurerm_storage_queue.api_keys.resource_manager_id
   role_definition_name = "Storage Queue Data Message Processor"
@@ -124,6 +134,16 @@ module "io_sign_issuer_func_staging_slot" {
   ]
 
   tags = var.tags
+}
+
+resource "azurerm_key_vault_access_policy" "io_sign_issuer_func_staging_slot_key_vault_access_policy" {
+  key_vault_id = module.key_vault.id
+  tenant_id    = data.azurerm_client_config.current.tenant_id
+  object_id    = module.io_sign_issuer_func_staging_slot.system_identity_principal
+
+  secret_permissions      = ["Get"]
+  storage_permissions     = []
+  certificate_permissions = []
 }
 
 resource "azurerm_monitor_autoscale_setting" "io_sign_issuer_func" {
@@ -231,3 +251,5 @@ resource "azurerm_monitor_autoscale_setting" "io_sign_issuer_func" {
     }
   }
 }
+
+
