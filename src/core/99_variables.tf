@@ -1015,6 +1015,13 @@ variable "pn_service_id" {
   description = "The Service ID of PN service"
   default     = "01G40DWQGKY5GRWSNM4303VNRP"
 }
+
+variable "pn_remote_config_id" {
+  type        = string
+  description = "The Remote Content Config ID of PN service"
+  default     = "01HMVMHCZZ8D0VTFWMRHBM5D6F"
+}
+
 # PN Test Endpoint
 variable "pn_test_endpoint" {
   type        = string
@@ -1028,10 +1035,22 @@ variable "io_sign_service_id" {
   default     = "01GQQZ9HF5GAPRVKJM1VDAVFHM"
 }
 
+variable "io_sign_remote_config_id" {
+  type        = string
+  description = "The Remote Content Config ID of io-sign service"
+  default     = "01HMVMDTHXCESMZ72NA701EKGQ"
+}
+
 # io-receipt service
 variable "io_receipt_service_id" {
   type        = string
   description = "The Service ID of io-receipt service"
+}
+
+variable "io_receipt_remote_config_id" {
+  type        = string
+  description = "The Remote Content Config ID of io-receipt service"
+  default     = "01HMVM9W74RWH93NT1EYNKKNNR"
 }
 
 variable "io_receipt_service_url" {
@@ -1042,6 +1061,12 @@ variable "io_receipt_service_url" {
 variable "io_receipt_service_test_id" {
   type        = string
   description = "The Service ID of io-receipt service"
+}
+
+variable "io_receipt_remote_config_test_id" {
+  type        = string
+  description = "The Remote Content Config ID of io-receipt service"
+  default     = "01HMVMCDD3JFYTPKT4ZN4WQ73B"
 }
 
 variable "io_receipt_service_test_url" {
@@ -1183,6 +1208,12 @@ variable "third_party_mock_service_id" {
   type        = string
   description = "The Service ID of the Third Party Mock service"
   default     = "01GQQDPM127KFGG6T3660D5TXD"
+}
+
+variable "third_party_mock_remote_config_id" {
+  type        = string
+  description = "The Remote Content Config ID of the Third Party Mock service"
+  default     = "01HMVM4N4XFJ8VBR1FXYFZ9QFB"
 }
 
 # Citizen auth
