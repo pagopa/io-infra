@@ -24,11 +24,11 @@ locals {
 
       // Service to Remote Content configuration MAP
       SERVICE_TO_RC_CONFIGURATION_MAP = jsonencode({
-        var.pn_service_id               = var.pn_remote_config_id,
-        var.io_sign_service_id          = var.io_sign_remote_config_id,
-        var.io_receipt_service_test_id  = var.io_receipt_remote_config_test_id,
-        var.io_receipt_service_id       = var.io_receipt_remote_config_id,
-        var.third_party_mock_service_id = var.third_party_mock_remote_config_id
+        "${var.pn_service_id}"               = var.pn_remote_config_id,
+        "${var.io_sign_service_id}"          = var.io_sign_remote_config_id,
+        "${var.io_receipt_service_test_id}"  = var.io_receipt_remote_config_test_id,
+        "${var.io_receipt_service_id}"       = var.io_receipt_remote_config_id,
+        "${var.third_party_mock_service_id}" = var.third_party_mock_remote_config_id
       })
 
       MESSAGE_CONTAINER_NAME = local.message_content_container_name
