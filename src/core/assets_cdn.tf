@@ -13,7 +13,7 @@ module "assets_cdn" {
   account_tier                    = "Standard"
   access_tier                     = "Hot"
   blob_versioning_enabled         = true
-  account_replication_type        = "GRS"
+  account_replication_type        = "GZRS"
   resource_group_name             = azurerm_resource_group.rg_common.name
   location                        = azurerm_resource_group.rg_common.location
   advanced_threat_protection      = false
