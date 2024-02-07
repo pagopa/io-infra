@@ -228,6 +228,11 @@ variable "cidr_subnet_appgateway" {
   description = "Application gateway address space."
 }
 
+variable "cidr_subnet_temp_appgateway" {
+  type        = list(string)
+  description = "Temp application gateway address space."
+}
+
 variable "cidr_subnet_apim" {
   type        = list(string)
   description = "Old Api Management address space."
