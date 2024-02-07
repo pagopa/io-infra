@@ -3,7 +3,7 @@
   "info": {
     "title": "OpenID Provider",
     "description": "OpenID Provider service",
-    "version": "1.0.7"
+    "version": "2.0.0"
   },
   "host": "api.openid-provider.io.italia.it",
   "schemes": [
@@ -14,6 +14,11 @@
       "post": {
         "operationId": "createClients",
         "summary": "Create a client",
+        "security": [
+          {
+            "SubscriptionKey": []
+          }
+        ],
         "parameters": [
           {
             "$ref": "#/parameters/bodyClientDefinition"
@@ -37,6 +42,11 @@
       "get": {
         "operationId": "getClients",
         "summary": "List clients",
+        "security": [
+          {
+            "SubscriptionKey": []
+          }
+        ],
         "parameters": [
           {
             "$ref": "#/parameters/queryOrganizationId"
@@ -67,6 +77,11 @@
       "get": {
         "operationId": "detailClient",
         "summary": "Return a client details",
+        "security": [
+          {
+            "SubscriptionKey": []
+          }
+        ],
         "responses": {
           "200": {
             "$ref": "#/responses/200ClientResponse"
@@ -85,101 +100,14 @@
       "delete": {
         "operationId": "deleteClient",
         "summary": "Remove a client",
+        "security": [
+          {
+            "SubscriptionKey": []
+          }
+        ],
         "responses": {
           "200": {
             "$ref": "#/responses/200ClientResponse"
-          },
-          "401": {
-            "$ref": "#/responses/401Unauthorized"
-          },
-          "404": {
-            "$ref": "#/responses/404NotFound"
-          },
-          "500": {
-            "$ref": "#/responses/500InternalServerError"
-          }
-        }
-      }
-    },
-    "/grants": {
-      "parameters": [
-        {
-          "$ref": "#/parameters/headerIdentityId"
-        }
-      ],
-      "get": {
-        "operationId": "listGrant",
-        "summary": "Return a list of grant",
-        "security": [
-          {
-            "SubscriptionKey": []
-          }
-        ],
-        "responses": {
-          "200": {
-            "$ref": "#/responses/200GrantListResponse"
-          },
-          "401": {
-            "$ref": "#/responses/401Unauthorized"
-          },
-          "500": {
-            "$ref": "#/responses/500InternalServerError"
-          }
-        }
-      }
-    },
-    "/grants/{organizationId}/{serviceId}": {
-      "parameters": [
-        {
-          "$ref": "#/parameters/pathOrganizationId"
-        },
-        {
-          "$ref": "#/parameters/pathServiceId"
-        },
-        {
-          "$ref": "#/parameters/headerIdentityId"
-        }
-      ],
-      "get": {
-        "operationId": "detailGrant",
-        "summary": "Return a grant detail",
-        "security": [
-          {
-            "SubscriptionKey": []
-          }
-        ],
-        "responses": {
-          "200": {
-            "$ref": "#/responses/200GrantDetailResponse"
-          },
-          "400": {
-            "$ref": "#/responses/400BadRequest"
-          },
-          "401": {
-            "$ref": "#/responses/401Unauthorized"
-          },
-          "404": {
-            "$ref": "#/responses/404NotFound"
-          },
-          "500": {
-            "$ref": "#/responses/500InternalServerError"
-          }
-        }
-      },
-      "delete": {
-        "operationId": "deleteGrant",
-        "summary": "Delete a grant",
-        "security": [
-          {
-            "SubscriptionKey": []
-          }
-        ],
-        "responses": {
-          "204": {
-            "$ref": "#/responses/204NoContent"
-          },
-          "400": {
-            "$ref": "#/responses/400BadRequest"
           },
           "401": {
             "$ref": "#/responses/401Unauthorized"
