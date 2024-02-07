@@ -1,8 +1,8 @@
 {
   "swagger": "2.0",
   "info": {
-    "title": "OpenID Provider",
-    "description": "OpenID Provider service",
+    "title": "OpenID Provider Public",
+    "description": "OpenID Provider Public API",
     "version": "2.0.0"
   },
   "host": "api.openid-provider.io.italia.it",
