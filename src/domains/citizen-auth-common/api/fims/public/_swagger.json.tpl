@@ -51,6 +51,28 @@
         }
       }
     },
+    "/oauth/authorize/{interactionId}": {
+      "get": {
+        "operationId": "authorizeInteraction",
+        "summary": "Continue an OAuth 2.0 flow by authorizing an interaction",
+        "parameters": [
+          {
+            "$ref": "#/parameters/pathInteractionId"
+          }
+        ],
+        "responses": {
+          "200": {
+            "$ref": "#/responses/200AuthenticationResponse"
+          },
+          "302": {
+            "$ref": "#/responses/302AuthenticationResponse"
+          },
+          "400": {
+            "$ref": "#/responses/400HtmlBadRequest"
+          }
+        }
+      }
+    },
     "/grants": {
       "parameters": [
         {
