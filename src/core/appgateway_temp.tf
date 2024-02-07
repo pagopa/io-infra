@@ -31,7 +31,8 @@ module "app_gw_temp" {
   resource_group_name = azurerm_resource_group.rg_external.name
   location            = azurerm_resource_group.rg_external.location
   name                = format("%s-temp-appgateway", local.project)
-
+  zones               = [1, 2, 3] 
+  
   # SKU
   sku_name = "WAF_v2"
   sku_tier = "WAF_v2"
