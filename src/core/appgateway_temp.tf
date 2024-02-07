@@ -239,7 +239,7 @@ module "app_gw_temp" {
       host               = format("api-app.%s.%s", var.dns_zone_io, var.external_domain)
       port               = 443
       ssl_profile_name   = null
-      firewall_policy_id = azurerm_web_application_firewall_policy.temp_api_app.id
+      firewall_policy_id = azurerm_web_application_firewall_policy.api_app.id
 
       certificate = {
         name = var.app_gateway_api_app_certificate_name
@@ -256,7 +256,7 @@ module "app_gw_temp" {
       host               = format("api-web.%s.%s", var.dns_zone_io, var.external_domain)
       port               = 443
       ssl_profile_name   = null
-      firewall_policy_id = azurerm_web_application_firewall_policy.temp_api_app.id
+      firewall_policy_id = azurerm_web_application_firewall_policy.api_app.id
 
       certificate = {
         name = var.app_gateway_api_web_certificate_name
@@ -273,7 +273,7 @@ module "app_gw_temp" {
       host               = "app-backend.io.italia.it"
       port               = 443
       ssl_profile_name   = null
-      firewall_policy_id = azurerm_web_application_firewall_policy.temp_api_app.id
+      firewall_policy_id = azurerm_web_application_firewall_policy.api_app.id
 
       certificate = {
         name = var.app_gateway_app_backend_io_italia_it_certificate_name
@@ -369,6 +369,23 @@ module "app_gw_temp" {
         )
       }
     }
+
+    openid-provider-io-pagopa-it = {
+      protocol           = "Https"
+      host               = format("openid-provider.%s.%s", var.dns_zone_io, var.external_domain)
+      port               = 443
+      ssl_profile_name   = null
+      firewall_policy_id = null
+
+      certificate = {
+        name = var.app_gateway_openid_provider_io_pagopa_it_certificate_name
+        id = replace(
+          data.azurerm_key_vault_certificate.app_gw_openid_provider_io.secret_id,
+          "/${data.azurerm_key_vault_certificate.app_gw_openid_provider_io.version}",
+          ""
+        )
+      }
+    }
   }
 
   # maps listener to backend
@@ -451,6 +468,12 @@ module "app_gw_temp" {
       priority              = 110
     }
 
+    openid-provider-io-pagopa-it = {
+      listener              = "openid-provider-io-pagopa-it"
+      backend               = "apim"
+      rewrite_rule_set_name = "rewrite-rule-set-openid-provider-io"
+      priority              = 120
+    }
   }
 
   rewrite_rule_sets = [
@@ -648,6 +671,60 @@ module "app_gw_temp" {
         response_header_configurations = []
       }]
     },
+    {
+      name = "rewrite-rule-set-openid-provider-io"
+      rewrite_rules = [
+        {
+          name          = "http-headers-api-openid-provider"
+          rule_sequence = 100
+          conditions    = []
+          url           = null
+          request_header_configurations = [
+            {
+              header_name  = "X-Forwarded-For"
+              header_value = "{var_client_ip}"
+            },
+            {
+              header_name  = "X-Forwarded-Host"
+              header_value = "{var_host}"
+            },
+            {
+              header_name  = "X-Client-Ip"
+              header_value = "{var_client_ip}"
+            }
+          ]
+          response_header_configurations = []
+        },
+        {
+          name          = "url-rewrite-openid-provider-private"
+          rule_sequence = 200
+          conditions = [
+            {
+              ignore_case = true
+              pattern     = join("|", var.app_gateway_deny_paths)
+              negate      = false
+              variable    = "var_uri_path"
+          }]
+          url = {
+            path         = "notfound"
+            query_string = null
+          }
+          request_header_configurations  = []
+          response_header_configurations = []
+        },
+        {
+          name          = "url-rewrite-openid-provider-public"
+          rule_sequence = 201
+          conditions    = []
+          url = {
+            path         = "fims/{var_uri_path}"
+            query_string = null
+          }
+          request_header_configurations  = []
+          response_header_configurations = []
+        }
+      ]
+    }
   ]
 
   # TLS
@@ -778,127 +855,3 @@ module "app_gw_temp" {
   tags = var.tags
 }
 
-## user assined identity: (application gateway) ##
-resource "azurerm_user_assigned_identity" "appgateway_temp" {
-  resource_group_name = azurerm_resource_group.sec_rg.name
-  location            = azurerm_resource_group.sec_rg.location
-  name                = format("%s-temp-appgateway-identity", local.project)
-
-  tags = var.tags
-}
-
-resource "azurerm_key_vault_access_policy" "app_gateway_policy_temp" {
-  key_vault_id            = module.key_vault.id
-  tenant_id               = data.azurerm_client_config.current.tenant_id
-  object_id               = azurerm_user_assigned_identity.appgateway_temp.principal_id
-  key_permissions         = []
-  secret_permissions      = ["Get", "List"]
-  certificate_permissions = ["Get", "List"]
-  storage_permissions     = []
-}
-
-resource "azurerm_key_vault_access_policy" "app_gateway_policy_common_temp" {
-  key_vault_id            = module.key_vault_common.id
-  tenant_id               = data.azurerm_client_config.current.tenant_id
-  object_id               = azurerm_user_assigned_identity.appgateway_temp.principal_id
-  key_permissions         = []
-  secret_permissions      = ["Get", "List"]
-  certificate_permissions = ["Get", "List"]
-  storage_permissions     = []
-}
-
-resource "azurerm_key_vault_access_policy" "app_gateway_policy_ioweb_temp" {
-  key_vault_id            = data.azurerm_key_vault.ioweb_kv.id
-  tenant_id               = data.azurerm_client_config.current.tenant_id
-  object_id               = azurerm_user_assigned_identity.appgateway_temp.principal_id
-  key_permissions         = []
-  secret_permissions      = ["Get", "List"]
-  certificate_permissions = ["Get", "List"]
-  storage_permissions     = []
-}
-
-resource "azurerm_web_application_firewall_policy" "temp_api_app" {
-  name                = format("%s-waf-appgateway-api-app-temp-policy", local.project)
-  resource_group_name = azurerm_resource_group.rg_external.name
-  location            = azurerm_resource_group.rg_external.location
-
-  policy_settings {
-    enabled                     = true
-    mode                        = "Prevention"
-    request_body_check          = true
-    file_upload_limit_in_mb     = 100
-    max_request_body_size_in_kb = 128
-  }
-
-  managed_rules {
-
-    managed_rule_set {
-      type    = "OWASP"
-      version = "3.1"
-
-      rule_group_override {
-        rule_group_name = "REQUEST-913-SCANNER-DETECTION"
-        disabled_rules = [
-          "913100",
-          "913101",
-          "913102",
-          "913110",
-          "913120",
-        ]
-      }
-
-      rule_group_override {
-        rule_group_name = "REQUEST-920-PROTOCOL-ENFORCEMENT"
-        disabled_rules = [
-          "920300",
-          "920320",
-        ]
-      }
-
-      rule_group_override {
-        rule_group_name = "REQUEST-930-APPLICATION-ATTACK-LFI"
-        disabled_rules = [
-          "930120",
-        ]
-      }
-
-      rule_group_override {
-        rule_group_name = "REQUEST-932-APPLICATION-ATTACK-RCE"
-        disabled_rules = [
-          "932150",
-        ]
-      }
-
-      rule_group_override {
-        rule_group_name = "REQUEST-941-APPLICATION-ATTACK-XSS"
-        disabled_rules = [
-          "941130",
-        ]
-      }
-
-      rule_group_override {
-        rule_group_name = "REQUEST-942-APPLICATION-ATTACK-SQLI"
-        disabled_rules = [
-          "942100",
-          "942120",
-          "942190",
-          "942200",
-          "942210",
-          "942240",
-          "942250",
-          "942260",
-          "942330",
-          "942340",
-          "942370",
-          "942380",
-          "942430",
-          "942440",
-          "942450",
-        ]
-      }
-
-    }
-  }
-
-  tags = var.tags
-}
