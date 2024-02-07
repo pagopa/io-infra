@@ -768,7 +768,7 @@ module "app_gw" {
     }
 
     backend_pools_status = {
-      description   = "One or more backend pools are down, check Backend Health on Azure portal"
+      description   = "One or more backend pools are down, check Backend Health on Azure portal. Runbook https://pagopa.atlassian.net/wiki/spaces/IC/pages/914161665/Application+Gateway+-+Backend+Status"
       frequency     = "PT5M"
       window_size   = "PT5M"
       severity      = 0
