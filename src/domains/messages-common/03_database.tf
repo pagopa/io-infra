@@ -313,3 +313,29 @@ resource "azurerm_cosmosdb_sql_container" "message_configuration" {
     }
   }
 }
+
+resource "azurerm_cosmosdb_sql_container" "user_configurations" {
+  name                = "user-configurations"
+  resource_group_name = azurerm_resource_group.data_rg.name
+  account_name        = module.cosmosdb_account_remote_content.name
+  database_name       = module.cosmosdb_sql_database_remote_content.name
+
+  partition_key_path    = "/userId"
+  partition_key_version = 2
+
+  autoscale_settings {
+    max_throughput = 2000
+  }
+
+  indexing_policy {
+    indexing_mode = "consistent"
+
+    included_path {
+      path = "/*"
+    }
+
+    excluded_path {
+      path = "/\"_etag\"/?"
+    }
+  }
+}

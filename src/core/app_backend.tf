@@ -305,11 +305,14 @@ locals {
       IOLOGIN_CANARY_USERS_REGEX = "^([(0-9)|(a-f)|(A-F)]{63}0)$"
 
       // UNIQUE EMAIL ENFORCEMENT
-      FF_UNIQUE_EMAIL_ENFORCEMENT    = "BETA"
+      FF_UNIQUE_EMAIL_ENFORCEMENT    = "ALL"
       UNIQUE_EMAIL_ENFORCEMENT_USERS = join(",", [data.azurerm_key_vault_secret.app_backend_UNIQUE_EMAIL_ENFORCEMENT_USER.value, local.test_users_unique_email_test[0]])
 
+      IS_SPID_EMAIL_PERSISTENCE_ENABLED = "false"
+
+
       // FAST LOGIN
-      FF_FAST_LOGIN = "BETA"
+      FF_FAST_LOGIN = "ALL"
       LV_TEST_USERS = join(",", [data.azurerm_key_vault_secret.app_backend_LV_TEST_USERS.value, local.test_users])
 
       BACKEND_HOST = "https://${trimsuffix(azurerm_dns_a_record.api_app_io_pagopa_it.fqdn, ".")}"

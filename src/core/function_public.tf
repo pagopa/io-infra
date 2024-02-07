@@ -20,7 +20,7 @@ locals {
       FETCH_KEEPALIVE_TIMEOUT             = "60000"
 
       # UNIQUE EMAIL ENFORCEMENT
-      FF_UNIQUE_EMAIL_ENFORCEMENT             = "BETA"
+      FF_UNIQUE_EMAIL_ENFORCEMENT             = "ALL"
       UNIQUE_EMAIL_ENFORCEMENT_USERS          = jsonencode(split(",", data.azurerm_key_vault_secret.app_backend_UNIQUE_EMAIL_ENFORCEMENT_USER.value))
       PROFILE_EMAIL_STORAGE_CONNECTION_STRING = data.azurerm_storage_account.citizen_auth_common.primary_connection_string
       PROFILE_EMAIL_STORAGE_TABLE_NAME        = "profileEmails"
