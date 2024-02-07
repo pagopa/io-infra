@@ -3,7 +3,7 @@
   "info": {
     "title": "OpenID Provider",
     "description": "OpenID Provider service",
-    "version": "1.0.7"
+    "version": "2.0.0"
   },
   "host": "api.openid-provider.io.italia.it",
   "schemes": [
@@ -47,6 +47,158 @@
           },
           "400": {
             "$ref": "#/responses/400HtmlBadRequest"
+          }
+        }
+      }
+    },
+    "/grants": {
+      "parameters": [
+        {
+          "$ref": "#/parameters/headerIdentityId"
+        }
+      ],
+      "get": {
+        "operationId": "listGrant",
+        "summary": "Return a list of grant",
+        "responses": {
+          "200": {
+            "$ref": "#/responses/200GrantListResponse"
+          },
+          "401": {
+            "$ref": "#/responses/401Unauthorized"
+          },
+          "500": {
+            "$ref": "#/responses/500InternalServerError"
+          }
+        }
+      }
+    },
+    "/grants/{organizationId}/{serviceId}": {
+      "parameters": [
+        {
+          "$ref": "#/parameters/pathOrganizationId"
+        },
+        {
+          "$ref": "#/parameters/pathServiceId"
+        },
+        {
+          "$ref": "#/parameters/headerIdentityId"
+        }
+      ],
+      "get": {
+        "operationId": "detailGrant",
+        "summary": "Return a grant detail",
+        "responses": {
+          "200": {
+            "$ref": "#/responses/200GrantDetailResponse"
+          },
+          "400": {
+            "$ref": "#/responses/400BadRequest"
+          },
+          "401": {
+            "$ref": "#/responses/401Unauthorized"
+          },
+          "404": {
+            "$ref": "#/responses/404NotFound"
+          },
+          "500": {
+            "$ref": "#/responses/500InternalServerError"
+          }
+        }
+      },
+      "delete": {
+        "operationId": "deleteGrant",
+        "summary": "Delete a grant",
+        "responses": {
+          "204": {
+            "$ref": "#/responses/204NoContent"
+          },
+          "400": {
+            "$ref": "#/responses/400BadRequest"
+          },
+          "401": {
+            "$ref": "#/responses/401Unauthorized"
+          },
+          "404": {
+            "$ref": "#/responses/404NotFound"
+          },
+          "500": {
+            "$ref": "#/responses/500InternalServerError"
+          }
+        }
+      }
+    },
+    "/interaction/{interactionId}": {
+      "parameters": [
+        {
+          "$ref": "#/parameters/pathInteractionId"
+        }
+      ],
+      "get": {
+        "operationId": "getInteraction",
+        "summary": "Get an interaction",
+        "responses": {
+          "200": {
+            "$ref": "#/responses/200GenericObject"
+          },
+          "400": {
+            "$ref": "#/responses/400BadRequest"
+          },
+          "404": {
+            "$ref": "#/responses/404NotFound"
+          },
+          "500": {
+            "$ref": "#/responses/500InternalServerError"
+          }
+        }
+      }
+    },
+    "/interaction/{interactionId}/confirm": {
+      "parameters": [
+        {
+          "$ref": "#/parameters/pathInteractionId"
+        }
+      ],
+      "post": {
+        "operationId": "confirmInteraction",
+        "summary": "Confirm an interaction",
+        "responses": {
+          "200": {
+            "$ref": "#/responses/200GenericObject"
+          },
+          "400": {
+            "$ref": "#/responses/400BadRequest"
+          },
+          "404": {
+            "$ref": "#/responses/404NotFound"
+          },
+          "500": {
+            "$ref": "#/responses/500InternalServerError"
+          }
+        }
+      }
+    },
+    "/interaction/{interactionId}/abort": {
+      "parameters": [
+        {
+          "$ref": "#/parameters/pathInteractionId"
+        }
+      ],
+      "get": {
+        "operationId": "abortInteraction",
+        "summary": "Abort an interaction",
+        "responses": {
+          "200": {
+            "$ref": "#/responses/200GenericObject"
+          },
+          "400": {
+            "$ref": "#/responses/400BadRequest"
+          },
+          "404": {
+            "$ref": "#/responses/404NotFound"
+          },
+          "500": {
+            "$ref": "#/responses/500InternalServerError"
           }
         }
       }
@@ -113,6 +265,13 @@
     "pathServiceId": {
       "name": "serviceId",
       "description": "The service identifier",
+      "in": "path",
+      "required": true,
+      "type": "string"
+    },
+    "pathInteractionId": {
+      "name": "interactionId",
+      "description": "The interaction identifier",
       "in": "path",
       "required": true,
       "type": "string"
@@ -196,6 +355,10 @@
     }
   },
   "definitions": {
+    "GenericObject": {
+      "type": "object",
+      "additionalProperties": true
+    },
     "APIScope": {
       "type": "string",
       "enum": [
@@ -639,6 +802,12 @@
     }
   },
   "responses": {
+    "200GenericObject": {
+      "description": "A generic response for interaction endpoints",
+      "schema": {
+        "$ref": "#/definitions/GenericObject"
+      }
+    },
     "200GrantListResponse": {
       "description": "List of grant",
       "schema": {
