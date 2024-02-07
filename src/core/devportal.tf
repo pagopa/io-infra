@@ -166,7 +166,10 @@ module "appservice_devportal_be" {
     API_SERVICES_CMS_BASE_PATH = "/api/v1"
   }
 
-  allowed_subnets = [module.appgateway_snet.id]
+  allowed_subnets = [
+    module.appgateway_snet.id,
+    module.appgateway_temp_snet.id
+  ]
 
   tags = var.tags
 }
