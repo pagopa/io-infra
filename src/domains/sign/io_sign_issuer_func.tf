@@ -7,7 +7,7 @@ locals {
       "ValidateUpload",
       "CreateIssuer",
       "CreateIssuerByVatNumberView"
-    ],
+    ]
     disabled = [
       "CreateIssuer"
     ]
