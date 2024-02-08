@@ -7,6 +7,9 @@ locals {
       "ValidateUpload",
       "CreateIssuer",
       "CreateIssuerByVatNumberView"
+    ],
+    disabled = [
+      "CreateIssuer"
     ]
     app_settings = {
       FUNCTIONS_WORKER_PROCESS_COUNT    = 4
@@ -60,7 +63,7 @@ module "io_sign_issuer_func" {
     {
       # Enable functions on production triggered by queue and timer
       for to_disable in local.io_sign_issuer_func.staging_disabled :
-      format("AzureWebJobs.%s.Disabled", to_disable) => "false"
+      format("AzureWebJobs.%s.Disabled", to_disable) => contains(local.io_sign_issuer_func.disabled, to_disable) ? "true" : "false"
     }
   )
 
