@@ -25,6 +25,11 @@ module "io_sign_backoffice_func" {
 
   subnet_id = module.io_sign_backoffice_snet.id
 
+  sticky_app_setting_names = [
+    for to_disable in local.io_sign_backoffice_func.staging_disabled :
+    format("AzureWebJobs.%s.Disabled", to_disable)
+  ]
+
   allowed_subnets = [
     module.io_sign_snet.id
   ]
