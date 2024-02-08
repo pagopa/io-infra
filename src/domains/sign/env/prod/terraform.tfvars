@@ -164,7 +164,6 @@ io_sign_backoffice_func = {
       name  = "NODE_ENV",
       value = "production"
     },
-
     {
       name  = "SELFCARE_EVENT_HUB_CONTRACTS_NAME",
       value = "sc-contracts"
