@@ -165,16 +165,24 @@ io_sign_backoffice_func = {
       value = "production"
     },
     {
+      name  = "SELFCARE_EVENT_HUB_CONTRACTS_NAME",
+      value = "sc-contracts"
+    },
+    {
+      name  = "BACK_OFFICE_API_BASE_PATH"
+      value = "https://api.io.pagopa.it/api/v1/sign/backoffice"
+    },
+    {
       name                  = "SelfCareEventHubConnectionString",
       key_vault_secret_name = "SelfCareEventHubConnectionString"
     },
     {
-      name                  = "SELFCARE_API_KEY",
-      key_vault_secret_name = "selfcare-prod-api-key"
+      name                  = "SLACK_WEBHOOK_URL",
+      key_vault_secret_name = "slack-webhook-url"
     },
     {
-      name                  = "SLACK_WEB_HOOK_URL",
-      key_vault_secret_name = "slack-webhook-url"
+      name                  = "BACK_OFFICE_API_KEY"
+      key_vault_secret_name = "BackOfficeApiKey"
     }
   ]
 }
