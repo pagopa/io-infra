@@ -73,7 +73,7 @@ variable "law_daily_quota_gb" {
 variable "dns_default_ttl_sec" {
   type        = number
   description = "value"
-  default     = 3600
+  default     = 60
 }
 
 variable "external_domain" {
