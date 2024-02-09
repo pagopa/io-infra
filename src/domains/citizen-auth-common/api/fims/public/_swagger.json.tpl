@@ -240,6 +240,26 @@
         }
       }
     },
+    "/jwks": {
+      "get": {
+        "operationId": "getJwks",
+        "summary": "Get JWKS to verify signature",
+        "responses": {
+          "200": {
+            "$ref": "#/responses/200GenericObject"
+          },
+          "400": {
+            "$ref": "#/responses/400BadRequest"
+          },
+          "404": {
+            "$ref": "#/responses/404NotFound"
+          },
+          "500": {
+            "$ref": "#/responses/500InternalServerError"
+          }
+        }
+      }
+    },
     "/info": {
       "get": {
         "operationId": "getInfo",
