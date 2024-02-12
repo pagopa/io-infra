@@ -732,7 +732,7 @@ module "app_gw_temp" {
   identity_ids = [azurerm_user_assigned_identity.appgateway.id]
 
   # Scaling
-  app_gateway_min_capacity = var.app_gateway_min_capacity
+  app_gateway_min_capacity = "10"
   app_gateway_max_capacity = var.app_gateway_max_capacity
 
   alerts_enabled = var.app_gateway_alerts_enabled
