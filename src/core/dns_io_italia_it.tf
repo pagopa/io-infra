@@ -40,7 +40,7 @@ resource "azurerm_dns_a_record" "developerportal_backend_io_italia_it" {
   resource_group_name = azurerm_resource_group.rg_external.name
   ttl                 = var.dns_default_ttl_sec
   records = [
-    azurerm_public_ip.appgateway_public_ip.ip_address,
+    # azurerm_public_ip.appgateway_public_ip.ip_address,
     azurerm_public_ip.appgateway_temp_public_ip.ip_address,
   ]
 
@@ -54,7 +54,7 @@ resource "azurerm_dns_a_record" "api_io_italia_it" {
   resource_group_name = azurerm_resource_group.rg_external.name
   ttl                 = var.dns_default_ttl_sec
   records = [
-    azurerm_public_ip.appgateway_public_ip.ip_address,
+    # azurerm_public_ip.appgateway_public_ip.ip_address,
     azurerm_public_ip.appgateway_temp_public_ip.ip_address,
   ]
 
@@ -68,7 +68,7 @@ resource "azurerm_dns_a_record" "app_backend_io_italia_it" {
   resource_group_name = azurerm_resource_group.rg_external.name
   ttl                 = var.dns_default_ttl_sec
   records = [
-    azurerm_public_ip.appgateway_public_ip.ip_address,
+    # azurerm_public_ip.appgateway_public_ip.ip_address,
     azurerm_public_ip.appgateway_temp_public_ip.ip_address,
   ]
 
