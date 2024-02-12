@@ -93,9 +93,3 @@ data "azurerm_subnet" "appgateway_snet" {
   virtual_network_name = local.vnet_common_name
   resource_group_name  = local.vnet_common_resource_group_name
 }
-
-data "azurerm_subnet" "temp_appgateway_snet" {
-  name                 = "io-p-temp-appgateway-snet"
-  virtual_network_name = local.vnet_common_name
-  resource_group_name  = local.vnet_common_resource_group_name
-}

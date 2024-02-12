@@ -96,7 +96,6 @@ module "appservice_continua" {
   subnet_id        = module.continua_common_snet.id
   allowed_subnets = [
     module.appgateway_snet.id,
-    module.appgateway_temp_snet.id,
   ]
 
   tags = var.tags
@@ -123,7 +122,6 @@ module "appservice_continua_slot_staging" {
   subnet_id        = module.continua_common_snet.id
   allowed_subnets = [
     module.appgateway_snet.id,
-    module.appgateway_temp_snet.id,
   ]
 
   tags = var.tags

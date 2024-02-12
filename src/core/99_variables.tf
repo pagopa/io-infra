@@ -73,7 +73,7 @@ variable "law_daily_quota_gb" {
 variable "dns_default_ttl_sec" {
   type        = number
   description = "value"
-  default     = 60
+  default     = 3600
 }
 
 variable "external_domain" {
@@ -226,11 +226,6 @@ variable "cidr_subnet_fnpblevtdispatcherv4" {
 variable "cidr_subnet_appgateway" {
   type        = list(string)
   description = "Application gateway address space."
-}
-
-variable "cidr_subnet_temp_appgateway" {
-  type        = list(string)
-  description = "Temp application gateway address space."
 }
 
 variable "cidr_subnet_apim" {
