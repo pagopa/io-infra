@@ -168,7 +168,6 @@ module "appservice_devportal_be" {
 
   allowed_subnets = [
     module.appgateway_snet.id,
-    module.appgateway_temp_snet.id
   ]
 
   tags = var.tags

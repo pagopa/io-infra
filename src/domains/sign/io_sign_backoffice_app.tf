@@ -43,12 +43,6 @@ data "azurerm_subnet" "appgateway_snet" {
   resource_group_name  = var.io_common.resource_group_name
 }
 
-data "azurerm_subnet" "temp_appgateway_snet" {
-  name                 = "io-p-temp-appgateway-snet"
-  virtual_network_name = var.io_common.vnet_common_name
-  resource_group_name  = var.io_common.resource_group_name
-}
-
 module "io_sign_backoffice_app" {
   source = "github.com/pagopa/terraform-azurerm-v3.git//app_service?ref=v7.46.0"
 
@@ -72,7 +66,6 @@ module "io_sign_backoffice_app" {
 
   allowed_subnets = [
     data.azurerm_subnet.appgateway_snet.id,
-    data.azurerm_subnet.temp_appgateway_snet.id,
     data.azurerm_subnet.apim_v2.id
   ]
 
@@ -145,7 +138,6 @@ module "io_sign_backoffice_app_staging_slot" {
 
   allowed_subnets = [
     data.azurerm_subnet.appgateway_snet.id,
-    data.azurerm_subnet.temp_appgateway_snet.id,
     data.azurerm_subnet.apim_v2.id
   ]
 
