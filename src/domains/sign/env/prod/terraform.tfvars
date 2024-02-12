@@ -183,6 +183,18 @@ io_sign_backoffice_func = {
     {
       name                  = "BACK_OFFICE_API_KEY"
       key_vault_secret_name = "BackOfficeApiKey"
+    },
+    {
+      name                  = "GOOGLE_PRIVATE_KEY",
+      key_vault_secret_name = "bo-google-private-key"
+    },
+    {
+      name                  = "GOOGLE_CLIENT_EMAIL",
+      key_vault_secret_name = "bo-google-client-email"
+    },
+    {
+      name                  = "GOOGLE_SPREADSHEET_ID",
+      key_vault_secret_name = "bo-google-spreadsheet-id"
     }
   ]
 }
