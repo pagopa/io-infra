@@ -31,6 +31,7 @@ module "app_gw" {
   resource_group_name = azurerm_resource_group.rg_external.name
   location            = azurerm_resource_group.rg_external.location
   name                = format("%s-appgateway", local.project)
+  zones               = [1, 2, 3]
 
   # SKU
   sku_name = "WAF_v2"
@@ -730,7 +731,8 @@ module "app_gw" {
   identity_ids = [azurerm_user_assigned_identity.appgateway.id]
 
   # Scaling
-  app_gateway_min_capacity = var.app_gateway_min_capacity
+  # app_gateway_min_capacity = var.app_gateway_min_capacity
+  app_gateway_min_capacity = "10"
   app_gateway_max_capacity = var.app_gateway_max_capacity
 
   alerts_enabled = var.app_gateway_alerts_enabled
