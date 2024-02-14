@@ -195,7 +195,11 @@ io_sign_backoffice_func = {
     {
       name                  = "GOOGLE_SPREADSHEET_ID",
       key_vault_secret_name = "bo-google-spreadsheet-id"
-    }
+    },
+    {
+      name                  = "SELFCARE_API_KEY",
+      key_vault_secret_name = "selfcare-prod-api-key"
+    },
   ]
 }
 
