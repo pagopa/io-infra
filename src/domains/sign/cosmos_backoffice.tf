@@ -20,7 +20,7 @@ module "cosmosdb_sql_container_backoffice-api-keys" {
   default_ttl = var.io_sign_database_backoffice.api_keys.ttl
 }
 
-module "cosmosdb_sql_container_backoffice-consents" {
+module "cosmosdb_sql_container_backoffice-api-keys-by-id" {
   source              = "github.com/pagopa/terraform-azurerm-v3.git//cosmosdb_sql_container?ref=v7.46.0"
   name                = "api-keys-by-id"
   resource_group_name = azurerm_resource_group.data_rg.name
