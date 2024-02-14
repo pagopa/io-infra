@@ -225,7 +225,7 @@ module "apim_v2_io_sign_backoffice_product" {
 }
 
 data "http" "backoffice_openapi" {
-  url = "https://raw.githubusercontent.com/pagopa/io-sign/main/apps/io-sign-backoffice-app/openapi.yml"
+  url = "https://raw.githubusercontent.com/pagopa/io-sign/main/apps/io-sign-backoffice-func/openapi.yml"
 }
 
 module "apim_v2_io_sign_backoffice_api_v1" {
