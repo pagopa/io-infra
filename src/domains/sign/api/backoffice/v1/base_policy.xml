@@ -1,9 +1,9 @@
 <policies>
     <inbound>
         <base />
-        <set-backend-service id="apim-generated-policy" base-url="{{io-sign-backoffice-func-url}}" />
+        <set-backend-service id="apim-generated-policy" base-url="{{io-fn-sign-backoffice-url}}" />
         <set-header name="x-functions-key" exists-action="override">
-            <value>{{io-sign-backoffice-func-key}}</value>
+            <value>{{io-fn-sign-backoffice-key}}</value>
         </set-header>
         <cors>
             <allowed-origins>
