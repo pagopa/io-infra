@@ -1,15 +1,9 @@
 <policies>
     <inbound>
         <base />
-        <set-backend-service id="apim-generated-policy" base-url="{{io-fn-sign-backoffice-url}}/api" />
+        <set-backend-service id="apim-generated-policy" base-url="{{io-sign-backoffice-func-url}}" />
         <set-header name="x-functions-key" exists-action="override">
-            <value>{{io-fn-sign-backoffice-key}}</value>
-        </set-header>
-        <set-header name="x-subscription-id" exists-action="override">
-            <value>@(context.Subscription.Id)</value>
-        </set-header>
-        <set-header name="X-Forwarded-Host" exists-action="override">
-            <value>@(context.Request.OriginalUrl.ToUri().Host)</value>
+            <value>{{io-sign-backoffice-func-key}}</value>
         </set-header>
         <cors>
             <allowed-origins>
