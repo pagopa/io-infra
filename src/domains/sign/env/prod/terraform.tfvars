@@ -87,6 +87,10 @@ io_sign_database_backoffice = {
     max_throughput = 1000
     ttl            = null
   }
+  api_keys_by_id = {
+    max_throughput = 1000
+    ttl            = null
+  }
   issuers = {
     max_throughput = 1000
     ttl            = null

@@ -20,6 +20,21 @@ module "cosmosdb_sql_container_backoffice-api-keys" {
   default_ttl = var.io_sign_database_backoffice.api_keys.ttl
 }
 
+module "cosmosdb_sql_container_backoffice-consents" {
+  source              = "github.com/pagopa/terraform-azurerm-v3.git//cosmosdb_sql_container?ref=v7.46.0"
+  name                = "api-keys-by-id"
+  resource_group_name = azurerm_resource_group.data_rg.name
+  account_name        = module.cosmosdb_account.name
+  database_name       = module.cosmosdb_sql_database_backoffice.name
+  partition_key_path  = "/id"
+
+  autoscale_settings = {
+    max_throughput = var.io_sign_database_backoffice.api_keys_by_id.max_throughput
+  }
+
+  default_ttl = var.io_sign_database_backoffice.api_keys_by_id.ttl
+}
+
 module "cosmosdb_sql_container_backoffice-issuers" {
   source              = "github.com/pagopa/terraform-azurerm-v3.git//cosmosdb_sql_container?ref=v7.46.0"
   name                = "issuers"
@@ -49,3 +64,5 @@ module "cosmosdb_sql_container_backoffice-consents" {
 
   default_ttl = var.io_sign_database_backoffice.consents.ttl
 }
+
+
