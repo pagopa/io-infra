@@ -17,7 +17,8 @@ module "key_vault_secrets" {
     "LollipopSecondaryApiKey",
     "PdvTokenizerApiKey",
     "BackOfficeApiKey",
-    "io-services-configuration-id"
+    "io-services-configuration-id",
+    "io-sign-backoffice-func-key"
   ]
 }
 

@@ -195,7 +195,7 @@ resource "azurerm_api_management_named_value" "io_fn_sign_backoffice_url_v2" {
   api_management_name = data.azurerm_api_management.apim_v2_api.name
   resource_group_name = data.azurerm_api_management.apim_v2_api.resource_group_name
   display_name        = "io-fn-sign-backoffice-url"
-  value               = format("https://%s-sign-backoffice-app.azurewebsites.net", local.product)
+  value               = format("https://%s-sign-backoffice-func.azurewebsites.net", local.product)
 }
 
 resource "azurerm_api_management_named_value" "io_fn_sign_backoffice_key_v2" {
@@ -203,7 +203,7 @@ resource "azurerm_api_management_named_value" "io_fn_sign_backoffice_key_v2" {
   api_management_name = data.azurerm_api_management.apim_v2_api.name
   resource_group_name = data.azurerm_api_management.apim_v2_api.resource_group_name
   display_name        = "io-fn-sign-backoffice-key"
-  value               = module.key_vault_secrets.values["io-fn-sign-support-key"].value
+  value               = module.key_vault_secrets.values["io-sign-backoffice-func-key"].value
   secret              = true
 }
 
@@ -225,7 +225,7 @@ module "apim_v2_io_sign_backoffice_product" {
 }
 
 data "http" "backoffice_openapi" {
-  url = "https://raw.githubusercontent.com/pagopa/io-sign/main/apps/io-sign-backoffice-app/openapi.yml"
+  url = "https://raw.githubusercontent.com/pagopa/io-sign/main/apps/io-sign-backoffice-func/openapi.yaml"
 }
 
 module "apim_v2_io_sign_backoffice_api_v1" {
