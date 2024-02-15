@@ -54,3 +54,13 @@ module "landing_cdn" {
 
   tags = var.tags
 }
+
+resource "azurerm_monitor_diagnostic_setting" "diagnostic_settings_cdn" {
+  name                       = "${local.project}-cdn-diagnostic-settings"
+  target_resource_id         = module.landing_cdn.id
+  log_analytics_workspace_id = data.azurerm_log_analytics_workspace.log_analytics.id
+
+  enabled_log {
+    category_group = "allLogs"
+  }
+}
