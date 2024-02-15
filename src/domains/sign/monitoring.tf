@@ -112,7 +112,7 @@ customEvents
     action_group = [
       azurerm_monitor_action_group.email_fci_tech.id,
       azurerm_monitor_action_group.slack_fci_tech.id,
-      azurerm_monitor_action_group.error_action_group.id
+      data.azurerm_monitor_action_group.error_action_group.id
     ]
   }
 
