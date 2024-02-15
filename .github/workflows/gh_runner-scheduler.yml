@@ -3,8 +3,8 @@ name: GitHub Runner Job AutoScaler
 on:
   workflow_dispatch:
   schedule:
-    - cron: '0 09 * * MON-FRI'
-    - cron: '0 18 * * MON-FRI'
+    - cron: '0 07 * * MON-FRI'
+    - cron: '0 16 * * MON-FRI'
 
 permissions:
   id-token: write
@@ -12,7 +12,7 @@ permissions:
 
 env:
   resource-group: 'io-p-github-runner-rg'
-  job-name: 'io-infra-github-runner-job'
+  job-name: 'io-p-github-runner-job'
   maximum_replica: 10
 
 jobs:
@@ -29,7 +29,7 @@ jobs:
           subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
 
       - name: Increase minimum replicas
-        if: github.event.schedule == '0 09 * * *'
+        if: github.event.schedule == '0 07 * * MON-FRI'
         run: |
           az containerapp job update \
             --resource-group ${{ env.resource-group }} \
@@ -38,7 +38,7 @@ jobs:
             --max-executions ${{ env.maximum_replica }}
 
       - name: Decrease minimum replicas
-        if: github.event.schedule == '0 18 * * *'
+        if: github.event.schedule == '0 16 * * MON-FRI'
         run: |
           az containerapp job update \
             --resource-group ${{ env.resource-group }} \

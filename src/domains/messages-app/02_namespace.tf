@@ -5,7 +5,7 @@ resource "kubernetes_namespace" "namespace" {
 }
 
 module "pod_identity" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//kubernetes_pod_identity?ref=v4.1.6"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//kubernetes_pod_identity?ref=v7.28.0"
 
   resource_group_name = local.aks_resource_group_name
   location            = var.location
@@ -16,7 +16,8 @@ module "pod_identity" {
   namespace     = kubernetes_namespace.namespace.metadata[0].name
   key_vault_id  = data.azurerm_key_vault.kv.id
 
-  secret_permissions = ["Get"]
+  secret_permissions      = ["Get"]
+  certificate_permissions = ["Get"]
 }
 
 resource "azurerm_key_vault_access_policy" "common" {
@@ -84,6 +85,7 @@ resource "azurerm_monitor_metric_alert" "tls_cert_check" {
   severity            = 0
   frequency           = "PT5M"
   auto_mitigate       = false
+  enabled             = var.tls_cert_check_enabled
 
   criteria {
     metric_namespace = "microsoft.insights/components"

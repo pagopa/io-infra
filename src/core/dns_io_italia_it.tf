@@ -71,7 +71,7 @@ resource "azurerm_dns_a_record" "api_internal_io_italia_it" {
   name                = "api-internal"
   zone_name           = azurerm_dns_zone.io_italia_it.name
   resource_group_name = azurerm_resource_group.rg_external.name
-  ttl                 = "60" # var.dns_default_ttl_sec # TODO rollback after apim-v2 migration
+  ttl                 = var.dns_default_ttl_sec
   records             = module.apim_v2.*.private_ip_addresses[0]
 
   tags = var.tags

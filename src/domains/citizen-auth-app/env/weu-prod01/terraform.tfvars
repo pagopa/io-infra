@@ -30,9 +30,9 @@ application_insights_name                   = "io-p-ai-common"
 # chart releases: https://github.com/stakater/Reloader/releases
 # image tags: https://hub.docker.com/r/stakater/reloader/tags
 reloader_helm = {
-  chart_version = "v0.0.118"
+  chart_version = "v1.0.41"
   image_name    = "stakater/reloader"
-  image_tag     = "v0.0.118@sha256:2d423cab8d0e83d1428ebc70c5c5cafc44bd92a597bff94007f93cddaa607b02"
+  image_tag     = "v1.0.41@sha256:eb7e816f4c38d9c9c25fd8743919075d8ea699d8593f261c7c2e0b52080c6c47"
 }
 # chart releases: https://github.com/pagopa/aks-microservice-chart-blueprint/releases
 # image tags: https://github.com/pagopa/infra-ssl-check/releases
@@ -44,16 +44,16 @@ tls_cert_check_helm = {
 
 ### Aks
 
-ingress_load_balancer_ip = "10.11.100.250"
+ingress_load_balancer_ip = "10.11.0.254"
 
 # Functions LolliPoP
 cidr_subnet_fnlollipop              = ["10.0.17.0/26"]
 function_lollipop_kind              = "Linux"
 function_lollipop_sku_tier          = "PremiumV3"
 function_lollipop_sku_size          = "P1v3"
-function_lollipop_autoscale_minimum = 1
-function_lollipop_autoscale_maximum = 3
-function_lollipop_autoscale_default = 1
+function_lollipop_autoscale_minimum = 2
+function_lollipop_autoscale_maximum = 20
+function_lollipop_autoscale_default = 10
 
 # Functions Fast Login
 cidr_subnet_fnfastlogin              = ["10.0.17.128/26"]
@@ -71,3 +71,4 @@ fims_plan_sku_size     = "P1v3"
 fims_autoscale_minimum = 1
 fims_autoscale_maximum = 3
 fims_autoscale_default = 1
+

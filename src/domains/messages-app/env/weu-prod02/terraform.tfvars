@@ -27,9 +27,9 @@ application_insights_name                   = "io-p-ai-common"
 # chart releases: https://github.com/stakater/Reloader/releases
 # image tags: https://hub.docker.com/r/stakater/reloader/tags
 reloader_helm = {
-  chart_version = "v0.0.118"
+  chart_version = "v1.0.41"
   image_name    = "stakater/reloader"
-  image_tag     = "v0.0.118@sha256:2d423cab8d0e83d1428ebc70c5c5cafc44bd92a597bff94007f93cddaa607b02"
+  image_tag     = "v1.0.41@sha256:eb7e816f4c38d9c9c25fd8743919075d8ea699d8593f261c7c2e0b52080c6c47"
 }
 # chart releases: https://github.com/pagopa/aks-microservice-chart-blueprint/releases
 # image tags: https://github.com/pagopa/infra-ssl-check/releases
@@ -38,6 +38,8 @@ tls_cert_check_helm = {
   image_name    = "ghcr.io/pagopa/infra-ssl-check"
   image_tag     = "v1.3.4@sha256:c3d45736706c981493b6216451fc65e99a69d5d64409ccb1c4ca93fef57c921d"
 }
+
+tls_cert_check_enabled = true
 
 ### Aks
 

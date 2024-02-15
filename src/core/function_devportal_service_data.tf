@@ -2,7 +2,6 @@ locals {
   function_devportalservicedata = {
     app_settings_commons = {
       FUNCTIONS_WORKER_RUNTIME       = "node"
-      WEBSITE_NODE_DEFAULT_VERSION   = "14.16.0"
       FUNCTIONS_WORKER_PROCESS_COUNT = 4
       NODE_ENV                       = "production"
 
@@ -40,8 +39,7 @@ locals {
       DB_USER         = format("%s", data.azurerm_key_vault_secret.devportalservicedata_db_server_adm_username.value)
       DB_PASSWORD     = data.azurerm_key_vault_secret.devportalservicedata_db_server_adm_password.value
 
-      WEBSITE_VNET_ROUTE_ALL = "1"
-      WEBSITE_DNS_SERVER     = "168.63.129.16"
+      WEBSITE_DNS_SERVER = "168.63.129.16"
 
       # Path of blob on which we export the last visible service read model
       AssetsStorageConnection                = module.assets_cdn.primary_connection_string
@@ -139,7 +137,7 @@ locals {
 
 #tfsec:ignore:azure-storage-queue-services-logging-enabled:exp:2022-05-01 # already ignored, maybe a bug in tfsec
 module "function_devportalservicedata" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app?ref=v4.1.15"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app?ref=v7.40.1"
 
   name                = format("%s-%s-fn", local.project, local.function_devportalservicedata.app_context.name)
   location            = local.function_devportalservicedata.app_context.resource_group.location
@@ -160,14 +158,21 @@ module "function_devportalservicedata" {
   }
 
   runtime_version   = "~3"
-  os_type           = "linux"
   health_check_path = "/api/v1/info"
-  linux_fx_version  = "NODE|14"
+  node_version      = "14"
 
   storage_account_info = {
     account_kind                      = "StorageV2"
     account_tier                      = "Standard"
-    account_replication_type          = "LRS"
+    account_replication_type          = "GZRS"
+    access_tier                       = "Hot"
+    advanced_threat_protection_enable = true
+  }
+
+  internal_storage_account_info = {
+    account_kind                      = "StorageV2"
+    account_tier                      = "Standard"
+    account_replication_type          = "GZRS"
     access_tier                       = "Hot"
     advanced_threat_protection_enable = true
   }
@@ -186,17 +191,22 @@ module "function_devportalservicedata" {
     "AzureWebJobs.ChangeAllSubscriptionsOwnership.Disabled" = "0"
   })
 
+  sticky_app_setting_names = [
+    "AzureWebJobs.ChangeAllSubscriptionsOwnership.Disabled",
+    "AzureWebJobs.ChangeOneSubscriptionOwnership.Disabled",
+    "AzureWebJobs.OnServiceChange.Disabled",
+    "AzureWebJobs.UpsertSubscriptionToMigrate.Disabled"
+  ]
+
   tags = var.tags
 }
 
-
 module "function_devportalservicedata_staging_slot" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app_slot?ref=v4.1.15"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app_slot?ref=v7.34.3"
 
   name                = "staging"
   location            = local.function_devportalservicedata.app_context.resource_group.location
   resource_group_name = local.function_devportalservicedata.app_context.resource_group.name
-  function_app_name   = module.function_devportalservicedata.name
   function_app_id     = module.function_devportalservicedata.id
   app_service_plan_id = local.function_devportalservicedata.app_context.app_service_plan.id
 
@@ -207,9 +217,8 @@ module "function_devportalservicedata_staging_slot" {
   internal_storage_connection_string = module.function_devportalservicedata.storage_account_internal_function.primary_connection_string
 
   runtime_version   = "~3"
-  os_type           = "linux"
   health_check_path = "/api/v1/info"
-  linux_fx_version  = "NODE|14"
+  node_version      = "14"
   always_on         = "true"
 
   subnet_id = local.function_devportalservicedata.app_context.snet.id
@@ -242,19 +251,20 @@ data "azurerm_key_vault_secret" "devportalservicedata_db_server_adm_username" {
   name         = "devportal-servicedata-DB-ADM-USERNAME"
   key_vault_id = module.key_vault_common.id
 }
+
 data "azurerm_key_vault_secret" "devportalservicedata_db_server_adm_password" {
   name         = "devportal-servicedata-DB-ADM-PASSWORD"
   key_vault_id = module.key_vault_common.id
 }
+
 // db applicative user credentials
 data "azurerm_key_vault_secret" "devportalservicedata_db_server_fndevportalservicedata_password" {
   name         = "devportal-servicedata-FNDEVPORTALSERVICEDATA-PASSWORD"
   key_vault_id = module.key_vault_common.id
 }
 
-
 module "devportalservicedata_db_server_snet" {
-  source                                    = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v4.1.15"
+  source                                    = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v7.34.3"
   name                                      = format("%s-snet", local.function_devportalservicedata.db.name)
   address_prefixes                          = var.cidr_subnet_devportalservicedata_db_server
   resource_group_name                       = azurerm_resource_group.rg_common.name
@@ -272,7 +282,7 @@ module "devportalservicedata_db_server_snet" {
 }
 
 module "devportalservicedata_db_server" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//postgres_flexible_server?ref=v4.1.15"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//postgres_flexible_server?ref=v7.34.3"
 
   name                = local.function_devportalservicedata.db.name
   location            = var.location
@@ -284,6 +294,7 @@ module "devportalservicedata_db_server" {
   sku_name                     = "GP_Standard_D2s_v3"
   db_version                   = 13
   geo_redundant_backup_enabled = true
+  zone                         = 1
 
   private_endpoint_enabled = true
   private_dns_zone_id      = azurerm_private_dns_zone.privatelink_postgres_database_azure_com.id

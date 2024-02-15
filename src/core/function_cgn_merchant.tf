@@ -7,7 +7,6 @@ locals {
     app_settings_common = {
       FUNCTIONS_WORKER_RUNTIME       = "node"
       WEBSITE_RUN_FROM_PACKAGE       = "1"
-      WEBSITE_VNET_ROUTE_ALL         = "1"
       WEBSITE_DNS_SERVER             = "168.63.129.16"
       FUNCTIONS_WORKER_PROCESS_COUNT = 4
       NODE_ENV                       = "production"
@@ -38,7 +37,7 @@ locals {
 
 #tfsec:ignore:azure-storage-queue-services-logging-enabled:exp:2022-05-01 # already ignored, maybe a bug in tfsec
 module "function_cgn_merchant" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app?ref=v4.1.15"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app?ref=v7.34.3"
 
   resource_group_name = azurerm_resource_group.cgn_be_rg.name
   name                = format("%s-cgn-merchant-fn", local.project)
@@ -46,9 +45,8 @@ module "function_cgn_merchant" {
   app_service_plan_id = azurerm_app_service_plan.cgn_common.id
   health_check_path   = "/api/v1/merchant/cgn/info"
 
-  os_type          = "linux"
-  linux_fx_version = "NODE|18"
-  runtime_version  = "~4"
+  node_version    = "18"
+  runtime_version = "~4"
 
   always_on                                = "true"
   application_insights_instrumentation_key = azurerm_application_insights.application_insights.instrumentation_key
@@ -61,7 +59,6 @@ module "function_cgn_merchant" {
 
   allowed_subnets = [
     module.cgn_snet.id,
-    module.apim_snet.id,
     module.apim_v2_snet.id,
   ]
 
@@ -69,12 +66,11 @@ module "function_cgn_merchant" {
 }
 
 module "function_cgn_merchant_staging_slot" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app_slot?ref=v4.1.15"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app_slot?ref=v7.34.3"
 
   name                = "staging"
   location            = var.location
   resource_group_name = azurerm_resource_group.cgn_be_rg.name
-  function_app_name   = module.function_cgn_merchant.name
   function_app_id     = module.function_cgn_merchant.id
   app_service_plan_id = azurerm_app_service_plan.cgn_common.id
   health_check_path   = "/api/v1/merchant/cgn/info"
@@ -82,8 +78,7 @@ module "function_cgn_merchant_staging_slot" {
   storage_account_name       = module.function_cgn_merchant.storage_account.name
   storage_account_access_key = module.function_cgn_merchant.storage_account.primary_access_key
 
-  os_type                                  = "linux"
-  linux_fx_version                         = "NODE|18"
+  node_version                             = "18"
   always_on                                = "true"
   runtime_version                          = "~4"
   application_insights_instrumentation_key = azurerm_application_insights.application_insights.instrumentation_key
@@ -97,7 +92,6 @@ module "function_cgn_merchant_staging_slot" {
   allowed_subnets = [
     module.cgn_snet.id,
     module.azdoa_snet[0].id,
-    module.apim_snet.id,
     module.apim_v2_snet.id,
   ]
 

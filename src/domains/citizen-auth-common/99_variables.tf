@@ -60,6 +60,11 @@ variable "instance" {
   description = "One of beta, prod01, prod02"
 }
 
+variable "fims_app_instance" {
+  type        = string
+  description = "App instance name. One of beta, prod01, prod02"
+}
+
 variable "tags" {
   type = map(any)
   default = {
@@ -113,4 +118,10 @@ variable "enable_azdoa" {
   type        = bool
   description = "Specifies Azure Devops Agent enabling"
   default     = true
+}
+
+# Redis Common
+variable "cidr_subnet_redis_common" {
+  type        = list(string)
+  description = "Redis Common address space."
 }

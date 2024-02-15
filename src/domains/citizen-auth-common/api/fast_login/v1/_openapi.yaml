@@ -1,0 +1,347 @@
+openapi: 3.0.1
+info:
+  version: 4.0.0
+  title: IO Fast Login Function API
+  x-logo:
+    url: https://io.italia.it/assets/img/io-logo-blue.svg
+  description: |
+    Documentation of the IO Fast Login Function API here.
+servers:
+  - url: https://api.pagopa.it/fast-login/api/v1
+security:
+  - ApiKeyAuth: []
+paths:
+  /logout:
+    post:
+      operationId: logoutFromIOApp
+      summary: Logout User from IO App
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LogoutData'
+      responses:
+        '204':
+          description: Success
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BadRequest'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Unauthorized'
+        '500':
+          description: Server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InternalServerError'
+        '502':
+          description: Bad Gateway
+        '504':
+          description: Gateway Timeout
+  /lock-session:
+    post:
+      operationId: lockUserSession
+      summary: Lock User Session on IO App
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LockSessionData'
+      responses:
+        '204':
+          description: Session Successfully locked
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BadRequest'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Unauthorized'
+        '409':
+          description: Conflict
+        '500':
+          description: Server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InternalServerError'
+        '502':
+          description: Bad Gateway
+        '504':
+          description: Gateway Timeout
+  /unlock-session:
+    post:
+      operationId: unlockUserSession
+      summary: Unlock User Session on IO App
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UnlockSessionData'
+      responses:
+        '204':
+          description: Session successfully unlocked
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BadRequest'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Unauthorized'
+        '403':
+          description: Forbidden
+        '429':
+          description: |
+            Too Many Requests.
+            This response is here just for APIM handling.
+            It won't be returned by the function implemented.
+        '500':
+          description: Server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InternalServerError'
+        '502':
+          description: Bad Gateway
+        '504':
+          description: Gateway Timeout
+  /session-state:
+    post:
+      operationId: getUserSessionState
+      summary: Get User Session State on IO App
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GetSessionStateData'
+      responses:
+        '200':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SessionState'
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BadRequest'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Unauthorized'
+        '500':
+          description: Server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InternalServerError'
+        '502':
+          description: Bad Gateway
+        '504':
+          description: Gateway Timeout
+components:
+  securitySchemes:
+    ApiKeyAuth:
+      type: apiKey
+      in: header
+      name: Ocp-Apim-Subscription-Key
+  schemas:
+    InternalServerError:
+      description: InternalServerError
+      allOf:
+        - $ref: '#/components/schemas/ProblemJson'
+        - type: object
+          properties:
+            status:
+              type: integer
+              enum:
+                - 500
+              example: 500
+              description: >-
+                The HTTP status code generated by the origin server for this
+                occurrence of the problem.
+          required:
+            - status
+    BadRequest:
+      description: Bad Request
+      allOf:
+        - $ref: '#/components/schemas/ProblemJson'
+        - type: object
+          properties:
+            status:
+              type: integer
+              enum:
+                - 400
+              example: 400
+              description: >-
+                The HTTP status code generated by the origin server for this
+                occurrence of the problem.
+          required:
+            - status
+    Unauthorized:
+      description: Unauthorized
+      allOf:
+        - $ref: '#/components/schemas/ProblemJson'
+        - type: object
+          properties:
+            status:
+              type: integer
+              enum:
+                - 401
+              example: 401
+              description: >-
+                The HTTP status code generated by the origin server for this
+                occurrence of the problem.
+          required:
+            - status
+    ProblemJson:
+      type: object
+      properties:
+        type:
+          type: string
+          format: uri
+          description: |-
+            An absolute URI that identifies the problem type. When dereferenced,
+            it SHOULD provide human-readable documentation for the problem type
+            (e.g., using HTML).
+          default: about:blank
+          example: https://example.com/problem/constraint-violation
+        title:
+          type: string
+          description: >-
+            A short, summary of the problem type. Written in english and
+            readable
+
+            for engineers (usually not suited for non technical stakeholders and
+
+            not localized); example: Service Unavailable
+        status:
+          type: integer
+          format: int32
+          description: >-
+            The HTTP status code generated by the origin server for this
+            occurrence
+
+            of the problem.
+          minimum: 100
+          maximum: 600
+          exclusiveMaximum: true
+          example: 200
+        detail:
+          type: string
+          description: |-
+            A human readable explanation specific to this occurrence of the
+            problem.
+          example: There was an error processing the request
+        instance:
+          type: string
+          format: uri
+          description: >-
+            An absolute URI that identifies the specific occurrence of the
+            problem.
+
+            It may or may not yield further information if dereferenced.
+    FiscalCode:
+      type: string
+      description: User's fiscal code.
+      format: FiscalCode
+      x-import: '@pagopa/ts-commons/lib/strings'
+      example: SPNDNL80R13C555X
+    UnlockCode:
+      type: string
+      pattern: ^\d{9}$
+    LogoutData:
+      type: object
+      properties:
+        fiscal_code:
+          $ref: '#/components/schemas/FiscalCode'
+      required:
+        - fiscal_code
+    LockSessionData:
+      type: object
+      properties:
+        fiscal_code:
+          $ref: '#/components/schemas/FiscalCode'
+      required:
+        - fiscal_code
+    UnlockSessionData:
+      type: object
+      properties:
+        fiscal_code:
+          $ref: '#/components/schemas/FiscalCode'
+      required:
+        - fiscal_code
+    GetSessionStateData:
+      type: object
+      properties:
+        fiscal_code:
+          $ref: '#/components/schemas/FiscalCode'
+      required:
+        - fiscal_code
+    SessionInfo:
+      description: Info about an user session
+      oneOf:
+        - type: object
+          description: Inactive session
+          properties:
+            active:
+              type: boolean
+              enum:
+                - false
+          required:
+            - active
+        - type: object
+          description: Active session
+          properties:
+            active:
+              type: boolean
+              enum:
+                - true
+            expiration_date:
+              type: string
+              format: date
+            type:
+              type: string
+              enum:
+                - LV
+                - LEGACY
+          required:
+            - active
+            - expiration_date
+            - type
+    SessionState:
+      description: The state of the user' session
+      type: object
+      properties:
+        access_enabled:
+          type: boolean
+        session_info:
+          $ref: '#/components/schemas/SessionInfo'
+      required:
+        - access_enabled
+        - session_info

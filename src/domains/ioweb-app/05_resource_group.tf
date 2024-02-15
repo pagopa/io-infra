@@ -12,3 +12,7 @@ resource "azurerm_resource_group" "ioweb_profile_rg" {
 
   tags = var.tags
 }
+
+data "azurerm_resource_group" "storage_rg" {
+  name = "${local.common_project}-${var.domain}-storage-rg"
+}

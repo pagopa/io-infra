@@ -59,6 +59,11 @@ data "azurerm_key_vault_secret" "devportal_request_review_legacy_queue_connectio
   key_vault_id = module.key_vault_common.id
 }
 
+data "azurerm_function_app" "webapp_functions_app" {
+  name                = "${local.project}-services-cms-webapp-fn"
+  resource_group_name = "${local.project}-services-cms-rg"
+}
+
 # Only 1 subnet can be associated to a service plan
 # azurerm_app_service_virtual_network_swift_connection requires an app service id
 # so we choose one of the app service in the app service plan
@@ -70,7 +75,7 @@ resource "azurerm_app_service_virtual_network_swift_connection" "devportal_be" {
 #tfsec:ignore:azure-appservice-authentication-enabled:exp:2022-05-01 # already ignored, maybe a bug in tfsec
 #tfsec:ignore:azure-appservice-require-client-cert:exp:2022-05-01 # already ignored, maybe a bug in tfsec
 module "appservice_devportal_be" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//app_service?ref=v6.0.0"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//app_service?ref=v7.28.0"
 
   name                = format("%s-app-devportal-be", local.project)
   resource_group_name = azurerm_resource_group.selfcare_be_rg.name
@@ -156,9 +161,14 @@ module "appservice_devportal_be" {
     # Note: The list below is for the user IDs only, not the full path APIM.id.
     # UPDATE: The new feature is that "If one of such strings is "*", we suddenly open the feature to everyone.".
     MANAGE_FLOW_ENABLE_USER_LIST = "*"
+
+    API_SERVICES_CMS_URL       = "https://${data.azurerm_function_app.webapp_functions_app.default_hostname}"
+    API_SERVICES_CMS_BASE_PATH = "/api/v1"
   }
 
-  allowed_subnets = [module.appgateway_snet.id]
+  allowed_subnets = [
+    module.appgateway_snet.id,
+  ]
 
   tags = var.tags
 }

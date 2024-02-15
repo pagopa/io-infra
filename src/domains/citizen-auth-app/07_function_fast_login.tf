@@ -1,5 +1,5 @@
 data "azurerm_key_vault_secret" "fast_login_subscription_key" {
-  name         = "fast-login-subscription-key"
+  name         = "fast-login-subscription-key-v2"
   key_vault_id = data.azurerm_key_vault.kv.id
 }
 
@@ -27,8 +27,14 @@ locals {
       FETCH_KEEPALIVE_FREE_SOCKET_TIMEOUT = "30000"
       FETCH_KEEPALIVE_TIMEOUT             = "60000"
 
+      # COSMOS
       COSMOS_DB_NAME           = "citizen-auth"
       COSMOS_CONNECTION_STRING = format("AccountEndpoint=%s;AccountKey=%s;", data.azurerm_cosmosdb_account.cosmos_citizen_auth.endpoint, data.azurerm_cosmosdb_account.cosmos_citizen_auth.primary_key)
+
+      # REDIS
+      REDIS_URL      = data.azurerm_redis_cache.redis_common.hostname
+      REDIS_PORT     = data.azurerm_redis_cache.redis_common.ssl_port
+      REDIS_PASSWORD = data.azurerm_redis_cache.redis_common.primary_access_key
 
       // --------------------------
       //  Config for getAssertion
@@ -39,7 +45,7 @@ locals {
       // --------------------------
       //  Fast login audit log storage
       // --------------------------
-      FAST_LOGIN_AUDIT_CONNECTION_STRING = data.azurerm_storage_account.lv_audit_logs_storage.primary_connection_string
+      FAST_LOGIN_AUDIT_CONNECTION_STRING = data.azurerm_storage_account.immutable_lv_audit_logs_storage.primary_connection_string
 
 
       // --------------------------
@@ -105,7 +111,7 @@ module "function_fast_login" {
     kind                         = var.function_fastlogin_kind
     sku_size                     = var.function_fastlogin_sku_size
     maximum_elastic_worker_count = 0
-    worker_count                 = 1
+    worker_count                 = 2
     zone_balancing_enabled       = false
   }
 
@@ -131,6 +137,7 @@ module "function_fast_login" {
 
   allowed_subnets = [
     module.fast_login_snet[0].id,
+    data.azurerm_subnet.apim_v2_snet.id,
     data.azurerm_subnet.app_backend_l1_snet.id,
     data.azurerm_subnet.app_backend_l2_snet.id,
     data.azurerm_subnet.ioweb_profile_snet.id,
@@ -177,6 +184,7 @@ module "function_fast_login_staging_slot" {
   allowed_subnets = [
     module.fast_login_snet[0].id,
     data.azurerm_subnet.azdoa_snet[0].id,
+    data.azurerm_subnet.apim_v2_snet.id,
     data.azurerm_subnet.app_backend_l1_snet.id,
     data.azurerm_subnet.app_backend_l2_snet.id,
   ]

@@ -7,9 +7,7 @@ locals {
   function_app_messages = {
     app_settings_common = {
       FUNCTIONS_WORKER_RUNTIME       = "node"
-      WEBSITE_NODE_DEFAULT_VERSION   = "14.16.0"
       WEBSITE_RUN_FROM_PACKAGE       = "1"
-      WEBSITE_VNET_ROUTE_ALL         = "1"
       WEBSITE_DNS_SERVER             = "168.63.129.16"
       FUNCTIONS_WORKER_PROCESS_COUNT = 4
       NODE_ENV                       = "production"
@@ -18,6 +16,20 @@ locals {
       COSMOSDB_URI                 = data.azurerm_cosmosdb_account.cosmos_api.endpoint
       COSMOSDB_KEY                 = data.azurerm_cosmosdb_account.cosmos_api.primary_key
       COSMOS_API_CONNECTION_STRING = format("AccountEndpoint=%s;AccountKey=%s;", data.azurerm_cosmosdb_account.cosmos_api.endpoint, data.azurerm_cosmosdb_account.cosmos_api.primary_key)
+
+      // Remote Content CosmosDB
+      REMOTE_CONTENT_COSMOSDB_NAME = "remote-content"
+      REMOTE_CONTENT_COSMOSDB_URI  = data.azurerm_cosmosdb_account.cosmos_remote_content.endpoint
+      REMOTE_CONTENT_COSMOSDB_KEY  = data.azurerm_cosmosdb_account.cosmos_remote_content.primary_key
+
+      // Service to Remote Content configuration MAP
+      SERVICE_TO_RC_CONFIGURATION_MAP = jsonencode({
+        "${var.pn_service_id}"               = var.pn_remote_config_id,
+        "${var.io_sign_service_id}"          = var.io_sign_remote_config_id,
+        "${var.io_receipt_service_test_id}"  = var.io_receipt_remote_config_test_id,
+        "${var.io_receipt_service_id}"       = var.io_receipt_remote_config_id,
+        "${var.third_party_mock_service_id}" = var.third_party_mock_remote_config_id
+      })
 
       MESSAGE_CONTAINER_NAME = local.message_content_container_name
       QueueStorageConnection = module.storage_api.primary_connection_string
@@ -34,6 +46,9 @@ locals {
       REDIS_URL      = module.redis_messages_v6.hostname
       REDIS_PORT     = module.redis_messages_v6.ssl_port
       REDIS_PASSWORD = module.redis_messages_v6.primary_access_key
+
+      // CACHE TTLs
+      SERVICE_CACHE_TTL_DURATION = "28800" // 8 hours
 
       PN_SERVICE_ID = var.pn_service_id
 
@@ -56,7 +71,7 @@ locals {
 * [REDIS V6]
 */
 module "redis_messages_v6" {
-  source                = "git::https://github.com/pagopa/terraform-azurerm-v3.git//redis_cache?ref=v6.11.2"
+  source                = "git::https://github.com/pagopa/terraform-azurerm-v3.git//redis_cache?ref=v7.34.3"
   name                  = format("%s-redis-app-messages-std-v6", local.project)
   resource_group_name   = azurerm_resource_group.app_messages_common_rg.name
   location              = azurerm_resource_group.app_messages_common_rg.location
@@ -65,6 +80,7 @@ module "redis_messages_v6" {
   sku_name              = "Standard"
   redis_version         = "6"
   enable_authentication = true
+  zones                 = null
 
   // when azure can apply patch?
   patch_schedules = [{
@@ -106,6 +122,7 @@ resource "azurerm_resource_group" "app_messages_common_rg" {
 
   tags = var.tags
 }
+
 resource "azurerm_resource_group" "app_messages_rg" {
   count    = var.app_messages_count
   name     = format("%s-app-messages-rg-%d", local.project, count.index + 1)
@@ -117,7 +134,7 @@ resource "azurerm_resource_group" "app_messages_rg" {
 # Subnet to host app messages function
 module "app_messages_snet" {
   count                                     = var.app_messages_count
-  source                                    = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v4.1.15"
+  source                                    = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v7.34.3"
   name                                      = format("%s-app-messages-snet-%d", local.project, count.index + 1)
   address_prefixes                          = [var.cidr_subnet_appmessages[count.index]]
   resource_group_name                       = azurerm_resource_group.rg_common.name
@@ -142,7 +159,7 @@ module "app_messages_snet" {
 #tfsec:ignore:azure-storage-queue-services-logging-enabled:exp:2022-05-01 # already ignored, maybe a bug in tfsec
 module "app_messages_function" {
   count  = var.app_messages_count
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app?ref=v4.1.15"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app?ref=v7.34.3"
 
   resource_group_name = azurerm_resource_group.app_messages_rg[count.index].name
   name                = format("%s-app-messages-fn-%d", local.project, count.index + 1)
@@ -150,9 +167,8 @@ module "app_messages_function" {
   location            = var.location
   health_check_path   = "/api/v1/info"
 
-  os_type                                  = "linux"
   runtime_version                          = "~4"
-  linux_fx_version                         = "NODE|18"
+  node_version                             = "18"
   always_on                                = var.app_messages_function_always_on
   application_insights_instrumentation_key = azurerm_application_insights.application_insights.instrumentation_key
 
@@ -161,12 +177,14 @@ module "app_messages_function" {
     sku_tier                     = var.app_messages_function_sku_tier
     sku_size                     = var.app_messages_function_sku_size
     maximum_elastic_worker_count = 0
+    worker_count                 = null
+    zone_balancing_enabled       = false
   }
 
   storage_account_info = {
     account_kind                      = "StorageV2"
     account_tier                      = "Standard"
-    account_replication_type          = "LRS"
+    account_replication_type          = "GZRS"
     access_tier                       = "Hot"
     advanced_threat_protection_enable = true
   }
@@ -181,7 +199,6 @@ module "app_messages_function" {
     module.app_messages_snet[count.index].id,
     module.app_backendl1_snet.id,
     module.app_backendl2_snet.id,
-    module.apim_snet.id,
     module.apim_v2_snet.id,
   ]
 
@@ -198,17 +215,18 @@ module "app_messages_function" {
     }
   ]
 
+  client_certificate_mode = "Required"
+
   tags = var.tags
 }
 
 module "app_messages_function_staging_slot" {
   count  = var.app_messages_count
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app_slot?ref=v4.1.15"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app_slot?ref=v7.34.3"
 
   name                = "staging"
   location            = var.location
   resource_group_name = azurerm_resource_group.app_messages_rg[count.index].name
-  function_app_name   = module.app_messages_function[count.index].name
   function_app_id     = module.app_messages_function[count.index].id
   app_service_plan_id = module.app_messages_function[count.index].app_service_plan_id
   health_check_path   = "/api/v1/info"
@@ -218,7 +236,7 @@ module "app_messages_function_staging_slot" {
 
   os_type                                  = "linux"
   runtime_version                          = "~4"
-  linux_fx_version                         = "NODE|18"
+  node_version                             = "18"
   always_on                                = var.app_messages_function_always_on
   application_insights_instrumentation_key = azurerm_application_insights.application_insights.instrumentation_key
 

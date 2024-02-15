@@ -135,7 +135,6 @@ module "appservice_fims_plus" {
 
   allowed_subnets = [
     data.azurerm_subnet.appgateway_snet.id,
-    data.azurerm_subnet.apim_snet.id,
     data.azurerm_subnet.apim_v2_snet.id,
   ]
 
@@ -173,7 +172,6 @@ module "appservice_fims_plus_slot_staging" {
   allowed_subnets = [
     data.azurerm_subnet.azdoa_snet[0].id,
     data.azurerm_subnet.appgateway_snet.id,
-    data.azurerm_subnet.apim_snet.id,
     data.azurerm_subnet.apim_v2_snet.id,
   ]
 
@@ -382,13 +380,12 @@ module "appservice_fims" {
   always_on         = true
   linux_fx_version  = "NODE|18-lts"
   app_command_line  = local.fims.app_command_line
-  health_check_path = "/api/info"
+  health_check_path = "/info"
 
   app_settings = local.fims.app_settings_common
 
   allowed_subnets = [
     data.azurerm_subnet.appgateway_snet.id,
-    data.azurerm_subnet.apim_snet.id,
     data.azurerm_subnet.apim_v2_snet.id,
   ]
 
@@ -419,14 +416,13 @@ module "appservice_fims_slot_staging" {
   always_on         = true
   linux_fx_version  = "NODE|18-lts"
   app_command_line  = local.fims.app_command_line
-  health_check_path = "/api/info"
+  health_check_path = "/info"
 
   app_settings = local.fims.app_settings_common
 
   allowed_subnets = [
     data.azurerm_subnet.azdoa_snet[0].id,
     data.azurerm_subnet.appgateway_snet.id,
-    data.azurerm_subnet.apim_snet.id,
     data.azurerm_subnet.apim_v2_snet.id,
   ]
 

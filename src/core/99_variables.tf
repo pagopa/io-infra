@@ -230,12 +230,12 @@ variable "cidr_subnet_appgateway" {
 
 variable "cidr_subnet_apim" {
   type        = list(string)
-  description = "Api Management address space."
+  description = "Old Api Management address space."
 }
 
 variable "cidr_subnet_apim_v2" {
   type        = list(string)
-  description = "Api Management address space."
+  description = "Api Management V2 address space."
 }
 
 variable "cidr_subnet_vpn" {
@@ -433,6 +433,11 @@ variable "app_gateway_selfcare_io_pagopa_it_certificate_name" {
   description = "Application gateway selfcare-io certificate name on Key Vault"
 }
 
+variable "app_gateway_openid_provider_io_pagopa_it_certificate_name" {
+  type        = string
+  description = "Application gateway openid-provider certificate name on Key Vault"
+}
+
 variable "app_gateway_min_capacity" {
   type    = number
   default = 0
@@ -448,14 +453,15 @@ variable "app_gateway_alerts_enabled" {
   description = "Enable alerts"
   default     = true
 }
+
+variable "app_gateway_deny_paths" {
+  type        = list(string)
+  description = "Regex patterns to deny requests"
+}
 ##
 
 ## Apim
 variable "apim_publisher_name" {
-  type = string
-}
-
-variable "apim_sku" {
   type = string
 }
 
@@ -681,7 +687,7 @@ variable "selfcare_plan_sku_capacity" {
 variable "cgn_legalbackup_account_replication_type" {
   type        = string
   description = "Legal backup replication type"
-  default     = "GRS"
+  default     = "GZRS"
 }
 
 variable "cgn_legalbackup_enable_versioning" {
@@ -792,6 +798,11 @@ variable "function_services_autoscale_default" {
   type        = number
   description = "The number of instances that are available for scaling if metrics are not available for evaluation."
   default     = 1
+}
+
+variable "function_services_subscription_cidrs_max_thoughput" {
+  type    = number
+  default = 1000
 }
 
 
@@ -1004,6 +1015,13 @@ variable "pn_service_id" {
   description = "The Service ID of PN service"
   default     = "01G40DWQGKY5GRWSNM4303VNRP"
 }
+
+variable "pn_remote_config_id" {
+  type        = string
+  description = "The Remote Content Config ID of PN service"
+  default     = "01HMVMHCZZ8D0VTFWMRHBM5D6F"
+}
+
 # PN Test Endpoint
 variable "pn_test_endpoint" {
   type        = string
@@ -1017,11 +1035,38 @@ variable "io_sign_service_id" {
   default     = "01GQQZ9HF5GAPRVKJM1VDAVFHM"
 }
 
+variable "io_sign_remote_config_id" {
+  type        = string
+  description = "The Remote Content Config ID of io-sign service"
+  default     = "01HMVMDTHXCESMZ72NA701EKGQ"
+}
+
 # io-receipt service
 variable "io_receipt_service_id" {
   type        = string
   description = "The Service ID of io-receipt service"
-  default     = "01GQQZ9HF5GAPRVKJM1VDAVFHM"
+}
+
+variable "io_receipt_remote_config_id" {
+  type        = string
+  description = "The Remote Content Config ID of io-receipt service"
+  default     = "01HMVM9W74RWH93NT1EYNKKNNR"
+}
+
+variable "io_receipt_service_url" {
+  type        = string
+  description = "The endpoint of Receipt Service (prod env)"
+}
+
+variable "io_receipt_service_test_id" {
+  type        = string
+  description = "The Service ID of io-receipt service"
+}
+
+variable "io_receipt_remote_config_test_id" {
+  type        = string
+  description = "The Remote Content Config ID of io-receipt service"
+  default     = "01HMVMCDD3JFYTPKT4ZN4WQ73B"
 }
 
 variable "io_receipt_service_test_url" {
@@ -1163,6 +1208,12 @@ variable "third_party_mock_service_id" {
   type        = string
   description = "The Service ID of the Third Party Mock service"
   default     = "01GQQDPM127KFGG6T3660D5TXD"
+}
+
+variable "third_party_mock_remote_config_id" {
+  type        = string
+  description = "The Remote Content Config ID of the Third Party Mock service"
+  default     = "01HMVM4N4XFJ8VBR1FXYFZ9QFB"
 }
 
 # Citizen auth

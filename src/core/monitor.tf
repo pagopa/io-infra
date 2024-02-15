@@ -374,7 +374,7 @@ locals {
 
 module "web_test_api" {
   for_each = { for v in local.test_urls : v.name => v if v != null }
-  source   = "git::https://github.com/pagopa/terraform-azurerm-v3.git//application_insights_web_test_preview?ref=v7.0.0"
+  source   = "git::https://github.com/pagopa/terraform-azurerm-v3.git//application_insights_web_test_preview?ref=v7.28.0"
 
   subscription_id                   = data.azurerm_subscription.current.subscription_id
   name                              = format("%s-test", each.value.name)
@@ -414,7 +414,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "mailup_alert_rule" {
         | where target contains "send.mailup.com"
         | where success == false;
     dataset
-    
+
   QUERY
 
   severity    = 1
@@ -432,9 +432,4 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "mailup_alert_rule" {
   }
 
   tags = var.tags
-}
-
-import {
-  to = azurerm_monitor_scheduled_query_rules_alert.mailup_alert_rule
-  id = "/subscriptions/ec285037-c673-4f58-b594-d7c480da4e8b/resourceGroups/io-p-rg-common/providers/Microsoft.Insights/scheduledQueryRules/[SEND.MAILUP.COM] Many Failures"
 }

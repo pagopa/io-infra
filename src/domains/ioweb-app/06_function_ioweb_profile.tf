@@ -45,7 +45,7 @@ locals {
       // --------------
       // FF AND TESTERS
       // --------------
-      FF_API_ENABLED = "BETA"
+      FF_API_ENABLED = "ALL"
       BETA_TESTERS   = data.azurerm_key_vault_secret.api_beta_testers.value
 
       // ------------
@@ -58,8 +58,9 @@ locals {
       // 1 hour
       EXCHANGE_JWT_TTL                   = "3600"
       MAGIC_LINK_JWE_PRIMARY_PRIVATE_KEY = azurerm_key_vault_secret.magic_link_jwe_private_key.value
+      MAGIC_LINK_JWE_PRIMARY_PUB_KEY     = azurerm_key_vault_secret.magic_link_jwe_pub_key.value
       MAGIC_LINK_JWE_ISSUER              = local.function_JWT_issuer
-      MAGIC_LINK_BASE_URL                = "https://ioapp.it/blocco-accesso/magic-link"
+      MAGIC_LINK_BASE_URL                = "https://ioapp.it/it/blocco-accesso/magic-link/"
       // TBD: more/less than 1 week?
       MAGIC_LINK_JWE_TTL = "604800"
 
@@ -83,6 +84,12 @@ locals {
       // -------------------------
       HUB_SPID_LOGIN_API_KEY         = data.azurerm_key_vault_secret.spid_login_api_key.value
       HUB_SPID_LOGIN_CLIENT_BASE_URL = "https://io-p-weu-ioweb-spid-login.azurewebsites.net"
+
+      // -------------------------
+      // Audit Logs config
+      // -------------------------
+      AUDIT_LOG_CONNECTION_STRING = data.azurerm_storage_account.immutable_spid_logs_storage.primary_connection_string
+      AUDIT_LOG_CONTAINER         = data.azurerm_storage_container.immutable_audit_logs.name
     }
   }
 }
@@ -308,4 +315,84 @@ resource "azurerm_monitor_autoscale_setting" "function_ioweb_profile" {
       }
     }
   }
+}
+
+// ----------------------------------------------------
+// Alerts
+// ----------------------------------------------------
+resource "azurerm_monitor_scheduled_query_rules_alert_v2" "alert_too_much_invalid_codes_on_unlock" {
+  enabled                 = true
+  name                    = "[${upper(var.domain)} | ${module.function_ioweb_profile.name}] Unexpected number of invalid codes to unlock endpoint"
+  resource_group_name     = azurerm_resource_group.ioweb_profile_rg.name
+  scopes                  = [data.azurerm_application_gateway.app_gateway.id]
+  description             = "Too many invalid codes submitted to IO-WEB profile unlock functionality"
+  severity                = 1
+  auto_mitigation_enabled = false
+  location                = azurerm_resource_group.ioweb_profile_rg.location
+
+  // check once every minute(evaluation_frequency)
+  // on the last minute of data(window_duration)
+  evaluation_frequency = "PT1M"
+  window_duration      = "PT1M"
+
+  criteria {
+    query                   = <<-QUERY
+AzureDiagnostics
+| where requestUri_s == "/ioweb/backend/api/v1/unlock-session" and httpMethod_s == "POST"
+| where serverStatus_s == 403
+    QUERY
+    operator                = "GreaterThanOrEqual"
+    time_aggregation_method = "Count"
+    threshold               = 5
+    failing_periods {
+      minimum_failing_periods_to_trigger_alert = 1
+      number_of_evaluation_periods             = 1
+    }
+  }
+
+  # Action groups for alerts
+  action {
+    action_groups = [data.azurerm_monitor_action_group.error_action_group.id]
+  }
+
+  tags = var.tags
+}
+
+
+resource "azurerm_monitor_scheduled_query_rules_alert_v2" "alert_too_much_calls_on_unlock" {
+  enabled                 = true
+  name                    = "[${upper(var.domain)} | ${module.function_ioweb_profile.name}] Unexpected number of calls to unlock endpoint"
+  resource_group_name     = azurerm_resource_group.ioweb_profile_rg.name
+  scopes                  = [data.azurerm_application_gateway.app_gateway.id]
+  description             = "Too many calls submitted to IO-WEB profile unlock functionality"
+  severity                = 1
+  auto_mitigation_enabled = false
+  location                = azurerm_resource_group.ioweb_profile_rg.location
+
+  // check once every minute(evaluation_frequency)
+  // on the last minute of data(window_duration)
+  evaluation_frequency = "PT1M"
+  window_duration      = "PT1M"
+
+  criteria {
+    query                   = <<-QUERY
+AzureDiagnostics
+| where requestUri_s == "/ioweb/backend/api/v1/unlock-session" and httpMethod_s == "POST"
+| where serverStatus_s == 429
+    QUERY
+    operator                = "GreaterThanOrEqual"
+    time_aggregation_method = "Count"
+    threshold               = 1
+    failing_periods {
+      minimum_failing_periods_to_trigger_alert = 1
+      number_of_evaluation_periods             = 1
+    }
+  }
+
+  # Action groups for alerts
+  action {
+    action_groups = [data.azurerm_monitor_action_group.error_action_group.id]
+  }
+
+  tags = var.tags
 }

@@ -7,7 +7,6 @@ locals {
     app_settings_common = {
       FUNCTIONS_WORKER_RUNTIME       = "node"
       WEBSITE_RUN_FROM_PACKAGE       = "1"
-      WEBSITE_VNET_ROUTE_ALL         = "1"
       WEBSITE_DNS_SERVER             = "168.63.129.16"
       FUNCTIONS_WORKER_PROCESS_COUNT = 4
       NODE_ENV                       = "production"
@@ -19,6 +18,12 @@ locals {
       FETCH_KEEPALIVE_MAX_FREE_SOCKETS    = "10"
       FETCH_KEEPALIVE_FREE_SOCKET_TIMEOUT = "30000"
       FETCH_KEEPALIVE_TIMEOUT             = "60000"
+
+      # UNIQUE EMAIL ENFORCEMENT
+      FF_UNIQUE_EMAIL_ENFORCEMENT             = "ALL"
+      UNIQUE_EMAIL_ENFORCEMENT_USERS          = jsonencode(split(",", data.azurerm_key_vault_secret.app_backend_UNIQUE_EMAIL_ENFORCEMENT_USER.value))
+      PROFILE_EMAIL_STORAGE_CONNECTION_STRING = data.azurerm_storage_account.citizen_auth_common.primary_connection_string
+      PROFILE_EMAIL_STORAGE_TABLE_NAME        = "profileEmails"
 
       COSMOSDB_URI      = data.azurerm_cosmosdb_account.cosmos_api.endpoint
       COSMOSDB_KEY      = data.azurerm_cosmosdb_account.cosmos_api.primary_key
@@ -32,7 +37,7 @@ locals {
 
 #tfsec:ignore:azure-storage-queue-services-logging-enabled:exp:2022-05-01 # already ignored, maybe a bug in tfsec
 module "function_public" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app?ref=v4.1.15"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app?ref=v7.34.3"
 
   resource_group_name = azurerm_resource_group.shared_rg.name
   name                = format("%s-public-fn", local.project)
@@ -41,9 +46,8 @@ module "function_public" {
   domain              = "PROFILE"
   health_check_path   = "/info"
 
-  os_type          = "linux"
-  linux_fx_version = "NODE|18"
-  runtime_version  = "~4"
+  node_version    = "18"
+  runtime_version = "~4"
 
   always_on                                = "true"
   application_insights_instrumentation_key = azurerm_application_insights.application_insights.instrumentation_key
@@ -67,7 +71,6 @@ module "function_public" {
 
   allowed_subnets = [
     module.shared_1_snet.id,
-    module.apim_snet.id,
     module.apim_v2_snet.id,
   ]
 
@@ -83,12 +86,11 @@ module "function_public" {
 }
 
 module "function_public_staging_slot" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app_slot?ref=v4.1.15"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app_slot?ref=v7.34.3"
 
   name                = "staging"
   location            = var.location
   resource_group_name = azurerm_resource_group.shared_rg.name
-  function_app_name   = module.function_public.name
   function_app_id     = module.function_public.id
   app_service_plan_id = azurerm_app_service_plan.shared_1_plan.id
   health_check_path   = "/info"
@@ -96,8 +98,7 @@ module "function_public_staging_slot" {
   storage_account_name       = module.function_public.storage_account.name
   storage_account_access_key = module.function_public.storage_account.primary_access_key
 
-  os_type                                  = "linux"
-  linux_fx_version                         = "NODE|18"
+  node_version                             = "18"
   always_on                                = "true"
   runtime_version                          = "~4"
   application_insights_instrumentation_key = azurerm_application_insights.application_insights.instrumentation_key
@@ -111,7 +112,6 @@ module "function_public_staging_slot" {
   allowed_subnets = [
     module.shared_1_snet.id,
     module.azdoa_snet[0].id,
-    module.apim_snet.id,
     module.apim_v2_snet.id,
   ]
 

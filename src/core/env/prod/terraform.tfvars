@@ -58,8 +58,6 @@ cidr_subnet_selfcare_be                    = ["10.0.137.0/24"]
 cidr_subnet_devportalservicedata_db_server = ["10.0.138.0/24"]
 cidr_subnet_services                       = ["10.0.139.0/26", "10.0.139.64/26"]
 # new push notif is related to messages domain ###############
-cidr_subnet_push_notif        = ["10.0.140.0/26"]
-cidr_subnet_prod01_push_notif = ["10.0.141.0/26"]
 ##############################################################
 cidr_subnet_appbackendl1 = ["10.0.152.0/24"]
 cidr_subnet_appbackendl2 = ["10.0.153.0/24"]
@@ -83,9 +81,11 @@ app_gateway_api_io_selfcare_pagopa_it_certificate_name            = "api-io-self
 app_gateway_firmaconio_selfcare_pagopa_it_certificate_name        = "firmaconio-selfcare-pagopa-it"
 app_gateway_continua_io_pagopa_it_certificate_name                = "continua-io-pagopa-it"
 app_gateway_selfcare_io_pagopa_it_certificate_name                = "selfcare-io-pagopa-it"
+app_gateway_openid_provider_io_pagopa_it_certificate_name         = "openid-provider-io-pagopa-it"
 app_gateway_min_capacity                                          = 4 # 4 capacity=baseline, 10 capacity=high volume event, 15 capacity=very high volume event
 app_gateway_max_capacity                                          = 50
 app_gateway_alerts_enabled                                        = true
+app_gateway_deny_paths                                            = ["\\/admin\\/(.*)"]
 
 ## REDIS COMMON ##
 redis_common = {
@@ -102,7 +102,6 @@ redis_common = {
 
 # apim
 apim_publisher_name = "IO"
-apim_sku            = "Premium_1"
 apim_v2_sku         = "Premium_2"
 apim_autoscale = {
   enabled                       = true
@@ -222,7 +221,7 @@ function_services_autoscale_default = 10
 function_app_async_kind              = "Linux"
 function_app_async_sku_tier          = "PremiumV3"
 function_app_async_sku_size          = "P1v3"
-function_app_async_autoscale_minimum = 1
+function_app_async_autoscale_minimum = 2 # 2 instance to achieve redundancy and failover
 function_app_async_autoscale_maximum = 30
 function_app_async_autoscale_default = 10
 
@@ -465,7 +464,9 @@ pn_service_id = "01G40DWQGKY5GRWSNM4303VNRP"
 pn_test_endpoint = "https://api-io.uat.notifichedigitali.it"
 
 # RECEIPT SERVICE
-io_receipt_service_id       = "01H4ZJ62C1CPGJ0PX8Q1BP7FAB"
+io_receipt_service_id       = "01HD63674XJ1R6XCNHH24PCRR2"
+io_receipt_service_url      = "https://api.platform.pagopa.it/receipts/service/v1"
+io_receipt_service_test_id  = "01H4ZJ62C1CPGJ0PX8Q1BP7FAB"
 io_receipt_service_test_url = "https://api.uat.platform.pagopa.it/receipts/service/v1"
 
 # TP Mock Service Id

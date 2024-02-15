@@ -2,11 +2,8 @@ locals {
   function_subscriptionmigrations = {
     app_settings_commons = {
       FUNCTIONS_WORKER_RUNTIME       = "node"
-      WEBSITE_NODE_DEFAULT_VERSION   = "14.16.0"
       FUNCTIONS_WORKER_PROCESS_COUNT = 4
       NODE_ENV                       = "production"
-
-      APPINSIGHTS_INSTRUMENTATIONKEY = azurerm_application_insights.application_insights.instrumentation_key
 
       // Keepalive fields are all optionals
       FETCH_KEEPALIVE_ENABLED             = "true"
@@ -47,8 +44,7 @@ locals {
       QUEUE_ALL_SUBSCRIPTIONS_TO_MIGRATE = "migrate-all-subscriptions-jobs" // when a migration is requested for all subscriptions
       QUEUE_SUBSCRIPTION_TO_MIGRATE      = "migrate-one-subscription-jobs"  // when a subscription is requested to migrate its ownership
 
-      WEBSITE_VNET_ROUTE_ALL = "1"
-      WEBSITE_DNS_SERVER     = "168.63.129.16"
+      WEBSITE_DNS_SERVER = "168.63.129.16"
     }
 
     // As we run this application under SelfCare IO logic subdomain,
@@ -140,7 +136,7 @@ locals {
 
 #tfsec:ignore:azure-storage-queue-services-logging-enabled:exp:2022-05-01 # already ignored, maybe a bug in tfsec
 module "function_subscriptionmigrations" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app?ref=v4.1.15"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app?ref=v7.34.3"
 
   name                = format("%s-%s-fn", local.project, local.function_subscriptionmigrations.app_context.name)
   location            = local.function_subscriptionmigrations.app_context.resource_group.location
@@ -165,20 +161,20 @@ module "function_subscriptionmigrations" {
   }
 
   runtime_version   = "~3"
-  os_type           = "linux"
   health_check_path = "/api/v1/info"
-  linux_fx_version  = "NODE|14"
+  node_version      = "14"
 
   subnet_id   = local.function_subscriptionmigrations.app_context.snet.id
   allowed_ips = local.app_insights_ips_west_europe
   allowed_subnets = [
     module.selfcare_be_common_snet.id,
+    data.azurerm_subnet.services_cms_backoffice_snet.id
   ]
 
   storage_account_info = {
     account_kind                      = "StorageV2"
     account_tier                      = "Standard"
-    account_replication_type          = "LRS"
+    account_replication_type          = "GZRS"
     access_tier                       = "Hot"
     advanced_threat_protection_enable = true
   }
@@ -191,17 +187,22 @@ module "function_subscriptionmigrations" {
     "AzureWebJobs.ChangeAllSubscriptionsOwnership.Disabled" = "0"
   })
 
+  sticky_app_setting_names = [
+    "AzureWebJobs.ChangeAllSubscriptionsOwnership.Disabled",
+    "AzureWebJobs.ChangeOneSubscriptionOwnership.Disabled",
+    "AzureWebJobs.OnServiceChange.Disabled",
+    "AzureWebJobs.UpsertSubscriptionToMigrate.Disabled"
+  ]
+
   tags = var.tags
 }
 
-
 module "function_subscriptionmigrations_staging_slot" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app_slot?ref=v4.1.15"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app_slot?ref=v7.34.3"
 
   name                = "staging"
   location            = local.function_subscriptionmigrations.app_context.resource_group.location
   resource_group_name = local.function_subscriptionmigrations.app_context.resource_group.name
-  function_app_name   = module.function_subscriptionmigrations.name
   function_app_id     = module.function_subscriptionmigrations.id
   app_service_plan_id = local.function_subscriptionmigrations.app_context.app_service_plan.id
 
@@ -212,9 +213,8 @@ module "function_subscriptionmigrations_staging_slot" {
   internal_storage_connection_string = module.function_subscriptionmigrations.storage_account_internal_function.primary_connection_string
 
   runtime_version   = "~3"
-  os_type           = "linux"
   health_check_path = "/api/v1/info"
-  linux_fx_version  = "NODE|14"
+  node_version      = "14"
   always_on         = "true"
 
   subnet_id = local.function_subscriptionmigrations.app_context.snet.id
@@ -245,6 +245,7 @@ data "azurerm_key_vault_secret" "subscriptionmigrations_db_server_adm_username" 
   name         = "selfcare-subsmigrations-DB-ADM-USERNAME"
   key_vault_id = module.key_vault_common.id
 }
+
 data "azurerm_key_vault_secret" "subscriptionmigrations_db_server_adm_password" {
   name         = "selfcare-subsmigrations-DB-ADM-PASSWORD"
   key_vault_id = module.key_vault_common.id
@@ -255,9 +256,8 @@ data "azurerm_key_vault_secret" "subscriptionmigrations_db_server_fnsubsmigratio
   key_vault_id = module.key_vault_common.id
 }
 
-
 module "subscriptionmigrations_db_server" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//postgresql_server?ref=v4.1.15"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//postgresql_server?ref=v7.28.0"
 
   name                = local.function_subscriptionmigrations.db.name
   location            = var.location

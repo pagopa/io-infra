@@ -1,5 +1,5 @@
 data "azurerm_key_vault_secret" "first_lollipop_consumer_subscription_key" {
-  name         = "first-lollipop-consumer-pagopa-subscription-key"
+  name         = "first-lollipop-consumer-pagopa-subscription-key-v2"
   key_vault_id = data.azurerm_key_vault.kv.id
 }
 
@@ -124,7 +124,6 @@ module "function_lollipop" {
 
   allowed_subnets = [
     module.lollipop_snet[0].id,
-    data.azurerm_subnet.apim_snet.id,
     data.azurerm_subnet.apim_v2_snet.id,
     data.azurerm_subnet.app_backend_l1_snet.id,
     data.azurerm_subnet.app_backend_l2_snet.id,
@@ -171,7 +170,6 @@ module "function_lollipop_staging_slot" {
   allowed_subnets = [
     module.lollipop_snet[0].id,
     data.azurerm_subnet.azdoa_snet[0].id,
-    data.azurerm_subnet.apim_snet.id,
     data.azurerm_subnet.apim_v2_snet.id,
     data.azurerm_subnet.app_backend_l1_snet.id,
     data.azurerm_subnet.app_backend_l2_snet.id,

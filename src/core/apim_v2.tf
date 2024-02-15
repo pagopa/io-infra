@@ -1,6 +1,21 @@
+data "azurerm_key_vault_secret" "apim_publisher_email" {
+  name         = "apim-publisher-email"
+  key_vault_id = module.key_vault.id
+}
+
+data "azurerm_key_vault_certificate" "api_internal_io_italia_it" {
+  name         = replace(local.apim_hostname_api_internal, ".", "-")
+  key_vault_id = module.key_vault_common.id
+}
+
+data "azurerm_key_vault_certificate" "api_app_internal_io_pagopa_it" {
+  name         = replace(local.apim_hostname_api_app_internal, ".", "-")
+  key_vault_id = module.key_vault.id
+}
+
 # APIM subnet
 module "apim_v2_snet" {
-  source               = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v4.1.15"
+  source               = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v7.28.0"
   name                 = "apimv2api"
   resource_group_name  = azurerm_resource_group.rg_common.name
   virtual_network_name = module.vnet_common.name
@@ -55,7 +70,7 @@ resource "azurerm_public_ip" "public_ip_apim" {
 # ## Api Management (apim) ##
 # ###########################
 module "apim_v2" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management?ref=v6.16.0"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management?ref=v7.28.0"
 
   subnet_id                 = module.apim_v2_snet.id
   location                  = azurerm_resource_group.rg_internal.location

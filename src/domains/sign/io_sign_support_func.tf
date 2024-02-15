@@ -14,7 +14,7 @@ locals {
 }
 
 module "io_sign_support_func" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app?ref=v6.2.1"
+  source = "github.com/pagopa/terraform-azurerm-v3.git//function_app?ref=v7.46.0"
 
   name                = format("%s-support-func", local.project)
   location            = azurerm_resource_group.backend_rg.location
@@ -33,6 +33,8 @@ module "io_sign_support_func" {
     sku_tier                     = var.io_sign_support_func.sku_tier
     sku_size                     = var.io_sign_support_func.sku_size
     maximum_elastic_worker_count = 0
+    worker_count                 = 1
+    zone_balancing_enabled       = false
   }
 
   app_settings = local.io_sign_support_func.app_settings
@@ -40,7 +42,6 @@ module "io_sign_support_func" {
   subnet_id = module.io_sign_support_snet.id
   allowed_subnets = [
     module.io_sign_support_snet.id,
-    data.azurerm_subnet.apim.id,
     data.azurerm_subnet.apim_v2.id,
   ]
 
@@ -52,7 +53,7 @@ module "io_sign_support_func" {
 
 module "io_sign_support_func_staging_slot" {
   count  = var.io_sign_support_func.sku_tier == "PremiumV3" ? 1 : 0
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app_slot?ref=v6.2.1"
+  source = "github.com/pagopa/terraform-azurerm-v3.git//function_app_slot?ref=v7.46.0"
 
   name                = "staging"
   location            = azurerm_resource_group.backend_rg.location
@@ -76,7 +77,6 @@ module "io_sign_support_func_staging_slot" {
   subnet_id = module.io_sign_support_snet.id
   allowed_subnets = [
     module.io_sign_support_snet.id,
-    data.azurerm_subnet.apim.id,
     data.azurerm_subnet.apim_v2.id,
   ]
 

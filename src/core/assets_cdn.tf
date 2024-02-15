@@ -6,18 +6,19 @@ resource "azurerm_resource_group" "assets_cdn_rg" {
 }
 
 module "assets_cdn" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//storage_account?ref=v4.1.15"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//storage_account?ref=v7.28.0"
 
   name                            = replace(format("%s-stcdnassets", local.project), "-", "")
   account_kind                    = "StorageV2"
   account_tier                    = "Standard"
   access_tier                     = "Hot"
   blob_versioning_enabled         = true
-  account_replication_type        = "GRS"
+  account_replication_type        = "GZRS"
   resource_group_name             = azurerm_resource_group.rg_common.name
   location                        = azurerm_resource_group.rg_common.location
   advanced_threat_protection      = false
   allow_nested_items_to_be_public = true
+  public_network_access_enabled   = true
 
   index_document     = "index.html"
   error_404_document = "index.html"

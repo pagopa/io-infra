@@ -12,7 +12,7 @@ resource "azurerm_public_ip" "appgateway_public_ip" {
 
 # Subnet to host the application gateway
 module "appgateway_snet" {
-  source                                    = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v4.1.15"
+  source                                    = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v7.28.0"
   name                                      = format("%s-appgateway-snet", local.project)
   address_prefixes                          = var.cidr_subnet_appgateway
   resource_group_name                       = azurerm_resource_group.rg_common.name
@@ -26,11 +26,12 @@ module "appgateway_snet" {
 
 ## Application gateway ##
 module "app_gw" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//app_gateway?ref=v4.1.15"
+  source = "github.com/pagopa/terraform-azurerm-v3.git//app_gateway?ref=v7.46.0"
 
   resource_group_name = azurerm_resource_group.rg_external.name
   location            = azurerm_resource_group.rg_external.location
   name                = format("%s-appgateway", local.project)
+  zones               = [1, 2, 3]
 
   # SKU
   sku_name = "WAF_v2"
@@ -139,7 +140,6 @@ module "app_gw" {
       request_timeout             = 10
       pick_host_name_from_backend = true
     }
-
   }
 
   ssl_profiles = [{
@@ -369,6 +369,23 @@ module "app_gw" {
         )
       }
     }
+
+    openid-provider-io-pagopa-it = {
+      protocol           = "Https"
+      host               = format("openid-provider.%s.%s", var.dns_zone_io, var.external_domain)
+      port               = 443
+      ssl_profile_name   = null
+      firewall_policy_id = null
+
+      certificate = {
+        name = var.app_gateway_openid_provider_io_pagopa_it_certificate_name
+        id = replace(
+          data.azurerm_key_vault_certificate.app_gw_openid_provider_io.secret_id,
+          "/${data.azurerm_key_vault_certificate.app_gw_openid_provider_io.version}",
+          ""
+        )
+      }
+    }
   }
 
   # maps listener to backend
@@ -451,6 +468,12 @@ module "app_gw" {
       priority              = 110
     }
 
+    openid-provider-io-pagopa-it = {
+      listener              = "openid-provider-io-pagopa-it"
+      backend               = "apim"
+      rewrite_rule_set_name = "rewrite-rule-set-openid-provider-io"
+      priority              = 120
+    }
   }
 
   rewrite_rule_sets = [
@@ -648,13 +671,68 @@ module "app_gw" {
         response_header_configurations = []
       }]
     },
+    {
+      name = "rewrite-rule-set-openid-provider-io"
+      rewrite_rules = [
+        {
+          name          = "http-headers-api-openid-provider"
+          rule_sequence = 100
+          conditions    = []
+          url           = null
+          request_header_configurations = [
+            {
+              header_name  = "X-Forwarded-For"
+              header_value = "{var_client_ip}"
+            },
+            {
+              header_name  = "X-Forwarded-Host"
+              header_value = "{var_host}"
+            },
+            {
+              header_name  = "X-Client-Ip"
+              header_value = "{var_client_ip}"
+            }
+          ]
+          response_header_configurations = []
+        },
+        {
+          name          = "url-rewrite-openid-provider-private"
+          rule_sequence = 200
+          conditions = [
+            {
+              ignore_case = true
+              pattern     = join("|", var.app_gateway_deny_paths)
+              negate      = false
+              variable    = "var_uri_path"
+          }]
+          url = {
+            path         = "notfound"
+            query_string = null
+          }
+          request_header_configurations  = []
+          response_header_configurations = []
+        },
+        {
+          name          = "url-rewrite-openid-provider-public"
+          rule_sequence = 201
+          conditions    = []
+          url = {
+            path         = "fims/{var_uri_path}"
+            query_string = null
+          }
+          request_header_configurations  = []
+          response_header_configurations = []
+        }
+      ]
+    }
   ]
 
   # TLS
   identity_ids = [azurerm_user_assigned_identity.appgateway.id]
 
   # Scaling
-  app_gateway_min_capacity = var.app_gateway_min_capacity
+  # app_gateway_min_capacity = var.app_gateway_min_capacity
+  app_gateway_min_capacity = "10"
   app_gateway_max_capacity = var.app_gateway_max_capacity
 
   alerts_enabled = var.app_gateway_alerts_enabled
@@ -692,7 +770,7 @@ module "app_gw" {
     }
 
     backend_pools_status = {
-      description   = "One or more backend pools are down, check Backend Health on Azure portal"
+      description   = "One or more backend pools are down, check Backend Health on Azure portal. Runbook https://pagopa.atlassian.net/wiki/spaces/IC/pages/914161665/Application+Gateway+-+Backend+Status"
       frequency     = "PT5M"
       window_size   = "PT5M"
       severity      = 0
@@ -893,6 +971,11 @@ data "azurerm_key_vault_certificate" "app_gw_continua" {
 
 data "azurerm_key_vault_certificate" "app_gw_selfcare_io" {
   name         = var.app_gateway_selfcare_io_pagopa_it_certificate_name
+  key_vault_id = module.key_vault.id
+}
+
+data "azurerm_key_vault_certificate" "app_gw_openid_provider_io" {
+  name         = var.app_gateway_openid_provider_io_pagopa_it_certificate_name
   key_vault_id = module.key_vault.id
 }
 
