@@ -209,42 +209,6 @@ module "apim_v2_io_backend_auth_api_v1" {
 
   xml_content = file("./api/io_backend/auth/v1/_base_policy.xml")
 }
-##
-
-## BONUS
-resource "azurerm_api_management_api_version_set" "io_backend_bonus_api_v2" {
-  name                = format("%s-io-backend-bonus-api", var.env_short)
-  resource_group_name = module.apim_v2.resource_group_name
-  api_management_name = module.apim_v2.name
-  display_name        = "${local.apim_v2_io_backend_api.display_name} - bonus"
-  versioning_scheme   = "Segment"
-}
-
-module "apim_v2_io_backend_bonus_api_v1" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api?ref=v7.28.0"
-
-  name                  = format("%s-io-backend-bonus-api", var.env_short)
-  api_management_name   = module.apim_v2.name
-  resource_group_name   = module.apim_v2.resource_group_name
-  product_ids           = [module.apim_v2_io_backend_product.product_id]
-  subscription_required = local.apim_v2_io_backend_api.subscription_required
-  version_set_id        = azurerm_api_management_api_version_set.io_backend_bonus_api_v2.id
-  api_version           = "v1"
-  service_url           = local.apim_v2_io_backend_api.service_url
-
-  description  = "${local.apim_v2_io_backend_api.description} - bonus"
-  display_name = "${local.apim_v2_io_backend_api.display_name} - bonus"
-  path         = "${local.apim_v2_io_backend_api.path}/bonus"
-  protocols    = ["https"]
-
-  content_format = "swagger-json"
-  content_value = templatefile("./api/io_backend/bonus/v1/_swagger.json.tpl", {
-    host = local.apim_hostname_api_app_internal # api-app.internal.io.pagopa.it
-  })
-
-  xml_content = file("./api/io_backend/bonus/v1/_base_policy.xml")
-}
-##
 
 ## CGN
 resource "azurerm_api_management_api_version_set" "io_backend_cgn_api_v2" {

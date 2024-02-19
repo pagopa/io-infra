@@ -54,8 +54,6 @@ locals {
 
       // FUNCTIONS
       API_KEY                     = data.azurerm_key_vault_secret.app_backend_API_KEY.value
-      BONUS_API_URL               = "http://${data.azurerm_function_app.fnapp_bonus.default_hostname}/api/v1"
-      BONUS_API_KEY               = data.azurerm_key_vault_secret.app_backend_BONUS_API_KEY.value
       CGN_API_URL                 = "https://${module.function_cgn.default_hostname}"
       CGN_API_KEY                 = data.azurerm_key_vault_secret.app_backend_CGN_API_KEY.value
       IO_SIGN_API_URL             = "https://io-p-sign-user-func.azurewebsites.net"
@@ -70,10 +68,8 @@ locals {
       FAST_LOGIN_API_URL          = "https://io-p-weu-fast-login-fn.azurewebsites.net"
       FAST_LOGIN_API_KEY          = data.azurerm_key_vault_secret.app_backend_FAST_LOGIN_API_KEY.value
 
-
       // EXPOSED API
       API_BASE_PATH                     = "/api/v1"
-      BONUS_API_BASE_PATH               = "/api/v1"
       CGN_API_BASE_PATH                 = "/api/v1/cgn"
       CGN_OPERATOR_SEARCH_API_BASE_PATH = "/api/v1/cgn/operator-search"
       EUCOVIDCERT_API_BASE_PATH         = "/api/v1/eucovidcert"
@@ -319,6 +315,14 @@ locals {
 
       // CLOCK SKEW LOG EVENT
       HAS_CLOCK_SKEW_LOG_EVENT = "false"
+
+      // DEPRECATED APP SETTINGS
+      // The following variables must be removed after a update
+      // of the io-backend configuration, because they are required to start
+      // the application.
+      BONUS_API_BASE_PATH = "/api/v1"
+      BONUS_API_URL       = "to-remove"
+      BONUS_API_KEY       = "to-remove"
     }
     app_settings_l1 = {
       IS_APPBACKENDLI = "false"
@@ -389,11 +393,6 @@ data "azurerm_key_vault_secret" "app_backend_SAML_KEY" {
 
 data "azurerm_key_vault_secret" "app_backend_API_KEY" {
   name         = "funcapp-KEY-APPBACKEND"
-  key_vault_id = module.key_vault_common.id
-}
-
-data "azurerm_key_vault_secret" "app_backend_BONUS_API_KEY" {
-  name         = "funcbonus-KEY-APPBACKEND"
   key_vault_id = module.key_vault_common.id
 }
 

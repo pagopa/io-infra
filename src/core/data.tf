@@ -30,15 +30,6 @@ data "azurerm_cosmosdb_account" "cosmos_cgn" {
 }
 
 #
-# Bonus vacanze resources
-#
-
-data "azurerm_function_app" "fnapp_bonus" {
-  name                = format("%s-func-bonus", local.project)
-  resource_group_name = format("%s-rg-internal", local.project)
-}
-
-#
 # Logs resources
 #
 
