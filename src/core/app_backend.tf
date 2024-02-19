@@ -54,8 +54,6 @@ locals {
 
       // FUNCTIONS
       API_KEY                     = data.azurerm_key_vault_secret.app_backend_API_KEY.value
-      BONUS_API_URL               = "http://${data.azurerm_function_app.fnapp_bonus.default_hostname}/api/v1"
-      BONUS_API_KEY               = data.azurerm_key_vault_secret.app_backend_BONUS_API_KEY.value
       CGN_API_URL                 = "https://${module.function_cgn.default_hostname}"
       CGN_API_KEY                 = data.azurerm_key_vault_secret.app_backend_CGN_API_KEY.value
       IO_SIGN_API_URL             = "https://io-p-sign-user-func.azurewebsites.net"
@@ -389,11 +387,6 @@ data "azurerm_key_vault_secret" "app_backend_SAML_KEY" {
 
 data "azurerm_key_vault_secret" "app_backend_API_KEY" {
   name         = "funcapp-KEY-APPBACKEND"
-  key_vault_id = module.key_vault_common.id
-}
-
-data "azurerm_key_vault_secret" "app_backend_BONUS_API_KEY" {
-  name         = "funcbonus-KEY-APPBACKEND"
   key_vault_id = module.key_vault_common.id
 }
 
