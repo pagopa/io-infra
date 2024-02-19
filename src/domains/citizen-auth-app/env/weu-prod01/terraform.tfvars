@@ -65,7 +65,6 @@ function_fastlogin_autoscale_default = 10
 
 # FIMS App Service
 cidr_subnet_fims       = ["10.0.18.0/26"]
-cidr_subnet_fims_plus  = ["10.0.18.64/26"]
 fims_plan_sku_tier     = "PremiumV3"
 fims_plan_sku_size     = "P1v3"
 fims_autoscale_minimum = 1
