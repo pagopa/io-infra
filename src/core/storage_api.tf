@@ -9,6 +9,7 @@ module "storage_api" {
   resource_group_name              = azurerm_resource_group.rg_internal.name
   location                         = azurerm_resource_group.rg_internal.location
   advanced_threat_protection       = true
+  use_legacy_defender_version      = false
   allow_nested_items_to_be_public  = false
   cross_tenant_replication_enabled = true
   public_network_access_enabled    = true
