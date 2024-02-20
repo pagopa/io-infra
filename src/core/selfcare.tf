@@ -22,7 +22,7 @@ resource "azurerm_resource_group" "selfcare_fe_rg" {
 ### Frontend resources
 #tfsec:ignore:azure-storage-queue-services-logging-enabled:exp:2022-05-01 # already ignored, maybe a bug in tfsec
 module "selfcare_cdn" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//cdn?ref=v7.28.0"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//cdn?ref=v7.61.0"
 
   name                  = "selfcare"
   prefix                = local.project
@@ -70,6 +70,8 @@ module "selfcare_cdn" {
     ]
   }
 
+  log_analytics_workspace_id = azurerm_log_analytics_workspace.log_analytics_workspace.id
+
   tags = var.tags
 }
 
@@ -116,7 +118,7 @@ data "azurerm_key_vault_secret" "selfcare_subsmigrations_apikey" {
 # JWT
 #tfsec:ignore:azure-keyvault-ensure-secret-expiry:exp:2022-05-01 # already ignored, maybe a bug in tfsec
 module "selfcare_jwt" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//jwt_keys?ref=v7.28.0"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//jwt_keys?ref=v7.61.0"
 
   jwt_name         = "selfcare-jwt"
   key_vault_id     = module.key_vault_common.id
@@ -139,7 +141,7 @@ resource "azurerm_service_plan" "selfcare_be_common" {
 
 # Subnet to host checkout function
 module "selfcare_be_common_snet" {
-  source                                    = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v7.28.0"
+  source                                    = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v7.61.0"
   name                                      = format("%s-selfcare-be-common-snet", local.project)
   address_prefixes                          = var.cidr_subnet_selfcare_be
   resource_group_name                       = azurerm_resource_group.rg_common.name
@@ -171,7 +173,7 @@ resource "azurerm_app_service_virtual_network_swift_connection" "selfcare_be" {
 #tfsec:ignore:azure-appservice-authentication-enabled:exp:2022-05-01 # already ignored, maybe a bug in tfsec
 #tfsec:ignore:azure-appservice-require-client-cert:exp:2022-05-01 # already ignored, maybe a bug in tfsec
 module "appservice_selfcare_be" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//app_service?ref=v7.28.0"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//app_service?ref=v7.61.0"
 
   name                = format("%s-app-selfcare-be", local.project)
   resource_group_name = azurerm_resource_group.selfcare_be_rg.name

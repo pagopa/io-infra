@@ -12,7 +12,7 @@ resource "azurerm_public_ip" "appgateway_public_ip" {
 
 # Subnet to host the application gateway
 module "appgateway_snet" {
-  source                                    = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v7.28.0"
+  source                                    = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v7.61.0"
   name                                      = format("%s-appgateway-snet", local.project)
   address_prefixes                          = var.cidr_subnet_appgateway
   resource_group_name                       = azurerm_resource_group.rg_common.name
@@ -26,7 +26,7 @@ module "appgateway_snet" {
 
 ## Application gateway ##
 module "app_gw" {
-  source = "github.com/pagopa/terraform-azurerm-v3.git//app_gateway?ref=v7.46.0"
+  source = "github.com/pagopa/terraform-azurerm-v3.git//app_gateway?ref=v7.61.0"
 
   resource_group_name = azurerm_resource_group.rg_external.name
   location            = azurerm_resource_group.rg_external.location
