@@ -734,9 +734,11 @@ resource "azurerm_monitor_autoscale_setting" "appservice_app_backendl1" {
 
     capacity {
       default = var.app_backend_autoscale_default
-      minimum = 2 # var.app_backend_autoscale_minimum
+      minimum = var.app_backend_autoscale_minimum
       maximum = var.app_backend_autoscale_maximum
     }
+
+    # Increase rules
 
     rule {
       metric_trigger {
@@ -770,7 +772,7 @@ resource "azurerm_monitor_autoscale_setting" "appservice_app_backendl1" {
         time_window              = "PT5M"
         time_aggregation         = "Average"
         operator                 = "GreaterThan"
-        threshold                = 50
+        threshold                = 40
         divide_by_instance_count = false
       }
 
@@ -782,6 +784,8 @@ resource "azurerm_monitor_autoscale_setting" "appservice_app_backendl1" {
       }
     }
 
+    # Decrease rules
+
     rule {
       metric_trigger {
         metric_name              = "Requests"
@@ -792,7 +796,7 @@ resource "azurerm_monitor_autoscale_setting" "appservice_app_backendl1" {
         time_window              = "PT5M"
         time_aggregation         = "Average"
         operator                 = "LessThan"
-        threshold                = 1000
+        threshold                = 1500
         divide_by_instance_count = false
       }
 
@@ -814,7 +818,7 @@ resource "azurerm_monitor_autoscale_setting" "appservice_app_backendl1" {
         time_window              = "PT5M"
         time_aggregation         = "Average"
         operator                 = "LessThan"
-        threshold                = 10
+        threshold                = 15
         divide_by_instance_count = false
       }
 
@@ -953,6 +957,9 @@ resource "azurerm_monitor_autoscale_setting" "appservice_app_backendl2" {
       maximum = var.app_backend_autoscale_maximum
     }
 
+
+    # Increase rules
+
     rule {
       metric_trigger {
         metric_name              = "Requests"
@@ -985,7 +992,7 @@ resource "azurerm_monitor_autoscale_setting" "appservice_app_backendl2" {
         time_window              = "PT5M"
         time_aggregation         = "Average"
         operator                 = "GreaterThan"
-        threshold                = 50
+        threshold                = 40
         divide_by_instance_count = false
       }
 
@@ -997,6 +1004,8 @@ resource "azurerm_monitor_autoscale_setting" "appservice_app_backendl2" {
       }
     }
 
+    # Decrease rules
+
     rule {
       metric_trigger {
         metric_name              = "Requests"
@@ -1007,7 +1016,7 @@ resource "azurerm_monitor_autoscale_setting" "appservice_app_backendl2" {
         time_window              = "PT5M"
         time_aggregation         = "Average"
         operator                 = "LessThan"
-        threshold                = 1000
+        threshold                = 1500
         divide_by_instance_count = false
       }
 
@@ -1029,7 +1038,7 @@ resource "azurerm_monitor_autoscale_setting" "appservice_app_backendl2" {
         time_window              = "PT5M"
         time_aggregation         = "Average"
         operator                 = "LessThan"
-        threshold                = 10
+        threshold                = 15
         divide_by_instance_count = false
       }
 
@@ -1169,6 +1178,8 @@ resource "azurerm_monitor_autoscale_setting" "appservice_app_backendli" {
       maximum = var.app_backend_autoscale_maximum
     }
 
+    # Increase rules
+
     rule {
       metric_trigger {
         metric_name              = "Requests"
@@ -1193,6 +1204,30 @@ resource "azurerm_monitor_autoscale_setting" "appservice_app_backendli" {
 
     rule {
       metric_trigger {
+        metric_name              = "CpuPercentage"
+        metric_resource_id       = module.appservice_app_backendli.plan_id
+        metric_namespace         = "microsoft.web/serverfarms"
+        time_grain               = "PT1M"
+        statistic                = "Average"
+        time_window              = "PT5M"
+        time_aggregation         = "Average"
+        operator                 = "GreaterThan"
+        threshold                = 40
+        divide_by_instance_count = false
+      }
+
+      scale_action {
+        direction = "Increase"
+        type      = "ChangeCount"
+        value     = "2"
+        cooldown  = "PT5M"
+      }
+    }
+
+    # Decrease rules
+
+    rule {
+      metric_trigger {
         metric_name              = "Requests"
         metric_resource_id       = module.appservice_app_backendli.id
         metric_namespace         = "microsoft.web/sites"
@@ -1201,7 +1236,29 @@ resource "azurerm_monitor_autoscale_setting" "appservice_app_backendli" {
         time_window              = "PT5M"
         time_aggregation         = "Average"
         operator                 = "LessThan"
-        threshold                = 1000
+        threshold                = 1500
+        divide_by_instance_count = false
+      }
+
+      scale_action {
+        direction = "Decrease"
+        type      = "ChangeCount"
+        value     = "1"
+        cooldown  = "PT1H"
+      }
+    }
+
+    rule {
+      metric_trigger {
+        metric_name              = "CpuPercentage"
+        metric_resource_id       = module.appservice_app_backendli.plan_id
+        metric_namespace         = "microsoft.web/serverfarms"
+        time_grain               = "PT1M"
+        statistic                = "Average"
+        time_window              = "PT5M"
+        time_aggregation         = "Average"
+        operator                 = "LessThan"
+        threshold                = 15
         divide_by_instance_count = false
       }
 

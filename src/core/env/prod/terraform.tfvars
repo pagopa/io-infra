@@ -260,7 +260,7 @@ app_messages_function_autoscale_maximum = 15
 app_messages_function_autoscale_default = 10
 
 app_backend_autoscale_default = 10
-app_backend_autoscale_minimum = 1
+app_backend_autoscale_minimum = 2
 app_backend_autoscale_maximum = 30
 
 # Function Messages CQRS

@@ -642,7 +642,7 @@ variable "app_backend_plan_sku_size" {
 variable "app_backend_autoscale_minimum" {
   type        = number
   description = "The minimum number of instances for this resource."
-  default     = 1
+  default     = 2
 }
 
 variable "app_backend_autoscale_maximum" {
