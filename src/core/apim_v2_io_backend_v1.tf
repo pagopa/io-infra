@@ -3,7 +3,7 @@
 ##############
 
 module "apim_v2_io_backend_product" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_product?ref=v7.28.0"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_product?ref=v7.61.0"
 
   product_id   = "io-backend"
   display_name = "IO BACKEND"
@@ -40,7 +40,7 @@ resource "azurerm_api_management_api_version_set" "io_backend_bpd_api_v2" {
 }
 
 module "apim_v2_io_backend_bpd_api_v1" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api?ref=v7.28.0"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api?ref=v7.61.0"
 
   name                  = format("%s-io-backend-bpd-api", var.env_short)
   api_management_name   = module.apim_v2.name
@@ -75,7 +75,7 @@ resource "azurerm_api_management_api_version_set" "io_backend_myportal_api_v2" {
 }
 
 module "apim_v2_io_backend_myportal_api_v1" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api?ref=v7.28.0"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api?ref=v7.61.0"
 
   name                  = format("%s-io-backend-myportal-api", var.env_short)
   api_management_name   = module.apim_v2.name
@@ -110,7 +110,7 @@ resource "azurerm_api_management_api_version_set" "io_backend_pagopa_api_v2" {
 }
 
 module "apim_v2_io_backend_pagopa_api_v1" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api?ref=v7.28.0"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api?ref=v7.61.0"
 
   name                  = format("%s-io-backend-pagopa-api", var.env_short)
   api_management_name   = module.apim_v2.name
@@ -145,7 +145,7 @@ resource "azurerm_api_management_api_version_set" "io_backend_app_api_v2" {
 }
 
 module "apim_v2_io_backend_app_api_v1" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api?ref=v7.28.0"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api?ref=v7.61.0"
 
   name                  = format("%s-io-backend-app-api", var.env_short)
   api_management_name   = module.apim_v2.name
@@ -186,7 +186,7 @@ resource "azurerm_api_management_api_version_set" "io_backend_auth_api_v2" {
 }
 
 module "apim_v2_io_backend_auth_api_v1" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api?ref=v7.28.0"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api?ref=v7.61.0"
 
   name                  = format("%s-io-backend-auth-api", var.env_short)
   api_management_name   = module.apim_v2.name
@@ -220,7 +220,7 @@ resource "azurerm_api_management_api_version_set" "io_backend_cgn_api_v2" {
 }
 
 module "apim_v2_io_backend_cgn_api_v1" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api?ref=v7.28.0"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api?ref=v7.61.0"
 
   name                  = format("%s-io-backend-cgn-api", var.env_short)
   api_management_name   = module.apim_v2.name
@@ -255,7 +255,7 @@ resource "azurerm_api_management_api_version_set" "io_backend_eucovidcert_api_v2
 }
 
 module "apim_v2_io_backend_eucovidcert_api_v1" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api?ref=v7.28.0"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api?ref=v7.61.0"
 
   name                  = format("%s-io-backend-eucovidcert-api", var.env_short)
   api_management_name   = module.apim_v2.name
@@ -290,7 +290,7 @@ resource "azurerm_api_management_api_version_set" "io_backend_mitvoucher_api_v2"
 }
 
 module "apim_v2_io_backend_mitvoucher_api_v1" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api?ref=v7.28.0"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api?ref=v7.61.0"
 
   name                  = format("%s-io-backend-mitvoucher-api", var.env_short)
   api_management_name   = module.apim_v2.name
@@ -325,7 +325,7 @@ resource "azurerm_api_management_api_version_set" "io_backend_notifications_api_
 }
 
 module "apim_v2_io_backend_notifications_api_v1" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api?ref=v7.28.0"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api?ref=v7.61.0"
 
   name                  = format("%s-io-backend-notifications-api", var.env_short)
   api_management_name   = module.apim_v2.name
@@ -360,7 +360,7 @@ resource "azurerm_api_management_api_version_set" "io_backend_public_api_v2" {
 }
 
 module "apim_v2_io_backend_public_api_v1" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api?ref=v7.28.0"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api?ref=v7.61.0"
 
   name                  = format("%s-io-backend-public-api", var.env_short)
   api_management_name   = module.apim_v2.name
@@ -395,7 +395,7 @@ resource "azurerm_api_management_api_version_set" "io_backend_session_api_v2" {
 }
 
 module "apim_v2_io_backend_session_api_v1" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api?ref=v7.28.0"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api?ref=v7.61.0"
 
   name                  = format("%s-io-backend-session-api", var.env_short)
   api_management_name   = module.apim_v2.name

@@ -1,5 +1,5 @@
 module "redis_common_snet" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v7.28.0"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v7.61.0"
 
   name                                      = "rediscommon"
   address_prefixes                          = var.cidr_subnet_redis_common
@@ -9,7 +9,7 @@ module "redis_common_snet" {
 }
 
 module "redis_common_backup_zrs" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//storage_account?ref=v7.28.0"
+  source = "github.com/pagopa/terraform-azurerm-v3//storage_account?ref=v7.61.0"
 
   name                            = replace(format("%s-stredisbackup", local.project), "-", "")
   account_kind                    = "StorageV2"
@@ -19,6 +19,7 @@ module "redis_common_backup_zrs" {
   resource_group_name             = azurerm_resource_group.rg_common.name
   location                        = azurerm_resource_group.rg_common.location
   advanced_threat_protection      = true
+  use_legacy_defender_version     = false
   allow_nested_items_to_be_public = false
   public_network_access_enabled   = true
 
@@ -26,7 +27,7 @@ module "redis_common_backup_zrs" {
 }
 
 module "redis_common" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//redis_cache?ref=v7.28.0"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//redis_cache?ref=v7.61.0"
 
   name                          = format("%s-redis-common", local.project)
   resource_group_name           = azurerm_resource_group.rg_common.name

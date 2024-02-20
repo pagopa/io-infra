@@ -136,7 +136,7 @@ locals {
 
 #tfsec:ignore:azure-storage-queue-services-logging-enabled:exp:2022-05-01 # already ignored, maybe a bug in tfsec
 module "function_subscriptionmigrations" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app?ref=v7.34.3"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app?ref=v7.61.0"
 
   name                = format("%s-%s-fn", local.project, local.function_subscriptionmigrations.app_context.name)
   location            = local.function_subscriptionmigrations.app_context.resource_group.location
@@ -198,7 +198,7 @@ module "function_subscriptionmigrations" {
 }
 
 module "function_subscriptionmigrations_staging_slot" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app_slot?ref=v7.34.3"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app_slot?ref=v7.61.0"
 
   name                = "staging"
   location            = local.function_subscriptionmigrations.app_context.resource_group.location
@@ -257,7 +257,7 @@ data "azurerm_key_vault_secret" "subscriptionmigrations_db_server_fnsubsmigratio
 }
 
 module "subscriptionmigrations_db_server" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//postgresql_server?ref=v7.28.0"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//postgresql_server?ref=v7.61.0"
 
   name                = local.function_subscriptionmigrations.db.name
   location            = var.location

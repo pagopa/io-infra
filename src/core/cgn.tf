@@ -9,7 +9,7 @@ data "azurerm_storage_account" "iopstcgn" {
 
 ## redis cgn subnet
 module "redis_cgn_snet" {
-  source                                    = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v7.28.0"
+  source                                    = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v7.61.0"
   name                                      = format("%s-redis-cgn-snet", local.project)
   address_prefixes                          = ["10.0.14.0/25"]
   resource_group_name                       = azurerm_resource_group.rg_common.name
@@ -18,7 +18,7 @@ module "redis_cgn_snet" {
 }
 
 module "redis_cgn" {
-  source                = "git::https://github.com/pagopa/terraform-azurerm-v3.git//redis_cache?ref=v7.28.0"
+  source                = "git::https://github.com/pagopa/terraform-azurerm-v3.git//redis_cache?ref=v7.61.0"
   name                  = format("%s-redis-cgn-std", local.project)
   resource_group_name   = data.azurerm_resource_group.rg_cgn.name
   location              = data.azurerm_resource_group.rg_cgn.location
@@ -67,7 +67,7 @@ module "redis_cgn" {
 ##################
 
 module "cosmos_cgn" {
-  source   = "git::https://github.com/pagopa/terraform-azurerm-v3.git//cosmosdb_account?ref=v7.28.0"
+  source   = "git::https://github.com/pagopa/terraform-azurerm-v3.git//cosmosdb_account?ref=v7.61.0"
   name     = format("%s-cosmos-cgn", local.project)
   location = var.location
   domain   = "CGN"
@@ -105,10 +105,11 @@ module "cosmos_cgn" {
   ip_range = ""
 
   # private endpoint
-  private_endpoint_sql_name = format("%s-cosmos-cgn-sql-endpoint", local.project)
-  private_endpoint_enabled  = true
-  subnet_id                 = module.private_endpoints_subnet.id
-  private_dns_zone_sql_ids  = [azurerm_private_dns_zone.privatelink_documents.id]
+  private_endpoint_sql_name           = format("%s-cosmos-cgn-sql-endpoint", local.project)
+  private_endpoint_enabled            = true
+  private_service_connection_sql_name = format("%s-cosmos-cgn-sql-endpoint", local.project)
+  subnet_id                           = module.private_endpoints_subnet.id
+  private_dns_zone_sql_ids            = [azurerm_private_dns_zone.privatelink_documents.id]
 
   tags = var.tags
 
@@ -116,7 +117,7 @@ module "cosmos_cgn" {
 
 ## Database
 module "cgn_cosmos_db" {
-  source              = "git::https://github.com/pagopa/terraform-azurerm-v3.git//cosmosdb_sql_database?ref=v7.28.0"
+  source              = "git::https://github.com/pagopa/terraform-azurerm-v3.git//cosmosdb_sql_database?ref=v7.61.0"
   name                = "db"
   resource_group_name = data.azurerm_resource_group.rg_cgn.name
   account_name        = module.cosmos_cgn.name
@@ -143,7 +144,7 @@ locals {
 }
 
 module "cgn_cosmosdb_containers" {
-  source   = "git::https://github.com/pagopa/terraform-azurerm-v3.git//cosmosdb_sql_container?ref=v7.28.0"
+  source   = "git::https://github.com/pagopa/terraform-azurerm-v3.git//cosmosdb_sql_container?ref=v7.61.0"
   for_each = { for c in local.cgn_cosmosdb_containers : c.name => c }
 
   name                = each.value.name
@@ -161,7 +162,7 @@ module "cgn_cosmosdb_containers" {
 #tfsec:ignore:azure-storage-default-action-deny
 #tfsec:ignore:azure-storage-queue-services-logging-enabled:exp:2022-05-01 # already ignored, maybe a bug in tfsec
 module "cgn_legalbackup_storage" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//storage_account?ref=v7.28.0"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//storage_account?ref=v7.61.0"
 
   name                            = replace(format("%s-cgn-legalbackup-storage", local.project), "-", "")
   account_kind                    = "StorageV2"
@@ -272,7 +273,7 @@ resource "azurerm_app_service_plan" "cgn_common" {
 
 # Subnet to host app function
 module "cgn_snet" {
-  source                                    = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v7.28.0"
+  source                                    = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v7.61.0"
   name                                      = format("%s-cgn-snet", local.project)
   address_prefixes                          = var.cidr_subnet_cgn
   resource_group_name                       = azurerm_resource_group.rg_common.name

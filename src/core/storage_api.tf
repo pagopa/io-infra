@@ -1,5 +1,5 @@
 module "storage_api" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//storage_account?ref=v7.28.0"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//storage_account?ref=v7.61.0"
 
   name                             = replace("${local.project}stapi", "-", "")
   account_kind                     = "StorageV2"
@@ -55,7 +55,7 @@ resource "azurerm_storage_table" "storage_api_validationtokens" {
 
 # Storage replica
 module "storage_api_replica" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//storage_account?ref=v7.28.0"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//storage_account?ref=v7.61.0"
 
   name                             = replace("${local.project}stapireplica", "-", "")
   account_kind                     = "StorageV2"
@@ -87,7 +87,7 @@ module "storage_api_replica" {
 }
 
 module "storage_api_object_replication_to_replica" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//storage_object_replication?ref=v7.28.0"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//storage_object_replication?ref=v7.61.0"
 
   source_storage_account_id      = module.storage_api.id
   destination_storage_account_id = module.storage_api_replica.id

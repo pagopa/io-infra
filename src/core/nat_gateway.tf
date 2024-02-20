@@ -6,7 +6,7 @@
 # }
 
 module "nat_gateway" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//nat_gateway?ref=v7.28.0"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//nat_gateway?ref=v7.61.0"
 
   name                = "${local.project}-natgw"
   location            = azurerm_resource_group.rg_common.location
