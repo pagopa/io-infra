@@ -460,6 +460,7 @@ eventhubs = [
 
 # PN Service Id
 pn_service_id = "01G40DWQGKY5GRWSNM4303VNRP"
+
 # PN Test Endpoint
 pn_test_endpoint = "https://api-io.uat.notifichedigitali.it"
 
