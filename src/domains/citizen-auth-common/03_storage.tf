@@ -6,7 +6,7 @@ locals {
 # LolliPoP Assertion Storage
 ###
 module "lollipop_assertions_storage" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3//storage_account?ref=v6.1.0"
+  source = "github.com/pagopa/terraform-azurerm-v3//storage_account?ref=v7.62.0"
 
   name                          = replace(format("%s-lollipop-assertions-st", local.product), "-", "") # `lollipop-assertions-st` is used in src/core/99_variables.tf#citizen_auth_assertion_storage_name
   domain                        = upper(var.domain)
@@ -24,7 +24,7 @@ module "lollipop_assertions_storage" {
 }
 
 module "lollipop_assertions_storage_customer_managed_key" {
-  source               = "git::https://github.com/pagopa/terraform-azurerm-v3//storage_account_customer_managed_key?ref=v4.3.1"
+  source               = "git::https://github.com/pagopa/terraform-azurerm-v3//storage_account_customer_managed_key?ref=v7.62.0"
   tenant_id            = data.azurerm_subscription.current.tenant_id
   location             = var.location
   resource_group_name  = azurerm_resource_group.data_rg.name
@@ -93,7 +93,7 @@ resource "azurerm_storage_queue" "lollipop_assertions_storage_revoke_queue" {
 # Immutable LV Audit Log Storage
 ###
 module "immutable_lv_audit_logs_storage" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3//storage_account?ref=v7.32.1"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3//storage_account?ref=v7.62.0"
 
   name                          = replace(format("%s-lv-logs-im-st", local.product), "-", "")
   domain                        = upper(var.domain)
@@ -123,7 +123,7 @@ module "immutable_lv_audit_logs_storage" {
 }
 
 module "immutable_lv_audit_logs_storage_customer_managed_key" {
-  source               = "git::https://github.com/pagopa/terraform-azurerm-v3//storage_account_customer_managed_key?ref=v7.32.1"
+  source               = "git::https://github.com/pagopa/terraform-azurerm-v3//storage_account_customer_managed_key?ref=v7.62.0"
   tenant_id            = data.azurerm_subscription.current.tenant_id
   location             = var.location
   resource_group_name  = azurerm_resource_group.data_rg.name
@@ -199,7 +199,7 @@ resource "azurerm_storage_management_policy" "immutable_lv_audit_logs_storage_ma
 # Citizen Auth Storage
 ###
 module "io_citizen_auth_storage" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3//storage_account?ref=v6.1.0"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3//storage_account?ref=v7.62.0"
 
   name                          = replace(format("%s-st", local.project), "-", "")
   domain                        = upper(var.domain)

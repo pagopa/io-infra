@@ -49,7 +49,7 @@ data "azurerm_private_dns_zone" "privatelink_table_core" {
 
 ## Redis Common subnet
 module "redis_common_snet" {
-  source               = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v7.14.0"
+  source               = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v7.62.0"
   name                 = format("%s-redis-snet", local.project)
   address_prefixes     = var.cidr_subnet_redis_common
   resource_group_name  = local.vnet_common_resource_group_name
