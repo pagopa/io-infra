@@ -118,7 +118,7 @@ resource "azurerm_monitor_metric_alert" "cosmosdb_account_normalized_RU_consumpt
 
   # Action groups for alerts
   action {
-    action_group_id = data.azurerm_monitor_action_group.quarantine_error_action_group.id
+    action_group_id = data.azurerm_monitor_action_group.error_action_group.id
   }
 
   tags = var.tags
