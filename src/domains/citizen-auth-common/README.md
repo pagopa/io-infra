@@ -5,33 +5,33 @@
 | Name | Version |
 |------|---------|
 | <a name="requirement_azuread"></a> [azuread](#requirement\_azuread) | <= 2.33.0 |
-| <a name="requirement_azurerm"></a> [azurerm](#requirement\_azurerm) | <= 3.40.0 |
+| <a name="requirement_azurerm"></a> [azurerm](#requirement\_azurerm) | <= 3.92.0 |
 | <a name="requirement_null"></a> [null](#requirement\_null) | <= 3.2.1 |
 
 ## Modules
 
 | Name | Source | Version |
 |------|--------|---------|
-| <a name="module_api_fims_admin"></a> [api\_fims\_admin](#module\_api\_fims\_admin) | github.com/pagopa/terraform-azurerm-v3.git//api_management_api | v4.1.15 |
-| <a name="module_api_fims_public"></a> [api\_fims\_public](#module\_api\_fims\_public) | github.com/pagopa/terraform-azurerm-v3.git//api_management_api | v4.1.15 |
-| <a name="module_apim_product_fims_admin"></a> [apim\_product\_fims\_admin](#module\_apim\_product\_fims\_admin) | github.com/pagopa/terraform-azurerm-v3.git//api_management_product | v4.1.15 |
-| <a name="module_apim_product_fims_public"></a> [apim\_product\_fims\_public](#module\_apim\_product\_fims\_public) | github.com/pagopa/terraform-azurerm-v3.git//api_management_product | v4.1.15 |
-| <a name="module_apim_v2_fast_login_operation_api_v1"></a> [apim\_v2\_fast\_login\_operation\_api\_v1](#module\_apim\_v2\_fast\_login\_operation\_api\_v1) | git::https://github.com/pagopa/terraform-azurerm-v3//api_management_api | v7.47.0 |
-| <a name="module_apim_v2_lollipop_api_v1"></a> [apim\_v2\_lollipop\_api\_v1](#module\_apim\_v2\_lollipop\_api\_v1) | git::https://github.com/pagopa/terraform-azurerm-v3//api_management_api | v4.1.5 |
-| <a name="module_apim_v2_product_fast_login_operation"></a> [apim\_v2\_product\_fast\_login\_operation](#module\_apim\_v2\_product\_fast\_login\_operation) | git::https://github.com/pagopa/terraform-azurerm-v3//api_management_product | v7.47.0 |
-| <a name="module_apim_v2_product_lollipop"></a> [apim\_v2\_product\_lollipop](#module\_apim\_v2\_product\_lollipop) | git::https://github.com/pagopa/terraform-azurerm-v3//api_management_product | v4.1.5 |
-| <a name="module_cosmosdb_account"></a> [cosmosdb\_account](#module\_cosmosdb\_account) | git::https://github.com/pagopa/terraform-azurerm-v3//cosmosdb_account | v4.3.1 |
-| <a name="module_cosmosdb_account_fims"></a> [cosmosdb\_account\_fims](#module\_cosmosdb\_account\_fims) | git::https://github.com/pagopa/terraform-azurerm-v3//cosmosdb_account | v4.3.1 |
-| <a name="module_cosmosdb_sql_database_citizen_auth"></a> [cosmosdb\_sql\_database\_citizen\_auth](#module\_cosmosdb\_sql\_database\_citizen\_auth) | git::https://github.com/pagopa/terraform-azurerm-v3//cosmosdb_sql_database | v4.3.1 |
-| <a name="module_cosmosdb_sql_database_fims"></a> [cosmosdb\_sql\_database\_fims](#module\_cosmosdb\_sql\_database\_fims) | git::https://github.com/pagopa/terraform-azurerm-v3//cosmosdb_sql_database | v4.3.1 |
-| <a name="module_immutable_lv_audit_logs_storage"></a> [immutable\_lv\_audit\_logs\_storage](#module\_immutable\_lv\_audit\_logs\_storage) | git::https://github.com/pagopa/terraform-azurerm-v3//storage_account | v7.32.1 |
-| <a name="module_immutable_lv_audit_logs_storage_customer_managed_key"></a> [immutable\_lv\_audit\_logs\_storage\_customer\_managed\_key](#module\_immutable\_lv\_audit\_logs\_storage\_customer\_managed\_key) | git::https://github.com/pagopa/terraform-azurerm-v3//storage_account_customer_managed_key | v7.32.1 |
-| <a name="module_io_citizen_auth_storage"></a> [io\_citizen\_auth\_storage](#module\_io\_citizen\_auth\_storage) | git::https://github.com/pagopa/terraform-azurerm-v3//storage_account | v6.1.0 |
-| <a name="module_key_vault"></a> [key\_vault](#module\_key\_vault) | git::https://github.com/pagopa/terraform-azurerm-v3.git//key_vault | v4.1.3 |
-| <a name="module_lollipop_assertions_storage"></a> [lollipop\_assertions\_storage](#module\_lollipop\_assertions\_storage) | git::https://github.com/pagopa/terraform-azurerm-v3//storage_account | v6.1.0 |
-| <a name="module_lollipop_assertions_storage_customer_managed_key"></a> [lollipop\_assertions\_storage\_customer\_managed\_key](#module\_lollipop\_assertions\_storage\_customer\_managed\_key) | git::https://github.com/pagopa/terraform-azurerm-v3//storage_account_customer_managed_key | v4.3.1 |
-| <a name="module_redis_common"></a> [redis\_common](#module\_redis\_common) | git::https://github.com/pagopa/terraform-azurerm-v3.git//redis_cache | v7.14.0 |
-| <a name="module_redis_common_snet"></a> [redis\_common\_snet](#module\_redis\_common\_snet) | git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet | v7.14.0 |
+| <a name="module_api_fims_admin"></a> [api\_fims\_admin](#module\_api\_fims\_admin) | github.com/pagopa/terraform-azurerm-v3.git//api_management_api | v7.62.0 |
+| <a name="module_api_fims_public"></a> [api\_fims\_public](#module\_api\_fims\_public) | github.com/pagopa/terraform-azurerm-v3.git//api_management_api | v7.62.0 |
+| <a name="module_apim_product_fims_admin"></a> [apim\_product\_fims\_admin](#module\_apim\_product\_fims\_admin) | github.com/pagopa/terraform-azurerm-v3.git//api_management_product | v7.62.0 |
+| <a name="module_apim_product_fims_public"></a> [apim\_product\_fims\_public](#module\_apim\_product\_fims\_public) | github.com/pagopa/terraform-azurerm-v3.git//api_management_product | v7.62.0 |
+| <a name="module_apim_v2_fast_login_operation_api_v1"></a> [apim\_v2\_fast\_login\_operation\_api\_v1](#module\_apim\_v2\_fast\_login\_operation\_api\_v1) | git::https://github.com/pagopa/terraform-azurerm-v3//api_management_api | v7.62.0 |
+| <a name="module_apim_v2_lollipop_api_v1"></a> [apim\_v2\_lollipop\_api\_v1](#module\_apim\_v2\_lollipop\_api\_v1) | git::https://github.com/pagopa/terraform-azurerm-v3//api_management_api | v7.62.0 |
+| <a name="module_apim_v2_product_fast_login_operation"></a> [apim\_v2\_product\_fast\_login\_operation](#module\_apim\_v2\_product\_fast\_login\_operation) | git::https://github.com/pagopa/terraform-azurerm-v3//api_management_product | v7.62.0 |
+| <a name="module_apim_v2_product_lollipop"></a> [apim\_v2\_product\_lollipop](#module\_apim\_v2\_product\_lollipop) | git::https://github.com/pagopa/terraform-azurerm-v3//api_management_product | v7.62.0 |
+| <a name="module_cosmosdb_account"></a> [cosmosdb\_account](#module\_cosmosdb\_account) | git::https://github.com/pagopa/terraform-azurerm-v3//cosmosdb_account | v7.62.0 |
+| <a name="module_cosmosdb_account_fims"></a> [cosmosdb\_account\_fims](#module\_cosmosdb\_account\_fims) | git::https://github.com/pagopa/terraform-azurerm-v3//cosmosdb_account | v7.62.0 |
+| <a name="module_cosmosdb_sql_database_citizen_auth"></a> [cosmosdb\_sql\_database\_citizen\_auth](#module\_cosmosdb\_sql\_database\_citizen\_auth) | git::https://github.com/pagopa/terraform-azurerm-v3//cosmosdb_sql_database | v7.62.0 |
+| <a name="module_cosmosdb_sql_database_fims"></a> [cosmosdb\_sql\_database\_fims](#module\_cosmosdb\_sql\_database\_fims) | git::https://github.com/pagopa/terraform-azurerm-v3//cosmosdb_sql_database | v7.62.0 |
+| <a name="module_immutable_lv_audit_logs_storage"></a> [immutable\_lv\_audit\_logs\_storage](#module\_immutable\_lv\_audit\_logs\_storage) | git::https://github.com/pagopa/terraform-azurerm-v3//storage_account | v7.62.0 |
+| <a name="module_immutable_lv_audit_logs_storage_customer_managed_key"></a> [immutable\_lv\_audit\_logs\_storage\_customer\_managed\_key](#module\_immutable\_lv\_audit\_logs\_storage\_customer\_managed\_key) | git::https://github.com/pagopa/terraform-azurerm-v3//storage_account_customer_managed_key | v7.62.0 |
+| <a name="module_io_citizen_auth_storage"></a> [io\_citizen\_auth\_storage](#module\_io\_citizen\_auth\_storage) | git::https://github.com/pagopa/terraform-azurerm-v3//storage_account | v7.62.0 |
+| <a name="module_key_vault"></a> [key\_vault](#module\_key\_vault) | git::https://github.com/pagopa/terraform-azurerm-v3.git//key_vault | v7.62.0 |
+| <a name="module_lollipop_assertions_storage"></a> [lollipop\_assertions\_storage](#module\_lollipop\_assertions\_storage) | github.com/pagopa/terraform-azurerm-v3//storage_account | v7.62.0 |
+| <a name="module_lollipop_assertions_storage_customer_managed_key"></a> [lollipop\_assertions\_storage\_customer\_managed\_key](#module\_lollipop\_assertions\_storage\_customer\_managed\_key) | git::https://github.com/pagopa/terraform-azurerm-v3//storage_account_customer_managed_key | v7.62.0 |
+| <a name="module_redis_common"></a> [redis\_common](#module\_redis\_common) | git::https://github.com/pagopa/terraform-azurerm-v3.git//redis_cache | v7.62.0 |
+| <a name="module_redis_common_snet"></a> [redis\_common\_snet](#module\_redis\_common\_snet) | git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet | v7.62.0 |
 
 ## Resources
 

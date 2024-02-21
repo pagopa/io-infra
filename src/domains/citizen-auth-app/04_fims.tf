@@ -10,11 +10,6 @@ data "azurerm_cosmosdb_account" "cosmos_fims" {
   resource_group_name = "io-p-citizen-auth-data-rg"
 }
 
-data "azurerm_key_vault_secret" "mongodb_connection_string_fims" {
-  name         = "io-p-fims-mongodb-account-connection-string"
-  key_vault_id = data.azurerm_key_vault.kv.id
-}
-
 data "azurerm_key_vault_secret" "jwk_primary_key_fims" {
   name         = "io-p-fims-jwk-primary-key"
   key_vault_id = data.azurerm_key_vault.kv.id
@@ -58,7 +53,6 @@ locals {
       APPLICATION_NAME                = "io-openid-provider"
       IO_BACKEND_BASE_URL             = "https://api-app.io.pagopa.it"
       VERSION                         = "0.0.1"
-      MONGODB_URL                     = data.azurerm_key_vault_secret.mongodb_connection_string_fims.value
       COSMOSDB_NAME                   = "fims"
       COSMOSDB_URI                    = data.azurerm_cosmosdb_account.cosmos_fims.endpoint
       COSMOSDB_KEY                    = data.azurerm_cosmosdb_account.cosmos_fims.primary_key
