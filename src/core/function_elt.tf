@@ -168,6 +168,7 @@ module "function_elt" {
     account_replication_type          = "GZRS"
     access_tier                       = "Hot"
     advanced_threat_protection_enable = true
+    use_legacy_defender_version       = false
   }
 
   internal_storage = {
