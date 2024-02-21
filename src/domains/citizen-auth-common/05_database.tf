@@ -142,9 +142,9 @@ module "cosmosdb_account_fims" {
   private_endpoint_enabled            = true
   private_service_connection_sql_name = "${local.product}-citizen-auth-fims-account-private-endpoint"
   private_endpoint_sql_name           = "${local.product}-citizen-auth-fims-account"
-  private_dns_zone_sql_ids          = [data.azurerm_private_dns_zone.privatelink_documents_azure_com.id]
-  subnet_id                         = data.azurerm_subnet.private_endpoints_subnet.id
-  is_virtual_network_filter_enabled = false
+  private_dns_zone_sql_ids            = [data.azurerm_private_dns_zone.privatelink_documents_azure_com.id]
+  subnet_id                           = data.azurerm_subnet.private_endpoints_subnet.id
+  is_virtual_network_filter_enabled   = false
 
   main_geo_location_location       = azurerm_resource_group.data_rg.location
   main_geo_location_zone_redundant = true
