@@ -183,6 +183,9 @@ locals {
       // Service ID PN
       PN_SERVICE_ID = var.pn_service_id
 
+      // Remote content configuration id of PN
+      PN_CONFIGURATION_ID = var.pn_remote_config_id
+
       // Service ID IO-SIGN
       IO_SIGN_SERVICE_ID = var.io_sign_service_id
 

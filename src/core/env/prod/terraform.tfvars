@@ -460,6 +460,10 @@ eventhubs = [
 
 # PN Service Id
 pn_service_id = "01G40DWQGKY5GRWSNM4303VNRP"
+
+# PN Remote Content Configuration Id
+pn_remote_config_id = "01HMVMHCZZ8D0VTFWMRHBM5D6F"
+
 # PN Test Endpoint
 pn_test_endpoint = "https://api-io.uat.notifichedigitali.it"
 
