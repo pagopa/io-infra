@@ -18,6 +18,7 @@ module "cosmosdb_account" {
 
   public_network_access_enabled     = false
   private_endpoint_enabled          = true
+  private_endpoint_sql_name         = "${local.product}-citizen-auth-account"
   private_dns_zone_sql_ids          = [data.azurerm_private_dns_zone.privatelink_documents_azure_com.id]
   subnet_id                         = data.azurerm_subnet.private_endpoints_subnet.id
   is_virtual_network_filter_enabled = false
