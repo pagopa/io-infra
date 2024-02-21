@@ -17,6 +17,7 @@ module "lollipop_assertions_storage" {
   resource_group_name           = azurerm_resource_group.data_rg.name
   location                      = var.location
   advanced_threat_protection    = true
+  use_legacy_defender_version   = false
   enable_identity               = true
   public_network_access_enabled = false
 
