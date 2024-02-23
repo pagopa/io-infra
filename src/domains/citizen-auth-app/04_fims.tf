@@ -63,6 +63,7 @@ locals {
       COOKIES_KEY                     = data.azurerm_key_vault_secret.cookies_key_fims.value
       ENABLE_FEATURE_REMEMBER_GRANT   = "true",
       APPINSIGHTS_SAMPLING_PERCENTAGE = 100,
+      DEFAULT_REQUEST_TIMEOUT_MS      = 10000,
       ENABLE_PROXY                    = "true"
     }
   }
