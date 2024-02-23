@@ -260,7 +260,7 @@ app_messages_function_autoscale_maximum = 15
 app_messages_function_autoscale_default = 10
 
 app_backend_autoscale_default = 10
-app_backend_autoscale_minimum = 1
+app_backend_autoscale_minimum = 2
 app_backend_autoscale_maximum = 30
 
 # Function Messages CQRS
@@ -460,6 +460,7 @@ eventhubs = [
 
 # PN Service Id
 pn_service_id = "01G40DWQGKY5GRWSNM4303VNRP"
+
 # PN Test Endpoint
 pn_test_endpoint = "https://api-io.uat.notifichedigitali.it"
 

@@ -82,41 +82,27 @@ resource "azurerm_monitor_metric_alert" "io_sign_user_helathcheck" {
   }
 }
 
-resource "azurerm_portal_dashboard" "io_sign_user_dashboard" {
-  name                = "my-cool-dashboard"
-  resource_group_name = azurerm_resource_group.backend_rg.name
-  location            = azurerm_resource_group.backend_rg.location
-  dashboard_properties = templatefile("dashboards/user-api.json.tpl", {
-    website_name = module.io_sign_user_func.name
-    website_id   = module.io_sign_user_func.id
-  })
-
-  tags = var.tags
-}
-
-resource "azurerm_monitor_scheduled_query_rules_alert" "io_sign_qtsp_avg_async_time" {
-  name                = format("%s-qtsp-avg-async-time", local.project)
+resource "azurerm_monitor_scheduled_query_rules_alert" "rejected_requests" {
+  name                = format("%s-rejected-requests", local.project)
   resource_group_name = azurerm_resource_group.backend_rg.name
   location            = azurerm_resource_group.backend_rg.location
 
   data_source_id          = data.azurerm_application_insights.application_insights.id
-  description             = format("%s QTSP avg async time is greater than 1s", local.project)
+  description             = "[IO-SIGN] There are REJECTED signature requests. Runbook: https://pagopa.atlassian.net/wiki/spaces/SFEQS/pages/935592503/Richieste+di+firma+in+stato+REJECTED"
   enabled                 = true
   auto_mitigation_enabled = false
 
   query = <<-QUERY
-
 customEvents
-| where name in ("sr_start", "sr_end")
-| summarize span = datetime_diff('second', max(timestamp), min(timestamp)), maxts = max(timestamp) by tostring(customDimensions["sr_id"])
-| summarize avg(span) by bin(maxts, 10m)
-| render timechart with (xtitle = "timestamp", ytitle= "span")
-
+| where name == "io.sign.signature_request.rejected"
+| summarize AggregatedValue = count() by bin(timestamp, 30m)
+| where AggregatedValue > 1
   QUERY
 
-  severity    = 1
-  frequency   = 10
-  time_window = 20
+  severity    = 3
+  frequency   = 30
+  time_window = 30
+
   trigger {
     operator  = "GreaterThanOrEqual"
     threshold = 1
@@ -126,6 +112,7 @@ customEvents
     action_group = [
       azurerm_monitor_action_group.email_fci_tech.id,
       azurerm_monitor_action_group.slack_fci_tech.id,
+      data.azurerm_monitor_action_group.error_action_group.id
     ]
   }
 
@@ -280,3 +267,4 @@ resource "azurerm_monitor_autoscale_setting" "io_sign_backoffice_func" {
     }
   }
 }
+

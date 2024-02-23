@@ -15,7 +15,7 @@ resource "azurerm_api_management_group" "api_lollipop_assertion_read_v2" {
 }
 
 module "apim_v2_product_lollipop" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3//api_management_product?ref=v4.1.5"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3//api_management_product?ref=v7.62.0"
 
   product_id   = "io-lollipop-api"
   display_name = "IO LOLLIPOP API"
@@ -32,7 +32,7 @@ module "apim_v2_product_lollipop" {
 }
 
 module "apim_v2_lollipop_api_v1" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3//api_management_api?ref=v4.1.5"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3//api_management_api?ref=v7.62.0"
 
   name                  = format("%s-lollipop-api", local.product)
   api_management_name   = data.azurerm_api_management.apim_v2_api.name
@@ -147,7 +147,7 @@ data "azurerm_linux_web_app" "appservice_fims" {
 }
 
 module "apim_product_fims_admin" {
-  source = "github.com/pagopa/terraform-azurerm-v3.git//api_management_product?ref=v4.1.15"
+  source = "github.com/pagopa/terraform-azurerm-v3.git//api_management_product?ref=v7.62.0"
 
   product_id            = "fims-admin-api"
   api_management_name   = data.azurerm_api_management.apim_v2_api.name
@@ -162,7 +162,7 @@ module "apim_product_fims_admin" {
 }
 
 module "api_fims_admin" {
-  source = "github.com/pagopa/terraform-azurerm-v3.git//api_management_api?ref=v4.1.15"
+  source = "github.com/pagopa/terraform-azurerm-v3.git//api_management_api?ref=v7.62.0"
 
   name                = "fims-admin-api"
   api_management_name = data.azurerm_api_management.apim_v2_api.name
@@ -193,7 +193,7 @@ module "api_fims_admin" {
 # FIMS public API
 ####################################################################################
 module "apim_product_fims_public" {
-  source = "github.com/pagopa/terraform-azurerm-v3.git//api_management_product?ref=v4.1.15"
+  source = "github.com/pagopa/terraform-azurerm-v3.git//api_management_product?ref=v7.62.0"
 
   product_id            = "fims-public-api"
   api_management_name   = data.azurerm_api_management.apim_v2_api.name
@@ -208,7 +208,7 @@ module "apim_product_fims_public" {
 }
 
 module "api_fims_public" {
-  source = "github.com/pagopa/terraform-azurerm-v3.git//api_management_api?ref=v4.1.15"
+  source = "github.com/pagopa/terraform-azurerm-v3.git//api_management_api?ref=v7.62.0"
 
   name                = "fims-public-api"
   api_management_name = data.azurerm_api_management.apim_v2_api.name
@@ -247,7 +247,7 @@ resource "azurerm_api_management_group" "api_fast_login_operation_v2" {
 }
 
 module "apim_v2_product_fast_login_operation" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3//api_management_product?ref=v7.47.0"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3//api_management_product?ref=v7.62.0"
 
   product_id   = "io-fast-login-operation-api"
   display_name = "IO FAST-LOGIN OPERATION API"
@@ -269,7 +269,7 @@ data "azurerm_linux_function_app" "functions_fast_login" {
 }
 
 module "apim_v2_fast_login_operation_api_v1" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3//api_management_api?ref=v7.47.0"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3//api_management_api?ref=v7.62.0"
 
   name                  = format("%s-fast-login-operation-api", local.product)
   api_management_name   = data.azurerm_api_management.apim_v2_api.name

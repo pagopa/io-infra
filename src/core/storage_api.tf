@@ -1,5 +1,5 @@
 module "storage_api" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//storage_account?ref=v7.28.0"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//storage_account?ref=v7.61.0"
 
   name                             = replace("${local.project}stapi", "-", "")
   account_kind                     = "StorageV2"
@@ -9,6 +9,7 @@ module "storage_api" {
   resource_group_name              = azurerm_resource_group.rg_internal.name
   location                         = azurerm_resource_group.rg_internal.location
   advanced_threat_protection       = true
+  use_legacy_defender_version      = false
   allow_nested_items_to_be_public  = false
   cross_tenant_replication_enabled = true
   public_network_access_enabled    = true
@@ -55,7 +56,7 @@ resource "azurerm_storage_table" "storage_api_validationtokens" {
 
 # Storage replica
 module "storage_api_replica" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//storage_account?ref=v7.28.0"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//storage_account?ref=v7.61.0"
 
   name                             = replace("${local.project}stapireplica", "-", "")
   account_kind                     = "StorageV2"
@@ -65,6 +66,7 @@ module "storage_api_replica" {
   resource_group_name              = azurerm_resource_group.rg_internal.name
   location                         = azurerm_resource_group.rg_internal.location
   advanced_threat_protection       = true
+  use_legacy_defender_version      = false
   allow_nested_items_to_be_public  = false
   cross_tenant_replication_enabled = true
   public_network_access_enabled    = true
@@ -87,7 +89,7 @@ module "storage_api_replica" {
 }
 
 module "storage_api_object_replication_to_replica" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//storage_object_replication?ref=v7.28.0"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//storage_object_replication?ref=v7.61.0"
 
   source_storage_account_id      = module.storage_api.id
   destination_storage_account_id = module.storage_api_replica.id

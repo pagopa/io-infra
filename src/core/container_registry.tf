@@ -6,7 +6,7 @@ resource "azurerm_resource_group" "container_registry_rg" {
 }
 
 module "container_registry" {
-  source                        = "git::https://github.com/pagopa/terraform-azurerm-v3.git//container_registry?ref=v7.28.0"
+  source                        = "git::https://github.com/pagopa/terraform-azurerm-v3.git//container_registry?ref=v7.61.0"
   name                          = replace(format("%s-common-acr", local.project), "-", "")
   sku                           = "Premium"
   resource_group_name           = azurerm_resource_group.container_registry_rg.name

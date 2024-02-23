@@ -69,7 +69,7 @@ locals {
 
 # Subnet to host fn messages cqrs function
 module "function_messages_cqrs_snet" {
-  source                                    = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v7.34.3"
+  source                                    = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v7.61.0"
   name                                      = format("%s-fn-messages-cqrs-snet", local.project)
   address_prefixes                          = var.cidr_subnet_fnmessagescqrs
   resource_group_name                       = azurerm_resource_group.rg_common.name
@@ -93,7 +93,7 @@ module "function_messages_cqrs_snet" {
 
 #tfsec:ignore:azure-storage-queue-services-logging-enabled:exp:2022-05-01 # already ignored, maybe a bug in tfsec
 module "function_messages_cqrs" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app?ref=v7.34.3"
+  source = "github.com/pagopa/terraform-azurerm-v3//function_app?ref=v7.62.0"
 
   resource_group_name = azurerm_resource_group.backend_messages_rg.name
   name                = format("%s-messages-cqrs-fn", local.project)
@@ -114,6 +114,7 @@ module "function_messages_cqrs" {
     account_replication_type          = "GZRS"
     access_tier                       = "Hot"
     advanced_threat_protection_enable = true
+    use_legacy_defender_version       = false
   }
 
   node_version                             = "18"
@@ -191,7 +192,7 @@ module "function_messages_cqrs" {
 }
 
 module "function_messages_cqrs_staging_slot" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app_slot?ref=v7.34.3"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app_slot?ref=v7.61.0"
 
   name                = "staging"
   location            = var.location

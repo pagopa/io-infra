@@ -17,7 +17,7 @@
 | <a name="module_immutable_spid_logs_storage"></a> [immutable\_spid\_logs\_storage](#module\_immutable\_spid\_logs\_storage) | git::https://github.com/pagopa/terraform-azurerm-v3//storage_account | v7.32.1 |
 | <a name="module_immutable_spid_logs_storage_customer_managed_key"></a> [immutable\_spid\_logs\_storage\_customer\_managed\_key](#module\_immutable\_spid\_logs\_storage\_customer\_managed\_key) | git::https://github.com/pagopa/terraform-azurerm-v3//storage_account_customer_managed_key | v7.32.1 |
 | <a name="module_key_vault"></a> [key\_vault](#module\_key\_vault) | git::https://github.com/pagopa/terraform-azurerm-v3.git//key_vault | v4.1.3 |
-| <a name="module_landing_cdn"></a> [landing\_cdn](#module\_landing\_cdn) | git::https://github.com/pagopa/terraform-azurerm-v3.git//cdn | v7.2.1 |
+| <a name="module_landing_cdn"></a> [landing\_cdn](#module\_landing\_cdn) | github.com/pagopa/terraform-azurerm-v3.git//cdn | v7.59.0 |
 | <a name="module_redis_spid_login"></a> [redis\_spid\_login](#module\_redis\_spid\_login) | git::https://github.com/pagopa/terraform-azurerm-v3.git//redis_cache | v6.11.2 |
 | <a name="module_redis_spid_login_snet"></a> [redis\_spid\_login\_snet](#module\_redis\_spid\_login\_snet) | git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet | v4.1.15 |
 | <a name="module_spid_login"></a> [spid\_login](#module\_spid\_login) | git::https://github.com/pagopa/terraform-azurerm-v3.git//app_service | v4.1.15 |

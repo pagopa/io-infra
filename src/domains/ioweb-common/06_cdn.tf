@@ -9,7 +9,7 @@ data "azurerm_dns_zone" "ioapp_it" {
 }
 
 module "landing_cdn" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//cdn?ref=v7.2.1"
+  source = "github.com/pagopa/terraform-azurerm-v3.git//cdn?ref=v7.59.0"
 
   name                             = "portal"
   prefix                           = local.project
@@ -51,6 +51,8 @@ module "landing_cdn" {
       }
     ]
   }
+
+  log_analytics_workspace_id = data.azurerm_log_analytics_workspace.log_analytics.id
 
   tags = var.tags
 }

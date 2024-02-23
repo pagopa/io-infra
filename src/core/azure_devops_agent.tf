@@ -8,7 +8,7 @@ resource "azurerm_resource_group" "azdo_rg" {
 
 module "azdoa_snet" {
   count  = var.enable_azdoa ? 1 : 0
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v7.28.0"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v7.61.0"
 
   name                                      = "azure-devops"
   address_prefixes                          = var.cidr_subnet_azdoa
@@ -22,7 +22,7 @@ module "azdoa_snet" {
 }
 
 module "azdoa_li_infra" {
-  source              = "git::https://github.com/pagopa/terraform-azurerm-v3.git//azure_devops_agent?ref=v7.28.0"
+  source              = "git::https://github.com/pagopa/terraform-azurerm-v3.git//azure_devops_agent?ref=v7.61.0"
   count               = var.enable_azdoa ? 1 : 0
   name                = "${local.project}-azdoa-vmss-li-infra"
   resource_group_name = azurerm_resource_group.azdo_rg[0].name
@@ -37,7 +37,7 @@ module "azdoa_li_infra" {
 }
 
 module "azdoa_loadtest_li" {
-  source              = "git::https://github.com/pagopa/terraform-azurerm-v3.git//azure_devops_agent?ref=v7.28.0"
+  source              = "git::https://github.com/pagopa/terraform-azurerm-v3.git//azure_devops_agent?ref=v7.61.0"
   count               = var.enable_azdoa ? 1 : 0
   name                = format("%s-azdoa-vmss-loadtest-li", local.project)
   resource_group_name = azurerm_resource_group.azdo_rg[0].name

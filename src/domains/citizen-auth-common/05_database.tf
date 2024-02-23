@@ -6,7 +6,7 @@ resource "azurerm_resource_group" "data_rg" {
 }
 
 module "cosmosdb_account" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3//cosmosdb_account?ref=v4.3.1"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3//cosmosdb_account?ref=v7.62.0"
 
   name                = "${local.product}-${var.domain}-account"
   domain              = upper(var.domain)
@@ -16,11 +16,13 @@ module "cosmosdb_account" {
   enable_free_tier    = false
   kind                = "GlobalDocumentDB"
 
-  public_network_access_enabled     = false
-  private_endpoint_enabled          = true
-  subnet_id                         = data.azurerm_subnet.private_endpoints_subnet.id
-  private_dns_zone_ids              = [data.azurerm_private_dns_zone.privatelink_documents_azure_com.id]
-  is_virtual_network_filter_enabled = false
+  public_network_access_enabled       = false
+  private_endpoint_enabled            = true
+  private_endpoint_sql_name           = "${local.product}-citizen-auth-account"
+  private_service_connection_sql_name = "${local.product}-citizen-auth-account-private-endpoint"
+  private_dns_zone_sql_ids            = [data.azurerm_private_dns_zone.privatelink_documents_azure_com.id]
+  subnet_id                           = data.azurerm_subnet.private_endpoints_subnet.id
+  is_virtual_network_filter_enabled   = false
 
   main_geo_location_location       = azurerm_resource_group.data_rg.location
   main_geo_location_zone_redundant = true
@@ -47,7 +49,7 @@ module "cosmosdb_account" {
 }
 
 module "cosmosdb_sql_database_citizen_auth" {
-  source              = "git::https://github.com/pagopa/terraform-azurerm-v3//cosmosdb_sql_database?ref=v4.3.1"
+  source              = "git::https://github.com/pagopa/terraform-azurerm-v3//cosmosdb_sql_database?ref=v7.62.0"
   name                = "citizen-auth"
   resource_group_name = azurerm_resource_group.data_rg.name
   account_name        = module.cosmosdb_account.name
@@ -116,7 +118,7 @@ resource "azurerm_monitor_metric_alert" "cosmosdb_account_normalized_RU_consumpt
 
   # Action groups for alerts
   action {
-    action_group_id = data.azurerm_monitor_action_group.quarantine_error_action_group.id
+    action_group_id = data.azurerm_monitor_action_group.error_action_group.id
   }
 
   tags = var.tags
@@ -126,7 +128,7 @@ resource "azurerm_monitor_metric_alert" "cosmosdb_account_normalized_RU_consumpt
 # FIMS COSMOS
 ############################
 module "cosmosdb_account_fims" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3//cosmosdb_account?ref=v4.3.1"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3//cosmosdb_account?ref=v7.62.0"
 
   name                = "${local.product}-${var.domain}-fims-account"
   domain              = upper(var.domain)
@@ -136,11 +138,13 @@ module "cosmosdb_account_fims" {
   enable_free_tier    = false
   kind                = "GlobalDocumentDB"
 
-  public_network_access_enabled     = false
-  private_endpoint_enabled          = true
-  subnet_id                         = data.azurerm_subnet.private_endpoints_subnet.id
-  private_dns_zone_ids              = [data.azurerm_private_dns_zone.privatelink_documents_azure_com.id]
-  is_virtual_network_filter_enabled = false
+  public_network_access_enabled       = false
+  private_endpoint_enabled            = true
+  private_service_connection_sql_name = "${local.product}-citizen-auth-fims-account-private-endpoint"
+  private_endpoint_sql_name           = "${local.product}-citizen-auth-fims-account"
+  private_dns_zone_sql_ids            = [data.azurerm_private_dns_zone.privatelink_documents_azure_com.id]
+  subnet_id                           = data.azurerm_subnet.private_endpoints_subnet.id
+  is_virtual_network_filter_enabled   = false
 
   main_geo_location_location       = azurerm_resource_group.data_rg.location
   main_geo_location_zone_redundant = true
@@ -167,7 +171,7 @@ module "cosmosdb_account_fims" {
 }
 
 module "cosmosdb_sql_database_fims" {
-  source              = "git::https://github.com/pagopa/terraform-azurerm-v3//cosmosdb_sql_database?ref=v4.3.1"
+  source              = "git::https://github.com/pagopa/terraform-azurerm-v3//cosmosdb_sql_database?ref=v7.62.0"
   name                = "fims"
   resource_group_name = azurerm_resource_group.data_rg.name
   account_name        = module.cosmosdb_account_fims.name
@@ -310,59 +314,3 @@ resource "azurerm_cosmosdb_sql_container" "fims_session" {
     }
   }
 }
-
-############################
-# FIMS MONGO (TO REMOVE)
-############################
-module "cosmosdb_account_mongodb_fims" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3//cosmosdb_account?ref=v4.1.5"
-
-  name                 = "io-p-fims-mongodb-account"
-  domain               = upper(var.domain)
-  location             = azurerm_resource_group.data_rg.location
-  resource_group_name  = azurerm_resource_group.data_rg.name
-  offer_type           = "Standard"
-  enable_free_tier     = false
-  kind                 = "MongoDB"
-  capabilities         = ["EnableMongo"]
-  mongo_server_version = "4.2"
-
-  public_network_access_enabled     = false
-  private_endpoint_enabled          = true
-  subnet_id                         = data.azurerm_subnet.private_endpoints_subnet.id
-  private_dns_zone_ids              = [data.azurerm_private_dns_zone.privatelink_mongo_cosmos_azure_com.id]
-  is_virtual_network_filter_enabled = false
-
-  main_geo_location_location       = azurerm_resource_group.data_rg.location
-  main_geo_location_zone_redundant = false
-  additional_geo_locations = [{
-    location          = "northeurope"
-    failover_priority = 1
-    zone_redundant    = false
-  }]
-  consistency_policy = {
-    consistency_level       = "Session"
-    max_interval_in_seconds = null
-    max_staleness_prefix    = null
-  }
-
-  tags = var.tags
-}
-
-resource "azurerm_cosmosdb_mongo_database" "db_fims" {
-  name                = "mongodb_fims"
-  resource_group_name = azurerm_resource_group.data_rg.name
-  account_name        = module.cosmosdb_account_mongodb_fims.name
-
-  autoscale_settings {
-    max_throughput = 5000
-  }
-}
-
-# mongodb connection string for fims provider
-data "azurerm_key_vault_secret" "mongodb_connection_string_fims" {
-  name         = "io-p-fims-mongodb-account-connection-string"
-  key_vault_id = module.key_vault.id
-}
-
-
