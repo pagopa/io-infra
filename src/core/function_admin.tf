@@ -12,6 +12,11 @@ data "azurerm_key_vault_secret" "fn_admin_AZURE_SUBSCRIPTION_ID" {
   key_vault_id = module.key_vault_common.id
 }
 
+data "azurerm_key_vault_secret" "fn_admin_INSTANT_DELETE_ENABLED_USERS" {
+  name         = "fn-admin-INSTANT-DELETE-ENABLED-USERS"
+  key_vault_id = module.key_vault_common.id
+}
+
 data "azurerm_key_vault_secret" "adb2c_TENANT_NAME" {
   name         = "adb2c-TENANT-NAME"
   key_vault_id = module.key_vault_common.id
@@ -151,6 +156,9 @@ locals {
 
       PROFILE_EMAILS_STORAGE_CONNECTION_STRING = data.azurerm_storage_account.citizen_auth_common.primary_connection_string
       PROFILE_EMAILS_TABLE_NAME                = "profileEmails"
+
+      # Instant delete
+      INSTANT_DELETE_ENABLED_USERS = join(",", [data.azurerm_key_vault_secret.fn_admin_INSTANT_DELETE_ENABLED_USERS.value, local.test_users])
     }
   }
 }
