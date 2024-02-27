@@ -20,11 +20,11 @@ module "cosmos_cgn" {
     max_staleness_prefix    = null
   }
 
-  main_geo_location_location = "westeurope"
+  main_geo_location_location = var.location
 
   additional_geo_locations = [
     {
-      location          = "northeurope"
+      location          = var.additional_location
       failover_priority = 1
       zone_redundant    = true
     }

@@ -3,7 +3,8 @@ locals {
   env_short = "p"
   project   = "${local.prefix}-${local.env_short}"
 
-  location = "westeurope"
+  location           = "westeurope"
+  secondary_location = "northeurope"
 
   tags = {
     test = "io-infra-refactoring"
