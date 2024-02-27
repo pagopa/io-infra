@@ -3,19 +3,15 @@ variable "env_short" {
   description = "Environment name"
 }
 
-variable "tags" {
-  type = map(any)
-}
-
 variable "location" {
   type        = string
   description = "Azure region"
 }
 
-variable "resource_group_name" {
-  type = string
+variable "tags" {
+  type = map(any)
 }
 
-variable "subnet_pendpoints" {
+variable "resource_group_name" {
   type = string
 }

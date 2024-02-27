@@ -3,9 +3,9 @@
 module "cgn_legalbackup_storage" {
   source = "github.com/pagopa/terraform-azurerm-v3//storage_account?ref=v7.61.0"
 
-  name                            = replace(format("%s-cgn-legalbackup-storage", local.project), "-", "")
-  resource_group_name             = var.resource_group_name
-  location                        = var.location
+  name                = replace(format("%s-cgn-legalbackup-storage", local.project), "-", "")
+  resource_group_name = var.resource_group_name
+  location            = var.location
 
   account_kind                    = "StorageV2"
   account_tier                    = "Standard"
@@ -17,4 +17,10 @@ module "cgn_legalbackup_storage" {
   public_network_access_enabled   = true
 
   tags = var.tags
+}
+
+resource "azurerm_storage_container" "cgn_legalbackup_container" {
+  name                  = "cgn-legalbackup-blob"
+  storage_account_name  = module.cgn_legalbackup_storage.name
+  container_access_type = "private"
 }
