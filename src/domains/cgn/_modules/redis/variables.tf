@@ -8,14 +8,9 @@ variable "tags" {
 }
 
 variable "location" {
-  type        = string
-  description = "Azure region"
-}
-
-variable "resource_group_name" {
   type = string
 }
 
-variable "subnet_pendpoints" {
+variable "resource_group_name" {
   type = string
 }

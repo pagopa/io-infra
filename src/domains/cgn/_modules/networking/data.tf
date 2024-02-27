@@ -7,3 +7,8 @@ data "azurerm_private_dns_zone" "privatelink_documents" {
   name                = "privatelink.documents.azure.com"
   resource_group_name = "${local.project}-rg-common"
 }
+
+data "azurerm_nat_gateway" "nat_gateway" {
+  name = "${local.project}-natgw"
+  resource_group_name = "${local.project}-rg-common"
+}
