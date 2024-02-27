@@ -8,6 +8,11 @@ variable "location" {
   description = "Azure region"
 }
 
+variable "additional_location" {
+  type        = string
+  description = "Azure region"
+}
+
 variable "tags" {
   type = map(any)
 }
