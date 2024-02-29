@@ -807,7 +807,7 @@ resource "azurerm_monitor_autoscale_setting" "appservice_app_backendl1" {
         direction = "Decrease"
         type      = "ChangeCount"
         value     = "1"
-        cooldown  = "PT1H"
+        cooldown  = "PT30M"
       }
     }
 
@@ -829,7 +829,7 @@ resource "azurerm_monitor_autoscale_setting" "appservice_app_backendl1" {
         direction = "Decrease"
         type      = "ChangeCount"
         value     = "1"
-        cooldown  = "PT1H"
+        cooldown  = "PT30M"
       }
     }
   }
@@ -1027,7 +1027,7 @@ resource "azurerm_monitor_autoscale_setting" "appservice_app_backendl2" {
         direction = "Decrease"
         type      = "ChangeCount"
         value     = "1"
-        cooldown  = "PT1H"
+        cooldown  = "PT30M"
       }
     }
 
@@ -1049,7 +1049,7 @@ resource "azurerm_monitor_autoscale_setting" "appservice_app_backendl2" {
         direction = "Decrease"
         type      = "ChangeCount"
         value     = "1"
-        cooldown  = "PT1H"
+        cooldown  = "PT30M"
       }
     }
   }
@@ -1247,7 +1247,7 @@ resource "azurerm_monitor_autoscale_setting" "appservice_app_backendli" {
         direction = "Decrease"
         type      = "ChangeCount"
         value     = "1"
-        cooldown  = "PT1H"
+        cooldown  = "PT30M"
       }
     }
 
@@ -1269,7 +1269,7 @@ resource "azurerm_monitor_autoscale_setting" "appservice_app_backendli" {
         direction = "Decrease"
         type      = "ChangeCount"
         value     = "1"
-        cooldown  = "PT1H"
+        cooldown  = "PT30M"
       }
     }
   }
