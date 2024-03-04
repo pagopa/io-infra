@@ -11,3 +11,7 @@ variable "location" {
 variable "tags" {
   type = map(any)
 }
+
+variable "project" {
+  type = string
+}

@@ -3,7 +3,7 @@ module "functions" {
 
   project             = local.project
   location            = local.location
-  resource_group_name = module.resource_groups.resource_group_be_cgn.name
+  resource_group_name = module.resource_groups.resource_group_cgn_be.name
 
   subnet_id                   = module.networking.subnet_cgn.id
   subnet_private_endpoints_id = module.networking.subnet_pendpoints.id
