@@ -1,5 +1,5 @@
 resource "azurerm_app_service_plan" "cgn_common" {
-  name                = format("%s-plan-cgn-common", local.project)
+  name                = format("%s-plan-cgn-common", var.project)
   location            = var.location
   resource_group_name = var.resource_group_name
 

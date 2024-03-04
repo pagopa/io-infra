@@ -1,6 +1,6 @@
 resource "azurerm_monitor_metric_alert" "function_cgn_health_check" {
   name                = "${module.function_cgn.name}-health-check-failed"
-  resource_group_name = azurerm_resource_group.cgn_be_rg.name
+  resource_group_name = var.resource_group_name
   scopes              = [module.function_cgn.id]
   description         = "${module.function_cgn.name} health check failed"
   severity            = 1
@@ -17,13 +17,13 @@ resource "azurerm_monitor_metric_alert" "function_cgn_health_check" {
   }
 
   action {
-    action_group_id = azurerm_monitor_action_group.error_action_group.id
+    action_group_id = data.azurerm_monitor_action_group.error_action_group.id
   }
 }
 
 resource "azurerm_monitor_metric_alert" "function_cgn_merchant_health_check" {
   name                = "${module.function_cgn_merchant.name}-health-check-failed"
-  resource_group_name = azurerm_resource_group.cgn_be_rg.name
+  resource_group_name = var.resource_group_name
   scopes              = [module.function_cgn_merchant.id]
   description         = "${module.function_cgn_merchant.name} health check failed"
   severity            = 1
@@ -40,6 +40,6 @@ resource "azurerm_monitor_metric_alert" "function_cgn_merchant_health_check" {
   }
 
   action {
-    action_group_id = azurerm_monitor_action_group.error_action_group.id
+    action_group_id = data.azurerm_monitor_action_group.error_action_group.id
   }
 }

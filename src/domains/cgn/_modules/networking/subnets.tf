@@ -1,5 +1,5 @@
 module "private_endpoints_subnet" {
-  source = "github.com/pagopa/terraform-azurerm-v3//subnet?ref=v7.61.0"
+  source = "github.com/pagopa/terraform-azurerm-v3//subnet?ref=v7.63.0"
 
   name                 = "pendpoints"
   resource_group_name  = data.azurerm_virtual_network.vnet_common.resource_group_name
@@ -10,9 +10,9 @@ module "private_endpoints_subnet" {
 }
 
 module "redis_cgn_snet" {
-  source = "github.com/pagopa/terraform-azurerm-v3//subnet?ref=v7.61.0"
+  source = "github.com/pagopa/terraform-azurerm-v3//subnet?ref=v7.63.0"
 
-  name                                      = format("%s-redis-cgn-snet", local.project)
+  name                                      = format("%s-redis-cgn-snet", var.project)
   address_prefixes                          = var.cidr_subnet_redis
   resource_group_name                       = data.azurerm_virtual_network.vnet_common.resource_group_name
   virtual_network_name                      = data.azurerm_virtual_network.vnet_common.name
@@ -20,12 +20,12 @@ module "redis_cgn_snet" {
 }
 
 module "cgn_snet" {
-  source = "github.com/pagopa/terraform-azurerm-v3//subnet?ref=v7.61.0"
+  source = "github.com/pagopa/terraform-azurerm-v3//subnet?ref=v7.63.0"
 
-  name                                      = format("%s-cgn-snet", local.project)
+  name                                      = format("%s-cgn-snet", var.project)
   address_prefixes                          = var.cidr_subnet_cgn
-  resource_group_name                       = azurerm_resource_group.rg_common.name
-  virtual_network_name                      = module.vnet_common.name
+  resource_group_name                       = data.azurerm_virtual_network.vnet_common.resource_group_name
+  virtual_network_name                      = data.azurerm_virtual_network.vnet_common.name
   private_endpoint_network_policies_enabled = false
 
   service_endpoints = [

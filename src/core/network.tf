@@ -78,16 +78,6 @@ module "vnet_peering_common_weu_prod01" {
   target_use_remote_gateways       = true # needed by vpn gateway for enabling routing from vnet to vnet_integration
 }
 
-module "private_endpoints_subnet" {
-  source               = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v7.61.0"
-  name                 = "pendpoints"
-  address_prefixes     = var.cidr_subnet_pendpoints
-  resource_group_name  = azurerm_resource_group.rg_common.name
-  virtual_network_name = module.vnet_common.name
-
-  private_endpoint_network_policies_enabled = false
-}
-
 # TODO OLD APIM subnet to REMOVE
 module "apim_snet" {
   source               = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v7.61.0"

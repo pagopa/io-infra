@@ -14,3 +14,7 @@ variable "location" {
 variable "resource_group_name" {
   type = string
 }
+
+variable "subnet_redis_id" {
+  type = string
+}

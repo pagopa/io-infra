@@ -2,11 +2,6 @@ data "azurerm_resource_group" "rg_cgn" {
   name = format("%s-rg-cgn", local.project)
 }
 
-data "azurerm_storage_account" "iopstcgn" {
-  name                = "iopstcgn"
-  resource_group_name = data.azurerm_resource_group.rg_cgn.name
-}
-
 locals {
   cgn_app_registreation_name = "cgn-onboarding-portal-backend"
 }
