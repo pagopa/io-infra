@@ -770,7 +770,7 @@ module "app_gw" {
     }
 
     backend_pools_status = {
-      description   = "One or more backend pools are down, check Backend Health on Azure portal. Runbook https://pagopa.atlassian.net/wiki/spaces/IC/pages/914161665/Application+Gateway+-+Backend+Status"
+      description   = "One or more backend pools are down, see Dimension value or check Backend Health on Azure portal. Runbook https://pagopa.atlassian.net/wiki/spaces/IC/pages/914161665/Application+Gateway+-+Backend+Status"
       frequency     = "PT5M"
       window_size   = "PT5M"
       severity      = 0
@@ -782,14 +782,20 @@ module "app_gw" {
           metric_name = "UnhealthyHostCount"
           operator    = "GreaterThan"
           threshold   = 0
-          dimension   = []
+          dimension = [
+            {
+              name     = "BackendSettingsPool"
+              operator = "Include"
+              values   = ["*"]
+            }
+          ]
         }
       ]
       dynamic_criteria = []
     }
 
     response_time = {
-      description   = "Backends response time is too high"
+      description   = "Backends response time is too high. See Dimension value to check the Listener unhealty."
       frequency     = "PT5M"
       window_size   = "PT5M"
       severity      = 2
@@ -804,7 +810,12 @@ module "app_gw" {
           alert_sensitivity        = "High"
           evaluation_total_count   = 2
           evaluation_failure_count = 2
-          dimension                = []
+          dimension = [
+            {
+              name     = "Listener"
+              operator = "Include"
+              values   = ["*"]
+          }]
         }
       ]
     }
@@ -831,7 +842,7 @@ module "app_gw" {
     }
 
     failed_requests = {
-      description   = "Abnormal failed requests"
+      description   = "Abnormal failed requests. See Dimension value to check the Backend Pool unhealty"
       frequency     = "PT5M"
       window_size   = "PT5M"
       severity      = 1
@@ -846,7 +857,13 @@ module "app_gw" {
           alert_sensitivity        = "High"
           evaluation_total_count   = 4
           evaluation_failure_count = 4
-          dimension                = []
+          dimension = [
+            {
+              name     = "BackendSettingsPool"
+              operator = "Include"
+              values   = ["*"]
+            }
+          ]
         }
       ]
     }
