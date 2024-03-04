@@ -784,7 +784,7 @@ module "app_gw" {
           threshold   = 0
           dimension = [
             {
-              name     = "BackendPool HttpSettings"
+              name     = "BackendSettingsPool"
               operator = "Include"
               values   = ["*"]
             }
@@ -859,7 +859,7 @@ module "app_gw" {
           evaluation_failure_count = 4
           dimension = [
             {
-              name     = "BackendPool HttpSettings"
+              name     = "BackendSettingsPool"
               operator = "Include"
               values   = ["*"]
             }
