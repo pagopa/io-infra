@@ -7,6 +7,10 @@ locals {
   secondary_location = "northeurope"
 
   tags = {
-    test = "io-infra-refactoring"
+    CostCenter = "io-infra-refactoring"
+    CreatedBy = "Terraform"
+    Environment = "Prod"
+    Owner = "IO"
+    Source = "https://github.com/pagopa/io-infra/blob/main/src/domains/cgn/prod/west-europe"
   }
 }
