@@ -1,12 +1,14 @@
-output "hostname" {
-  value = module.redis_cgn.hostname
+output "redis_cgn" {
+  value = {
+    id                  = module.redis_cgn.id
+    resource_group_name = module.redis_cgn.resource_group_name
+    location            = module.redis_cgn.location
+    hostname            = module.redis_cgn.hostname
+    ssl_port            = module.redis_cgn.ssl_port
+  }
 }
 
-output "ssl_port" {
-  value = module.redis_cgn.ssl_port
-}
-
-output "primary_access_key" {
+output "redis_cgn_primary_access_key" {
   value     = module.redis_cgn.primary_access_key
   sensitive = true
 }

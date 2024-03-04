@@ -1,6 +1,5 @@
-variable "env_short" {
-  type        = string
-  description = "Environment name"
+variable "project" {
+  type = string
 }
 
 variable "tags" {
@@ -16,5 +15,9 @@ variable "resource_group_name" {
 }
 
 variable "subnet_redis_id" {
+  type = string
+}
+
+variable "vnet_redis_id" {
   type = string
 }

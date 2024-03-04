@@ -1,11 +1,11 @@
 #tfsec:ignore:azure-storage-queue-services-logging-enabled:exp:2022-05-01 # already ignored, maybe a bug in tfsec
 module "function_cgn" {
-  source = "github.com/pagopa/terraform-azurerm-v3//function_app?ref=v7.63.0"
+  source = "github.com/pagopa/terraform-azurerm-v3//function_app?ref=v7.64.0"
 
   resource_group_name = var.resource_group_name
-  name                = format("%s-cgn-fn", var.project)
+  name                = "${var.project}-cgn-fn"
   location            = var.location
-  app_service_plan_id = azurerm_app_service_plan.cgn_common.id
+  app_service_plan_id = azurerm_app_service_plan.app_service_plan_cgn_common.id
   health_check_path   = "/api/v1/cgn/info"
 
   node_version    = "18"
@@ -15,7 +15,7 @@ module "function_cgn" {
   application_insights_instrumentation_key = data.azurerm_application_insights.application_insights.instrumentation_key
 
   app_settings = merge(
-    local.app_settings_common, {
+    local.function_cgn.app_settings_common, {
       "AzureWebJobs.ContinueEycaActivation.Disabled" = "0",
       "AzureWebJobs.UpdateExpiredCgn.Disabled"       = "0",
       "AzureWebJobs.UpdateExpiredEyca.Disabled"      = "0"
@@ -37,9 +37,9 @@ module "function_cgn" {
 
   allowed_subnets = [
     var.subnet_id,
-    data.azurerm_subnet.snet_backendl1,
-    data.azurerm_subnet.snet_backendl2,
-    data.azurerm_subnet.snet_backendli,
+    data.azurerm_subnet.snet_backendl1.id,
+    data.azurerm_subnet.snet_backendl2.id,
+    data.azurerm_subnet.snet_backendli.id,
     data.azurerm_subnet.snet_apim_v2.id,
   ]
 
@@ -53,13 +53,13 @@ module "function_cgn" {
 }
 
 module "function_cgn_staging_slot" {
-  source = "github.com/pagopa/terraform-azurerm-v3//function_app_slot?ref=v7.63.0"
+  source = "github.com/pagopa/terraform-azurerm-v3//function_app_slot?ref=v7.64.0"
 
   name                = "staging"
   location            = var.location
   resource_group_name = var.resource_group_name
   function_app_id     = module.function_cgn.id
-  app_service_plan_id = azurerm_app_service_plan.cgn_common.id
+  app_service_plan_id = azurerm_app_service_plan.app_service_plan_cgn_common.id
   health_check_path   = "/api/v1/cgn/info"
 
   storage_account_name       = module.function_cgn.storage_account.name
@@ -73,7 +73,7 @@ module "function_cgn_staging_slot" {
   application_insights_instrumentation_key = data.azurerm_application_insights.application_insights.instrumentation_key
 
   app_settings = merge(
-    local.app_settings_common, {
+    local.function_cgn.app_settings_common, {
       "AzureWebJobs.ContinueEycaActivation.Disabled" = "1",
       "AzureWebJobs.UpdateExpiredCgn.Disabled"       = "1",
       "AzureWebJobs.UpdateExpiredEyca.Disabled"      = "1"
@@ -85,9 +85,9 @@ module "function_cgn_staging_slot" {
   allowed_subnets = [
     var.subnet_id,
     data.azurerm_subnet.snet_azdoa.id,
-    data.azurerm_subnet.snet_backendl1,
-    data.azurerm_subnet.snet_backendl2,
-    data.azurerm_subnet.snet_backendli,
+    data.azurerm_subnet.snet_backendl1.id,
+    data.azurerm_subnet.snet_backendl2.id,
+    data.azurerm_subnet.snet_backendli.id,
     data.azurerm_subnet.snet_apim_v2.id,
   ]
 

@@ -1,11 +1,11 @@
 #tfsec:ignore:azure-storage-queue-services-logging-enabled:exp:2022-05-01 # already ignored, maybe a bug in tfsec
 module "function_cgn_merchant" {
-  source = "github.com/pagopa/terraform-azurerm-v3//function_app?ref=v7.61.0"
+  source = "github.com/pagopa/terraform-azurerm-v3//function_app?ref=v7.64.0"
 
   resource_group_name = var.resource_group_name
-  name                = format("%s-cgn-merchant-fn", var.project)
+  name                = "${var.project}-cgn-merchant-fn"
   location            = var.location
-  app_service_plan_id = azurerm_app_service_plan.cgn_common.id
+  app_service_plan_id = azurerm_app_service_plan.app_service_plan_cgn_common.id
   health_check_path   = "/api/v1/merchant/cgn/info"
 
   node_version    = "18"
@@ -29,13 +29,13 @@ module "function_cgn_merchant" {
 }
 
 module "function_cgn_merchant_staging_slot" {
-  source = "github.com/pagopa/terraform-azurerm-v3//function_app_slot?ref=v7.63.0"
+  source = "github.com/pagopa/terraform-azurerm-v3//function_app_slot?ref=v7.64.0"
 
   name                = "staging"
   location            = var.location
   resource_group_name = var.resource_group_name
   function_app_id     = module.function_cgn_merchant.id
-  app_service_plan_id = azurerm_app_service_plan.cgn_common.id
+  app_service_plan_id = azurerm_app_service_plan.app_service_plan_cgn_common.id
   health_check_path   = "/api/v1/merchant/cgn/info"
 
   storage_account_name       = module.function_cgn_merchant.storage_account.name

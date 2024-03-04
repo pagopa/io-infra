@@ -1,28 +1,28 @@
+output "vnet_common" {
+  value = {
+    id                  = data.azurerm_virtual_network.vnet_common.id
+    name                = data.azurerm_virtual_network.vnet_common.name
+    resource_group_name = data.azurerm_virtual_network.vnet_common.resource_group_name
+  }
+}
+
 output "subnet_pendpoints" {
   value = {
-    id   = module.private_endpoints_subnet.id
-    name = module.private_endpoints_subnet.name
+    id   = module.subnet_private_endpoints.id
+    name = module.subnet_private_endpoints.name
   }
 }
 
 output "subnet_redis" {
   value = {
-    id   = module.redis_cgn_snet.id
-    name = module.redis_cgn_snet.name
+    id   = module.subnet_redis.id
+    name = module.subnet_redis.name
   }
 }
 
 output "subnet_cgn" {
   value = {
-    id   = module.cgn_snet.id
-    name = module.cgn_snet.name
-  }
-}
-
-output "private_dns_zones" {
-  value = {
-    privatelink_documents = {
-      id = data.azurerm_private_dns_zone.privatelink_documents.id
-    }
+    id   = module.subnet.id
+    name = module.subnet.name
   }
 }

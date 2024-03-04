@@ -1,6 +1,5 @@
-variable "env_short" {
-  type        = string
-  description = "Environment name"
+variable "project" {
+  type = string
 }
 
 variable "tags" {

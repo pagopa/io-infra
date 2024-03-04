@@ -1,9 +1,9 @@
 #tfsec:ignore:azure-storage-default-action-deny
 #tfsec:ignore:azure-storage-queue-services-logging-enabled:exp:2022-05-01 # already ignored, maybe a bug in tfsec
-module "cgn_legalbackup_storage" {
-  source = "github.com/pagopa/terraform-azurerm-v3//storage_account?ref=v7.61.0"
+module "storage_account_legal_backup" {
+  source = "github.com/pagopa/terraform-azurerm-v3//storage_account?ref=v7.64.0"
 
-  name                = replace(format("%s-cgn-legalbackup-storage", local.project), "-", "")
+  name                = "${replace(var.project, "-", "")}cgnlegalbackupstorage"
   resource_group_name = var.resource_group_name
   location            = var.location
 
@@ -17,10 +17,4 @@ module "cgn_legalbackup_storage" {
   public_network_access_enabled   = true
 
   tags = var.tags
-}
-
-resource "azurerm_storage_container" "cgn_legalbackup_container" {
-  name                  = "cgn-legalbackup-blob"
-  storage_account_name  = module.cgn_legalbackup_storage.name
-  container_access_type = "private"
 }
