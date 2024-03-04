@@ -2,11 +2,6 @@ variable "project" {
   type = string
 }
 
-variable "env_short" {
-  type        = string
-  description = "Environment name"
-}
-
 variable "tags" {
   type = map(any)
 }

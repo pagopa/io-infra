@@ -1,10 +1,12 @@
 module "redis" {
   source = "../../_modules/redis"
 
-  env_short           = local.env_short
+  project             = local.project
   location            = local.location
   resource_group_name = module.resource_groups.resource_group_cgn.name
-  subnet_redis_id     = module.networking.subnet_cgn.id
+
+  vnet_redis_id   = module.networking.vnet_common.id
+  subnet_redis_id = module.networking.subnet_cgn.id
 
   tags = local.tags
 }
