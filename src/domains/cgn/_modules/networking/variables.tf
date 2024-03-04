@@ -1,3 +1,7 @@
+variable "project" {
+  type = string
+}
+
 variable "env_short" {
   type        = string
   description = "Environment name"
@@ -13,5 +17,9 @@ variable "cidr_subnet_pendpoints" {
 }
 
 variable "cidr_subnet_redis" {
+  type = list(string)
+}
+
+variable "cidr_subnet_cgn" {
   type = list(string)
 }

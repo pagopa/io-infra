@@ -1,9 +1,9 @@
 terraform {
 
   backend "azurerm" {
-    resource_group_name  = "dev-andreag"
-    storage_account_name = "tfproddotnet"
-    container_name       = "terraform-state"
+    resource_group_name  = "terraform-state-rg"
+    storage_account_name = "tfinfprodio"
+    container_name       = "terraform-state-migration"
     key                  = "terraform.tfstate"
   }
 

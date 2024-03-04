@@ -1,9 +1,9 @@
 #tfsec:ignore:azure-storage-queue-services-logging-enabled:exp:2022-05-01 # already ignored, maybe a bug in tfsec
 module "function_cgn" {
-  source = "github.com/pagopa/terraform-azurerm-v3//function_app?ref=v7.61.0"
+  source = "github.com/pagopa/terraform-azurerm-v3//function_app?ref=v7.63.0"
 
   resource_group_name = var.resource_group_name
-  name                = format("%s-cgn-fn", local.project)
+  name                = format("%s-cgn-fn", var.project)
   location            = var.location
   app_service_plan_id = azurerm_app_service_plan.cgn_common.id
   health_check_path   = "/api/v1/cgn/info"
@@ -24,7 +24,7 @@ module "function_cgn" {
 
   internal_storage = {
     "enable"                     = true,
-    "private_endpoint_subnet_id" = module.private_endpoints_subnet.id,
+    "private_endpoint_subnet_id" = var.subnet_private_endpoints_id,
     "private_dns_zone_blob_ids"  = [data.azurerm_private_dns_zone.privatelink_blob_core.id],
     "private_dns_zone_queue_ids" = [data.azurerm_private_dns_zone.privatelink_queue_core.id],
     "private_dns_zone_table_ids" = [data.azurerm_private_dns_zone.privatelink_table_core.id],
@@ -33,14 +33,14 @@ module "function_cgn" {
     "blobs_retention_days"       = 0,
   }
 
-  subnet_id = module.cgn_snet.id
+  subnet_id = var.subnet_id
 
   allowed_subnets = [
-    module.cgn_snet.id,
-    module.app_backendl1_snet.id,
-    module.app_backendl2_snet.id,
-    module.app_backendli_snet.id,
-    module.apim_v2_snet.id,
+    var.subnet_id,
+    data.azurerm_subnet.snet_backendl1,
+    data.azurerm_subnet.snet_backendl2,
+    data.azurerm_subnet.snet_backendli,
+    data.azurerm_subnet.snet_apim_v2.id,
   ]
 
   sticky_app_setting_names = [
@@ -53,7 +53,7 @@ module "function_cgn" {
 }
 
 module "function_cgn_staging_slot" {
-  source = "github.com/pagopa/terraform-azurerm-v3//function_app_slot?ref=v7.61.0"
+  source = "github.com/pagopa/terraform-azurerm-v3//function_app_slot?ref=v7.63.0"
 
   name                = "staging"
   location            = var.location
@@ -70,7 +70,7 @@ module "function_cgn_staging_slot" {
   node_version                             = "18"
   always_on                                = "true"
   runtime_version                          = "~4"
-  application_insights_instrumentation_key = azurerm_application_insights.application_insights.instrumentation_key
+  application_insights_instrumentation_key = data.azurerm_application_insights.application_insights.instrumentation_key
 
   app_settings = merge(
     local.app_settings_common, {
@@ -80,15 +80,15 @@ module "function_cgn_staging_slot" {
     }
   )
 
-  subnet_id = module.cgn_snet.id
+  subnet_id = var.subnet_id
 
   allowed_subnets = [
-    module.cgn_snet.id,
-    module.azdoa_snet[0].id,
-    module.app_backendl1_snet.id,
-    module.app_backendl2_snet.id,
-    module.app_backendli_snet.id,
-    module.apim_v2_snet.id,
+    var.subnet_id,
+    data.azurerm_subnet.snet_azdoa.id,
+    data.azurerm_subnet.snet_backendl1,
+    data.azurerm_subnet.snet_backendl2,
+    data.azurerm_subnet.snet_backendli,
+    data.azurerm_subnet.snet_apim_v2.id,
   ]
 
   tags = var.tags

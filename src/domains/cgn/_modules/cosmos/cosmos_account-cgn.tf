@@ -1,6 +1,6 @@
 module "cosmos_cgn" {
-  source   = "github.com/pagopa/terraform-azurerm-v3//cosmosdb_account?ref=v7.61.0"
-  name     = format("%s-cosmos-cgn", local.project)
+  source   = "github.com/pagopa/terraform-azurerm-v3//cosmosdb_account?ref=v7.63.0"
+  name     = format("%s-cosmos-cgn", var.project)
   location = var.location
   domain   = "CGN"
 
@@ -37,9 +37,9 @@ module "cosmos_cgn" {
   ip_range = ""
 
   # private endpoint
-  private_endpoint_sql_name           = format("%s-cosmos-cgn-sql-endpoint", local.project)
+  private_endpoint_sql_name           = format("%s-cosmos-cgn-sql-endpoint", var.project)
   private_endpoint_enabled            = true
-  private_service_connection_sql_name = format("%s-cosmos-cgn-sql-endpoint", local.project)
+  private_service_connection_sql_name = format("%s-cosmos-cgn-sql-endpoint", var.project)
   subnet_id                           = var.subnet_id
   private_dns_zone_sql_ids            = [var.private_dns_zone_sql_ids]
 

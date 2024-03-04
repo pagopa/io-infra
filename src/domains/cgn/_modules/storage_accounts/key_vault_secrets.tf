@@ -22,5 +22,5 @@ resource "azurerm_key_vault_secret" "cgn_legalbackup_storage_blob_connection_str
   value        = module.cgn_legalbackup_storage.primary_blob_connection_string
   content_type = "text/plain"
 
-  key_vault_id = module.key_vault_common.id
+  key_vault_id = data.azurerm_key_vault.key_vault_common.id
 }

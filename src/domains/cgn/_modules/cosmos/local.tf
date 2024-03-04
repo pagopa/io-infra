@@ -1,5 +1,4 @@
 locals {
-  project = "io-${var.env_short}"
 
   cgn_cosmosdb_containers = [
     {
