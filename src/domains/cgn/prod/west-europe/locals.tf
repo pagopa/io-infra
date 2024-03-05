@@ -7,7 +7,7 @@ locals {
   secondary_location = "northeurope"
 
   tags = {
-    CostCenter  = "io-infra-refactoring"
+    CostCenter  = "TS310 - PAGAMENTI & SERVIZI"
     CreatedBy   = "Terraform"
     Environment = "Prod"
     Owner       = "IO"
