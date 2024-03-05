@@ -48,6 +48,11 @@ module "landing_cdn" {
         action = "Append"
         name   = "Content-Security-Policy"
         value  = "script-src 'self' 'unsafe-inline'; worker-src 'none'; font-src data: 'self'; object-src 'none'; "
+      },
+      {
+        action = "Overwrite"
+        name   = "Cache-Control"
+        value  = "no-cache"
       }
     ]
   }
