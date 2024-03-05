@@ -109,8 +109,7 @@ jobs:
 
       - name: Checkout
         id: checkout
-        # from https://github.com/actions/checkout/commits/main
-        uses: actions/checkout@1f9a0c22da41e6ebfa534300ef656657ea2c6707
+        uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
         with:
           persist-credentials: false
           fetch-depth: 0
