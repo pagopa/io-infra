@@ -8,7 +8,7 @@ module "storage_account_cgn" {
   account_kind                  = "StorageV2"
   account_tier                  = "Standard"
   access_tier                   = "Hot"
-  account_replication_type      = "GZRS"
+  account_replication_type      = "GRS"
   public_network_access_enabled = true
 
   tags = var.tags

@@ -8,9 +8,9 @@ resource "azurerm_monitor_autoscale_setting" "function_cgn" {
     name = "default"
 
     capacity {
-      default = var.function_cgn_autoscale_default
-      minimum = var.function_cgn_autoscale_minimum
-      maximum = var.function_cgn_autoscale_maximum
+      default = 10
+      minimum = 1
+      maximum = 30
     }
 
     rule {
