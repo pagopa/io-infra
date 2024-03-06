@@ -261,33 +261,6 @@ module "cosmosdb_sql_database_remote_content" {
   account_name        = module.cosmosdb_account_remote_content.name
 }
 
-resource "azurerm_cosmosdb_sql_container" "remote_content_configuration" {
-
-  name                = "remote-content-configuration"
-  resource_group_name = azurerm_resource_group.data_rg.name
-  account_name        = module.cosmosdb_account_remote_content.name
-  database_name       = module.cosmosdb_sql_database_remote_content.name
-
-  partition_key_path    = "/serviceId"
-  partition_key_version = 2
-
-  autoscale_settings {
-    max_throughput = 2000
-  }
-
-  indexing_policy {
-    indexing_mode = "consistent"
-
-    included_path {
-      path = "/*"
-    }
-
-    excluded_path {
-      path = "/\"_etag\"/?"
-    }
-  }
-}
-
 resource "azurerm_cosmosdb_sql_container" "message_configuration" {
   name                = "message-configuration"
   resource_group_name = azurerm_resource_group.data_rg.name
