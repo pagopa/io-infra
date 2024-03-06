@@ -34,15 +34,14 @@ jobs:
 
       - name: Checkout
         id: checkout
-        # from https://github.com/actions/checkout/commits/main
-        uses: actions/checkout@1f9a0c22da41e6ebfa534300ef656657ea2c6707
+        uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
         with:
           persist-credentials: false
           fetch-depth: 0
 
       - name: Azure Login
         id: az_login
-        uses: azure/login@92a5484dfaf04ca78a94597f4f19fea633851fa2
+        uses: azure/login@81e1d9f360e1ba776e93b8ead1c4320761356b2a # v2.0.0
         with:
           client-id: ${{ secrets.AZURE_CLIENT_ID_CI }}
           tenant-id: ${{ secrets.AZURE_TENANT_ID }}
@@ -102,8 +101,7 @@ jobs:
 
       - name: Checkout
         id: checkout
-        # from https://github.com/actions/checkout/commits/main
-        uses: actions/checkout@1f9a0c22da41e6ebfa534300ef656657ea2c6707
+        uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
         with:
           persist-credentials: false
           fetch-depth: 0
@@ -116,7 +114,7 @@ jobs:
 
       - name: Azure Login
         id: az_login
-        uses: azure/login@92a5484dfaf04ca78a94597f4f19fea633851fa2
+        uses: azure/login@81e1d9f360e1ba776e93b8ead1c4320761356b2a # v2.0.0
         with:
           client-id: ${{ secrets.AZURE_CLIENT_ID_CD }}
           tenant-id: ${{ secrets.AZURE_TENANT_ID }}
