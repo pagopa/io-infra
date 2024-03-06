@@ -23,7 +23,7 @@ module "api_v2_cgn_merchant" {
   api_management_name = data.azurerm_api_management.apim.name
   resource_group_name = data.azurerm_api_management.apim.resource_group_name
 
-  product_ids = [] # [module.apim_v2_product_merchant.product_id]
+  product_ids = [module.apim_v2_product_merchant.product_id]
   service_url = null
 
   description           = "CGN MERCHANT API for IO platform."
