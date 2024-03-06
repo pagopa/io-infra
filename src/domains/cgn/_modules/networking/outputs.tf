@@ -8,8 +8,8 @@ output "vnet_common" {
 
 output "subnet_pendpoints" {
   value = {
-    id   = module.subnet_private_endpoints.id
-    name = module.subnet_private_endpoints.name
+    id   = data.azurerm_subnet.subnet_private_endpoints.id
+    name = data.azurerm_subnet.subnet_private_endpoints.name
   }
 }
 
