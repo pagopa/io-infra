@@ -807,7 +807,7 @@ module "app_gw" {
           aggregation              = "Average"
           metric_name              = "BackendLastByteResponseTime"
           operator                 = "GreaterThan"
-          alert_sensitivity        = "High"
+          alert_sensitivity        = "Medium"
           evaluation_total_count   = 2
           evaluation_failure_count = 2
           dimension = [
