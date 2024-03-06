@@ -718,7 +718,7 @@ module "app_gw" {
           conditions    = []
           url = {
             path         = "fims/{var_uri_path}"
-            query_string = null
+            query_string = "{var_query_string}"
           }
           request_header_configurations  = []
           response_header_configurations = []
