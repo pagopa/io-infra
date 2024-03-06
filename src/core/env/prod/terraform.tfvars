@@ -32,7 +32,6 @@ cidr_weu_beta_vnet   = ["10.10.0.0/16"]
 cidr_weu_prod01_vnet = ["10.11.0.0/16"]
 cidr_weu_prod02_vnet = ["10.12.0.0/16"]
 # check free subnet on azure portal io-p-vnet-common -> subnets
-cidr_subnet_cgn                            = ["10.0.8.0/26"]
 cidr_subnet_eventhub                       = ["10.0.10.0/24"]
 cidr_subnet_fnelt                          = ["10.0.11.0/24"]
 cidr_subnet_fnpblevtdispatcher             = ["10.0.12.0/24"]
@@ -232,14 +231,6 @@ function_admin_sku_size          = "P1v3"
 function_admin_autoscale_minimum = 1
 function_admin_autoscale_maximum = 3
 function_admin_autoscale_default = 1
-
-# Functions Cgn
-plan_cgn_kind                  = "Linux"
-plan_cgn_sku_tier              = "PremiumV3"
-plan_cgn_sku_size              = "P1v3"
-function_cgn_autoscale_minimum = 1
-function_cgn_autoscale_maximum = 30
-function_cgn_autoscale_default = 10
 
 # Functions shared
 plan_shared_1_kind                = "Linux"

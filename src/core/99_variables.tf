@@ -303,14 +303,8 @@ variable "cidr_subnet_appbackendli" {
   description = "App backend li address space."
 }
 
-variable "cidr_subnet_cgn" {
-  type        = list(string)
-  description = "Function cgn address space."
-}
-
 variable "cidr_subnet_shared_1" {
-  type        = list(string)
-  description = "Function cgn address space."
+  type = list(string)
 }
 
 variable "cidr_subnet_eucovidcert" {
@@ -682,38 +676,6 @@ variable "selfcare_plan_sku_capacity" {
   default     = 1
 }
 
-
-# legal backup storage
-variable "cgn_legalbackup_account_replication_type" {
-  type        = string
-  description = "Legal backup replication type"
-  default     = "GZRS"
-}
-
-variable "cgn_legalbackup_enable_versioning" {
-  type        = bool
-  description = "Enable legal backup versioning"
-  default     = false
-}
-
-## Azure container registry
-# variable "sku_container_registry" {
-#   type    = string
-#   default = "Basic"
-# }
-
-# variable "retention_policy_acr" {
-#   type = object({
-#     days    = number
-#     enabled = bool
-#   })
-#   default = {
-#     days    = 7
-#     enabled = true
-#   }
-#   description = "Container registry retention policy."
-# }
-
 # Function App
 variable "function_app_count" {
   type    = number
@@ -1072,49 +1034,6 @@ variable "io_receipt_remote_config_test_id" {
 variable "io_receipt_service_test_url" {
   type        = string
   description = "The endpoint of Receipt Service (test env)"
-}
-
-# Function CGN
-variable "plan_cgn_kind" {
-  type        = string
-  description = "App service plan kind"
-  default     = null
-}
-
-variable "plan_cgn_sku_tier" {
-  type        = string
-  description = "App service plan sku tier"
-  default     = null
-}
-
-variable "plan_cgn_sku_size" {
-  type        = string
-  description = "App service plan sku size"
-  default     = null
-}
-
-variable "plan_cgn_sku_capacity" {
-  description = "Cgn app plan capacity"
-  type        = number
-  default     = 1
-}
-
-variable "function_cgn_autoscale_minimum" {
-  type        = number
-  description = "The minimum number of instances for this resource."
-  default     = 1
-}
-
-variable "function_cgn_autoscale_maximum" {
-  type        = number
-  description = "The maximum number of instances for this resource."
-  default     = 3
-}
-
-variable "function_cgn_autoscale_default" {
-  type        = number
-  description = "The number of instances that are available for scaling if metrics are not available for evaluation."
-  default     = 1
 }
 
 # Function EUCovidCert

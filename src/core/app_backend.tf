@@ -54,7 +54,7 @@ locals {
 
       // FUNCTIONS
       API_KEY                     = data.azurerm_key_vault_secret.app_backend_API_KEY.value
-      CGN_API_URL                 = "https://${module.function_cgn.default_hostname}"
+      CGN_API_URL                 = "https://${data.azurerm_linux_function_app.function_cgn.default_hostname}"
       CGN_API_KEY                 = data.azurerm_key_vault_secret.app_backend_CGN_API_KEY.value
       IO_SIGN_API_URL             = "https://io-p-sign-user-func.azurewebsites.net"
       IO_SIGN_API_KEY             = data.azurerm_key_vault_secret.app_backend_IO_SIGN_API_KEY.value
