@@ -1,5 +1,5 @@
 data "azurerm_dns_zone" "io_selfcare_pagopa_it" {
-  name                = local.dns_zone_name
+  name                = var.dns_zone_name
   resource_group_name = "${var.project}-rg-external"
 }
 
@@ -12,5 +12,3 @@ data "azurerm_log_analytics_workspace" "law_common" {
   name                = "${var.project}-law-common"
   resource_group_name = "${var.project}-rg-common"
 }
-
-data "azurerm_subscription" "current" {}

@@ -6,7 +6,7 @@ module "cdn_selfcare" {
   prefix                = var.project
   resource_group_name   = var.resource_group_name
   location              = var.location
-  hostname              = local.dns_zone_name
+  hostname              = var.dns_zone_name
   https_rewrite_enabled = true
 
   index_document     = "index.html"

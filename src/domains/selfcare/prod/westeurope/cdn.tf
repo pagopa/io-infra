@@ -5,6 +5,7 @@ module "cdn" {
   project  = local.project
 
   resource_group_name = module.resource_groups.resource_group_selfcare_fe.name
+  dns_zone_name       = local.dns_zone_name
 
   tags = local.tags
 }
