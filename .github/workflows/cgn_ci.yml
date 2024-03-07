@@ -13,10 +13,6 @@ on:
       - "src/domains/cgn**"
       - ".github/workflows/cgn_**"
 
-permissions:
-  id-token: write
-  contents: read
-
 env:
   DIR: "src/domains/cgn"
   AZURE_ENVIRONMENT: prod
