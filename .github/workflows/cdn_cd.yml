@@ -1,0 +1,22 @@
+name: Continuous Delivery on prod cgn
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+    paths:
+      - "src/domains/cgn**"
+
+env:
+  DIR: "src/domains/cgn"
+  AZURE_ENVIRONMENT: prod
+
+jobs:
+  release_prod:
+    uses: ./.github/workflows/call_release.yml
+    name: Terraform Apply
+    secrets: inherit
+    with:
+      environment: prod
+      dir: ${{ env.DIR }}
