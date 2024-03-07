@@ -797,7 +797,7 @@ module "app_gw" {
     response_time = {
       description   = "Backends response time is too high. See Dimension value to check the Listener unhealty."
       frequency     = "PT5M"
-      window_size   = "PT5M"
+      window_size   = "PT15M"
       severity      = 2
       auto_mitigate = true
 
@@ -807,7 +807,7 @@ module "app_gw" {
           aggregation              = "Average"
           metric_name              = "BackendLastByteResponseTime"
           operator                 = "GreaterThan"
-          alert_sensitivity        = "High"
+          alert_sensitivity        = "Medium"
           evaluation_total_count   = 2
           evaluation_failure_count = 2
           dimension = [
