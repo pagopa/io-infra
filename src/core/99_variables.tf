@@ -26,7 +26,7 @@ variable "location" {
   default = "westeurope"
 }
 
-variable "location_it" {
+variable "location_in" {
   type    = string
   default = "italynorth"
 }

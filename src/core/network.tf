@@ -18,7 +18,7 @@ module "vnet_common" {
 
 resource "azurerm_resource_group" "rg_in_vnet" {
   name     = format("%s-in-vnet-common", local.project)
-  location = var.location_it
+  location = var.location_in
 
   tags = var.tags
 }
