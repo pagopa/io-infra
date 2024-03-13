@@ -84,11 +84,11 @@ module "vnet_peering_in_common_weu_beta" {
   source_resource_group_name       = azurerm_resource_group.rg_in_vnet.name
   source_virtual_network_name      = module.vnet_in_common.name
   source_remote_virtual_network_id = module.vnet_in_common.id
-  source_allow_gateway_transit     = true # needed by vpn gateway for enabling routing from vnet to vnet_integration
+  source_allow_gateway_transit     = false # needed by vpn gateway for enabling routing from vnet to vnet_integration
   target_resource_group_name       = azurerm_resource_group.weu_beta_vnet_rg.name
   target_virtual_network_name      = module.vnet_weu_beta.name
   target_remote_virtual_network_id = module.vnet_weu_beta.id
-  target_use_remote_gateways       = true # needed by vpn gateway for enabling routing from vnet to vnet_integration
+  target_use_remote_gateways       = false # needed by vpn gateway for enabling routing from vnet to vnet_integration
 }
 
 resource "azurerm_resource_group" "weu_prod01_vnet_rg" {
@@ -128,11 +128,11 @@ module "vnet_peering_in_common_weu_prod01" {
   source_resource_group_name       = azurerm_resource_group.rg_in_vnet.name
   source_virtual_network_name      = module.vnet_in_common.name
   source_remote_virtual_network_id = module.vnet_in_common.id
-  source_allow_gateway_transit     = true # needed by vpn gateway for enabling routing from vnet to vnet_integration
+  source_allow_gateway_transit     = false # needed by vpn gateway for enabling routing from vnet to vnet_integration
   target_resource_group_name       = azurerm_resource_group.weu_prod01_vnet_rg.name
   target_virtual_network_name      = module.vnet_weu_prod01.name
   target_remote_virtual_network_id = module.vnet_weu_prod01.id
-  target_use_remote_gateways       = true # needed by vpn gateway for enabling routing from vnet to vnet_integration
+  target_use_remote_gateways       = false # needed by vpn gateway for enabling routing from vnet to vnet_integration
 }
 
 module "private_endpoints_subnet" {
