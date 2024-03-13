@@ -26,6 +26,11 @@ variable "location" {
   default = "westeurope"
 }
 
+variable "location_in" {
+  type    = string
+  default = "italynorth"
+}
+
 variable "location_short" {
   type = string
   validation {
@@ -175,6 +180,11 @@ variable "ddos_protection_plan" {
     enable = bool
   })
   default = null
+}
+
+variable "cidr_common_in_vnet" {
+  type        = list(string)
+  description = "Common Italy North Virtual network cidr."
 }
 
 variable "cidr_common_vnet" {

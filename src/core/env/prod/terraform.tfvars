@@ -28,6 +28,7 @@ ddos_protection_plan = {
   enable = true
 }
 cidr_common_vnet     = ["10.0.0.0/16"]
+cidr_common_in_vnet  = ["10.20.0.0/16"]
 cidr_weu_beta_vnet   = ["10.10.0.0/16"]
 cidr_weu_prod01_vnet = ["10.11.0.0/16"]
 cidr_weu_prod02_vnet = ["10.12.0.0/16"]
