@@ -60,11 +60,6 @@ variable "instance" {
   description = "One of beta, prod01, prod02"
 }
 
-variable "fims_app_instance" {
-  type        = string
-  description = "App instance name. One of beta, prod01, prod02"
-}
-
 variable "tags" {
   type = map(any)
   default = {
@@ -75,15 +70,6 @@ variable "tags" {
 ### Cosmos DB
 
 variable "citizen_auth_database" {
-  type = map(
-    object({
-      max_throughput = number
-      ttl            = number
-    })
-  )
-}
-
-variable "fims_database" {
   type = map(
     object({
       max_throughput = number
