@@ -35,7 +35,8 @@ output "function_app_cgn_merchant" {
 
 output "redis" {
   value = {
-    id = module.redis.redis_cgn.id
+    id   = module.redis.redis_cgn.id
+    name = module.redis.redis_cgn.name
   }
 }
 

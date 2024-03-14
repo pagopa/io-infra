@@ -1,9 +1,11 @@
 variable "project" {
-  type = string
+  type        = string
+  description = "IO prefix and short environment"
 }
 
 variable "tags" {
-  type = map(any)
+  type        = map(any)
+  description = "Resource tags"
 }
 
 variable "location" {
@@ -12,9 +14,11 @@ variable "location" {
 }
 
 variable "resource_group_name" {
-  type = string
+  type        = string
+  description = "Name of the resource group where resources will be created"
 }
 
-variable "subnet_pendpoints" {
-  type = string
+variable "subnet_pendpoints_id" {
+  type        = string
+  description = "Id of the subnet which holds private endpoints"
 }

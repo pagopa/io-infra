@@ -2,7 +2,7 @@ resource "azurerm_private_endpoint" "private_endpoint_storage_account_legal_back
   name                = "${var.project}-cgn-legalbackup-storage"
   location            = var.location
   resource_group_name = module.storage_account_legal_backup.resource_group_name
-  subnet_id           = var.subnet_pendpoints
+  subnet_id           = var.subnet_pendpoints_id
 
   private_service_connection {
     name                           = "${var.project}-cgn-legalbackup-storage-private-endpoint"

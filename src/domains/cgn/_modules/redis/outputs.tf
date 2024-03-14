@@ -1,6 +1,7 @@
 output "redis_cgn" {
   value = {
     id                  = module.redis_cgn.id
+    name                = module.redis_cgn.name
     resource_group_name = module.redis_cgn.resource_group_name
     location            = module.redis_cgn.location
     hostname            = module.redis_cgn.hostname

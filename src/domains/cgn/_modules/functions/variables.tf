@@ -1,5 +1,6 @@
 variable "project" {
-  type = string
+  type        = string
+  description = "IO prefix and short environment"
 }
 
 variable "location" {
@@ -8,19 +9,18 @@ variable "location" {
 }
 
 variable "tags" {
-  type = map(any)
+  type        = map(any)
+  description = "Resource tags"
 }
 
 variable "resource_group_name" {
-  type = string
+  type        = string
+  description = "Name of the resource group where resources will be created"
 }
 
 variable "subnet_id" {
-  type = string
-}
-
-variable "subnet_private_endpoints_id" {
-  type = string
+  type        = string
+  description = "Id of the subnet to use for Function Apps"
 }
 
 variable "cosmos_db" {
@@ -29,12 +29,14 @@ variable "cosmos_db" {
     primary_key = string
   })
 
-  sensitive = true
+  sensitive   = true
+  description = "Cosmos Account endpoint and primary key that Function Apps must use"
 }
 
 variable "cgn_storage_account_connection_string" {
-  type      = string
-  sensitive = true
+  type        = string
+  sensitive   = true
+  description = "CGN Storage Account blob connection string"
 }
 
 variable "redis" {
@@ -44,5 +46,6 @@ variable "redis" {
     primary_access_key = string
   })
 
-  sensitive = true
+  sensitive   = true
+  description = "Redis hostname, port and access key that Function Apps must use"
 }

@@ -1,5 +1,6 @@
 variable "project" {
-  type = string
+  type        = string
+  description = "IO prefix and short environment"
 }
 
 variable "location" {
@@ -9,17 +10,20 @@ variable "location" {
 
 variable "additional_location" {
   type        = string
-  description = "Azure region"
+  description = "Secondary Azure region used for replication purposes"
 }
 
 variable "tags" {
-  type = map(any)
+  type        = map(any)
+  description = "Resource tags"
 }
 
 variable "resource_group_name" {
-  type = string
+  type        = string
+  description = "Name of the resource group where resources will be created"
 }
 
 variable "private_endpoint_subnet_id" {
-  type = string
+  type        = string
+  description = "Id of the subnet which has private endpoints"
 }
