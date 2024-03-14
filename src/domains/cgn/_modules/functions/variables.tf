@@ -23,6 +23,11 @@ variable "subnet_id" {
   description = "Id of the subnet to use for Function Apps"
 }
 
+variable "subnet_private_endpoints_id" {
+  type        = string
+  description = "Id of the subnet which holds private endpoints"
+}
+
 variable "cosmos_db" {
   type = object({
     endpoint    = string

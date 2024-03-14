@@ -5,7 +5,7 @@ module "storage_accounts" {
   location            = local.location
   resource_group_name = module.resource_groups.resource_group_cgn.name
 
-  subnet_pendpoints = module.networking.subnet_pendpoints.id
+  subnet_pendpoints_id = module.networking.subnet_pendpoints.id
 
   tags = local.tags
 }
