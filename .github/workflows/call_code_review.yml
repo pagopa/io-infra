@@ -31,6 +31,7 @@ jobs:
     permissions:
       id-token: write
       contents: read
+      pull-requests: write
     env:
       ARM_CLIENT_ID: ${{ secrets.ARM_CLIENT_ID }}
       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -49,9 +50,9 @@ jobs:
           done
 
       - name: Azure Login
-        uses: azure/login@81e1d9f360e1ba776e93b8ead1c4320761356b2a # v2.0.0
+        uses: azure/login@v2 # v2.0.0
         with:
-          client-id: ${{ secrets.AZURE_CLIENT_ID_CI }}
+          client-id: ${{ env.ARM_CLIENT_ID }}
           tenant-id: ${{ env.ARM_TENANT_ID }}
           subscription-id: ${{ env.ARM_SUBSCRIPTION_ID }}
 
@@ -66,12 +67,16 @@ jobs:
           terraform_version: ${{ steps.set-terraform-version.outputs.terraform_version }}
           terraform_wrapper: true
 
+      - name: Terraform Init
+        working-directory: ${{ inputs.dir }}
+        run: |
+          terraform init
+
       - name: Terraform Plan
         working-directory: ${{ inputs.dir }}
-        continue-on-error: ${{ github.event_name == 'pull_request' }}
         run: |
-          bash ./terraform.sh plan ${{ env.TERRAFORM_ENVIRONMENT }} | tee plan_output.txt
-          OUTPUT="$(cat plan_output.txt | grep -v "Refreshing state" | tail -c 60000)"
+          terraform plan -lock-timeout=3000s -no-color -input=false -var-file="./${{env.TERRAFORM_ENVIRONMENT}}/terraform.tfvars" | tee plan_output.txt
+          OUTPUT=$(grep -Ev "Refreshing state|state lock|Reading|Read" plan_output.txt | tail -c 60000)
           echo "$OUTPUT" > plan_output_multiline.txt
 
       - uses: actions/github-script@60a0d83039c74a4aee543508d2ffcb1c3799cdea # v7.0.1
@@ -89,12 +94,14 @@ jobs:
             const botComment = comments.find(comment => {
               return comment.user.type === 'Bot' && comment.body.includes('Terraform Plan')
             })
-            const commentBody = `#### Terraform Plan 📖
+            const commentBody = `#### Terraform Plan ('${{ inputs.dir }}') 📖
             <details>
             <summary>Terraform Plan</summary>
+
             \`\`\`hcl
             ${output}
             \`\`\`
+
             </details>
             `;
             if (botComment) {
