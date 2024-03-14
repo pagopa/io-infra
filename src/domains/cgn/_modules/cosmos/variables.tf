@@ -8,7 +8,7 @@ variable "location" {
   description = "Azure region"
 }
 
-variable "additional_location" {
+variable "secondary_location" {
   type        = string
   description = "Secondary Azure region used for replication purposes"
 }
