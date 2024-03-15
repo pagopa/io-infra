@@ -65,7 +65,7 @@ jobs:
             if [[ -f "99_main.tf" ]]; then
               sed -i -e 's/  backend "azurerm" {}//g' 99_main.tf # use local backend
             elif [[ -f "$(pwd)/$secondPath/main.tf" ]]; then
-              sed -i -e '/^\s*backend "azurerm" {$/,/^}$/d' main.tf # use local backend
+              sed -i -e '/^\s*backend "azurerm" {$/,/^}$/d' $(pwd)/$secondPath/main.tf # use local backend
             fi
 
             docker run -v $(pwd):/tmp -w /tmp hashicorp/terraform:$TAG -chdir="${newmap[$f]}" init &
