@@ -1,7 +1,16 @@
 name: Static Analysis
 
 on:
-  push:
+  workflow_dispatch:
+  pull_request:
+    types:
+    - opened
+    - synchronize
+    - ready_for_review
+    paths:
+      - "src/**"
+      - ".terraform-version"
+      - ".pre-commit-config.yaml"
 
 jobs:
   static_analysis:
@@ -12,12 +21,11 @@ jobs:
 
       - name: init_terraform_folders
         env:
-          FOLDERS: >
+          FOLDERS: "
             src/core
             src/.template-app
             src/.template-common
             src/aks-platform
-            src/domains/cgn/_modules/resource_groups
             src/domains/cgn/prod/westeurope
             src/domains/ioweb-app
             src/domains/ioweb-common
@@ -30,12 +38,13 @@ jobs:
             src/domains/profile-app
             src/domains/profile-common
             src/domains/sign
+            "
         run: |
           pids=()
 
           TAG=$(cat .terraform-version)
           for f in $FOLDERS; do
-            pushd "$(pwd)/${f}"
+            pushd "$f"
               if [[ -f "99_main.tf" ]]; then
                 sed -i -e 's/  backend "azurerm" {}//g' 99_main.tf # use local backend
               elif [[ -f "main.tf" ]]; then
