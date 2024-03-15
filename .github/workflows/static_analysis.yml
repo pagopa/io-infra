@@ -63,22 +63,18 @@ jobs:
             elif [[ -f "main.tf" ]]; then
               sed -i -e 's/  backend "azurerm" {}//g' main.tf # use local backend
             elif [[ -f "$(pwd)/$relativePath/main.tf" ]]; then
-              echo "PROCESSING - $(pwd)$relativePath/main.tf"
               sed -i -e '/backend "azurerm" {/,/}/d' $(pwd)/$relativePath/main.tf # use local backend
 
-              echo "DEBUG $(pwd)"
-              ls
+              # pushd "_modules"
+              # modules=$(find . -type d)
 
-              pushd "_modules"
-              modules=$(find . -type d)
-
-              for module in modules; do
-                folder_name=$(basename "$folder")
-                echo "DEBUG - run docker in folder: $folder_name"
-                # docker run -v $(pwd):/tmp -w /tmp hashicorp/terraform:$TAG -chdir="./$folder_name" init &
-                pids+=($!)
-              done
-              popd
+              # for module in modules; do
+              #   folder_name=$(basename "$folder")
+              #   echo "DEBUG - run docker in folder: $folder_name"
+              #   docker run -v $(pwd):/tmp -w /tmp hashicorp/terraform:$TAG -chdir="./$folder_name" init &
+              #   pids+=($!)
+              # done
+              # popd
             fi
 
             docker run -v $(pwd):/tmp -w /tmp hashicorp/terraform:$TAG -chdir="${newmap[$f]}" init &
