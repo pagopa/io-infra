@@ -6,9 +6,9 @@ repos:
       - id: terraform_docs
         args:
           - --args=--hide providers
-      - id: terraform_trivy
+      - id: terraform_tfsec
         args:
-          - --args=--tf-exclude-downloaded-modules
+          - --args=--exclude-downloaded-modules
           - --args=--skip-dirs="**/.terraform"
       - id: terraform_validate
         args:
