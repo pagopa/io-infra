@@ -49,6 +49,8 @@ jobs:
 
           TAG=$(cat .terraform-version)
 
+          docker pull hashicorp/terraform:$TAG
+
           for f in "${!newmap[@]}"; do
 
             pushd "$f"
