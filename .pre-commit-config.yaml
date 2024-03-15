@@ -9,7 +9,7 @@ repos:
       - id: terraform_tfsec
         args:
           - --args=--exclude-downloaded-modules
-          - --args=-e azure-keyvault-content-type-for-secret
+          - --args=-e azure-keyvault-content-type-for-secret,azure-keyvault-ensure-secret-expiry
       # - id: terraform_validate
       #   args:
       #     - --init-args=-lockfile=readonly
