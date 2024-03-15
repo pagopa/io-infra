@@ -45,7 +45,7 @@ jobs:
           declare -A newmap
 
           newmap[src/core]="."
-          newmap[aks-platform]="."
+          newmap[src/aks-platform]="."
           newmap[src/domains/cgn]="./prod/westeurope"
 
           TAG=$(cat .terraform-version)
@@ -60,7 +60,7 @@ jobs:
               sed -i -e 's/  backend "azurerm" {}//g' main.tf # use local backend
             fi
 
-            docker run -v $(pwd):/tmp -w /tmp hashicorp/terraform:$TAG init "${newmap[$f]}" &
+            docker run -v $(pwd):/tmp -w /tmp hashicorp/terraform:$TAG -chdir="${newmap[$f]}" init &
             pids+=($!)
 
             popd
