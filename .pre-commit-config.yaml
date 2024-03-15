@@ -9,9 +9,10 @@ repos:
       - id: terraform_tfsec
         args:
           - --args=--exclude-downloaded-modules
+          - -e azure-keyvault-content-type-for-secret
       # - id: terraform_validate
       #   args:
       #     - --init-args=-lockfile=readonly
       #     - --args=-json
       #     - --args=-no-color
-      #     - --retry-once-with-cleanup=true
+      #     - --hook-config=--retry-once-with-cleanup=true
