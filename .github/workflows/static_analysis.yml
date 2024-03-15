@@ -35,6 +35,7 @@ jobs:
           newmap[src/domains/citizen-auth-common]="."
           newmap[src/domains/ioweb-app]="."
           newmap[src/domains/ioweb-common]="."
+          newmap[src/domains/elk]="."
           newmap[src/domains/messages-app]="."
           newmap[src/domains/messages-common]="."
           newmap[src/domains/payments-app]="."
