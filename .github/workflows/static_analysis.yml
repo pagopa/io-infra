@@ -17,6 +17,7 @@ jobs:
             src/.template-app
             src/.template-common
             src/aks-platform
+            src/domains/cgn/prod/westeurope
             src/domains/ioweb-app
             src/domains/ioweb-common
             src/domains/citizen-auth-app
