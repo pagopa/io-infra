@@ -56,7 +56,7 @@ jobs:
 
             if [[ -f "99_main.tf" ]]; then
               sed -i -e 's/  backend "azurerm" {}//g' 99_main.tf # use local backend
-            elif [[ -f "${newmap[$f]}/main.tf" ]]; then
+            elif [[ -f "$(pwd)/${newmap[$f]}/main.tf" ]]; then
               sed -i -e '/^\s*backend "azurerm" {$/,/^}$/d' main.tf # use local backend
             fi
 
