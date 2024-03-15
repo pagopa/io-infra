@@ -54,11 +54,17 @@ jobs:
 
             pushd "$f"
 
-            echo "DEBUG - $(pwd)/${newmap[$f]}/main.tf"
+            if [[ "${newmap[$f]}" == "." ]]; then
+              secondPath=""
+            else
+              secondPath="${newmap[$f]#.}"
+            fi
+
+            echo "DEBUG - $(pwd)$secondPath/main.tf"
 
             if [[ -f "99_main.tf" ]]; then
               sed -i -e 's/  backend "azurerm" {}//g' 99_main.tf # use local backend
-            elif [[ -f "$(pwd)/${newmap[$f]}/main.tf" ]]; then
+            elif [[ -f "$(pwd)/$secondPath/main.tf" ]]; then
               sed -i -e '/^\s*backend "azurerm" {$/,/^}$/d' main.tf # use local backend
             fi
 
