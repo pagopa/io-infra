@@ -39,7 +39,7 @@ locals {
 module "function_cgn_merchant" {
   source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app?ref=v7.61.0"
 
-  resource_group_name = azurerm_resource_group.cgn_be_rg.name
+  resource_group_name = data.azurerm_resource_group.cgn_be_rg.name
   name                = format("%s-cgn-merchant-fn", local.project)
   location            = var.location
   app_service_plan_id = azurerm_app_service_plan.cgn_common.id
@@ -70,7 +70,7 @@ module "function_cgn_merchant_staging_slot" {
 
   name                = "staging"
   location            = var.location
-  resource_group_name = azurerm_resource_group.cgn_be_rg.name
+  resource_group_name = data.azurerm_resource_group.cgn_be_rg.name
   function_app_id     = module.function_cgn_merchant.id
   app_service_plan_id = azurerm_app_service_plan.cgn_common.id
   health_check_path   = "/api/v1/merchant/cgn/info"
@@ -102,7 +102,7 @@ module "function_cgn_merchant_staging_slot" {
 
 resource "azurerm_monitor_metric_alert" "function_cgn_merchant_health_check" {
   name                = "${module.function_cgn_merchant.name}-health-check-failed"
-  resource_group_name = azurerm_resource_group.cgn_be_rg.name
+  resource_group_name = data.azurerm_resource_group.cgn_be_rg.name
   scopes              = [module.function_cgn_merchant.id]
   description         = "${module.function_cgn_merchant.name} health check failed"
   severity            = 1

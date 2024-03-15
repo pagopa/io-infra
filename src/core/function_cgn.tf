@@ -93,7 +93,7 @@ locals {
 module "function_cgn" {
   source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app?ref=v7.61.0"
 
-  resource_group_name = azurerm_resource_group.cgn_be_rg.name
+  resource_group_name = data.azurerm_resource_group.cgn_be_rg.name
   name                = format("%s-cgn-fn", local.project)
   location            = var.location
   app_service_plan_id = azurerm_app_service_plan.cgn_common.id
@@ -148,7 +148,7 @@ module "function_cgn_staging_slot" {
 
   name                = "staging"
   location            = var.location
-  resource_group_name = azurerm_resource_group.cgn_be_rg.name
+  resource_group_name = data.azurerm_resource_group.cgn_be_rg.name
   function_app_id     = module.function_cgn.id
   app_service_plan_id = azurerm_app_service_plan.cgn_common.id
   health_check_path   = "/api/v1/cgn/info"
@@ -187,7 +187,7 @@ module "function_cgn_staging_slot" {
 
 resource "azurerm_monitor_autoscale_setting" "function_cgn" {
   name                = format("%s-autoscale", module.function_cgn.name)
-  resource_group_name = azurerm_resource_group.cgn_be_rg.name
+  resource_group_name = data.azurerm_resource_group.cgn_be_rg.name
   location            = var.location
   target_resource_id  = module.function_cgn.app_service_plan_id
 
@@ -294,7 +294,7 @@ resource "azurerm_monitor_autoscale_setting" "function_cgn" {
 
 resource "azurerm_monitor_metric_alert" "function_cgn_health_check" {
   name                = "${module.function_cgn.name}-health-check-failed"
-  resource_group_name = azurerm_resource_group.cgn_be_rg.name
+  resource_group_name = data.azurerm_resource_group.cgn_be_rg.name
   scopes              = [module.function_cgn.id]
   description         = "${module.function_cgn.name} health check failed"
   severity            = 1
