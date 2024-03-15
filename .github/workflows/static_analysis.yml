@@ -43,16 +43,22 @@ jobs:
           pids=()
 
           TAG=$(cat .terraform-version)
+
           for f in $FOLDERS; do
+
             pushd "$f"
-              if [[ -f "99_main.tf" ]]; then
-                sed -i -e 's/  backend "azurerm" {}//g' 99_main.tf # use local backend
-              elif [[ -f "main.tf" ]]; then
-                sed -i -e 's/  backend "azurerm" {}//g' main.tf # use local backend
-              fi
-              docker run -v $(pwd):/tmp -w /tmp hashicorp/terraform:$TAG init &
-              pids+=($!)
+
+            if [[ -f "99_main.tf" ]]; then
+              sed -i -e 's/  backend "azurerm" {}//g' 99_main.tf # use local backend
+            elif [[ -f "main.tf" ]]; then
+              sed -i -e 's/  backend "azurerm" {}//g' main.tf # use local backend
+            fi
+
+            docker run -v $(pwd)/../:/tmp -w /tmp hashicorp/terraform:$TAG init &
+            pids+=($!)
+
             popd
+
           done
 
           # Wait for each specific process to terminate.
