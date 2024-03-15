@@ -43,6 +43,7 @@ jobs:
           newmap[src/domains/profile-common]="."
           newmap[src/domains/sign]="."
           newmap[src/github-runner]="."
+          newmap[.identity]="."
 
           TAG=$(cat .terraform-version)
 
