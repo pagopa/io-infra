@@ -20,33 +20,29 @@ jobs:
       - uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
 
       - name: init_terraform_folders
-        # env:
-          # FOLDERS:
-          #   src/core
-          #   src/.template-app
-          #   src/.template-common
-          #   src/aks-platform
-          #   src/domains/cgn/prod/westeurope
-          #   src/domains/ioweb-app
-          #   src/domains/ioweb-common
-          #   src/domains/citizen-auth-app
-          #   src/domains/citizen-auth-common
-          #   src/domains/messages-app
-          #   src/domains/messages-common
-          #   src/domains/payments-app
-          #   src/domains/payments-common
-          #   src/domains/profile-app
-          #   src/domains/profile-common
-          #   src/domains/sign
-
         run: |
           pids=()
 
+          # map value with path to domain root and path to config entry point
           declare -A newmap
 
           newmap[src/core]="."
+          newmap[src/.template-app]="."
+          newmap[src/.template-common]="."
           newmap[src/aks-platform]="."
           newmap[src/domains/cgn]="./prod/westeurope"
+          newmap[src/domains/citizen-auth-app]="."
+          newmap[src/domains/citizen-auth-common]="."
+          newmap[src/domains/ioweb-app]="."
+          newmap[src/domains/ioweb-common]="."
+          newmap[src/domains/messages-app]="."
+          newmap[src/domains/messages-common]="."
+          newmap[src/domains/payments-app]="."
+          newmap[src/domains/payments-common]="."
+          newmap[src/domains/profile-app]="."
+          newmap[src/domains/profile-common]="."
+          newmap[src/domains/sign]="."
+          newmap[src/github-runner]="."
 
           TAG=$(cat .terraform-version)
 
@@ -54,20 +50,28 @@ jobs:
 
             pushd "$f"
 
-            if [[ "${newmap[$f]}" == "." ]]; then
-              secondPath=""
-            else
-              secondPath="${newmap[$f]#.}"
-            fi
+            # replace '.' with empty string
+            relativePath="${newmap[$f]//./}"
 
-            echo "DEBUG - $(pwd)$secondPath/main.tf"
+            echo "DEBUG - $(pwd)$relativePath/main.tf"
 
             if [[ -f "99_main.tf" ]]; then
               echo "PROCESSING - 99_main.tf"
               sed -i -e 's/  backend "azurerm" {}//g' 99_main.tf # use local backend
-            elif [[ -f "$(pwd)/$secondPath/main.tf" ]]; then
-              echo "PROCESSING - $(pwd)$secondPath/main.tf"
-              sed -i -e '/backend "azurerm" {/,/}/d' $(pwd)/$secondPath/main.tf # use local backend
+            elif [[ -f "$(pwd)/$relativePath/main.tf" ]]; then
+              echo "PROCESSING - $(pwd)$relativePath/main.tf"
+              sed -i -e '/backend "azurerm" {/,/}/d' $(pwd)/$relativePath/main.tf # use local backend
+
+              pushd "./_modules"
+              modules=$(find . -type d)
+
+              for module in modules; do
+                folder_name=$(basename "$folder")
+                echo "DEBUG - run docker in folder: $folder_name"
+                docker run -v $(pwd):/tmp -w /tmp hashicorp/terraform:$TAG -chdir="./$folder_name" init &
+                pids+=($!)
+              done
+              popd
             fi
 
             docker run -v $(pwd):/tmp -w /tmp hashicorp/terraform:$TAG -chdir="${newmap[$f]}" init &
