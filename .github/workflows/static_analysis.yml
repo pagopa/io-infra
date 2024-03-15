@@ -102,5 +102,5 @@ jobs:
 
       - name: run_pre_commit_terraform
         run: |
-          TAG="v1.83.0@sha256:94ec10f1587b22ffae28f46ebaefc317ae2ba8eb61f6be02af6a41f33a6a57cb"
+          TAG="v1.88.2@sha256:5667c8a9bca61c33dbd54fa736a78b117c6bd398ff24c7cee37c21ca16100122"
           docker run -v $(pwd):/lint -w /lint ghcr.io/antonbabenko/pre-commit-terraform:$TAG run -a
