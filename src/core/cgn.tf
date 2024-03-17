@@ -249,15 +249,14 @@ data "azurerm_key_vault_secret" "cgn_onboarding_backend_identity" {
 #   principal_id         = data.azurerm_key_vault_secret.cgn_onboarding_backend_identity.value
 # }
 
-resource "azurerm_resource_group" "cgn_be_rg" {
-  name     = format("%s-cgn-be-rg", local.project)
-  location = var.location
+data "azurerm_resource_group" "cgn_be_rg" {
+  name = format("%s-cgn-be-rg", local.project)
 }
 
 resource "azurerm_app_service_plan" "cgn_common" {
   name                = format("%s-plan-cgn-common", local.project)
-  location            = azurerm_resource_group.cgn_be_rg.location
-  resource_group_name = azurerm_resource_group.cgn_be_rg.name
+  location            = data.azurerm_resource_group.cgn_be_rg.location
+  resource_group_name = data.azurerm_resource_group.cgn_be_rg.name
 
   kind     = var.plan_cgn_kind
   reserved = true
