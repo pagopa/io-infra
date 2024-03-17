@@ -65,6 +65,8 @@ jobs:
             elif [[ -f "$(pwd)/$relativePath/main.tf" ]]; then
               sed -i -e '/backend "azurerm" {/,/}/d' $(pwd)/$relativePath/main.tf # use local backend
 
+              # explaination: https://github.com/pagopa/io-infra/pull/906
+
               # pushd "_modules"
               # modules=$(find . -type d)
 
@@ -100,5 +102,5 @@ jobs:
 
       - name: run_pre_commit_terraform
         run: |
-          TAG="v1.84.0@sha256:09115c5d80dc7469a1f284f56529a55185f7bfc1e425746ed4cf5320ac760872"
+          TAG="v1.83.0@sha256:94ec10f1587b22ffae28f46ebaefc317ae2ba8eb61f6be02af6a41f33a6a57cb"
           docker run -v $(pwd):/lint -w /lint ghcr.io/antonbabenko/pre-commit-terraform:$TAG run -a
