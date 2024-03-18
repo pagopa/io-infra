@@ -53,12 +53,12 @@ module "api_v2_cgn_merchant" {
 }
 
 # Named Values function-cgn-merchant
-data "azurerm_linux_function_app" "function_cgn_merchant" {
+data "azurerm_linux_function_app" "function_cgn" {
   resource_group_name = "${local.project}-cgn-be-rg"
   name                = format("%s-cgn-fn", local.project)
 }
 
-data "azurerm_linux_function_app" "function_cgn" {
+data "azurerm_linux_function_app" "function_cgn_merchant" {
   resource_group_name = "${local.project}-cgn-be-rg"
   name                = format("%s-cgn-merchant-fn", local.project)
 }
