@@ -10,6 +10,7 @@
 
 | Name | Source | Version |
 |------|--------|---------|
+| <a name="module_cosmos"></a> [cosmos](#module\_cosmos) | ../../_modules/cosmos | n/a |
 | <a name="module_networking"></a> [networking](#module\_networking) | ../../_modules/networking | n/a |
 | <a name="module_redis"></a> [redis](#module\_redis) | ../../_modules/redis | n/a |
 | <a name="module_resource_groups"></a> [resource\_groups](#module\_resource\_groups) | ../../_modules/resource_groups | n/a |
