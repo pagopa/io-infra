@@ -20,4 +20,4 @@ jobs:
     secrets: inherit
     with:
       environment: prod
-      dir: "src/domains/cgn"
+      dir: "src/domains/cgn/prod/westeurope"
