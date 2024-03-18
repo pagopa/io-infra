@@ -15,7 +15,7 @@ on:
 
 jobs:
   code_review_prod:
-    uses: ./.github/workflows/call_code_review.yml
+    uses: ./.github/workflows/call_code_review.yaml
     name: Terraform Plan
     secrets: inherit
     with:

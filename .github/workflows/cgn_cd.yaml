@@ -10,7 +10,7 @@ on:
 
 jobs:
   release_prod:
-    uses: ./.github/workflows/call_release.yml
+    uses: ./.github/workflows/call_release.yaml
     name: Terraform Apply
     secrets: inherit
     with:
