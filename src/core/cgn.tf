@@ -7,7 +7,7 @@ data "azurerm_storage_account" "iopstcgn" {
   resource_group_name = data.azurerm_resource_group.rg_cgn.name
 }
 
-data "azurerm_subnet" "redis_cgn_redis_subnet" {
+data "azurerm_subnet" "redis_cgn_snet" {
   name                 = format("%s-redis-cgn-snet", local.project)
   resource_group_name  = azurerm_resource_group.rg_common.name
   virtual_network_name = module.vnet_common.name
@@ -51,7 +51,7 @@ module "redis_cgn" {
   private_endpoint = {
     enabled              = true
     virtual_network_id   = module.vnet_common.id
-    subnet_id            = data.azurerm_subnet.redis_cgn_redis_subnet.id
+    subnet_id            = data.azurerm_subnet.redis_cgn_snet.id
     private_dns_zone_ids = [azurerm_private_dns_zone.privatelink_redis_cache.id]
   }
 
