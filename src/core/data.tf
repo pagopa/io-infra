@@ -241,3 +241,12 @@ data "azurerm_user_assigned_identity" "managed_identity_io_infra_cd" {
   name                = "${local.project}-infra-github-cd-identity"
   resource_group_name = "${local.project}-identity-rg"
 }
+
+#
+# CGN
+#
+
+data "azurerm_linux_function_app" "function_cgn" {
+  resource_group_name = "${local.project}-cgn-be-rg"
+  name                = format("%s-cgn-fn", local.project)
+}
