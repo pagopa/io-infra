@@ -124,10 +124,10 @@ module "function_cgn" {
     "blobs_retention_days"       = 0,
   }
 
-  subnet_id = module.cgn_snet.id
+  subnet_id = data.azurerm_subnet.cgn_snet.id
 
   allowed_subnets = [
-    module.cgn_snet.id,
+    data.azurerm_subnet.cgn_snet.id,
     module.app_backendl1_snet.id,
     module.app_backendl2_snet.id,
     module.app_backendli_snet.id,
@@ -171,10 +171,10 @@ module "function_cgn_staging_slot" {
     }
   )
 
-  subnet_id = module.cgn_snet.id
+  subnet_id = data.azurerm_subnet.cgn_snet.id
 
   allowed_subnets = [
-    module.cgn_snet.id,
+    data.azurerm_subnet.cgn_snet.id,
     module.azdoa_snet[0].id,
     module.app_backendl1_snet.id,
     module.app_backendl2_snet.id,

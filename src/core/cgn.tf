@@ -7,14 +7,10 @@ data "azurerm_storage_account" "iopstcgn" {
   resource_group_name = data.azurerm_resource_group.rg_cgn.name
 }
 
-## redis cgn subnet
-module "redis_cgn_snet" {
-  source                                    = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v7.61.0"
-  name                                      = format("%s-redis-cgn-snet", local.project)
-  address_prefixes                          = ["10.0.14.0/25"]
-  resource_group_name                       = azurerm_resource_group.rg_common.name
-  virtual_network_name                      = module.vnet_common.name
-  private_endpoint_network_policies_enabled = false
+data "azurerm_subnet" "redis_cgn_redis_subnet" {
+  name                 = format("%s-redis-cgn-snet", local.project)
+  resource_group_name  = azurerm_resource_group.rg_common.name
+  virtual_network_name = module.vnet_common.name
 }
 
 module "redis_cgn" {
@@ -55,7 +51,7 @@ module "redis_cgn" {
   private_endpoint = {
     enabled              = true
     virtual_network_id   = module.vnet_common.id
-    subnet_id            = module.redis_cgn_snet.id
+    subnet_id            = data.azurerm_subnet.redis_cgn_redis_subnet.id
     private_dns_zone_ids = [azurerm_private_dns_zone.privatelink_redis_cache.id]
   }
 
@@ -270,31 +266,8 @@ resource "azurerm_app_service_plan" "cgn_common" {
   tags = var.tags
 }
 
-# Subnet to host app function
-module "cgn_snet" {
-  source                                    = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v7.61.0"
-  name                                      = format("%s-cgn-snet", local.project)
-  address_prefixes                          = var.cidr_subnet_cgn
-  resource_group_name                       = azurerm_resource_group.rg_common.name
-  virtual_network_name                      = module.vnet_common.name
-  private_endpoint_network_policies_enabled = false
-
-  service_endpoints = [
-    "Microsoft.Web",
-    "Microsoft.AzureCosmosDB",
-    "Microsoft.Storage",
-  ]
-
-  delegation = {
-    name = "default"
-    service_delegation = {
-      name    = "Microsoft.Web/serverFarms"
-      actions = ["Microsoft.Network/virtualNetworks/subnets/action"]
-    }
-  }
-}
-
-resource "azurerm_subnet_nat_gateway_association" "cgn_snet" {
-  nat_gateway_id = module.nat_gateway.id
-  subnet_id      = module.cgn_snet.id
+data "azurerm_subnet" "cgn_snet" {
+  name                 = format("%s-cgn-snet", local.project)
+  resource_group_name  = azurerm_resource_group.rg_common.name
+  virtual_network_name = module.vnet_common.name
 }
