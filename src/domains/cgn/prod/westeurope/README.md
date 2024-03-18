@@ -10,6 +10,7 @@
 
 | Name | Source | Version |
 |------|--------|---------|
+| <a name="module_apim"></a> [apim](#module\_apim) | ../../_modules/apim | n/a |
 | <a name="module_cosmos"></a> [cosmos](#module\_cosmos) | ../../_modules/cosmos | n/a |
 | <a name="module_functions"></a> [functions](#module\_functions) | ../../_modules/functions_apps | n/a |
 | <a name="module_networking"></a> [networking](#module\_networking) | ../../_modules/networking | n/a |
