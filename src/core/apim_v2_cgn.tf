@@ -53,12 +53,22 @@ module "api_v2_cgn_merchant" {
 }
 
 # Named Values function-cgn-merchant
+data "azurerm_linux_function_app" "function_cgn" {
+  resource_group_name = "${local.project}-cgn-be-rg"
+  name                = format("%s-cgn-fn", local.project)
+}
+
+data "azurerm_linux_function_app" "function_cgn_merchant" {
+  resource_group_name = "${local.project}-cgn-be-rg"
+  name                = format("%s-cgn-merchant-fn", local.project)
+}
+
 resource "azurerm_api_management_named_value" "io_fn_cgnmerchant_url_v2" {
   name                = "io-fn-cgnmerchant-url"
   api_management_name = module.apim_v2.name
   resource_group_name = module.apim_v2.resource_group_name
   display_name        = "io-fn-cgnmerchant-url"
-  value               = "https://${module.function_cgn_merchant.default_hostname}"
+  value               = "https://${data.azurerm_linux_function_app.function_cgn_merchant.default_hostname}"
 }
 
 data "azurerm_key_vault_secret" "io_fn_cgnmerchant_key_secret_v2" {

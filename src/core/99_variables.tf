@@ -1065,49 +1065,6 @@ variable "io_receipt_service_test_url" {
   description = "The endpoint of Receipt Service (test env)"
 }
 
-# Function CGN
-variable "plan_cgn_kind" {
-  type        = string
-  description = "App service plan kind"
-  default     = null
-}
-
-variable "plan_cgn_sku_tier" {
-  type        = string
-  description = "App service plan sku tier"
-  default     = null
-}
-
-variable "plan_cgn_sku_size" {
-  type        = string
-  description = "App service plan sku size"
-  default     = null
-}
-
-variable "plan_cgn_sku_capacity" {
-  description = "Cgn app plan capacity"
-  type        = number
-  default     = 1
-}
-
-variable "function_cgn_autoscale_minimum" {
-  type        = number
-  description = "The minimum number of instances for this resource."
-  default     = 1
-}
-
-variable "function_cgn_autoscale_maximum" {
-  type        = number
-  description = "The maximum number of instances for this resource."
-  default     = 3
-}
-
-variable "function_cgn_autoscale_default" {
-  type        = number
-  description = "The number of instances that are available for scaling if metrics are not available for evaluation."
-  default     = 1
-}
-
 # Function EUCovidCert
 variable "function_eucovidcert_count" {
   type    = number
