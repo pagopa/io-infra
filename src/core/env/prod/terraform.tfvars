@@ -233,14 +233,6 @@ function_admin_autoscale_minimum = 1
 function_admin_autoscale_maximum = 3
 function_admin_autoscale_default = 1
 
-# Functions Cgn
-plan_cgn_kind                  = "Linux"
-plan_cgn_sku_tier              = "PremiumV3"
-plan_cgn_sku_size              = "P1v3"
-function_cgn_autoscale_minimum = 1
-function_cgn_autoscale_maximum = 30
-function_cgn_autoscale_default = 10
-
 # Functions shared
 plan_shared_1_kind                = "Linux"
 plan_shared_1_sku_tier            = "PremiumV3"
