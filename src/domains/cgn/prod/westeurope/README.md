@@ -13,6 +13,7 @@
 | <a name="module_networking"></a> [networking](#module\_networking) | ../../_modules/networking | n/a |
 | <a name="module_redis"></a> [redis](#module\_redis) | ../../_modules/redis | n/a |
 | <a name="module_resource_groups"></a> [resource\_groups](#module\_resource\_groups) | ../../_modules/resource_groups | n/a |
+| <a name="module_storage_accounts"></a> [storage\_accounts](#module\_storage\_accounts) | ../../_modules/storage_accounts | n/a |
 
 ## Resources
 
