@@ -78,14 +78,13 @@ jobs:
           terraform plan \
             -lock-timeout=3000s \
             -out=tfplan-${{ github.sha }} \
-            -input=false \
-            -var-file="./${{env.TERRAFORM_ENVIRONMENT}}/terraform.tfvars"
+            -input=false
 
       - name: "Upload Terraform Plan as Artifact"
         uses: actions/upload-artifact@694cdabd8bdb0f10b2cea11669e1bf5453eed0a6 # v4.2.0
         with:
           name: tfplan
-          path: ${{ inputs.dir }}/tfplan-${{ env.TERRAFORM_ENVIRONMENT }}-${{ github.sha }}
+          path: ${{ inputs.dir }}/tfplan-${{ github.sha }}
           if-no-files-found: error
           retention-days: 7
 
@@ -144,4 +143,4 @@ jobs:
             -lock-timeout=3000s \
             -auto-approve \
             -input=false \
-            tfplan-${{ env.TERRAFORM_ENVIRONMENT }}-${{ github.sha }}
+            tfplan-${{ github.sha }}
