@@ -55,10 +55,10 @@ module "function_cgn_merchant" {
     local.function_cgn_merchant.app_settings_common,
   )
 
-  subnet_id = module.cgn_snet.id
+  subnet_id = data.azurerm_subnet.cgn_snet.id
 
   allowed_subnets = [
-    module.cgn_snet.id,
+    data.azurerm_subnet.cgn_snet.id,
     module.apim_v2_snet.id,
   ]
 
@@ -87,10 +87,10 @@ module "function_cgn_merchant_staging_slot" {
     local.function_cgn_merchant.app_settings_common,
   )
 
-  subnet_id = module.cgn_snet.id
+  subnet_id = data.azurerm_subnet.cgn_snet.id
 
   allowed_subnets = [
-    module.cgn_snet.id,
+    data.azurerm_subnet.cgn_snet.id,
     module.azdoa_snet[0].id,
     module.apim_v2_snet.id,
   ]
