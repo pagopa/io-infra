@@ -314,8 +314,7 @@ variable "cidr_subnet_appbackendli" {
 }
 
 variable "cidr_subnet_shared_1" {
-  type        = list(string)
-  description = "Function cgn address space."
+  type = list(string)
 }
 
 variable "cidr_subnet_eucovidcert" {
@@ -686,24 +685,6 @@ variable "selfcare_plan_sku_capacity" {
   type        = number
   default     = 1
 }
-
-## Azure container registry
-# variable "sku_container_registry" {
-#   type    = string
-#   default = "Basic"
-# }
-
-# variable "retention_policy_acr" {
-#   type = object({
-#     days    = number
-#     enabled = bool
-#   })
-#   default = {
-#     days    = 7
-#     enabled = true
-#   }
-#   description = "Container registry retention policy."
-# }
 
 # Function App
 variable "function_app_count" {
