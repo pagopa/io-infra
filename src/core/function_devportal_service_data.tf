@@ -54,7 +54,7 @@ locals {
       name             = "devportalsrvdata" # devportalservicedata would result in a name too long
       resource_group   = data.azurerm_resource_group.selfcare_be_rg
       app_service_plan = azurerm_service_plan.selfcare_be_common
-      snet             = module.selfcare_be_common_snet
+      snet             = data.azurerm_subnet.selfcare_be_common_snet
       vnet             = module.vnet_common
     }
 
@@ -180,7 +180,7 @@ module "function_devportalservicedata" {
   subnet_id   = local.function_devportalservicedata.app_context.snet.id
   allowed_ips = local.app_insights_ips_west_europe
   allowed_subnets = [
-    module.selfcare_be_common_snet.id,
+    data.azurerm_subnet.selfcare_be_common_snet.id,
   ]
 
   app_settings = merge(local.function_devportalservicedata.app_settings_commons, {

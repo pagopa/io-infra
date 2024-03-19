@@ -69,7 +69,7 @@ data "azurerm_function_app" "webapp_functions_app" {
 # so we choose one of the app service in the app service plan
 resource "azurerm_app_service_virtual_network_swift_connection" "devportal_be" {
   app_service_id = module.appservice_devportal_be.id
-  subnet_id      = module.selfcare_be_common_snet.id
+  subnet_id      = data.azurerm_subnet.selfcare_be_common_snet.id
 }
 
 #tfsec:ignore:azure-appservice-authentication-enabled:exp:2022-05-01 # already ignored, maybe a bug in tfsec

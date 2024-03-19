@@ -133,27 +133,10 @@ resource "azurerm_service_plan" "selfcare_be_common" {
   tags = var.tags
 }
 
-# Subnet to host checkout function
-module "selfcare_be_common_snet" {
-  source                                    = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v7.61.0"
-  name                                      = format("%s-selfcare-be-common-snet", local.project)
-  address_prefixes                          = var.cidr_subnet_selfcare_be
-  resource_group_name                       = azurerm_resource_group.rg_common.name
-  virtual_network_name                      = module.vnet_common.name
-  private_endpoint_network_policies_enabled = false
-  service_endpoints = [
-    "Microsoft.Web",
-    "Microsoft.Storage",
-    "Microsoft.AzureCosmosDB",
-  ]
-
-  delegation = {
-    name = "default"
-    service_delegation = {
-      name    = "Microsoft.Web/serverFarms"
-      actions = ["Microsoft.Network/virtualNetworks/subnets/action"]
-    }
-  }
+data "azurerm_subnet" "selfcare_be_common_snet" {
+  name                 = format("%s-selfcare-be-common-snet", local.project)
+  resource_group_name  = azurerm_resource_group.rg_common.name
+  virtual_network_name = module.vnet_common.name
 }
 
 # Only 1 subnet can be associated to a service plan
@@ -161,7 +144,7 @@ module "selfcare_be_common_snet" {
 # so we choose one of the app service in the app service plan
 resource "azurerm_app_service_virtual_network_swift_connection" "selfcare_be" {
   app_service_id = module.appservice_selfcare_be.id
-  subnet_id      = module.selfcare_be_common_snet.id
+  subnet_id      = data.azurerm_subnet.selfcare_be_common_snet.id
 }
 
 #tfsec:ignore:azure-appservice-authentication-enabled:exp:2022-05-01 # already ignored, maybe a bug in tfsec
