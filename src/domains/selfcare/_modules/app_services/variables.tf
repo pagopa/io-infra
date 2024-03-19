@@ -20,7 +20,7 @@ variable "resource_group_name" {
 
 variable "subnet_id" {
   type        = string
-  description = "Subnet Id for the App Services"
+  description = "Subnet Id for the App Services and Function Apps"
 }
 
 variable "frontend_hostname" {
@@ -38,11 +38,27 @@ variable "selfcare_external_hostname" {
   description = "External hostname to save in app configs"
 }
 
-# variable "dns_zone_name" {
-#   type = string
-# }
-
 variable "apim_hostname_api_app_internal" {
   type        = string
   description = "Admin API url to save in app configs"
+}
+
+variable "private_endpoint_subnet_id" {
+  type        = string
+  description = "Id of the subnet which has private endpoints"
+}
+
+variable "app_insights_ips" {
+  type        = list(string)
+  description = "List of Application Insights IPs"
+}
+
+variable "db_server_data" {
+  type = object({
+    username = string
+    password = string
+  })
+
+  sensitive   = true
+  description = "Database credentials to save in app configs"
 }

@@ -3,6 +3,7 @@ resource "azurerm_monitor_autoscale_setting" "appservice_selfcare_be_common" {
   resource_group_name = azurerm_service_plan.selfcare_be_common.resource_group_name
   location            = azurerm_service_plan.selfcare_be_common.location
   target_resource_id  = azurerm_service_plan.selfcare_be_common.id
+  enabled             = false
 
   profile {
     name = "default"
