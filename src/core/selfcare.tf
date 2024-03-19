@@ -12,11 +12,8 @@ locals {
 }
 
 ### Frontend common resources
-resource "azurerm_resource_group" "selfcare_fe_rg" {
-  name     = "${local.project}-selfcare-fe-rg"
-  location = var.location
-
-  tags = var.tags
+data "azurerm_resource_group" "selfcare_fe_rg" {
+  name = "${local.project}-selfcare-fe-rg"
 }
 
 ### Frontend resources
@@ -26,8 +23,8 @@ module "selfcare_cdn" {
 
   name                  = "selfcare"
   prefix                = local.project
-  resource_group_name   = azurerm_resource_group.selfcare_fe_rg.name
-  location              = azurerm_resource_group.selfcare_fe_rg.location
+  resource_group_name   = data.azurerm_resource_group.selfcare_fe_rg.name
+  location              = data.azurerm_resource_group.selfcare_fe_rg.location
   hostname              = "${var.dns_zone_io_selfcare}.${var.external_domain}"
   https_rewrite_enabled = true
 
@@ -76,11 +73,8 @@ module "selfcare_cdn" {
 }
 
 ### Backend common resources
-resource "azurerm_resource_group" "selfcare_be_rg" {
-  name     = format("%s-selfcare-be-rg", local.project)
-  location = var.location
-
-  tags = var.tags
+data "azurerm_resource_group" "selfcare_be_rg" {
+  name = format("%s-selfcare-be-rg", local.project)
 }
 
 ## key vault
@@ -129,8 +123,8 @@ module "selfcare_jwt" {
 
 resource "azurerm_service_plan" "selfcare_be_common" {
   name                = format("%s-plan-selfcare-be-common", local.project)
-  location            = azurerm_resource_group.selfcare_be_rg.location
-  resource_group_name = azurerm_resource_group.selfcare_be_rg.name
+  location            = data.azurerm_resource_group.selfcare_be_rg.location
+  resource_group_name = data.azurerm_resource_group.selfcare_be_rg.name
 
   os_type      = "Linux"
   sku_name     = var.selfcare_plan_sku_size
@@ -176,7 +170,7 @@ module "appservice_selfcare_be" {
   source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//app_service?ref=v7.61.0"
 
   name                = format("%s-app-selfcare-be", local.project)
-  resource_group_name = azurerm_resource_group.selfcare_be_rg.name
+  resource_group_name = data.azurerm_resource_group.selfcare_be_rg.name
 
   plan_type = "external"
   plan_id   = azurerm_service_plan.selfcare_be_common.id
@@ -275,8 +269,8 @@ module "appservice_selfcare_be" {
 
 resource "azurerm_monitor_autoscale_setting" "appservice_selfcare_be_common" {
   name                = format("%s-autoscale", azurerm_service_plan.selfcare_be_common.name)
-  resource_group_name = azurerm_resource_group.selfcare_be_rg.name
-  location            = azurerm_resource_group.selfcare_be_rg.location
+  resource_group_name = data.azurerm_resource_group.selfcare_be_rg.name
+  location            = data.azurerm_resource_group.selfcare_be_rg.location
   target_resource_id  = azurerm_service_plan.selfcare_be_common.id
 
   profile {
