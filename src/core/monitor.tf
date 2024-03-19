@@ -334,8 +334,8 @@ locals {
     },
     {
       # https://io.selfcare.pagopa.it
-      name                              = module.selfcare_cdn.fqdn,
-      host                              = module.selfcare_cdn.fqdn,
+      name                              = trimsuffix(data.azurerm_dns_a_record.selfcare_cdn.fqdn, "."),
+      host                              = trimsuffix(data.azurerm_dns_a_record.selfcare_cdn.fqdn, "."),
       path                              = "",
       frequency                         = 900
       http_status                       = 200,

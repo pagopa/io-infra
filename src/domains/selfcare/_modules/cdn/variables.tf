@@ -14,11 +14,11 @@ variable "tags" {
 }
 
 variable "resource_group_name" {
-  type = string
+  type        = string
   description = "Resource group name for the CDN"
 }
 
 variable "dns_zone_name" {
-  type = string
+  type        = string
   description = "DNZ zone for the CDN Profile"
 }

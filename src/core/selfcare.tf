@@ -16,65 +16,15 @@ data "azurerm_resource_group" "selfcare_fe_rg" {
   name = "${local.project}-selfcare-fe-rg"
 }
 
-### Frontend resources
-#tfsec:ignore:azure-storage-queue-services-logging-enabled:exp:2022-05-01 # already ignored, maybe a bug in tfsec
-module "selfcare_cdn" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//cdn?ref=v7.61.0"
-
-  name                  = "selfcare"
-  prefix                = local.project
-  resource_group_name   = data.azurerm_resource_group.selfcare_fe_rg.name
-  location              = data.azurerm_resource_group.selfcare_fe_rg.location
-  hostname              = "${var.dns_zone_io_selfcare}.${var.external_domain}"
-  https_rewrite_enabled = true
-
-  index_document     = "index.html"
-  error_404_document = "404.html"
-
-  storage_account_replication_type = "GZRS"
-
-  dns_zone_name                = azurerm_dns_zone.io_selfcare_pagopa_it[0].name
-  dns_zone_resource_group_name = azurerm_dns_zone.io_selfcare_pagopa_it[0].resource_group_name
-
-  keyvault_vault_name          = module.key_vault.name
-  keyvault_resource_group_name = module.key_vault.resource_group_name
-  keyvault_subscription_id     = data.azurerm_subscription.current.subscription_id
-
-  querystring_caching_behaviour = "BypassCaching"
-
-  global_delivery_rule = {
-    cache_expiration_action       = []
-    cache_key_query_string_action = []
-    modify_request_header_action  = []
-
-    # HSTS
-    modify_response_header_action = [{
-      action = "Overwrite"
-      name   = "Strict-Transport-Security"
-      value  = "max-age=31536000"
-      },
-      # Content-Security-Policy (in Report mode)
-      {
-        action = "Append"
-        name   = "Content-Security-Policy-Report-Only"
-        value  = "script-src 'self' https://www.google.com https://www.gstatic.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; worker-src 'none'; font-src 'self' https://fonts.googleapis.com https://fonts.gstatic.com; "
-      },
-      {
-        action = "Append"
-        name   = "Content-Security-Policy-Report-Only"
-        value  = "img-src 'self' https://assets.cdn.io.italia.it data:; "
-      }
-    ]
-  }
-
-  log_analytics_workspace_id = azurerm_log_analytics_workspace.log_analytics_workspace.id
-
-  tags = var.tags
-}
-
 ### Backend common resources
 data "azurerm_resource_group" "selfcare_be_rg" {
   name = format("%s-selfcare-be-rg", local.project)
+}
+
+data "azurerm_dns_a_record" "selfcare_cdn" {
+  name                = "@"
+  resource_group_name = azurerm_dns_zone.io_selfcare_pagopa_it[0].resource_group_name
+  zone_name           = azurerm_dns_zone.io_selfcare_pagopa_it[0].name
 }
 
 ## key vault
