@@ -49,3 +49,7 @@ packer:
 automation:
   - changed-files:
     - any-glob-to-any-file: ['.github/**']
+
+selfcare:
+  - changed-files:
+    - any-glob-to-any-file: ['.src/domains/selfcare/**']

@@ -78,7 +78,7 @@ module "appservice_devportal_be" {
   source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//app_service?ref=v7.61.0"
 
   name                = format("%s-app-devportal-be", local.project)
-  resource_group_name = azurerm_resource_group.selfcare_be_rg.name
+  resource_group_name = data.azurerm_resource_group.selfcare_be_rg.name
 
   plan_type = "external"
   plan_id   = azurerm_service_plan.selfcare_be_common.id
