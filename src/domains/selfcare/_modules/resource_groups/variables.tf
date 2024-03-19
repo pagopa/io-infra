@@ -1,11 +1,14 @@
+variable "project" {
+  type        = string
+  description = "IO prefix and short environment"
+}
+
 variable "location" {
-  type = string
+  type        = string
+  description = "Azure region"
 }
 
 variable "tags" {
-  type = map(any)
-}
-
-variable "project" {
-  type = string
+  type        = map(any)
+  description = "Resource tags"
 }
