@@ -81,18 +81,8 @@ data "azurerm_key_vault_secret" "devportal_cookie_key" {
   key_vault_id = data.azurerm_key_vault.key_vault_common.id
 }
 
-data "azurerm_key_vault_secret" "selfcare_devportal_service_principal_secret" {
-  name         = "devportal-SERVICE-PRINCIPAL-SECRET"
-  key_vault_id = data.azurerm_key_vault.key_vault_common.id
-}
-
 data "azurerm_key_vault_secret" "devportal_request_review_legacy_queue_connectionstring" {
   name         = "devportal-REQUEST-REVIEW-LEGACY-QUEUE-CONNECTIONSTRING"
-  key_vault_id = data.azurerm_key_vault.key_vault_common.id
-}
-
-data "azurerm_key_vault_secret" "subscriptionmigrations_db_server_fnsubsmigrations_password" {
-  name         = "selfcare-subsmigrations-FNSUBSMIGRATIONS-PASSWORD"
   key_vault_id = data.azurerm_key_vault.key_vault_common.id
 }
 

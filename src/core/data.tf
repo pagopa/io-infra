@@ -261,6 +261,10 @@ data "azurerm_dns_a_record" "selfcare_cdn" {
   zone_name           = azurerm_dns_zone.io_selfcare_pagopa_it[0].name
 }
 
+#
+# DevPortal
+#
+
 data "azurerm_linux_web_app" "appservice_devportal_be" {
   name                = "${local.project}-app-devportal-be"
   resource_group_name = "${local.project}-selfcare-be-rg"

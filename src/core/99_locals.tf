@@ -51,13 +51,4 @@ locals {
 
   # MESSAGES
   message_content_container_name = "message-content"
-
-  selfcare_io = {
-    backend_hostname  = "api.${var.dns_zone_io_selfcare}.${var.external_domain}"
-    frontend_hostname = "${var.dns_zone_io_selfcare}.${var.external_domain}"
-  }
-
-  selfcare = {
-    hostname = "${var.selfcare_external_hostname}"
-  }
 }
