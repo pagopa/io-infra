@@ -53,3 +53,7 @@ automation:
 selfcare:
   - changed-files:
     - any-glob-to-any-file: ['.src/domains/selfcare/**']
+
+eucovidcert:
+  - changed-files:
+    - any-glob-to-any-file: ['.src/domains/eucovidcert/**']
