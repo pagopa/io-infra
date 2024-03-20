@@ -65,11 +65,8 @@ data "azurerm_key_vault_secret" "fn_eucovidcert_FNSERVICES_API_KEY" {
 #
 # RESOUCE GROUP
 #
-resource "azurerm_resource_group" "eucovidcert_rg" {
-  name     = format("%s-rg-eucovidcert", local.project)
-  location = var.location
-
-  tags = var.tags
+data "azurerm_resource_group" "eucovidcert_rg" {
+  name = format("%s-rg-eucovidcert", local.project)
 }
 
 #
@@ -84,8 +81,8 @@ module "eucovidcert_storage_account" {
   access_tier                     = "Hot"
   blob_versioning_enabled         = false
   account_replication_type        = "GZRS"
-  resource_group_name             = azurerm_resource_group.eucovidcert_rg.name
-  location                        = azurerm_resource_group.eucovidcert_rg.location
+  resource_group_name             = data.azurerm_resource_group.eucovidcert_rg.name
+  location                        = data.azurerm_resource_group.eucovidcert_rg.location
   advanced_threat_protection      = false
   allow_nested_items_to_be_public = false
   public_network_access_enabled   = true
@@ -181,7 +178,7 @@ resource "azurerm_subnet_nat_gateway_association" "function_eucovidcert_snet" {
 module "function_eucovidcert" {
   source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app?ref=v7.61.0"
 
-  resource_group_name = azurerm_resource_group.eucovidcert_rg.name
+  resource_group_name = data.azurerm_resource_group.eucovidcert_rg.name
   name                = format("%s-eucovidcert-fn", local.project)
   location            = var.location
   health_check_path   = "/api/v1/info"
@@ -231,7 +228,7 @@ module "function_eucovidcert_staging_slot" {
 
   name                = "staging"
   location            = var.location
-  resource_group_name = azurerm_resource_group.eucovidcert_rg.name
+  resource_group_name = data.azurerm_resource_group.eucovidcert_rg.name
   function_app_id     = module.function_eucovidcert.id
   app_service_plan_id = module.function_eucovidcert.app_service_plan_id
   health_check_path   = "/api/v1/info"
@@ -267,7 +264,7 @@ module "function_eucovidcert_staging_slot" {
 
 resource "azurerm_monitor_autoscale_setting" "function_eucovidcert" {
   name                = format("%s-autoscale", module.function_eucovidcert.name)
-  resource_group_name = azurerm_resource_group.eucovidcert_rg.name
+  resource_group_name = data.azurerm_resource_group.eucovidcert_rg.name
   location            = var.location
   target_resource_id  = module.function_eucovidcert.app_service_plan_id
 
@@ -375,7 +372,7 @@ resource "azurerm_monitor_autoscale_setting" "function_eucovidcert" {
 resource "azurerm_monitor_metric_alert" "function_eucovidcert_health_check" {
 
   name                = "${module.function_eucovidcert.name}-health-check-failed"
-  resource_group_name = azurerm_resource_group.eucovidcert_rg.name
+  resource_group_name = data.azurerm_resource_group.eucovidcert_rg.name
   scopes              = [module.function_eucovidcert.id]
   description         = "${module.function_eucovidcert.name} health check failed"
   severity            = 1
