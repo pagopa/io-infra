@@ -13,6 +13,7 @@ locals {
   apim_hostname_api_app_internal = format("api-app.internal.io.%s", local.external_domain)
   apim_hostname_api_internal     = "api-internal.io.italia.it"
   selfcare_external_hostname     = "selfcare.pagopa.it"
+  devportal_frontend_hostname    = "developer.io.italia.it"
 
   tags = {
     CostCenter     = "TS310 - PAGAMENTI & SERVIZI"

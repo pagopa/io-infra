@@ -77,7 +77,7 @@ module "app_gw" {
       port         = 443
       ip_addresses = null # with null value use fqdns
       fqdns = [
-        module.appservice_devportal_be.default_site_hostname,
+        data.azurerm_linux_web_app.appservice_devportal_be.default_hostname,
       ]
       probe                       = "/info"
       probe_name                  = "probe-developerportal-backend"
@@ -91,7 +91,7 @@ module "app_gw" {
       port         = 443
       ip_addresses = null # with null value use fqdns
       fqdns = [
-        module.appservice_selfcare_be.default_site_hostname,
+        data.azurerm_linux_web_app.appservice_devportal_be.default_hostname,
       ]
       probe                       = "/info"
       probe_name                  = "probe-selfcare-backend"

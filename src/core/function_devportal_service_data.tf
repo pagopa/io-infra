@@ -1,3 +1,15 @@
+locals {
+  function_devportalservicedata = {
+    app_context = {
+      resource_group_name = data.azurerm_resource_group.selfcare_be_rg
+    }
+
+    db = {
+      name = "${local.project}-devportalservicedata-db-postgresql"
+    }
+  }
+}
+
 #
 # DB
 #
@@ -23,7 +35,7 @@ module "devportalservicedata_db_server" {
 
   name                = local.function_devportalservicedata.db.name
   location            = var.location
-  resource_group_name = local.function_devportalservicedata.app_context.resource_group.name
+  resource_group_name = local.function_devportalservicedata.app_context.resource_group_name
 
   administrator_login    = data.azurerm_key_vault_secret.devportalservicedata_db_server_adm_username.value
   administrator_password = data.azurerm_key_vault_secret.devportalservicedata_db_server_adm_password.value
@@ -35,7 +47,7 @@ module "devportalservicedata_db_server" {
 
   private_endpoint_enabled = true
   private_dns_zone_id      = azurerm_private_dns_zone.privatelink_postgres_database_azure_com.id
-  delegated_subnet_id      = module.devportalservicedata_db_server_snet.id
+  delegated_subnet_id      = data.azurerm_subnet.devportal_service_data_snet.id
 
   high_availability_enabled = false
 
@@ -56,4 +68,15 @@ resource "azurerm_postgresql_flexible_server_database" "devportalservicedata_db"
   charset    = "UTF8"
   collation  = "en_US.utf8"
   depends_on = [module.devportalservicedata_db_server]
+}
+
+data "azurerm_subnet" "devportal_service_data_snet" {
+  name                 = "${local.project}-devportalservicedata-db-postgresql-snet"
+  resource_group_name  = azurerm_resource_group.rg_common.name
+  virtual_network_name = module.vnet_common.name
+}
+
+data "azurerm_linux_web_app" "appservice_devportal_be" {
+  name                = "${local.project}-app-devportal-be"
+  resource_group_name = "${local.project}-selfcare-be-rg"
 }

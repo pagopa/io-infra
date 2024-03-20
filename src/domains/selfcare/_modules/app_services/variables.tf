@@ -53,12 +53,30 @@ variable "app_insights_ips" {
   description = "List of Application Insights IPs"
 }
 
-variable "db_server_data" {
+variable "dev_portal_db_data" {
   type = object({
+    host     = string
     username = string
     password = string
   })
 
   sensitive   = true
-  description = "Database credentials to save in app configs"
+  description = "DevPortal database credentials to save in app configs"
+}
+
+variable "subsmigrations_db_data" {
+  type = object({
+    host     = string
+    username = string
+    password = string
+  })
+
+  sensitive   = false
+  description = "SubsMigrations database credentials to save in app configs"
+}
+
+
+variable "devportal_frontend_hostname" {
+  type        = string
+  description = "Developer Portal frontend host name"
 }

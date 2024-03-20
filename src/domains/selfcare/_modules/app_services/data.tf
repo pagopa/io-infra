@@ -36,12 +36,12 @@ data "azurerm_key_vault_secret" "selfcare_apim_io_service_key" {
   key_vault_id = data.azurerm_key_vault.key_vault_common.id
 }
 
-data "azurerm_key_vault_secret" "selfcare_devportal_service_principal_client_id" {
+data "azurerm_key_vault_secret" "apim_service_principal_client_id" {
   name         = "devportal-SERVICE-PRINCIPAL-CLIENT-ID"
   key_vault_id = data.azurerm_key_vault.key_vault_common.id
 }
 
-data "azurerm_key_vault_secret" "selfcare_devportal_service_principal_secret" {
+data "azurerm_key_vault_secret" "apim_service_principal_secret" {
   name         = "devportal-SERVICE-PRINCIPAL-SECRET"
   key_vault_id = data.azurerm_key_vault.key_vault_common.id
 }
@@ -51,7 +51,7 @@ data "azurerm_key_vault_secret" "selfcare_io_sandbox_fiscal_code" {
   key_vault_id = data.azurerm_key_vault.key_vault_common.id
 }
 
-data "azurerm_key_vault_secret" "selfcare_devportal_jira_token" {
+data "azurerm_key_vault_secret" "jira_token" {
   name         = "devportal-JIRA-TOKEN"
   key_vault_id = data.azurerm_key_vault.key_vault_common.id
 }
@@ -61,20 +61,36 @@ data "azurerm_key_vault_secret" "selfcare_subsmigrations_apikey" {
   key_vault_id = data.azurerm_key_vault.key_vault_common.id
 }
 
+data "azurerm_key_vault_secret" "devportal_client_id" {
+  name         = "devportal-CLIENT-ID"
+  key_vault_id = data.azurerm_key_vault.key_vault_common.id
+}
+
+data "azurerm_key_vault_secret" "devportal_client_secret" {
+  name         = "devportal-CLIENT-SECRET"
+  key_vault_id = data.azurerm_key_vault.key_vault_common.id
+}
+
+data "azurerm_key_vault_secret" "devportal_cookie_iv" {
+  name         = "devportal-COOKIE-IV"
+  key_vault_id = data.azurerm_key_vault.key_vault_common.id
+}
+
+data "azurerm_key_vault_secret" "devportal_cookie_key" {
+  name         = "devportal-COOKIE-KEY"
+  key_vault_id = data.azurerm_key_vault.key_vault_common.id
+}
+
+data "azurerm_key_vault_secret" "selfcare_devportal_service_principal_secret" {
+  name         = "devportal-SERVICE-PRINCIPAL-SECRET"
+  key_vault_id = data.azurerm_key_vault.key_vault_common.id
+}
+
 data "azurerm_key_vault_secret" "devportal_request_review_legacy_queue_connectionstring" {
   name         = "devportal-REQUEST-REVIEW-LEGACY-QUEUE-CONNECTIONSTRING"
   key_vault_id = data.azurerm_key_vault.key_vault_common.id
 }
 
-data "azurerm_key_vault_secret" "subscriptionmigrations_db_server_adm_username" {
-  name         = "selfcare-subsmigrations-DB-ADM-USERNAME"
-  key_vault_id = data.azurerm_key_vault.key_vault_common.id
-}
-
-data "azurerm_key_vault_secret" "subscriptionmigrations_db_server_adm_password" {
-  name         = "selfcare-subsmigrations-DB-ADM-PASSWORD"
-  key_vault_id = data.azurerm_key_vault.key_vault_common.id
-}
 data "azurerm_key_vault_secret" "subscriptionmigrations_db_server_fnsubsmigrations_password" {
   name         = "selfcare-subsmigrations-FNSUBSMIGRATIONS-PASSWORD"
   key_vault_id = data.azurerm_key_vault.key_vault_common.id
@@ -85,13 +101,13 @@ data "azurerm_key_vault_secret" "services_exclusion_list" {
   key_vault_id = data.azurerm_key_vault.key_vault_common.id
 }
 
-data "azurerm_key_vault_secret" "devportal_service_principal_secret" {
-  name         = "devportal-SERVICE-PRINCIPAL-SECRET"
+data "azurerm_key_vault_secret" "devportal_io_sandbox_fiscal_code" {
+  name         = "io-SANDBOX-FISCAL-CODE"
   key_vault_id = data.azurerm_key_vault.key_vault_common.id
 }
 
-data "azurerm_key_vault_secret" "devportal_service_principal_client_id" {
-  name         = "devportal-SERVICE-PRINCIPAL-CLIENT-ID"
+data "azurerm_key_vault_secret" "devportal_apim_io_service_key" {
+  name         = "apim-IO-SERVICE-KEY"
   key_vault_id = data.azurerm_key_vault.key_vault_common.id
 }
 
