@@ -265,3 +265,8 @@ data "azurerm_linux_web_app" "appservice_devportal_be" {
   name                = "${local.project}-app-devportal-be"
   resource_group_name = "${local.project}-selfcare-be-rg"
 }
+
+data "azurerm_linux_web_app" "appservice_selfcare_be" {
+  name                = "${local.project}-app-selfcare-be"
+  resource_group_name = "${local.project}-selfcare-be-rg"
+}
