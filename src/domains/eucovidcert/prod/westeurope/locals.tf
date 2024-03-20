@@ -10,7 +10,6 @@ locals {
     CreatedBy      = "Terraform"
     Environment    = "Prod"
     Owner          = "IO"
-    ManagementTeam = "IO Comunicazione"
     Source         = "https://github.com/pagopa/io-infra/blob/main/src/domains/eucovidcert/prod/westeurope"
   }
 }
