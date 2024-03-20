@@ -15,15 +15,15 @@ module "app_services" {
   apim_hostname_api_app_internal = local.apim_hostname_api_app_internal
 
   dev_portal_db_data = {
-    host     = module.postgresql.dev_portal_credentials.host
-    username = module.postgresql.dev_portal_credentials.username
-    password = module.postgresql.dev_portal_credentials.password
+    host     = module.postgresql.dev_portal_db_credentials.host
+    username = module.postgresql.dev_portal_db_credentials.username
+    password = module.postgresql.dev_portal_db_credentials.password
   }
 
   subsmigrations_db_data = {
-    host     = module.postgresql.subsmigrations_credentials.host
-    username = module.postgresql.subsmigrations_credentials.username
-    password = module.postgresql.subsmigrations_credentials.password
+    host     = module.postgresql.subsmigrations_db_credentials.host
+    username = module.postgresql.subsmigrations_db_credentials.username
+    password = module.postgresql.subsmigrations_db_credentials.password
   }
 
   app_insights_ips = [

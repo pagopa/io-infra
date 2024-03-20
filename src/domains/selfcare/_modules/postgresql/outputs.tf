@@ -6,7 +6,7 @@ output "dev_portal_db" {
   }
 }
 
-output "dev_portal_credentials" {
+output "dev_portal_db_credentials" {
   value = {
     host     = module.devportalservicedata_db_server.fqdn
     username = module.devportalservicedata_db_server.administrator_login
@@ -23,7 +23,7 @@ output "subsmigrations_db" {
   }
 }
 
-output "subsmigrations_credentials" {
+output "subsmigrations_db_credentials" {
   value = {
     host     = module.subscriptionmigrations_db_server.fqdn
     username = module.subscriptionmigrations_db_server.administrator_login
