@@ -250,3 +250,27 @@ data "azurerm_linux_function_app" "function_cgn" {
   resource_group_name = "${local.project}-cgn-be-rg"
   name                = format("%s-cgn-fn", local.project)
 }
+
+#
+# SelfCare
+#
+
+data "azurerm_dns_a_record" "selfcare_cdn" {
+  name                = "@"
+  resource_group_name = azurerm_dns_zone.io_selfcare_pagopa_it[0].resource_group_name
+  zone_name           = azurerm_dns_zone.io_selfcare_pagopa_it[0].name
+}
+
+#
+# DevPortal
+#
+
+data "azurerm_linux_web_app" "appservice_devportal_be" {
+  name                = "${local.project}-app-devportal-be"
+  resource_group_name = "${local.project}-selfcare-be-rg"
+}
+
+data "azurerm_linux_web_app" "appservice_selfcare_be" {
+  name                = "${local.project}-app-selfcare-be"
+  resource_group_name = "${local.project}-selfcare-be-rg"
+}

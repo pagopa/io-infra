@@ -1,5 +1,5 @@
 module "snet_selfcare_be_common" {
-  source = "github.com/pagopa/terraform-azurerm-v3//subnet?ref=v7.64.0"
+  source = "github.com/pagopa/terraform-azurerm-v3//subnet?ref=v7.69.1"
 
   name                 = "${var.project}-selfcare-be-common-snet"
   resource_group_name  = data.azurerm_virtual_network.vnet_common.resource_group_name
