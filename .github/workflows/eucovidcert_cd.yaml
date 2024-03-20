@@ -6,7 +6,7 @@ on:
     branches:
       - main
     paths:
-      - "src/domains/eucovidcert**"
+      - "src/domains/eucovidcert/**"
 
 jobs:
   release_prod:
