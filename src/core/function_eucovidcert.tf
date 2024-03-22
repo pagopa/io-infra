@@ -69,25 +69,9 @@ data "azurerm_resource_group" "eucovidcert_rg" {
   name = format("%s-rg-eucovidcert", local.project)
 }
 
-#
-# STORAGE
-#
-module "eucovidcert_storage_account" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//storage_account?ref=v7.61.0"
-
-  name                            = "${replace(local.project, "-", "")}steucovidcert"
-  account_kind                    = "StorageV2"
-  account_tier                    = "Standard"
-  access_tier                     = "Hot"
-  blob_versioning_enabled         = false
-  account_replication_type        = "GZRS"
-  resource_group_name             = data.azurerm_resource_group.eucovidcert_rg.name
-  location                        = data.azurerm_resource_group.eucovidcert_rg.location
-  advanced_threat_protection      = false
-  allow_nested_items_to_be_public = false
-  public_network_access_enabled   = true
-
-  tags = var.tags
+data "azurerm_storage_account" "steucovid" {
+  name                = "${replace(local.project, "-", "")}steucovidcert"
+  resource_group_name = "${local.project}-rg-eucovidcert"
 }
 
 #
@@ -132,11 +116,11 @@ locals {
       DGC_LOAD_TEST_SERVER_CA   = trimspace(data.azurerm_key_vault_secret.fn_eucovidcert_DGC_LOAD_TEST_SERVER_CA.value)
 
       // Events configs
-      EventsQueueStorageConnection                    = module.eucovidcert_storage_account.primary_connection_string
+      EventsQueueStorageConnection                    = data.azurerm_storage_account.steucovid.primary_connection_string
       EUCOVIDCERT_PROFILE_CREATED_QUEUE_NAME          = "eucovidcert-profile-created"
-      QueueStorageConnection                          = module.eucovidcert_storage_account.primary_connection_string
+      QueueStorageConnection                          = data.azurerm_storage_account.steucovid.primary_connection_string
       EUCOVIDCERT_NOTIFY_NEW_PROFILE_QUEUE_NAME       = "notify-new-profile"
-      TableStorageConnection                          = module.eucovidcert_storage_account.primary_connection_string
+      TableStorageConnection                          = data.azurerm_storage_account.steucovid.primary_connection_string
       EUCOVIDCERT_TRACE_NOTIFY_NEW_PROFILE_TABLE_NAME = "TraceNotifyNewProfile"
 
       FNSERVICES_API_URL = join(",", formatlist("https://%s/api/v1", module.function_services.*.default_hostname))
