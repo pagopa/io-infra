@@ -274,3 +274,18 @@ data "azurerm_linux_web_app" "appservice_selfcare_be" {
   name                = "${local.project}-app-selfcare-be"
   resource_group_name = "${local.project}-selfcare-be-rg"
 }
+
+#
+# EuCovid
+#
+
+data "azurerm_linux_function_app" "eucovidcert" {
+  resource_group_name = "${local.project}-rg-eucovidcert"
+  name                = format("%s-eucovidcert-fn", local.project)
+}
+
+data "azurerm_subnet" "function_eucovidcert_snet" {
+  name                 = format("%s-eucovidcert-snet", local.project)
+  resource_group_name  = azurerm_resource_group.rg_common.name
+  virtual_network_name = module.vnet_common.name
+}
