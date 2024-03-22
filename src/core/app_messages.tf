@@ -43,9 +43,9 @@ locals {
       FETCH_KEEPALIVE_TIMEOUT             = "60000"
 
       // REDIS
-      REDIS_URL      = module.redis_messages_v6.hostname
-      REDIS_PORT     = module.redis_messages_v6.ssl_port
-      REDIS_PASSWORD = module.redis_messages_v6.primary_access_key
+      REDIS_URL      = data.azurerm_redis_cache.redis_messages_v6.hostname
+      REDIS_PORT     = data.azurerm_redis_cache.redis_messages_v6.ssl_port
+      REDIS_PASSWORD = data.azurerm_redis_cache.redis_messages_v6.primary_access_key
 
       // CACHE TTLs
       SERVICE_CACHE_TTL_DURATION = "28800" // 8 hours
@@ -67,16 +67,17 @@ locals {
   }
 }
 
-resource "azurerm_resource_group" "app_messages_common_rg" {
-  name     = format("%s-app-messages-common-rg", local.project)
+data "azurerm_redis_cache" "redis_messages_v6" {
+  name                = "${local.project}-redis-app-messages-std-v6"
+  resource_group_name = "${local.project}-app-messages-common-rg"
+}
+
+resource "azurerm_resource_group" "app_messages_rg" {
+  count    = var.app_messages_count
+  name     = format("%s-app-messages-rg-%d", local.project, count.index + 1)
   location = var.location
 
   tags = var.tags
-}
-
-data "azurerm_resource_group" "app_messages_rg" {
-  count = 2
-  name  = format("%s-app-messages-rg-%d", local.project, count.index + 1)
 }
 
 # Subnet to host app messages function
