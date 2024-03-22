@@ -235,7 +235,7 @@ module "function_services" {
     module.services_snet[count.index].id,
     module.azdoa_snet[0].id,
     module.apim_v2_snet.id,
-    module.function_eucovidcert_snet.id,
+    data.azurerm_subnet.function_eucovidcert_snet.id,
   ]
 
   # Action groups for alerts
@@ -295,7 +295,7 @@ module "function_services_staging_slot" {
     module.services_snet[count.index].id,
     module.azdoa_snet[0].id,
     module.apim_v2_snet.id,
-    module.function_eucovidcert_snet.id,
+    data.azurerm_subnet.function_eucovidcert_snet.id,
   ]
 
   tags = var.tags

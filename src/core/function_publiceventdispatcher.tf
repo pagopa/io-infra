@@ -93,7 +93,7 @@ module "function_pblevtdispatcher" {
     webhooks = jsonencode([
       # EUCovidCert PROD
       {
-        url           = format("https://%s/api/v1/io-events-webhook", module.function_eucovidcert.default_hostname),
+        url           = format("https://%s/api/v1/io-events-webhook", data.azurerm_linux_function_app.eucovidcert.default_hostname),
         headers       = { "X-Functions-Key" = data.azurerm_key_vault_secret.fn_eucovidcert_API_KEY_PUBLICIOEVENTDISPATCHER.value },
         attributes    = { serviceId = "01F73DNTMJTCEZQKJDFNB53KEB" },
         subscriptions = ["service:subscribed"]
@@ -183,7 +183,7 @@ module "function_pblevtdispatcher_v4" {
     webhooks = jsonencode([
       # EUCovidCert PROD
       {
-        url           = format("https://%s/api/v1/io-events-webhook", module.function_eucovidcert.default_hostname),
+        url           = format("https://%s/api/v1/io-events-webhook", data.azurerm_linux_function_app.eucovidcert.default_hostname),
         headers       = { "X-Functions-Key" = data.azurerm_key_vault_secret.fn_eucovidcert_API_KEY_PUBLICIOEVENTDISPATCHER.value },
         attributes    = { serviceId = "01F73DNTMJTCEZQKJDFNB53KEB" },
         subscriptions = ["service:subscribed"]
