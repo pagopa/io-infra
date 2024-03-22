@@ -67,55 +67,6 @@ locals {
   }
 }
 
-/**
-* [REDIS V6]
-*/
-module "redis_messages_v6" {
-  source                = "git::https://github.com/pagopa/terraform-azurerm-v3.git//redis_cache?ref=v7.61.0"
-  name                  = format("%s-redis-app-messages-std-v6", local.project)
-  resource_group_name   = azurerm_resource_group.app_messages_common_rg.name
-  location              = azurerm_resource_group.app_messages_common_rg.location
-  capacity              = 0
-  family                = "C"
-  sku_name              = "Standard"
-  redis_version         = "6"
-  enable_authentication = true
-  zones                 = null
-
-  // when azure can apply patch?
-  patch_schedules = [{
-    day_of_week    = "Sunday"
-    start_hour_utc = 23
-    },
-    {
-      day_of_week    = "Monday"
-      start_hour_utc = 23
-    },
-    {
-      day_of_week    = "Tuesday"
-      start_hour_utc = 23
-    },
-    {
-      day_of_week    = "Wednesday"
-      start_hour_utc = 23
-    },
-    {
-      day_of_week    = "Thursday"
-      start_hour_utc = 23
-    },
-  ]
-
-
-  private_endpoint = {
-    enabled              = true
-    virtual_network_id   = module.vnet_common.id
-    subnet_id            = module.private_endpoints_subnet.id
-    private_dns_zone_ids = [azurerm_private_dns_zone.privatelink_redis_cache.id]
-  }
-
-  tags = var.tags
-}
-
 resource "azurerm_resource_group" "app_messages_common_rg" {
   name     = format("%s-app-messages-common-rg", local.project)
   location = var.location
@@ -123,12 +74,9 @@ resource "azurerm_resource_group" "app_messages_common_rg" {
   tags = var.tags
 }
 
-resource "azurerm_resource_group" "app_messages_rg" {
-  count    = var.app_messages_count
-  name     = format("%s-app-messages-rg-%d", local.project, count.index + 1)
-  location = var.location
-
-  tags = var.tags
+data "azurerm_resource_group" "app_messages_rg" {
+  count = 2
+  name  = format("%s-app-messages-rg-%d", local.project, count.index + 1)
 }
 
 # Subnet to host app messages function

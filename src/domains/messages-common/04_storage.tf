@@ -32,16 +32,17 @@ resource "azurerm_resource_group" "notifications_rg" {
 }
 
 module "push_notifications_storage" {
-  source                     = "git::https://github.com/pagopa/terraform-azurerm-v3//storage_account?ref=v4.1.5"
-  name                       = replace(format("%s-notifst", local.project), "-", "")
-  domain                     = upper(var.domain)
-  account_kind               = "StorageV2"
-  account_tier               = "Standard"
-  access_tier                = "Hot"
-  account_replication_type   = "ZRS"
-  resource_group_name        = azurerm_resource_group.notifications_rg.name
-  location                   = azurerm_resource_group.notifications_rg.location
-  advanced_threat_protection = true
+  source                        = "git::https://github.com/pagopa/terraform-azurerm-v3//storage_account?ref=v7.69.1"
+  name                          = replace(format("%s-notifst", local.project), "-", "")
+  domain                        = upper(var.domain)
+  account_kind                  = "StorageV2"
+  account_tier                  = "Standard"
+  access_tier                   = "Hot"
+  account_replication_type      = "ZRS"
+  resource_group_name           = azurerm_resource_group.notifications_rg.name
+  location                      = azurerm_resource_group.notifications_rg.location
+  advanced_threat_protection    = true
+  public_network_access_enabled = true
 
   tags = var.tags
 }
@@ -52,16 +53,17 @@ resource "azurerm_storage_queue" "push_notifications_queue" {
 }
 
 module "push_notif_beta_storage" {
-  source                     = "git::https://github.com/pagopa/terraform-azurerm-v3//storage_account?ref=v4.1.5"
-  name                       = replace(format("%s-betauserst", local.project), "-", "")
-  domain                     = upper(var.domain)
-  account_kind               = "StorageV2"
-  account_tier               = "Standard"
-  access_tier                = "Hot"
-  account_replication_type   = "ZRS"
-  resource_group_name        = azurerm_resource_group.notifications_rg.name
-  location                   = azurerm_resource_group.notifications_rg.location
-  advanced_threat_protection = true
+  source                        = "git::https://github.com/pagopa/terraform-azurerm-v3//storage_account?ref=v7.69.1"
+  name                          = replace(format("%s-betauserst", local.project), "-", "")
+  domain                        = upper(var.domain)
+  account_kind                  = "StorageV2"
+  account_tier                  = "Standard"
+  access_tier                   = "Hot"
+  account_replication_type      = "ZRS"
+  resource_group_name           = azurerm_resource_group.notifications_rg.name
+  location                      = azurerm_resource_group.notifications_rg.location
+  advanced_threat_protection    = true
+  public_network_access_enabled = true
 
   tags = var.tags
 }
