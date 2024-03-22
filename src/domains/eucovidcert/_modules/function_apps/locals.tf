@@ -19,11 +19,11 @@ locals {
       FETCH_KEEPALIVE_FREE_SOCKET_TIMEOUT = "30000"
       FETCH_KEEPALIVE_TIMEOUT             = "60000"
 
-      DGC_UAT_FISCAL_CODES = module.tests.test_users_eu_covid_cert_flat
+      DGC_UAT_FISCAL_CODES = module.tests.test_users.eu_covid_cert_flat
       # we need test_users_store_review_flat because app IO reviewers must read a valid certificate response
       LOAD_TEST_FISCAL_CODES = join(",", [
-        module.tests.test_users_store_review_flat,
-        module.tests.test_users_internal_load_flat
+        module.tests.test_users.store_review_flat,
+        module.tests.test_users.internal_load_flat
       ])
 
       DGC_UAT_URL               = "https://servizi-pnval.dgc.gov.it"
