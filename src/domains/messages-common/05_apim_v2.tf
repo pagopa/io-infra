@@ -191,6 +191,10 @@ module "apim_v2_service_messages_manage_api_v1" {
   xml_content = file("./api/service-messages/v1/_base_policy.xml")
 }
 
+data "http" "service_messages_internal_openapi" {
+  url = "https://raw.githubusercontent.com/pagopa/io-functions-service-messages/master/openapi/index.yaml"
+}
+
 module "apim_v2_service_messages_internal_api_v1" {
   source = "git::https://github.com/pagopa/terraform-azurerm-v3//api_management_api?ref=v7.69.1"
 
@@ -207,7 +211,7 @@ module "apim_v2_service_messages_internal_api_v1" {
   protocols    = ["https"]
 
   content_format = "openapi"
-  content_value  = data.http.service_messages_manage_openapi.body
+  content_value  = data.http.service_messages_internal_openapi.body
 
   xml_content = file("./api/service-messages/v1/_base_policy.xml")
 }
