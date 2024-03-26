@@ -1,14 +1,15 @@
 module "services_storage" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//storage_account?ref=v4.1.6"
+  source = "github.com/pagopa/terraform-azurerm-v3//storage_account?ref=v7.69.1"
 
-  name                       = replace(format("%s-svst", local.project), "-", "")
-  account_kind               = "StorageV2"
-  account_tier               = "Standard"
-  access_tier                = "Hot"
-  account_replication_type   = "ZRS"
-  resource_group_name        = azurerm_resource_group.data_process_rg.name
-  location                   = var.location
-  advanced_threat_protection = false
+  name                          = replace(format("%s-svst", local.project), "-", "")
+  account_kind                  = "StorageV2"
+  account_tier                  = "Standard"
+  access_tier                   = "Hot"
+  account_replication_type      = "ZRS"
+  resource_group_name           = azurerm_resource_group.data_process_rg.name
+  location                      = var.location
+  advanced_threat_protection    = false
+  public_network_access_enabled = true
 
   tags = var.tags
 }

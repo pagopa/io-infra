@@ -10,7 +10,7 @@ tags = {
   CreatedBy      = "Terraform"
   Environment    = "Prod"
   Owner          = "IO"
-  Source         = "https://github.com/pagopa/io-infra/tree/main/src/messages-common"
+  Source         = "https://github.com/pagopa/io-infra/blob/main/src/domains/messages-common"
   CostCenter     = "TS310 - PAGAMENTI & SERVIZI"
   ManagementTeam = "IO Comunicazione"
 }

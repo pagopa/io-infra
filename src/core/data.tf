@@ -289,3 +289,17 @@ data "azurerm_subnet" "function_eucovidcert_snet" {
   resource_group_name  = azurerm_resource_group.rg_common.name
   virtual_network_name = module.vnet_common.name
 }
+
+#
+# Messages
+#
+
+data "azurerm_linux_function_app" "app_messages_1" {
+  resource_group_name = "${local.project}-app-messages-rg-1"
+  name                = "${local.project}-app-messages-fn-1"
+}
+
+data "azurerm_linux_function_app" "app_messages_2" {
+  resource_group_name = "${local.project}-app-messages-rg-2"
+  name                = "${local.project}-app-messages-fn-2"
+}
