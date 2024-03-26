@@ -293,11 +293,6 @@ variable "cidr_subnet_app_async" {
   description = "Function app async address space."
 }
 
-variable "cidr_subnet_appmessages" {
-  type        = list(string)
-  description = "App messages address space."
-}
-
 variable "cidr_subnet_fnmessagescqrs" {
   type        = list(string)
   description = "Fn cqrs address space."
@@ -315,11 +310,6 @@ variable "cidr_subnet_appbackendli" {
 
 variable "cidr_subnet_shared_1" {
   type = list(string)
-}
-
-variable "cidr_subnet_eucovidcert" {
-  type        = list(string)
-  description = "Function App EUCovidCert address space."
 }
 
 variable "cidr_subnet_fnadmin" {
@@ -616,13 +606,6 @@ EOD
   }))
 }
 
-# eucovidcert
-variable "eucovidcert_alerts_enabled" {
-  description = "Enable eucovidcert alerts"
-  type        = bool
-  default     = true
-}
-
 # app backend
 
 variable "app_backend_names" {
@@ -854,53 +837,6 @@ variable "function_admin_autoscale_default" {
   default     = 1
 }
 
-# App Messages
-variable "app_messages_count" {
-  type    = number
-  default = 2
-}
-
-variable "app_messages_function_always_on" {
-  type    = bool
-  default = false
-}
-
-variable "app_messages_function_kind" {
-  type        = string
-  description = "App service plan kind"
-  default     = null
-}
-
-variable "app_messages_function_sku_tier" {
-  type        = string
-  description = "App service plan sku tier"
-  default     = null
-}
-
-variable "app_messages_function_sku_size" {
-  type        = string
-  description = "App service plan sku size"
-  default     = null
-}
-
-variable "app_messages_function_autoscale_minimum" {
-  type        = number
-  description = "The minimum number of instances for this resource."
-  default     = 1
-}
-
-variable "app_messages_function_autoscale_maximum" {
-  type        = number
-  description = "The maximum number of instances for this resource."
-  default     = 3
-}
-
-variable "app_messages_function_autoscale_default" {
-  type        = number
-  description = "The number of instances that are available for scaling if metrics are not available for evaluation."
-  default     = 1
-}
-
 # Functions Messages CQRS
 
 variable "function_messages_cqrs_always_on" {
@@ -1044,48 +980,6 @@ variable "io_receipt_remote_config_test_id" {
 variable "io_receipt_service_test_url" {
   type        = string
   description = "The endpoint of Receipt Service (test env)"
-}
-
-# Function EUCovidCert
-variable "function_eucovidcert_count" {
-  type    = number
-  default = 2
-}
-
-variable "function_eucovidcert_kind" {
-  type        = string
-  description = "App service plan kind"
-  default     = null
-}
-
-variable "function_eucovidcert_sku_tier" {
-  type        = string
-  description = "App service plan sku tier"
-  default     = null
-}
-
-variable "function_eucovidcert_sku_size" {
-  type        = string
-  description = "App service plan sku size"
-  default     = null
-}
-
-variable "function_eucovidcert_autoscale_minimum" {
-  type        = number
-  description = "The minimum number of instances for this resource."
-  default     = 1
-}
-
-variable "function_eucovidcert_autoscale_maximum" {
-  type        = number
-  description = "The maximum number of instances for this resource."
-  default     = 30
-}
-
-variable "function_eucovidcert_autoscale_default" {
-  type        = number
-  description = "The number of instances that are available for scaling if metrics are not available for evaluation."
-  default     = 1
 }
 
 # Shared functions
