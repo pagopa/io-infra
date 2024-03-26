@@ -176,7 +176,7 @@ module "apim_v2_service_messages_manage_api_v1" {
   name                  = format("%s-service-messages-api", local.product)
   api_management_name   = data.azurerm_api_management.apim_v2_api.name
   resource_group_name   = data.azurerm_api_management.apim_v2_api.resource_group_name
-  product_ids           = [module.apim_v2_product_services.product_id]
+  product_ids           = [data.azurerm_api_management_product.apim_v2_product_services.product_id]
   subscription_required = true
   service_url           = null
 
