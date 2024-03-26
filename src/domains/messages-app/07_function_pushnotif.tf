@@ -186,8 +186,6 @@ module "push_notif_function" {
     }
   ]
 
-  client_certificate_mode = "Required"
-
   tags = var.tags
 }
 

@@ -518,14 +518,6 @@
 | <a name="input_app_gateway_min_capacity"></a> [app\_gateway\_min\_capacity](#input\_app\_gateway\_min\_capacity) | n/a | `number` | `0` | no |
 | <a name="input_app_gateway_openid_provider_io_pagopa_it_certificate_name"></a> [app\_gateway\_openid\_provider\_io\_pagopa\_it\_certificate\_name](#input\_app\_gateway\_openid\_provider\_io\_pagopa\_it\_certificate\_name) | Application gateway openid-provider certificate name on Key Vault | `string` | n/a | yes |
 | <a name="input_app_gateway_selfcare_io_pagopa_it_certificate_name"></a> [app\_gateway\_selfcare\_io\_pagopa\_it\_certificate\_name](#input\_app\_gateway\_selfcare\_io\_pagopa\_it\_certificate\_name) | Application gateway selfcare-io certificate name on Key Vault | `string` | n/a | yes |
-| <a name="input_app_messages_count"></a> [app\_messages\_count](#input\_app\_messages\_count) | App Messages | `number` | `2` | no |
-| <a name="input_app_messages_function_always_on"></a> [app\_messages\_function\_always\_on](#input\_app\_messages\_function\_always\_on) | n/a | `bool` | `false` | no |
-| <a name="input_app_messages_function_autoscale_default"></a> [app\_messages\_function\_autoscale\_default](#input\_app\_messages\_function\_autoscale\_default) | The number of instances that are available for scaling if metrics are not available for evaluation. | `number` | `1` | no |
-| <a name="input_app_messages_function_autoscale_maximum"></a> [app\_messages\_function\_autoscale\_maximum](#input\_app\_messages\_function\_autoscale\_maximum) | The maximum number of instances for this resource. | `number` | `3` | no |
-| <a name="input_app_messages_function_autoscale_minimum"></a> [app\_messages\_function\_autoscale\_minimum](#input\_app\_messages\_function\_autoscale\_minimum) | The minimum number of instances for this resource. | `number` | `1` | no |
-| <a name="input_app_messages_function_kind"></a> [app\_messages\_function\_kind](#input\_app\_messages\_function\_kind) | App service plan kind | `string` | `null` | no |
-| <a name="input_app_messages_function_sku_size"></a> [app\_messages\_function\_sku\_size](#input\_app\_messages\_function\_sku\_size) | App service plan sku size | `string` | `null` | no |
-| <a name="input_app_messages_function_sku_tier"></a> [app\_messages\_function\_sku\_tier](#input\_app\_messages\_function\_sku\_tier) | App service plan sku tier | `string` | `null` | no |
 | <a name="input_application_insights_name"></a> [application\_insights\_name](#input\_application\_insights\_name) | The common Application Insights name | `string` | `""` | no |
 | <a name="input_azdo_sp_tls_cert_enabled"></a> [azdo\_sp\_tls\_cert\_enabled](#input\_azdo\_sp\_tls\_cert\_enabled) | Enable Azure DevOps connection for TLS cert management | `string` | `false` | no |
 | <a name="input_azdoa_image_name"></a> [azdoa\_image\_name](#input\_azdoa\_image\_name) | Azure DevOps Agent image name | `string` | n/a | yes |
@@ -544,7 +536,6 @@
 | <a name="input_cidr_subnet_continua"></a> [cidr\_subnet\_continua](#input\_cidr\_subnet\_continua) | continua address space. | `list(string)` | n/a | yes |
 | <a name="input_cidr_subnet_devportalservicedata_db_server"></a> [cidr\_subnet\_devportalservicedata\_db\_server](#input\_cidr\_subnet\_devportalservicedata\_db\_server) | Space address for DevPortal Service Data PostgresSQL | `list(string)` | n/a | yes |
 | <a name="input_cidr_subnet_dnsforwarder"></a> [cidr\_subnet\_dnsforwarder](#input\_cidr\_subnet\_dnsforwarder) | DNS Forwarder network address space. | `list(string)` | n/a | yes |
-| <a name="input_cidr_subnet_eucovidcert"></a> [cidr\_subnet\_eucovidcert](#input\_cidr\_subnet\_eucovidcert) | Function App EUCovidCert address space. | `list(string)` | n/a | yes |
 | <a name="input_cidr_subnet_eventhub"></a> [cidr\_subnet\_eventhub](#input\_cidr\_subnet\_eventhub) | Eventhub network address space. | `list(string)` | n/a | yes |
 | <a name="input_cidr_subnet_fims"></a> [cidr\_subnet\_fims](#input\_cidr\_subnet\_fims) | FIMS app service address space. | `list(string)` | n/a | yes |
 | <a name="input_cidr_subnet_fnadmin"></a> [cidr\_subnet\_fnadmin](#input\_cidr\_subnet\_fnadmin) | Function Admin address space. | `list(string)` | n/a | yes |
@@ -587,7 +578,6 @@
 | <a name="input_enable_azdoa"></a> [enable\_azdoa](#input\_enable\_azdoa) | Enable Azure DevOps agent. | `bool` | n/a | yes |
 | <a name="input_enable_iac_pipeline"></a> [enable\_iac\_pipeline](#input\_enable\_iac\_pipeline) | If true create the key vault policy to allow used by azure devops iac pipelines. | `bool` | `false` | no |
 | <a name="input_env_short"></a> [env\_short](#input\_env\_short) | n/a | `string` | n/a | yes |
-| <a name="input_eucovidcert_alerts_enabled"></a> [eucovidcert\_alerts\_enabled](#input\_eucovidcert\_alerts\_enabled) | Enable eucovidcert alerts | `bool` | `true` | no |
 | <a name="input_eventhubs"></a> [eventhubs](#input\_eventhubs) | A list of event hubs to add to namespace. | <pre>list(object({<br>    name              = string<br>    partitions        = number<br>    message_retention = number<br>    consumers         = list(string)<br>    keys = list(object({<br>      name   = string<br>      listen = bool<br>      send   = bool<br>      manage = bool<br>    }))<br>  }))</pre> | `[]` | no |
 | <a name="input_external_domain"></a> [external\_domain](#input\_external\_domain) | Domain for delegation | `string` | `"pagopa.it"` | no |
 | <a name="input_function_admin_autoscale_default"></a> [function\_admin\_autoscale\_default](#input\_function\_admin\_autoscale\_default) | The number of instances that are available for scaling if metrics are not available for evaluation. | `number` | `1` | no |
@@ -615,13 +605,6 @@
 | <a name="input_function_assets_cdn_kind"></a> [function\_assets\_cdn\_kind](#input\_function\_assets\_cdn\_kind) | App service plan kind | `string` | `null` | no |
 | <a name="input_function_assets_cdn_sku_size"></a> [function\_assets\_cdn\_sku\_size](#input\_function\_assets\_cdn\_sku\_size) | App service plan sku size | `string` | `null` | no |
 | <a name="input_function_assets_cdn_sku_tier"></a> [function\_assets\_cdn\_sku\_tier](#input\_function\_assets\_cdn\_sku\_tier) | App service plan sku tier | `string` | `null` | no |
-| <a name="input_function_eucovidcert_autoscale_default"></a> [function\_eucovidcert\_autoscale\_default](#input\_function\_eucovidcert\_autoscale\_default) | The number of instances that are available for scaling if metrics are not available for evaluation. | `number` | `1` | no |
-| <a name="input_function_eucovidcert_autoscale_maximum"></a> [function\_eucovidcert\_autoscale\_maximum](#input\_function\_eucovidcert\_autoscale\_maximum) | The maximum number of instances for this resource. | `number` | `30` | no |
-| <a name="input_function_eucovidcert_autoscale_minimum"></a> [function\_eucovidcert\_autoscale\_minimum](#input\_function\_eucovidcert\_autoscale\_minimum) | The minimum number of instances for this resource. | `number` | `1` | no |
-| <a name="input_function_eucovidcert_count"></a> [function\_eucovidcert\_count](#input\_function\_eucovidcert\_count) | Function EUCovidCert | `number` | `2` | no |
-| <a name="input_function_eucovidcert_kind"></a> [function\_eucovidcert\_kind](#input\_function\_eucovidcert\_kind) | App service plan kind | `string` | `null` | no |
-| <a name="input_function_eucovidcert_sku_size"></a> [function\_eucovidcert\_sku\_size](#input\_function\_eucovidcert\_sku\_size) | App service plan sku size | `string` | `null` | no |
-| <a name="input_function_eucovidcert_sku_tier"></a> [function\_eucovidcert\_sku\_tier](#input\_function\_eucovidcert\_sku\_tier) | App service plan sku tier | `string` | `null` | no |
 | <a name="input_function_messages_cqrs_always_on"></a> [function\_messages\_cqrs\_always\_on](#input\_function\_messages\_cqrs\_always\_on) | n/a | `bool` | `false` | no |
 | <a name="input_function_messages_cqrs_autoscale_default"></a> [function\_messages\_cqrs\_autoscale\_default](#input\_function\_messages\_cqrs\_autoscale\_default) | The number of instances that are available for scaling if metrics are not available for evaluation. | `number` | `1` | no |
 | <a name="input_function_messages_cqrs_autoscale_maximum"></a> [function\_messages\_cqrs\_autoscale\_maximum](#input\_function\_messages\_cqrs\_autoscale\_maximum) | The maximum number of instances for this resource. | `number` | `3` | no |

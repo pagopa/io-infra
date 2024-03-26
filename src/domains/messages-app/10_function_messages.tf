@@ -70,7 +70,7 @@ locals {
       // CACHE TTLs
       SERVICE_CACHE_TTL_DURATION = "28800" // 8 hours
 
-      PN_SERVICE_ID = "01G40DWQGKY5GRWSNM4303VNRP"
+      PN_SERVICE_ID = var.pn_service_id
 
       // View Features Flag
       USE_FALLBACK        = false
