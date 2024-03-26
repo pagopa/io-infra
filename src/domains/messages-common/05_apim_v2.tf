@@ -173,7 +173,7 @@ data "http" "service_messages_manage_openapi" {
 module "apim_v2_service_messages_manage_api_v1" {
   source = "git::https://github.com/pagopa/terraform-azurerm-v3//api_management_api?ref=v7.69.1"
 
-  name                  = format("%s-service-messages-api", local.product)
+  name                  = format("%s-service-messages-manage-api", local.product)
   api_management_name   = data.azurerm_api_management.apim_v2_api.name
   resource_group_name   = data.azurerm_api_management.apim_v2_api.resource_group_name
   product_ids           = [data.azurerm_api_management_product.apim_v2_product_services.product_id]
@@ -182,6 +182,27 @@ module "apim_v2_service_messages_manage_api_v1" {
 
   description  = "IO Service Messages - Manage - API"
   display_name = "IO Service Messages - Manage - API"
+  path         = "service-messages/api/v1"
+  protocols    = ["https"]
+
+  content_format = "openapi"
+  content_value  = data.http.service_messages_manage_openapi.body
+
+  xml_content = file("./api/service-messages/v1/_base_policy.xml")
+}
+
+module "apim_v2_service_messages_internal_api_v1" {
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3//api_management_api?ref=v7.69.1"
+
+  name                  = format("%s-service-messages-internal-api", local.product)
+  api_management_name   = data.azurerm_api_management.apim_v2_api.name
+  resource_group_name   = data.azurerm_api_management.apim_v2_api.resource_group_name
+  product_ids           = [module.apim_v2_product_notifications.product_id]
+  subscription_required = true
+  service_url           = null
+
+  description  = "IO Service Messages - Internal - API"
+  display_name = "IO Service Messages - Internal - API"
   path         = "service-messages/api/v1"
   protocols    = ["https"]
 
