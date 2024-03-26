@@ -331,6 +331,7 @@ variable "app_messages_count" {
 variable "cidr_subnet_appmessages" {
   type        = list(string)
   description = "App messages address space."
+  default     = []
 }
 
 variable "pn_service_id" {
