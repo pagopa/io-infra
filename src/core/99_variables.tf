@@ -293,11 +293,6 @@ variable "cidr_subnet_app_async" {
   description = "Function app async address space."
 }
 
-variable "cidr_subnet_appmessages" {
-  type        = list(string)
-  description = "App messages address space."
-}
-
 variable "cidr_subnet_fnmessagescqrs" {
   type        = list(string)
   description = "Fn cqrs address space."
