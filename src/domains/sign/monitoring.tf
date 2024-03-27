@@ -126,7 +126,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "rejected_test_requests" 
   location            = azurerm_resource_group.backend_rg.location
 
   data_source_id          = data.azurerm_application_insights.application_insights.id
-  description             = "[IO-SIGN] There are REJECTED signature requests in TEST environment"
+  description             = "[IO-SIGN] There are REJECTED signature requests in TEST environment. No action required"
   enabled                 = true
   auto_mitigation_enabled = false
 
