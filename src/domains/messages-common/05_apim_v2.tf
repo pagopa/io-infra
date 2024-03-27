@@ -182,7 +182,7 @@ module "apim_v2_service_messages_manage_api_v1" {
 
   description  = "IO Service Messages - Manage - API"
   display_name = "IO Service Messages - Manage - API"
-  path         = "service-messages/api/v1"
+  path         = "service-messages/manage/api/v1"
   protocols    = ["https"]
 
   content_format = "openapi"
