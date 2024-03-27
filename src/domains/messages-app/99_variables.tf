@@ -393,3 +393,11 @@ variable "third_party_mock_remote_config_id" {
   description = "The Remote Content Config ID of the Third Party Mock service"
   default     = "01HMVM4N4XFJ8VBR1FXYFZ9QFB"
 }
+
+###############################
+# Messages cqrs functions
+###############################
+variable "cidr_subnet_fnmessagescqrs" {
+  type        = list(string)
+  description = "Fn cqrs address space."
+}

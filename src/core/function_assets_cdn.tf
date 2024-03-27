@@ -1,3 +1,7 @@
+data "azurerm_resource_group" "backend_messages_rg" {
+  name = "${local.project}-backend-messages-rg"
+}
+
 locals {
   function_assets_cdn = {
     app_settings = {
@@ -112,7 +116,7 @@ module "function_assets_cdn_staging_slot" {
 resource "azurerm_monitor_autoscale_setting" "function_assets_cdn" {
   count               = var.function_assets_cdn_sku_tier == "PremiumV3" ? 1 : 0
   name                = format("%s-autoscale", module.function_assets_cdn.name)
-  resource_group_name = azurerm_resource_group.backend_messages_rg.name
+  resource_group_name = data.azurerm_resource_group.backend_messages_rg.name
   location            = var.location
   target_resource_id  = module.function_assets_cdn.app_service_plan_id
 
