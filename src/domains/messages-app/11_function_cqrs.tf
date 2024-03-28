@@ -19,30 +19,11 @@ data "azurerm_eventhub_authorization_rule" "evh_ns_io_auth_cdc" {
   resource_group_name = "${local.product}-evt-rg"
 }
 
-data "azurerm_eventhub_namespace" "messages-weu-prod01" {
-  name                = "${local.product}-messages-weu-prod01-evh-ns"
-  resource_group_name = "${local.product}-messages-weu-prod01-evt-rg"
-}
-
 data "azurerm_eventhub_authorization_rule" "io-p-payments-weu-prod01-evh-ns_payment-updates_io-fn-messages-cqrs" {
   name                = "${var.prefix}-fn-messages-cqrs"
   namespace_name      = "${local.product}-payments-weu-prod01-evh-ns"
   eventhub_name       = "payment-updates"
   resource_group_name = "${local.product}-payments-weu-prod01-evt-rg"
-}
-
-data "azurerm_eventhub_authorization_rule" "io-p-messages-weu-prod01-evh-ns_messages_io-fn-messages-cqrs" {
-  name                = "${var.prefix}-fn-messages-cqrs"
-  namespace_name      = "${local.product}-messages-weu-prod01-evh-ns"
-  eventhub_name       = "messages"
-  resource_group_name = "${local.product}-messages-weu-prod01-evt-rg"
-}
-
-data "azurerm_eventhub_authorization_rule" "io-p-messages-weu-prod01-evh-ns_message-status_io-fn-messages-cqrs" {
-  name                = "${var.prefix}-fn-messages-cqrs"
-  namespace_name      = "${local.product}-messages-weu-prod01-evh-ns"
-  eventhub_name       = "message-status"
-  resource_group_name = "${local.product}-messages-weu-prod01-evt-rg"
 }
 
 data "azurerm_key_vault_secret" "apim_services_subscription_key" {
@@ -84,10 +65,10 @@ locals {
       // Saturday 1 July 2023 00:00:00
       MESSAGE_CHANGE_FEED_START_TIME = 1688169600000
 
-      MESSAGES_TOPIC_CONNECTION_STRING = data.azurerm_eventhub_authorization_rule.io-p-messages-weu-prod01-evh-ns_messages_io-fn-messages-cqrs.primary_connection_string
+      MESSAGES_TOPIC_CONNECTION_STRING = var.ehns_enabled ? module.event_hub[0].keys["messages.${var.prefix}-fn-messages-cqrs"].primary_connection_string : "" # data.azurerm_eventhub_authorization_rule.io-p-messages-weu-prod01-evh-ns_messages_io-fn-messages-cqrs.primary_connection_string
       MESSAGES_TOPIC_NAME              = "messages"
 
-      MESSAGE_STATUS_FOR_REMINDER_TOPIC_PRODUCER_CONNECTION_STRING = data.azurerm_eventhub_authorization_rule.io-p-messages-weu-prod01-evh-ns_message-status_io-fn-messages-cqrs.primary_connection_string
+      MESSAGE_STATUS_FOR_REMINDER_TOPIC_PRODUCER_CONNECTION_STRING = var.ehns_enabled ? module.event_hub[0].keys["message-status.${var.prefix}-fn-messages-cqrs"].primary_connection_string : "" # data.azurerm_eventhub_authorization_rule.io-p-messages-weu-prod01-evh-ns_message-status_io-fn-messages-cqrs.primary_connection_string
       MESSAGE_STATUS_FOR_REMINDER_TOPIC_NAME                       = "message-status"
 
       TARGETKAFKA_clientId        = "IO_FUNCTIONS_MESSAGES_CQRS"
@@ -95,7 +76,7 @@ locals {
       TARGETKAFKA_ssl             = "true"
       TARGETKAFKA_sasl_mechanism  = "plain"
       TARGETKAFKA_sasl_username   = "$ConnectionString"
-      TARGETKAFKA_sasl_password   = data.azurerm_eventhub_authorization_rule.io-p-messages-weu-prod01-evh-ns_messages_io-fn-messages-cqrs.primary_connection_string
+      TARGETKAFKA_sasl_password   = var.ehns_enabled ? module.event_hub[0].keys["messages.${var.prefix}-fn-messages-cqrs"].primary_connection_string : "" # data.azurerm_eventhub_authorization_rule.io-p-messages-weu-prod01-evh-ns_messages_io-fn-messages-cqrs.primary_connection_string
       TARGETKAFKA_idempotent      = "true"
       TARGETKAFKA_transactionalId = "IO_MESSAGES_CQRS"
       TARGETKAFKA_topic           = "messages"
@@ -151,7 +132,7 @@ module "function_messages_cqrs" {
   location            = azurerm_resource_group.backend_messages_rg.location
   health_check_path   = "/api/v1/info"
   domain              = "MESSAGES"
-  # Action groups for alerts
+
   action = [
     {
       action_group_id    = data.azurerm_monitor_action_group.error_action_group.id
