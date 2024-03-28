@@ -12,6 +12,14 @@ locals {
       COSMOSDB_KEY               = data.azurerm_cosmosdb_account.cosmos_api.primary_key
       COSMOSDB_CONNECTION_STRING = format("AccountEndpoint=%s;AccountKey=%s;", data.azurerm_cosmosdb_account.cosmos_api.endpoint, data.azurerm_cosmosdb_account.cosmos_api.primary_key)
 
+      REMOTE_CONTENT_COSMOSDB_URI               = data.azurerm_cosmosdb_account.cosmos_remote_content.endpoint
+      REMOTE_CONTENT_COSMOSDB_KEY               = data.azurerm_cosmosdb_account.cosmos_remote_content.primary_key
+      REMOTE_CONTENT_COSMOSDB_NAME              = "remote-content"
+      REMOTE_CONTENT_COSMOSDB_CONNECTION_STRING = format("AccountEndpoint=%s;AccountKey=%s;", data.azurerm_cosmosdb_account.cosmos_remote_content.endpoint, data.azurerm_cosmosdb_account.cosmos_remote_content.primary_key)
+
+      MESSAGE_CONFIGURATION_CHANGE_FEED_LEASE_PREFIX = "RemoteContentMessageConfigurationChangeFeed-00"
+      MESSAGE_CONFIGURATION_CHANGE_FEED_START_TIME   = "0"
+
       LEASE_COLLECTION_PREFIX = "bulk-status-update-00"
 
       MESSAGE_VIEW_UPDATE_FAILURE_QUEUE_NAME         = "message-view-update-failures"
