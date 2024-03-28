@@ -79,12 +79,6 @@ variable "fastlogin_enabled" {
   description = "Fast login LC creation flag"
 }
 
-variable "fims_enabled" {
-  type        = bool
-  default     = false
-  description = "FIMS creation flag"
-}
-
 ### External resources
 
 variable "monitor_resource_group_name" {
@@ -223,39 +217,3 @@ variable "function_fastlogin_autoscale_default" {
   default     = 1
 }
 
-# FIMS App Service
-variable "cidr_subnet_fims" {
-  type        = list(string)
-  description = "App service FIMS address space."
-}
-
-
-variable "fims_plan_sku_tier" {
-  type        = string
-  description = "App service plan sku tier"
-  default     = null
-}
-
-variable "fims_plan_sku_size" {
-  type        = string
-  description = "App service plan sku size"
-  default     = null
-}
-
-variable "fims_autoscale_minimum" {
-  type        = number
-  description = "The minimum number of instances for this resource."
-  default     = 1
-}
-
-variable "fims_autoscale_maximum" {
-  type        = number
-  description = "The maximum number of instances for this resource."
-  default     = 3
-}
-
-variable "fims_autoscale_default" {
-  type        = number
-  description = "The number of instances that are available for scaling if metrics are not available for evaluation."
-  default     = 1
-}

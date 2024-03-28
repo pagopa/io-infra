@@ -12,18 +12,12 @@
 
 | Name | Source | Version |
 |------|--------|---------|
-| <a name="module_api_fims_admin"></a> [api\_fims\_admin](#module\_api\_fims\_admin) | github.com/pagopa/terraform-azurerm-v3.git//api_management_api | v7.62.0 |
-| <a name="module_api_fims_public"></a> [api\_fims\_public](#module\_api\_fims\_public) | github.com/pagopa/terraform-azurerm-v3.git//api_management_api | v7.62.0 |
-| <a name="module_apim_product_fims_admin"></a> [apim\_product\_fims\_admin](#module\_apim\_product\_fims\_admin) | github.com/pagopa/terraform-azurerm-v3.git//api_management_product | v7.62.0 |
-| <a name="module_apim_product_fims_public"></a> [apim\_product\_fims\_public](#module\_apim\_product\_fims\_public) | github.com/pagopa/terraform-azurerm-v3.git//api_management_product | v7.62.0 |
 | <a name="module_apim_v2_fast_login_operation_api_v1"></a> [apim\_v2\_fast\_login\_operation\_api\_v1](#module\_apim\_v2\_fast\_login\_operation\_api\_v1) | git::https://github.com/pagopa/terraform-azurerm-v3//api_management_api | v7.62.0 |
 | <a name="module_apim_v2_lollipop_api_v1"></a> [apim\_v2\_lollipop\_api\_v1](#module\_apim\_v2\_lollipop\_api\_v1) | git::https://github.com/pagopa/terraform-azurerm-v3//api_management_api | v7.62.0 |
 | <a name="module_apim_v2_product_fast_login_operation"></a> [apim\_v2\_product\_fast\_login\_operation](#module\_apim\_v2\_product\_fast\_login\_operation) | git::https://github.com/pagopa/terraform-azurerm-v3//api_management_product | v7.62.0 |
 | <a name="module_apim_v2_product_lollipop"></a> [apim\_v2\_product\_lollipop](#module\_apim\_v2\_product\_lollipop) | git::https://github.com/pagopa/terraform-azurerm-v3//api_management_product | v7.62.0 |
 | <a name="module_cosmosdb_account"></a> [cosmosdb\_account](#module\_cosmosdb\_account) | git::https://github.com/pagopa/terraform-azurerm-v3//cosmosdb_account | v7.62.0 |
-| <a name="module_cosmosdb_account_fims"></a> [cosmosdb\_account\_fims](#module\_cosmosdb\_account\_fims) | git::https://github.com/pagopa/terraform-azurerm-v3//cosmosdb_account | v7.62.0 |
 | <a name="module_cosmosdb_sql_database_citizen_auth"></a> [cosmosdb\_sql\_database\_citizen\_auth](#module\_cosmosdb\_sql\_database\_citizen\_auth) | git::https://github.com/pagopa/terraform-azurerm-v3//cosmosdb_sql_database | v7.62.0 |
-| <a name="module_cosmosdb_sql_database_fims"></a> [cosmosdb\_sql\_database\_fims](#module\_cosmosdb\_sql\_database\_fims) | git::https://github.com/pagopa/terraform-azurerm-v3//cosmosdb_sql_database | v7.62.0 |
 | <a name="module_immutable_lv_audit_logs_storage"></a> [immutable\_lv\_audit\_logs\_storage](#module\_immutable\_lv\_audit\_logs\_storage) | git::https://github.com/pagopa/terraform-azurerm-v3//storage_account | v7.62.0 |
 | <a name="module_immutable_lv_audit_logs_storage_customer_managed_key"></a> [immutable\_lv\_audit\_logs\_storage\_customer\_managed\_key](#module\_immutable\_lv\_audit\_logs\_storage\_customer\_managed\_key) | git::https://github.com/pagopa/terraform-azurerm-v3//storage_account_customer_managed_key | v7.62.0 |
 | <a name="module_io_citizen_auth_storage"></a> [io\_citizen\_auth\_storage](#module\_io\_citizen\_auth\_storage) | git::https://github.com/pagopa/terraform-azurerm-v3//storage_account | v7.62.0 |
@@ -51,10 +45,6 @@
 | [azurerm_api_management_subscription.pagopa_v2](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_subscription) | resource |
 | [azurerm_api_management_user.fast_login_operation_user_v2](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_user) | resource |
 | [azurerm_api_management_user.pagopa_user_v2](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_user) | resource |
-| [azurerm_cosmosdb_sql_container.fims_client](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/cosmosdb_sql_container) | resource |
-| [azurerm_cosmosdb_sql_container.fims_grant](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/cosmosdb_sql_container) | resource |
-| [azurerm_cosmosdb_sql_container.fims_interaction](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/cosmosdb_sql_container) | resource |
-| [azurerm_cosmosdb_sql_container.fims_session](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/cosmosdb_sql_container) | resource |
 | [azurerm_cosmosdb_sql_container.lollipop_pubkeys](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/cosmosdb_sql_container) | resource |
 | [azurerm_key_vault_access_policy.access_policy_io_infra_cd](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_access_policy) | resource |
 | [azurerm_key_vault_access_policy.access_policy_io_infra_ci](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_access_policy) | resource |
@@ -95,7 +85,6 @@
 | [azurerm_key_vault_secret.functions_fast_login_api_key](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/key_vault_secret) | data source |
 | [azurerm_key_vault_secret.io_fn_weu_lollipop_key_secret_v2](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/key_vault_secret) | data source |
 | [azurerm_linux_function_app.functions_fast_login](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/linux_function_app) | data source |
-| [azurerm_linux_web_app.appservice_fims](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/linux_web_app) | data source |
 | [azurerm_log_analytics_workspace.log_analytics](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/log_analytics_workspace) | data source |
 | [azurerm_monitor_action_group.email](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/monitor_action_group) | data source |
 | [azurerm_monitor_action_group.error_action_group](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/monitor_action_group) | data source |
@@ -126,8 +115,6 @@
 | <a name="input_enable_azdoa"></a> [enable\_azdoa](#input\_enable\_azdoa) | Specifies Azure Devops Agent enabling | `bool` | `true` | no |
 | <a name="input_env"></a> [env](#input\_env) | n/a | `string` | n/a | yes |
 | <a name="input_env_short"></a> [env\_short](#input\_env\_short) | n/a | `string` | n/a | yes |
-| <a name="input_fims_app_instance"></a> [fims\_app\_instance](#input\_fims\_app\_instance) | App instance name. One of beta, prod01, prod02 | `string` | n/a | yes |
-| <a name="input_fims_database"></a> [fims\_database](#input\_fims\_database) | n/a | <pre>map(<br>    object({<br>      max_throughput = number<br>      ttl            = number<br>    })<br>  )</pre> | n/a | yes |
 | <a name="input_instance"></a> [instance](#input\_instance) | One of beta, prod01, prod02 | `string` | n/a | yes |
 | <a name="input_location"></a> [location](#input\_location) | One of westeurope, northeurope | `string` | n/a | yes |
 | <a name="input_location_full"></a> [location\_full](#input\_location\_full) | One of West Europe, North Europe | `string` | n/a | yes |

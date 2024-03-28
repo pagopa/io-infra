@@ -337,11 +337,6 @@ variable "cidr_subnet_fnfastlogin" {
   description = "Function Fast Login address space."
 }
 
-variable "cidr_subnet_fims" {
-  type        = list(string)
-  description = "FIMS app service address space."
-}
-
 ## REDIS COMMON ##
 variable "redis_common" {
   type = object({
