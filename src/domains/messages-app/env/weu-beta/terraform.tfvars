@@ -56,3 +56,14 @@ nh_partition_count     = 4
 # CIDRS
 #################################
 cidr_subnet_push_notif = ["10.0.140.0/26"]
+
+###############################
+# Messages functions
+###############################
+app_messages_count      = 1
+cidr_subnet_appmessages = ["10.0.127.0/24", "10.0.128.0/24"]
+
+###############################
+# Messages cqrs functions
+###############################
+cidr_subnet_fnmessagescqrs = ["10.0.129.0/24"]
