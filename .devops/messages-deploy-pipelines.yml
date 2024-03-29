@@ -117,7 +117,7 @@ stages:
               WORKINGDIR: 'src/domains/messages-app'
 
   - stage: tf_apply_app_on_aks_on_prod01
-    dependsOn: [tf_apply_app_on_aks_beta]
+    dependsOn: []
     condition: and(succeeded(), eq(${{parameters.APP_PROD01}}, true))
     pool:
       name: io-prod-linux
