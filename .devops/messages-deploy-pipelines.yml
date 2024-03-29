@@ -117,8 +117,14 @@ stages:
               WORKINGDIR: 'src/domains/messages-app'
 
   - stage: tf_apply_app_on_aks_on_prod01
-    dependsOn: []
-    condition: and(succeeded(), eq(${{parameters.APP_PROD01}}, true))
+    dependsOn: [tf_apply_common_on_prod, tf_apply_app_on_aks_beta]
+    condition: and(
+      or
+      (
+        in(dependencies.tf_apply_common_on_prod.result, 'Succeeded', 'SucceededWithIssues', 'Skipped'),
+        in(dependencies.tf_apply_app_on_aks_beta.result, 'Succeeded', 'SucceededWithIssues', 'Skipped')
+      ), 
+      eq(${{parameters.APP_PROD01}}, true))
     pool:
       name: io-prod-linux
     jobs:
