@@ -44,10 +44,8 @@ cidr_subnet_shared_1                       = ["10.0.16.0/26"]
 cidr_subnet_fnlollipop                     = ["10.0.17.0/26"]
 cidr_subnet_continua                       = ["10.0.17.64/26"]
 cidr_subnet_fnfastlogin                    = ["10.0.17.128/26"]
-cidr_subnet_fims                           = ["10.0.18.0/26"]
 cidr_subnet_apim                           = ["10.0.101.0/24"]
 cidr_subnet_apim_v2                        = ["10.0.100.0/24"]
-cidr_subnet_fnmessagescqrs                 = ["10.0.129.0/24"]
 cidr_subnet_fncdnassets                    = ["10.0.131.0/24"]
 cidr_subnet_app                            = ["10.0.132.0/26", "10.0.132.64/26"]
 cidr_subnet_app_async                      = ["10.0.132.128/26"]
@@ -242,16 +240,6 @@ function_public_autoscale_default = 10
 app_backend_autoscale_default = 10
 app_backend_autoscale_minimum = 3
 app_backend_autoscale_maximum = 30
-
-# Function Messages CQRS
-function_messages_cqrs_always_on = true
-
-function_messages_cqrs_kind              = "Linux"
-function_messages_cqrs_sku_tier          = "PremiumV3"
-function_messages_cqrs_sku_size          = "P1v3"
-function_messages_cqrs_autoscale_minimum = 1
-function_messages_cqrs_autoscale_maximum = 30
-function_messages_cqrs_autoscale_default = 1
 
 # Function CDN Assets
 function_assets_cdn_kind              = "Linux"

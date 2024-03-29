@@ -293,11 +293,6 @@ variable "cidr_subnet_app_async" {
   description = "Function app async address space."
 }
 
-variable "cidr_subnet_fnmessagescqrs" {
-  type        = list(string)
-  description = "Fn cqrs address space."
-}
-
 variable "cidr_subnet_fncdnassets" {
   type        = list(string)
   description = "Fn assets address space."
@@ -335,11 +330,6 @@ variable "cidr_subnet_continua" {
 variable "cidr_subnet_fnfastlogin" {
   type        = list(string)
   description = "Function Fast Login address space."
-}
-
-variable "cidr_subnet_fims" {
-  type        = list(string)
-  description = "FIMS app service address space."
 }
 
 ## REDIS COMMON ##
@@ -832,49 +822,6 @@ variable "function_admin_autoscale_maximum" {
 }
 
 variable "function_admin_autoscale_default" {
-  type        = number
-  description = "The number of instances that are available for scaling if metrics are not available for evaluation."
-  default     = 1
-}
-
-# Functions Messages CQRS
-
-variable "function_messages_cqrs_always_on" {
-  type    = bool
-  default = false
-}
-
-variable "function_messages_cqrs_kind" {
-  type        = string
-  description = "App service plan kind"
-  default     = null
-}
-
-variable "function_messages_cqrs_sku_tier" {
-  type        = string
-  description = "App service plan sku tier"
-  default     = null
-}
-
-variable "function_messages_cqrs_sku_size" {
-  type        = string
-  description = "App service plan sku size"
-  default     = null
-}
-
-variable "function_messages_cqrs_autoscale_minimum" {
-  type        = number
-  description = "The minimum number of instances for this resource."
-  default     = 1
-}
-
-variable "function_messages_cqrs_autoscale_maximum" {
-  type        = number
-  description = "The maximum number of instances for this resource."
-  default     = 3
-}
-
-variable "function_messages_cqrs_autoscale_default" {
   type        = number
   description = "The number of instances that are available for scaling if metrics are not available for evaluation."
   default     = 1
