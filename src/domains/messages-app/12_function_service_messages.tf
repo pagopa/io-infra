@@ -166,7 +166,7 @@ module "function_service_messages_staging_slot" {
   location            = var.location
   resource_group_name = azurerm_resource_group.service_messages_rg.name
   function_app_id     = module.function_service_messages[0].id
-  app_service_plan_id = module.function_service_messages.app_service_plan_id
+  app_service_plan_id = module.function_service_messages[0].app_service_plan_id
   health_check_path   = "/api/v1/info"
 
   node_version                             = "18"
@@ -197,7 +197,7 @@ resource "azurerm_monitor_autoscale_setting" "function_service_messages" {
   name                = format("%s-autoscale", module.function_service_messages.name)
   resource_group_name = azurerm_resource_group.service_messages_rg.name
   location            = var.location
-  target_resource_id  = module.function_service_messages.app_service_plan_id
+  target_resource_id  = module.function_service_messages[0].app_service_plan_id
 
   profile {
     name = "default"
@@ -233,7 +233,7 @@ resource "azurerm_monitor_autoscale_setting" "function_service_messages" {
     rule {
       metric_trigger {
         metric_name              = "CpuPercentage"
-        metric_resource_id       = module.function_service_messages.app_service_plan_id
+        metric_resource_id       = module.function_service_messages[0].app_service_plan_id
         metric_namespace         = "microsoft.web/serverfarms"
         time_grain               = "PT1M"
         statistic                = "Average"
@@ -277,7 +277,7 @@ resource "azurerm_monitor_autoscale_setting" "function_service_messages" {
     rule {
       metric_trigger {
         metric_name              = "CpuPercentage"
-        metric_resource_id       = module.function_service_messages.app_service_plan_id
+        metric_resource_id       = module.function_service_messages[0].app_service_plan_id
         metric_namespace         = "microsoft.web/serverfarms"
         time_grain               = "PT1M"
         statistic                = "Average"
