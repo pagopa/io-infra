@@ -67,3 +67,9 @@ cidr_subnet_appmessages = ["10.0.127.0/24", "10.0.128.0/24"]
 # Messages cqrs functions
 ###############################
 cidr_subnet_fnmessagescqrs = ["10.0.129.0/24"]
+
+###############################
+# Service messages functions
+###############################
+cidr_subnet_fnservicemessages     = []
+function_service_messages_enabled = false
