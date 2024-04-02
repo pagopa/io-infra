@@ -28,7 +28,6 @@ locals {
       FUNCTIONS_WORKER_PROCESS_COUNT = 4
       NODE_ENV                       = "production"
 
-      WEBSITE_SITE_NAME                         = "io-p-service-messages-fn"
       APPINSIGHTS_INSTRUMENTATIONKEY            = data.azurerm_application_insights.application_insights.instrumentation_key
       MESSAGE_CONTENT_STORAGE_CONNECTION_STRING = data.azurerm_storage_account.storage_api.primary_connection_string
 
