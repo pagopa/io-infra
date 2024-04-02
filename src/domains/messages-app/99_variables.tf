@@ -401,3 +401,21 @@ variable "cidr_subnet_fnmessagescqrs" {
   type        = list(string)
   description = "Fn cqrs address space."
 }
+
+###############################
+# Service messages functions
+###############################
+variable "cidr_subnet_fnservicemessages" {
+  type        = list(string)
+  description = "Functions service messages address space."
+}
+
+variable "function_service_messages_enabled" {
+  type        = bool
+  default     = false
+  description = "Functions service messages enabled?"
+}
+
+
+
+
