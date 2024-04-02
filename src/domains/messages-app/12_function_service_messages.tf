@@ -194,7 +194,7 @@ module "function_service_messages_staging_slot" {
 
 resource "azurerm_monitor_autoscale_setting" "function_service_messages" {
   count               = var.function_service_messages_enabled ? 1 : 0
-  name                = format("%s-autoscale", module.function_service_messages.name)
+  name                = format("%s-autoscale", module.function_service_messages[0].name)
   resource_group_name = azurerm_resource_group.service_messages_rg.name
   location            = var.location
   target_resource_id  = module.function_service_messages[0].app_service_plan_id
