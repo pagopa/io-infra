@@ -165,7 +165,7 @@ module "function_service_messages_staging_slot" {
   name                = "staging"
   location            = var.location
   resource_group_name = azurerm_resource_group.service_messages_rg.name
-  function_app_id     = module.function_service_messages.id
+  function_app_id     = module.function_service_messages[0].id
   app_service_plan_id = module.function_service_messages.app_service_plan_id
   health_check_path   = "/api/v1/info"
 
@@ -211,7 +211,7 @@ resource "azurerm_monitor_autoscale_setting" "function_service_messages" {
     rule {
       metric_trigger {
         metric_name              = "Requests"
-        metric_resource_id       = module.function_service_messages.id
+        metric_resource_id       = module.function_service_messages[0].id
         metric_namespace         = "microsoft.web/sites"
         time_grain               = "PT1M"
         statistic                = "Average"
@@ -255,7 +255,7 @@ resource "azurerm_monitor_autoscale_setting" "function_service_messages" {
     rule {
       metric_trigger {
         metric_name              = "Requests"
-        metric_resource_id       = module.function_service_messages.id
+        metric_resource_id       = module.function_service_messages[0].id
         metric_namespace         = "microsoft.web/sites"
         time_grain               = "PT1M"
         statistic                = "Average"
