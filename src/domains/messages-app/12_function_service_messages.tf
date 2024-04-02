@@ -174,6 +174,9 @@ module "function_service_messages_staging_slot" {
   always_on                                = true
   application_insights_instrumentation_key = data.azurerm_application_insights.application_insights.instrumentation_key
 
+  storage_account_name       = module.function_service_messages[0].storage_account.name
+  storage_account_access_key = module.function_service_messages[0].storage_account.primary_access_key
+
   app_settings = merge(
     local.function_service_messages.app_settings,
   )
