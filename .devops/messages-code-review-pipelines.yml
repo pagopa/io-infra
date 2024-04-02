@@ -109,8 +109,14 @@ stages:
               AKS_AZURE_DEVOPS_SA_CA_CRT: ${{ variables.BETA_AKS_AZURE_DEVOPS_SA_CACRT }}
               AKS_AZURE_DEVOPS_SA_TOKEN: ${{ variables.BETA_AKS_AZURE_DEVOPS_SA_TOKEN }}
   - stage: tf_plan_app_on_aks_on_prod01
-    dependsOn: [tf_plan_app_on_aks_beta]
-    condition: and(succeeded(), eq(${{parameters.APP_PROD01}}, true))
+    dependsOn: [tf_plan_common_on_prod, tf_plan_app_on_aks_beta]
+    condition: and(
+      or
+      (
+        in(dependencies.tf_plan_common_on_prod.result, 'Succeeded', 'SucceededWithIssues', 'Skipped'),
+        in(dependencies.tf_plan_app_on_aks_beta.result, 'Succeeded', 'SucceededWithIssues', 'Skipped')
+      ), 
+      eq(${{parameters.APP_PROD01}}, true))
     pool:
       name: io-prod-linux
     jobs:
