@@ -101,7 +101,7 @@ module "function_service_messages" {
   source = "github.com/pagopa/terraform-azurerm-v3//function_app?ref=v7.70.1"
 
   resource_group_name = azurerm_resource_group.service_messages_rg.name
-  name                = format("%s-service-messages-fn", local.product)
+  name                = format("%s-messages-sending-func", local.product)
   location            = azurerm_resource_group.service_messages_rg.location
   health_check_path   = "/api/v1/info"
   domain              = "MESSAGES"
