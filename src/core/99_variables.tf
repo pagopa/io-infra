@@ -223,16 +223,6 @@ variable "cidr_subnet_fnelt" {
   description = "function-elt network address space."
 }
 
-variable "cidr_subnet_fnpblevtdispatcher" {
-  type        = list(string)
-  description = "function-publiceventdispatcher network address space."
-}
-
-variable "cidr_subnet_fnpblevtdispatcherv4" {
-  type        = list(string)
-  description = "function-publiceventdispatcher network address space."
-}
-
 variable "cidr_subnet_appgateway" {
   type        = list(string)
   description = "Application gateway address space."
