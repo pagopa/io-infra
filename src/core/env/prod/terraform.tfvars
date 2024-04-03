@@ -40,7 +40,6 @@ cidr_subnet_redis_apim                     = ["10.0.14.0/24"]
 cidr_subnet_fnadmin                        = ["10.0.15.0/26"]
 cidr_subnet_shared_1                       = ["10.0.16.0/26"]
 cidr_subnet_fnlollipop                     = ["10.0.17.0/26"]
-cidr_subnet_continua                       = ["10.0.17.64/26"]
 cidr_subnet_fnfastlogin                    = ["10.0.17.128/26"]
 cidr_subnet_apim                           = ["10.0.101.0/24"]
 cidr_subnet_apim_v2                        = ["10.0.100.0/24"]
@@ -248,10 +247,6 @@ function_assets_cdn_autoscale_maximum = 5
 function_assets_cdn_autoscale_default = 1
 
 # App Continua DynamicLynk
-
-# TODO remove when the terraform provider for Azure will support SKU P0v3
-# Up to then, the work-around is defining as P1v3 and changing via console
-continua_appservice_sku = "P1v3"
 
 eventhubs = [
   {
