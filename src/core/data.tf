@@ -276,6 +276,15 @@ data "azurerm_linux_web_app" "appservice_selfcare_be" {
 }
 
 #
+# Continua
+#
+
+data "azurerm_linux_web_app" "appservice_continua" {
+  name                = "${local.project}-app-continua"
+  resource_group_name = "${local.project}-continua-rg"
+}
+
+#
 # EuCovid
 #
 

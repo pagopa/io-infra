@@ -119,7 +119,7 @@ module "app_gw" {
       port         = 443
       ip_addresses = null # with null value use fqdns
       fqdns = [
-        module.appservice_continua.default_site_hostname,
+        data.azurerm_linux_web_app.appservice_continua.default_hostname,
       ]
       probe                       = "/info"
       probe_name                  = "probe-continua-app"

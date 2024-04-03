@@ -248,10 +248,6 @@ function_assets_cdn_autoscale_default = 1
 
 # App Continua DynamicLynk
 
-# TODO remove when the terraform provider for Azure will support SKU P0v3
-# Up to then, the work-around is defining as P1v3 and changing via console
-continua_appservice_sku = "P1v3"
-
 eventhubs = [
   {
     name              = "io-cosmosdb-services"
