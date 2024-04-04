@@ -253,7 +253,7 @@ resource "azurerm_monitor_autoscale_setting" "push_notif_function" {
         metric_namespace         = "microsoft.web/sites"
         time_grain               = "PT1M"
         statistic                = "Average"
-        time_window              = "PT5M"
+        time_window              = "PT1M"
         time_aggregation         = "Average"
         operator                 = "GreaterThan"
         threshold                = 3000
@@ -297,7 +297,7 @@ resource "azurerm_monitor_autoscale_setting" "push_notif_function" {
         metric_namespace         = "microsoft.web/sites"
         time_grain               = "PT1M"
         statistic                = "Average"
-        time_window              = "PT5M"
+        time_window              = "PT15M"
         time_aggregation         = "Average"
         operator                 = "LessThan"
         threshold                = 2000
@@ -308,7 +308,7 @@ resource "azurerm_monitor_autoscale_setting" "push_notif_function" {
         direction = "Decrease"
         type      = "ChangeCount"
         value     = "1"
-        cooldown  = "PT20M"
+        cooldown  = "PT10M"
       }
     }
 
