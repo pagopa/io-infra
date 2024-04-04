@@ -76,8 +76,6 @@ module "mongdb_collection_reminder" {
   cosmosdb_mongo_account_name  = module.cosmosdb_account_mongodb_reminder.name
   cosmosdb_mongo_database_name = azurerm_cosmosdb_mongo_database.db_reminder.name
 
-  shard_key = "shard"
-
   indexes = [
     {
       keys   = ["_id"]
@@ -142,6 +140,8 @@ module "mongdb_collection_reminder_sharded" {
 
   cosmosdb_mongo_account_name  = module.cosmosdb_account_mongodb_reminder.name
   cosmosdb_mongo_database_name = azurerm_cosmosdb_mongo_database.db_reminder.name
+
+  shard_key = "shard"
 
   indexes = [
     {
