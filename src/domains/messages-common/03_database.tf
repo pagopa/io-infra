@@ -132,6 +132,73 @@ module "mongdb_collection_reminder" {
   ]
 }
 
+module "mongdb_collection_reminder_sharded" {
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3//cosmosdb_mongodb_collection?ref=v7.69.1"
+
+  name                = "reminder-sharded"
+  resource_group_name = azurerm_resource_group.data_rg.name
+
+  cosmosdb_mongo_account_name  = module.cosmosdb_account_mongodb_reminder.name
+  cosmosdb_mongo_database_name = azurerm_cosmosdb_mongo_database.db_reminder.name
+
+  shard_key = "shard"
+
+  indexes = [
+    {
+      keys   = ["_id"]
+      unique = true
+    },
+    {
+      keys   = ["rptId"]
+      unique = false
+    },
+    {
+      keys   = ["shard"]
+      unique = false
+    },
+    {
+      keys   = ["readFlag"]
+      unique = false
+    },
+    {
+      keys   = ["paidFlag"]
+      unique = false
+    },
+    {
+      keys   = ["content_type"]
+      unique = false
+    },
+    {
+      keys   = ["maxReadMessageSend"]
+      unique = false
+    },
+    {
+      keys   = ["maxPaidMessageSend"]
+      unique = false
+    },
+    {
+      keys   = ["lastDateReminder"]
+      unique = false
+    },
+    {
+      keys   = ["dueDate"]
+      unique = false
+    },
+    {
+      keys   = ["insertionDate"]
+      unique = false
+    },
+    {
+      keys   = ["content_paymentData_noticeNumber", "content_paymentData_payeeFiscalCode"]
+      unique = false
+    },
+    {
+      keys   = ["content_paymentData_dueDate"]
+      unique = false
+    },
+  ]
+}
+
 #tfsec:ignore:AZU023
 resource "azurerm_key_vault_secret" "mongodb_connection_string_reminder" {
   name         = "${module.cosmosdb_account_mongodb_reminder.name}-connection-string"
