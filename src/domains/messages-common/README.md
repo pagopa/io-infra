@@ -21,6 +21,7 @@
 | <a name="module_io-backend_notification_v2_api_v1"></a> [io-backend\_notification\_v2\_api\_v1](#module\_io-backend\_notification\_v2\_api\_v1) | git::https://github.com/pagopa/terraform-azurerm-v3//api_management_api | v7.69.1 |
 | <a name="module_key_vault"></a> [key\_vault](#module\_key\_vault) | git::https://github.com/pagopa/terraform-azurerm-v3//key_vault | v7.69.1 |
 | <a name="module_mongdb_collection_reminder"></a> [mongdb\_collection\_reminder](#module\_mongdb\_collection\_reminder) | git::https://github.com/pagopa/terraform-azurerm-v3//cosmosdb_mongodb_collection | v7.69.1 |
+| <a name="module_mongdb_collection_reminder_sharded"></a> [mongdb\_collection\_reminder\_sharded](#module\_mongdb\_collection\_reminder\_sharded) | git::https://github.com/pagopa/terraform-azurerm-v3//cosmosdb_mongodb_collection | v7.69.1 |
 | <a name="module_push_notif_beta_storage"></a> [push\_notif\_beta\_storage](#module\_push\_notif\_beta\_storage) | git::https://github.com/pagopa/terraform-azurerm-v3//storage_account | v7.69.1 |
 | <a name="module_push_notifications_storage"></a> [push\_notifications\_storage](#module\_push\_notifications\_storage) | git::https://github.com/pagopa/terraform-azurerm-v3//storage_account | v7.69.1 |
 | <a name="module_redis_messages"></a> [redis\_messages](#module\_redis\_messages) | github.com/pagopa/terraform-azurerm-v3//redis_cache | v7.63.0 |
