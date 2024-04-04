@@ -77,7 +77,7 @@ module "app_gw" {
       port         = 443
       ip_addresses = null # with null value use fqdns
       fqdns = [
-        module.appservice_devportal_be.default_site_hostname,
+        data.azurerm_linux_web_app.appservice_devportal_be.default_hostname,
       ]
       probe                       = "/info"
       probe_name                  = "probe-developerportal-backend"
@@ -91,7 +91,7 @@ module "app_gw" {
       port         = 443
       ip_addresses = null # with null value use fqdns
       fqdns = [
-        module.appservice_selfcare_be.default_site_hostname,
+        data.azurerm_linux_web_app.appservice_selfcare_be.default_hostname,
       ]
       probe                       = "/info"
       probe_name                  = "probe-selfcare-backend"
@@ -119,7 +119,7 @@ module "app_gw" {
       port         = 443
       ip_addresses = null # with null value use fqdns
       fqdns = [
-        module.appservice_continua.default_site_hostname,
+        data.azurerm_linux_web_app.appservice_continua.default_hostname,
       ]
       probe                       = "/info"
       probe_name                  = "probe-continua-app"
@@ -304,7 +304,7 @@ module "app_gw" {
 
     api-io-selfcare-pagopa-it = {
       protocol           = "Https"
-      host               = local.selfcare_io.backend_hostname
+      host               = "api.${var.dns_zone_io_selfcare}.${var.external_domain}"
       port               = 443
       ssl_profile_name   = null
       firewall_policy_id = null

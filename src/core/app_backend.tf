@@ -54,13 +54,13 @@ locals {
 
       // FUNCTIONS
       API_KEY                     = data.azurerm_key_vault_secret.app_backend_API_KEY.value
-      CGN_API_URL                 = "https://${module.function_cgn.default_hostname}"
+      CGN_API_URL                 = "https://${data.azurerm_linux_function_app.function_cgn.default_hostname}"
       CGN_API_KEY                 = data.azurerm_key_vault_secret.app_backend_CGN_API_KEY.value
       IO_SIGN_API_URL             = "https://io-p-sign-user-func.azurewebsites.net"
       IO_SIGN_API_KEY             = data.azurerm_key_vault_secret.app_backend_IO_SIGN_API_KEY.value
       CGN_OPERATOR_SEARCH_API_URL = "https://cgnonboardingportal-p-op.azurewebsites.net" # prod subscription
       CGN_OPERATOR_SEARCH_API_KEY = data.azurerm_key_vault_secret.app_backend_CGN_OPERATOR_SEARCH_API_KEY_PROD.value
-      EUCOVIDCERT_API_URL         = "https://${module.function_eucovidcert.default_hostname}/api/v1"
+      EUCOVIDCERT_API_URL         = "https://${data.azurerm_linux_function_app.eucovidcert.default_hostname}/api/v1"
       EUCOVIDCERT_API_KEY         = data.azurerm_key_vault_secret.fn_eucovidcert_API_KEY_APPBACKEND.value
       APP_MESSAGES_API_KEY        = data.azurerm_key_vault_secret.app_backend_APP_MESSAGES_API_KEY.value
       LOLLIPOP_API_URL            = "https://io-p-weu-lollipop-fn.azurewebsites.net"
@@ -331,19 +331,19 @@ locals {
       IS_APPBACKENDLI = "false"
       // FUNCTIONS
       API_URL              = "https://${module.function_app[0].default_hostname}/api/v1"
-      APP_MESSAGES_API_URL = "https://${module.app_messages_function[0].default_hostname}/api/v1"
+      APP_MESSAGES_API_URL = "https://${data.azurerm_linux_function_app.app_messages_1.default_hostname}/api/v1"
     }
     app_settings_l2 = {
       IS_APPBACKENDLI = "false"
       // FUNCTIONS
       API_URL              = "https://${module.function_app[1].default_hostname}/api/v1"
-      APP_MESSAGES_API_URL = "https://${module.app_messages_function[1].default_hostname}/api/v1"
+      APP_MESSAGES_API_URL = "https://${data.azurerm_linux_function_app.app_messages_2.default_hostname}/api/v1"
     }
     app_settings_li = {
       IS_APPBACKENDLI = "true"
       // FUNCTIONS
-      API_URL              = "https://${module.function_app[0].default_hostname}/api/v1"          # not used
-      APP_MESSAGES_API_URL = "https://${module.app_messages_function[0].default_hostname}/api/v1" # not used
+      API_URL              = "https://${module.function_app[0].default_hostname}/api/v1"                         # not used
+      APP_MESSAGES_API_URL = "https://${data.azurerm_linux_function_app.app_messages_1.default_hostname}/api/v1" # not used
     }
   }
 
@@ -552,6 +552,16 @@ data "azurerm_key_vault_secret" "app_backend_RECEIPT_SERVICE_TEST_API_KEY" {
 data "azurerm_key_vault_secret" "app_backend_RECEIPT_SERVICE_API_KEY" {
   name         = "appbackend-RECEIPT-SERVICE-API-KEY"
   key_vault_id = module.key_vault_common.id
+}
+
+data "azurerm_key_vault_secret" "fn_eucovidcert_API_KEY_APPBACKEND" {
+  name         = "funceucovidcert-KEY-APPBACKEND"
+  key_vault_id = module.key_vault_common.id
+}
+
+data "azurerm_key_vault_secret" "fn_eucovidcert_API_KEY_PUBLICIOEVENTDISPATCHER" {
+  name         = "funceucovidcert-KEY-PUBLICIOEVENTDISPATCHER"
+  key_vault_id = module.key_vault.id
 }
 
 #tfsec:ignore:AZU023

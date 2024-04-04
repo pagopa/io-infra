@@ -1,12 +1,11 @@
-prefix            = "io"
-env_short         = "p"
-env               = "prod"
-domain            = "citizen-auth"
-location          = "westeurope"
-location_short    = "weu"
-location_full     = "West Europe"
-instance          = "common"
-fims_app_instance = "prod01"
+prefix         = "io"
+env_short      = "p"
+env            = "prod"
+domain         = "citizen-auth"
+location       = "westeurope"
+location_short = "weu"
+location_full  = "West Europe"
+instance       = "common"
 
 tags = {
   CreatedBy   = "Terraform"
@@ -21,25 +20,6 @@ tags = {
 citizen_auth_database = {
   lollipop_pubkeys = {
     max_throughput = 9000
-    ttl            = -1
-  }
-}
-
-fims_database = {
-  client = {
-    max_throughput = 3000
-    ttl            = -1
-  },
-  grant = {
-    max_throughput = 3000
-    ttl            = -1
-  },
-  interaction = {
-    max_throughput = 3000
-    ttl            = -1
-  },
-  session = {
-    max_throughput = 3000
     ttl            = -1
   }
 }

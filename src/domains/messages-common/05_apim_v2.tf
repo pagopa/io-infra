@@ -52,7 +52,7 @@ resource "azurerm_api_management_group" "apipaymentupdater_v2" {
 }
 
 module "apim_v2_product_notifications" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3//api_management_product?ref=v4.1.5"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3//api_management_product?ref=v7.69.1"
 
   product_id   = "io-notifications-api"
   display_name = "IO NOTIFICATIONS API"
@@ -68,33 +68,8 @@ module "apim_v2_product_notifications" {
   policy_xml = file("./api_product/messages/_base_policy.xml")
 }
 
-data "http" "service_messages_openapi" {
-  url = "https://raw.githubusercontent.com/pagopa/io-functions-service-messages/master/openapi/index.yaml"
-}
-
-module "apim_v2_service_messages_api_v1" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3//api_management_api?ref=v4.1.5"
-
-  name                  = format("%s-service-messages-api", local.product)
-  api_management_name   = data.azurerm_api_management.apim_v2_api.name
-  resource_group_name   = data.azurerm_api_management.apim_v2_api.resource_group_name
-  product_ids           = [module.apim_v2_product_notifications.product_id]
-  subscription_required = true
-  service_url           = null
-
-  description  = "IO Service - Messages API"
-  display_name = "IO Service - Messages API"
-  path         = "service-messages/api/v1"
-  protocols    = ["https"]
-
-  content_format = "openapi"
-  content_value  = data.http.service_messages_openapi.body
-
-  xml_content = file("./api/service-messages/v1/_base_policy.xml")
-}
-
 module "io-backend_notification_v2_api_v1" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3//api_management_api?ref=v4.1.5"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3//api_management_api?ref=v7.69.1"
 
   name                  = format("%s-io-backend-notification-api", local.product)
   api_management_name   = data.azurerm_api_management.apim_v2_api.name
@@ -179,4 +154,64 @@ resource "azurerm_key_vault_secret" "reminder_paymentapi_subscription_primary_ke
   value        = azurerm_api_management_subscription.payment_updater_reminder_v2.primary_key
   content_type = "subscription key"
   key_vault_id = module.key_vault.id
+}
+
+###############################################
+################ API MANAGE ###################
+###############################################
+
+data "azurerm_api_management_product" "apim_v2_product_services" {
+  product_id          = "io-services-api"
+  api_management_name = data.azurerm_api_management.apim_v2_api.name
+  resource_group_name = data.azurerm_api_management.apim_v2_api.resource_group_name
+}
+
+data "http" "service_messages_manage_openapi" {
+  url = "https://raw.githubusercontent.com/pagopa/io-functions-service-messages/master/openapi/index_external.yaml"
+}
+
+module "apim_v2_service_messages_manage_api_v1" {
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3//api_management_api?ref=v7.69.1"
+
+  name                  = format("%s-service-messages-manage-api", local.product)
+  api_management_name   = data.azurerm_api_management.apim_v2_api.name
+  resource_group_name   = data.azurerm_api_management.apim_v2_api.resource_group_name
+  product_ids           = [data.azurerm_api_management_product.apim_v2_product_services.product_id]
+  subscription_required = true
+  service_url           = null
+
+  description  = "IO Service Messages - Manage - API"
+  display_name = "IO Service Messages - Manage - API"
+  path         = "service-messages/manage/api/v1"
+  protocols    = ["https"]
+
+  content_format = "openapi"
+  content_value  = data.http.service_messages_manage_openapi.body
+
+  xml_content = file("./api/service-messages/v1/_base_policy.xml")
+}
+
+data "http" "service_messages_internal_openapi" {
+  url = "https://raw.githubusercontent.com/pagopa/io-functions-service-messages/master/openapi/index.yaml"
+}
+
+module "apim_v2_service_messages_internal_api_v1" {
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3//api_management_api?ref=v7.69.1"
+
+  name                  = format("%s-service-messages-internal-api", local.product)
+  api_management_name   = data.azurerm_api_management.apim_v2_api.name
+  resource_group_name   = data.azurerm_api_management.apim_v2_api.resource_group_name
+  product_ids           = [module.apim_v2_product_notifications.product_id]
+  subscription_required = true
+  service_url           = null
+
+  description  = "IO Service Messages - Internal - API"
+  display_name = "IO Service Messages - Internal - API"
+  path         = "service-messages/api/v1"
+  protocols    = ["https"]
+
+  content_format = "openapi"
+  content_value  = data.http.service_messages_internal_openapi.body
+
+  xml_content = file("./api/service-messages/v1/_base_policy.xml")
 }
