@@ -41,7 +41,7 @@ module "event_hub" {
       default_action = "Deny",
       virtual_network_rule = [
         {
-          subnet_id                                       = module.function_elt_snetout.id,
+          subnet_id                                       = data.azurerm_subnet.function_let_snet.id
           ignore_missing_virtual_network_service_endpoint = false
         }
       ],
