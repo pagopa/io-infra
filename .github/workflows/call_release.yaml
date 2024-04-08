@@ -11,14 +11,11 @@ on:
         type: string
         required: false
         description: List of environment variables to set up, given in env=value format.
-      job_agent:
-        type: choice
-        options:
-          - ubuntu-20.04
-          - self-hosted
-        default: ubuntu-20-04
+      use_self_hosted_agent:
+        type: boolean
+        default: false
         required: false
-        description: Specify which agent must be used, managed or self hosted
+        description: True to use a vnet integrated self-hosted agent
 
 env:
   ARM_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
@@ -26,12 +23,13 @@ env:
   ARM_USE_OIDC: true
   ARM_USE_AZUREAD: true
   ARM_STORAGE_USE_AZUREAD: true
+  AGENT: ${{ inputs.use_self_hosted_agent == true && 'ubuntu-20.04' || 'self-hosted' }}
 
 jobs:
 
   tf_plan:
     name: 'Terraform Plan'
-    runs-on: ${{ inputs.job_agent }}
+    runs-on: ${{ env.AGENT }}
     environment: ${{ inputs.environment }}-ci
     permissions:
       id-token: write
@@ -94,7 +92,7 @@ jobs:
 
   tf_apply:
     name: 'Terraform Apply'
-    runs-on: ${{ inputs.job_agent }}
+    runs-on: ${{ env.AGENT }}
     needs: [tf_plan]
     environment: ${{ inputs.environment }}-cd
     permissions:
