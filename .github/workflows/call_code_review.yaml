@@ -23,12 +23,11 @@ env:
   ARM_USE_OIDC: true
   ARM_USE_AZUREAD: true
   ARM_STORAGE_USE_AZUREAD: true
-  AGENT: ${{ inputs.use_self_hosted_agent == true && 'ubuntu-20.04' || 'self-hosted' }}
 
 jobs:
   tf_plan:
     name: 'Terraform Plan'
-    runs-on: ${{ env.AGENT }}
+    runs-on: ${{ inputs.use_self_hosted_agent == true && 'ubuntu-20.04' || 'self-hosted' }}
     environment: ${{ inputs.environment }}-ci
     permissions:
       id-token: write
