@@ -4,9 +4,6 @@ on:
       environment:
         type: string
         required: true
-      tf_environment:
-        type: string
-        required: false
       dir:
         type: string
         required: true
@@ -14,6 +11,14 @@ on:
         type: string
         required: false
         description: List of environment variables to set up, given in env=value format.
+      job_agent:
+        type: choice
+        options:
+          - ubuntu-20.04
+          - self-hosted
+        default: ubuntu-20-04
+        required: false
+        description: Specify which agent must be used, managed or self hosted
 
 env:
   ARM_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
@@ -21,13 +26,12 @@ env:
   ARM_USE_OIDC: true
   ARM_USE_AZUREAD: true
   ARM_STORAGE_USE_AZUREAD: true
-  TERRAFORM_ENVIRONMENT: ${{ inputs.tf_environment || inputs.environment }}
 
 jobs:
 
   tf_plan:
     name: 'Terraform Plan'
-    runs-on: ubuntu-20.04
+    runs-on: ${{ inputs.job_agent }}
     environment: ${{ inputs.environment }}-ci
     permissions:
       id-token: write
@@ -90,7 +94,7 @@ jobs:
 
   tf_apply:
     name: 'Terraform Apply'
-    runs-on: ubuntu-20.04
+    runs-on: ${{ inputs.job_agent }}
     needs: [tf_plan]
     environment: ${{ inputs.environment }}-cd
     permissions:
