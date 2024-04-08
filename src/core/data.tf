@@ -62,12 +62,6 @@ locals {
   storage_account_notifications_queue_push_notifications = "push-notifications"
 }
 
-# KeyVault values - start
-data "azurerm_key_vault_secret" "services_exclusion_list" {
-  name         = "io-fn-services-SERVICEID-EXCLUSION-LIST"
-  key_vault_id = module.key_vault_common.id
-}
-
 # Event hubs
 
 data "azurerm_eventhub_authorization_rule" "io-p-payments-weu-prod01-evh-ns_payment-updates_io-fn-messages-cqrs" {
@@ -311,4 +305,14 @@ data "azurerm_linux_function_app" "app_messages_1" {
 data "azurerm_linux_function_app" "app_messages_2" {
   resource_group_name = "${local.project}-app-messages-rg-2"
   name                = "${local.project}-app-messages-fn-2"
+}
+
+#
+# ELT
+#
+
+data "azurerm_subnet" "function_let_snet" {
+  name                 = "fn3eltout"
+  resource_group_name  = azurerm_resource_group.rg_common.name
+  virtual_network_name = module.vnet_common.name
 }
