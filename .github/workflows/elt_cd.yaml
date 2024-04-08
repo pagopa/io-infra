@@ -16,4 +16,3 @@ jobs:
     with:
       environment: prod
       dir: "src/domains/elt/prod/westeurope"
-      use_self_hosted_agent: true
