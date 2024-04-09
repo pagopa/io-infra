@@ -28,7 +28,7 @@ jobs:
     runs-on: self-hosted
     environment: prod-ci
     env:
-      ARM_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID_CI }}
+      ARM_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
 
     steps:
 
@@ -43,7 +43,7 @@ jobs:
         id: az_login
         uses: azure/login@81e1d9f360e1ba776e93b8ead1c4320761356b2a # v2.0.0
         with:
-          client-id: ${{ secrets.AZURE_CLIENT_ID_CI }}
+          client-id: ${{ secrets.AZURE_CLIENT_ID }}
           tenant-id: ${{ secrets.AZURE_TENANT_ID }}
           subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
 
@@ -103,7 +103,7 @@ jobs:
     environment: prod-cd
     needs: [terraform_plan_job]
     env:
-      ARM_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID_CD }}
+      ARM_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
 
     steps:
 
