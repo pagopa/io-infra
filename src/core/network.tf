@@ -16,36 +16,36 @@ module "vnet_common" {
   tags = var.tags
 }
 
-resource "azurerm_resource_group" "rg_in_vnet" {
-  name     = format("%s-in-rg-common", local.project)
-  location = var.location_in
+# resource "azurerm_resource_group" "rg_in_vnet" {
+#   name     = format("%s-in-rg-common", local.project)
+#   location = var.location_in
 
-  tags = var.tags
-}
+#   tags = var.tags
+# }
 
-module "vnet_in_common" {
-  source               = "git::https://github.com/pagopa/terraform-azurerm-v3.git//virtual_network?ref=v7.61.0"
-  name                 = "${local.project}-in-vnet-common"
-  location             = azurerm_resource_group.rg_in_vnet.location
-  resource_group_name  = azurerm_resource_group.rg_in_vnet.name
-  address_space        = var.cidr_common_in_vnet
-  ddos_protection_plan = var.ddos_protection_plan
+# module "vnet_in_common" {
+#   source               = "git::https://github.com/pagopa/terraform-azurerm-v3.git//virtual_network?ref=v7.61.0"
+#   name                 = "${local.project}-in-vnet-common"
+#   location             = azurerm_resource_group.rg_in_vnet.location
+#   resource_group_name  = azurerm_resource_group.rg_in_vnet.name
+#   address_space        = var.cidr_common_in_vnet
+#   ddos_protection_plan = var.ddos_protection_plan
 
-  tags = var.tags
-}
+#   tags = var.tags
+# }
 
-module "vnet_peering_common_in_common" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//virtual_network_peering?ref=v7.61.0"
+# module "vnet_peering_common_in_common" {
+#   source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//virtual_network_peering?ref=v7.61.0"
 
-  source_resource_group_name       = azurerm_resource_group.rg_common.name
-  source_virtual_network_name      = module.vnet_common.name
-  source_remote_virtual_network_id = module.vnet_common.id
-  source_allow_gateway_transit     = true # needed by vpn gateway for enabling routing from vnet to vnet_integration
-  target_resource_group_name       = azurerm_resource_group.rg_in_vnet.name
-  target_virtual_network_name      = module.vnet_in_common.name
-  target_remote_virtual_network_id = module.vnet_in_common.id
-  target_use_remote_gateways       = true # needed by vpn gateway for enabling routing from vnet to vnet_integration
-}
+#   source_resource_group_name       = azurerm_resource_group.rg_common.name
+#   source_virtual_network_name      = module.vnet_common.name
+#   source_remote_virtual_network_id = module.vnet_common.id
+#   source_allow_gateway_transit     = true # needed by vpn gateway for enabling routing from vnet to vnet_integration
+#   target_resource_group_name       = azurerm_resource_group.rg_in_vnet.name
+#   target_virtual_network_name      = module.vnet_in_common.name
+#   target_remote_virtual_network_id = module.vnet_in_common.id
+#   target_use_remote_gateways       = true # needed by vpn gateway for enabling routing from vnet to vnet_integration
+# }
 
 resource "azurerm_resource_group" "weu_beta_vnet_rg" {
   name     = "${local.project}-weu-beta-vnet-rg"
@@ -78,18 +78,18 @@ module "vnet_peering_common_weu_beta" {
   target_use_remote_gateways       = true # needed by vpn gateway for enabling routing from vnet to vnet_integration
 }
 
-module "vnet_peering_in_common_weu_beta" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//virtual_network_peering?ref=v7.61.0"
+# module "vnet_peering_in_common_weu_beta" {
+#   source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//virtual_network_peering?ref=v7.61.0"
 
-  source_resource_group_name       = azurerm_resource_group.rg_in_vnet.name
-  source_virtual_network_name      = module.vnet_in_common.name
-  source_remote_virtual_network_id = module.vnet_in_common.id
-  source_allow_gateway_transit     = false # needed by vpn gateway for enabling routing from vnet to vnet_integration
-  target_resource_group_name       = azurerm_resource_group.weu_beta_vnet_rg.name
-  target_virtual_network_name      = module.vnet_weu_beta.name
-  target_remote_virtual_network_id = module.vnet_weu_beta.id
-  target_use_remote_gateways       = false # needed by vpn gateway for enabling routing from vnet to vnet_integration
-}
+#   source_resource_group_name       = azurerm_resource_group.rg_in_vnet.name
+#   source_virtual_network_name      = module.vnet_in_common.name
+#   source_remote_virtual_network_id = module.vnet_in_common.id
+#   source_allow_gateway_transit     = false # needed by vpn gateway for enabling routing from vnet to vnet_integration
+#   target_resource_group_name       = azurerm_resource_group.weu_beta_vnet_rg.name
+#   target_virtual_network_name      = module.vnet_weu_beta.name
+#   target_remote_virtual_network_id = module.vnet_weu_beta.id
+#   target_use_remote_gateways       = false # needed by vpn gateway for enabling routing from vnet to vnet_integration
+# }
 
 resource "azurerm_resource_group" "weu_prod01_vnet_rg" {
   name     = "${local.project}-weu-prod01-vnet-rg"
@@ -122,18 +122,18 @@ module "vnet_peering_common_weu_prod01" {
   target_use_remote_gateways       = true # needed by vpn gateway for enabling routing from vnet to vnet_integration
 }
 
-module "vnet_peering_in_common_weu_prod01" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//virtual_network_peering?ref=v7.61.0"
+# module "vnet_peering_in_common_weu_prod01" {
+#   source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//virtual_network_peering?ref=v7.61.0"
 
-  source_resource_group_name       = azurerm_resource_group.rg_in_vnet.name
-  source_virtual_network_name      = module.vnet_in_common.name
-  source_remote_virtual_network_id = module.vnet_in_common.id
-  source_allow_gateway_transit     = false # needed by vpn gateway for enabling routing from vnet to vnet_integration
-  target_resource_group_name       = azurerm_resource_group.weu_prod01_vnet_rg.name
-  target_virtual_network_name      = module.vnet_weu_prod01.name
-  target_remote_virtual_network_id = module.vnet_weu_prod01.id
-  target_use_remote_gateways       = false # needed by vpn gateway for enabling routing from vnet to vnet_integration
-}
+#   source_resource_group_name       = azurerm_resource_group.rg_in_vnet.name
+#   source_virtual_network_name      = module.vnet_in_common.name
+#   source_remote_virtual_network_id = module.vnet_in_common.id
+#   source_allow_gateway_transit     = false # needed by vpn gateway for enabling routing from vnet to vnet_integration
+#   target_resource_group_name       = azurerm_resource_group.weu_prod01_vnet_rg.name
+#   target_virtual_network_name      = module.vnet_weu_prod01.name
+#   target_remote_virtual_network_id = module.vnet_weu_prod01.id
+#   target_use_remote_gateways       = false # needed by vpn gateway for enabling routing from vnet to vnet_integration
+# }
 
 module "private_endpoints_subnet" {
   source               = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v7.61.0"
