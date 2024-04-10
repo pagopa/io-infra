@@ -1,0 +1,24 @@
+name: PR Infrastructure Plan
+
+on:
+  workflow_dispatch:
+  pull_request:
+    types:
+      - opened
+      - edited
+      - synchronize
+      - reopened
+      - ready_for_review
+    paths:
+      - "src/core/prod"
+      - "src/core/_modules"
+      - ".github/workflows/core_code_review.yaml"
+
+jobs:
+  code_review_prod:
+    uses: pagopa/dx-typescript/.github/workflows/infra_plan.yaml@DEVEX-108--ci-tf-plan
+    name: Code Review Infrastructure Plan
+    secrets: inherit
+    with:
+      environment: prod
+      region: italynorth
