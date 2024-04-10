@@ -52,5 +52,5 @@ function_ioweb_profile = {
   sku_size          = "P1v3"
   autoscale_minimum = 2
   autoscale_maximum = 30
-  autoscale_default = 1
+  autoscale_default = 2
 }
