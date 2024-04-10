@@ -91,16 +91,6 @@ data "azuread_service_principal" "github_action_iac_cd" {
   display_name = "github-pagopa-io-infra-prod-cd"
 }
 
-resource "azurerm_key_vault_access_policy" "github_action_iac_cd_kv" {
-  key_vault_id = module.key_vault.id
-  tenant_id    = data.azurerm_client_config.current.tenant_id
-  object_id    = data.azuread_service_principal.github_action_iac_cd.object_id
-
-  secret_permissions      = ["Get", "List", "Set", ]
-  storage_permissions     = []
-  certificate_permissions = ["SetIssuers", "DeleteIssuers", "Purge", "List", "Get", "ManageContacts", "Create", ]
-}
-
 data "azuread_service_principal" "github_action_iac_ci" {
   display_name = "github-pagopa-io-infra-prod-ci"
 }
