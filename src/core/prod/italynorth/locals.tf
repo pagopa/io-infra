@@ -1,13 +1,13 @@
 locals {
   prefix                   = "io"
   env_short                = "p"
-  location_short           = "in"
+  location_short           = "itn"
   secondary_location_short = "gw"
   project                  = "${local.prefix}-${local.env_short}-${location_short}"
   secondary_project        = "${local.prefix}-${local.env_short}-${secondary_location_short}"
 
   location           = "italynorth"
-  secondary_location = "westgermany"
+  secondary_location = "germanywestcentral"
 
   tags = {
     CostCenter  = "TS310 - PAGAMENTI & SERVIZI"
