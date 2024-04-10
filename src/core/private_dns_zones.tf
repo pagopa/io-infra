@@ -16,15 +16,15 @@ resource "azurerm_private_dns_zone_virtual_network_link" "internal_io_pagopa_it_
   tags = var.tags
 }
 
-resource "azurerm_private_dns_zone_virtual_network_link" "internal_io_pagopa_it_private_vnet_in_common" {
-  name                  = format("%s-private-vnet-in-common", local.project)
-  resource_group_name   = azurerm_resource_group.rg_internal.name
-  private_dns_zone_name = azurerm_private_dns_zone.internal_io_pagopa_it[0].name
-  virtual_network_id    = module.vnet_in_common.id
-  registration_enabled  = false
+# resource "azurerm_private_dns_zone_virtual_network_link" "internal_io_pagopa_it_private_vnet_in_common" {
+#   name                  = format("%s-private-vnet-in-common", local.project)
+#   resource_group_name   = azurerm_resource_group.rg_internal.name
+#   private_dns_zone_name = azurerm_private_dns_zone.internal_io_pagopa_it[0].name
+#   virtual_network_id    = module.vnet_in_common.id
+#   registration_enabled  = false
 
-  tags = var.tags
-}
+#   tags = var.tags
+# }
 
 resource "azurerm_private_dns_zone_virtual_network_link" "internal_io_pagopa_it_private_vnet_beta" {
   name                  = module.vnet_weu_beta.name

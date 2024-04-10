@@ -23,7 +23,7 @@ resource "azurerm_resource_group" "vnet" {
   name     = "${local.project}-common-rg-001"
   location = local.location
 
-  tags = var.tags
+  tags = local.tags
 }
 
 module "networking" {
