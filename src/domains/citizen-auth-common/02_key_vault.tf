@@ -86,28 +86,6 @@ resource "azurerm_key_vault_access_policy" "azdevops_platform_iac_policy" {
   certificate_permissions = ["SetIssuers", "DeleteIssuers", "Purge", "List", "Get", "ManageContacts", ]
 }
 
-
-data "azuread_service_principal" "github_action_iac_cd" {
-  display_name = "github-pagopa-io-infra-prod-cd"
-}
-
-data "azuread_service_principal" "github_action_iac_ci" {
-  display_name = "github-pagopa-io-infra-prod-ci"
-}
-
-resource "azurerm_key_vault_access_policy" "github_action_iac_ci_kv" {
-  key_vault_id = module.key_vault.id
-  tenant_id    = data.azurerm_client_config.current.tenant_id
-  object_id    = data.azuread_service_principal.github_action_iac_ci.object_id
-
-  secret_permissions      = ["Get", "List", ]
-  storage_permissions     = []
-  certificate_permissions = ["Get", "List", ]
-  key_permissions = [
-    "Get",
-  ]
-}
-
 resource "azurerm_key_vault_certificate" "lollipop_certificate_v1" {
   name         = "lollipop-certificate-v1"
   key_vault_id = module.key_vault.id
