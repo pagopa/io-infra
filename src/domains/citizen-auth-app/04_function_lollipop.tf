@@ -58,7 +58,7 @@ resource "azurerm_resource_group" "lollipop_rg" {
 # Subnet to host admin function
 module "lollipop_snet" {
   count                                     = var.lollipop_enabled ? 1 : 0
-  source                                    = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v4.1.15"
+  source                                    = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v7.77.0"
   name                                      = format("%s-lollipop-snet", local.common_project)
   address_prefixes                          = var.cidr_subnet_fnlollipop
   resource_group_name                       = data.azurerm_virtual_network.vnet_common.resource_group_name
@@ -82,7 +82,7 @@ module "lollipop_snet" {
 
 module "function_lollipop" {
   count  = var.lollipop_enabled ? 1 : 0
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app?ref=v5.2.0"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app?ref=v7.77.0"
 
   resource_group_name = azurerm_resource_group.lollipop_rg[0].name
   name                = format("%s-lollipop-fn", local.common_project)
@@ -142,7 +142,7 @@ module "function_lollipop" {
 
 module "function_lollipop_staging_slot" {
   count  = var.lollipop_enabled ? 1 : 0
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app_slot?ref=v5.2.0"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app_slot?ref=v7.77.0"
 
   name                = "staging"
   location            = var.location
