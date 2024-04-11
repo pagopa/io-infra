@@ -107,7 +107,7 @@ module "function_lollipop" {
     { "AzureWebJobs.HandlePubKeyRevoke.Disabled" = "0" },
   )
 
-  sticky_settings = ["AzureWebJobs.HandlePubKeyRevoke.Disabled"]
+  sticky_app_setting_names = ["AzureWebJobs.HandlePubKeyRevoke.Disabled"]
 
   internal_storage = {
     "enable"                     = true,
