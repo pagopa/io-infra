@@ -8,7 +8,7 @@ data "azurerm_key_vault_secret" "backendli_api_key" {
   key_vault_id = data.azurerm_key_vault.kv_common.id
 }
 
-data "azurerm_app_service" "app_backend_li" {
+data "azurerm_linux_web_app" "app_backend_li" {
   name                = format("%s-app-appbackendli", local.product)
   resource_group_name = format("%s-rg-linux", local.product)
 }
@@ -52,7 +52,7 @@ locals {
       //  Config for backendli connection
       // --------------------------
       BACKEND_INTERNAL_API_KEY  = data.azurerm_key_vault_secret.backendli_api_key.value
-      BACKEND_INTERNAL_BASE_URL = "https://${data.azurerm_app_service.app_backend_li.default_site_hostname}"
+      BACKEND_INTERNAL_BASE_URL = "https://${data.azurerm_linux_web_app.app_backend_li.default_site_hostname}"
 
     }
   }
