@@ -16,9 +16,10 @@ on:
 
 jobs:
   prod_itn_core_code_review:
-    uses: pagopa/dx/.github/workflows/infra_plan.yaml@main
+    uses: pagopa/dx-typescript/.github/workflows/infra_plan.yaml@DEVEX-108--ci-tf-plan-2
     name: Italy North Prod - Code Review
     secrets: inherit
     with:
       environment: prod
       region: italynorth
+      tf_configuration_path: src/core
