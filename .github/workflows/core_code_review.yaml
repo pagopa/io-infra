@@ -1,4 +1,4 @@
-name: PR Infrastructure Plan
+name: PR - Core
 
 on:
   workflow_dispatch:
@@ -10,14 +10,14 @@ on:
       - reopened
       - ready_for_review
     paths:
-      - "src/core/prod"
+      - "src/core/prod/italynorth"
       - "src/core/_modules"
       - ".github/workflows/core_code_review.yaml"
 
 jobs:
-  code_review_prod:
-    uses: pagopa/dx-typescript/.github/workflows/infra_plan.yaml@DEVEX-108--ci-tf-plan
-    name: Code Review Infrastructure Plan
+  prod_itn_core_code_review:
+    uses: pagopa/dx/.github/workflows/infra_plan.yaml@DEVEX-108--ci-tf-plan
+    name: Italy North Prod - Code Review
     secrets: inherit
     with:
       environment: prod
