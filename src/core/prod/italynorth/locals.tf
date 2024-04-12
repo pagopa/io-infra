@@ -3,8 +3,8 @@ locals {
   env_short                = "p"
   location_short           = "itn"
   secondary_location_short = "gw"
-  project                  = "${local.prefix}-${local.env_short}-${location_short}"
-  secondary_project        = "${local.prefix}-${local.env_short}-${secondary_location_short}"
+  project                  = "${local.prefix}-${local.env_short}-${local.location_short}"
+  secondary_project        = "${local.prefix}-${local.env_short}-${local.secondary_location_short}"
 
   location           = "italynorth"
   secondary_location = "germanywestcentral"
