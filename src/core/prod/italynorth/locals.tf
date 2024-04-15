@@ -2,7 +2,7 @@ locals {
   prefix                   = "io"
   env_short                = "p"
   location_short           = "itn"
-  secondary_location_short = "gw"
+  secondary_location_short = "gwc"
   project                  = "${local.prefix}-${local.env_short}-${local.location_short}"
   secondary_project        = "${local.prefix}-${local.env_short}-${local.secondary_location_short}"
 
