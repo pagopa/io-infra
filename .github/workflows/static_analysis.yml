@@ -27,7 +27,6 @@ jobs:
           declare -A newmap
 
           newmap[src/core]="."
-          newmap[src/core]="./prod/italynorth"
           newmap[src/.template-app]="."
           newmap[src/.template-common]="."
           newmap[src/aks-platform]="."
