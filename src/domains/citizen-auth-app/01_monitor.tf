@@ -51,8 +51,8 @@ resource "azurerm_monitor_scheduled_query_rules_alert_v2" "samlresponse_missing_
     IdP is unknown here but you can watch Mixpanel events to identify the IdP
     that is causing the alert to trigger
   EOT
-  severity                = 0
-  auto_mitigation_enabled = false
+  severity                = 1
+  auto_mitigation_enabled = true
   location                = data.azurerm_resource_group.monitor_rg.location
 
   // check once every 5 minutes(evaluation_frequency)
