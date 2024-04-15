@@ -212,7 +212,7 @@ resource "azurerm_monitor_autoscale_setting" "function_lollipop" {
         direction = "Increase"
         type      = "ChangeCount"
         value     = "2"
-        cooldown  = "PT5M"
+        cooldown  = "PT1M"
       }
     }
 
@@ -223,7 +223,7 @@ resource "azurerm_monitor_autoscale_setting" "function_lollipop" {
         metric_namespace         = "microsoft.web/serverfarms"
         time_grain               = "PT1M"
         statistic                = "Average"
-        time_window              = "PT5M"
+        time_window              = "PT1M"
         time_aggregation         = "Average"
         operator                 = "GreaterThan"
         threshold                = 45
@@ -234,7 +234,7 @@ resource "azurerm_monitor_autoscale_setting" "function_lollipop" {
         direction = "Increase"
         type      = "ChangeCount"
         value     = "2"
-        cooldown  = "PT5M"
+        cooldown  = "PT1M"
       }
     }
 

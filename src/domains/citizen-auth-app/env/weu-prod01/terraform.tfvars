@@ -50,7 +50,7 @@ cidr_subnet_fnlollipop              = ["10.0.17.0/26"]
 function_lollipop_kind              = "Linux"
 function_lollipop_sku_tier          = "PremiumV3"
 function_lollipop_sku_size          = "P1v3"
-function_lollipop_autoscale_minimum = 2
+function_lollipop_autoscale_minimum = 4
 function_lollipop_autoscale_maximum = 20
 function_lollipop_autoscale_default = 10
 
@@ -58,6 +58,6 @@ function_lollipop_autoscale_default = 10
 cidr_subnet_fnfastlogin              = ["10.0.17.128/26"]
 function_fastlogin_kind              = "Linux"
 function_fastlogin_sku_size          = "P1v3"
-function_fastlogin_autoscale_minimum = 2
+function_fastlogin_autoscale_minimum = 4
 function_fastlogin_autoscale_maximum = 20
 function_fastlogin_autoscale_default = 10
