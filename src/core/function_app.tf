@@ -326,7 +326,7 @@ resource "azurerm_monitor_autoscale_setting" "function_app" {
         direction = "Increase"
         type      = "ChangeCount"
         value     = "2"
-        cooldown  = "PT5M"
+        cooldown  = "PT1M"
       }
     }
 

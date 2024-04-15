@@ -237,7 +237,7 @@ resource "azurerm_monitor_autoscale_setting" "app_messages_function" {
 
     capacity {
       default = 10
-      minimum = 1
+      minimum = 3
       maximum = 15
     }
 
@@ -259,7 +259,7 @@ resource "azurerm_monitor_autoscale_setting" "app_messages_function" {
         direction = "Increase"
         type      = "ChangeCount"
         value     = "2"
-        cooldown  = "PT5M"
+        cooldown  = "PT1M"
       }
     }
 
@@ -270,7 +270,7 @@ resource "azurerm_monitor_autoscale_setting" "app_messages_function" {
         metric_namespace         = "microsoft.web/serverfarms"
         time_grain               = "PT1M"
         statistic                = "Average"
-        time_window              = "PT5M"
+        time_window              = "PT1M"
         time_aggregation         = "Average"
         operator                 = "GreaterThan"
         threshold                = 45
@@ -281,7 +281,7 @@ resource "azurerm_monitor_autoscale_setting" "app_messages_function" {
         direction = "Increase"
         type      = "ChangeCount"
         value     = "2"
-        cooldown  = "PT5M"
+        cooldown  = "PT1M"
       }
     }
 

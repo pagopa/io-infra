@@ -159,7 +159,7 @@ resource "azurerm_monitor_autoscale_setting" "function_app_async" {
         metric_namespace         = "microsoft.web/sites"
         time_grain               = "PT1M"
         statistic                = "Average"
-        time_window              = "PT5M"
+        time_window              = "PT1M"
         time_aggregation         = "Average"
         operator                 = "GreaterThan"
         threshold                = 3000
@@ -170,7 +170,7 @@ resource "azurerm_monitor_autoscale_setting" "function_app_async" {
         direction = "Increase"
         type      = "ChangeCount"
         value     = "2"
-        cooldown  = "PT5M"
+        cooldown  = "PT1M"
       }
     }
 
@@ -181,7 +181,7 @@ resource "azurerm_monitor_autoscale_setting" "function_app_async" {
         metric_namespace         = "microsoft.web/serverfarms"
         time_grain               = "PT1M"
         statistic                = "Average"
-        time_window              = "PT5M"
+        time_window              = "PT1M"
         time_aggregation         = "Average"
         operator                 = "GreaterThan"
         threshold                = 45
@@ -192,7 +192,7 @@ resource "azurerm_monitor_autoscale_setting" "function_app_async" {
         direction = "Increase"
         type      = "ChangeCount"
         value     = "2"
-        cooldown  = "PT5M"
+        cooldown  = "PT1M"
       }
     }
 

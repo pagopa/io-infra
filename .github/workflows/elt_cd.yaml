@@ -1,0 +1,18 @@
+name: Continuous Delivery on elt
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+    paths:
+      - "src/domains/elt**"
+
+jobs:
+  release_prod:
+    uses: ./.github/workflows/call_release.yaml
+    name: Terraform Apply
+    secrets: inherit
+    with:
+      environment: prod
+      dir: "src/domains/elt/prod/westeurope"
