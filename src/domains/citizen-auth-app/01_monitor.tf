@@ -70,7 +70,7 @@ AzureDiagnostics
     QUERY
     operator                = "GreaterThanOrEqual"
     time_aggregation_method = "Count"
-    threshold               = 5
+    threshold               = 25
     failing_periods {
       minimum_failing_periods_to_trigger_alert = 1
       number_of_evaluation_periods             = 1
