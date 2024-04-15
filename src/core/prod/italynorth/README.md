@@ -24,5 +24,7 @@ No inputs.
 
 ## Outputs
 
-No outputs.
+| Name | Description |
+|------|-------------|
+| <a name="output_vnet_itn_common"></a> [vnet\_itn\_common](#output\_vnet\_itn\_common) | n/a |
 <!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
