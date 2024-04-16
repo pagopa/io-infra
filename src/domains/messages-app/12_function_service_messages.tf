@@ -19,6 +19,12 @@ data "azurerm_key_vault_secret" "internal_user" {
   key_vault_id = data.azurerm_key_vault.kv.id
 }
 
+data "azurerm_subnet" "runner_subnet" {
+  name                 = "${local.product}-github-runner-snet"
+  virtual_network_name = local.vnet_common_name
+  resource_group_name  = local.vnet_common_resource_group_name
+}
+
 locals {
   function_service_messages = {
     app_settings = {
@@ -185,6 +191,7 @@ module "function_service_messages_staging_slot" {
   allowed_subnets = [
     module.function_service_messages_snet.id,
     data.azurerm_subnet.azdoa_snet.id,
+    data.azurerm_subnet.runner_subnet.id
   ]
 
   allowed_ips = concat(
