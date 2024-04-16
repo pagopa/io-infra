@@ -57,6 +57,56 @@ module "landing_cdn" {
     ]
   }
 
+  delivery_rule = [{
+    name  = "TakeRootFilesFromStorage"
+    order = 2
+    request_uri_conditions = [{
+      match_values = [
+        "?",
+      ]
+      negate_condition = true
+      operator         = "Contains"
+      transforms       = []
+      },
+      {
+        match_values = [
+          "/",
+        ]
+        negate_condition = false
+        operator         = "EndsWith"
+        transforms       = []
+      }
+    ]
+
+    url_redirect_actions = [{
+      protocol      = "Https"
+      query_string  = "refresh=true"
+      redirect_type = "Found",
+      fragment      = null
+      hostname      = null
+      path          = null
+    }]
+
+    cache_expiration_actions       = []
+    cache_key_query_string_actions = []
+    cookies_conditions             = []
+    device_conditions              = []
+    http_version_conditions        = []
+    modify_request_header_actions  = []
+    modify_response_header_actions = []
+    post_arg_conditions            = []
+    query_string_conditions        = []
+    remote_address_conditions      = []
+    request_body_conditions        = []
+    request_header_conditions      = []
+    request_method_conditions      = []
+    request_scheme_conditions      = []
+    url_file_extension_conditions  = []
+    url_file_name_conditions       = []
+    url_path_conditions            = []
+    url_rewrite_actions            = []
+  }]
+
   log_analytics_workspace_id = data.azurerm_log_analytics_workspace.log_analytics.id
 
   tags = var.tags
