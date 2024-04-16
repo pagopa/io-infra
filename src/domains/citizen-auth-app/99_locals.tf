@@ -23,4 +23,6 @@ locals {
   aks_resource_group_name = "${local.product}-${var.location_short}-${var.instance}-aks-rg"
 
   lollipop_jwt_host = "api.io.pagopa.it"
+
+  appgw_resource_group_name = "${local.product}-rg-external"
 }
