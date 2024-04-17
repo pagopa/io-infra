@@ -439,3 +439,8 @@ resource "azurerm_private_dns_zone_virtual_network_link" "azurewebsites_private_
 
   tags = var.tags
 }
+
+resource "azurerm_private_dns_zone" "privatelink_srch" {
+  name                = "privatelink.search.windows.net"
+  resource_group_name = azurerm_resource_group.rg_common.name
+}
