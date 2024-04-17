@@ -195,7 +195,10 @@ resource "azurerm_monitor_autoscale_setting" "function_lollipop" {
       {
         name = "default",
 
-        recurrence = null
+        recurrence = {
+          hours   = 23
+          minutes = 00
+        }
 
         capacity = {
           default = var.function_lollipop_autoscale_default
