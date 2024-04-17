@@ -219,16 +219,37 @@ resource "azurerm_monitor_autoscale_setting" "function_ioweb_profile" {
   target_resource_id  = module.function_ioweb_profile.app_service_plan_id
 
 
+
+  # Scaling strategy
+  # 19,30 - 22 -> 2
+  # 22 - 19,30 -> 1
   dynamic "profile" {
     for_each = [
       {
         name = "default",
 
-        recurrence = []
+        recurrence = {
+          hours   = 22
+          minutes = 00
+        }
 
         capacity = {
           default = var.function_ioweb_profile.autoscale_default
           minimum = var.function_ioweb_profile.autoscale_minimum
+          maximum = var.function_ioweb_profile.autoscale_maximum
+        }
+      },
+      {
+        name = "evening",
+
+        recurrence = {
+          hours   = 19
+          minutes = 30
+        }
+
+        capacity = {
+          default = var.function_ioweb_profile.autoscale_default + 1
+          minimum = var.function_ioweb_profile.autoscale_minimum + 1
           maximum = var.function_ioweb_profile.autoscale_maximum
         }
       }
@@ -239,7 +260,7 @@ resource "azurerm_monitor_autoscale_setting" "function_ioweb_profile" {
       name = profile_info.value.name
 
       dynamic "recurrence" {
-        for_each = profile_info.value.recurrence
+        for_each = profile_info.value.recurrence == null ? [] : [profile_info.value.recurrence]
         iterator = recurrence_info
 
         content {
@@ -267,6 +288,8 @@ resource "azurerm_monitor_autoscale_setting" "function_ioweb_profile" {
           maximum = profile_info.value.capacity.maximum
         }
       }
+
+      # Increase
 
       rule {
         metric_trigger {
@@ -311,6 +334,8 @@ resource "azurerm_monitor_autoscale_setting" "function_ioweb_profile" {
           cooldown  = "PT1M"
         }
       }
+
+      # Decrease
 
       rule {
         metric_trigger {
