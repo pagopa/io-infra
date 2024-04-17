@@ -198,7 +198,7 @@ ehns_metric_alerts = {
 function_app_kind              = "Linux"
 function_app_sku_tier          = "PremiumV3"
 function_app_sku_size          = "P1v3"
-function_app_autoscale_minimum = 3
+function_app_autoscale_minimum = 2
 function_app_autoscale_maximum = 30
 function_app_autoscale_default = 10
 
@@ -235,7 +235,7 @@ function_public_autoscale_maximum = 30
 function_public_autoscale_default = 10
 
 app_backend_autoscale_default = 10
-app_backend_autoscale_minimum = 4
+app_backend_autoscale_minimum = 2
 app_backend_autoscale_maximum = 30
 
 # Function CDN Assets
