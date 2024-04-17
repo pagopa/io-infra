@@ -116,3 +116,16 @@ resource "azurerm_private_dns_zone_virtual_network_link" "azurewebsites_private_
 
   tags = var.tags
 }
+
+resource "azurerm_private_dns_zone" "privatelink_srch" {
+  name                = "privatelink.search.windows.net"
+  resource_group_name = var.resource_group_name
+}
+
+resource "azurerm_private_dns_zone_virtual_network_link" "srch_core_private_vnet_itn_common" {
+  name                  = module.vnet_itn_common.name
+
+  private_dns_zone_name = azurerm_private_dns_zone.privatelink_srch.name
+  resource_group_name   = var.resource_group_name
+  virtual_network_id    = module.vnet_itn_common.id
+}
