@@ -58,7 +58,7 @@ resource "azurerm_resource_group" "lollipop_rg" {
 # Subnet to host admin function
 module "lollipop_snet" {
   count                                     = var.lollipop_enabled ? 1 : 0
-  source                                    = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v7.77.0"
+  source                                    = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v8.3.0"
   name                                      = format("%s-lollipop-snet", local.common_project)
   address_prefixes                          = var.cidr_subnet_fnlollipop
   resource_group_name                       = data.azurerm_virtual_network.vnet_common.resource_group_name
@@ -82,7 +82,7 @@ module "lollipop_snet" {
 
 module "function_lollipop" {
   count  = var.lollipop_enabled ? 1 : 0
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app?ref=v7.77.0"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app?ref=v8.3.0"
 
   resource_group_name = azurerm_resource_group.lollipop_rg[0].name
   name                = format("%s-lollipop-fn", local.common_project)
@@ -100,6 +100,8 @@ module "function_lollipop" {
     kind                         = var.function_lollipop_kind
     sku_size                     = var.function_lollipop_sku_size
     maximum_elastic_worker_count = 0
+    worker_count                 = null
+    zone_balancing_enabled       = false
   }
 
   app_settings = merge(
@@ -118,6 +120,26 @@ module "function_lollipop" {
     "queues"                     = [],
     "containers"                 = [],
     "blobs_retention_days"       = 0,
+  }
+
+  storage_account_info = {
+    account_kind                      = "StorageV2"
+    account_tier                      = "Standard"
+    account_replication_type          = "ZRS"
+    access_tier                       = "Hot"
+    advanced_threat_protection_enable = true
+    use_legacy_defender_version       = true
+    public_network_access_enabled     = true
+  }
+
+  internal_storage_account_info = {
+    account_kind                      = "StorageV2"
+    account_tier                      = "Standard"
+    account_replication_type          = "ZRS"
+    access_tier                       = "Hot"
+    advanced_threat_protection_enable = false
+    use_legacy_defender_version       = true
+    public_network_access_enabled     = true
   }
 
   subnet_id = module.lollipop_snet[0].id
@@ -142,7 +164,7 @@ module "function_lollipop" {
 
 module "function_lollipop_staging_slot" {
   count  = var.lollipop_enabled ? 1 : 0
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app_slot?ref=v7.77.0"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app_slot?ref=v8.3.0"
 
   name                = "staging"
   location            = var.location
