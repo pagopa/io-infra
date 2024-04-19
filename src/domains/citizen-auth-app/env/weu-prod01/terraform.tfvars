@@ -61,3 +61,11 @@ function_fastlogin_sku_size          = "P1v3"
 function_fastlogin_autoscale_minimum = 4
 function_fastlogin_autoscale_maximum = 20
 function_fastlogin_autoscale_default = 10
+
+# Session manager
+cidr_subnet_session_manager = ["10.0.17.192/26"]
+session_manager_autoscale_settings = {
+  autoscale_minimum = 1
+  autoscale_default = 2
+  autoscale_maximum = 10
+}
