@@ -306,25 +306,25 @@ resource "azurerm_monitor_autoscale_setting" "function_app" {
   dynamic "profile" {
     for_each = [
       {
-        name = "default"
+        name = "{\"name\":\"default\",\"for\":\"evening\"}",
 
         recurrence = {
-          hours   = 23
-          minutes = 00
+          hours   = 22
+          minutes = 59
         }
 
         capacity = {
-          default = var.function_app_autoscale_default
-          minimum = var.function_app_autoscale_minimum
+          default = var.function_app_autoscale_default + 1
+          minimum = var.function_app_autoscale_minimum + 1
           maximum = var.function_app_autoscale_maximum
         }
       },
       {
-        name = "morning"
+        name = "{\"name\":\"default\",\"for\":\"night\"}",
 
         recurrence = {
-          hours   = 05
-          minutes = 00
+          hours   = 5
+          minutes = 0
         }
 
         capacity = {
@@ -344,6 +344,20 @@ resource "azurerm_monitor_autoscale_setting" "function_app" {
         capacity = {
           default = var.function_app_autoscale_default + 2
           minimum = var.function_app_autoscale_minimum + 2
+          maximum = var.function_app_autoscale_maximum
+        }
+      },
+      {
+        name = "night"
+
+        recurrence = {
+          hours   = 23
+          minutes = 0
+        }
+
+        capacity = {
+          default = var.function_app_autoscale_default
+          minimum = var.function_app_autoscale_minimum
           maximum = var.function_app_autoscale_maximum
         }
       }
