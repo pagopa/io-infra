@@ -700,6 +700,12 @@ data "azurerm_subnet" "functions_fast_login_snet" {
   resource_group_name  = azurerm_resource_group.rg_common.name
 }
 
+data "azurerm_subnet" "functions_service_messages_snet" {
+  name                 = "io-p-fn-service-messages-snet"
+  virtual_network_name = module.vnet_common.name
+  resource_group_name  = azurerm_resource_group.rg_common.name
+}
+
 module "appservice_app_backendl1" {
   source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//app_service?ref=v7.61.0"
 
@@ -1228,6 +1234,7 @@ module "appservice_app_backendli" {
     module.services_snet[1].id,
     module.admin_snet.id,
     data.azurerm_subnet.functions_fast_login_snet.id,
+    data.azurerm_subnet.functions_service_messages_snet.id,
   ]
 
   allowed_ips = concat(
