@@ -127,6 +127,7 @@ module "function_lollipop" {
     data.azurerm_subnet.apim_v2_snet.id,
     data.azurerm_subnet.app_backend_l1_snet.id,
     data.azurerm_subnet.app_backend_l2_snet.id,
+    module.session_manager_snet.id,
   ]
 
   # Action groups for alerts
@@ -305,14 +306,14 @@ resource "azurerm_monitor_scheduled_query_rules_alert_v2" "alert_function_lollip
 exceptions
 | where cloud_RoleName == "${module.function_lollipop[0].name}"
 | where outerMessage startswith "HandlePubKeyRevoke|"
-| extend 
+| extend
   event_name = tostring(customDimensions.name),
   event_maxRetryCount = toint(customDimensions.maxRetryCount),
   event_retryCount = toint(customDimensions.retryCount),
   event_assertionRef = tostring(customDimensions.assertionRef),
   event_detail = tostring(customDimensions.detail),
-  event_fatal = tostring(customDimensions.fatal), 
-  event_isSuccess = tostring(customDimensions.isSuccess), 
+  event_fatal = tostring(customDimensions.fatal),
+  event_isSuccess = tostring(customDimensions.isSuccess),
   event_modelId = tostring(customDimensions.modelId)
 | where event_name == "lollipop.pubKeys.revoke.failure" and event_retryCount == event_maxRetryCount-1
       QUERY
