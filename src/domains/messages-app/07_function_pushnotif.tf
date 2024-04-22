@@ -5,8 +5,6 @@ resource "azurerm_resource_group" "push_notif_rg" {
   tags = var.tags
 }
 
-
-
 locals {
   function_push_notif = {
     app_settings_common = {
@@ -72,7 +70,6 @@ locals {
       # ------------------------------------------------------------------------------
 
       AzureFunctionsJobHost__extensions__durableTask__storageProvider__partitionCount = "8"
-
     }
     app_settings_1 = {
     }
@@ -81,11 +78,9 @@ locals {
   }
 }
 
-
-
 # Subnet to host push notif function
 module "push_notif_snet" {
-  source                                    = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v4.1.6"
+  source                                    = "github.com/pagopa/terraform-azurerm-v3//subnet?ref=v7.69.1"
   name                                      = format("%s-push-notif-snet", local.project)
   address_prefixes                          = var.cidr_subnet_push_notif
   resource_group_name                       = data.azurerm_virtual_network.vnet_common.resource_group_name
@@ -110,7 +105,7 @@ module "push_notif_snet" {
 #tfsec:ignore:azure-storage-queue-services-logging-enabled:exp:2022-05-01 # already ignored, maybe a bug in tfsec
 module "push_notif_function" {
   count  = var.push_notif_enabled ? 1 : 0
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app?ref=v4.1.6"
+  source = "github.com/pagopa/terraform-azurerm-v3//function_app?ref=v7.71.1"
 
   resource_group_name = azurerm_resource_group.push_notif_rg.name
   name                = format("%s-push-notif-fn", local.product)
@@ -118,9 +113,8 @@ module "push_notif_function" {
   location            = var.location
   health_check_path   = "/api/v1/info"
 
-  os_type                                  = "linux"
   runtime_version                          = "~4"
-  linux_fx_version                         = "NODE|18"
+  node_version                             = "18"
   always_on                                = var.push_notif_function_always_on
   application_insights_instrumentation_key = data.azurerm_application_insights.application_insights.instrumentation_key
 
@@ -129,6 +123,8 @@ module "push_notif_function" {
     sku_tier                     = var.push_notif_function_sku_tier
     sku_size                     = var.push_notif_function_sku_size
     maximum_elastic_worker_count = 0
+    worker_count                 = null
+    zone_balancing_enabled       = false
   }
 
   internal_storage = {
@@ -142,11 +138,35 @@ module "push_notif_function" {
     "blobs_retention_days"       = 1,
   }
 
+  storage_account_info = {
+    account_tier                      = "Standard"
+    account_replication_type          = "ZRS"
+    public_network_access_enabled     = true
+    access_tier                       = "Hot"
+    account_kind                      = "StorageV2"
+    advanced_threat_protection_enable = true
+    use_legacy_defender_version       = true
+  }
+
+  internal_storage_account_info = {
+    account_tier                      = "Standard"
+    account_replication_type          = "ZRS"
+    public_network_access_enabled     = true
+    access_tier                       = "Hot"
+    account_kind                      = "StorageV2"
+    advanced_threat_protection_enable = false
+    use_legacy_defender_version       = true
+  }
+
   app_settings = merge(
     local.function_push_notif.app_settings_common, {
       "AzureWebJobs.HandleNHNotificationCall.Disabled" = "0"
     }
   )
+
+  sticky_app_setting_names = [
+    "AzureWebJobs.HandleNHNotificationCall.Disabled"
+  ]
 
   subnet_id = module.push_notif_snet.id
 
@@ -171,12 +191,11 @@ module "push_notif_function" {
 
 module "push_notif_function_staging_slot" {
   count  = var.push_notif_enabled ? 1 : 0
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app_slot?ref=v4.1.6"
+  source = "github.com/pagopa/terraform-azurerm-v3//function_app_slot?ref=v7.71.1"
 
   name                = "staging"
   location            = var.location
   resource_group_name = azurerm_resource_group.push_notif_rg.name
-  function_app_name   = module.push_notif_function[0].name
   function_app_id     = module.push_notif_function[0].id
   app_service_plan_id = module.push_notif_function[0].app_service_plan_id
   health_check_path   = "/api/v1/info"
@@ -186,9 +205,8 @@ module "push_notif_function_staging_slot" {
 
   internal_storage_connection_string = module.push_notif_function[0].storage_account_internal_function.primary_connection_string
 
-  os_type                                  = "linux"
   runtime_version                          = "~4"
-  linux_fx_version                         = "NODE|18"
+  node_version                             = "18"
   always_on                                = var.push_notif_function_always_on
   application_insights_instrumentation_key = data.azurerm_application_insights.application_insights.instrumentation_key
 
@@ -202,7 +220,7 @@ module "push_notif_function_staging_slot" {
 
   allowed_subnets = [
     module.push_notif_snet.id,
-    data.azurerm_subnet.azdoa_snet[0].id,
+    data.azurerm_subnet.azdoa_snet.id,
   ]
 
   allowed_ips = concat(
@@ -235,7 +253,7 @@ resource "azurerm_monitor_autoscale_setting" "push_notif_function" {
         metric_namespace         = "microsoft.web/sites"
         time_grain               = "PT1M"
         statistic                = "Average"
-        time_window              = "PT5M"
+        time_window              = "PT1M"
         time_aggregation         = "Average"
         operator                 = "GreaterThan"
         threshold                = 3000
@@ -279,7 +297,7 @@ resource "azurerm_monitor_autoscale_setting" "push_notif_function" {
         metric_namespace         = "microsoft.web/sites"
         time_grain               = "PT1M"
         statistic                = "Average"
-        time_window              = "PT5M"
+        time_window              = "PT15M"
         time_aggregation         = "Average"
         operator                 = "LessThan"
         threshold                = 2000
@@ -290,7 +308,7 @@ resource "azurerm_monitor_autoscale_setting" "push_notif_function" {
         direction = "Decrease"
         type      = "ChangeCount"
         value     = "1"
-        cooldown  = "PT20M"
+        cooldown  = "PT10M"
       }
     }
 

@@ -95,6 +95,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "rejected_requests" {
   query = <<-QUERY
 customEvents
 | where name == "io.sign.signature_request.rejected"
+| where customDimensions.environment == "DEFAULT"
 | summarize AggregatedValue = count() by bin(timestamp, 30m)
 | where AggregatedValue > 1
   QUERY
@@ -113,6 +114,42 @@ customEvents
       azurerm_monitor_action_group.email_fci_tech.id,
       azurerm_monitor_action_group.slack_fci_tech.id,
       data.azurerm_monitor_action_group.error_action_group.id
+    ]
+  }
+
+  tags = var.tags
+}
+
+resource "azurerm_monitor_scheduled_query_rules_alert" "rejected_test_requests" {
+  name                = format("%s-rejected-test-requests", local.project)
+  resource_group_name = azurerm_resource_group.backend_rg.name
+  location            = azurerm_resource_group.backend_rg.location
+
+  data_source_id          = data.azurerm_application_insights.application_insights.id
+  description             = "[IO-SIGN] There are REJECTED signature requests in TEST environment. No action required"
+  enabled                 = true
+  auto_mitigation_enabled = false
+
+  query = <<-QUERY
+customEvents
+| where name == "io.sign.signature_request.rejected"
+| where customDimensions.environment == "TEST"
+| summarize AggregatedValue = count() by bin(timestamp, 30m)
+| where AggregatedValue > 1
+  QUERY
+
+  severity    = 3
+  frequency   = 30
+  time_window = 30
+
+  trigger {
+    operator  = "GreaterThanOrEqual"
+    threshold = 1
+  }
+
+  action {
+    action_group = [
+      azurerm_monitor_action_group.slack_fci_tech.id
     ]
   }
 

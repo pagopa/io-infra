@@ -1,0 +1,23 @@
+name: Continuous Integration on eucovidcert
+
+on:
+  workflow_dispatch:
+  pull_request:
+    types:
+      - opened
+      - edited
+      - synchronize
+      - reopened
+      - ready_for_review
+    paths:
+      - "src/domains/eucovidcert/**"
+      - ".github/workflows/eucovidcert_**"
+
+jobs:
+  code_review_prod:
+    uses: ./.github/workflows/call_code_review.yaml
+    name: Terraform Plan
+    secrets: inherit
+    with:
+      environment: prod
+      dir: "src/domains/eucovidcert/prod/westeurope"

@@ -1,0 +1,59 @@
+ioweb:
+  - changed-files:
+    - any-glob-to-any-file: ['src/domains/ioweb-**']
+
+citizen-auth:
+  - changed-files:
+    - any-glob-to-any-file: ['src/domains/citizen-auth-**']
+
+cgn:
+  - changed-files:
+    - any-glob-to-any-file: ['src/domains/cgn/**']
+
+elk:
+  - changed-files:
+    - any-glob-to-any-file: ['src/domains/elk/**']
+
+messages:
+  - changed-files:
+    - any-glob-to-any-file: ['src/domains/messages-**']
+
+payments:
+  - changed-files:
+    - any-glob-to-any-file: ['src/domains/payments-**']
+
+profile:
+  - changed-files:
+    - any-glob-to-any-file: ['src/domains/profile-**']
+
+sign:
+  - changed-files:
+    - any-glob-to-any-file: ['src/domains/sign/**']
+
+aks-platform:
+  - changed-files:
+    - any-glob-to-any-file: ['src/aks-platform/**']
+
+core:
+  - changed-files:
+    - any-glob-to-any-file: ['src/core/**']
+
+github-runner:
+  - changed-files:
+    - any-glob-to-any-file: ['src/github-runner/**']
+
+packer:
+  - changed-files:
+    - any-glob-to-any-file: ['src/packer/**']
+
+automation:
+  - changed-files:
+    - any-glob-to-any-file: ['.github/**']
+
+selfcare:
+  - changed-files:
+    - any-glob-to-any-file: ['.src/domains/selfcare/**']
+
+eucovidcert:
+  - changed-files:
+    - any-glob-to-any-file: ['.src/domains/eucovidcert/**']

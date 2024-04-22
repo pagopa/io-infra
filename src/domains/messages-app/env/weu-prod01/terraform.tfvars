@@ -8,11 +8,12 @@ location_string = "West Europe"
 instance        = "prod01"
 
 tags = {
-  CreatedBy   = "Terraform"
-  Environment = "Prod"
-  Owner       = "IO"
-  Source      = "https://github.com/pagopa/io-infra/tree/main/src/messages"
-  CostCenter  = "TS310 - PAGAMENTI & SERVIZI"
+  CreatedBy      = "Terraform"
+  Environment    = "Prod"
+  Owner          = "IO"
+  Source         = "https://github.com/pagopa/io-infra/blob/main/src/domains/messages-app"
+  ManagementTeam = "IO Comunicazione"
+  CostCenter     = "TS310 - PAGAMENTI & SERVIZI"
 }
 
 ### External resources
@@ -191,3 +192,20 @@ push_notif_function_sku_size          = "P1v3"
 push_notif_function_autoscale_minimum = 1
 push_notif_function_autoscale_maximum = 15
 push_notif_function_autoscale_default = 10
+
+###############################
+# Messages functions
+###############################
+app_messages_count      = 2
+cidr_subnet_appmessages = ["10.0.127.0/24", "10.0.128.0/24"]
+
+###############################
+# Messages cqrs functions
+###############################
+cidr_subnet_fnmessagescqrs = ["10.0.129.0/24"]
+
+###############################
+# Service messages functions
+###############################
+cidr_subnet_fnservicemessages     = ["10.0.148.0/26"]
+function_service_messages_enabled = true

@@ -77,7 +77,7 @@ module "app_gw" {
       port         = 443
       ip_addresses = null # with null value use fqdns
       fqdns = [
-        module.appservice_devportal_be.default_site_hostname,
+        data.azurerm_linux_web_app.appservice_devportal_be.default_hostname,
       ]
       probe                       = "/info"
       probe_name                  = "probe-developerportal-backend"
@@ -91,7 +91,7 @@ module "app_gw" {
       port         = 443
       ip_addresses = null # with null value use fqdns
       fqdns = [
-        module.appservice_selfcare_be.default_site_hostname,
+        data.azurerm_linux_web_app.appservice_selfcare_be.default_hostname,
       ]
       probe                       = "/info"
       probe_name                  = "probe-selfcare-backend"
@@ -119,7 +119,7 @@ module "app_gw" {
       port         = 443
       ip_addresses = null # with null value use fqdns
       fqdns = [
-        module.appservice_continua.default_site_hostname,
+        data.azurerm_linux_web_app.appservice_continua.default_hostname,
       ]
       probe                       = "/info"
       probe_name                  = "probe-continua-app"
@@ -304,7 +304,7 @@ module "app_gw" {
 
     api-io-selfcare-pagopa-it = {
       protocol           = "Https"
-      host               = local.selfcare_io.backend_hostname
+      host               = "api.${var.dns_zone_io_selfcare}.${var.external_domain}"
       port               = 443
       ssl_profile_name   = null
       firewall_policy_id = null
@@ -718,7 +718,7 @@ module "app_gw" {
           conditions    = []
           url = {
             path         = "fims/{var_uri_path}"
-            query_string = null
+            query_string = "{var_query_string}"
           }
           request_header_configurations  = []
           response_header_configurations = []
@@ -770,7 +770,7 @@ module "app_gw" {
     }
 
     backend_pools_status = {
-      description   = "One or more backend pools are down, check Backend Health on Azure portal. Runbook https://pagopa.atlassian.net/wiki/spaces/IC/pages/914161665/Application+Gateway+-+Backend+Status"
+      description   = "One or more backend pools are down, see Dimension value or check Backend Health on Azure portal. Runbook https://pagopa.atlassian.net/wiki/spaces/IC/pages/914161665/Application+Gateway+-+Backend+Status"
       frequency     = "PT5M"
       window_size   = "PT5M"
       severity      = 0
@@ -782,16 +782,22 @@ module "app_gw" {
           metric_name = "UnhealthyHostCount"
           operator    = "GreaterThan"
           threshold   = 0
-          dimension   = []
+          dimension = [
+            {
+              name     = "BackendSettingsPool"
+              operator = "Include"
+              values   = ["*"]
+            }
+          ]
         }
       ]
       dynamic_criteria = []
     }
 
     response_time = {
-      description   = "Backends response time is too high"
+      description   = "Backends response time is too high. See Dimension value to check the Listener unhealty."
       frequency     = "PT5M"
-      window_size   = "PT5M"
+      window_size   = "PT15M"
       severity      = 2
       auto_mitigate = true
 
@@ -801,10 +807,15 @@ module "app_gw" {
           aggregation              = "Average"
           metric_name              = "BackendLastByteResponseTime"
           operator                 = "GreaterThan"
-          alert_sensitivity        = "High"
+          alert_sensitivity        = "Medium"
           evaluation_total_count   = 2
           evaluation_failure_count = 2
-          dimension                = []
+          dimension = [
+            {
+              name     = "Listener"
+              operator = "Include"
+              values   = ["*"]
+          }]
         }
       ]
     }
@@ -831,7 +842,7 @@ module "app_gw" {
     }
 
     failed_requests = {
-      description   = "Abnormal failed requests"
+      description   = "Abnormal failed requests. See Dimension value to check the Backend Pool unhealty"
       frequency     = "PT5M"
       window_size   = "PT5M"
       severity      = 1
@@ -846,7 +857,13 @@ module "app_gw" {
           alert_sensitivity        = "High"
           evaluation_total_count   = 4
           evaluation_failure_count = 4
-          dimension                = []
+          dimension = [
+            {
+              name     = "BackendSettingsPool"
+              operator = "Include"
+              values   = ["*"]
+            }
+          ]
         }
       ]
     }

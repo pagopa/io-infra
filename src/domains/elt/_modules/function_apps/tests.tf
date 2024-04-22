@@ -1,0 +1,3 @@
+module "tests" {
+  source = "../../../tests"
+}

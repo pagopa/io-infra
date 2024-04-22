@@ -1,0 +1,25 @@
+name: PR - Core
+
+on:
+  workflow_dispatch:
+  pull_request:
+    types:
+      - opened
+      - edited
+      - synchronize
+      - reopened
+      - ready_for_review
+    paths:
+      - "src/core/prod/italynorth"
+      - "src/core/_modules"
+      - ".github/workflows/core_code_review.yaml"
+
+jobs:
+  prod_itn_core_code_review:
+    uses: pagopa/dx/.github/workflows/infra_plan.yaml@main
+    name: Italy North Prod - Code Review
+    secrets: inherit
+    with:
+      environment: prod
+      region: italynorth
+      base_path: src/core

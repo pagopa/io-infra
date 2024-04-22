@@ -28,31 +28,24 @@ ddos_protection_plan = {
   enable = true
 }
 cidr_common_vnet     = ["10.0.0.0/16"]
+cidr_common_in_vnet  = ["10.20.0.0/16"]
 cidr_weu_beta_vnet   = ["10.10.0.0/16"]
 cidr_weu_prod01_vnet = ["10.11.0.0/16"]
 cidr_weu_prod02_vnet = ["10.12.0.0/16"]
 # check free subnet on azure portal io-p-vnet-common -> subnets
-cidr_subnet_cgn                            = ["10.0.8.0/26"]
 cidr_subnet_eventhub                       = ["10.0.10.0/24"]
 cidr_subnet_fnelt                          = ["10.0.11.0/24"]
-cidr_subnet_fnpblevtdispatcher             = ["10.0.12.0/24"]
 cidr_subnet_appgateway                     = ["10.0.13.0/24"]
 cidr_subnet_redis_apim                     = ["10.0.14.0/24"]
 cidr_subnet_fnadmin                        = ["10.0.15.0/26"]
-cidr_subnet_fnpblevtdispatcherv4           = ["10.0.15.64/26"]
 cidr_subnet_shared_1                       = ["10.0.16.0/26"]
 cidr_subnet_fnlollipop                     = ["10.0.17.0/26"]
-cidr_subnet_continua                       = ["10.0.17.64/26"]
 cidr_subnet_fnfastlogin                    = ["10.0.17.128/26"]
-cidr_subnet_fims                           = ["10.0.18.0/26"]
 cidr_subnet_apim                           = ["10.0.101.0/24"]
 cidr_subnet_apim_v2                        = ["10.0.100.0/24"]
-cidr_subnet_appmessages                    = ["10.0.127.0/24", "10.0.128.0/24"]
-cidr_subnet_fnmessagescqrs                 = ["10.0.129.0/24"]
 cidr_subnet_fncdnassets                    = ["10.0.131.0/24"]
 cidr_subnet_app                            = ["10.0.132.0/26", "10.0.132.64/26"]
 cidr_subnet_app_async                      = ["10.0.132.128/26"]
-cidr_subnet_eucovidcert                    = ["10.0.132.192/26"]
 cidr_subnet_vpn                            = ["10.0.133.0/24"]
 cidr_subnet_selfcare_be                    = ["10.0.137.0/24"]
 cidr_subnet_devportalservicedata_db_server = ["10.0.138.0/24"]
@@ -205,7 +198,7 @@ ehns_metric_alerts = {
 function_app_kind              = "Linux"
 function_app_sku_tier          = "PremiumV3"
 function_app_sku_size          = "P1v3"
-function_app_autoscale_minimum = 1
+function_app_autoscale_minimum = 2
 function_app_autoscale_maximum = 30
 function_app_autoscale_default = 10
 
@@ -221,7 +214,7 @@ function_services_autoscale_default = 10
 function_app_async_kind              = "Linux"
 function_app_async_sku_tier          = "PremiumV3"
 function_app_async_sku_size          = "P1v3"
-function_app_async_autoscale_minimum = 2 # 2 instance to achieve redundancy and failover
+function_app_async_autoscale_minimum = 3 # 2 instance to achieve redundancy and failover
 function_app_async_autoscale_maximum = 30
 function_app_async_autoscale_default = 10
 
@@ -233,14 +226,6 @@ function_admin_autoscale_minimum = 1
 function_admin_autoscale_maximum = 3
 function_admin_autoscale_default = 1
 
-# Functions Cgn
-plan_cgn_kind                  = "Linux"
-plan_cgn_sku_tier              = "PremiumV3"
-plan_cgn_sku_size              = "P1v3"
-function_cgn_autoscale_minimum = 1
-function_cgn_autoscale_maximum = 30
-function_cgn_autoscale_default = 10
-
 # Functions shared
 plan_shared_1_kind                = "Linux"
 plan_shared_1_sku_tier            = "PremiumV3"
@@ -249,29 +234,9 @@ function_public_autoscale_minimum = 1
 function_public_autoscale_maximum = 30
 function_public_autoscale_default = 10
 
-# App Messages
-app_messages_function_always_on = true
-
-app_messages_function_kind              = "Linux"
-app_messages_function_sku_tier          = "PremiumV3"
-app_messages_function_sku_size          = "P1v3"
-app_messages_function_autoscale_minimum = 1
-app_messages_function_autoscale_maximum = 15
-app_messages_function_autoscale_default = 10
-
 app_backend_autoscale_default = 10
 app_backend_autoscale_minimum = 2
 app_backend_autoscale_maximum = 30
-
-# Function Messages CQRS
-function_messages_cqrs_always_on = true
-
-function_messages_cqrs_kind              = "Linux"
-function_messages_cqrs_sku_tier          = "PremiumV3"
-function_messages_cqrs_sku_size          = "P1v3"
-function_messages_cqrs_autoscale_minimum = 1
-function_messages_cqrs_autoscale_maximum = 30
-function_messages_cqrs_autoscale_default = 1
 
 # Function CDN Assets
 function_assets_cdn_kind              = "Linux"
@@ -281,19 +246,7 @@ function_assets_cdn_autoscale_minimum = 1
 function_assets_cdn_autoscale_maximum = 5
 function_assets_cdn_autoscale_default = 1
 
-# Function EUCovidCert
-function_eucovidcert_kind              = "Linux"
-function_eucovidcert_sku_tier          = "PremiumV3"
-function_eucovidcert_sku_size          = "P1v3"
-function_eucovidcert_autoscale_minimum = 1
-function_eucovidcert_autoscale_maximum = 20
-function_eucovidcert_autoscale_default = 10
-
 # App Continua DynamicLynk
-
-# TODO remove when the terraform provider for Azure will support SKU P0v3
-# Up to then, the work-around is defining as P1v3 and changing via console
-continua_appservice_sku = "P1v3"
 
 eventhubs = [
   {
@@ -472,6 +425,5 @@ io_receipt_service_test_url = "https://api.uat.platform.pagopa.it/receipts/servi
 
 # TP Mock Service Id
 third_party_mock_service_id = "01GQQDPM127KFGG6T3660D5TXD"
-
 
 app_backend_names = ["appbackendl1", "appbackendl2", "appbackendli"]

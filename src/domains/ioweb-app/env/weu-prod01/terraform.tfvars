@@ -50,7 +50,7 @@ cidr_subnet_fniowebprofile = ["10.0.117.0/24"]
 function_ioweb_profile = {
   kind              = "Linux"
   sku_size          = "P1v3"
-  autoscale_minimum = 1
+  autoscale_minimum = 2
   autoscale_maximum = 30
-  autoscale_default = 1
+  autoscale_default = 2
 }

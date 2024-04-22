@@ -26,6 +26,11 @@ variable "location" {
   default = "westeurope"
 }
 
+variable "location_in" {
+  type    = string
+  default = "italynorth"
+}
+
 variable "location_short" {
   type = string
   validation {
@@ -177,6 +182,11 @@ variable "ddos_protection_plan" {
   default = null
 }
 
+variable "cidr_common_in_vnet" {
+  type        = list(string)
+  description = "Common Italy North Virtual network cidr."
+}
+
 variable "cidr_common_vnet" {
   type        = list(string)
   description = "Common Virtual network cidr."
@@ -211,16 +221,6 @@ variable "cidr_subnet_eventhub" {
 variable "cidr_subnet_fnelt" {
   type        = list(string)
   description = "function-elt network address space."
-}
-
-variable "cidr_subnet_fnpblevtdispatcher" {
-  type        = list(string)
-  description = "function-publiceventdispatcher network address space."
-}
-
-variable "cidr_subnet_fnpblevtdispatcherv4" {
-  type        = list(string)
-  description = "function-publiceventdispatcher network address space."
 }
 
 variable "cidr_subnet_appgateway" {
@@ -283,16 +283,6 @@ variable "cidr_subnet_app_async" {
   description = "Function app async address space."
 }
 
-variable "cidr_subnet_appmessages" {
-  type        = list(string)
-  description = "App messages address space."
-}
-
-variable "cidr_subnet_fnmessagescqrs" {
-  type        = list(string)
-  description = "Fn cqrs address space."
-}
-
 variable "cidr_subnet_fncdnassets" {
   type        = list(string)
   description = "Fn assets address space."
@@ -303,19 +293,8 @@ variable "cidr_subnet_appbackendli" {
   description = "App backend li address space."
 }
 
-variable "cidr_subnet_cgn" {
-  type        = list(string)
-  description = "Function cgn address space."
-}
-
 variable "cidr_subnet_shared_1" {
-  type        = list(string)
-  description = "Function cgn address space."
-}
-
-variable "cidr_subnet_eucovidcert" {
-  type        = list(string)
-  description = "Function App EUCovidCert address space."
+  type = list(string)
 }
 
 variable "cidr_subnet_fnadmin" {
@@ -333,19 +312,9 @@ variable "cidr_subnet_fnlollipop" {
   description = "Function Lollipop address space."
 }
 
-variable "cidr_subnet_continua" {
-  type        = list(string)
-  description = "continua address space."
-}
-
 variable "cidr_subnet_fnfastlogin" {
   type        = list(string)
   description = "Function Fast Login address space."
-}
-
-variable "cidr_subnet_fims" {
-  type        = list(string)
-  description = "FIMS app service address space."
 }
 
 ## REDIS COMMON ##
@@ -612,13 +581,6 @@ EOD
   }))
 }
 
-# eucovidcert
-variable "eucovidcert_alerts_enabled" {
-  description = "Enable eucovidcert alerts"
-  type        = bool
-  default     = true
-}
-
 # app backend
 
 variable "app_backend_names" {
@@ -681,38 +643,6 @@ variable "selfcare_plan_sku_capacity" {
   type        = number
   default     = 1
 }
-
-
-# legal backup storage
-variable "cgn_legalbackup_account_replication_type" {
-  type        = string
-  description = "Legal backup replication type"
-  default     = "GZRS"
-}
-
-variable "cgn_legalbackup_enable_versioning" {
-  type        = bool
-  description = "Enable legal backup versioning"
-  default     = false
-}
-
-## Azure container registry
-# variable "sku_container_registry" {
-#   type    = string
-#   default = "Basic"
-# }
-
-# variable "retention_policy_acr" {
-#   type = object({
-#     days    = number
-#     enabled = bool
-#   })
-#   default = {
-#     days    = 7
-#     enabled = true
-#   }
-#   description = "Container registry retention policy."
-# }
 
 # Function App
 variable "function_app_count" {
@@ -882,96 +812,6 @@ variable "function_admin_autoscale_default" {
   default     = 1
 }
 
-# App Messages
-variable "app_messages_count" {
-  type    = number
-  default = 2
-}
-
-variable "app_messages_function_always_on" {
-  type    = bool
-  default = false
-}
-
-variable "app_messages_function_kind" {
-  type        = string
-  description = "App service plan kind"
-  default     = null
-}
-
-variable "app_messages_function_sku_tier" {
-  type        = string
-  description = "App service plan sku tier"
-  default     = null
-}
-
-variable "app_messages_function_sku_size" {
-  type        = string
-  description = "App service plan sku size"
-  default     = null
-}
-
-variable "app_messages_function_autoscale_minimum" {
-  type        = number
-  description = "The minimum number of instances for this resource."
-  default     = 1
-}
-
-variable "app_messages_function_autoscale_maximum" {
-  type        = number
-  description = "The maximum number of instances for this resource."
-  default     = 3
-}
-
-variable "app_messages_function_autoscale_default" {
-  type        = number
-  description = "The number of instances that are available for scaling if metrics are not available for evaluation."
-  default     = 1
-}
-
-# Functions Messages CQRS
-
-variable "function_messages_cqrs_always_on" {
-  type    = bool
-  default = false
-}
-
-variable "function_messages_cqrs_kind" {
-  type        = string
-  description = "App service plan kind"
-  default     = null
-}
-
-variable "function_messages_cqrs_sku_tier" {
-  type        = string
-  description = "App service plan sku tier"
-  default     = null
-}
-
-variable "function_messages_cqrs_sku_size" {
-  type        = string
-  description = "App service plan sku size"
-  default     = null
-}
-
-variable "function_messages_cqrs_autoscale_minimum" {
-  type        = number
-  description = "The minimum number of instances for this resource."
-  default     = 1
-}
-
-variable "function_messages_cqrs_autoscale_maximum" {
-  type        = number
-  description = "The maximum number of instances for this resource."
-  default     = 3
-}
-
-variable "function_messages_cqrs_autoscale_default" {
-  type        = number
-  description = "The number of instances that are available for scaling if metrics are not available for evaluation."
-  default     = 1
-}
-
 variable "function_assets_cdn_kind" {
   type        = string
   description = "App service plan kind"
@@ -1074,91 +914,6 @@ variable "io_receipt_service_test_url" {
   description = "The endpoint of Receipt Service (test env)"
 }
 
-# Function CGN
-variable "plan_cgn_kind" {
-  type        = string
-  description = "App service plan kind"
-  default     = null
-}
-
-variable "plan_cgn_sku_tier" {
-  type        = string
-  description = "App service plan sku tier"
-  default     = null
-}
-
-variable "plan_cgn_sku_size" {
-  type        = string
-  description = "App service plan sku size"
-  default     = null
-}
-
-variable "plan_cgn_sku_capacity" {
-  description = "Cgn app plan capacity"
-  type        = number
-  default     = 1
-}
-
-variable "function_cgn_autoscale_minimum" {
-  type        = number
-  description = "The minimum number of instances for this resource."
-  default     = 1
-}
-
-variable "function_cgn_autoscale_maximum" {
-  type        = number
-  description = "The maximum number of instances for this resource."
-  default     = 3
-}
-
-variable "function_cgn_autoscale_default" {
-  type        = number
-  description = "The number of instances that are available for scaling if metrics are not available for evaluation."
-  default     = 1
-}
-
-# Function EUCovidCert
-variable "function_eucovidcert_count" {
-  type    = number
-  default = 2
-}
-
-variable "function_eucovidcert_kind" {
-  type        = string
-  description = "App service plan kind"
-  default     = null
-}
-
-variable "function_eucovidcert_sku_tier" {
-  type        = string
-  description = "App service plan sku tier"
-  default     = null
-}
-
-variable "function_eucovidcert_sku_size" {
-  type        = string
-  description = "App service plan sku size"
-  default     = null
-}
-
-variable "function_eucovidcert_autoscale_minimum" {
-  type        = number
-  description = "The minimum number of instances for this resource."
-  default     = 1
-}
-
-variable "function_eucovidcert_autoscale_maximum" {
-  type        = number
-  description = "The maximum number of instances for this resource."
-  default     = 30
-}
-
-variable "function_eucovidcert_autoscale_default" {
-  type        = number
-  description = "The number of instances that are available for scaling if metrics are not available for evaluation."
-  default     = 1
-}
-
 # Shared functions
 variable "plan_shared_1_kind" {
   type        = string
@@ -1239,14 +994,4 @@ variable "citizen_auth_assertion_storage_name" {
   type        = string
   description = "Use storage name from citizen_auth domain"
   default     = "lollipop-assertions-st"
-}
-
-
-################################
-# App Continua - DynamicLink
-################################
-
-variable "continua_appservice_sku" {
-  type        = string
-  description = "The SKU for the AppService Plan relative to Continua"
 }

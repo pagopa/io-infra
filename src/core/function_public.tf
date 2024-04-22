@@ -31,6 +31,7 @@ locals {
       StorageConnection = module.storage_api.primary_connection_string
 
       VALIDATION_CALLBACK_URL = "https://api-app.io.pagopa.it/email_verification.html"
+      CONFIRM_CHOICE_PAGE_URL = "https://api-app.io.pagopa.it/email_confirm.html"
     }
   }
 }

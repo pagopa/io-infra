@@ -54,13 +54,13 @@ locals {
 
       // FUNCTIONS
       API_KEY                     = data.azurerm_key_vault_secret.app_backend_API_KEY.value
-      CGN_API_URL                 = "https://${module.function_cgn.default_hostname}"
+      CGN_API_URL                 = "https://${data.azurerm_linux_function_app.function_cgn.default_hostname}"
       CGN_API_KEY                 = data.azurerm_key_vault_secret.app_backend_CGN_API_KEY.value
       IO_SIGN_API_URL             = "https://io-p-sign-user-func.azurewebsites.net"
       IO_SIGN_API_KEY             = data.azurerm_key_vault_secret.app_backend_IO_SIGN_API_KEY.value
       CGN_OPERATOR_SEARCH_API_URL = "https://cgnonboardingportal-p-op.azurewebsites.net" # prod subscription
       CGN_OPERATOR_SEARCH_API_KEY = data.azurerm_key_vault_secret.app_backend_CGN_OPERATOR_SEARCH_API_KEY_PROD.value
-      EUCOVIDCERT_API_URL         = "https://${module.function_eucovidcert.default_hostname}/api/v1"
+      EUCOVIDCERT_API_URL         = "https://${data.azurerm_linux_function_app.eucovidcert.default_hostname}/api/v1"
       EUCOVIDCERT_API_KEY         = data.azurerm_key_vault_secret.fn_eucovidcert_API_KEY_APPBACKEND.value
       APP_MESSAGES_API_KEY        = data.azurerm_key_vault_secret.app_backend_APP_MESSAGES_API_KEY.value
       LOLLIPOP_API_URL            = "https://io-p-weu-lollipop-fn.azurewebsites.net"
@@ -331,19 +331,19 @@ locals {
       IS_APPBACKENDLI = "false"
       // FUNCTIONS
       API_URL              = "https://${module.function_app[0].default_hostname}/api/v1"
-      APP_MESSAGES_API_URL = "https://${module.app_messages_function[0].default_hostname}/api/v1"
+      APP_MESSAGES_API_URL = "https://${data.azurerm_linux_function_app.app_messages_1.default_hostname}/api/v1"
     }
     app_settings_l2 = {
       IS_APPBACKENDLI = "false"
       // FUNCTIONS
       API_URL              = "https://${module.function_app[1].default_hostname}/api/v1"
-      APP_MESSAGES_API_URL = "https://${module.app_messages_function[1].default_hostname}/api/v1"
+      APP_MESSAGES_API_URL = "https://${data.azurerm_linux_function_app.app_messages_2.default_hostname}/api/v1"
     }
     app_settings_li = {
       IS_APPBACKENDLI = "true"
       // FUNCTIONS
-      API_URL              = "https://${module.function_app[0].default_hostname}/api/v1"          # not used
-      APP_MESSAGES_API_URL = "https://${module.app_messages_function[0].default_hostname}/api/v1" # not used
+      API_URL              = "https://${module.function_app[0].default_hostname}/api/v1"                         # not used
+      APP_MESSAGES_API_URL = "https://${data.azurerm_linux_function_app.app_messages_1.default_hostname}/api/v1" # not used
     }
   }
 
@@ -373,6 +373,64 @@ locals {
 
   pn_api_url_prod = "https://api-io.notifichedigitali.it"
 
+  autoscale_profiles = [
+    {
+      name = "{\"name\":\"default\",\"for\":\"evening\"}",
+
+      recurrence = {
+        hours   = 22
+        minutes = 59
+      }
+
+      capacity = {
+        default = var.app_backend_autoscale_default + 1
+        minimum = var.app_backend_autoscale_minimum + 1
+        maximum = var.app_backend_autoscale_maximum
+      }
+    },
+    {
+      name = "{\"name\":\"default\",\"for\":\"night\"}",
+
+      recurrence = {
+        hours   = 5
+        minutes = 0
+      }
+
+      capacity = {
+        default = var.app_backend_autoscale_default + 1
+        minimum = var.app_backend_autoscale_minimum + 1
+        maximum = var.app_backend_autoscale_maximum
+      }
+    },
+    {
+      name = "evening"
+
+      recurrence = {
+        hours   = 19
+        minutes = 30
+      }
+
+      capacity = {
+        default = var.app_backend_autoscale_default + 2
+        minimum = var.app_backend_autoscale_minimum + 2
+        maximum = var.app_backend_autoscale_maximum
+      }
+    },
+    {
+      name = "night"
+
+      recurrence = {
+        hours   = 23
+        minutes = 0
+      }
+
+      capacity = {
+        default = var.app_backend_autoscale_default
+        minimum = var.app_backend_autoscale_minimum
+        maximum = var.app_backend_autoscale_maximum
+      }
+    }
+  ]
 }
 
 resource "azurerm_resource_group" "rg_linux" {
@@ -554,6 +612,16 @@ data "azurerm_key_vault_secret" "app_backend_RECEIPT_SERVICE_API_KEY" {
   key_vault_id = module.key_vault_common.id
 }
 
+data "azurerm_key_vault_secret" "fn_eucovidcert_API_KEY_APPBACKEND" {
+  name         = "funceucovidcert-KEY-APPBACKEND"
+  key_vault_id = module.key_vault_common.id
+}
+
+data "azurerm_key_vault_secret" "fn_eucovidcert_API_KEY_PUBLICIOEVENTDISPATCHER" {
+  name         = "funceucovidcert-KEY-PUBLICIOEVENTDISPATCHER"
+  key_vault_id = module.key_vault.id
+}
+
 #tfsec:ignore:AZU023
 resource "azurerm_key_vault_secret" "appbackend-REDIS-PASSWORD" {
   name         = "appbackend-REDIS-PASSWORD"
@@ -640,6 +708,12 @@ resource "azurerm_subnet_nat_gateway_association" "app_backendl1_snet" {
 
 data "azurerm_subnet" "functions_fast_login_snet" {
   name                 = format("%s-%s-fast-login-snet", local.project, var.location_short)
+  virtual_network_name = module.vnet_common.name
+  resource_group_name  = azurerm_resource_group.rg_common.name
+}
+
+data "azurerm_subnet" "functions_service_messages_snet" {
+  name                 = "io-p-fn-service-messages-snet"
   virtual_network_name = module.vnet_common.name
   resource_group_name  = azurerm_resource_group.rg_common.name
 }
@@ -732,104 +806,134 @@ resource "azurerm_monitor_autoscale_setting" "appservice_app_backendl1" {
   location            = azurerm_resource_group.rg_linux.location
   target_resource_id  = module.appservice_app_backendl1.plan_id
 
-  profile {
-    name = "default"
 
-    capacity {
-      default = var.app_backend_autoscale_default
-      minimum = var.app_backend_autoscale_minimum
-      maximum = var.app_backend_autoscale_maximum
-    }
+  # Scaling strategy
+  # 05 - 19,30 -> min 3
+  # 19,30 - 23 -> min 4
+  # 23 - 05 -> min 2
+  dynamic "profile" {
+    for_each = local.autoscale_profiles
+    iterator = profile_info
 
-    # Increase rules
+    content {
+      name = profile_info.value.name
 
-    rule {
-      metric_trigger {
-        metric_name              = "Requests"
-        metric_resource_id       = module.appservice_app_backendl1.id
-        metric_namespace         = "microsoft.web/sites"
-        time_grain               = "PT1M"
-        statistic                = "Average"
-        time_window              = "PT1M"
-        time_aggregation         = "Average"
-        operator                 = "GreaterThan"
-        threshold                = 4000
-        divide_by_instance_count = false
+      dynamic "recurrence" {
+        for_each = profile_info.value.recurrence != null ? [profile_info.value.recurrence] : []
+        iterator = recurrence_info
+
+        content {
+          timezone = "W. Europe Standard Time"
+          hours    = [recurrence_info.value.hours]
+          minutes  = [recurrence_info.value.minutes]
+          days = [
+            "Monday",
+            "Tuesday",
+            "Wednesday",
+            "Thursday",
+            "Friday",
+            "Saturday",
+            "Sunday"
+          ]
+        }
       }
 
-      scale_action {
-        direction = "Increase"
-        type      = "ChangeCount"
-        value     = "2"
-        cooldown  = "PT5M"
-      }
-    }
-
-    rule {
-      metric_trigger {
-        metric_name              = "CpuPercentage"
-        metric_resource_id       = module.appservice_app_backendl1.plan_id
-        metric_namespace         = "microsoft.web/serverfarms"
-        time_grain               = "PT1M"
-        statistic                = "Average"
-        time_window              = "PT5M"
-        time_aggregation         = "Average"
-        operator                 = "GreaterThan"
-        threshold                = 40
-        divide_by_instance_count = false
+      capacity {
+        default = profile_info.value.capacity.default
+        minimum = profile_info.value.capacity.minimum
+        maximum = profile_info.value.capacity.maximum
       }
 
-      scale_action {
-        direction = "Increase"
-        type      = "ChangeCount"
-        value     = "2"
-        cooldown  = "PT5M"
-      }
-    }
+      # Increase rules
 
-    # Decrease rules
+      rule {
+        metric_trigger {
+          metric_name              = "Requests"
+          metric_resource_id       = module.appservice_app_backendl1.id
+          metric_namespace         = "microsoft.web/sites"
+          time_grain               = "PT1M"
+          statistic                = "Average"
+          time_window              = "PT1M"
+          time_aggregation         = "Average"
+          operator                 = "GreaterThan"
+          threshold                = 4000
+          divide_by_instance_count = false
+        }
 
-    rule {
-      metric_trigger {
-        metric_name              = "Requests"
-        metric_resource_id       = module.appservice_app_backendl1.id
-        metric_namespace         = "microsoft.web/sites"
-        time_grain               = "PT1M"
-        statistic                = "Average"
-        time_window              = "PT15M"
-        time_aggregation         = "Average"
-        operator                 = "LessThan"
-        threshold                = 1500
-        divide_by_instance_count = false
-      }
-
-      scale_action {
-        direction = "Decrease"
-        type      = "ChangeCount"
-        value     = "1"
-        cooldown  = "PT1H"
-      }
-    }
-
-    rule {
-      metric_trigger {
-        metric_name              = "CpuPercentage"
-        metric_resource_id       = module.appservice_app_backendl1.plan_id
-        metric_namespace         = "microsoft.web/serverfarms"
-        time_grain               = "PT1M"
-        statistic                = "Average"
-        time_window              = "PT15M"
-        time_aggregation         = "Average"
-        operator                 = "LessThan"
-        threshold                = 15
-        divide_by_instance_count = false
+        scale_action {
+          direction = "Increase"
+          type      = "ChangeCount"
+          value     = "2"
+          cooldown  = "PT1M"
+        }
       }
 
-      scale_action {
-        direction = "Decrease"
-        type      = "ChangeCount"
-        value     = "1"
-        cooldown  = "PT1H"
+      rule {
+        metric_trigger {
+          metric_name              = "CpuPercentage"
+          metric_resource_id       = module.appservice_app_backendl1.plan_id
+          metric_namespace         = "microsoft.web/serverfarms"
+          time_grain               = "PT1M"
+          statistic                = "Average"
+          time_window              = "PT1M"
+          time_aggregation         = "Average"
+          operator                 = "GreaterThan"
+          threshold                = 40
+          divide_by_instance_count = false
+        }
+
+        scale_action {
+          direction = "Increase"
+          type      = "ChangeCount"
+          value     = "2"
+          cooldown  = "PT1M"
+        }
+      }
+
+      # Decrease rules
+
+      rule {
+        metric_trigger {
+          metric_name              = "Requests"
+          metric_resource_id       = module.appservice_app_backendl1.id
+          metric_namespace         = "microsoft.web/sites"
+          time_grain               = "PT1M"
+          statistic                = "Average"
+          time_window              = "PT15M"
+          time_aggregation         = "Average"
+          operator                 = "LessThan"
+          threshold                = 1500
+          divide_by_instance_count = false
+        }
+
+        scale_action {
+          direction = "Decrease"
+          type      = "ChangeCount"
+          value     = "1"
+          cooldown  = "PT30M"
+        }
+      }
+
+      rule {
+        metric_trigger {
+          metric_name              = "CpuPercentage"
+          metric_resource_id       = module.appservice_app_backendl1.plan_id
+          metric_namespace         = "microsoft.web/serverfarms"
+          time_grain               = "PT1M"
+          statistic                = "Average"
+          time_window              = "PT15M"
+          time_aggregation         = "Average"
+          operator                 = "LessThan"
+          threshold                = 15
+          divide_by_instance_count = false
+        }
+
+        scale_action {
+          direction = "Decrease"
+          type      = "ChangeCount"
+          value     = "1"
+          cooldown  = "PT30M"
+        }
       }
     }
   }
@@ -951,105 +1055,134 @@ resource "azurerm_monitor_autoscale_setting" "appservice_app_backendl2" {
   location            = azurerm_resource_group.rg_linux.location
   target_resource_id  = module.appservice_app_backendl2.plan_id
 
-  profile {
-    name = "default"
+  # Scaling strategy
+  # 05 - 19,30 -> min 3
+  # 19,30 - 23 -> min 4
+  # 23 - 05 -> min 2
+  dynamic "profile" {
+    for_each = local.autoscale_profiles
+    iterator = profile_info
 
-    capacity {
-      default = var.app_backend_autoscale_default
-      minimum = var.app_backend_autoscale_minimum
-      maximum = var.app_backend_autoscale_maximum
-    }
+    content {
+      name = profile_info.value.name
 
+      dynamic "recurrence" {
+        for_each = profile_info.value.recurrence != null ? [profile_info.value.recurrence] : []
+        iterator = recurrence_info
 
-    # Increase rules
-
-    rule {
-      metric_trigger {
-        metric_name              = "Requests"
-        metric_resource_id       = module.appservice_app_backendl2.id
-        metric_namespace         = "microsoft.web/sites"
-        time_grain               = "PT1M"
-        statistic                = "Average"
-        time_window              = "PT1M"
-        time_aggregation         = "Average"
-        operator                 = "GreaterThan"
-        threshold                = 4000
-        divide_by_instance_count = false
+        content {
+          timezone = "W. Europe Standard Time"
+          hours    = [recurrence_info.value.hours]
+          minutes  = [recurrence_info.value.minutes]
+          days = [
+            "Monday",
+            "Tuesday",
+            "Wednesday",
+            "Thursday",
+            "Friday",
+            "Saturday",
+            "Sunday"
+          ]
+        }
       }
 
-      scale_action {
-        direction = "Increase"
-        type      = "ChangeCount"
-        value     = "2"
-        cooldown  = "PT5M"
-      }
-    }
-
-    rule {
-      metric_trigger {
-        metric_name              = "CpuPercentage"
-        metric_resource_id       = module.appservice_app_backendl2.plan_id
-        metric_namespace         = "microsoft.web/serverfarms"
-        time_grain               = "PT1M"
-        statistic                = "Average"
-        time_window              = "PT5M"
-        time_aggregation         = "Average"
-        operator                 = "GreaterThan"
-        threshold                = 40
-        divide_by_instance_count = false
+      capacity {
+        default = profile_info.value.capacity.default
+        minimum = profile_info.value.capacity.minimum
+        maximum = profile_info.value.capacity.maximum
       }
 
-      scale_action {
-        direction = "Increase"
-        type      = "ChangeCount"
-        value     = "2"
-        cooldown  = "PT5M"
-      }
-    }
 
-    # Decrease rules
+      # Increase rules
 
-    rule {
-      metric_trigger {
-        metric_name              = "Requests"
-        metric_resource_id       = module.appservice_app_backendl2.id
-        metric_namespace         = "microsoft.web/sites"
-        time_grain               = "PT1M"
-        statistic                = "Average"
-        time_window              = "PT15M"
-        time_aggregation         = "Average"
-        operator                 = "LessThan"
-        threshold                = 1500
-        divide_by_instance_count = false
-      }
+      rule {
+        metric_trigger {
+          metric_name              = "Requests"
+          metric_resource_id       = module.appservice_app_backendl2.id
+          metric_namespace         = "microsoft.web/sites"
+          time_grain               = "PT1M"
+          statistic                = "Average"
+          time_window              = "PT1M"
+          time_aggregation         = "Average"
+          operator                 = "GreaterThan"
+          threshold                = 4000
+          divide_by_instance_count = false
+        }
 
-      scale_action {
-        direction = "Decrease"
-        type      = "ChangeCount"
-        value     = "1"
-        cooldown  = "PT1H"
-      }
-    }
-
-    rule {
-      metric_trigger {
-        metric_name              = "CpuPercentage"
-        metric_resource_id       = module.appservice_app_backendl2.plan_id
-        metric_namespace         = "microsoft.web/serverfarms"
-        time_grain               = "PT1M"
-        statistic                = "Average"
-        time_window              = "PT15M"
-        time_aggregation         = "Average"
-        operator                 = "LessThan"
-        threshold                = 15
-        divide_by_instance_count = false
+        scale_action {
+          direction = "Increase"
+          type      = "ChangeCount"
+          value     = "2"
+          cooldown  = "PT1M"
+        }
       }
 
-      scale_action {
-        direction = "Decrease"
-        type      = "ChangeCount"
-        value     = "1"
-        cooldown  = "PT1H"
+      rule {
+        metric_trigger {
+          metric_name              = "CpuPercentage"
+          metric_resource_id       = module.appservice_app_backendl2.plan_id
+          metric_namespace         = "microsoft.web/serverfarms"
+          time_grain               = "PT1M"
+          statistic                = "Average"
+          time_window              = "PT1M"
+          time_aggregation         = "Average"
+          operator                 = "GreaterThan"
+          threshold                = 40
+          divide_by_instance_count = false
+        }
+
+        scale_action {
+          direction = "Increase"
+          type      = "ChangeCount"
+          value     = "2"
+          cooldown  = "PT1M"
+        }
+      }
+
+      # Decrease rules
+
+      rule {
+        metric_trigger {
+          metric_name              = "Requests"
+          metric_resource_id       = module.appservice_app_backendl2.id
+          metric_namespace         = "microsoft.web/sites"
+          time_grain               = "PT1M"
+          statistic                = "Average"
+          time_window              = "PT15M"
+          time_aggregation         = "Average"
+          operator                 = "LessThan"
+          threshold                = 1500
+          divide_by_instance_count = false
+        }
+
+        scale_action {
+          direction = "Decrease"
+          type      = "ChangeCount"
+          value     = "1"
+          cooldown  = "PT30M"
+        }
+      }
+
+      rule {
+        metric_trigger {
+          metric_name              = "CpuPercentage"
+          metric_resource_id       = module.appservice_app_backendl2.plan_id
+          metric_namespace         = "microsoft.web/serverfarms"
+          time_grain               = "PT1M"
+          statistic                = "Average"
+          time_window              = "PT15M"
+          time_aggregation         = "Average"
+          operator                 = "LessThan"
+          threshold                = 15
+          divide_by_instance_count = false
+        }
+
+        scale_action {
+          direction = "Decrease"
+          type      = "ChangeCount"
+          value     = "1"
+          cooldown  = "PT30M"
+        }
       }
     }
   }
@@ -1113,6 +1246,7 @@ module "appservice_app_backendli" {
     module.services_snet[1].id,
     module.admin_snet.id,
     data.azurerm_subnet.functions_fast_login_snet.id,
+    data.azurerm_subnet.functions_service_messages_snet.id,
   ]
 
   allowed_ips = concat(
@@ -1172,104 +1306,133 @@ resource "azurerm_monitor_autoscale_setting" "appservice_app_backendli" {
   location            = azurerm_resource_group.rg_linux.location
   target_resource_id  = module.appservice_app_backendli.plan_id
 
-  profile {
-    name = "default"
+  # Scaling strategy
+  # 05 - 19,30 -> min 3
+  # 19,30 - 23 -> min 4
+  # 23 - 05 -> min 2
+  dynamic "profile" {
+    for_each = local.autoscale_profiles
+    iterator = profile_info
 
-    capacity {
-      default = var.app_backend_autoscale_default
-      minimum = var.app_backend_autoscale_minimum
-      maximum = var.app_backend_autoscale_maximum
-    }
+    content {
+      name = profile_info.value.name
 
-    # Increase rules
+      dynamic "recurrence" {
+        for_each = profile_info.value.recurrence != null ? [profile_info.value.recurrence] : []
+        iterator = recurrence_info
 
-    rule {
-      metric_trigger {
-        metric_name              = "Requests"
-        metric_resource_id       = module.appservice_app_backendli.id
-        metric_namespace         = "microsoft.web/sites"
-        time_grain               = "PT1M"
-        statistic                = "Average"
-        time_window              = "PT5M"
-        time_aggregation         = "Average"
-        operator                 = "GreaterThan"
-        threshold                = 4000
-        divide_by_instance_count = false
+        content {
+          timezone = "W. Europe Standard Time"
+          hours    = [recurrence_info.value.hours]
+          minutes  = [recurrence_info.value.minutes]
+          days = [
+            "Monday",
+            "Tuesday",
+            "Wednesday",
+            "Thursday",
+            "Friday",
+            "Saturday",
+            "Sunday"
+          ]
+        }
       }
 
-      scale_action {
-        direction = "Increase"
-        type      = "ChangeCount"
-        value     = "2"
-        cooldown  = "PT5M"
-      }
-    }
-
-    rule {
-      metric_trigger {
-        metric_name              = "CpuPercentage"
-        metric_resource_id       = module.appservice_app_backendli.plan_id
-        metric_namespace         = "microsoft.web/serverfarms"
-        time_grain               = "PT1M"
-        statistic                = "Average"
-        time_window              = "PT5M"
-        time_aggregation         = "Average"
-        operator                 = "GreaterThan"
-        threshold                = 40
-        divide_by_instance_count = false
+      capacity {
+        default = profile_info.value.capacity.default
+        minimum = profile_info.value.capacity.minimum
+        maximum = profile_info.value.capacity.maximum
       }
 
-      scale_action {
-        direction = "Increase"
-        type      = "ChangeCount"
-        value     = "2"
-        cooldown  = "PT5M"
-      }
-    }
+      # Increase rules
 
-    # Decrease rules
+      rule {
+        metric_trigger {
+          metric_name              = "Requests"
+          metric_resource_id       = module.appservice_app_backendli.id
+          metric_namespace         = "microsoft.web/sites"
+          time_grain               = "PT1M"
+          statistic                = "Average"
+          time_window              = "PT5M"
+          time_aggregation         = "Average"
+          operator                 = "GreaterThan"
+          threshold                = 4000
+          divide_by_instance_count = false
+        }
 
-    rule {
-      metric_trigger {
-        metric_name              = "Requests"
-        metric_resource_id       = module.appservice_app_backendli.id
-        metric_namespace         = "microsoft.web/sites"
-        time_grain               = "PT1M"
-        statistic                = "Average"
-        time_window              = "PT5M"
-        time_aggregation         = "Average"
-        operator                 = "LessThan"
-        threshold                = 1500
-        divide_by_instance_count = false
-      }
-
-      scale_action {
-        direction = "Decrease"
-        type      = "ChangeCount"
-        value     = "1"
-        cooldown  = "PT1H"
-      }
-    }
-
-    rule {
-      metric_trigger {
-        metric_name              = "CpuPercentage"
-        metric_resource_id       = module.appservice_app_backendli.plan_id
-        metric_namespace         = "microsoft.web/serverfarms"
-        time_grain               = "PT1M"
-        statistic                = "Average"
-        time_window              = "PT5M"
-        time_aggregation         = "Average"
-        operator                 = "LessThan"
-        threshold                = 15
-        divide_by_instance_count = false
+        scale_action {
+          direction = "Increase"
+          type      = "ChangeCount"
+          value     = "2"
+          cooldown  = "PT5M"
+        }
       }
 
-      scale_action {
-        direction = "Decrease"
-        type      = "ChangeCount"
-        value     = "1"
-        cooldown  = "PT1H"
+      rule {
+        metric_trigger {
+          metric_name              = "CpuPercentage"
+          metric_resource_id       = module.appservice_app_backendli.plan_id
+          metric_namespace         = "microsoft.web/serverfarms"
+          time_grain               = "PT1M"
+          statistic                = "Average"
+          time_window              = "PT5M"
+          time_aggregation         = "Average"
+          operator                 = "GreaterThan"
+          threshold                = 40
+          divide_by_instance_count = false
+        }
+
+        scale_action {
+          direction = "Increase"
+          type      = "ChangeCount"
+          value     = "2"
+          cooldown  = "PT5M"
+        }
+      }
+
+      # Decrease rules
+
+      rule {
+        metric_trigger {
+          metric_name              = "Requests"
+          metric_resource_id       = module.appservice_app_backendli.id
+          metric_namespace         = "microsoft.web/sites"
+          time_grain               = "PT1M"
+          statistic                = "Average"
+          time_window              = "PT5M"
+          time_aggregation         = "Average"
+          operator                 = "LessThan"
+          threshold                = 1500
+          divide_by_instance_count = false
+        }
+
+        scale_action {
+          direction = "Decrease"
+          type      = "ChangeCount"
+          value     = "1"
+          cooldown  = "PT30M"
+        }
+      }
+
+      rule {
+        metric_trigger {
+          metric_name              = "CpuPercentage"
+          metric_resource_id       = module.appservice_app_backendli.plan_id
+          metric_namespace         = "microsoft.web/serverfarms"
+          time_grain               = "PT1M"
+          statistic                = "Average"
+          time_window              = "PT5M"
+          time_aggregation         = "Average"
+          operator                 = "LessThan"
+          threshold                = 15
+          divide_by_instance_count = false
+        }
+
+        scale_action {
+          direction = "Decrease"
+          type      = "ChangeCount"
+          value     = "1"
+          cooldown  = "PT30M"
+        }
       }
     }
   }

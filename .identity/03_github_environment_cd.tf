@@ -1,6 +1,6 @@
 resource "github_repository_environment" "github_repository_environment_cd" {
   environment = "${var.env}-cd"
-  repository  = var.github.repository
+  repository  = local.repository
   # filter teams reviewers from github_organization_teams
   # if reviewers_teams is null no reviewers will be configured for environment
   dynamic "reviewers" {
@@ -19,49 +19,49 @@ resource "github_repository_environment" "github_repository_environment_cd" {
   }
 }
 
+# TODO: remove when all workflows read values from ARM_** secrets
 #tfsec:ignore:github-actions-no-plain-text-action-secrets # not real secret
-resource "github_actions_environment_secret" "azure_cd_tenant_id" {
-  repository      = var.github.repository
+resource "github_actions_environment_secret" "azure_cd_tenant_id_azure" {
+  repository      = local.repository
   environment     = "${var.env}-cd"
   secret_name     = "AZURE_TENANT_ID"
   plaintext_value = data.azurerm_client_config.current.tenant_id
 }
 
+resource "github_actions_environment_secret" "azure_cd_tenant_id" {
+  repository      = local.repository
+  environment     = "${var.env}-cd"
+  secret_name     = "ARM_TENANT_ID"
+  plaintext_value = data.azurerm_client_config.current.tenant_id
+}
+
+# TODO: remove when all workflows read values from ARM_** secrets
 #tfsec:ignore:github-actions-no-plain-text-action-secrets # not real secret
-resource "github_actions_environment_secret" "azure_cd_subscription_id" {
-  repository      = var.github.repository
+resource "github_actions_environment_secret" "azure_cd_subscription_id_azure" {
+  repository      = local.repository
   environment     = "${var.env}-cd"
   secret_name     = "AZURE_SUBSCRIPTION_ID"
   plaintext_value = data.azurerm_subscription.current.subscription_id
 }
 
-#tfsec:ignore:github-actions-no-plain-text-action-secrets # not real secret
-resource "github_actions_environment_secret" "azure_cd_client_id" {
-  repository      = var.github.repository
+resource "github_actions_environment_secret" "azure_cd_subscription_id" {
+  repository      = local.repository
   environment     = "${var.env}-cd"
-  secret_name     = "AZURE_CLIENT_ID"
-  plaintext_value = azuread_service_principal.environment_cd.application_id
+  secret_name     = "ARM_SUBSCRIPTION_ID"
+  plaintext_value = data.azurerm_subscription.current.subscription_id
 }
 
-resource "github_actions_environment_secret" "azure_client_id_cd" {
-  repository      = var.github.repository
+# TODO: remove when all workflows read values from ARM_** secrets
+resource "github_actions_environment_secret" "azure_client_id_cd_azure" {
+  repository      = local.repository
   environment     = "${var.env}-cd"
-  secret_name     = "AZURE_CLIENT_ID_CD"
+  secret_name     = "AZURE_CLIENT_ID"
   plaintext_value = module.identity_cd.identity_client_id
 }
 
-#tfsec:ignore:github-actions-no-plain-text-action-secrets # not real secret
-resource "github_actions_environment_secret" "azure_cd_container_app_environment_name" {
-  repository      = var.github.repository
+resource "github_actions_environment_secret" "azure_client_id_cd" {
+  repository      = local.repository
   environment     = "${var.env}-cd"
-  secret_name     = "AZURE_CONTAINER_APP_ENVIRONMENT_NAME"
-  plaintext_value = "${local.project}-github-runner-cae"
-}
-
-#tfsec:ignore:github-actions-no-plain-text-action-secrets # not real secret
-resource "github_actions_environment_secret" "azure_cd_resource_group_name" {
-  repository      = var.github.repository
-  environment     = "${var.env}-cd"
-  secret_name     = "AZURE_RESOURCE_GROUP_NAME"
-  plaintext_value = "${local.project}-github-runner-rg"
+  secret_name     = "ARM_CLIENT_ID"
+  plaintext_value = module.identity_cd.identity_client_id
 }

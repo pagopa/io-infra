@@ -16,20 +16,6 @@ data "azurerm_cosmosdb_account" "cosmos_remote_content" {
 }
 
 #
-# Function cgn
-#
-
-data "azurerm_redis_cache" "redis_cgn" {
-  name                = format("%s-redis-cgn-std", local.project)
-  resource_group_name = format("%s-rg-cgn", local.project)
-}
-
-data "azurerm_cosmosdb_account" "cosmos_cgn" {
-  name                = format("%s-cosmos-cgn", local.project)
-  resource_group_name = format("%s-rg-cgn", local.project)
-}
-
-#
 # Logs resources
 #
 
@@ -74,12 +60,6 @@ data "azurerm_storage_account" "lollipop_assertions_storage" {
 # todo migrate storage account and related resources
 locals {
   storage_account_notifications_queue_push_notifications = "push-notifications"
-}
-
-# KeyVault values - start
-data "azurerm_key_vault_secret" "services_exclusion_list" {
-  name         = "io-fn-services-SERVICEID-EXCLUSION-LIST"
-  key_vault_id = module.key_vault_common.id
 }
 
 # Event hubs
@@ -217,55 +197,6 @@ resource "azurerm_monitor_metric_alert" "iopstapi_throttling_low_availability" {
   tags = var.tags
 }
 
-resource "azurerm_monitor_metric_alert" "cosmos_cgn_throttling_alert" {
-
-  name                = "[CGN | ${data.azurerm_cosmosdb_account.cosmos_cgn.name}] Throttling"
-  resource_group_name = azurerm_resource_group.cgn_be_rg.name
-  scopes              = [data.azurerm_cosmosdb_account.cosmos_cgn.id]
-  # TODO: add Runbook for checking errors
-  description   = "One or more collections consumed throughput (RU/s) exceed provisioned throughput. Please, consider to increase RU for these collections. Runbook: https://pagopa.atlassian.net/wiki/spaces/IC/pages/723452380/CosmosDB+-+Increase+Max+RU"
-  severity      = 0
-  window_size   = "PT5M"
-  frequency     = "PT5M"
-  auto_mitigate = false
-
-  # Metric info
-  # https://learn.microsoft.com/en-us/azure/azure-monitor/essentials/metrics-supported#microsoftdocumentdbdatabaseaccounts
-  criteria {
-    metric_namespace       = "Microsoft.DocumentDB/databaseAccounts"
-    metric_name            = "TotalRequestUnits"
-    aggregation            = "Total"
-    operator               = "GreaterThan"
-    threshold              = 0
-    skip_metric_validation = false
-
-
-    dimension {
-      name     = "Region"
-      operator = "Include"
-      values   = ["West Europe"]
-    }
-    dimension {
-      name     = "StatusCode"
-      operator = "Include"
-      values   = ["429"]
-    }
-    dimension {
-      name     = "CollectionName"
-      operator = "Include"
-      values   = ["*"]
-    }
-
-  }
-
-  action {
-    action_group_id    = azurerm_monitor_action_group.error_action_group.id
-    webhook_properties = {}
-  }
-
-  tags = var.tags
-}
-
 #
 # IO Services CMS BackOffice App
 #
@@ -303,4 +234,85 @@ data "azurerm_user_assigned_identity" "managed_identity_io_infra_ci" {
 data "azurerm_user_assigned_identity" "managed_identity_io_infra_cd" {
   name                = "${local.project}-infra-github-cd-identity"
   resource_group_name = "${local.project}-identity-rg"
+}
+
+#
+# CGN
+#
+
+data "azurerm_linux_function_app" "function_cgn" {
+  resource_group_name = "${local.project}-cgn-be-rg"
+  name                = format("%s-cgn-fn", local.project)
+}
+
+#
+# SelfCare
+#
+
+data "azurerm_dns_a_record" "selfcare_cdn" {
+  name                = "@"
+  resource_group_name = azurerm_dns_zone.io_selfcare_pagopa_it[0].resource_group_name
+  zone_name           = azurerm_dns_zone.io_selfcare_pagopa_it[0].name
+}
+
+#
+# DevPortal
+#
+
+data "azurerm_linux_web_app" "appservice_devportal_be" {
+  name                = "${local.project}-app-devportal-be"
+  resource_group_name = "${local.project}-selfcare-be-rg"
+}
+
+data "azurerm_linux_web_app" "appservice_selfcare_be" {
+  name                = "${local.project}-app-selfcare-be"
+  resource_group_name = "${local.project}-selfcare-be-rg"
+}
+
+#
+# Continua
+#
+
+data "azurerm_linux_web_app" "appservice_continua" {
+  name                = "${local.project}-app-continua"
+  resource_group_name = "${local.project}-continua-rg"
+}
+
+#
+# EuCovid
+#
+
+data "azurerm_linux_function_app" "eucovidcert" {
+  resource_group_name = "${local.project}-rg-eucovidcert"
+  name                = format("%s-eucovidcert-fn", local.project)
+}
+
+data "azurerm_subnet" "function_eucovidcert_snet" {
+  name                 = format("%s-eucovidcert-snet", local.project)
+  resource_group_name  = azurerm_resource_group.rg_common.name
+  virtual_network_name = module.vnet_common.name
+}
+
+#
+# Messages
+#
+
+data "azurerm_linux_function_app" "app_messages_1" {
+  resource_group_name = "${local.project}-app-messages-rg-1"
+  name                = "${local.project}-app-messages-fn-1"
+}
+
+data "azurerm_linux_function_app" "app_messages_2" {
+  resource_group_name = "${local.project}-app-messages-rg-2"
+  name                = "${local.project}-app-messages-fn-2"
+}
+
+#
+# ELT
+#
+
+data "azurerm_subnet" "function_let_snet" {
+  name                 = "fn3eltout"
+  resource_group_name  = azurerm_resource_group.rg_common.name
+  virtual_network_name = module.vnet_common.name
 }
