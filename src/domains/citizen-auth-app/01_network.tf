@@ -95,12 +95,21 @@ data "azurerm_subnet" "appgateway_snet" {
 }
 
 ## session_manager subnet
+data "azurerm_resource_group" "italy_north_common_rg" {
+  name = format("%s-itn-common-rg-001", local.product)
+}
+
+data "azurerm_virtual_network" "common_vnet_italy_north" {
+  name                = format("%s-itn-common-vnet-001", local.product)
+  resource_group_name = data.azurerm_resource_group.italy_north_common_rg.name
+}
+
 module "session_manager_snet" {
   source               = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v8.4.0"
   name                 = format("%s-session-manager-snet", local.common_session_manager_project)
   address_prefixes     = var.cidr_subnet_session_manager
-  resource_group_name  = local.vnet_common_resource_group_name
-  virtual_network_name = local.vnet_common_name
+  resource_group_name  = data.azurerm_resource_group.italy_north_common_rg.name
+  virtual_network_name = data.azurerm_virtual_network.common_vnet_italy_north.name
 
   private_endpoint_network_policies_enabled = true
 
