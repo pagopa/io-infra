@@ -48,6 +48,11 @@ module "session_manager" {
     FETCH_KEEPALIVE_MAX_FREE_SOCKETS    = "10"
     FETCH_KEEPALIVE_FREE_SOCKET_TIMEOUT = "30000"
     FETCH_KEEPALIVE_TIMEOUT             = "60000"
+
+    # REDIS AUTHENTICATION
+    REDIS_URL      = data.azurerm_redis_cache.core_domain_redis_common.hostname
+    REDIS_PORT     = data.azurerm_redis_cache.core_domain_redis_common.ssl_port
+    REDIS_PASSWORD = data.azurerm_redis_cache.core_domain_redis_common.primary_access_key
   }
 
   allowed_subnets = [
@@ -100,6 +105,11 @@ module "session_manager_staging" {
     FETCH_KEEPALIVE_MAX_FREE_SOCKETS    = "10"
     FETCH_KEEPALIVE_FREE_SOCKET_TIMEOUT = "30000"
     FETCH_KEEPALIVE_TIMEOUT             = "60000"
+
+    # REDIS AUTHENTICATION
+    REDIS_URL      = data.azurerm_redis_cache.core_domain_redis_common.hostname
+    REDIS_PORT     = data.azurerm_redis_cache.core_domain_redis_common.ssl_port
+    REDIS_PASSWORD = data.azurerm_redis_cache.core_domain_redis_common.primary_access_key
   }
 
   allowed_subnets = [
