@@ -55,6 +55,11 @@ variable "location_string" {
   description = "One of West Europe, North Europe"
 }
 
+variable "session_manager_location" {
+  type        = string
+  description = "Due to capacity issues, session_manager will be created on northitaly"
+}
+
 variable "instance" {
   type        = string
   description = "One of beta, prod01, prod02"
