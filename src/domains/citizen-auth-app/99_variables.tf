@@ -60,6 +60,11 @@ variable "session_manager_location" {
   description = "Due to capacity issues, session_manager will be created on northitaly"
 }
 
+variable "session_manager_location_short" {
+  type    = string
+  default = "itn"
+}
+
 variable "instance" {
   type        = string
   description = "One of beta, prod01, prod02"

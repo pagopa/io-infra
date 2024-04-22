@@ -97,7 +97,7 @@ data "azurerm_subnet" "appgateway_snet" {
 ## session_manager subnet
 module "session_manager_snet" {
   source               = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v8.4.0"
-  name                 = format("%s-session-manager-snet", local.common_project)
+  name                 = format("%s-session-manager-snet", local.common_session_manager_project)
   address_prefixes     = var.cidr_subnet_session_manager
   resource_group_name  = local.vnet_common_resource_group_name
   virtual_network_name = local.vnet_common_name

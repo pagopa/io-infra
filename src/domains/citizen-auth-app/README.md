@@ -120,6 +120,7 @@
 | <a name="input_reloader_helm"></a> [reloader\_helm](#input\_reloader\_helm) | reloader helm chart configuration | <pre>object({<br>    chart_version = string,<br>    image_name    = string,<br>    image_tag     = string<br>  })</pre> | n/a | yes |
 | <a name="input_session_manager_autoscale_settings"></a> [session\_manager\_autoscale\_settings](#input\_session\_manager\_autoscale\_settings) | n/a | <pre>object({<br>    autoscale_minimum = number<br>    autoscale_maximum = number<br>    autoscale_default = number<br>  })</pre> | n/a | yes |
 | <a name="input_session_manager_location"></a> [session\_manager\_location](#input\_session\_manager\_location) | Due to capacity issues, session\_manager will be created on northitaly | `string` | n/a | yes |
+| <a name="input_session_manager_location_short"></a> [session\_manager\_location\_short](#input\_session\_manager\_location\_short) | n/a | `string` | `"itn"` | no |
 | <a name="input_session_manager_plan_sku_name"></a> [session\_manager\_plan\_sku\_name](#input\_session\_manager\_plan\_sku\_name) | App service plan sku name | `string` | `"P1v3"` | no |
 | <a name="input_tags"></a> [tags](#input\_tags) | n/a | `map(any)` | <pre>{<br>  "CreatedBy": "Terraform"<br>}</pre> | no |
 | <a name="input_tls_cert_check_helm"></a> [tls\_cert\_check\_helm](#input\_tls\_cert\_check\_helm) | tls cert helm chart configuration | <pre>object({<br>    chart_version = string,<br>    image_name    = string,<br>    image_tag     = string<br>  })</pre> | n/a | yes |

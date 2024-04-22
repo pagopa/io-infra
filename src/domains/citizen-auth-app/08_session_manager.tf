@@ -1,5 +1,5 @@
 resource "azurerm_resource_group" "session_manager_rg" {
-  name     = format("%s-session-manager-rg", local.common_project)
+  name     = format("%s-session-manager-rg", local.common_session_manager_project)
   location = var.session_manager_location
 
   tags = var.tags
@@ -13,11 +13,11 @@ module "session_manager" {
 
   # App service plan
   plan_type = "internal"
-  plan_name = format("%s-plan-session-manager", local.common_project)
+  plan_name = format("%s-plan-session-manager", local.common_session_manager_project)
   sku_name  = var.session_manager_plan_sku_name
 
   # App service
-  name                = format("%s-session-manager", local.common_project)
+  name                = format("%s-session-manager", local.common_session_manager_project)
   resource_group_name = azurerm_resource_group.session_manager_rg.name
   location            = azurerm_resource_group.session_manager_rg.location
 
@@ -75,7 +75,7 @@ module "session_manager_staging" {
   app_service_id   = module.session_manager.id
   app_service_name = module.session_manager.name
 
-  name                = format("%s-session-manager-staging", local.common_project)
+  name                = format("%s-session-manager-staging", local.common_session_manager_project)
   resource_group_name = azurerm_resource_group.session_manager_rg.name
   location            = azurerm_resource_group.session_manager_rg.location
 
