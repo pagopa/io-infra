@@ -43,7 +43,7 @@ module "session_manager" {
 
   # App service plan
   plan_type = "internal"
-  plan_name = format("%s-plan-session-manager", local.common_session_manager_project)
+  plan_name = format("%s-session-manager-plan", local.common_session_manager_project)
   sku_name  = var.session_manager_plan_sku_name
 
   # App service
@@ -52,7 +52,7 @@ module "session_manager" {
   location            = azurerm_resource_group.session_manager_rg.location
 
   always_on                    = true
-  node_version                 = "20-lts"
+  node_version                 = "18-lts"
   app_command_line             = "npm run start"
   health_check_path            = "/healthcheck"
   health_check_maxpingfailures = 3
@@ -84,7 +84,7 @@ module "session_manager_staging" {
   location            = azurerm_resource_group.session_manager_rg.location
 
   always_on         = true
-  node_version      = "20-lts"
+  node_version      = "18-lts"
   app_command_line  = "npm run start"
   health_check_path = "/healthcheck"
 
