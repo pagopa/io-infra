@@ -55,6 +55,16 @@ variable "location_string" {
   description = "One of West Europe, North Europe"
 }
 
+variable "session_manager_location" {
+  type        = string
+  description = "Due to capacity issues, session_manager will be created on northitaly"
+}
+
+variable "session_manager_location_short" {
+  type    = string
+  default = "itn"
+}
+
 variable "instance" {
   type        = string
   description = "One of beta, prod01, prod02"
@@ -217,3 +227,25 @@ variable "function_fastlogin_autoscale_default" {
   default     = 1
 }
 
+####################
+# Session manager ##
+####################
+variable "cidr_subnet_session_manager" {
+  type        = list(string)
+  description = "Session manager app service address space."
+}
+
+variable "session_manager_plan_sku_name" {
+  description = "App service plan sku name"
+  type        = string
+  default     = "P1v3"
+}
+
+variable "session_manager_autoscale_settings" {
+  type = object({
+    autoscale_minimum = number
+    autoscale_maximum = number
+    autoscale_default = number
+  })
+}
+####################

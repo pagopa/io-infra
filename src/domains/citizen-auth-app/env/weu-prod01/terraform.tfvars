@@ -1,13 +1,14 @@
-prefix            = "io"
-env_short         = "p"
-env               = "prod"
-domain            = "citizen-auth"
-location          = "westeurope"
-location_short    = "weu"
-location_string   = "West Europe"
-instance          = "prod01"
-lollipop_enabled  = true
-fastlogin_enabled = true
+prefix                   = "io"
+env_short                = "p"
+env                      = "prod"
+domain                   = "citizen-auth"
+location                 = "westeurope"
+location_short           = "weu"
+location_string          = "West Europe"
+session_manager_location = "italynorth"
+instance                 = "prod01"
+lollipop_enabled         = true
+fastlogin_enabled        = true
 
 tags = {
   CreatedBy   = "Terraform"
@@ -61,3 +62,11 @@ function_fastlogin_sku_size          = "P1v3"
 function_fastlogin_autoscale_minimum = 2
 function_fastlogin_autoscale_maximum = 20
 function_fastlogin_autoscale_default = 10
+
+# Session manager
+cidr_subnet_session_manager = ["10.20.0.0/26"]
+session_manager_autoscale_settings = {
+  autoscale_minimum = 1
+  autoscale_default = 2
+  autoscale_maximum = 10
+}

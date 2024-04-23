@@ -127,6 +127,7 @@ module "function_lollipop" {
     data.azurerm_subnet.apim_v2_snet.id,
     data.azurerm_subnet.app_backend_l1_snet.id,
     data.azurerm_subnet.app_backend_l2_snet.id,
+    module.session_manager_snet.id,
   ]
 
   # Action groups for alerts
