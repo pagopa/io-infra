@@ -1,5 +1,5 @@
 module "pep_snet" {
-  source               = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v8.5.0"
+  source               = "github.com/pagopa/terraform-azurerm-v3//subnet?ref=v8.5.0"
   name                 = "${var.project}-pep-snet-001"
   address_prefixes     = var.pep_snet_cidr
   resource_group_name  = var.resource_group_name
