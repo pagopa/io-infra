@@ -33,5 +33,8 @@ module "networking" {
   resource_group_name = azurerm_resource_group.vnet.name
   project             = local.project
 
+  vnet_cidr_block = local.vnet_cidr_block
+  pep_snet_cidr   = local.pep_snet_cidr
+
   tags = local.tags
 }
