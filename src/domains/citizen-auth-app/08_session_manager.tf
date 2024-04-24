@@ -79,7 +79,7 @@ module "session_manager_staging" {
   app_service_id   = module.session_manager.id
   app_service_name = module.session_manager.name
 
-  name                = format("%s-session-manager-staging", local.common_session_manager_project)
+  name                = "staging"
   resource_group_name = azurerm_resource_group.session_manager_rg.name
   location            = azurerm_resource_group.session_manager_rg.location
 
