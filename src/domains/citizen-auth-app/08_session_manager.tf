@@ -91,6 +91,9 @@ module "session_manager_staging" {
   app_settings = local.app_settings_common
 
   allowed_subnets = [
+    # self hosted runners subnet
+    data.azurerm_subnet.self_hosted_runner_snet.id,
+    #
     data.azurerm_subnet.apim_v2_snet.id,
     data.azurerm_subnet.appgateway_snet.id
     // TODO: add proxy subnet
