@@ -63,6 +63,7 @@ locals {
         minimum = var.function_lollipop_autoscale_minimum + 1
         maximum = var.function_lollipop_autoscale_maximum
       }
+
       },
       {
         name = "{\"name\":\"default\",\"for\":\"night\"}",
