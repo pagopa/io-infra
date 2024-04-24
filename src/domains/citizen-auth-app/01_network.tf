@@ -97,7 +97,7 @@ data "azurerm_subnet" "appgateway_snet" {
 data "azurerm_subnet" "self_hosted_runner_snet" {
   name                 = "io-p-github-runner-snet"
   virtual_network_name = local.vnet_common_name
-  resource_group_name  = local.vnet_resource_group_name
+  resource_group_name  = local.vnet_common_resource_group_name
 }
 
 ## session_manager subnet
