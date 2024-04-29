@@ -5,7 +5,7 @@ module "storage_api" {
   account_kind                     = "StorageV2"
   account_tier                     = "Standard"
   access_tier                      = "Hot"
-  account_replication_type         = "GRS"
+  account_replication_type         = "GZRS"
   resource_group_name              = azurerm_resource_group.rg_internal.name
   location                         = azurerm_resource_group.rg_internal.location
   advanced_threat_protection       = true
