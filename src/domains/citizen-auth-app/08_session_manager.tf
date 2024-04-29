@@ -1,3 +1,12 @@
+###########
+# SECRETS #
+###########
+data "azurerm_key_vault_secret" "functions_app_api_key" {
+  name         = "session-manager-functions-app-api-key"
+  key_vault_id = data.azurerm_key_vault.kv.id
+}
+###########
+
 resource "azurerm_resource_group" "session_manager_rg" {
   name     = format("%s-session-manager-rg-01", local.common_session_manager_project)
   location = var.session_manager_location
@@ -35,6 +44,10 @@ locals {
     REDIS_URL      = data.azurerm_redis_cache.core_domain_redis_common.hostname
     REDIS_PORT     = data.azurerm_redis_cache.core_domain_redis_common.ssl_port
     REDIS_PASSWORD = data.azurerm_redis_cache.core_domain_redis_common.primary_access_key
+
+    # Functions App config
+    API_KEY = data.azurerm_key_vault_secret.functions_app_api_key.value
+    API_URL = "https://io-p-app-fn-1.azurewebsites.net"
   }
 }
 
