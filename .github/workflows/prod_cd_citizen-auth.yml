@@ -122,7 +122,7 @@ jobs:
 
       - name: Azure Login
         id: az_login
-        uses: azure/login@v2
+        uses: azure/login@6b24568 # v2.0.0
         with:
           client-id: ${{ secrets.AZURE_CLIENT_ID_CD }}
           tenant-id: ${{ secrets.AZURE_TENANT_ID }}
