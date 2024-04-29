@@ -1,5 +1,5 @@
 module "vnet_peering_weu_common_itn_common" {
-  source = "github.com/pagopa/terraform-azurerm-v3//virtual_network_peering?ref=v7.76.0"
+  source = "github.com/pagopa/terraform-azurerm-v3//virtual_network_peering?ref=v8.7.0"
 
   source_resource_group_name       = data.azurerm_virtual_network.weu_common.resource_group_name
   source_virtual_network_name      = data.azurerm_virtual_network.weu_common.name

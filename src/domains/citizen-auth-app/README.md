@@ -20,9 +20,9 @@
 | <a name="module_function_lollipop"></a> [function\_lollipop](#module\_function\_lollipop) | git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app | v5.2.0 |
 | <a name="module_function_lollipop_staging_slot"></a> [function\_lollipop\_staging\_slot](#module\_function\_lollipop\_staging\_slot) | git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app_slot | v5.2.0 |
 | <a name="module_lollipop_snet"></a> [lollipop\_snet](#module\_lollipop\_snet) | git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet | v4.1.15 |
-| <a name="module_session_manager"></a> [session\_manager](#module\_session\_manager) | git::https://github.com/pagopa/terraform-azurerm-v3.git//app_service | v8.4.0 |
-| <a name="module_session_manager_snet"></a> [session\_manager\_snet](#module\_session\_manager\_snet) | git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet | v8.4.0 |
-| <a name="module_session_manager_staging"></a> [session\_manager\_staging](#module\_session\_manager\_staging) | git::https://github.com/pagopa/terraform-azurerm-v3.git//app_service_slot | v8.4.0 |
+| <a name="module_session_manager"></a> [session\_manager](#module\_session\_manager) | github.com/pagopa/terraform-azurerm-v3//app_service | v8.7.0 |
+| <a name="module_session_manager_snet"></a> [session\_manager\_snet](#module\_session\_manager\_snet) | github.com/pagopa/terraform-azurerm-v3//subnet | v8.7.0 |
+| <a name="module_session_manager_staging"></a> [session\_manager\_staging](#module\_session\_manager\_staging) | github.com/pagopa/terraform-azurerm-v3//app_service_slot | v8.7.0 |
 
 ## Resources
 
