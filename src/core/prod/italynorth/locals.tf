@@ -8,6 +8,8 @@ locals {
 
   location           = "italynorth"
   secondary_location = "germanywestcentral"
+  vnet_cidr_block    = "10.20.0.0/16"
+  pep_snet_cidr      = ["10.20.2.0/23"]
 
   tags = {
     CostCenter  = "TS310 - PAGAMENTI & SERVIZI"

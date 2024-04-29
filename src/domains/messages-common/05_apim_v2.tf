@@ -160,6 +160,20 @@ resource "azurerm_key_vault_secret" "reminder_paymentapi_subscription_primary_ke
 ################ API MANAGE ###################
 ###############################################
 
+data "azurerm_key_vault_secret" "io_p_messages_sending_func_key" {
+  name         = "io-p-messages-sending-func-key"
+  key_vault_id = module.key_vault.id
+}
+
+resource "azurerm_api_management_named_value" "io_p_messages_sending_func_key" {
+  name                = "io-p-messages-sending-func-key"
+  display_name        = "io-p-messages-sending-func-key"
+  api_management_name = data.azurerm_api_management.apim_v2_api.name
+  resource_group_name = data.azurerm_api_management.apim_v2_api.resource_group_name
+  value               = data.azurerm_key_vault_secret.io_p_messages_sending_func_key.value
+  secret              = "true"
+}
+
 data "azurerm_api_management_product" "apim_v2_product_services" {
   product_id          = "io-services-api"
   api_management_name = data.azurerm_api_management.apim_v2_api.name
