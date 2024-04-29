@@ -1,7 +1,7 @@
 module "vnet_itn_common" {
-  source = "github.com/pagopa/terraform-azurerm-v3//virtual_network?ref=v7.76.0"
+  source = "github.com/pagopa/terraform-azurerm-v3//virtual_network?ref=v8.7.0"
 
-  name                = "${var.project}-common-vnet-001"
+  name                = "${var.project}-common-vnet-01"
   location            = var.location
   resource_group_name = var.resource_group_name
 
