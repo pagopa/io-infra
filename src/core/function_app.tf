@@ -182,6 +182,13 @@ data "azurerm_subnet" "ioweb_profile_snet" {
   resource_group_name  = azurerm_resource_group.rg_common.name
 }
 
+# subnet for session-manager(located in italy north)
+data "azurerm_subnet" "session_manager_snet" {
+  name                 = format("%s-itn-session-manager-snet-01", local.project)
+  virtual_network_name = format("%s-itn-common-vnet-01", local.project)
+  resource_group_name  = format("%s-itn-common-rg-01", local.project)
+}
+
 #tfsec:ignore:azure-storage-queue-services-logging-enabled:exp:2022-05-01 # already ignored, maybe a bug in tfsec
 module "function_app" {
   count  = var.function_app_count
@@ -235,6 +242,7 @@ module "function_app" {
     module.app_backendl2_snet.id,
     module.app_backendli_snet.id,
     data.azurerm_subnet.ioweb_profile_snet.id,
+    data.azurerm_subnet.session_manager_snet.id,
   ]
 
   sticky_app_setting_names = concat([

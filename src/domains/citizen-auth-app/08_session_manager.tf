@@ -1,5 +1,14 @@
+###########
+# SECRETS #
+###########
+data "azurerm_key_vault_secret" "functions_app_api_key" {
+  name         = "session-manager-functions-app-api-key"
+  key_vault_id = data.azurerm_key_vault.kv.id
+}
+###########
+
 resource "azurerm_resource_group" "session_manager_rg" {
-  name     = format("%s-session-manager-rg", local.common_session_manager_project)
+  name     = format("%s-session-manager-rg-01", local.common_session_manager_project)
   location = var.session_manager_location
 
   tags = var.tags
@@ -35,19 +44,23 @@ locals {
     REDIS_URL      = data.azurerm_redis_cache.core_domain_redis_common.hostname
     REDIS_PORT     = data.azurerm_redis_cache.core_domain_redis_common.ssl_port
     REDIS_PASSWORD = data.azurerm_redis_cache.core_domain_redis_common.primary_access_key
+
+    # Functions App config
+    API_KEY = data.azurerm_key_vault_secret.functions_app_api_key.value
+    API_URL = "https://io-p-app-fn-1.azurewebsites.net"
   }
 }
 
 module "session_manager" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//app_service?ref=v8.4.0"
+  source = "github.com/pagopa/terraform-azurerm-v3//app_service?ref=v8.7.0"
 
   # App service plan
   plan_type = "internal"
-  plan_name = format("%s-session-manager-plan", local.common_session_manager_project)
+  plan_name = format("%s-session-manager-asp-01", local.common_session_manager_project)
   sku_name  = var.session_manager_plan_sku_name
 
   # App service
-  name                = format("%s-session-manager", local.common_session_manager_project)
+  name                = format("%s-session-manager-app-01", local.common_session_manager_project)
   resource_group_name = azurerm_resource_group.session_manager_rg.name
   location            = azurerm_resource_group.session_manager_rg.location
 
@@ -74,7 +87,7 @@ module "session_manager" {
 
 ## staging slot
 module "session_manager_staging" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//app_service_slot?ref=v8.4.0"
+  source = "github.com/pagopa/terraform-azurerm-v3//app_service_slot?ref=v8.7.0"
 
   app_service_id   = module.session_manager.id
   app_service_name = module.session_manager.name
@@ -108,7 +121,7 @@ module "session_manager_staging" {
 
 ## autoscaling
 resource "azurerm_monitor_autoscale_setting" "session_manager_autoscale_setting" {
-  name                = format("%s-autoscale", module.session_manager.name)
+  name                = format("%s-autoscale-01", module.session_manager.name)
   resource_group_name = azurerm_resource_group.session_manager_rg.name
   location            = azurerm_resource_group.session_manager_rg.location
   target_resource_id  = module.session_manager.plan_id

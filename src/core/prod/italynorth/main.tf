@@ -10,7 +10,7 @@ terraform {
   required_providers {
     azurerm = {
       source  = "hashicorp/azurerm"
-      version = "<= 3.99.0"
+      version = "<= 3.101.0"
     }
   }
 }
@@ -20,7 +20,7 @@ provider "azurerm" {
 }
 
 resource "azurerm_resource_group" "vnet" {
-  name     = "${local.project}-common-rg-001"
+  name     = "${local.project}-common-rg-01"
   location = local.location
 
   tags = local.tags
