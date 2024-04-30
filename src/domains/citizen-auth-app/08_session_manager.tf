@@ -56,13 +56,13 @@ module "session_manager" {
 
   # App service plan
   plan_type = "internal"
-  plan_name = format("%s-session-manager-asp-01", local.common_session_manager_project)
+  plan_name = format("%s-session-manager-asp-02", local.common_project)
   sku_name  = var.session_manager_plan_sku_name
 
   # App service
-  name                = format("%s-session-manager-app-01", local.common_session_manager_project)
+  name                = format("%s-session-manager-app-02", local.common_project)
   resource_group_name = azurerm_resource_group.session_manager_rg.name
-  location            = azurerm_resource_group.session_manager_rg.location
+  location            = var.location
 
   always_on                    = true
   node_version                 = "18-lts"
@@ -94,7 +94,7 @@ module "session_manager_staging" {
 
   name                = "staging"
   resource_group_name = azurerm_resource_group.session_manager_rg.name
-  location            = azurerm_resource_group.session_manager_rg.location
+  location            = var.location
 
   always_on         = true
   node_version      = "18-lts"
