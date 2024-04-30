@@ -3,6 +3,8 @@ locals {
   product        = "${var.prefix}-${var.env_short}"
   common_project = "${var.prefix}-${var.env_short}-${var.location_short}"
 
+  common_session_manager_project = "${var.prefix}-${var.env_short}-${var.session_manager_location_short}"
+
   monitor_action_group_slack_name = "SlackPagoPA"
   monitor_action_group_email_name = "EmailPagoPA"
 

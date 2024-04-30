@@ -1,7 +1,7 @@
 module "subnet_addrs" {
   source = "hashicorp/subnets/cidr"
 
-  base_cidr_block = "10.20.0.0/16"
+  base_cidr_block = var.vnet_cidr_block
   networks = [
     # {
     #   name     = "foo"

@@ -444,3 +444,13 @@ resource "azurerm_private_dns_zone" "privatelink_srch" {
   name                = "privatelink.search.windows.net"
   resource_group_name = azurerm_resource_group.rg_common.name
 }
+
+resource "azurerm_private_dns_zone_virtual_network_link" "srch_private_vnet_common" {
+  name                  = module.vnet_common.name
+  resource_group_name   = azurerm_resource_group.rg_common.name
+  private_dns_zone_name = azurerm_private_dns_zone.privatelink_srch.name
+  virtual_network_id    = module.vnet_common.id
+  registration_enabled  = false
+
+  tags = var.tags
+}
