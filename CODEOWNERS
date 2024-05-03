@@ -3,3 +3,11 @@
 * @pagopa/io-backend-admin @pagopa/io-backend-contributors
 
 /src/domains/sign @pagopa/io-backend-admin @pagopa/io-backend-contributors @pagopa/io-sign-maintainers
+
+# engineering-team-cloud-eng
+
+/.github @pagopa/engineering-team-cloud-eng
+/.identity @pagopa/engineering-team-cloud-eng
+/src/core @pagopa/engineering-team-cloud-eng
+/src/domains @pagopa/engineering-team-cloud-eng
+/src/github-runner @pagopa/engineering-team-cloud-eng
