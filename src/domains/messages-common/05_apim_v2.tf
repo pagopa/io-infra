@@ -3,6 +3,14 @@ data "azurerm_api_management" "apim_v2_api" {
   resource_group_name = local.apim_resource_group_name
 }
 
+resource "azurerm_api_management_group" "apiremotecontentconfigurationwrite" {
+  name                = "apiremotecontentconfigurationwrite"
+  api_management_name = data.azurerm_api_management.apim_v2_api.name
+  resource_group_name = data.azurerm_api_management.apim_v2_api.resource_group_name
+  display_name        = "ApiRemoteContentConfigurationWrite"
+  description         = "A group that enables to write and manage Remote Content Configuration"
+}
+
 resource "azurerm_api_management_group" "apithirdpartymessagewrite_v2" {
   name                = "apithirdpartymessagewrite"
   api_management_name = data.azurerm_api_management.apim_v2_api.name
