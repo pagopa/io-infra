@@ -12,6 +12,8 @@
 
 | Name | Source | Version |
 |------|--------|---------|
+| <a name="module_apim_v2_messages_sending_external_api_v1"></a> [apim\_v2\_messages\_sending\_external\_api\_v1](#module\_apim\_v2\_messages\_sending\_external\_api\_v1) | git::https://github.com/pagopa/terraform-azurerm-v3//api_management_api | v7.69.1 |
+| <a name="module_apim_v2_messages_sending_internal_api_v1"></a> [apim\_v2\_messages\_sending\_internal\_api\_v1](#module\_apim\_v2\_messages\_sending\_internal\_api\_v1) | git::https://github.com/pagopa/terraform-azurerm-v3//api_management_api | v7.69.1 |
 | <a name="module_apim_v2_product_notifications"></a> [apim\_v2\_product\_notifications](#module\_apim\_v2\_product\_notifications) | git::https://github.com/pagopa/terraform-azurerm-v3//api_management_product | v7.69.1 |
 | <a name="module_apim_v2_service_messages_internal_api_v1"></a> [apim\_v2\_service\_messages\_internal\_api\_v1](#module\_apim\_v2\_service\_messages\_internal\_api\_v1) | git::https://github.com/pagopa/terraform-azurerm-v3//api_management_api | v7.69.1 |
 | <a name="module_apim_v2_service_messages_manage_api_v1"></a> [apim\_v2\_service\_messages\_manage\_api\_v1](#module\_apim\_v2\_service\_messages\_manage\_api\_v1) | git::https://github.com/pagopa/terraform-azurerm-v3//api_management_api | v7.69.1 |
@@ -107,6 +109,8 @@
 | [azurerm_subnet.private_endpoints_subnet](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/subnet) | data source |
 | [azurerm_subscription.current](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/subscription) | data source |
 | [azurerm_virtual_network.vnet_common](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/virtual_network) | data source |
+| [http_http.messages_sending_external_openapi](https://registry.terraform.io/providers/hashicorp/http/latest/docs/data-sources/http) | data source |
+| [http_http.messages_sending_internal_openapi](https://registry.terraform.io/providers/hashicorp/http/latest/docs/data-sources/http) | data source |
 | [http_http.service_messages_internal_openapi](https://registry.terraform.io/providers/hashicorp/http/latest/docs/data-sources/http) | data source |
 | [http_http.service_messages_manage_openapi](https://registry.terraform.io/providers/hashicorp/http/latest/docs/data-sources/http) | data source |
 
