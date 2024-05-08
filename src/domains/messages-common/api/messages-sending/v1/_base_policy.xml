@@ -1,6 +1,13 @@
 <policies>
     <inbound>
         <base />
+        <choose>
+            <when condition="@(context.User.Groups.All(g => g.Name != "ApiRemoteContentConfigurationWrite"))">
+                <return-response>
+                    <set-status code="403" reason="Invalid key" />
+                </return-response>
+            </when>
+        </choose>
         <set-backend-service base-url="https://io-p-messages-sending-func.azurewebsites.net/api/v1" />
         <set-header name="x-functions-key" exists-action="override">
             <value>{{io-p-messages-sending-func-key}}</value>
