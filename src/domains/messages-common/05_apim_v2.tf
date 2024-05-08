@@ -195,9 +195,9 @@ data "http" "messages_sending_external_openapi" {
 }
 
 module "apim_v2_messages_sending_external_api_v1" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3//api_management_api?ref=v7.69.1"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3//api_management_api?ref=v8.11.0"
 
-  name                  = format("%s-messages-sending-external-api", local.product)
+  name                  = format("%s-%s-messages-sending-external-api", local.product, var.location_short)
   api_management_name   = data.azurerm_api_management.apim_v2_api.name
   resource_group_name   = data.azurerm_api_management.apim_v2_api.resource_group_name
   product_ids           = [data.azurerm_api_management_product.apim_v2_product_services.product_id]
@@ -220,9 +220,9 @@ data "http" "messages_sending_internal_openapi" {
 }
 
 module "apim_v2_messages_sending_internal_api_v1" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3//api_management_api?ref=v7.69.1"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3//api_management_api?ref=v8.11.0"
 
-  name                  = format("%s-messages-sending-internal-api", local.product)
+  name                  = format("%s-%s-messages-sending-internal-api", local.product, var.location_short)
   api_management_name   = data.azurerm_api_management.apim_v2_api.name
   resource_group_name   = data.azurerm_api_management.apim_v2_api.resource_group_name
   product_ids           = [module.apim_v2_product_notifications.product_id]
