@@ -212,7 +212,7 @@ module "apim_v2_messages_sending_external_api_v1" {
   content_format = "openapi"
   content_value  = data.http.messages_sending_external_openapi.body
 
-  xml_content = file("./api/messages-sending/v1/_base_policy.xml")
+  xml_content = file("./api/messages-sending/v1/_base_policy_external.xml")
 }
 
 data "http" "messages_sending_internal_openapi" {
@@ -237,7 +237,7 @@ module "apim_v2_messages_sending_internal_api_v1" {
   content_format = "openapi"
   content_value  = data.http.messages_sending_internal_openapi.body
 
-  xml_content = file("./api/messages-sending/v1/_base_policy.xml")
+  xml_content = file("./api/messages-sending/v1/_base_policy_internal.xml")
 }
 
 data "http" "service_messages_manage_openapi" {
