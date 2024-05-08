@@ -188,8 +188,60 @@ data "azurerm_api_management_product" "apim_v2_product_services" {
   resource_group_name = data.azurerm_api_management.apim_v2_api.resource_group_name
 }
 
+# APIM APIs
+
+data "http" "messages_sending_external_openapi" {
+  url = "https://raw.githubusercontent.com/pagopa/io-functions-services-messages/master/openapi/index_external.yaml"
+}
+
+module "apim_v2_messages_sending_external_api_v1" {
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3//api_management_api?ref=v8.11.0"
+
+  name                  = format("%s-%s-messages-sending-external-api-01", local.product, var.location_short)
+  api_management_name   = data.azurerm_api_management.apim_v2_api.name
+  resource_group_name   = data.azurerm_api_management.apim_v2_api.resource_group_name
+  product_ids           = [data.azurerm_api_management_product.apim_v2_product_services.product_id]
+  subscription_required = true
+  service_url           = null
+
+  description  = "IO Messages Sending - External - API"
+  display_name = "IO Messages Sending - External - API"
+  path         = "api/v1/messages-sending"
+  protocols    = ["https"]
+
+  content_format = "openapi"
+  content_value  = data.http.messages_sending_external_openapi.body
+
+  xml_content = file("./api/messages-sending/v1/_base_policy.xml")
+}
+
+data "http" "messages_sending_internal_openapi" {
+  url = "https://raw.githubusercontent.com/pagopa/io-functions-services-messages/master/openapi/index.yaml"
+}
+
+module "apim_v2_messages_sending_internal_api_v1" {
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3//api_management_api?ref=v8.11.0"
+
+  name                  = format("%s-%s-messages-sending-internal-api-01", local.product, var.location_short)
+  api_management_name   = data.azurerm_api_management.apim_v2_api.name
+  resource_group_name   = data.azurerm_api_management.apim_v2_api.resource_group_name
+  product_ids           = [module.apim_v2_product_notifications.product_id]
+  subscription_required = true
+  service_url           = null
+
+  description  = "IO Messages Sending - Internal - API"
+  display_name = "IO Messages Sending - Internal - API"
+  path         = "api/v1/messages-sending/internal"
+  protocols    = ["https"]
+
+  content_format = "openapi"
+  content_value  = data.http.messages_sending_internal_openapi.body
+
+  xml_content = file("./api/messages-sending/v1/_base_policy.xml")
+}
+
 data "http" "service_messages_manage_openapi" {
-  url = "https://raw.githubusercontent.com/pagopa/io-functions-service-messages/master/openapi/index_external.yaml"
+  url = "https://raw.githubusercontent.com/pagopa/io-functions-services-messages/833616dceab72bd65c4d3875c64eb75787b19258/openapi/index_external.yaml"
 }
 
 module "apim_v2_service_messages_manage_api_v1" {
@@ -214,7 +266,7 @@ module "apim_v2_service_messages_manage_api_v1" {
 }
 
 data "http" "service_messages_internal_openapi" {
-  url = "https://raw.githubusercontent.com/pagopa/io-functions-service-messages/master/openapi/index.yaml"
+  url = "https://raw.githubusercontent.com/pagopa/io-functions-services-messages/833616dceab72bd65c4d3875c64eb75787b19258/openapi/index.yaml"
 }
 
 module "apim_v2_service_messages_internal_api_v1" {
