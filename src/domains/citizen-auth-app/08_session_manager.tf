@@ -45,7 +45,8 @@ locals {
     FETCH_KEEPALIVE_FREE_SOCKET_TIMEOUT = "30000"
     FETCH_KEEPALIVE_TIMEOUT             = "60000"
 
-    API_BASE_PATH = "/api/v1"
+    API_BASE_PATH  = "/api/v1"
+    FIMS_BASE_PATH = "/fims/api/v1"
 
     # REDIS AUTHENTICATION
     REDIS_URL      = data.azurerm_redis_cache.core_domain_redis_common.hostname
