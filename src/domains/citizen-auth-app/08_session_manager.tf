@@ -10,6 +10,12 @@ data "azurerm_key_vault_secret" "functions_fast_login_api_key" {
   name         = "session-manager-functions-fast-login-api-key"
   key_vault_id = data.azurerm_key_vault.kv.id
 }
+
+data "azurerm_key_vault_secret" "functions_lollipop_api_key" {
+  name         = "session-manager-functions-lollipop-api-key"
+  key_vault_id = data.azurerm_key_vault.kv.id
+}
+
 ###########
 
 resource "azurerm_resource_group" "session_manager_rg" {
@@ -64,7 +70,7 @@ locals {
     # Functions Lollipop config
     LOLLIPOP_API_BASE_PATH = "/api/v1"
     LOLLIPOP_API_URL       = var.lollipop_enabled ? "https://${module.function_lollipop[0].default_hostname}" : ""
-    LOLLIPOP_API_KEY       = data.azurerm_key_vault_secret.app_backend_LOLLIPOP_API_KEY.value
+    LOLLIPOP_API_KEY       = data.azurerm_key_vault_secret.functions_lollipop_api_key.value
   }
 }
 
