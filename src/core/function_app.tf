@@ -182,11 +182,11 @@ data "azurerm_subnet" "ioweb_profile_snet" {
   resource_group_name  = azurerm_resource_group.rg_common.name
 }
 
-# subnet for session-manager(located in italy north)
+# subnet for session-manager
 data "azurerm_subnet" "session_manager_snet" {
-  name                 = format("%s-itn-session-manager-snet-01", local.project)
-  virtual_network_name = format("%s-itn-common-vnet-01", local.project)
-  resource_group_name  = format("%s-itn-common-rg-01", local.project)
+  name                 = format("%s-weu-session-manager-snet-02", local.project)
+  virtual_network_name = format("%s-vnet-common", local.project)
+  resource_group_name  = format("%s-rg-common", local.project)
 }
 
 #tfsec:ignore:azure-storage-queue-services-logging-enabled:exp:2022-05-01 # already ignored, maybe a bug in tfsec
