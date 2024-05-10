@@ -60,6 +60,11 @@ locals {
     # Functions Fast Login config
     FAST_LOGIN_API_KEY = data.azurerm_key_vault_secret.functions_fast_login_api_key.value
     FAST_LOGIN_API_URL = var.fastlogin_enabled ? "https://${module.function_fast_login[0].default_hostname}" : ""
+
+    # Functions Lollipop config
+    LOLLIPOP_API_BASE_PATH = "/api/v1"
+    LOLLIPOP_API_URL       = var.lollipop_enabled ? "https://${module.function_lollipop[0].default_hostname}" : ""
+    LOLLIPOP_API_KEY       = data.azurerm_key_vault_secret.app_backend_LOLLIPOP_API_KEY.value
   }
 }
 
