@@ -10,4 +10,5 @@
 /.identity @pagopa/engineering-team-cloud-eng
 /src/core @pagopa/engineering-team-cloud-eng
 /src/domains @pagopa/engineering-team-cloud-eng
+/src/domains/citizen-auth-app @pagopa/engineering-team-cloud-eng @pagopa/io-auth-n-identity-backend
 /src/github-runner @pagopa/engineering-team-cloud-eng
