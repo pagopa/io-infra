@@ -10,7 +10,7 @@ module "appservice_devportal_be" {
   plan_id   = azurerm_service_plan.selfcare_be_common.id
 
   app_command_line = "node /home/site/wwwroot/build/src/app.js"
-  node_version     = "14-lts"
+  node_version     = "18-lts"
 
   health_check_path = "/info"
 
