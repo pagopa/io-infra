@@ -1,0 +1,23 @@
+name: Continuous Integration on cosmos-api
+
+on:
+  workflow_dispatch:
+  pull_request:
+    types:
+      - opened
+      - edited
+      - synchronize
+      - reopened
+      - ready_for_review
+    paths:
+      - "src/cosmos-api/**"
+      - ".github/workflows/cosmos_api_**"
+
+jobs:
+  code_review_prod:
+    uses: ./.github/workflows/call_code_review.yaml
+    name: Code Review Infrastructure Plan
+    secrets: inherit
+    with:
+      environment: prod
+      dir: "src/cosmos-api/prod"
