@@ -70,3 +70,7 @@ session_manager_autoscale_settings = {
   autoscale_default = 2
   autoscale_maximum = 10
 }
+
+# DNS
+external_domain              = "pagopa.it"
+dns_zone_io                  = "io"

@@ -16,6 +16,26 @@ data "azurerm_key_vault_secret" "functions_lollipop_api_key" {
   key_vault_id = data.azurerm_key_vault.kv.id
 }
 
+data "azurerm_key_vault_secret" "app_backend_LV_TEST_USERS" {
+  name         = "appbackend-LV-TEST-USERS"
+  key_vault_id = data.azurerm_key_vault.kv_common.id
+}
+
+data "azurerm_key_vault_secret" "app_backend_SAML_CERT" {
+  name         = "appbackend-SAML-CERT"
+  key_vault_id = data.azurerm_key_vault.kv_common.id
+}
+
+data "azurerm_key_vault_secret" "app_backend_SAML_KEY" {
+  name         = "appbackend-SAML-KEY"
+  key_vault_id = data.azurerm_key_vault.kv_common.id
+}
+
+data "azurerm_key_vault_secret" "app_backend_ALLOWED_CIE_TEST_FISCAL_CODES" {
+  name         = "appbackend-ALLOWED-CIE-TEST-FISCAL-CODES"
+  key_vault_id = data.azurerm_key_vault.kv_common.id
+}
+
 ###########
 
 resource "azurerm_resource_group" "session_manager_rg" {
@@ -67,9 +87,39 @@ locals {
     FAST_LOGIN_API_URL = var.fastlogin_enabled ? "https://${module.function_fast_login[0].default_hostname}" : ""
 
     # Functions Lollipop config
+    FF_LOLLIPOP_ENABLED    = "1"
     LOLLIPOP_API_BASE_PATH = "/api/v1"
     LOLLIPOP_API_URL       = var.lollipop_enabled ? "https://${module.function_lollipop[0].default_hostname}" : ""
     LOLLIPOP_API_KEY       = data.azurerm_key_vault_secret.functions_lollipop_api_key.value
+
+    # Fast Login config
+    FF_FAST_LOGIN = "ALL"
+    LV_TEST_USERS = join(",", [data.azurerm_key_vault_secret.app_backend_LV_TEST_USERS.value, module.tests.test_users.all])
+
+
+    BACKEND_HOST = "https://${trimsuffix(data.azurerm_dns_a_record.api_app_io_pagopa_it.fqdn, ".")}"
+
+    # Spid logs config
+    SPID_LOG_QUEUE_NAME                = "spidmsgitems"
+    SPID_LOG_STORAGE_CONNECTION_STRING = data.azurerm_storage_account.logs.primary_connection_string
+
+    # Spid config
+    SAML_CALLBACK_URL                      = "https://app-backend.io.italia.it/assertionConsumerService"
+    SAML_CERT                              = trimspace(data.azurerm_key_vault_secret.app_backend_SAML_CERT.value)
+    SAML_KEY                               = trimspace(data.azurerm_key_vault_secret.app_backend_SAML_KEY.value)
+    SAML_LOGOUT_CALLBACK_URL               = "https://app-backend.io.italia.it/slo"
+    SAML_ISSUER                            = "https://app-backend.io.italia.it"
+    SAML_ATTRIBUTE_CONSUMING_SERVICE_INDEX = "0"
+    SAML_ACCEPTED_CLOCK_SKEW_MS            = "5000"
+    # IDP_METADATA_URL                       = "https://registry.SPID.gov.it/metadata/idp/spid-entities-idps.xml"
+    IDP_METADATA_URL                      = "https://api.is.eng.pagopa.it/idp-keys/spid/latest" # PagoPA internal cache
+    IDP_METADATA_REFRESH_INTERVAL_SECONDS = "864000"                                            # 10 days
+
+    # CIE config
+    # CIE_METADATA_URL = "https://idserver.servizicie.interno.gov.it:443/idp/shibboleth"
+    CIE_METADATA_URL              = "https://api.is.eng.pagopa.it/idp-keys/cie/latest" # PagoPA internal cache
+    ALLOWED_CIE_TEST_FISCAL_CODES = data.azurerm_key_vault_secret.app_backend_ALLOWED_CIE_TEST_FISCAL_CODES.value
+    CIE_TEST_METADATA_URL         = "https://collaudo.idserver.servizicie.interno.gov.it/idp/shibboleth"
   }
 }
 
