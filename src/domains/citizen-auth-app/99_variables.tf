@@ -249,3 +249,16 @@ variable "session_manager_autoscale_settings" {
   })
 }
 ####################
+
+# DNS
+variable "external_domain" {
+  type        = string
+  default     = "pagopa.it"
+  description = "Domain for delegation"
+}
+
+variable "dns_zone_io" {
+  type        = string
+  default     = null
+  description = "The dns subdomain."
+}
