@@ -35,7 +35,6 @@ locals {
 
     WEBSITE_NODE_DEFAULT_VERSION = "20.12.2"
     WEBSITE_RUN_FROM_PACKAGE     = "1"
-    WEBSITE_VNET_ROUTE_ALL       = "1"
 
     // ENVIRONMENT
     NODE_ENV = "production"
