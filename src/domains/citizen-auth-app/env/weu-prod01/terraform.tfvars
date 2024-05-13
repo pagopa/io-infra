@@ -72,5 +72,5 @@ session_manager_autoscale_settings = {
 }
 
 # DNS
-external_domain              = "pagopa.it"
-dns_zone_io                  = "io"
+external_domain = "pagopa.it"
+dns_zone_io     = "io"
