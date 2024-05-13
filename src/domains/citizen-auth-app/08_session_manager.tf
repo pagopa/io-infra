@@ -10,6 +10,12 @@ data "azurerm_key_vault_secret" "functions_fast_login_api_key" {
   name         = "session-manager-functions-fast-login-api-key"
   key_vault_id = data.azurerm_key_vault.kv.id
 }
+
+data "azurerm_key_vault_secret" "functions_lollipop_api_key" {
+  name         = "session-manager-functions-lollipop-api-key"
+  key_vault_id = data.azurerm_key_vault.kv.id
+}
+
 ###########
 
 resource "azurerm_resource_group" "session_manager_rg" {
@@ -29,7 +35,6 @@ locals {
 
     WEBSITE_NODE_DEFAULT_VERSION = "20.12.2"
     WEBSITE_RUN_FROM_PACKAGE     = "1"
-    WEBSITE_VNET_ROUTE_ALL       = "1"
 
     // ENVIRONMENT
     NODE_ENV = "production"
@@ -45,7 +50,8 @@ locals {
     FETCH_KEEPALIVE_FREE_SOCKET_TIMEOUT = "30000"
     FETCH_KEEPALIVE_TIMEOUT             = "60000"
 
-    API_BASE_PATH = "/api/v1"
+    API_BASE_PATH  = "/api/v1"
+    FIMS_BASE_PATH = "/fims/api/v1"
 
     # REDIS AUTHENTICATION
     REDIS_URL      = data.azurerm_redis_cache.core_domain_redis_common.hostname
@@ -59,6 +65,11 @@ locals {
     # Functions Fast Login config
     FAST_LOGIN_API_KEY = data.azurerm_key_vault_secret.functions_fast_login_api_key.value
     FAST_LOGIN_API_URL = var.fastlogin_enabled ? "https://${module.function_fast_login[0].default_hostname}" : ""
+
+    # Functions Lollipop config
+    LOLLIPOP_API_BASE_PATH = "/api/v1"
+    LOLLIPOP_API_URL       = var.lollipop_enabled ? "https://${module.function_lollipop[0].default_hostname}" : ""
+    LOLLIPOP_API_KEY       = data.azurerm_key_vault_secret.functions_lollipop_api_key.value
   }
 }
 
