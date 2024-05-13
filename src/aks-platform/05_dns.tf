@@ -17,19 +17,34 @@ resource "kubernetes_manifest" "coredns_custom" {
       }
     }
     "data" = {
-      "pagopa-d-evh-ns01.server" = <<EOT
+      "pagopa-d-evh-ns01.server"          = <<EOT
 pagopa-d-evh-ns01.servicebus.windows.net:53 {
   forward pagopa-d-evh-ns01.servicebus.windows.net 8.8.8.8
 }
 EOT
-      "pagopa-u-evh-ns01.server" = <<EOT
+      "pagopa-u-evh-ns01.server"          = <<EOT
 pagopa-u-evh-ns01.servicebus.windows.net:53 {
   forward pagopa-u-evh-ns01.servicebus.windows.net 8.8.8.8
 }
 EOT
-      "pagopa-p-evh-ns01.server" = <<EOT
+      "pagopa-p-evh-ns01.server"          = <<EOT
 pagopa-p-evh-ns01.servicebus.windows.net:53 {
   forward pagopa-p-evh-ns01.servicebus.windows.net 8.8.8.8
+}
+EOT
+      "pagopa-d-weu-core-evh-ns03.server" = <<EOT
+pagopa-d-weu-core-evh-ns03.servicebus.windows.net:53 {
+  forward pagopa-d-weu-core-evh-ns03.servicebus.windows.net 8.8.8.8
+}
+EOT
+      "pagopa-u-weu-core-evh-ns03.server" = <<EOT
+pagopa-u-weu-core-evh-ns03.servicebus.windows.net:53 {
+  forward pagopa-u-weu-core-evh-ns03.servicebus.windows.net 8.8.8.8
+}
+EOT
+      "pagopa-p-weu-core-evh-ns03.server" = <<EOT
+pagopa-p-weu-core-evh-ns03.servicebus.windows.net:53 {
+  forward pagopa-p-weu-core-evh-ns03.servicebus.windows.net 8.8.8.8
 }
 EOT
     }
