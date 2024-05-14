@@ -67,14 +67,6 @@ jobs:
         run: |
           bash ./terraform.sh plan ${{ env.AZURE_ENVIRONMENT }} -lock-timeout=3000s -out=tfplan-${{ env.AZURE_ENVIRONMENT }}-${{ github.sha }} -input=false
 
-      - name: Terraform plan weu-beta
-        shell: bash
-        working-directory: ${{ env.DIR }}-app
-        env:
-          AZURE_ENVIRONMENT: weu-beta
-        run: |
-          bash ./terraform.sh plan ${{ env.AZURE_ENVIRONMENT }} -lock-timeout=3000s -out=tfplan-${{ env.AZURE_ENVIRONMENT }}-${{ github.sha }} -input=false
-
       - name: Terraform plan weu-prod01
         shell: bash
         working-directory: ${{ env.DIR }}-app
@@ -91,7 +83,6 @@ jobs:
           if-no-files-found: error
           path: |
             **/tfplan-prod-*
-            **/tfplan-weu-beta-*
             **/tfplan-weu-prod01-*
 
     outputs:
@@ -150,24 +141,6 @@ jobs:
         working-directory: ${{ env.DIR }}-common
         env:
           AZURE_ENVIRONMENT: prod
-        run: |
-          terraform apply -lock-timeout=3000s -auto-approve -input=false tfplan-${{ env.AZURE_ENVIRONMENT }}-${{ github.sha }}
-
-      - name: Terraform init weu-beta
-        id: terraform_init_weu-beta
-        shell: bash
-        working-directory: ${{ env.DIR }}-app
-        env:
-          AZURE_ENVIRONMENT: weu-beta
-        run: |
-          bash ./terraform.sh init ${{ env.AZURE_ENVIRONMENT }}
-
-      - name: Terraform apply weu-beta
-        id: terraform_apply_weu-beta
-        shell: bash
-        working-directory: ${{ env.DIR }}-app
-        env:
-          AZURE_ENVIRONMENT: weu-beta
         run: |
           terraform apply -lock-timeout=3000s -auto-approve -input=false tfplan-${{ env.AZURE_ENVIRONMENT }}-${{ github.sha }}
 

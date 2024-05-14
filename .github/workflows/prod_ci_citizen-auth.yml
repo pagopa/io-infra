@@ -50,16 +50,6 @@ jobs:
           dir: ${{ env.DIR }}-common
           azure_environment: prod
 
-      - name: Terraform plan weu-beta
-        # from https://github.com/pagopa/terraform-plan-azure-action/commits/main
-        uses: pagopa/terraform-plan-azure-action@392aca28cbb33f5dc28215dfb72385e136fd813b
-        with:
-          client_id: ${{ secrets.AZURE_CLIENT_ID }}
-          tenant_id: ${{ secrets.AZURE_TENANT_ID }}
-          subscription_id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
-          dir: ${{ env.DIR }}-app
-          azure_environment: weu-beta
-
       - name: Terraform plan weu-prod01
         # from https://github.com/pagopa/terraform-plan-azure-action/commits/main
         uses: pagopa/terraform-plan-azure-action@392aca28cbb33f5dc28215dfb72385e136fd813b

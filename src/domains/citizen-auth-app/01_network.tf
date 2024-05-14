@@ -136,3 +136,18 @@ module "session_manager_snet" {
     }
   }
 }
+
+data "azurerm_resource_group" "rg_external" {
+  name = format("%s-rg-external", local.product)
+}
+
+data "azurerm_dns_zone" "io_pagopa_it" {
+  name                = join(".", [var.dns_zone_io, var.external_domain])
+  resource_group_name = data.azurerm_resource_group.rg_external.name
+}
+
+data "azurerm_dns_a_record" "api_app_io_pagopa_it" {
+  name                = "api-app"
+  zone_name           = data.azurerm_dns_zone.io_pagopa_it.name
+  resource_group_name = data.azurerm_resource_group.rg_external.name
+}
