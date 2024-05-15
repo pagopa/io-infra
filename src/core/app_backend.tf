@@ -326,6 +326,11 @@ locals {
       BONUS_API_BASE_PATH = "/api/v1"
       BONUS_API_URL       = "to-remove"
       BONUS_API_KEY       = "to-remove"
+
+      // Services App Backend
+      SERVICES_APP_BACKEND_BASE_PATH     = "/api/v2"
+      SERVICES_APP_BACKEND_API_URL       = "https://${data.azurerm_linux_function_app.services_app_backend_function_app.default_hostname}"
+      SERVICES_APP_BACKEND_API_BASE_PATH = "/api/v1"
     }
     app_settings_l1 = {
       IS_APPBACKENDLI = "false"
