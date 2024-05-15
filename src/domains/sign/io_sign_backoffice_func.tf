@@ -77,7 +77,7 @@ resource "azurerm_key_vault_access_policy" "backoffice_func_key_vault_access_pol
 }
 
 module "io_sign_backoffice_func_staging_slot" {
-  source = "github.com/pagopa/terraform-azurerm-v3.git//function_app_slot?ref=v7.46.0"
+  source = "github.com/pagopa/terraform-azurerm-v3.git//function_app_slot?ref=v8.12.2"
 
   name                = "staging"
   location            = azurerm_resource_group.backend_rg.location
@@ -112,4 +112,14 @@ module "io_sign_backoffice_func_staging_slot" {
   ]
 
   tags = var.tags
+}
+
+resource "azurerm_key_vault_access_policy" "backoffice_func_staging_key_vault_access_policy" {
+  key_vault_id = module.key_vault.id
+  tenant_id    = data.azurerm_client_config.current.tenant_id
+  object_id    = module.io_sign_backoffice_func.system_identity_principal
+
+  secret_permissions      = ["Get"]
+  storage_permissions     = []
+  certificate_permissions = []
 }
