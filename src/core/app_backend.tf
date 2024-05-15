@@ -329,7 +329,7 @@ locals {
 
       // Services App Backend
       SERVICES_APP_BACKEND_BASE_PATH     = "/api/v2"
-      SERVICES_APP_BACKEND_API_URL       = "https://io-p-itn-svc-app-be-fn-01.azurewebsites.net"
+      SERVICES_APP_BACKEND_API_URL       = "https://${data.azurerm_linux_function_app.services_app_backend_function_app.default_hostname}"
       SERVICES_APP_BACKEND_API_BASE_PATH = "/api/v1"
     }
     app_settings_l1 = {

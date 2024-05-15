@@ -213,6 +213,12 @@ data "azurerm_subnet" "services_cms_backoffice_snet" {
   resource_group_name  = azurerm_resource_group.rg_common.name
 }
 
+data "azurerm_linux_function_app" "services_app_backend_function_app" {
+  resource_group_name = format("%s-itn-svc-rg-01", local.project)
+  name                = format("%s-itn-svc-app-be-fn-01", local.project)
+}
+
+
 #
 # UNIQUE EMAIL ENFORCEMENT
 #
