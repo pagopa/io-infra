@@ -316,3 +316,31 @@ data "azurerm_subnet" "function_let_snet" {
   resource_group_name  = azurerm_resource_group.rg_common.name
   virtual_network_name = module.vnet_common.name
 }
+
+#
+# Functions
+#
+
+data "azurerm_subnet" "admin_snet" {
+  name                 = format("%s-admin-snet", local.project)
+  resource_group_name  = azurerm_resource_group.rg_common.name
+  virtual_network_name = module.vnet_common.name
+}
+
+data "azurerm_subnet" "services_snet" {
+  count = var.function_services_count
+  name                 = format("%s-services-snet-%d", local.project, count.index + 1)
+  resource_group_name  = azurerm_resource_group.rg_common.name
+  virtual_network_name = module.vnet_common.name
+}
+
+data "azurerm_linux_function_app" "function_app" {
+  count = var.function_app_count
+  name                = format("%s-app-fn-%d", local.project, count.index + 1)
+  resource_group_name = format("%s-app-rg-%d", local.project, count.index + 1)
+}
+
+data "azurerm_linux_function_app" "function_assets_cdn" {
+  name                = format("%s-assets-cdn-fn", local.project)
+  resource_group_name = format("%s-assets-cdn-rg", local.project)
+}

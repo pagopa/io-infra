@@ -4,22 +4,22 @@
 
 data "azurerm_key_vault_secret" "fn_app_PUBLIC_API_KEY" {
   name         = "apim-IO-SERVICE-KEY"
-  key_vault_id = module.key_vault_common.id
+  key_vault_id = data.azurerm_key_vault.common
 }
 
 data "azurerm_key_vault_secret" "fn_app_SPID_LOGS_PUBLIC_KEY" {
   name         = "funcapp-KEY-SPIDLOGS-PUB"
-  key_vault_id = module.key_vault_common.id
+  key_vault_id = data.azurerm_key_vault.common
 }
 
 data "azurerm_key_vault_secret" "fn_app_AZURE_NH_ENDPOINT" {
   name         = "common-AZURE-NH-ENDPOINT"
-  key_vault_id = module.key_vault_common.id
+  key_vault_id = data.azurerm_key_vault.common
 }
 
 data "azurerm_key_vault_secret" "fn_app_beta_users" {
   name         = "io-fn-services-BETA-USERS" # reuse common beta list (array of CF)
-  key_vault_id = module.key_vault_common.id
+  key_vault_id = data.azurerm_key_vault.common
 }
 
 data "azurerm_key_vault_secret" "ioweb_profile_function_api_key" {

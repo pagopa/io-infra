@@ -3,47 +3,47 @@
 ########################
 data "azurerm_key_vault_secret" "fn_services_mailup_username" {
   name         = "common-MAILUP-USERNAME"
-  key_vault_id = module.key_vault_common.id
+  key_vault_id = data.azurerm_key_vault.common
 }
 
 data "azurerm_key_vault_secret" "fn_services_mailup_secret" {
   name         = "common-MAILUP-SECRET"
-  key_vault_id = module.key_vault_common.id
+  key_vault_id = data.azurerm_key_vault.common
 }
 
 data "azurerm_key_vault_secret" "fn_services_webhook_channel_url" {
   name         = "appbackend-WEBHOOK-CHANNEL-URL"
-  key_vault_id = module.key_vault_common.id
+  key_vault_id = data.azurerm_key_vault.common
 }
 
 data "azurerm_key_vault_secret" "fn_services_webhook_channel_aks_url" {
   name         = "appbackend-WEBHOOK-CHANNEL-AKS-URL"
-  key_vault_id = module.key_vault_common.id
+  key_vault_id = data.azurerm_key_vault.common
 }
 
 data "azurerm_key_vault_secret" "fn_services_sandbox_fiscal_code" {
   name         = "io-SANDBOX-FISCAL-CODE"
-  key_vault_id = module.key_vault_common.id
+  key_vault_id = data.azurerm_key_vault.common
 }
 
 data "azurerm_key_vault_secret" "fn_services_email_service_blacklist_id" {
   name         = "io-EMAIL-SERVICE-BLACKLIST-ID"
-  key_vault_id = module.key_vault_common.id
+  key_vault_id = data.azurerm_key_vault.common
 }
 
 data "azurerm_key_vault_secret" "fn_services_notification_service_blacklist_id" {
   name         = "io-NOTIFICATION-SERVICE-BLACKLIST-ID"
-  key_vault_id = module.key_vault_common.id
+  key_vault_id = data.azurerm_key_vault.common
 }
 
 data "azurerm_key_vault_secret" "fn_services_beta_users" {
   name         = "io-fn-services-BETA-USERS" # common beta list (array of CF)
-  key_vault_id = module.key_vault_common.id
+  key_vault_id = data.azurerm_key_vault.common
 }
 
 data "azurerm_key_vault_secret" "fn_services_io_service_key" {
   name         = "apim-IO-SERVICE-KEY"
-  key_vault_id = module.key_vault_common.id
+  key_vault_id = data.azurerm_key_vault.common
 }
 
 #

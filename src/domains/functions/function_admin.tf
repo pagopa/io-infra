@@ -4,62 +4,62 @@
 
 data "azurerm_key_vault_secret" "fn_admin_ASSETS_URL" {
   name         = "cdn-ASSETS-URL"
-  key_vault_id = module.key_vault_common.id
+  key_vault_id = data.azurerm_key_vault.common
 }
 
 data "azurerm_key_vault_secret" "fn_admin_AZURE_SUBSCRIPTION_ID" {
   name         = "common-AZURE-SUBSCRIPTION-ID"
-  key_vault_id = module.key_vault_common.id
+  key_vault_id = data.azurerm_key_vault.common
 }
 
 data "azurerm_key_vault_secret" "fn_admin_INSTANT_DELETE_ENABLED_USERS" {
   name         = "fn-admin-INSTANT-DELETE-ENABLED-USERS"
-  key_vault_id = module.key_vault_common.id
+  key_vault_id = data.azurerm_key_vault.common
 }
 
 data "azurerm_key_vault_secret" "adb2c_TENANT_NAME" {
   name         = "adb2c-TENANT-NAME"
-  key_vault_id = module.key_vault_common.id
+  key_vault_id = data.azurerm_key_vault.common
 }
 
 data "azurerm_key_vault_secret" "devportal_CLIENT_ID" {
   name         = "devportal-CLIENT-ID"
-  key_vault_id = module.key_vault_common.id
+  key_vault_id = data.azurerm_key_vault.common
 }
 
 data "azurerm_key_vault_secret" "devportal_CLIENT_SECRET" {
   name         = "devportal-CLIENT-SECRET"
-  key_vault_id = module.key_vault_common.id
+  key_vault_id = data.azurerm_key_vault.common
 }
 
 data "azurerm_key_vault_secret" "adb2c_TOKEN_ATTRIBUTE_NAME" {
   name         = "adb2c-TOKEN-ATTRIBUTE-NAME"
-  key_vault_id = module.key_vault_common.id
+  key_vault_id = data.azurerm_key_vault.common
 }
 
 data "azurerm_key_vault_secret" "ad_APPCLIENT_APIM_ID" {
   name         = "ad-APPCLIENT-APIM-ID"
-  key_vault_id = module.key_vault_common.id
+  key_vault_id = data.azurerm_key_vault.common
 }
 
 data "azurerm_key_vault_secret" "ad_APPCLIENT_APIM_SECRET" {
   name         = "ad-APPCLIENT-APIM-SECRET"
-  key_vault_id = module.key_vault_common.id
+  key_vault_id = data.azurerm_key_vault.common
 }
 
 data "azurerm_key_vault_secret" "common_AZURE_TENANT_ID" {
   name         = "common-AZURE-TENANT-ID"
-  key_vault_id = module.key_vault_common.id
+  key_vault_id = data.azurerm_key_vault.common
 }
 
 data "azurerm_key_vault_secret" "apim_IO_GDPR_SERVICE_KEY" {
   name         = "apim-IO-GDPR-SERVICE-KEY"
-  key_vault_id = module.key_vault_common.id
+  key_vault_id = data.azurerm_key_vault.common
 }
 
 data "azurerm_key_vault_secret" "common_SENDGRID_APIKEY" {
   name         = "common-SENDGRID-APIKEY"
-  key_vault_id = module.key_vault_common.id
+  key_vault_id = data.azurerm_key_vault.common
 }
 
 #

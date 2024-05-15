@@ -750,3 +750,14 @@ variable "citizen_auth_assertion_storage_name" {
   description = "Use storage name from citizen_auth domain"
   default     = "lollipop-assertions-st"
 }
+
+# Functions
+variable "function_services_count" {
+  type    = number
+  default = 2
+}
+
+variable "function_app_count" {
+  type    = number
+  default = 2
+}

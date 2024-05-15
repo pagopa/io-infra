@@ -36,7 +36,7 @@ resource "azurerm_cdn_profile" "assets_cdn_profile" {
 }
 
 data "azurerm_key_vault_secret" "assets_cdn_fn_key_cdn" {
-  name         = "${module.function_assets_cdn.name}-KEY-CDN"
+  name         = "${data.azurerm_linux_function_app.function_assets_cdn.name}-KEY-CDN"
   key_vault_id = module.key_vault_common.id
 }
 
@@ -48,11 +48,11 @@ resource "azurerm_cdn_endpoint" "assets_cdn_endpoint" {
   is_https_allowed              = true
   is_http_allowed               = false
   querystring_caching_behaviour = "IgnoreQueryString"
-  origin_host_header            = module.function_assets_cdn.default_hostname
+  origin_host_header            = data.azurerm_linux_function_app.function_assets_cdn.default_hostname
 
   origin {
     name      = "primary"
-    host_name = module.function_assets_cdn.default_hostname
+    host_name = data.azurerm_linux_function_app.function_assets_cdn.default_hostname
   }
 
   global_delivery_rule {
