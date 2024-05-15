@@ -92,6 +92,9 @@ locals {
     LOLLIPOP_API_URL       = var.lollipop_enabled ? "https://${module.function_lollipop[0].default_hostname}" : ""
     LOLLIPOP_API_KEY       = data.azurerm_key_vault_secret.functions_lollipop_api_key.value
 
+    LOLLIPOP_REVOKE_STORAGE_CONNECTION_STRING = data.azurerm_storage_account.lollipop_assertion_storage.primary_connection_string
+    LOLLIPOP_REVOKE_QUEUE_NAME                = "pubkeys-revoke"
+
     # Fast Login config
     FF_FAST_LOGIN = "ALL"
     LV_TEST_USERS = join(",", [data.azurerm_key_vault_secret.app_backend_LV_TEST_USERS.value, module.tests.test_users.all])
