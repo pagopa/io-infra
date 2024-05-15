@@ -138,8 +138,8 @@ module "session_manager_snet" {
 }
 
 data "azurerm_nat_gateway" "nat_gateway" {
-  name               = "${local.product}-natgw"
-  resurce_group_name = format("%s-rg-common", local.product)
+  name                = "${local.product}-natgw"
+  resource_group_name = format("%s-rg-common", local.product)
 }
 
 resource "azurerm_subnet_nat_gateway_association" "session_manager_snet" {
