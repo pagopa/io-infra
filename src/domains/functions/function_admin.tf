@@ -68,12 +68,12 @@ data "azurerm_key_vault_secret" "common_SENDGRID_APIKEY" {
 
 data "azurerm_storage_account" "userdatadownload" {
   name                = "iopstuserdatadownload"
-  resource_group_name = azurerm_resource_group.rg_internal.name
+  resource_group_name = local.rg_internal_name
 }
 
 data "azurerm_storage_account" "userbackups" {
   name                = "iopstuserbackups"
-  resource_group_name = azurerm_resource_group.rg_internal.name
+  resource_group_name = local.rg_internal_name
 }
 
 
@@ -176,8 +176,8 @@ module "admin_snet" {
   source                                    = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v7.61.0"
   name                                      = format("%s-admin-snet", local.project)
   address_prefixes                          = var.cidr_subnet_fnadmin
-  resource_group_name                       = azurerm_resource_group.rg_common.name
-  virtual_network_name                      = module.vnet_common.name
+  resource_group_name                       = local.rg_common_name
+  virtual_network_name                      = local.vnet_common_name
   private_endpoint_network_policies_enabled = false
 
   service_endpoints = [
@@ -208,7 +208,7 @@ module "function_admin" {
   runtime_version = "~4"
 
   always_on                                = "true"
-  application_insights_instrumentation_key = azurerm_application_insights.application_insights.instrumentation_key
+  application_insights_instrumentation_key = data.azurerm_application_insights.application_insights.instrumentation_key
 
   app_service_plan_info = {
     kind                         = var.function_admin_kind
@@ -228,9 +228,9 @@ module "function_admin" {
   internal_storage = {
     "enable"                     = true,
     "private_endpoint_subnet_id" = module.private_endpoints_subnet.id,
-    "private_dns_zone_blob_ids"  = [azurerm_private_dns_zone.privatelink_blob_core.id],
-    "private_dns_zone_queue_ids" = [azurerm_private_dns_zone.privatelink_queue_core.id],
-    "private_dns_zone_table_ids" = [azurerm_private_dns_zone.privatelink_table_core.id],
+    "private_dns_zone_blob_ids"  = [data.azurerm_private_dns_zone.privatelink_blob_core.id],
+    "private_dns_zone_queue_ids" = [data.azurerm_private_dns_zone.privatelink_queue_core.id],
+    "private_dns_zone_table_ids" = [data.azurerm_private_dns_zone.privatelink_table_core.id],
     "queues"                     = [],
     "containers"                 = [],
     "blobs_retention_days"       = 0,
@@ -246,7 +246,7 @@ module "function_admin" {
   # Action groups for alerts
   action = [
     {
-      action_group_id    = azurerm_monitor_action_group.error_action_group.id
+      action_group_id    = data.azurerm_monitor_action_group.error_action_group.id
       webhook_properties = {}
     }
   ]
@@ -275,7 +275,7 @@ module "function_admin_staging_slot" {
   node_version                             = "18"
   always_on                                = "true"
   runtime_version                          = "~4"
-  application_insights_instrumentation_key = azurerm_application_insights.application_insights.instrumentation_key
+  application_insights_instrumentation_key = data.azurerm_application_insights.application_insights.instrumentation_key
 
   app_settings = merge(
     local.function_admin.app_settings_common, {

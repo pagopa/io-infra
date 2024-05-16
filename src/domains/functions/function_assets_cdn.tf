@@ -39,8 +39,8 @@ module "function_assets_cdn_snet" {
   source                                    = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v7.61.0"
   name                                      = format("%s-assets-cdn-fn-snet", local.project)
   address_prefixes                          = var.cidr_subnet_fncdnassets
-  resource_group_name                       = azurerm_resource_group.rg_common.name
-  virtual_network_name                      = module.vnet_common.name
+  resource_group_name                       = local.rg_common_name
+  virtual_network_name                      = local.vnet_common_name
   private_endpoint_network_policies_enabled = false
 
   service_endpoints = [
@@ -69,7 +69,7 @@ module "function_assets_cdn" {
   runtime_version                          = "~4"
   node_version                             = "18"
   always_on                                = true
-  application_insights_instrumentation_key = azurerm_application_insights.application_insights.instrumentation_key
+  application_insights_instrumentation_key = data.azurerm_application_insights.application_insights.instrumentation_key
 
   app_service_plan_info = {
     kind                         = var.function_assets_cdn_kind
@@ -104,7 +104,7 @@ module "function_assets_cdn_staging_slot" {
   runtime_version                          = "~4"
   node_version                             = "18"
   always_on                                = true
-  application_insights_instrumentation_key = azurerm_application_insights.application_insights.instrumentation_key
+  application_insights_instrumentation_key = data.azurerm_application_insights.application_insights.instrumentation_key
 
   app_settings = local.function_assets_cdn.app_settings
 
@@ -239,7 +239,7 @@ resource "azurerm_monitor_metric_alert" "function_assets_health_check" {
   }
 
   action {
-    action_group_id = azurerm_monitor_action_group.error_action_group.id
+    action_group_id = data.azurerm_monitor_action_group.error_action_group.id
   }
 }
 
@@ -261,7 +261,7 @@ resource "azurerm_monitor_metric_alert" "function_assets_http_server_errors" {
   }
 
   action {
-    action_group_id = azurerm_monitor_action_group.error_action_group.id
+    action_group_id = data.azurerm_monitor_action_group.error_action_group.id
   }
 }
 
@@ -283,6 +283,6 @@ resource "azurerm_monitor_metric_alert" "function_assets_response_time" {
   }
 
   action {
-    action_group_id = azurerm_monitor_action_group.error_action_group.id
+    action_group_id = data.azurerm_monitor_action_group.error_action_group.id
   }
 }

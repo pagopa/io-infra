@@ -25,8 +25,8 @@ module "shared_1_snet" {
   source                                    = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v7.61.0"
   name                                      = format("%s-shared-1-snet", local.project)
   address_prefixes                          = var.cidr_subnet_shared_1
-  resource_group_name                       = azurerm_resource_group.rg_common.name
-  virtual_network_name                      = module.vnet_common.name
+  resource_group_name                       = local.rg_common_name
+  virtual_network_name                      = local.vnet_common_name
   private_endpoint_network_policies_enabled = false
 
   service_endpoints = [
