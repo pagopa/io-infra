@@ -10,8 +10,8 @@ on:
       - reopened
       - ready_for_review
     paths:
-      - "src/core/prod/italynorth"
-      - "src/core/_modules"
+      - "src/core/prod/italynorth/**"
+      - "src/core/_modules/**"
       - ".github/workflows/core_code_review.yaml"
 
 jobs:
