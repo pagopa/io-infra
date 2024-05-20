@@ -10,16 +10,16 @@ tags = {
 
 location       = "westeurope"
 location_short = "weu"
-lock_enable = true
+lock_enable    = true
 
 # networking
 # check free subnet on azure portal io-p-vnet-common -> subnets
-cidr_subnet_fnadmin                        = ["10.0.15.0/26"]
-cidr_subnet_shared_1                       = ["10.0.16.0/26"]
-cidr_subnet_fncdnassets                    = ["10.0.131.0/24"]
-cidr_subnet_app                            = ["10.0.132.0/26", "10.0.132.64/26"]
-cidr_subnet_app_async                      = ["10.0.132.128/26"]
-cidr_subnet_services                       = ["10.0.139.0/26", "10.0.139.64/26"]
+cidr_subnet_fnadmin     = ["10.0.15.0/26"]
+cidr_subnet_shared_1    = ["10.0.16.0/26"]
+cidr_subnet_fncdnassets = ["10.0.131.0/24"]
+cidr_subnet_app         = ["10.0.132.0/26", "10.0.132.64/26"]
+cidr_subnet_app_async   = ["10.0.132.128/26"]
+cidr_subnet_services    = ["10.0.139.0/26", "10.0.139.64/26"]
 
 # Functions App
 function_app_kind              = "Linux"
@@ -61,9 +61,6 @@ function_public_autoscale_minimum = 1
 function_public_autoscale_maximum = 30
 function_public_autoscale_default = 10
 
-app_backend_autoscale_default = 10
-app_backend_autoscale_minimum = 2
-app_backend_autoscale_maximum = 30
 
 # Function CDN Assets
 function_assets_cdn_kind              = "Linux"

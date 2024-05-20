@@ -342,8 +342,8 @@ locals {
     app_settings_li = {
       IS_APPBACKENDLI = "true"
       // FUNCTIONS
-      API_URL              = "https://${data.azurerm_linux_function_app.function_app[0].default_hostname}/api/v1"                         # not used
-      APP_MESSAGES_API_URL = "https://${data.azurerm_linux_function_app.app_messages_1.default_hostname}/api/v1" # not used
+      API_URL              = "https://${data.azurerm_linux_function_app.function_app[0].default_hostname}/api/v1" # not used
+      APP_MESSAGES_API_URL = "https://${data.azurerm_linux_function_app.app_messages_1.default_hostname}/api/v1"  # not used
     }
   }
 

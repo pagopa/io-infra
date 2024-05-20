@@ -2,7 +2,7 @@ terraform {
   required_providers {
     azurerm = {
       source  = "hashicorp/azurerm"
-      version = "<= 3.92.0"
+      version = "<= 3.100.0"
     }
     azuread = {
       source  = "hashicorp/azuread"
@@ -10,12 +10,7 @@ terraform {
     }
   }
 
-  backend "azurerm" {
-    resource_group_name  = "terraform-state-rg"
-    storage_account_name = "tfinfprodio"
-    container_name       = "terraform-state"
-    key                  = "io-infra.functions.tfstate"
-  }
+  backend "azurerm" {}
 }
 
 provider "azurerm" {

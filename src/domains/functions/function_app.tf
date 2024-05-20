@@ -4,22 +4,22 @@
 
 data "azurerm_key_vault_secret" "fn_app_PUBLIC_API_KEY" {
   name         = "apim-IO-SERVICE-KEY"
-  key_vault_id = data.azurerm_key_vault.common
+  key_vault_id = data.azurerm_key_vault.common.id
 }
 
 data "azurerm_key_vault_secret" "fn_app_SPID_LOGS_PUBLIC_KEY" {
   name         = "funcapp-KEY-SPIDLOGS-PUB"
-  key_vault_id = data.azurerm_key_vault.common
+  key_vault_id = data.azurerm_key_vault.common.id
 }
 
 data "azurerm_key_vault_secret" "fn_app_AZURE_NH_ENDPOINT" {
   name         = "common-AZURE-NH-ENDPOINT"
-  key_vault_id = data.azurerm_key_vault.common
+  key_vault_id = data.azurerm_key_vault.common.id
 }
 
 data "azurerm_key_vault_secret" "fn_app_beta_users" {
   name         = "io-fn-services-BETA-USERS" # reuse common beta list (array of CF)
-  key_vault_id = data.azurerm_key_vault.common
+  key_vault_id = data.azurerm_key_vault.common.id
 }
 
 data "azurerm_key_vault_secret" "ioweb_profile_function_api_key" {
@@ -55,7 +55,7 @@ locals {
       COSMOSDB_CONNECTION_STRING = format("AccountEndpoint=%s;AccountKey=%s;", data.azurerm_cosmosdb_account.cosmos_api.endpoint, data.azurerm_cosmosdb_account.cosmos_api.primary_key)
 
       MESSAGE_CONTAINER_NAME = local.message_content_container_name
-      QueueStorageConnection = module.storage_api.primary_connection_string
+      QueueStorageConnection = data.azurerm_storage_account.storage_api.primary_connection_string
 
       // Keepalive fields are all optionals
       FETCH_KEEPALIVE_ENABLED             = "true"
@@ -66,7 +66,7 @@ locals {
       FETCH_KEEPALIVE_TIMEOUT             = "60000"
 
       LogsStorageConnection      = data.azurerm_storage_account.logs.primary_connection_string
-      AssetsStorageConnection    = module.assets_cdn.primary_connection_string
+      AssetsStorageConnection    = data.azurerm_storage_account.assets_cdn.primary_connection_string
       STATUS_ENDPOINT_URL        = "https://api-app.io.pagopa.it/info"
       STATUS_REFRESH_INTERVAL_MS = "300000"
 
@@ -219,7 +219,7 @@ module "function_app" {
 
   internal_storage = {
     "enable"                     = true,
-    "private_endpoint_subnet_id" = module.private_endpoints_subnet.id,
+    "private_endpoint_subnet_id" = data.azurerm_subnet.private_endpoints_subnet.id,
     "private_dns_zone_blob_ids"  = [data.azurerm_private_dns_zone.privatelink_blob_core.id],
     "private_dns_zone_queue_ids" = [data.azurerm_private_dns_zone.privatelink_queue_core.id],
     "private_dns_zone_table_ids" = [data.azurerm_private_dns_zone.privatelink_table_core.id],
@@ -232,9 +232,9 @@ module "function_app" {
 
   allowed_subnets = [
     module.app_snet[count.index].id,
-    module.app_backendl1_snet.id,
-    module.app_backendl2_snet.id,
-    module.app_backendli_snet.id,
+    data.azurerm_subnet.app_backendl1_snet.id,
+    data.azurerm_subnet.app_backendl2_snet.id,
+    data.azurerm_subnet.app_backendli_snet.id,
     data.azurerm_subnet.ioweb_profile_snet.id,
     data.azurerm_subnet.session_manager_snet.id,
   ]
@@ -285,10 +285,10 @@ module "function_app_staging_slot" {
 
   allowed_subnets = [
     module.app_snet[count.index].id,
-    module.azdoa_snet[0].id,
-    module.app_backendl1_snet.id,
-    module.app_backendl2_snet.id,
-    module.app_backendli_snet.id,
+    data.azurerm_subnet.azdoa_snet.id,
+    data.azurerm_subnet.app_backendl1_snet.id,
+    data.azurerm_subnet.app_backendl2_snet.id,
+    data.azurerm_subnet.app_backendli_snet.id,
   ]
 
   tags = var.tags

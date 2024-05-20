@@ -61,6 +61,11 @@ variable "tags" {
 # Function Assets CDN
 ################################
 
+variable "cidr_subnet_fncdnassets" {
+  type        = list(string)
+  description = "Fn assets address space."
+}
+
 variable "function_assets_cdn_kind" {
   type        = string
   description = "App service plan kind"
@@ -123,6 +128,11 @@ variable "function_public_autoscale_default" {
 # Function Services
 ################################
 
+variable "cidr_subnet_services" {
+  type        = list(string)
+  description = "Function services address space."
+}
+
 variable "function_services_count" {
   type    = number
   default = 2
@@ -179,6 +189,10 @@ variable "pn_service_id" {
 # Function Shared
 ################################
 
+variable "cidr_subnet_shared_1" {
+  type = list(string)
+}
+
 variable "plan_shared_1_kind" {
   type        = string
   description = "App service plan kind"
@@ -206,6 +220,11 @@ variable "plan_shared_1_sku_capacity" {
 ################################
 # Function App
 ################################
+
+variable "cidr_subnet_app" {
+  type        = list(string)
+  description = "Function app address space."
+}
 
 variable "function_app_count" {
   type    = number
@@ -252,6 +271,11 @@ variable "function_app_autoscale_default" {
 # Function App Async
 ################################
 
+variable "cidr_subnet_app_async" {
+  type        = list(string)
+  description = "Function app async address space."
+}
+
 variable "function_app_async_kind" {
   type        = string
   description = "App service plan kind"
@@ -292,6 +316,11 @@ variable "function_app_async_autoscale_default" {
 # Function Admin
 ################################
 
+variable "cidr_subnet_fnadmin" {
+  type        = list(string)
+  description = "Function Admin address space."
+}
+
 variable "function_admin_kind" {
   type        = string
   description = "App service plan kind"
@@ -326,4 +355,10 @@ variable "function_admin_autoscale_default" {
   type        = number
   description = "The number of instances that are available for scaling if metrics are not available for evaluation."
   default     = 1
+}
+
+variable "function_admin_locked_profiles_table_name" {
+  type        = string
+  description = "Locked profiles table name"
+  default     = "lockedprofiles"
 }

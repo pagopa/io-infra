@@ -76,7 +76,7 @@ module "function_app_async" {
 
   internal_storage = {
     "enable"                     = true,
-    "private_endpoint_subnet_id" = module.private_endpoints_subnet.id,
+    "private_endpoint_subnet_id" = data.azurerm_subnet.private_endpoints_subnet.id,
     "private_dns_zone_blob_ids"  = [data.azurerm_private_dns_zone.privatelink_blob_core.id],
     "private_dns_zone_queue_ids" = [data.azurerm_private_dns_zone.privatelink_queue_core.id],
     "private_dns_zone_table_ids" = [data.azurerm_private_dns_zone.privatelink_table_core.id],
@@ -131,7 +131,7 @@ module "function_app_async_staging_slot" {
 
   allowed_subnets = [
     module.app_async_snet.id,
-    module.azdoa_snet[0].id,
+    data.azurerm_subnet.azdoa_snet.id,
   ]
 
   tags = var.tags

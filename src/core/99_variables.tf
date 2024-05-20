@@ -268,26 +268,6 @@ variable "cidr_subnet_appbackendl2" {
   description = "App backend l2 address space."
 }
 
-variable "cidr_subnet_app" {
-  type        = list(string)
-  description = "Function app address space."
-}
-
-variable "cidr_subnet_services" {
-  type        = list(string)
-  description = "Function services address space."
-}
-
-variable "cidr_subnet_app_async" {
-  type        = list(string)
-  description = "Function app async address space."
-}
-
-variable "cidr_subnet_fncdnassets" {
-  type        = list(string)
-  description = "Fn assets address space."
-}
-
 variable "cidr_subnet_appbackendli" {
   type        = list(string)
   description = "App backend li address space."
@@ -295,11 +275,6 @@ variable "cidr_subnet_appbackendli" {
 
 variable "cidr_subnet_shared_1" {
   type = list(string)
-}
-
-variable "cidr_subnet_fnadmin" {
-  type        = list(string)
-  description = "Function Admin address space."
 }
 
 variable "cidr_subnet_pendpoints" {

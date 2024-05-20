@@ -28,7 +28,7 @@ locals {
       COSMOSDB_URI      = data.azurerm_cosmosdb_account.cosmos_api.endpoint
       COSMOSDB_KEY      = data.azurerm_cosmosdb_account.cosmos_api.primary_key
       COSMOSDB_NAME     = "db"
-      StorageConnection = module.storage_api.primary_connection_string
+      StorageConnection = data.azurerm_storage_account.storage_api.primary_connection_string
 
       VALIDATION_CALLBACK_URL = "https://api-app.io.pagopa.it/email_verification.html"
       CONFIRM_CHOICE_PAGE_URL = "https://api-app.io.pagopa.it/email_confirm.html"
@@ -59,7 +59,7 @@ module "function_public" {
 
   internal_storage = {
     "enable"                     = false,
-    "private_endpoint_subnet_id" = module.private_endpoints_subnet.id,
+    "private_endpoint_subnet_id" = data.azurerm_subnet.private_endpoints_subnet.id,
     "private_dns_zone_blob_ids"  = [data.azurerm_private_dns_zone.privatelink_blob_core.id],
     "private_dns_zone_queue_ids" = [data.azurerm_private_dns_zone.privatelink_queue_core.id],
     "private_dns_zone_table_ids" = [data.azurerm_private_dns_zone.privatelink_table_core.id],
@@ -72,7 +72,7 @@ module "function_public" {
 
   allowed_subnets = [
     module.shared_1_snet.id,
-    module.apim_v2_snet.id,
+    data.azurerm_subnet.apim_v2_snet.id,
   ]
 
   # Action groups for alerts
@@ -112,8 +112,8 @@ module "function_public_staging_slot" {
 
   allowed_subnets = [
     module.shared_1_snet.id,
-    module.azdoa_snet[0].id,
-    module.apim_v2_snet.id,
+    data.azurerm_subnet.azdoa_snet.id,
+    data.azurerm_subnet.apim_v2_snet.id,
   ]
 
   tags = var.tags

@@ -3,47 +3,47 @@
 ########################
 data "azurerm_key_vault_secret" "fn_services_mailup_username" {
   name         = "common-MAILUP-USERNAME"
-  key_vault_id = data.azurerm_key_vault.common
+  key_vault_id = data.azurerm_key_vault.common.id
 }
 
 data "azurerm_key_vault_secret" "fn_services_mailup_secret" {
   name         = "common-MAILUP-SECRET"
-  key_vault_id = data.azurerm_key_vault.common
+  key_vault_id = data.azurerm_key_vault.common.id
 }
 
 data "azurerm_key_vault_secret" "fn_services_webhook_channel_url" {
   name         = "appbackend-WEBHOOK-CHANNEL-URL"
-  key_vault_id = data.azurerm_key_vault.common
+  key_vault_id = data.azurerm_key_vault.common.id
 }
 
 data "azurerm_key_vault_secret" "fn_services_webhook_channel_aks_url" {
   name         = "appbackend-WEBHOOK-CHANNEL-AKS-URL"
-  key_vault_id = data.azurerm_key_vault.common
+  key_vault_id = data.azurerm_key_vault.common.id
 }
 
 data "azurerm_key_vault_secret" "fn_services_sandbox_fiscal_code" {
   name         = "io-SANDBOX-FISCAL-CODE"
-  key_vault_id = data.azurerm_key_vault.common
+  key_vault_id = data.azurerm_key_vault.common.id
 }
 
 data "azurerm_key_vault_secret" "fn_services_email_service_blacklist_id" {
   name         = "io-EMAIL-SERVICE-BLACKLIST-ID"
-  key_vault_id = data.azurerm_key_vault.common
+  key_vault_id = data.azurerm_key_vault.common.id
 }
 
 data "azurerm_key_vault_secret" "fn_services_notification_service_blacklist_id" {
   name         = "io-NOTIFICATION-SERVICE-BLACKLIST-ID"
-  key_vault_id = data.azurerm_key_vault.common
+  key_vault_id = data.azurerm_key_vault.common.id
 }
 
 data "azurerm_key_vault_secret" "fn_services_beta_users" {
   name         = "io-fn-services-BETA-USERS" # common beta list (array of CF)
-  key_vault_id = data.azurerm_key_vault.common
+  key_vault_id = data.azurerm_key_vault.common.id
 }
 
 data "azurerm_key_vault_secret" "fn_services_io_service_key" {
   name         = "apim-IO-SERVICE-KEY"
-  key_vault_id = data.azurerm_key_vault.common
+  key_vault_id = data.azurerm_key_vault.common.id
 }
 
 #
@@ -79,8 +79,8 @@ locals {
       COSMOSDB_URI  = data.azurerm_cosmosdb_account.cosmos_api.endpoint
       COSMOSDB_KEY  = data.azurerm_cosmosdb_account.cosmos_api.primary_key
 
-      MESSAGE_CONTENT_STORAGE_CONNECTION_STRING   = module.storage_api.primary_connection_string
-      SUBSCRIPTION_FEED_STORAGE_CONNECTION_STRING = module.storage_api.primary_connection_string
+      MESSAGE_CONTENT_STORAGE_CONNECTION_STRING   = data.azurerm_storage_account.storage_api.primary_connection_string
+      SUBSCRIPTION_FEED_STORAGE_CONNECTION_STRING = data.azurerm_storage_account.storage_api.primary_connection_string
 
       MAIL_FROM = "IO - l'app dei servizi pubblici <no-reply@io.italia.it>"
       // we keep this while we wait for new app version to be deployed
@@ -209,7 +209,7 @@ module "function_services" {
 
   internal_storage = {
     "enable"                     = true,
-    "private_endpoint_subnet_id" = module.private_endpoints_subnet.id,
+    "private_endpoint_subnet_id" = data.azurerm_subnet.private_endpoints_subnet.id,
     "private_dns_zone_blob_ids"  = [data.azurerm_private_dns_zone.privatelink_blob_core.id],
     "private_dns_zone_queue_ids" = [data.azurerm_private_dns_zone.privatelink_queue_core.id],
     "private_dns_zone_table_ids" = [data.azurerm_private_dns_zone.privatelink_table_core.id],
@@ -233,8 +233,8 @@ module "function_services" {
 
   allowed_subnets = [
     module.services_snet[count.index].id,
-    module.azdoa_snet[0].id,
-    module.apim_v2_snet.id,
+    data.azurerm_subnet.azdoa_snet.id,
+    data.azurerm_subnet.apim_v2_snet.id,
     data.azurerm_subnet.function_eucovidcert_snet.id,
   ]
 
@@ -293,8 +293,8 @@ module "function_services_staging_slot" {
 
   allowed_subnets = [
     module.services_snet[count.index].id,
-    module.azdoa_snet[0].id,
-    module.apim_v2_snet.id,
+    data.azurerm_subnet.azdoa_snet.id,
+    data.azurerm_subnet.apim_v2_snet.id,
     data.azurerm_subnet.function_eucovidcert_snet.id,
   ]
 
