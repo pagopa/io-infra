@@ -158,7 +158,7 @@ locals {
       PROFILE_EMAILS_TABLE_NAME                = "profileEmails"
 
       # Instant delete
-      INSTANT_DELETE_ENABLED_USERS = join(",", [data.azurerm_key_vault_secret.fn_admin_INSTANT_DELETE_ENABLED_USERS.value, local.test_users])
+      INSTANT_DELETE_ENABLED_USERS = join(",", [data.azurerm_key_vault_secret.fn_admin_INSTANT_DELETE_ENABLED_USERS.value, module.tests.test_users.all])
     }
   }
 }
