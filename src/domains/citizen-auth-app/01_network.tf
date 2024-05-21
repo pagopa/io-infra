@@ -136,3 +136,28 @@ module "session_manager_snet" {
     }
   }
 }
+
+data "azurerm_nat_gateway" "nat_gateway" {
+  name                = "${local.product}-natgw"
+  resource_group_name = format("%s-rg-common", local.product)
+}
+
+resource "azurerm_subnet_nat_gateway_association" "session_manager_snet" {
+  nat_gateway_id = data.azurerm_nat_gateway.nat_gateway.id
+  subnet_id      = module.session_manager_snet.id
+}
+
+data "azurerm_resource_group" "rg_external" {
+  name = format("%s-rg-external", local.product)
+}
+
+data "azurerm_dns_zone" "io_pagopa_it" {
+  name                = join(".", [var.dns_zone_io, var.external_domain])
+  resource_group_name = data.azurerm_resource_group.rg_external.name
+}
+
+data "azurerm_dns_a_record" "api_app_io_pagopa_it" {
+  name                = "api-app"
+  zone_name           = data.azurerm_dns_zone.io_pagopa_it.name
+  resource_group_name = data.azurerm_resource_group.rg_external.name
+}

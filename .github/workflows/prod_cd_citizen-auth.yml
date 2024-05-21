@@ -18,8 +18,6 @@ env:
   ARM_USE_OIDC: true
   ARM_USE_AZUREAD: true
   ARM_STORAGE_USE_AZUREAD: true
-  ARM_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
-  ARM_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
 
 jobs:
 
@@ -29,6 +27,8 @@ jobs:
     environment: prod-ci
     env:
       ARM_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
+      ARM_SUBSCRIPTION_ID: ${{ secrets.ARM_SUBSCRIPTION_ID }}
+      ARM_TENANT_ID: ${{ secrets.ARM_TENANT_ID }}
 
     steps:
 
@@ -43,9 +43,9 @@ jobs:
         id: az_login
         uses: azure/login@6b2456866fc08b011acb422a92a4aa20e2c4de32 # v2.1.0
         with:
-          client-id: ${{ secrets.AZURE_CLIENT_ID }}
-          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
-          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+          client-id: ${{ env.ARM_CLIENT_ID }}
+          tenant-id: ${{ env.ARM_TENANT_ID }}
+          subscription-id: ${{ env.ARM_SUBSCRIPTION_ID }}
 
       - name: Set Terraform Version
         id: env_tf_version
@@ -67,14 +67,6 @@ jobs:
         run: |
           bash ./terraform.sh plan ${{ env.AZURE_ENVIRONMENT }} -lock-timeout=3000s -out=tfplan-${{ env.AZURE_ENVIRONMENT }}-${{ github.sha }} -input=false
 
-      - name: Terraform plan weu-beta
-        shell: bash
-        working-directory: ${{ env.DIR }}-app
-        env:
-          AZURE_ENVIRONMENT: weu-beta
-        run: |
-          bash ./terraform.sh plan ${{ env.AZURE_ENVIRONMENT }} -lock-timeout=3000s -out=tfplan-${{ env.AZURE_ENVIRONMENT }}-${{ github.sha }} -input=false
-
       - name: Terraform plan weu-prod01
         shell: bash
         working-directory: ${{ env.DIR }}-app
@@ -91,7 +83,6 @@ jobs:
           if-no-files-found: error
           path: |
             **/tfplan-prod-*
-            **/tfplan-weu-beta-*
             **/tfplan-weu-prod01-*
 
     outputs:
@@ -104,6 +95,8 @@ jobs:
     needs: [terraform_plan_job]
     env:
       ARM_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
+      ARM_SUBSCRIPTION_ID: ${{ secrets.ARM_SUBSCRIPTION_ID }}
+      ARM_TENANT_ID: ${{ secrets.ARM_TENANT_ID }}
 
     steps:
 
@@ -124,9 +117,9 @@ jobs:
         id: az_login
         uses: azure/login@6b2456866fc08b011acb422a92a4aa20e2c4de32 # v2.1.0
         with:
-          client-id: ${{ secrets.AZURE_CLIENT_ID_CD }}
-          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
-          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+          client-id: ${{ env.ARM_CLIENT_ID }}
+          tenant-id: ${{ env.ARM_TENANT_ID }}
+          subscription-id: ${{ env.ARM_SUBSCRIPTION_ID }}
 
       - uses: hashicorp/setup-terraform@a1502cd9e758c50496cc9ac5308c4843bcd56d36
         id: terraform_setup
@@ -150,24 +143,6 @@ jobs:
         working-directory: ${{ env.DIR }}-common
         env:
           AZURE_ENVIRONMENT: prod
-        run: |
-          terraform apply -lock-timeout=3000s -auto-approve -input=false tfplan-${{ env.AZURE_ENVIRONMENT }}-${{ github.sha }}
-
-      - name: Terraform init weu-beta
-        id: terraform_init_weu-beta
-        shell: bash
-        working-directory: ${{ env.DIR }}-app
-        env:
-          AZURE_ENVIRONMENT: weu-beta
-        run: |
-          bash ./terraform.sh init ${{ env.AZURE_ENVIRONMENT }}
-
-      - name: Terraform apply weu-beta
-        id: terraform_apply_weu-beta
-        shell: bash
-        working-directory: ${{ env.DIR }}-app
-        env:
-          AZURE_ENVIRONMENT: weu-beta
         run: |
           terraform apply -lock-timeout=3000s -auto-approve -input=false tfplan-${{ env.AZURE_ENVIRONMENT }}-${{ github.sha }}
 
