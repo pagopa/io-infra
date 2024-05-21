@@ -36,6 +36,11 @@ data "azurerm_key_vault_secret" "app_backend_ALLOWED_CIE_TEST_FISCAL_CODES" {
   key_vault_id = data.azurerm_key_vault.kv_common.id
 }
 
+data "azurerm_key_vault_secret" "session_manager_JWT_ZENDESK_SUPPORT_TOKEN_SECRET" {
+  name         = "session-manager-JWT-ZENDESK-SUPPORT-TOKEN-SECRET"
+  key_vault_id = data.azurerm_key_vault.kv.id
+}
+
 ###########
 
 resource "azurerm_resource_group" "session_manager_rg" {
@@ -123,6 +128,12 @@ locals {
     CIE_METADATA_URL              = "https://api.is.eng.pagopa.it/idp-keys/cie/latest" # PagoPA internal cache
     ALLOWED_CIE_TEST_FISCAL_CODES = data.azurerm_key_vault_secret.app_backend_ALLOWED_CIE_TEST_FISCAL_CODES.value
     CIE_TEST_METADATA_URL         = "https://collaudo.idserver.servizicie.interno.gov.it/idp/shibboleth"
+
+    # ZENDESK config
+    ZENDESK_BASE_PATH                    = "/api/backend/zendesk/v1"
+    JWT_ZENDESK_SUPPORT_TOKEN_ISSUER     = "app-backend.io.italia.it"
+    JWT_ZENDESK_SUPPORT_TOKEN_EXPIRATION = 1200
+    JWT_ZENDESK_SUPPORT_TOKEN_SECRET     = data.azurerm_key_vault_secret.session_manager_JWT_ZENDESK_SUPPORT_TOKEN_SECRET.value
   }
 }
 
