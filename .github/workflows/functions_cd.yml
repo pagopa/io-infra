@@ -26,7 +26,7 @@ jobs:
     runs-on: self-hosted
     environment: prod-ci
     env:
-      ARM_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
+      ARM_CLIENT_ID: ${{ secrets.ARM_CLIENT_ID }}
       ARM_SUBSCRIPTION_ID: ${{ secrets.ARM_SUBSCRIPTION_ID }}
       ARM_TENANT_ID: ${{ secrets.ARM_TENANT_ID }}
 
@@ -74,7 +74,7 @@ jobs:
           name: tfplan-output
           if-no-files-found: error
           path: |
-            **/tfplan-prod-*
+            **/tfplan-${{ env.AZURE_ENVIRONMENT }}-*
 
     outputs:
       terraform_version: ${{ steps.env_tf_version.outputs.terraform_version}}
@@ -85,7 +85,7 @@ jobs:
     environment: prod-cd
     needs: [terraform_plan_job]
     env:
-      ARM_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
+      ARM_CLIENT_ID: ${{ secrets.ARM_CLIENT_ID }}
       ARM_SUBSCRIPTION_ID: ${{ secrets.ARM_SUBSCRIPTION_ID }}
       ARM_TENANT_ID: ${{ secrets.ARM_TENANT_ID }}
 
