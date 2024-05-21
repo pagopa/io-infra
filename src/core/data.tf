@@ -90,17 +90,7 @@ data "azurerm_key_vault_secret" "apim_services_subscription_key" {
   key_vault_id = module.key_vault_common.id
 }
 
-# MAILUP
 
-data "azurerm_key_vault_secret" "common_MAILUP_USERNAME" {
-  name         = "common-MAILUP2-USERNAME"
-  key_vault_id = module.key_vault_common.id
-}
-
-data "azurerm_key_vault_secret" "common_MAILUP_SECRET" {
-  name         = "common-MAILUP2-SECRET"
-  key_vault_id = module.key_vault_common.id
-}
 
 #
 # App Backend shared resources
@@ -220,15 +210,6 @@ data "azurerm_linux_function_app" "services_app_backend_function_app" {
 
 
 #
-# UNIQUE EMAIL ENFORCEMENT
-#
-
-data "azurerm_storage_account" "citizen_auth_common" {
-  name                = "iopweucitizenauthst"
-  resource_group_name = "io-p-citizen-auth-data-rg"
-}
-
-#
 # MANAGED IDENTITIES
 #
 
@@ -293,12 +274,6 @@ data "azurerm_linux_function_app" "eucovidcert" {
   name                = format("%s-eucovidcert-fn", local.project)
 }
 
-data "azurerm_subnet" "function_eucovidcert_snet" {
-  name                 = format("%s-eucovidcert-snet", local.project)
-  resource_group_name  = azurerm_resource_group.rg_common.name
-  virtual_network_name = module.vnet_common.name
-}
-
 #
 # Messages
 #
@@ -321,4 +296,32 @@ data "azurerm_subnet" "function_let_snet" {
   name                 = "fn3eltout"
   resource_group_name  = azurerm_resource_group.rg_common.name
   virtual_network_name = module.vnet_common.name
+}
+
+#
+# Functions
+#
+
+data "azurerm_subnet" "admin_snet" {
+  name                 = format("%s-admin-snet", local.project)
+  resource_group_name  = azurerm_resource_group.rg_common.name
+  virtual_network_name = module.vnet_common.name
+}
+
+data "azurerm_subnet" "services_snet" {
+  count                = var.function_services_count
+  name                 = format("%s-services-snet-%d", local.project, count.index + 1)
+  resource_group_name  = azurerm_resource_group.rg_common.name
+  virtual_network_name = module.vnet_common.name
+}
+
+data "azurerm_linux_function_app" "function_app" {
+  count               = var.function_app_count
+  name                = format("%s-app-fn-%d", local.project, count.index + 1)
+  resource_group_name = format("%s-app-rg-%d", local.project, count.index + 1)
+}
+
+data "azurerm_linux_function_app" "function_assets_cdn" {
+  name                = format("%s-assets-cdn-fn", local.project)
+  resource_group_name = format("%s-assets-cdn-rg", local.project)
 }

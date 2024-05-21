@@ -268,26 +268,6 @@ variable "cidr_subnet_appbackendl2" {
   description = "App backend l2 address space."
 }
 
-variable "cidr_subnet_app" {
-  type        = list(string)
-  description = "Function app address space."
-}
-
-variable "cidr_subnet_services" {
-  type        = list(string)
-  description = "Function services address space."
-}
-
-variable "cidr_subnet_app_async" {
-  type        = list(string)
-  description = "Function app async address space."
-}
-
-variable "cidr_subnet_fncdnassets" {
-  type        = list(string)
-  description = "Fn assets address space."
-}
-
 variable "cidr_subnet_appbackendli" {
   type        = list(string)
   description = "App backend li address space."
@@ -295,11 +275,6 @@ variable "cidr_subnet_appbackendli" {
 
 variable "cidr_subnet_shared_1" {
   type = list(string)
-}
-
-variable "cidr_subnet_fnadmin" {
-  type        = list(string)
-  description = "Function Admin address space."
 }
 
 variable "cidr_subnet_pendpoints" {
@@ -644,209 +619,7 @@ variable "selfcare_plan_sku_capacity" {
   default     = 1
 }
 
-# Function App
-variable "function_app_count" {
-  type    = number
-  default = 2
-}
 
-variable "function_app_kind" {
-  type        = string
-  description = "App service plan kind"
-  default     = null
-}
-
-variable "function_app_sku_tier" {
-  type        = string
-  description = "App service plan sku tier"
-  default     = null
-}
-
-variable "function_app_sku_size" {
-  type        = string
-  description = "App service plan sku size"
-  default     = null
-}
-
-variable "function_app_autoscale_minimum" {
-  type        = number
-  description = "The minimum number of instances for this resource."
-  default     = 1
-}
-
-variable "function_app_autoscale_maximum" {
-  type        = number
-  description = "The maximum number of instances for this resource."
-  default     = 30
-}
-
-variable "function_app_autoscale_default" {
-  type        = number
-  description = "The number of instances that are available for scaling if metrics are not available for evaluation."
-  default     = 1
-}
-
-################################
-# Function Services
-################################
-variable "function_services_count" {
-  type    = number
-  default = 2
-}
-
-variable "function_services_kind" {
-  type        = string
-  description = "App service plan kind"
-  default     = null
-}
-
-variable "function_services_sku_tier" {
-  type        = string
-  description = "App service plan sku tier"
-  default     = null
-}
-
-variable "function_services_sku_size" {
-  type        = string
-  description = "App service plan sku size"
-  default     = null
-}
-
-variable "function_services_autoscale_minimum" {
-  type        = number
-  description = "The minimum number of instances for this resource."
-  default     = 1
-}
-
-variable "function_services_autoscale_maximum" {
-  type        = number
-  description = "The maximum number of instances for this resource."
-  default     = 30
-}
-
-variable "function_services_autoscale_default" {
-  type        = number
-  description = "The number of instances that are available for scaling if metrics are not available for evaluation."
-  default     = 1
-}
-
-variable "function_services_subscription_cidrs_max_thoughput" {
-  type    = number
-  default = 1000
-}
-
-
-
-# Function App Async
-variable "function_app_async_kind" {
-  type        = string
-  description = "App service plan kind"
-  default     = null
-}
-
-variable "function_app_async_sku_tier" {
-  type        = string
-  description = "App service plan sku tier"
-  default     = null
-}
-
-variable "function_app_async_sku_size" {
-  type        = string
-  description = "App service plan sku size"
-  default     = null
-}
-
-variable "function_app_async_autoscale_minimum" {
-  type        = number
-  description = "The minimum number of instances for this resource."
-  default     = 1
-}
-
-variable "function_app_async_autoscale_maximum" {
-  type        = number
-  description = "The maximum number of instances for this resource."
-  default     = 30
-}
-
-variable "function_app_async_autoscale_default" {
-  type        = number
-  description = "The number of instances that are available for scaling if metrics are not available for evaluation."
-  default     = 1
-}
-
-# Function Admin
-
-variable "function_admin_kind" {
-  type        = string
-  description = "App service plan kind"
-  default     = null
-}
-
-variable "function_admin_sku_tier" {
-  type        = string
-  description = "App service plan sku tier"
-  default     = null
-}
-
-variable "function_admin_sku_size" {
-  type        = string
-  description = "App service plan sku size"
-  default     = null
-}
-
-variable "function_admin_autoscale_minimum" {
-  type        = number
-  description = "The minimum number of instances for this resource."
-  default     = 1
-}
-
-variable "function_admin_autoscale_maximum" {
-  type        = number
-  description = "The maximum number of instances for this resource."
-  default     = 3
-}
-
-variable "function_admin_autoscale_default" {
-  type        = number
-  description = "The number of instances that are available for scaling if metrics are not available for evaluation."
-  default     = 1
-}
-
-variable "function_assets_cdn_kind" {
-  type        = string
-  description = "App service plan kind"
-  default     = null
-}
-
-variable "function_assets_cdn_sku_tier" {
-  type        = string
-  description = "App service plan sku tier"
-  default     = null
-}
-
-variable "function_assets_cdn_sku_size" {
-  type        = string
-  description = "App service plan sku size"
-  default     = null
-}
-
-variable "function_assets_cdn_autoscale_minimum" {
-  type        = number
-  description = "The minimum number of instances for this resource."
-  default     = 1
-}
-
-variable "function_assets_cdn_autoscale_maximum" {
-  type        = number
-  description = "The maximum number of instances for this resource."
-  default     = 3
-}
-
-variable "function_assets_cdn_autoscale_default" {
-  type        = number
-  description = "The number of instances that are available for scaling if metrics are not available for evaluation."
-  default     = 1
-}
 ##
 
 # PN Service Id
@@ -914,49 +687,6 @@ variable "io_receipt_service_test_url" {
   description = "The endpoint of Receipt Service (test env)"
 }
 
-# Shared functions
-variable "plan_shared_1_kind" {
-  type        = string
-  description = "App service plan kind"
-  default     = null
-}
-
-variable "plan_shared_1_sku_tier" {
-  type        = string
-  description = "App service plan sku tier"
-  default     = null
-}
-
-variable "plan_shared_1_sku_size" {
-  type        = string
-  description = "App service plan sku size"
-  default     = null
-}
-
-variable "plan_shared_1_sku_capacity" {
-  description = "Shared functions app plan capacity"
-  type        = number
-  default     = 1
-}
-
-variable "function_public_autoscale_minimum" {
-  type        = number
-  description = "The minimum number of instances for this resource."
-  default     = 1
-}
-
-variable "function_public_autoscale_maximum" {
-  type        = number
-  description = "The maximum number of instances for this resource."
-  default     = 3
-}
-
-variable "function_public_autoscale_default" {
-  type        = number
-  description = "The number of instances that are available for scaling if metrics are not available for evaluation."
-  default     = 1
-}
-
 # Third Party Mock
 
 variable "third_party_mock_service_id" {
@@ -994,4 +724,15 @@ variable "citizen_auth_assertion_storage_name" {
   type        = string
   description = "Use storage name from citizen_auth domain"
   default     = "lollipop-assertions-st"
+}
+
+# Functions
+variable "function_services_count" {
+  type    = number
+  default = 2
+}
+
+variable "function_app_count" {
+  type    = number
+  default = 2
 }
