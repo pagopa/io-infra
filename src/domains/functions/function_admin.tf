@@ -4,62 +4,62 @@
 
 data "azurerm_key_vault_secret" "fn_admin_ASSETS_URL" {
   name         = "cdn-ASSETS-URL"
-  key_vault_id = module.key_vault_common.id
+  key_vault_id = data.azurerm_key_vault.common.id
 }
 
 data "azurerm_key_vault_secret" "fn_admin_AZURE_SUBSCRIPTION_ID" {
   name         = "common-AZURE-SUBSCRIPTION-ID"
-  key_vault_id = module.key_vault_common.id
+  key_vault_id = data.azurerm_key_vault.common.id
 }
 
 data "azurerm_key_vault_secret" "fn_admin_INSTANT_DELETE_ENABLED_USERS" {
   name         = "fn-admin-INSTANT-DELETE-ENABLED-USERS"
-  key_vault_id = module.key_vault_common.id
+  key_vault_id = data.azurerm_key_vault.common.id
 }
 
 data "azurerm_key_vault_secret" "adb2c_TENANT_NAME" {
   name         = "adb2c-TENANT-NAME"
-  key_vault_id = module.key_vault_common.id
+  key_vault_id = data.azurerm_key_vault.common.id
 }
 
 data "azurerm_key_vault_secret" "devportal_CLIENT_ID" {
   name         = "devportal-CLIENT-ID"
-  key_vault_id = module.key_vault_common.id
+  key_vault_id = data.azurerm_key_vault.common.id
 }
 
 data "azurerm_key_vault_secret" "devportal_CLIENT_SECRET" {
   name         = "devportal-CLIENT-SECRET"
-  key_vault_id = module.key_vault_common.id
+  key_vault_id = data.azurerm_key_vault.common.id
 }
 
 data "azurerm_key_vault_secret" "adb2c_TOKEN_ATTRIBUTE_NAME" {
   name         = "adb2c-TOKEN-ATTRIBUTE-NAME"
-  key_vault_id = module.key_vault_common.id
+  key_vault_id = data.azurerm_key_vault.common.id
 }
 
 data "azurerm_key_vault_secret" "ad_APPCLIENT_APIM_ID" {
   name         = "ad-APPCLIENT-APIM-ID"
-  key_vault_id = module.key_vault_common.id
+  key_vault_id = data.azurerm_key_vault.common.id
 }
 
 data "azurerm_key_vault_secret" "ad_APPCLIENT_APIM_SECRET" {
   name         = "ad-APPCLIENT-APIM-SECRET"
-  key_vault_id = module.key_vault_common.id
+  key_vault_id = data.azurerm_key_vault.common.id
 }
 
 data "azurerm_key_vault_secret" "common_AZURE_TENANT_ID" {
   name         = "common-AZURE-TENANT-ID"
-  key_vault_id = module.key_vault_common.id
+  key_vault_id = data.azurerm_key_vault.common.id
 }
 
 data "azurerm_key_vault_secret" "apim_IO_GDPR_SERVICE_KEY" {
   name         = "apim-IO-GDPR-SERVICE-KEY"
-  key_vault_id = module.key_vault_common.id
+  key_vault_id = data.azurerm_key_vault.common.id
 }
 
 data "azurerm_key_vault_secret" "common_SENDGRID_APIKEY" {
   name         = "common-SENDGRID-APIKEY"
-  key_vault_id = module.key_vault_common.id
+  key_vault_id = data.azurerm_key_vault.common.id
 }
 
 #
@@ -68,12 +68,12 @@ data "azurerm_key_vault_secret" "common_SENDGRID_APIKEY" {
 
 data "azurerm_storage_account" "userdatadownload" {
   name                = "iopstuserdatadownload"
-  resource_group_name = azurerm_resource_group.rg_internal.name
+  resource_group_name = local.rg_internal_name
 }
 
 data "azurerm_storage_account" "userbackups" {
   name                = "iopstuserbackups"
-  resource_group_name = azurerm_resource_group.rg_internal.name
+  resource_group_name = local.rg_internal_name
 }
 
 
@@ -93,9 +93,9 @@ locals {
       COSMOSDB_KEY               = data.azurerm_cosmosdb_account.cosmos_api.primary_key
       COSMOSDB_CONNECTION_STRING = format("AccountEndpoint=%s;AccountKey=%s;", data.azurerm_cosmosdb_account.cosmos_api.endpoint, data.azurerm_cosmosdb_account.cosmos_api.primary_key)
 
-      StorageConnection = module.storage_api.primary_connection_string
+      StorageConnection = data.azurerm_storage_account.storage_api.primary_connection_string
 
-      AssetsStorageConnection = module.assets_cdn.primary_connection_string
+      AssetsStorageConnection = data.azurerm_storage_account.assets_cdn.primary_connection_string
 
       AZURE_APIM                = "io-p-apim-v2-api"
       AZURE_APIM_HOST           = local.apim_hostname_api_internal
@@ -109,7 +109,7 @@ locals {
       PUBLIC_API_URL           = local.service_api_url
       PUBLIC_DOWNLOAD_BASE_URL = "https://${data.azurerm_storage_account.userdatadownload.primary_blob_host}/user-data-download"
 
-      SESSION_API_URL                 = "https://${module.appservice_app_backendli.default_site_hostname}" # https://io-p-app-appbackendli.azurewebsites.net
+      SESSION_API_URL                 = "https://${data.azurerm_app_service.appservice_app_backendli.default_site_hostname}" # https://io-p-app-appbackendli.azurewebsites.net
       UserDataBackupStorageConnection = data.azurerm_storage_account.userbackups.primary_connection_string
       USER_DATA_BACKUP_CONTAINER_NAME = "user-data-backup"
       USER_DATA_DELETE_DELAY_DAYS     = 6
@@ -118,11 +118,11 @@ locals {
       MAIL_FROM = "IO - l'app dei servizi pubblici <no-reply@io.italia.it>"
 
       SUBSCRIPTIONS_FEED_TABLE          = "SubscriptionsFeedByDay"
-      SubscriptionFeedStorageConnection = module.storage_api.primary_connection_string
+      SubscriptionFeedStorageConnection = data.azurerm_storage_account.storage_api.primary_connection_string
 
       // table for saving failed user data processing requests
       FAILED_USER_DATA_PROCESSING_TABLE         = "FailedUserDataProcessing"
-      FailedUserDataProcessingStorageConnection = module.storage_api.primary_connection_string
+      FailedUserDataProcessingStorageConnection = data.azurerm_storage_account.storage_api.primary_connection_string
 
       # SECRETS
       LOGOS_URL = data.azurerm_key_vault_secret.fn_admin_ASSETS_URL.value
@@ -151,14 +151,14 @@ locals {
       SanitizeUserProfileQueueName = "profiles-to-sanitize"
 
       # Locked Profile Storage
-      LOCKED_PROFILES_STORAGE_CONNECTION_STRING = module.locked_profiles_storage.primary_connection_string
-      LOCKED_PROFILES_TABLE_NAME                = azurerm_storage_table.locked_profiles.name
+      LOCKED_PROFILES_STORAGE_CONNECTION_STRING = data.azurerm_storage_account.locked_profiles_storage.primary_connection_string
+      LOCKED_PROFILES_TABLE_NAME                = var.function_admin_locked_profiles_table_name
 
       PROFILE_EMAILS_STORAGE_CONNECTION_STRING = data.azurerm_storage_account.citizen_auth_common.primary_connection_string
       PROFILE_EMAILS_TABLE_NAME                = "profileEmails"
 
       # Instant delete
-      INSTANT_DELETE_ENABLED_USERS = join(",", [data.azurerm_key_vault_secret.fn_admin_INSTANT_DELETE_ENABLED_USERS.value, local.test_users])
+      INSTANT_DELETE_ENABLED_USERS = join(",", [data.azurerm_key_vault_secret.fn_admin_INSTANT_DELETE_ENABLED_USERS.value, module.tests.test_users.all])
     }
   }
 }
@@ -176,8 +176,8 @@ module "admin_snet" {
   source                                    = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v7.61.0"
   name                                      = format("%s-admin-snet", local.project)
   address_prefixes                          = var.cidr_subnet_fnadmin
-  resource_group_name                       = azurerm_resource_group.rg_common.name
-  virtual_network_name                      = module.vnet_common.name
+  resource_group_name                       = local.rg_common_name
+  virtual_network_name                      = local.vnet_common_name
   private_endpoint_network_policies_enabled = false
 
   service_endpoints = [
@@ -208,7 +208,7 @@ module "function_admin" {
   runtime_version = "~4"
 
   always_on                                = "true"
-  application_insights_instrumentation_key = azurerm_application_insights.application_insights.instrumentation_key
+  application_insights_instrumentation_key = data.azurerm_application_insights.application_insights.instrumentation_key
 
   app_service_plan_info = {
     kind                         = var.function_admin_kind
@@ -227,10 +227,10 @@ module "function_admin" {
 
   internal_storage = {
     "enable"                     = true,
-    "private_endpoint_subnet_id" = module.private_endpoints_subnet.id,
-    "private_dns_zone_blob_ids"  = [azurerm_private_dns_zone.privatelink_blob_core.id],
-    "private_dns_zone_queue_ids" = [azurerm_private_dns_zone.privatelink_queue_core.id],
-    "private_dns_zone_table_ids" = [azurerm_private_dns_zone.privatelink_table_core.id],
+    "private_endpoint_subnet_id" = data.azurerm_subnet.private_endpoints_subnet.id,
+    "private_dns_zone_blob_ids"  = [data.azurerm_private_dns_zone.privatelink_blob_core.id],
+    "private_dns_zone_queue_ids" = [data.azurerm_private_dns_zone.privatelink_queue_core.id],
+    "private_dns_zone_table_ids" = [data.azurerm_private_dns_zone.privatelink_table_core.id],
     "queues"                     = [],
     "containers"                 = [],
     "blobs_retention_days"       = 0,
@@ -240,13 +240,13 @@ module "function_admin" {
 
   allowed_subnets = [
     module.admin_snet.id,
-    module.apim_v2_snet.id,
+    data.azurerm_subnet.apim_v2_snet.id,
   ]
 
   # Action groups for alerts
   action = [
     {
-      action_group_id    = azurerm_monitor_action_group.error_action_group.id
+      action_group_id    = data.azurerm_monitor_action_group.error_action_group.id
       webhook_properties = {}
     }
   ]
@@ -275,7 +275,7 @@ module "function_admin_staging_slot" {
   node_version                             = "18"
   always_on                                = "true"
   runtime_version                          = "~4"
-  application_insights_instrumentation_key = azurerm_application_insights.application_insights.instrumentation_key
+  application_insights_instrumentation_key = data.azurerm_application_insights.application_insights.instrumentation_key
 
   app_settings = merge(
     local.function_admin.app_settings_common, {
@@ -288,8 +288,8 @@ module "function_admin_staging_slot" {
 
   allowed_subnets = [
     module.admin_snet.id,
-    module.azdoa_snet[0].id,
-    module.apim_v2_snet.id,
+    data.azurerm_subnet.azdoa_snet.id,
+    data.azurerm_subnet.apim_v2_snet.id,
   ]
 
   tags = var.tags

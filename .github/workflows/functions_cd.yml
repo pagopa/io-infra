@@ -1,0 +1,138 @@
+name: Continuous Delivery on prod functions
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+    paths:
+      - "src/domains/functions**"
+      - ".github/workflows/functions**.yml"
+
+permissions:
+  id-token: write
+  contents: read
+
+env:
+  DIR: "src/domains/functions"
+  ARM_USE_OIDC: true
+  ARM_USE_AZUREAD: true
+  ARM_STORAGE_USE_AZUREAD: true
+
+jobs:
+
+  terraform_plan_job:
+    name: Terraform Plan
+    runs-on: self-hosted
+    environment: prod-ci
+    env:
+      ARM_CLIENT_ID: ${{ secrets.ARM_CLIENT_ID }}
+      ARM_SUBSCRIPTION_ID: ${{ secrets.ARM_SUBSCRIPTION_ID }}
+      ARM_TENANT_ID: ${{ secrets.ARM_TENANT_ID }}
+
+    steps:
+
+      - name: Checkout
+        id: checkout
+        uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
+        with:
+          persist-credentials: false
+          fetch-depth: 0
+
+      - name: Azure Login
+        id: az_login
+        uses: azure/login@6b2456866fc08b011acb422a92a4aa20e2c4de32 # v2.1.0
+        with:
+          client-id: ${{ env.ARM_CLIENT_ID }}
+          tenant-id: ${{ env.ARM_TENANT_ID }}
+          subscription-id: ${{ env.ARM_SUBSCRIPTION_ID }}
+
+      - name: Set Terraform Version
+        id: env_tf_version
+        run: |
+          echo "terraform_version=$(cat .terraform-version)" >> $GITHUB_OUTPUT
+
+      - uses: hashicorp/setup-terraform@a1502cd9e758c50496cc9ac5308c4843bcd56d36
+        id: terraform_setup
+        name: Setup Terraform
+        with:
+          terraform_version: ${{ steps.env_tf_version.outputs.terraform_version}}
+          terraform_wrapper: true
+
+      - name: Terraform plan
+        shell: bash
+        working-directory: ${{ env.DIR }}
+        env:
+          AZURE_ENVIRONMENT: prod
+        run: |
+          bash ./terraform.sh plan ${{ env.AZURE_ENVIRONMENT }} -lock-timeout=3000s -out=tfplan-${{ env.AZURE_ENVIRONMENT }}-${{ github.sha }} -input=false
+
+      - uses: actions/upload-artifact@c7d193f32edcb7bfad88892161225aeda64e9392
+        id: artifact_upload
+        name: Upload plans as artifacts
+        with:
+          name: tfplan-output
+          if-no-files-found: error
+          path: |
+            **/tfplan-${{ env.AZURE_ENVIRONMENT }}-*
+
+    outputs:
+      terraform_version: ${{ steps.env_tf_version.outputs.terraform_version}}
+
+  terraform_apply_job:
+    name: Terraform Apply
+    runs-on: self-hosted
+    environment: prod-cd
+    needs: [terraform_plan_job]
+    env:
+      ARM_CLIENT_ID: ${{ secrets.ARM_CLIENT_ID }}
+      ARM_SUBSCRIPTION_ID: ${{ secrets.ARM_SUBSCRIPTION_ID }}
+      ARM_TENANT_ID: ${{ secrets.ARM_TENANT_ID }}
+
+    steps:
+
+      - name: Checkout
+        id: checkout
+        uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
+        with:
+          persist-credentials: false
+          fetch-depth: 0
+
+      - uses: actions/download-artifact@f44cd7b40bfd40b6aa1cc1b9b5b7bf03d3c67110
+        id: artifact_download
+        name: Download plans as artifact
+        with:
+          name: tfplan-output
+
+      - name: Azure Login
+        id: az_login
+        uses: azure/login@6b2456866fc08b011acb422a92a4aa20e2c4de32 # v2.1.0
+        with:
+          client-id: ${{ env.ARM_CLIENT_ID }}
+          tenant-id: ${{ env.ARM_TENANT_ID }}
+          subscription-id: ${{ env.ARM_SUBSCRIPTION_ID }}
+
+      - uses: hashicorp/setup-terraform@a1502cd9e758c50496cc9ac5308c4843bcd56d36
+        id: terraform_setup
+        name: Setup Terraform
+        with:
+          terraform_version: ${{ needs.terraform_plan_job.outputs.terraform_version }}
+          terraform_wrapper: true
+
+      - name: Terraform init
+        id: terraform_init
+        shell: bash
+        working-directory: ${{ env.DIR }}
+        env:
+          AZURE_ENVIRONMENT: prod
+        run: |
+          bash ./terraform.sh init ${{ env.AZURE_ENVIRONMENT }}
+
+      - name: Terraform apply
+        id: terraform_apply
+        shell: bash
+        working-directory: ${{ env.DIR }}
+        env:
+          AZURE_ENVIRONMENT: prod
+        run: |
+          terraform apply -lock-timeout=3000s -auto-approve -input=false tfplan-${{ env.AZURE_ENVIRONMENT }}-${{ github.sha }}

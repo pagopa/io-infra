@@ -1,0 +1,57 @@
+name: Continuous Integration on prod functions
+
+on:
+  workflow_dispatch:
+  pull_request:
+    types:
+      - opened
+      - edited
+      - synchronize
+      - reopened
+      - ready_for_review
+    paths:
+      - "src/domains/functions**"
+      - ".github/workflows/functions**.yml"
+
+permissions:
+  id-token: write
+  contents: read
+
+env:
+  DIR: "src/domains/functions"
+  AZURE_ENVIRONMENT: prod
+
+jobs:
+
+  terraform_plan_job:
+    name: Terraform Plan
+    runs-on: self-hosted
+    environment: prod-ci
+    env:
+      ARM_CLIENT_ID: ${{ secrets.ARM_CLIENT_ID }}
+      ARM_SUBSCRIPTION_ID: ${{ secrets.ARM_SUBSCRIPTION_ID }}
+      ARM_TENANT_ID: ${{ secrets.ARM_TENANT_ID }}
+
+    steps:
+
+      - name: Checkout
+        id: checkout
+        uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
+        with:
+          persist-credentials: false
+          fetch-depth: 0
+
+      - name: Setup terraform
+        id: setup-version
+        # https://github.com/pagopa/terraform-install-action/commits/main
+        uses: pagopa/terraform-install-action@1f76f593176e58c423b88d72273a612ba7ba430b
+
+      - name: Terraform plan
+        # from https://github.com/pagopa/terraform-plan-azure-action/commits/main
+        uses: pagopa/terraform-plan-azure-action@392aca28cbb33f5dc28215dfb72385e136fd813b
+        with:
+          client_id: ${{ secrets.AZURE_CLIENT_ID }}
+          tenant_id: ${{ secrets.AZURE_TENANT_ID }}
+          subscription_id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+          dir: ${{ env.DIR }}
+          azure_environment: prod

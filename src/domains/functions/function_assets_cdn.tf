@@ -23,11 +23,11 @@ locals {
       COSMOSDB_KEY  = data.azurerm_cosmosdb_account.cosmos_api.primary_key
       COSMOSDB_NAME = "db"
 
-      STATIC_WEB_ASSETS_ENDPOINT  = module.assets_cdn.primary_web_host
-      STATIC_BLOB_ASSETS_ENDPOINT = module.assets_cdn.primary_blob_host
+      STATIC_WEB_ASSETS_ENDPOINT  = data.azurerm_storage_account.assets_cdn.primary_web_host
+      STATIC_BLOB_ASSETS_ENDPOINT = data.azurerm_storage_account.assets_cdn.primary_blob_host
 
-      CachedStorageConnection = module.storage_api.primary_connection_string
-      AssetsStorageConnection = module.assets_cdn.primary_connection_string
+      CachedStorageConnection = data.azurerm_storage_account.storage_api.primary_connection_string
+      AssetsStorageConnection = data.azurerm_storage_account.assets_cdn.primary_connection_string
 
       AzureWebJobsFeatureFlags = "EnableProxies"
     }
@@ -39,8 +39,8 @@ module "function_assets_cdn_snet" {
   source                                    = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v7.61.0"
   name                                      = format("%s-assets-cdn-fn-snet", local.project)
   address_prefixes                          = var.cidr_subnet_fncdnassets
-  resource_group_name                       = azurerm_resource_group.rg_common.name
-  virtual_network_name                      = module.vnet_common.name
+  resource_group_name                       = local.rg_common_name
+  virtual_network_name                      = local.vnet_common_name
   private_endpoint_network_policies_enabled = false
 
   service_endpoints = [
@@ -61,7 +61,7 @@ module "function_assets_cdn_snet" {
 module "function_assets_cdn" {
   source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app?ref=v7.61.0"
 
-  resource_group_name = azurerm_resource_group.assets_cdn_rg.name
+  resource_group_name = local.rg_assets_cdn_name
   name                = "${local.project}-assets-cdn-fn"
   location            = var.location
   health_check_path   = "/info"
@@ -69,7 +69,7 @@ module "function_assets_cdn" {
   runtime_version                          = "~4"
   node_version                             = "18"
   always_on                                = true
-  application_insights_instrumentation_key = azurerm_application_insights.application_insights.instrumentation_key
+  application_insights_instrumentation_key = data.azurerm_application_insights.application_insights.instrumentation_key
 
   app_service_plan_info = {
     kind                         = var.function_assets_cdn_kind
@@ -93,7 +93,7 @@ module "function_assets_cdn_staging_slot" {
 
   name                = "staging"
   location            = var.location
-  resource_group_name = azurerm_resource_group.assets_cdn_rg.name
+  resource_group_name = local.rg_assets_cdn_name
   function_app_id     = module.function_assets_cdn.id
   app_service_plan_id = module.function_assets_cdn.app_service_plan_id
   health_check_path   = "/info"
@@ -104,7 +104,7 @@ module "function_assets_cdn_staging_slot" {
   runtime_version                          = "~4"
   node_version                             = "18"
   always_on                                = true
-  application_insights_instrumentation_key = azurerm_application_insights.application_insights.instrumentation_key
+  application_insights_instrumentation_key = data.azurerm_application_insights.application_insights.instrumentation_key
 
   app_settings = local.function_assets_cdn.app_settings
 
@@ -223,7 +223,7 @@ resource "azurerm_monitor_autoscale_setting" "function_assets_cdn" {
 
 resource "azurerm_monitor_metric_alert" "function_assets_health_check" {
   name                = "${module.function_assets_cdn.name}-health-check-failed"
-  resource_group_name = azurerm_resource_group.assets_cdn_rg.name
+  resource_group_name = local.rg_assets_cdn_name
   scopes              = [module.function_assets_cdn.id]
   description         = "${module.function_assets_cdn.name} health check failed"
   severity            = 1
@@ -239,13 +239,13 @@ resource "azurerm_monitor_metric_alert" "function_assets_health_check" {
   }
 
   action {
-    action_group_id = azurerm_monitor_action_group.error_action_group.id
+    action_group_id = data.azurerm_monitor_action_group.error_action_group.id
   }
 }
 
 resource "azurerm_monitor_metric_alert" "function_assets_http_server_errors" {
   name                = "${module.function_assets_cdn.name}-http-server-errors"
-  resource_group_name = azurerm_resource_group.assets_cdn_rg.name
+  resource_group_name = local.rg_assets_cdn_name
   scopes              = [module.function_assets_cdn.id]
   description         = "${module.function_assets_cdn.name} http server errors"
   severity            = 1
@@ -261,13 +261,13 @@ resource "azurerm_monitor_metric_alert" "function_assets_http_server_errors" {
   }
 
   action {
-    action_group_id = azurerm_monitor_action_group.error_action_group.id
+    action_group_id = data.azurerm_monitor_action_group.error_action_group.id
   }
 }
 
 resource "azurerm_monitor_metric_alert" "function_assets_response_time" {
   name                = "${module.function_assets_cdn.name}-response-time"
-  resource_group_name = azurerm_resource_group.assets_cdn_rg.name
+  resource_group_name = local.rg_assets_cdn_name
   scopes              = [module.function_assets_cdn.id]
   description         = "${module.function_assets_cdn.name} response time is greater than 0.5s"
   severity            = 1
@@ -283,6 +283,6 @@ resource "azurerm_monitor_metric_alert" "function_assets_response_time" {
   }
 
   action {
-    action_group_id = azurerm_monitor_action_group.error_action_group.id
+    action_group_id = data.azurerm_monitor_action_group.error_action_group.id
   }
 }
