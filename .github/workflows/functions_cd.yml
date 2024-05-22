@@ -70,6 +70,8 @@ jobs:
       - uses: actions/upload-artifact@c7d193f32edcb7bfad88892161225aeda64e9392
         id: artifact_upload
         name: Upload plans as artifacts
+        env:
+          AZURE_ENVIRONMENT: prod
         with:
           name: tfplan-output
           if-no-files-found: error
