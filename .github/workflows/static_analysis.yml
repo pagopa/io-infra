@@ -77,7 +77,7 @@ jobs:
               # for module in modules; do
               #   folder_name=$(basename "$folder")
               #   echo "DEBUG - run docker in folder: $folder_name"
-              #   docker run -v $(pwd)/..:/tmp -w /tmp hashicorp/terraform:$TAG -chdir="./$folder_name" init &
+              #   docker run -v $(pwd):/tmp -w /tmp hashicorp/terraform:$TAG -chdir="./$folder_name" init &
               #   pids+=($!)
               # done
               # popd
