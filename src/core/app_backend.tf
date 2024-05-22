@@ -67,6 +67,8 @@ locals {
       LOLLIPOP_API_KEY            = data.azurerm_key_vault_secret.app_backend_LOLLIPOP_API_KEY.value
       FAST_LOGIN_API_URL          = "https://io-p-weu-fast-login-fn.azurewebsites.net"
       FAST_LOGIN_API_KEY          = data.azurerm_key_vault_secret.app_backend_FAST_LOGIN_API_KEY.value
+      TRIAL_SYSTEM_API_URL        = "https://ts-p-itn-subscription-fn-01.azurewebsites.net" # PROD-TRIAL subscription
+      TRIAL_SYSTEM_API_KEY        = data.azurerm_key_vault_secret.app_backend_TRIAL_SYSTEM_API_KEY.value
 
       // EXPOSED API
       API_BASE_PATH                     = "/api/v1"
@@ -76,6 +78,7 @@ locals {
       MIT_VOUCHER_API_BASE_PATH         = "/api/v1/mitvoucher/auth"
       IO_SIGN_API_BASE_PATH             = "/api/v1/sign"
       LOLLIPOP_API_BASE_PATH            = "/api/v1"
+      TRIAL_SYSTEM_API_BASE_PATH        = "/api/v1"
 
       // REDIS
       REDIS_URL      = module.redis_common.hostname
@@ -152,6 +155,7 @@ locals {
       FF_ROUTING_PUSH_NOTIF_CANARY_SHA_USERS_REGEX = "^([(0-9)|(a-f)|(A-F)]{63}[(0-4)]{1})$"
 
       FF_PN_ACTIVATION_ENABLED = "1"
+      FF_TRIAL_SYSTEM_ENABLED  = "0"
 
       // TEST LOGIN
       TEST_LOGIN_PASSWORD     = data.azurerm_key_vault_secret.app_backend_TEST_LOGIN_PASSWORD.value
@@ -584,6 +588,11 @@ data "azurerm_key_vault_secret" "app_backend_LOLLIPOP_API_KEY" {
 
 data "azurerm_key_vault_secret" "app_backend_FAST_LOGIN_API_KEY" {
   name         = "appbackend-FAST-LOGIN-API-KEY"
+  key_vault_id = module.key_vault_common.id
+}
+
+data "azurerm_key_vault_secret" "app_backend_TRIAL_SYSTEM_API_KEY" {
+  name         = "appbackend-TRIAL-SYSTEM-API-KEY"
   key_vault_id = module.key_vault_common.id
 }
 
