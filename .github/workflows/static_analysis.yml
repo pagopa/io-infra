@@ -55,21 +55,39 @@ jobs:
 
           for f in "${!newmap[@]}"; do
             dir_path=$(dirname "$f")
+            module_path=$(basename "$f")
+
             pushd "$dir_path"
-            echo "Initializing domain in $f"
+            echo initializing domain in $f
+            # replace '.' with empty string
+            relativePath="${module_path}/${newmap[$f]//./}"
 
             if [[ -f "99_main.tf" ]]; then
               sed -i -e 's/  backend "azurerm" {}//g' 99_main.tf # use local backend
             elif [[ -f "main.tf" ]]; then
               sed -i -e 's/  backend "azurerm" {}//g' main.tf # use local backend
-            elif [[ -f "${newmap[$f]}/main.tf" ]]; then
-              sed -i -e '/backend "azurerm" {/,/}/d' "${newmap[$f]}/main.tf" # use local backend
+            elif [[ -f "$(pwd)/$relativePath/main.tf" ]]; then
+              sed -i -e '/backend "azurerm" {/,/}/d' $(pwd)/$relativePath/main.tf # use local backend
+
+              # explaination: https://github.com/pagopa/io-infra/pull/906
+
+              # pushd "_modules"
+              # modules=$(find . -type d)
+
+              # for module in modules; do
+              #   folder_name=$(basename "$folder")
+              #   echo "DEBUG - run docker in folder: $folder_name"
+              #   docker run -v $(pwd):/tmp -w /tmp hashicorp/terraform:$TAG -chdir="./$folder_name" init &
+              #   pids+=($!)
+              # done
+              # popd
             fi
 
-            docker run -v $(pwd):/tmp -w /tmp hashicorp/terraform:$TAG -chdir="${newmap[$f]}" init
+            docker run -v $(pwd):/tmp -w /tmp hashicorp/terraform:$TAG -chdir="${newmap[$f]}" init &
             pids+=($!)
 
             popd
+
           done
 
           # Wait for each specific process to terminate.
