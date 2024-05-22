@@ -54,11 +54,14 @@ jobs:
           docker pull hashicorp/terraform:$TAG
 
           for f in "${!newmap[@]}"; do
+            # get the root level of the current module for example src/domains
             dir_path=$(dirname "$f")
+            # get the folder name of the current module
             module_path=$(basename "$f")
 
+            # move in the root level of the current module
             pushd "$dir_path"
-            echo initializing domain in $f
+
             # replace '.' with empty string
             relativePath="${newmap[$f]//./}"
 
@@ -83,6 +86,8 @@ jobs:
               # popd
             fi
 
+            # initialize the current module (eg selfcare) from the root level of the module (eg src/domains/)
+            # this allows the import of modules present at the same level (eg tests)
             docker run -v $(pwd):/tmp -w /tmp hashicorp/terraform:$TAG -chdir="${module_path}/${newmap[$f]}" init &
             pids+=($!)
 
