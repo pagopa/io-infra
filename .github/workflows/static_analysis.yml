@@ -60,7 +60,7 @@ jobs:
             pushd "$dir_path"
             echo initializing domain in $f
             # replace '.' with empty string
-            relativePath="${module_path}/${newmap[$f]//./}"
+            relativePath="${newmap[$f]//./}"
 
             if [[ -f "99_main.tf" ]]; then
               sed -i -e 's/  backend "azurerm" {}//g' 99_main.tf # use local backend
@@ -83,7 +83,7 @@ jobs:
               # popd
             fi
 
-            docker run -v $(pwd):/tmp -w /tmp hashicorp/terraform:$TAG -chdir="${newmap[$f]}" init &
+            docker run -v $(pwd):/tmp -w /tmp hashicorp/terraform:$TAG -chdir=""${module_path}/${newmap[$f]}"" init &
             pids+=($!)
 
             popd
