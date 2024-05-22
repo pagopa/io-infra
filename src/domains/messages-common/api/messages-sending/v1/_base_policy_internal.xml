@@ -1,6 +1,10 @@
 <policies>
     <inbound>
         <base />
+        <ip-filter action="forbid">
+            <!-- io-p-appgateway-snet  -->
+            <address-range from="10.0.13.0" to="10.0.13.255" />
+        </ip-filter>
         <set-backend-service base-url="https://io-p-messages-sending-func.azurewebsites.net/api/v1" />
         <set-header name="x-functions-key" exists-action="override">
             <value>{{io-p-messages-sending-func-key}}</value>
@@ -10,7 +14,7 @@
         </set-header>
         <set-header name="x-user-id" exists-action="override">
             <value>@(context.User.Id)</value>
-        </set-header>  
+        </set-header>
         <set-header name="x-subscription-id" exists-action="override">
             <value>@(context.Subscription.Id)</value>
         </set-header>
