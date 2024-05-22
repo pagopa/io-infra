@@ -81,7 +81,7 @@ jobs:
               # popd
             fi
 
-            docker run -v $(pwd):/tmp -w /tmp hashicorp/terraform:$TAG -chdir="${newmap[$f]}" init &
+            docker run -e TF_DATA_DIR="${newmap[$f]}" -v $(pwd):/tmp -w /tmp hashicorp/terraform:$TAG init &
             pids+=($!)
 
             popd
