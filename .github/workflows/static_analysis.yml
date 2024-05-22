@@ -54,23 +54,17 @@ jobs:
           docker pull hashicorp/terraform:$TAG
 
           for f in "${!newmap[@]}"; do
-            # get the root level of the current module for example src/domains
-            dir_path=$(dirname "$f")
-            # get the folder name of the current module
-            module_path=$(basename "$f")
-
-            # move in the root level of the current module
-            pushd "$dir_path"
+            pushd "$f"
 
             # replace '.' with empty string
             relativePath="${newmap[$f]//./}"
 
-            if [[ -f "$module_path/99_main.tf" ]]; then
-              sed -i -e 's/  backend "azurerm" {}//g' $module_path/99_main.tf # use local backend
-            elif [[ -f "$module_path/main.tf" ]]; then
-              sed -i -e 's/  backend "azurerm" {}//g' $module_path/main.tf # use local backend
-            elif [[ -f "$(pwd)/$module_path/$relativePath/main.tf" ]]; then
-              sed -i -e '/backend "azurerm" {/,/}/d' $(pwd)/$module_path/$relativePath/main.tf # use local backend
+            if [[ -f "99_main.tf" ]]; then
+              sed -i -e 's/  backend "azurerm" {}//g' 99_main.tf # use local backend
+            elif [[ -f "main.tf" ]]; then
+              sed -i -e 's/  backend "azurerm" {}//g' main.tf # use local backend
+            elif [[ -f "$(pwd)/$relativePath/main.tf" ]]; then
+              sed -i -e '/backend "azurerm" {/,/}/d' $(pwd)/$relativePath/main.tf # use local backend
 
               # explaination: https://github.com/pagopa/io-infra/pull/906
 
@@ -80,7 +74,7 @@ jobs:
               # for module in modules; do
               #   folder_name=$(basename "$folder")
               #   echo "DEBUG - run docker in folder: $folder_name"
-              #   docker run -v $(pwd):/tmp -w /tmp hashicorp/terraform:$TAG -chdir="./$folder_name" init &
+              #   docker run -v $(pwd)/..:/tmp -w /tmp hashicorp/terraform:$TAG -chdir="./$folder_name" init &
               #   pids+=($!)
               # done
               # popd
@@ -88,7 +82,7 @@ jobs:
 
             # initialize the current module (eg selfcare) from the root level of the module (eg src/domains/)
             # this allows the import of modules present at the same level (eg tests)
-            docker run -v $(pwd):/tmp -w /tmp hashicorp/terraform:$TAG -chdir="${module_path}/${newmap[$f]}" init &
+            docker run -v $(dirname $(pwd)):/tmp -w /tmp hashicorp/terraform:$TAG -chdir="${newmap[$f]}" init &
             pids+=($!)
 
             popd
