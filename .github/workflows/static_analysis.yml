@@ -62,12 +62,12 @@ jobs:
             # replace '.' with empty string
             relativePath="${newmap[$f]//./}"
 
-            if [[ -f "99_main.tf" ]]; then
-              sed -i -e 's/  backend "azurerm" {}//g' 99_main.tf # use local backend
-            elif [[ -f "main.tf" ]]; then
-              sed -i -e 's/  backend "azurerm" {}//g' main.tf # use local backend
-            elif [[ -f "$(pwd)/$relativePath/main.tf" ]]; then
-              sed -i -e '/backend "azurerm" {/,/}/d' $(pwd)/$relativePath/main.tf # use local backend
+            if [[ -f "$module_path/99_main.tf" ]]; then
+              sed -i -e 's/  backend "azurerm" {}//g' $module_path/99_main.tf # use local backend
+            elif [[ -f "$module_path/main.tf" ]]; then
+              sed -i -e 's/  backend "azurerm" {}//g' $module_path/main.tf # use local backend
+            elif [[ -f "$(pwd)/$module_path/$relativePath/main.tf" ]]; then
+              sed -i -e '/backend "azurerm" {/,/}/d' $(pwd)/$module_path/$relativePath/main.tf # use local backend
 
               # explaination: https://github.com/pagopa/io-infra/pull/906
 
@@ -83,7 +83,7 @@ jobs:
               # popd
             fi
 
-            docker run -v $(pwd):/tmp -w /tmp hashicorp/terraform:$TAG -chdir=""${module_path}/${newmap[$f]}"" init &
+            docker run -v $(pwd):/tmp -w /tmp hashicorp/terraform:$TAG -chdir="${module_path}/${newmap[$f]}" init &
             pids+=($!)
 
             popd
