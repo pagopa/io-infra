@@ -43,7 +43,9 @@ jobs:
           newmap[src/domains/payments-common]="."
           newmap[src/domains/profile-app]="."
           newmap[src/domains/profile-common]="."
+          newmap[src/domains/functions]="."
           newmap[src/domains/sign]="."
+          newmap[src/domains/tests]="."
           newmap[src/github-runner]="."
           newmap[.identity]="."
           newmap[src/packer]="."
@@ -53,8 +55,9 @@ jobs:
           docker pull hashicorp/terraform:$TAG
 
           for f in "${!newmap[@]}"; do
-
             pushd "$f"
+            # get the folder name of the current module
+            module_path=$(basename "$f")
 
             # replace '.' with empty string
             relativePath="${newmap[$f]//./}"
@@ -80,7 +83,9 @@ jobs:
               # popd
             fi
 
-            docker run -v $(pwd):/tmp -w /tmp hashicorp/terraform:$TAG -chdir="${newmap[$f]}" init &
+            # initialize the current module (eg selfcare) from the root level of the module (eg src/domains/)
+            # this allows the import of modules present at the same level (eg tests)
+            docker run -v $(dirname $(pwd)):/tmp -w /tmp hashicorp/terraform:$TAG -chdir="$module_path/${newmap[$f]}" init &
             pids+=($!)
 
             popd
