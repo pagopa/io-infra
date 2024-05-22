@@ -43,6 +43,7 @@ jobs:
           newmap[src/domains/payments-common]="."
           newmap[src/domains/profile-app]="."
           newmap[src/domains/profile-common]="."
+          newmap[src/domains/functions]="."
           newmap[src/domains/sign]="."
           newmap[src/domains/tests]="."
           newmap[src/github-runner]="."
