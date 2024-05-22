@@ -56,6 +56,9 @@ jobs:
           for f in "${!newmap[@]}"; do
             pushd "$f"
 
+            # get the folder name of the current module
+            module_path=$(basename "$f")
+
             # replace '.' with empty string
             relativePath="${newmap[$f]//./}"
 
@@ -82,7 +85,7 @@ jobs:
 
             # initialize the current module (eg selfcare) from the root level of the module (eg src/domains/)
             # this allows the import of modules present at the same level (eg tests)
-            docker run -v $(dirname $(pwd)):/tmp -w /tmp hashicorp/terraform:$TAG -chdir="${newmap[$f]}" init &
+            docker run -v $(dirname $(pwd)):/tmp -w /tmp hashicorp/terraform:$TAG -chdir="$module_path/${newmap[$f]}" init &
             pids+=($!)
 
             popd
