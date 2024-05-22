@@ -56,7 +56,7 @@ jobs:
           for f in "${!newmap[@]}"; do
 
             pushd "$f"
-            echo $f
+            echo initializing domain in $f
             # replace '.' with empty string
             relativePath="${newmap[$f]//./}"
 
