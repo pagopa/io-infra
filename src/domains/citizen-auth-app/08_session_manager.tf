@@ -41,6 +41,11 @@ data "azurerm_key_vault_secret" "session_manager_JWT_ZENDESK_SUPPORT_TOKEN_SECRE
   key_vault_id = data.azurerm_key_vault.kv.id
 }
 
+data "azurerm_key_vault_secret" "session_manager_ALLOW_ZENDESK_IP_SOURCE_RANGE" {
+  name         = "session-manager-ALLOW-ZENDESK-IP-SOURCE-RANGE"
+  key_vault_id = data.azurerm_key_vault.kv.id
+}
+
 ###########
 
 resource "azurerm_resource_group" "session_manager_rg" {
@@ -134,6 +139,7 @@ locals {
     JWT_ZENDESK_SUPPORT_TOKEN_ISSUER     = "app-backend.io.italia.it"
     JWT_ZENDESK_SUPPORT_TOKEN_EXPIRATION = 1200
     JWT_ZENDESK_SUPPORT_TOKEN_SECRET     = data.azurerm_key_vault_secret.session_manager_JWT_ZENDESK_SUPPORT_TOKEN_SECRET.value
+    ALLOW_ZENDESK_IP_SOURCE_RANGE        = data.azurerm_key_vault_secret.session_manager_ALLOW_ZENDESK_IP_SOURCE_RANGE.value
   }
 }
 
