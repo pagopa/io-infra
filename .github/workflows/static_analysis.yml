@@ -55,7 +55,6 @@ jobs:
 
           for f in "${!newmap[@]}"; do
             pushd "$f"
-
             # get the folder name of the current module
             module_path=$(basename "$f")
 
