@@ -49,7 +49,8 @@ resource "azurerm_monitor_scheduled_query_rules_alert_v2" "samlresponse_missing_
   description             = <<-EOT
     Detected multiple SAMLResponse missing during assertionConsumerService.
     IdP is unknown here but you can watch Mixpanel events to identify the IdP
-    that is causing the alert to trigger
+    that is causing the alert to trigger. For more info see runbook
+    https://pagopa.atlassian.net/wiki/spaces/IC/pages/1010729336/Citizen+Auth+-+Missing+required+SAMLResponse+in+assertionConsumerService
   EOT
   severity                = 1
   auto_mitigation_enabled = true
