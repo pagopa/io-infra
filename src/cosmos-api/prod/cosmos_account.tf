@@ -21,7 +21,7 @@ resource "azurerm_cosmosdb_account" "this" {
   }
 
   consistency_policy {
-    consistency_level = "Strong"
+    consistency_level = "Strong" # TODO: Consider returning to BoundedSession
   }
 
   public_network_access_enabled     = true
