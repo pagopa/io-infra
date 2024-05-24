@@ -10,7 +10,8 @@ repos:
         args:
           - --args=--exclude-downloaded-modules
       - id: terraform_validate
+        exclude: '(\/_?modules\/.*)'
         args:
+          - --tf-init-args=-lockfile=readonly
           - --args=-json
           - --args=-no-color
-          - --hook-config=--retry-once-with-cleanup=true
