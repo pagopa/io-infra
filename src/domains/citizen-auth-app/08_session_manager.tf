@@ -117,6 +117,10 @@ locals {
 
     BACKEND_HOST = "https://${trimsuffix(data.azurerm_dns_a_record.api_app_io_pagopa_it.fqdn, ".")}"
 
+    # Locked profile storage
+    LOCKED_PROFILES_STORAGE_CONNECTION_STRING = data.azurerm_storage_account.locked_profiles_storage.primary_connection_string
+    LOCKED_PROFILES_TABLE_NAME                = "lockedprofiles"
+
     # Spid logs config
     SPID_LOG_QUEUE_NAME                = "spidmsgitems"
     SPID_LOG_STORAGE_CONNECTION_STRING = data.azurerm_storage_account.logs.primary_connection_string
