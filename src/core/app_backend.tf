@@ -69,6 +69,8 @@ locals {
       FAST_LOGIN_API_KEY          = data.azurerm_key_vault_secret.app_backend_FAST_LOGIN_API_KEY.value
       TRIAL_SYSTEM_API_URL        = "https://ts-p-itn-subscription-fn-01.azurewebsites.net" # PROD-TRIAL subscription
       TRIAL_SYSTEM_API_KEY        = data.azurerm_key_vault_secret.app_backend_TRIAL_SYSTEM_API_KEY.value
+      IO_WALLET_API_URL           = "https://io-p-itn-wallet-user-func-01.azurewebsites.net"
+      IO_WALLET_API_KEY           = data.azurerm_key_vault_secret.app_backend_IO_WALLET_API_KEY.value
 
       // EXPOSED API
       API_BASE_PATH                     = "/api/v1"
@@ -79,6 +81,7 @@ locals {
       IO_SIGN_API_BASE_PATH             = "/api/v1/sign"
       LOLLIPOP_API_BASE_PATH            = "/api/v1"
       TRIAL_SYSTEM_API_BASE_PATH        = "/api/v1"
+      IO_WALLET_API_BASE_PATH           = "/api/v1"
 
       // REDIS
       REDIS_URL      = module.redis_common.hostname
@@ -148,6 +151,7 @@ locals {
       FF_MIT_VOUCHER_ENABLED    = 1
       FF_USER_AGE_LIMIT_ENABLED = 1
       FF_IO_SIGN_ENABLED        = 1
+      FF_IO_WALLET_ENABLED      = 0
 
       FF_ROUTING_PUSH_NOTIF                      = "ALL" # possible values are: BETA, CANARY, ALL, NONE
       FF_ROUTING_PUSH_NOTIF_BETA_TESTER_SHA_LIST = data.azurerm_key_vault_secret.app_backend_APP_MESSAGES_BETA_FISCAL_CODES.value
@@ -634,6 +638,11 @@ data "azurerm_key_vault_secret" "fn_eucovidcert_API_KEY_APPBACKEND" {
 data "azurerm_key_vault_secret" "fn_eucovidcert_API_KEY_PUBLICIOEVENTDISPATCHER" {
   name         = "funceucovidcert-KEY-PUBLICIOEVENTDISPATCHER"
   key_vault_id = module.key_vault.id
+}
+
+data "azurerm_key_vault_secret" "app_backend_IO_WALLET_API_KEY" {
+  name         = "funciowallet-KEY-APPBACKEND"
+  key_vault_id = module.key_vault_common.id
 }
 
 #tfsec:ignore:AZU023
