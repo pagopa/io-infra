@@ -27,7 +27,7 @@ resource "azurerm_resource_group" "vnet" {
 }
 
 module "networking" {
-  source = "../../_modules/networking"
+  source = "../_modules/networking"
 
   location            = azurerm_resource_group.vnet.location
   resource_group_name = azurerm_resource_group.vnet.name

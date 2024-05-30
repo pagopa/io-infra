@@ -10,7 +10,7 @@
 
 | Name | Source | Version |
 |------|--------|---------|
-| <a name="module_networking"></a> [networking](#module\_networking) | ../../_modules/networking | n/a |
+| <a name="module_networking"></a> [networking](#module\_networking) | ../_modules/networking | n/a |
 
 ## Resources
 
