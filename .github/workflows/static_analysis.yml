@@ -47,7 +47,6 @@ jobs:
           newmap[src/domains/sign]="."
           newmap[src/cosmos-api]="./prod"
           newmap[src/github-runner]="."
-          newmap[.identity]="."
           newmap[src/packer]="."
 
           TAG=$(cat .terraform-version)
