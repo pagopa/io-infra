@@ -29,7 +29,6 @@ jobs:
           newmap[src/core]="."
           newmap[src/.template-app]="."
           newmap[src/.template-common]="."
-          newmap[src/aks-platform]="."
           newmap[src/domains/cgn]="./prod/westeurope"
           newmap[src/domains/selfcare]="./prod/westeurope"
           newmap[src/domains/citizen-auth-app]="."
