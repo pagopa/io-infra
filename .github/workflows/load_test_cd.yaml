@@ -15,4 +15,4 @@ jobs:
     secrets: inherit
     with:
       environment: prod
-      dir: src/load-test
+      base_path: src/load-test
