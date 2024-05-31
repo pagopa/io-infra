@@ -47,7 +47,7 @@ jobs:
           newmap[src/domains/sign]="."
           newmap[src/cosmos-api]="./prod"
           newmap[src/github-runner]="."
-          newmap[src/identity]="./prod"
+          # newmap[src/identity]="./prod"
           newmap[src/repository]="."
           newmap[src/packer]="."
 
