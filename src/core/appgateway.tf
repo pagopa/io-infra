@@ -26,7 +26,7 @@ module "appgateway_snet" {
 
 ## Application gateway ##
 module "app_gw" {
-  source = "github.com/pagopa/terraform-azurerm-v3.git//app_gateway?ref=v7.61.0"
+  source = "github.com/pagopa/terraform-azurerm-v3.git//app_gateway?ref=v8.20.0"
 
   resource_group_name = azurerm_resource_group.rg_external.name
   location            = azurerm_resource_group.rg_external.location
@@ -67,6 +67,20 @@ module "app_gw" {
       ]
       probe                       = "/info"
       probe_name                  = "probe-appbackend-app"
+      request_timeout             = 10
+      pick_host_name_from_backend = true
+    }
+   
+    session-manager-app = {
+      protocol     = "Https"
+      host         = null
+      port         = 443
+      ip_addresses = null # with null value use fqdns
+      fqdns = [
+        data.azurerm_linux_web_app.session_manager.default_hostname
+      ]
+      probe                       = "/healthcheck"
+      probe_name                  = "probe-session-manager-app"
       request_timeout             = 10
       pick_host_name_from_backend = true
     }
@@ -1085,4 +1099,14 @@ resource "azurerm_web_application_firewall_policy" "api_app" {
   }
 
   tags = var.tags
+}
+
+
+#######################
+## Web Application ##
+#######################
+
+data "azurerm_linux_web_app" "session_manager" {
+  name                = "io-p-weu-session-manager-app-02"
+  resource_group_name = "io-p-itn-session-manager-rg-01"
 }
