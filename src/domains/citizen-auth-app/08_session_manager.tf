@@ -51,6 +51,11 @@ data "azurerm_key_vault_secret" "session_manager_ALLOW_BPD_IP_SOURCE_RANGE" {
   key_vault_id = data.azurerm_key_vault.kv.id
 }
 
+data "azurerm_key_vault_secret" "session_manager_ALLOW_PAGOPA_IP_SOURCE_RANGE" {
+  name         = "session-manager-ALLOW-PAGOPA-IP-SOURCE-RANGE"
+  key_vault_id = data.azurerm_key_vault.kv.id
+}
+
 ###########
 
 resource "azurerm_resource_group" "session_manager_rg" {
@@ -160,6 +165,10 @@ locals {
     # BPD config
     BPD_BASE_PATH             = "/bpd/api/v1"
     ALLOW_BPD_IP_SOURCE_RANGE = data.azurerm_key_vault_secret.session_manager_ALLOW_BPD_IP_SOURCE_RANGE.value
+
+    # PAGOPA config
+    PAGOPA_BASE_PATH             = "/pagopa/api/v1"
+    ALLOW_PAGOPA_IP_SOURCE_RANGE = data.azurerm_key_vault_secret.session_manager_ALLOW_PAGOPA_IP_SOURCE_RANGE.value
   }
 }
 
