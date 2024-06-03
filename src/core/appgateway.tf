@@ -517,6 +517,11 @@ module "app_gw" {
       default_backend               = "appbackend-app"
       default_rewrite_rule_set_name = "rewrite-rule-set-api-app"
       path_rule = {
+        session-manager = {
+          paths                 = ["/session-manager/*"]
+          backend               = "session-manager-app",
+          rewrite_rule_set_name = "rewrite-rule-set-api-app-remove-base-path-session-manager"
+        },
         healthcheck = {
           paths                 = ["/healthcheck"]
           backend               = "appbackend-app",
@@ -580,6 +585,28 @@ module "app_gw" {
     {
       name          = "rewrite-rule-set-api-app"
       rewrite_rules = [local.io_backend_ip_headers_rule]
+    },
+    {
+      name = "rewrite-rule-set-api-app-remove-base-path-session-manager"
+      rewrite_rules = [
+        local.io_backend_ip_headers_rule,
+        {
+          name          = "strip_base_session_manager_path"
+          rule_sequence = 200
+          conditions = [{
+            variable    = "var_uri_path"
+            pattern     = "/session-manager/(.*)"
+            ignore_case = true
+            negate      = false
+          }]
+          url = {
+            path         = "/{var_uri_path_1}"
+            query_string = null
+            reroute      = false
+          }
+          request_header_configurations  = []
+          response_header_configurations = []
+      }]
     },
     {
       name = "rewrite-rule-set-api-web"
