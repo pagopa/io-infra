@@ -70,7 +70,7 @@ module "app_gw" {
       request_timeout             = 10
       pick_host_name_from_backend = true
     }
-   
+
     session-manager-app = {
       protocol     = "Https"
       host         = null
