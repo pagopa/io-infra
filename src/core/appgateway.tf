@@ -525,7 +525,7 @@ module "app_gw" {
         healthcheck = {
           paths                 = ["/healthcheck"]
           backend               = "appbackend-app",
-          rewrite_rule_set_name = "rewrite-rule-set-api-app"
+          rewrite_rule_set_name = "rewrite-rule-set-api-app-rewrite-to-session-manager"
         },
       }
     }
@@ -585,6 +585,29 @@ module "app_gw" {
     {
       name          = "rewrite-rule-set-api-app"
       rewrite_rules = [local.io_backend_ip_headers_rule]
+    },
+    {
+      name = "rewrite-rule-set-api-app-rewrite-to-session-manager"
+      rewrite_rules = [
+        local.io_backend_ip_headers_rule,
+        {
+          name          = "rewrite-if-cookie-present"
+          rule_sequence = 200
+          conditions = [{
+            variable    = "http_req_Cookie"
+            pattern     = "test-session-manager"
+            ignore_case = true
+            negate      = false
+          }]
+          url = {
+            path         = "/session-manager/{var_uri_path}"
+            query_string = null
+            reroute      = true
+          }
+          request_header_configurations  = []
+          response_header_configurations = []
+        }
+      ]
     },
     {
       name = "rewrite-rule-set-api-app-remove-base-path-session-manager"
