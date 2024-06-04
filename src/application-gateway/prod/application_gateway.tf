@@ -1,6 +1,6 @@
 ## Application gateway ##
 module "app_gw" {
-  source = "github.com/pagopa/terraform-azurerm-v3.git//app_gateway?ref=v8.20.0"
+  source = "github.com/pagopa/terraform-azurerm-v3//app_gateway?ref=v8.20.0"
 
   resource_group_name = data.azurerm_resource_group.weu_external.name
   location            = data.azurerm_resource_group.weu_external.location
@@ -41,6 +41,20 @@ module "app_gw" {
       ]
       probe                       = "/info"
       probe_name                  = "probe-appbackend-app"
+      request_timeout             = 10
+      pick_host_name_from_backend = true
+    }
+
+    session-manager-app = {
+      protocol     = "Https"
+      host         = null
+      port         = 443
+      ip_addresses = null # with null value use fqdns
+      fqdns = [
+        data.azurerm_linux_web_app.session_manager.default_hostname
+      ]
+      probe                       = "/healthcheck"
+      probe_name                  = "probe-session-manager-app"
       request_timeout             = 10
       pick_host_name_from_backend = true
     }
@@ -387,25 +401,11 @@ module "app_gw" {
       priority              = 10
     }
 
-    api-app-io-pagopa-it = {
-      listener              = "api-app-io-pagopa-it"
-      backend               = "appbackend-app"
-      rewrite_rule_set_name = "rewrite-rule-set-api-app"
-      priority              = 70
-    }
-
     api-web-io-pagopa-it = {
       listener              = "api-web-io-pagopa-it"
       backend               = "apim"
       rewrite_rule_set_name = "rewrite-rule-set-api-web"
       priority              = 100
-    }
-
-    app-backend-io-italia-it = {
-      listener              = "app-backend-io-italia-it"
-      backend               = "appbackend-app"
-      rewrite_rule_set_name = "rewrite-rule-set-api-app"
-      priority              = 40
     }
 
     developerportal-backend-io-italia-it = {
@@ -448,6 +448,89 @@ module "app_gw" {
       backend               = "apim"
       rewrite_rule_set_name = "rewrite-rule-set-openid-provider-io"
       priority              = 120
+    }
+  }
+
+  routes_path_based = {
+    app-backend-io-italia-it = {
+      listener     = "app-backend-io-italia-it"
+      url_map_name = "io-backend-path-based-rule"
+      priority     = 40
+    }
+
+    api-app-io-pagopa-it = {
+      listener     = "api-app-io-pagopa-it"
+      url_map_name = "io-backend-path-based-rule"
+      priority     = 70
+    }
+  }
+
+  url_path_map = {
+    io-backend-path-based-rule = {
+      default_backend               = "appbackend-app"
+      default_rewrite_rule_set_name = "rewrite-rule-set-api-app"
+      path_rule = {
+        session-manager = {
+          paths                 = ["/session-manager/*"]
+          backend               = "session-manager-app",
+          rewrite_rule_set_name = "rewrite-rule-set-api-app-remove-base-path-session-manager"
+        },
+        healthcheck = {
+          paths                 = ["/healthcheck"]
+          backend               = "appbackend-app",
+          rewrite_rule_set_name = "rewrite-rule-set-api-app-rewrite-to-session-manager"
+        },
+        test-login = {
+          paths                 = ["/test-login"]
+          backend               = "appbackend-app",
+          rewrite_rule_set_name = "rewrite-rule-set-api-app-rewrite-to-session-manager"
+        },
+        login = {
+          paths                 = ["/login"]
+          backend               = "appbackend-app",
+          rewrite_rule_set_name = "rewrite-rule-set-api-app-rewrite-to-session-manager"
+        },
+        acs = {
+          paths                 = ["/assertionConsumerService"]
+          backend               = "appbackend-app",
+          rewrite_rule_set_name = "rewrite-rule-set-api-app-rewrite-to-session-manager"
+        },
+        fast-login = {
+          paths                 = ["/api/v1/fast-login"]
+          backend               = "appbackend-app",
+          rewrite_rule_set_name = "rewrite-rule-set-api-app-rewrite-to-session-manager"
+        },
+        nonce-fast-login = {
+          paths                 = ["/api/v1/fast-login/nonce/generate"]
+          backend               = "appbackend-app",
+          rewrite_rule_set_name = "rewrite-rule-set-api-app-rewrite-to-session-manager"
+        },
+        logout = {
+          paths                 = ["/logout"]
+          backend               = "appbackend-app",
+          rewrite_rule_set_name = "rewrite-rule-set-api-app-rewrite-to-session-manager"
+        },
+        session = {
+          paths                 = ["/api/v1/session"]
+          backend               = "appbackend-app",
+          rewrite_rule_set_name = "rewrite-rule-set-api-app-rewrite-to-session-manager"
+        },
+        bpd-user = {
+          paths                 = ["/bpd/api/v1/user"]
+          backend               = "appbackend-app",
+          rewrite_rule_set_name = "rewrite-rule-set-api-app-rewrite-to-session-manager"
+        },
+        zendesk-user = {
+          paths                 = ["/api/backend/zendesk/v1/jwt"]
+          backend               = "appbackend-app",
+          rewrite_rule_set_name = "rewrite-rule-set-api-app-rewrite-to-session-manager"
+        },
+        pagopa-user = {
+          paths                 = ["/pagopa/api/v1/user"]
+          backend               = "appbackend-app",
+          rewrite_rule_set_name = "rewrite-rule-set-api-app-rewrite-to-session-manager"
+        },
+      }
     }
   }
 
@@ -503,23 +586,52 @@ module "app_gw" {
       }]
     },
     {
-      name = "rewrite-rule-set-api-app"
-      rewrite_rules = [{
-        name          = "http-headers-api-app"
-        rule_sequence = 100
-        conditions    = []
-        url           = null
-        request_header_configurations = [
-          {
-            header_name  = "X-Forwarded-For"
-            header_value = "{var_client_ip}"
-          },
-          {
-            header_name  = "X-Client-Ip"
-            header_value = "{var_client_ip}"
-          },
-        ]
-        response_header_configurations = []
+      name          = "rewrite-rule-set-api-app"
+      rewrite_rules = [local.io_backend_ip_headers_rule]
+    },
+    {
+      name = "rewrite-rule-set-api-app-rewrite-to-session-manager"
+      rewrite_rules = [
+        local.io_backend_ip_headers_rule,
+        {
+          name          = "rewrite-if-cookie-present"
+          rule_sequence = 200
+          conditions = [{
+            variable    = "http_req_Cookie"
+            pattern     = "test-session-manager"
+            ignore_case = true
+            negate      = false
+          }]
+          url = {
+            path         = "/session-manager{var_uri_path}"
+            query_string = null
+            reroute      = true
+          }
+          request_header_configurations  = []
+          response_header_configurations = []
+        }
+      ]
+    },
+    {
+      name = "rewrite-rule-set-api-app-remove-base-path-session-manager"
+      rewrite_rules = [
+        local.io_backend_ip_headers_rule,
+        {
+          name          = "strip_base_session_manager_path"
+          rule_sequence = 200
+          conditions = [{
+            variable    = "var_uri_path"
+            pattern     = "/session-manager/(.*)"
+            ignore_case = true
+            negate      = false
+          }]
+          url = {
+            path         = "/{var_uri_path_1}"
+            query_string = null
+            reroute      = false
+          }
+          request_header_configurations  = []
+          response_header_configurations = []
       }]
     },
     {
