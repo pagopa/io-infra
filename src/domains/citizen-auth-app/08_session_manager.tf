@@ -36,9 +36,9 @@ data "azurerm_key_vault_secret" "app_backend_ALLOWED_CIE_TEST_FISCAL_CODES" {
   key_vault_id = data.azurerm_key_vault.kv_common.id
 }
 
-data "azurerm_key_vault_secret" "app_backend_TEST_LOGIN_PASSWORD" {
-  name         = "appbackend-TEST-LOGIN-PASSWORD"
-  key_vault_id = data.azurerm_key_vault.kv_common.id
+data "azurerm_key_vault_secret" "session_manager_TEST_LOGIN_PASSWORD" {
+  name         = "session-manager-TEST-LOGIN-PASSWORD"
+  key_vault_id = data.azurerm_key_vault.kv.id
 }
 
 data "azurerm_key_vault_secret" "session_manager_JWT_ZENDESK_SUPPORT_TOKEN_SECRET" {
@@ -126,7 +126,7 @@ locals {
 
     # Test Login config
     TEST_LOGIN_FISCAL_CODES = module.tests.test_users.all
-    TEST_LOGIN_PASSWORD     = data.azurerm_key_vault_secret.app_backend_TEST_LOGIN_PASSWORD.value
+    TEST_LOGIN_PASSWORD     = data.azurerm_key_vault_secret.session_manager_TEST_LOGIN_PASSWORD.value
 
 
     BACKEND_HOST = "https://${trimsuffix(data.azurerm_dns_a_record.api_app_io_pagopa_it.fqdn, ".")}"
