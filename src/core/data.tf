@@ -205,7 +205,7 @@ data "azurerm_subnet" "services_cms_backoffice_snet" {
 
 data "azurerm_linux_function_app" "services_app_backend_function_app" {
   resource_group_name = format("%s-itn-svc-rg-01", local.project)
-  name                = format("%s-itn-svc-app-be-fn-01", local.project)
+  name                = format("%s-itn-svc-app-be-func-01", local.project)
 }
 
 
