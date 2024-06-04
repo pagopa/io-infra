@@ -24,6 +24,27 @@ module "appgateway_snet" {
   ]
 }
 
+
+locals {
+  io_backend_ip_headers_rule = {
+    name          = "http-headers-api-app"
+    rule_sequence = 100
+    conditions    = []
+    url           = null
+    request_header_configurations = [
+      {
+        header_name  = "X-Forwarded-For"
+        header_value = "{var_client_ip}"
+      },
+      {
+        header_name  = "X-Client-Ip"
+        header_value = "{var_client_ip}"
+      },
+    ]
+    response_header_configurations = []
+  }
+}
+
 ## Application gateway ##
 module "app_gw" {
   source = "github.com/pagopa/terraform-azurerm-v3.git//app_gateway?ref=v8.20.0"
@@ -426,25 +447,12 @@ module "app_gw" {
       priority              = 10
     }
 
-    api-app-io-pagopa-it = {
-      listener              = "api-app-io-pagopa-it"
-      backend               = "appbackend-app"
-      rewrite_rule_set_name = "rewrite-rule-set-api-app"
-      priority              = 70
-    }
 
     api-web-io-pagopa-it = {
       listener              = "api-web-io-pagopa-it"
       backend               = "apim"
       rewrite_rule_set_name = "rewrite-rule-set-api-web"
       priority              = 100
-    }
-
-    app-backend-io-italia-it = {
-      listener              = "app-backend-io-italia-it"
-      backend               = "appbackend-app"
-      rewrite_rule_set_name = "rewrite-rule-set-api-app"
-      priority              = 40
     }
 
     developerportal-backend-io-italia-it = {
@@ -487,6 +495,34 @@ module "app_gw" {
       backend               = "apim"
       rewrite_rule_set_name = "rewrite-rule-set-openid-provider-io"
       priority              = 120
+    }
+  }
+
+  routes_path_based = {
+    app-backend-io-italia-it = {
+      listener     = "app-backend-io-italia-it"
+      url_map_name = "io-backend-path-based-rule"
+      priority     = 40
+    }
+
+    api-app-io-pagopa-it = {
+      listener     = "api-app-io-pagopa-it"
+      url_map_name = "io-backend-path-based-rule"
+      priority     = 70
+    }
+  }
+
+  url_path_map = {
+    io-backend-path-based-rule = {
+      default_backend               = "appbackend-app"
+      default_rewrite_rule_set_name = "rewrite-rule-set-api-app"
+      path_rule = {
+        healthcheck = {
+          paths                 = ["/healthcheck"]
+          backend               = "appbackend-app",
+          rewrite_rule_set_name = "rewrite-rule-set-api-app"
+        },
+      }
     }
   }
 
@@ -542,24 +578,8 @@ module "app_gw" {
       }]
     },
     {
-      name = "rewrite-rule-set-api-app"
-      rewrite_rules = [{
-        name          = "http-headers-api-app"
-        rule_sequence = 100
-        conditions    = []
-        url           = null
-        request_header_configurations = [
-          {
-            header_name  = "X-Forwarded-For"
-            header_value = "{var_client_ip}"
-          },
-          {
-            header_name  = "X-Client-Ip"
-            header_value = "{var_client_ip}"
-          },
-        ]
-        response_header_configurations = []
-      }]
+      name          = "rewrite-rule-set-api-app"
+      rewrite_rules = [local.io_backend_ip_headers_rule]
     },
     {
       name = "rewrite-rule-set-api-web"
