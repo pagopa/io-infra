@@ -532,51 +532,51 @@ module "app_gw" {
           backend               = "appbackend-app",
           rewrite_rule_set_name = "rewrite-rule-set-api-app-rewrite-to-session-manager"
         },
-        # login = {
-        #   paths                 = ["/login"]
-        #   backend               = "appbackend-app",
-        #   rewrite_rule_set_name = "rewrite-rule-set-api-app-rewrite-to-session-manager"
-        # },
-        # acs = {
-        #   paths                 = ["/assertionConsumerService"]
-        #   backend               = "appbackend-app",
-        #   rewrite_rule_set_name = "rewrite-rule-set-api-app-rewrite-to-session-manager"
-        # },
-        # fast-login = {
-        #   paths                 = ["/api/v1/fast-login"]
-        #   backend               = "appbackend-app",
-        #   rewrite_rule_set_name = "rewrite-rule-set-api-app-rewrite-to-session-manager"
-        # },
-        # nonce-fast-login = {
-        #   paths                 = ["/api/v1/fast-login/nonce/generate"]
-        #   backend               = "appbackend-app",
-        #   rewrite_rule_set_name = "rewrite-rule-set-api-app-rewrite-to-session-manager"
-        # },
-        # logout = {
-        #   paths                 = ["/logout"]
-        #   backend               = "appbackend-app",
-        #   rewrite_rule_set_name = "rewrite-rule-set-api-app-rewrite-to-session-manager"
-        # },
-        # session = {
-        #   paths                 = ["/api/v1/session"]
-        #   backend               = "appbackend-app",
-        #   rewrite_rule_set_name = "rewrite-rule-set-api-app-rewrite-to-session-manager"
-        # },
-        # bpd-user = {
-        #   paths                 = ["/bpd/api/v1/user"]
-        #   backend               = "appbackend-app",
-        #   rewrite_rule_set_name = "rewrite-rule-set-api-app-rewrite-to-session-manager"
-        # },
-        # zendesk-user = {
-        #   paths                 = ["/api/backend/zendesk/v1/jwt"]
-        #   backend               = "appbackend-app",
-        #   rewrite_rule_set_name = "rewrite-rule-set-api-app-rewrite-to-session-manager"
-        # },
-        # pagopa-user = {
-        #   paths                 = ["/pagopa/api/v1/user"]
-        #   backend               = "appbackend-app",
-        #   rewrite_rule_set_name = "rewrite-rule-set-api-app-rewrite-to-session-manager"
-        # },
+        login = {
+          paths                 = ["/login"]
+          backend               = "appbackend-app",
+          rewrite_rule_set_name = "rewrite-rule-set-api-app-rewrite-to-session-manager"
+        },
+        acs = {
+          paths                 = ["/assertionConsumerService"]
+          backend               = "appbackend-app",
+          rewrite_rule_set_name = "rewrite-rule-set-api-app-rewrite-to-session-manager"
+        },
+        fast-login = {
+          paths                 = ["/api/v1/fast-login"]
+          backend               = "appbackend-app",
+          rewrite_rule_set_name = "rewrite-rule-set-api-app-rewrite-to-session-manager"
+        },
+        nonce-fast-login = {
+          paths                 = ["/api/v1/fast-login/nonce/generate"]
+          backend               = "appbackend-app",
+          rewrite_rule_set_name = "rewrite-rule-set-api-app-rewrite-to-session-manager"
+        },
+        logout = {
+          paths                 = ["/logout"]
+          backend               = "appbackend-app",
+          rewrite_rule_set_name = "rewrite-rule-set-api-app-rewrite-to-session-manager"
+        },
+        session = {
+          paths                 = ["/api/v1/session"]
+          backend               = "appbackend-app",
+          rewrite_rule_set_name = "rewrite-rule-set-api-app-rewrite-to-session-manager"
+        },
+        bpd-user = {
+          paths                 = ["/bpd/api/v1/user"]
+          backend               = "appbackend-app",
+          rewrite_rule_set_name = "rewrite-rule-set-api-app-rewrite-to-session-manager"
+        },
+        zendesk-user = {
+          paths                 = ["/api/backend/zendesk/v1/jwt"]
+          backend               = "appbackend-app",
+          rewrite_rule_set_name = "rewrite-rule-set-api-app-rewrite-to-session-manager"
+        },
+        pagopa-user = {
+          paths                 = ["/pagopa/api/v1/user"]
+          backend               = "appbackend-app",
+          rewrite_rule_set_name = "rewrite-rule-set-api-app-rewrite-to-session-manager"
+        },
       }
     }
   }
@@ -650,7 +650,7 @@ module "app_gw" {
             negate      = false
           }]
           url = {
-            path         = "/session-manager/{var_uri_path}"
+            path         = "/session-manager{var_uri_path}"
             query_string = null
             reroute      = true
           }
