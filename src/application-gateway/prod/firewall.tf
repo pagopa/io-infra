@@ -1,7 +1,7 @@
 resource "azurerm_web_application_firewall_policy" "api_app" {
   name                = "${local.project}-waf-appgateway-api-app-policy"
-  resource_group_name = data.azurerm_resource_group.weu-external.name
-  location            = data.azurerm_resource_group.weu-external.location
+  resource_group_name = data.azurerm_resource_group.weu_external.name
+  location            = data.azurerm_resource_group.weu_external.location
 
   policy_settings {
     enabled                     = true

@@ -1,30 +1,30 @@
 data "azurerm_client_config" "current" {}
 
-data "azurerm_resource_group" "weu-common" {
+data "azurerm_resource_group" "weu_common" {
   name = "${local.project}-rg-common"
 }
 
-data "azurerm_resource_group" "weu-sec" {
+data "azurerm_resource_group" "weu_sec" {
   name = "${local.project}-sec-rg"
 }
 
-data "azurerm_resource_group" "weu-external" {
+data "azurerm_resource_group" "weu_external" {
   name = "${local.project}-rg-external"
 }
 
-data "azurerm_virtual_network" "weu-common" {
+data "azurerm_virtual_network" "weu_common" {
   name                = "${local.project}-vnet-common"
-  resource_group_name = data.azurerm_resource_group.weu-common.name
+  resource_group_name = data.azurerm_resource_group.weu_common.name
 }
 
-data "azurerm_key_vault" "weu-common" {
+data "azurerm_key_vault" "weu_common" {
   name                = "${local.project}-kv-common"
-  resource_group_name = data.azurerm_resource_group.weu-common.name
+  resource_group_name = data.azurerm_resource_group.weu_common.name
 }
 
 data "azurerm_key_vault" "weu" {
   name                = "${local.project}-kv"
-  resource_group_name = data.azurerm_resource_group.weu-sec.name
+  resource_group_name = data.azurerm_resource_group.weu_sec.name
 }
 
 ## user assined identity: (old application gateway) ##
@@ -63,17 +63,17 @@ data "azurerm_key_vault_certificate" "app_gw_api_web" {
 
 data "azurerm_key_vault_certificate" "app_gw_api_io_italia_it" {
   name         = "api-io-italia-it"
-  key_vault_id = data.azurerm_key_vault.weu-common.id
+  key_vault_id = data.azurerm_key_vault.weu_common.id
 }
 
 data "azurerm_key_vault_certificate" "app_gw_app_backend_io_italia_it" {
   name         = "app-backend-io-italia-it"
-  key_vault_id = data.azurerm_key_vault.weu-common.id
+  key_vault_id = data.azurerm_key_vault.weu_common.id
 }
 
 data "azurerm_key_vault_certificate" "app_gw_developerportal_backend_io_italia_it" {
   name         = "developerportal-backend-io-italia-it"
-  key_vault_id = data.azurerm_key_vault.weu-common.id
+  key_vault_id = data.azurerm_key_vault.weu_common.id
 }
 
 data "azurerm_key_vault_certificate" "app_gw_api_io_selfcare_pagopa_it" {
@@ -143,5 +143,5 @@ data "azurerm_linux_web_app" "cms_backoffice_app" {
 
 data "azurerm_monitor_action_group" "error_action_group" {
   name                = format("%s%serror", local.prefix, local.env_short)
-  resource_group_name = data.azurerm_resource_group.weu-common.name
+  resource_group_name = data.azurerm_resource_group.weu_common.name
 }

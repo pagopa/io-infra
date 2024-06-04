@@ -2,8 +2,8 @@
 module "app_gw" {
   source = "github.com/pagopa/terraform-azurerm-v3.git//app_gateway?ref=v8.20.0"
 
-  resource_group_name = data.azurerm_resource_group.weu-external.name
-  location            = data.azurerm_resource_group.weu-external.location
+  resource_group_name = data.azurerm_resource_group.weu_external.name
+  location            = data.azurerm_resource_group.weu_external.location
   name                = "${local.project}-appgateway"
   zones               = [1, 2, 3]
 
