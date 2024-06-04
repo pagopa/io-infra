@@ -106,20 +106,6 @@ module "app_gw" {
       pick_host_name_from_backend = true
     }
 
-    session-manager-app = {
-      protocol     = "Https"
-      host         = null
-      port         = 443
-      ip_addresses = null # with null value use fqdns
-      fqdns = [
-        data.azurerm_linux_web_app.session_manager.default_hostname
-      ]
-      probe                       = "/healthcheck"
-      probe_name                  = "probe-session-manager-app"
-      request_timeout             = 10
-      pick_host_name_from_backend = true
-    }
-
     developerportal-backend = {
       protocol     = "Https"
       host         = null
