@@ -11,7 +11,7 @@ resource "azurerm_subnet" "weu_load_test" {
   name                 = "${local.project}-load-test-snet-01"
   resource_group_name  = azurerm_resource_group.load_test.name
   virtual_network_name = azurerm_virtual_network.weu_load_test.name
-  address_prefixes     = ["10.40.0.0/27"]
+  address_prefixes     = ["10.40.0.0/26"]
 }
 
 resource "azurerm_virtual_network_peering" "weu_load_test" {
