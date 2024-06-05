@@ -31,3 +31,15 @@ resource "azurerm_virtual_network_peering" "weu_common" {
 
   allow_virtual_network_access = true
 }
+
+resource "azurerm_private_dns_zone_virtual_network_link" "azurewebsites_private_vnet_itn_common" {
+  name                = azurerm_virtual_network.weu_load_test.name
+  virtual_network_id  = azurerm_virtual_network.weu_load_test.id
+
+  resource_group_name = data.azurerm_private_dns_zone.privatelink_azurewebsites.resource_group_name
+  private_dns_zone_name = data.azurerm_private_dns_zone.privatelink_azurewebsites.name
+
+  registration_enabled  = false
+
+  tags = local.tags
+}
