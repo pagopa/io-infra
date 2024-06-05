@@ -74,6 +74,9 @@ resource "azurerm_resource_group" "session_manager_rg" {
 ## Session Manager App service ##
 #################################
 locals {
+
+  app_name = format("%s-session-manager-app-02", local.common_project)
+
   app_settings_common = {
     WEBSITES_ENABLE_APP_SERVICE_STORAGE = false
     WEBSITES_PORT                       = 8080
@@ -94,6 +97,11 @@ locals {
     FETCH_KEEPALIVE_MAX_FREE_SOCKETS    = "10"
     FETCH_KEEPALIVE_FREE_SOCKET_TIMEOUT = "30000"
     FETCH_KEEPALIVE_TIMEOUT             = "60000"
+
+    # APPINSIGHTS
+    APPINSIGHTS_CONNECTION_STRING   = data.azurerm_application_insights.application_insights.connection_string
+    APPINSIGHTS_DISABLED            = false
+    APPINSIGHTS_SAMPLING_PERCENTAGE = 100
 
     API_BASE_PATH  = "/api/v1"
     FIMS_BASE_PATH = "/fims/api/v1"
@@ -190,7 +198,7 @@ module "session_manager" {
   sku_name  = var.session_manager_plan_sku_name
 
   # App service
-  name                = format("%s-session-manager-app-02", local.common_project)
+  name                = local.app_name
   resource_group_name = azurerm_resource_group.session_manager_rg.name
   location            = var.location
 
@@ -200,7 +208,12 @@ module "session_manager" {
   health_check_path            = "/healthcheck"
   health_check_maxpingfailures = 3
 
-  app_settings = local.app_settings_common
+  app_settings = merge(
+    local.app_settings_common,
+    {
+      APPINSIGHTS_CLOUD_ROLE_NAME = local.app_name
+    }
+  )
 
   allowed_subnets = [
     data.azurerm_subnet.apim_v2_snet.id,
@@ -231,7 +244,12 @@ module "session_manager_staging" {
   app_command_line  = "npm run start"
   health_check_path = "/healthcheck"
 
-  app_settings = local.app_settings_common
+  app_settings = merge(
+    local.app_settings_common,
+    {
+      APPINSIGHTS_CLOUD_ROLE_NAME = "${module.session_manager.name}-staging"
+    }
+  )
 
   allowed_subnets = [
     # self hosted runners subnet
