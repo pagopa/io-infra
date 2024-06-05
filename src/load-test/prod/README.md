@@ -17,11 +17,13 @@ No modules.
 | Name | Type |
 |------|------|
 | [azurerm_load_test.weu_common](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/load_test) | resource |
+| [azurerm_private_dns_zone_virtual_network_link.azurewebsites_private_vnet_itn_common](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/private_dns_zone_virtual_network_link) | resource |
 | [azurerm_resource_group.load_test](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/resource_group) | resource |
 | [azurerm_subnet.weu_load_test](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/subnet) | resource |
 | [azurerm_virtual_network.weu_load_test](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/virtual_network) | resource |
 | [azurerm_virtual_network_peering.weu_common](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/virtual_network_peering) | resource |
 | [azurerm_virtual_network_peering.weu_load_test](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/virtual_network_peering) | resource |
+| [azurerm_private_dns_zone.privatelink_azurewebsites](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/private_dns_zone) | data source |
 | [azurerm_virtual_network.weu_common](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/virtual_network) | data source |
 
 ## Inputs
@@ -30,5 +32,7 @@ No inputs.
 
 ## Outputs
 
-No outputs.
+| Name | Description |
+|------|-------------|
+| <a name="output_load_test_weu_common"></a> [load\_test\_weu\_common](#output\_load\_test\_weu\_common) | n/a |
 <!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
