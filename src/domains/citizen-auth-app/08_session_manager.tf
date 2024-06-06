@@ -214,6 +214,8 @@ module "session_manager" {
       APPINSIGHTS_CLOUD_ROLE_NAME = local.app_name
     }
   )
+  sticky_settings = concat(["APPINSIGHTS_CLOUD_ROLE_NAME"])
+
 
   allowed_subnets = [
     data.azurerm_subnet.apim_v2_snet.id,
