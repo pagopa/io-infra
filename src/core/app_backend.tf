@@ -81,7 +81,7 @@ locals {
       IO_SIGN_API_BASE_PATH             = "/api/v1/sign"
       LOLLIPOP_API_BASE_PATH            = "/api/v1"
       TRIAL_SYSTEM_API_BASE_PATH        = "/api/v1"
-      IO_WALLET_API_BASE_PATH           = "/api/v1"
+      IO_WALLET_API_BASE_PATH           = "/api/v1/wallet"
 
       // REDIS
       REDIS_URL      = module.redis_common.hostname
