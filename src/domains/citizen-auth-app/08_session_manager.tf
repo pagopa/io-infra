@@ -64,8 +64,8 @@ data "azurerm_key_vault_secret" "session_manager_ALLOW_PAGOPA_IP_SOURCE_RANGE" {
 ###########
 
 resource "azurerm_resource_group" "session_manager_rg" {
-  name     = format("%s-session-manager-rg-01", local.common_session_manager_project)
-  location = var.session_manager_location
+  name     = format("%s-session-manager-rg-01", local.common_project)
+  location = var.location
 
   tags = var.tags
 }
