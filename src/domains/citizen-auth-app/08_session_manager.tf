@@ -75,7 +75,7 @@ resource "azurerm_resource_group" "session_manager_rg" {
 #################################
 locals {
 
-  app_name = format("%s-session-manager-app-02", local.common_project)
+  app_name = format("%s-session-manager-app-03", local.common_project)
 
   app_settings_common = {
     WEBSITES_ENABLE_APP_SERVICE_STORAGE = false
@@ -193,9 +193,10 @@ module "session_manager" {
   source = "github.com/pagopa/terraform-azurerm-v3//app_service?ref=v8.7.0"
 
   # App service plan
-  plan_type = "internal"
-  plan_name = format("%s-session-manager-asp-02", local.common_project)
-  sku_name  = var.session_manager_plan_sku_name
+  plan_type              = "internal"
+  plan_name              = format("%s-session-manager-asp-03", local.common_project)
+  zone_balancing_enabled = true
+  sku_name               = "P1v3"
 
   # App service
   name                = local.app_name
