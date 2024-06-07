@@ -12,7 +12,17 @@ data "azurerm_key_vault_secret" "ntfns_common_ntf_common_token" {
   key_vault_id = data.azurerm_key_vault.weu_common.id
 }
 
+data "azurerm_key_vault_secret" "ntfns_common_ntf_common_token_sandbox" {
+  name         = "notification-hub-ntfns-common-ntf-common-token-sandbox"
+  key_vault_id = data.azurerm_key_vault.weu_common.id
+}
+
 data "azurerm_key_vault_secret" "ntfns_common_ntf_common_api_key" {
   name         = "notification-hub-ntfns-common-ntf-common-api-key"
+  key_vault_id = data.azurerm_key_vault.weu_common.id
+}
+
+data "azurerm_key_vault_secret" "ntfns_common_ntf_common_api_key_sandbox" {
+  name         = "notification-hub-ntfns-common-ntf-common-api-key-sandbox"
   key_vault_id = data.azurerm_key_vault.weu_common.id
 }
