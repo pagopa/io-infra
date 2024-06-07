@@ -29,21 +29,21 @@ resource "azurerm_notification_hub" "common_partition_1" {
   tags = local.tags
 }
 
-resource "azurerm_notification_hub_authorization_rule" "common_default_listen" {
+resource "azurerm_notification_hub_authorization_rule" "common_partition_1_default_listen" {
   name                  = "DefaultListenSharedAccessSignature"
-  notification_hub_name = azurerm_notification_hub.common.name
-  namespace_name      = azurerm_notification_hub_namespace.common_partition_1.name
-  resource_group_name = azurerm_notification_hub_namespace.common_partition_1.resource_group_name
+  notification_hub_name = azurerm_notification_hub.common_partition_1.name
+  namespace_name        = azurerm_notification_hub_namespace.common_partition_1.name
+  resource_group_name   = azurerm_notification_hub_namespace.common_partition_1.resource_group_name
   manage                = false
   send                  = false
   listen                = true
 }
 
-resource "azurerm_notification_hub_authorization_rule" "common_default_full" {
+resource "azurerm_notification_hub_authorization_rule" "common_partition_1_default_full" {
   name                  = "DefaultFullSharedAccessSignature"
   notification_hub_name = azurerm_notification_hub.common_partition_1.name
-  namespace_name      = azurerm_notification_hub_namespace.common.name
-  resource_group_name = azurerm_notification_hub_namespace.common.resource_group_name
+  namespace_name        = azurerm_notification_hub_namespace.common_partition_1.name
+  resource_group_name   = azurerm_notification_hub_namespace.common_partition_1.resource_group_name
   manage                = true
   send                  = true
   listen                = true
