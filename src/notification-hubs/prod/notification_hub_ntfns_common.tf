@@ -41,8 +41,8 @@ resource "azurerm_notification_hub" "common01" {
 resource "azurerm_notification_hub_authorization_rule" "common_default_listen" {
   name                  = "DefaultListenSharedAccessSignature"
   notification_hub_name = azurerm_notification_hub.common.name
-  namespace_name      = azurerm_notification_hub_namespace.common.name
-  resource_group_name = azurerm_notification_hub_namespace.common.resource_group_name
+  namespace_name        = azurerm_notification_hub_namespace.common.name
+  resource_group_name   = azurerm_notification_hub_namespace.common.resource_group_name
   manage                = false
   send                  = false
   listen                = true
@@ -51,8 +51,8 @@ resource "azurerm_notification_hub_authorization_rule" "common_default_listen" {
 resource "azurerm_notification_hub_authorization_rule" "common_default_full" {
   name                  = "DefaultFullSharedAccessSignature"
   notification_hub_name = azurerm_notification_hub.common.name
-  namespace_name      = azurerm_notification_hub_namespace.common.name
-  resource_group_name = azurerm_notification_hub_namespace.common.resource_group_name
+  namespace_name        = azurerm_notification_hub_namespace.common.name
+  resource_group_name   = azurerm_notification_hub_namespace.common.resource_group_name
   manage                = true
   send                  = true
   listen                = true
