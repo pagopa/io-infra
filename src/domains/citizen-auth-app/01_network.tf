@@ -173,7 +173,7 @@ resource "azurerm_private_endpoint" "staging_session_manager_sites" {
     name                           = "${local.common_project}-session-manager-staging-app-pep-01"
     private_connection_resource_id = module.session_manager_weu_staging.id
     is_manual_connection           = false
-    subresource_names              = ["sites-staging"]
+    subresource_names              = ["sites-${module.session_manager_weu_staging.name}"]
   }
 
   private_dns_zone_group {
