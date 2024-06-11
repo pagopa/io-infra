@@ -13,6 +13,11 @@ data "azurerm_private_dns_zone" "internal" {
   resource_group_name = local.internal_dns_zone_resource_group_name
 }
 
+data "azurerm_private_dns_zone" "privatelink_azurewebsites_net" {
+  name                = "privatelink.azurewebsites.net"
+  resource_group_name = format("%s-rg-common", local.product)
+}
+
 data "azurerm_private_dns_zone" "privatelink_blob_core_windows_net" {
   name                = "privatelink.blob.core.windows.net"
   resource_group_name = format("%s-rg-common", local.product)
@@ -136,6 +141,49 @@ module "session_manager_snet" {
     }
   }
 }
+
+resource "azurerm_private_endpoint" "session_manager_sites" {
+  name                = "${local.common_project}-session-manager-app-pep-01"
+  location            = var.location
+  resource_group_name = azurerm_resource_group.session_manager_rg_weu.name
+  subnet_id           = data.azurerm_subnet.private_endpoints_subnet.id
+
+  private_service_connection {
+    name                           = "${local.common_project}-session-manager-app-pep-01"
+    private_connection_resource_id = module.session_manager_weu.id
+    is_manual_connection           = false
+    subresource_names              = ["sites"]
+  }
+
+  private_dns_zone_group {
+    name                 = "private-dns-zone-group"
+    private_dns_zone_ids = [data.azurerm_private_dns_zone.privatelink_azurewebsites_net.id]
+  }
+
+  tags = var.tags
+}
+
+resource "azurerm_private_endpoint" "staging_session_manager_sites" {
+  name                = "${local.common_project}-session-manager-staging-app-pep-01"
+  location            = var.location
+  resource_group_name = azurerm_resource_group.session_manager_rg_weu.name
+  subnet_id           = data.azurerm_subnet.private_endpoints_subnet.id
+
+  private_service_connection {
+    name                           = "${local.common_project}-session-manager-staging-app-pep-01"
+    private_connection_resource_id = module.session_manager_weu.id
+    is_manual_connection           = false
+    subresource_names              = ["sites-${module.session_manager_weu_staging.name}"]
+  }
+
+  private_dns_zone_group {
+    name                 = "private-dns-zone-group"
+    private_dns_zone_ids = [data.azurerm_private_dns_zone.privatelink_azurewebsites_net.id]
+  }
+
+  tags = var.tags
+}
+
 
 data "azurerm_nat_gateway" "nat_gateway" {
   name                = "${local.product}-natgw"

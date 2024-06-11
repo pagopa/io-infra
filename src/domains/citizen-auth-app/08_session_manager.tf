@@ -63,19 +63,17 @@ data "azurerm_key_vault_secret" "session_manager_ALLOW_PAGOPA_IP_SOURCE_RANGE" {
 
 ###########
 
-resource "azurerm_resource_group" "session_manager_rg" {
-  name     = format("%s-session-manager-rg-01", local.common_session_manager_project)
-  location = var.session_manager_location
+resource "azurerm_resource_group" "session_manager_rg_weu" {
+  name     = format("%s-session-manager-rg-01", local.common_project)
+  location = var.location
 
   tags = var.tags
 }
 
-#################################
-## Session Manager App service ##
-#################################
 locals {
 
-  app_name = format("%s-session-manager-app-02", local.common_project)
+  app_name     = format("%s-session-manager-app-02", local.common_project)
+  app_name_weu = format("%s-session-manager-app-03", local.common_project)
 
   app_settings_common = {
     WEBSITES_ENABLE_APP_SERVICE_STORAGE = false
@@ -189,17 +187,22 @@ locals {
   }
 }
 
-module "session_manager" {
+#################################
+## Session Manager App service ##
+#################################
+
+module "session_manager_weu" {
   source = "github.com/pagopa/terraform-azurerm-v3//app_service?ref=v8.7.0"
 
   # App service plan
-  plan_type = "internal"
-  plan_name = format("%s-session-manager-asp-02", local.common_project)
-  sku_name  = var.session_manager_plan_sku_name
+  plan_type              = "internal"
+  plan_name              = format("%s-session-manager-asp-03", local.common_project)
+  zone_balancing_enabled = true
+  sku_name               = "P1v3"
 
   # App service
-  name                = local.app_name
-  resource_group_name = azurerm_resource_group.session_manager_rg.name
+  name                = local.app_name_weu
+  resource_group_name = azurerm_resource_group.session_manager_rg_weu.name
   location            = var.location
 
   always_on                    = true
@@ -211,7 +214,7 @@ module "session_manager" {
   app_settings = merge(
     local.app_settings_common,
     {
-      APPINSIGHTS_CLOUD_ROLE_NAME = local.app_name
+      APPINSIGHTS_CLOUD_ROLE_NAME = local.app_name_weu
     }
   )
   sticky_settings = concat(["APPINSIGHTS_CLOUD_ROLE_NAME"])
@@ -231,14 +234,14 @@ module "session_manager" {
 }
 
 ## staging slot
-module "session_manager_staging" {
+module "session_manager_weu_staging" {
   source = "github.com/pagopa/terraform-azurerm-v3//app_service_slot?ref=v8.7.0"
 
-  app_service_id   = module.session_manager.id
-  app_service_name = module.session_manager.name
+  app_service_id   = module.session_manager_weu.id
+  app_service_name = module.session_manager_weu.name
 
   name                = "staging"
-  resource_group_name = azurerm_resource_group.session_manager_rg.name
+  resource_group_name = azurerm_resource_group.session_manager_rg_weu.name
   location            = var.location
 
   always_on         = true
@@ -249,7 +252,7 @@ module "session_manager_staging" {
   app_settings = merge(
     local.app_settings_common,
     {
-      APPINSIGHTS_CLOUD_ROLE_NAME = "${module.session_manager.name}-staging"
+      APPINSIGHTS_CLOUD_ROLE_NAME = "${module.session_manager_weu.name}-staging"
     }
   )
 
@@ -270,11 +273,11 @@ module "session_manager_staging" {
 }
 
 ## autoscaling
-resource "azurerm_monitor_autoscale_setting" "session_manager_autoscale_setting" {
-  name                = format("%s-autoscale-01", module.session_manager.name)
-  resource_group_name = azurerm_resource_group.session_manager_rg.name
-  location            = azurerm_resource_group.session_manager_rg.location
-  target_resource_id  = module.session_manager.plan_id
+resource "azurerm_monitor_autoscale_setting" "session_manager_weu_autoscale_setting" {
+  name                = format("%s-autoscale-02", module.session_manager_weu.name)
+  resource_group_name = azurerm_resource_group.session_manager_rg_weu.name
+  location            = azurerm_resource_group.session_manager_rg_weu.location
+  target_resource_id  = module.session_manager_weu.plan_id
 
   profile {
     name = "default"
@@ -290,7 +293,7 @@ resource "azurerm_monitor_autoscale_setting" "session_manager_autoscale_setting"
     rule {
       metric_trigger {
         metric_name              = "Requests"
-        metric_resource_id       = module.session_manager.id
+        metric_resource_id       = module.session_manager_weu.id
         metric_namespace         = "microsoft.web/sites"
         time_grain               = "PT1M"
         statistic                = "Average"
@@ -312,7 +315,7 @@ resource "azurerm_monitor_autoscale_setting" "session_manager_autoscale_setting"
     rule {
       metric_trigger {
         metric_name              = "CpuPercentage"
-        metric_resource_id       = module.session_manager.plan_id
+        metric_resource_id       = module.session_manager_weu.plan_id
         metric_namespace         = "microsoft.web/serverfarms"
         time_grain               = "PT1M"
         statistic                = "Average"
@@ -336,7 +339,7 @@ resource "azurerm_monitor_autoscale_setting" "session_manager_autoscale_setting"
     rule {
       metric_trigger {
         metric_name              = "Requests"
-        metric_resource_id       = module.session_manager.id
+        metric_resource_id       = module.session_manager_weu.id
         metric_namespace         = "microsoft.web/sites"
         time_grain               = "PT1M"
         statistic                = "Average"
@@ -358,7 +361,7 @@ resource "azurerm_monitor_autoscale_setting" "session_manager_autoscale_setting"
     rule {
       metric_trigger {
         metric_name              = "CpuPercentage"
-        metric_resource_id       = module.session_manager.plan_id
+        metric_resource_id       = module.session_manager_weu.plan_id
         metric_namespace         = "microsoft.web/serverfarms"
         time_grain               = "PT1M"
         statistic                = "Average"
