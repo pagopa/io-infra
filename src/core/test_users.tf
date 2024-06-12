@@ -33,11 +33,11 @@ locals {
 
 
   test_users_fast_login_load_test = [
-    for i in range(0, 1000): format("LVTEST00A00A%03dX", i)
+    for i in range(0, 1000) : format("LVTEST00A00A%03dX", i)
   ]
 
   test_users_fast_login_load_test_light = [
-    for i in range(0, 200): format("LVTEST00A00A%03dX", i)
+    for i in range(0, 200) : format("LVTEST00A00A%03dX", i)
   ]
 
   # A list of fiscal code to be used to test for Unique Email Enforcement initiative on IO

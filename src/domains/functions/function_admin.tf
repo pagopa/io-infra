@@ -281,7 +281,7 @@ module "function_admin_staging_slot" {
     local.function_admin.app_settings_common, {
       # Disabled CosmosDB Trigger Activity on slot
       "AzureWebJobs.UserDataProcessingTrigger.Disabled" = "1",
-      "AzureWebJobs.SanitizeProfileEmail.Disabled" = "1"
+      "AzureWebJobs.SanitizeProfileEmail.Disabled"      = "1"
     }
   )
 
