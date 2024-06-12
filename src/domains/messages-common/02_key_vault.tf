@@ -43,6 +43,36 @@ resource "azurerm_key_vault_access_policy" "adgroup_developers" {
   certificate_permissions = ["Get", "List", "Update", "Create", "Import", "Delete", "Restore", "Recover", ]
 }
 
+# kv managed identities reader policy
+
+data "azurerm_user_assigned_identity" "managed_identity_io_messages_ci" {
+  name                = "io-p-messages-github-ci-identity"
+  resource_group_name = "${local.product}-identity-rg"
+}
+
+data "azurerm_user_assigned_identity" "managed_identity_io_messages_cd" {
+  name                = "io-p-messages-github-cd-identity"
+  resource_group_name = "${local.product}-identity-rg"
+}
+
+resource "azurerm_key_vault_access_policy" "access_policy_kv_io_infra_ci" {
+  key_vault_id = module.key_vault.id
+
+  tenant_id = data.azurerm_client_config.current.tenant_id
+  object_id = data.azurerm_user_assigned_identity.managed_identity_io_messages_ci.principal_id
+
+  secret_permissions = ["Get", "List"]
+}
+
+resource "azurerm_key_vault_access_policy" "access_policy_kv_io_infra_cd" {
+  key_vault_id = module.key_vault.id
+
+  tenant_id = data.azurerm_client_config.current.tenant_id
+  object_id = data.azurerm_user_assigned_identity.managed_identity_io_messages_cd.principal_id
+
+  secret_permissions = ["Get", "List"]
+}
+
 #
 # azure devops policy
 #
