@@ -212,7 +212,7 @@ locals {
           schemaKind         = "PN",
           jsonSchema         = "unused",
           isLollipopEnabled  = "true",
-          disableLollipopFor = split(",", local.test_users),
+          disableLollipopFor = split(",", local.test_users_light),
           prodEnvironment = {
             baseUrl = local.pn_api_url_prod,
             detailsAuthentication = {
@@ -222,7 +222,7 @@ locals {
             }
           },
           testEnvironment = {
-            testUsers = split(",", local.test_users),
+            testUsers = split(",", local.test_users_light),
             baseUrl   = var.pn_test_endpoint,
             detailsAuthentication = {
               type            = "API_KEY",

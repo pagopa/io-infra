@@ -36,6 +36,10 @@ locals {
     for i in range(0, 1000): format("LVTEST00A00A%03dX", i)
   ]
 
+  test_users_fast_login_load_test_light = [
+    for i in range(0, 200): format("LVTEST00A00A%03dX", i)
+  ]
+
   # A list of fiscal code to be used to test for Unique Email Enforcement initiative on IO
   test_users_unique_email_test = [
     "UEETST00A00A000X",
@@ -51,6 +55,18 @@ locals {
       local.test_users_store_review,
       local.test_users_eu_covid_cert,
       local.test_users_fast_login_load_test,
+      local.test_users_unique_email_test,
+      ]
+    )
+  )
+
+  test_users_light = join(",",
+    flatten([
+      local.test_users_internal,
+      local.test_users_internal_load,
+      local.test_users_store_review,
+      local.test_users_eu_covid_cert,
+      local.test_users_fast_login_load_test_light,
       local.test_users_unique_email_test,
       ]
     )
