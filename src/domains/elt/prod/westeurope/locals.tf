@@ -11,7 +11,7 @@ locals {
     CreatedBy      = "Terraform"
     Environment    = "Prod"
     Owner          = "IO"
-    Source         = "https://github.com/pagopa/io-infra/blob/main/src/domains/elt/prod/westeurope"
+    Source         = "https://github.com/pagopa/io-infra/blob/main/src/domains/elt/prod"
     ManagementTeam = "IO Platform"
   }
 }

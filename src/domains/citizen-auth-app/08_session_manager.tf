@@ -61,6 +61,11 @@ data "azurerm_key_vault_secret" "session_manager_ALLOW_PAGOPA_IP_SOURCE_RANGE" {
   key_vault_id = data.azurerm_key_vault.kv.id
 }
 
+data "azurerm_key_vault_secret" "session_manager_ALLOW_FIMS_IP_SOURCE_RANGE" {
+  name         = "session-manager-ALLOW-FIMS-IP-SOURCE-RANGE"
+  key_vault_id = data.azurerm_key_vault.kv.id
+}
+
 ###########
 
 resource "azurerm_resource_group" "session_manager_rg_weu" {
@@ -101,8 +106,11 @@ locals {
     APPINSIGHTS_DISABLED            = false
     APPINSIGHTS_SAMPLING_PERCENTAGE = 100
 
-    API_BASE_PATH  = "/api/v1"
-    FIMS_BASE_PATH = "/fims/api/v1"
+    API_BASE_PATH = "/api/v1"
+
+    # Fims config
+    FIMS_BASE_PATH             = "/fims/api/v1"
+    ALLOW_FIMS_IP_SOURCE_RANGE = data.azurerm_key_vault_secret.session_manager_ALLOW_FIMS_IP_SOURCE_RANGE.value
 
     # REDIS AUTHENTICATION
     REDIS_URL      = data.azurerm_redis_cache.core_domain_redis_common.hostname
@@ -128,7 +136,7 @@ locals {
 
     # Fast Login config
     FF_FAST_LOGIN = "ALL"
-    LV_TEST_USERS = join(",", [data.azurerm_key_vault_secret.app_backend_LV_TEST_USERS.value, module.tests.test_users.all])
+    LV_TEST_USERS = module.tests.test_users.all
 
     # Test Login config
     TEST_LOGIN_FISCAL_CODES = module.tests.test_users.all
