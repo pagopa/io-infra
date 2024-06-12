@@ -128,3 +128,15 @@ resource "azurerm_private_dns_zone_virtual_network_link" "srch_private_vnet_itn_
 
   tags = var.tags
 }
+
+resource "azurerm_private_dns_zone_virtual_network_link" "redis_private_vnet_itn_common" {
+  name = module.vnet_itn_common.name
+
+  virtual_network_id    = module.vnet_itn_common.id
+  resource_group_name   = data.azurerm_private_dns_zone.privatelink_redis.resource_group_name
+  private_dns_zone_name = data.azurerm_private_dns_zone.privatelink_redis.name
+
+  registration_enabled = false
+
+  tags = var.tags
+}
