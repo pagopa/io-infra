@@ -128,7 +128,7 @@ locals {
 
     # Fast Login config
     FF_FAST_LOGIN = "ALL"
-    LV_TEST_USERS = join(",", [data.azurerm_key_vault_secret.app_backend_LV_TEST_USERS.value, module.tests.test_users.all])
+    LV_TEST_USERS = module.tests.test_users.all
 
     # Test Login config
     TEST_LOGIN_FISCAL_CODES = module.tests.test_users.all
