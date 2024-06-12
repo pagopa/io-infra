@@ -68,3 +68,8 @@ data "azurerm_private_dns_zone" "privatelink_srch" {
   name                = "privatelink.search.windows.net"
   resource_group_name = "io-p-rg-common"
 }
+
+data "azurerm_private_dns_zone" "privatelink_redis" {
+  name                = "privatelink.redis.cache.windows.net"
+  resource_group_name = "io-p-rg-common"
+}
