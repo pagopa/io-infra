@@ -1227,6 +1227,6 @@ resource "azurerm_web_application_firewall_policy" "api_app" {
 #######################
 
 data "azurerm_linux_web_app" "session_manager" {
-  name                = "io-p-weu-session-manager-app-02"
-  resource_group_name = "io-p-itn-session-manager-rg-01"
+  name                = "io-p-weu-session-manager-app-03"
+  resource_group_name = "io-p-weu-session-manager-rg-01"
 }
