@@ -20,7 +20,7 @@ jobs:
   prod_itn_core_deploy:
     if: ${{ inputs.prod_environment == 'true' }}
     uses: pagopa/dx/.github/workflows/infra_apply.yaml@main
-    name: Code Deploy
+    name: Prod - Code Deploy
     secrets: inherit
     with:
       environment: prod
