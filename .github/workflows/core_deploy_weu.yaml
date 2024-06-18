@@ -1,5 +1,6 @@
 name: WEU - Core TF Apply (PROD)
 
+# Only manual
 on: 
   workflow_dispatch:
     inputs:
