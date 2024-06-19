@@ -12,11 +12,6 @@ on:
         options:
           - true
           - false
-      use_private_agent:
-        description: Use a private agent to run the Terraform plan.
-        type: boolean
-        required: false
-        default: true
       env_vars:
         type: string
         required: false
