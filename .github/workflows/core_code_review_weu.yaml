@@ -12,7 +12,7 @@ on:
     paths:
       - "src/core/*"
       - "src/psql/*"
-      - ".devops/core-code-review-pipelines.yml"
+      - ".github/workflows/core_code_review_weu.yaml"
     paths-ignore:
       - "src/core/prod/**"
       - "src/core/_modules/**"

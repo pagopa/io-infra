@@ -16,7 +16,7 @@ on:
         description: Use a private agent to run the Terraform plan.
         type: boolean
         required: false
-        default: false
+        default: true
       env_vars:
         type: string
         required: false
@@ -25,7 +25,6 @@ on:
 permissions:
   id-token: write
   contents: read
-  pull-requests: write
         
 concurrency:
   group: ${{ github.workflow }}-cd
@@ -33,132 +32,122 @@ concurrency:
 
 env:
   ARM_SUBSCRIPTION_ID: ${{ secrets.ARM_SUBSCRIPTION_ID }}
+  ARM_CLIENT_ID: ${{ secrets.ARM_CLIENT_ID }}
   ARM_TENANT_ID: ${{ secrets.ARM_TENANT_ID }}
   ARM_USE_OIDC: true
   ARM_USE_AZUREAD: true
   ARM_STORAGE_USE_AZUREAD: true
   DIR: src/core
   AZURE_ENVIRONMENT: prod
-  ARM_CLIENT_ID: ${{ secrets.ARM_CLIENT_ID }}
   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
 jobs:
-
-  tf_plan:
-    name: 'Terraform Plan'
-    runs-on: ${{ inputs.use_private_agent == true && 'self-hosted' || 'ubuntu-20.04' }}
+  terraform_plan_job:
+    name: Terraform Plan
+    runs-on: self-hosted
     environment: prod-ci
-    permissions:
-      id-token: write
-      contents: read
-    outputs:
-      terraform_version: ${{ steps.set-terraform-version.outputs.terraform_version }}
 
     steps:
-      - uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
-        name: Checkout
 
-      - name: Set Environment Variables
-        if: ${{ inputs.env_vars }}
-        env:
-          ENV_VARS: ${{ inputs.env_vars }}
-        run: |
-          set -euo pipefail
-
-          for i in "$ENV_VARS[@]"
-          do
-            printf "%q\n" "$i" >> "$GITHUB_ENV"
-          done
+      - name: Checkout
+        id: checkout
+        uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
+        with:
+          persist-credentials: false
+          fetch-depth: 0
 
       - name: Azure Login
-        uses: azure/login@v2 # v2.0.0
+        id: az_login
+        uses: azure/login@6b2456866fc08b011acb422a92a4aa20e2c4de32 # v2.1.0
         with:
           client-id: ${{ env.ARM_CLIENT_ID }}
           tenant-id: ${{ env.ARM_TENANT_ID }}
           subscription-id: ${{ env.ARM_SUBSCRIPTION_ID }}
 
       - name: Set Terraform Version
-        id: set-terraform-version
+        id: env_tf_version
         run: |
-          set -eu
-          terraform_version=$(cat .terraform-version)
-          echo "terraform_version=$terraform_version" >> "$GITHUB_OUTPUT"
+          echo "terraform_version=$(cat .terraform-version)" >> $GITHUB_OUTPUT
 
-      - uses: hashicorp/setup-terraform@a1502cd9e758c50496cc9ac5308c4843bcd56d36 # v3.0.0
+      - uses: hashicorp/setup-terraform@a1502cd9e758c50496cc9ac5308c4843bcd56d36
+        id: terraform_setup
         name: Setup Terraform
         with:
-          terraform_version: ${{ steps.set-terraform-version.outputs.terraform_version }}
+          terraform_version: ${{ steps.env_tf_version.outputs.terraform_version}}
+          terraform_wrapper: true
 
-      - name: Terraform Init
+      - name: Terraform plan
+        shell: bash
         working-directory: ${{ env.DIR }}
+        env:
+          AZURE_ENVIRONMENT: prod
         run: |
-          terraform init
+          bash ./terraform.sh plan ${{ env.AZURE_ENVIRONMENT }} -lock-timeout=3000s -out=tfplan-${{ env.AZURE_ENVIRONMENT }}-${{ github.sha }} -input=false
 
-      - name: Terraform Plan
-        working-directory: ${{ env.DIR }}
-        run: |
-          terraform plan \
-            -lock-timeout=3000s \
-            -out=tfplan-${{ github.sha }} \
-            -input=false
-
-      - name: "Upload Terraform Plan as Artifact"
-        uses: actions/upload-artifact@694cdabd8bdb0f10b2cea11669e1bf5453eed0a6 # v4.2.0
+      - uses: actions/upload-artifact@c7d193f32edcb7bfad88892161225aeda64e9392
+        id: artifact_upload
+        name: Upload plans as artifacts
+        env:
+          AZURE_ENVIRONMENT: prod
         with:
-          name: tfplan
-          path: ${{ env.DIR }}/tfplan-${{ github.sha }}
+          name: tfplan-output
           if-no-files-found: error
-          retention-days: 7
+          path: |
+            **/tfplan-${{ env.AZURE_ENVIRONMENT }}-*
 
-  tf_apply:
-    name: 'Terraform Apply'
-    runs-on: ${{ inputs.use_private_agent == true && 'self-hosted' || 'ubuntu-20.04' }}
-    needs: [tf_plan]
+    outputs:
+      terraform_version: ${{ steps.env_tf_version.outputs.terraform_version}}
+
+  terraform_apply_job:
+    name: Terraform Apply
+    runs-on: self-hosted
     environment: prod-cd
-    permissions:
-      id-token: write
-      contents: read
+    needs: [terraform_plan_job]
 
     steps:
-      - uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
-        name: Checkout
+
+      - name: Checkout
+        id: checkout
+        uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
+        with:
+          persist-credentials: false
+          fetch-depth: 0
+
+      - uses: actions/download-artifact@f44cd7b40bfd40b6aa1cc1b9b5b7bf03d3c67110
+        id: artifact_download
+        name: Download plans as artifact
+        with:
+          name: tfplan-output
 
       - name: Azure Login
-        uses: azure/login@v2 # v2.0.0
+        id: az_login
+        uses: azure/login@6b2456866fc08b011acb422a92a4aa20e2c4de32 # v2.1.0
         with:
           client-id: ${{ env.ARM_CLIENT_ID }}
           tenant-id: ${{ env.ARM_TENANT_ID }}
           subscription-id: ${{ env.ARM_SUBSCRIPTION_ID }}
 
-      - name: Download Terraform Plan as Artifact
-        uses: actions/download-artifact@6b208ae046db98c579e8a3aa621ab581ff575935 # v4.1.1
-        with:
-          name: tfplan
-          path: ${{ env.DIR }}
-
-      - name: Retrieve Terraform Modules from Cache
-        uses: actions/cache@ab5e6d0c87105b4c9c2047343972218f562e4319 # v4.0.1
-        with:
-          path: ${{ env.DIR }}/.terraform
-          key: terraform-${{ env.DIR }}-${{ github.sha }}
-          restore-keys: |
-            terraform-${{ env.DIR }}
-
-      - uses: hashicorp/setup-terraform@a1502cd9e758c50496cc9ac5308c4843bcd56d36 # v3.0.0
+      - uses: hashicorp/setup-terraform@a1502cd9e758c50496cc9ac5308c4843bcd56d36
+        id: terraform_setup
         name: Setup Terraform
         with:
-          terraform_version: ${{ needs.tf_plan.outputs.terraform_version }}
+          terraform_version: ${{ needs.terraform_plan_job.outputs.terraform_version }}
+          terraform_wrapper: true
 
-      - name: Terraform Init
+      - name: Terraform init
+        id: terraform_init
+        shell: bash
         working-directory: ${{ env.DIR }}
+        env:
+          AZURE_ENVIRONMENT: prod
         run: |
-          terraform init
+          bash ./terraform.sh init ${{ env.AZURE_ENVIRONMENT }}
 
-      - name: Terraform Apply
+      - name: Terraform apply
+        id: terraform_apply
+        shell: bash
         working-directory: ${{ env.DIR }}
+        env:
+          AZURE_ENVIRONMENT: prod
         run: |
-          terraform apply \
-            -lock-timeout=3000s \
-            -auto-approve \
-            -input=false \
-            tfplan-${{ github.sha }}
+          terraform apply -lock-timeout=3000s -auto-approve -input=false tfplan-${{ env.AZURE_ENVIRONMENT }}-${{ github.sha }}
