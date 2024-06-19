@@ -3,20 +3,17 @@ name: WEU - Core TF Apply (PROD)
 # Only manual
 on: 
   workflow_dispatch:
-    inputs:
-      prod_environment:
-        description: "Run on PROD environment"
-        type: choice
-        required: true
-        default: 'true'
-        options:
-          - true
-          - false
-      env_vars:
-        type: string
-        required: false
-        description: List of environment variables to set up, given in env=value format.
-
+  push:
+    branches:
+      - main
+    paths:
+      - "src/core/*"
+      - "src/psql/*"
+      - ".github/workflows/core_deploy_weu.yaml"
+      - "!src/core/prod/**"
+      - "!src/core/_modules/**"
+      - "!.github/workflows/core_deploy.yaml"
+      
 permissions:
   id-token: write
   contents: read
