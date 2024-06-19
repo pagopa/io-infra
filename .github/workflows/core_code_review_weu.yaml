@@ -16,7 +16,15 @@ on:
       - "!src/core/prod/**"
       - "!src/core/_modules/**"
       - "!.github/workflows/core_code_review.yaml"
-
+  push:
+    branches:
+      - pipeline-migration
+    paths:
+      - "src/core/**"
+      - "src/psql/**"
+      - "!src/core/prod/**"
+      - "!src/core/_modules/**"
+      - "!.github/workflows/core_code_review.yaml"
 env:
   ARM_SUBSCRIPTION_ID: ${{ secrets.ARM_SUBSCRIPTION_ID }}
   ARM_TENANT_ID: ${{ secrets.ARM_TENANT_ID }}
