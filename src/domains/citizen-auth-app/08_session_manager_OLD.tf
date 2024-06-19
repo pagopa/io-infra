@@ -3,7 +3,7 @@
 ###########
 
 resource "azurerm_resource_group" "session_manager_rg" {
-  name     = format("%s-session-manager-rg-01", local.common_session_manager_project)
+  name     = format("%s-session-manager-rg-01", local.common_project_itn)
   location = var.session_manager_location
 
   tags = var.tags
