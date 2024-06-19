@@ -142,8 +142,8 @@ data "azurerm_linux_web_app" "cms_backoffice_app" {
 }
 
 data "azurerm_linux_web_app" "session_manager" {
-  name                = "${local.project}-weu-session-manager-app-02"
-  resource_group_name = "${local.project}-itn-session-manager-rg-01"
+  name                = "${local.project}-weu-session-manager-app-03"
+  resource_group_name = "${local.project}-weu-session-manager-rg-01"
 }
 
 data "azurerm_monitor_action_group" "error_action_group" {
