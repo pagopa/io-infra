@@ -76,13 +76,13 @@ jobs:
             -n ${{ env.STORAGE_ACCOUNT_NAME }} \
             --query [0].value -o tsv)
 
-            az apim backup \
-            --name ${{ env.APIM_NAME }} \
-            -g ${{ env.APIM_RG }} \
-            --backup-name ${{ env.BACKUP_NAME }} \
-            --storage-account-name ${{ env.STORAGE_ACCOUNT_NAME }} \
-            --storage-account-container ${{ env.STORAGE_ACCOUNT_CONTAINER }} \
-            --storage-account-key $key
+            # az apim backup \
+            # --name ${{ env.APIM_NAME }} \
+            # -g ${{ env.APIM_RG }} \
+            # --backup-name ${{ env.BACKUP_NAME }} \
+            # --storage-account-name ${{ env.STORAGE_ACCOUNT_NAME }} \
+            # --storage-account-container ${{ env.STORAGE_ACCOUNT_CONTAINER }} \
+            # --storage-account-key $key
         env:
           APIM_NAME: ${{ inputs.apim_name }}
           APIM_RG: ${{ inputs.apim_resource_group }}
