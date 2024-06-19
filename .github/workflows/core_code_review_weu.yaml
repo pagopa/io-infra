@@ -13,10 +13,9 @@ on:
       - "src/core/*"
       - "src/psql/*"
       - ".github/workflows/core_code_review_weu.yaml"
-    paths-ignore:
-      - "src/core/prod/**"
-      - "src/core/_modules/**"
-      - ".github/workflows/core_code_review.yaml"
+      - "!src/core/prod/**"
+      - "!src/core/_modules/**"
+      - "!.github/workflows/core_code_review.yaml"
 
 env:
   ARM_SUBSCRIPTION_ID: ${{ secrets.ARM_SUBSCRIPTION_ID }}
