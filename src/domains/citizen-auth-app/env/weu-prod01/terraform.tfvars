@@ -49,6 +49,7 @@ ingress_load_balancer_ip = "10.11.0.254"
 
 # Functions LolliPoP
 cidr_subnet_fnlollipop              = ["10.0.17.0/26"]
+cidr_subnet_fnlollipop_itn          = ["10.20.3.0/26"]
 function_lollipop_kind              = "Linux"
 function_lollipop_sku_tier          = "PremiumV3"
 function_lollipop_sku_size          = "P1v3"

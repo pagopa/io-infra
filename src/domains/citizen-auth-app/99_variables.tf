@@ -154,6 +154,11 @@ variable "cidr_subnet_fnlollipop" {
   description = "Function Lollipop address space."
 }
 
+variable "cidr_subnet_fnlollipop_itn" {
+  type        = list(string)
+  description = "Function Lollipop address space."
+}
+
 variable "function_lollipop_kind" {
   type        = string
   description = "App service plan kind"
