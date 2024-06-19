@@ -138,70 +138,8 @@ resource "azurerm_monitor_autoscale_setting" "function_lollipop" {
   location            = var.location
   target_resource_id  = module.function_lollipop[0].app_service_plan_id
 
-
-  # Scaling strategy
-  # 05 - 19,30 -> min 3
-  # 19,30 - 23 -> min 4
-  # 23 - 05 -> min 2
   dynamic "profile" {
-    for_each = [
-      {
-        name = "{\"name\":\"default\",\"for\":\"evening\"}",
-
-        recurrence = {
-          hours   = 22
-          minutes = 59
-        }
-
-        capacity = {
-          default = var.function_lollipop_autoscale_default + 1
-          minimum = var.function_lollipop_autoscale_minimum + 1
-          maximum = var.function_lollipop_autoscale_maximum
-        }
-      },
-      {
-        name = "{\"name\":\"default\",\"for\":\"night\"}",
-
-        recurrence = {
-          hours   = 5
-          minutes = 0
-        }
-
-        capacity = {
-          default = var.function_lollipop_autoscale_default + 1
-          minimum = var.function_lollipop_autoscale_minimum + 1
-          maximum = var.function_lollipop_autoscale_maximum
-        }
-      },
-      {
-        name = "evening",
-
-        recurrence = {
-          hours   = 19
-          minutes = 30
-        }
-
-        capacity = {
-          default = var.function_lollipop_autoscale_default + 2
-          minimum = var.function_lollipop_autoscale_minimum + 2
-          maximum = var.function_lollipop_autoscale_maximum
-        }
-      },
-      {
-        name = "night",
-
-        recurrence = {
-          hours   = 23
-          minutes = 0
-        }
-
-        capacity = {
-          default = var.function_lollipop_autoscale_default
-          minimum = var.function_lollipop_autoscale_minimum
-          maximum = var.function_lollipop_autoscale_maximum
-        }
-      }
-    ]
+    for_each = local.function_lollipop.autoscale_profiles
     iterator = profile_info
 
     content {
