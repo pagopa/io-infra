@@ -1,5 +1,12 @@
 name: PR - Core TF Validation
 
+# This pipeline start automatically when a PR is opened
+#
+# is responsible for managing changes relating to the NEW mode only, 
+# so it checks whether the change has occurred only in the folders inside "paths"
+#
+## NOTE: 'NEW mode' mean the new terraform infrastructure inside the src/core/prod folder, which no longer requires the terraform.sh script to be applied.
+
 on:
   workflow_dispatch:
   pull_request:

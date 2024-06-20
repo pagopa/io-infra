@@ -1,6 +1,12 @@
 name: WEU - Core TF Apply (PROD)
 
-# Only manual
+# This pipeline start automatically when a PR will be merged in 'main'
+#
+# is responsible for managing only the legacy part (West Europe), so it checks whether the change has occurred only in the folders inside "paths"
+# and gnore the folders regarding the new mode (you can notice it from the symbol '!', which indicates an excluded path)
+#
+# This pipeline will use the terraform.sh script, which first executes a plan and then an apply, which must be approved by the team.
+
 on: 
   workflow_dispatch:
   push:
