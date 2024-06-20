@@ -24,7 +24,7 @@ locals {
 
       #TODO: move to new storage on itn
       LOLLIPOP_ASSERTION_STORAGE_CONNECTION_STRING = data.azurerm_storage_account.lollipop_assertion_storage.primary_connection_string
-      LOLLIPOP_ASSERTION_REVOKE_QUEUE              = "pubkeys-revoke"
+      LOLLIPOP_ASSERTION_REVOKE_QUEUE              = "pubkeys-revoke-v2"
 
 
       // ------------
@@ -121,7 +121,7 @@ resource "azurerm_resource_group" "lollipop_rg_itn" {
 
 # Subnet to host admin function
 module "lollipop_snet_itn" {
-  source                                    = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v4.1.15"
+  source                                    = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v6.19.1"
   name                                      = format("%s-lollipop-snet", local.common_project_itn)
   address_prefixes                          = var.cidr_subnet_fnlollipop_itn
   resource_group_name                       = data.azurerm_virtual_network.common_vnet_italy_north.resource_group_name
@@ -144,7 +144,7 @@ module "lollipop_snet_itn" {
 }
 
 module "function_lollipop_itn" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app?ref=v5.2.0"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app?ref=v6.19.1"
 
   resource_group_name = azurerm_resource_group.lollipop_rg_itn.name
   name                = format("%s-lollipop-fn", local.common_project_itn)
@@ -162,15 +162,16 @@ module "function_lollipop_itn" {
     kind                         = var.function_lollipop_kind
     sku_size                     = var.function_lollipop_sku_size
     maximum_elastic_worker_count = 0
+    worker_count                 = null
+    zone_balancing_enabled       = true
   }
 
   app_settings = merge(
     local.function_lollipop.app_settings,
-    #TODO: enable when the new storage has been creted and linked to env variables
-    { "AzureWebJobs.HandlePubKeyRevoke.Disabled" = "1" },
+    { "AzureWebJobs.HandlePubKeyRevoke.Disabled" = "0" },
   )
 
-  sticky_settings = ["AzureWebJobs.HandlePubKeyRevoke.Disabled"]
+  sticky_app_setting_names = ["AzureWebJobs.HandlePubKeyRevoke.Disabled"]
 
   internal_storage = {
     "enable"                     = true,
@@ -197,7 +198,7 @@ module "function_lollipop_itn" {
 }
 
 module "function_lollipop_staging_slot_itn" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app_slot?ref=v5.2.0"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app_slot?ref=v6.19.1"
 
   name                = "staging"
   location            = var.session_manager_location
@@ -228,7 +229,7 @@ module "function_lollipop_staging_slot_itn" {
 resource "azurerm_monitor_autoscale_setting" "function_lollipop_itn" {
   name                = format("%s-autoscale", module.function_lollipop_itn.name)
   resource_group_name = azurerm_resource_group.lollipop_rg_itn.name
-  location            = var.location
+  location            = var.session_manager_location
   target_resource_id  = module.function_lollipop_itn.app_service_plan_id
 
   dynamic "profile" {
@@ -361,55 +362,54 @@ resource "azurerm_monitor_autoscale_setting" "function_lollipop_itn" {
   }
 }
 
-# # ---------------------------------
-# # Alerts
-# # ---------------------------------
+# ---------------------------------
+# Alerts
+# ---------------------------------
 
-# resource "azurerm_monitor_scheduled_query_rules_alert_v2" "alert_function_lollipop_HandlePubKeyRevoke_failure" {
-#   count = var.lollipop_enabled ? 1 : 0
+resource "azurerm_monitor_scheduled_query_rules_alert_v2" "alert_function_lollipop_itn_HandlePubKeyRevoke_failure" {
 
-#   name                = "[${upper(var.domain)}|${module.function_lollipop[0].name}] The revocation of one or more PubKeys has failed"
-#   resource_group_name = azurerm_resource_group.lollipop_rg[0].name
-#   location            = var.location
+  name                = "[${upper(var.domain)}|${module.function_lollipop_itn.name}] The revocation of one or more PubKeys has failed"
+  resource_group_name = azurerm_resource_group.lollipop_rg_itn.name
+  location            = var.location
 
-#   // check once per day
-#   evaluation_frequency = "P1D"
-#   window_duration      = "P1D"
-#   scopes               = [data.azurerm_application_insights.application_insights.id]
-#   severity             = 1
-#   criteria {
-#     query                   = <<-QUERY
-# exceptions
-# | where cloud_RoleName == "${module.function_lollipop[0].name}"
-# | where outerMessage startswith "HandlePubKeyRevoke|"
-# | extend
-#   event_name = tostring(customDimensions.name),
-#   event_maxRetryCount = toint(customDimensions.maxRetryCount),
-#   event_retryCount = toint(customDimensions.retryCount),
-#   event_assertionRef = tostring(customDimensions.assertionRef),
-#   event_detail = tostring(customDimensions.detail),
-#   event_fatal = tostring(customDimensions.fatal),
-#   event_isSuccess = tostring(customDimensions.isSuccess),
-#   event_modelId = tostring(customDimensions.modelId)
-# | where event_name == "lollipop.pubKeys.revoke.failure" and event_retryCount == event_maxRetryCount-1
-#       QUERY
-#     time_aggregation_method = "Count"
-#     threshold               = 1
-#     operator                = "GreaterThanOrEqual"
+  // check once per day
+  evaluation_frequency = "P1D"
+  window_duration      = "P1D"
+  scopes               = [data.azurerm_application_insights.application_insights.id]
+  severity             = 1
+  criteria {
+    query                   = <<-QUERY
+exceptions
+| where cloud_RoleName == "${module.function_lollipop_itn.name}"
+| where outerMessage startswith "HandlePubKeyRevoke|"
+| extend
+  event_name = tostring(customDimensions.name),
+  event_maxRetryCount = toint(customDimensions.maxRetryCount),
+  event_retryCount = toint(customDimensions.retryCount),
+  event_assertionRef = tostring(customDimensions.assertionRef),
+  event_detail = tostring(customDimensions.detail),
+  event_fatal = tostring(customDimensions.fatal),
+  event_isSuccess = tostring(customDimensions.isSuccess),
+  event_modelId = tostring(customDimensions.modelId)
+| where event_name == "lollipop.pubKeys.revoke.failure" and event_retryCount == event_maxRetryCount-1
+      QUERY
+    time_aggregation_method = "Count"
+    threshold               = 1
+    operator                = "GreaterThanOrEqual"
 
-#     failing_periods {
-#       minimum_failing_periods_to_trigger_alert = 1
-#       number_of_evaluation_periods             = 1
-#     }
-#   }
+    failing_periods {
+      minimum_failing_periods_to_trigger_alert = 1
+      number_of_evaluation_periods             = 1
+    }
+  }
 
-#   auto_mitigation_enabled = false
-#   description             = "One or more PubKey has not been revoked. Please, check the poison-queue and re-schedule the operation."
-#   enabled                 = true
-#   action {
-#     action_groups = [data.azurerm_monitor_action_group.quarantine_error_action_group.id]
-#   }
+  auto_mitigation_enabled = false
+  description             = "One or more PubKey has not been revoked. Please, check the poison-queue and re-schedule the operation."
+  enabled                 = true
+  action {
+    action_groups = [data.azurerm_monitor_action_group.error_action_group.id]
+  }
 
-#   tags = var.tags
-# }
+  tags = var.tags
+}
 

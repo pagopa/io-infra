@@ -314,7 +314,7 @@ exceptions
   description             = "One or more PubKey has not been revoked. Please, check the poison-queue and re-schedule the operation."
   enabled                 = true
   action {
-    action_groups = [data.azurerm_monitor_action_group.quarantine_error_action_group.id]
+    action_groups = [data.azurerm_monitor_action_group.error_action_group.id]
   }
 
   tags = var.tags

@@ -88,6 +88,11 @@ resource "azurerm_storage_queue" "lollipop_assertions_storage_revoke_queue" {
   storage_account_name = module.lollipop_assertions_storage.name
 }
 
+resource "azurerm_storage_queue" "lollipop_assertions_storage_revoke_queue_v2" {
+  name                 = "pubkeys-revoke-v2"
+  storage_account_name = module.lollipop_assertions_storage.name
+}
+
 
 
 ###
