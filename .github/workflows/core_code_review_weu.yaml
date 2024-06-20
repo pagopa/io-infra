@@ -1,5 +1,11 @@
 name: WEU - Core TF Validation (PROD)
 
+# This pipeline starts automatically when a PR is opened.
+#
+# It is responsible for managing only the legacy part (West Europe), 
+# ensuring that changes have occurred exclusively within the directories listed in "paths." 
+# It ignores the folders related to the new infrastructure, indicated by the symbol '!', which denotes an excluded path.
+
 on:
   workflow_dispatch:
   pull_request:
