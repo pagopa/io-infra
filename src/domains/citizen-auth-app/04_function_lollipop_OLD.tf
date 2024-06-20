@@ -56,7 +56,10 @@ module "function_lollipop" {
 
   app_settings = merge(
     local.function_lollipop.app_settings,
-    { "AzureWebJobs.HandlePubKeyRevoke.Disabled" = "0" },
+    {
+      "LOLLIPOP_ASSERTION_REVOKE_QUEUE"          = "pubkeys-revoke",
+      "AzureWebJobs.HandlePubKeyRevoke.Disabled" = "0"
+    },
   )
 
   sticky_settings = ["AzureWebJobs.HandlePubKeyRevoke.Disabled"]
@@ -115,7 +118,10 @@ module "function_lollipop_staging_slot" {
 
   app_settings = merge(
     local.function_lollipop.app_settings,
-    { "AzureWebJobs.HandlePubKeyRevoke.Disabled" = "1" },
+    {
+      "LOLLIPOP_ASSERTION_REVOKE_QUEUE"          = "pubkeys-revoke",
+      "AzureWebJobs.HandlePubKeyRevoke.Disabled" = "1"
+    },
   )
 
   subnet_id = module.lollipop_snet[0].id

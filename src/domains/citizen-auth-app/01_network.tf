@@ -111,16 +111,6 @@ data "azurerm_subnet" "self_hosted_runner_snet" {
   resource_group_name  = local.vnet_common_resource_group_name
 }
 
-## session_manager subnet
-data "azurerm_resource_group" "italy_north_common_rg" {
-  name = format("%s-itn-common-rg-01", local.product)
-}
-
-data "azurerm_virtual_network" "common_vnet_italy_north" {
-  name                = format("%s-itn-common-vnet-01", local.product)
-  resource_group_name = data.azurerm_resource_group.italy_north_common_rg.name
-}
-
 data "azurerm_virtual_network" "common_vnet" {
   name                = format("%s-vnet-common", local.product)
   resource_group_name = format("%s-rg-common", local.product)
@@ -147,6 +137,10 @@ module "session_manager_snet" {
     }
   }
 }
+
+#########################
+# Private Endpoints
+#########################
 
 resource "azurerm_private_endpoint" "session_manager_sites" {
   name                = "${local.common_project}-session-manager-app-pep-01"
