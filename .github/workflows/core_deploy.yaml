@@ -2,27 +2,18 @@ name: PR - Core TF Apply
 
 on: 
   workflow_dispatch:
-    inputs:
-      prod_environment:
-        description: "Run on PROD environment"
-        type: choice
-        required: true
-        default: 'true'
-        options:
-          - true
-          - false
-      env_vars:
-        type: string
-        required: false
-        description: List of environment variables to set up, given in env=value format.
-
+  push:
+    branches:
+      - main
+    paths:
+      - "src/core/prod/**"
+      - "src/core/_modules/**"
+      - ".github/workflows/core_deploy.yaml"
 jobs:
   prod_itn_core_deploy:
-    if: ${{ inputs.prod_environment == 'true' }}
     uses: pagopa/dx/.github/workflows/infra_apply.yaml@main
     name: Prod - Code Deploy
     secrets: inherit
     with:
       environment: prod
       base_path: src/core
-      env_vars: ${{ inputs.env_vars }}

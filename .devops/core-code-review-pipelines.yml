@@ -1,17 +1,22 @@
-pr:
-  autoCancel: false # prevent terraform state lock on new commits
-  branches:
-    include:
-      - main
-  paths:
-    include:
-      - "src/core/*"
-      - "src/psql/*"
-      - ".devops/core-code-review-pipelines.yml"
-    exclude:
-      - '**/*.lock.hcl'
-      - 'src/core/prod/*'
-      - 'src/core/_modules/*'
+# only manual
+trigger: none
+pr: none
+
+# Disabled auto start for PR
+# pr:
+#   autoCancel: false # prevent terraform state lock on new commits
+#   branches:
+#     include:
+#       - main
+#   paths:
+#     include:
+#       - "src/core/*"
+#       - "src/psql/*"
+#       - ".devops/core-code-review-pipelines.yml"
+#     exclude:
+#       - '**/*.lock.hcl'
+#       - 'src/core/prod/*'
+#       - 'src/core/_modules/*'
 
 parameters:
   - name: "PROD"
