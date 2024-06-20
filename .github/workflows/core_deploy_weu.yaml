@@ -7,8 +7,7 @@ on:
     branches:
       - main
     paths:
-      - "src/core/*"
-      - "src/psql/*"
+      - "src/core/**"
       - ".github/workflows/core_deploy_weu.yaml"
       - "!src/core/prod/**"
       - "!src/core/_modules/**"
