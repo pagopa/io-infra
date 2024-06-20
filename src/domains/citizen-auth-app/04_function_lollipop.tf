@@ -112,7 +112,7 @@ locals {
 
 resource "azurerm_resource_group" "lollipop_rg_itn" {
   name     = format("%s-lollipop-rg", local.common_project_itn)
-  location = var.session_manager_location
+  location = local.itn_location
 
   tags = var.tags
 }
@@ -148,7 +148,7 @@ module "function_lollipop_itn" {
 
   resource_group_name = azurerm_resource_group.lollipop_rg_itn.name
   name                = format("%s-lollipop-fn", local.common_project_itn)
-  location            = var.session_manager_location
+  location            = local.itn_location
   domain              = "IO-COMMONS"
   health_check_path   = "/info"
 
@@ -201,7 +201,7 @@ module "function_lollipop_staging_slot_itn" {
   source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app_slot?ref=v6.19.1"
 
   name                = "staging"
-  location            = var.session_manager_location
+  location            = local.itn_location
   resource_group_name = azurerm_resource_group.lollipop_rg_itn.name
   function_app_id     = module.function_lollipop_itn.id
   app_service_plan_id = module.function_lollipop_itn.app_service_plan_id
@@ -229,7 +229,7 @@ module "function_lollipop_staging_slot_itn" {
 resource "azurerm_monitor_autoscale_setting" "function_lollipop_itn" {
   name                = format("%s-autoscale", module.function_lollipop_itn.name)
   resource_group_name = azurerm_resource_group.lollipop_rg_itn.name
-  location            = var.session_manager_location
+  location            = local.itn_location
   target_resource_id  = module.function_lollipop_itn.app_service_plan_id
 
   dynamic "profile" {

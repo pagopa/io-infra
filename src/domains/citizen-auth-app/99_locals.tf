@@ -32,7 +32,9 @@ locals {
 
 # Region ITN
 locals {
-  project_itn        = "${var.prefix}-${var.env_short}-${var.domain}-${var.session_manager_location_short}-${var.instance}"
+  itn_location       = "italynorth"
+  itn_location_short = "itn"
+  project_itn        = "${var.prefix}-${var.env_short}-${var.domain}-${local.itn_location_short}-${var.instance}"
   product_itn        = "${var.prefix}-${var.env_short}"
-  common_project_itn = "${var.prefix}-${var.env_short}-${var.session_manager_location_short}"
+  common_project_itn = "${var.prefix}-${var.env_short}-${local.itn_location_short}"
 }

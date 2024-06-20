@@ -22,7 +22,7 @@ data "azurerm_subnet" "pep" {
 
 resource "azurerm_private_endpoint" "function_lollipop_itn_sites" {
   name                = "${local.common_project_itn}-lollipop-fn-pep-01"
-  location            = var.session_manager_location
+  location            = local.itn_location
   resource_group_name = azurerm_resource_group.lollipop_rg_itn.name
   subnet_id           = data.azurerm_subnet.pep.id
 
@@ -43,7 +43,7 @@ resource "azurerm_private_endpoint" "function_lollipop_itn_sites" {
 
 resource "azurerm_private_endpoint" "staging_function_lollipop_itn_sites" {
   name                = "${local.common_project}-lollipop-fn-staging-pep-01"
-  location            = var.session_manager_location
+  location            = local.itn_location
   resource_group_name = azurerm_resource_group.lollipop_rg_itn.name
   subnet_id           = data.azurerm_subnet.pep.id
 

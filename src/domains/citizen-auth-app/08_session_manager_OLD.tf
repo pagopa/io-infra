@@ -4,7 +4,7 @@
 
 resource "azurerm_resource_group" "session_manager_rg" {
   name     = format("%s-session-manager-rg-01", local.common_project_itn)
-  location = var.session_manager_location
+  location = local.itn_location
 
   tags = var.tags
 }
