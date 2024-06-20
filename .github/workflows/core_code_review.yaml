@@ -1,11 +1,11 @@
 name: PR - Core TF Validation
 
-# This pipeline start automatically when a PR is opened
+# This pipeline starts automatically when a PR is opened.
 #
-# is responsible for managing changes relating to the NEW infrastructure only, 
-# so it checks whether the change has occurred only in the folders inside "paths"
+# It is responsible for managing changes related solely to the NEW infrastructure. 
+# Therefore, it checks whether the changes have occurred only in the directories listed in "paths."
 #
-## NOTE: 'NEW infrastructure' mean the new terraform infrastructure inside the src/core/prod folder, which no longer requires the terraform.sh script to be applied.
+## NOTE: 'NEW infrastructure' refers to the new Terraform infrastructure located in the src/core/prod folder, which no longer requires the terraform.sh script to be applied.
 
 on:
   workflow_dispatch:
