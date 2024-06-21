@@ -1,5 +1,14 @@
 name: PR - Core TF Apply
 
+# This pipeline starts automatically when a PR is merged into 'main'.
+#
+# It is responsible for managing changes related solely to the NEW infrastructure, 
+# ensuring that changes have occurred exclusively within the directories listed in "paths."
+#
+## NOTE: 'NEW infrastructure' refers to the new Terraform infrastructure located in the src/core/prod folder, which no longer requires the terraform.sh script to be applied.
+#
+# This pipeline first executes a plan and then an apply, which must be approved by the team.
+
 on: 
   workflow_dispatch:
   push:
