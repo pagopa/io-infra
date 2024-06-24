@@ -34,7 +34,6 @@ locals {
 locals {
   itn_location       = "italynorth"
   itn_location_short = "itn"
-  project_itn        = "${var.prefix}-${var.env_short}-${var.domain}-${local.itn_location_short}-${var.instance}"
-  product_itn        = "${var.prefix}-${var.env_short}"
-  common_project_itn = "${var.prefix}-${var.env_short}-${local.itn_location_short}"
+  project_itn        = "${local.product}-${var.domain}-${local.itn_location_short}-${var.instance}"
+  common_project_itn = "${local.product}-${local.itn_location_short}"
 }
