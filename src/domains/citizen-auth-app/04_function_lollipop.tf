@@ -111,7 +111,7 @@ locals {
 }
 
 resource "azurerm_resource_group" "lollipop_rg_itn" {
-  name     = format("%s-lollipop-rg", local.common_project_itn)
+  name     = format("%s-lollipop-rg-01", local.common_project_itn)
   location = local.itn_location
 
   tags = var.tags
@@ -122,7 +122,7 @@ resource "azurerm_resource_group" "lollipop_rg_itn" {
 # Subnet to host admin function
 module "lollipop_snet_itn" {
   source                                    = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v6.19.1"
-  name                                      = format("%s-lollipop-snet", local.common_project_itn)
+  name                                      = format("%s-lollipop-snet-01", local.common_project_itn)
   address_prefixes                          = var.cidr_subnet_fnlollipop_itn
   resource_group_name                       = data.azurerm_virtual_network.common_vnet_italy_north.resource_group_name
   virtual_network_name                      = data.azurerm_virtual_network.common_vnet_italy_north.name
@@ -147,7 +147,7 @@ module "function_lollipop_itn" {
   source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app?ref=v6.19.1"
 
   resource_group_name = azurerm_resource_group.lollipop_rg_itn.name
-  name                = format("%s-lollipop-fn", local.common_project_itn)
+  name                = format("%s-lollipop-fn-01", local.common_project_itn)
   location            = local.itn_location
   domain              = "IO-COMMONS"
   health_check_path   = "/info"
@@ -227,7 +227,7 @@ module "function_lollipop_staging_slot_itn" {
 }
 
 resource "azurerm_monitor_autoscale_setting" "function_lollipop_itn" {
-  name                = format("%s-autoscale", module.function_lollipop_itn.name)
+  name                = format("%s-autoscale-01", module.function_lollipop_itn.name)
   resource_group_name = azurerm_resource_group.lollipop_rg_itn.name
   location            = local.itn_location
   target_resource_id  = module.function_lollipop_itn.app_service_plan_id
