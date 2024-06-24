@@ -106,6 +106,20 @@ module "app_gw" {
       pick_host_name_from_backend = true
     }
 
+    fims-op-app = {
+      protocol     = "Https"
+      host         = null
+      port         = 443
+      ip_addresses = null # with null value use fqdns
+      fqdns = [
+        data.azurerm_linux_web_app.fims_op_app.default_hostname
+      ]
+      probe                       = "/health"
+      probe_name                  = "probe-fims-op-app"
+      request_timeout             = 10
+      pick_host_name_from_backend = true
+    }
+
     developerportal-backend = {
       protocol     = "Https"
       host         = null
@@ -522,6 +536,11 @@ module "app_gw" {
           backend               = "session-manager-app",
           rewrite_rule_set_name = "rewrite-rule-set-api-app-remove-base-path-session-manager"
         },
+        fims-op-app = {
+          paths                 = ["/oauth2/*"]
+          backend               = "fims-op-app",
+          rewrite_rule_set_name = "rewrite-rule-set-api-app-remove-base-path-fims-op-app"
+        },
         healthcheck = {
           paths                 = ["/healthcheck"]
           backend               = "appbackend-app",
@@ -669,6 +688,28 @@ module "app_gw" {
           conditions = [{
             variable    = "var_uri_path"
             pattern     = "/session-manager/(.*)"
+            ignore_case = true
+            negate      = false
+          }]
+          url = {
+            path         = "/{var_uri_path_1}"
+            query_string = null
+            reroute      = false
+          }
+          request_header_configurations  = []
+          response_header_configurations = []
+      }]
+    },
+    {
+      name = "rewrite-rule-set-api-app-remove-base-path-fims-op-app"
+      rewrite_rules = [
+        local.io_backend_ip_headers_rule,
+        {
+          name          = "strip_base_fims_op_app_path"
+          rule_sequence = 200
+          conditions = [{
+            variable    = "var_uri_path"
+            pattern     = "/oauth2/(.*)"
             ignore_case = true
             negate      = false
           }]
@@ -1229,4 +1270,9 @@ resource "azurerm_web_application_firewall_policy" "api_app" {
 data "azurerm_linux_web_app" "session_manager" {
   name                = "io-p-weu-session-manager-app-03"
   resource_group_name = "io-p-weu-session-manager-rg-01"
+}
+
+data "azurerm_linux_web_app" "fims_op_app" {
+  name                = "io-p-weu-fims-op-app-01"
+  resource_group_name = "io-p-weu-fims-rg-01"
 }
