@@ -10,7 +10,7 @@ resource "azurerm_resource_group" "lollipop_rg" {
 # Subnet to host admin function
 module "lollipop_snet" {
   count                                     = var.lollipop_enabled ? 1 : 0
-  source                                    = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v4.1.15"
+  source                                    = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v8.22.0"
   name                                      = format("%s-lollipop-snet", local.common_project)
   address_prefixes                          = var.cidr_subnet_fnlollipop
   resource_group_name                       = data.azurerm_virtual_network.vnet_common.resource_group_name
@@ -34,7 +34,7 @@ module "lollipop_snet" {
 
 module "function_lollipop" {
   count  = var.lollipop_enabled ? 1 : 0
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app?ref=v5.2.0"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app?ref=v8.22.0"
 
   resource_group_name = azurerm_resource_group.lollipop_rg[0].name
   name                = format("%s-lollipop-fn", local.common_project)
@@ -52,6 +52,9 @@ module "function_lollipop" {
     kind                         = var.function_lollipop_kind
     sku_size                     = var.function_lollipop_sku_size
     maximum_elastic_worker_count = 0
+    // worker count is managed by autoscaling settings
+    worker_count           = null
+    zone_balancing_enabled = false
   }
 
   app_settings = merge(
@@ -62,7 +65,7 @@ module "function_lollipop" {
     },
   )
 
-  sticky_settings = ["AzureWebJobs.HandlePubKeyRevoke.Disabled"]
+  sticky_app_setting_names = ["AzureWebJobs.HandlePubKeyRevoke.Disabled"]
 
   internal_storage = {
     "enable"                     = true,
@@ -98,7 +101,7 @@ module "function_lollipop" {
 
 module "function_lollipop_staging_slot" {
   count  = var.lollipop_enabled ? 1 : 0
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app_slot?ref=v5.2.0"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app_slot?ref=v8.22.0"
 
   name                = "staging"
   location            = var.location
@@ -142,7 +145,9 @@ resource "azurerm_monitor_autoscale_setting" "function_lollipop" {
   name                = format("%s-autoscale", module.function_lollipop[0].name)
   resource_group_name = azurerm_resource_group.lollipop_rg[0].name
   location            = var.location
-  target_resource_id  = module.function_lollipop[0].app_service_plan_id
+  // TODO: plan renaming forces replacement for the entire resource. the
+  // following is a temporary fix
+  target_resource_id = replace(module.function_lollipop[0].app_service_plan_id, "serverFarms", "serverfarms")
 
   dynamic "profile" {
     for_each = local.function_lollipop.autoscale_profiles

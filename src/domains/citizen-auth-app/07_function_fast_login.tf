@@ -69,7 +69,7 @@ resource "azurerm_resource_group" "fast_login_rg" {
 # Subnet to host admin function
 module "fast_login_snet" {
   count                                     = var.fastlogin_enabled ? 1 : 0
-  source                                    = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v6.19.1"
+  source                                    = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v8.22.0"
   name                                      = format("%s-fast-login-snet", local.common_project)
   address_prefixes                          = var.cidr_subnet_fnfastlogin
   resource_group_name                       = data.azurerm_virtual_network.vnet_common.resource_group_name
@@ -93,7 +93,7 @@ module "fast_login_snet" {
 
 module "function_fast_login" {
   count  = var.fastlogin_enabled ? 1 : 0
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app?ref=v6.19.1"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app?ref=v8.22.0"
 
   resource_group_name = azurerm_resource_group.fast_login_rg[0].name
   name                = format("%s-fast-login-fn", local.common_project)
@@ -157,7 +157,7 @@ module "function_fast_login" {
 
 module "function_fast_login_staging_slot" {
   count  = var.fastlogin_enabled ? 1 : 0
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app_slot?ref=v6.19.1"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app_slot?ref=v8.22.0"
 
   name                = "staging"
   location            = var.location
@@ -198,7 +198,9 @@ resource "azurerm_monitor_autoscale_setting" "function_fast_login" {
   name                = format("%s-autoscale", module.function_fast_login[0].name)
   resource_group_name = azurerm_resource_group.fast_login_rg[0].name
   location            = var.location
-  target_resource_id  = module.function_fast_login[0].app_service_plan_id
+  // TODO: plan renaming forces replacement for the entire resource. the
+  // following is a temporary fix
+  target_resource_id = replace(module.function_fast_login[0].app_service_plan_id, "serverFarms", "serverfarms")
 
 
   # Scaling strategy

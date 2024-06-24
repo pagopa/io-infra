@@ -63,6 +63,7 @@ locals {
         minimum = var.function_lollipop_autoscale_minimum + 1
         maximum = var.function_lollipop_autoscale_maximum
       }
+
       },
       {
         name = "{\"name\":\"default\",\"for\":\"night\"}",
@@ -149,13 +150,23 @@ resource "azurerm_subnet" "lollipop_snet_itn" {
 
 
 module "function_lollipop_itn" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app?ref=v6.19.1"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app?ref=v8.22.0"
 
   resource_group_name = azurerm_resource_group.lollipop_rg_itn.name
   name                = format("%s-lollipop-fn-01", local.common_project_itn)
   location            = local.itn_location
   domain              = "IO-COMMONS"
   health_check_path   = "/info"
+
+  storage_account_info = {
+    account_kind                      = "StorageV2"
+    account_tier                      = "Standard"
+    account_replication_type          = "ZRS"
+    access_tier                       = "Hot"
+    advanced_threat_protection_enable = false
+    public_network_access_enabled     = false
+    use_legacy_defender_version       = true
+  }
 
   node_version    = "18"
   runtime_version = "~4"
@@ -180,7 +191,7 @@ module "function_lollipop_itn" {
 
   internal_storage = {
     "enable"                     = true,
-    "private_endpoint_subnet_id" = data.azurerm_subnet.private_endpoints_subnet.id,
+    "private_endpoint_subnet_id" = data.azurerm_subnet.itn_pep.id,
     "private_dns_zone_blob_ids"  = [data.azurerm_private_dns_zone.privatelink_blob_core_windows_net.id],
     "private_dns_zone_queue_ids" = [data.azurerm_private_dns_zone.privatelink_queue_core_windows_net.id],
     "private_dns_zone_table_ids" = [data.azurerm_private_dns_zone.privatelink_table_core_windows_net.id],
@@ -203,7 +214,7 @@ module "function_lollipop_itn" {
 }
 
 module "function_lollipop_staging_slot_itn" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app_slot?ref=v6.19.1"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app_slot?ref=v8.22.0"
 
   name                = "staging"
   location            = local.itn_location
