@@ -146,6 +146,11 @@ data "azurerm_linux_web_app" "session_manager" {
   resource_group_name = "${local.project}-weu-session-manager-rg-01"
 }
 
+data "azurerm_linux_web_app" "fims_op_app" {
+  name                = "${local.project}-weu-fims-op-app-01"
+  resource_group_name = "${local.project}-weu-fims-rg-01"
+}
+
 data "azurerm_monitor_action_group" "error_action_group" {
   name                = format("%s%serror", local.prefix, local.env_short)
   resource_group_name = data.azurerm_resource_group.weu_common.name
