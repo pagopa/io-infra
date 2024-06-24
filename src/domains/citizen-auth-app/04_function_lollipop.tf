@@ -157,6 +157,14 @@ module "function_lollipop_itn" {
   domain              = "IO-COMMONS"
   health_check_path   = "/info"
 
+  storage_account_info = {
+    account_kind                      = "StorageV2"
+    account_tier                      = "Standard"
+    account_replication_type          = "ZRS"
+    access_tier                       = "Hot"
+    advanced_threat_protection_enable = false
+  }
+
   node_version    = "18"
   runtime_version = "~4"
 
