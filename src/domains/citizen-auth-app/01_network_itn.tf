@@ -51,7 +51,7 @@ resource "azurerm_private_endpoint" "staging_function_lollipop_itn_sites" {
     name                           = "${local.common_project_itn}-lollipop-fn-staging-app-pep-01"
     private_connection_resource_id = module.function_lollipop_itn.id
     is_manual_connection           = false
-    subresource_names              = ["sites-${module.function_lollipop_itn.name}"]
+    subresource_names              = ["sites-${module.function_lollipop_staging_slot_itn.name}"]
   }
 
   private_dns_zone_group {
