@@ -1,131 +1,21 @@
-data "azurerm_key_vault_secret" "first_lollipop_consumer_subscription_key" {
-  name         = "first-lollipop-consumer-pagopa-subscription-key-v2"
-  key_vault_id = data.azurerm_key_vault.kv.id
-}
 
-locals {
-  function_lollipop = {
-    app_settings = {
-      FUNCTIONS_WORKER_PROCESS_COUNT = 4
-      NODE_ENV                       = "production"
-
-      // Keepalive fields are all optionals
-      FETCH_KEEPALIVE_ENABLED             = "true"
-      FETCH_KEEPALIVE_SOCKET_ACTIVE_TTL   = "110000"
-      FETCH_KEEPALIVE_MAX_SOCKETS         = "40"
-      FETCH_KEEPALIVE_MAX_FREE_SOCKETS    = "10"
-      FETCH_KEEPALIVE_FREE_SOCKET_TIMEOUT = "30000"
-      FETCH_KEEPALIVE_TIMEOUT             = "60000"
-
-      COSMOSDB_NAME                = "citizen-auth"
-      COSMOSDB_URI                 = data.azurerm_cosmosdb_account.cosmos_citizen_auth.endpoint
-      COSMOSDB_KEY                 = data.azurerm_cosmosdb_account.cosmos_citizen_auth.primary_key
-      COSMOS_API_CONNECTION_STRING = format("AccountEndpoint=%s;AccountKey=%s;", data.azurerm_cosmosdb_account.cosmos_citizen_auth.endpoint, data.azurerm_cosmosdb_account.cosmos_citizen_auth.primary_key)
-
-      #TODO: move to new storage on itn
-      LOLLIPOP_ASSERTION_STORAGE_CONNECTION_STRING = data.azurerm_storage_account.lollipop_assertion_storage.primary_connection_string
-      LOLLIPOP_ASSERTION_REVOKE_QUEUE              = "pubkeys-revoke-v2"
-
-
-      // ------------
-      // JWT Config
-      // ------------
-      ISSUER = local.lollipop_jwt_host
-
-      PRIMARY_PRIVATE_KEY = trimspace(data.azurerm_key_vault_certificate_data.lollipop_certificate_v1.key)
-      PRIMARY_PUBLIC_KEY  = trimspace(data.azurerm_key_vault_certificate_data.lollipop_certificate_v1.pem)
-
-      // Use it during rotation period. See https://pagopa.atlassian.net/wiki/spaces/IC/pages/645136398/LolliPoP+Procedura+di+rotazione+dei+certificati
-      //SECONDARY_PUBLIC_KEY =
-
-
-      // -------------------------
-      // First LolliPoP Consumer
-      // -------------------------
-      FIRST_LC_ASSERTION_CLIENT_BASE_URL         = "https://api.io.pagopa.it"
-      FIRST_LC_ASSERTION_CLIENT_SUBSCRIPTION_KEY = data.azurerm_key_vault_secret.first_lollipop_consumer_subscription_key.value
-    }
-
-    # Scaling strategy
-    # 05 - 19,30 -> min 3
-    # 19,30 - 23 -> min 4
-    # 23 - 05 -> min 2
-    autoscale_profiles = [{
-      name = "{\"name\":\"default\",\"for\":\"evening\"}",
-
-      recurrence = {
-        hours   = 22
-        minutes = 59
-      }
-
-      capacity = {
-        default = var.function_lollipop_autoscale_default + 1
-        minimum = var.function_lollipop_autoscale_minimum + 1
-        maximum = var.function_lollipop_autoscale_maximum
-      }
-      },
-      {
-        name = "{\"name\":\"default\",\"for\":\"night\"}",
-
-        recurrence = {
-          hours   = 5
-          minutes = 0
-        }
-
-        capacity = {
-          default = var.function_lollipop_autoscale_default + 1
-          minimum = var.function_lollipop_autoscale_minimum + 1
-          maximum = var.function_lollipop_autoscale_maximum
-        }
-      },
-      {
-        name = "evening",
-
-        recurrence = {
-          hours   = 19
-          minutes = 30
-        }
-
-        capacity = {
-          default = var.function_lollipop_autoscale_default + 2
-          minimum = var.function_lollipop_autoscale_minimum + 2
-          maximum = var.function_lollipop_autoscale_maximum
-        }
-      },
-      {
-        name = "night",
-
-        recurrence = {
-          hours   = 23
-          minutes = 0
-        }
-
-        capacity = {
-          default = var.function_lollipop_autoscale_default
-          minimum = var.function_lollipop_autoscale_minimum
-          maximum = var.function_lollipop_autoscale_maximum
-        }
-    }]
-
-  }
-}
-
-resource "azurerm_resource_group" "lollipop_rg_itn" {
-  name     = format("%s-lollipop-rg-01", local.common_project_itn)
-  location = local.itn_location
+resource "azurerm_resource_group" "lollipop_rg" {
+  count    = var.lollipop_enabled ? 1 : 0
+  name     = format("%s-lollipop-rg", local.common_project)
+  location = var.location
 
   tags = var.tags
 }
 
-
-
 # Subnet to host admin function
-
-resource "azurerm_subnet" "lollipop_snet_itn" {
-  name                 = format("%s-lollipop-snet-01", local.common_project_itn)
-  resource_group_name  = data.azurerm_virtual_network.common_vnet_italy_north.resource_group_name
-  virtual_network_name = data.azurerm_virtual_network.common_vnet_italy_north.name
-  address_prefixes     = var.cidr_subnet_fnlollipop_itn
+module "lollipop_snet" {
+  count                                     = var.lollipop_enabled ? 1 : 0
+  source                                    = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v4.1.15"
+  name                                      = format("%s-lollipop-snet", local.common_project)
+  address_prefixes                          = var.cidr_subnet_fnlollipop
+  resource_group_name                       = data.azurerm_virtual_network.vnet_common.resource_group_name
+  virtual_network_name                      = data.azurerm_virtual_network.vnet_common.name
+  private_endpoint_network_policies_enabled = false
 
   service_endpoints = [
     "Microsoft.Web",
@@ -133,27 +23,22 @@ resource "azurerm_subnet" "lollipop_snet_itn" {
     "Microsoft.Storage",
   ]
 
-  delegation {
+  delegation = {
     name = "default"
-    service_delegation {
+    service_delegation = {
       name    = "Microsoft.Web/serverFarms"
       actions = ["Microsoft.Network/virtualNetworks/subnets/action"]
     }
   }
-
-  private_link_service_network_policies_enabled = true
-  private_endpoint_network_policies_enabled     = true
 }
 
+module "function_lollipop" {
+  count  = var.lollipop_enabled ? 1 : 0
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app?ref=v5.2.0"
 
-
-
-module "function_lollipop_itn" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app?ref=v6.19.1"
-
-  resource_group_name = azurerm_resource_group.lollipop_rg_itn.name
-  name                = format("%s-lollipop-fn-01", local.common_project_itn)
-  location            = local.itn_location
+  resource_group_name = azurerm_resource_group.lollipop_rg[0].name
+  name                = format("%s-lollipop-fn", local.common_project)
+  location            = var.location
   domain              = "IO-COMMONS"
   health_check_path   = "/info"
 
@@ -167,16 +52,17 @@ module "function_lollipop_itn" {
     kind                         = var.function_lollipop_kind
     sku_size                     = var.function_lollipop_sku_size
     maximum_elastic_worker_count = 0
-    worker_count                 = null
-    zone_balancing_enabled       = true
   }
 
   app_settings = merge(
     local.function_lollipop.app_settings,
-    { "AzureWebJobs.HandlePubKeyRevoke.Disabled" = "0" },
+    {
+      "LOLLIPOP_ASSERTION_REVOKE_QUEUE"          = "pubkeys-revoke",
+      "AzureWebJobs.HandlePubKeyRevoke.Disabled" = "0"
+    },
   )
 
-  sticky_app_setting_names = ["AzureWebJobs.HandlePubKeyRevoke.Disabled"]
+  sticky_settings = ["AzureWebJobs.HandlePubKeyRevoke.Disabled"]
 
   internal_storage = {
     "enable"                     = true,
@@ -189,7 +75,15 @@ module "function_lollipop_itn" {
     "blobs_retention_days"       = 0,
   }
 
-  subnet_id = azurerm_subnet.lollipop_snet_itn.id
+  subnet_id = module.lollipop_snet[0].id
+
+  allowed_subnets = [
+    module.lollipop_snet[0].id,
+    data.azurerm_subnet.apim_v2_snet.id,
+    data.azurerm_subnet.app_backend_l1_snet.id,
+    data.azurerm_subnet.app_backend_l2_snet.id,
+    module.session_manager_snet.id,
+  ]
 
   # Action groups for alerts
   action = [
@@ -202,19 +96,20 @@ module "function_lollipop_itn" {
   tags = var.tags
 }
 
-module "function_lollipop_staging_slot_itn" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app_slot?ref=v6.19.1"
+module "function_lollipop_staging_slot" {
+  count  = var.lollipop_enabled ? 1 : 0
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app_slot?ref=v5.2.0"
 
   name                = "staging"
-  location            = local.itn_location
-  resource_group_name = azurerm_resource_group.lollipop_rg_itn.name
-  function_app_id     = module.function_lollipop_itn.id
-  app_service_plan_id = module.function_lollipop_itn.app_service_plan_id
+  location            = var.location
+  resource_group_name = azurerm_resource_group.lollipop_rg[0].name
+  function_app_id     = module.function_lollipop[0].id
+  app_service_plan_id = module.function_lollipop[0].app_service_plan_id
   health_check_path   = "/info"
 
-  storage_account_name               = module.function_lollipop_itn.storage_account.name
-  storage_account_access_key         = module.function_lollipop_itn.storage_account.primary_access_key
-  internal_storage_connection_string = module.function_lollipop_itn.storage_account_internal_function.primary_connection_string
+  storage_account_name               = module.function_lollipop[0].storage_account.name
+  storage_account_access_key         = module.function_lollipop[0].storage_account.primary_access_key
+  internal_storage_connection_string = module.function_lollipop[0].storage_account_internal_function.primary_connection_string
 
   node_version                             = "18"
   always_on                                = "true"
@@ -223,19 +118,31 @@ module "function_lollipop_staging_slot_itn" {
 
   app_settings = merge(
     local.function_lollipop.app_settings,
-    { "AzureWebJobs.HandlePubKeyRevoke.Disabled" = "1" },
+    {
+      "LOLLIPOP_ASSERTION_REVOKE_QUEUE"          = "pubkeys-revoke",
+      "AzureWebJobs.HandlePubKeyRevoke.Disabled" = "1"
+    },
   )
 
-  subnet_id = azurerm_subnet.lollipop_snet_itn.id
+  subnet_id = module.lollipop_snet[0].id
+
+  allowed_subnets = [
+    module.lollipop_snet[0].id,
+    data.azurerm_subnet.azdoa_snet[0].id,
+    data.azurerm_subnet.apim_v2_snet.id,
+    data.azurerm_subnet.app_backend_l1_snet.id,
+    data.azurerm_subnet.app_backend_l2_snet.id,
+  ]
 
   tags = var.tags
 }
 
-resource "azurerm_monitor_autoscale_setting" "function_lollipop_itn" {
-  name                = format("%s-autoscale-01", module.function_lollipop_itn.name)
-  resource_group_name = azurerm_resource_group.lollipop_rg_itn.name
-  location            = local.itn_location
-  target_resource_id  = module.function_lollipop_itn.app_service_plan_id
+resource "azurerm_monitor_autoscale_setting" "function_lollipop" {
+  count               = var.lollipop_enabled ? 1 : 0
+  name                = format("%s-autoscale", module.function_lollipop[0].name)
+  resource_group_name = azurerm_resource_group.lollipop_rg[0].name
+  location            = var.location
+  target_resource_id  = module.function_lollipop[0].app_service_plan_id
 
   dynamic "profile" {
     for_each = local.function_lollipop.autoscale_profiles
@@ -277,7 +184,7 @@ resource "azurerm_monitor_autoscale_setting" "function_lollipop_itn" {
       rule {
         metric_trigger {
           metric_name              = "Requests"
-          metric_resource_id       = module.function_lollipop_itn.id
+          metric_resource_id       = module.function_lollipop[0].id
           metric_namespace         = "microsoft.web/sites"
           time_grain               = "PT1M"
           statistic                = "Average"
@@ -299,7 +206,7 @@ resource "azurerm_monitor_autoscale_setting" "function_lollipop_itn" {
       rule {
         metric_trigger {
           metric_name              = "CpuPercentage"
-          metric_resource_id       = module.function_lollipop_itn.app_service_plan_id
+          metric_resource_id       = module.function_lollipop[0].app_service_plan_id
           metric_namespace         = "microsoft.web/serverfarms"
           time_grain               = "PT1M"
           statistic                = "Average"
@@ -323,7 +230,7 @@ resource "azurerm_monitor_autoscale_setting" "function_lollipop_itn" {
       rule {
         metric_trigger {
           metric_name              = "Requests"
-          metric_resource_id       = module.function_lollipop_itn.id
+          metric_resource_id       = module.function_lollipop[0].id
           metric_namespace         = "microsoft.web/sites"
           time_grain               = "PT1M"
           statistic                = "Average"
@@ -345,7 +252,7 @@ resource "azurerm_monitor_autoscale_setting" "function_lollipop_itn" {
       rule {
         metric_trigger {
           metric_name              = "CpuPercentage"
-          metric_resource_id       = module.function_lollipop_itn.app_service_plan_id
+          metric_resource_id       = module.function_lollipop[0].app_service_plan_id
           metric_namespace         = "microsoft.web/serverfarms"
           time_grain               = "PT1M"
           statistic                = "Average"
@@ -371,10 +278,11 @@ resource "azurerm_monitor_autoscale_setting" "function_lollipop_itn" {
 # Alerts
 # ---------------------------------
 
-resource "azurerm_monitor_scheduled_query_rules_alert_v2" "alert_function_lollipop_itn_HandlePubKeyRevoke_failure" {
+resource "azurerm_monitor_scheduled_query_rules_alert_v2" "alert_function_lollipop_HandlePubKeyRevoke_failure" {
+  count = var.lollipop_enabled ? 1 : 0
 
-  name                = "[${upper(var.domain)}|${module.function_lollipop_itn.name}] The revocation of one or more PubKeys has failed"
-  resource_group_name = azurerm_resource_group.lollipop_rg_itn.name
+  name                = "[${upper(var.domain)}|${module.function_lollipop[0].name}] The revocation of one or more PubKeys has failed"
+  resource_group_name = azurerm_resource_group.lollipop_rg[0].name
   location            = var.location
 
   // check once per day
@@ -385,7 +293,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert_v2" "alert_function_lollip
   criteria {
     query                   = <<-QUERY
 exceptions
-| where cloud_RoleName == "${module.function_lollipop_itn.name}"
+| where cloud_RoleName == "${module.function_lollipop[0].name}"
 | where outerMessage startswith "HandlePubKeyRevoke|"
 | extend
   event_name = tostring(customDimensions.name),
@@ -417,4 +325,3 @@ exceptions
 
   tags = var.tags
 }
-
