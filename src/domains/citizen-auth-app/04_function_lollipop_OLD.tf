@@ -145,7 +145,9 @@ resource "azurerm_monitor_autoscale_setting" "function_lollipop" {
   name                = format("%s-autoscale", module.function_lollipop[0].name)
   resource_group_name = azurerm_resource_group.lollipop_rg[0].name
   location            = var.location
-  target_resource_id  = module.function_lollipop[0].app_service_plan_id
+  // TODO: plan renaming forces replacement for the entire resource. the
+  // following is a temporary fix
+  target_resource_id = replace(module.function_lollipop[0].app_service_plan_id, "serverFarms", "serverfarms")
 
   dynamic "profile" {
     for_each = local.function_lollipop.autoscale_profiles

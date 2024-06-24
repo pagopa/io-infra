@@ -198,7 +198,9 @@ resource "azurerm_monitor_autoscale_setting" "function_fast_login" {
   name                = format("%s-autoscale", module.function_fast_login[0].name)
   resource_group_name = azurerm_resource_group.fast_login_rg[0].name
   location            = var.location
-  target_resource_id  = module.function_fast_login[0].app_service_plan_id
+  // TODO: plan renaming forces replacement for the entire resource. the
+  // following is a temporary fix
+  target_resource_id = replace(module.function_fast_login[0].app_service_plan_id, "serverFarms", "serverfarms")
 
 
   # Scaling strategy
