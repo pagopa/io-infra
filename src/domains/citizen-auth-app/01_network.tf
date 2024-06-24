@@ -117,7 +117,7 @@ data "azurerm_virtual_network" "common_vnet" {
 }
 
 module "session_manager_snet" {
-  source               = "github.com/pagopa/terraform-azurerm-v3//subnet?ref=v8.7.0"
+  source               = "github.com/pagopa/terraform-azurerm-v3//subnet?ref=v8.22.0"
   name                 = format("%s-session-manager-snet-02", local.common_project)
   address_prefixes     = var.cidr_subnet_session_manager
   resource_group_name  = data.azurerm_virtual_network.common_vnet.resource_group_name
