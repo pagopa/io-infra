@@ -120,13 +120,12 @@ resource "azurerm_resource_group" "lollipop_rg_itn" {
 
 
 # Subnet to host admin function
-module "lollipop_snet_itn" {
-  source                                    = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v6.19.1"
-  name                                      = format("%s-lollipop-snet-01", local.common_project_itn)
-  address_prefixes                          = var.cidr_subnet_fnlollipop_itn
-  resource_group_name                       = data.azurerm_virtual_network.common_vnet_italy_north.resource_group_name
-  virtual_network_name                      = data.azurerm_virtual_network.common_vnet_italy_north.name
-  private_endpoint_network_policies_enabled = true
+
+resource "azurerm_subnet" "lollipop_snet_itn" {
+  name                 = format("%s-lollipop-snet-01", local.common_project_itn)
+  resource_group_name  = data.azurerm_virtual_network.common_vnet_italy_north.resource_group_name
+  virtual_network_name = data.azurerm_virtual_network.common_vnet_italy_north.name
+  address_prefixes     = var.cidr_subnet_fnlollipop_itn
 
   service_endpoints = [
     "Microsoft.Web",
@@ -134,14 +133,20 @@ module "lollipop_snet_itn" {
     "Microsoft.Storage",
   ]
 
-  delegation = {
+  delegation {
     name = "default"
-    service_delegation = {
+    service_delegation {
       name    = "Microsoft.Web/serverFarms"
       actions = ["Microsoft.Network/virtualNetworks/subnets/action"]
     }
   }
+
+  private_link_service_network_policies_enabled = true
+  private_endpoint_network_policies_enabled     = true
 }
+
+
+
 
 module "function_lollipop_itn" {
   source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app?ref=v6.19.1"
@@ -184,7 +189,7 @@ module "function_lollipop_itn" {
     "blobs_retention_days"       = 0,
   }
 
-  subnet_id = module.lollipop_snet_itn.id
+  subnet_id = azurerm_subnet.lollipop_snet_itn.id
 
   # Action groups for alerts
   action = [
@@ -221,7 +226,7 @@ module "function_lollipop_staging_slot_itn" {
     { "AzureWebJobs.HandlePubKeyRevoke.Disabled" = "1" },
   )
 
-  subnet_id = module.lollipop_snet_itn.id
+  subnet_id = azurerm_subnet.lollipop_snet_itn.id
 
   tags = var.tags
 }
