@@ -14,7 +14,7 @@ resource "azurerm_resource_group" "session_manager_rg" {
 #################################
 
 module "session_manager" {
-  source = "github.com/pagopa/terraform-azurerm-v3//app_service?ref=v8.7.0"
+  source = "github.com/pagopa/terraform-azurerm-v3//app_service?ref=v8.22.0"
 
   # App service plan
   plan_type = "internal"
@@ -56,7 +56,7 @@ module "session_manager" {
 
 ## staging slot
 module "session_manager_staging" {
-  source = "github.com/pagopa/terraform-azurerm-v3//app_service_slot?ref=v8.7.0"
+  source = "github.com/pagopa/terraform-azurerm-v3//app_service_slot?ref=v8.22.0"
 
   app_service_id   = module.session_manager.id
   app_service_name = module.session_manager.name
