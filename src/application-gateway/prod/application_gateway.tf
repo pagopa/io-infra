@@ -647,7 +647,20 @@ module "app_gw" {
             query_string = null
             reroute      = false
           }
-          request_header_configurations  = []
+          request_header_configurations = [
+            {
+              header_name  = "X-Forwarded-For"
+              header_value = "{var_client_ip}"
+            },
+            {
+              header_name  = "X-Forwarded-Host"
+              header_value = "{var_host}"
+            },
+            {
+              header_name  = "X-Client-Ip"
+              header_value = "{var_client_ip}"
+            }
+          ],
           response_header_configurations = []
       }]
     },
