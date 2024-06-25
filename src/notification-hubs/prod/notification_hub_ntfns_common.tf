@@ -71,7 +71,7 @@ resource "azurerm_monitor_metric_alert" "alert_nh_common_pns_errors" {
   auto_mitigate = false
 
   criteria {
-    metric_namespace       = "Microsoft.NotificationHubs/namespaces/notificationHubs"
+    metric_namespace       = "Microsoft.NotificationHubs/namespaces"
     metric_name            = "outgoing.allpns.pnserror"
     aggregation            = "Total"
     operator               = "GreaterThan"
@@ -100,7 +100,7 @@ resource "azurerm_monitor_metric_alert" "alert_nh_common_anomalous_pns_success_v
   auto_mitigate = false
 
   dynamic_criteria {
-    metric_namespace         = "Microsoft.NotificationHubs/namespaces/notificationHubs"
+    metric_namespace         = "Microsoft.NotificationHubs/namespaces"
     metric_name              = "outgoing.allpns.success"
     aggregation              = "Total"
     operator                 = "GreaterThan"
