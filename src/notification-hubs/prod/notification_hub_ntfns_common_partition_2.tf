@@ -57,7 +57,7 @@ resource "azurerm_monitor_metric_alert" "alert_nh_common_partition_2_pns_errors"
   scopes        = [azurerm_notification_hub_namespace.common_partition_2.id]
   description   = "Notification Hub Partition 2 incurred in PNS errors, please check. Runbook: not needed."
   severity      = 1
-  window_size   = "PT30M"
+  window_size   = "PT5M"
   frequency     = "PT1M"
   auto_mitigate = false
 
@@ -86,17 +86,19 @@ resource "azurerm_monitor_metric_alert" "alert_nh_common_partition_2_anomalous_p
   scopes        = [azurerm_notification_hub_namespace.common_partition_2.id]
   description   = "Notification Hub Partition 2 has an anomalous PNS success volume. Runbook: not needed."
   severity      = 1
-  window_size   = "PT30M"
+  window_size   = "PT5M"
   frequency     = "PT1M"
   auto_mitigate = false
 
-  criteria {
-    metric_namespace       = "Microsoft.NotificationHubs/namespaces/notificationHubs"
-    metric_name            = "outgoing.allpns.success"
-    aggregation            = "Total"
-    operator               = "GreaterThan"
-    threshold              = 30000 # usually we are around 25k under bulk message sending
-    skip_metric_validation = false
+  dynamic_criteria {
+    metric_namespace         = "Microsoft.NotificationHubs/namespaces/notificationHubs"
+    metric_name              = "outgoing.allpns.success"
+    aggregation              = "Total"
+    operator                 = "GreaterThan"
+    alert_sensitivity        = "High"
+    evaluation_total_count   = 1
+    evaluation_failure_count = 1
+    skip_metric_validation   = false
   }
 
   # Action groups for alerts
