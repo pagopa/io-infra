@@ -60,7 +60,7 @@ resource "azurerm_notification_hub_authorization_rule" "common_default_full" {
 
 resource "azurerm_monitor_metric_alert" "alert_nh_common_pns_errors" {
 
-  name                = "[IOCOM|NHLegacy] Push Notification Service errors."
+  name                = "[IOCOM|NHLegacy] Push Notification Service errors"
   resource_group_name = azurerm_notification_hub_namespace.common.resource_group_name
 
   scopes        = [azurerm_notification_hub_namespace.common.id]
@@ -89,7 +89,7 @@ resource "azurerm_monitor_metric_alert" "alert_nh_common_pns_errors" {
 
 resource "azurerm_monitor_metric_alert" "alert_nh_common_anomalous_pns_success_volume" {
 
-  name                = "[IOCOM|NHLegacy] Push Notification Service anomalous success volume."
+  name                = "[IOCOM|NHLegacy] Push Notification Service anomalous success volume"
   resource_group_name = azurerm_notification_hub_namespace.common.resource_group_name
 
   scopes        = [azurerm_notification_hub_namespace.common.id]
