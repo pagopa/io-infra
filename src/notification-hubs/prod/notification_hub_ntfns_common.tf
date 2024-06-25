@@ -63,7 +63,7 @@ resource "azurerm_monitor_metric_alert" "alert_nh_common_pns_errors" {
   name                = "[IOCOM|NHLegacy] Push Notification Service errors"
   resource_group_name = azurerm_notification_hub_namespace.common.resource_group_name
 
-  scopes        = [azurerm_notification_hub_namespace.common.id]
+  scopes        = [azurerm_notification_hub.common.id]
   description   = "Notification Hub Legacy incurred in PNS errors, please check. Runbook: not needed."
   severity      = 1
   window_size   = "PT5M"
@@ -71,7 +71,7 @@ resource "azurerm_monitor_metric_alert" "alert_nh_common_pns_errors" {
   auto_mitigate = false
 
   criteria {
-    metric_namespace       = "Microsoft.NotificationHubs/namespaces"
+    metric_namespace       = "Microsoft.NotificationHubs/namespaces/notificationHubs"
     metric_name            = "outgoing.allpns.pnserror"
     aggregation            = "Total"
     operator               = "GreaterThan"
@@ -92,7 +92,7 @@ resource "azurerm_monitor_metric_alert" "alert_nh_common_anomalous_pns_success_v
   name                = "[IOCOM|NHLegacy] Push Notification Service anomalous success volume"
   resource_group_name = azurerm_notification_hub_namespace.common.resource_group_name
 
-  scopes        = [azurerm_notification_hub_namespace.common.id]
+  scopes        = [azurerm_notification_hub.common.id]
   description   = "Notification Hub Legacy has an anomalous PNS success volume. Runbook: not needed."
   severity      = 1
   window_size   = "PT5M"
@@ -100,7 +100,7 @@ resource "azurerm_monitor_metric_alert" "alert_nh_common_anomalous_pns_success_v
   auto_mitigate = false
 
   dynamic_criteria {
-    metric_namespace         = "Microsoft.NotificationHubs/namespaces"
+    metric_namespace         = "Microsoft.NotificationHubs/namespaces/notificationHubs"
     metric_name              = "outgoing.allpns.success"
     aggregation              = "Total"
     operator                 = "GreaterThan"
