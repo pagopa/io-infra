@@ -418,6 +418,23 @@ module "app_gw" {
         )
       }
     }
+
+    oauth-io-pagopa-it = {
+      protocol           = "Https"
+      host               = format("oauth.%s.%s", var.dns_zone_io, var.external_domain)
+      port               = 443
+      ssl_profile_name   = null
+      firewall_policy_id = null
+
+      certificate = {
+        name = var.app_gateway_oauth_io_pagopa_it_certificate_name
+        id = replace(
+          data.azurerm_key_vault_certificate.app_gw_oauth.secret_id,
+          "/${data.azurerm_key_vault_certificate.app_gw_oauth.version}",
+          ""
+        )
+      }
+    }
   }
 
   # maps listener to backend
@@ -486,6 +503,13 @@ module "app_gw" {
       rewrite_rule_set_name = "rewrite-rule-set-selfcare-io"
       priority              = 110
     }
+
+    oauth-io-pagopa-it = {
+      listener              = "oauth-io-pagopa-it"
+      backend               = "fims-op-app"
+      rewrite_rule_set_name = "rewrite-rule-set-fims-op-app"
+      priority              = 80
+    }
   }
 
   routes_path_based = {
@@ -511,11 +535,6 @@ module "app_gw" {
           paths                 = ["/session-manager/*"]
           backend               = "session-manager-app",
           rewrite_rule_set_name = "rewrite-rule-set-api-app-remove-base-path-session-manager"
-        },
-        fims-op-app = {
-          paths                 = ["/oauth2/*"]
-          backend               = "fims-op-app",
-          rewrite_rule_set_name = "rewrite-rule-set-api-app-remove-base-path-fims-op-app"
         },
         healthcheck = {
           paths                 = ["/healthcheck"]
@@ -677,38 +696,27 @@ module "app_gw" {
       }]
     },
     {
-      name = "rewrite-rule-set-api-app-remove-base-path-fims-op-app"
-      rewrite_rules = [
-        local.io_backend_ip_headers_rule,
-        {
-          name          = "strip_base_fims_op_app_path"
-          rule_sequence = 200
-          conditions = [{
-            variable    = "var_uri_path"
-            pattern     = "/oauth2/(.*)"
-            ignore_case = true
-            negate      = false
-          }]
-          url = {
-            path         = "/{var_uri_path_1}"
-            query_string = null
-            reroute      = false
-          }
-          request_header_configurations = [
-            {
-              header_name  = "X-Forwarded-For"
-              header_value = "{var_client_ip}"
-            },
-            {
-              header_name  = "X-Forwarded-Host"
-              header_value = "{var_host}"
-            },
-            {
-              header_name  = "X-Client-Ip"
-              header_value = "{var_client_ip}"
-            }
-          ]
-          response_header_configurations = []
+      name = "rewrite-rule-set-fims-op-app"
+      rewrite_rules = [{
+        name          = "http-headers-fims-op-app"
+        rule_sequence = 100
+        conditions    = []
+        url           = null
+        request_header_configurations = [
+          {
+            header_name  = "X-Forwarded-For"
+            header_value = "{var_client_ip}"
+          },
+          {
+            header_name  = "X-Forwarded-Host"
+            header_value = "{var_host}"
+          },
+          {
+            header_name  = "X-Client-Ip"
+            header_value = "{var_client_ip}"
+          },
+        ]
+        response_header_configurations = []
       }]
     },
     {
@@ -1092,6 +1100,11 @@ data "azurerm_key_vault_certificate" "app_gw_firmaconio_selfcare_pagopa_it" {
 }
 
 data "azurerm_key_vault_certificate" "app_gw_continua" {
+  name         = var.app_gateway_continua_io_pagopa_it_certificate_name
+  key_vault_id = module.key_vault.id
+}
+
+data "azurerm_key_vault_certificate" "app_gw_oauth" {
   name         = var.app_gateway_continua_io_pagopa_it_certificate_name
   key_vault_id = module.key_vault.id
 }
