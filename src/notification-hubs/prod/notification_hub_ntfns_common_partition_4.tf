@@ -15,10 +15,10 @@ resource "azurerm_notification_hub" "common_partition_4" {
   location            = azurerm_notification_hub_namespace.common_partition_4.location
 
   apns_credential {
-    application_mode = "Production"
-    bundle_id        = "it.pagopa.app.io"
-    team_id          = "M2X5YQ4BJ7"
-    key_id           = "PL6AXY2HSQ"
+    application_mode = local.apns_credential.application_mode
+    bundle_id        = local.apns_credential.bundle_id
+    team_id          = local.apns_credential.team_id
+    key_id           = local.apns_credential.key_id
     token            = data.azurerm_key_vault_secret.ntfns_common_ntf_common_token.value
   }
 
