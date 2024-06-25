@@ -54,7 +54,7 @@ resource "azurerm_monitor_metric_alert" "alert_nh_common_partition_4_pns_errors"
   name                = "[IOCOM|NH4] Push Notification Service errors"
   resource_group_name = azurerm_notification_hub_namespace.common_partition_4.resource_group_name
 
-  scopes        = [azurerm_notification_hub_namespace.common_partition_4.id]
+  scopes        = [azurerm_notification_hub.common_partition_4.id]
   description   = "Notification Hub Partition 4 incurred in PNS errors, please check. Runbook: not needed."
   severity      = 1
   window_size   = "PT5M"
@@ -62,7 +62,7 @@ resource "azurerm_monitor_metric_alert" "alert_nh_common_partition_4_pns_errors"
   auto_mitigate = false
 
   criteria {
-    metric_namespace       = "Microsoft.NotificationHubs/namespaces"
+    metric_namespace       = "Microsoft.NotificationHubs/namespaces/notificationHubs"
     metric_name            = "outgoing.allpns.pnserror"
     aggregation            = "Total"
     operator               = "GreaterThan"
@@ -83,7 +83,7 @@ resource "azurerm_monitor_metric_alert" "alert_nh_common_partition_4_anomalous_p
   name                = "[IOCOM|NH4] Push Notification Service anomalous success volume"
   resource_group_name = azurerm_notification_hub_namespace.common_partition_4.resource_group_name
 
-  scopes        = [azurerm_notification_hub_namespace.common_partition_4.id]
+  scopes        = [azurerm_notification_hub.common_partition_4.id]
   description   = "Notification Hub Partition 4 has an anomalous PNS success volume. Runbook: not needed."
   severity      = 1
   window_size   = "PT5M"
@@ -91,7 +91,7 @@ resource "azurerm_monitor_metric_alert" "alert_nh_common_partition_4_anomalous_p
   auto_mitigate = false
 
   dynamic_criteria {
-    metric_namespace         = "Microsoft.NotificationHubs/namespaces"
+    metric_namespace         = "Microsoft.NotificationHubs/namespaces/notificationHubs"
     metric_name              = "outgoing.allpns.success"
     aggregation              = "Total"
     operator                 = "GreaterThan"
