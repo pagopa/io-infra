@@ -63,17 +63,17 @@ resource "azurerm_monitor_metric_alert" "alert_nh_common_pns_errors" {
   name                = "[IOCOM|NHLegacy] Push Notification Service errors."
   resource_group_name = azurerm_notification_hub_namespace.common.resource_group_name
 
-  scopes              = [azurerm_notification_hub_namespace.common.id]
-  description         = "Notification Hub Legacy incurred in PNS errors, please check. Runbook: not needed."
-  severity            = 1
-  window_size         = "PT30M"
-  frequency           = "PT1M"
-  auto_mitigate       = false
+  scopes        = [azurerm_notification_hub_namespace.common.id]
+  description   = "Notification Hub Legacy incurred in PNS errors, please check. Runbook: not needed."
+  severity      = 1
+  window_size   = "PT30M"
+  frequency     = "PT1M"
+  auto_mitigate = false
 
   criteria {
     metric_namespace       = "Microsoft.NotificationHubs/namespaces/notificationHubs"
     metric_name            = "outgoing.allpns.pnserror"
-    aggregation            = "Sum"
+    aggregation            = "Total"
     operator               = "GreaterThan"
     threshold              = 0
     skip_metric_validation = false
@@ -92,17 +92,17 @@ resource "azurerm_monitor_metric_alert" "alert_nh_common_anomalous_pns_success_v
   name                = "[IOCOM|NHLegacy] Push Notification Service anomalous success volume."
   resource_group_name = azurerm_notification_hub_namespace.common.resource_group_name
 
-  scopes              = [azurerm_notification_hub_namespace.common.id]
-  description         = "Notification Hub Legacy has an anomalous PNS success volume. Runbook: not needed."
-  severity            = 1
-  window_size         = "PT30M"
-  frequency           = "PT1M"
-  auto_mitigate       = false
+  scopes        = [azurerm_notification_hub_namespace.common.id]
+  description   = "Notification Hub Legacy has an anomalous PNS success volume. Runbook: not needed."
+  severity      = 1
+  window_size   = "PT30M"
+  frequency     = "PT1M"
+  auto_mitigate = false
 
   criteria {
     metric_namespace       = "Microsoft.NotificationHubs/namespaces/notificationHubs"
     metric_name            = "outgoing.allpns.success"
-    aggregation            = "Sum"
+    aggregation            = "Total"
     operator               = "GreaterThan"
     threshold              = 1000 # usually we are around 700 reqs because it's going to be dismissed
     skip_metric_validation = false
