@@ -132,7 +132,7 @@ locals {
     LOLLIPOP_API_KEY       = data.azurerm_key_vault_secret.functions_lollipop_api_key.value
 
     LOLLIPOP_REVOKE_STORAGE_CONNECTION_STRING = data.azurerm_storage_account.lollipop_assertion_storage.primary_connection_string
-    LOLLIPOP_REVOKE_QUEUE_NAME                = "pubkeys-revoke"
+    LOLLIPOP_REVOKE_QUEUE_NAME                = "pubkeys-revoke-v2"
 
     # Fast Login config
     FF_FAST_LOGIN = "ALL"
@@ -254,7 +254,7 @@ module "session_manager_weu_staging" {
   location            = var.location
 
   always_on         = true
-  node_version      = "20-lts"
+  node_version      = "18-lts"
   app_command_line  = "npm run start"
   health_check_path = "/healthcheck"
 
