@@ -239,6 +239,10 @@ module "function_lollipop_staging_slot_itn" {
 
   subnet_id = azurerm_subnet.lollipop_snet_itn.id
 
+  allowed_subnets = [
+    data.azurerm_subnet.azdoa_snet[0].id,
+  ]
+
   tags = var.tags
 }
 
