@@ -51,7 +51,7 @@ resource "azurerm_notification_hub_authorization_rule" "common_partition_4_defau
 
 resource "azurerm_monitor_metric_alert" "alert_nh_common_partition_4_pns_errors" {
 
-  name                = "[IOCOM|NH4] Push Notification Service errors."
+  name                = "[IOCOM|NH4] Push Notification Service errors"
   resource_group_name = azurerm_notification_hub_namespace.common_partition_4.resource_group_name
 
   scopes        = [azurerm_notification_hub_namespace.common_partition_4.id]
@@ -80,7 +80,7 @@ resource "azurerm_monitor_metric_alert" "alert_nh_common_partition_4_pns_errors"
 
 resource "azurerm_monitor_metric_alert" "alert_nh_common_partition_4_anomalous_pns_success_volume" {
 
-  name                = "[IOCOM|NH4] Push Notification Service anomalous success volume."
+  name                = "[IOCOM|NH4] Push Notification Service anomalous success volume"
   resource_group_name = azurerm_notification_hub_namespace.common_partition_4.resource_group_name
 
   scopes        = [azurerm_notification_hub_namespace.common_partition_4.id]
