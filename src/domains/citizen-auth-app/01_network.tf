@@ -13,6 +13,11 @@ data "azurerm_private_dns_zone" "internal" {
   resource_group_name = local.internal_dns_zone_resource_group_name
 }
 
+data "azurerm_private_dns_zone" "privatelink_azurewebsites_net" {
+  name                = "privatelink.azurewebsites.net"
+  resource_group_name = format("%s-rg-common", local.product)
+}
+
 data "azurerm_private_dns_zone" "privatelink_blob_core_windows_net" {
   name                = "privatelink.blob.core.windows.net"
   resource_group_name = format("%s-rg-common", local.product)
@@ -75,6 +80,12 @@ data "azurerm_subnet" "ioweb_profile_snet" {
   resource_group_name  = local.vnet_common_resource_group_name
 }
 
+data "azurerm_subnet" "fims_op_app_snet_01" {
+  name                 = "io-p-weu-fims-op-app-snet-01"
+  virtual_network_name = local.vnet_common_name
+  resource_group_name  = local.vnet_common_resource_group_name
+}
+
 data "azurerm_subnet" "apim_v2_snet" {
   name                 = "apimv2api"
   virtual_network_name = local.vnet_common_name
@@ -100,23 +111,13 @@ data "azurerm_subnet" "self_hosted_runner_snet" {
   resource_group_name  = local.vnet_common_resource_group_name
 }
 
-## session_manager subnet
-data "azurerm_resource_group" "italy_north_common_rg" {
-  name = format("%s-itn-common-rg-01", local.product)
-}
-
-data "azurerm_virtual_network" "common_vnet_italy_north" {
-  name                = format("%s-itn-common-vnet-01", local.product)
-  resource_group_name = data.azurerm_resource_group.italy_north_common_rg.name
-}
-
 data "azurerm_virtual_network" "common_vnet" {
   name                = format("%s-vnet-common", local.product)
   resource_group_name = format("%s-rg-common", local.product)
 }
 
 module "session_manager_snet" {
-  source               = "github.com/pagopa/terraform-azurerm-v3//subnet?ref=v8.7.0"
+  source               = "github.com/pagopa/terraform-azurerm-v3//subnet?ref=v8.22.0"
   name                 = format("%s-session-manager-snet-02", local.common_project)
   address_prefixes     = var.cidr_subnet_session_manager
   resource_group_name  = data.azurerm_virtual_network.common_vnet.resource_group_name
@@ -136,6 +137,53 @@ module "session_manager_snet" {
     }
   }
 }
+
+#########################
+# Private Endpoints
+#########################
+
+resource "azurerm_private_endpoint" "session_manager_sites" {
+  name                = "${local.common_project}-session-manager-app-pep-01"
+  location            = var.location
+  resource_group_name = azurerm_resource_group.session_manager_rg_weu.name
+  subnet_id           = data.azurerm_subnet.private_endpoints_subnet.id
+
+  private_service_connection {
+    name                           = "${local.common_project}-session-manager-app-pep-01"
+    private_connection_resource_id = module.session_manager_weu.id
+    is_manual_connection           = false
+    subresource_names              = ["sites"]
+  }
+
+  private_dns_zone_group {
+    name                 = "private-dns-zone-group"
+    private_dns_zone_ids = [data.azurerm_private_dns_zone.privatelink_azurewebsites_net.id]
+  }
+
+  tags = var.tags
+}
+
+resource "azurerm_private_endpoint" "staging_session_manager_sites" {
+  name                = "${local.common_project}-session-manager-staging-app-pep-01"
+  location            = var.location
+  resource_group_name = azurerm_resource_group.session_manager_rg_weu.name
+  subnet_id           = data.azurerm_subnet.private_endpoints_subnet.id
+
+  private_service_connection {
+    name                           = "${local.common_project}-session-manager-staging-app-pep-01"
+    private_connection_resource_id = module.session_manager_weu.id
+    is_manual_connection           = false
+    subresource_names              = ["sites-${module.session_manager_weu_staging.name}"]
+  }
+
+  private_dns_zone_group {
+    name                 = "private-dns-zone-group"
+    private_dns_zone_ids = [data.azurerm_private_dns_zone.privatelink_azurewebsites_net.id]
+  }
+
+  tags = var.tags
+}
+
 
 data "azurerm_nat_gateway" "nat_gateway" {
   name                = "${local.product}-natgw"

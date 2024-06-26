@@ -61,21 +61,24 @@ data "azurerm_key_vault_secret" "session_manager_ALLOW_PAGOPA_IP_SOURCE_RANGE" {
   key_vault_id = data.azurerm_key_vault.kv.id
 }
 
+data "azurerm_key_vault_secret" "session_manager_ALLOW_FIMS_IP_SOURCE_RANGE" {
+  name         = "session-manager-ALLOW-FIMS-IP-SOURCE-RANGE"
+  key_vault_id = data.azurerm_key_vault.kv.id
+}
+
 ###########
 
-resource "azurerm_resource_group" "session_manager_rg" {
-  name     = format("%s-session-manager-rg-01", local.common_session_manager_project)
-  location = var.session_manager_location
+resource "azurerm_resource_group" "session_manager_rg_weu" {
+  name     = format("%s-session-manager-rg-01", local.common_project)
+  location = var.location
 
   tags = var.tags
 }
 
-#################################
-## Session Manager App service ##
-#################################
 locals {
 
-  app_name = format("%s-session-manager-app-02", local.common_project)
+  app_name     = format("%s-session-manager-app-02", local.common_project)
+  app_name_weu = format("%s-session-manager-app-03", local.common_project)
 
   app_settings_common = {
     WEBSITES_ENABLE_APP_SERVICE_STORAGE = false
@@ -103,8 +106,11 @@ locals {
     APPINSIGHTS_DISABLED            = false
     APPINSIGHTS_SAMPLING_PERCENTAGE = 100
 
-    API_BASE_PATH  = "/api/v1"
-    FIMS_BASE_PATH = "/fims/api/v1"
+    API_BASE_PATH = "/api/v1"
+
+    # Fims config
+    FIMS_BASE_PATH             = "/fims/api/v1"
+    ALLOW_FIMS_IP_SOURCE_RANGE = data.azurerm_key_vault_secret.session_manager_ALLOW_FIMS_IP_SOURCE_RANGE.value
 
     # REDIS AUTHENTICATION
     REDIS_URL      = data.azurerm_redis_cache.core_domain_redis_common.hostname
@@ -122,15 +128,15 @@ locals {
     # Functions Lollipop config
     FF_LOLLIPOP_ENABLED    = "1"
     LOLLIPOP_API_BASE_PATH = "/api/v1"
-    LOLLIPOP_API_URL       = var.lollipop_enabled ? "https://${module.function_lollipop[0].default_hostname}" : ""
+    LOLLIPOP_API_URL       = "https://${module.function_lollipop_itn.default_hostname}"
     LOLLIPOP_API_KEY       = data.azurerm_key_vault_secret.functions_lollipop_api_key.value
 
     LOLLIPOP_REVOKE_STORAGE_CONNECTION_STRING = data.azurerm_storage_account.lollipop_assertion_storage.primary_connection_string
-    LOLLIPOP_REVOKE_QUEUE_NAME                = "pubkeys-revoke"
+    LOLLIPOP_REVOKE_QUEUE_NAME                = "pubkeys-revoke-v2"
 
     # Fast Login config
     FF_FAST_LOGIN = "ALL"
-    LV_TEST_USERS = join(",", [data.azurerm_key_vault_secret.app_backend_LV_TEST_USERS.value, module.tests.test_users.all])
+    LV_TEST_USERS = module.tests.test_users.all
 
     # Test Login config
     TEST_LOGIN_FISCAL_CODES = module.tests.test_users.all
@@ -189,17 +195,22 @@ locals {
   }
 }
 
-module "session_manager" {
-  source = "github.com/pagopa/terraform-azurerm-v3//app_service?ref=v8.7.0"
+#################################
+## Session Manager App service ##
+#################################
+
+module "session_manager_weu" {
+  source = "github.com/pagopa/terraform-azurerm-v3//app_service?ref=v8.22.0"
 
   # App service plan
-  plan_type = "internal"
-  plan_name = format("%s-session-manager-asp-02", local.common_project)
-  sku_name  = var.session_manager_plan_sku_name
+  plan_type              = "internal"
+  plan_name              = format("%s-session-manager-asp-03", local.common_project)
+  zone_balancing_enabled = true
+  sku_name               = "P1v3"
 
   # App service
-  name                = local.app_name
-  resource_group_name = azurerm_resource_group.session_manager_rg.name
+  name                = local.app_name_weu
+  resource_group_name = azurerm_resource_group.session_manager_rg_weu.name
   location            = var.location
 
   always_on                    = true
@@ -211,7 +222,7 @@ module "session_manager" {
   app_settings = merge(
     local.app_settings_common,
     {
-      APPINSIGHTS_CLOUD_ROLE_NAME = local.app_name
+      APPINSIGHTS_CLOUD_ROLE_NAME = local.app_name_weu
     }
   )
   sticky_settings = concat(["APPINSIGHTS_CLOUD_ROLE_NAME"])
@@ -219,7 +230,8 @@ module "session_manager" {
 
   allowed_subnets = [
     data.azurerm_subnet.apim_v2_snet.id,
-    data.azurerm_subnet.appgateway_snet.id
+    data.azurerm_subnet.appgateway_snet.id,
+    data.azurerm_subnet.fims_op_app_snet_01.id
     // TODO: add proxy subnet
   ]
   allowed_ips = []
@@ -231,14 +243,14 @@ module "session_manager" {
 }
 
 ## staging slot
-module "session_manager_staging" {
-  source = "github.com/pagopa/terraform-azurerm-v3//app_service_slot?ref=v8.7.0"
+module "session_manager_weu_staging" {
+  source = "github.com/pagopa/terraform-azurerm-v3//app_service_slot?ref=v8.22.0"
 
-  app_service_id   = module.session_manager.id
-  app_service_name = module.session_manager.name
+  app_service_id   = module.session_manager_weu.id
+  app_service_name = module.session_manager_weu.name
 
   name                = "staging"
-  resource_group_name = azurerm_resource_group.session_manager_rg.name
+  resource_group_name = azurerm_resource_group.session_manager_rg_weu.name
   location            = var.location
 
   always_on         = true
@@ -249,7 +261,7 @@ module "session_manager_staging" {
   app_settings = merge(
     local.app_settings_common,
     {
-      APPINSIGHTS_CLOUD_ROLE_NAME = "${module.session_manager.name}-staging"
+      APPINSIGHTS_CLOUD_ROLE_NAME = "${module.session_manager_weu.name}-staging"
     }
   )
 
@@ -270,11 +282,11 @@ module "session_manager_staging" {
 }
 
 ## autoscaling
-resource "azurerm_monitor_autoscale_setting" "session_manager_autoscale_setting" {
-  name                = format("%s-autoscale-01", module.session_manager.name)
-  resource_group_name = azurerm_resource_group.session_manager_rg.name
-  location            = azurerm_resource_group.session_manager_rg.location
-  target_resource_id  = module.session_manager.plan_id
+resource "azurerm_monitor_autoscale_setting" "session_manager_weu_autoscale_setting" {
+  name                = format("%s-autoscale-02", module.session_manager_weu.name)
+  resource_group_name = azurerm_resource_group.session_manager_rg_weu.name
+  location            = azurerm_resource_group.session_manager_rg_weu.location
+  target_resource_id  = module.session_manager_weu.plan_id
 
   profile {
     name = "default"
@@ -290,7 +302,7 @@ resource "azurerm_monitor_autoscale_setting" "session_manager_autoscale_setting"
     rule {
       metric_trigger {
         metric_name              = "Requests"
-        metric_resource_id       = module.session_manager.id
+        metric_resource_id       = module.session_manager_weu.id
         metric_namespace         = "microsoft.web/sites"
         time_grain               = "PT1M"
         statistic                = "Average"
@@ -312,7 +324,7 @@ resource "azurerm_monitor_autoscale_setting" "session_manager_autoscale_setting"
     rule {
       metric_trigger {
         metric_name              = "CpuPercentage"
-        metric_resource_id       = module.session_manager.plan_id
+        metric_resource_id       = module.session_manager_weu.plan_id
         metric_namespace         = "microsoft.web/serverfarms"
         time_grain               = "PT1M"
         statistic                = "Average"
@@ -336,7 +348,7 @@ resource "azurerm_monitor_autoscale_setting" "session_manager_autoscale_setting"
     rule {
       metric_trigger {
         metric_name              = "Requests"
-        metric_resource_id       = module.session_manager.id
+        metric_resource_id       = module.session_manager_weu.id
         metric_namespace         = "microsoft.web/sites"
         time_grain               = "PT1M"
         statistic                = "Average"
@@ -358,7 +370,7 @@ resource "azurerm_monitor_autoscale_setting" "session_manager_autoscale_setting"
     rule {
       metric_trigger {
         metric_name              = "CpuPercentage"
-        metric_resource_id       = module.session_manager.plan_id
+        metric_resource_id       = module.session_manager_weu.plan_id
         metric_namespace         = "microsoft.web/serverfarms"
         time_grain               = "PT1M"
         statistic                = "Average"

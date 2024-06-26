@@ -3,8 +3,6 @@ locals {
   product        = "${var.prefix}-${var.env_short}"
   common_project = "${var.prefix}-${var.env_short}-${var.location_short}"
 
-  common_session_manager_project = "${var.prefix}-${var.env_short}-${var.session_manager_location_short}"
-
   monitor_action_group_slack_name = "SlackPagoPA"
   monitor_action_group_email_name = "EmailPagoPA"
 
@@ -30,4 +28,12 @@ locals {
 
   storage_account_notifications_queue_userslogin         = "userslogin"
   storage_account_notifications_queue_push_notifications = "push-notifications"
+}
+
+# Region ITN
+locals {
+  itn_location       = "italynorth"
+  itn_location_short = "itn"
+  project_itn        = "${local.product}-${var.domain}-${local.itn_location_short}-${var.instance}"
+  common_project_itn = "${local.product}-${local.itn_location_short}"
 }

@@ -1,77 +1,18 @@
-data "azurerm_key_vault_secret" "fast_login_subscription_key" {
-  name         = "fast-login-subscription-key-v2"
-  key_vault_id = data.azurerm_key_vault.kv.id
-}
 
-data "azurerm_key_vault_secret" "backendli_api_key" {
-  name         = "appbackend-PRE-SHARED-KEY"
-  key_vault_id = data.azurerm_key_vault.kv_common.id
-}
-
-data "azurerm_app_service" "app_backend_li" {
-  name                = format("%s-app-appbackendli", local.product)
-  resource_group_name = format("%s-rg-linux", local.product)
-}
-
-locals {
-  function_fast_login = {
-    app_settings = {
-      FUNCTIONS_WORKER_PROCESS_COUNT = 4
-      NODE_ENV                       = "production"
-
-      // Keepalive fields are all optionals
-      FETCH_KEEPALIVE_ENABLED             = "true"
-      FETCH_KEEPALIVE_SOCKET_ACTIVE_TTL   = "110000"
-      FETCH_KEEPALIVE_MAX_SOCKETS         = "40"
-      FETCH_KEEPALIVE_MAX_FREE_SOCKETS    = "10"
-      FETCH_KEEPALIVE_FREE_SOCKET_TIMEOUT = "30000"
-      FETCH_KEEPALIVE_TIMEOUT             = "60000"
-
-      # COSMOS
-      COSMOS_DB_NAME           = "citizen-auth"
-      COSMOS_CONNECTION_STRING = format("AccountEndpoint=%s;AccountKey=%s;", data.azurerm_cosmosdb_account.cosmos_citizen_auth.endpoint, data.azurerm_cosmosdb_account.cosmos_citizen_auth.primary_key)
-
-      # REDIS
-      REDIS_URL      = data.azurerm_redis_cache.redis_common.hostname
-      REDIS_PORT     = data.azurerm_redis_cache.redis_common.ssl_port
-      REDIS_PASSWORD = data.azurerm_redis_cache.redis_common.primary_access_key
-
-      // --------------------------
-      //  Config for getAssertion
-      // --------------------------
-      LOLLIPOP_GET_ASSERTION_BASE_URL = "https://api.io.pagopa.it"
-      LOLLIPOP_GET_ASSERTION_API_KEY  = data.azurerm_key_vault_secret.fast_login_subscription_key.value
-
-      // --------------------------
-      //  Fast login audit log storage
-      // --------------------------
-      FAST_LOGIN_AUDIT_CONNECTION_STRING = data.azurerm_storage_account.immutable_lv_audit_logs_storage.primary_connection_string
-
-
-      // --------------------------
-      //  Config for backendli connection
-      // --------------------------
-      BACKEND_INTERNAL_API_KEY  = data.azurerm_key_vault_secret.backendli_api_key.value
-      BACKEND_INTERNAL_BASE_URL = "https://${data.azurerm_app_service.app_backend_li.default_site_hostname}"
-
-    }
-  }
-}
-
-resource "azurerm_resource_group" "fast_login_rg" {
-  count    = var.fastlogin_enabled ? 1 : 0
-  name     = format("%s-fast-login-rg", local.common_project)
+resource "azurerm_resource_group" "lollipop_rg" {
+  count    = var.lollipop_enabled ? 1 : 0
+  name     = format("%s-lollipop-rg", local.common_project)
   location = var.location
 
   tags = var.tags
 }
 
 # Subnet to host admin function
-module "fast_login_snet" {
-  count                                     = var.fastlogin_enabled ? 1 : 0
+module "lollipop_snet" {
+  count                                     = var.lollipop_enabled ? 1 : 0
   source                                    = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v8.22.0"
-  name                                      = format("%s-fast-login-snet", local.common_project)
-  address_prefixes                          = var.cidr_subnet_fnfastlogin
+  name                                      = format("%s-lollipop-snet", local.common_project)
+  address_prefixes                          = var.cidr_subnet_fnlollipop
   resource_group_name                       = data.azurerm_virtual_network.vnet_common.resource_group_name
   virtual_network_name                      = data.azurerm_virtual_network.vnet_common.name
   private_endpoint_network_policies_enabled = false
@@ -91,12 +32,12 @@ module "fast_login_snet" {
   }
 }
 
-module "function_fast_login" {
-  count  = var.fastlogin_enabled ? 1 : 0
+module "function_lollipop" {
+  count  = var.lollipop_enabled ? 1 : 0
   source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app?ref=v8.22.0"
 
-  resource_group_name = azurerm_resource_group.fast_login_rg[0].name
-  name                = format("%s-fast-login-fn", local.common_project)
+  resource_group_name = azurerm_resource_group.lollipop_rg[0].name
+  name                = format("%s-lollipop-fn", local.common_project)
   location            = var.location
   domain              = "IO-COMMONS"
   health_check_path   = "/info"
@@ -108,19 +49,23 @@ module "function_fast_login" {
   application_insights_instrumentation_key = data.azurerm_application_insights.application_insights.instrumentation_key
 
   app_service_plan_info = {
-    kind                         = var.function_fastlogin_kind
-    sku_size                     = var.function_fastlogin_sku_size
+    kind                         = var.function_lollipop_kind
+    sku_size                     = var.function_lollipop_sku_size
     maximum_elastic_worker_count = 0
-    worker_count                 = null
-    zone_balancing_enabled       = false
+    // worker count is managed by autoscaling settings
+    worker_count           = null
+    zone_balancing_enabled = false
   }
 
   app_settings = merge(
-    local.function_fast_login.app_settings,
-    {},
+    local.function_lollipop.app_settings,
+    {
+      "LOLLIPOP_ASSERTION_REVOKE_QUEUE"          = "pubkeys-revoke",
+      "AzureWebJobs.HandlePubKeyRevoke.Disabled" = "0"
+    },
   )
 
-  sticky_app_setting_names = []
+  sticky_app_setting_names = ["AzureWebJobs.HandlePubKeyRevoke.Disabled"]
 
   internal_storage = {
     "enable"                     = true,
@@ -133,14 +78,13 @@ module "function_fast_login" {
     "blobs_retention_days"       = 0,
   }
 
-  subnet_id = module.fast_login_snet[0].id
+  subnet_id = module.lollipop_snet[0].id
 
   allowed_subnets = [
-    module.fast_login_snet[0].id,
+    module.lollipop_snet[0].id,
     data.azurerm_subnet.apim_v2_snet.id,
     data.azurerm_subnet.app_backend_l1_snet.id,
     data.azurerm_subnet.app_backend_l2_snet.id,
-    data.azurerm_subnet.ioweb_profile_snet.id,
     module.session_manager_snet.id,
   ]
 
@@ -155,20 +99,20 @@ module "function_fast_login" {
   tags = var.tags
 }
 
-module "function_fast_login_staging_slot" {
-  count  = var.fastlogin_enabled ? 1 : 0
+module "function_lollipop_staging_slot" {
+  count  = var.lollipop_enabled ? 1 : 0
   source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app_slot?ref=v8.22.0"
 
   name                = "staging"
   location            = var.location
-  resource_group_name = azurerm_resource_group.fast_login_rg[0].name
-  function_app_id     = module.function_fast_login[0].id
-  app_service_plan_id = module.function_fast_login[0].app_service_plan_id
+  resource_group_name = azurerm_resource_group.lollipop_rg[0].name
+  function_app_id     = module.function_lollipop[0].id
+  app_service_plan_id = module.function_lollipop[0].app_service_plan_id
   health_check_path   = "/info"
 
-  storage_account_name               = module.function_fast_login[0].storage_account.name
-  storage_account_access_key         = module.function_fast_login[0].storage_account.primary_access_key
-  internal_storage_connection_string = module.function_fast_login[0].storage_account_internal_function.primary_connection_string
+  storage_account_name               = module.function_lollipop[0].storage_account.name
+  storage_account_access_key         = module.function_lollipop[0].storage_account.primary_access_key
+  internal_storage_connection_string = module.function_lollipop[0].storage_account_internal_function.primary_connection_string
 
   node_version                             = "18"
   always_on                                = "true"
@@ -176,14 +120,17 @@ module "function_fast_login_staging_slot" {
   application_insights_instrumentation_key = data.azurerm_application_insights.application_insights.instrumentation_key
 
   app_settings = merge(
-    local.function_fast_login.app_settings,
-    {},
+    local.function_lollipop.app_settings,
+    {
+      "LOLLIPOP_ASSERTION_REVOKE_QUEUE"          = "pubkeys-revoke",
+      "AzureWebJobs.HandlePubKeyRevoke.Disabled" = "1"
+    },
   )
 
-  subnet_id = module.fast_login_snet[0].id
+  subnet_id = module.lollipop_snet[0].id
 
   allowed_subnets = [
-    module.fast_login_snet[0].id,
+    module.lollipop_snet[0].id,
     data.azurerm_subnet.azdoa_snet[0].id,
     data.azurerm_subnet.apim_v2_snet.id,
     data.azurerm_subnet.app_backend_l1_snet.id,
@@ -193,83 +140,22 @@ module "function_fast_login_staging_slot" {
   tags = var.tags
 }
 
-resource "azurerm_monitor_autoscale_setting" "function_fast_login" {
-  count               = var.fastlogin_enabled ? 1 : 0
-  name                = format("%s-autoscale", module.function_fast_login[0].name)
-  resource_group_name = azurerm_resource_group.fast_login_rg[0].name
+resource "azurerm_monitor_autoscale_setting" "function_lollipop" {
+  count               = var.lollipop_enabled ? 1 : 0
+  name                = format("%s-autoscale", module.function_lollipop[0].name)
+  resource_group_name = azurerm_resource_group.lollipop_rg[0].name
   location            = var.location
   // TODO: plan renaming forces replacement for the entire resource. the
   // following is a temporary fix
-  target_resource_id = replace(module.function_fast_login[0].app_service_plan_id, "serverFarms", "serverfarms")
+  target_resource_id = replace(module.function_lollipop[0].app_service_plan_id, "serverFarms", "serverfarms")
 
-
-  # Scaling strategy
-  # 05 - 19,30 -> min 3
-  # 19,30 - 23 -> min 4
-  # 23 - 05 -> min 2
   dynamic "profile" {
-    for_each = [
-      {
-        name = "{\"name\":\"default\",\"for\":\"evening\"}",
-
-        recurrence = {
-          hours   = 22
-          minutes = 59
-        }
-
-        capacity = {
-          default = var.function_fastlogin_autoscale_default + 1
-          minimum = var.function_fastlogin_autoscale_minimum + 1
-          maximum = var.function_fastlogin_autoscale_maximum
-        }
-      },
-      {
-        name = "{\"name\":\"default\",\"for\":\"night\"}",
-
-        recurrence = {
-          hours   = 5
-          minutes = 0
-        }
-
-        capacity = {
-          default = var.function_fastlogin_autoscale_default + 1
-          minimum = var.function_fastlogin_autoscale_minimum + 1
-          maximum = var.function_fastlogin_autoscale_maximum
-        }
-      },
-      {
-        name = "evening",
-
-        recurrence = {
-          hours   = 19
-          minutes = 30
-        }
-
-        capacity = {
-          default = var.function_fastlogin_autoscale_default + 2
-          minimum = var.function_fastlogin_autoscale_minimum + 2
-          maximum = var.function_fastlogin_autoscale_maximum
-        }
-      },
-      {
-        name = "night",
-
-        recurrence = {
-          hours   = 23
-          minutes = 0
-        }
-
-        capacity = {
-          default = var.function_fastlogin_autoscale_default
-          minimum = var.function_fastlogin_autoscale_minimum
-          maximum = var.function_fastlogin_autoscale_maximum
-        }
-      }
-    ]
+    for_each = local.function_lollipop.autoscale_profiles
     iterator = profile_info
 
     content {
       name = profile_info.value.name
+
 
       dynamic "recurrence" {
         for_each = profile_info.value.recurrence != null ? [profile_info.value.recurrence] : []
@@ -297,12 +183,13 @@ resource "azurerm_monitor_autoscale_setting" "function_fast_login" {
         maximum = profile_info.value.capacity.maximum
       }
 
+
       # Increase
 
       rule {
         metric_trigger {
           metric_name              = "Requests"
-          metric_resource_id       = module.function_fast_login[0].id
+          metric_resource_id       = module.function_lollipop[0].id
           metric_namespace         = "microsoft.web/sites"
           time_grain               = "PT1M"
           statistic                = "Average"
@@ -324,7 +211,7 @@ resource "azurerm_monitor_autoscale_setting" "function_fast_login" {
       rule {
         metric_trigger {
           metric_name              = "CpuPercentage"
-          metric_resource_id       = module.function_fast_login[0].app_service_plan_id
+          metric_resource_id       = module.function_lollipop[0].app_service_plan_id
           metric_namespace         = "microsoft.web/serverfarms"
           time_grain               = "PT1M"
           statistic                = "Average"
@@ -348,7 +235,7 @@ resource "azurerm_monitor_autoscale_setting" "function_fast_login" {
       rule {
         metric_trigger {
           metric_name              = "Requests"
-          metric_resource_id       = module.function_fast_login[0].id
+          metric_resource_id       = module.function_lollipop[0].id
           metric_namespace         = "microsoft.web/sites"
           time_grain               = "PT1M"
           statistic                = "Average"
@@ -370,7 +257,7 @@ resource "azurerm_monitor_autoscale_setting" "function_fast_login" {
       rule {
         metric_trigger {
           metric_name              = "CpuPercentage"
-          metric_resource_id       = module.function_fast_login[0].app_service_plan_id
+          metric_resource_id       = module.function_lollipop[0].app_service_plan_id
           metric_namespace         = "microsoft.web/serverfarms"
           time_grain               = "PT1M"
           statistic                = "Average"
@@ -390,4 +277,56 @@ resource "azurerm_monitor_autoscale_setting" "function_fast_login" {
       }
     }
   }
+}
+
+# ---------------------------------
+# Alerts
+# ---------------------------------
+
+resource "azurerm_monitor_scheduled_query_rules_alert_v2" "alert_function_lollipop_HandlePubKeyRevoke_failure" {
+  count = var.lollipop_enabled ? 1 : 0
+
+  name                = "[${upper(var.domain)}|${module.function_lollipop[0].name}] The revocation of one or more PubKeys has failed"
+  resource_group_name = azurerm_resource_group.lollipop_rg[0].name
+  location            = var.location
+
+  // check once per day
+  evaluation_frequency = "P1D"
+  window_duration      = "P1D"
+  scopes               = [data.azurerm_application_insights.application_insights.id]
+  severity             = 1
+  criteria {
+    query                   = <<-QUERY
+exceptions
+| where cloud_RoleName == "${module.function_lollipop[0].name}"
+| where outerMessage startswith "HandlePubKeyRevoke|"
+| extend
+  event_name = tostring(customDimensions.name),
+  event_maxRetryCount = toint(customDimensions.maxRetryCount),
+  event_retryCount = toint(customDimensions.retryCount),
+  event_assertionRef = tostring(customDimensions.assertionRef),
+  event_detail = tostring(customDimensions.detail),
+  event_fatal = tostring(customDimensions.fatal),
+  event_isSuccess = tostring(customDimensions.isSuccess),
+  event_modelId = tostring(customDimensions.modelId)
+| where event_name == "lollipop.pubKeys.revoke.failure" and event_retryCount == event_maxRetryCount-1
+      QUERY
+    time_aggregation_method = "Count"
+    threshold               = 1
+    operator                = "GreaterThanOrEqual"
+
+    failing_periods {
+      minimum_failing_periods_to_trigger_alert = 1
+      number_of_evaluation_periods             = 1
+    }
+  }
+
+  auto_mitigation_enabled = false
+  description             = "One or more PubKey has not been revoked. Please, check the poison-queue and re-schedule the operation."
+  enabled                 = true
+  action {
+    action_groups = [data.azurerm_monitor_action_group.error_action_group.id]
+  }
+
+  tags = var.tags
 }

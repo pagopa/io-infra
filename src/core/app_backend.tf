@@ -212,7 +212,7 @@ locals {
           schemaKind         = "PN",
           jsonSchema         = "unused",
           isLollipopEnabled  = "true",
-          disableLollipopFor = split(",", local.test_users),
+          disableLollipopFor = split(",", local.test_users_light),
           prodEnvironment = {
             baseUrl = local.pn_api_url_prod,
             detailsAuthentication = {
@@ -222,7 +222,7 @@ locals {
             }
           },
           testEnvironment = {
-            testUsers = split(",", local.test_users),
+            testUsers = split(",", local.test_users_light),
             baseUrl   = var.pn_test_endpoint,
             detailsAuthentication = {
               type            = "API_KEY",
@@ -739,6 +739,12 @@ data "azurerm_subnet" "functions_service_messages_snet" {
   name                 = "io-p-fn-service-messages-snet"
   virtual_network_name = module.vnet_common.name
   resource_group_name  = azurerm_resource_group.rg_common.name
+}
+
+data "azurerm_subnet" "itn_msgs_sending_func_snet" {
+  name                 = "io-p-itn-msgs-sending-func-snet-01"
+  virtual_network_name = "io-p-itn-common-vnet-01"
+  resource_group_name  = "io-p-itn-common-rg-01"
 }
 
 module "appservice_app_backendl1" {
@@ -1270,6 +1276,7 @@ module "appservice_app_backendli" {
     data.azurerm_subnet.admin_snet.id,
     data.azurerm_subnet.functions_fast_login_snet.id,
     data.azurerm_subnet.functions_service_messages_snet.id,
+    data.azurerm_subnet.itn_msgs_sending_func_snet.id,
   ]
 
   allowed_ips = concat(
