@@ -96,9 +96,9 @@ data "azurerm_key_vault_certificate" "app_gw_selfcare_io" {
   key_vault_id = data.azurerm_key_vault.weu.id
 }
 
-data "azurerm_key_vault_certificate" "app_gw_openid_provider_io" {
-  name         = "openid-provider-io-pagopa-it"
-  key_vault_id = data.azurerm_key_vault.weu.id
+data "azurerm_key_vault_certificate" "app_gw_oauth" {
+  name         = "oauth-io-pagopa-it"
+  key_vault_id = module.key_vault.id
 }
 
 data "azurerm_key_vault_secret" "app_gw_mtls_header_name" {
