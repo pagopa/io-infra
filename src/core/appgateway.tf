@@ -508,7 +508,7 @@ module "app_gw" {
       listener              = "oauth-io-pagopa-it"
       backend               = "fims-op-app"
       rewrite_rule_set_name = "rewrite-rule-set-fims-op-app"
-      priority              = 80
+      priority              = 120
     }
   }
 
@@ -1105,7 +1105,7 @@ data "azurerm_key_vault_certificate" "app_gw_continua" {
 }
 
 data "azurerm_key_vault_certificate" "app_gw_oauth" {
-  name         = var.app_gateway_continua_io_pagopa_it_certificate_name
+  name         = var.app_gateway_oauth_io_pagopa_it_certificate_name
   key_vault_id = module.key_vault.id
 }
 
