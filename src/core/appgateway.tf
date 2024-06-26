@@ -1114,11 +1114,6 @@ data "azurerm_key_vault_certificate" "app_gw_selfcare_io" {
   key_vault_id = module.key_vault.id
 }
 
-data "azurerm_key_vault_certificate" "app_gw_openid_provider_io" {
-  name         = var.app_gateway_openid_provider_io_pagopa_it_certificate_name
-  key_vault_id = module.key_vault.id
-}
-
 data "azurerm_key_vault_secret" "app_gw_mtls_header_name" {
   name         = "mtls-header-name"
   key_vault_id = module.key_vault.id
