@@ -461,7 +461,7 @@ module "app_gw" {
       listener              = "oauth-io-pagopa-it"
       backend               = "fims-op-app"
       rewrite_rule_set_name = "rewrite-rule-set-fims-op-app"
-      priority              = 80
+      priority              = 120
     }
   }
 
