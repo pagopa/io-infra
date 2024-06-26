@@ -1,4 +1,3 @@
-## user assined identity: (application gateway) ##
 resource "azurerm_user_assigned_identity" "appgateway" {
   resource_group_name = data.azurerm_resource_group.weu_sec.name
   location            = data.azurerm_resource_group.weu_sec.location
