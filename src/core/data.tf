@@ -325,3 +325,18 @@ data "azurerm_linux_function_app" "function_assets_cdn" {
   name                = format("%s-assets-cdn-fn", local.project)
   resource_group_name = format("%s-assets-cdn-rg", local.project)
 }
+
+data "azurerm_subnet" "appgateway" {
+  name                 = "${local.project}-appgateway-snet"
+  virtual_network_name = module.vnet_common.name
+  resource_group_name  = module.vnet_common.resource_group_name
+}
+
+#
+# Public IP
+#
+
+data "azurerm_public_ip" "appgateway_public_ip" {
+  name                = format("%s-appgateway-pip", local.project)
+  resource_group_name = format("%s-rg-external", local.project)
+}

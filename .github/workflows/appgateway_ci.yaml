@@ -1,0 +1,23 @@
+name: PR - Application Gateway TF Validation
+
+on:
+  workflow_dispatch:
+  pull_request:
+    types:
+      - opened
+      - edited
+      - synchronize
+      - reopened
+      - ready_for_review
+    paths:
+      - "src/application-gateway/prod/**"
+      - ".github/workflows/appgateway_ci.yaml"
+
+jobs:
+  prod_itn_core_code_review:
+    uses: pagopa/dx/.github/workflows/infra_plan.yaml@main
+    name: Prod - Code Review
+    secrets: inherit
+    with:
+      environment: prod
+      base_path: src/application-gateway
