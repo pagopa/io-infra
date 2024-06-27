@@ -57,6 +57,15 @@ data "azurerm_storage_account" "lollipop_assertions_storage" {
   resource_group_name = format("%s-%s-data-rg", var.citizen_auth_product, var.citizen_auth_domain)
 }
 
+data "azurerm_resource_group" "lollipop_function_rg" {
+  name = format("%s-itn-lollipop-rg-01", local.project)
+}
+
+data "azurerm_linux_function_app" "lollipop_function" {
+  name                = format("%s-itn-lollipop-fn-01", local.project)
+  resource_group_name = data.azurerm_resource_group.lollipop_function_rg.name
+}
+
 # todo migrate storage account and related resources
 locals {
   storage_account_notifications_queue_push_notifications = "push-notifications"

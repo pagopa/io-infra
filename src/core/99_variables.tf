@@ -717,7 +717,7 @@ variable "citizen_auth_product" {
 variable "citizen_auth_revoke_queue_name" {
   type        = string
   description = "Use queue storage name from citizen_auth domain storage"
-  default     = "pubkeys-revoke"
+  default     = "pubkeys-revoke-v2"
 }
 
 variable "citizen_auth_assertion_storage_name" {
