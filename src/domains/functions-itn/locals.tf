@@ -8,13 +8,13 @@ locals {
     CostCenter  = "TS310 - PAGAMENTI & SERVIZI"
   })
 
-  env_short                  = "p"
-  location                   = "italynorth"
-  location_short             = "itn"
-  instance_number            = "01"
-  domain                     = "infra" # TO CHECK - "IO-COMMONS"
+  env_short       = "p"
+  location        = "italynorth"
+  location_short  = "itn"
+  instance_number = "01"
+  domain          = "infra" # TO CHECK - "IO-COMMONS"
 
-  project                    = "${var.prefix}-${local.env_short}"
+  project = "${var.prefix}-${local.env_short}"
 
   # To distinguish between different configurations as common/internal/cdn and italy north (regional)
   resource_groups = {
