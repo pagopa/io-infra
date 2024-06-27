@@ -63,8 +63,8 @@ locals {
       EUCOVIDCERT_API_URL         = "https://${data.azurerm_linux_function_app.eucovidcert.default_hostname}/api/v1"
       EUCOVIDCERT_API_KEY         = data.azurerm_key_vault_secret.fn_eucovidcert_API_KEY_APPBACKEND.value
       APP_MESSAGES_API_KEY        = data.azurerm_key_vault_secret.app_backend_APP_MESSAGES_API_KEY.value
-      LOLLIPOP_API_URL            = "https://io-p-weu-lollipop-fn.azurewebsites.net"
-      LOLLIPOP_API_KEY            = data.azurerm_key_vault_secret.app_backend_LOLLIPOP_API_KEY.value
+      LOLLIPOP_API_URL            = "https://${data.azurerm_linux_function_app.lollipop_function.default_hostname}"
+      LOLLIPOP_API_KEY            = data.azurerm_key_vault_secret.app_backend_LOLLIPOP_ITN_API_KEY.value
       FAST_LOGIN_API_URL          = "https://io-p-weu-fast-login-fn.azurewebsites.net"
       FAST_LOGIN_API_KEY          = data.azurerm_key_vault_secret.app_backend_FAST_LOGIN_API_KEY.value
       TRIAL_SYSTEM_API_URL        = "https://ts-p-itn-subscription-fn-01.azurewebsites.net" # PROD-TRIAL subscription
@@ -585,8 +585,8 @@ data "azurerm_key_vault_secret" "app_backend_PN_REAL_TEST_USERS" {
   key_vault_id = module.key_vault_common.id
 }
 
-data "azurerm_key_vault_secret" "app_backend_LOLLIPOP_API_KEY" {
-  name         = "appbackend-LOLLIPOP-API-KEY"
+data "azurerm_key_vault_secret" "app_backend_LOLLIPOP_ITN_API_KEY" {
+  name         = "appbackend-LOLLIPOP-ITN-API-KEY"
   key_vault_id = module.key_vault_common.id
 }
 
