@@ -59,7 +59,7 @@ resource "azurerm_api_management_named_value" "io_fn_itn_lollipop_url_v2" {
   api_management_name = data.azurerm_api_management.apim_v2_api.name
   resource_group_name = data.azurerm_api_management.apim_v2_api.resource_group_name
   display_name        = "io-fn-itn-lollipop-url"
-  value               = "https://io-p-itn-lollipop-fn-01.azurewebsites.net"
+  value               = "https://${data.azurerm_linux_function_app.lollipop_function.default_hostname}"
 }
 
 data "azurerm_key_vault_secret" "io_fn_itn_lollipop_key_secret_v2" {
