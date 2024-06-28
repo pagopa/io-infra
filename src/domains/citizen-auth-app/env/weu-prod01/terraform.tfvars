@@ -66,9 +66,9 @@ function_fastlogin_autoscale_default = 10
 # Session manager
 cidr_subnet_session_manager = ["10.0.149.0/26"]
 session_manager_autoscale_settings = {
-  autoscale_minimum = 1
-  autoscale_default = 2
-  autoscale_maximum = 10
+  autoscale_minimum = 3
+  autoscale_default = 3
+  autoscale_maximum = 30
 }
 
 # DNS
