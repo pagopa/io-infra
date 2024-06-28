@@ -309,7 +309,7 @@ resource "azurerm_monitor_autoscale_setting" "session_manager_weu_autoscale_sett
         time_window              = "PT1M"
         time_aggregation         = "Average"
         operator                 = "GreaterThan"
-        threshold                = 4000
+        threshold                = 1500
         divide_by_instance_count = false
       }
 
@@ -331,7 +331,7 @@ resource "azurerm_monitor_autoscale_setting" "session_manager_weu_autoscale_sett
         time_window              = "PT1M"
         time_aggregation         = "Average"
         operator                 = "GreaterThan"
-        threshold                = 40
+        threshold                = 70
         divide_by_instance_count = false
       }
 
@@ -355,7 +355,7 @@ resource "azurerm_monitor_autoscale_setting" "session_manager_weu_autoscale_sett
         time_window              = "PT15M"
         time_aggregation         = "Average"
         operator                 = "LessThan"
-        threshold                = 1500
+        threshold                = 500
         divide_by_instance_count = false
       }
 
