@@ -66,7 +66,7 @@ resource "azurerm_monitor_metric_alert" "alert_nh_common_partition_3_pns_errors"
     metric_name            = "outgoing.allpns.pnserror"
     aggregation            = "Total"
     operator               = "GreaterThan"
-    threshold              = 0
+    threshold              = 10
     skip_metric_validation = false
   }
 
