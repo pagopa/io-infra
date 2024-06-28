@@ -104,9 +104,9 @@ resource "azurerm_monitor_autoscale_setting" "session_manager_autoscale_setting"
     name = "default"
 
     capacity {
-      default = var.session_manager_autoscale_settings.autoscale_default
-      minimum = var.session_manager_autoscale_settings.autoscale_minimum
-      maximum = var.session_manager_autoscale_settings.autoscale_maximum
+      default = 1
+      minimum = 1
+      maximum = 1
     }
 
     # Increase rules
