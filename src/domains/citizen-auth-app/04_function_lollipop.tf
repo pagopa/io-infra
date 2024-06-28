@@ -4,6 +4,8 @@ data "azurerm_key_vault_secret" "first_lollipop_consumer_subscription_key" {
 }
 
 locals {
+  function_name = format("%s-lollipop-fn-01", local.common_project_itn)
+
   function_lollipop = {
     app_settings = {
       FUNCTIONS_WORKER_PROCESS_COUNT = 4
@@ -44,6 +46,10 @@ locals {
       // -------------------------
       FIRST_LC_ASSERTION_CLIENT_BASE_URL         = "https://api.io.pagopa.it"
       FIRST_LC_ASSERTION_CLIENT_SUBSCRIPTION_KEY = data.azurerm_key_vault_secret.first_lollipop_consumer_subscription_key.value
+
+      # APPINSIGHTS
+      APPINSIGHTS_CONNECTION_STRING = data.azurerm_application_insights.application_insights.connection_string
+
     }
 
     # Scaling strategy
@@ -153,7 +159,7 @@ module "function_lollipop_itn" {
   source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app?ref=v8.22.0"
 
   resource_group_name = azurerm_resource_group.lollipop_rg_itn.name
-  name                = format("%s-lollipop-fn-01", local.common_project_itn)
+  name                = local.function_name
   location            = local.itn_location
   domain              = "IO-COMMONS"
   health_check_path   = "/info"
@@ -184,7 +190,8 @@ module "function_lollipop_itn" {
 
   app_settings = merge(
     local.function_lollipop.app_settings,
-    { "AzureWebJobs.HandlePubKeyRevoke.Disabled" = "0" },
+    { "AzureWebJobs.HandlePubKeyRevoke.Disabled" = "0",
+    APPINSIGHTS_CLOUD_ROLE_NAME = local.function_name },
   )
 
   sticky_app_setting_names = ["AzureWebJobs.HandlePubKeyRevoke.Disabled"]
@@ -234,7 +241,8 @@ module "function_lollipop_staging_slot_itn" {
 
   app_settings = merge(
     local.function_lollipop.app_settings,
-    { "AzureWebJobs.HandlePubKeyRevoke.Disabled" = "1" },
+    { "AzureWebJobs.HandlePubKeyRevoke.Disabled" = "1",
+    APPINSIGHTS_CLOUD_ROLE_NAME = "${module.function_lollipop_itn.name}-staging" },
   )
 
   subnet_id = azurerm_subnet.lollipop_snet_itn.id
