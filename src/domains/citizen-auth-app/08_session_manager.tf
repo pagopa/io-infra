@@ -77,7 +77,6 @@ resource "azurerm_resource_group" "session_manager_rg_weu" {
 
 locals {
 
-  app_name     = format("%s-session-manager-app-02", local.common_project)
   app_name_weu = format("%s-session-manager-app-03", local.common_project)
 
   app_settings_common = {
@@ -206,7 +205,7 @@ module "session_manager_weu" {
   plan_type              = "internal"
   plan_name              = format("%s-session-manager-asp-03", local.common_project)
   zone_balancing_enabled = true
-  sku_name               = "P1v3"
+  sku_name               = var.session_manager_plan_sku_name
 
   # App service
   name                = local.app_name_weu
