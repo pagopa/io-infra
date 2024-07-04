@@ -106,6 +106,20 @@ module "app_gw" {
       pick_host_name_from_backend = true
     }
 
+    fims-op-app = {
+      protocol     = "Https"
+      host         = null
+      port         = 443
+      ip_addresses = null # with null value use fqdns
+      fqdns = [
+        data.azurerm_linux_web_app.fims_op_app.default_hostname
+      ]
+      probe                       = "/health"
+      probe_name                  = "probe-fims-op-app"
+      request_timeout             = 10
+      pick_host_name_from_backend = true
+    }
+
     developerportal-backend = {
       protocol     = "Https"
       host         = null
@@ -405,18 +419,18 @@ module "app_gw" {
       }
     }
 
-    openid-provider-io-pagopa-it = {
+    oauth-io-pagopa-it = {
       protocol           = "Https"
-      host               = format("openid-provider.%s.%s", var.dns_zone_io, var.external_domain)
+      host               = format("oauth.%s.%s", var.dns_zone_io, var.external_domain)
       port               = 443
       ssl_profile_name   = null
       firewall_policy_id = null
 
       certificate = {
-        name = var.app_gateway_openid_provider_io_pagopa_it_certificate_name
+        name = var.app_gateway_oauth_io_pagopa_it_certificate_name
         id = replace(
-          data.azurerm_key_vault_certificate.app_gw_openid_provider_io.secret_id,
-          "/${data.azurerm_key_vault_certificate.app_gw_openid_provider_io.version}",
+          data.azurerm_key_vault_certificate.app_gw_oauth.secret_id,
+          "/${data.azurerm_key_vault_certificate.app_gw_oauth.version}",
           ""
         )
       }
@@ -490,10 +504,10 @@ module "app_gw" {
       priority              = 110
     }
 
-    openid-provider-io-pagopa-it = {
-      listener              = "openid-provider-io-pagopa-it"
-      backend               = "apim"
-      rewrite_rule_set_name = "rewrite-rule-set-openid-provider-io"
+    oauth-io-pagopa-it = {
+      listener              = "oauth-io-pagopa-it"
+      backend               = "fims-op-app"
+      rewrite_rule_set_name = "rewrite-rule-set-fims-op-app"
       priority              = 120
     }
   }
@@ -682,6 +696,30 @@ module "app_gw" {
       }]
     },
     {
+      name = "rewrite-rule-set-fims-op-app"
+      rewrite_rules = [{
+        name          = "http-headers-fims-op-app"
+        rule_sequence = 100
+        conditions    = []
+        url           = null
+        request_header_configurations = [
+          {
+            header_name  = "X-Forwarded-For"
+            header_value = "{var_client_ip}"
+          },
+          {
+            header_name  = "X-Forwarded-Host"
+            header_value = "{var_host}"
+          },
+          {
+            header_name  = "X-Client-Ip"
+            header_value = "{var_client_ip}"
+          },
+        ]
+        response_header_configurations = []
+      }]
+    },
+    {
       name = "rewrite-rule-set-api-web"
       rewrite_rules = [{
         name          = "http-headers-api-web"
@@ -804,60 +842,6 @@ module "app_gw" {
         ]
         response_header_configurations = []
       }]
-    },
-    {
-      name = "rewrite-rule-set-openid-provider-io"
-      rewrite_rules = [
-        {
-          name          = "http-headers-api-openid-provider"
-          rule_sequence = 100
-          conditions    = []
-          url           = null
-          request_header_configurations = [
-            {
-              header_name  = "X-Forwarded-For"
-              header_value = "{var_client_ip}"
-            },
-            {
-              header_name  = "X-Forwarded-Host"
-              header_value = "{var_host}"
-            },
-            {
-              header_name  = "X-Client-Ip"
-              header_value = "{var_client_ip}"
-            }
-          ]
-          response_header_configurations = []
-        },
-        {
-          name          = "url-rewrite-openid-provider-private"
-          rule_sequence = 200
-          conditions = [
-            {
-              ignore_case = true
-              pattern     = join("|", var.app_gateway_deny_paths)
-              negate      = false
-              variable    = "var_uri_path"
-          }]
-          url = {
-            path         = "notfound"
-            query_string = null
-          }
-          request_header_configurations  = []
-          response_header_configurations = []
-        },
-        {
-          name          = "url-rewrite-openid-provider-public"
-          rule_sequence = 201
-          conditions    = []
-          url = {
-            path         = "fims/{var_uri_path}"
-            query_string = "{var_query_string}"
-          }
-          request_header_configurations  = []
-          response_header_configurations = []
-        }
-      ]
     }
   ]
 
@@ -1120,13 +1104,13 @@ data "azurerm_key_vault_certificate" "app_gw_continua" {
   key_vault_id = module.key_vault.id
 }
 
-data "azurerm_key_vault_certificate" "app_gw_selfcare_io" {
-  name         = var.app_gateway_selfcare_io_pagopa_it_certificate_name
+data "azurerm_key_vault_certificate" "app_gw_oauth" {
+  name         = var.app_gateway_oauth_io_pagopa_it_certificate_name
   key_vault_id = module.key_vault.id
 }
 
-data "azurerm_key_vault_certificate" "app_gw_openid_provider_io" {
-  name         = var.app_gateway_openid_provider_io_pagopa_it_certificate_name
+data "azurerm_key_vault_certificate" "app_gw_selfcare_io" {
+  name         = var.app_gateway_selfcare_io_pagopa_it_certificate_name
   key_vault_id = module.key_vault.id
 }
 
@@ -1229,4 +1213,9 @@ resource "azurerm_web_application_firewall_policy" "api_app" {
 data "azurerm_linux_web_app" "session_manager" {
   name                = "io-p-weu-session-manager-app-03"
   resource_group_name = "io-p-weu-session-manager-rg-01"
+}
+
+data "azurerm_linux_web_app" "fims_op_app" {
+  name                = "io-p-weu-fims-op-app-01"
+  resource_group_name = "io-p-weu-fims-rg-01"
 }

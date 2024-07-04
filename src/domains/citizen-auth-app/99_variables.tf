@@ -55,16 +55,6 @@ variable "location_string" {
   description = "One of West Europe, North Europe"
 }
 
-variable "session_manager_location" {
-  type        = string
-  description = "Due to capacity issues, session_manager will be created on northitaly"
-}
-
-variable "session_manager_location_short" {
-  type    = string
-  default = "itn"
-}
-
 variable "instance" {
   type        = string
   description = "One of beta, prod01, prod02"
@@ -154,6 +144,11 @@ variable "cidr_subnet_fnlollipop" {
   description = "Function Lollipop address space."
 }
 
+variable "cidr_subnet_fnlollipop_itn" {
+  type        = list(string)
+  description = "Function Lollipop address space."
+}
+
 variable "function_lollipop_kind" {
   type        = string
   description = "App service plan kind"
@@ -169,19 +164,19 @@ variable "function_lollipop_sku_size" {
 variable "function_lollipop_autoscale_minimum" {
   type        = number
   description = "The minimum number of instances for this resource."
-  default     = 1
+  default     = 3
 }
 
 variable "function_lollipop_autoscale_maximum" {
   type        = number
   description = "The maximum number of instances for this resource."
-  default     = 3
+  default     = 10
 }
 
 variable "function_lollipop_autoscale_default" {
   type        = number
   description = "The number of instances that are available for scaling if metrics are not available for evaluation."
-  default     = 1
+  default     = 3
 }
 
 # Function Fast Login

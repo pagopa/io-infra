@@ -15,10 +15,10 @@ resource "azurerm_notification_hub" "sandbox_partition_1" {
   location            = azurerm_notification_hub_namespace.sandbox_partition_1.location
 
   apns_credential {
-    application_mode = "Sandbox"
-    bundle_id        = "it.pagopa.app.io"
-    team_id          = "M2X5YQ4BJ7"
-    key_id           = "3GD7XXZMRW"
+    application_mode = local.apns_credential.application_mode
+    bundle_id        = local.apns_credential.bundle_id
+    team_id          = local.apns_credential.team_id
+    key_id           = local.apns_credential.key_id
     token            = data.azurerm_key_vault_secret.ntfns_common_ntf_common_token_sandbox.value
   }
 

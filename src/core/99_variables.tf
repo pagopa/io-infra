@@ -362,6 +362,11 @@ variable "app_gateway_api_io_selfcare_pagopa_it_certificate_name" {
   description = "Application gateway api certificate name on Key Vault"
 }
 
+variable "app_gateway_oauth_io_pagopa_it_certificate_name" {
+  type        = string
+  description = "Application gateway oauth certificate name on Key Vault"
+}
+
 variable "app_gateway_firmaconio_selfcare_pagopa_it_certificate_name" {
   type        = string
   description = "Application gateway api certificate name on Key Vault"
@@ -375,11 +380,6 @@ variable "app_gateway_continua_io_pagopa_it_certificate_name" {
 variable "app_gateway_selfcare_io_pagopa_it_certificate_name" {
   type        = string
   description = "Application gateway selfcare-io certificate name on Key Vault"
-}
-
-variable "app_gateway_openid_provider_io_pagopa_it_certificate_name" {
-  type        = string
-  description = "Application gateway openid-provider certificate name on Key Vault"
 }
 
 variable "app_gateway_min_capacity" {
@@ -717,7 +717,7 @@ variable "citizen_auth_product" {
 variable "citizen_auth_revoke_queue_name" {
   type        = string
   description = "Use queue storage name from citizen_auth domain storage"
-  default     = "pubkeys-revoke"
+  default     = "pubkeys-revoke-v2"
 }
 
 variable "citizen_auth_assertion_storage_name" {
