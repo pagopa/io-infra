@@ -77,7 +77,6 @@ resource "azurerm_resource_group" "session_manager_rg_weu" {
 
 locals {
 
-  app_name     = format("%s-session-manager-app-02", local.common_project)
   app_name_weu = format("%s-session-manager-app-03", local.common_project)
 
   app_settings_common = {
@@ -206,7 +205,7 @@ module "session_manager_weu" {
   plan_type              = "internal"
   plan_name              = format("%s-session-manager-asp-03", local.common_project)
   zone_balancing_enabled = true
-  sku_name               = "P1v3"
+  sku_name               = var.session_manager_plan_sku_name
 
   # App service
   name                = local.app_name_weu
@@ -214,7 +213,7 @@ module "session_manager_weu" {
   location            = var.location
 
   always_on                    = true
-  node_version                 = "18-lts"
+  node_version                 = "20-lts"
   app_command_line             = "npm run start"
   health_check_path            = "/healthcheck"
   health_check_maxpingfailures = 3
@@ -254,7 +253,7 @@ module "session_manager_weu_staging" {
   location            = var.location
 
   always_on         = true
-  node_version      = "18-lts"
+  node_version      = "20-lts"
   app_command_line  = "npm run start"
   health_check_path = "/healthcheck"
 
@@ -309,7 +308,7 @@ resource "azurerm_monitor_autoscale_setting" "session_manager_weu_autoscale_sett
         time_window              = "PT1M"
         time_aggregation         = "Average"
         operator                 = "GreaterThan"
-        threshold                = 4000
+        threshold                = 1500
         divide_by_instance_count = false
       }
 
@@ -331,7 +330,7 @@ resource "azurerm_monitor_autoscale_setting" "session_manager_weu_autoscale_sett
         time_window              = "PT1M"
         time_aggregation         = "Average"
         operator                 = "GreaterThan"
-        threshold                = 40
+        threshold                = 70
         divide_by_instance_count = false
       }
 
@@ -355,7 +354,7 @@ resource "azurerm_monitor_autoscale_setting" "session_manager_weu_autoscale_sett
         time_window              = "PT15M"
         time_aggregation         = "Average"
         operator                 = "LessThan"
-        threshold                = 1500
+        threshold                = 500
         divide_by_instance_count = false
       }
 
