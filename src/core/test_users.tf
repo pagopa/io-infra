@@ -32,9 +32,11 @@ locals {
   ]
 
 
-  test_users_fast_login_load_test = [
+  test_users_fast_login_load_test = concat([
     for i in range(0, 1000) : format("LVTEST00A00A%03dX", i)
-  ]
+    ], [
+    for i in range(0, 1000) : format("LVTEST00A00B%03dX", i)
+  ])
 
   test_users_fast_login_load_test_light = [
     for i in range(0, 200) : format("LVTEST00A00A%03dX", i)
