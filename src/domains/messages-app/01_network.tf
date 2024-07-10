@@ -64,6 +64,12 @@ data "azurerm_subnet" "app_backendl2_snet" {
   resource_group_name  = local.vnet_common_resource_group_name
 }
 
+data "azurerm_subnet" "app_backendl3_snet" {
+  name                 = "io-p-weu-backend-snet-03"
+  virtual_network_name = local.vnet_common_name
+  resource_group_name  = local.vnet_common_resource_group_name
+}
+
 data "azurerm_subnet" "apim_snet" {
   name                 = "apimv2api"
   virtual_network_name = local.vnet_common_name
