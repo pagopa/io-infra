@@ -85,6 +85,7 @@ module "app_gw" {
       fqdns = [
         module.appservice_app_backendl1.default_site_hostname,
         module.appservice_app_backendl2.default_site_hostname,
+        module.appservice_app_backendl3.default_site_hostname,
       ]
       probe                       = "/info"
       probe_name                  = "probe-appbackend-app"
