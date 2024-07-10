@@ -140,6 +140,7 @@ module "function_fast_login" {
     data.azurerm_subnet.apim_v2_snet.id,
     data.azurerm_subnet.app_backend_l1_snet.id,
     data.azurerm_subnet.app_backend_l2_snet.id,
+    data.azurerm_subnet.app_backend_l3_snet.id,
     data.azurerm_subnet.ioweb_profile_snet.id,
     module.session_manager_snet.id,
   ]
@@ -188,6 +189,7 @@ module "function_fast_login_staging_slot" {
     data.azurerm_subnet.apim_v2_snet.id,
     data.azurerm_subnet.app_backend_l1_snet.id,
     data.azurerm_subnet.app_backend_l2_snet.id,
+    data.azurerm_subnet.app_backend_l3_snet.id,
   ]
 
   tags = var.tags

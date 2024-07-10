@@ -27,6 +27,12 @@ data "azurerm_subnet" "snet_backendl2" {
   resource_group_name  = local.resource_group_name_common
 }
 
+data "azurerm_subnet" "snet_backendl3" {
+  name                 = "io-p-weu-backend-snet-03"
+  virtual_network_name = local.vnet_name_common
+  resource_group_name  = local.resource_group_name_common
+}
+
 data "azurerm_subnet" "snet_pblevtdispatcher" {
   name                 = "fnpblevtdispatcherout"
   virtual_network_name = local.vnet_name_common
