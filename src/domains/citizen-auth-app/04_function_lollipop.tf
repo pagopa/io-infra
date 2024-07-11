@@ -193,7 +193,7 @@ module "function_lollipop_itn" {
     APPINSIGHTS_CLOUD_ROLE_NAME = local.function_name },
   )
 
-  sticky_app_setting_names = ["AzureWebJobs.HandlePubKeyRevoke.Disabled"]
+  sticky_app_setting_names = ["AzureWebJobs.HandlePubKeyRevoke.Disabled", "APPINSIGHTS_CLOUD_ROLE_NAME"]
 
   internal_storage = {
     "enable"                     = true,
