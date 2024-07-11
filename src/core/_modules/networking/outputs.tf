@@ -1,8 +1,8 @@
-output "vnet_itn_common" {
+output "vnet_common" {
   value = {
-    id            = module.vnet_itn_common.id
-    name          = module.vnet_itn_common.name
-    address_space = module.vnet_itn_common.address_space
+    id            = module.vnet_common.id
+    name          = module.vnet_common.name
+    address_space = module.vnet_common.address_space
   }
 }
 
