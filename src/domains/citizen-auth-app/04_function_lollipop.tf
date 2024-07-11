@@ -48,8 +48,7 @@ locals {
       FIRST_LC_ASSERTION_CLIENT_SUBSCRIPTION_KEY = data.azurerm_key_vault_secret.first_lollipop_consumer_subscription_key.value
 
       # APPINSIGHTS
-      APPINSIGHTS_CONNECTION_STRING = data.azurerm_application_insights.application_insights.connection_string
-
+      APPLICATIONINSIGHTS_CONNECTION_STRING = data.azurerm_application_insights.application_insights.connection_string
     }
 
     # Scaling strategy
