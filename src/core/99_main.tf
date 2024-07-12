@@ -47,7 +47,6 @@ data "azurerm_client_config" "current" {}
 provider "azurerm" {
   alias                      = "prod-trial"
   subscription_id            = "a2124115-ba74-462f-832a-9192cbd03649"
-  skip_provider_registration = true
 
   features {}
 }        

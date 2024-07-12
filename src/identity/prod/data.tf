@@ -1,3 +1,3 @@
 data "azurerm_subscription" "trial_system" {
-  provider = azurerm.trial-system
+  provider = azurerm.prod-trial
 }
