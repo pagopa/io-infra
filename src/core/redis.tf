@@ -1,5 +1,5 @@
 module "redis_common_snet" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v7.61.0"
+  source = "github.com/pagopa/terraform-azurerm-v3//subnet?ref=v8.26.5"
 
   name                                      = "rediscommon"
   address_prefixes                          = var.cidr_subnet_redis_common
@@ -9,7 +9,7 @@ module "redis_common_snet" {
 }
 
 module "redis_common_backup_zrs" {
-  source = "github.com/pagopa/terraform-azurerm-v3//storage_account?ref=v7.61.0"
+  source = "github.com/pagopa/terraform-azurerm-v3//storage_account?ref=v8.26.5"
 
   name                            = replace(format("%s-stredisbackup", local.project), "-", "")
   account_kind                    = "StorageV2"
@@ -27,7 +27,7 @@ module "redis_common_backup_zrs" {
 }
 
 module "redis_common" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//redis_cache?ref=v7.61.0"
+  source = "github.com/pagopa/terraform-azurerm-v3//redis_cache?ref=v8.26.5"
 
   name                          = format("%s-redis-common", local.project)
   resource_group_name           = azurerm_resource_group.rg_common.name
