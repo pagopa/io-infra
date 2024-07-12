@@ -455,6 +455,7 @@ resource "azurerm_private_dns_zone_virtual_network_link" "srch_private_vnet_comm
   tags = var.tags
 }
 
+# APIM
 resource "azurerm_private_dns_zone" "azure_api_net" {
   name                = "azure-api.net"
   resource_group_name = azurerm_resource_group.rg_common.name
@@ -462,16 +463,12 @@ resource "azurerm_private_dns_zone" "azure_api_net" {
   tags = var.tags
 }
 
-resource "azurerm_private_dns_zone" "management_azure_api_net" {
-  name                = "management.azure-api.net"
+resource "azurerm_private_dns_a_record" "apim_azure_api_net" {
+  name                = data.azurerm_api_management.trial_system.name
+  zone_name           = azurerm_private_dns_zone.azure_api_net.name
   resource_group_name = azurerm_resource_group.rg_common.name
-
-  tags = var.tags
-}
-
-resource "azurerm_private_dns_zone" "scm_azure_api_net" {
-  name                = "scm.azure-api.net"
-  resource_group_name = azurerm_resource_group.rg_common.name
+  ttl                 = var.dns_default_ttl_sec
+  records             = [data.azurerm_api_management.trial_system.private_ip_addresses[0]]
 
   tags = var.tags
 }
@@ -486,12 +483,48 @@ resource "azurerm_private_dns_zone_virtual_network_link" "azure_api_net_vnet_com
   tags = var.tags
 }
 
+# APIM management
+resource "azurerm_private_dns_zone" "management_azure_api_net" {
+  name                = "management.azure-api.net"
+  resource_group_name = azurerm_resource_group.rg_common.name
+
+  tags = var.tags
+}
+
+resource "azurerm_private_dns_a_record" "apim_management_azure_api_net" {
+  name                = data.azurerm_api_management.trial_system.name
+  zone_name           = azurerm_private_dns_zone.management_azure_api_net.name
+  resource_group_name = azurerm_resource_group.rg_common.name
+  ttl                 = var.dns_default_ttl_sec
+  records             = [data.azurerm_api_management.trial_system.private_ip_addresses[0]]
+
+  tags = var.tags
+}
+
 resource "azurerm_private_dns_zone_virtual_network_link" "management_azure_api_net_vnet_common" {
   name                  = module.vnet_common.name
   resource_group_name   = azurerm_resource_group.rg_common.name
   private_dns_zone_name = azurerm_private_dns_zone.management_azure_api_net.name
   virtual_network_id    = module.vnet_common.id
   registration_enabled  = false
+
+  tags = var.tags
+}
+
+# APIM SCM
+resource "azurerm_private_dns_zone" "scm_azure_api_net" {
+  name                = "scm.azure-api.net"
+  resource_group_name = azurerm_resource_group.rg_common.name
+
+  tags = var.tags
+}
+
+resource "azurerm_private_dns_a_record" "apim_scm_azure_api_net" {
+  name                = data.azurerm_api_management.trial_system.name
+  zone_name           = azurerm_private_dns_zone.scm_azure_api_net.name
+  resource_group_name = azurerm_resource_group.rg_common.name
+  ttl                 = var.dns_default_ttl_sec
+  records             = [data.azurerm_api_management.trial_system.private_ip_addresses[0]]
 
   tags = var.tags
 }
