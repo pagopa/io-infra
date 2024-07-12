@@ -49,6 +49,13 @@ locals {
 
       # APPINSIGHTS
       APPLICATIONINSIGHTS_CONNECTION_STRING = data.azurerm_application_insights.application_insights.connection_string
+      // NOTE: the following variable ensures that the applicationinsights
+      // nodejs sdk doesn't include additional headers towards requests on all
+      // type of storage accounts. without the following, all requests would
+      // fail for an unexpected signature from the storage account. to support
+      // the storage-account calls, a migration from `azure-storage` to
+      // `@azure/...` sdks is needed (see https://www.npmjs.com/package/diagnostic-channel-publishers/v/1.0.8#currently-supported-modules)
+      APPINSIGHTS_EXCLUDED_DOMAINS = "queue.core.windows.net,blob.core.windows.net,table.core.windows.net,file.core.windows.net"
     }
 
     # Scaling strategy
