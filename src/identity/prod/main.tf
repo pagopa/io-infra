@@ -70,3 +70,17 @@ module "federated_identities" {
 
   tags = local.tags
 }
+
+resource "azurerm_role_assignment" "ci" {
+  provider             = azurerm.trial-system
+  scope                = data.azurerm_subscription.trial_system.id
+  principal_id         = module.federated_identities.federated_ci_identity.id
+  role_definition_name = "Reader"
+}
+
+resource "azurerm_role_assignment" "cd" {
+  provider             = azurerm.trial-system
+  scope                = data.azurerm_subscription.trial_system.id
+  principal_id         = module.federated_identities.federated_ci_identity.id
+  role_definition_name = "Reader"
+}
