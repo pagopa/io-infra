@@ -98,9 +98,32 @@ resource "azurerm_private_dns_zone" "privatelink_table_core" {
 resource "azurerm_private_dns_zone" "privatelink_azurewebsites" {
   name                = "privatelink.azurewebsites.net"
   resource_group_name = var.resource_groups.common
+  
+  tags = var.tags
 }
 
 resource "azurerm_private_dns_zone" "privatelink_srch" {
   name                = "privatelink.search.windows.net"
   resource_group_name = var.resource_groups.common
+}
+
+resource "azurerm_private_dns_zone" "azure_api_net" {
+  name                = "azure-api.net"
+  resource_group_name = var.resource_groups.common
+
+  tags = var.tags
+}
+
+resource "azurerm_private_dns_zone" "management_azure_api_net" {
+  name                = "management.azure-api.net"
+  resource_group_name = var.resource_groups.common
+
+  tags = var.tags
+}
+
+resource "azurerm_private_dns_zone" "scm_azure_api_net" {
+  name                = "scm.azure-api.net"
+  resource_group_name = var.resource_groups.common
+
+  tags = var.tags
 }
