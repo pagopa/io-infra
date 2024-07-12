@@ -480,6 +480,7 @@
 | <a name="input_io_receipt_service_url"></a> [io\_receipt\_service\_url](#input\_io\_receipt\_service\_url) | The endpoint of Receipt Service (prod env) | `string` | n/a | yes |
 | <a name="input_io_sign_remote_config_id"></a> [io\_sign\_remote\_config\_id](#input\_io\_sign\_remote\_config\_id) | The Remote Content Config ID of io-sign service | `string` | `"01HMVMDTHXCESMZ72NA701EKGQ"` | no |
 | <a name="input_io_sign_service_id"></a> [io\_sign\_service\_id](#input\_io\_sign\_service\_id) | The Service ID of io-sign service | `string` | `"01GQQZ9HF5GAPRVKJM1VDAVFHM"` | no |
+| <a name="input_io_wallet_trial_id"></a> [io\_wallet\_trial\_id](#input\_io\_wallet\_trial\_id) | The trial ID of io-wallet trial | `string` | `"01J2GN4TA8FB6DPTAX3T3YD6M1"` | no |
 | <a name="input_law_daily_quota_gb"></a> [law\_daily\_quota\_gb](#input\_law\_daily\_quota\_gb) | The workspace daily quota for ingestion in GB. | `number` | `-1` | no |
 | <a name="input_law_retention_in_days"></a> [law\_retention\_in\_days](#input\_law\_retention\_in\_days) | The workspace data retention in days | `number` | `90` | no |
 | <a name="input_law_sku"></a> [law\_sku](#input\_law\_sku) | Sku of the Log Analytics Workspace | `string` | `"PerGB2018"` | no |
