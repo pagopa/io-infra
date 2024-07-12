@@ -454,3 +454,54 @@ resource "azurerm_private_dns_zone_virtual_network_link" "srch_private_vnet_comm
 
   tags = var.tags
 }
+
+resource "azurerm_private_dns_zone" "azure_api_net" {
+  name                = "azure-api.net"
+  resource_group_name = azurerm_resource_group.rg_common.name
+
+  tags = var.tags
+}
+
+resource "azurerm_private_dns_zone" "management_azure_api_net" {
+  name                = "management.azure-api.net"
+  resource_group_name = azurerm_resource_group.rg_common.name
+
+  tags = var.tags
+}
+
+resource "azurerm_private_dns_zone" "scm_azure_api_net" {
+  name                = "scm.azure-api.net"
+  resource_group_name = azurerm_resource_group.rg_common.name
+
+  tags = var.tags
+}
+
+resource "azurerm_private_dns_zone_virtual_network_link" "azure_api_net_vnet_common" {
+  name                  = module.vnet_common.name
+  resource_group_name   = azurerm_resource_group.rg_common.name
+  private_dns_zone_name = azurerm_private_dns_zone.azure_api_net.name
+  virtual_network_id    = module.vnet_common.id
+  registration_enabled  = false
+
+  tags = var.tags
+}
+
+resource "azurerm_private_dns_zone_virtual_network_link" "management_azure_api_net_vnet_common" {
+  name                  = module.vnet_common.name
+  resource_group_name   = azurerm_resource_group.rg_common.name
+  private_dns_zone_name = azurerm_private_dns_zone.management_azure_api_net.name
+  virtual_network_id    = module.vnet_common.id
+  registration_enabled  = false
+
+  tags = var.tags
+}
+
+resource "azurerm_private_dns_zone_virtual_network_link" "scm_azure_api_net_vnet_common" {
+  name                  = module.vnet_common.name
+  resource_group_name   = azurerm_resource_group.rg_common.name
+  private_dns_zone_name = azurerm_private_dns_zone.scm_azure_api_net.name
+  virtual_network_id    = module.vnet_common.id
+  registration_enabled  = false
+
+  tags = var.tags
+}
