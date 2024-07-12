@@ -18,3 +18,37 @@ module "networking_itn" {
 
   tags = local.tags
 }
+
+module "vnet_peering_itn" {
+  source = "../_modules/vnet_peering"
+
+  source_vnet = {
+    name                  = module.networking_itn.vnet_common.name
+    id                    = module.networking_itn.vnet_common.id
+    resource_group_name   = module.networking_itn.vnet_common.resource_group_name
+    allow_gateway_transit = true
+  }
+
+  target_vnets = {
+    weu = {
+      name                = module.networking_weu.vnet_common.name
+      id                  = module.networking_weu.vnet_common.id
+      resource_group_name = module.networking_weu.vnet_common.resource_group_name
+      use_remote_gateways = false
+    }
+    
+    beta = {
+      name                = data.azurerm_virtual_network.weu_beta.name
+      id                  = data.azurerm_virtual_network.weu_beta.id
+      resource_group_name = data.azurerm_virtual_network.weu_beta.resource_group_name
+      use_remote_gateways = false
+    }
+
+    prod01 = {
+      name                = data.azurerm_virtual_network.weu_prod01.name
+      id                  = data.azurerm_virtual_network.weu_prod01.id
+      resource_group_name = data.azurerm_virtual_network.weu_prod01.resource_group_name
+      use_remote_gateways = false
+    }
+  }
+}

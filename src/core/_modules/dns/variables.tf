@@ -18,6 +18,11 @@ variable "tags" {
   description = "Resource tags"
 }
 
+variable "resource_groups" {
+  type        = map(string)
+  description = "Resource group names"
+}
+
 variable "vnets" {
   type = map(object({
     id                  = string
@@ -38,8 +43,24 @@ variable "external_domain" {
   description = "Domain for delegation"
 }
 
-variable "dns_zone_io" {
+variable "dns_zones" {
+  type        = object({
+    io                  = string
+    io_selfcare         = string
+    firmaconio_selfcare = string
+    }
+  )
+  description = "DNS zones to create"
+}
+
+# TODO: remove when app gateway module is implemented
+variable "app_gateway_public_ip" {
   type        = string
-  default     = null
-  description = "The dns subdomain."
+  description = "Public IP of the app gateway"
+}
+
+# TODO: remove when apim v2 module is implemented
+variable "apim_v2_public_ip" {
+  type        = string
+  description = "Public IP of the API Management v2"
 }
