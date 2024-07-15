@@ -60,7 +60,7 @@ resource "azurerm_api_management_group" "apipaymentupdater_v2" {
 }
 
 module "apim_v2_product_notifications" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3//api_management_product?ref=v7.69.1"
+  source = "github.com/pagopa/terraform-azurerm-v3//api_management_product?ref=v8.27.0"
 
   product_id   = "io-notifications-api"
   display_name = "IO NOTIFICATIONS API"
@@ -77,7 +77,7 @@ module "apim_v2_product_notifications" {
 }
 
 module "io-backend_notification_v2_api_v1" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3//api_management_api?ref=v7.69.1"
+  source = "github.com/pagopa/terraform-azurerm-v3//api_management_api?ref=v8.27.0"
 
   name                  = format("%s-io-backend-notification-api", local.product)
   api_management_name   = data.azurerm_api_management.apim_v2_api.name
@@ -195,7 +195,7 @@ data "http" "messages_sending_external_openapi" {
 }
 
 module "apim_v2_messages_sending_external_api_v1" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3//api_management_api?ref=v8.11.0"
+  source = "github.com/pagopa/terraform-azurerm-v3//api_management_api?ref=v8.17.0"
 
   name                  = format("%s-%s-messages-sending-external-api-01", local.product, var.location_short)
   api_management_name   = data.azurerm_api_management.apim_v2_api.name
@@ -220,7 +220,7 @@ data "http" "messages_sending_internal_openapi" {
 }
 
 module "apim_v2_messages_sending_internal_api_v1" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3//api_management_api?ref=v8.11.0"
+  source = "github.com/pagopa/terraform-azurerm-v3//api_management_api?ref=v8.27.0"
 
   name                  = format("%s-%s-messages-sending-internal-api-01", local.product, var.location_short)
   api_management_name   = data.azurerm_api_management.apim_v2_api.name
@@ -245,7 +245,7 @@ data "http" "service_messages_manage_openapi" {
 }
 
 module "apim_v2_service_messages_manage_api_v1" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3//api_management_api?ref=v7.69.1"
+  source = "github.com/pagopa/terraform-azurerm-v3//api_management_api?ref=v8.27.0"
 
   name                  = format("%s-service-messages-manage-api", local.product)
   api_management_name   = data.azurerm_api_management.apim_v2_api.name
@@ -270,7 +270,7 @@ data "http" "service_messages_internal_openapi" {
 }
 
 module "apim_v2_service_messages_internal_api_v1" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3//api_management_api?ref=v7.69.1"
+  source = "github.com/pagopa/terraform-azurerm-v3//api_management_api?ref=v8.27.0"
 
   name                  = format("%s-service-messages-internal-api", local.product)
   api_management_name   = data.azurerm_api_management.apim_v2_api.name
