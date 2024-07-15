@@ -109,8 +109,10 @@ module "function_service_messages" {
   resource_group_name = azurerm_resource_group.service_messages_rg.name
   name                = format("%s-messages-sending-func", local.product)
   location            = azurerm_resource_group.service_messages_rg.location
-  health_check_path   = "/api/v1/info"
   domain              = "MESSAGES"
+
+  health_check_path            = "/api/v1/info"
+  health_check_maxpingfailures = 2
 
   node_version                             = "18"
   runtime_version                          = "~4"
@@ -172,7 +174,9 @@ module "function_service_messages_staging_slot" {
   resource_group_name = azurerm_resource_group.service_messages_rg.name
   function_app_id     = module.function_service_messages[0].id
   app_service_plan_id = module.function_service_messages[0].app_service_plan_id
-  health_check_path   = "/api/v1/info"
+
+  health_check_path            = "/api/v1/info"
+  health_check_maxpingfailures = 2
 
   node_version                             = "18"
   runtime_version                          = "~4"
@@ -203,7 +207,7 @@ module "function_service_messages_staging_slot" {
 
 resource "azurerm_monitor_autoscale_setting" "function_service_messages" {
   count               = var.function_service_messages_enabled ? 1 : 0
-  name                = format("%s-autoscale", module.function_service_messages[0].name)
+  name                = format("%s-as-01", module.function_service_messages[0].name)
   resource_group_name = azurerm_resource_group.service_messages_rg.name
   location            = var.location
   target_resource_id  = module.function_service_messages[0].app_service_plan_id

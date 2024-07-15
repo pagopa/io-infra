@@ -171,9 +171,6 @@
 | <a name="input_push_notif_count"></a> [push\_notif\_count](#input\_push\_notif\_count) | n/a | `number` | `2` | no |
 | <a name="input_push_notif_enabled"></a> [push\_notif\_enabled](#input\_push\_notif\_enabled) | Push Notif function enabled? | `bool` | `false` | no |
 | <a name="input_push_notif_function_always_on"></a> [push\_notif\_function\_always\_on](#input\_push\_notif\_function\_always\_on) | n/a | `bool` | `false` | no |
-| <a name="input_push_notif_function_autoscale_default"></a> [push\_notif\_function\_autoscale\_default](#input\_push\_notif\_function\_autoscale\_default) | The number of instances that are available for scaling if metrics are not available for evaluation. | `number` | `1` | no |
-| <a name="input_push_notif_function_autoscale_maximum"></a> [push\_notif\_function\_autoscale\_maximum](#input\_push\_notif\_function\_autoscale\_maximum) | The maximum number of instances for this resource. | `number` | `3` | no |
-| <a name="input_push_notif_function_autoscale_minimum"></a> [push\_notif\_function\_autoscale\_minimum](#input\_push\_notif\_function\_autoscale\_minimum) | The minimum number of instances for this resource. | `number` | `1` | no |
 | <a name="input_push_notif_function_kind"></a> [push\_notif\_function\_kind](#input\_push\_notif\_function\_kind) | App service plan kind | `string` | `null` | no |
 | <a name="input_push_notif_function_sku_size"></a> [push\_notif\_function\_sku\_size](#input\_push\_notif\_function\_sku\_size) | App service plan sku size | `string` | `null` | no |
 | <a name="input_push_notif_function_sku_tier"></a> [push\_notif\_function\_sku\_tier](#input\_push\_notif\_function\_sku\_tier) | App service plan sku tier | `string` | `null` | no |

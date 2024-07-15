@@ -129,7 +129,9 @@ module "app_messages_function" {
   name                = format("%s-app-messages-fn-%d", local.product, count.index + 1)
   domain              = "MESSAGES"
   location            = azurerm_resource_group.app_messages_rg[count.index].location
-  health_check_path   = "/api/v1/info"
+
+  health_check_path            = "/api/v1/info"
+  health_check_maxpingfailures = 2
 
   runtime_version                          = "~4"
   node_version                             = "18"
@@ -195,7 +197,9 @@ module "app_messages_function_staging_slot" {
   resource_group_name = azurerm_resource_group.app_messages_rg[count.index].name
   function_app_id     = module.app_messages_function[count.index].id
   app_service_plan_id = module.app_messages_function[count.index].app_service_plan_id
-  health_check_path   = "/api/v1/info"
+
+  health_check_path            = "/api/v1/info"
+  health_check_maxpingfailures = 2
 
   storage_account_name       = module.app_messages_function[count.index].storage_account.name
   storage_account_access_key = module.app_messages_function[count.index].storage_account.primary_access_key
@@ -229,7 +233,7 @@ module "app_messages_function_staging_slot" {
 
 resource "azurerm_monitor_autoscale_setting" "app_messages_function" {
   count               = var.app_messages_count
-  name                = format("%s-autoscale", module.app_messages_function[count.index].name)
+  name                = format("%s-as-01", module.app_messages_function[count.index].name)
   resource_group_name = azurerm_resource_group.app_messages_rg[count.index].name
   location            = azurerm_resource_group.app_messages_rg[count.index].location
   target_resource_id  = module.app_messages_function[count.index].app_service_plan_id
@@ -253,14 +257,14 @@ resource "azurerm_monitor_autoscale_setting" "app_messages_function" {
         time_window              = "PT1M"
         time_aggregation         = "Average"
         operator                 = "GreaterThan"
-        threshold                = 3000
-        divide_by_instance_count = false
+        threshold                = 600
+        divide_by_instance_count = true
       }
 
       scale_action {
         direction = "Increase"
         type      = "ChangeCount"
-        value     = "2"
+        value     = "1"
         cooldown  = "PT1M"
       }
     }
@@ -272,10 +276,10 @@ resource "azurerm_monitor_autoscale_setting" "app_messages_function" {
         metric_namespace         = "microsoft.web/serverfarms"
         time_grain               = "PT1M"
         statistic                = "Average"
-        time_window              = "PT1M"
+        time_window              = "PT5M"
         time_aggregation         = "Average"
         operator                 = "GreaterThan"
-        threshold                = 45
+        threshold                = 60
         divide_by_instance_count = false
       }
 
@@ -283,7 +287,7 @@ resource "azurerm_monitor_autoscale_setting" "app_messages_function" {
         direction = "Increase"
         type      = "ChangeCount"
         value     = "2"
-        cooldown  = "PT1M"
+        cooldown  = "PT2M"
       }
     }
 
@@ -294,18 +298,18 @@ resource "azurerm_monitor_autoscale_setting" "app_messages_function" {
         metric_namespace         = "microsoft.web/sites"
         time_grain               = "PT1M"
         statistic                = "Average"
-        time_window              = "PT15M"
+        time_window              = "PT5M"
         time_aggregation         = "Average"
         operator                 = "LessThan"
-        threshold                = 2000
-        divide_by_instance_count = false
+        threshold                = 150
+        divide_by_instance_count = true
       }
 
       scale_action {
         direction = "Decrease"
         type      = "ChangeCount"
         value     = "1"
-        cooldown  = "PT10M"
+        cooldown  = "PT1M"
       }
     }
 
@@ -319,7 +323,7 @@ resource "azurerm_monitor_autoscale_setting" "app_messages_function" {
         time_window              = "PT5M"
         time_aggregation         = "Average"
         operator                 = "LessThan"
-        threshold                = 30
+        threshold                = 15
         divide_by_instance_count = false
       }
 
@@ -327,7 +331,7 @@ resource "azurerm_monitor_autoscale_setting" "app_messages_function" {
         direction = "Decrease"
         type      = "ChangeCount"
         value     = "1"
-        cooldown  = "PT20M"
+        cooldown  = "PT2M"
       }
     }
 
@@ -366,14 +370,14 @@ resource "azurerm_monitor_autoscale_setting" "app_messages_function" {
         time_window              = "PT1M"
         time_aggregation         = "Average"
         operator                 = "GreaterThan"
-        threshold                = 3000
-        divide_by_instance_count = false
+        threshold                = 600
+        divide_by_instance_count = true
       }
 
       scale_action {
         direction = "Increase"
         type      = "ChangeCount"
-        value     = "2"
+        value     = "1"
         cooldown  = "PT1M"
       }
     }
@@ -385,10 +389,10 @@ resource "azurerm_monitor_autoscale_setting" "app_messages_function" {
         metric_namespace         = "microsoft.web/serverfarms"
         time_grain               = "PT1M"
         statistic                = "Average"
-        time_window              = "PT1M"
+        time_window              = "PT5M"
         time_aggregation         = "Average"
         operator                 = "GreaterThan"
-        threshold                = 45
+        threshold                = 60
         divide_by_instance_count = false
       }
 
@@ -396,7 +400,7 @@ resource "azurerm_monitor_autoscale_setting" "app_messages_function" {
         direction = "Increase"
         type      = "ChangeCount"
         value     = "2"
-        cooldown  = "PT1M"
+        cooldown  = "PT2M"
       }
     }
 
@@ -407,18 +411,18 @@ resource "azurerm_monitor_autoscale_setting" "app_messages_function" {
         metric_namespace         = "microsoft.web/sites"
         time_grain               = "PT1M"
         statistic                = "Average"
-        time_window              = "PT15M"
+        time_window              = "PT5M"
         time_aggregation         = "Average"
         operator                 = "LessThan"
-        threshold                = 2000
-        divide_by_instance_count = false
+        threshold                = 150
+        divide_by_instance_count = true
       }
 
       scale_action {
         direction = "Decrease"
         type      = "ChangeCount"
         value     = "1"
-        cooldown  = "PT10M"
+        cooldown  = "PT1M"
       }
     }
 
@@ -432,7 +436,7 @@ resource "azurerm_monitor_autoscale_setting" "app_messages_function" {
         time_window              = "PT5M"
         time_aggregation         = "Average"
         operator                 = "LessThan"
-        threshold                = 30
+        threshold                = 15
         divide_by_instance_count = false
       }
 
@@ -440,7 +444,7 @@ resource "azurerm_monitor_autoscale_setting" "app_messages_function" {
         direction = "Decrease"
         type      = "ChangeCount"
         value     = "1"
-        cooldown  = "PT20M"
+        cooldown  = "PT2M"
       }
     }
 
@@ -465,8 +469,8 @@ resource "azurerm_monitor_autoscale_setting" "app_messages_function" {
 
     capacity {
       default = 10
-      minimum = 4
-      maximum = 15
+      minimum = 5
+      maximum = 20
     }
 
     recurrence {
@@ -494,15 +498,15 @@ resource "azurerm_monitor_autoscale_setting" "app_messages_function" {
         time_window              = "PT1M"
         time_aggregation         = "Average"
         operator                 = "GreaterThan"
-        threshold                = 3000
-        divide_by_instance_count = false
+        threshold                = 500
+        divide_by_instance_count = true
       }
 
       scale_action {
         direction = "Increase"
         type      = "ChangeCount"
         value     = "2"
-        cooldown  = "PT1M"
+        cooldown  = "PT0M"
       }
     }
 
@@ -513,10 +517,10 @@ resource "azurerm_monitor_autoscale_setting" "app_messages_function" {
         metric_namespace         = "microsoft.web/serverfarms"
         time_grain               = "PT1M"
         statistic                = "Average"
-        time_window              = "PT1M"
+        time_window              = "PT3M"
         time_aggregation         = "Average"
         operator                 = "GreaterThan"
-        threshold                = 45
+        threshold                = 60
         divide_by_instance_count = false
       }
 
@@ -524,7 +528,7 @@ resource "azurerm_monitor_autoscale_setting" "app_messages_function" {
         direction = "Increase"
         type      = "ChangeCount"
         value     = "2"
-        cooldown  = "PT1M"
+        cooldown  = "PT0M"
       }
     }
 
@@ -535,18 +539,18 @@ resource "azurerm_monitor_autoscale_setting" "app_messages_function" {
         metric_namespace         = "microsoft.web/sites"
         time_grain               = "PT1M"
         statistic                = "Average"
-        time_window              = "PT15M"
+        time_window              = "PT5M"
         time_aggregation         = "Average"
         operator                 = "LessThan"
-        threshold                = 2000
-        divide_by_instance_count = false
+        threshold                = 100
+        divide_by_instance_count = true
       }
 
       scale_action {
         direction = "Decrease"
         type      = "ChangeCount"
         value     = "1"
-        cooldown  = "PT10M"
+        cooldown  = "PT0M"
       }
     }
 
@@ -557,10 +561,10 @@ resource "azurerm_monitor_autoscale_setting" "app_messages_function" {
         metric_namespace         = "microsoft.web/serverfarms"
         time_grain               = "PT1M"
         statistic                = "Average"
-        time_window              = "PT5M"
+        time_window              = "PT10M"
         time_aggregation         = "Average"
         operator                 = "LessThan"
-        threshold                = 30
+        threshold                = 10
         divide_by_instance_count = false
       }
 
@@ -568,7 +572,7 @@ resource "azurerm_monitor_autoscale_setting" "app_messages_function" {
         direction = "Decrease"
         type      = "ChangeCount"
         value     = "1"
-        cooldown  = "PT20M"
+        cooldown  = "PT0M"
       }
     }
   }
@@ -607,15 +611,15 @@ resource "azurerm_monitor_autoscale_setting" "app_messages_function" {
         time_window              = "PT1M"
         time_aggregation         = "Average"
         operator                 = "GreaterThan"
-        threshold                = 2000
-        divide_by_instance_count = false
+        threshold                = 600
+        divide_by_instance_count = true
       }
 
       scale_action {
         direction = "Increase"
         type      = "ChangeCount"
-        value     = "2"
-        cooldown  = "PT1M"
+        value     = "1"
+        cooldown  = "PT2M"
       }
     }
 
@@ -626,10 +630,10 @@ resource "azurerm_monitor_autoscale_setting" "app_messages_function" {
         metric_namespace         = "microsoft.web/serverfarms"
         time_grain               = "PT1M"
         statistic                = "Average"
-        time_window              = "PT1M"
+        time_window              = "PT5M"
         time_aggregation         = "Average"
         operator                 = "GreaterThan"
-        threshold                = 30
+        threshold                = 60
         divide_by_instance_count = false
       }
 
@@ -637,7 +641,7 @@ resource "azurerm_monitor_autoscale_setting" "app_messages_function" {
         direction = "Increase"
         type      = "ChangeCount"
         value     = "2"
-        cooldown  = "PT1M"
+        cooldown  = "PT2M"
       }
     }
 
@@ -648,18 +652,18 @@ resource "azurerm_monitor_autoscale_setting" "app_messages_function" {
         metric_namespace         = "microsoft.web/sites"
         time_grain               = "PT1M"
         statistic                = "Average"
-        time_window              = "PT15M"
+        time_window              = "PT5M"
         time_aggregation         = "Average"
         operator                 = "LessThan"
-        threshold                = 1500
-        divide_by_instance_count = false
+        threshold                = 200
+        divide_by_instance_count = true
       }
 
       scale_action {
         direction = "Decrease"
         type      = "ChangeCount"
         value     = "1"
-        cooldown  = "PT10M"
+        cooldown  = "PT2M"
       }
     }
 
@@ -673,7 +677,7 @@ resource "azurerm_monitor_autoscale_setting" "app_messages_function" {
         time_window              = "PT5M"
         time_aggregation         = "Average"
         operator                 = "LessThan"
-        threshold                = 15
+        threshold                = 20
         divide_by_instance_count = false
       }
 
@@ -681,7 +685,7 @@ resource "azurerm_monitor_autoscale_setting" "app_messages_function" {
         direction = "Decrease"
         type      = "ChangeCount"
         value     = "1"
-        cooldown  = "PT20M"
+        cooldown  = "PT2M"
       }
     }
   }
