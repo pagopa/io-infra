@@ -543,8 +543,8 @@ module "app_gw" {
         },
         test-login = {
           paths                 = ["/test-login"]
-          backend               = "appbackend-app",
-          rewrite_rule_set_name = "rewrite-rule-set-api-app-rewrite-to-session-manager"
+          backend               = "session-manager-app",
+          rewrite_rule_set_name = "rewrite-rule-set-api-app"
         },
         login = {
           paths                 = ["/login"]
