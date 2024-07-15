@@ -140,3 +140,40 @@ resource "azurerm_private_dns_zone_virtual_network_link" "redis_private_vnet_itn
 
   tags = var.tags
 }
+
+
+resource "azurerm_private_dns_zone_virtual_network_link" "azure_api_net_vnet_common" {
+  name = module.vnet_itn_common.name
+
+  virtual_network_id    = module.vnet_itn_common.id
+  resource_group_name   = data.azurerm_private_dns_zone.azure_api_net.resource_group_name
+  private_dns_zone_name = data.azurerm_private_dns_zone.azure_api_net.name
+
+  registration_enabled = false
+
+  tags = var.tags
+}
+
+resource "azurerm_private_dns_zone_virtual_network_link" "management_azure_api_net_vnet_common" {
+  name = module.vnet_itn_common.name
+
+  virtual_network_id    = module.vnet_itn_common.id
+  resource_group_name   = data.azurerm_private_dns_zone.management_azure_api_net.resource_group_name
+  private_dns_zone_name = data.azurerm_private_dns_zone.management_azure_api_net.name
+
+  registration_enabled = false
+
+  tags = var.tags
+}
+
+resource "azurerm_private_dns_zone_virtual_network_link" "scm_azure_api_net_vnet_common" {
+  name = module.vnet_itn_common.name
+
+  virtual_network_id    = module.vnet_itn_common.id
+  resource_group_name   = data.azurerm_private_dns_zone.scm_azure_api_net.resource_group_name
+  private_dns_zone_name = data.azurerm_private_dns_zone.scm_azure_api_net.name
+
+  registration_enabled = false
+
+  tags = var.tags
+}
