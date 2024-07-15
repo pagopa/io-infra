@@ -654,6 +654,12 @@ variable "io_sign_remote_config_id" {
   default     = "01HMVMDTHXCESMZ72NA701EKGQ"
 }
 
+variable "io_wallet_trial_id" {
+  type        = string
+  description = "The trial ID of io-wallet trial"
+  default     = "01J2GN4TA8FB6DPTAX3T3YD6M1"
+}
+
 # io-receipt service
 variable "io_receipt_service_id" {
   type        = string
