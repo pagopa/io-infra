@@ -5,7 +5,7 @@
 | Name | Version |
 |------|---------|
 | <a name="requirement_azuread"></a> [azuread](#requirement\_azuread) | <= 2.33.0 |
-| <a name="requirement_azurerm"></a> [azurerm](#requirement\_azurerm) | <= 3.96.0 |
+| <a name="requirement_azurerm"></a> [azurerm](#requirement\_azurerm) | <= 3.112.0 |
 | <a name="requirement_helm"></a> [helm](#requirement\_helm) | = 2.8.0 |
 | <a name="requirement_kubernetes"></a> [kubernetes](#requirement\_kubernetes) | = 2.17.0 |
 | <a name="requirement_null"></a> [null](#requirement\_null) | <= 3.2.1 |
@@ -14,21 +14,21 @@
 
 | Name | Source | Version |
 |------|--------|---------|
-| <a name="module_app_messages_function"></a> [app\_messages\_function](#module\_app\_messages\_function) | github.com/pagopa/terraform-azurerm-v3//function_app | v7.69.1 |
-| <a name="module_app_messages_function_staging_slot"></a> [app\_messages\_function\_staging\_slot](#module\_app\_messages\_function\_staging\_slot) | github.com/pagopa/terraform-azurerm-v3//function_app_slot | v7.69.1 |
-| <a name="module_app_messages_snet"></a> [app\_messages\_snet](#module\_app\_messages\_snet) | github.com/pagopa/terraform-azurerm-v3//subnet | v7.69.1 |
-| <a name="module_event_hub"></a> [event\_hub](#module\_event\_hub) | github.com/pagopa/terraform-azurerm-v3//eventhub | v7.69.1 |
-| <a name="module_function_messages_cqrs"></a> [function\_messages\_cqrs](#module\_function\_messages\_cqrs) | github.com/pagopa/terraform-azurerm-v3//function_app | v7.70.1 |
-| <a name="module_function_messages_cqrs_snet"></a> [function\_messages\_cqrs\_snet](#module\_function\_messages\_cqrs\_snet) | github.com/pagopa/terraform-azurerm-v3//subnet | v7.70.1 |
-| <a name="module_function_messages_cqrs_staging_slot"></a> [function\_messages\_cqrs\_staging\_slot](#module\_function\_messages\_cqrs\_staging\_slot) | github.com/pagopa/terraform-azurerm-v3//function_app_slot | v7.70.1 |
-| <a name="module_function_service_messages"></a> [function\_service\_messages](#module\_function\_service\_messages) | github.com/pagopa/terraform-azurerm-v3//function_app | v7.70.1 |
-| <a name="module_function_service_messages_snet"></a> [function\_service\_messages\_snet](#module\_function\_service\_messages\_snet) | github.com/pagopa/terraform-azurerm-v3//subnet | v7.70.1 |
-| <a name="module_function_service_messages_staging_slot"></a> [function\_service\_messages\_staging\_slot](#module\_function\_service\_messages\_staging\_slot) | github.com/pagopa/terraform-azurerm-v3//function_app_slot | v7.70.1 |
-| <a name="module_pod_identity"></a> [pod\_identity](#module\_pod\_identity) | github.com/pagopa/terraform-azurerm-v3//kubernetes_pod_identity | v7.69.1 |
-| <a name="module_push_notif_function"></a> [push\_notif\_function](#module\_push\_notif\_function) | github.com/pagopa/terraform-azurerm-v3//function_app | v7.71.1 |
-| <a name="module_push_notif_function_staging_slot"></a> [push\_notif\_function\_staging\_slot](#module\_push\_notif\_function\_staging\_slot) | github.com/pagopa/terraform-azurerm-v3//function_app_slot | v7.71.1 |
-| <a name="module_push_notif_snet"></a> [push\_notif\_snet](#module\_push\_notif\_snet) | github.com/pagopa/terraform-azurerm-v3//subnet | v7.69.1 |
-| <a name="module_services_storage"></a> [services\_storage](#module\_services\_storage) | github.com/pagopa/terraform-azurerm-v3//storage_account | v7.69.1 |
+| <a name="module_app_messages_function"></a> [app\_messages\_function](#module\_app\_messages\_function) | github.com/pagopa/terraform-azurerm-v3//function_app | v8.27.0 |
+| <a name="module_app_messages_function_staging_slot"></a> [app\_messages\_function\_staging\_slot](#module\_app\_messages\_function\_staging\_slot) | github.com/pagopa/terraform-azurerm-v3//function_app_slot | v8.27.0 |
+| <a name="module_app_messages_snet"></a> [app\_messages\_snet](#module\_app\_messages\_snet) | github.com/pagopa/terraform-azurerm-v3//subnet | v8.27.0 |
+| <a name="module_event_hub"></a> [event\_hub](#module\_event\_hub) | github.com/pagopa/terraform-azurerm-v3//eventhub | v8.27.0 |
+| <a name="module_function_messages_cqrs"></a> [function\_messages\_cqrs](#module\_function\_messages\_cqrs) | github.com/pagopa/terraform-azurerm-v3//function_app | v8.27.0 |
+| <a name="module_function_messages_cqrs_snet"></a> [function\_messages\_cqrs\_snet](#module\_function\_messages\_cqrs\_snet) | github.com/pagopa/terraform-azurerm-v3//subnet | v8.27.0 |
+| <a name="module_function_messages_cqrs_staging_slot"></a> [function\_messages\_cqrs\_staging\_slot](#module\_function\_messages\_cqrs\_staging\_slot) | github.com/pagopa/terraform-azurerm-v3//function_app_slot | v8.27.0 |
+| <a name="module_function_service_messages"></a> [function\_service\_messages](#module\_function\_service\_messages) | github.com/pagopa/terraform-azurerm-v3//function_app | v8.27.0 |
+| <a name="module_function_service_messages_snet"></a> [function\_service\_messages\_snet](#module\_function\_service\_messages\_snet) | github.com/pagopa/terraform-azurerm-v3//subnet | v8.27.0 |
+| <a name="module_function_service_messages_staging_slot"></a> [function\_service\_messages\_staging\_slot](#module\_function\_service\_messages\_staging\_slot) | github.com/pagopa/terraform-azurerm-v3//function_app_slot | v8.27.0 |
+| <a name="module_pod_identity"></a> [pod\_identity](#module\_pod\_identity) | github.com/pagopa/terraform-azurerm-v3//kubernetes_pod_identity | v8.27.0 |
+| <a name="module_push_notif_function"></a> [push\_notif\_function](#module\_push\_notif\_function) | github.com/pagopa/terraform-azurerm-v3//function_app | v8.27.0 |
+| <a name="module_push_notif_function_staging_slot"></a> [push\_notif\_function\_staging\_slot](#module\_push\_notif\_function\_staging\_slot) | github.com/pagopa/terraform-azurerm-v3//function_app_slot | v8.27.0 |
+| <a name="module_push_notif_snet"></a> [push\_notif\_snet](#module\_push\_notif\_snet) | github.com/pagopa/terraform-azurerm-v3//subnet | v8.27.0 |
+| <a name="module_services_storage"></a> [services\_storage](#module\_services\_storage) | github.com/pagopa/terraform-azurerm-v3//storage_account | v8.27.0 |
 
 ## Resources
 

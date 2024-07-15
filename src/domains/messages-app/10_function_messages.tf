@@ -98,7 +98,7 @@ resource "azurerm_resource_group" "app_messages_rg" {
 
 module "app_messages_snet" {
   count  = var.app_messages_count
-  source = "github.com/pagopa/terraform-azurerm-v3//subnet?ref=v7.69.1"
+  source = "github.com/pagopa/terraform-azurerm-v3//subnet?ref=v8.27.0"
 
   name                                      = format("%s-app-messages-snet-%d", local.product, count.index + 1)
   address_prefixes                          = [var.cidr_subnet_appmessages[count.index]]
@@ -123,7 +123,7 @@ module "app_messages_snet" {
 
 module "app_messages_function" {
   count  = var.app_messages_count
-  source = "github.com/pagopa/terraform-azurerm-v3//function_app?ref=v7.69.1"
+  source = "github.com/pagopa/terraform-azurerm-v3//function_app?ref=v8.27.0"
 
   resource_group_name = azurerm_resource_group.app_messages_rg[count.index].name
   name                = format("%s-app-messages-fn-%d", local.product, count.index + 1)
@@ -152,6 +152,7 @@ module "app_messages_function" {
     access_tier                       = "Hot"
     advanced_threat_protection_enable = true
     use_legacy_defender_version       = true
+    public_network_access_enabled     = false
   }
 
   app_settings = merge(
@@ -188,7 +189,7 @@ module "app_messages_function" {
 
 module "app_messages_function_staging_slot" {
   count  = var.app_messages_count
-  source = "github.com/pagopa/terraform-azurerm-v3//function_app_slot?ref=v7.69.1"
+  source = "github.com/pagopa/terraform-azurerm-v3//function_app_slot?ref=v8.27.0"
 
   name                = "staging"
   location            = azurerm_resource_group.app_messages_rg[count.index].location

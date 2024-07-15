@@ -79,7 +79,7 @@ locals {
 }
 
 module "function_service_messages_snet" {
-  source = "github.com/pagopa/terraform-azurerm-v3//subnet?ref=v7.70.1"
+  source = "github.com/pagopa/terraform-azurerm-v3//subnet?ref=v8.27.0"
 
   name                                      = format("%s-fn-service-messages-snet", local.product)
   address_prefixes                          = var.cidr_subnet_fnservicemessages
@@ -104,7 +104,7 @@ module "function_service_messages_snet" {
 
 module "function_service_messages" {
   count  = var.function_service_messages_enabled ? 1 : 0
-  source = "github.com/pagopa/terraform-azurerm-v3//function_app?ref=v7.70.1"
+  source = "github.com/pagopa/terraform-azurerm-v3//function_app?ref=v8.27.0"
 
   resource_group_name = azurerm_resource_group.service_messages_rg.name
   name                = format("%s-messages-sending-func", local.product)
@@ -133,6 +133,7 @@ module "function_service_messages" {
     access_tier                       = "Hot"
     advanced_threat_protection_enable = true
     use_legacy_defender_version       = true
+    public_network_access_enabled     = false
   }
 
   app_settings = merge(
@@ -165,7 +166,7 @@ module "function_service_messages" {
 
 module "function_service_messages_staging_slot" {
   count  = var.function_service_messages_enabled ? 1 : 0
-  source = "github.com/pagopa/terraform-azurerm-v3//function_app_slot?ref=v7.70.1"
+  source = "github.com/pagopa/terraform-azurerm-v3//function_app_slot?ref=v8.27.0"
 
   name                = "staging"
   location            = var.location
