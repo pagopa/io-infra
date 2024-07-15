@@ -25,8 +25,8 @@ variable "resource_groups" {
 
 variable "vnets" {
   type = map(object({
-    id                  = string
-    name                = string
+    id   = string
+    name = string
   }))
   description = "Map of virtual networks where to attach private dns zones"
 }
@@ -44,7 +44,7 @@ variable "external_domain" {
 }
 
 variable "dns_zones" {
-  type        = object({
+  type = object({
     io                  = string
     io_selfcare         = string
     firmaconio_selfcare = string

@@ -16,6 +16,6 @@ data "azurerm_public_ip" "appgateway_public_ip" {
 
 # TODO: remove when apim v2 module is implemented
 data "azurerm_api_management" "apim_v2" {
-  name                      = "${local.project_weu_legacy}-apim-v2-api"
-  resource_group_name       = "${local.project_weu_legacy}-rg-internal"
+  name                = "${local.project_weu_legacy}-apim-v2-api"
+  resource_group_name = "${local.project_weu_legacy}-rg-internal"
 }

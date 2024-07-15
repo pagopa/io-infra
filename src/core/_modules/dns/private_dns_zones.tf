@@ -98,7 +98,7 @@ resource "azurerm_private_dns_zone" "privatelink_table_core" {
 resource "azurerm_private_dns_zone" "privatelink_azurewebsites" {
   name                = "privatelink.azurewebsites.net"
   resource_group_name = var.resource_groups.common
-  
+
   tags = var.tags
 }
 

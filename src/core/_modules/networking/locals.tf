@@ -6,9 +6,9 @@ locals {
 
   nonstandard = {
     weu = {
-      ng = "${var.project}-natgw"
+      ng       = "${var.project}-natgw"
       pep-snet = "pendpoints"
-      vnet = "${var.project}-vnet-common"
+      vnet     = "${var.project}-vnet-common"
     }
   }
 }

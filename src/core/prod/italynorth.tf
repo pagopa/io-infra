@@ -36,7 +36,7 @@ module "vnet_peering_itn" {
       resource_group_name = module.networking_weu.vnet_common.resource_group_name
       use_remote_gateways = false
     }
-    
+
     beta = {
       name                = data.azurerm_virtual_network.weu_beta.name
       id                  = data.azurerm_virtual_network.weu_beta.id

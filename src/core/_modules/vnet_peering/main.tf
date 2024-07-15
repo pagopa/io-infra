@@ -1,5 +1,5 @@
 module "vnet_peering" {
-  source = "github.com/pagopa/terraform-azurerm-v3//virtual_network_peering?ref=v8.7.0"
+  source = "github.com/pagopa/terraform-azurerm-v3//virtual_network_peering?ref=v8.27.0"
   for_each = {
     for peering_key, target_vnet in var.target_vnets : peering_key => target_vnet
   }

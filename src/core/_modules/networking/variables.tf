@@ -36,5 +36,5 @@ variable "pep_snet_cidr" {
 variable "ng_ips_number" {
   type        = number
   description = "Number of public IPs assigned to the nat gateway"
-  default = 1
+  default     = 1
 }
