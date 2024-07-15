@@ -142,7 +142,7 @@ resource "azurerm_private_dns_zone_virtual_network_link" "redis_private_vnet_itn
 }
 
 
-resource "azurerm_private_dns_zone_virtual_network_link" "azure_api_net_vnet_common" {
+resource "azurerm_private_dns_zone_virtual_network_link" "azure_api_net_vnet_itn_common" {
   name = module.vnet_itn_common.name
 
   virtual_network_id    = module.vnet_itn_common.id
@@ -154,7 +154,7 @@ resource "azurerm_private_dns_zone_virtual_network_link" "azure_api_net_vnet_com
   tags = var.tags
 }
 
-resource "azurerm_private_dns_zone_virtual_network_link" "management_azure_api_net_vnet_common" {
+resource "azurerm_private_dns_zone_virtual_network_link" "management_azure_api_net_vnet_itn_common" {
   name = module.vnet_itn_common.name
 
   virtual_network_id    = module.vnet_itn_common.id
@@ -166,7 +166,7 @@ resource "azurerm_private_dns_zone_virtual_network_link" "management_azure_api_n
   tags = var.tags
 }
 
-resource "azurerm_private_dns_zone_virtual_network_link" "scm_azure_api_net_vnet_common" {
+resource "azurerm_private_dns_zone_virtual_network_link" "scm_azure_api_net_vnet_itn_common" {
   name = module.vnet_itn_common.name
 
   virtual_network_id    = module.vnet_itn_common.id
