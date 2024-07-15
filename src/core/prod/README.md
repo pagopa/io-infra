@@ -10,7 +10,7 @@
 
 | Name | Source | Version |
 |------|--------|---------|
-| <a name="module_dns_weu"></a> [dns\_weu](#module\_dns\_weu) | ../_modules/dns | n/a |
+| <a name="module_global"></a> [global](#module\_global) | ../_modules/global | n/a |
 | <a name="module_networking_itn"></a> [networking\_itn](#module\_networking\_itn) | ../_modules/networking | n/a |
 | <a name="module_networking_weu"></a> [networking\_weu](#module\_networking\_weu) | ../_modules/networking | n/a |
 | <a name="module_vnet_peering_itn"></a> [vnet\_peering\_itn](#module\_vnet\_peering\_itn) | ../_modules/vnet_peering | n/a |
