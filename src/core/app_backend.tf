@@ -723,7 +723,7 @@ resource "azurerm_key_vault_secret" "appbackend_THIRD_PARTY_CONFIG_LIST" {
 
 ## app_backendl3
 module "app_backendl3_snet" {
-  source                                    = "github.com/pagopa/terraform-azurerm-v3//subnet?ref=v7.61.0"
+  source                                    = "github.com/pagopa/terraform-azurerm-v3//subnet?ref=v8.27.0"
   name                                      = "${local.project}-weu-backend-snet-03"
   address_prefixes                          = ["10.0.156.0/24"]
   resource_group_name                       = azurerm_resource_group.rg_common.name
@@ -749,7 +749,7 @@ resource "azurerm_subnet_nat_gateway_association" "app_backendl3_snet" {
 }
 
 module "appservice_app_backendl3" {
-  source = "github.com/pagopa/terraform-azurerm-v3//app_service?ref=v7.61.0"
+  source = "github.com/pagopa/terraform-azurerm-v3//app_service?ref=v8.27.0"
 
   # App service plan
   plan_type = "internal"
@@ -800,7 +800,7 @@ resource "azurerm_private_endpoint" "backend3_sites" {
 }
 
 module "appservice_app_backendl3_slot_staging" {
-  source = "github.com/pagopa/terraform-azurerm-v3//app_service_slot?ref=v7.61.0"
+  source = "github.com/pagopa/terraform-azurerm-v3//app_service_slot?ref=v8.27.0"
 
   # App service plan
   app_service_id   = module.appservice_app_backendl3.id
@@ -848,43 +848,10 @@ resource "azurerm_private_endpoint" "backend3_staging_sites" {
   tags = var.tags
 }
 
-# module "app_backend_3" {
-#   source = "github.com/pagopa/dx//infra/modules/azure_app_service?ref=main"
-
-#   environment = {
-#     prefix = var.prefix
-#     env_short = var.env_short
-#     location = azurerm_resource_group.backend.location
-#     app_name = "backend"
-#     instance_number = "03"
-#   }
-
-#   resource_group_name = azurerm_resource_group.backend.name
-
-#   subnet_cidr = "10.0.156.0/24"
-#   subnet_pep_id = module.private_endpoints_subnet.id
-#   virtual_network = module.vnet_common.name
-#   private_dns_zone_resource_group_name = azurerm_resource_group.rg_common.name
-#   subnet_service_endpoints = {
-#     web = true
-#   }
-
-#   health_check_path = "/ping"
-
-#   node_version = 18
-
-#   app_settings = merge(
-#     local.app_backend.app_settings_common,
-#     local.app_backend.app_settings_l3,
-#   )
-
-#   tags = var.tags
-# }
-
 ## app_backendl1
 
 module "app_backendl1_snet" {
-  source                                    = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v7.61.0"
+  source                                    = "github.com/pagopa/terraform-azurerm-v3//subnet?ref=v8.27.0"
   name                                      = "appbackendl1"
   address_prefixes                          = var.cidr_subnet_appbackendl1
   resource_group_name                       = azurerm_resource_group.rg_common.name
@@ -928,7 +895,7 @@ data "azurerm_subnet" "itn_msgs_sending_func_snet" {
 }
 
 module "appservice_app_backendl1" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//app_service?ref=v7.61.0"
+  source = "github.com/pagopa/terraform-azurerm-v3//app_service?ref=v8.27.0"
 
   # App service plan
   plan_type = "internal"
@@ -970,7 +937,7 @@ module "appservice_app_backendl1" {
 }
 
 module "appservice_app_backendl1_slot_staging" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//app_service_slot?ref=v7.61.0"
+  source = "github.com/pagopa/terraform-azurerm-v3//app_service_slot?ref=v8.27.0"
 
   # App service plan
   app_service_id   = module.appservice_app_backendl1.id
@@ -1151,7 +1118,7 @@ resource "azurerm_monitor_autoscale_setting" "appservice_app_backendl1" {
 ## app_backendl2
 
 module "app_backendl2_snet" {
-  source                                    = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v7.61.0"
+  source                                    = "github.com/pagopa/terraform-azurerm-v3//subnet?ref=v8.27.0"
   name                                      = "appbackendl2"
   address_prefixes                          = var.cidr_subnet_appbackendl2
   resource_group_name                       = azurerm_resource_group.rg_common.name
@@ -1177,7 +1144,7 @@ resource "azurerm_subnet_nat_gateway_association" "app_backendl2_snet" {
 }
 
 module "appservice_app_backendl2" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//app_service?ref=v7.61.0"
+  source = "github.com/pagopa/terraform-azurerm-v3//app_service?ref=v8.27.0"
 
   # App service plan
   plan_type = "internal"
@@ -1219,7 +1186,7 @@ module "appservice_app_backendl2" {
 }
 
 module "appservice_app_backendl2_slot_staging" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//app_service_slot?ref=v7.61.0"
+  source = "github.com/pagopa/terraform-azurerm-v3//app_service_slot?ref=v8.27.0"
 
   # App service plan
   app_service_id   = module.appservice_app_backendl2.id
@@ -1400,7 +1367,7 @@ resource "azurerm_monitor_autoscale_setting" "appservice_app_backendl2" {
 ## app_backendli
 
 module "app_backendli_snet" {
-  source                                    = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v7.61.0"
+  source                                    = "github.com/pagopa/terraform-azurerm-v3//subnet?ref=v8.27.0"
   name                                      = "appbackendli"
   address_prefixes                          = var.cidr_subnet_appbackendli
   resource_group_name                       = azurerm_resource_group.rg_common.name
@@ -1426,12 +1393,11 @@ resource "azurerm_subnet_nat_gateway_association" "app_backendli_snet" {
 }
 
 module "appservice_app_backendli" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//app_service?ref=v7.61.0"
+  source = "github.com/pagopa/terraform-azurerm-v3//app_service?ref=v8.27.0"
 
   # App service plan
   plan_type = "internal"
   plan_name = format("%s-plan-appappbackendli", local.project)
-  plan_kind = "Linux"
   sku_name  = var.app_backend_plan_sku_size
 
   # App service
@@ -1472,7 +1438,7 @@ module "appservice_app_backendli" {
 }
 
 module "appservice_app_backendli_slot_staging" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//app_service_slot?ref=v7.61.0"
+  source = "github.com/pagopa/terraform-azurerm-v3//app_service_slot?ref=v8.27.0"
 
   # App service plan
   app_service_id   = module.appservice_app_backendli.id
@@ -1651,7 +1617,7 @@ resource "azurerm_monitor_autoscale_setting" "appservice_app_backendli" {
 ## web availabolity test
 module "app_backend_web_test_api" {
   for_each = { for v in local.app_backend_test_urls : v.id => v if v != null }
-  source   = "git::https://github.com/pagopa/terraform-azurerm-v3.git//application_insights_web_test_preview?ref=v7.61.0"
+  source   = "github.com/pagopa/terraform-azurerm-v3//application_insights_web_test_preview?ref=v8.27.0"
 
   subscription_id                   = data.azurerm_subscription.current.subscription_id
   name                              = format("%s-test", each.value.name)
