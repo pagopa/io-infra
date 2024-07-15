@@ -288,7 +288,7 @@ locals {
           isLollipopEnabled  = "false",
           disableLollipopFor = [],
           prodEnvironment = {
-            baseUrl = "https://pagopahub.io/third-party-mock",
+            baseUrl = "https://pagopa.github.io/third-party-mock",
             detailsAuthentication = {
               type            = "API_KEY",
               header_key_name = "x-api-key",
