@@ -30,8 +30,8 @@ module "event_hub" {
   virtual_network_ids = [module.vnet_common.id]
   # subnet_id           = module.eventhub_snet.id
   private_dns_zones = {
-    id   = [azurerm_private_dns_zone.privatelink_servicebus.id]
-    name = [azurerm_private_dns_zone.privatelink_servicebus.name]
+    id                  = [azurerm_private_dns_zone.privatelink_servicebus.id]
+    name                = [azurerm_private_dns_zone.privatelink_servicebus.name]
     resource_group_name = azurerm_private_dns_zone.privatelink_servicebus.resource_group_name
   }
 
