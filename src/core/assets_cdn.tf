@@ -6,7 +6,7 @@ resource "azurerm_resource_group" "assets_cdn_rg" {
 }
 
 module "assets_cdn" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//storage_account?ref=v7.61.0"
+  source = "github.com/pagopa/terraform-azurerm-v3//storage_account?ref=v8.27.0"
 
   name                            = replace(format("%s-stcdnassets", local.project), "-", "")
   account_kind                    = "StorageV2"
