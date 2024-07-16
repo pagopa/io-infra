@@ -32,7 +32,7 @@ resource "azurerm_resource_group" "notifications_rg" {
 }
 
 module "push_notifications_storage" {
-  source                        = "git::https://github.com/pagopa/terraform-azurerm-v3//storage_account?ref=v7.69.1"
+  source                        = "github.com/pagopa/terraform-azurerm-v3//storage_account?ref=v8.27.0"
   name                          = replace(format("%s-notifst", local.project), "-", "")
   domain                        = upper(var.domain)
   account_kind                  = "StorageV2"
@@ -53,7 +53,7 @@ resource "azurerm_storage_queue" "push_notifications_queue" {
 }
 
 module "push_notif_beta_storage" {
-  source                        = "git::https://github.com/pagopa/terraform-azurerm-v3//storage_account?ref=v7.69.1"
+  source                        = "github.com/pagopa/terraform-azurerm-v3//storage_account?ref=v8.27.0"
   name                          = replace(format("%s-betauserst", local.project), "-", "")
   domain                        = upper(var.domain)
   account_kind                  = "StorageV2"

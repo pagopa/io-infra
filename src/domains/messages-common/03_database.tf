@@ -20,7 +20,7 @@ resource "azurerm_resource_group" "data_rg" {
 
 
 module "cosmosdb_account_mongodb_reminder" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3//cosmosdb_account?ref=v7.69.1"
+  source = "github.com/pagopa/terraform-azurerm-v3//cosmosdb_account?ref=v8.27.0"
 
   name                 = "${local.product}-${var.domain}-reminder-mongodb-account"
   domain               = upper(var.domain)
@@ -68,7 +68,7 @@ resource "azurerm_cosmosdb_mongo_database" "db_reminder" {
 
 # Collections
 module "mongdb_collection_reminder" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3//cosmosdb_mongodb_collection?ref=v7.69.1"
+  source = "github.com/pagopa/terraform-azurerm-v3//cosmosdb_mongodb_collection?ref=v8.27.0"
 
   name                = "reminder"
   resource_group_name = azurerm_resource_group.data_rg.name
@@ -133,7 +133,7 @@ module "mongdb_collection_reminder" {
 }
 
 module "mongdb_collection_reminder_sharded" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3//cosmosdb_mongodb_collection?ref=v7.69.1"
+  source = "github.com/pagopa/terraform-azurerm-v3//cosmosdb_mongodb_collection?ref=v8.27.0"
 
   name                = "reminder-sharded"
   resource_group_name = azurerm_resource_group.data_rg.name
@@ -219,7 +219,7 @@ data "azurerm_key_vault_secret" "reminder_mysql_db_server_adm_password" {
 }
 
 module "reminder_mysql_db_server_snet" {
-  source                                    = "git::https://github.com/pagopa/terraform-azurerm-v3//subnet?ref=v7.69.1"
+  source                                    = "github.com/pagopa/terraform-azurerm-v3//subnet?ref=v8.27.0"
   name                                      = format("%s-snet", "reminder-mysql")
   address_prefixes                          = ["10.0.155.16/28"]
   resource_group_name                       = data.azurerm_virtual_network.vnet_common.resource_group_name
@@ -281,7 +281,7 @@ resource "azurerm_key_vault_secret" "reminder_mysql_db_server_url" {
 # REMOTE CONTENT COSMOS
 ############################
 module "cosmosdb_account_remote_content" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3//cosmosdb_account?ref=v7.69.1"
+  source = "github.com/pagopa/terraform-azurerm-v3//cosmosdb_account?ref=v8.27.0"
 
   name                = "${local.product}-${var.domain}-remote-content"
   domain              = upper(var.domain)
@@ -326,7 +326,7 @@ module "cosmosdb_account_remote_content" {
 }
 
 module "cosmosdb_sql_database_remote_content" {
-  source              = "git::https://github.com/pagopa/terraform-azurerm-v3//cosmosdb_sql_database?ref=v7.69.1"
+  source              = "github.com/pagopa/terraform-azurerm-v3//cosmosdb_sql_database?ref=v8.27.0"
   name                = "remote-content"
   resource_group_name = azurerm_resource_group.data_rg.name
   account_name        = module.cosmosdb_account_remote_content.name
