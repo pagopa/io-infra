@@ -6,7 +6,7 @@ resource "azurerm_resource_group" "sec_rg" {
 }
 
 module "key_vault" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3//key_vault?ref=v7.69.1"
+  source = "github.com/pagopa/terraform-azurerm-v3//key_vault?ref=v8.27.0"
 
   name                       = "${local.product}-${var.domain}-kv"
   location                   = azurerm_resource_group.sec_rg.location

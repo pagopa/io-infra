@@ -1,5 +1,5 @@
 module "services_storage" {
-  source = "github.com/pagopa/terraform-azurerm-v3//storage_account?ref=v7.69.1"
+  source = "github.com/pagopa/terraform-azurerm-v3//storage_account?ref=v8.27.0"
 
   name                          = replace(format("%s-svst", local.project), "-", "")
   account_kind                  = "StorageV2"

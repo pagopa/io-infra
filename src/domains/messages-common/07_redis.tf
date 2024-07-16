@@ -6,7 +6,7 @@ resource "azurerm_resource_group" "app_messages_common_rg" {
 }
 
 module "redis_messages" {
-  source = "github.com/pagopa/terraform-azurerm-v3//redis_cache?ref=v7.63.0"
+  source = "github.com/pagopa/terraform-azurerm-v3//redis_cache?ref=v8.27.0"
 
   name                = "${local.product}-redis-app-messages-std-v6"
   resource_group_name = azurerm_resource_group.app_messages_common_rg.name

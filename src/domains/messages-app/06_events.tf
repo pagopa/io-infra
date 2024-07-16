@@ -7,7 +7,7 @@ resource "azurerm_resource_group" "event_rg" {
 
 module "event_hub" {
   count                    = var.ehns_enabled ? 1 : 0
-  source                   = "github.com/pagopa/terraform-azurerm-v3//eventhub?ref=v7.69.1"
+  source                   = "github.com/pagopa/terraform-azurerm-v3//eventhub?ref=v8.27.0"
   name                     = format("%s-evh-ns", local.project)
   location                 = var.location
   resource_group_name      = azurerm_resource_group.event_rg.name
@@ -17,26 +17,15 @@ module "event_hub" {
   maximum_throughput_units = var.ehns_maximum_throughput_units
   zone_redundant           = var.ehns_zone_redundant
 
+  private_endpoint_created             = true
+  private_endpoint_resource_group_name = azurerm_resource_group.event_rg.name
+  private_endpoint_subnet_id           = data.azurerm_subnet.private_endpoints_subnet.id
+
   virtual_network_ids            = [data.azurerm_virtual_network.vnet_common.id]
-  subnet_id                      = data.azurerm_subnet.private_endpoints_subnet.id
   private_dns_zone_record_A_name = null
 
   eventhubs                     = var.eventhubs
   public_network_access_enabled = false
-
-  # network_rulesets = [
-  #   {
-  #     default_action       = "Deny",
-  #     ip_rule              = var.ehns_ip_rules
-  #     virtual_network_rule = []
-  #     # virtual_network_rule = [
-  #     #   {
-  #     #     subnet_id                                       = null,
-  #     #     ignore_missing_virtual_network_service_endpoint = false
-  #     #   }
-  #     # ]
-  #   }
-  # ]
 
   alerts_enabled = var.ehns_alerts_enabled
   metric_alerts  = var.ehns_metric_alerts
@@ -48,8 +37,9 @@ module "event_hub" {
   ]
 
   private_dns_zones = {
-    id   = [data.azurerm_private_dns_zone.privatelink_servicebus_windows_net.id]
-    name = [data.azurerm_private_dns_zone.privatelink_servicebus_windows_net.name]
+    id                  = [data.azurerm_private_dns_zone.privatelink_servicebus_windows_net.id]
+    name                = [data.azurerm_private_dns_zone.privatelink_servicebus_windows_net.name]
+    resource_group_name = data.azurerm_private_dns_zone.privatelink_servicebus_windows_net.resource_group_name
   }
 
   tags = var.tags

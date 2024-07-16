@@ -25,6 +25,9 @@ locals {
       FETCH_KEEPALIVE_FREE_SOCKET_TIMEOUT = "30000"
       FETCH_KEEPALIVE_TIMEOUT             = "60000"
 
+      // see https://learn.microsoft.com/en-us/azure/app-service/monitor-instances-health-check?tabs=dotnet#configuration
+      WEBSITE_HEALTHCHECK_MAXUNHEALTHYWORKERPERCENT = "95"
+
       // SPID
       SAML_CALLBACK_URL                      = "https://app-backend.io.italia.it/assertionConsumerService"
       SAML_CERT                              = trimspace(data.azurerm_key_vault_secret.app_backend_SAML_CERT.value)
@@ -145,13 +148,14 @@ locals {
       USERS_LOGIN_STORAGE_CONNECTION_STRING = data.azurerm_storage_account.logs.primary_connection_string
 
       // Feature flags
-      FF_BONUS_ENABLED          = 1
-      FF_CGN_ENABLED            = 1
-      FF_EUCOVIDCERT_ENABLED    = 1
-      FF_MIT_VOUCHER_ENABLED    = 1
-      FF_USER_AGE_LIMIT_ENABLED = 1
-      FF_IO_SIGN_ENABLED        = 1
-      FF_IO_WALLET_ENABLED      = 0
+      FF_BONUS_ENABLED           = 1
+      FF_CGN_ENABLED             = 1
+      FF_EUCOVIDCERT_ENABLED     = 1
+      FF_MIT_VOUCHER_ENABLED     = 1
+      FF_USER_AGE_LIMIT_ENABLED  = 1
+      FF_IO_SIGN_ENABLED         = 1
+      FF_IO_WALLET_ENABLED       = 0
+      FF_IO_WALLET_TRIAL_ENABLED = 1
 
       FF_ROUTING_PUSH_NOTIF                      = "ALL" # possible values are: BETA, CANARY, ALL, NONE
       FF_ROUTING_PUSH_NOTIF_BETA_TESTER_SHA_LIST = data.azurerm_key_vault_secret.app_backend_APP_MESSAGES_BETA_FISCAL_CODES.value
@@ -159,7 +163,7 @@ locals {
       FF_ROUTING_PUSH_NOTIF_CANARY_SHA_USERS_REGEX = "^([(0-9)|(a-f)|(A-F)]{63}[(0-4)]{1})$"
 
       FF_PN_ACTIVATION_ENABLED = "1"
-      FF_TRIAL_SYSTEM_ENABLED  = "0"
+      FF_TRIAL_SYSTEM_ENABLED  = "1"
 
       // TEST LOGIN
       TEST_LOGIN_PASSWORD     = data.azurerm_key_vault_secret.app_backend_TEST_LOGIN_PASSWORD.value
@@ -196,6 +200,9 @@ locals {
 
       // Service ID IO-SIGN
       IO_SIGN_SERVICE_ID = var.io_sign_service_id
+
+      // IO Wallet TRIAL ID
+      IO_WALLET_TRIAL_ID = var.io_wallet_trial_id
 
       // PN Service Activation
       PN_ACTIVATION_BASE_PATH = "/api/v1/pn"

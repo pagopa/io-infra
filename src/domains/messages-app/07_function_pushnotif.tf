@@ -80,7 +80,7 @@ locals {
 
 # Subnet to host push notif function
 module "push_notif_snet" {
-  source                                    = "github.com/pagopa/terraform-azurerm-v3//subnet?ref=v7.69.1"
+  source                                    = "github.com/pagopa/terraform-azurerm-v3//subnet?ref=v8.27.0"
   name                                      = format("%s-push-notif-snet", local.project)
   address_prefixes                          = var.cidr_subnet_push_notif
   resource_group_name                       = data.azurerm_virtual_network.vnet_common.resource_group_name
@@ -105,7 +105,7 @@ module "push_notif_snet" {
 #tfsec:ignore:azure-storage-queue-services-logging-enabled:exp:2022-05-01 # already ignored, maybe a bug in tfsec
 module "push_notif_function" {
   count  = var.push_notif_enabled ? 1 : 0
-  source = "github.com/pagopa/terraform-azurerm-v3//function_app?ref=v7.71.1"
+  source = "github.com/pagopa/terraform-azurerm-v3//function_app?ref=v8.27.0"
 
   resource_group_name = azurerm_resource_group.push_notif_rg.name
   name                = format("%s-push-notif-fn", local.product)
@@ -195,7 +195,7 @@ module "push_notif_function" {
 
 module "push_notif_function_staging_slot" {
   count  = var.push_notif_enabled ? 1 : 0
-  source = "github.com/pagopa/terraform-azurerm-v3//function_app_slot?ref=v7.71.1"
+  source = "github.com/pagopa/terraform-azurerm-v3//function_app_slot?ref=v8.27.0"
 
   name                = "staging"
   location            = var.location
