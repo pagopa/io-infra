@@ -160,7 +160,7 @@ locals {
       FF_ROUTING_PUSH_NOTIF_CANARY_SHA_USERS_REGEX = "^([(0-9)|(a-f)|(A-F)]{63}[(0-4)]{1})$"
 
       FF_PN_ACTIVATION_ENABLED = "1"
-      FF_TRIAL_SYSTEM_ENABLED  = "0"
+      FF_TRIAL_SYSTEM_ENABLED  = "1"
 
       // TEST LOGIN
       TEST_LOGIN_PASSWORD     = data.azurerm_key_vault_secret.app_backend_TEST_LOGIN_PASSWORD.value
