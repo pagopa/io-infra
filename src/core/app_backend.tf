@@ -902,7 +902,7 @@ data "azurerm_subnet" "itn_msgs_sending_func_snet" {
 }
 
 module "appservice_app_backendl1" {
-  source = "github.com/pagopa/terraform-azurerm-v3//app_service?ref=v8.27.0"
+  source = "github.com/pagopa/terraform-azurerm-v3//app_service?ref=v8.28.0"
 
   # App service plan
   plan_type = "internal"
@@ -919,6 +919,14 @@ module "appservice_app_backendl1" {
   app_command_line             = local.app_backend.app_command_line
   health_check_path            = "/ping"
   health_check_maxpingfailures = 3
+
+  auto_heal_enabled = true
+  auto_heal_settings = {
+    startup_time = "00:05:00"
+    slow_requests_count = 50
+    slow_requests_interval = "00:01:00"
+    slow_requests_time = "00:00:05"
+  }
 
   app_settings = merge(
     local.app_backend.app_settings_common,
@@ -944,7 +952,7 @@ module "appservice_app_backendl1" {
 }
 
 module "appservice_app_backendl1_slot_staging" {
-  source = "github.com/pagopa/terraform-azurerm-v3//app_service_slot?ref=v8.27.0"
+  source = "github.com/pagopa/terraform-azurerm-v3//app_service_slot?ref=v8.28.0"
 
   # App service plan
   app_service_id   = module.appservice_app_backendl1.id
@@ -959,6 +967,14 @@ module "appservice_app_backendl1_slot_staging" {
   node_version      = "18-lts"
   app_command_line  = local.app_backend.app_command_line
   health_check_path = "/ping"
+
+  auto_heal_enabled = true
+  auto_heal_settings = {
+    startup_time = "00:05:00"
+    slow_requests_count = 50
+    slow_requests_interval = "00:01:00"
+    slow_requests_time = "00:00:05"
+  }
 
   app_settings = merge(
     local.app_backend.app_settings_common,
@@ -1151,7 +1167,7 @@ resource "azurerm_subnet_nat_gateway_association" "app_backendl2_snet" {
 }
 
 module "appservice_app_backendl2" {
-  source = "github.com/pagopa/terraform-azurerm-v3//app_service?ref=v8.27.0"
+  source = "github.com/pagopa/terraform-azurerm-v3//app_service?ref=v8.28.0"
 
   # App service plan
   plan_type = "internal"
@@ -1168,6 +1184,14 @@ module "appservice_app_backendl2" {
   app_command_line             = local.app_backend.app_command_line
   health_check_path            = "/ping"
   health_check_maxpingfailures = 3
+
+  auto_heal_enabled = true
+  auto_heal_settings = {
+    startup_time = "00:05:00"
+    slow_requests_count = 50
+    slow_requests_interval = "00:01:00"
+    slow_requests_time = "00:00:05"
+  }
 
   app_settings = merge(
     local.app_backend.app_settings_common,
@@ -1193,7 +1217,7 @@ module "appservice_app_backendl2" {
 }
 
 module "appservice_app_backendl2_slot_staging" {
-  source = "github.com/pagopa/terraform-azurerm-v3//app_service_slot?ref=v8.27.0"
+  source = "github.com/pagopa/terraform-azurerm-v3//app_service_slot?ref=v8.28.0"
 
   # App service plan
   app_service_id   = module.appservice_app_backendl2.id
@@ -1208,6 +1232,14 @@ module "appservice_app_backendl2_slot_staging" {
   node_version      = "18-lts"
   app_command_line  = local.app_backend.app_command_line
   health_check_path = "/ping"
+
+  auto_heal_enabled = true
+  auto_heal_settings = {
+    startup_time = "00:05:00"
+    slow_requests_count = 50
+    slow_requests_interval = "00:01:00"
+    slow_requests_time = "00:00:05"
+  }
 
   app_settings = merge(
     local.app_backend.app_settings_common,
