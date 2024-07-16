@@ -25,6 +25,9 @@ locals {
       FETCH_KEEPALIVE_FREE_SOCKET_TIMEOUT = "30000"
       FETCH_KEEPALIVE_TIMEOUT             = "60000"
 
+      // see https://learn.microsoft.com/en-us/azure/app-service/monitor-instances-health-check?tabs=dotnet#configuration
+      WEBSITE_HEALTHCHECK_MAXUNHEALTHYWORKERPERCENT = "95"
+
       // SPID
       SAML_CALLBACK_URL                      = "https://app-backend.io.italia.it/assertionConsumerService"
       SAML_CERT                              = trimspace(data.azurerm_key_vault_secret.app_backend_SAML_CERT.value)
@@ -160,7 +163,7 @@ locals {
       FF_ROUTING_PUSH_NOTIF_CANARY_SHA_USERS_REGEX = "^([(0-9)|(a-f)|(A-F)]{63}[(0-4)]{1})$"
 
       FF_PN_ACTIVATION_ENABLED = "1"
-      FF_TRIAL_SYSTEM_ENABLED  = "0"
+      FF_TRIAL_SYSTEM_ENABLED  = "1"
 
       // TEST LOGIN
       TEST_LOGIN_PASSWORD     = data.azurerm_key_vault_secret.app_backend_TEST_LOGIN_PASSWORD.value
