@@ -578,18 +578,18 @@ module "app_gw" {
         },
         bpd-user = {
           paths                 = ["/bpd/api/v1/user"]
-          backend               = "appbackend-app",
-          rewrite_rule_set_name = "rewrite-rule-set-api-app-rewrite-to-session-manager"
+          backend               = "session-manager-app",
+          rewrite_rule_set_name = "rewrite-rule-set-api-app"
         },
         zendesk-user = {
           paths                 = ["/api/backend/zendesk/v1/jwt"]
-          backend               = "appbackend-app",
-          rewrite_rule_set_name = "rewrite-rule-set-api-app-rewrite-to-session-manager"
+          backend               = "session-manager-app",
+          rewrite_rule_set_name = "rewrite-rule-set-api-app"
         },
         pagopa-user = {
           paths                 = ["/pagopa/api/v1/user"]
-          backend               = "appbackend-app",
-          rewrite_rule_set_name = "rewrite-rule-set-api-app-rewrite-to-session-manager"
+          backend               = "session-manager-app",
+          rewrite_rule_set_name = "rewrite-rule-set-api-app"
         },
       }
     }
