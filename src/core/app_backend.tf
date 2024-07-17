@@ -756,7 +756,7 @@ resource "azurerm_subnet_nat_gateway_association" "app_backendl3_snet" {
 }
 
 module "appservice_app_backendl3" {
-  source = "github.com/pagopa/terraform-azurerm-v3//app_service?ref=v8.27.0"
+  source = "github.com/pagopa/terraform-azurerm-v3//app_service?ref=v8.28.1"
 
   # App service plan
   plan_type = "internal"
@@ -807,7 +807,7 @@ resource "azurerm_private_endpoint" "backend3_sites" {
 }
 
 module "appservice_app_backendl3_slot_staging" {
-  source = "github.com/pagopa/terraform-azurerm-v3//app_service_slot?ref=v8.27.0"
+  source = "github.com/pagopa/terraform-azurerm-v3//app_service_slot?ref=v8.28.1"
 
   # App service plan
   app_service_id   = module.appservice_app_backendl3.id
@@ -902,7 +902,7 @@ data "azurerm_subnet" "itn_msgs_sending_func_snet" {
 }
 
 module "appservice_app_backendl1" {
-  source = "github.com/pagopa/terraform-azurerm-v3//app_service?ref=v8.28.0"
+  source = "github.com/pagopa/terraform-azurerm-v3//app_service?ref=v8.28.1"
 
   # App service plan
   plan_type = "internal"
@@ -922,10 +922,10 @@ module "appservice_app_backendl1" {
 
   auto_heal_enabled = true
   auto_heal_settings = {
-    startup_time = "00:05:00"
-    slow_requests_count = 50
+    startup_time           = "00:05:00"
+    slow_requests_count    = 50
     slow_requests_interval = "00:01:00"
-    slow_requests_time = "00:00:05"
+    slow_requests_time     = "00:00:05"
   }
 
   app_settings = merge(
@@ -952,7 +952,7 @@ module "appservice_app_backendl1" {
 }
 
 module "appservice_app_backendl1_slot_staging" {
-  source = "github.com/pagopa/terraform-azurerm-v3//app_service_slot?ref=v8.28.0"
+  source = "github.com/pagopa/terraform-azurerm-v3//app_service_slot?ref=v8.28.1"
 
   # App service plan
   app_service_id   = module.appservice_app_backendl1.id
@@ -970,10 +970,10 @@ module "appservice_app_backendl1_slot_staging" {
 
   auto_heal_enabled = true
   auto_heal_settings = {
-    startup_time = "00:05:00"
-    slow_requests_count = 50
+    startup_time           = "00:05:00"
+    slow_requests_count    = 50
     slow_requests_interval = "00:01:00"
-    slow_requests_time = "00:00:05"
+    slow_requests_time     = "00:00:05"
   }
 
   app_settings = merge(
@@ -1167,7 +1167,7 @@ resource "azurerm_subnet_nat_gateway_association" "app_backendl2_snet" {
 }
 
 module "appservice_app_backendl2" {
-  source = "github.com/pagopa/terraform-azurerm-v3//app_service?ref=v8.28.0"
+  source = "github.com/pagopa/terraform-azurerm-v3//app_service?ref=v8.28.1"
 
   # App service plan
   plan_type = "internal"
@@ -1187,10 +1187,10 @@ module "appservice_app_backendl2" {
 
   auto_heal_enabled = true
   auto_heal_settings = {
-    startup_time = "00:05:00"
-    slow_requests_count = 50
+    startup_time           = "00:05:00"
+    slow_requests_count    = 50
     slow_requests_interval = "00:01:00"
-    slow_requests_time = "00:00:05"
+    slow_requests_time     = "00:00:05"
   }
 
   app_settings = merge(
@@ -1217,7 +1217,7 @@ module "appservice_app_backendl2" {
 }
 
 module "appservice_app_backendl2_slot_staging" {
-  source = "github.com/pagopa/terraform-azurerm-v3//app_service_slot?ref=v8.28.0"
+  source = "github.com/pagopa/terraform-azurerm-v3//app_service_slot?ref=v8.28.1"
 
   # App service plan
   app_service_id   = module.appservice_app_backendl2.id
@@ -1235,10 +1235,10 @@ module "appservice_app_backendl2_slot_staging" {
 
   auto_heal_enabled = true
   auto_heal_settings = {
-    startup_time = "00:05:00"
-    slow_requests_count = 50
+    startup_time           = "00:05:00"
+    slow_requests_count    = 50
     slow_requests_interval = "00:01:00"
-    slow_requests_time = "00:00:05"
+    slow_requests_time     = "00:00:05"
   }
 
   app_settings = merge(
