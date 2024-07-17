@@ -507,7 +507,7 @@ resource "azurerm_monitor_autoscale_setting" "app_messages_function" {
         direction = "Increase"
         type      = "ChangeCount"
         value     = "2"
-        cooldown  = "PT0M"
+        cooldown  = "PT1M"
       }
     }
 
@@ -529,7 +529,7 @@ resource "azurerm_monitor_autoscale_setting" "app_messages_function" {
         direction = "Increase"
         type      = "ChangeCount"
         value     = "2"
-        cooldown  = "PT0M"
+        cooldown  = "PT1M"
       }
     }
 
@@ -551,7 +551,7 @@ resource "azurerm_monitor_autoscale_setting" "app_messages_function" {
         direction = "Decrease"
         type      = "ChangeCount"
         value     = "1"
-        cooldown  = "PT0M"
+        cooldown  = "PT1M"
       }
     }
 
@@ -573,7 +573,7 @@ resource "azurerm_monitor_autoscale_setting" "app_messages_function" {
         direction = "Decrease"
         type      = "ChangeCount"
         value     = "1"
-        cooldown  = "PT0M"
+        cooldown  = "PT1M"
       }
     }
   }
