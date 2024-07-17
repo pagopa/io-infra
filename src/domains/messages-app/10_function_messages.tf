@@ -255,10 +255,10 @@ resource "azurerm_monitor_autoscale_setting" "app_messages_function" {
         metric_namespace         = "microsoft.web/sites"
         time_grain               = "PT1M"
         statistic                = "Average"
-        time_window              = "PT1M"
+        time_window              = "PT2M"
         time_aggregation         = "Average"
         operator                 = "GreaterThan"
-        threshold                = 600
+        threshold                = 700
         divide_by_instance_count = true
       }
 
@@ -368,10 +368,10 @@ resource "azurerm_monitor_autoscale_setting" "app_messages_function" {
         metric_namespace         = "microsoft.web/sites"
         time_grain               = "PT1M"
         statistic                = "Average"
-        time_window              = "PT1M"
+        time_window              = "PT2M"
         time_aggregation         = "Average"
         operator                 = "GreaterThan"
-        threshold                = 600
+        threshold                = 700
         divide_by_instance_count = true
       }
 
@@ -609,7 +609,7 @@ resource "azurerm_monitor_autoscale_setting" "app_messages_function" {
         metric_namespace         = "microsoft.web/sites"
         time_grain               = "PT1M"
         statistic                = "Average"
-        time_window              = "PT1M"
+        time_window              = "PT5M"
         time_aggregation         = "Average"
         operator                 = "GreaterThan"
         threshold                = 600
