@@ -104,6 +104,8 @@ locals {
     APPINSIGHTS_CONNECTION_STRING   = data.azurerm_application_insights.application_insights.connection_string
     APPINSIGHTS_DISABLED            = false
     APPINSIGHTS_SAMPLING_PERCENTAGE = 100
+    APPINSIGHTS_CLOUD_ROLE_NAME     = "io-p-itn-lollipop-fn-01"
+    APPINSIGHTS_EXCLUDED_DOMAINS    = "queue.core.windows.net,blob.core.windows.net,table.core.windows.net,file.core.windows.net"
 
     API_BASE_PATH = "/api/v1"
 
@@ -199,7 +201,7 @@ locals {
 #################################
 
 module "session_manager_weu" {
-  source = "github.com/pagopa/terraform-azurerm-v3//app_service?ref=v8.22.0"
+  source = "github.com/pagopa/terraform-azurerm-v3//app_service?ref=v8.28.1"
 
   # App service plan
   plan_type              = "internal"
@@ -216,7 +218,15 @@ module "session_manager_weu" {
   node_version                 = "20-lts"
   app_command_line             = "npm run start"
   health_check_path            = "/healthcheck"
-  health_check_maxpingfailures = 3
+  health_check_maxpingfailures = 2
+
+  auto_heal_enabled = true
+  auto_heal_settings = {
+    startup_time           = "00:05:00"
+    slow_requests_count    = 50
+    slow_requests_interval = "00:01:00"
+    slow_requests_time     = "00:00:05"
+  }
 
   app_settings = merge(
     local.app_settings_common,
@@ -243,7 +253,7 @@ module "session_manager_weu" {
 
 ## staging slot
 module "session_manager_weu_staging" {
-  source = "github.com/pagopa/terraform-azurerm-v3//app_service_slot?ref=v8.22.0"
+  source = "github.com/pagopa/terraform-azurerm-v3//app_service_slot?ref=v8.28.1"
 
   app_service_id   = module.session_manager_weu.id
   app_service_name = module.session_manager_weu.name
@@ -256,6 +266,14 @@ module "session_manager_weu_staging" {
   node_version      = "20-lts"
   app_command_line  = "npm run start"
   health_check_path = "/healthcheck"
+
+  auto_heal_enabled = true
+  auto_heal_settings = {
+    startup_time           = "00:05:00"
+    slow_requests_count    = 50
+    slow_requests_interval = "00:01:00"
+    slow_requests_time     = "00:00:05"
+  }
 
   app_settings = merge(
     local.app_settings_common,
