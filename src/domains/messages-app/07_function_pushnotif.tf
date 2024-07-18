@@ -250,7 +250,7 @@ resource "azurerm_monitor_autoscale_setting" "push_notif_function" {
     capacity {
       default = 3
       minimum = 2
-      maximum = 30
+      maximum = 8
     }
 
     rule {
