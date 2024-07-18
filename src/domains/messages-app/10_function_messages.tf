@@ -234,236 +234,10 @@ module "app_messages_function_staging_slot" {
 
 resource "azurerm_monitor_autoscale_setting" "app_messages_function" {
   count               = var.app_messages_count
-  name                = format("%s-as-01", module.app_messages_function[count.index].name)
+  name                = replace(module.app_messages_function[count.index].name, "fn", "as")
   resource_group_name = azurerm_resource_group.app_messages_rg[count.index].name
   location            = azurerm_resource_group.app_messages_rg[count.index].location
   target_resource_id  = module.app_messages_function[count.index].app_service_plan_id
-
-  profile {
-    name = "{\"name\":\"default\",\"for\":\"evening\"}"
-
-    capacity {
-      default = 10
-      minimum = 3
-      maximum = 15
-    }
-
-    rule {
-      metric_trigger {
-        metric_name              = "Requests"
-        metric_resource_id       = module.app_messages_function[count.index].id
-        metric_namespace         = "microsoft.web/sites"
-        time_grain               = "PT1M"
-        statistic                = "Average"
-        time_window              = "PT2M"
-        time_aggregation         = "Average"
-        operator                 = "GreaterThan"
-        threshold                = 700
-        divide_by_instance_count = true
-      }
-
-      scale_action {
-        direction = "Increase"
-        type      = "ChangeCount"
-        value     = "1"
-        cooldown  = "PT1M"
-      }
-    }
-
-    rule {
-      metric_trigger {
-        metric_name              = "CpuPercentage"
-        metric_resource_id       = module.app_messages_function[count.index].app_service_plan_id
-        metric_namespace         = "microsoft.web/serverfarms"
-        time_grain               = "PT1M"
-        statistic                = "Average"
-        time_window              = "PT5M"
-        time_aggregation         = "Average"
-        operator                 = "GreaterThan"
-        threshold                = 60
-        divide_by_instance_count = false
-      }
-
-      scale_action {
-        direction = "Increase"
-        type      = "ChangeCount"
-        value     = "2"
-        cooldown  = "PT2M"
-      }
-    }
-
-    rule {
-      metric_trigger {
-        metric_name              = "Requests"
-        metric_resource_id       = module.app_messages_function[count.index].id
-        metric_namespace         = "microsoft.web/sites"
-        time_grain               = "PT1M"
-        statistic                = "Average"
-        time_window              = "PT5M"
-        time_aggregation         = "Average"
-        operator                 = "LessThan"
-        threshold                = 150
-        divide_by_instance_count = true
-      }
-
-      scale_action {
-        direction = "Decrease"
-        type      = "ChangeCount"
-        value     = "1"
-        cooldown  = "PT1M"
-      }
-    }
-
-    rule {
-      metric_trigger {
-        metric_name              = "CpuPercentage"
-        metric_resource_id       = module.app_messages_function[count.index].app_service_plan_id
-        metric_namespace         = "microsoft.web/serverfarms"
-        time_grain               = "PT1M"
-        statistic                = "Average"
-        time_window              = "PT5M"
-        time_aggregation         = "Average"
-        operator                 = "LessThan"
-        threshold                = 15
-        divide_by_instance_count = false
-      }
-
-      scale_action {
-        direction = "Decrease"
-        type      = "ChangeCount"
-        value     = "1"
-        cooldown  = "PT2M"
-      }
-    }
-
-    recurrence {
-      timezone = "W. Europe Standard Time"
-      hours    = [21]
-      minutes  = [0]
-      days = [
-        "Monday",
-        "Tuesday",
-        "Wednesday",
-        "Thursday",
-        "Friday",
-        "Saturday",
-        "Sunday"
-      ]
-    }
-  }
-
-  profile {
-    name = "{\"name\":\"default\",\"for\":\"night\"}"
-
-    capacity {
-      default = 10
-      minimum = 3
-      maximum = 15
-    }
-
-    rule {
-      metric_trigger {
-        metric_name              = "Requests"
-        metric_resource_id       = module.app_messages_function[count.index].id
-        metric_namespace         = "microsoft.web/sites"
-        time_grain               = "PT1M"
-        statistic                = "Average"
-        time_window              = "PT2M"
-        time_aggregation         = "Average"
-        operator                 = "GreaterThan"
-        threshold                = 700
-        divide_by_instance_count = true
-      }
-
-      scale_action {
-        direction = "Increase"
-        type      = "ChangeCount"
-        value     = "1"
-        cooldown  = "PT1M"
-      }
-    }
-
-    rule {
-      metric_trigger {
-        metric_name              = "CpuPercentage"
-        metric_resource_id       = module.app_messages_function[count.index].app_service_plan_id
-        metric_namespace         = "microsoft.web/serverfarms"
-        time_grain               = "PT1M"
-        statistic                = "Average"
-        time_window              = "PT5M"
-        time_aggregation         = "Average"
-        operator                 = "GreaterThan"
-        threshold                = 60
-        divide_by_instance_count = false
-      }
-
-      scale_action {
-        direction = "Increase"
-        type      = "ChangeCount"
-        value     = "2"
-        cooldown  = "PT2M"
-      }
-    }
-
-    rule {
-      metric_trigger {
-        metric_name              = "Requests"
-        metric_resource_id       = module.app_messages_function[count.index].id
-        metric_namespace         = "microsoft.web/sites"
-        time_grain               = "PT1M"
-        statistic                = "Average"
-        time_window              = "PT5M"
-        time_aggregation         = "Average"
-        operator                 = "LessThan"
-        threshold                = 150
-        divide_by_instance_count = true
-      }
-
-      scale_action {
-        direction = "Decrease"
-        type      = "ChangeCount"
-        value     = "1"
-        cooldown  = "PT1M"
-      }
-    }
-
-    rule {
-      metric_trigger {
-        metric_name              = "CpuPercentage"
-        metric_resource_id       = module.app_messages_function[count.index].app_service_plan_id
-        metric_namespace         = "microsoft.web/serverfarms"
-        time_grain               = "PT1M"
-        statistic                = "Average"
-        time_window              = "PT5M"
-        time_aggregation         = "Average"
-        operator                 = "LessThan"
-        threshold                = 15
-        divide_by_instance_count = false
-      }
-
-      scale_action {
-        direction = "Decrease"
-        type      = "ChangeCount"
-        value     = "1"
-        cooldown  = "PT2M"
-      }
-    }
-
-    recurrence {
-      timezone = "W. Europe Standard Time"
-      hours    = [5]
-      minutes  = [0]
-      days = [
-        "Monday",
-        "Tuesday",
-        "Wednesday",
-        "Thursday",
-        "Friday",
-        "Saturday",
-        "Sunday"
-      ]
-    }
-  }
 
   profile {
     name = "evening"
@@ -495,11 +269,11 @@ resource "azurerm_monitor_autoscale_setting" "app_messages_function" {
         metric_resource_id       = module.app_messages_function[count.index].id
         metric_namespace         = "microsoft.web/sites"
         time_grain               = "PT1M"
-        statistic                = "Average"
+        statistic                = "Max"
         time_window              = "PT1M"
-        time_aggregation         = "Average"
+        time_aggregation         = "Maximum"
         operator                 = "GreaterThan"
-        threshold                = 500
+        threshold                = 2500
         divide_by_instance_count = true
       }
 
@@ -517,131 +291,18 @@ resource "azurerm_monitor_autoscale_setting" "app_messages_function" {
         metric_resource_id       = module.app_messages_function[count.index].app_service_plan_id
         metric_namespace         = "microsoft.web/serverfarms"
         time_grain               = "PT1M"
-        statistic                = "Average"
-        time_window              = "PT3M"
-        time_aggregation         = "Average"
+        statistic                = "Max"
+        time_window              = "PT1M"
+        time_aggregation         = "Maximum"
         operator                 = "GreaterThan"
-        threshold                = 60
+        threshold                = 40
         divide_by_instance_count = false
       }
 
       scale_action {
         direction = "Increase"
         type      = "ChangeCount"
-        value     = "2"
-        cooldown  = "PT1M"
-      }
-    }
-
-    rule {
-      metric_trigger {
-        metric_name              = "Requests"
-        metric_resource_id       = module.app_messages_function[count.index].id
-        metric_namespace         = "microsoft.web/sites"
-        time_grain               = "PT1M"
-        statistic                = "Average"
-        time_window              = "PT5M"
-        time_aggregation         = "Average"
-        operator                 = "LessThan"
-        threshold                = 100
-        divide_by_instance_count = true
-      }
-
-      scale_action {
-        direction = "Decrease"
-        type      = "ChangeCount"
-        value     = "1"
-        cooldown  = "PT1M"
-      }
-    }
-
-    rule {
-      metric_trigger {
-        metric_name              = "CpuPercentage"
-        metric_resource_id       = module.app_messages_function[count.index].app_service_plan_id
-        metric_namespace         = "microsoft.web/serverfarms"
-        time_grain               = "PT1M"
-        statistic                = "Average"
-        time_window              = "PT10M"
-        time_aggregation         = "Average"
-        operator                 = "LessThan"
-        threshold                = 10
-        divide_by_instance_count = false
-      }
-
-      scale_action {
-        direction = "Decrease"
-        type      = "ChangeCount"
-        value     = "1"
-        cooldown  = "PT1M"
-      }
-    }
-  }
-
-  profile {
-    name = "night"
-
-    capacity {
-      default = 10
-      minimum = 2
-      maximum = 15
-    }
-
-    recurrence {
-      timezone = "W. Europe Standard Time"
-      hours    = [1]
-      minutes  = [0]
-      days = [
-        "Monday",
-        "Tuesday",
-        "Wednesday",
-        "Thursday",
-        "Friday",
-        "Saturday",
-        "Sunday"
-      ]
-    }
-
-    rule {
-      metric_trigger {
-        metric_name              = "Requests"
-        metric_resource_id       = module.app_messages_function[count.index].id
-        metric_namespace         = "microsoft.web/sites"
-        time_grain               = "PT1M"
-        statistic                = "Average"
-        time_window              = "PT5M"
-        time_aggregation         = "Average"
-        operator                 = "GreaterThan"
-        threshold                = 600
-        divide_by_instance_count = true
-      }
-
-      scale_action {
-        direction = "Increase"
-        type      = "ChangeCount"
-        value     = "1"
-        cooldown  = "PT2M"
-      }
-    }
-
-    rule {
-      metric_trigger {
-        metric_name              = "CpuPercentage"
-        metric_resource_id       = module.app_messages_function[count.index].app_service_plan_id
-        metric_namespace         = "microsoft.web/serverfarms"
-        time_grain               = "PT1M"
-        statistic                = "Average"
-        time_window              = "PT5M"
-        time_aggregation         = "Average"
-        operator                 = "GreaterThan"
-        threshold                = 60
-        divide_by_instance_count = false
-      }
-
-      scale_action {
-        direction = "Increase"
-        type      = "ChangeCount"
-        value     = "2"
+        value     = "3"
         cooldown  = "PT2M"
       }
     }
@@ -664,7 +325,120 @@ resource "azurerm_monitor_autoscale_setting" "app_messages_function" {
         direction = "Decrease"
         type      = "ChangeCount"
         value     = "1"
+        cooldown  = "PT1M"
+      }
+    }
+
+    rule {
+      metric_trigger {
+        metric_name              = "CpuPercentage"
+        metric_resource_id       = module.app_messages_function[count.index].app_service_plan_id
+        metric_namespace         = "microsoft.web/serverfarms"
+        time_grain               = "PT1M"
+        statistic                = "Average"
+        time_window              = "PT5M"
+        time_aggregation         = "Average"
+        operator                 = "LessThan"
+        threshold                = 10
+        divide_by_instance_count = false
+      }
+
+      scale_action {
+        direction = "Decrease"
+        type      = "ChangeCount"
+        value     = "1"
         cooldown  = "PT2M"
+      }
+    }
+  }
+
+  profile {
+    name = "night"
+
+    capacity {
+      default = 10
+      minimum = 2
+      maximum = 15
+    }
+
+    recurrence {
+      timezone = "W. Europe Standard Time"
+      hours    = [23]
+      minutes  = [0]
+      days = [
+        "Monday",
+        "Tuesday",
+        "Wednesday",
+        "Thursday",
+        "Friday",
+        "Saturday",
+        "Sunday"
+      ]
+    }
+
+    rule {
+      metric_trigger {
+        metric_name              = "Requests"
+        metric_resource_id       = module.app_messages_function[count.index].id
+        metric_namespace         = "microsoft.web/sites"
+        time_grain               = "PT1M"
+        statistic                = "Max"
+        time_window              = "PT1M"
+        time_aggregation         = "Maximum"
+        operator                 = "GreaterThan"
+        threshold                = 3000
+        divide_by_instance_count = true
+      }
+
+      scale_action {
+        direction = "Increase"
+        type      = "ChangeCount"
+        value     = "2"
+        cooldown  = "PT1M"
+      }
+    }
+
+    rule {
+      metric_trigger {
+        metric_name              = "CpuPercentage"
+        metric_resource_id       = module.app_messages_function[count.index].app_service_plan_id
+        metric_namespace         = "microsoft.web/serverfarms"
+        time_grain               = "PT1M"
+        statistic                = "Max"
+        time_window              = "PT1M"
+        time_aggregation         = "Maximum"
+        operator                 = "GreaterThan"
+        threshold                = 50
+        divide_by_instance_count = false
+      }
+
+      scale_action {
+        direction = "Increase"
+        type      = "ChangeCount"
+        value     = "3"
+        cooldown  = "PT2M"
+      }
+    }
+
+    rule {
+      metric_trigger {
+        metric_name              = "Requests"
+        metric_resource_id       = module.app_messages_function[count.index].id
+        metric_namespace         = "microsoft.web/sites"
+        time_grain               = "PT1M"
+        statistic                = "Average"
+        time_window              = "PT5M"
+        time_aggregation         = "Average"
+        operator                 = "LessThan"
+        threshold                = 400
+        divide_by_instance_count = true
+      }
+
+      scale_action {
+        direction = "Decrease"
+        type      = "ChangeCount"
+        value     = "1"
+        cooldown  = "PT1M"
       }
     }
 
@@ -679,6 +453,232 @@ resource "azurerm_monitor_autoscale_setting" "app_messages_function" {
         time_aggregation         = "Average"
         operator                 = "LessThan"
         threshold                = 20
+        divide_by_instance_count = false
+      }
+
+      scale_action {
+        direction = "Decrease"
+        type      = "ChangeCount"
+        value     = "1"
+        cooldown  = "PT2M"
+      }
+    }
+  }
+
+  profile {
+    name = "{\"name\":\"default\",\"for\":\"evening\"}"
+
+    recurrence {
+      timezone = "W. Europe Standard Time"
+      hours    = [22]
+      minutes  = [59]
+      days = [
+        "Monday",
+        "Tuesday",
+        "Wednesday",
+        "Thursday",
+        "Friday",
+        "Saturday",
+        "Sunday"
+      ]
+    }
+
+    capacity {
+      default = 10
+      minimum = 3
+      maximum = 30
+    }
+
+    rule {
+      metric_trigger {
+        metric_name              = "Requests"
+        metric_resource_id       = module.app_messages_function[count.index].id
+        metric_namespace         = "microsoft.web/sites"
+        time_grain               = "PT1M"
+        statistic                = "Max"
+        time_window              = "PT1M"
+        time_aggregation         = "Maximum"
+        operator                 = "GreaterThan"
+        threshold                = 3000
+        divide_by_instance_count = true
+      }
+
+      scale_action {
+        direction = "Increase"
+        type      = "ChangeCount"
+        value     = "2"
+        cooldown  = "PT1M"
+      }
+    }
+
+    rule {
+      metric_trigger {
+        metric_name              = "CpuPercentage"
+        metric_resource_id       = module.app_messages_function[count.index].app_service_plan_id
+        metric_namespace         = "microsoft.web/serverfarms"
+        time_grain               = "PT1M"
+        statistic                = "Max"
+        time_window              = "PT1M"
+        time_aggregation         = "Maximum"
+        operator                 = "GreaterThan"
+        threshold                = 40
+        divide_by_instance_count = false
+      }
+
+      scale_action {
+        direction = "Increase"
+        type      = "ChangeCount"
+        value     = "3"
+        cooldown  = "PT2M"
+      }
+    }
+
+    rule {
+      metric_trigger {
+        metric_name              = "Requests"
+        metric_resource_id       = module.app_messages_function[count.index].id
+        metric_namespace         = "microsoft.web/sites"
+        time_grain               = "PT1M"
+        statistic                = "Average"
+        time_window              = "PT5M"
+        time_aggregation         = "Average"
+        operator                 = "LessThan"
+        threshold                = 300
+        divide_by_instance_count = true
+      }
+
+      scale_action {
+        direction = "Decrease"
+        type      = "ChangeCount"
+        value     = "1"
+        cooldown  = "PT1M"
+      }
+    }
+
+    rule {
+      metric_trigger {
+        metric_name              = "CpuPercentage"
+        metric_resource_id       = module.app_messages_function[count.index].app_service_plan_id
+        metric_namespace         = "microsoft.web/serverfarms"
+        time_grain               = "PT1M"
+        statistic                = "Average"
+        time_window              = "PT5M"
+        time_aggregation         = "Average"
+        operator                 = "LessThan"
+        threshold                = 15
+        divide_by_instance_count = false
+      }
+
+      scale_action {
+        direction = "Decrease"
+        type      = "ChangeCount"
+        value     = "1"
+        cooldown  = "PT2M"
+      }
+    }
+  }
+
+  profile {
+    name = "{\"name\":\"default\",\"for\":\"night\"}"
+
+    capacity {
+      default = 10
+      minimum = 3
+      maximum = 30
+    }
+
+    recurrence {
+      timezone = "W. Europe Standard Time"
+      hours    = [5]
+      minutes  = [0]
+      days = [
+        "Monday",
+        "Tuesday",
+        "Wednesday",
+        "Thursday",
+        "Friday",
+        "Saturday",
+        "Sunday"
+      ]
+    }
+
+    rule {
+      metric_trigger {
+        metric_name              = "Requests"
+        metric_resource_id       = module.app_messages_function[count.index].id
+        metric_namespace         = "microsoft.web/sites"
+        time_grain               = "PT1M"
+        statistic                = "Max"
+        time_window              = "PT1M"
+        time_aggregation         = "Maximum"
+        operator                 = "GreaterThan"
+        threshold                = 3000
+        divide_by_instance_count = true
+      }
+
+      scale_action {
+        direction = "Increase"
+        type      = "ChangeCount"
+        value     = "2"
+        cooldown  = "PT1M"
+      }
+    }
+
+    rule {
+      metric_trigger {
+        metric_name              = "CpuPercentage"
+        metric_resource_id       = module.app_messages_function[count.index].app_service_plan_id
+        metric_namespace         = "microsoft.web/serverfarms"
+        time_grain               = "PT1M"
+        statistic                = "Max"
+        time_window              = "PT1M"
+        time_aggregation         = "Maximum"
+        operator                 = "GreaterThan"
+        threshold                = 40
+        divide_by_instance_count = false
+      }
+
+      scale_action {
+        direction = "Increase"
+        type      = "ChangeCount"
+        value     = "3"
+        cooldown  = "PT2M"
+      }
+    }
+
+    rule {
+      metric_trigger {
+        metric_name              = "Requests"
+        metric_resource_id       = module.app_messages_function[count.index].id
+        metric_namespace         = "microsoft.web/sites"
+        time_grain               = "PT1M"
+        statistic                = "Average"
+        time_window              = "PT5M"
+        time_aggregation         = "Average"
+        operator                 = "LessThan"
+        threshold                = 300
+        divide_by_instance_count = true
+      }
+
+      scale_action {
+        direction = "Decrease"
+        type      = "ChangeCount"
+        value     = "1"
+        cooldown  = "PT1M"
+      }
+    }
+
+    rule {
+      metric_trigger {
+        metric_name              = "CpuPercentage"
+        metric_resource_id       = module.app_messages_function[count.index].app_service_plan_id
+        metric_namespace         = "microsoft.web/serverfarms"
+        time_grain               = "PT1M"
+        statistic                = "Average"
+        time_window              = "PT5M"
+        time_aggregation         = "Average"
+        operator                 = "LessThan"
+        threshold                = 15
         divide_by_instance_count = false
       }
 
