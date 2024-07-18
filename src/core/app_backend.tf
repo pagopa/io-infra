@@ -918,7 +918,7 @@ module "appservice_app_backendl1" {
   always_on                    = true
   app_command_line             = local.app_backend.app_command_line
   health_check_path            = "/ping"
-  health_check_maxpingfailures = 3
+  health_check_maxpingfailures = 2
 
   auto_heal_enabled = true
   auto_heal_settings = {
@@ -1183,7 +1183,7 @@ module "appservice_app_backendl2" {
   node_version                 = "18-lts"
   app_command_line             = local.app_backend.app_command_line
   health_check_path            = "/ping"
-  health_check_maxpingfailures = 3
+  health_check_maxpingfailures = 2
 
   auto_heal_enabled = true
   auto_heal_settings = {

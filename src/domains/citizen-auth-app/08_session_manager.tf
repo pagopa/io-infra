@@ -216,7 +216,15 @@ module "session_manager_weu" {
   node_version                 = "20-lts"
   app_command_line             = "npm run start"
   health_check_path            = "/healthcheck"
-  health_check_maxpingfailures = 3
+  health_check_maxpingfailures = 2
+
+  auto_heal_enabled = true
+  auto_heal_settings = {
+    startup_time           = "00:05:00"
+    slow_requests_count    = 50
+    slow_requests_interval = "00:01:00"
+    slow_requests_time     = "00:00:05"
+  }
 
   app_settings = merge(
     local.app_settings_common,
@@ -252,10 +260,19 @@ module "session_manager_weu_staging" {
   resource_group_name = azurerm_resource_group.session_manager_rg_weu.name
   location            = var.location
 
-  always_on         = true
-  node_version      = "20-lts"
-  app_command_line  = "npm run start"
-  health_check_path = "/healthcheck"
+  always_on                    = true
+  node_version                 = "20-lts"
+  app_command_line             = "npm run start"
+  health_check_path            = "/healthcheck"
+  health_check_maxpingfailures = 2
+
+  auto_heal_enabled = true
+  auto_heal_settings = {
+    startup_time           = "00:05:00"
+    slow_requests_count    = 50
+    slow_requests_interval = "00:01:00"
+    slow_requests_time     = "00:00:05"
+  }
 
   app_settings = merge(
     local.app_settings_common,
