@@ -109,8 +109,10 @@ module "function_service_messages" {
   resource_group_name = azurerm_resource_group.service_messages_rg.name
   name                = format("%s-messages-sending-func", local.product)
   location            = azurerm_resource_group.service_messages_rg.location
-  health_check_path   = "/api/v1/info"
   domain              = "MESSAGES"
+
+  health_check_path            = "/api/v1/info"
+  health_check_maxpingfailures = 2
 
   node_version                             = "18"
   runtime_version                          = "~4"
@@ -173,7 +175,9 @@ module "function_service_messages_staging_slot" {
   resource_group_name = azurerm_resource_group.service_messages_rg.name
   function_app_id     = module.function_service_messages[0].id
   app_service_plan_id = module.function_service_messages[0].app_service_plan_id
-  health_check_path   = "/api/v1/info"
+
+  health_check_path            = "/api/v1/info"
+  health_check_maxpingfailures = 2
 
   node_version                             = "18"
   runtime_version                          = "~4"
@@ -204,17 +208,32 @@ module "function_service_messages_staging_slot" {
 
 resource "azurerm_monitor_autoscale_setting" "function_service_messages" {
   count               = var.function_service_messages_enabled ? 1 : 0
-  name                = format("%s-autoscale", module.function_service_messages[0].name)
+  name                = replace(module.function_service_messages[0].name, "fn", "as")
   resource_group_name = azurerm_resource_group.service_messages_rg.name
   location            = var.location
   target_resource_id  = module.function_service_messages[0].app_service_plan_id
 
   profile {
-    name = "default"
+    name = "{\"name\":\"default\",\"for\":\"evening\"}"
+
+    recurrence {
+      hours    = [22]
+      minutes  = [59]
+      timezone = "W. Europe Standard Time"
+      days = [
+        "Monday",
+        "Tuesday",
+        "Wednesday",
+        "Thursday",
+        "Friday",
+        "Saturday",
+        "Sunday"
+      ]
+    }
 
     capacity {
-      default = 1
-      minimum = 1
+      default = 10
+      minimum = 2
       maximum = 30
     }
 
@@ -224,19 +243,19 @@ resource "azurerm_monitor_autoscale_setting" "function_service_messages" {
         metric_resource_id       = module.function_service_messages[0].id
         metric_namespace         = "microsoft.web/sites"
         time_grain               = "PT1M"
-        statistic                = "Average"
-        time_window              = "PT5M"
-        time_aggregation         = "Average"
+        statistic                = "Max"
+        time_window              = "PT1M"
+        time_aggregation         = "Maximum"
         operator                 = "GreaterThan"
-        threshold                = 3500
-        divide_by_instance_count = false
+        threshold                = 3000
+        divide_by_instance_count = true
       }
 
       scale_action {
         direction = "Increase"
         type      = "ChangeCount"
         value     = "2"
-        cooldown  = "PT5M"
+        cooldown  = "PT1M"
       }
     }
 
@@ -246,19 +265,19 @@ resource "azurerm_monitor_autoscale_setting" "function_service_messages" {
         metric_resource_id       = module.function_service_messages[0].app_service_plan_id
         metric_namespace         = "microsoft.web/serverfarms"
         time_grain               = "PT1M"
-        statistic                = "Average"
-        time_window              = "PT5M"
-        time_aggregation         = "Average"
+        statistic                = "Max"
+        time_window              = "PT1M"
+        time_aggregation         = "Maximum"
         operator                 = "GreaterThan"
-        threshold                = 60
+        threshold                = 40
         divide_by_instance_count = false
       }
 
       scale_action {
         direction = "Increase"
         type      = "ChangeCount"
-        value     = "2"
-        cooldown  = "PT5M"
+        value     = "3"
+        cooldown  = "PT2M"
       }
     }
 
@@ -272,15 +291,15 @@ resource "azurerm_monitor_autoscale_setting" "function_service_messages" {
         time_window              = "PT5M"
         time_aggregation         = "Average"
         operator                 = "LessThan"
-        threshold                = 2500
-        divide_by_instance_count = false
+        threshold                = 300
+        divide_by_instance_count = true
       }
 
       scale_action {
         direction = "Decrease"
         type      = "ChangeCount"
         value     = "1"
-        cooldown  = "PT20M"
+        cooldown  = "PT1M"
       }
     }
 
@@ -294,7 +313,7 @@ resource "azurerm_monitor_autoscale_setting" "function_service_messages" {
         time_window              = "PT5M"
         time_aggregation         = "Average"
         operator                 = "LessThan"
-        threshold                = 30
+        threshold                = 15
         divide_by_instance_count = false
       }
 
@@ -302,7 +321,120 @@ resource "azurerm_monitor_autoscale_setting" "function_service_messages" {
         direction = "Decrease"
         type      = "ChangeCount"
         value     = "1"
-        cooldown  = "PT20M"
+        cooldown  = "PT1M"
+      }
+    }
+  }
+
+  profile {
+    name = "evening"
+
+    recurrence {
+      hours    = [19]
+      minutes  = [30]
+      timezone = "W. Europe Standard Time"
+      days = [
+        "Monday",
+        "Tuesday",
+        "Wednesday",
+        "Thursday",
+        "Friday",
+        "Saturday",
+        "Sunday"
+      ]
+    }
+
+    capacity {
+      default = 10
+      minimum = 4
+      maximum = 30
+    }
+
+    rule {
+      metric_trigger {
+        metric_name              = "Requests"
+        metric_resource_id       = module.function_service_messages[0].id
+        metric_namespace         = "microsoft.web/sites"
+        time_grain               = "PT1M"
+        statistic                = "Max"
+        time_window              = "PT1M"
+        time_aggregation         = "Maximum"
+        operator                 = "GreaterThan"
+        threshold                = 2500
+        divide_by_instance_count = true
+      }
+
+      scale_action {
+        direction = "Increase"
+        type      = "ChangeCount"
+        value     = "2"
+        cooldown  = "PT1M"
+      }
+    }
+
+    rule {
+      metric_trigger {
+        metric_name              = "CpuPercentage"
+        metric_resource_id       = module.function_service_messages[0].app_service_plan_id
+        metric_namespace         = "microsoft.web/serverfarms"
+        time_grain               = "PT1M"
+        statistic                = "Max"
+        time_window              = "PT1M"
+        time_aggregation         = "Maximum"
+        operator                 = "GreaterThan"
+        threshold                = 40
+        divide_by_instance_count = false
+      }
+
+      scale_action {
+        direction = "Increase"
+        type      = "ChangeCount"
+        value     = "3"
+        cooldown  = "PT2M"
+      }
+    }
+
+    rule {
+      metric_trigger {
+        metric_name              = "Requests"
+        metric_resource_id       = module.function_service_messages[0].id
+        metric_namespace         = "microsoft.web/sites"
+        time_grain               = "PT1M"
+        statistic                = "Average"
+        time_window              = "PT5M"
+        time_aggregation         = "Average"
+        operator                 = "LessThan"
+        threshold                = 200
+        divide_by_instance_count = true
+      }
+
+      scale_action {
+        direction = "Decrease"
+        type      = "ChangeCount"
+        value     = "1"
+        cooldown  = "PT1M"
+      }
+    }
+
+    rule {
+      metric_trigger {
+        metric_name              = "CpuPercentage"
+        metric_resource_id       = module.function_service_messages[0].app_service_plan_id
+        metric_namespace         = "microsoft.web/serverfarms"
+        time_grain               = "PT1M"
+        statistic                = "Average"
+        time_window              = "PT5M"
+        time_aggregation         = "Average"
+        operator                 = "LessThan"
+        threshold                = 10
+        divide_by_instance_count = false
+      }
+
+      scale_action {
+        direction = "Decrease"
+        type      = "ChangeCount"
+        value     = "1"
+        cooldown  = "PT1M"
       }
     }
   }
