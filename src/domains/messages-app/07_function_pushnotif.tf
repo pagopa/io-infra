@@ -239,7 +239,7 @@ module "push_notif_function_staging_slot" {
 
 resource "azurerm_monitor_autoscale_setting" "push_notif_function" {
   count               = var.push_notif_enabled ? 1 : 0
-  name                = format("%s-as-01", module.push_notif_function[0].name)
+  name                = "${replace(module.push_notif_function[0].name, "fn", "as")}-01"
   resource_group_name = azurerm_resource_group.push_notif_rg.name
   location            = var.location
   target_resource_id  = module.push_notif_function[0].app_service_plan_id
@@ -250,7 +250,7 @@ resource "azurerm_monitor_autoscale_setting" "push_notif_function" {
     capacity {
       default = 3
       minimum = 2
-      maximum = 6
+      maximum = 30
     }
 
     rule {
@@ -259,11 +259,11 @@ resource "azurerm_monitor_autoscale_setting" "push_notif_function" {
         metric_resource_id       = module.push_notif_function[0].id
         metric_namespace         = "microsoft.web/sites"
         time_grain               = "PT1M"
-        statistic                = "Average"
+        statistic                = "Max"
         time_window              = "PT1M"
-        time_aggregation         = "Average"
+        time_aggregation         = "Maximum"
         operator                 = "GreaterThan"
-        threshold                = 500
+        threshold                = 3000
         divide_by_instance_count = true
       }
 
@@ -271,7 +271,7 @@ resource "azurerm_monitor_autoscale_setting" "push_notif_function" {
         direction = "Increase"
         type      = "ChangeCount"
         value     = "2"
-        cooldown  = "PT2M"
+        cooldown  = "PT1M"
       }
     }
 
@@ -281,19 +281,19 @@ resource "azurerm_monitor_autoscale_setting" "push_notif_function" {
         metric_resource_id       = module.push_notif_function[0].app_service_plan_id
         metric_namespace         = "microsoft.web/serverfarms"
         time_grain               = "PT1M"
-        statistic                = "Average"
-        time_window              = "PT5M"
-        time_aggregation         = "Average"
+        statistic                = "Max"
+        time_window              = "PT1M"
+        time_aggregation         = "Maximum"
         operator                 = "GreaterThan"
-        threshold                = 60
+        threshold                = 40
         divide_by_instance_count = false
       }
 
       scale_action {
         direction = "Increase"
         type      = "ChangeCount"
-        value     = "2"
-        cooldown  = "PT3M"
+        value     = "3"
+        cooldown  = "PT2M"
       }
     }
 
@@ -307,7 +307,7 @@ resource "azurerm_monitor_autoscale_setting" "push_notif_function" {
         time_window              = "PT5M"
         time_aggregation         = "Average"
         operator                 = "LessThan"
-        threshold                = 200
+        threshold                = 300
         divide_by_instance_count = true
       }
 
@@ -315,7 +315,7 @@ resource "azurerm_monitor_autoscale_setting" "push_notif_function" {
         direction = "Decrease"
         type      = "ChangeCount"
         value     = "1"
-        cooldown  = "PT0M"
+        cooldown  = "PT1M"
       }
     }
 

@@ -284,7 +284,7 @@ module "function_messages_cqrs_staging_slot" {
 }
 
 resource "azurerm_monitor_autoscale_setting" "function_messages_cqrs" {
-  name                = format("%s-as-01", module.function_messages_cqrs.name)
+  name                = "${replace(module.function_messages_cqrs.name, "fn", "as")}-01"
   resource_group_name = azurerm_resource_group.backend_messages_rg.name
   location            = var.location
   target_resource_id  = module.function_messages_cqrs.app_service_plan_id
@@ -304,11 +304,11 @@ resource "azurerm_monitor_autoscale_setting" "function_messages_cqrs" {
         metric_resource_id       = module.function_messages_cqrs.id
         metric_namespace         = "microsoft.web/sites"
         time_grain               = "PT1M"
-        statistic                = "Average"
+        statistic                = "Max"
         time_window              = "PT1M"
-        time_aggregation         = "Average"
+        time_aggregation         = "Maximum"
         operator                 = "GreaterThan"
-        threshold                = 500
+        threshold                = 3000
         divide_by_instance_count = true
       }
 
@@ -316,7 +316,7 @@ resource "azurerm_monitor_autoscale_setting" "function_messages_cqrs" {
         direction = "Increase"
         type      = "ChangeCount"
         value     = "2"
-        cooldown  = "PT2M"
+        cooldown  = "PT1M"
       }
     }
 
@@ -326,19 +326,19 @@ resource "azurerm_monitor_autoscale_setting" "function_messages_cqrs" {
         metric_resource_id       = module.function_messages_cqrs.app_service_plan_id
         metric_namespace         = "microsoft.web/serverfarms"
         time_grain               = "PT1M"
-        statistic                = "Average"
-        time_window              = "PT5M"
-        time_aggregation         = "Average"
+        statistic                = "Max"
+        time_window              = "PT1M"
+        time_aggregation         = "Maximum"
         operator                 = "GreaterThan"
-        threshold                = 60
+        threshold                = 40
         divide_by_instance_count = false
       }
 
       scale_action {
         direction = "Increase"
         type      = "ChangeCount"
-        value     = "2"
-        cooldown  = "PT3M"
+        value     = "3"
+        cooldown  = "PT2M"
       }
     }
 
@@ -352,7 +352,7 @@ resource "azurerm_monitor_autoscale_setting" "function_messages_cqrs" {
         time_window              = "PT5M"
         time_aggregation         = "Average"
         operator                 = "LessThan"
-        threshold                = 200
+        threshold                = 300
         divide_by_instance_count = true
       }
 
@@ -360,7 +360,7 @@ resource "azurerm_monitor_autoscale_setting" "function_messages_cqrs" {
         direction = "Decrease"
         type      = "ChangeCount"
         value     = "1"
-        cooldown  = "PT0M"
+        cooldown  = "PT1M"
       }
     }
 
