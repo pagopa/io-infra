@@ -568,13 +568,13 @@ module "app_gw" {
         },
         logout = {
           paths                 = ["/logout"]
-          backend               = "appbackend-app",
-          rewrite_rule_set_name = "rewrite-rule-set-api-app-rewrite-to-session-manager"
+          backend               = "session-manager-app",
+          rewrite_rule_set_name = "rewrite-rule-set-api-app"
         },
         session = {
           paths                 = ["/api/v1/session"]
-          backend               = "appbackend-app",
-          rewrite_rule_set_name = "rewrite-rule-set-api-app-rewrite-to-session-manager"
+          backend               = "session-manager-app",
+          rewrite_rule_set_name = "rewrite-rule-set-api-app"
         },
         bpd-user = {
           paths                 = ["/bpd/api/v1/user"]
