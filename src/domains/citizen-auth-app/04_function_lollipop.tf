@@ -86,11 +86,12 @@ resource "azurerm_subnet" "lollipop_snet_itn" {
 module "function_lollipop_itn" {
   source = "github.com/pagopa/terraform-azurerm-v3//function_app?ref=v8.28.2"
 
-  resource_group_name = azurerm_resource_group.lollipop_rg_itn.name
-  name                = format("%s-lollipop-fn-01", local.common_project_itn)
-  location            = local.itn_location
-  domain              = "IO-COMMONS"
-  health_check_path   = "/info"
+  resource_group_name          = azurerm_resource_group.lollipop_rg_itn.name
+  name                         = format("%s-lollipop-fn-01", local.common_project_itn)
+  location                     = local.itn_location
+  domain                       = "IO-COMMONS"
+  health_check_path            = "/info"
+  health_check_maxpingfailures = "2"
 
   storage_account_info = {
     account_kind                      = "StorageV2"

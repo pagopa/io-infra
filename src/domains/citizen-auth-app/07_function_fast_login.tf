@@ -95,11 +95,12 @@ module "function_fast_login" {
   count  = var.fastlogin_enabled ? 1 : 0
   source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app?ref=v8.22.0"
 
-  resource_group_name = azurerm_resource_group.fast_login_rg[0].name
-  name                = format("%s-fast-login-fn", local.common_project)
-  location            = var.location
-  domain              = "IO-COMMONS"
-  health_check_path   = "/info"
+  resource_group_name          = azurerm_resource_group.fast_login_rg[0].name
+  name                         = format("%s-fast-login-fn", local.common_project)
+  location                     = var.location
+  domain                       = "IO-COMMONS"
+  health_check_path            = "/info"
+  health_check_maxpingfailures = "2"
 
   node_version    = "18"
   runtime_version = "~4"
