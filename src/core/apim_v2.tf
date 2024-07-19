@@ -18,7 +18,7 @@ module "apim_v2_snet" {
   source               = "github.com/pagopa/terraform-azurerm-v3//subnet?ref=v8.27.0"
   name                 = "apimv2api"
   resource_group_name  = azurerm_resource_group.rg_common.name
-  virtual_network_name = module.vnet_common.name
+  virtual_network_name = data.azurerm_virtual_network.common.name
   address_prefixes     = var.cidr_subnet_apim_v2
 
   private_endpoint_network_policies_enabled = true

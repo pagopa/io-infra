@@ -1,9 +1,9 @@
 output "vnet_common" {
   value = {
-    id                  = module.vnet_common.id
-    name                = module.vnet_common.name
-    address_space       = module.vnet_common.address_space
-    resource_group_name = module.vnet_common.resource_group_name
+    id                  = data.azurerm_virtual_network.common.id
+    name                = data.azurerm_virtual_network.common.name
+    address_space       = data.azurerm_virtual_network.common.address_space
+    resource_group_name = data.azurerm_virtual_network.common.resource_group_name
   }
 }
 
