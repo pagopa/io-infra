@@ -329,7 +329,7 @@ locals {
       FF_FAST_LOGIN = "ALL"
       LV_TEST_USERS = join(",", [data.azurerm_key_vault_secret.app_backend_LV_TEST_USERS.value, local.test_users])
 
-      BACKEND_HOST = "https://${trimsuffix(azurerm_dns_a_record.api_app_io_pagopa_it.fqdn, ".")}"
+      BACKEND_HOST = "https://${trimsuffix(data.azurerm_dns_a_record.api_app_io_pagopa_it.fqdn, ".")}"
 
       // CLOCK SKEW LOG EVENT
       HAS_CLOCK_SKEW_LOG_EVENT = "false"
@@ -800,7 +800,7 @@ resource "azurerm_private_endpoint" "backend3_sites" {
 
   private_dns_zone_group {
     name                 = "private-dns-zone-group"
-    private_dns_zone_ids = [azurerm_private_dns_zone.privatelink_azurewebsites.id]
+    private_dns_zone_ids = [data.azurerm_private_dns_zone.privatelink_azurewebsites.id]
   }
 
   tags = var.tags
@@ -849,7 +849,7 @@ resource "azurerm_private_endpoint" "backend3_staging_sites" {
 
   private_dns_zone_group {
     name                 = "private-dns-zone-group"
-    private_dns_zone_ids = [azurerm_private_dns_zone.privatelink_azurewebsites.id]
+    private_dns_zone_ids = [data.azurerm_private_dns_zone.privatelink_azurewebsites.id]
   }
 
   tags = var.tags
