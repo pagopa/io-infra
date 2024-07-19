@@ -104,7 +104,7 @@ locals {
     APPINSIGHTS_CONNECTION_STRING   = data.azurerm_application_insights.application_insights.connection_string
     APPINSIGHTS_DISABLED            = false
     APPINSIGHTS_SAMPLING_PERCENTAGE = 100
-    APPINSIGHTS_CLOUD_ROLE_NAME     = "io-p-itn-lollipop-fn-01"
+    APPINSIGHTS_CLOUD_ROLE_NAME     = "io-p-weu-session-manager-app-03"
     APPINSIGHTS_EXCLUDED_DOMAINS    = "queue.core.windows.net,blob.core.windows.net,table.core.windows.net,file.core.windows.net"
 
     API_BASE_PATH = "/api/v1"
