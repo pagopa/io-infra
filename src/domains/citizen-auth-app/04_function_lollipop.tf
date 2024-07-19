@@ -26,6 +26,8 @@ locals {
       LOLLIPOP_ASSERTION_STORAGE_CONNECTION_STRING = data.azurerm_storage_account.lollipop_assertion_storage.primary_connection_string
       LOLLIPOP_ASSERTION_REVOKE_QUEUE              = "pubkeys-revoke-v2"
 
+      APPINSIGHTS_CLOUD_ROLE_NAME  = "io-p-itn-lollipop-fn-01"
+      APPINSIGHTS_EXCLUDED_DOMAINS = "queue.core.windows.net,blob.core.windows.net,table.core.windows.net,file.core.windows.net"
 
       // ------------
       // JWT Config
@@ -45,69 +47,6 @@ locals {
       FIRST_LC_ASSERTION_CLIENT_BASE_URL         = "https://api.io.pagopa.it"
       FIRST_LC_ASSERTION_CLIENT_SUBSCRIPTION_KEY = data.azurerm_key_vault_secret.first_lollipop_consumer_subscription_key.value
     }
-
-    # Scaling strategy
-    # 05 - 19,30 -> min 3
-    # 19,30 - 23 -> min 4
-    # 23 - 05 -> min 2
-    autoscale_profiles = [{
-      name = "{\"name\":\"default\",\"for\":\"evening\"}",
-
-      recurrence = {
-        hours   = 22
-        minutes = 59
-      }
-
-      capacity = {
-        default = var.function_lollipop_autoscale_default + 1
-        minimum = var.function_lollipop_autoscale_minimum + 1
-        maximum = var.function_lollipop_autoscale_maximum
-      }
-
-      },
-      {
-        name = "{\"name\":\"default\",\"for\":\"night\"}",
-
-        recurrence = {
-          hours   = 5
-          minutes = 0
-        }
-
-        capacity = {
-          default = var.function_lollipop_autoscale_default + 1
-          minimum = var.function_lollipop_autoscale_minimum + 1
-          maximum = var.function_lollipop_autoscale_maximum
-        }
-      },
-      {
-        name = "evening",
-
-        recurrence = {
-          hours   = 19
-          minutes = 30
-        }
-
-        capacity = {
-          default = var.function_lollipop_autoscale_default + 2
-          minimum = var.function_lollipop_autoscale_minimum + 2
-          maximum = var.function_lollipop_autoscale_maximum
-        }
-      },
-      {
-        name = "night",
-
-        recurrence = {
-          hours   = 23
-          minutes = 0
-        }
-
-        capacity = {
-          default = var.function_lollipop_autoscale_default
-          minimum = var.function_lollipop_autoscale_minimum
-          maximum = var.function_lollipop_autoscale_maximum
-        }
-    }]
-
   }
 }
 
@@ -117,8 +56,6 @@ resource "azurerm_resource_group" "lollipop_rg_itn" {
 
   tags = var.tags
 }
-
-
 
 # Subnet to host admin function
 
@@ -146,11 +83,8 @@ resource "azurerm_subnet" "lollipop_snet_itn" {
   private_endpoint_network_policies_enabled     = true
 }
 
-
-
-
 module "function_lollipop_itn" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app?ref=v8.22.0"
+  source = "github.com/pagopa/terraform-azurerm-v3//function_app?ref=v8.28.2"
 
   resource_group_name = azurerm_resource_group.lollipop_rg_itn.name
   name                = format("%s-lollipop-fn-01", local.common_project_itn)
@@ -214,7 +148,7 @@ module "function_lollipop_itn" {
 }
 
 module "function_lollipop_staging_slot_itn" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app_slot?ref=v8.22.0"
+  source = "github.com/pagopa/terraform-azurerm-v3//function_app_slot?ref=v8.28.2"
 
   name                = "staging"
   location            = local.itn_location
@@ -247,136 +181,459 @@ module "function_lollipop_staging_slot_itn" {
 }
 
 resource "azurerm_monitor_autoscale_setting" "function_lollipop_itn" {
-  name                = format("%s-autoscale-01", module.function_lollipop_itn.name)
+  name                = "${replace(module.function_lollipop_itn.name, "fn", "as")}-01"
   resource_group_name = azurerm_resource_group.lollipop_rg_itn.name
   location            = local.itn_location
   target_resource_id  = module.function_lollipop_itn.app_service_plan_id
 
-  dynamic "profile" {
-    for_each = local.function_lollipop.autoscale_profiles
-    iterator = profile_info
+  profile {
+    name = "evening"
 
-    content {
-      name = profile_info.value.name
+    capacity {
+      default = 10
+      minimum = 5
+      maximum = 20
+    }
 
+    recurrence {
+      timezone = "W. Europe Standard Time"
+      hours    = [19]
+      minutes  = [30]
+      days = [
+        "Monday",
+        "Tuesday",
+        "Wednesday",
+        "Thursday",
+        "Friday",
+        "Saturday",
+        "Sunday"
+      ]
+    }
 
-      dynamic "recurrence" {
-        for_each = profile_info.value.recurrence != null ? [profile_info.value.recurrence] : []
-        iterator = recurrence_info
-
-        content {
-          timezone = "W. Europe Standard Time"
-          hours    = [recurrence_info.value.hours]
-          minutes  = [recurrence_info.value.minutes]
-          days = [
-            "Monday",
-            "Tuesday",
-            "Wednesday",
-            "Thursday",
-            "Friday",
-            "Saturday",
-            "Sunday"
-          ]
-        }
+    rule {
+      metric_trigger {
+        metric_name              = "Requests"
+        metric_resource_id       = module.function_lollipop_itn.id
+        metric_namespace         = "microsoft.web/sites"
+        time_grain               = "PT1M"
+        statistic                = "Max"
+        time_window              = "PT1M"
+        time_aggregation         = "Maximum"
+        operator                 = "GreaterThan"
+        threshold                = 2500
+        divide_by_instance_count = true
       }
 
-      capacity {
-        default = profile_info.value.capacity.default
-        minimum = profile_info.value.capacity.minimum
-        maximum = profile_info.value.capacity.maximum
+      scale_action {
+        direction = "Increase"
+        type      = "ChangeCount"
+        value     = "2"
+        cooldown  = "PT1M"
+      }
+    }
+
+    rule {
+      metric_trigger {
+        metric_name              = "CpuPercentage"
+        metric_resource_id       = module.function_lollipop_itn.app_service_plan_id
+        metric_namespace         = "microsoft.web/serverfarms"
+        time_grain               = "PT1M"
+        statistic                = "Max"
+        time_window              = "PT1M"
+        time_aggregation         = "Maximum"
+        operator                 = "GreaterThan"
+        threshold                = 40
+        divide_by_instance_count = false
       }
 
+      scale_action {
+        direction = "Increase"
+        type      = "ChangeCount"
+        value     = "3"
+        cooldown  = "PT2M"
+      }
+    }
 
-      # Increase
-
-      rule {
-        metric_trigger {
-          metric_name              = "Requests"
-          metric_resource_id       = module.function_lollipop_itn.id
-          metric_namespace         = "microsoft.web/sites"
-          time_grain               = "PT1M"
-          statistic                = "Average"
-          time_window              = "PT1M"
-          time_aggregation         = "Average"
-          operator                 = "GreaterThan"
-          threshold                = 3000
-          divide_by_instance_count = false
-        }
-
-        scale_action {
-          direction = "Increase"
-          type      = "ChangeCount"
-          value     = "2"
-          cooldown  = "PT1M"
-        }
+    rule {
+      metric_trigger {
+        metric_name              = "Requests"
+        metric_resource_id       = module.function_lollipop_itn.id
+        metric_namespace         = "microsoft.web/sites"
+        time_grain               = "PT1M"
+        statistic                = "Average"
+        time_window              = "PT5M"
+        time_aggregation         = "Average"
+        operator                 = "LessThan"
+        threshold                = 200
+        divide_by_instance_count = true
       }
 
-      rule {
-        metric_trigger {
-          metric_name              = "CpuPercentage"
-          metric_resource_id       = module.function_lollipop_itn.app_service_plan_id
-          metric_namespace         = "microsoft.web/serverfarms"
-          time_grain               = "PT1M"
-          statistic                = "Average"
-          time_window              = "PT1M"
-          time_aggregation         = "Average"
-          operator                 = "GreaterThan"
-          threshold                = 45
-          divide_by_instance_count = false
-        }
+      scale_action {
+        direction = "Decrease"
+        type      = "ChangeCount"
+        value     = "1"
+        cooldown  = "PT1M"
+      }
+    }
 
-        scale_action {
-          direction = "Increase"
-          type      = "ChangeCount"
-          value     = "2"
-          cooldown  = "PT1M"
-        }
+    rule {
+      metric_trigger {
+        metric_name              = "CpuPercentage"
+        metric_resource_id       = module.function_lollipop_itn.app_service_plan_id
+        metric_namespace         = "microsoft.web/serverfarms"
+        time_grain               = "PT1M"
+        statistic                = "Average"
+        time_window              = "PT5M"
+        time_aggregation         = "Average"
+        operator                 = "LessThan"
+        threshold                = 15
+        divide_by_instance_count = false
       }
 
-      # Decrease
+      scale_action {
+        direction = "Decrease"
+        type      = "ChangeCount"
+        value     = "1"
+        cooldown  = "PT1M"
+      }
+    }
+  }
 
-      rule {
-        metric_trigger {
-          metric_name              = "Requests"
-          metric_resource_id       = module.function_lollipop_itn.id
-          metric_namespace         = "microsoft.web/sites"
-          time_grain               = "PT1M"
-          statistic                = "Average"
-          time_window              = "PT15M"
-          time_aggregation         = "Average"
-          operator                 = "LessThan"
-          threshold                = 2000
-          divide_by_instance_count = false
-        }
+  profile {
+    name = "night"
 
-        scale_action {
-          direction = "Decrease"
-          type      = "ChangeCount"
-          value     = "1"
-          cooldown  = "PT10M"
-        }
+    capacity {
+      default = 10
+      minimum = 2
+      maximum = 15
+    }
+
+    recurrence {
+      timezone = "W. Europe Standard Time"
+      hours    = [23]
+      minutes  = [0]
+      days = [
+        "Monday",
+        "Tuesday",
+        "Wednesday",
+        "Thursday",
+        "Friday",
+        "Saturday",
+        "Sunday"
+      ]
+    }
+
+    rule {
+      metric_trigger {
+        metric_name              = "Requests"
+        metric_resource_id       = module.function_lollipop_itn.id
+        metric_namespace         = "microsoft.web/sites"
+        time_grain               = "PT1M"
+        statistic                = "Max"
+        time_window              = "PT1M"
+        time_aggregation         = "Maximum"
+        operator                 = "GreaterThan"
+        threshold                = 3200
+        divide_by_instance_count = true
       }
 
-      rule {
-        metric_trigger {
-          metric_name              = "CpuPercentage"
-          metric_resource_id       = module.function_lollipop_itn.app_service_plan_id
-          metric_namespace         = "microsoft.web/serverfarms"
-          time_grain               = "PT1M"
-          statistic                = "Average"
-          time_window              = "PT15M"
-          time_aggregation         = "Average"
-          operator                 = "LessThan"
-          threshold                = 30
-          divide_by_instance_count = false
-        }
+      scale_action {
+        direction = "Increase"
+        type      = "ChangeCount"
+        value     = "2"
+        cooldown  = "PT1M"
+      }
+    }
 
-        scale_action {
-          direction = "Decrease"
-          type      = "ChangeCount"
-          value     = "1"
-          cooldown  = "PT10M"
-        }
+    rule {
+      metric_trigger {
+        metric_name              = "CpuPercentage"
+        metric_resource_id       = module.function_lollipop_itn.app_service_plan_id
+        metric_namespace         = "microsoft.web/serverfarms"
+        time_grain               = "PT1M"
+        statistic                = "Max"
+        time_window              = "PT1M"
+        time_aggregation         = "Maximum"
+        operator                 = "GreaterThan"
+        threshold                = 45
+        divide_by_instance_count = false
+      }
+
+      scale_action {
+        direction = "Increase"
+        type      = "ChangeCount"
+        value     = "3"
+        cooldown  = "PT2M"
+      }
+    }
+
+    rule {
+      metric_trigger {
+        metric_name              = "Requests"
+        metric_resource_id       = module.function_lollipop_itn.id
+        metric_namespace         = "microsoft.web/sites"
+        time_grain               = "PT1M"
+        statistic                = "Average"
+        time_window              = "PT5M"
+        time_aggregation         = "Average"
+        operator                 = "LessThan"
+        threshold                = 500
+        divide_by_instance_count = true
+      }
+
+      scale_action {
+        direction = "Decrease"
+        type      = "ChangeCount"
+        value     = "1"
+        cooldown  = "PT1M"
+      }
+    }
+
+    rule {
+      metric_trigger {
+        metric_name              = "CpuPercentage"
+        metric_resource_id       = module.function_lollipop_itn.app_service_plan_id
+        metric_namespace         = "microsoft.web/serverfarms"
+        time_grain               = "PT1M"
+        statistic                = "Average"
+        time_window              = "PT5M"
+        time_aggregation         = "Average"
+        operator                 = "LessThan"
+        threshold                = 20
+        divide_by_instance_count = false
+      }
+
+      scale_action {
+        direction = "Decrease"
+        type      = "ChangeCount"
+        value     = "1"
+        cooldown  = "PT2M"
+      }
+    }
+  }
+
+  profile {
+    name = "{\"name\":\"default\",\"for\":\"evening\"}"
+
+    recurrence {
+      timezone = "W. Europe Standard Time"
+      hours    = [22]
+      minutes  = [59]
+      days = [
+        "Monday",
+        "Tuesday",
+        "Wednesday",
+        "Thursday",
+        "Friday",
+        "Saturday",
+        "Sunday"
+      ]
+    }
+
+    capacity {
+      default = 10
+      minimum = 3
+      maximum = 30
+    }
+
+    rule {
+      metric_trigger {
+        metric_name              = "Requests"
+        metric_resource_id       = module.function_lollipop_itn.id
+        metric_namespace         = "microsoft.web/sites"
+        time_grain               = "PT1M"
+        statistic                = "Max"
+        time_window              = "PT1M"
+        time_aggregation         = "Maximum"
+        operator                 = "GreaterThan"
+        threshold                = 3000
+        divide_by_instance_count = true
+      }
+
+      scale_action {
+        direction = "Increase"
+        type      = "ChangeCount"
+        value     = "2"
+        cooldown  = "PT1M"
+      }
+    }
+
+    rule {
+      metric_trigger {
+        metric_name              = "CpuPercentage"
+        metric_resource_id       = module.function_lollipop_itn.app_service_plan_id
+        metric_namespace         = "microsoft.web/serverfarms"
+        time_grain               = "PT1M"
+        statistic                = "Max"
+        time_window              = "PT1M"
+        time_aggregation         = "Maximum"
+        operator                 = "GreaterThan"
+        threshold                = 40
+        divide_by_instance_count = false
+      }
+
+      scale_action {
+        direction = "Increase"
+        type      = "ChangeCount"
+        value     = "3"
+        cooldown  = "PT2M"
+      }
+    }
+
+    rule {
+      metric_trigger {
+        metric_name              = "Requests"
+        metric_resource_id       = module.function_lollipop_itn.id
+        metric_namespace         = "microsoft.web/sites"
+        time_grain               = "PT1M"
+        statistic                = "Average"
+        time_window              = "PT5M"
+        time_aggregation         = "Average"
+        operator                 = "LessThan"
+        threshold                = 300
+        divide_by_instance_count = true
+      }
+
+      scale_action {
+        direction = "Decrease"
+        type      = "ChangeCount"
+        value     = "1"
+        cooldown  = "PT1M"
+      }
+    }
+
+    rule {
+      metric_trigger {
+        metric_name              = "CpuPercentage"
+        metric_resource_id       = module.function_lollipop_itn.app_service_plan_id
+        metric_namespace         = "microsoft.web/serverfarms"
+        time_grain               = "PT1M"
+        statistic                = "Average"
+        time_window              = "PT5M"
+        time_aggregation         = "Average"
+        operator                 = "LessThan"
+        threshold                = 15
+        divide_by_instance_count = false
+      }
+
+      scale_action {
+        direction = "Decrease"
+        type      = "ChangeCount"
+        value     = "1"
+        cooldown  = "PT2M"
+      }
+    }
+  }
+
+  profile {
+    name = "{\"name\":\"default\",\"for\":\"night\"}"
+
+    recurrence {
+      timezone = "W. Europe Standard Time"
+      hours    = [5]
+      minutes  = [0]
+      days = [
+        "Monday",
+        "Tuesday",
+        "Wednesday",
+        "Thursday",
+        "Friday",
+        "Saturday",
+        "Sunday"
+      ]
+    }
+
+    capacity {
+      default = 10
+      minimum = 3
+      maximum = 30
+    }
+
+    rule {
+      metric_trigger {
+        metric_name              = "Requests"
+        metric_resource_id       = module.function_lollipop_itn.id
+        metric_namespace         = "microsoft.web/sites"
+        time_grain               = "PT1M"
+        statistic                = "Max"
+        time_window              = "PT1M"
+        time_aggregation         = "Maximum"
+        operator                 = "GreaterThan"
+        threshold                = 3000
+        divide_by_instance_count = true
+      }
+
+      scale_action {
+        direction = "Increase"
+        type      = "ChangeCount"
+        value     = "2"
+        cooldown  = "PT1M"
+      }
+    }
+
+    rule {
+      metric_trigger {
+        metric_name              = "CpuPercentage"
+        metric_resource_id       = module.function_lollipop_itn.app_service_plan_id
+        metric_namespace         = "microsoft.web/serverfarms"
+        time_grain               = "PT1M"
+        statistic                = "Max"
+        time_window              = "PT1M"
+        time_aggregation         = "Maximum"
+        operator                 = "GreaterThan"
+        threshold                = 40
+        divide_by_instance_count = false
+      }
+
+      scale_action {
+        direction = "Increase"
+        type      = "ChangeCount"
+        value     = "3"
+        cooldown  = "PT2M"
+      }
+    }
+
+    rule {
+      metric_trigger {
+        metric_name              = "Requests"
+        metric_resource_id       = module.function_lollipop_itn.id
+        metric_namespace         = "microsoft.web/sites"
+        time_grain               = "PT1M"
+        statistic                = "Average"
+        time_window              = "PT5M"
+        time_aggregation         = "Average"
+        operator                 = "LessThan"
+        threshold                = 300
+        divide_by_instance_count = true
+      }
+
+      scale_action {
+        direction = "Decrease"
+        type      = "ChangeCount"
+        value     = "1"
+        cooldown  = "PT1M"
+      }
+    }
+
+    rule {
+      metric_trigger {
+        metric_name              = "CpuPercentage"
+        metric_resource_id       = module.function_lollipop_itn.app_service_plan_id
+        metric_namespace         = "microsoft.web/serverfarms"
+        time_grain               = "PT1M"
+        statistic                = "Average"
+        time_window              = "PT5M"
+        time_aggregation         = "Average"
+        operator                 = "LessThan"
+        threshold                = 15
+        divide_by_instance_count = false
+      }
+
+      scale_action {
+        direction = "Decrease"
+        type      = "ChangeCount"
+        value     = "1"
+        cooldown  = "PT2M"
       }
     }
   }
@@ -432,4 +689,3 @@ exceptions
 
   tags = var.tags
 }
-
