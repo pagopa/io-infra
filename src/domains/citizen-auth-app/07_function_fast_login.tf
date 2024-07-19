@@ -258,15 +258,15 @@ resource "azurerm_monitor_autoscale_setting" "function_fast_login" {
         time_window              = "PT1M"
         time_aggregation         = "Maximum"
         operator                 = "GreaterThan"
-        threshold                = 40
+        threshold                = 35
         divide_by_instance_count = false
       }
 
       scale_action {
         direction = "Increase"
         type      = "ChangeCount"
-        value     = "3"
-        cooldown  = "PT2M"
+        value     = "4"
+        cooldown  = "PT1M"
       }
     }
 
@@ -484,15 +484,15 @@ resource "azurerm_monitor_autoscale_setting" "function_fast_login" {
         time_window              = "PT1M"
         time_aggregation         = "Maximum"
         operator                 = "GreaterThan"
-        threshold                = 40
+        threshold                = 35
         divide_by_instance_count = false
       }
 
       scale_action {
         direction = "Increase"
         type      = "ChangeCount"
-        value     = "3"
-        cooldown  = "PT2M"
+        value     = "4"
+        cooldown  = "PT1M"
       }
     }
 
@@ -597,15 +597,15 @@ resource "azurerm_monitor_autoscale_setting" "function_fast_login" {
         time_window              = "PT1M"
         time_aggregation         = "Maximum"
         operator                 = "GreaterThan"
-        threshold                = 40
+        threshold                = 35
         divide_by_instance_count = false
       }
 
       scale_action {
         direction = "Increase"
         type      = "ChangeCount"
-        value     = "3"
-        cooldown  = "PT2M"
+        value     = "4"
+        cooldown  = "PT1M"
       }
     }
 

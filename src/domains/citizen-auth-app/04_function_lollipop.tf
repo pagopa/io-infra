@@ -26,9 +26,6 @@ locals {
       LOLLIPOP_ASSERTION_STORAGE_CONNECTION_STRING = data.azurerm_storage_account.lollipop_assertion_storage.primary_connection_string
       LOLLIPOP_ASSERTION_REVOKE_QUEUE              = "pubkeys-revoke-v2"
 
-      APPINSIGHTS_CLOUD_ROLE_NAME  = "io-p-itn-lollipop-fn-01"
-      APPINSIGHTS_EXCLUDED_DOMAINS = "queue.core.windows.net,blob.core.windows.net,table.core.windows.net,file.core.windows.net"
-
       // ------------
       // JWT Config
       // ------------
@@ -243,15 +240,15 @@ resource "azurerm_monitor_autoscale_setting" "function_lollipop_itn" {
         time_window              = "PT1M"
         time_aggregation         = "Maximum"
         operator                 = "GreaterThan"
-        threshold                = 40
+        threshold                = 35
         divide_by_instance_count = false
       }
 
       scale_action {
         direction = "Increase"
         type      = "ChangeCount"
-        value     = "3"
-        cooldown  = "PT2M"
+        value     = "4"
+        cooldown  = "PT1M"
       }
     }
 
@@ -469,15 +466,15 @@ resource "azurerm_monitor_autoscale_setting" "function_lollipop_itn" {
         time_window              = "PT1M"
         time_aggregation         = "Maximum"
         operator                 = "GreaterThan"
-        threshold                = 40
+        threshold                = 35
         divide_by_instance_count = false
       }
 
       scale_action {
         direction = "Increase"
         type      = "ChangeCount"
-        value     = "3"
-        cooldown  = "PT2M"
+        value     = "4"
+        cooldown  = "PT1M"
       }
     }
 
@@ -582,15 +579,15 @@ resource "azurerm_monitor_autoscale_setting" "function_lollipop_itn" {
         time_window              = "PT1M"
         time_aggregation         = "Maximum"
         operator                 = "GreaterThan"
-        threshold                = 40
+        threshold                = 35
         divide_by_instance_count = false
       }
 
       scale_action {
         direction = "Increase"
         type      = "ChangeCount"
-        value     = "3"
-        cooldown  = "PT2M"
+        value     = "4"
+        cooldown  = "PT1M"
       }
     }
 

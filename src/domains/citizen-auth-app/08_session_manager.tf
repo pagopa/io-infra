@@ -104,8 +104,6 @@ locals {
     APPINSIGHTS_CONNECTION_STRING   = data.azurerm_application_insights.application_insights.connection_string
     APPINSIGHTS_DISABLED            = false
     APPINSIGHTS_SAMPLING_PERCENTAGE = 100
-    APPINSIGHTS_CLOUD_ROLE_NAME     = "io-p-weu-session-manager-app-03"
-    APPINSIGHTS_EXCLUDED_DOMAINS    = "queue.core.windows.net,blob.core.windows.net,table.core.windows.net,file.core.windows.net"
 
     API_BASE_PATH = "/api/v1"
 
@@ -225,7 +223,7 @@ module "session_manager_weu" {
     startup_time           = "00:05:00"
     slow_requests_count    = 50
     slow_requests_interval = "00:01:00"
-    slow_requests_time     = "00:00:05"
+    slow_requests_time     = "00:00:10"
   }
 
   app_settings = merge(
@@ -272,7 +270,7 @@ module "session_manager_weu_staging" {
     startup_time           = "00:05:00"
     slow_requests_count    = 50
     slow_requests_interval = "00:01:00"
-    slow_requests_time     = "00:00:05"
+    slow_requests_time     = "00:00:10"
   }
 
   app_settings = merge(
@@ -296,114 +294,4 @@ module "session_manager_weu_staging" {
   vnet_integration = true
 
   tags = var.tags
-}
-
-## autoscaling
-resource "azurerm_monitor_autoscale_setting" "session_manager_weu_autoscale_setting" {
-  name                = format("%s-autoscale-02", module.session_manager_weu.name)
-  resource_group_name = azurerm_resource_group.session_manager_rg_weu.name
-  location            = azurerm_resource_group.session_manager_rg_weu.location
-  target_resource_id  = module.session_manager_weu.plan_id
-
-  profile {
-    name = "default"
-
-    capacity {
-      default = var.session_manager_autoscale_settings.autoscale_default
-      minimum = var.session_manager_autoscale_settings.autoscale_minimum
-      maximum = var.session_manager_autoscale_settings.autoscale_maximum
-    }
-
-    # Increase rules
-
-    rule {
-      metric_trigger {
-        metric_name              = "Requests"
-        metric_resource_id       = module.session_manager_weu.id
-        metric_namespace         = "microsoft.web/sites"
-        time_grain               = "PT1M"
-        statistic                = "Average"
-        time_window              = "PT1M"
-        time_aggregation         = "Average"
-        operator                 = "GreaterThan"
-        threshold                = 1500
-        divide_by_instance_count = false
-      }
-
-      scale_action {
-        direction = "Increase"
-        type      = "ChangeCount"
-        value     = "2"
-        cooldown  = "PT1M"
-      }
-    }
-
-    rule {
-      metric_trigger {
-        metric_name              = "CpuPercentage"
-        metric_resource_id       = module.session_manager_weu.plan_id
-        metric_namespace         = "microsoft.web/serverfarms"
-        time_grain               = "PT1M"
-        statistic                = "Average"
-        time_window              = "PT1M"
-        time_aggregation         = "Average"
-        operator                 = "GreaterThan"
-        threshold                = 70
-        divide_by_instance_count = false
-      }
-
-      scale_action {
-        direction = "Increase"
-        type      = "ChangeCount"
-        value     = "2"
-        cooldown  = "PT1M"
-      }
-    }
-
-    # Decrease rules
-
-    rule {
-      metric_trigger {
-        metric_name              = "Requests"
-        metric_resource_id       = module.session_manager_weu.id
-        metric_namespace         = "microsoft.web/sites"
-        time_grain               = "PT1M"
-        statistic                = "Average"
-        time_window              = "PT15M"
-        time_aggregation         = "Average"
-        operator                 = "LessThan"
-        threshold                = 500
-        divide_by_instance_count = false
-      }
-
-      scale_action {
-        direction = "Decrease"
-        type      = "ChangeCount"
-        value     = "1"
-        cooldown  = "PT30M"
-      }
-    }
-
-    rule {
-      metric_trigger {
-        metric_name              = "CpuPercentage"
-        metric_resource_id       = module.session_manager_weu.plan_id
-        metric_namespace         = "microsoft.web/serverfarms"
-        time_grain               = "PT1M"
-        statistic                = "Average"
-        time_window              = "PT15M"
-        time_aggregation         = "Average"
-        operator                 = "LessThan"
-        threshold                = 15
-        divide_by_instance_count = false
-      }
-
-      scale_action {
-        direction = "Decrease"
-        type      = "ChangeCount"
-        value     = "1"
-        cooldown  = "PT30M"
-      }
-    }
-  }
 }
