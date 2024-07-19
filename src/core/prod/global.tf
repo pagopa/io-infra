@@ -47,7 +47,7 @@ module "global" {
     app_gateway_public_ip = data.azurerm_public_ip.appgateway_public_ip.ip_address
 
     # TODO: remove when apim v2 module is implemented
-    apim_v2_public_ip = data.azurerm_api_management.apim_v2.public_ip_addresses[0]
+    apim_v2_private_ip = data.azurerm_api_management.apim_v2.private_ip_addresses[0]
   }
 
   tags = local.tags

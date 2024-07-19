@@ -17,6 +17,15 @@ variable "target_vnets" {
     id                  = string
     resource_group_name = string
     use_remote_gateways = optional(bool, false)
+    symmetrical = optional(object({
+      enabled               = optional(bool, false)
+      use_remote_gateways   = optional(bool, false)
+      allow_gateway_transit = optional(bool, false)
+    }), {
+      enabled               = false
+      use_remote_gateways   = false
+      allow_gateway_transit = false
+    })
   }))
 
   description = "The destination vnets information"

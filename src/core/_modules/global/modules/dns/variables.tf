@@ -50,7 +50,7 @@ variable "app_gateway_public_ip" {
 }
 
 # TODO: remove when apim v2 module is implemented
-variable "apim_v2_public_ip" {
+variable "apim_v2_private_ip" {
   type        = string
-  description = "Public IP of the API Management v2"
+  description = "Private IP of the API Management v2"
 }

@@ -26,7 +26,7 @@ module "vnet_peering_itn" {
     name                  = module.networking_itn.vnet_common.name
     id                    = module.networking_itn.vnet_common.id
     resource_group_name   = module.networking_itn.vnet_common.resource_group_name
-    allow_gateway_transit = true
+    allow_gateway_transit = false
   }
 
   target_vnets = {
@@ -34,7 +34,7 @@ module "vnet_peering_itn" {
       name                = module.networking_weu.vnet_common.name
       id                  = module.networking_weu.vnet_common.id
       resource_group_name = module.networking_weu.vnet_common.resource_group_name
-      use_remote_gateways = false
+      use_remote_gateways = true
     }
 
     beta = {
@@ -42,6 +42,9 @@ module "vnet_peering_itn" {
       id                  = data.azurerm_virtual_network.weu_beta.id
       resource_group_name = data.azurerm_virtual_network.weu_beta.resource_group_name
       use_remote_gateways = false
+      symmetrical = {
+        enabled = true
+      }
     }
 
     prod01 = {
@@ -49,6 +52,9 @@ module "vnet_peering_itn" {
       id                  = data.azurerm_virtual_network.weu_prod01.id
       resource_group_name = data.azurerm_virtual_network.weu_prod01.resource_group_name
       use_remote_gateways = false
+      symmetrical = {
+        enabled = true
+      }
     }
   }
 }
