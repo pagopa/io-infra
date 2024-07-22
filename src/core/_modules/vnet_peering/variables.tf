@@ -21,7 +21,7 @@ variable "target_vnets" {
       enabled               = optional(bool, false)
       use_remote_gateways   = optional(bool, false)
       allow_gateway_transit = optional(bool, false)
-    }), {
+      }), {
       enabled               = false
       use_remote_gateways   = false
       allow_gateway_transit = false
