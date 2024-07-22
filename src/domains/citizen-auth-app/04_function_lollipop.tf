@@ -302,7 +302,7 @@ resource "azurerm_monitor_autoscale_setting" "function_lollipop_itn" {
 
     capacity {
       default = 10
-      minimum = 2
+      minimum = 3
       maximum = 15
     }
 
