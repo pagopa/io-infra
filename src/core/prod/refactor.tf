@@ -511,5 +511,5 @@ moved {
 
 moved {
   from = module.networking_itn.azurerm_private_dns_zone_virtual_network_link.azurewebsites_private_vnet_itn_common
-  to = module.global.module.dns.azurerm_private_dns_zone_virtual_network_link.azurewebsites_private_vnet["itn"]
+  to   = module.global.module.dns.azurerm_private_dns_zone_virtual_network_link.azurewebsites_private_vnet["itn"]
 }
