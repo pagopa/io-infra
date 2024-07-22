@@ -45,7 +45,7 @@ resource "azurerm_nat_gateway" "this_01" {
   tags = var.tags
 }
 
-resource "azurerm_nat_gateway" "this_2" {
+resource "azurerm_nat_gateway" "this_02" {
   name                    = "${var.project}-ng-02"
   location                = var.location
   resource_group_name     = var.resource_group_name
@@ -56,7 +56,7 @@ resource "azurerm_nat_gateway" "this_2" {
   tags = var.tags
 }
 
-resource "azurerm_nat_gateway" "this_3" {
+resource "azurerm_nat_gateway" "this_03" {
   name                    = "${var.project}-ng-03"
   location                = var.location
   resource_group_name     = var.resource_group_name
