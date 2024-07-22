@@ -27,3 +27,13 @@ resource "azurerm_nat_gateway_public_ip_association" "this_pip_01" {
   nat_gateway_id       = azurerm_nat_gateway.this.id
   public_ip_address_id = azurerm_public_ip.this_01[count.index].id
 }
+
+resource "azurerm_nat_gateway_public_ip_association" "this_02" {
+  nat_gateway_id       = azurerm_nat_gateway.this_02.id
+  public_ip_address_id = azurerm_public_ip.this_02.id
+}
+
+resource "azurerm_nat_gateway_public_ip_association" "this_03" {
+  nat_gateway_id       = azurerm_nat_gateway.this_03.id
+  public_ip_address_id = azurerm_public_ip.this_03.id
+}
