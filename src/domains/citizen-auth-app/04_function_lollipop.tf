@@ -179,7 +179,7 @@ module "function_lollipop_staging_slot_itn" {
 }
 
 resource "azurerm_monitor_autoscale_setting" "function_lollipop_itn" {
-  name                = "${replace(module.function_lollipop_itn.name, "fn", "as")}-01"
+  name                = "${replace(module.function_lollipop_itn.name, "-fn-", "-as-")}-01"
   resource_group_name = azurerm_resource_group.lollipop_rg_itn.name
   location            = local.itn_location
   target_resource_id  = module.function_lollipop_itn.app_service_plan_id
