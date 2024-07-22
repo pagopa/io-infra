@@ -1,5 +1,4 @@
 resource "azurerm_private_dns_zone" "internal_io_pagopa_it" {
-  count               = (var.dns_zones.io == null || var.external_domain == null) ? 0 : 1
   name                = join(".", ["internal", var.dns_zones.io, var.external_domain])
   resource_group_name = var.resource_groups.internal
 
@@ -10,7 +9,7 @@ resource "azurerm_private_dns_zone" "internal_io_pagopa_it" {
 # api-app.internal.dev.io.pagopa.it
 resource "azurerm_private_dns_a_record" "api_app_internal_io" {
   name                = "api-app"
-  zone_name           = azurerm_private_dns_zone.internal_io_pagopa_it[0].name
+  zone_name           = azurerm_private_dns_zone.internal_io_pagopa_it.name
   resource_group_name = var.resource_groups.internal
   ttl                 = var.dns_default_ttl_sec
   records             = [var.apim_v2_private_ip]

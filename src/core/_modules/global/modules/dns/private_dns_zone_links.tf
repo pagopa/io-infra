@@ -2,7 +2,7 @@ resource "azurerm_private_dns_zone_virtual_network_link" "internal_io_pagopa_it_
   for_each              = var.vnets
   name                  = each.key == "weu" ? "${var.project}-private-vnet-common" : each.value.name
   resource_group_name   = var.resource_groups.internal
-  private_dns_zone_name = azurerm_private_dns_zone.internal_io_pagopa_it[0].name
+  private_dns_zone_name = azurerm_private_dns_zone.internal_io_pagopa_it.name
   virtual_network_id    = each.value.id
   registration_enabled  = false
 

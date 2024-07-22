@@ -1,5 +1,4 @@
 resource "azurerm_dns_zone" "firmaconio_selfcare_pagopa_it" {
-  count               = (var.dns_zones.firmaconio_selfcare == null || var.external_domain == null) ? 0 : 1
   name                = join(".", [var.dns_zones.firmaconio_selfcare, var.external_domain])
   resource_group_name = var.resource_groups.external
 
@@ -10,7 +9,7 @@ resource "azurerm_dns_zone" "firmaconio_selfcare_pagopa_it" {
 # firmaconio.selfcare.pagopa.it
 resource "azurerm_dns_a_record" "firmaconio_selfcare_pagopa_it" {
   name                = "@"
-  zone_name           = azurerm_dns_zone.firmaconio_selfcare_pagopa_it[0].name
+  zone_name           = azurerm_dns_zone.firmaconio_selfcare_pagopa_it.name
   resource_group_name = var.resource_groups.external
   ttl                 = var.dns_default_ttl_sec
   records             = [var.app_gateway_public_ip]
@@ -20,7 +19,7 @@ resource "azurerm_dns_a_record" "firmaconio_selfcare_pagopa_it" {
 
 resource "azurerm_dns_caa_record" "firmaconio_selfcare_pagopa_it" {
   name                = "@"
-  zone_name           = azurerm_dns_zone.firmaconio_selfcare_pagopa_it[0].name
+  zone_name           = azurerm_dns_zone.firmaconio_selfcare_pagopa_it.name
   resource_group_name = var.resource_groups.external
   ttl                 = var.dns_default_ttl_sec
 
@@ -46,5 +45,5 @@ resource "azurerm_dns_caa_record" "firmaconio_selfcare_pagopa_it" {
 }
 
 output "dns_firmaconio_selfcare_pagopa_it_ns" {
-  value = azurerm_dns_zone.firmaconio_selfcare_pagopa_it[0].name_servers
+  value = azurerm_dns_zone.firmaconio_selfcare_pagopa_it.name_servers
 }

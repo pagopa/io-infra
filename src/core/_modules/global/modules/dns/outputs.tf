@@ -1,11 +1,11 @@
 output "public_dns_zones" {
   value = {
     io = {
-      name = length(azurerm_dns_zone.io_pagopa_it) > 0 ? azurerm_dns_zone.io_pagopa_it[0].name : null
+      name = azurerm_dns_zone.io_pagopa_it.name
     }
 
     firmaconio_selfcare_pagopa_it = {
-      name = length(azurerm_dns_zone.firmaconio_selfcare_pagopa_it) > 0 ? azurerm_dns_zone.io_pagopa_it[0].name : null
+      name = azurerm_dns_zone.io_pagopa_it.name
     }
 
     io_italia_it = {
@@ -13,7 +13,7 @@ output "public_dns_zones" {
     }
 
     io_selfcare_pagopa_it = {
-      name = length(azurerm_dns_zone.io_selfcare_pagopa_it) > 0 ? azurerm_dns_zone.io_pagopa_it[0].name : null
+      name = azurerm_dns_zone.io_pagopa_it.name
     }
 
     ioweb_it = {
