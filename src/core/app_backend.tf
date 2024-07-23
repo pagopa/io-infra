@@ -756,7 +756,7 @@ resource "azurerm_subnet_nat_gateway_association" "app_backendl3_snet" {
 }
 
 module "appservice_app_backendl3" {
-  source = "github.com/pagopa/terraform-azurerm-v3//app_service?ref=v8.28.1"
+  source = "github.com/pagopa/terraform-azurerm-v3//app_service?ref=v8.31.0"
 
   # App service plan
   plan_type = "internal"
@@ -778,6 +778,8 @@ module "appservice_app_backendl3" {
     local.app_backend.app_settings_common,
     local.app_backend.app_settings_l3,
   )
+
+  ip_restriction_default_action = "Deny"
 
   subnet_id        = module.app_backendl3_snet.id
   vnet_integration = true
@@ -807,7 +809,7 @@ resource "azurerm_private_endpoint" "backend3_sites" {
 }
 
 module "appservice_app_backendl3_slot_staging" {
-  source = "github.com/pagopa/terraform-azurerm-v3//app_service_slot?ref=v8.28.1"
+  source = "github.com/pagopa/terraform-azurerm-v3//app_service_slot?ref=v8.31.0"
 
   # App service plan
   app_service_id   = module.appservice_app_backendl3.id
@@ -827,6 +829,8 @@ module "appservice_app_backendl3_slot_staging" {
     local.app_backend.app_settings_common,
     local.app_backend.app_settings_l3,
   )
+
+  ip_restriction_default_action = "Deny"
 
   subnet_id        = module.app_backendl3_snet.id
   vnet_integration = true
@@ -902,7 +906,7 @@ data "azurerm_subnet" "itn_msgs_sending_func_snet" {
 }
 
 module "appservice_app_backendl1" {
-  source = "github.com/pagopa/terraform-azurerm-v3//app_service?ref=v8.28.1"
+  source = "github.com/pagopa/terraform-azurerm-v3//app_service?ref=v8.31.0"
 
   # App service plan
   plan_type = "internal"
@@ -933,6 +937,8 @@ module "appservice_app_backendl1" {
     local.app_backend.app_settings_l1,
   )
 
+  ip_restriction_default_action = "Deny"
+
   allowed_subnets = [
     data.azurerm_subnet.services_snet[0].id,
     data.azurerm_subnet.services_snet[1].id,
@@ -952,7 +958,7 @@ module "appservice_app_backendl1" {
 }
 
 module "appservice_app_backendl1_slot_staging" {
-  source = "github.com/pagopa/terraform-azurerm-v3//app_service_slot?ref=v8.28.1"
+  source = "github.com/pagopa/terraform-azurerm-v3//app_service_slot?ref=v8.31.0"
 
   # App service plan
   app_service_id   = module.appservice_app_backendl1.id
@@ -980,6 +986,8 @@ module "appservice_app_backendl1_slot_staging" {
     local.app_backend.app_settings_common,
     local.app_backend.app_settings_l1,
   )
+
+  ip_restriction_default_action = "Deny"
 
   allowed_subnets = [
     module.azdoa_snet[0].id,
@@ -1028,7 +1036,7 @@ resource "azurerm_subnet_nat_gateway_association" "app_backendl2_snet" {
 }
 
 module "appservice_app_backendl2" {
-  source = "github.com/pagopa/terraform-azurerm-v3//app_service?ref=v8.28.1"
+  source = "github.com/pagopa/terraform-azurerm-v3//app_service?ref=v8.31.0"
 
   # App service plan
   plan_type = "internal"
@@ -1059,6 +1067,8 @@ module "appservice_app_backendl2" {
     local.app_backend.app_settings_l2,
   )
 
+  ip_restriction_default_action = "Deny"
+
   allowed_subnets = [
     data.azurerm_subnet.services_snet[0].id,
     data.azurerm_subnet.services_snet[1].id,
@@ -1078,7 +1088,7 @@ module "appservice_app_backendl2" {
 }
 
 module "appservice_app_backendl2_slot_staging" {
-  source = "github.com/pagopa/terraform-azurerm-v3//app_service_slot?ref=v8.28.1"
+  source = "github.com/pagopa/terraform-azurerm-v3//app_service_slot?ref=v8.31.0"
 
   # App service plan
   app_service_id   = module.appservice_app_backendl2.id
@@ -1106,6 +1116,8 @@ module "appservice_app_backendl2_slot_staging" {
     local.app_backend.app_settings_common,
     local.app_backend.app_settings_l2,
   )
+
+  ip_restriction_default_action = "Deny"
 
   allowed_subnets = [
     module.azdoa_snet[0].id,
@@ -1154,7 +1166,7 @@ resource "azurerm_subnet_nat_gateway_association" "app_backendli_snet" {
 }
 
 module "appservice_app_backendli" {
-  source = "github.com/pagopa/terraform-azurerm-v3//app_service?ref=v8.27.0"
+  source = "github.com/pagopa/terraform-azurerm-v3//app_service?ref=v8.31.0"
 
   # App service plan
   plan_type = "internal"
@@ -1176,6 +1188,8 @@ module "appservice_app_backendli" {
     local.app_backend.app_settings_common,
     local.app_backend.app_settings_li,
   )
+
+  ip_restriction_default_action = "Deny"
 
   allowed_subnets = [
     data.azurerm_subnet.services_snet[0].id,
@@ -1199,7 +1213,7 @@ module "appservice_app_backendli" {
 }
 
 module "appservice_app_backendli_slot_staging" {
-  source = "github.com/pagopa/terraform-azurerm-v3//app_service_slot?ref=v8.27.0"
+  source = "github.com/pagopa/terraform-azurerm-v3//app_service_slot?ref=v8.31.0"
 
   # App service plan
   app_service_id   = module.appservice_app_backendli.id
@@ -1219,6 +1233,8 @@ module "appservice_app_backendli_slot_staging" {
     local.app_backend.app_settings_common,
     local.app_backend.app_settings_li,
   )
+
+  ip_restriction_default_action = "Deny"
 
   allowed_subnets = [
     module.azdoa_snet[0].id,
