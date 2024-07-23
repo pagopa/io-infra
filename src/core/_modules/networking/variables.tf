@@ -8,6 +8,11 @@ variable "location" {
   description = "Azure region"
 }
 
+variable "location_short" {
+  type        = string
+  description = "Azure region short name"
+}
+
 variable "tags" {
   type        = map(any)
   description = "Resource tags"
@@ -26,4 +31,10 @@ variable "vnet_cidr_block" {
 variable "pep_snet_cidr" {
   type        = list(string)
   description = "CIDR block allocated in the private endpoints subnet"
+}
+
+variable "ng_ips_number" {
+  type        = number
+  description = "Number of public IPs assigned to the nat gateway"
+  default     = 1
 }

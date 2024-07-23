@@ -329,7 +329,7 @@ locals {
       FF_FAST_LOGIN = "ALL"
       LV_TEST_USERS = join(",", [data.azurerm_key_vault_secret.app_backend_LV_TEST_USERS.value, local.test_users])
 
-      BACKEND_HOST = "https://${trimsuffix(azurerm_dns_a_record.api_app_io_pagopa_it.fqdn, ".")}"
+      BACKEND_HOST = "https://${trimsuffix(data.azurerm_dns_a_record.api_app_io_pagopa_it.fqdn, ".")}"
 
       // CLOCK SKEW LOG EVENT
       HAS_CLOCK_SKEW_LOG_EVENT = "false"
@@ -734,7 +734,7 @@ module "app_backendl3_snet" {
   name                                      = "${local.project}-weu-backend-snet-03"
   address_prefixes                          = ["10.0.156.0/24"]
   resource_group_name                       = azurerm_resource_group.rg_common.name
-  virtual_network_name                      = module.vnet_common.name
+  virtual_network_name                      = data.azurerm_virtual_network.common.name
   private_endpoint_network_policies_enabled = true
 
   service_endpoints = [
@@ -751,7 +751,7 @@ module "app_backendl3_snet" {
 }
 
 resource "azurerm_subnet_nat_gateway_association" "app_backendl3_snet" {
-  nat_gateway_id = module.nat_gateway.id
+  nat_gateway_id = data.azurerm_nat_gateway.ng.id
   subnet_id      = module.app_backendl3_snet.id
 }
 
@@ -789,7 +789,7 @@ resource "azurerm_private_endpoint" "backend3_sites" {
   name                = "${local.project}-weu-backend-app-pep-03"
   location            = azurerm_resource_group.backend3.location
   resource_group_name = azurerm_resource_group.backend3.name
-  subnet_id           = module.private_endpoints_subnet.id
+  subnet_id           = data.azurerm_subnet.private_endpoints_subnet.id
 
   private_service_connection {
     name                           = "${local.project}-weu-backend-app-pep-03"
@@ -800,7 +800,7 @@ resource "azurerm_private_endpoint" "backend3_sites" {
 
   private_dns_zone_group {
     name                 = "private-dns-zone-group"
-    private_dns_zone_ids = [azurerm_private_dns_zone.privatelink_azurewebsites.id]
+    private_dns_zone_ids = [data.azurerm_private_dns_zone.privatelink_azurewebsites.id]
   }
 
   tags = var.tags
@@ -838,7 +838,7 @@ resource "azurerm_private_endpoint" "backend3_staging_sites" {
   name                = "${local.project}-weu-backend-staging-app-pep-03"
   location            = azurerm_resource_group.backend3.location
   resource_group_name = azurerm_resource_group.backend3.name
-  subnet_id           = module.private_endpoints_subnet.id
+  subnet_id           = data.azurerm_subnet.private_endpoints_subnet.id
 
   private_service_connection {
     name                           = "${local.project}-weu-backend-staging-app-pep-03"
@@ -849,7 +849,7 @@ resource "azurerm_private_endpoint" "backend3_staging_sites" {
 
   private_dns_zone_group {
     name                 = "private-dns-zone-group"
-    private_dns_zone_ids = [azurerm_private_dns_zone.privatelink_azurewebsites.id]
+    private_dns_zone_ids = [data.azurerm_private_dns_zone.privatelink_azurewebsites.id]
   }
 
   tags = var.tags
@@ -862,7 +862,7 @@ module "app_backendl1_snet" {
   name                                      = "appbackendl1"
   address_prefixes                          = var.cidr_subnet_appbackendl1
   resource_group_name                       = azurerm_resource_group.rg_common.name
-  virtual_network_name                      = module.vnet_common.name
+  virtual_network_name                      = data.azurerm_virtual_network.common.name
   private_endpoint_network_policies_enabled = true
 
   service_endpoints = [
@@ -879,19 +879,19 @@ module "app_backendl1_snet" {
 }
 
 resource "azurerm_subnet_nat_gateway_association" "app_backendl1_snet" {
-  nat_gateway_id = module.nat_gateway.id
+  nat_gateway_id = data.azurerm_nat_gateway.ng.id
   subnet_id      = module.app_backendl1_snet.id
 }
 
 data "azurerm_subnet" "functions_fast_login_snet" {
   name                 = format("%s-%s-fast-login-snet", local.project, var.location_short)
-  virtual_network_name = module.vnet_common.name
+  virtual_network_name = data.azurerm_virtual_network.common.name
   resource_group_name  = azurerm_resource_group.rg_common.name
 }
 
 data "azurerm_subnet" "functions_service_messages_snet" {
   name                 = "io-p-fn-service-messages-snet"
-  virtual_network_name = module.vnet_common.name
+  virtual_network_name = data.azurerm_virtual_network.common.name
   resource_group_name  = azurerm_resource_group.rg_common.name
 }
 
@@ -1006,7 +1006,7 @@ module "app_backendl2_snet" {
   name                                      = "appbackendl2"
   address_prefixes                          = var.cidr_subnet_appbackendl2
   resource_group_name                       = azurerm_resource_group.rg_common.name
-  virtual_network_name                      = module.vnet_common.name
+  virtual_network_name                      = data.azurerm_virtual_network.common.name
   private_endpoint_network_policies_enabled = true
 
   service_endpoints = [
@@ -1023,7 +1023,7 @@ module "app_backendl2_snet" {
 }
 
 resource "azurerm_subnet_nat_gateway_association" "app_backendl2_snet" {
-  nat_gateway_id = module.nat_gateway.id
+  nat_gateway_id = data.azurerm_nat_gateway.ng.id
   subnet_id      = module.app_backendl2_snet.id
 }
 
@@ -1132,7 +1132,7 @@ module "app_backendli_snet" {
   name                                      = "appbackendli"
   address_prefixes                          = var.cidr_subnet_appbackendli
   resource_group_name                       = azurerm_resource_group.rg_common.name
-  virtual_network_name                      = module.vnet_common.name
+  virtual_network_name                      = data.azurerm_virtual_network.common.name
   private_endpoint_network_policies_enabled = true
 
   service_endpoints = [
@@ -1149,7 +1149,7 @@ module "app_backendli_snet" {
 }
 
 resource "azurerm_subnet_nat_gateway_association" "app_backendli_snet" {
-  nat_gateway_id = module.nat_gateway.id
+  nat_gateway_id = data.azurerm_nat_gateway.ng.id
   subnet_id      = module.app_backendli_snet.id
 }
 
@@ -1378,7 +1378,7 @@ resource "azurerm_monitor_autoscale_setting" "appservice_app_backendli" {
 ## web availabolity test
 module "app_backend_web_test_api" {
   for_each = { for v in local.app_backend_test_urls : v.id => v if v != null }
-  source   = "github.com/pagopa/terraform-azurerm-v3//application_insights_web_test_preview?ref=v8.27.0"
+  source   = "github.com/pagopa/terraform-azurerm-v3//application_insights_web_test_preview?ref=v8.29.1"
 
   subscription_id                   = data.azurerm_subscription.current.subscription_id
   name                              = format("%s-test", each.value.name)
