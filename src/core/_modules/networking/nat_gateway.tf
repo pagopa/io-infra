@@ -1,5 +1,6 @@
 resource "azurerm_public_ip" "this_01" {
-  name                = "${var.project}-ng-pip-01"
+  count               = var.ng_ips_number
+  name                = format("%s-pip-%02d", try(local.nonstandard[var.location_short].ng, "${var.project}-ng"), count.index + 1)
   location            = var.location
   resource_group_name = var.resource_group_name
   allocation_method   = "Static"
@@ -11,7 +12,7 @@ resource "azurerm_public_ip" "this_01" {
 }
 
 resource "azurerm_nat_gateway" "this" {
-  name                    = "${var.project}-ng-01"
+  name                    = try(local.nonstandard[var.location_short].ng, "${var.project}-ng-01")
   location                = var.location
   resource_group_name     = var.resource_group_name
   sku_name                = "Standard"
@@ -22,6 +23,7 @@ resource "azurerm_nat_gateway" "this" {
 }
 
 resource "azurerm_nat_gateway_public_ip_association" "this_pip_01" {
+  count                = var.ng_ips_number
   nat_gateway_id       = azurerm_nat_gateway.this.id
-  public_ip_address_id = azurerm_public_ip.this_01.id
+  public_ip_address_id = azurerm_public_ip.this_01[count.index].id
 }
