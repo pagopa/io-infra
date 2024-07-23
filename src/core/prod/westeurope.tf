@@ -15,7 +15,7 @@ module "networking_weu" {
 
   ng_ips_number = 2
 
-  tags = local.tags
+  tags = merge(local.tags, { Source = "https://github.com/pagopa/io-infra" })
 }
 
 module "vnet_peering_weu" {

@@ -50,5 +50,5 @@ module "global" {
     apim_v2_private_ip = data.azurerm_api_management.apim_v2.private_ip_addresses[0]
   }
 
-  tags = local.tags
+  tags = merge(local.tags, { Source = "https://github.com/pagopa/io-infra" })
 }
