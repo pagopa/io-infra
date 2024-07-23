@@ -548,23 +548,23 @@ module "app_gw" {
         },
         login = {
           paths                 = ["/login"]
-          backend               = "appbackend-app",
-          rewrite_rule_set_name = "rewrite-rule-set-api-app-rewrite-to-session-manager"
+          backend               = "session-manager-app",
+          rewrite_rule_set_name = "rewrite-rule-set-api-app"
         },
         acs = {
           paths                 = ["/assertionConsumerService"]
-          backend               = "appbackend-app",
-          rewrite_rule_set_name = "rewrite-rule-set-api-app-rewrite-to-session-manager"
+          backend               = "session-manager-app",
+          rewrite_rule_set_name = "rewrite-rule-set-api-app"
         },
         fast-login = {
           paths                 = ["/api/v1/fast-login"]
-          backend               = "appbackend-app",
-          rewrite_rule_set_name = "rewrite-rule-set-api-app-rewrite-to-session-manager"
+          backend               = "session-manager-app",
+          rewrite_rule_set_name = "rewrite-rule-set-api-app"
         },
         nonce-fast-login = {
           paths                 = ["/api/v1/fast-login/nonce/generate"]
-          backend               = "appbackend-app",
-          rewrite_rule_set_name = "rewrite-rule-set-api-app-rewrite-to-session-manager"
+          backend               = "session-manager-app",
+          rewrite_rule_set_name = "rewrite-rule-set-api-app"
         },
         logout = {
           paths                 = ["/logout"]

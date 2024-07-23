@@ -756,7 +756,7 @@ resource "azurerm_subnet_nat_gateway_association" "app_backendl3_snet" {
 }
 
 module "appservice_app_backendl3" {
-  source = "github.com/pagopa/terraform-azurerm-v3//app_service?ref=v8.27.0"
+  source = "github.com/pagopa/terraform-azurerm-v3//app_service?ref=v8.28.1"
 
   # App service plan
   plan_type = "internal"
@@ -807,7 +807,7 @@ resource "azurerm_private_endpoint" "backend3_sites" {
 }
 
 module "appservice_app_backendl3_slot_staging" {
-  source = "github.com/pagopa/terraform-azurerm-v3//app_service_slot?ref=v8.27.0"
+  source = "github.com/pagopa/terraform-azurerm-v3//app_service_slot?ref=v8.28.1"
 
   # App service plan
   app_service_id   = module.appservice_app_backendl3.id
@@ -902,7 +902,7 @@ data "azurerm_subnet" "itn_msgs_sending_func_snet" {
 }
 
 module "appservice_app_backendl1" {
-  source = "github.com/pagopa/terraform-azurerm-v3//app_service?ref=v8.27.0"
+  source = "github.com/pagopa/terraform-azurerm-v3//app_service?ref=v8.28.1"
 
   # App service plan
   plan_type = "internal"
@@ -918,7 +918,15 @@ module "appservice_app_backendl1" {
   always_on                    = true
   app_command_line             = local.app_backend.app_command_line
   health_check_path            = "/ping"
-  health_check_maxpingfailures = 3
+  health_check_maxpingfailures = 2
+
+  auto_heal_enabled = true
+  auto_heal_settings = {
+    startup_time           = "00:05:00"
+    slow_requests_count    = 50
+    slow_requests_interval = "00:01:00"
+    slow_requests_time     = "00:00:05"
+  }
 
   app_settings = merge(
     local.app_backend.app_settings_common,
@@ -944,7 +952,7 @@ module "appservice_app_backendl1" {
 }
 
 module "appservice_app_backendl1_slot_staging" {
-  source = "github.com/pagopa/terraform-azurerm-v3//app_service_slot?ref=v8.27.0"
+  source = "github.com/pagopa/terraform-azurerm-v3//app_service_slot?ref=v8.28.1"
 
   # App service plan
   app_service_id   = module.appservice_app_backendl1.id
@@ -959,6 +967,14 @@ module "appservice_app_backendl1_slot_staging" {
   node_version      = "18-lts"
   app_command_line  = local.app_backend.app_command_line
   health_check_path = "/ping"
+
+  auto_heal_enabled = true
+  auto_heal_settings = {
+    startup_time           = "00:05:00"
+    slow_requests_count    = 50
+    slow_requests_interval = "00:01:00"
+    slow_requests_time     = "00:00:10"
+  }
 
   app_settings = merge(
     local.app_backend.app_settings_common,
@@ -981,145 +997,6 @@ module "appservice_app_backendl1_slot_staging" {
   vnet_integration = true
 
   tags = var.tags
-}
-
-resource "azurerm_monitor_autoscale_setting" "appservice_app_backendl1" {
-  name                = format("%s-autoscale", module.appservice_app_backendl1.name)
-  resource_group_name = azurerm_resource_group.rg_linux.name
-  location            = azurerm_resource_group.rg_linux.location
-  target_resource_id  = module.appservice_app_backendl1.plan_id
-
-
-  # Scaling strategy
-  # 05 - 19,30 -> min 3
-  # 19,30 - 23 -> min 4
-  # 23 - 05 -> min 2
-  dynamic "profile" {
-    for_each = local.autoscale_profiles
-    iterator = profile_info
-
-    content {
-      name = profile_info.value.name
-
-      dynamic "recurrence" {
-        for_each = profile_info.value.recurrence != null ? [profile_info.value.recurrence] : []
-        iterator = recurrence_info
-
-        content {
-          timezone = "W. Europe Standard Time"
-          hours    = [recurrence_info.value.hours]
-          minutes  = [recurrence_info.value.minutes]
-          days = [
-            "Monday",
-            "Tuesday",
-            "Wednesday",
-            "Thursday",
-            "Friday",
-            "Saturday",
-            "Sunday"
-          ]
-        }
-      }
-
-      capacity {
-        default = profile_info.value.capacity.default
-        minimum = profile_info.value.capacity.minimum
-        maximum = profile_info.value.capacity.maximum
-      }
-
-      # Increase rules
-
-      rule {
-        metric_trigger {
-          metric_name              = "Requests"
-          metric_resource_id       = module.appservice_app_backendl1.id
-          metric_namespace         = "microsoft.web/sites"
-          time_grain               = "PT1M"
-          statistic                = "Average"
-          time_window              = "PT1M"
-          time_aggregation         = "Average"
-          operator                 = "GreaterThan"
-          threshold                = 4000
-          divide_by_instance_count = false
-        }
-
-        scale_action {
-          direction = "Increase"
-          type      = "ChangeCount"
-          value     = "2"
-          cooldown  = "PT1M"
-        }
-      }
-
-      rule {
-        metric_trigger {
-          metric_name              = "CpuPercentage"
-          metric_resource_id       = module.appservice_app_backendl1.plan_id
-          metric_namespace         = "microsoft.web/serverfarms"
-          time_grain               = "PT1M"
-          statistic                = "Average"
-          time_window              = "PT1M"
-          time_aggregation         = "Average"
-          operator                 = "GreaterThan"
-          threshold                = 40
-          divide_by_instance_count = false
-        }
-
-        scale_action {
-          direction = "Increase"
-          type      = "ChangeCount"
-          value     = "2"
-          cooldown  = "PT1M"
-        }
-      }
-
-      # Decrease rules
-
-      rule {
-        metric_trigger {
-          metric_name              = "Requests"
-          metric_resource_id       = module.appservice_app_backendl1.id
-          metric_namespace         = "microsoft.web/sites"
-          time_grain               = "PT1M"
-          statistic                = "Average"
-          time_window              = "PT15M"
-          time_aggregation         = "Average"
-          operator                 = "LessThan"
-          threshold                = 1500
-          divide_by_instance_count = false
-        }
-
-        scale_action {
-          direction = "Decrease"
-          type      = "ChangeCount"
-          value     = "1"
-          cooldown  = "PT30M"
-        }
-      }
-
-      rule {
-        metric_trigger {
-          metric_name              = "CpuPercentage"
-          metric_resource_id       = module.appservice_app_backendl1.plan_id
-          metric_namespace         = "microsoft.web/serverfarms"
-          time_grain               = "PT1M"
-          statistic                = "Average"
-          time_window              = "PT15M"
-          time_aggregation         = "Average"
-          operator                 = "LessThan"
-          threshold                = 15
-          divide_by_instance_count = false
-        }
-
-        scale_action {
-          direction = "Decrease"
-          type      = "ChangeCount"
-          value     = "1"
-          cooldown  = "PT30M"
-        }
-      }
-    }
-  }
 }
 
 ## app_backendl2
@@ -1151,7 +1028,7 @@ resource "azurerm_subnet_nat_gateway_association" "app_backendl2_snet" {
 }
 
 module "appservice_app_backendl2" {
-  source = "github.com/pagopa/terraform-azurerm-v3//app_service?ref=v8.27.0"
+  source = "github.com/pagopa/terraform-azurerm-v3//app_service?ref=v8.28.1"
 
   # App service plan
   plan_type = "internal"
@@ -1167,7 +1044,15 @@ module "appservice_app_backendl2" {
   node_version                 = "18-lts"
   app_command_line             = local.app_backend.app_command_line
   health_check_path            = "/ping"
-  health_check_maxpingfailures = 3
+  health_check_maxpingfailures = 2
+
+  auto_heal_enabled = true
+  auto_heal_settings = {
+    startup_time           = "00:05:00"
+    slow_requests_count    = 50
+    slow_requests_interval = "00:01:00"
+    slow_requests_time     = "00:00:05"
+  }
 
   app_settings = merge(
     local.app_backend.app_settings_common,
@@ -1193,7 +1078,7 @@ module "appservice_app_backendl2" {
 }
 
 module "appservice_app_backendl2_slot_staging" {
-  source = "github.com/pagopa/terraform-azurerm-v3//app_service_slot?ref=v8.27.0"
+  source = "github.com/pagopa/terraform-azurerm-v3//app_service_slot?ref=v8.28.1"
 
   # App service plan
   app_service_id   = module.appservice_app_backendl2.id
@@ -1208,6 +1093,14 @@ module "appservice_app_backendl2_slot_staging" {
   node_version      = "18-lts"
   app_command_line  = local.app_backend.app_command_line
   health_check_path = "/ping"
+
+  auto_heal_enabled = true
+  auto_heal_settings = {
+    startup_time           = "00:05:00"
+    slow_requests_count    = 50
+    slow_requests_interval = "00:01:00"
+    slow_requests_time     = "00:00:10"
+  }
 
   app_settings = merge(
     local.app_backend.app_settings_common,
@@ -1230,145 +1123,6 @@ module "appservice_app_backendl2_slot_staging" {
   vnet_integration = true
 
   tags = var.tags
-}
-
-resource "azurerm_monitor_autoscale_setting" "appservice_app_backendl2" {
-  name                = format("%s-autoscale", module.appservice_app_backendl2.name)
-  resource_group_name = azurerm_resource_group.rg_linux.name
-  location            = azurerm_resource_group.rg_linux.location
-  target_resource_id  = module.appservice_app_backendl2.plan_id
-
-  # Scaling strategy
-  # 05 - 19,30 -> min 3
-  # 19,30 - 23 -> min 4
-  # 23 - 05 -> min 2
-  dynamic "profile" {
-    for_each = local.autoscale_profiles
-    iterator = profile_info
-
-    content {
-      name = profile_info.value.name
-
-      dynamic "recurrence" {
-        for_each = profile_info.value.recurrence != null ? [profile_info.value.recurrence] : []
-        iterator = recurrence_info
-
-        content {
-          timezone = "W. Europe Standard Time"
-          hours    = [recurrence_info.value.hours]
-          minutes  = [recurrence_info.value.minutes]
-          days = [
-            "Monday",
-            "Tuesday",
-            "Wednesday",
-            "Thursday",
-            "Friday",
-            "Saturday",
-            "Sunday"
-          ]
-        }
-      }
-
-      capacity {
-        default = profile_info.value.capacity.default
-        minimum = profile_info.value.capacity.minimum
-        maximum = profile_info.value.capacity.maximum
-      }
-
-
-      # Increase rules
-
-      rule {
-        metric_trigger {
-          metric_name              = "Requests"
-          metric_resource_id       = module.appservice_app_backendl2.id
-          metric_namespace         = "microsoft.web/sites"
-          time_grain               = "PT1M"
-          statistic                = "Average"
-          time_window              = "PT1M"
-          time_aggregation         = "Average"
-          operator                 = "GreaterThan"
-          threshold                = 4000
-          divide_by_instance_count = false
-        }
-
-        scale_action {
-          direction = "Increase"
-          type      = "ChangeCount"
-          value     = "2"
-          cooldown  = "PT1M"
-        }
-      }
-
-      rule {
-        metric_trigger {
-          metric_name              = "CpuPercentage"
-          metric_resource_id       = module.appservice_app_backendl2.plan_id
-          metric_namespace         = "microsoft.web/serverfarms"
-          time_grain               = "PT1M"
-          statistic                = "Average"
-          time_window              = "PT1M"
-          time_aggregation         = "Average"
-          operator                 = "GreaterThan"
-          threshold                = 40
-          divide_by_instance_count = false
-        }
-
-        scale_action {
-          direction = "Increase"
-          type      = "ChangeCount"
-          value     = "2"
-          cooldown  = "PT1M"
-        }
-      }
-
-      # Decrease rules
-
-      rule {
-        metric_trigger {
-          metric_name              = "Requests"
-          metric_resource_id       = module.appservice_app_backendl2.id
-          metric_namespace         = "microsoft.web/sites"
-          time_grain               = "PT1M"
-          statistic                = "Average"
-          time_window              = "PT15M"
-          time_aggregation         = "Average"
-          operator                 = "LessThan"
-          threshold                = 1500
-          divide_by_instance_count = false
-        }
-
-        scale_action {
-          direction = "Decrease"
-          type      = "ChangeCount"
-          value     = "1"
-          cooldown  = "PT30M"
-        }
-      }
-
-      rule {
-        metric_trigger {
-          metric_name              = "CpuPercentage"
-          metric_resource_id       = module.appservice_app_backendl2.plan_id
-          metric_namespace         = "microsoft.web/serverfarms"
-          time_grain               = "PT1M"
-          statistic                = "Average"
-          time_window              = "PT15M"
-          time_aggregation         = "Average"
-          operator                 = "LessThan"
-          threshold                = 15
-          divide_by_instance_count = false
-        }
-
-        scale_action {
-          direction = "Decrease"
-          type      = "ChangeCount"
-          value     = "1"
-          cooldown  = "PT30M"
-        }
-      }
-    }
-  }
 }
 
 ## app_backendli

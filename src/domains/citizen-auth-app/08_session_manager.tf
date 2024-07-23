@@ -199,7 +199,7 @@ locals {
 #################################
 
 module "session_manager_weu" {
-  source = "github.com/pagopa/terraform-azurerm-v3//app_service?ref=v8.22.0"
+  source = "github.com/pagopa/terraform-azurerm-v3//app_service?ref=v8.28.1"
 
   # App service plan
   plan_type              = "internal"
@@ -216,7 +216,15 @@ module "session_manager_weu" {
   node_version                 = "20-lts"
   app_command_line             = "npm run start"
   health_check_path            = "/healthcheck"
-  health_check_maxpingfailures = 3
+  health_check_maxpingfailures = 2
+
+  auto_heal_enabled = true
+  auto_heal_settings = {
+    startup_time           = "00:05:00"
+    slow_requests_count    = 50
+    slow_requests_interval = "00:01:00"
+    slow_requests_time     = "00:00:10"
+  }
 
   app_settings = merge(
     local.app_settings_common,
@@ -243,7 +251,7 @@ module "session_manager_weu" {
 
 ## staging slot
 module "session_manager_weu_staging" {
-  source = "github.com/pagopa/terraform-azurerm-v3//app_service_slot?ref=v8.22.0"
+  source = "github.com/pagopa/terraform-azurerm-v3//app_service_slot?ref=v8.28.1"
 
   app_service_id   = module.session_manager_weu.id
   app_service_name = module.session_manager_weu.name
@@ -256,6 +264,14 @@ module "session_manager_weu_staging" {
   node_version      = "20-lts"
   app_command_line  = "npm run start"
   health_check_path = "/healthcheck"
+
+  auto_heal_enabled = true
+  auto_heal_settings = {
+    startup_time           = "00:05:00"
+    slow_requests_count    = 50
+    slow_requests_interval = "00:01:00"
+    slow_requests_time     = "00:00:10"
+  }
 
   app_settings = merge(
     local.app_settings_common,
@@ -278,114 +294,4 @@ module "session_manager_weu_staging" {
   vnet_integration = true
 
   tags = var.tags
-}
-
-## autoscaling
-resource "azurerm_monitor_autoscale_setting" "session_manager_weu_autoscale_setting" {
-  name                = format("%s-autoscale-02", module.session_manager_weu.name)
-  resource_group_name = azurerm_resource_group.session_manager_rg_weu.name
-  location            = azurerm_resource_group.session_manager_rg_weu.location
-  target_resource_id  = module.session_manager_weu.plan_id
-
-  profile {
-    name = "default"
-
-    capacity {
-      default = var.session_manager_autoscale_settings.autoscale_default
-      minimum = var.session_manager_autoscale_settings.autoscale_minimum
-      maximum = var.session_manager_autoscale_settings.autoscale_maximum
-    }
-
-    # Increase rules
-
-    rule {
-      metric_trigger {
-        metric_name              = "Requests"
-        metric_resource_id       = module.session_manager_weu.id
-        metric_namespace         = "microsoft.web/sites"
-        time_grain               = "PT1M"
-        statistic                = "Average"
-        time_window              = "PT1M"
-        time_aggregation         = "Average"
-        operator                 = "GreaterThan"
-        threshold                = 1500
-        divide_by_instance_count = false
-      }
-
-      scale_action {
-        direction = "Increase"
-        type      = "ChangeCount"
-        value     = "2"
-        cooldown  = "PT1M"
-      }
-    }
-
-    rule {
-      metric_trigger {
-        metric_name              = "CpuPercentage"
-        metric_resource_id       = module.session_manager_weu.plan_id
-        metric_namespace         = "microsoft.web/serverfarms"
-        time_grain               = "PT1M"
-        statistic                = "Average"
-        time_window              = "PT1M"
-        time_aggregation         = "Average"
-        operator                 = "GreaterThan"
-        threshold                = 70
-        divide_by_instance_count = false
-      }
-
-      scale_action {
-        direction = "Increase"
-        type      = "ChangeCount"
-        value     = "2"
-        cooldown  = "PT1M"
-      }
-    }
-
-    # Decrease rules
-
-    rule {
-      metric_trigger {
-        metric_name              = "Requests"
-        metric_resource_id       = module.session_manager_weu.id
-        metric_namespace         = "microsoft.web/sites"
-        time_grain               = "PT1M"
-        statistic                = "Average"
-        time_window              = "PT15M"
-        time_aggregation         = "Average"
-        operator                 = "LessThan"
-        threshold                = 500
-        divide_by_instance_count = false
-      }
-
-      scale_action {
-        direction = "Decrease"
-        type      = "ChangeCount"
-        value     = "1"
-        cooldown  = "PT30M"
-      }
-    }
-
-    rule {
-      metric_trigger {
-        metric_name              = "CpuPercentage"
-        metric_resource_id       = module.session_manager_weu.plan_id
-        metric_namespace         = "microsoft.web/serverfarms"
-        time_grain               = "PT1M"
-        statistic                = "Average"
-        time_window              = "PT15M"
-        time_aggregation         = "Average"
-        operator                 = "LessThan"
-        threshold                = 15
-        divide_by_instance_count = false
-      }
-
-      scale_action {
-        direction = "Decrease"
-        type      = "ChangeCount"
-        value     = "1"
-        cooldown  = "PT30M"
-      }
-    }
-  }
 }
