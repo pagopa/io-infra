@@ -139,8 +139,8 @@ locals {
     },
     {
       # https://api.io.italia.it
-      name                              = trimsuffix(azurerm_dns_a_record.api_io_italia_it.fqdn, "."),
-      host                              = trimsuffix(azurerm_dns_a_record.api_io_italia_it.fqdn, "."),
+      name                              = trimsuffix(data.azurerm_dns_a_record.api_io_italia_it.fqdn, "."),
+      host                              = trimsuffix(data.azurerm_dns_a_record.api_io_italia_it.fqdn, "."),
       path                              = "",
       frequency                         = 900
       http_status                       = 404,
@@ -148,8 +148,8 @@ locals {
     },
     {
       # https://app-backend.io.italia.it/info
-      name                              = trimsuffix(azurerm_dns_a_record.app_backend_io_italia_it.fqdn, "."),
-      host                              = trimsuffix(azurerm_dns_a_record.app_backend_io_italia_it.fqdn, "."),
+      name                              = trimsuffix(data.azurerm_dns_a_record.app_backend_io_italia_it.fqdn, "."),
+      host                              = trimsuffix(data.azurerm_dns_a_record.app_backend_io_italia_it.fqdn, "."),
       path                              = "/info",
       frequency                         = 900
       http_status                       = 200,
@@ -185,7 +185,7 @@ locals {
     {
       # CIE https://app-backend.io.italia.it/login?authLevel=SpidL2&entityID=xx_servizicie
       name                              = "CIE",
-      host                              = trimsuffix(azurerm_dns_a_record.app_backend_io_italia_it.fqdn, "."),
+      host                              = trimsuffix(data.azurerm_dns_a_record.app_backend_io_italia_it.fqdn, "."),
       path                              = "/login?authLevel=SpidL2&entityID=xx_servizicie",
       frequency                         = 900
       http_status                       = 200,
@@ -202,7 +202,7 @@ locals {
     {
       # SpidL2-arubaid https://app-backend.io.italia.it/login?authLevel=SpidL2&entityID=arubaid
       name                              = "SpidL2-arubaid",
-      host                              = trimsuffix(azurerm_dns_a_record.app_backend_io_italia_it.fqdn, "."),
+      host                              = trimsuffix(data.azurerm_dns_a_record.app_backend_io_italia_it.fqdn, "."),
       path                              = "/login?authLevel=SpidL2&entityID=arubaid",
       frequency                         = 900
       http_status                       = 200,
@@ -211,7 +211,7 @@ locals {
     {
       # SpidL2-infocertid https://app-backend.io.italia.it/login?authLevel=SpidL2&entityID=infocertid
       name                              = "SpidL2-infocertid",
-      host                              = trimsuffix(azurerm_dns_a_record.app_backend_io_italia_it.fqdn, "."),
+      host                              = trimsuffix(data.azurerm_dns_a_record.app_backend_io_italia_it.fqdn, "."),
       path                              = "/login?authLevel=SpidL2&entityID=infocertid",
       frequency                         = 900
       http_status                       = 200,
@@ -220,7 +220,7 @@ locals {
     {
       # SpidL2-lepidaid https://app-backend.io.italia.it/login?authLevel=SpidL2&entityID=lepidaid
       name                              = "SpidL2-lepidaid",
-      host                              = trimsuffix(azurerm_dns_a_record.app_backend_io_italia_it.fqdn, "."),
+      host                              = trimsuffix(data.azurerm_dns_a_record.app_backend_io_italia_it.fqdn, "."),
       path                              = "/login?authLevel=SpidL2&entityID=lepidaid",
       frequency                         = 900
       http_status                       = 200,
@@ -229,7 +229,7 @@ locals {
     {
       # SpidL2-namirialid https://app-backend.io.italia.it/login?authLevel=SpidL2&entityID=namirialid
       name                              = "SpidL2-namirialid",
-      host                              = trimsuffix(azurerm_dns_a_record.app_backend_io_italia_it.fqdn, "."),
+      host                              = trimsuffix(data.azurerm_dns_a_record.app_backend_io_italia_it.fqdn, "."),
       path                              = "/login?authLevel=SpidL2&entityID=namirialid",
       frequency                         = 900
       http_status                       = 200,
@@ -238,7 +238,7 @@ locals {
     {
       # SpidL2-posteid https://app-backend.io.italia.it/login?authLevel=SpidL2&entityID=posteid
       name                              = "SpidL2-posteid",
-      host                              = trimsuffix(azurerm_dns_a_record.app_backend_io_italia_it.fqdn, "."),
+      host                              = trimsuffix(data.azurerm_dns_a_record.app_backend_io_italia_it.fqdn, "."),
       path                              = "/login?authLevel=SpidL2&entityID=posteid",
       frequency                         = 900
       http_status                       = 200,
@@ -247,7 +247,7 @@ locals {
     {
       # SpidL2-sielteid https://app-backend.io.italia.it/login?authLevel=SpidL2&entityID=sielteid
       name                              = "SpidL2-sielteid",
-      host                              = trimsuffix(azurerm_dns_a_record.app_backend_io_italia_it.fqdn, "."),
+      host                              = trimsuffix(data.azurerm_dns_a_record.app_backend_io_italia_it.fqdn, "."),
       path                              = "/login?authLevel=SpidL2&entityID=sielteid",
       frequency                         = 900
       http_status                       = 200,
@@ -256,7 +256,7 @@ locals {
     {
       # SpidL2-spiditalia https://app-backend.io.italia.it/login?authLevel=SpidL2&entityID=spiditalia
       name                              = "SpidL2-spiditalia",
-      host                              = trimsuffix(azurerm_dns_a_record.app_backend_io_italia_it.fqdn, "."),
+      host                              = trimsuffix(data.azurerm_dns_a_record.app_backend_io_italia_it.fqdn, "."),
       path                              = "/login?authLevel=SpidL2&entityID=spiditalia",
       frequency                         = 900
       http_status                       = 200,
@@ -265,7 +265,7 @@ locals {
     #{
     #  # SpidL2-etna https://app-backend.io.italia.it/login?authLevel=SpidL2&entityID=ehtid
     #  name                              = "SpidL2-etna",
-    #  host                              = trimsuffix(azurerm_dns_a_record.app_backend_io_italia_it.fqdn, "."),
+    #  host                              = trimsuffix(data.azurerm_dns_a_record.app_backend_io_italia_it.fqdn, "."),
     #  path                              = "/login?authLevel=SpidL2&entityID=ehtid",
     #  http_status                       = 200,
     #  ssl_cert_remaining_lifetime_check = 1,
@@ -273,7 +273,7 @@ locals {
     {
       # SpidL2-infocamere https://app-backend.io.italia.it/login?authLevel=SpidL2&entityID=infocamereid
       name                              = "SpidL2-infocamere",
-      host                              = trimsuffix(azurerm_dns_a_record.app_backend_io_italia_it.fqdn, "."),
+      host                              = trimsuffix(data.azurerm_dns_a_record.app_backend_io_italia_it.fqdn, "."),
       path                              = "/login?authLevel=SpidL2&entityID=infocamereid",
       frequency                         = 900
       http_status                       = 200,
@@ -282,15 +282,15 @@ locals {
     # { # temp disabled because tim blocked application insights ip
     #   # SpidL2-timid https://app-backend.io.italia.it/login?authLevel=SpidL2&entityID=timid
     #   name        = "SpidL2-timid",
-    #   host        = trimsuffix(azurerm_dns_a_record.app_backend_io_italia_it.fqdn, "."),
+    #   host        = trimsuffix(data.azurerm_dns_a_record.app_backend_io_italia_it.fqdn, "."),
     #   path        = "/login?authLevel=SpidL2&entityID=timid",
     #   http_status = 200,
     #   ssl_cert_remaining_lifetime_check = 1,
     # },
     {
       # https://api.io.pagopa.it
-      name                              = trimsuffix(azurerm_dns_a_record.api_io_pagopa_it.fqdn, "."),
-      host                              = trimsuffix(azurerm_dns_a_record.api_io_pagopa_it.fqdn, "."),
+      name                              = trimsuffix(data.azurerm_dns_a_record.api_io_pagopa_it.fqdn, "."),
+      host                              = trimsuffix(data.azurerm_dns_a_record.api_io_pagopa_it.fqdn, "."),
       path                              = "",
       frequency                         = 900
       http_status                       = 404,
@@ -298,8 +298,8 @@ locals {
     },
     {
       # https://api-app.io.pagopa.it/info
-      name                              = trimsuffix(azurerm_dns_a_record.api_app_io_pagopa_it.fqdn, "."),
-      host                              = trimsuffix(azurerm_dns_a_record.api_app_io_pagopa_it.fqdn, "."),
+      name                              = trimsuffix(data.azurerm_dns_a_record.api_app_io_pagopa_it.fqdn, "."),
+      host                              = trimsuffix(data.azurerm_dns_a_record.api_app_io_pagopa_it.fqdn, "."),
       path                              = "/info",
       frequency                         = 900
       http_status                       = 200,
@@ -307,8 +307,8 @@ locals {
     },
     {
       # https://api-web.io.pagopa.it
-      name                              = trimsuffix(azurerm_dns_a_record.api_web_io_pagopa_it.fqdn, "."),
-      host                              = trimsuffix(azurerm_dns_a_record.api_web_io_pagopa_it.fqdn, "."),
+      name                              = trimsuffix(data.azurerm_dns_a_record.api_web_io_pagopa_it.fqdn, "."),
+      host                              = trimsuffix(data.azurerm_dns_a_record.api_web_io_pagopa_it.fqdn, "."),
       path                              = "",
       frequency                         = 900
       http_status                       = 404,
@@ -316,8 +316,8 @@ locals {
     },
     {
       # https://api-mtls.io.pagopa.it
-      name                              = trimsuffix(azurerm_dns_a_record.api_mtls_io_pagopa_it.fqdn, "."),
-      host                              = trimsuffix(azurerm_dns_a_record.api_mtls_io_pagopa_it.fqdn, "."),
+      name                              = trimsuffix(data.azurerm_dns_a_record.api_mtls_io_pagopa_it.fqdn, "."),
+      host                              = trimsuffix(data.azurerm_dns_a_record.api_mtls_io_pagopa_it.fqdn, "."),
       path                              = "",
       frequency                         = 900
       http_status                       = 400,
@@ -325,8 +325,8 @@ locals {
     },
     {
       # https://api.io.selfcare.pagopa.it/info
-      name                              = trimsuffix(azurerm_dns_a_record.api_io_selfcare_pagopa_it.fqdn, "."),
-      host                              = trimsuffix(azurerm_dns_a_record.api_io_selfcare_pagopa_it.fqdn, "."),
+      name                              = trimsuffix(data.azurerm_dns_a_record.api_io_selfcare_pagopa_it.fqdn, "."),
+      host                              = trimsuffix(data.azurerm_dns_a_record.api_io_selfcare_pagopa_it.fqdn, "."),
       path                              = "/info",
       frequency                         = 900
       http_status                       = 200,
@@ -343,8 +343,8 @@ locals {
     },
     {
       # https://firmaconio.selfcare.pagopa.it
-      name                              = trimsuffix(azurerm_dns_a_record.firmaconio_selfcare_pagopa_it.fqdn, "."),
-      host                              = trimsuffix(azurerm_dns_a_record.firmaconio_selfcare_pagopa_it.fqdn, "."),
+      name                              = trimsuffix(data.azurerm_dns_a_record.firmaconio_selfcare_pagopa_it.fqdn, "."),
+      host                              = trimsuffix(data.azurerm_dns_a_record.firmaconio_selfcare_pagopa_it.fqdn, "."),
       path                              = "/health",
       frequency                         = 900
       http_status                       = 200,
@@ -361,8 +361,8 @@ locals {
     },
     {
       # https://continua.io.pagopa.it
-      name                              = trimsuffix(azurerm_dns_a_record.continua_io_pagopa_it.fqdn, "."),
-      host                              = trimsuffix(azurerm_dns_a_record.continua_io_pagopa_it.fqdn, "."),
+      name                              = trimsuffix(data.azurerm_dns_a_record.continua_io_pagopa_it.fqdn, "."),
+      host                              = trimsuffix(data.azurerm_dns_a_record.continua_io_pagopa_it.fqdn, "."),
       path                              = "",
       frequency                         = 900
       http_status                       = 302,
@@ -374,7 +374,7 @@ locals {
 
 module "web_test_api" {
   for_each = { for v in local.test_urls : v.name => v if v != null }
-  source   = "github.com/pagopa/terraform-azurerm-v3//application_insights_web_test_preview?ref=v8.27.0"
+  source   = "github.com/pagopa/terraform-azurerm-v3//application_insights_web_test_preview?ref=v8.29.1"
 
   subscription_id                   = data.azurerm_subscription.current.subscription_id
   name                              = format("%s-test", each.value.name)

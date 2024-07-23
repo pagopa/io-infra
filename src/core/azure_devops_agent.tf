@@ -13,7 +13,7 @@ module "azdoa_snet" {
   name                                      = "azure-devops"
   address_prefixes                          = var.cidr_subnet_azdoa
   resource_group_name                       = azurerm_resource_group.rg_common.name
-  virtual_network_name                      = module.vnet_common.name
+  virtual_network_name                      = data.azurerm_virtual_network.common.name
   private_endpoint_network_policies_enabled = false
 
   service_endpoints = [
