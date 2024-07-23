@@ -150,7 +150,7 @@ locals {
 
     # UNIQUE EMAIL ENFORCEMENT
     FF_UNIQUE_EMAIL_ENFORCEMENT    = "ALL"
-    UNIQUE_EMAIL_ENFORCEMENT_USERS = join(",", [data.azurerm_key_vault_secret.session_manager_UNIQUE_EMAIL_ENFORCEMENT_USER.value, module.tests.test_users_unique_email_test[0]])
+    UNIQUE_EMAIL_ENFORCEMENT_USERS = data.azurerm_key_vault_secret.session_manager_UNIQUE_EMAIL_ENFORCEMENT_USER.value
 
     # MITIGATION APP BUG EMAIL VALIDATION
     IS_SPID_EMAIL_PERSISTENCE_ENABLED = "false"
