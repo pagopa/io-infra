@@ -1,6 +1,6 @@
 resource "azurerm_dns_zone" "io_italia_it" {
-  name                = join(".", [var.dns_zone_io, "italia.it"])
-  resource_group_name = azurerm_resource_group.rg_external.name
+  name                = join(".", [var.dns_zones.io, "italia.it"])
+  resource_group_name = var.resource_groups.external
 
   tags = var.tags
 }
@@ -8,7 +8,7 @@ resource "azurerm_dns_zone" "io_italia_it" {
 resource "azurerm_dns_caa_record" "io_italia_it" {
   name                = "@"
   zone_name           = azurerm_dns_zone.io_italia_it.name
-  resource_group_name = azurerm_resource_group.rg_external.name
+  resource_group_name = var.resource_groups.external
   ttl                 = var.dns_default_ttl_sec
 
   record {
@@ -37,9 +37,9 @@ resource "azurerm_dns_caa_record" "io_italia_it" {
 resource "azurerm_dns_a_record" "developerportal_backend_io_italia_it" {
   name                = "developerportal-backend"
   zone_name           = azurerm_dns_zone.io_italia_it.name
-  resource_group_name = azurerm_resource_group.rg_external.name
+  resource_group_name = var.resource_groups.external
   ttl                 = var.dns_default_ttl_sec
-  records             = [azurerm_public_ip.appgateway_public_ip.ip_address]
+  records             = [var.app_gateway_public_ip]
 
   tags = var.tags
 }
@@ -48,9 +48,9 @@ resource "azurerm_dns_a_record" "developerportal_backend_io_italia_it" {
 resource "azurerm_dns_a_record" "api_io_italia_it" {
   name                = "api"
   zone_name           = azurerm_dns_zone.io_italia_it.name
-  resource_group_name = azurerm_resource_group.rg_external.name
+  resource_group_name = var.resource_groups.external
   ttl                 = var.dns_default_ttl_sec
-  records             = [azurerm_public_ip.appgateway_public_ip.ip_address]
+  records             = [var.app_gateway_public_ip]
 
   tags = var.tags
 }
@@ -59,9 +59,9 @@ resource "azurerm_dns_a_record" "api_io_italia_it" {
 resource "azurerm_dns_a_record" "app_backend_io_italia_it" {
   name                = "app-backend"
   zone_name           = azurerm_dns_zone.io_italia_it.name
-  resource_group_name = azurerm_resource_group.rg_external.name
+  resource_group_name = var.resource_groups.external
   ttl                 = var.dns_default_ttl_sec
-  records             = [azurerm_public_ip.appgateway_public_ip.ip_address]
+  records             = [var.app_gateway_public_ip]
 
   tags = var.tags
 }
@@ -70,9 +70,9 @@ resource "azurerm_dns_a_record" "app_backend_io_italia_it" {
 resource "azurerm_dns_a_record" "api_internal_io_italia_it" {
   name                = "api-internal"
   zone_name           = azurerm_dns_zone.io_italia_it.name
-  resource_group_name = azurerm_resource_group.rg_external.name
+  resource_group_name = var.resource_groups.external
   ttl                 = var.dns_default_ttl_sec
-  records             = module.apim_v2.*.private_ip_addresses[0]
+  records             = [var.apim_v2_private_ip]
 
   tags = var.tags
 }
@@ -81,7 +81,7 @@ resource "azurerm_dns_a_record" "api_internal_io_italia_it" {
 resource "azurerm_dns_txt_record" "zendeskverification_io_italia_it" {
   name                = "zendeskverification"
   zone_name           = azurerm_dns_zone.io_italia_it.name
-  resource_group_name = azurerm_resource_group.rg_external.name
+  resource_group_name = var.resource_groups.external
   ttl                 = var.dns_default_ttl_sec
   record {
     value = "1da62a0d3c1426ec"
@@ -93,7 +93,7 @@ resource "azurerm_dns_txt_record" "zendeskverification_io_italia_it" {
 resource "azurerm_dns_txt_record" "io_italia_it" {
   name                = "@"
   zone_name           = azurerm_dns_zone.io_italia_it.name
-  resource_group_name = azurerm_resource_group.rg_external.name
+  resource_group_name = var.resource_groups.external
   ttl                 = var.dns_default_ttl_sec
   record {
     value = "v=spf1 include:musvc.com include:_spf.google.com include:mail.zendesk.com -all"
@@ -105,7 +105,7 @@ resource "azurerm_dns_txt_record" "io_italia_it" {
 resource "azurerm_dns_cname_record" "sender" {
   name                = "sender"
   zone_name           = azurerm_dns_zone.io_italia_it.name
-  resource_group_name = azurerm_resource_group.rg_external.name
+  resource_group_name = var.resource_groups.external
   ttl                 = var.dns_default_ttl_sec
   record              = "bounce.musvc.com"
 }
