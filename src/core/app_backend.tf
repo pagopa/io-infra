@@ -986,7 +986,7 @@ module "appservice_app_backendl1_slot_staging" {
     local.app_backend.app_settings_common,
     local.app_backend.app_settings_l1,
   )
-  
+
   ip_restriction_default_action = "Deny"
 
   allowed_subnets = [
@@ -1117,7 +1117,7 @@ module "appservice_app_backendl2_slot_staging" {
     local.app_backend.app_settings_l2,
   )
 
-  # ip_restriction_default_action = "Deny"
+  ip_restriction_default_action = "Deny"
 
   allowed_subnets = [
     module.azdoa_snet[0].id,
