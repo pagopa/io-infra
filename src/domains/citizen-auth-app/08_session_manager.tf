@@ -113,7 +113,8 @@ locals {
     # APPINSIGHTS
     APPINSIGHTS_CONNECTION_STRING   = data.azurerm_application_insights.application_insights.connection_string
     APPINSIGHTS_DISABLED            = false
-    APPINSIGHTS_SAMPLING_PERCENTAGE = 100
+    APPINSIGHTS_SAMPLING_PERCENTAGE = 30
+    APPINSIGHTS_REDIS_TRACE_ENABLED = "true"
 
     API_BASE_PATH = "/api/v1"
 
