@@ -66,6 +66,16 @@ data "azurerm_key_vault_secret" "session_manager_ALLOW_FIMS_IP_SOURCE_RANGE" {
   key_vault_id = data.azurerm_key_vault.kv.id
 }
 
+data "azurerm_key_vault_secret" "session_manager_UNIQUE_EMAIL_ENFORCEMENT_USER" {
+  name         = "session-manager-UNIQUE-EMAIL-ENFORCEMENT-USER"
+  key_vault_id = data.azurerm_key_vault.kv.id
+}
+
+data "azurerm_key_vault_secret" "session_manager_IOLOGIN_TEST_USERS" {
+  name         = "session-manager-IOLOGIN-TEST-USERS"
+  key_vault_id = data.azurerm_key_vault.kv.id
+}
+
 ###########
 
 resource "azurerm_resource_group" "session_manager_rg_weu" {
@@ -103,7 +113,8 @@ locals {
     # APPINSIGHTS
     APPINSIGHTS_CONNECTION_STRING   = data.azurerm_application_insights.application_insights.connection_string
     APPINSIGHTS_DISABLED            = false
-    APPINSIGHTS_SAMPLING_PERCENTAGE = 100
+    APPINSIGHTS_SAMPLING_PERCENTAGE = 30
+    APPINSIGHTS_REDIS_TRACE_ENABLED = "true"
 
     API_BASE_PATH = "/api/v1"
 
@@ -136,6 +147,19 @@ locals {
     # Fast Login config
     FF_FAST_LOGIN = "ALL"
     LV_TEST_USERS = module.tests.test_users.all
+
+    # UNIQUE EMAIL ENFORCEMENT
+    FF_UNIQUE_EMAIL_ENFORCEMENT    = "ALL"
+    UNIQUE_EMAIL_ENFORCEMENT_USERS = data.azurerm_key_vault_secret.session_manager_UNIQUE_EMAIL_ENFORCEMENT_USER.value
+
+    # MITIGATION APP BUG EMAIL VALIDATION
+    IS_SPID_EMAIL_PERSISTENCE_ENABLED = "false"
+
+    # IOLOGIN redirect
+    FF_IOLOGIN         = "BETA"
+    IOLOGIN_TEST_USERS = data.azurerm_key_vault_secret.session_manager_IOLOGIN_TEST_USERS.value
+    # Takes ~6,25% of users
+    IOLOGIN_CANARY_USERS_REGEX = "^([(0-9)|(a-f)|(A-F)]{63}0)$"
 
     # Test Login config
     TEST_LOGIN_FISCAL_CODES = module.tests.test_users.all
@@ -191,6 +215,9 @@ locals {
     # PAGOPA config
     PAGOPA_BASE_PATH             = "/pagopa/api/v1"
     ALLOW_PAGOPA_IP_SOURCE_RANGE = data.azurerm_key_vault_secret.session_manager_ALLOW_PAGOPA_IP_SOURCE_RANGE.value
+
+    # Feature Flag
+    FF_USER_AGE_LIMIT_ENABLED = 1
   }
 }
 
