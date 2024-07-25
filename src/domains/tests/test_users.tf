@@ -31,9 +31,11 @@ locals {
   ]
 
   # A list of fiscal code to be uset to execute load test for Fast Login initiative on IO
-  test_users_fast_login_load_test = [
+  test_users_fast_login_load_test = concat([
     for i in range(0, 1000) : format("LVTEST00A00A%03dX", i)
-  ]
+    ], [
+    for i in range(0, 1000) : format("LVTEST00A00B%03dX", i)
+  ])
 
   # A list of fiscal code to be used to test for Unique Email Enforcement initiative on IO
   test_users_unique_email_test = [

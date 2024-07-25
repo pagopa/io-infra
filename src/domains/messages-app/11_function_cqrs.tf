@@ -109,7 +109,7 @@ locals {
 }
 
 module "function_messages_cqrs_snet" {
-  source = "github.com/pagopa/terraform-azurerm-v3//subnet?ref=v7.70.1"
+  source = "github.com/pagopa/terraform-azurerm-v3//subnet?ref=v8.27.0"
 
   name                                      = format("%s-fn-messages-cqrs-snet", local.product)
   address_prefixes                          = var.cidr_subnet_fnmessagescqrs
@@ -133,7 +133,7 @@ module "function_messages_cqrs_snet" {
 }
 
 module "function_messages_cqrs" {
-  source = "github.com/pagopa/terraform-azurerm-v3//function_app?ref=v7.70.1"
+  source = "github.com/pagopa/terraform-azurerm-v3//function_app?ref=v8.27.0"
 
   resource_group_name = azurerm_resource_group.backend_messages_rg.name
   name                = format("%s-messages-cqrs-fn", local.product)
@@ -155,6 +155,7 @@ module "function_messages_cqrs" {
     access_tier                       = "Hot"
     advanced_threat_protection_enable = true
     use_legacy_defender_version       = false
+    public_network_access_enabled     = false
   }
 
   node_version                             = "18"
@@ -234,7 +235,7 @@ module "function_messages_cqrs" {
 }
 
 module "function_messages_cqrs_staging_slot" {
-  source = "github.com/pagopa/terraform-azurerm-v3//function_app_slot?ref=v7.70.1"
+  source = "github.com/pagopa/terraform-azurerm-v3//function_app_slot?ref=v8.27.0"
 
   name                = "staging"
   location            = var.location
@@ -283,7 +284,7 @@ module "function_messages_cqrs_staging_slot" {
 }
 
 resource "azurerm_monitor_autoscale_setting" "function_messages_cqrs" {
-  name                = format("%s-autoscale", module.function_messages_cqrs.name)
+  name                = "${replace(module.function_messages_cqrs.name, "fn", "as")}-01"
   resource_group_name = azurerm_resource_group.backend_messages_rg.name
   location            = var.location
   target_resource_id  = module.function_messages_cqrs.app_service_plan_id
@@ -292,8 +293,8 @@ resource "azurerm_monitor_autoscale_setting" "function_messages_cqrs" {
     name = "default"
 
     capacity {
-      default = 1
-      minimum = 1
+      default = 3
+      minimum = 2
       maximum = 30
     }
 
@@ -303,19 +304,19 @@ resource "azurerm_monitor_autoscale_setting" "function_messages_cqrs" {
         metric_resource_id       = module.function_messages_cqrs.id
         metric_namespace         = "microsoft.web/sites"
         time_grain               = "PT1M"
-        statistic                = "Average"
+        statistic                = "Max"
         time_window              = "PT1M"
-        time_aggregation         = "Average"
+        time_aggregation         = "Maximum"
         operator                 = "GreaterThan"
-        threshold                = 3500
-        divide_by_instance_count = false
+        threshold                = 3000
+        divide_by_instance_count = true
       }
 
       scale_action {
         direction = "Increase"
         type      = "ChangeCount"
         value     = "2"
-        cooldown  = "PT5M"
+        cooldown  = "PT1M"
       }
     }
 
@@ -325,19 +326,19 @@ resource "azurerm_monitor_autoscale_setting" "function_messages_cqrs" {
         metric_resource_id       = module.function_messages_cqrs.app_service_plan_id
         metric_namespace         = "microsoft.web/serverfarms"
         time_grain               = "PT1M"
-        statistic                = "Average"
-        time_window              = "PT5M"
-        time_aggregation         = "Average"
+        statistic                = "Max"
+        time_window              = "PT1M"
+        time_aggregation         = "Maximum"
         operator                 = "GreaterThan"
-        threshold                = 60
+        threshold                = 40
         divide_by_instance_count = false
       }
 
       scale_action {
         direction = "Increase"
         type      = "ChangeCount"
-        value     = "2"
-        cooldown  = "PT5M"
+        value     = "3"
+        cooldown  = "PT2M"
       }
     }
 
@@ -348,18 +349,18 @@ resource "azurerm_monitor_autoscale_setting" "function_messages_cqrs" {
         metric_namespace         = "microsoft.web/sites"
         time_grain               = "PT1M"
         statistic                = "Average"
-        time_window              = "PT15M"
+        time_window              = "PT5M"
         time_aggregation         = "Average"
         operator                 = "LessThan"
-        threshold                = 2500
-        divide_by_instance_count = false
+        threshold                = 300
+        divide_by_instance_count = true
       }
 
       scale_action {
         direction = "Decrease"
         type      = "ChangeCount"
         value     = "1"
-        cooldown  = "PT10M"
+        cooldown  = "PT1M"
       }
     }
 
@@ -373,7 +374,7 @@ resource "azurerm_monitor_autoscale_setting" "function_messages_cqrs" {
         time_window              = "PT5M"
         time_aggregation         = "Average"
         operator                 = "LessThan"
-        threshold                = 30
+        threshold                = 15
         divide_by_instance_count = false
       }
 
@@ -381,7 +382,7 @@ resource "azurerm_monitor_autoscale_setting" "function_messages_cqrs" {
         direction = "Decrease"
         type      = "ChangeCount"
         value     = "1"
-        cooldown  = "PT20M"
+        cooldown  = "PT1M"
       }
     }
   }

@@ -12,11 +12,11 @@ resource "azurerm_public_ip" "appgateway_public_ip" {
 
 # Subnet to host the application gateway
 module "appgateway_snet" {
-  source                                    = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v7.61.0"
+  source                                    = "github.com/pagopa/terraform-azurerm-v3//subnet?ref=v8.27.0"
   name                                      = format("%s-appgateway-snet", local.project)
   address_prefixes                          = var.cidr_subnet_appgateway
   resource_group_name                       = azurerm_resource_group.rg_common.name
-  virtual_network_name                      = module.vnet_common.name
+  virtual_network_name                      = data.azurerm_virtual_network.common.name
   private_endpoint_network_policies_enabled = true
 
   service_endpoints = [
@@ -47,7 +47,7 @@ locals {
 
 ## Application gateway ##
 module "app_gw" {
-  source = "github.com/pagopa/terraform-azurerm-v3.git//app_gateway?ref=v8.20.0"
+  source = "github.com/pagopa/terraform-azurerm-v3//app_gateway?ref=v8.31.0"
 
   resource_group_name = azurerm_resource_group.rg_external.name
   location            = azurerm_resource_group.rg_external.location
@@ -543,28 +543,28 @@ module "app_gw" {
         },
         test-login = {
           paths                 = ["/test-login"]
-          backend               = "appbackend-app",
-          rewrite_rule_set_name = "rewrite-rule-set-api-app-rewrite-to-session-manager"
+          backend               = "session-manager-app",
+          rewrite_rule_set_name = "rewrite-rule-set-api-app"
         },
         login = {
           paths                 = ["/login"]
-          backend               = "appbackend-app",
-          rewrite_rule_set_name = "rewrite-rule-set-api-app-rewrite-to-session-manager"
+          backend               = "session-manager-app",
+          rewrite_rule_set_name = "rewrite-rule-set-api-app"
         },
         acs = {
           paths                 = ["/assertionConsumerService"]
-          backend               = "appbackend-app",
-          rewrite_rule_set_name = "rewrite-rule-set-api-app-rewrite-to-session-manager"
+          backend               = "session-manager-app",
+          rewrite_rule_set_name = "rewrite-rule-set-api-app"
         },
         fast-login = {
           paths                 = ["/api/v1/fast-login"]
-          backend               = "appbackend-app",
-          rewrite_rule_set_name = "rewrite-rule-set-api-app-rewrite-to-session-manager"
+          backend               = "session-manager-app",
+          rewrite_rule_set_name = "rewrite-rule-set-api-app"
         },
         nonce-fast-login = {
           paths                 = ["/api/v1/fast-login/nonce/generate"]
-          backend               = "appbackend-app",
-          rewrite_rule_set_name = "rewrite-rule-set-api-app-rewrite-to-session-manager"
+          backend               = "session-manager-app",
+          rewrite_rule_set_name = "rewrite-rule-set-api-app"
         },
         logout = {
           paths                 = ["/logout"]
@@ -578,18 +578,18 @@ module "app_gw" {
         },
         bpd-user = {
           paths                 = ["/bpd/api/v1/user"]
-          backend               = "appbackend-app",
-          rewrite_rule_set_name = "rewrite-rule-set-api-app-rewrite-to-session-manager"
+          backend               = "session-manager-app",
+          rewrite_rule_set_name = "rewrite-rule-set-api-app"
         },
         zendesk-user = {
           paths                 = ["/api/backend/zendesk/v1/jwt"]
-          backend               = "appbackend-app",
-          rewrite_rule_set_name = "rewrite-rule-set-api-app-rewrite-to-session-manager"
+          backend               = "session-manager-app",
+          rewrite_rule_set_name = "rewrite-rule-set-api-app"
         },
         pagopa-user = {
           paths                 = ["/pagopa/api/v1/user"]
-          backend               = "appbackend-app",
-          rewrite_rule_set_name = "rewrite-rule-set-api-app-rewrite-to-session-manager"
+          backend               = "session-manager-app",
+          rewrite_rule_set_name = "rewrite-rule-set-api-app"
         },
       }
     }
@@ -667,6 +667,7 @@ module "app_gw" {
             path         = "/session-manager{var_uri_path}"
             query_string = null
             reroute      = true
+            components   = "path_only"
           }
           request_header_configurations  = []
           response_header_configurations = []
@@ -690,6 +691,7 @@ module "app_gw" {
             path         = "/{var_uri_path_1}"
             query_string = null
             reroute      = false
+            components   = "path_only"
           }
           request_header_configurations  = []
           response_header_configurations = []

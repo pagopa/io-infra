@@ -5,7 +5,7 @@
 | Name | Version |
 |------|---------|
 | <a name="requirement_azuread"></a> [azuread](#requirement\_azuread) | <= 2.33.0 |
-| <a name="requirement_azurerm"></a> [azurerm](#requirement\_azurerm) | <= 3.96.0 |
+| <a name="requirement_azurerm"></a> [azurerm](#requirement\_azurerm) | <= 3.112.0 |
 | <a name="requirement_helm"></a> [helm](#requirement\_helm) | = 2.8.0 |
 | <a name="requirement_kubernetes"></a> [kubernetes](#requirement\_kubernetes) | = 2.17.0 |
 | <a name="requirement_null"></a> [null](#requirement\_null) | <= 3.2.1 |
@@ -14,21 +14,21 @@
 
 | Name | Source | Version |
 |------|--------|---------|
-| <a name="module_app_messages_function"></a> [app\_messages\_function](#module\_app\_messages\_function) | github.com/pagopa/terraform-azurerm-v3//function_app | v7.69.1 |
-| <a name="module_app_messages_function_staging_slot"></a> [app\_messages\_function\_staging\_slot](#module\_app\_messages\_function\_staging\_slot) | github.com/pagopa/terraform-azurerm-v3//function_app_slot | v7.69.1 |
-| <a name="module_app_messages_snet"></a> [app\_messages\_snet](#module\_app\_messages\_snet) | github.com/pagopa/terraform-azurerm-v3//subnet | v7.69.1 |
-| <a name="module_event_hub"></a> [event\_hub](#module\_event\_hub) | github.com/pagopa/terraform-azurerm-v3//eventhub | v7.69.1 |
-| <a name="module_function_messages_cqrs"></a> [function\_messages\_cqrs](#module\_function\_messages\_cqrs) | github.com/pagopa/terraform-azurerm-v3//function_app | v7.70.1 |
-| <a name="module_function_messages_cqrs_snet"></a> [function\_messages\_cqrs\_snet](#module\_function\_messages\_cqrs\_snet) | github.com/pagopa/terraform-azurerm-v3//subnet | v7.70.1 |
-| <a name="module_function_messages_cqrs_staging_slot"></a> [function\_messages\_cqrs\_staging\_slot](#module\_function\_messages\_cqrs\_staging\_slot) | github.com/pagopa/terraform-azurerm-v3//function_app_slot | v7.70.1 |
-| <a name="module_function_service_messages"></a> [function\_service\_messages](#module\_function\_service\_messages) | github.com/pagopa/terraform-azurerm-v3//function_app | v7.70.1 |
-| <a name="module_function_service_messages_snet"></a> [function\_service\_messages\_snet](#module\_function\_service\_messages\_snet) | github.com/pagopa/terraform-azurerm-v3//subnet | v7.70.1 |
-| <a name="module_function_service_messages_staging_slot"></a> [function\_service\_messages\_staging\_slot](#module\_function\_service\_messages\_staging\_slot) | github.com/pagopa/terraform-azurerm-v3//function_app_slot | v7.70.1 |
-| <a name="module_pod_identity"></a> [pod\_identity](#module\_pod\_identity) | github.com/pagopa/terraform-azurerm-v3//kubernetes_pod_identity | v7.69.1 |
-| <a name="module_push_notif_function"></a> [push\_notif\_function](#module\_push\_notif\_function) | github.com/pagopa/terraform-azurerm-v3//function_app | v7.71.1 |
-| <a name="module_push_notif_function_staging_slot"></a> [push\_notif\_function\_staging\_slot](#module\_push\_notif\_function\_staging\_slot) | github.com/pagopa/terraform-azurerm-v3//function_app_slot | v7.71.1 |
-| <a name="module_push_notif_snet"></a> [push\_notif\_snet](#module\_push\_notif\_snet) | github.com/pagopa/terraform-azurerm-v3//subnet | v7.69.1 |
-| <a name="module_services_storage"></a> [services\_storage](#module\_services\_storage) | github.com/pagopa/terraform-azurerm-v3//storage_account | v7.69.1 |
+| <a name="module_app_messages_function"></a> [app\_messages\_function](#module\_app\_messages\_function) | github.com/pagopa/terraform-azurerm-v3//function_app | v8.27.0 |
+| <a name="module_app_messages_function_staging_slot"></a> [app\_messages\_function\_staging\_slot](#module\_app\_messages\_function\_staging\_slot) | github.com/pagopa/terraform-azurerm-v3//function_app_slot | v8.27.0 |
+| <a name="module_app_messages_snet"></a> [app\_messages\_snet](#module\_app\_messages\_snet) | github.com/pagopa/terraform-azurerm-v3//subnet | v8.27.0 |
+| <a name="module_event_hub"></a> [event\_hub](#module\_event\_hub) | github.com/pagopa/terraform-azurerm-v3//eventhub | v8.27.0 |
+| <a name="module_function_messages_cqrs"></a> [function\_messages\_cqrs](#module\_function\_messages\_cqrs) | github.com/pagopa/terraform-azurerm-v3//function_app | v8.27.0 |
+| <a name="module_function_messages_cqrs_snet"></a> [function\_messages\_cqrs\_snet](#module\_function\_messages\_cqrs\_snet) | github.com/pagopa/terraform-azurerm-v3//subnet | v8.27.0 |
+| <a name="module_function_messages_cqrs_staging_slot"></a> [function\_messages\_cqrs\_staging\_slot](#module\_function\_messages\_cqrs\_staging\_slot) | github.com/pagopa/terraform-azurerm-v3//function_app_slot | v8.27.0 |
+| <a name="module_function_service_messages"></a> [function\_service\_messages](#module\_function\_service\_messages) | github.com/pagopa/terraform-azurerm-v3//function_app | v8.27.0 |
+| <a name="module_function_service_messages_snet"></a> [function\_service\_messages\_snet](#module\_function\_service\_messages\_snet) | github.com/pagopa/terraform-azurerm-v3//subnet | v8.27.0 |
+| <a name="module_function_service_messages_staging_slot"></a> [function\_service\_messages\_staging\_slot](#module\_function\_service\_messages\_staging\_slot) | github.com/pagopa/terraform-azurerm-v3//function_app_slot | v8.27.0 |
+| <a name="module_pod_identity"></a> [pod\_identity](#module\_pod\_identity) | github.com/pagopa/terraform-azurerm-v3//kubernetes_pod_identity | v8.27.0 |
+| <a name="module_push_notif_function"></a> [push\_notif\_function](#module\_push\_notif\_function) | github.com/pagopa/terraform-azurerm-v3//function_app | v8.27.0 |
+| <a name="module_push_notif_function_staging_slot"></a> [push\_notif\_function\_staging\_slot](#module\_push\_notif\_function\_staging\_slot) | github.com/pagopa/terraform-azurerm-v3//function_app_slot | v8.27.0 |
+| <a name="module_push_notif_snet"></a> [push\_notif\_snet](#module\_push\_notif\_snet) | github.com/pagopa/terraform-azurerm-v3//subnet | v8.27.0 |
+| <a name="module_services_storage"></a> [services\_storage](#module\_services\_storage) | github.com/pagopa/terraform-azurerm-v3//storage_account | v8.27.0 |
 
 ## Resources
 
@@ -111,6 +111,7 @@
 | [azurerm_subnet.apim_snet](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/subnet) | data source |
 | [azurerm_subnet.app_backendl1_snet](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/subnet) | data source |
 | [azurerm_subnet.app_backendl2_snet](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/subnet) | data source |
+| [azurerm_subnet.app_backendl3_snet](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/subnet) | data source |
 | [azurerm_subnet.azdoa_snet](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/subnet) | data source |
 | [azurerm_subnet.private_endpoints_subnet](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/subnet) | data source |
 | [azurerm_subnet.runner_subnet](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/subnet) | data source |
@@ -170,9 +171,6 @@
 | <a name="input_push_notif_count"></a> [push\_notif\_count](#input\_push\_notif\_count) | n/a | `number` | `2` | no |
 | <a name="input_push_notif_enabled"></a> [push\_notif\_enabled](#input\_push\_notif\_enabled) | Push Notif function enabled? | `bool` | `false` | no |
 | <a name="input_push_notif_function_always_on"></a> [push\_notif\_function\_always\_on](#input\_push\_notif\_function\_always\_on) | n/a | `bool` | `false` | no |
-| <a name="input_push_notif_function_autoscale_default"></a> [push\_notif\_function\_autoscale\_default](#input\_push\_notif\_function\_autoscale\_default) | The number of instances that are available for scaling if metrics are not available for evaluation. | `number` | `1` | no |
-| <a name="input_push_notif_function_autoscale_maximum"></a> [push\_notif\_function\_autoscale\_maximum](#input\_push\_notif\_function\_autoscale\_maximum) | The maximum number of instances for this resource. | `number` | `3` | no |
-| <a name="input_push_notif_function_autoscale_minimum"></a> [push\_notif\_function\_autoscale\_minimum](#input\_push\_notif\_function\_autoscale\_minimum) | The minimum number of instances for this resource. | `number` | `1` | no |
 | <a name="input_push_notif_function_kind"></a> [push\_notif\_function\_kind](#input\_push\_notif\_function\_kind) | App service plan kind | `string` | `null` | no |
 | <a name="input_push_notif_function_sku_size"></a> [push\_notif\_function\_sku\_size](#input\_push\_notif\_function\_sku\_size) | App service plan sku size | `string` | `null` | no |
 | <a name="input_push_notif_function_sku_tier"></a> [push\_notif\_function\_sku\_tier](#input\_push\_notif\_function\_sku\_tier) | App service plan sku tier | `string` | `null` | no |

@@ -25,6 +25,9 @@ locals {
       FETCH_KEEPALIVE_FREE_SOCKET_TIMEOUT = "30000"
       FETCH_KEEPALIVE_TIMEOUT             = "60000"
 
+      // see https://learn.microsoft.com/en-us/azure/app-service/monitor-instances-health-check?tabs=dotnet#configuration
+      WEBSITE_HEALTHCHECK_MAXUNHEALTHYWORKERPERCENT = "95"
+
       // SPID
       SAML_CALLBACK_URL                      = "https://app-backend.io.italia.it/assertionConsumerService"
       SAML_CERT                              = trimspace(data.azurerm_key_vault_secret.app_backend_SAML_CERT.value)
@@ -67,7 +70,7 @@ locals {
       LOLLIPOP_API_KEY            = data.azurerm_key_vault_secret.app_backend_LOLLIPOP_ITN_API_KEY.value
       FAST_LOGIN_API_URL          = "https://io-p-weu-fast-login-fn.azurewebsites.net"
       FAST_LOGIN_API_KEY          = data.azurerm_key_vault_secret.app_backend_FAST_LOGIN_API_KEY.value
-      TRIAL_SYSTEM_API_URL        = "https://ts-p-itn-subscription-fn-01.azurewebsites.net" # PROD-TRIAL subscription
+      TRIAL_SYSTEM_API_URL        = "https://ts-p-itn-api-func-01.azurewebsites.net" # PROD-TRIAL subscription
       TRIAL_SYSTEM_API_KEY        = data.azurerm_key_vault_secret.app_backend_TRIAL_SYSTEM_API_KEY.value
       IO_WALLET_API_URL           = "https://io-p-itn-wallet-user-func-01.azurewebsites.net"
       IO_WALLET_API_KEY           = data.azurerm_key_vault_secret.app_backend_IO_WALLET_API_KEY.value
@@ -84,9 +87,9 @@ locals {
       IO_WALLET_API_BASE_PATH           = "/api/v1/wallet"
 
       // REDIS
-      REDIS_URL      = module.redis_common.hostname
-      REDIS_PORT     = module.redis_common.ssl_port
-      REDIS_PASSWORD = module.redis_common.primary_access_key
+      REDIS_URL      = data.azurerm_redis_cache.redis_common.hostname
+      REDIS_PORT     = data.azurerm_redis_cache.redis_common.ssl_port
+      REDIS_PASSWORD = data.azurerm_redis_cache.redis_common.primary_access_key
 
       // PUSH NOTIFICATIONS
       PRE_SHARED_KEY               = data.azurerm_key_vault_secret.app_backend_PRE_SHARED_KEY.value
@@ -145,13 +148,14 @@ locals {
       USERS_LOGIN_STORAGE_CONNECTION_STRING = data.azurerm_storage_account.logs.primary_connection_string
 
       // Feature flags
-      FF_BONUS_ENABLED          = 1
-      FF_CGN_ENABLED            = 1
-      FF_EUCOVIDCERT_ENABLED    = 1
-      FF_MIT_VOUCHER_ENABLED    = 1
-      FF_USER_AGE_LIMIT_ENABLED = 1
-      FF_IO_SIGN_ENABLED        = 1
-      FF_IO_WALLET_ENABLED      = 0
+      FF_BONUS_ENABLED           = 1
+      FF_CGN_ENABLED             = 1
+      FF_EUCOVIDCERT_ENABLED     = 1
+      FF_MIT_VOUCHER_ENABLED     = 1
+      FF_USER_AGE_LIMIT_ENABLED  = 1
+      FF_IO_SIGN_ENABLED         = 1
+      FF_IO_WALLET_ENABLED       = 0
+      FF_IO_WALLET_TRIAL_ENABLED = 1
 
       FF_ROUTING_PUSH_NOTIF                      = "ALL" # possible values are: BETA, CANARY, ALL, NONE
       FF_ROUTING_PUSH_NOTIF_BETA_TESTER_SHA_LIST = data.azurerm_key_vault_secret.app_backend_APP_MESSAGES_BETA_FISCAL_CODES.value
@@ -159,7 +163,7 @@ locals {
       FF_ROUTING_PUSH_NOTIF_CANARY_SHA_USERS_REGEX = "^([(0-9)|(a-f)|(A-F)]{63}[(0-4)]{1})$"
 
       FF_PN_ACTIVATION_ENABLED = "1"
-      FF_TRIAL_SYSTEM_ENABLED  = "0"
+      FF_TRIAL_SYSTEM_ENABLED  = "1"
 
       // TEST LOGIN
       TEST_LOGIN_PASSWORD     = data.azurerm_key_vault_secret.app_backend_TEST_LOGIN_PASSWORD.value
@@ -196,6 +200,9 @@ locals {
 
       // Service ID IO-SIGN
       IO_SIGN_SERVICE_ID = var.io_sign_service_id
+
+      // IO Wallet TRIAL ID
+      IO_WALLET_TRIAL_ID = var.io_wallet_trial_id
 
       // PN Service Activation
       PN_ACTIVATION_BASE_PATH = "/api/v1/pn"
@@ -322,7 +329,7 @@ locals {
       FF_FAST_LOGIN = "ALL"
       LV_TEST_USERS = join(",", [data.azurerm_key_vault_secret.app_backend_LV_TEST_USERS.value, local.test_users])
 
-      BACKEND_HOST = "https://${trimsuffix(azurerm_dns_a_record.api_app_io_pagopa_it.fqdn, ".")}"
+      BACKEND_HOST = "https://${trimsuffix(data.azurerm_dns_a_record.api_app_io_pagopa_it.fqdn, ".")}"
 
       // CLOCK SKEW LOG EVENT
       HAS_CLOCK_SKEW_LOG_EVENT = "false"
@@ -352,6 +359,12 @@ locals {
       API_URL              = "https://${data.azurerm_linux_function_app.function_app[1].default_hostname}/api/v1"
       APP_MESSAGES_API_URL = "https://${data.azurerm_linux_function_app.app_messages_2.default_hostname}/api/v1"
     }
+    app_settings_l3 = {
+      IS_APPBACKENDLI = "false"
+      // FUNCTIONS
+      API_URL              = "https://${data.azurerm_linux_function_app.function_app[1].default_hostname}/api/v1"
+      APP_MESSAGES_API_URL = "https://${data.azurerm_linux_function_app.app_messages_2.default_hostname}/api/v1"
+    }
     app_settings_li = {
       IS_APPBACKENDLI = "true"
       // FUNCTIONS
@@ -372,6 +385,13 @@ locals {
       id          = "io-p-app-appbackendl2.azurewebsites.net"
       name        = module.appservice_app_backendl2.default_site_hostname,
       host        = module.appservice_app_backendl2.default_site_hostname,
+      path        = "/info",
+      http_status = 200,
+    },
+    {
+      id          = "io-p-app-appbackendl3.azurewebsites.net"
+      name        = module.appservice_app_backendl3.default_site_hostname,
+      host        = module.appservice_app_backendl3.default_site_hostname,
       path        = "/info",
       http_status = 200,
     },
@@ -448,6 +468,13 @@ locals {
 
 resource "azurerm_resource_group" "rg_linux" {
   name     = format("%s-rg-linux", local.project)
+  location = var.location
+
+  tags = var.tags
+}
+
+resource "azurerm_resource_group" "backend3" {
+  name     = format("%s-weu-backend-rg-03", local.project)
   location = var.location
 
   tags = var.tags
@@ -648,7 +675,7 @@ data "azurerm_key_vault_secret" "app_backend_IO_WALLET_API_KEY" {
 #tfsec:ignore:AZU023
 resource "azurerm_key_vault_secret" "appbackend-REDIS-PASSWORD" {
   name         = "appbackend-REDIS-PASSWORD"
-  value        = module.redis_common.primary_access_key
+  value        = data.azurerm_redis_cache.redis_common.primary_access_key
   key_vault_id = module.key_vault_common.id
   content_type = "string"
 }
@@ -701,14 +728,145 @@ resource "azurerm_key_vault_secret" "appbackend_THIRD_PARTY_CONFIG_LIST" {
   content_type = "string"
 }
 
+## app_backendl3
+module "app_backendl3_snet" {
+  source                                    = "github.com/pagopa/terraform-azurerm-v3//subnet?ref=v8.27.0"
+  name                                      = "${local.project}-weu-backend-snet-03"
+  address_prefixes                          = ["10.0.156.0/24"]
+  resource_group_name                       = azurerm_resource_group.rg_common.name
+  virtual_network_name                      = data.azurerm_virtual_network.common.name
+  private_endpoint_network_policies_enabled = true
+
+  service_endpoints = [
+    "Microsoft.Web",
+  ]
+
+  delegation = {
+    name = "default"
+    service_delegation = {
+      name    = "Microsoft.Web/serverFarms"
+      actions = ["Microsoft.Network/virtualNetworks/subnets/action"]
+    }
+  }
+}
+
+resource "azurerm_subnet_nat_gateway_association" "app_backendl3_snet" {
+  nat_gateway_id = data.azurerm_nat_gateway.ng.id
+  subnet_id      = module.app_backendl3_snet.id
+}
+
+module "appservice_app_backendl3" {
+  source = "github.com/pagopa/terraform-azurerm-v3//app_service?ref=v8.31.0"
+
+  # App service plan
+  plan_type = "internal"
+  plan_name = format("%s-weu-backend-asp-03", local.project)
+  sku_name  = var.app_backend_plan_sku_size
+
+  # App service
+  name                = format("%s-weu-backend-app-03", local.project)
+  resource_group_name = azurerm_resource_group.backend3.name
+  location            = azurerm_resource_group.backend3.location
+
+  node_version                 = "18-lts"
+  always_on                    = true
+  app_command_line             = local.app_backend.app_command_line
+  health_check_path            = "/ping"
+  health_check_maxpingfailures = 2
+
+  app_settings = merge(
+    local.app_backend.app_settings_common,
+    local.app_backend.app_settings_l3,
+  )
+
+  ip_restriction_default_action = "Deny"
+
+  subnet_id        = module.app_backendl3_snet.id
+  vnet_integration = true
+
+  tags = var.tags
+}
+
+resource "azurerm_private_endpoint" "backend3_sites" {
+  name                = "${local.project}-weu-backend-app-pep-03"
+  location            = azurerm_resource_group.backend3.location
+  resource_group_name = azurerm_resource_group.backend3.name
+  subnet_id           = data.azurerm_subnet.private_endpoints_subnet.id
+
+  private_service_connection {
+    name                           = "${local.project}-weu-backend-app-pep-03"
+    private_connection_resource_id = module.appservice_app_backendl3.id
+    is_manual_connection           = false
+    subresource_names              = ["sites"]
+  }
+
+  private_dns_zone_group {
+    name                 = "private-dns-zone-group"
+    private_dns_zone_ids = [data.azurerm_private_dns_zone.privatelink_azurewebsites.id]
+  }
+
+  tags = var.tags
+}
+
+module "appservice_app_backendl3_slot_staging" {
+  source = "github.com/pagopa/terraform-azurerm-v3//app_service_slot?ref=v8.31.0"
+
+  # App service plan
+  app_service_id   = module.appservice_app_backendl3.id
+  app_service_name = module.appservice_app_backendl3.name
+
+  # App service
+  name                = "staging"
+  resource_group_name = azurerm_resource_group.backend3.name
+  location            = azurerm_resource_group.backend3.location
+
+  always_on         = true
+  node_version      = "18-lts"
+  app_command_line  = local.app_backend.app_command_line
+  health_check_path = "/ping"
+
+  app_settings = merge(
+    local.app_backend.app_settings_common,
+    local.app_backend.app_settings_l3,
+  )
+
+  ip_restriction_default_action = "Deny"
+
+  subnet_id        = module.app_backendl3_snet.id
+  vnet_integration = true
+
+  tags = var.tags
+}
+
+resource "azurerm_private_endpoint" "backend3_staging_sites" {
+  name                = "${local.project}-weu-backend-staging-app-pep-03"
+  location            = azurerm_resource_group.backend3.location
+  resource_group_name = azurerm_resource_group.backend3.name
+  subnet_id           = data.azurerm_subnet.private_endpoints_subnet.id
+
+  private_service_connection {
+    name                           = "${local.project}-weu-backend-staging-app-pep-03"
+    private_connection_resource_id = module.appservice_app_backendl3.id
+    is_manual_connection           = false
+    subresource_names              = ["sites-${module.appservice_app_backendl3_slot_staging.name}"]
+  }
+
+  private_dns_zone_group {
+    name                 = "private-dns-zone-group"
+    private_dns_zone_ids = [data.azurerm_private_dns_zone.privatelink_azurewebsites.id]
+  }
+
+  tags = var.tags
+}
+
 ## app_backendl1
 
 module "app_backendl1_snet" {
-  source                                    = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v7.61.0"
+  source                                    = "github.com/pagopa/terraform-azurerm-v3//subnet?ref=v8.27.0"
   name                                      = "appbackendl1"
   address_prefixes                          = var.cidr_subnet_appbackendl1
   resource_group_name                       = azurerm_resource_group.rg_common.name
-  virtual_network_name                      = module.vnet_common.name
+  virtual_network_name                      = data.azurerm_virtual_network.common.name
   private_endpoint_network_policies_enabled = true
 
   service_endpoints = [
@@ -725,19 +883,19 @@ module "app_backendl1_snet" {
 }
 
 resource "azurerm_subnet_nat_gateway_association" "app_backendl1_snet" {
-  nat_gateway_id = module.nat_gateway.id
+  nat_gateway_id = data.azurerm_nat_gateway.ng.id
   subnet_id      = module.app_backendl1_snet.id
 }
 
 data "azurerm_subnet" "functions_fast_login_snet" {
   name                 = format("%s-%s-fast-login-snet", local.project, var.location_short)
-  virtual_network_name = module.vnet_common.name
+  virtual_network_name = data.azurerm_virtual_network.common.name
   resource_group_name  = azurerm_resource_group.rg_common.name
 }
 
 data "azurerm_subnet" "functions_service_messages_snet" {
   name                 = "io-p-fn-service-messages-snet"
-  virtual_network_name = module.vnet_common.name
+  virtual_network_name = data.azurerm_virtual_network.common.name
   resource_group_name  = azurerm_resource_group.rg_common.name
 }
 
@@ -748,7 +906,7 @@ data "azurerm_subnet" "itn_msgs_sending_func_snet" {
 }
 
 module "appservice_app_backendl1" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//app_service?ref=v7.61.0"
+  source = "github.com/pagopa/terraform-azurerm-v3//app_service?ref=v8.31.0"
 
   # App service plan
   plan_type = "internal"
@@ -764,12 +922,22 @@ module "appservice_app_backendl1" {
   always_on                    = true
   app_command_line             = local.app_backend.app_command_line
   health_check_path            = "/ping"
-  health_check_maxpingfailures = 3
+  health_check_maxpingfailures = 2
+
+  auto_heal_enabled = true
+  auto_heal_settings = {
+    startup_time           = "00:05:00"
+    slow_requests_count    = 50
+    slow_requests_interval = "00:01:00"
+    slow_requests_time     = "00:00:05"
+  }
 
   app_settings = merge(
     local.app_backend.app_settings_common,
     local.app_backend.app_settings_l1,
   )
+
+  ip_restriction_default_action = "Deny"
 
   allowed_subnets = [
     data.azurerm_subnet.services_snet[0].id,
@@ -790,7 +958,7 @@ module "appservice_app_backendl1" {
 }
 
 module "appservice_app_backendl1_slot_staging" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//app_service_slot?ref=v7.61.0"
+  source = "github.com/pagopa/terraform-azurerm-v3//app_service_slot?ref=v8.31.0"
 
   # App service plan
   app_service_id   = module.appservice_app_backendl1.id
@@ -806,10 +974,20 @@ module "appservice_app_backendl1_slot_staging" {
   app_command_line  = local.app_backend.app_command_line
   health_check_path = "/ping"
 
+  auto_heal_enabled = true
+  auto_heal_settings = {
+    startup_time           = "00:05:00"
+    slow_requests_count    = 50
+    slow_requests_interval = "00:01:00"
+    slow_requests_time     = "00:00:10"
+  }
+
   app_settings = merge(
     local.app_backend.app_settings_common,
     local.app_backend.app_settings_l1,
   )
+
+  ip_restriction_default_action = "Deny"
 
   allowed_subnets = [
     module.azdoa_snet[0].id,
@@ -829,153 +1007,14 @@ module "appservice_app_backendl1_slot_staging" {
   tags = var.tags
 }
 
-resource "azurerm_monitor_autoscale_setting" "appservice_app_backendl1" {
-  name                = format("%s-autoscale", module.appservice_app_backendl1.name)
-  resource_group_name = azurerm_resource_group.rg_linux.name
-  location            = azurerm_resource_group.rg_linux.location
-  target_resource_id  = module.appservice_app_backendl1.plan_id
-
-
-  # Scaling strategy
-  # 05 - 19,30 -> min 3
-  # 19,30 - 23 -> min 4
-  # 23 - 05 -> min 2
-  dynamic "profile" {
-    for_each = local.autoscale_profiles
-    iterator = profile_info
-
-    content {
-      name = profile_info.value.name
-
-      dynamic "recurrence" {
-        for_each = profile_info.value.recurrence != null ? [profile_info.value.recurrence] : []
-        iterator = recurrence_info
-
-        content {
-          timezone = "W. Europe Standard Time"
-          hours    = [recurrence_info.value.hours]
-          minutes  = [recurrence_info.value.minutes]
-          days = [
-            "Monday",
-            "Tuesday",
-            "Wednesday",
-            "Thursday",
-            "Friday",
-            "Saturday",
-            "Sunday"
-          ]
-        }
-      }
-
-      capacity {
-        default = profile_info.value.capacity.default
-        minimum = profile_info.value.capacity.minimum
-        maximum = profile_info.value.capacity.maximum
-      }
-
-      # Increase rules
-
-      rule {
-        metric_trigger {
-          metric_name              = "Requests"
-          metric_resource_id       = module.appservice_app_backendl1.id
-          metric_namespace         = "microsoft.web/sites"
-          time_grain               = "PT1M"
-          statistic                = "Average"
-          time_window              = "PT1M"
-          time_aggregation         = "Average"
-          operator                 = "GreaterThan"
-          threshold                = 4000
-          divide_by_instance_count = false
-        }
-
-        scale_action {
-          direction = "Increase"
-          type      = "ChangeCount"
-          value     = "2"
-          cooldown  = "PT1M"
-        }
-      }
-
-      rule {
-        metric_trigger {
-          metric_name              = "CpuPercentage"
-          metric_resource_id       = module.appservice_app_backendl1.plan_id
-          metric_namespace         = "microsoft.web/serverfarms"
-          time_grain               = "PT1M"
-          statistic                = "Average"
-          time_window              = "PT1M"
-          time_aggregation         = "Average"
-          operator                 = "GreaterThan"
-          threshold                = 40
-          divide_by_instance_count = false
-        }
-
-        scale_action {
-          direction = "Increase"
-          type      = "ChangeCount"
-          value     = "2"
-          cooldown  = "PT1M"
-        }
-      }
-
-      # Decrease rules
-
-      rule {
-        metric_trigger {
-          metric_name              = "Requests"
-          metric_resource_id       = module.appservice_app_backendl1.id
-          metric_namespace         = "microsoft.web/sites"
-          time_grain               = "PT1M"
-          statistic                = "Average"
-          time_window              = "PT15M"
-          time_aggregation         = "Average"
-          operator                 = "LessThan"
-          threshold                = 1500
-          divide_by_instance_count = false
-        }
-
-        scale_action {
-          direction = "Decrease"
-          type      = "ChangeCount"
-          value     = "1"
-          cooldown  = "PT30M"
-        }
-      }
-
-      rule {
-        metric_trigger {
-          metric_name              = "CpuPercentage"
-          metric_resource_id       = module.appservice_app_backendl1.plan_id
-          metric_namespace         = "microsoft.web/serverfarms"
-          time_grain               = "PT1M"
-          statistic                = "Average"
-          time_window              = "PT15M"
-          time_aggregation         = "Average"
-          operator                 = "LessThan"
-          threshold                = 15
-          divide_by_instance_count = false
-        }
-
-        scale_action {
-          direction = "Decrease"
-          type      = "ChangeCount"
-          value     = "1"
-          cooldown  = "PT30M"
-        }
-      }
-    }
-  }
-}
-
 ## app_backendl2
 
 module "app_backendl2_snet" {
-  source                                    = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v7.61.0"
+  source                                    = "github.com/pagopa/terraform-azurerm-v3//subnet?ref=v8.27.0"
   name                                      = "appbackendl2"
   address_prefixes                          = var.cidr_subnet_appbackendl2
   resource_group_name                       = azurerm_resource_group.rg_common.name
-  virtual_network_name                      = module.vnet_common.name
+  virtual_network_name                      = data.azurerm_virtual_network.common.name
   private_endpoint_network_policies_enabled = true
 
   service_endpoints = [
@@ -992,12 +1031,12 @@ module "app_backendl2_snet" {
 }
 
 resource "azurerm_subnet_nat_gateway_association" "app_backendl2_snet" {
-  nat_gateway_id = module.nat_gateway.id
+  nat_gateway_id = data.azurerm_nat_gateway.ng.id
   subnet_id      = module.app_backendl2_snet.id
 }
 
 module "appservice_app_backendl2" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//app_service?ref=v7.61.0"
+  source = "github.com/pagopa/terraform-azurerm-v3//app_service?ref=v8.31.0"
 
   # App service plan
   plan_type = "internal"
@@ -1013,12 +1052,22 @@ module "appservice_app_backendl2" {
   node_version                 = "18-lts"
   app_command_line             = local.app_backend.app_command_line
   health_check_path            = "/ping"
-  health_check_maxpingfailures = 3
+  health_check_maxpingfailures = 2
+
+  auto_heal_enabled = true
+  auto_heal_settings = {
+    startup_time           = "00:05:00"
+    slow_requests_count    = 50
+    slow_requests_interval = "00:01:00"
+    slow_requests_time     = "00:00:05"
+  }
 
   app_settings = merge(
     local.app_backend.app_settings_common,
     local.app_backend.app_settings_l2,
   )
+
+  ip_restriction_default_action = "Deny"
 
   allowed_subnets = [
     data.azurerm_subnet.services_snet[0].id,
@@ -1039,7 +1088,7 @@ module "appservice_app_backendl2" {
 }
 
 module "appservice_app_backendl2_slot_staging" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//app_service_slot?ref=v7.61.0"
+  source = "github.com/pagopa/terraform-azurerm-v3//app_service_slot?ref=v8.31.0"
 
   # App service plan
   app_service_id   = module.appservice_app_backendl2.id
@@ -1055,10 +1104,20 @@ module "appservice_app_backendl2_slot_staging" {
   app_command_line  = local.app_backend.app_command_line
   health_check_path = "/ping"
 
+  auto_heal_enabled = true
+  auto_heal_settings = {
+    startup_time           = "00:05:00"
+    slow_requests_count    = 50
+    slow_requests_interval = "00:01:00"
+    slow_requests_time     = "00:00:10"
+  }
+
   app_settings = merge(
     local.app_backend.app_settings_common,
     local.app_backend.app_settings_l2,
   )
+
+  ip_restriction_default_action = "Deny"
 
   allowed_subnets = [
     module.azdoa_snet[0].id,
@@ -1078,153 +1137,14 @@ module "appservice_app_backendl2_slot_staging" {
   tags = var.tags
 }
 
-resource "azurerm_monitor_autoscale_setting" "appservice_app_backendl2" {
-  name                = format("%s-autoscale", module.appservice_app_backendl2.name)
-  resource_group_name = azurerm_resource_group.rg_linux.name
-  location            = azurerm_resource_group.rg_linux.location
-  target_resource_id  = module.appservice_app_backendl2.plan_id
-
-  # Scaling strategy
-  # 05 - 19,30 -> min 3
-  # 19,30 - 23 -> min 4
-  # 23 - 05 -> min 2
-  dynamic "profile" {
-    for_each = local.autoscale_profiles
-    iterator = profile_info
-
-    content {
-      name = profile_info.value.name
-
-      dynamic "recurrence" {
-        for_each = profile_info.value.recurrence != null ? [profile_info.value.recurrence] : []
-        iterator = recurrence_info
-
-        content {
-          timezone = "W. Europe Standard Time"
-          hours    = [recurrence_info.value.hours]
-          minutes  = [recurrence_info.value.minutes]
-          days = [
-            "Monday",
-            "Tuesday",
-            "Wednesday",
-            "Thursday",
-            "Friday",
-            "Saturday",
-            "Sunday"
-          ]
-        }
-      }
-
-      capacity {
-        default = profile_info.value.capacity.default
-        minimum = profile_info.value.capacity.minimum
-        maximum = profile_info.value.capacity.maximum
-      }
-
-
-      # Increase rules
-
-      rule {
-        metric_trigger {
-          metric_name              = "Requests"
-          metric_resource_id       = module.appservice_app_backendl2.id
-          metric_namespace         = "microsoft.web/sites"
-          time_grain               = "PT1M"
-          statistic                = "Average"
-          time_window              = "PT1M"
-          time_aggregation         = "Average"
-          operator                 = "GreaterThan"
-          threshold                = 4000
-          divide_by_instance_count = false
-        }
-
-        scale_action {
-          direction = "Increase"
-          type      = "ChangeCount"
-          value     = "2"
-          cooldown  = "PT1M"
-        }
-      }
-
-      rule {
-        metric_trigger {
-          metric_name              = "CpuPercentage"
-          metric_resource_id       = module.appservice_app_backendl2.plan_id
-          metric_namespace         = "microsoft.web/serverfarms"
-          time_grain               = "PT1M"
-          statistic                = "Average"
-          time_window              = "PT1M"
-          time_aggregation         = "Average"
-          operator                 = "GreaterThan"
-          threshold                = 40
-          divide_by_instance_count = false
-        }
-
-        scale_action {
-          direction = "Increase"
-          type      = "ChangeCount"
-          value     = "2"
-          cooldown  = "PT1M"
-        }
-      }
-
-      # Decrease rules
-
-      rule {
-        metric_trigger {
-          metric_name              = "Requests"
-          metric_resource_id       = module.appservice_app_backendl2.id
-          metric_namespace         = "microsoft.web/sites"
-          time_grain               = "PT1M"
-          statistic                = "Average"
-          time_window              = "PT15M"
-          time_aggregation         = "Average"
-          operator                 = "LessThan"
-          threshold                = 1500
-          divide_by_instance_count = false
-        }
-
-        scale_action {
-          direction = "Decrease"
-          type      = "ChangeCount"
-          value     = "1"
-          cooldown  = "PT30M"
-        }
-      }
-
-      rule {
-        metric_trigger {
-          metric_name              = "CpuPercentage"
-          metric_resource_id       = module.appservice_app_backendl2.plan_id
-          metric_namespace         = "microsoft.web/serverfarms"
-          time_grain               = "PT1M"
-          statistic                = "Average"
-          time_window              = "PT15M"
-          time_aggregation         = "Average"
-          operator                 = "LessThan"
-          threshold                = 15
-          divide_by_instance_count = false
-        }
-
-        scale_action {
-          direction = "Decrease"
-          type      = "ChangeCount"
-          value     = "1"
-          cooldown  = "PT30M"
-        }
-      }
-    }
-  }
-}
-
 ## app_backendli
 
 module "app_backendli_snet" {
-  source                                    = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v7.61.0"
+  source                                    = "github.com/pagopa/terraform-azurerm-v3//subnet?ref=v8.27.0"
   name                                      = "appbackendli"
   address_prefixes                          = var.cidr_subnet_appbackendli
   resource_group_name                       = azurerm_resource_group.rg_common.name
-  virtual_network_name                      = module.vnet_common.name
+  virtual_network_name                      = data.azurerm_virtual_network.common.name
   private_endpoint_network_policies_enabled = true
 
   service_endpoints = [
@@ -1241,17 +1161,16 @@ module "app_backendli_snet" {
 }
 
 resource "azurerm_subnet_nat_gateway_association" "app_backendli_snet" {
-  nat_gateway_id = module.nat_gateway.id
+  nat_gateway_id = data.azurerm_nat_gateway.ng.id
   subnet_id      = module.app_backendli_snet.id
 }
 
 module "appservice_app_backendli" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//app_service?ref=v7.61.0"
+  source = "github.com/pagopa/terraform-azurerm-v3//app_service?ref=v8.31.0"
 
   # App service plan
   plan_type = "internal"
   plan_name = format("%s-plan-appappbackendli", local.project)
-  plan_kind = "Linux"
   sku_name  = var.app_backend_plan_sku_size
 
   # App service
@@ -1269,6 +1188,8 @@ module "appservice_app_backendli" {
     local.app_backend.app_settings_common,
     local.app_backend.app_settings_li,
   )
+
+  ip_restriction_default_action = "Deny"
 
   allowed_subnets = [
     data.azurerm_subnet.services_snet[0].id,
@@ -1292,7 +1213,7 @@ module "appservice_app_backendli" {
 }
 
 module "appservice_app_backendli_slot_staging" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//app_service_slot?ref=v7.61.0"
+  source = "github.com/pagopa/terraform-azurerm-v3//app_service_slot?ref=v8.31.0"
 
   # App service plan
   app_service_id   = module.appservice_app_backendli.id
@@ -1312,6 +1233,8 @@ module "appservice_app_backendli_slot_staging" {
     local.app_backend.app_settings_common,
     local.app_backend.app_settings_li,
   )
+
+  ip_restriction_default_action = "Deny"
 
   allowed_subnets = [
     module.azdoa_snet[0].id,
@@ -1471,7 +1394,7 @@ resource "azurerm_monitor_autoscale_setting" "appservice_app_backendli" {
 ## web availabolity test
 module "app_backend_web_test_api" {
   for_each = { for v in local.app_backend_test_urls : v.id => v if v != null }
-  source   = "git::https://github.com/pagopa/terraform-azurerm-v3.git//application_insights_web_test_preview?ref=v7.61.0"
+  source   = "github.com/pagopa/terraform-azurerm-v3//application_insights_web_test_preview?ref=v8.29.1"
 
   subscription_id                   = data.azurerm_subscription.current.subscription_id
   name                              = format("%s-test", each.value.name)

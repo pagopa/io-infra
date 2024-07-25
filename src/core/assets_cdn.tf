@@ -6,7 +6,7 @@ resource "azurerm_resource_group" "assets_cdn_rg" {
 }
 
 module "assets_cdn" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//storage_account?ref=v7.61.0"
+  source = "github.com/pagopa/terraform-azurerm-v3//storage_account?ref=v8.27.0"
 
   name                            = replace(format("%s-stcdnassets", local.project), "-", "")
   account_kind                    = "StorageV2"
@@ -140,7 +140,7 @@ resource "azurerm_cdn_endpoint" "assets_cdn_endpoint" {
 
 resource "azurerm_dns_cname_record" "assets_cdn_io_pagopa_it" {
   name                = "assets.cdn"
-  zone_name           = azurerm_dns_zone.io_pagopa_it[0].name
+  zone_name           = data.azurerm_dns_zone.io_pagopa_it[0].name
   resource_group_name = azurerm_resource_group.rg_external.name
   ttl                 = var.dns_default_ttl_sec
   record              = azurerm_cdn_endpoint.assets_cdn_endpoint.fqdn
@@ -165,7 +165,7 @@ resource "azurerm_cdn_endpoint_custom_domain" "assets_cdn" {
 
 resource "azurerm_dns_cname_record" "assets_cdn_io_italia_it" {
   name                = "assets.cdn"
-  zone_name           = azurerm_dns_zone.io_italia_it.name
+  zone_name           = data.azurerm_dns_zone.io_italia_it.name
   resource_group_name = azurerm_resource_group.rg_external.name
   ttl                 = var.dns_default_ttl_sec
   record              = azurerm_cdn_endpoint.assets_cdn_endpoint.fqdn

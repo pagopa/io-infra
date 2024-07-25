@@ -208,7 +208,7 @@ data "azurerm_linux_web_app" "cms_backoffice_app" {
 
 data "azurerm_subnet" "services_cms_backoffice_snet" {
   name                 = format("%s-services-cms-backoffice-snet", local.project)
-  virtual_network_name = module.vnet_common.name
+  virtual_network_name = data.azurerm_virtual_network.common.name
   resource_group_name  = azurerm_resource_group.rg_common.name
 }
 
@@ -247,8 +247,8 @@ data "azurerm_linux_function_app" "function_cgn" {
 
 data "azurerm_dns_a_record" "selfcare_cdn" {
   name                = "@"
-  resource_group_name = azurerm_dns_zone.io_selfcare_pagopa_it[0].resource_group_name
-  zone_name           = azurerm_dns_zone.io_selfcare_pagopa_it[0].name
+  resource_group_name = data.azurerm_dns_zone.io_selfcare_pagopa_it[0].resource_group_name
+  zone_name           = data.azurerm_dns_zone.io_selfcare_pagopa_it[0].name
 }
 
 #
@@ -304,7 +304,7 @@ data "azurerm_linux_function_app" "app_messages_2" {
 data "azurerm_subnet" "function_let_snet" {
   name                 = "fn3eltout"
   resource_group_name  = azurerm_resource_group.rg_common.name
-  virtual_network_name = module.vnet_common.name
+  virtual_network_name = data.azurerm_virtual_network.common.name
 }
 
 #
@@ -314,14 +314,14 @@ data "azurerm_subnet" "function_let_snet" {
 data "azurerm_subnet" "admin_snet" {
   name                 = format("%s-admin-snet", local.project)
   resource_group_name  = azurerm_resource_group.rg_common.name
-  virtual_network_name = module.vnet_common.name
+  virtual_network_name = data.azurerm_virtual_network.common.name
 }
 
 data "azurerm_subnet" "services_snet" {
   count                = var.function_services_count
   name                 = format("%s-services-snet-%d", local.project, count.index + 1)
   resource_group_name  = azurerm_resource_group.rg_common.name
-  virtual_network_name = module.vnet_common.name
+  virtual_network_name = data.azurerm_virtual_network.common.name
 }
 
 data "azurerm_linux_function_app" "function_app" {
@@ -333,4 +333,127 @@ data "azurerm_linux_function_app" "function_app" {
 data "azurerm_linux_function_app" "function_assets_cdn" {
   name                = format("%s-assets-cdn-fn", local.project)
   resource_group_name = format("%s-assets-cdn-rg", local.project)
+}
+
+data "azurerm_api_management" "trial_system" {
+  provider            = azurerm.prod-trial
+  name                = "ts-p-itn-apim-01"
+  resource_group_name = "ts-p-itn-routing-rg-01"
+}
+
+### Network and DNS
+# TO BE REMOVED WHEN RESOURCES ARE  
+# MOVED TO THE MODULAR FORM
+data "azurerm_virtual_network" "common" {
+  name                = "${local.project}-vnet-common"
+  resource_group_name = "${local.project}-rg-common"
+}
+
+data "azurerm_nat_gateway" "ng" {
+  name                = "${local.project}-natgw"
+  resource_group_name = "${local.project}-rg-common"
+}
+
+data "azurerm_private_dns_zone" "privatelink_table_core" {
+  name                = "privatelink.table.core.windows.net"
+  resource_group_name = "${local.project}-rg-common"
+}
+
+data "azurerm_private_dns_zone" "privatelink_servicebus" {
+  name                = "privatelink.servicebus.windows.net"
+  resource_group_name = "${local.project}-evt-rg"
+}
+
+data "azurerm_private_dns_zone" "privatelink_azurewebsites" {
+  name                = "privatelink.azurewebsites.net"
+  resource_group_name = "${local.project}-rg-common"
+}
+
+data "azurerm_dns_zone" "io_pagopa_it" {
+  count               = (var.dns_zone_io == null || var.external_domain == null) ? 0 : 1
+  name                = "io.pagopa.it"
+  resource_group_name = "${local.project}-rg-external"
+}
+
+data "azurerm_dns_zone" "io_italia_it" {
+  name                = "io.italia.it"
+  resource_group_name = "${local.project}-rg-external"
+}
+
+data "azurerm_dns_zone" "io_selfcare_pagopa_it" {
+  count               = (var.dns_zone_io_selfcare == null || var.external_domain == null) ? 0 : 1
+  name                = "io.selfcare.pagopa.it"
+  resource_group_name = "${local.project}-rg-external"
+}
+
+data "azurerm_dns_zone" "firmaconio_selfcare_pagopa_it" {
+  count               = (var.dns_zone_firmaconio_selfcare == null || var.external_domain == null) ? 0 : 1
+  name                = "firmaconio.selfcare.pagopa.it"
+  resource_group_name = "${local.project}-rg-external"
+}
+
+data "azurerm_subnet" "private_endpoints_subnet" {
+  name                 = "pendpoints"
+  virtual_network_name = "${local.project}-vnet-common"
+  resource_group_name  = "${local.project}-rg-common"
+}
+
+data "azurerm_dns_a_record" "developerportal_backend_io_italia_it" {
+  name                = "developerportal-backend"
+  zone_name           = data.azurerm_dns_zone.io_italia_it.name
+  resource_group_name = "${local.project}-rg-external"
+}
+
+data "azurerm_dns_a_record" "app_backend_io_italia_it" {
+  name                = "app-backend"
+  zone_name           = data.azurerm_dns_zone.io_italia_it.name
+  resource_group_name = "${local.project}-rg-external"
+}
+
+data "azurerm_dns_a_record" "api_io_pagopa_it" {
+  name                = "api"
+  zone_name           = data.azurerm_dns_zone.io_pagopa_it[0].name
+  resource_group_name = "${local.project}-rg-external"
+}
+
+data "azurerm_dns_a_record" "api_app_io_pagopa_it" {
+  name                = "api-app"
+  zone_name           = data.azurerm_dns_zone.io_pagopa_it[0].name
+  resource_group_name = "${local.project}-rg-external"
+}
+
+data "azurerm_dns_a_record" "api_web_io_pagopa_it" {
+  name                = "api-web"
+  zone_name           = data.azurerm_dns_zone.io_pagopa_it[0].name
+  resource_group_name = "${local.project}-rg-external"
+}
+
+data "azurerm_dns_a_record" "api_mtls_io_pagopa_it" {
+  name                = "api-mtls"
+  zone_name           = data.azurerm_dns_zone.io_pagopa_it[0].name
+  resource_group_name = "${local.project}-rg-external"
+}
+
+data "azurerm_dns_a_record" "continua_io_pagopa_it" {
+  name                = "continua"
+  zone_name           = data.azurerm_dns_zone.io_pagopa_it[0].name
+  resource_group_name = "${local.project}-rg-external"
+}
+
+data "azurerm_dns_a_record" "api_io_selfcare_pagopa_it" {
+  name                = "api"
+  zone_name           = data.azurerm_dns_zone.io_selfcare_pagopa_it[0].name
+  resource_group_name = "${local.project}-rg-external"
+}
+
+data "azurerm_dns_a_record" "firmaconio_selfcare_pagopa_it" {
+  name                = "@"
+  zone_name           = data.azurerm_dns_zone.firmaconio_selfcare_pagopa_it[0].name
+  resource_group_name = "${local.project}-rg-external"
+}
+
+data "azurerm_dns_a_record" "api_io_italia_it" {
+  name                = "api"
+  zone_name           = data.azurerm_dns_zone.io_italia_it.name
+  resource_group_name = "${local.project}-rg-external"
 }

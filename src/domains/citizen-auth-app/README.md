@@ -17,11 +17,11 @@
 | <a name="module_fast_login_snet"></a> [fast\_login\_snet](#module\_fast\_login\_snet) | git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet | v8.22.0 |
 | <a name="module_function_fast_login"></a> [function\_fast\_login](#module\_function\_fast\_login) | git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app | v8.22.0 |
 | <a name="module_function_fast_login_staging_slot"></a> [function\_fast\_login\_staging\_slot](#module\_function\_fast\_login\_staging\_slot) | git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app_slot | v8.22.0 |
-| <a name="module_function_lollipop_itn"></a> [function\_lollipop\_itn](#module\_function\_lollipop\_itn) | git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app | v8.22.0 |
-| <a name="module_function_lollipop_staging_slot_itn"></a> [function\_lollipop\_staging\_slot\_itn](#module\_function\_lollipop\_staging\_slot\_itn) | git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app_slot | v8.22.0 |
+| <a name="module_function_lollipop_itn"></a> [function\_lollipop\_itn](#module\_function\_lollipop\_itn) | github.com/pagopa/terraform-azurerm-v3//function_app | v8.28.2 |
+| <a name="module_function_lollipop_staging_slot_itn"></a> [function\_lollipop\_staging\_slot\_itn](#module\_function\_lollipop\_staging\_slot\_itn) | github.com/pagopa/terraform-azurerm-v3//function_app_slot | v8.28.2 |
 | <a name="module_session_manager_snet"></a> [session\_manager\_snet](#module\_session\_manager\_snet) | github.com/pagopa/terraform-azurerm-v3//subnet | v8.22.0 |
-| <a name="module_session_manager_weu"></a> [session\_manager\_weu](#module\_session\_manager\_weu) | github.com/pagopa/terraform-azurerm-v3//app_service | v8.22.0 |
-| <a name="module_session_manager_weu_staging"></a> [session\_manager\_weu\_staging](#module\_session\_manager\_weu\_staging) | github.com/pagopa/terraform-azurerm-v3//app_service_slot | v8.22.0 |
+| <a name="module_session_manager_weu"></a> [session\_manager\_weu](#module\_session\_manager\_weu) | github.com/pagopa/terraform-azurerm-v3//app_service | v8.28.1 |
+| <a name="module_session_manager_weu_staging"></a> [session\_manager\_weu\_staging](#module\_session\_manager\_weu\_staging) | github.com/pagopa/terraform-azurerm-v3//app_service_slot | v8.28.1 |
 | <a name="module_tests"></a> [tests](#module\_tests) | ../tests | n/a |
 
 ## Resources
@@ -30,7 +30,6 @@
 |------|------|
 | [azurerm_monitor_autoscale_setting.function_fast_login](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/monitor_autoscale_setting) | resource |
 | [azurerm_monitor_autoscale_setting.function_lollipop_itn](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/monitor_autoscale_setting) | resource |
-| [azurerm_monitor_autoscale_setting.session_manager_weu_autoscale_setting](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/monitor_autoscale_setting) | resource |
 | [azurerm_monitor_scheduled_query_rules_alert_v2.alert_function_lollipop_itn_HandlePubKeyRevoke_failure](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/monitor_scheduled_query_rules_alert_v2) | resource |
 | [azurerm_monitor_scheduled_query_rules_alert_v2.samlresponse_missing_detection_alert](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/monitor_scheduled_query_rules_alert_v2) | resource |
 | [azurerm_private_dns_a_record.ingress](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/private_dns_a_record) | resource |
@@ -71,8 +70,10 @@
 | [azurerm_key_vault_secret.session_manager_ALLOW_FIMS_IP_SOURCE_RANGE](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/key_vault_secret) | data source |
 | [azurerm_key_vault_secret.session_manager_ALLOW_PAGOPA_IP_SOURCE_RANGE](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/key_vault_secret) | data source |
 | [azurerm_key_vault_secret.session_manager_ALLOW_ZENDESK_IP_SOURCE_RANGE](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/key_vault_secret) | data source |
+| [azurerm_key_vault_secret.session_manager_IOLOGIN_TEST_USERS](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/key_vault_secret) | data source |
 | [azurerm_key_vault_secret.session_manager_JWT_ZENDESK_SUPPORT_TOKEN_SECRET](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/key_vault_secret) | data source |
 | [azurerm_key_vault_secret.session_manager_TEST_LOGIN_PASSWORD](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/key_vault_secret) | data source |
+| [azurerm_key_vault_secret.session_manager_UNIQUE_EMAIL_ENFORCEMENT_USER](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/key_vault_secret) | data source |
 | [azurerm_log_analytics_workspace.log_analytics](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/log_analytics_workspace) | data source |
 | [azurerm_monitor_action_group.email](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/monitor_action_group) | data source |
 | [azurerm_monitor_action_group.error_action_group](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/monitor_action_group) | data source |
@@ -102,6 +103,7 @@
 | [azurerm_subnet.apim_v2_snet](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/subnet) | data source |
 | [azurerm_subnet.app_backend_l1_snet](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/subnet) | data source |
 | [azurerm_subnet.app_backend_l2_snet](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/subnet) | data source |
+| [azurerm_subnet.app_backend_l3_snet](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/subnet) | data source |
 | [azurerm_subnet.appgateway_snet](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/subnet) | data source |
 | [azurerm_subnet.azdoa_snet](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/subnet) | data source |
 | [azurerm_subnet.fims_op_app_snet_01](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/subnet) | data source |

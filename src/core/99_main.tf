@@ -2,7 +2,7 @@ terraform {
   required_providers {
     azurerm = {
       source  = "hashicorp/azurerm"
-      version = "<= 3.92.0"
+      version = "<= 3.110.0"
     }
     azuread = {
       source  = "hashicorp/azuread"
@@ -43,3 +43,10 @@ provider "azapi" {
 data "azurerm_subscription" "current" {}
 
 data "azurerm_client_config" "current" {}
+
+provider "azurerm" {
+  alias           = "prod-trial"
+  subscription_id = "a2124115-ba74-462f-832a-9192cbd03649"
+
+  features {}
+}        

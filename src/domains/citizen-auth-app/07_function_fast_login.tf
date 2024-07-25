@@ -95,11 +95,12 @@ module "function_fast_login" {
   count  = var.fastlogin_enabled ? 1 : 0
   source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app?ref=v8.22.0"
 
-  resource_group_name = azurerm_resource_group.fast_login_rg[0].name
-  name                = format("%s-fast-login-fn", local.common_project)
-  location            = var.location
-  domain              = "IO-COMMONS"
-  health_check_path   = "/info"
+  resource_group_name          = azurerm_resource_group.fast_login_rg[0].name
+  name                         = format("%s-fast-login-fn", local.common_project)
+  location                     = var.location
+  domain                       = "IO-COMMONS"
+  health_check_path            = "/info"
+  health_check_maxpingfailures = "2"
 
   node_version    = "18"
   runtime_version = "~4"
@@ -140,6 +141,7 @@ module "function_fast_login" {
     data.azurerm_subnet.apim_v2_snet.id,
     data.azurerm_subnet.app_backend_l1_snet.id,
     data.azurerm_subnet.app_backend_l2_snet.id,
+    data.azurerm_subnet.app_backend_l3_snet.id,
     data.azurerm_subnet.ioweb_profile_snet.id,
     module.session_manager_snet.id,
   ]
@@ -188,206 +190,469 @@ module "function_fast_login_staging_slot" {
     data.azurerm_subnet.apim_v2_snet.id,
     data.azurerm_subnet.app_backend_l1_snet.id,
     data.azurerm_subnet.app_backend_l2_snet.id,
+    data.azurerm_subnet.app_backend_l3_snet.id,
   ]
 
   tags = var.tags
 }
 
 resource "azurerm_monitor_autoscale_setting" "function_fast_login" {
-  count               = var.fastlogin_enabled ? 1 : 0
-  name                = format("%s-autoscale", module.function_fast_login[0].name)
+  name                = "${replace(module.function_fast_login[0].name, "fn", "as")}-01"
   resource_group_name = azurerm_resource_group.fast_login_rg[0].name
   location            = var.location
-  // TODO: plan renaming forces replacement for the entire resource. the
-  // following is a temporary fix
-  target_resource_id = replace(module.function_fast_login[0].app_service_plan_id, "serverFarms", "serverfarms")
+  target_resource_id  = module.function_fast_login[0].app_service_plan_id
 
+  profile {
+    name = "evening"
 
-  # Scaling strategy
-  # 05 - 19,30 -> min 3
-  # 19,30 - 23 -> min 4
-  # 23 - 05 -> min 2
-  dynamic "profile" {
-    for_each = [
-      {
-        name = "{\"name\":\"default\",\"for\":\"evening\"}",
+    capacity {
+      default = 10
+      minimum = 4
+      maximum = 20
+    }
 
-        recurrence = {
-          hours   = 22
-          minutes = 59
-        }
+    recurrence {
+      timezone = "W. Europe Standard Time"
+      hours    = [19]
+      minutes  = [30]
+      days = [
+        "Monday",
+        "Tuesday",
+        "Wednesday",
+        "Thursday",
+        "Friday",
+        "Saturday",
+        "Sunday"
+      ]
+    }
 
-        capacity = {
-          default = var.function_fastlogin_autoscale_default + 1
-          minimum = var.function_fastlogin_autoscale_minimum + 1
-          maximum = var.function_fastlogin_autoscale_maximum
-        }
-      },
-      {
-        name = "{\"name\":\"default\",\"for\":\"night\"}",
-
-        recurrence = {
-          hours   = 5
-          minutes = 0
-        }
-
-        capacity = {
-          default = var.function_fastlogin_autoscale_default + 1
-          minimum = var.function_fastlogin_autoscale_minimum + 1
-          maximum = var.function_fastlogin_autoscale_maximum
-        }
-      },
-      {
-        name = "evening",
-
-        recurrence = {
-          hours   = 19
-          minutes = 30
-        }
-
-        capacity = {
-          default = var.function_fastlogin_autoscale_default + 2
-          minimum = var.function_fastlogin_autoscale_minimum + 2
-          maximum = var.function_fastlogin_autoscale_maximum
-        }
-      },
-      {
-        name = "night",
-
-        recurrence = {
-          hours   = 23
-          minutes = 0
-        }
-
-        capacity = {
-          default = var.function_fastlogin_autoscale_default
-          minimum = var.function_fastlogin_autoscale_minimum
-          maximum = var.function_fastlogin_autoscale_maximum
-        }
-      }
-    ]
-    iterator = profile_info
-
-    content {
-      name = profile_info.value.name
-
-      dynamic "recurrence" {
-        for_each = profile_info.value.recurrence != null ? [profile_info.value.recurrence] : []
-        iterator = recurrence_info
-
-        content {
-          timezone = "W. Europe Standard Time"
-          hours    = [recurrence_info.value.hours]
-          minutes  = [recurrence_info.value.minutes]
-          days = [
-            "Monday",
-            "Tuesday",
-            "Wednesday",
-            "Thursday",
-            "Friday",
-            "Saturday",
-            "Sunday"
-          ]
-        }
+    rule {
+      metric_trigger {
+        metric_name              = "Requests"
+        metric_resource_id       = module.function_fast_login[0].id
+        metric_namespace         = "microsoft.web/sites"
+        time_grain               = "PT1M"
+        statistic                = "Max"
+        time_window              = "PT1M"
+        time_aggregation         = "Maximum"
+        operator                 = "GreaterThan"
+        threshold                = 2500
+        divide_by_instance_count = true
       }
 
-      capacity {
-        default = profile_info.value.capacity.default
-        minimum = profile_info.value.capacity.minimum
-        maximum = profile_info.value.capacity.maximum
+      scale_action {
+        direction = "Increase"
+        type      = "ChangeCount"
+        value     = "2"
+        cooldown  = "PT1M"
+      }
+    }
+
+    rule {
+      metric_trigger {
+        metric_name              = "CpuPercentage"
+        metric_resource_id       = module.function_fast_login[0].app_service_plan_id
+        metric_namespace         = "microsoft.web/serverfarms"
+        time_grain               = "PT1M"
+        statistic                = "Max"
+        time_window              = "PT1M"
+        time_aggregation         = "Maximum"
+        operator                 = "GreaterThan"
+        threshold                = 35
+        divide_by_instance_count = false
       }
 
-      # Increase
+      scale_action {
+        direction = "Increase"
+        type      = "ChangeCount"
+        value     = "4"
+        cooldown  = "PT1M"
+      }
+    }
 
-      rule {
-        metric_trigger {
-          metric_name              = "Requests"
-          metric_resource_id       = module.function_fast_login[0].id
-          metric_namespace         = "microsoft.web/sites"
-          time_grain               = "PT1M"
-          statistic                = "Average"
-          time_window              = "PT1M"
-          time_aggregation         = "Average"
-          operator                 = "GreaterThan"
-          threshold                = 3000
-          divide_by_instance_count = false
-        }
-
-        scale_action {
-          direction = "Increase"
-          type      = "ChangeCount"
-          value     = "2"
-          cooldown  = "PT1M"
-        }
+    rule {
+      metric_trigger {
+        metric_name              = "Requests"
+        metric_resource_id       = module.function_fast_login[0].id
+        metric_namespace         = "microsoft.web/sites"
+        time_grain               = "PT1M"
+        statistic                = "Average"
+        time_window              = "PT5M"
+        time_aggregation         = "Average"
+        operator                 = "LessThan"
+        threshold                = 200
+        divide_by_instance_count = true
       }
 
-      rule {
-        metric_trigger {
-          metric_name              = "CpuPercentage"
-          metric_resource_id       = module.function_fast_login[0].app_service_plan_id
-          metric_namespace         = "microsoft.web/serverfarms"
-          time_grain               = "PT1M"
-          statistic                = "Average"
-          time_window              = "PT1M"
-          time_aggregation         = "Average"
-          operator                 = "GreaterThan"
-          threshold                = 45
-          divide_by_instance_count = false
-        }
+      scale_action {
+        direction = "Decrease"
+        type      = "ChangeCount"
+        value     = "1"
+        cooldown  = "PT1M"
+      }
+    }
 
-        scale_action {
-          direction = "Increase"
-          type      = "ChangeCount"
-          value     = "2"
-          cooldown  = "PT1M"
-        }
+    rule {
+      metric_trigger {
+        metric_name              = "CpuPercentage"
+        metric_resource_id       = module.function_fast_login[0].app_service_plan_id
+        metric_namespace         = "microsoft.web/serverfarms"
+        time_grain               = "PT1M"
+        statistic                = "Average"
+        time_window              = "PT5M"
+        time_aggregation         = "Average"
+        operator                 = "LessThan"
+        threshold                = 15
+        divide_by_instance_count = false
       }
 
-      # Decrease
-
-      rule {
-        metric_trigger {
-          metric_name              = "Requests"
-          metric_resource_id       = module.function_fast_login[0].id
-          metric_namespace         = "microsoft.web/sites"
-          time_grain               = "PT1M"
-          statistic                = "Average"
-          time_window              = "PT15M"
-          time_aggregation         = "Average"
-          operator                 = "LessThan"
-          threshold                = 2000
-          divide_by_instance_count = false
-        }
-
-        scale_action {
-          direction = "Decrease"
-          type      = "ChangeCount"
-          value     = "1"
-          cooldown  = "PT10M"
-        }
-      }
-
-      rule {
-        metric_trigger {
-          metric_name              = "CpuPercentage"
-          metric_resource_id       = module.function_fast_login[0].app_service_plan_id
-          metric_namespace         = "microsoft.web/serverfarms"
-          time_grain               = "PT1M"
-          statistic                = "Average"
-          time_window              = "PT15M"
-          time_aggregation         = "Average"
-          operator                 = "LessThan"
-          threshold                = 30
-          divide_by_instance_count = false
-        }
-
-        scale_action {
-          direction = "Decrease"
-          type      = "ChangeCount"
-          value     = "1"
-          cooldown  = "PT10M"
-        }
+      scale_action {
+        direction = "Decrease"
+        type      = "ChangeCount"
+        value     = "1"
+        cooldown  = "PT1M"
       }
     }
   }
+
+  profile {
+    name = "night"
+
+    capacity {
+      default = 10
+      minimum = 2
+      maximum = 15
+    }
+
+    recurrence {
+      timezone = "W. Europe Standard Time"
+      hours    = [23]
+      minutes  = [0]
+      days = [
+        "Monday",
+        "Tuesday",
+        "Wednesday",
+        "Thursday",
+        "Friday",
+        "Saturday",
+        "Sunday"
+      ]
+    }
+
+    rule {
+      metric_trigger {
+        metric_name              = "Requests"
+        metric_resource_id       = module.function_fast_login[0].id
+        metric_namespace         = "microsoft.web/sites"
+        time_grain               = "PT1M"
+        statistic                = "Max"
+        time_window              = "PT1M"
+        time_aggregation         = "Maximum"
+        operator                 = "GreaterThan"
+        threshold                = 3200
+        divide_by_instance_count = true
+      }
+
+      scale_action {
+        direction = "Increase"
+        type      = "ChangeCount"
+        value     = "2"
+        cooldown  = "PT1M"
+      }
+    }
+
+    rule {
+      metric_trigger {
+        metric_name              = "CpuPercentage"
+        metric_resource_id       = module.function_fast_login[0].app_service_plan_id
+        metric_namespace         = "microsoft.web/serverfarms"
+        time_grain               = "PT1M"
+        statistic                = "Max"
+        time_window              = "PT1M"
+        time_aggregation         = "Maximum"
+        operator                 = "GreaterThan"
+        threshold                = 45
+        divide_by_instance_count = false
+      }
+
+      scale_action {
+        direction = "Increase"
+        type      = "ChangeCount"
+        value     = "3"
+        cooldown  = "PT2M"
+      }
+    }
+
+    rule {
+      metric_trigger {
+        metric_name              = "Requests"
+        metric_resource_id       = module.function_fast_login[0].id
+        metric_namespace         = "microsoft.web/sites"
+        time_grain               = "PT1M"
+        statistic                = "Average"
+        time_window              = "PT5M"
+        time_aggregation         = "Average"
+        operator                 = "LessThan"
+        threshold                = 500
+        divide_by_instance_count = true
+      }
+
+      scale_action {
+        direction = "Decrease"
+        type      = "ChangeCount"
+        value     = "1"
+        cooldown  = "PT1M"
+      }
+    }
+
+    rule {
+      metric_trigger {
+        metric_name              = "CpuPercentage"
+        metric_resource_id       = module.function_fast_login[0].app_service_plan_id
+        metric_namespace         = "microsoft.web/serverfarms"
+        time_grain               = "PT1M"
+        statistic                = "Average"
+        time_window              = "PT5M"
+        time_aggregation         = "Average"
+        operator                 = "LessThan"
+        threshold                = 20
+        divide_by_instance_count = false
+      }
+
+      scale_action {
+        direction = "Decrease"
+        type      = "ChangeCount"
+        value     = "1"
+        cooldown  = "PT2M"
+      }
+    }
+  }
+
+  profile {
+    name = "{\"name\":\"default\",\"for\":\"evening\"}"
+
+    recurrence {
+      timezone = "W. Europe Standard Time"
+      hours    = [22]
+      minutes  = [59]
+      days = [
+        "Monday",
+        "Tuesday",
+        "Wednesday",
+        "Thursday",
+        "Friday",
+        "Saturday",
+        "Sunday"
+      ]
+    }
+
+    capacity {
+      default = 10
+      minimum = 3
+      maximum = 30
+    }
+
+    rule {
+      metric_trigger {
+        metric_name              = "Requests"
+        metric_resource_id       = module.function_fast_login[0].id
+        metric_namespace         = "microsoft.web/sites"
+        time_grain               = "PT1M"
+        statistic                = "Max"
+        time_window              = "PT1M"
+        time_aggregation         = "Maximum"
+        operator                 = "GreaterThan"
+        threshold                = 3000
+        divide_by_instance_count = true
+      }
+
+      scale_action {
+        direction = "Increase"
+        type      = "ChangeCount"
+        value     = "2"
+        cooldown  = "PT1M"
+      }
+    }
+
+    rule {
+      metric_trigger {
+        metric_name              = "CpuPercentage"
+        metric_resource_id       = module.function_fast_login[0].app_service_plan_id
+        metric_namespace         = "microsoft.web/serverfarms"
+        time_grain               = "PT1M"
+        statistic                = "Max"
+        time_window              = "PT1M"
+        time_aggregation         = "Maximum"
+        operator                 = "GreaterThan"
+        threshold                = 35
+        divide_by_instance_count = false
+      }
+
+      scale_action {
+        direction = "Increase"
+        type      = "ChangeCount"
+        value     = "4"
+        cooldown  = "PT1M"
+      }
+    }
+
+    rule {
+      metric_trigger {
+        metric_name              = "Requests"
+        metric_resource_id       = module.function_fast_login[0].id
+        metric_namespace         = "microsoft.web/sites"
+        time_grain               = "PT1M"
+        statistic                = "Average"
+        time_window              = "PT5M"
+        time_aggregation         = "Average"
+        operator                 = "LessThan"
+        threshold                = 300
+        divide_by_instance_count = true
+      }
+
+      scale_action {
+        direction = "Decrease"
+        type      = "ChangeCount"
+        value     = "1"
+        cooldown  = "PT1M"
+      }
+    }
+
+    rule {
+      metric_trigger {
+        metric_name              = "CpuPercentage"
+        metric_resource_id       = module.function_fast_login[0].app_service_plan_id
+        metric_namespace         = "microsoft.web/serverfarms"
+        time_grain               = "PT1M"
+        statistic                = "Average"
+        time_window              = "PT5M"
+        time_aggregation         = "Average"
+        operator                 = "LessThan"
+        threshold                = 15
+        divide_by_instance_count = false
+      }
+
+      scale_action {
+        direction = "Decrease"
+        type      = "ChangeCount"
+        value     = "1"
+        cooldown  = "PT2M"
+      }
+    }
+  }
+
+  profile {
+    name = "{\"name\":\"default\",\"for\":\"night\"}"
+
+    recurrence {
+      timezone = "W. Europe Standard Time"
+      hours    = [5]
+      minutes  = [0]
+      days = [
+        "Monday",
+        "Tuesday",
+        "Wednesday",
+        "Thursday",
+        "Friday",
+        "Saturday",
+        "Sunday"
+      ]
+    }
+
+    capacity {
+      default = 10
+      minimum = 3
+      maximum = 30
+    }
+
+    rule {
+      metric_trigger {
+        metric_name              = "Requests"
+        metric_resource_id       = module.function_fast_login[0].id
+        metric_namespace         = "microsoft.web/sites"
+        time_grain               = "PT1M"
+        statistic                = "Max"
+        time_window              = "PT1M"
+        time_aggregation         = "Maximum"
+        operator                 = "GreaterThan"
+        threshold                = 3000
+        divide_by_instance_count = true
+      }
+
+      scale_action {
+        direction = "Increase"
+        type      = "ChangeCount"
+        value     = "2"
+        cooldown  = "PT1M"
+      }
+    }
+
+    rule {
+      metric_trigger {
+        metric_name              = "CpuPercentage"
+        metric_resource_id       = module.function_fast_login[0].app_service_plan_id
+        metric_namespace         = "microsoft.web/serverfarms"
+        time_grain               = "PT1M"
+        statistic                = "Max"
+        time_window              = "PT1M"
+        time_aggregation         = "Maximum"
+        operator                 = "GreaterThan"
+        threshold                = 35
+        divide_by_instance_count = false
+      }
+
+      scale_action {
+        direction = "Increase"
+        type      = "ChangeCount"
+        value     = "4"
+        cooldown  = "PT1M"
+      }
+    }
+
+    rule {
+      metric_trigger {
+        metric_name              = "Requests"
+        metric_resource_id       = module.function_fast_login[0].id
+        metric_namespace         = "microsoft.web/sites"
+        time_grain               = "PT1M"
+        statistic                = "Average"
+        time_window              = "PT5M"
+        time_aggregation         = "Average"
+        operator                 = "LessThan"
+        threshold                = 300
+        divide_by_instance_count = true
+      }
+
+      scale_action {
+        direction = "Decrease"
+        type      = "ChangeCount"
+        value     = "1"
+        cooldown  = "PT1M"
+      }
+    }
+
+    rule {
+      metric_trigger {
+        metric_name              = "CpuPercentage"
+        metric_resource_id       = module.function_fast_login[0].app_service_plan_id
+        metric_namespace         = "microsoft.web/serverfarms"
+        time_grain               = "PT1M"
+        statistic                = "Average"
+        time_window              = "PT5M"
+        time_aggregation         = "Average"
+        operator                 = "LessThan"
+        threshold                = 15
+        divide_by_instance_count = false
+      }
+
+      scale_action {
+        direction = "Decrease"
+        type      = "ChangeCount"
+        value     = "1"
+        cooldown  = "PT2M"
+      }
+    }
+  }
+
+  tags = var.tags
 }

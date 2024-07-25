@@ -5,29 +5,29 @@
 | Name | Version |
 |------|---------|
 | <a name="requirement_azuread"></a> [azuread](#requirement\_azuread) | <= 2.33.0 |
-| <a name="requirement_azurerm"></a> [azurerm](#requirement\_azurerm) | <= 3.96.0 |
+| <a name="requirement_azurerm"></a> [azurerm](#requirement\_azurerm) | <= 3.112.0 |
 | <a name="requirement_null"></a> [null](#requirement\_null) | <= 3.2.1 |
 
 ## Modules
 
 | Name | Source | Version |
 |------|--------|---------|
-| <a name="module_apim_v2_messages_sending_external_api_v1"></a> [apim\_v2\_messages\_sending\_external\_api\_v1](#module\_apim\_v2\_messages\_sending\_external\_api\_v1) | git::https://github.com/pagopa/terraform-azurerm-v3//api_management_api | v8.11.0 |
-| <a name="module_apim_v2_messages_sending_internal_api_v1"></a> [apim\_v2\_messages\_sending\_internal\_api\_v1](#module\_apim\_v2\_messages\_sending\_internal\_api\_v1) | git::https://github.com/pagopa/terraform-azurerm-v3//api_management_api | v8.11.0 |
-| <a name="module_apim_v2_product_notifications"></a> [apim\_v2\_product\_notifications](#module\_apim\_v2\_product\_notifications) | git::https://github.com/pagopa/terraform-azurerm-v3//api_management_product | v7.69.1 |
-| <a name="module_apim_v2_service_messages_internal_api_v1"></a> [apim\_v2\_service\_messages\_internal\_api\_v1](#module\_apim\_v2\_service\_messages\_internal\_api\_v1) | git::https://github.com/pagopa/terraform-azurerm-v3//api_management_api | v7.69.1 |
-| <a name="module_apim_v2_service_messages_manage_api_v1"></a> [apim\_v2\_service\_messages\_manage\_api\_v1](#module\_apim\_v2\_service\_messages\_manage\_api\_v1) | git::https://github.com/pagopa/terraform-azurerm-v3//api_management_api | v7.69.1 |
-| <a name="module_cosmosdb_account_mongodb_reminder"></a> [cosmosdb\_account\_mongodb\_reminder](#module\_cosmosdb\_account\_mongodb\_reminder) | git::https://github.com/pagopa/terraform-azurerm-v3//cosmosdb_account | v7.69.1 |
-| <a name="module_cosmosdb_account_remote_content"></a> [cosmosdb\_account\_remote\_content](#module\_cosmosdb\_account\_remote\_content) | git::https://github.com/pagopa/terraform-azurerm-v3//cosmosdb_account | v7.69.1 |
-| <a name="module_cosmosdb_sql_database_remote_content"></a> [cosmosdb\_sql\_database\_remote\_content](#module\_cosmosdb\_sql\_database\_remote\_content) | git::https://github.com/pagopa/terraform-azurerm-v3//cosmosdb_sql_database | v7.69.1 |
-| <a name="module_io-backend_notification_v2_api_v1"></a> [io-backend\_notification\_v2\_api\_v1](#module\_io-backend\_notification\_v2\_api\_v1) | git::https://github.com/pagopa/terraform-azurerm-v3//api_management_api | v7.69.1 |
-| <a name="module_key_vault"></a> [key\_vault](#module\_key\_vault) | git::https://github.com/pagopa/terraform-azurerm-v3//key_vault | v7.69.1 |
-| <a name="module_mongdb_collection_reminder"></a> [mongdb\_collection\_reminder](#module\_mongdb\_collection\_reminder) | git::https://github.com/pagopa/terraform-azurerm-v3//cosmosdb_mongodb_collection | v7.69.1 |
-| <a name="module_mongdb_collection_reminder_sharded"></a> [mongdb\_collection\_reminder\_sharded](#module\_mongdb\_collection\_reminder\_sharded) | git::https://github.com/pagopa/terraform-azurerm-v3//cosmosdb_mongodb_collection | v7.69.1 |
-| <a name="module_push_notif_beta_storage"></a> [push\_notif\_beta\_storage](#module\_push\_notif\_beta\_storage) | git::https://github.com/pagopa/terraform-azurerm-v3//storage_account | v7.69.1 |
-| <a name="module_push_notifications_storage"></a> [push\_notifications\_storage](#module\_push\_notifications\_storage) | git::https://github.com/pagopa/terraform-azurerm-v3//storage_account | v7.69.1 |
-| <a name="module_redis_messages"></a> [redis\_messages](#module\_redis\_messages) | github.com/pagopa/terraform-azurerm-v3//redis_cache | v7.63.0 |
-| <a name="module_reminder_mysql_db_server_snet"></a> [reminder\_mysql\_db\_server\_snet](#module\_reminder\_mysql\_db\_server\_snet) | git::https://github.com/pagopa/terraform-azurerm-v3//subnet | v7.69.1 |
+| <a name="module_apim_v2_messages_sending_external_api_v1"></a> [apim\_v2\_messages\_sending\_external\_api\_v1](#module\_apim\_v2\_messages\_sending\_external\_api\_v1) | github.com/pagopa/terraform-azurerm-v3//api_management_api | v8.17.0 |
+| <a name="module_apim_v2_messages_sending_internal_api_v1"></a> [apim\_v2\_messages\_sending\_internal\_api\_v1](#module\_apim\_v2\_messages\_sending\_internal\_api\_v1) | github.com/pagopa/terraform-azurerm-v3//api_management_api | v8.27.0 |
+| <a name="module_apim_v2_product_notifications"></a> [apim\_v2\_product\_notifications](#module\_apim\_v2\_product\_notifications) | github.com/pagopa/terraform-azurerm-v3//api_management_product | v8.27.0 |
+| <a name="module_apim_v2_service_messages_internal_api_v1"></a> [apim\_v2\_service\_messages\_internal\_api\_v1](#module\_apim\_v2\_service\_messages\_internal\_api\_v1) | github.com/pagopa/terraform-azurerm-v3//api_management_api | v8.27.0 |
+| <a name="module_apim_v2_service_messages_manage_api_v1"></a> [apim\_v2\_service\_messages\_manage\_api\_v1](#module\_apim\_v2\_service\_messages\_manage\_api\_v1) | github.com/pagopa/terraform-azurerm-v3//api_management_api | v8.27.0 |
+| <a name="module_cosmosdb_account_mongodb_reminder"></a> [cosmosdb\_account\_mongodb\_reminder](#module\_cosmosdb\_account\_mongodb\_reminder) | github.com/pagopa/terraform-azurerm-v3//cosmosdb_account | v8.27.0 |
+| <a name="module_cosmosdb_account_remote_content"></a> [cosmosdb\_account\_remote\_content](#module\_cosmosdb\_account\_remote\_content) | github.com/pagopa/terraform-azurerm-v3//cosmosdb_account | v8.27.0 |
+| <a name="module_cosmosdb_sql_database_remote_content"></a> [cosmosdb\_sql\_database\_remote\_content](#module\_cosmosdb\_sql\_database\_remote\_content) | github.com/pagopa/terraform-azurerm-v3//cosmosdb_sql_database | v8.27.0 |
+| <a name="module_io-backend_notification_v2_api_v1"></a> [io-backend\_notification\_v2\_api\_v1](#module\_io-backend\_notification\_v2\_api\_v1) | github.com/pagopa/terraform-azurerm-v3//api_management_api | v8.27.0 |
+| <a name="module_key_vault"></a> [key\_vault](#module\_key\_vault) | github.com/pagopa/terraform-azurerm-v3//key_vault | v8.27.0 |
+| <a name="module_mongdb_collection_reminder"></a> [mongdb\_collection\_reminder](#module\_mongdb\_collection\_reminder) | github.com/pagopa/terraform-azurerm-v3//cosmosdb_mongodb_collection | v8.27.0 |
+| <a name="module_mongdb_collection_reminder_sharded"></a> [mongdb\_collection\_reminder\_sharded](#module\_mongdb\_collection\_reminder\_sharded) | github.com/pagopa/terraform-azurerm-v3//cosmosdb_mongodb_collection | v8.27.0 |
+| <a name="module_push_notif_beta_storage"></a> [push\_notif\_beta\_storage](#module\_push\_notif\_beta\_storage) | github.com/pagopa/terraform-azurerm-v3//storage_account | v8.27.0 |
+| <a name="module_push_notifications_storage"></a> [push\_notifications\_storage](#module\_push\_notifications\_storage) | github.com/pagopa/terraform-azurerm-v3//storage_account | v8.27.0 |
+| <a name="module_redis_messages"></a> [redis\_messages](#module\_redis\_messages) | github.com/pagopa/terraform-azurerm-v3//redis_cache | v8.27.0 |
+| <a name="module_reminder_mysql_db_server_snet"></a> [reminder\_mysql\_db\_server\_snet](#module\_reminder\_mysql\_db\_server\_snet) | github.com/pagopa/terraform-azurerm-v3//subnet | v8.27.0 |
 
 ## Resources
 

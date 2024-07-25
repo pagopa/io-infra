@@ -13,6 +13,7 @@ resource "azurerm_dashboard_grafana" "grafana_dashboard" {
   deterministic_outbound_ip_enabled = true
   public_network_access_enabled     = true
   zone_redundancy_enabled           = true
+  grafana_major_version             = 10
 
   identity {
     type = "SystemAssigned"

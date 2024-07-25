@@ -5,17 +5,17 @@ data "azuread_application" "vpn_app" {
 ## VPN
 
 module "vpn_snet" {
-  source                                    = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v7.61.0"
+  source                                    = "github.com/pagopa/terraform-azurerm-v3//subnet?ref=v8.27.0"
   name                                      = "GatewaySubnet"
   address_prefixes                          = var.cidr_subnet_vpn
   resource_group_name                       = azurerm_resource_group.rg_common.name
-  virtual_network_name                      = module.vnet_common.name
+  virtual_network_name                      = data.azurerm_virtual_network.common.name
   service_endpoints                         = []
   private_endpoint_network_policies_enabled = false
 }
 
 module "vpn" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//vpn_gateway?ref=v7.61.0"
+  source = "github.com/pagopa/terraform-azurerm-v3//vpn_gateway?ref=v8.27.0"
 
   name                = format("%s-vpn", local.project)
   location            = var.location
@@ -43,11 +43,11 @@ module "vpn" {
 
 ## DNS FORWARDER
 module "dns_forwarder_snet" {
-  source                                    = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v7.61.0"
+  source                                    = "github.com/pagopa/terraform-azurerm-v3//subnet?ref=v8.27.0"
   name                                      = format("%s-dnsforwarder", local.project)
   address_prefixes                          = var.cidr_subnet_dnsforwarder
   resource_group_name                       = azurerm_resource_group.rg_common.name
-  virtual_network_name                      = module.vnet_common.name
+  virtual_network_name                      = data.azurerm_virtual_network.common.name
   private_endpoint_network_policies_enabled = false
 
   delegation = {
@@ -60,7 +60,7 @@ module "dns_forwarder_snet" {
 }
 
 module "dns_forwarder" {
-  source              = "git::https://github.com/pagopa/terraform-azurerm-v3.git//dns_forwarder?ref=v7.61.0"
+  source              = "github.com/pagopa/terraform-azurerm-v3//dns_forwarder?ref=v8.27.0"
   name                = format("%s-dns-forwarder", local.project)
   location            = var.location
   resource_group_name = azurerm_resource_group.rg_common.name

@@ -80,7 +80,7 @@ locals {
 
 # Subnet to host push notif function
 module "push_notif_snet" {
-  source                                    = "github.com/pagopa/terraform-azurerm-v3//subnet?ref=v7.69.1"
+  source                                    = "github.com/pagopa/terraform-azurerm-v3//subnet?ref=v8.27.0"
   name                                      = format("%s-push-notif-snet", local.project)
   address_prefixes                          = var.cidr_subnet_push_notif
   resource_group_name                       = data.azurerm_virtual_network.vnet_common.resource_group_name
@@ -105,13 +105,15 @@ module "push_notif_snet" {
 #tfsec:ignore:azure-storage-queue-services-logging-enabled:exp:2022-05-01 # already ignored, maybe a bug in tfsec
 module "push_notif_function" {
   count  = var.push_notif_enabled ? 1 : 0
-  source = "github.com/pagopa/terraform-azurerm-v3//function_app?ref=v7.71.1"
+  source = "github.com/pagopa/terraform-azurerm-v3//function_app?ref=v8.27.0"
 
   resource_group_name = azurerm_resource_group.push_notif_rg.name
   name                = format("%s-push-notif-fn", local.product)
   domain              = upper(var.domain)
   location            = var.location
-  health_check_path   = "/api/v1/info"
+
+  health_check_path            = "/api/v1/info"
+  health_check_maxpingfailures = 2
 
   runtime_version                          = "~4"
   node_version                             = "18"
@@ -193,14 +195,16 @@ module "push_notif_function" {
 
 module "push_notif_function_staging_slot" {
   count  = var.push_notif_enabled ? 1 : 0
-  source = "github.com/pagopa/terraform-azurerm-v3//function_app_slot?ref=v7.71.1"
+  source = "github.com/pagopa/terraform-azurerm-v3//function_app_slot?ref=v8.27.0"
 
   name                = "staging"
   location            = var.location
   resource_group_name = azurerm_resource_group.push_notif_rg.name
   function_app_id     = module.push_notif_function[0].id
   app_service_plan_id = module.push_notif_function[0].app_service_plan_id
-  health_check_path   = "/api/v1/info"
+
+  health_check_path            = "/api/v1/info"
+  health_check_maxpingfailures = 2
 
   storage_account_name       = module.push_notif_function[0].storage_account.name
   storage_account_access_key = module.push_notif_function[0].storage_account.primary_access_key
@@ -235,7 +239,7 @@ module "push_notif_function_staging_slot" {
 
 resource "azurerm_monitor_autoscale_setting" "push_notif_function" {
   count               = var.push_notif_enabled ? 1 : 0
-  name                = format("%s-autoscale", module.push_notif_function[0].name)
+  name                = "${replace(module.push_notif_function[0].name, "fn", "as")}-01"
   resource_group_name = azurerm_resource_group.push_notif_rg.name
   location            = var.location
   target_resource_id  = module.push_notif_function[0].app_service_plan_id
@@ -244,9 +248,9 @@ resource "azurerm_monitor_autoscale_setting" "push_notif_function" {
     name = "default"
 
     capacity {
-      default = var.push_notif_function_autoscale_default
-      minimum = var.push_notif_function_autoscale_minimum
-      maximum = var.push_notif_function_autoscale_maximum
+      default = 3
+      minimum = 2
+      maximum = 8
     }
 
     rule {
@@ -255,19 +259,19 @@ resource "azurerm_monitor_autoscale_setting" "push_notif_function" {
         metric_resource_id       = module.push_notif_function[0].id
         metric_namespace         = "microsoft.web/sites"
         time_grain               = "PT1M"
-        statistic                = "Average"
+        statistic                = "Max"
         time_window              = "PT1M"
-        time_aggregation         = "Average"
+        time_aggregation         = "Maximum"
         operator                 = "GreaterThan"
         threshold                = 3000
-        divide_by_instance_count = false
+        divide_by_instance_count = true
       }
 
       scale_action {
         direction = "Increase"
         type      = "ChangeCount"
         value     = "2"
-        cooldown  = "PT5M"
+        cooldown  = "PT1M"
       }
     }
 
@@ -277,19 +281,19 @@ resource "azurerm_monitor_autoscale_setting" "push_notif_function" {
         metric_resource_id       = module.push_notif_function[0].app_service_plan_id
         metric_namespace         = "microsoft.web/serverfarms"
         time_grain               = "PT1M"
-        statistic                = "Average"
-        time_window              = "PT5M"
-        time_aggregation         = "Average"
+        statistic                = "Max"
+        time_window              = "PT1M"
+        time_aggregation         = "Maximum"
         operator                 = "GreaterThan"
-        threshold                = 60
+        threshold                = 40
         divide_by_instance_count = false
       }
 
       scale_action {
         direction = "Increase"
         type      = "ChangeCount"
-        value     = "2"
-        cooldown  = "PT5M"
+        value     = "3"
+        cooldown  = "PT2M"
       }
     }
 
@@ -300,18 +304,18 @@ resource "azurerm_monitor_autoscale_setting" "push_notif_function" {
         metric_namespace         = "microsoft.web/sites"
         time_grain               = "PT1M"
         statistic                = "Average"
-        time_window              = "PT15M"
+        time_window              = "PT5M"
         time_aggregation         = "Average"
         operator                 = "LessThan"
-        threshold                = 2000
-        divide_by_instance_count = false
+        threshold                = 300
+        divide_by_instance_count = true
       }
 
       scale_action {
         direction = "Decrease"
         type      = "ChangeCount"
         value     = "1"
-        cooldown  = "PT10M"
+        cooldown  = "PT1M"
       }
     }
 
@@ -325,7 +329,7 @@ resource "azurerm_monitor_autoscale_setting" "push_notif_function" {
         time_window              = "PT5M"
         time_aggregation         = "Average"
         operator                 = "LessThan"
-        threshold                = 30
+        threshold                = 15
         divide_by_instance_count = false
       }
 
@@ -333,7 +337,7 @@ resource "azurerm_monitor_autoscale_setting" "push_notif_function" {
         direction = "Decrease"
         type      = "ChangeCount"
         value     = "1"
-        cooldown  = "PT20M"
+        cooldown  = "PT1M"
       }
     }
   }
