@@ -53,6 +53,12 @@ data "azurerm_key_vault_secret" "alert_error_notification_opsgenie" {
   key_vault_id = module.key_vault.id
 }
 
+# point to the channel of the trial-system project
+data "azurerm_key_vault_secret" "alert_error_trial_slack" {
+  name         = "alert-error-trial-slack"
+  key_vault_id = module.key_vault.id
+}
+
 #
 # Actions Groups
 #
@@ -90,6 +96,21 @@ resource "azurerm_monitor_action_group" "quarantine_error_action_group" {
   email_receiver {
     name                    = "slack"
     email_address           = data.azurerm_key_vault_secret.alert_quarantine_error_notification_slack.value
+    use_common_alert_schema = true
+  }
+
+  tags = var.tags
+}
+
+# the action group that publish to the channel of the trial-system project
+resource "azurerm_monitor_action_group" "trial_system_error_action_group" {
+  resource_group_name = azurerm_resource_group.rg_common.name
+  name                = "${var.prefix}${var.env_short}trialsystemerror"
+  short_name          = "${var.prefix}${var.env_short}tserr"
+
+  email_receiver {
+    name                    = "slack"
+    email_address           = data.azurerm_key_vault_secret.alert_error_trial_slack.value
     use_common_alert_schema = true
   }
 
