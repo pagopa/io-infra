@@ -103,7 +103,7 @@ data "azurerm_key_vault_secret" "devportal_apim_io_service_key" {
 
 
 data "azurerm_linux_function_app" "itn_webapp_functions_app" {
-  name                = "${car.project}-itn-svc-cms-func-01"
+  name                = "${var.project}-itn-svc-cms-func-01"
   resource_group_name = "${var.project}-itn-svc-rg-01"
 }
 
