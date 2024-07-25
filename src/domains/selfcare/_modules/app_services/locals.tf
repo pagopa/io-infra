@@ -78,7 +78,7 @@ locals {
       # Lock the creation of a new APIM user, when resolve SelfCareIdentity.
       LOCK_SELFCARE_CREATE_NEW_APIM_USER = "false"
 
-      API_SERVICES_CMS_URL       = "https://${data.azurerm_linux_function_app.webapp_functions_app.default_hostname}"
+      API_SERVICES_CMS_URL       = "https://${data.azurerm_linux_function_app.itn_webapp_functions_app.default_hostname}"
       API_SERVICES_CMS_BASE_PATH = "/api/v1"
 
     }
@@ -256,7 +256,7 @@ locals {
       # UPDATE: The new feature is that "If one of such strings is "*", we suddenly open the feature to everyone.".
       MANAGE_FLOW_ENABLE_USER_LIST = "*"
 
-      API_SERVICES_CMS_URL       = "https://${data.azurerm_linux_function_app.webapp_functions_app.default_hostname}"
+      API_SERVICES_CMS_URL       = "https://${data.azurerm_linux_function_app.itn_webapp_functions_app.default_hostname}"
       API_SERVICES_CMS_BASE_PATH = "/api/v1"
     }
   }
