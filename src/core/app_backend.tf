@@ -154,7 +154,7 @@ locals {
       FF_MIT_VOUCHER_ENABLED     = 1
       FF_USER_AGE_LIMIT_ENABLED  = 1
       FF_IO_SIGN_ENABLED         = 1
-      FF_IO_WALLET_ENABLED       = 0
+      FF_IO_WALLET_ENABLED       = 1
       FF_IO_WALLET_TRIAL_ENABLED = 1
 
       FF_ROUTING_PUSH_NOTIF                      = "ALL" # possible values are: BETA, CANARY, ALL, NONE
