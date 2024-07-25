@@ -106,7 +106,7 @@ resource "azurerm_monitor_action_group" "quarantine_error_action_group" {
 resource "azurerm_monitor_action_group" "trial_system_error_action_group" {
   resource_group_name = azurerm_resource_group.rg_common.name
   name                = "${var.prefix}${var.env_short}trialsystemerror"
-  short_name          = "${var.prefix}${var.env_short}trialsystemerror"
+  short_name          = "${var.prefix}${var.env_short}tserr"
 
   email_receiver {
     name                    = "slack"
