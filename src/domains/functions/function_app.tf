@@ -234,7 +234,6 @@ module "function_app" {
     module.app_snet[count.index].id,
     data.azurerm_subnet.app_backendl1_snet.id,
     data.azurerm_subnet.app_backendl2_snet.id,
-    data.azurerm_subnet.app_backendl3_snet.id,
     data.azurerm_subnet.app_backendli_snet.id,
     data.azurerm_subnet.ioweb_profile_snet.id,
     data.azurerm_subnet.session_manager_snet.id,
@@ -289,7 +288,6 @@ module "function_app_staging_slot" {
     data.azurerm_subnet.azdoa_snet.id,
     data.azurerm_subnet.app_backendl1_snet.id,
     data.azurerm_subnet.app_backendl2_snet.id,
-    data.azurerm_subnet.app_backendl3_snet.id,
     data.azurerm_subnet.app_backendli_snet.id,
   ]
 

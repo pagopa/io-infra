@@ -359,12 +359,6 @@ locals {
       API_URL              = "https://${data.azurerm_linux_function_app.function_app[1].default_hostname}/api/v1"
       APP_MESSAGES_API_URL = "https://${data.azurerm_linux_function_app.app_messages_2.default_hostname}/api/v1"
     }
-    app_settings_l3 = {
-      IS_APPBACKENDLI = "false"
-      // FUNCTIONS
-      API_URL              = "https://${data.azurerm_linux_function_app.function_app[1].default_hostname}/api/v1"
-      APP_MESSAGES_API_URL = "https://${data.azurerm_linux_function_app.app_messages_2.default_hostname}/api/v1"
-    }
     app_settings_li = {
       IS_APPBACKENDLI = "true"
       // FUNCTIONS
@@ -385,13 +379,6 @@ locals {
       id          = "io-p-app-appbackendl2.azurewebsites.net"
       name        = module.appservice_app_backendl2.default_site_hostname,
       host        = module.appservice_app_backendl2.default_site_hostname,
-      path        = "/info",
-      http_status = 200,
-    },
-    {
-      id          = "io-p-app-appbackendl3.azurewebsites.net"
-      name        = module.appservice_app_backendl3.default_site_hostname,
-      host        = module.appservice_app_backendl3.default_site_hostname,
       path        = "/info",
       http_status = 200,
     },
@@ -468,13 +455,6 @@ locals {
 
 resource "azurerm_resource_group" "rg_linux" {
   name     = format("%s-rg-linux", local.project)
-  location = var.location
-
-  tags = var.tags
-}
-
-resource "azurerm_resource_group" "backend3" {
-  name     = format("%s-weu-backend-rg-03", local.project)
   location = var.location
 
   tags = var.tags
@@ -726,137 +706,6 @@ resource "azurerm_key_vault_secret" "appbackend_THIRD_PARTY_CONFIG_LIST" {
   value        = local.app_backend.app_settings_common.THIRD_PARTY_CONFIG_LIST
   key_vault_id = module.key_vault_common.id
   content_type = "string"
-}
-
-## app_backendl3
-module "app_backendl3_snet" {
-  source                                    = "github.com/pagopa/terraform-azurerm-v3//subnet?ref=v8.27.0"
-  name                                      = "${local.project}-weu-backend-snet-03"
-  address_prefixes                          = ["10.0.156.0/24"]
-  resource_group_name                       = azurerm_resource_group.rg_common.name
-  virtual_network_name                      = data.azurerm_virtual_network.common.name
-  private_endpoint_network_policies_enabled = true
-
-  service_endpoints = [
-    "Microsoft.Web",
-  ]
-
-  delegation = {
-    name = "default"
-    service_delegation = {
-      name    = "Microsoft.Web/serverFarms"
-      actions = ["Microsoft.Network/virtualNetworks/subnets/action"]
-    }
-  }
-}
-
-resource "azurerm_subnet_nat_gateway_association" "app_backendl3_snet" {
-  nat_gateway_id = data.azurerm_nat_gateway.ng.id
-  subnet_id      = module.app_backendl3_snet.id
-}
-
-module "appservice_app_backendl3" {
-  source = "github.com/pagopa/terraform-azurerm-v3//app_service?ref=v8.31.0"
-
-  # App service plan
-  plan_type = "internal"
-  plan_name = format("%s-weu-backend-asp-03", local.project)
-  sku_name  = var.app_backend_plan_sku_size
-
-  # App service
-  name                = format("%s-weu-backend-app-03", local.project)
-  resource_group_name = azurerm_resource_group.backend3.name
-  location            = azurerm_resource_group.backend3.location
-
-  node_version                 = "18-lts"
-  always_on                    = true
-  app_command_line             = local.app_backend.app_command_line
-  health_check_path            = "/ping"
-  health_check_maxpingfailures = 2
-
-  app_settings = merge(
-    local.app_backend.app_settings_common,
-    local.app_backend.app_settings_l3,
-  )
-
-  ip_restriction_default_action = "Deny"
-
-  subnet_id        = module.app_backendl3_snet.id
-  vnet_integration = true
-
-  tags = var.tags
-}
-
-resource "azurerm_private_endpoint" "backend3_sites" {
-  name                = "${local.project}-weu-backend-app-pep-03"
-  location            = azurerm_resource_group.backend3.location
-  resource_group_name = azurerm_resource_group.backend3.name
-  subnet_id           = data.azurerm_subnet.private_endpoints_subnet.id
-
-  private_service_connection {
-    name                           = "${local.project}-weu-backend-app-pep-03"
-    private_connection_resource_id = module.appservice_app_backendl3.id
-    is_manual_connection           = false
-    subresource_names              = ["sites"]
-  }
-
-  private_dns_zone_group {
-    name                 = "private-dns-zone-group"
-    private_dns_zone_ids = [data.azurerm_private_dns_zone.privatelink_azurewebsites.id]
-  }
-
-  tags = var.tags
-}
-
-module "appservice_app_backendl3_slot_staging" {
-  source = "github.com/pagopa/terraform-azurerm-v3//app_service_slot?ref=v8.31.0"
-
-  # App service plan
-  app_service_id   = module.appservice_app_backendl3.id
-  app_service_name = module.appservice_app_backendl3.name
-
-  # App service
-  name                = "staging"
-  resource_group_name = azurerm_resource_group.backend3.name
-  location            = azurerm_resource_group.backend3.location
-
-  always_on         = true
-  node_version      = "18-lts"
-  app_command_line  = local.app_backend.app_command_line
-  health_check_path = "/ping"
-
-  app_settings = merge(
-    local.app_backend.app_settings_common,
-    local.app_backend.app_settings_l3,
-  )
-
-  ip_restriction_default_action = "Deny"
-
-  subnet_id        = module.app_backendl3_snet.id
-  vnet_integration = true
-
-  tags = var.tags
-}
-
-resource "azurerm_private_endpoint" "backend3_staging_sites" {
-  name                = "${local.project}-weu-backend-staging-app-pep-03"
-  location            = azurerm_resource_group.backend3.location
-  resource_group_name = azurerm_resource_group.backend3.name
-  subnet_id           = data.azurerm_subnet.private_endpoints_subnet.id
-
-  private_service_connection {
-    name                           = "${local.project}-weu-backend-staging-app-pep-03"
-    private_connection_resource_id = module.appservice_app_backendl3.id
-    is_manual_connection           = false
-    subresource_names              = ["sites-${module.appservice_app_backendl3_slot_staging.name}"]
-  }
-
-  private_dns_zone_group {
-    name                 = "private-dns-zone-group"
-    private_dns_zone_ids = [data.azurerm_private_dns_zone.privatelink_azurewebsites.id]
-  }
-
-  tags = var.tags
 }
 
 ## app_backendl1
