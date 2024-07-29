@@ -101,9 +101,10 @@ data "azurerm_key_vault_secret" "devportal_apim_io_service_key" {
   key_vault_id = data.azurerm_key_vault.key_vault_common.id
 }
 
-data "azurerm_linux_function_app" "webapp_functions_app" {
-  name                = "${var.project}-services-cms-webapp-fn"
-  resource_group_name = "${var.project}-services-cms-rg"
+
+data "azurerm_linux_function_app" "itn_webapp_functions_app" {
+  name                = "${var.project}-itn-svc-cms-func-01"
+  resource_group_name = "${var.project}-itn-svc-rg-01"
 }
 
 data "azurerm_private_dns_zone" "privatelink_blob_core" {

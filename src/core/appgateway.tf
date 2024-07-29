@@ -47,7 +47,7 @@ locals {
 
 ## Application gateway ##
 module "app_gw" {
-  source = "github.com/pagopa/terraform-azurerm-v3//app_gateway?ref=v8.27.0"
+  source = "github.com/pagopa/terraform-azurerm-v3//app_gateway?ref=v8.31.0"
 
   resource_group_name = azurerm_resource_group.rg_external.name
   location            = azurerm_resource_group.rg_external.location
@@ -667,6 +667,7 @@ module "app_gw" {
             path         = "/session-manager{var_uri_path}"
             query_string = null
             reroute      = true
+            components   = "path_only"
           }
           request_header_configurations  = []
           response_header_configurations = []
@@ -690,6 +691,7 @@ module "app_gw" {
             path         = "/{var_uri_path_1}"
             query_string = null
             reroute      = false
+            components   = "path_only"
           }
           request_header_configurations  = []
           response_header_configurations = []

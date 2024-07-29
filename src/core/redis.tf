@@ -26,59 +26,7 @@ module "redis_common_backup_zrs" {
   tags = var.tags
 }
 
-module "redis_common" {
-  source = "github.com/pagopa/terraform-azurerm-v3//redis_cache?ref=v8.27.0"
-
-  name                          = format("%s-redis-common", local.project)
-  resource_group_name           = azurerm_resource_group.rg_common.name
-  location                      = azurerm_resource_group.rg_common.location
-  capacity                      = var.redis_common.capacity
-  shard_count                   = var.redis_common.shard_count
-  family                        = var.redis_common.family
-  sku_name                      = var.redis_common.sku_name
-  subnet_id                     = module.redis_common_snet.id
-  public_network_access_enabled = var.redis_common.public_network_access_enabled
-  redis_version                 = var.redis_common.redis_version
-  zones                         = null
-
-  backup_configuration = {
-    frequency                 = var.redis_common.rdb_backup_frequency
-    max_snapshot_count        = var.redis_common.rdb_backup_max_snapshot_count
-    storage_connection_string = module.redis_common_backup_zrs.primary_connection_string
-  }
-
-  # when azure can apply patch?
-  patch_schedules = [
-    {
-      day_of_week    = "Sunday"
-      start_hour_utc = 23
-    },
-    {
-      day_of_week    = "Monday"
-      start_hour_utc = 23
-    },
-    {
-      day_of_week    = "Tuesday"
-      start_hour_utc = 23
-    },
-    {
-      day_of_week    = "Wednesday"
-      start_hour_utc = 23
-    },
-    {
-      day_of_week    = "Thursday"
-      start_hour_utc = 23
-    },
-  ]
-
-  # only for this redis we use vnet integration (legacy configuration)
-  # DO NOT COPY THIS CONFIGURATION FOR NEW REDIS CACHE
-  private_endpoint = {
-    enabled              = false
-    virtual_network_id   = ""
-    subnet_id            = ""
-    private_dns_zone_ids = [""]
-  }
-
-  tags = var.tags
+data "azurerm_redis_cache" "redis_common" {
+  name                = format("%s-redis-common", local.project)
+  resource_group_name = azurerm_resource_group.rg_common.name
 }

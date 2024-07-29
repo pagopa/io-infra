@@ -74,7 +74,7 @@ locals {
 
       // View Features Flag
       USE_FALLBACK        = false
-      FF_TYPE             = "canary"
+      FF_TYPE             = "none"
       FF_BETA_TESTER_LIST = data.azurerm_key_vault_secret.fn_messages_APP_MESSAGES_BETA_FISCAL_CODES.value
       # Takes ~0,4% of users
       FF_CANARY_USERS_REGEX = "^([(0-9)|(a-f)|(A-F)]{62}00)$"

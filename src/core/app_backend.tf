@@ -70,7 +70,7 @@ locals {
       LOLLIPOP_API_KEY            = data.azurerm_key_vault_secret.app_backend_LOLLIPOP_ITN_API_KEY.value
       FAST_LOGIN_API_URL          = "https://io-p-weu-fast-login-fn.azurewebsites.net"
       FAST_LOGIN_API_KEY          = data.azurerm_key_vault_secret.app_backend_FAST_LOGIN_API_KEY.value
-      TRIAL_SYSTEM_API_URL        = "https://ts-p-itn-subscription-fn-01.azurewebsites.net" # PROD-TRIAL subscription
+      TRIAL_SYSTEM_API_URL        = "https://ts-p-itn-api-func-01.azurewebsites.net" # PROD-TRIAL subscription
       TRIAL_SYSTEM_API_KEY        = data.azurerm_key_vault_secret.app_backend_TRIAL_SYSTEM_API_KEY.value
       IO_WALLET_API_URL           = "https://io-p-itn-wallet-user-func-01.azurewebsites.net"
       IO_WALLET_API_KEY           = data.azurerm_key_vault_secret.app_backend_IO_WALLET_API_KEY.value
@@ -87,9 +87,9 @@ locals {
       IO_WALLET_API_BASE_PATH           = "/api/v1/wallet"
 
       // REDIS
-      REDIS_URL      = module.redis_common.hostname
-      REDIS_PORT     = module.redis_common.ssl_port
-      REDIS_PASSWORD = module.redis_common.primary_access_key
+      REDIS_URL      = data.azurerm_redis_cache.redis_common.hostname
+      REDIS_PORT     = data.azurerm_redis_cache.redis_common.ssl_port
+      REDIS_PASSWORD = data.azurerm_redis_cache.redis_common.primary_access_key
 
       // PUSH NOTIFICATIONS
       PRE_SHARED_KEY               = data.azurerm_key_vault_secret.app_backend_PRE_SHARED_KEY.value
@@ -154,7 +154,7 @@ locals {
       FF_MIT_VOUCHER_ENABLED     = 1
       FF_USER_AGE_LIMIT_ENABLED  = 1
       FF_IO_SIGN_ENABLED         = 1
-      FF_IO_WALLET_ENABLED       = 0
+      FF_IO_WALLET_ENABLED       = 1
       FF_IO_WALLET_TRIAL_ENABLED = 1
 
       FF_ROUTING_PUSH_NOTIF                      = "ALL" # possible values are: BETA, CANARY, ALL, NONE
@@ -675,7 +675,7 @@ data "azurerm_key_vault_secret" "app_backend_IO_WALLET_API_KEY" {
 #tfsec:ignore:AZU023
 resource "azurerm_key_vault_secret" "appbackend-REDIS-PASSWORD" {
   name         = "appbackend-REDIS-PASSWORD"
-  value        = module.redis_common.primary_access_key
+  value        = data.azurerm_redis_cache.redis_common.primary_access_key
   key_vault_id = module.key_vault_common.id
   content_type = "string"
 }
@@ -756,7 +756,7 @@ resource "azurerm_subnet_nat_gateway_association" "app_backendl3_snet" {
 }
 
 module "appservice_app_backendl3" {
-  source = "github.com/pagopa/terraform-azurerm-v3//app_service?ref=v8.28.1"
+  source = "github.com/pagopa/terraform-azurerm-v3//app_service?ref=v8.31.0"
 
   # App service plan
   plan_type = "internal"
@@ -778,6 +778,8 @@ module "appservice_app_backendl3" {
     local.app_backend.app_settings_common,
     local.app_backend.app_settings_l3,
   )
+
+  ip_restriction_default_action = "Deny"
 
   subnet_id        = module.app_backendl3_snet.id
   vnet_integration = true
@@ -807,7 +809,7 @@ resource "azurerm_private_endpoint" "backend3_sites" {
 }
 
 module "appservice_app_backendl3_slot_staging" {
-  source = "github.com/pagopa/terraform-azurerm-v3//app_service_slot?ref=v8.28.1"
+  source = "github.com/pagopa/terraform-azurerm-v3//app_service_slot?ref=v8.31.0"
 
   # App service plan
   app_service_id   = module.appservice_app_backendl3.id
@@ -827,6 +829,8 @@ module "appservice_app_backendl3_slot_staging" {
     local.app_backend.app_settings_common,
     local.app_backend.app_settings_l3,
   )
+
+  ip_restriction_default_action = "Deny"
 
   subnet_id        = module.app_backendl3_snet.id
   vnet_integration = true
@@ -902,7 +906,7 @@ data "azurerm_subnet" "itn_msgs_sending_func_snet" {
 }
 
 module "appservice_app_backendl1" {
-  source = "github.com/pagopa/terraform-azurerm-v3//app_service?ref=v8.28.1"
+  source = "github.com/pagopa/terraform-azurerm-v3//app_service?ref=v8.31.0"
 
   # App service plan
   plan_type = "internal"
@@ -933,6 +937,8 @@ module "appservice_app_backendl1" {
     local.app_backend.app_settings_l1,
   )
 
+  ip_restriction_default_action = "Deny"
+
   allowed_subnets = [
     data.azurerm_subnet.services_snet[0].id,
     data.azurerm_subnet.services_snet[1].id,
@@ -952,7 +958,7 @@ module "appservice_app_backendl1" {
 }
 
 module "appservice_app_backendl1_slot_staging" {
-  source = "github.com/pagopa/terraform-azurerm-v3//app_service_slot?ref=v8.28.1"
+  source = "github.com/pagopa/terraform-azurerm-v3//app_service_slot?ref=v8.31.0"
 
   # App service plan
   app_service_id   = module.appservice_app_backendl1.id
@@ -980,6 +986,8 @@ module "appservice_app_backendl1_slot_staging" {
     local.app_backend.app_settings_common,
     local.app_backend.app_settings_l1,
   )
+
+  ip_restriction_default_action = "Deny"
 
   allowed_subnets = [
     module.azdoa_snet[0].id,
@@ -1028,7 +1036,7 @@ resource "azurerm_subnet_nat_gateway_association" "app_backendl2_snet" {
 }
 
 module "appservice_app_backendl2" {
-  source = "github.com/pagopa/terraform-azurerm-v3//app_service?ref=v8.28.1"
+  source = "github.com/pagopa/terraform-azurerm-v3//app_service?ref=v8.31.0"
 
   # App service plan
   plan_type = "internal"
@@ -1059,6 +1067,8 @@ module "appservice_app_backendl2" {
     local.app_backend.app_settings_l2,
   )
 
+  ip_restriction_default_action = "Deny"
+
   allowed_subnets = [
     data.azurerm_subnet.services_snet[0].id,
     data.azurerm_subnet.services_snet[1].id,
@@ -1078,7 +1088,7 @@ module "appservice_app_backendl2" {
 }
 
 module "appservice_app_backendl2_slot_staging" {
-  source = "github.com/pagopa/terraform-azurerm-v3//app_service_slot?ref=v8.28.1"
+  source = "github.com/pagopa/terraform-azurerm-v3//app_service_slot?ref=v8.31.0"
 
   # App service plan
   app_service_id   = module.appservice_app_backendl2.id
@@ -1106,6 +1116,8 @@ module "appservice_app_backendl2_slot_staging" {
     local.app_backend.app_settings_common,
     local.app_backend.app_settings_l2,
   )
+
+  ip_restriction_default_action = "Deny"
 
   allowed_subnets = [
     module.azdoa_snet[0].id,
@@ -1154,7 +1166,7 @@ resource "azurerm_subnet_nat_gateway_association" "app_backendli_snet" {
 }
 
 module "appservice_app_backendli" {
-  source = "github.com/pagopa/terraform-azurerm-v3//app_service?ref=v8.27.0"
+  source = "github.com/pagopa/terraform-azurerm-v3//app_service?ref=v8.31.0"
 
   # App service plan
   plan_type = "internal"
@@ -1176,6 +1188,8 @@ module "appservice_app_backendli" {
     local.app_backend.app_settings_common,
     local.app_backend.app_settings_li,
   )
+
+  ip_restriction_default_action = "Deny"
 
   allowed_subnets = [
     data.azurerm_subnet.services_snet[0].id,
@@ -1199,7 +1213,7 @@ module "appservice_app_backendli" {
 }
 
 module "appservice_app_backendli_slot_staging" {
-  source = "github.com/pagopa/terraform-azurerm-v3//app_service_slot?ref=v8.27.0"
+  source = "github.com/pagopa/terraform-azurerm-v3//app_service_slot?ref=v8.31.0"
 
   # App service plan
   app_service_id   = module.appservice_app_backendli.id
@@ -1219,6 +1233,8 @@ module "appservice_app_backendli_slot_staging" {
     local.app_backend.app_settings_common,
     local.app_backend.app_settings_li,
   )
+
+  ip_restriction_default_action = "Deny"
 
   allowed_subnets = [
     module.azdoa_snet[0].id,
