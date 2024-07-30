@@ -13,7 +13,8 @@ module "networking_weu" {
   vnet_cidr_block = "10.0.0.0/16"
   pep_snet_cidr   = ["10.0.240.0/23"]
 
-  ng_ips_number = 2
+  ng_ips_number    = 2
+  ng_ippres_number = 0
 
   tags = merge(local.tags, { Source = "https://github.com/pagopa/io-infra" })
 }
