@@ -12,18 +12,20 @@ resource "azurerm_public_ip" "this_01" {
 }
 
 resource "azurerm_nat_gateway" "this" {
-  name                    = try(local.nonstandard[var.location_short].ng, "${var.project}-ng-01")
+  count = var.nb_number
+
+  name                    = try(local.nonstandard[var.location_short].ng, "${var.project}-ng-0${count.index + 1}")
   location                = var.location
   resource_group_name     = var.resource_group_name
   sku_name                = "Standard"
   idle_timeout_in_minutes = 4
-  zones                   = [1]
+  zones                   = ["${count.index + 1}"]
 
   tags = var.tags
 }
 
 resource "azurerm_nat_gateway_public_ip_association" "this_pip_01" {
   count                = var.ng_ips_number
-  nat_gateway_id       = azurerm_nat_gateway.this.id
+  nat_gateway_id       = azurerm_nat_gateway.this[0].id
   public_ip_address_id = azurerm_public_ip.this_01[count.index].id
 }

@@ -38,3 +38,9 @@ variable "ng_ips_number" {
   description = "Number of public IPs assigned to the nat gateway"
   default     = 1
 }
+
+variable "nb_number" {
+  type        = number
+  description = "Number of nat gateways to deploy"
+  default     = 1
+}
