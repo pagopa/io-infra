@@ -12,7 +12,7 @@ resource "azurerm_public_ip" "this_01" {
 }
 
 resource "azurerm_nat_gateway" "this" {
-  count = var.nb_number
+  count = var.ng_number
 
   name                    = try(local.nonstandard[var.location_short].ng, "${var.project}-ng-0${count.index + 1}")
   location                = var.location
