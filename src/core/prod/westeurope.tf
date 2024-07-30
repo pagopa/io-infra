@@ -1,13 +1,13 @@
-data "azurerm_resource_group" "vnet_weu" {
+data "azurerm_resource_group" "common_weu" {
   name = format("%s-rg-common", local.project_weu_legacy)
 }
 
 module "networking_weu" {
   source = "../_modules/networking"
 
-  location            = data.azurerm_resource_group.vnet_weu.location
-  location_short      = local.location_short[data.azurerm_resource_group.vnet_weu.location]
-  resource_group_name = data.azurerm_resource_group.vnet_weu.name
+  location            = data.azurerm_resource_group.common_weu.location
+  location_short      = local.location_short[data.azurerm_resource_group.common_weu.location]
+  resource_group_name = data.azurerm_resource_group.common_weu.name
   project             = local.project_weu_legacy
 
   vnet_cidr_block = "10.0.0.0/16"
@@ -82,4 +82,22 @@ module "key_vault_weu" {
   tenant_id             = data.azurerm_client_config.current.tenant_id
 
   tags = merge(local.tags)
+}
+
+module "vpn_weu" {
+  source = "../_modules/vpn"
+
+  location            = data.azurerm_resource_group.common_weu.location
+  location_short      = local.location_short[data.azurerm_resource_group.common_weu.location]
+  resource_group_name = data.azurerm_resource_group.common_weu.name
+  project             = local.project_weu_legacy
+  prefix              = local.prefix
+  env_short           = local.env_short
+
+  subscription_current     = data.azurerm_subscription.current
+  vnet_common              = module.networking_weu.vnet_common
+  vpn_cidr_subnet          = ["10.0.133.0/24"]
+  dnsforwarder_cidr_subnet = ["10.0.252.8/29"]
+
+  tags = local.tags
 }
