@@ -13,7 +13,7 @@ module "vpn_snet" {
 module "vpn" {
   source = "github.com/pagopa/terraform-azurerm-v3//vpn_gateway?ref=v8.33.0"
 
-  name                = try(local.nonstandard[var.location_short].vpn, "${var.project}-vpn-01")
+  name                = try(local.nonstandard[var.location_short].vpn, "${var.project}-vgw-01")
   location            = var.location
   resource_group_name = var.resource_group_name
   sku                 = var.vpn_sku
@@ -57,7 +57,7 @@ module "dns_forwarder_snet" {
 
 module "dns_forwarder" {
   source              = "github.com/pagopa/terraform-azurerm-v3//dns_forwarder?ref=fix-dns-forwarder-import-causes-replacement"
-  name                = try(local.nonstandard[var.location_short].dns_forwarder, "${var.project}-dns-forwarder-01")
+  name                = try(local.nonstandard[var.location_short].dns_forwarder, "${var.project}-dns-forwarder-ci-01")
   location            = var.location
   resource_group_name = var.resource_group_name
   subnet_id           = module.dns_forwarder_snet.id
