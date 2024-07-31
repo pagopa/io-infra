@@ -1,7 +1,7 @@
 ## VPN
 
 module "vpn_snet" {
-  source                                    = "github.com/pagopa/terraform-azurerm-v3//subnet?ref=v8.33.0"
+  source                                    = "github.com/pagopa/terraform-azurerm-v3//subnet?ref=v8.33.1"
   name                                      = "GatewaySubnet"
   address_prefixes                          = var.vpn_cidr_subnet
   resource_group_name                       = var.resource_group_name
@@ -39,7 +39,7 @@ module "vpn" {
 
 ## DNS FORWARDER
 module "dns_forwarder_snet" {
-  source                                    = "github.com/pagopa/terraform-azurerm-v3//subnet?ref=v8.33.0"
+  source                                    = "github.com/pagopa/terraform-azurerm-v3//subnet?ref=v8.33.1"
   name                                      = try(local.nonstandard[var.location_short].dns_forwarder_snet, "${var.project}-dns-forwarder-snet-01")
   address_prefixes                          = var.dnsforwarder_cidr_subnet
   resource_group_name                       = var.resource_group_name
@@ -56,7 +56,7 @@ module "dns_forwarder_snet" {
 }
 
 module "dns_forwarder" {
-  source              = "github.com/pagopa/terraform-azurerm-v3//dns_forwarder?ref=fix-dns-forwarder-import-causes-replacement"
+  source              = "github.com/pagopa/terraform-azurerm-v3//dns_forwarder?ref=v8.33.1"
   name                = try(local.nonstandard[var.location_short].dns_forwarder, "${var.project}-dns-forwarder-ci-01")
   location            = var.location
   resource_group_name = var.resource_group_name
