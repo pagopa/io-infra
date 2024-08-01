@@ -1,15 +1,8 @@
-resource "azurerm_resource_group" "container_registry_rg" {
-  name     = format("%s-container-registry-rg", local.project)
-  location = var.location
-
-  tags = var.tags
-}
-
 module "container_registry" {
-  source                        = "github.com/pagopa/terraform-azurerm-v3//container_registry?ref=v8.27.0"
-  name                          = replace(format("%s-common-acr", local.project), "-", "")
+  source                        = "github.com/pagopa/terraform-azurerm-v3//container_registry?ref=v8.34.0"
+  name                          = local.nonstandard[var.location_short].acr
   sku                           = "Premium"
-  resource_group_name           = azurerm_resource_group.container_registry_rg.name
+  resource_group_name           = azurerm_resource_group.container_registry.name
   admin_enabled                 = false
   anonymous_pull_enabled        = false
   zone_redundancy_enabled       = true

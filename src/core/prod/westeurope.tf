@@ -61,3 +61,13 @@ module "vnet_peering_weu" {
     }
   }
 }
+
+module "container_registry" {
+  source = "../_modules/container_registry"
+
+  location       = data.azurerm_resource_group.vnet_weu.location
+  location_short = local.location_short[data.azurerm_resource_group.vnet_weu.location]
+  project        = local.project_weu_legacy
+
+  tags = merge(local.tags, { Source = "https://github.com/pagopa/io-infra" })
+}
