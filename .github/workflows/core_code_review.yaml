@@ -23,7 +23,7 @@ on:
 
 jobs:
   prod_itn_core_code_review:
-    uses: pagopa/dx/.github/workflows/infra_plan.yaml@CES-9-fix-plan-comments-being-overwritten
+    uses: pagopa/dx/.github/workflows/infra_plan.yaml@main
     name: Prod - Code Review
     secrets: inherit
     with:
