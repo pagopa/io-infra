@@ -71,3 +71,15 @@ module "container_registry" {
 
   tags = merge(local.tags, { Source = "https://github.com/pagopa/io-infra" })
 }
+
+module "key_vault_weu" {
+  source = "../_modules/key_vaults"
+
+  location              = data.azurerm_resource_group.vnet_weu.location
+  location_short        = local.location_short[data.azurerm_resource_group.vnet_weu.location]
+  project               = local.project_weu_legacy
+  resource_group_common = data.azurerm_resource_group.vnet_weu.name
+  tenant_id             = data.azurerm_client_config.current.tenant_id
+
+  tags = merge(local.tags)
+}
