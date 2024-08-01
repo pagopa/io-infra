@@ -778,7 +778,7 @@ module "appservice_app_backendl1" {
     startup_time           = "00:05:00"
     slow_requests_count    = 50
     slow_requests_interval = "00:01:00"
-    slow_requests_time     = "00:00:05"
+    slow_requests_time     = "00:00:10"
   }
 
   app_settings = merge(
@@ -908,7 +908,7 @@ module "appservice_app_backendl2" {
     startup_time           = "00:05:00"
     slow_requests_count    = 50
     slow_requests_interval = "00:01:00"
-    slow_requests_time     = "00:00:05"
+    slow_requests_time     = "00:00:10"
   }
 
   app_settings = merge(
