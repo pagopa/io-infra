@@ -96,7 +96,7 @@ data "azurerm_eventhub_authorization_rule" "io-p-messages-weu-prod01-evh-ns_mess
 
 data "azurerm_key_vault_secret" "apim_services_subscription_key" {
   name         = "apim-IO-SERVICE-KEY"
-  key_vault_id = module.key_vault_common.id
+  key_vault_id = data.azurerm_key_vault.key_vault_common.id
 }
 
 
@@ -107,7 +107,7 @@ data "azurerm_key_vault_secret" "apim_services_subscription_key" {
 
 data "azurerm_key_vault_secret" "app_backend_PRE_SHARED_KEY" {
   name         = "appbackend-PRE-SHARED-KEY"
-  key_vault_id = module.key_vault_common.id
+  key_vault_id = data.azurerm_key_vault.key_vault_common.id
 }
 
 
@@ -342,7 +342,7 @@ data "azurerm_api_management" "trial_system" {
 }
 
 ### Network and DNS
-# TO BE REMOVED WHEN RESOURCES ARE  
+# TO BE REMOVED WHEN RESOURCES ARE
 # MOVED TO THE MODULAR FORM
 data "azurerm_virtual_network" "common" {
   name                = "${local.project}-vnet-common"
