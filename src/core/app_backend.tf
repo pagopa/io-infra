@@ -255,7 +255,6 @@ locals {
       ])
 
       // LolliPOP
-      LOLLIPOP_ALLOWED_USER_AGENTS              = "IO-App/2.23.0"
       LOLLIPOP_REVOKE_STORAGE_CONNECTION_STRING = data.azurerm_storage_account.lollipop_assertions_storage.primary_connection_string
       LOLLIPOP_REVOKE_QUEUE_NAME                = var.citizen_auth_revoke_queue_name
 
