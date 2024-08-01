@@ -1,6 +1,6 @@
 output "acr" {
   value = {
-    id   = module.container_registry.id
-    name = module.container_registry.name
+    id           = module.container_registry.id
+    login_server = module.container_registry.login_server
   }
 }
