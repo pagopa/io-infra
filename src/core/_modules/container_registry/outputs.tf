@@ -1,6 +1,6 @@
 output "acr" {
   value = {
-    id           = module.container_registry.id
-    login_server = module.container_registry.login_server
+    id           = azurerm_container_registry.this.id
+    login_server = azurerm_container_registry.this.login_server
   }
 }
