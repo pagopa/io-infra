@@ -37,7 +37,7 @@ resource "azurerm_cdn_profile" "assets_cdn_profile" {
 
 data "azurerm_key_vault_secret" "assets_cdn_fn_key_cdn" {
   name         = "${data.azurerm_linux_function_app.function_assets_cdn.name}-KEY-CDN"
-  key_vault_id = module.key_vault_common.id
+  key_vault_id = data.azurerm_key_vault.key_vault_common.id
 }
 
 resource "azurerm_cdn_endpoint" "assets_cdn_endpoint" {

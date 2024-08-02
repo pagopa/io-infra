@@ -56,8 +56,6 @@
 | <a name="module_dns_forwarder_snet"></a> [dns\_forwarder\_snet](#module\_dns\_forwarder\_snet) | github.com/pagopa/terraform-azurerm-v3//subnet | v8.27.0 |
 | <a name="module_event_hub"></a> [event\_hub](#module\_event\_hub) | github.com/pagopa/terraform-azurerm-v3//eventhub | v8.27.0 |
 | <a name="module_eventhub_snet"></a> [eventhub\_snet](#module\_eventhub\_snet) | github.com/pagopa/terraform-azurerm-v3//subnet | v8.27.0 |
-| <a name="module_key_vault"></a> [key\_vault](#module\_key\_vault) | github.com/pagopa/terraform-azurerm-v3//key_vault | v8.27.0 |
-| <a name="module_key_vault_common"></a> [key\_vault\_common](#module\_key\_vault\_common) | github.com/pagopa/terraform-azurerm-v3//key_vault | v8.27.0 |
 | <a name="module_locked_profiles_storage"></a> [locked\_profiles\_storage](#module\_locked\_profiles\_storage) | github.com/pagopa/terraform-azurerm-v3//storage_account | v8.27.0 |
 | <a name="module_redis_common_backup_zrs"></a> [redis\_common\_backup\_zrs](#module\_redis\_common\_backup\_zrs) | github.com/pagopa/terraform-azurerm-v3//storage_account | v8.27.0 |
 | <a name="module_redis_common_snet"></a> [redis\_common\_snet](#module\_redis\_common\_snet) | github.com/pagopa/terraform-azurerm-v3//subnet | v8.27.0 |
@@ -158,7 +156,6 @@
 | [azurerm_resource_group.rg_external](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/resource_group) | resource |
 | [azurerm_resource_group.rg_internal](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/resource_group) | resource |
 | [azurerm_resource_group.rg_linux](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/resource_group) | resource |
-| [azurerm_resource_group.sec_rg](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/resource_group) | resource |
 | [azurerm_storage_container.storage_api_cached](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/storage_container) | resource |
 | [azurerm_storage_container.storage_api_message_content](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/storage_container) | resource |
 | [azurerm_storage_queue.storage_account_apievents_events_queue](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/storage_queue) | resource |
@@ -202,6 +199,8 @@
 | [azurerm_eventhub_authorization_rule.io-p-messages-weu-prod01-evh-ns_messages_io-fn-messages-cqrs](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/eventhub_authorization_rule) | data source |
 | [azurerm_eventhub_authorization_rule.io-p-payments-weu-prod01-evh-ns_payment-updates_io-fn-messages-cqrs](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/eventhub_authorization_rule) | data source |
 | [azurerm_key_vault.ioweb_kv](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/key_vault) | data source |
+| [azurerm_key_vault.key_vault](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/key_vault) | data source |
+| [azurerm_key_vault.key_vault_common](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/key_vault) | data source |
 | [azurerm_key_vault_certificate.api_app_internal_io_pagopa_it](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/key_vault_certificate) | data source |
 | [azurerm_key_vault_certificate.api_internal_io_italia_it](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/key_vault_certificate) | data source |
 | [azurerm_key_vault_certificate.app_gw_api](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/key_vault_certificate) | data source |
@@ -296,6 +295,7 @@
 | [azurerm_redis_cache.redis_common](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/redis_cache) | data source |
 | [azurerm_resource_group.lollipop_function_rg](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/resource_group) | data source |
 | [azurerm_resource_group.notifications_rg](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/resource_group) | data source |
+| [azurerm_resource_group.sec_rg](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/resource_group) | data source |
 | [azurerm_storage_account.logs](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/storage_account) | data source |
 | [azurerm_storage_account.lollipop_assertions_storage](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/storage_account) | data source |
 | [azurerm_storage_account.notifications](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/storage_account) | data source |

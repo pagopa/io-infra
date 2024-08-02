@@ -464,199 +464,199 @@ resource "azurerm_resource_group" "rg_linux" {
 
 data "azurerm_key_vault_secret" "app_backend_SAML_CERT" {
   name         = "appbackend-SAML-CERT"
-  key_vault_id = module.key_vault_common.id
+  key_vault_id = data.azurerm_key_vault.key_vault_common.id
 }
 
 data "azurerm_key_vault_secret" "app_backend_SAML_KEY" {
   name         = "appbackend-SAML-KEY"
-  key_vault_id = module.key_vault_common.id
+  key_vault_id = data.azurerm_key_vault.key_vault_common.id
 }
 
 data "azurerm_key_vault_secret" "app_backend_API_KEY" {
   name         = "funcapp-KEY-APPBACKEND"
-  key_vault_id = module.key_vault_common.id
+  key_vault_id = data.azurerm_key_vault.key_vault_common.id
 }
 
 data "azurerm_key_vault_secret" "app_backend_CGN_API_KEY" {
   name         = "funccgn-KEY-APPBACKEND"
-  key_vault_id = module.key_vault_common.id
+  key_vault_id = data.azurerm_key_vault.key_vault_common.id
 }
 
 data "azurerm_key_vault_secret" "app_backend_IO_SIGN_API_KEY" {
   name         = "funciosign-KEY-APPBACKEND"
-  key_vault_id = module.key_vault_common.id
+  key_vault_id = data.azurerm_key_vault.key_vault_common.id
 }
 
 data "azurerm_key_vault_secret" "app_backend_CGN_OPERATOR_SEARCH_API_KEY_PROD" {
   name         = "funccgnoperatorsearch-KEY-PROD-APPBACKEND"
-  key_vault_id = module.key_vault_common.id
+  key_vault_id = data.azurerm_key_vault.key_vault_common.id
 }
 
 data "azurerm_key_vault_secret" "app_backend_CGN_OPERATOR_SEARCH_API_KEY_UAT" {
   name         = "funccgnoperatorsearch-KEY-UAT-APPBACKEND"
-  key_vault_id = module.key_vault_common.id
+  key_vault_id = data.azurerm_key_vault.key_vault_common.id
 }
 
 data "azurerm_key_vault_secret" "app_backend_ALLOW_PAGOPA_IP_SOURCE_RANGE" {
   name         = "appbackend-ALLOW-PAGOPA-IP-SOURCE-RANGE"
-  key_vault_id = module.key_vault_common.id
+  key_vault_id = data.azurerm_key_vault.key_vault_common.id
 }
 
 data "azurerm_key_vault_secret" "app_backend_PAGOPA_API_KEY_PROD" {
   name         = "appbackend-PAGOPA-API-KEY-PROD-PRIMARY"
-  key_vault_id = module.key_vault_common.id
+  key_vault_id = data.azurerm_key_vault.key_vault_common.id
 }
 
 data "azurerm_key_vault_secret" "app_backend_PAGOPA_API_KEY_UAT" {
   name         = "appbackend-PAGOPA-API-KEY-UAT-PRIMARY"
-  key_vault_id = module.key_vault_common.id
+  key_vault_id = data.azurerm_key_vault.key_vault_common.id
 }
 
 data "azurerm_key_vault_secret" "app_backend_TEST_LOGIN_PASSWORD" {
   name         = "appbackend-TEST-LOGIN-PASSWORD"
-  key_vault_id = module.key_vault_common.id
+  key_vault_id = data.azurerm_key_vault.key_vault_common.id
 }
 
 data "azurerm_key_vault_secret" "app_backend_ALLOW_MYPORTAL_IP_SOURCE_RANGE" {
   name         = "appbackend-ALLOW-MYPORTAL-IP-SOURCE-RANGE"
-  key_vault_id = module.key_vault_common.id
+  key_vault_id = data.azurerm_key_vault.key_vault_common.id
 }
 
 data "azurerm_key_vault_secret" "app_backend_ALLOW_BPD_IP_SOURCE_RANGE" {
   name         = "appbackend-ALLOW-BPD-IP-SOURCE-RANGE"
-  key_vault_id = module.key_vault_common.id
+  key_vault_id = data.azurerm_key_vault.key_vault_common.id
 }
 
 data "azurerm_key_vault_secret" "app_backend_JWT_SUPPORT_TOKEN_PRIVATE_RSA_KEY" {
   name         = "appbackend-JWT-SUPPORT-TOKEN-PRIVATE-RSA-KEY"
-  key_vault_id = module.key_vault_common.id
+  key_vault_id = data.azurerm_key_vault.key_vault_common.id
 }
 
 data "azurerm_key_vault_secret" "app_backend_TEST_CGN_FISCAL_CODES" {
   name         = "appbackend-TEST-CGN-FISCAL-CODES"
-  key_vault_id = module.key_vault_common.id
+  key_vault_id = data.azurerm_key_vault.key_vault_common.id
 }
 
 data "azurerm_key_vault_secret" "app_backend_JWT_MIT_VOUCHER_TOKEN_PRIVATE_ES_KEY" {
   name         = "appbackend-mitvoucher-JWT-PRIVATE-ES-KEY"
-  key_vault_id = module.key_vault_common.id
+  key_vault_id = data.azurerm_key_vault.key_vault_common.id
 }
 
 data "azurerm_key_vault_secret" "app_backend_JWT_MIT_VOUCHER_TOKEN_AUDIENCE" {
   name         = "appbackend-mitvoucher-JWT-AUDIENCE"
-  key_vault_id = module.key_vault_common.id
+  key_vault_id = data.azurerm_key_vault.key_vault_common.id
 }
 
 data "azurerm_key_vault_secret" "app_backend_ALLOW_ZENDESK_IP_SOURCE_RANGE" {
   name         = "appbackend-ALLOW-ZENDESK-IP-SOURCE-RANGE"
-  key_vault_id = module.key_vault_common.id
+  key_vault_id = data.azurerm_key_vault.key_vault_common.id
 }
 
 data "azurerm_key_vault_secret" "app_backend_JWT_ZENDESK_SUPPORT_TOKEN_SECRET" {
   name         = "appbackend-JWT-ZENDESK-SUPPORT-TOKEN-SECRET"
-  key_vault_id = module.key_vault_common.id
+  key_vault_id = data.azurerm_key_vault.key_vault_common.id
 }
 
 data "azurerm_key_vault_secret" "app_backend_PECSERVER_TOKEN_SECRET" {
   name         = "appbackend-PECSERVER-TOKEN-SECRET"
-  key_vault_id = module.key_vault_common.id
+  key_vault_id = data.azurerm_key_vault.key_vault_common.id
 }
 
 data "azurerm_key_vault_secret" "app_backend_PECSERVER_ARUBA_TOKEN_SECRET" {
   name         = "appbackend-PECSERVER-ARUBA-TOKEN-SECRET"
-  key_vault_id = module.key_vault_common.id
+  key_vault_id = data.azurerm_key_vault.key_vault_common.id
 }
 
 data "azurerm_key_vault_secret" "app_backend_APP_MESSAGES_API_KEY" {
   name         = "appbackend-APP-MESSAGES-API-KEY"
-  key_vault_id = module.key_vault_common.id
+  key_vault_id = data.azurerm_key_vault.key_vault_common.id
 }
 
 data "azurerm_key_vault_secret" "app_backend_APP_MESSAGES_BETA_FISCAL_CODES" {
   name         = "appbackend-APP-MESSAGES-BETA-FISCAL-CODES"
-  key_vault_id = module.key_vault_common.id
+  key_vault_id = data.azurerm_key_vault.key_vault_common.id
 }
 
 data "azurerm_key_vault_secret" "app_backend_PN_API_KEY_PROD" {
   name         = "appbackend-PN-API-KEY-PROD-ENV"
-  key_vault_id = module.key_vault_common.id
+  key_vault_id = data.azurerm_key_vault.key_vault_common.id
 }
 
 data "azurerm_key_vault_secret" "app_backend_PN_API_KEY_UAT_V2" {
   name         = "appbackend-PN-API-KEY-UAT-ENV-V2"
-  key_vault_id = module.key_vault_common.id
+  key_vault_id = data.azurerm_key_vault.key_vault_common.id
 }
 
 data "azurerm_key_vault_secret" "app_backend_PN_REAL_TEST_USERS" {
   name         = "appbackend-PN-REAL-TEST-USERS"
-  key_vault_id = module.key_vault_common.id
+  key_vault_id = data.azurerm_key_vault.key_vault_common.id
 }
 
 data "azurerm_key_vault_secret" "app_backend_LOLLIPOP_ITN_API_KEY" {
   name         = "appbackend-LOLLIPOP-ITN-API-KEY"
-  key_vault_id = module.key_vault_common.id
+  key_vault_id = data.azurerm_key_vault.key_vault_common.id
 }
 
 data "azurerm_key_vault_secret" "app_backend_FAST_LOGIN_API_KEY" {
   name         = "appbackend-FAST-LOGIN-API-KEY"
-  key_vault_id = module.key_vault_common.id
+  key_vault_id = data.azurerm_key_vault.key_vault_common.id
 }
 
 data "azurerm_key_vault_secret" "app_backend_TRIAL_SYSTEM_API_KEY" {
   name         = "appbackend-TRIAL-SYSTEM-API-KEY"
-  key_vault_id = module.key_vault_common.id
+  key_vault_id = data.azurerm_key_vault.key_vault_common.id
 }
 
 data "azurerm_key_vault_secret" "app_backend_IOLOGIN_TEST_USERS" {
   name         = "appbackend-IOLOGIN-TEST-USERS"
-  key_vault_id = module.key_vault_common.id
+  key_vault_id = data.azurerm_key_vault.key_vault_common.id
 }
 
 data "azurerm_key_vault_secret" "app_backend_UNIQUE_EMAIL_ENFORCEMENT_USER" {
   name         = "appbackend-UNIQUE-EMAIL-ENFORCEMENT-USER"
-  key_vault_id = module.key_vault_common.id
+  key_vault_id = data.azurerm_key_vault.key_vault_common.id
 }
 
 data "azurerm_key_vault_secret" "app_backend_LV_TEST_USERS" {
   name         = "appbackend-LV-TEST-USERS"
-  key_vault_id = module.key_vault_common.id
+  key_vault_id = data.azurerm_key_vault.key_vault_common.id
 }
 
 data "azurerm_key_vault_secret" "app_backend_ALLOWED_CIE_TEST_FISCAL_CODES" {
   name         = "appbackend-ALLOWED-CIE-TEST-FISCAL-CODES"
-  key_vault_id = module.key_vault_common.id
+  key_vault_id = data.azurerm_key_vault.key_vault_common.id
 }
 
 data "azurerm_key_vault_secret" "app_backend_RECEIPT_SERVICE_TEST_API_KEY" {
   name         = "appbackend-RECEIPT-SERVICE-TEST-API-KEY"
-  key_vault_id = module.key_vault_common.id
+  key_vault_id = data.azurerm_key_vault.key_vault_common.id
 }
 
 data "azurerm_key_vault_secret" "app_backend_RECEIPT_SERVICE_API_KEY" {
   name         = "appbackend-RECEIPT-SERVICE-API-KEY"
-  key_vault_id = module.key_vault_common.id
+  key_vault_id = data.azurerm_key_vault.key_vault_common.id
 }
 
 data "azurerm_key_vault_secret" "fn_eucovidcert_API_KEY_APPBACKEND" {
   name         = "funceucovidcert-KEY-APPBACKEND"
-  key_vault_id = module.key_vault_common.id
+  key_vault_id = data.azurerm_key_vault.key_vault_common.id
 }
 
 data "azurerm_key_vault_secret" "fn_eucovidcert_API_KEY_PUBLICIOEVENTDISPATCHER" {
   name         = "funceucovidcert-KEY-PUBLICIOEVENTDISPATCHER"
-  key_vault_id = module.key_vault.id
+  key_vault_id = data.azurerm_key_vault.key_vault.id
 }
 
 data "azurerm_key_vault_secret" "app_backend_IO_WALLET_API_KEY" {
   name         = "funciowallet-KEY-APPBACKEND"
-  key_vault_id = module.key_vault_common.id
+  key_vault_id = data.azurerm_key_vault.key_vault_common.id
 }
 
 #tfsec:ignore:AZU023
 resource "azurerm_key_vault_secret" "appbackend-REDIS-PASSWORD" {
   name         = "appbackend-REDIS-PASSWORD"
   value        = data.azurerm_redis_cache.redis_common.primary_access_key
-  key_vault_id = module.key_vault_common.id
+  key_vault_id = data.azurerm_key_vault.key_vault_common.id
   content_type = "string"
 }
 
@@ -664,7 +664,7 @@ resource "azurerm_key_vault_secret" "appbackend-REDIS-PASSWORD" {
 resource "azurerm_key_vault_secret" "appbackend-SPID-LOG-STORAGE" {
   name         = "appbackend-SPID-LOG-STORAGE"
   value        = data.azurerm_storage_account.logs.primary_connection_string
-  key_vault_id = module.key_vault_common.id
+  key_vault_id = data.azurerm_key_vault.key_vault_common.id
   content_type = "string"
 }
 
@@ -672,7 +672,7 @@ resource "azurerm_key_vault_secret" "appbackend-SPID-LOG-STORAGE" {
 resource "azurerm_key_vault_secret" "appbackend-PUSH-NOTIFICATIONS-STORAGE" {
   name         = "appbackend-PUSH-NOTIFICATIONS-STORAGE"
   value        = data.azurerm_storage_account.push_notifications_storage.primary_connection_string
-  key_vault_id = module.key_vault_common.id
+  key_vault_id = data.azurerm_key_vault.key_vault_common.id
   content_type = "string"
 }
 
@@ -680,7 +680,7 @@ resource "azurerm_key_vault_secret" "appbackend-PUSH-NOTIFICATIONS-STORAGE" {
 resource "azurerm_key_vault_secret" "appbackend-NORIFICATIONS-STORAGE" {
   name         = "appbackend-NORIFICATIONS-STORAGE"
   value        = data.azurerm_storage_account.notifications.primary_connection_string
-  key_vault_id = module.key_vault_common.id
+  key_vault_id = data.azurerm_key_vault.key_vault_common.id
   content_type = "string"
 }
 
@@ -688,7 +688,7 @@ resource "azurerm_key_vault_secret" "appbackend-NORIFICATIONS-STORAGE" {
 resource "azurerm_key_vault_secret" "appbackend-USERS-LOGIN-STORAGE" {
   name         = "appbackend-USERS-LOGIN-STORAGE"
   value        = data.azurerm_storage_account.logs.primary_connection_string
-  key_vault_id = module.key_vault_common.id
+  key_vault_id = data.azurerm_key_vault.key_vault_common.id
   content_type = "string"
 }
 
@@ -696,7 +696,7 @@ resource "azurerm_key_vault_secret" "appbackend-USERS-LOGIN-STORAGE" {
 resource "azurerm_key_vault_secret" "appbackend_LOLLIPOP_ASSERTIONS_STORAGE" {
   name         = "appbackend-LOLLIPOP-ASSERTIONS-STORAGE"
   value        = data.azurerm_storage_account.lollipop_assertions_storage.primary_connection_string
-  key_vault_id = module.key_vault_common.id
+  key_vault_id = data.azurerm_key_vault.key_vault_common.id
   content_type = "string"
 }
 
@@ -704,7 +704,7 @@ resource "azurerm_key_vault_secret" "appbackend_LOLLIPOP_ASSERTIONS_STORAGE" {
 resource "azurerm_key_vault_secret" "appbackend_THIRD_PARTY_CONFIG_LIST" {
   name         = "appbackend-THIRD-PARTY-CONFIG-LIST"
   value        = local.app_backend.app_settings_common.THIRD_PARTY_CONFIG_LIST
-  key_vault_id = module.key_vault_common.id
+  key_vault_id = data.azurerm_key_vault.key_vault_common.id
   content_type = "string"
 }
 
