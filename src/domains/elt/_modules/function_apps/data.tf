@@ -75,6 +75,13 @@ data "azurerm_eventhub_authorization_rule" "evh_ns_pdnd_io_cosmos_fn" {
   resource_group_name = "${var.project}-evt-rg"
 }
 
+data "azurerm_eventhub_authorization_rule" "evh_ns_pdnd_io_cosmos_service_preferences_fn" {
+  name                = "io-fn-elt"
+  namespace_name      = "${var.project}-evh-ns"
+  eventhub_name       = "pdnd-io-cosmosdb-service-preferences"
+  resource_group_name = "${var.project}-evt-rg"
+}
+
 data "azurerm_eventhub_authorization_rule" "evh_ns_import_command_fn" {
   name                = "io-fn-elt"
   namespace_name      = "${var.project}-evh-ns"
