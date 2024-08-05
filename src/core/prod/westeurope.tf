@@ -136,3 +136,38 @@ module "event_hubs_weu" {
 
   tags = merge(local.tags)
 }
+
+module "event_hubs_weu" {
+  source = "../_modules/event_hubs"
+
+  location       = data.azurerm_resource_group.vnet_weu.location
+  location_short = local.location_short[data.azurerm_resource_group.vnet_weu.location]
+  project        = local.project_weu_legacy
+
+  resource_group_common           = data.azurerm_resource_group.vnet_weu.name
+  privatelink_servicebus_dns_zone = module.global.dns.private_dns_zones.privatelink_servicebus
+  vnet_common                     = module.networking_weu.vnet_common
+  key_vault                       = module.key_vault_weu.kv
+
+  ehns_cidr_subnet              = ["10.0.10.0/24"]
+  ehns_sku_name                 = "Standard"
+  ehns_capacity                 = 5
+  ehns_maximum_throughput_units = 5
+  eventhubs                     = local.eventhubs
+  ehns_ip_rules = [
+    {
+      ip_mask = "18.192.147.151", # PDND
+      action  = "Allow"
+    },
+    {
+      ip_mask = "18.159.227.69", # PDND
+      action  = "Allow"
+    },
+    {
+      ip_mask = "3.126.198.129", # PDND
+      action  = "Allow"
+    }
+  ]
+
+  tags = merge(local.tags)
+}
