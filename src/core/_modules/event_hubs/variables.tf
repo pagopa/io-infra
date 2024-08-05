@@ -67,13 +67,13 @@ variable "sku_name" {
 variable "capacity" {
   type        = number
   description = "Specifies the Capacity / Throughput Units for a Standard SKU namespace."
-  default     = null
+  default     = 5
 }
 
 variable "maximum_throughput_units" {
   type        = number
   description = "Specifies the maximum number of throughput units when Auto Inflate is Enabled"
-  default     = null
+  default     = 5
 }
 
 variable "auto_inflate_enabled" {
