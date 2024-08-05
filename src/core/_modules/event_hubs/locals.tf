@@ -1,5 +1,5 @@
 locals {
-  ehns_metric_alerts = {
+  metric_alerts = {
     no_trx = {
       aggregation = "Total"
       metric_name = "IncomingMessages"
