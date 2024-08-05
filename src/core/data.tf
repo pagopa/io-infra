@@ -24,12 +24,6 @@ data "azurerm_storage_account" "logs" {
   resource_group_name = format("%s-rg-operations", local.project)
 }
 
-# todo migrate storage account and related resources
-locals {
-  storage_account_notifications_queue_spidmsgitems = "spidmsgitems"
-  storage_account_notifications_queue_userslogin   = "userslogin"
-}
-
 #
 # Notifications resources
 #
