@@ -81,7 +81,7 @@ module "key_vault_weu" {
   resource_group_common = data.azurerm_resource_group.common_weu.name
   tenant_id             = data.azurerm_client_config.current.tenant_id
 
-  tags = merge(local.tags)
+  tags = local.tags
 }
 
 module "vpn_weu" {
@@ -112,7 +112,7 @@ module "event_hubs_weu" {
   resource_group_common           = data.azurerm_resource_group.common_weu.name
   privatelink_servicebus_dns_zone = module.global.dns.private_dns_zones.privatelink_servicebus
   vnet_common                     = module.networking_weu.vnet_common
-  key_vault                       = module.key_vault_weu.kv
+  key_vault                       = module.key_vault_weu.kv_common
 
   ehns_cidr_subnet              = ["10.0.10.0/24"]
   ehns_sku_name                 = "Standard"
@@ -134,20 +134,20 @@ module "event_hubs_weu" {
     }
   ]
 
-  tags = merge(local.tags)
+  tags = local.tags
 }
 
 module "event_hubs_weu" {
   source = "../_modules/event_hubs"
 
-  location       = data.azurerm_resource_group.vnet_weu.location
-  location_short = local.location_short[data.azurerm_resource_group.vnet_weu.location]
+  location       = data.azurerm_resource_group.common_weu.location
+  location_short = local.location_short[data.azurerm_resource_group.common_weu.location]
   project        = local.project_weu_legacy
 
-  resource_group_common           = data.azurerm_resource_group.vnet_weu.name
+  resource_group_common           = data.azurerm_resource_group.common_weu.name
   privatelink_servicebus_dns_zone = module.global.dns.private_dns_zones.privatelink_servicebus
   vnet_common                     = module.networking_weu.vnet_common
-  key_vault                       = module.key_vault_weu.kv
+  key_vault                       = module.key_vault_weu.kv_common
 
   ehns_cidr_subnet              = ["10.0.10.0/24"]
   ehns_sku_name                 = "Standard"
@@ -169,5 +169,5 @@ module "event_hubs_weu" {
     }
   ]
 
-  tags = merge(local.tags)
+  tags = local.tags
 }
