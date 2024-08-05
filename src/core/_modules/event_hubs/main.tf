@@ -1,5 +1,5 @@
 resource "azurerm_resource_group" "event_rg" {
-  name     = format("%s-evt-rg", var.project)
+  name     = try(local.nonstandard[var.location_short].evh-rg, "${var.project}-evt-rg-01")
   location = var.location
 
   tags = var.tags
@@ -7,7 +7,7 @@ resource "azurerm_resource_group" "event_rg" {
 
 module "eventhub_snet" {
   source                                    = "github.com/pagopa/terraform-azurerm-v3//subnet?ref=v8.35.0"
-  name                                      = format("%s-eventhub-snet", var.project)
+  name                                      = try(local.nonstandard[var.location_short].evh-snet, "${var.project}-evh-snet-01")
   address_prefixes                          = var.ehns_cidr_subnet
   resource_group_name                       = var.resource_group_common
   virtual_network_name                      = var.vnet_common.name
@@ -17,7 +17,7 @@ module "eventhub_snet" {
 
 module "event_hub" {
   source                   = "github.com/pagopa/terraform-azurerm-v3//eventhub?ref=v8.35.0"
-  name                     = format("%s-evh-ns", var.project)
+  name                     = try(local.nonstandard[var.location_short].evh-ns, "${var.project}-evhns-01")
   location                 = var.location
   resource_group_name      = azurerm_resource_group.event_rg.name
   auto_inflate_enabled     = var.ehns_auto_inflate_enabled
@@ -66,7 +66,7 @@ module "event_hub" {
 
 locals {
   event_hub = {
-    connection = "${format("%s-evh-ns", var.project)}.servicebus.windows.net:9093"
+    connection = "${try(local.nonstandard[var.location_short].evh-ns, "${var.project}-evhns-01")}.servicebus.windows.net:9093"
   }
 }
 

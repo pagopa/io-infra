@@ -44,4 +44,12 @@ locals {
       ],
     },
   }
+
+  nonstandard = {
+    weu = {
+      evh-rg   = "${var.project}-evt-rg"
+      evh-snet = "${var.project}-eventhub-snet"
+      evh-ns   = "${var.project}-evh-ns"
+    }
+  }
 }
