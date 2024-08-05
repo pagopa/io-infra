@@ -53,36 +53,36 @@ variable "key_vault" {
 }
 
 ## Event hub
-variable "ehns_cidr_subnet" {
+variable "cidr_subnet" {
   type        = list(string)
   description = "CIDR for the EventHub Namespace subnets."
 }
 
-variable "ehns_sku_name" {
+variable "sku_name" {
   type        = string
   description = "Defines which tier to use."
   default     = "Standard"
 }
 
-variable "ehns_capacity" {
+variable "capacity" {
   type        = number
   description = "Specifies the Capacity / Throughput Units for a Standard SKU namespace."
   default     = null
 }
 
-variable "ehns_maximum_throughput_units" {
+variable "maximum_throughput_units" {
   type        = number
   description = "Specifies the maximum number of throughput units when Auto Inflate is Enabled"
   default     = null
 }
 
-variable "ehns_auto_inflate_enabled" {
+variable "auto_inflate_enabled" {
   type        = bool
   description = "Is Auto Inflate enabled for the EventHub Namespace?"
   default     = true
 }
 
-variable "ehns_zone_redundant" {
+variable "zone_redundant" {
   type        = bool
   description = "Specifies if the EventHub Namespace should be Zone Redundant (created across Availability Zones)."
   default     = true
@@ -105,7 +105,7 @@ variable "eventhubs" {
   default = []
 }
 
-variable "ehns_ip_rules" {
+variable "ip_rules" {
   description = "eventhub network rules"
   type = list(object({
     ip_mask = string
@@ -114,7 +114,7 @@ variable "ehns_ip_rules" {
   default = []
 }
 
-variable "ehns_alerts_enabled" {
+variable "alerts_enabled" {
   type        = bool
   default     = true
   description = "Event hub alerts enabled?"

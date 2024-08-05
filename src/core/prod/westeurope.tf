@@ -114,12 +114,12 @@ module "event_hubs_weu" {
   vnet_common                     = module.networking_weu.vnet_common
   key_vault                       = module.key_vault_weu.kv_common
 
-  ehns_cidr_subnet              = ["10.0.10.0/24"]
-  ehns_sku_name                 = "Standard"
-  ehns_capacity                 = 5
-  ehns_maximum_throughput_units = 5
-  eventhubs                     = local.eventhubs
-  ehns_ip_rules = [
+  cidr_subnet              = ["10.0.10.0/24"]
+  sku_name                 = "Standard"
+  capacity                 = 5
+  maximum_throughput_units = 5
+  eventhubs                = local.eventhubs
+  ip_rules = [
     {
       ip_mask = "18.192.147.151", # PDND
       action  = "Allow"

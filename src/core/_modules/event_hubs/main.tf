@@ -8,7 +8,7 @@ resource "azurerm_resource_group" "event_rg" {
 module "eventhub_snet" {
   source                                    = "github.com/pagopa/terraform-azurerm-v3//subnet?ref=v8.35.0"
   name                                      = try(local.nonstandard[var.location_short].evh-snet, "${var.project}-evh-snet-01")
-  address_prefixes                          = var.ehns_cidr_subnet
+  address_prefixes                          = var.cidr_subnet
   resource_group_name                       = var.resource_group_common
   virtual_network_name                      = var.vnet_common.name
   service_endpoints                         = ["Microsoft.EventHub"]
@@ -20,11 +20,11 @@ module "event_hub" {
   name                     = try(local.nonstandard[var.location_short].evh-ns, "${var.project}-evhns-01")
   location                 = var.location
   resource_group_name      = azurerm_resource_group.event_rg.name
-  auto_inflate_enabled     = var.ehns_auto_inflate_enabled
-  sku                      = var.ehns_sku_name
-  capacity                 = var.ehns_capacity
-  maximum_throughput_units = var.ehns_maximum_throughput_units
-  zone_redundant           = var.ehns_zone_redundant
+  auto_inflate_enabled     = var.auto_inflate_enabled
+  sku                      = var.sku_name
+  capacity                 = var.capacity
+  maximum_throughput_units = var.maximum_throughput_units
+  zone_redundant           = var.zone_redundant
   private_endpoint_created = false
 
   virtual_network_ids = [var.vnet_common.id]
@@ -47,13 +47,13 @@ module "event_hub" {
           ignore_missing_virtual_network_service_endpoint = false
         }
       ],
-      ip_rule                        = var.ehns_ip_rules
+      ip_rule                        = var.ip_rules
       trusted_service_access_enabled = false
     }
   ]
 
-  alerts_enabled = var.ehns_alerts_enabled
-  metric_alerts  = local.ehns_metric_alerts
+  alerts_enabled = var.alerts_enabled
+  metric_alerts  = local.metric_alerts
   action = [
     {
       action_group_id    = data.azurerm_monitor_action_group.error_action_group.id
