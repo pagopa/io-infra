@@ -18,6 +18,7 @@ concurrency:
 
 env:
   ARM_SUBSCRIPTION_ID: ${{ secrets.ARM_SUBSCRIPTION_ID }}
+  ARM_CLIENT_ID: ${{ secrets.ARM_CLIENT_ID }}
   ARM_TENANT_ID: ${{ secrets.ARM_TENANT_ID }}
   ARM_USE_OIDC: true
   ARM_USE_AZUREAD: true
@@ -31,8 +32,6 @@ jobs:
     name: Terraform Plan
     runs-on: self-hosted
     environment: prod-ci
-    env:
-      ARM_CLIENT_ID: ${{ secrets.ARM_CLIENT_ID }}
 
     steps:
 
@@ -90,8 +89,6 @@ jobs:
     runs-on: self-hosted
     environment: prod-cd
     needs: [terraform_plan_job]
-    env:
-      ARM_CLIENT_ID: ${{ secrets.ARM_CLIENT_ID }}
 
     steps:
 
