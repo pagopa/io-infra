@@ -1,5 +1,5 @@
 module "io_sign_storage" {
-  source                          = "github.com/pagopa/terraform-azurerm-v3.git//storage_account?ref=v7.46.0"
+  source                          = "github.com/pagopa/terraform-azurerm-v3//storage_account?ref=v8.35.0"
   name                            = replace(format("%s-st", local.project), "-", "")
   account_kind                    = "StorageV2"
   account_tier                    = "Standard"
@@ -9,6 +9,7 @@ module "io_sign_storage" {
   resource_group_name             = azurerm_resource_group.data_rg.name
   location                        = azurerm_resource_group.data_rg.location
   advanced_threat_protection      = true
+  use_legacy_defender_version     = true
   allow_nested_items_to_be_public = false
   public_network_access_enabled   = true
 
@@ -32,6 +33,42 @@ module "io_sign_storage" {
 
   tags = var.tags
 }
+
+# module "io_sign_storage_itn" {
+#   source                          = "github.com/pagopa/terraform-azurerm-v3//storage_account?ref=v8.35.0"
+#   name                            = replace(format("%s-itn-sign-st-01", local.product), "-", "")
+#   account_kind                    = "StorageV2"
+#   account_tier                    = "Standard"
+#   account_replication_type        = "ZRS"
+#   access_tier                     = "Hot"
+#   blob_versioning_enabled         = false
+#   resource_group_name             = azurerm_resource_group.sign.name
+#   location                        = azurerm_resource_group.sign.location
+#   advanced_threat_protection      = true
+#   use_legacy_defender_version = false
+#   allow_nested_items_to_be_public = false
+#   public_network_access_enabled   = true
+
+#   network_rules = {
+#     default_action = "Allow"
+#     ip_rules       = []
+#     bypass = [
+#       "Logging",
+#       "Metrics",
+#       "AzureServices",
+#     ]
+#     virtual_network_subnet_ids = []
+#   }
+
+#   action = var.storage_account.enable_low_availability_alert ? [
+#     {
+#       action_group_id    = data.azurerm_monitor_action_group.error_action_group.id
+#       webhook_properties = {}
+#     }
+#   ] : []
+
+#   tags = var.tags
+# }
 
 resource "azurerm_storage_management_policy" "io_sign_storage_management_policy" {
   storage_account_id = module.io_sign_storage.id

@@ -9,7 +9,7 @@ data "azurerm_user_assigned_identity" "infra_cd" {
 }
 
 module "key_vault_secrets" {
-  source = "github.com/pagopa/terraform-azurerm-v3.git//key_vault_secrets_query?ref=v7.46.0"
+  source = "github.com/pagopa/terraform-azurerm-v3//key_vault_secrets_query?ref=v8.35.0"
 
   resource_group = azurerm_resource_group.sec_rg.name
   key_vault_name = module.key_vault.name
@@ -33,7 +33,7 @@ module "key_vault_secrets" {
 }
 
 module "key_vault" {
-  source = "github.com/pagopa/terraform-azurerm-v3.git//key_vault?ref=v7.46.0"
+  source = "github.com/pagopa/terraform-azurerm-v3//key_vault?ref=v8.35.0"
 
   name                       = format("%s-%s-kv", local.product, var.domain)
   location                   = azurerm_resource_group.sec_rg.location

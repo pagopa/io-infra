@@ -102,7 +102,7 @@ resource "azurerm_api_management_named_value" "backoffice-api-keys-collection-na
 }
 
 module "apim_v2_io_sign_product" {
-  source = "github.com/pagopa/terraform-azurerm-v3.git//api_management_product?ref=v7.46.0"
+  source = "github.com/pagopa/terraform-azurerm-v3//api_management_product?ref=v8.35.0"
 
   product_id   = "io-sign-api"
   display_name = "IO SIGN API"
@@ -128,7 +128,7 @@ resource "azurerm_api_management_api_operation_policy" "get_signer_by_fiscal_cod
 }
 
 module "apim_v2_io_sign_issuer_api_v1" {
-  source = "github.com/pagopa/terraform-azurerm-v3.git//api_management_api?ref=v7.46.0"
+  source = "github.com/pagopa/terraform-azurerm-v3//api_management_api?ref=v8.35.0"
 
   name                  = format("%s-sign-issuer-api", local.product)
   api_management_name   = data.azurerm_api_management.apim_v2_api.name
@@ -150,7 +150,7 @@ module "apim_v2_io_sign_issuer_api_v1" {
 }
 
 module "apim_v2_io_sign_support_product" {
-  source = "github.com/pagopa/terraform-azurerm-v3.git//api_management_product?ref=v7.46.0"
+  source = "github.com/pagopa/terraform-azurerm-v3//api_management_product?ref=v8.35.0"
 
   product_id   = "io-sign-support-api"
   display_name = "IO SIGN SUPPORT Product"
@@ -167,7 +167,7 @@ module "apim_v2_io_sign_support_product" {
 }
 
 module "apim_v2_io_sign_support_api_v1" {
-  source = "github.com/pagopa/terraform-azurerm-v3.git//api_management_api?ref=v7.46.0"
+  source = "github.com/pagopa/terraform-azurerm-v3//api_management_api?ref=v8.35.0"
 
   name                  = format("%s-sign-support-api", local.product)
   api_management_name   = data.azurerm_api_management.apim_v2_api.name
@@ -208,7 +208,7 @@ resource "azurerm_api_management_named_value" "io_fn_sign_backoffice_key_v2" {
 }
 
 module "apim_v2_io_sign_backoffice_product" {
-  source = "github.com/pagopa/terraform-azurerm-v3.git//api_management_product?ref=v7.46.0"
+  source = "github.com/pagopa/terraform-azurerm-v3//api_management_product?ref=v8.35.0"
 
   product_id   = format("%s-sign-backoffice-apim-product", local.product)
   display_name = "IO SIGN BACKOFFICE"
@@ -229,7 +229,7 @@ data "http" "backoffice_openapi" {
 }
 
 module "apim_v2_io_sign_backoffice_api_v1" {
-  source = "github.com/pagopa/terraform-azurerm-v3.git//api_management_api?ref=v7.46.0"
+  source = "github.com/pagopa/terraform-azurerm-v3//api_management_api?ref=v8.35.0"
 
   name                  = format("%s-sign-backoffice-apim-api", local.product)
   api_management_name   = data.azurerm_api_management.apim_v2_api.name

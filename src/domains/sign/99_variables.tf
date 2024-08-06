@@ -43,14 +43,6 @@ variable "tags" {
 
 # domain specific
 
-# Container App Job GitHub Runner
-variable "container_app_environment" {
-  type = object({
-    name                = string
-    resource_group_name = string
-  })
-}
-
 variable "key_vault_common" {
   type = object({
     resource_group_name = string

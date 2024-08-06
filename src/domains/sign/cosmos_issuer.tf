@@ -1,12 +1,12 @@
 module "cosmosdb_sql_database_issuer" {
-  source              = "github.com/pagopa/terraform-azurerm-v3.git//cosmosdb_sql_database?ref=v7.46.0"
+  source              = "github.com/pagopa/terraform-azurerm-v3//cosmosdb_sql_database?ref=v8.35.0"
   name                = "issuer"
   resource_group_name = azurerm_resource_group.data_rg.name
   account_name        = module.cosmosdb_account.name
 }
 
 module "cosmosdb_sql_container_issuer-dossiers" {
-  source              = "github.com/pagopa/terraform-azurerm-v3.git//cosmosdb_sql_container?ref=v7.46.0"
+  source              = "github.com/pagopa/terraform-azurerm-v3//cosmosdb_sql_container?ref=v8.35.0"
   name                = "dossiers"
   resource_group_name = azurerm_resource_group.data_rg.name
   account_name        = module.cosmosdb_account.name
@@ -21,7 +21,7 @@ module "cosmosdb_sql_container_issuer-dossiers" {
 }
 
 module "cosmosdb_sql_container_issuer-signature-requests" {
-  source              = "github.com/pagopa/terraform-azurerm-v3.git//cosmosdb_sql_container?ref=v7.46.0"
+  source              = "github.com/pagopa/terraform-azurerm-v3//cosmosdb_sql_container?ref=v8.35.0"
   name                = "signature-requests"
   resource_group_name = azurerm_resource_group.data_rg.name
   account_name        = module.cosmosdb_account.name
@@ -36,7 +36,7 @@ module "cosmosdb_sql_container_issuer-signature-requests" {
 }
 
 module "cosmosdb_sql_container_issuer-uploads" {
-  source              = "github.com/pagopa/terraform-azurerm-v3.git//cosmosdb_sql_container?ref=v7.46.0"
+  source              = "github.com/pagopa/terraform-azurerm-v3//cosmosdb_sql_container?ref=v8.35.0"
   name                = "uploads"
   resource_group_name = azurerm_resource_group.data_rg.name
   account_name        = module.cosmosdb_account.name
@@ -51,7 +51,7 @@ module "cosmosdb_sql_container_issuer-uploads" {
 }
 
 module "cosmosdb_sql_container_issuer-issuers" {
-  source              = "github.com/pagopa/terraform-azurerm-v3.git//cosmosdb_sql_container?ref=v7.46.0"
+  source              = "github.com/pagopa/terraform-azurerm-v3//cosmosdb_sql_container?ref=v8.35.0"
   name                = "issuers"
   resource_group_name = azurerm_resource_group.data_rg.name
   account_name        = module.cosmosdb_account.name
@@ -66,7 +66,7 @@ module "cosmosdb_sql_container_issuer-issuers" {
 }
 
 module "cosmosdb_sql_container_issuer-issuers-by-vat-number" {
-  source              = "github.com/pagopa/terraform-azurerm-v3.git//cosmosdb_sql_container?ref=v7.46.0"
+  source              = "github.com/pagopa/terraform-azurerm-v3//cosmosdb_sql_container?ref=v8.35.0"
   name                = "issuers-by-vat-number"
   resource_group_name = azurerm_resource_group.data_rg.name
   account_name        = module.cosmosdb_account.name
@@ -81,7 +81,7 @@ module "cosmosdb_sql_container_issuer-issuers-by-vat-number" {
 }
 
 module "cosmosdb_sql_container_issuer-issuers-by-subscription-id" {
-  source              = "github.com/pagopa/terraform-azurerm-v3.git//cosmosdb_sql_container?ref=v7.46.0"
+  source              = "github.com/pagopa/terraform-azurerm-v3//cosmosdb_sql_container?ref=v8.35.0"
   name                = "issuers-by-subscription-id"
   resource_group_name = azurerm_resource_group.data_rg.name
   account_name        = module.cosmosdb_account.name
@@ -96,7 +96,7 @@ module "cosmosdb_sql_container_issuer-issuers-by-subscription-id" {
 }
 
 module "cosmosdb_sql_container_issuer-issuers-whitelist" {
-  source              = "github.com/pagopa/terraform-azurerm-v3.git//cosmosdb_sql_container?ref=v7.46.0"
+  source              = "github.com/pagopa/terraform-azurerm-v3//cosmosdb_sql_container?ref=v8.35.0"
   name                = "issuers-whitelist"
   resource_group_name = azurerm_resource_group.data_rg.name
   account_name        = module.cosmosdb_account.name
