@@ -79,7 +79,7 @@ jobs:
       - name: Terraform Plan
         working-directory: ${{ inputs.dir }}
         run: |
-          terraform plan -lock-timeout=3000s -no-color | tee plan_output.txt
+          terraform plan -lock-timeout=3000s -no-color | grep -v "hidden-link:" | tee plan_output.txt
           OUTPUT=$(grep -Ev "Refreshing state|state lock|Reading|Read" plan_output.txt | tail -c 60000)
           echo "$OUTPUT" > plan_output_multiline.txt
 
