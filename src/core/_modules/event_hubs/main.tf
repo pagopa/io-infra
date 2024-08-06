@@ -56,7 +56,7 @@ module "event_hub" {
   metric_alerts  = local.metric_alerts
   action = [
     {
-      action_group_id    = data.azurerm_monitor_action_group.error_action_group.id
+      action_group_id    = var.error_action_group_id
       webhook_properties = null
     }
   ]

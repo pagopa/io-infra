@@ -119,3 +119,8 @@ variable "alerts_enabled" {
   default     = true
   description = "Event hub alerts enabled?"
 }
+
+variable "error_action_group_id" {
+  type        = string
+  description = "Azure Monitor error action group id"
+}

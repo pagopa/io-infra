@@ -113,6 +113,7 @@ module "event_hubs_weu" {
   privatelink_servicebus_dns_zone = module.global.dns.private_dns_zones.privatelink_servicebus
   vnet_common                     = module.networking_weu.vnet_common
   key_vault                       = module.key_vault_weu.kv
+  error_action_group_id           = data.azurerm_monitor_action_group.error_action_group.id
 
   cidr_subnet = ["10.0.10.0/24"]
   sku_name    = "Standard"
