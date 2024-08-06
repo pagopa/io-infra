@@ -35,5 +35,7 @@ module "app_services" {
     "51.144.56.176/28",
   ]
 
+  app_insights_key = data.azurerm_application_insights.application_insights.instrumentation_key
+
   tags = local.tags
 }

@@ -6,7 +6,7 @@ locals {
     app_settings = {
       WEBSITE_RUN_FROM_PACKAGE = "1"
 
-      APPINSIGHTS_INSTRUMENTATIONKEY = data.azurerm_application_insights.application_insights.instrumentation_key
+      APPINSIGHTS_INSTRUMENTATIONKEY = var.app_insights_key
 
       LOG_LEVEL = "info"
 
@@ -187,7 +187,7 @@ locals {
     app_settings = {
       WEBSITE_RUN_FROM_PACKAGE = "1"
 
-      APPINSIGHTS_INSTRUMENTATIONKEY = data.azurerm_application_insights.application_insights.instrumentation_key
+      APPINSIGHTS_INSTRUMENTATIONKEY = var.app_insights_key
 
       LOG_LEVEL = "info"
 
