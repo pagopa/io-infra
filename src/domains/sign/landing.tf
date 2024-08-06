@@ -16,8 +16,13 @@ data "azurerm_dns_zone" "io_italia_it" {
   resource_group_name = data.azurerm_resource_group.core_ext.name
 }
 
+data "azurerm_log_analytics_workspace" "common" {
+  name                = var.io_common.log_analytics_workspace_name
+  resource_group_name = var.io_common.resource_group_name
+}
+
 module "landing_cdn" {
-  source = "github.com/pagopa/terraform-azurerm-v3.git//cdn?ref=v7.46.0"
+  source = "github.com/pagopa/terraform-azurerm-v3//cdn?ref=v8.35.0"
 
   name                  = "landing"
   prefix                = local.project
@@ -60,6 +65,10 @@ module "landing_cdn" {
       }
     ]
   }
+
+  log_analytics_workspace_id = data.azurerm_log_analytics_workspace.common.id
+
+  advanced_threat_protection_enabled = false
 
   tags = var.tags
 }

@@ -1,6 +1,6 @@
 # Needed to integrate Firma con IO with external domains, products or platforms (ie. eventhub for billing, ...)
 module "event_hub" {
-  source                   = "github.com/pagopa/terraform-azurerm-v3.git//eventhub?ref=v7.46.0"
+  source                   = "github.com/pagopa/terraform-azurerm-v3//eventhub?ref=v8.35.0"
   name                     = format("%s-eventhub-ns", local.project)
   location                 = azurerm_resource_group.integration_rg.location
   resource_group_name      = azurerm_resource_group.integration_rg.name
@@ -11,7 +11,6 @@ module "event_hub" {
   zone_redundant           = var.integration_hub.zone_redundant
 
   virtual_network_ids = [data.azurerm_virtual_network.vnet_common.id]
-  subnet_id           = module.io_sign_eventhub_snet.id
 
   private_dns_zone_record_A_name = null
 
@@ -35,10 +34,14 @@ module "event_hub" {
     }
   ]
 
+  private_endpoint_created = true
   private_dns_zones = {
-    id   = [data.azurerm_private_dns_zone.privatelink_servicebus_windows_net.id]
-    name = [data.azurerm_private_dns_zone.privatelink_servicebus_windows_net.name]
+    id                  = [data.azurerm_private_dns_zone.privatelink_servicebus_windows_net.id]
+    name                = [data.azurerm_private_dns_zone.privatelink_servicebus_windows_net.name]
+    resource_group_name = data.azurerm_private_dns_zone.privatelink_servicebus_windows_net.resource_group_name
   }
+  private_endpoint_resource_group_name = azurerm_resource_group.integration_rg.name
+  private_endpoint_subnet_id           = module.io_sign_eventhub_snet.id
 
   alerts_enabled = var.integration_hub.alerts_enabled
   metric_alerts = {
