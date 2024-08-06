@@ -16,6 +16,12 @@ data "azurerm_subnet" "services_cms_backoffice_snet" {
   resource_group_name  = local.resource_group_name_common
 }
 
+data "azurerm_subnet" "services_cms_backoffice_snet_itn" {
+  name                 = "${var.project}-itn-svc-bo-app-snet-01"
+  virtual_network_name = "${var.project}-itn-common-vnet-01"
+  resource_group_name  = "${var.project}-itn-common-rg-01"
+}
+
 data "azurerm_application_insights" "application_insights" {
   name                = format("%s-ai-common", var.project)
   resource_group_name = local.resource_group_name_common
