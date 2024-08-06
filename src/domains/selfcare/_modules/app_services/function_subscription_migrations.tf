@@ -133,7 +133,7 @@ resource "azurerm_private_endpoint" "staging_function_sites" {
     name                           = "${var.project}-subsmigrations-fn-staging"
     private_connection_resource_id = module.function_subscriptionmigrations.id
     is_manual_connection           = false
-    subresource_names              = ["sites-${module.function_subscriptionmigrations.name}"]
+    subresource_names              = ["sites-${module.function_subscriptionmigrations_staging_slot.name}"]
   }
 
   private_dns_zone_group {
