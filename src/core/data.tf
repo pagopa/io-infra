@@ -211,7 +211,7 @@ data "azurerm_subnet" "services_cms_backoffice_snet" {
 #
 data "azurerm_linux_web_app" "cms_backoffice_app_itn" {
   name                = "${local.project}-itn-svc-bo-app-01"
-  resource_group_name = "${local.project}-itn-common-rg-01"
+  resource_group_name = "${local.project}-itn-svc-rg-01"
 }
 
 data "azurerm_subnet" "services_cms_backoffice_snet_itn" {
