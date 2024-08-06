@@ -101,3 +101,45 @@ module "function_subscriptionmigrations_staging_slot" {
 
   tags = var.tags
 }
+
+resource "azurerm_private_endpoint" "function_sites" {
+  name                = "${var.project}-subsmigrations-fn"
+  location            = var.location
+  resource_group_name = var.resource_group_name
+  subnet_id           = var.private_endpoint_subnet_id
+
+  private_service_connection {
+    name                           = "${var.project}-subsmigrations-fn"
+    private_connection_resource_id = module.function_subscriptionmigrations.id
+    is_manual_connection           = false
+    subresource_names              = ["sites"]
+  }
+
+  private_dns_zone_group {
+    name                 = "private-dns-zone-group"
+    private_dns_zone_ids = [data.azurerm_private_dns_zone.function_app.id]
+  }
+
+  tags = var.tags
+}
+
+resource "azurerm_private_endpoint" "staging_function_sites" {
+  name                = "${var.project}-subsmigrations-fn-staging"
+  location            = var.location
+  resource_group_name = var.resource_group_name
+  subnet_id           = var.private_endpoint_subnet_id
+
+  private_service_connection {
+    name                           = "${var.project}-subsmigrations-fn-staging"
+    private_connection_resource_id = module.function_subscriptionmigrations.id
+    is_manual_connection           = false
+    subresource_names              = ["sites-${module.function_subscriptionmigrations.name}"]
+  }
+
+  private_dns_zone_group {
+    name                 = "private-dns-zone-group"
+    private_dns_zone_ids = [data.azurerm_private_dns_zone.function_app.id]
+  }
+
+  tags = var.tags
+}

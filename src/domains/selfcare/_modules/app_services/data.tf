@@ -132,3 +132,8 @@ data "azurerm_storage_account" "assets_cdn" {
   name                = replace("${var.project}-stcdnassets", "-", "")
   resource_group_name = local.resource_group_name_common
 }
+
+data "azurerm_private_dns_zone" "function_app" {
+  name                = "privatelink.azurewebsites.net"
+  resource_group_name = local.resource_group_name_common
+}
