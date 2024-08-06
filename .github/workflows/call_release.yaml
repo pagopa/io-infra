@@ -83,7 +83,8 @@ jobs:
           terraform plan \
             -lock-timeout=3000s \
             -out=tfplan-${{ github.sha }} \
-            -input=false
+            -input=false \
+            | grep -v "hidden-link:"
 
       - name: "Upload Terraform Plan as Artifact"
         uses: actions/upload-artifact@694cdabd8bdb0f10b2cea11669e1bf5453eed0a6 # v4.2.0
@@ -148,4 +149,5 @@ jobs:
             -lock-timeout=3000s \
             -auto-approve \
             -input=false \
-            tfplan-${{ github.sha }}
+            tfplan-${{ github.sha }} \
+            | grep -v "hidden-link:"
