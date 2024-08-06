@@ -31,7 +31,8 @@ module "function_subscriptionmigrations" {
   allowed_ips = var.app_insights_ips
   allowed_subnets = [
     var.subnet_id,
-    data.azurerm_subnet.services_cms_backoffice_snet.id
+    data.azurerm_subnet.services_cms_backoffice_snet.id,
+    data.azurerm_subnet.services_cms_backoffice_snet_itn.id
   ]
 
   storage_account_info = {
