@@ -206,6 +206,20 @@ data "azurerm_subnet" "services_cms_backoffice_snet" {
   resource_group_name  = azurerm_resource_group.rg_common.name
 }
 
+#
+# IO Services CMS BackOffice App ITN
+#
+data "azurerm_linux_web_app" "cms_backoffice_app_itn" {
+  name                = "${local.project}-itn-svc-bo-app-01"
+  resource_group_name = "${local.project}-itn-svc-rg-01"
+}
+
+data "azurerm_subnet" "services_cms_backoffice_snet_itn" {
+  name                 = "${local.project}-itn-svc-bo-app-snet-01"
+  virtual_network_name = "${local.project}-itn-common-vnet-01"
+  resource_group_name  = "${local.project}-itn-common-rg-01"
+}
+
 data "azurerm_linux_function_app" "services_app_backend_function_app" {
   resource_group_name = format("%s-itn-svc-rg-01", local.project)
   name                = format("%s-itn-svc-app-be-func-01", local.project)

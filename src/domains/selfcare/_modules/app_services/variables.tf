@@ -53,6 +53,12 @@ variable "app_insights_ips" {
   description = "List of Application Insights IPs"
 }
 
+variable "app_insights_key" {
+  type        = string
+  description = "Application Insights key"
+  sensitive   = true
+}
+
 variable "dev_portal_db_data" {
   type = object({
     host     = string
