@@ -30,9 +30,9 @@ module "event_hub" {
   virtual_network_ids = [var.vnet_common.id]
   # subnet_id           = module.eventhub_snet.id
   private_dns_zones = {
-    id                  = [var.privatelink_servicebus_dns_zone.id]
-    name                = [var.privatelink_servicebus_dns_zone.name]
-    resource_group_name = var.privatelink_servicebus_dns_zone.resource_group_name
+    id                  = [var.servicebus_dns_zone.id]
+    name                = [var.servicebus_dns_zone.name]
+    resource_group_name = var.servicebus_dns_zone.resource_group_name
   }
 
   eventhubs = var.eventhubs

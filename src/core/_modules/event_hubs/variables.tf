@@ -18,7 +18,7 @@ variable "tags" {
   description = "Resource tags"
 }
 
-variable "privatelink_servicebus_dns_zone" {
+variable "servicebus_dns_zone" {
   type = object({
     id                  = string
     name                = string

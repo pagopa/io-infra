@@ -24,6 +24,6 @@ output "public_dns_zones" {
 
 output "private_dns_zones" {
   value = {
-    privatelink_servicebus = azurerm_private_dns_zone.privatelink_servicebus
+    servicebus = azurerm_private_dns_zone.privatelink_servicebus
   }
 }
