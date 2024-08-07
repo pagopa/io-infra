@@ -3,10 +3,21 @@ data "azurerm_virtual_network" "vnet_common" {
   resource_group_name = format("%s-rg-common", local.product)
 }
 
+data "azurerm_virtual_network" "itn_vnet_common" {
+  name                = format("%s-itn-common-vnet-01", local.product)
+  resource_group_name = format("%s-itn-common-rg-01", local.product)
+}
+
 data "azurerm_subnet" "private_endpoints_subnet" {
   name                 = "pendpoints"
   virtual_network_name = format("%s-vnet-common", local.product)
   resource_group_name  = format("%s-rg-common", local.product)
+}
+
+data "azurerm_subnet" "itn_private_endpoints_subnet" {
+  name                 = format("%s-itn-pep-snet-01", local.product)
+  virtual_network_name = data.azurerm_virtual_network.itn_vnet_common.name
+  resource_group_name  = data.azurerm_virtual_network.itn_vnet_common.resource_group_name
 }
 
 data "azurerm_subnet" "apim_v2" {
@@ -220,7 +231,7 @@ resource "azurerm_private_endpoint" "itn_blob" {
   name                = format("%s-itn-sign-blob-pep-01", local.product)
   location            = azurerm_resource_group.sign.location
   resource_group_name = azurerm_resource_group.sign.name
-  subnet_id           = data.azurerm_subnet.private_endpoints_subnet.id
+  subnet_id           = data.azurerm_subnet.itn_private_endpoints_subnet.id
 
   private_service_connection {
     name                           = format("%s-itn-sign-blob-pep-01", local.product)
@@ -262,7 +273,7 @@ resource "azurerm_private_endpoint" "itn_queue" {
   name                = format("%s-itn-sign-queue-pep-01", local.product)
   location            = azurerm_resource_group.sign.location
   resource_group_name = azurerm_resource_group.sign.name
-  subnet_id           = data.azurerm_subnet.private_endpoints_subnet.id
+  subnet_id           = data.azurerm_subnet.itn_private_endpoints_subnet.id
 
   private_service_connection {
     name                           = format("%s-itn-sign-queue-pep-01", local.product)
