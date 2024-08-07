@@ -21,7 +21,6 @@ env:
   ARM_STORAGE_USE_AZUREAD: true
   DIR: src/domains/sign
   AZURE_ENVIRONMENT: prod
-  ARM_CLIENT_ID: ${{ secrets.ARM_CLIENT_ID }}
   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
 jobs:
@@ -29,6 +28,8 @@ jobs:
     name: Terraform Plan
     runs-on: self-hosted
     environment: prod-ci
+    env:
+      ARM_CLIENT_ID: ${{ secrets.ARM_CLIENT_ID }}
     concurrency:
       group: ${{ github.workflow }}-ci
       cancel-in-progress: false
