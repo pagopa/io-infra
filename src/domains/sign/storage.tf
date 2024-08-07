@@ -46,7 +46,7 @@ module "io_sign_storage_itn" {
   blob_change_feed_enabled        = false
   resource_group_name             = azurerm_resource_group.sign.name
   location                        = azurerm_resource_group.sign.location
-  advanced_threat_protection      = true
+  advanced_threat_protection      = false
   use_legacy_defender_version     = false
   allow_nested_items_to_be_public = false
   public_network_access_enabled   = true
