@@ -5,12 +5,12 @@ resource "azurerm_resource_group" "data_rg" {
   tags = var.tags
 }
 
-# resource "azurerm_resource_group" "sign" {
-#   name     = format("%s-itn-sign-rg", local.product)
-#   location = "italynorth"
+resource "azurerm_resource_group" "sign" {
+  name     = format("%s-itn-sign-rg-01", local.product)
+  location = "italynorth"
 
-#   tags = var.tags
-# }
+  tags = var.tags
+}
 
 resource "azurerm_resource_group" "backend_rg" {
   name     = format("%s-backend-rg", local.project)
