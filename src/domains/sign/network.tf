@@ -217,13 +217,13 @@ resource "azurerm_private_endpoint" "blob" {
 }
 
 resource "azurerm_private_endpoint" "itn_blob" {
-  name                = format("%s-itn-sign-blob-pep-01", local.product, module.io_sign_storage_itn.name)
+  name                = format("%s-itn-sign-blob-pep-01", local.product)
   location            = azurerm_resource_group.sign.location
   resource_group_name = azurerm_resource_group.sign.name
   subnet_id           = data.azurerm_subnet.private_endpoints_subnet.id
 
   private_service_connection {
-    name                           = format("%s-itn-sign-blob-pep-01", local.product, module.io_sign_storage_itn.name)
+    name                           = format("%s-itn-sign-blob-pep-01", local.product)
     private_connection_resource_id = module.io_sign_storage_itn.id
     is_manual_connection           = false
     subresource_names              = ["blob"]
@@ -259,13 +259,13 @@ resource "azurerm_private_endpoint" "queue" {
 }
 
 resource "azurerm_private_endpoint" "itn_queue" {
-  name                = format("%s-itn-sign-queue-pep-01", local.product, module.io_sign_storage_itn.name)
+  name                = format("%s-itn-sign-queue-pep-01", local.product)
   location            = azurerm_resource_group.data_rg.location
   resource_group_name = azurerm_resource_group.data_rg.name
   subnet_id           = data.azurerm_subnet.private_endpoints_subnet.id
 
   private_service_connection {
-    name                           = format("%s-itn-sign-queue-pep-01", local.product, module.io_sign_storage_itn.name)
+    name                           = format("%s-itn-sign-queue-pep-01", local.product)
     private_connection_resource_id = module.io_sign_storage_itn.id
     is_manual_connection           = false
     subresource_names              = ["queue"]
