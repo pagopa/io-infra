@@ -30,7 +30,8 @@ subnets_cidrs = {
 }
 
 storage_account = {
-  enable_versioning             = false
+  enable_versioning             = true
+  change_feed_enabled           = true
   delete_after_days             = 90
   replication_type              = "GZRS"
   enable_low_availability_alert = true
