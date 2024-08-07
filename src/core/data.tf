@@ -191,33 +191,11 @@ resource "azurerm_monitor_metric_alert" "iopstapi_throttling_low_availability" {
 }
 
 #
-# IO Services CMS BackOffice App
-#
-
-data "azurerm_linux_web_app" "cms_backoffice_app" {
-  name                = format("%s-services-cms-backoffice-app", local.project)
-  resource_group_name = format("%s-services-cms-rg", local.project)
-}
-
-
-data "azurerm_subnet" "services_cms_backoffice_snet" {
-  name                 = format("%s-services-cms-backoffice-snet", local.project)
-  virtual_network_name = data.azurerm_virtual_network.common.name
-  resource_group_name  = azurerm_resource_group.rg_common.name
-}
-
-#
-# IO Services CMS BackOffice App ITN
+# Services App service and fn
 #
 data "azurerm_linux_web_app" "cms_backoffice_app_itn" {
   name                = "${local.project}-itn-svc-bo-app-01"
   resource_group_name = "${local.project}-itn-svc-rg-01"
-}
-
-data "azurerm_subnet" "services_cms_backoffice_snet_itn" {
-  name                 = "${local.project}-itn-svc-bo-app-snet-01"
-  virtual_network_name = "${local.project}-itn-common-vnet-01"
-  resource_group_name  = "${local.project}-itn-common-rg-01"
 }
 
 data "azurerm_linux_function_app" "services_app_backend_function_app" {
