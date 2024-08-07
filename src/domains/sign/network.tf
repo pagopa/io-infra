@@ -260,8 +260,8 @@ resource "azurerm_private_endpoint" "queue" {
 
 resource "azurerm_private_endpoint" "itn_queue" {
   name                = format("%s-itn-sign-queue-pep-01", local.product)
-  location            = azurerm_resource_group.data_rg.location
-  resource_group_name = azurerm_resource_group.data_rg.name
+  location            = azurerm_resource_group.sign.location
+  resource_group_name = azurerm_resource_group.sign.name
   subnet_id           = data.azurerm_subnet.private_endpoints_subnet.id
 
   private_service_connection {
