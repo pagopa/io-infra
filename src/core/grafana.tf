@@ -5,6 +5,11 @@ resource "azurerm_resource_group" "grafana_dashboard_rg" {
   tags = var.tags
 }
 
+data "azurerm_key_vault_secret" "smtp" {
+  name         = "${local.project}-grafana-smtp-password"
+  key_vault_id = data.azurerm_key_vault.key_vault.id
+}
+
 resource "azurerm_dashboard_grafana" "grafana_dashboard" {
   name                              = "${local.project}-grafana"
   resource_group_name               = azurerm_resource_group.grafana_dashboard_rg.name
@@ -17,6 +22,17 @@ resource "azurerm_dashboard_grafana" "grafana_dashboard" {
 
   identity {
     type = "SystemAssigned"
+  }
+
+  smtp {
+    enabled                   = true
+    from_address              = "io-service-management@pagopa.it"
+    from_name                 = "Service Management di IO"
+    host                      = "smtp.gmail.com:587"
+    start_tls_policy          = "OpportunisticStartTLS"
+    user                      = "io-service-management@pagopa.it"
+    verification_skip_enabled = false
+    password                  = data.azurerm_key_vault_secret.smtp.value
   }
 
   tags = var.tags
