@@ -182,7 +182,7 @@ module "app_gw" {
       port         = 443
       ip_addresses = null # with null value use fqdns
       fqdns = [
-        data.azurerm_linux_web_app.cms_backoffice_app.default_hostname,
+        data.azurerm_linux_web_app.cms_backoffice_app_itn.default_hostname,
       ]
       probe                       = "/api/info"
       probe_name                  = "probe-selfcare-io-app"

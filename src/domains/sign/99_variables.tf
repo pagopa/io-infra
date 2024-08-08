@@ -83,6 +83,7 @@ variable "subnets_cidrs" {
 variable "storage_account" {
   type = object({
     enable_versioning             = bool
+    change_feed_enabled           = bool
     delete_after_days             = number
     replication_type              = string
     enable_low_availability_alert = bool

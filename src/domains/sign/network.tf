@@ -3,10 +3,21 @@ data "azurerm_virtual_network" "vnet_common" {
   resource_group_name = format("%s-rg-common", local.product)
 }
 
+data "azurerm_virtual_network" "itn_vnet_common" {
+  name                = format("%s-itn-common-vnet-01", local.product)
+  resource_group_name = format("%s-itn-common-rg-01", local.product)
+}
+
 data "azurerm_subnet" "private_endpoints_subnet" {
   name                 = "pendpoints"
   virtual_network_name = format("%s-vnet-common", local.product)
   resource_group_name  = format("%s-rg-common", local.product)
+}
+
+data "azurerm_subnet" "itn_private_endpoints_subnet" {
+  name                 = format("%s-itn-pep-snet-01", local.product)
+  virtual_network_name = data.azurerm_virtual_network.itn_vnet_common.name
+  resource_group_name  = data.azurerm_virtual_network.itn_vnet_common.resource_group_name
 }
 
 data "azurerm_subnet" "apim_v2" {
@@ -216,6 +227,27 @@ resource "azurerm_private_endpoint" "blob" {
   tags = var.tags
 }
 
+resource "azurerm_private_endpoint" "itn_blob" {
+  name                = format("%s-itn-sign-blob-pep-01", local.product)
+  location            = azurerm_resource_group.sign.location
+  resource_group_name = azurerm_resource_group.sign.name
+  subnet_id           = data.azurerm_subnet.itn_private_endpoints_subnet.id
+
+  private_service_connection {
+    name                           = format("%s-itn-sign-blob-pep-01", local.product)
+    private_connection_resource_id = module.io_sign_storage_itn.id
+    is_manual_connection           = false
+    subresource_names              = ["blob"]
+  }
+
+  private_dns_zone_group {
+    name                 = "private-dns-zone-group"
+    private_dns_zone_ids = [data.azurerm_private_dns_zone.privatelink_blob_core_windows_net.id]
+  }
+
+  tags = var.tags
+}
+
 resource "azurerm_private_endpoint" "queue" {
   name                = format("%s-queue-endpoint", module.io_sign_storage.name)
   location            = azurerm_resource_group.data_rg.location
@@ -225,6 +257,27 @@ resource "azurerm_private_endpoint" "queue" {
   private_service_connection {
     name                           = format("%s-queue", module.io_sign_storage.name)
     private_connection_resource_id = module.io_sign_storage.id
+    is_manual_connection           = false
+    subresource_names              = ["queue"]
+  }
+
+  private_dns_zone_group {
+    name                 = "private-dns-zone-group"
+    private_dns_zone_ids = [data.azurerm_private_dns_zone.privatelink_queue_core_windows_net.id]
+  }
+
+  tags = var.tags
+}
+
+resource "azurerm_private_endpoint" "itn_queue" {
+  name                = format("%s-itn-sign-queue-pep-01", local.product)
+  location            = azurerm_resource_group.sign.location
+  resource_group_name = azurerm_resource_group.sign.name
+  subnet_id           = data.azurerm_subnet.itn_private_endpoints_subnet.id
+
+  private_service_connection {
+    name                           = format("%s-itn-sign-queue-pep-01", local.product)
+    private_connection_resource_id = module.io_sign_storage_itn.id
     is_manual_connection           = false
     subresource_names              = ["queue"]
   }
@@ -390,4 +443,3 @@ resource "azurerm_private_endpoint" "io_sign_backoffice_func_staging" {
 
   tags = var.tags
 }
-
