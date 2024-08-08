@@ -1,5 +1,5 @@
 module "functions" {
-  source = "../../_modules/functions_apps"
+  source = "../_modules/functions_apps"
 
   project             = local.project
   location            = local.location

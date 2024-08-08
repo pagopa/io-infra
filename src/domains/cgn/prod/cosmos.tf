@@ -1,5 +1,5 @@
 module "cosmos" {
-  source = "../../_modules/cosmos"
+  source = "../_modules/cosmos"
 
   project             = local.project
   location            = local.location
