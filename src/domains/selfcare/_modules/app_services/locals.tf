@@ -170,7 +170,7 @@ locals {
       DB_NAME         = "db"
       DB_SCHEMA       = "DeveloperPortalServiceData"
       DB_TABLE        = "services"
-      DB_USER         = "${var.dev_portal_db_data.username}@${var.dev_portal_db_data.host}"
+      DB_USER         = "${var.dev_portal_db_data.username}"
       DB_PASSWORD     = var.dev_portal_db_data.password
 
       WEBSITE_DNS_SERVER = "168.63.129.16"
