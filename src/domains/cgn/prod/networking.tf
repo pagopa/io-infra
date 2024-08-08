@@ -1,5 +1,5 @@
 module "networking" {
-  source = "../../_modules/networking"
+  source = "../_modules/networking"
 
   project = local.project
 
