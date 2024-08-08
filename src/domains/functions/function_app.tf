@@ -301,10 +301,6 @@ resource "azurerm_monitor_autoscale_setting" "function_app" {
   location            = var.location
   target_resource_id  = module.function_app[count.index].app_service_plan_id
 
-  # Scaling strategy
-  # 05 - 19,30 -> min 3
-  # 19,30 - 23 -> min 4
-  # 23 - 05 -> min 2
   dynamic "profile" {
     for_each = [
       {
@@ -316,9 +312,9 @@ resource "azurerm_monitor_autoscale_setting" "function_app" {
         }
 
         capacity = {
-          default = var.function_app_autoscale_default + 1
-          minimum = var.function_app_autoscale_minimum + 1
-          maximum = var.function_app_autoscale_maximum
+          default = 10
+          minimum = 3
+          maximum = 30
         }
       },
       {
@@ -330,9 +326,9 @@ resource "azurerm_monitor_autoscale_setting" "function_app" {
         }
 
         capacity = {
-          default = var.function_app_autoscale_default + 1
-          minimum = var.function_app_autoscale_minimum + 1
-          maximum = var.function_app_autoscale_maximum
+          default = 10
+          minimum = 3
+          maximum = 30
         }
       },
       {
@@ -344,9 +340,9 @@ resource "azurerm_monitor_autoscale_setting" "function_app" {
         }
 
         capacity = {
-          default = var.function_app_autoscale_default + 2
-          minimum = var.function_app_autoscale_minimum + 2
-          maximum = var.function_app_autoscale_maximum
+          default = 10
+          minimum = 4
+          maximum = 30
         }
       },
       {
@@ -358,9 +354,9 @@ resource "azurerm_monitor_autoscale_setting" "function_app" {
         }
 
         capacity = {
-          default = var.function_app_autoscale_default
-          minimum = var.function_app_autoscale_minimum
-          maximum = var.function_app_autoscale_maximum
+          default = 10
+          minimum = 2
+          maximum = 30
         }
       }
     ]
@@ -401,12 +397,12 @@ resource "azurerm_monitor_autoscale_setting" "function_app" {
           metric_resource_id       = module.function_app[count.index].id
           metric_namespace         = "microsoft.web/sites"
           time_grain               = "PT1M"
-          statistic                = "Average"
-          time_window              = "PT1M"
-          time_aggregation         = "Average"
+          statistic                = "Max"
+          time_window              = "PT2M"
+          time_aggregation         = "Maximum"
           operator                 = "GreaterThan"
-          threshold                = 3000
-          divide_by_instance_count = false
+          threshold                = 2000
+          divide_by_instance_count = true
         }
 
         scale_action {
@@ -423,19 +419,19 @@ resource "azurerm_monitor_autoscale_setting" "function_app" {
           metric_resource_id       = module.function_app[count.index].app_service_plan_id
           metric_namespace         = "microsoft.web/serverfarms"
           time_grain               = "PT1M"
-          statistic                = "Average"
-          time_window              = "PT5M"
-          time_aggregation         = "Average"
+          statistic                = "Max"
+          time_window              = "PT1M"
+          time_aggregation         = "Maximum"
           operator                 = "GreaterThan"
-          threshold                = 60
+          threshold                = 40
           divide_by_instance_count = false
         }
 
         scale_action {
           direction = "Increase"
           type      = "ChangeCount"
-          value     = "2"
-          cooldown  = "PT5M"
+          value     = "4"
+          cooldown  = "PT1M"
         }
       }
 
@@ -446,18 +442,18 @@ resource "azurerm_monitor_autoscale_setting" "function_app" {
           metric_namespace         = "microsoft.web/sites"
           time_grain               = "PT1M"
           statistic                = "Average"
-          time_window              = "PT15M"
+          time_window              = "PT5M"
           time_aggregation         = "Average"
           operator                 = "LessThan"
-          threshold                = 1500
-          divide_by_instance_count = false
+          threshold                = 200
+          divide_by_instance_count = true
         }
 
         scale_action {
           direction = "Decrease"
           type      = "ChangeCount"
           value     = "1"
-          cooldown  = "PT10M"
+          cooldown  = "PT1M"
         }
       }
 
@@ -468,7 +464,7 @@ resource "azurerm_monitor_autoscale_setting" "function_app" {
           metric_namespace         = "microsoft.web/serverfarms"
           time_grain               = "PT1M"
           statistic                = "Average"
-          time_window              = "PT15M"
+          time_window              = "PT5M"
           time_aggregation         = "Average"
           operator                 = "LessThan"
           threshold                = 15
@@ -479,7 +475,7 @@ resource "azurerm_monitor_autoscale_setting" "function_app" {
           direction = "Decrease"
           type      = "ChangeCount"
           value     = "1"
-          cooldown  = "PT10M"
+          cooldown  = "PT2M"
         }
       }
     }
