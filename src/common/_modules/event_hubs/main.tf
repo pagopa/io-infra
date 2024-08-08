@@ -78,5 +78,5 @@ resource "azurerm_key_vault_secret" "event_hub_keys" {
   value        = module.event_hub.keys[each.key].primary_key
   content_type = "text/plain"
 
-  key_vault_id = var.key_vault.id // ?
+  key_vault_id = var.key_vault.id
 }
