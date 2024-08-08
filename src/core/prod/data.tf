@@ -23,9 +23,3 @@ data "azurerm_api_management" "apim_v2" {
   name                = "${local.project_weu_legacy}-apim-v2-api"
   resource_group_name = "${local.project_weu_legacy}-rg-internal"
 }
-
-# TODO: remove when monitor module is implemented
-data "azurerm_monitor_action_group" "error_action_group" {
-  resource_group_name = "${local.project_weu_legacy}-rg-common"
-  name                = "${replace(local.project_weu_legacy, "-", "")}error"
-}
