@@ -96,6 +96,10 @@ locals {
     WEBSITE_NODE_DEFAULT_VERSION = "20.12.2"
     WEBSITE_RUN_FROM_PACKAGE     = "1"
 
+    // HEALTHCHECK VARIABLES
+    WEBSITE_WARMUP_PATH               = "/healthcheck"
+    WEBSITE_SWAP_WARMUP_PING_STATUSES = "200"
+
     // ENVIRONMENT
     NODE_ENV = "production"
 
