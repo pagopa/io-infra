@@ -1,0 +1,31 @@
+name: PR - Common TF Validation
+
+# This pipeline starts automatically when a PR is opened.
+#
+# It is responsible for managing changes related solely to the NEW infrastructure.
+# Therefore, it checks whether the changes have occurred only in the directories listed in "paths."
+#
+## NOTE: 'NEW infrastructure' refers to the new Terraform infrastructure located in the src/common/prod folder, which no longer requires the terraform.sh script to be applied.
+
+on:
+  workflow_dispatch:
+  pull_request:
+    types:
+      - opened
+      - edited
+      - synchronize
+      - reopened
+      - ready_for_review
+    paths:
+      - "src/common/prod/**"
+      - "src/common/_modules/**"
+      - ".github/workflows/common_code_review.yaml"
+
+jobs:
+  prod_itn_common_code_review:
+    uses: pagopa/dx/.github/workflows/infra_plan.yaml@main
+    name: Prod - Code Review
+    secrets: inherit
+    with:
+      environment: prod
+      base_path: src/common

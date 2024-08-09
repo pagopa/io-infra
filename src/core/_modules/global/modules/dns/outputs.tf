@@ -21,3 +21,9 @@ output "public_dns_zones" {
     }
   }
 }
+
+output "private_dns_zones" {
+  value = {
+    servicebus = azurerm_private_dns_zone.privatelink_servicebus
+  }
+}
