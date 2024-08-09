@@ -293,7 +293,7 @@ module "session_manager_weu_staging" {
 
   always_on         = true
   node_version      = "20-lts"
-  app_command_line  = "npm run start"
+  app_command_line  = ""
   health_check_path = "/healthcheck"
 
   auto_heal_enabled = true
