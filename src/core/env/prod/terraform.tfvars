@@ -390,6 +390,26 @@ eventhubs = [
     ]
   },
   {
+    name              = "pdnd-io-cosmosdb-profiles"
+    partitions        = 30
+    message_retention = 7
+    consumers         = []
+    keys = [
+      {
+        name   = "io-fn-elt"
+        listen = false
+        send   = true
+        manage = false
+      },
+      {
+        name   = "pdnd"
+        listen = true
+        send   = false
+        manage = false
+      }
+    ]
+  },
+  {
     name              = "pdnd-io-cosmosdb-notification-status"
     partitions        = 30
     message_retention = 7
