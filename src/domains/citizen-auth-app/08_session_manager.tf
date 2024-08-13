@@ -96,6 +96,10 @@ locals {
     WEBSITE_NODE_DEFAULT_VERSION = "20.12.2"
     WEBSITE_RUN_FROM_PACKAGE     = "1"
 
+    // HEALTHCHECK VARIABLES
+    WEBSITE_SWAP_WARMUP_PING_PATH     = "/healthcheck"
+    WEBSITE_SWAP_WARMUP_PING_STATUSES = "200"
+
     // ENVIRONMENT
     NODE_ENV = "production"
 
@@ -241,7 +245,7 @@ module "session_manager_weu" {
 
   always_on                    = true
   node_version                 = "20-lts"
-  app_command_line             = "npm run start"
+  app_command_line             = ""
   health_check_path            = "/healthcheck"
   health_check_maxpingfailures = 2
 
@@ -289,7 +293,7 @@ module "session_manager_weu_staging" {
 
   always_on         = true
   node_version      = "20-lts"
-  app_command_line  = "npm run start"
+  app_command_line  = ""
   health_check_path = "/healthcheck"
 
   auto_heal_enabled = true
