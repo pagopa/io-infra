@@ -38,7 +38,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert_v2" "service_preferences_f
   evaluation_frequency = "PT15M" # Select how often the alert rule is to be run. Select a frequency that's smaller than the aggregation granularity to generate a sliding window for the evaluation.
 
   criteria {
-    query = <<-QUERY
+    query                   = <<-QUERY
       StorageQueueLogs
         | where OperationName contains "PutMessage"
         | where Uri contains "${local.service_preferences_failure_queue_name}"
