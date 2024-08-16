@@ -42,8 +42,6 @@ resource "azurerm_monitor_scheduled_query_rules_alert_v2" "service_preferences_f
       StorageQueueLogs
         | where OperationName contains "PutMessage"
         | where Uri contains "${local.service_preferences_failure_queue_name}"
-        | distinct Uri
-        | project QueueName = split(Uri, "/")[3]
       QUERY
     operator                = "GreaterThan"
     threshold               = 0
