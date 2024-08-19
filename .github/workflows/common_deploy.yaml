@@ -1,0 +1,28 @@
+name: PR - Common TF Apply
+
+# This pipeline starts automatically when a PR is merged into 'main'.
+#
+# It is responsible for managing changes related solely to the NEW infrastructure, 
+# ensuring that changes have occurred exclusively within the directories listed in "paths."
+#
+## NOTE: 'NEW infrastructure' refers to the new Terraform infrastructure located in the src/common/prod folder, which no longer requires the terraform.sh script to be applied.
+#
+# This pipeline first executes a plan and then an apply, which must be approved by the team.
+
+on: 
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+    paths:
+      - "src/common/prod/**"
+      - "src/common/_modules/**"
+      - ".github/workflows/common_deploy.yaml"
+jobs:
+  prod_itn_common_deploy:
+    uses: pagopa/dx/.github/workflows/infra_apply.yaml@main
+    name: Prod - Code Deploy
+    secrets: inherit
+    with:
+      environment: prod
+      base_path: src/common
