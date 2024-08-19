@@ -11,7 +11,6 @@
 | Name | Source | Version |
 |------|--------|---------|
 | <a name="module_container_registry"></a> [container\_registry](#module\_container\_registry) | ../_modules/container_registry | n/a |
-| <a name="module_event_hubs_weu"></a> [event\_hubs\_weu](#module\_event\_hubs\_weu) | ../_modules/event_hubs | n/a |
 | <a name="module_global"></a> [global](#module\_global) | ../_modules/global | n/a |
 | <a name="module_key_vault_weu"></a> [key\_vault\_weu](#module\_key\_vault\_weu) | ../_modules/key_vaults | n/a |
 | <a name="module_networking_itn"></a> [networking\_itn](#module\_networking\_itn) | ../_modules/networking | n/a |
@@ -41,6 +40,7 @@ No inputs.
 
 | Name | Description |
 |------|-------------|
-| <a name="output_networking_itn"></a> [networking\_itn](#output\_networking\_itn) | n/a |
-| <a name="output_networking_weu"></a> [networking\_weu](#output\_networking\_weu) | n/a |
+| <a name="output_global"></a> [global](#output\_global) | n/a |
+| <a name="output_key_vault"></a> [key\_vault](#output\_key\_vault) | n/a |
+| <a name="output_networking"></a> [networking](#output\_networking) | n/a |
 <!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
