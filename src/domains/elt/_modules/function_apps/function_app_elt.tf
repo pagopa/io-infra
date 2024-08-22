@@ -95,7 +95,7 @@ locals {
       MESSAGE_STATUS_FAILURE_QUEUE_NAME      = "pdnd-io-cosmosdb-message-status-failure"
       SERVICES_FAILURE_QUEUE_NAME            = "pdnd-io-cosmosdb-services-failure"
       SERVICE_PREFERENCES_FAILURE_QUEUE_NAME = local.service_preferences_failure_queue_name
-      PROFILES_FAILURE_QUEUE_NAME            = "pdnd-io-cosmosdb-profiles-failure"
+      PROFILES_FAILURE_QUEUE_NAME            = local.profiles_failure_queue_name
 
       INTERNAL_TEST_FISCAL_CODES = module.tests.test_users.all
     }
@@ -168,8 +168,8 @@ module "function_elt" {
       "${local.function_elt.app_settings.SERVICES_FAILURE_QUEUE_NAME}-poison",
       local.service_preferences_failure_queue_name,
       "${local.service_preferences_failure_queue_name}-poison",
-      local.function_elt.app_settings.PROFILES_FAILURE_QUEUE_NAME,
-      "${local.function_elt.app_settings.PROFILES_FAILURE_QUEUE_NAME}-poison"
+      local.profiles_failure_queue_name,
+      "${local.profiles_failure_queue_name}-poison"
     ],
     "containers"           = [],
     "blobs_retention_days" = 1,
