@@ -81,7 +81,7 @@ module "key_vault_weu" {
   resource_group_common = data.azurerm_resource_group.common_weu.name
   tenant_id             = data.azurerm_client_config.current.tenant_id
 
-  tags = merge(local.tags)
+  tags = local.tags
 }
 
 module "vpn_weu" {
