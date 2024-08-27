@@ -41,7 +41,7 @@ locals {
 }
 
 module "io_sign_user_func" {
-  source = "github.com/pagopa/terraform-azurerm-v3.git//function_app?ref=v7.46.0"
+  source = "github.com/pagopa/terraform-azurerm-v3//function_app?ref=v8.35.0"
 
   name                = format("%s-user-func", local.project)
   location            = azurerm_resource_group.backend_rg.location
@@ -89,7 +89,7 @@ module "io_sign_user_func" {
 
 module "io_sign_user_func_staging_slot" {
   count  = var.io_sign_user_func.sku_tier == "PremiumV3" ? 1 : 0
-  source = "github.com/pagopa/terraform-azurerm-v3.git//function_app_slot?ref=v7.46.0"
+  source = "github.com/pagopa/terraform-azurerm-v3//function_app_slot?ref=v8.35.0"
 
   name                = "staging"
   location            = azurerm_resource_group.backend_rg.location
@@ -97,7 +97,8 @@ module "io_sign_user_func_staging_slot" {
   function_app_id     = module.io_sign_user_func.id
   app_service_plan_id = module.io_sign_user_func.app_service_plan_id
 
-  health_check_path = "/api/v1/sign/info"
+  health_check_path            = "/api/v1/sign/info"
+  health_check_maxpingfailures = 2
 
   storage_account_name       = module.io_sign_user_func.storage_account.name
   storage_account_access_key = module.io_sign_user_func.storage_account.primary_access_key
@@ -228,4 +229,6 @@ resource "azurerm_monitor_autoscale_setting" "io_sign_user_func" {
       }
     }
   }
+
+  tags = var.tags
 }

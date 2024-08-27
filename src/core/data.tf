@@ -24,12 +24,6 @@ data "azurerm_storage_account" "logs" {
   resource_group_name = format("%s-rg-operations", local.project)
 }
 
-# todo migrate storage account and related resources
-locals {
-  storage_account_notifications_queue_spidmsgitems = "spidmsgitems"
-  storage_account_notifications_queue_userslogin   = "userslogin"
-}
-
 #
 # Notifications resources
 #
@@ -96,7 +90,7 @@ data "azurerm_eventhub_authorization_rule" "io-p-messages-weu-prod01-evh-ns_mess
 
 data "azurerm_key_vault_secret" "apim_services_subscription_key" {
   name         = "apim-IO-SERVICE-KEY"
-  key_vault_id = module.key_vault_common.id
+  key_vault_id = data.azurerm_key_vault.key_vault_common.id
 }
 
 
@@ -107,7 +101,7 @@ data "azurerm_key_vault_secret" "apim_services_subscription_key" {
 
 data "azurerm_key_vault_secret" "app_backend_PRE_SHARED_KEY" {
   name         = "appbackend-PRE-SHARED-KEY"
-  key_vault_id = module.key_vault_common.id
+  key_vault_id = data.azurerm_key_vault.key_vault_common.id
 }
 
 
@@ -197,19 +191,11 @@ resource "azurerm_monitor_metric_alert" "iopstapi_throttling_low_availability" {
 }
 
 #
-# IO Services CMS BackOffice App
+# Services App service and fn
 #
-
-data "azurerm_linux_web_app" "cms_backoffice_app" {
-  name                = format("%s-services-cms-backoffice-app", local.project)
-  resource_group_name = format("%s-services-cms-rg", local.project)
-}
-
-
-data "azurerm_subnet" "services_cms_backoffice_snet" {
-  name                 = format("%s-services-cms-backoffice-snet", local.project)
-  virtual_network_name = data.azurerm_virtual_network.common.name
-  resource_group_name  = azurerm_resource_group.rg_common.name
+data "azurerm_linux_web_app" "cms_backoffice_app_itn" {
+  name                = "${local.project}-itn-svc-bo-app-01"
+  resource_group_name = "${local.project}-itn-svc-rg-01"
 }
 
 data "azurerm_linux_function_app" "services_app_backend_function_app" {
@@ -342,7 +328,7 @@ data "azurerm_api_management" "trial_system" {
 }
 
 ### Network and DNS
-# TO BE REMOVED WHEN RESOURCES ARE  
+# TO BE REMOVED WHEN RESOURCES ARE
 # MOVED TO THE MODULAR FORM
 data "azurerm_virtual_network" "common" {
   name                = "${local.project}-vnet-common"

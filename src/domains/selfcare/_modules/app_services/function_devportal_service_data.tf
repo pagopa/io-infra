@@ -6,7 +6,7 @@ module "function_devportalservicedata" {
   resource_group_name = var.resource_group_name
   app_service_plan_id = azurerm_service_plan.selfcare_be_common.id
 
-  application_insights_instrumentation_key = data.azurerm_application_insights.application_insights.instrumentation_key
+  application_insights_instrumentation_key = var.app_insights_key
 
   internal_storage = {
     "enable"                     = true,
@@ -74,7 +74,7 @@ module "function_devportalservicedata_staging_slot" {
   function_app_id     = module.function_devportalservicedata.id
   app_service_plan_id = azurerm_service_plan.selfcare_be_common.id
 
-  application_insights_instrumentation_key = data.azurerm_application_insights.application_insights.instrumentation_key
+  application_insights_instrumentation_key = var.app_insights_key
 
   storage_account_name               = module.function_devportalservicedata.storage_account_name
   storage_account_access_key         = module.function_devportalservicedata.storage_account.primary_access_key

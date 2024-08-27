@@ -1,16 +1,16 @@
 data "azurerm_key_vault_secret" "apim_publisher_email" {
   name         = "apim-publisher-email"
-  key_vault_id = module.key_vault.id
+  key_vault_id = data.azurerm_key_vault.key_vault.id
 }
 
 data "azurerm_key_vault_certificate" "api_internal_io_italia_it" {
   name         = replace(local.apim_hostname_api_internal, ".", "-")
-  key_vault_id = module.key_vault_common.id
+  key_vault_id = data.azurerm_key_vault.key_vault_common.id
 }
 
 data "azurerm_key_vault_certificate" "api_app_internal_io_pagopa_it" {
   name         = replace(local.apim_hostname_api_app_internal, ".", "-")
-  key_vault_id = module.key_vault.id
+  key_vault_id = data.azurerm_key_vault.key_vault.id
 }
 
 # APIM subnet
@@ -222,7 +222,7 @@ module "apim_v2" {
 
 # ## api management key vault policy ##
 resource "azurerm_key_vault_access_policy" "apim_v2_kv_policy" {
-  key_vault_id = module.key_vault.id
+  key_vault_id = data.azurerm_key_vault.key_vault.id
   tenant_id    = data.azurerm_client_config.current.tenant_id
   object_id    = module.apim_v2.principal_id
 
@@ -233,7 +233,7 @@ resource "azurerm_key_vault_access_policy" "apim_v2_kv_policy" {
 }
 
 resource "azurerm_key_vault_access_policy" "v2_common" {
-  key_vault_id = module.key_vault_common.id
+  key_vault_id = data.azurerm_key_vault.key_vault_common.id
   tenant_id    = data.azurerm_client_config.current.tenant_id
   object_id    = module.apim_v2.principal_id
 

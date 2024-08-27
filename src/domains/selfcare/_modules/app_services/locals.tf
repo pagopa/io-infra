@@ -6,7 +6,7 @@ locals {
     app_settings = {
       WEBSITE_RUN_FROM_PACKAGE = "1"
 
-      APPINSIGHTS_INSTRUMENTATIONKEY = data.azurerm_application_insights.application_insights.instrumentation_key
+      APPINSIGHTS_INSTRUMENTATIONKEY = var.app_insights_key
 
       LOG_LEVEL = "info"
 
@@ -170,7 +170,7 @@ locals {
       DB_NAME         = "db"
       DB_SCHEMA       = "DeveloperPortalServiceData"
       DB_TABLE        = "services"
-      DB_USER         = "${var.dev_portal_db_data.username}@${var.dev_portal_db_data.host}"
+      DB_USER         = "${var.dev_portal_db_data.username}"
       DB_PASSWORD     = var.dev_portal_db_data.password
 
       WEBSITE_DNS_SERVER = "168.63.129.16"
@@ -187,7 +187,7 @@ locals {
     app_settings = {
       WEBSITE_RUN_FROM_PACKAGE = "1"
 
-      APPINSIGHTS_INSTRUMENTATIONKEY = data.azurerm_application_insights.application_insights.instrumentation_key
+      APPINSIGHTS_INSTRUMENTATIONKEY = var.app_insights_key
 
       LOG_LEVEL = "info"
 

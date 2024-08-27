@@ -43,14 +43,6 @@ variable "tags" {
 
 # domain specific
 
-# Container App Job GitHub Runner
-variable "container_app_environment" {
-  type = object({
-    name                = string
-    resource_group_name = string
-  })
-}
-
 variable "key_vault_common" {
   type = object({
     resource_group_name = string
@@ -91,6 +83,7 @@ variable "subnets_cidrs" {
 variable "storage_account" {
   type = object({
     enable_versioning             = bool
+    change_feed_enabled           = bool
     delete_after_days             = number
     replication_type              = string
     enable_low_availability_alert = bool

@@ -10,7 +10,7 @@ on:
       - reopened
       - ready_for_review
     paths:
-      - "src/domains/cgn**"
+      - "src/domains/cgn/**"
       - ".github/workflows/cgn_**"
 
 jobs:
@@ -20,5 +20,5 @@ jobs:
     secrets: inherit
     with:
       environment: prod
-      dir: "src/domains/cgn/prod/westeurope"
+      dir: "src/domains/cgn/prod"
       use_private_agent: true

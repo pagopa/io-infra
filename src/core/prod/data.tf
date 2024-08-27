@@ -1,3 +1,7 @@
+data "azurerm_client_config" "current" {}
+
+data "azurerm_subscription" "current" {}
+
 data "azurerm_virtual_network" "weu_beta" {
   name                = "${local.project_weu}-beta-vnet"
   resource_group_name = "${local.project_weu}-beta-vnet-rg"

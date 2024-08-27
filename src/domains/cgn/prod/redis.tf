@@ -1,11 +1,12 @@
-module "storage_accounts" {
-  source = "../../_modules/storage_accounts"
+module "redis" {
+  source = "../_modules/redis"
 
   project             = local.project
   location            = local.location
   resource_group_name = module.resource_groups.resource_group_cgn.name
 
-  subnet_pendpoints_id = module.networking.subnet_pendpoints.id
+  vnet_redis_id   = module.networking.vnet_common.id
+  subnet_redis_id = module.networking.subnet_redis.id
 
   tags = local.tags
 }

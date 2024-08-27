@@ -18,7 +18,9 @@
 
 ## Resources
 
-No resources.
+| Name | Type |
+|------|------|
+| [azurerm_application_insights.application_insights](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/application_insights) | data source |
 
 ## Inputs
 

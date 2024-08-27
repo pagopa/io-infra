@@ -182,7 +182,7 @@ module "app_gw" {
       port         = 443
       ip_addresses = null # with null value use fqdns
       fqdns = [
-        data.azurerm_linux_web_app.cms_backoffice_app.default_hostname,
+        data.azurerm_linux_web_app.cms_backoffice_app_itn.default_hostname,
       ]
       probe                       = "/api/info"
       probe_name                  = "probe-selfcare-io-app"
@@ -225,7 +225,7 @@ module "app_gw" {
   trusted_client_certificates = [
     {
       secret_name  = format("%s-issuer-chain", var.prefix)
-      key_vault_id = module.key_vault.id
+      key_vault_id = data.azurerm_key_vault.key_vault.id
     }
   ]
 
@@ -995,15 +995,15 @@ module "app_gw" {
 
 ## user assined identity: (application gateway) ##
 resource "azurerm_user_assigned_identity" "appgateway" {
-  resource_group_name = azurerm_resource_group.sec_rg.name
-  location            = azurerm_resource_group.sec_rg.location
+  resource_group_name = data.azurerm_resource_group.sec_rg.name
+  location            = data.azurerm_resource_group.sec_rg.location
   name                = format("%s-appgateway-identity", local.project)
 
   tags = var.tags
 }
 
 resource "azurerm_key_vault_access_policy" "app_gateway_policy" {
-  key_vault_id            = module.key_vault.id
+  key_vault_id            = data.azurerm_key_vault.key_vault.id
   tenant_id               = data.azurerm_client_config.current.tenant_id
   object_id               = azurerm_user_assigned_identity.appgateway.principal_id
   key_permissions         = []
@@ -1013,7 +1013,7 @@ resource "azurerm_key_vault_access_policy" "app_gateway_policy" {
 }
 
 resource "azurerm_key_vault_access_policy" "app_gateway_policy_common" {
-  key_vault_id            = module.key_vault_common.id
+  key_vault_id            = data.azurerm_key_vault.key_vault_common.id
   tenant_id               = data.azurerm_client_config.current.tenant_id
   object_id               = azurerm_user_assigned_identity.appgateway.principal_id
   key_permissions         = []
@@ -1038,7 +1038,7 @@ data "azuread_service_principal" "app_gw_uai_kvreader" {
 }
 
 resource "azurerm_key_vault_access_policy" "app_gw_uai_kvreader_common" {
-  key_vault_id            = module.key_vault_common.id
+  key_vault_id            = data.azurerm_key_vault.key_vault_common.id
   tenant_id               = data.azurerm_client_config.current.tenant_id
   object_id               = data.azuread_service_principal.app_gw_uai_kvreader.object_id
   key_permissions         = []
@@ -1049,17 +1049,17 @@ resource "azurerm_key_vault_access_policy" "app_gw_uai_kvreader_common" {
 
 data "azurerm_key_vault_certificate" "app_gw_api" {
   name         = var.app_gateway_api_certificate_name
-  key_vault_id = module.key_vault.id
+  key_vault_id = data.azurerm_key_vault.key_vault.id
 }
 
 data "azurerm_key_vault_certificate" "app_gw_api_mtls" {
   name         = var.app_gateway_api_mtls_certificate_name
-  key_vault_id = module.key_vault.id
+  key_vault_id = data.azurerm_key_vault.key_vault.id
 }
 
 data "azurerm_key_vault_certificate" "app_gw_api_app" {
   name         = var.app_gateway_api_app_certificate_name
-  key_vault_id = module.key_vault.id
+  key_vault_id = data.azurerm_key_vault.key_vault.id
 }
 
 ###
@@ -1078,47 +1078,47 @@ data "azurerm_key_vault_certificate" "app_gw_api_web" {
 
 data "azurerm_key_vault_certificate" "app_gw_api_io_italia_it" {
   name         = var.app_gateway_api_io_italia_it_certificate_name
-  key_vault_id = module.key_vault_common.id
+  key_vault_id = data.azurerm_key_vault.key_vault_common.id
 }
 
 data "azurerm_key_vault_certificate" "app_gw_app_backend_io_italia_it" {
   name         = var.app_gateway_app_backend_io_italia_it_certificate_name
-  key_vault_id = module.key_vault_common.id
+  key_vault_id = data.azurerm_key_vault.key_vault_common.id
 }
 
 data "azurerm_key_vault_certificate" "app_gw_developerportal_backend_io_italia_it" {
   name         = var.app_gateway_developerportal_backend_io_italia_it_certificate_name
-  key_vault_id = module.key_vault_common.id
+  key_vault_id = data.azurerm_key_vault.key_vault_common.id
 }
 
 data "azurerm_key_vault_certificate" "app_gw_api_io_selfcare_pagopa_it" {
   name         = var.app_gateway_api_io_selfcare_pagopa_it_certificate_name
-  key_vault_id = module.key_vault.id
+  key_vault_id = data.azurerm_key_vault.key_vault.id
 }
 
 data "azurerm_key_vault_certificate" "app_gw_firmaconio_selfcare_pagopa_it" {
   name         = var.app_gateway_firmaconio_selfcare_pagopa_it_certificate_name
-  key_vault_id = module.key_vault.id
+  key_vault_id = data.azurerm_key_vault.key_vault.id
 }
 
 data "azurerm_key_vault_certificate" "app_gw_continua" {
   name         = var.app_gateway_continua_io_pagopa_it_certificate_name
-  key_vault_id = module.key_vault.id
+  key_vault_id = data.azurerm_key_vault.key_vault.id
 }
 
 data "azurerm_key_vault_certificate" "app_gw_oauth" {
   name         = var.app_gateway_oauth_io_pagopa_it_certificate_name
-  key_vault_id = module.key_vault.id
+  key_vault_id = data.azurerm_key_vault.key_vault.id
 }
 
 data "azurerm_key_vault_certificate" "app_gw_selfcare_io" {
   name         = var.app_gateway_selfcare_io_pagopa_it_certificate_name
-  key_vault_id = module.key_vault.id
+  key_vault_id = data.azurerm_key_vault.key_vault.id
 }
 
 data "azurerm_key_vault_secret" "app_gw_mtls_header_name" {
   name         = "mtls-header-name"
-  key_vault_id = module.key_vault.id
+  key_vault_id = data.azurerm_key_vault.key_vault.id
 }
 
 resource "azurerm_web_application_firewall_policy" "api_app" {

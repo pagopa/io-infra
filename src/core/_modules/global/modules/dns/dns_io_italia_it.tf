@@ -98,6 +98,10 @@ resource "azurerm_dns_txt_record" "io_italia_it" {
   record {
     value = "v=spf1 include:musvc.com include:_spf.google.com include:mail.zendesk.com -all"
   }
+
+  record {
+    value = "google-site-verification=mCszyWBbGJY2zYcNJ7nJenQwuaSebRDYnsBaeN2vVGw"
+  }
   tags = var.tags
 }
 

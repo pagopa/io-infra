@@ -1,5 +1,15 @@
+data "azurerm_user_assigned_identity" "infra_ci" {
+  name                = "${local.product}-infra-github-ci-identity"
+  resource_group_name = "${local.product}-identity-rg"
+}
+
+data "azurerm_user_assigned_identity" "infra_cd" {
+  name                = "${local.product}-infra-github-cd-identity"
+  resource_group_name = "${local.product}-identity-rg"
+}
+
 module "key_vault_secrets" {
-  source = "github.com/pagopa/terraform-azurerm-v3.git//key_vault_secrets_query?ref=v7.46.0"
+  source = "github.com/pagopa/terraform-azurerm-v3//key_vault_secrets_query?ref=v8.35.0"
 
   resource_group = azurerm_resource_group.sec_rg.name
   key_vault_name = module.key_vault.name
@@ -23,7 +33,7 @@ module "key_vault_secrets" {
 }
 
 module "key_vault" {
-  source = "github.com/pagopa/terraform-azurerm-v3.git//key_vault?ref=v7.46.0"
+  source = "github.com/pagopa/terraform-azurerm-v3//key_vault?ref=v8.35.0"
 
   name                       = format("%s-%s-kv", local.product, var.domain)
   location                   = azurerm_resource_group.sec_rg.location
@@ -71,6 +81,24 @@ resource "azurerm_key_vault_access_policy" "adgroup_sign" {
   secret_permissions      = ["Get", "List", "Set", "Delete", "Restore", "Recover", ]
   storage_permissions     = []
   certificate_permissions = ["Get", "List", "Update", "Create", "Import", "Delete", "Restore", "Recover", ]
+}
+
+resource "azurerm_key_vault_access_policy" "infra_ci" {
+  key_vault_id = module.key_vault.id
+
+  tenant_id = data.azurerm_client_config.current.tenant_id
+  object_id = data.azurerm_user_assigned_identity.infra_ci.principal_id
+
+  secret_permissions = ["Get", "List"]
+}
+
+resource "azurerm_key_vault_access_policy" "infra_cd" {
+  key_vault_id = module.key_vault.id
+
+  tenant_id = data.azurerm_client_config.current.tenant_id
+  object_id = data.azurerm_user_assigned_identity.infra_cd.principal_id
+
+  secret_permissions = ["Get", "List", "Set"]
 }
 
 #
