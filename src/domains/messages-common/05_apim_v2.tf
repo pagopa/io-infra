@@ -323,7 +323,7 @@ resource "azurerm_api_management_subscription" "messages_backend_v2" {
 }
 
 data "azurerm_key_vault_secret" "io_messages_backend_func_key" {
-  name         = "io-messages-backend-func-key"
+  name         = "io-p-messages-backend-func-key"
   key_vault_id = module.key_vault.id
 }
 
