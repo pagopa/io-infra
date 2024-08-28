@@ -7,7 +7,7 @@
         </ip-filter>
         <set-backend-service base-url="https://io-p-app-messages-fn-2.azurewebsites.net/api/v1" />
         <set-header name="x-functions-key" exists-action="override">
-            <value>{{io-fn3-admin-key}}</value>
+            <value>{{io-messages-backend-key}}</value>
         </set-header>
     </inbound>
     <outbound>
