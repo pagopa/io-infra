@@ -295,6 +295,23 @@ module "apim_v2_service_messages_internal_api_v1" {
 }
 
 # MESSAGES CITIZEN FUNC
+module "apim_v2_product_messages_backend" {
+  source = "github.com/pagopa/terraform-azurerm-v3//api_management_product?ref=v8.27.0"
+
+  product_id   = "io-messages-backend-api"
+  display_name = "IO MESSAGES BACKEND API"
+  description  = "Product for IO MESSAGES BACKEND API"
+
+  api_management_name = data.azurerm_api_management.apim_v2_api.name
+  resource_group_name = data.azurerm_api_management.apim_v2_api.resource_group_name
+
+  published             = true
+  subscription_required = true
+  approval_required     = false
+
+  policy_xml = file("./api_product/backend/_base_policy.xml")
+}
+
 data "http" "messages_citizen_openapi" {
   url = "https://github.com/pagopa/io-messages/blob/main/apps/citizen-func/openapi/index.yaml"
 }
@@ -305,13 +322,13 @@ module "apim_v2_messages_citizen_l1_api_v1" {
   name                  = format("%s-%s-messages-citizen-api-01", local.product, var.location_short)
   api_management_name   = data.azurerm_api_management.apim_v2_api.name
   resource_group_name   = data.azurerm_api_management.apim_v2_api.resource_group_name
-  product_ids           = [module.apim_v2_product_notifications.product_id]
+  product_ids           = [module.apim_v2_product_messages_backend.product_id]
   subscription_required = true
   service_url           = null
 
   description  = "IO Messages Citizen - L1 - API"
   display_name = "IO Messages Citizen - L1 - API"
-  path         = "l1/api/v1/"
+  path         = "l1/api/v1"
   protocols    = ["https"]
 
   content_format = "openapi"
@@ -326,13 +343,13 @@ module "apim_v2_messages_citizen_l2_api_v1" {
   name                  = format("%s-%s-messages-citizen-api-02", local.product, var.location_short)
   api_management_name   = data.azurerm_api_management.apim_v2_api.name
   resource_group_name   = data.azurerm_api_management.apim_v2_api.resource_group_name
-  product_ids           = [module.apim_v2_product_notifications.product_id]
+  product_ids           = [module.apim_v2_product_messages_backend.product_id]
   subscription_required = true
   service_url           = null
 
   description  = "IO Messages Citizen - L2 - API"
   display_name = "IO Messages Citizen - L2 - API"
-  path         = "l2/api/v1/"
+  path         = "l2/api/v1"
   protocols    = ["https"]
 
   content_format = "openapi"
