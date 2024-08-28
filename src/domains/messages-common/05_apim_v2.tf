@@ -312,21 +312,10 @@ module "apim_v2_product_messages_backend" {
   policy_xml = file("./api_product/backend/_base_policy.xml")
 }
 
-resource "azurerm_api_management_user" "messages_backend_user" {
-  user_id             = "iobackenduser"
-  api_management_name = data.azurerm_api_management.apim_v2_api.name
-  resource_group_name = data.azurerm_api_management.apim_v2_api.resource_group_name
-  first_name          = "IO Backend"
-  last_name           = "Messages"
-  email               = "io-comunicazione@pagopa.it"
-  state               = "active"
-}
-
 
 resource "azurerm_api_management_subscription" "messages_backend_v2" {
   api_management_name = data.azurerm_api_management.apim_v2_api.name
   resource_group_name = data.azurerm_api_management.apim_v2_api.resource_group_name
-  user_id             = azurerm_api_management_user.messages_backend_user.id
   product_id          = module.apim_v2_product_messages_backend.id
   display_name        = "Messages Backend API"
   state               = "active"
