@@ -334,7 +334,7 @@ resource "azurerm_api_management_subscription" "messages_backend_v2" {
 }
 
 data "http" "messages_citizen_openapi" {
-  url = "https://github.com/pagopa/io-messages/blob/main/apps/citizen-func/openapi/index.yaml"
+  url = "https://raw.githubusercontent.com/pagopa/io-messages/main/apps/citizen-func/openapi/index.yaml"
 }
 
 module "apim_v2_messages_citizen_l1_api_v1" {
