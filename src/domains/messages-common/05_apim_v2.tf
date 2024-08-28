@@ -305,7 +305,7 @@ module "apim_v2_messages_citizen_l1_api_v1" {
   name                  = format("%s-%s-messages-citizen-api-01", local.product, var.location_short)
   api_management_name   = data.azurerm_api_management.apim_v2_api.name
   resource_group_name   = data.azurerm_api_management.apim_v2_api.resource_group_name
-  product_ids           = [data.azurerm_api_management_product.apim_v2_product_notifications.product_id]
+  product_ids           = [module.apim_v2_product_notifications.product_id]
   subscription_required = true
   service_url           = null
 
@@ -326,7 +326,7 @@ module "apim_v2_messages_citizen_l2_api_v1" {
   name                  = format("%s-%s-messages-citizen-api-02", local.product, var.location_short)
   api_management_name   = data.azurerm_api_management.apim_v2_api.name
   resource_group_name   = data.azurerm_api_management.apim_v2_api.resource_group_name
-  product_ids           = [data.azurerm_api_management_product.apim_v2_product_notifications.product_id]
+  product_ids           = [module.apim_v2_product_notifications.product_id]
   subscription_required = true
   service_url           = null
 
