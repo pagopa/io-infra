@@ -322,6 +322,20 @@ resource "azurerm_api_management_subscription" "messages_backend_v2" {
   allow_tracing       = false
 }
 
+data "azurerm_key_vault_secret" "io_messages_backend_func_key" {
+  name         = "io-messages-backend-func-key"
+  key_vault_id = module.key_vault.id
+}
+
+resource "azurerm_api_management_named_value" "io_messages_backend_key" {
+  name                = "io-messages-backend-key"
+  api_management_name = data.azurerm_api_management.apim_v2_api.name
+  resource_group_name = data.azurerm_api_management.apim_v2_api.resource_group_name
+  display_name        = "io-messages-backend-key"
+  value               = data.azurerm_key_vault_secret.io_messages_backend_func_key.value
+  secret              = "true"
+}
+
 data "http" "messages_citizen_openapi" {
   url = "https://raw.githubusercontent.com/pagopa/io-messages/main/apps/citizen-func/openapi/index.yaml"
 }
@@ -338,7 +352,7 @@ module "apim_v2_messages_citizen_l1_api_v1" {
 
   description  = "IO Messages Citizen - L1 - API"
   display_name = "IO Messages Citizen - L1 - API"
-  path         = "l1/api/v1"
+  path         = "messages/l1/api/v1"
   protocols    = ["https"]
 
   content_format = "openapi"
@@ -359,7 +373,7 @@ module "apim_v2_messages_citizen_l2_api_v1" {
 
   description  = "IO Messages Citizen - L2 - API"
   display_name = "IO Messages Citizen - L2 - API"
-  path         = "l2/api/v1"
+  path         = "messages/l2/api/v1"
   protocols    = ["https"]
 
   content_format = "openapi"
