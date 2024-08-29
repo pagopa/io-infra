@@ -8,7 +8,7 @@
                 </return-response>
             </when>
         </choose>
-        <set-backend-service base-url="https://io-p-messages-sending-func.azurewebsites.net/api/v1" />
+        <set-backend-service base-url="https://io-p-itn-msgs-sending-func-01.azurewebsites.net/api/v1" />
         <set-header name="x-functions-key" exists-action="override">
             <value>{{io-p-messages-sending-func-key}}</value>
         </set-header>
