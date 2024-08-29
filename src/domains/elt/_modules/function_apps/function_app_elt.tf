@@ -49,6 +49,10 @@ locals {
       SERVICE_PREFERENCES_TOPIC_CONNECTION_STRING = data.azurerm_eventhub_authorization_rule.evh_ns_pdnd_io_cosmos_service_preferences_fn.primary_connection_string
       SERVICE_PREFERENCES_LEASES_PREFIX           = "service-preferences-001"
 
+      PROFILES_TOPIC_NAME              = "pdnd-io-cosmosdb-profiles"
+      PROFILES_TOPIC_CONNECTION_STRING = data.azurerm_eventhub_authorization_rule.evh_ns_pdnd_io_cosmos_profiles_fn.primary_connection_string
+      PROFILES_LEASES_PREFIX           = "profiles-001"
+
       ERROR_STORAGE_ACCOUNT                   = var.storage_account_name
       ERROR_STORAGE_KEY                       = var.storage_account_primary_access_key
       ERROR_STORAGE_TABLE                     = var.storage_account_tables.fnelterrors
@@ -91,6 +95,7 @@ locals {
       MESSAGE_STATUS_FAILURE_QUEUE_NAME      = "pdnd-io-cosmosdb-message-status-failure"
       SERVICES_FAILURE_QUEUE_NAME            = "pdnd-io-cosmosdb-services-failure"
       SERVICE_PREFERENCES_FAILURE_QUEUE_NAME = "pdnd-io-cosmosdb-service-preferences-failure"
+      PROFILES_FAILURE_QUEUE_NAME            = "pdnd-io-cosmosdb-profiles-failure"
 
       INTERNAL_TEST_FISCAL_CODES = module.tests.test_users.all
     }
@@ -135,6 +140,7 @@ module "function_elt" {
       "AzureWebJobs.AnalyticsServiceChangeFeedInboundProcessorAdapter.Disabled"            = "0"
       "AzureWebJobs.AnalyticsServiceStorageQueueInboundProcessorAdapter.Disabled"          = "0"
       "AzureWebJobs.AnalyticsServicePreferencesChangeFeedInboundProcessorAdapter.Disabled" = "1"
+      "AzureWebJobs.AnalyticsProfilesChangeFeedInboundProcessorAdapter.Disabled"           = "1"
     }
   )
 
@@ -161,7 +167,9 @@ module "function_elt" {
       local.function_elt.app_settings.SERVICES_FAILURE_QUEUE_NAME,
       "${local.function_elt.app_settings.SERVICES_FAILURE_QUEUE_NAME}-poison",
       local.function_elt.app_settings.SERVICE_PREFERENCES_FAILURE_QUEUE_NAME,
-      "${local.function_elt.app_settings.SERVICE_PREFERENCES_FAILURE_QUEUE_NAME}-poison"
+      "${local.function_elt.app_settings.SERVICE_PREFERENCES_FAILURE_QUEUE_NAME}-poison",
+      local.function_elt.app_settings.PROFILES_FAILURE_QUEUE_NAME,
+      "${local.function_elt.app_settings.PROFILES_FAILURE_QUEUE_NAME}-poison"
     ],
     "containers"           = [],
     "blobs_retention_days" = 1,

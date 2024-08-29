@@ -40,6 +40,7 @@ No inputs.
 
 | Name | Description |
 |------|-------------|
-| <a name="output_networking_itn"></a> [networking\_itn](#output\_networking\_itn) | n/a |
-| <a name="output_networking_weu"></a> [networking\_weu](#output\_networking\_weu) | n/a |
+| <a name="output_global"></a> [global](#output\_global) | n/a |
+| <a name="output_key_vault"></a> [key\_vault](#output\_key\_vault) | n/a |
+| <a name="output_networking"></a> [networking](#output\_networking) | n/a |
 <!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
