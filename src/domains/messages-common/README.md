@@ -12,8 +12,8 @@
 
 | Name | Source | Version |
 |------|--------|---------|
-| <a name="module_apim_v2_messages_citizen_l1_api_v1"></a> [apim\_v2\_messages\_citizen\_l1\_api\_v1](#module\_apim\_v2\_messages\_citizen\_l1\_api\_v1) | github.com/pagopa/terraform-azurerm-v3//api_management_api | v8.17.0 |
-| <a name="module_apim_v2_messages_citizen_l2_api_v1"></a> [apim\_v2\_messages\_citizen\_l2\_api\_v1](#module\_apim\_v2\_messages\_citizen\_l2\_api\_v1) | github.com/pagopa/terraform-azurerm-v3//api_management_api | v8.17.0 |
+| <a name="module_apim_v2_messages_citizen_l1_api_v1"></a> [apim\_v2\_messages\_citizen\_l1\_api\_v1](#module\_apim\_v2\_messages\_citizen\_l1\_api\_v1) | github.com/pagopa/terraform-azurerm-v3//api_management_api | v8.40.0 |
+| <a name="module_apim_v2_messages_citizen_l2_api_v1"></a> [apim\_v2\_messages\_citizen\_l2\_api\_v1](#module\_apim\_v2\_messages\_citizen\_l2\_api\_v1) | github.com/pagopa/terraform-azurerm-v3//api_management_api | v8.40.0 |
 | <a name="module_apim_v2_messages_sending_external_api_v1"></a> [apim\_v2\_messages\_sending\_external\_api\_v1](#module\_apim\_v2\_messages\_sending\_external\_api\_v1) | github.com/pagopa/terraform-azurerm-v3//api_management_api | v8.17.0 |
 | <a name="module_apim_v2_messages_sending_internal_api_v1"></a> [apim\_v2\_messages\_sending\_internal\_api\_v1](#module\_apim\_v2\_messages\_sending\_internal\_api\_v1) | github.com/pagopa/terraform-azurerm-v3//api_management_api | v8.27.0 |
 | <a name="module_apim_v2_product_messages_backend"></a> [apim\_v2\_product\_messages\_backend](#module\_apim\_v2\_product\_messages\_backend) | github.com/pagopa/terraform-azurerm-v3//api_management_product | v8.27.0 |

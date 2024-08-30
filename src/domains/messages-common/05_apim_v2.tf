@@ -352,7 +352,7 @@ module "apim_v2_messages_citizen_l1_api_v1" {
 
   subscription_key_names = {
     header = "x-functions-key"
-    query= "subscription-key"
+    query  = "subscription-key"
   }
 
   description  = "IO Messages Citizen - L1 - API"
@@ -383,7 +383,7 @@ module "apim_v2_messages_citizen_l2_api_v1" {
 
   subscription_key_names = {
     header = "x-functions-key"
-    query= "subscription-key"
+    query  = "subscription-key"
   }
 
   content_format = "openapi"
