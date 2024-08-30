@@ -1,57 +1,10 @@
-## Application gateway public ip ##
-resource "azurerm_public_ip" "appgateway_public_ip" {
-  name                = format("%s-appgateway-pip", local.project)
-  resource_group_name = azurerm_resource_group.rg_external.name
-  location            = azurerm_resource_group.rg_external.location
-  sku                 = "Standard"
-  allocation_method   = "Static"
-  zones               = [1, 2, 3]
-
-  tags = var.tags
-}
-
-# Subnet to host the application gateway
-module "appgateway_snet" {
-  source                                    = "github.com/pagopa/terraform-azurerm-v3//subnet?ref=v8.27.0"
-  name                                      = format("%s-appgateway-snet", local.project)
-  address_prefixes                          = var.cidr_subnet_appgateway
-  resource_group_name                       = azurerm_resource_group.rg_common.name
-  virtual_network_name                      = data.azurerm_virtual_network.common.name
-  private_endpoint_network_policies_enabled = true
-
-  service_endpoints = [
-    "Microsoft.Web",
-  ]
-}
-
-
-locals {
-  io_backend_ip_headers_rule = {
-    name          = "http-headers-api-app"
-    rule_sequence = 100
-    conditions    = []
-    url           = null
-    request_header_configurations = [
-      {
-        header_name  = "X-Forwarded-For"
-        header_value = "{var_client_ip}"
-      },
-      {
-        header_name  = "X-Client-Ip"
-        header_value = "{var_client_ip}"
-      },
-    ]
-    response_header_configurations = []
-  }
-}
-
 ## Application gateway ##
 module "app_gw" {
   source = "github.com/pagopa/terraform-azurerm-v3//app_gateway?ref=v8.31.0"
 
   resource_group_name = azurerm_resource_group.rg_external.name
   location            = azurerm_resource_group.rg_external.location
-  name                = format("%s-appgateway", local.project)
+  name                = format("%s-appgateway", var.project)
   zones               = [1, 2, 3]
 
   # SKU
@@ -192,7 +145,7 @@ module "app_gw" {
   }
 
   ssl_profiles = [{
-    name                             = format("%s-api-mtls-profile", local.project)
+    name                             = format("%s-api-mtls-profile", var.project)
     trusted_client_certificate_names = [format("%s-issuer-chain", var.prefix)]
     verify_client_cert_issuer_dn     = true
     ssl_policy = {
@@ -207,7 +160,7 @@ module "app_gw" {
     }
     },
     {
-      name                             = format("%s-ssl-profile", local.project)
+      name                             = format("%s-ssl-profile", var.project)
       trusted_client_certificate_names = null
       verify_client_cert_issuer_dn     = false
       ssl_policy = {
@@ -225,7 +178,7 @@ module "app_gw" {
   trusted_client_certificates = [
     {
       secret_name  = format("%s-issuer-chain", var.prefix)
-      key_vault_id = data.azurerm_key_vault.key_vault.id
+      key_vault_id = var.key_vault.id
     }
   ]
 
@@ -253,7 +206,7 @@ module "app_gw" {
       protocol           = "Https"
       host               = format("api-mtls.%s.%s", var.dns_zone_io, var.external_domain)
       port               = 443
-      ssl_profile_name   = format("%s-api-mtls-profile", local.project)
+      ssl_profile_name   = format("%s-api-mtls-profile", var.project)
       firewall_policy_id = null
 
       certificate = {
@@ -406,7 +359,7 @@ module "app_gw" {
       protocol           = "Https"
       host               = format("selfcare.%s.%s", var.dns_zone_io, var.external_domain)
       port               = 443
-      ssl_profile_name   = format("%s-ssl-profile", local.project)
+      ssl_profile_name   = format("%s-ssl-profile", var.project)
       firewall_policy_id = null
 
       certificate = {
@@ -996,233 +949,4 @@ module "app_gw" {
   }
 
   tags = var.tags
-}
-
-## user assined identity: (application gateway) ##
-resource "azurerm_user_assigned_identity" "appgateway" {
-  resource_group_name = data.azurerm_resource_group.sec_rg.name
-  location            = data.azurerm_resource_group.sec_rg.location
-  name                = format("%s-appgateway-identity", local.project)
-
-  tags = var.tags
-}
-
-resource "azurerm_key_vault_access_policy" "app_gateway_policy" {
-  key_vault_id            = data.azurerm_key_vault.key_vault.id
-  tenant_id               = data.azurerm_client_config.current.tenant_id
-  object_id               = azurerm_user_assigned_identity.appgateway.principal_id
-  key_permissions         = []
-  secret_permissions      = ["Get", "List"]
-  certificate_permissions = ["Get", "List"]
-  storage_permissions     = []
-}
-
-resource "azurerm_key_vault_access_policy" "app_gateway_policy_common" {
-  key_vault_id            = data.azurerm_key_vault.key_vault_common.id
-  tenant_id               = data.azurerm_client_config.current.tenant_id
-  object_id               = azurerm_user_assigned_identity.appgateway.principal_id
-  key_permissions         = []
-  secret_permissions      = ["Get", "List"]
-  certificate_permissions = ["Get", "List"]
-  storage_permissions     = []
-}
-
-resource "azurerm_key_vault_access_policy" "app_gateway_policy_ioweb" {
-  key_vault_id            = data.azurerm_key_vault.ioweb_kv.id
-  tenant_id               = data.azurerm_client_config.current.tenant_id
-  object_id               = azurerm_user_assigned_identity.appgateway.principal_id
-  key_permissions         = []
-  secret_permissions      = ["Get", "List"]
-  certificate_permissions = ["Get", "List"]
-  storage_permissions     = []
-}
-
-## user assined identity: (old application gateway) ##
-data "azuread_service_principal" "app_gw_uai_kvreader" {
-  display_name = format("%s-uai-kvreader", local.project)
-}
-
-resource "azurerm_key_vault_access_policy" "app_gw_uai_kvreader_common" {
-  key_vault_id            = data.azurerm_key_vault.key_vault_common.id
-  tenant_id               = data.azurerm_client_config.current.tenant_id
-  object_id               = data.azuread_service_principal.app_gw_uai_kvreader.object_id
-  key_permissions         = []
-  secret_permissions      = ["Get", "List"]
-  certificate_permissions = ["Get", "List"]
-  storage_permissions     = []
-}
-
-data "azurerm_key_vault_certificate" "app_gw_api" {
-  name         = var.app_gateway_api_certificate_name
-  key_vault_id = data.azurerm_key_vault.key_vault.id
-}
-
-data "azurerm_key_vault_certificate" "app_gw_api_mtls" {
-  name         = var.app_gateway_api_mtls_certificate_name
-  key_vault_id = data.azurerm_key_vault.key_vault.id
-}
-
-data "azurerm_key_vault_certificate" "app_gw_api_app" {
-  name         = var.app_gateway_api_app_certificate_name
-  key_vault_id = data.azurerm_key_vault.key_vault.id
-}
-
-###
-# kv where the certificate for api-web domain is located
-###
-data "azurerm_key_vault" "ioweb_kv" {
-  name                = format("%s-ioweb-kv", local.project)
-  resource_group_name = format("%s-ioweb-sec-rg", local.project)
-}
-
-data "azurerm_key_vault_certificate" "app_gw_api_web" {
-  name         = var.app_gateway_api_web_certificate_name
-  key_vault_id = data.azurerm_key_vault.ioweb_kv.id
-}
-###
-
-data "azurerm_key_vault_certificate" "app_gw_api_io_italia_it" {
-  name         = var.app_gateway_api_io_italia_it_certificate_name
-  key_vault_id = data.azurerm_key_vault.key_vault_common.id
-}
-
-data "azurerm_key_vault_certificate" "app_gw_app_backend_io_italia_it" {
-  name         = var.app_gateway_app_backend_io_italia_it_certificate_name
-  key_vault_id = data.azurerm_key_vault.key_vault_common.id
-}
-
-data "azurerm_key_vault_certificate" "app_gw_developerportal_backend_io_italia_it" {
-  name         = var.app_gateway_developerportal_backend_io_italia_it_certificate_name
-  key_vault_id = data.azurerm_key_vault.key_vault_common.id
-}
-
-data "azurerm_key_vault_certificate" "app_gw_api_io_selfcare_pagopa_it" {
-  name         = var.app_gateway_api_io_selfcare_pagopa_it_certificate_name
-  key_vault_id = data.azurerm_key_vault.key_vault.id
-}
-
-data "azurerm_key_vault_certificate" "app_gw_firmaconio_selfcare_pagopa_it" {
-  name         = var.app_gateway_firmaconio_selfcare_pagopa_it_certificate_name
-  key_vault_id = data.azurerm_key_vault.key_vault.id
-}
-
-data "azurerm_key_vault_certificate" "app_gw_continua" {
-  name         = var.app_gateway_continua_io_pagopa_it_certificate_name
-  key_vault_id = data.azurerm_key_vault.key_vault.id
-}
-
-data "azurerm_key_vault_certificate" "app_gw_oauth" {
-  name         = var.app_gateway_oauth_io_pagopa_it_certificate_name
-  key_vault_id = data.azurerm_key_vault.key_vault.id
-}
-
-data "azurerm_key_vault_certificate" "app_gw_selfcare_io" {
-  name         = var.app_gateway_selfcare_io_pagopa_it_certificate_name
-  key_vault_id = data.azurerm_key_vault.key_vault.id
-}
-
-data "azurerm_key_vault_secret" "app_gw_mtls_header_name" {
-  name         = "mtls-header-name"
-  key_vault_id = data.azurerm_key_vault.key_vault.id
-}
-
-resource "azurerm_web_application_firewall_policy" "api_app" {
-  name                = format("%s-waf-appgateway-api-app-policy", local.project)
-  resource_group_name = azurerm_resource_group.rg_external.name
-  location            = azurerm_resource_group.rg_external.location
-
-  policy_settings {
-    enabled                     = true
-    mode                        = "Prevention"
-    request_body_check          = true
-    file_upload_limit_in_mb     = 100
-    max_request_body_size_in_kb = 128
-  }
-
-  managed_rules {
-
-    managed_rule_set {
-      type    = "OWASP"
-      version = "3.1"
-
-      rule_group_override {
-        rule_group_name = "REQUEST-913-SCANNER-DETECTION"
-        disabled_rules = [
-          "913100",
-          "913101",
-          "913102",
-          "913110",
-          "913120",
-        ]
-      }
-
-      rule_group_override {
-        rule_group_name = "REQUEST-920-PROTOCOL-ENFORCEMENT"
-        disabled_rules = [
-          "920300",
-          "920320",
-        ]
-      }
-
-      rule_group_override {
-        rule_group_name = "REQUEST-930-APPLICATION-ATTACK-LFI"
-        disabled_rules = [
-          "930120",
-        ]
-      }
-
-      rule_group_override {
-        rule_group_name = "REQUEST-932-APPLICATION-ATTACK-RCE"
-        disabled_rules = [
-          "932150",
-        ]
-      }
-
-      rule_group_override {
-        rule_group_name = "REQUEST-941-APPLICATION-ATTACK-XSS"
-        disabled_rules = [
-          "941130",
-        ]
-      }
-
-      rule_group_override {
-        rule_group_name = "REQUEST-942-APPLICATION-ATTACK-SQLI"
-        disabled_rules = [
-          "942100",
-          "942120",
-          "942190",
-          "942200",
-          "942210",
-          "942240",
-          "942250",
-          "942260",
-          "942330",
-          "942340",
-          "942370",
-          "942380",
-          "942430",
-          "942440",
-          "942450",
-        ]
-      }
-
-    }
-  }
-
-  tags = var.tags
-}
-
-
-#######################
-## Web Application ##
-#######################
-
-data "azurerm_linux_web_app" "session_manager" {
-  name                = "io-p-weu-session-manager-app-03"
-  resource_group_name = "io-p-weu-session-manager-rg-01"
-}
-
-data "azurerm_linux_web_app" "fims_op_app" {
-  name                = "io-p-weu-fims-op-app-01"
-  resource_group_name = "io-p-weu-fims-rg-01"
 }

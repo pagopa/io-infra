@@ -453,3 +453,13 @@ data "azurerm_dns_a_record" "api_io_italia_it" {
   zone_name           = data.azurerm_dns_zone.io_italia_it.name
   resource_group_name = "${local.project}-rg-external"
 }
+
+#
+# AppGateway
+#
+
+data "azurerm_subnet" "appgateway_snet" {
+  name                 = "${local.project}-appgateway-snet"
+  resource_group_name  = azurerm_resource_group.rg_common.name
+  virtual_network_name = data.azurerm_virtual_network.common.name
+}

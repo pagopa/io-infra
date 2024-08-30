@@ -281,3 +281,35 @@ module "monitoring_weu" {
 
   tags = local.tags
 }
+module "application_gateway_weu" {
+  source = "../_modules/application_gateway"
+
+  location       = data.azurerm_resource_group.common_weu.location
+  location_short = local.location_short[data.azurerm_resource_group.common_weu.location]
+  project        = local.project_weu_legacy
+
+  resource_group_common = data.azurerm_resource_group.common_weu.name
+  servicebus_dns_zone   = local.core.global.dns.private_dns_zones.servicebus
+  vnet_common           = local.core.networking.weu.vnet_common
+  key_vault             = local.core.key_vault.weu.kv
+  error_action_group_id = data.azurerm_monitor_action_group.error_action_group.id
+
+  cidr_subnet = ["10.0.11.0/24"]
+  sku_name    = "WAF_v2"
+  ip_rules = [
+    {
+      ip_mask = "00000000000000", # PDND
+      action  = "Allow"
+    },
+    {
+      ip_mask = "0000000000000", # PDND
+      action  = "Allow"
+    },
+    {
+      ip_mask = "0000000000000", # PDND
+      action  = "Allow"
+    }
+  ]
+
+  tags = local.tags
+}
