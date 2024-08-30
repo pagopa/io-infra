@@ -341,7 +341,7 @@ data "http" "messages_citizen_openapi" {
 }
 
 module "apim_v2_messages_citizen_l1_api_v1" {
-  source = "github.com/pagopa/terraform-azurerm-v3//api_management_api?ref=apim-subs-name"
+  source = "github.com/pagopa/terraform-azurerm-v3//api_management_api?ref=v8.40.0"
 
   name                  = format("%s-%s-messages-citizen-api-01", local.product, var.location_short)
   api_management_name   = data.azurerm_api_management.apim_v2_api.name
@@ -367,7 +367,7 @@ module "apim_v2_messages_citizen_l1_api_v1" {
 }
 
 module "apim_v2_messages_citizen_l2_api_v1" {
-  source = "github.com/pagopa/terraform-azurerm-v3//api_management_api?ref=apim-subs-name"
+  source = "github.com/pagopa/terraform-azurerm-v3//api_management_api?ref=v8.40.0"
 
   name                  = format("%s-%s-messages-citizen-api-02", local.product, var.location_short)
   api_management_name   = data.azurerm_api_management.apim_v2_api.name
