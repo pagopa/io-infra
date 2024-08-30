@@ -17,6 +17,14 @@ locals {
 
   core = data.terraform_remote_state.core.outputs
 
+  resource_groups = {
+    common   = "${local.project_weu_legacy}-rg-common"
+    internal = "${local.project_weu_legacy}-rg-internal"
+    external = "${local.project_weu_legacy}-rg-external"
+    event    = "${local.project_weu_legacy}-evt-rg"
+    sec      = "${local.project_weu_legacy}-sec-rg"
+  }
+
   eventhubs = [
     {
       name              = "io-cosmosdb-services"

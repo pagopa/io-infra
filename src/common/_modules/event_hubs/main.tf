@@ -9,7 +9,7 @@ module "eventhub_snet" {
   source                                    = "github.com/pagopa/terraform-azurerm-v3//subnet?ref=v8.35.0"
   name                                      = try(local.nonstandard[var.location_short].evh-snet, "${var.project}-evh-snet-01")
   address_prefixes                          = var.cidr_subnet
-  resource_group_name                       = var.resource_group_common
+  resource_group_name                       = var.resource_groups.common
   virtual_network_name                      = var.vnet_common.name
   service_endpoints                         = ["Microsoft.EventHub"]
   private_endpoint_network_policies_enabled = false

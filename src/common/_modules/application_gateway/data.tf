@@ -37,17 +37,17 @@ data "azurerm_linux_web_app" "appservice_selfcare_be" {
 #######################
 
 data "azurerm_key_vault_certificate" "app_gw_api" {
-  name         = var.app_gateway_api_certificate_name
+  name         = var.certificates.api
   key_vault_id = var.key_vault.id
 }
 
 data "azurerm_key_vault_certificate" "app_gw_api_mtls" {
-  name         = var.app_gateway_api_mtls_certificate_name
+  name         = var.certificates.api_mtls
   key_vault_id = var.key_vault.id
 }
 
 data "azurerm_key_vault_certificate" "app_gw_api_app" {
-  name         = var.app_gateway_api_app_certificate_name
+  name         = var.certificates.api_app
   key_vault_id = var.key_vault.id
 }
 
@@ -60,48 +60,48 @@ data "azurerm_key_vault" "ioweb_kv" {
 }
 
 data "azurerm_key_vault_certificate" "app_gw_api_web" {
-  name         = var.app_gateway_api_web_certificate_name
+  name         = var.certificates.api_web
   key_vault_id = data.azurerm_key_vault.ioweb_kv.id
 }
 ###
 
 data "azurerm_key_vault_certificate" "app_gw_api_io_italia_it" {
-  name         = var.app_gateway_api_io_italia_it_certificate_name
+  name         = var.certificates.api_io_italia_it
   key_vault_id = var.key_vault_common.id
 }
 
 data "azurerm_key_vault_certificate" "app_gw_app_backend_io_italia_it" {
-  name         = var.app_gateway_app_backend_io_italia_it_certificate_name
+  name         = var.certificates.app_backend_io_italia_it
   key_vault_id = var.key_vault_common.id
 }
 
 data "azurerm_key_vault_certificate" "app_gw_developerportal_backend_io_italia_it" {
-  name         = var.app_gateway_developerportal_backend_io_italia_it_certificate_name
+  name         = var.certificates.developerportal_backend_io_italia_it
   key_vault_id = var.key_vault_common.id
 }
 
 data "azurerm_key_vault_certificate" "app_gw_api_io_selfcare_pagopa_it" {
-  name         = var.app_gateway_api_io_selfcare_pagopa_it_certificate_name
+  name         = var.certificates.api_io_selfcare_pagopa_it
   key_vault_id = var.key_vault.id
 }
 
 data "azurerm_key_vault_certificate" "app_gw_firmaconio_selfcare_pagopa_it" {
-  name         = var.app_gateway_firmaconio_selfcare_pagopa_it_certificate_name
+  name         = var.certificates.firmaconio_selfcare_pagopa_it
   key_vault_id = var.key_vault.id
 }
 
 data "azurerm_key_vault_certificate" "app_gw_continua" {
-  name         = var.app_gateway_continua_io_pagopa_it_certificate_name
+  name         = var.certificates.continua_io_pagopa_it
   key_vault_id = var.key_vault.id
 }
 
 data "azurerm_key_vault_certificate" "app_gw_oauth" {
-  name         = var.app_gateway_oauth_io_pagopa_it_certificate_name
+  name         = var.certificates.oauth_io_pagopa_it
   key_vault_id = var.key_vault.id
 }
 
 data "azurerm_key_vault_certificate" "app_gw_selfcare_io" {
-  name         = var.app_gateway_selfcare_io_pagopa_it_certificate_name
+  name         = var.certificates.selfcare_io_pagopa_it
   key_vault_id = var.key_vault.id
 }
 

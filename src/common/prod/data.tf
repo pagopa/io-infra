@@ -36,3 +36,22 @@ data "terraform_remote_state" "core" {
     key                  = "io-infra.core.prod.italynorth.tfstate"
   }
 }
+
+data "azurerm_client_config" "current" {}
+
+data "azurerm_linux_web_app" "firmaconio_selfcare_web_app" {
+  name                = "${local.project_weu_legacy}-sign-backoffice-app"
+  resource_group_name = "${local.project_weu_legacy}-sign-backend-rg"
+}
+
+# TODO: remove if app_backend module is moved in core or common
+data "azurerm_linux_web_app" "app_backendl1" {
+  name                = "${local.project_weu_legacy}-app-appbackendl1"
+  resource_group_name = "${local.project_weu_legacy}-rg-linux"
+}
+
+# TODO: remove if app_backend module is moved in core or common
+data "azurerm_linux_web_app" "app_backendl2" {
+  name                = "${local.project_weu_legacy}-app-appbackendl2"
+  resource_group_name = "${local.project_weu_legacy}-rg-linux"
+}

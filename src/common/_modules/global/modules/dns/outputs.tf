@@ -36,3 +36,7 @@ output "private_dns_zones" {
     servicebus = azurerm_private_dns_zone.privatelink_servicebus
   }
 }
+
+output "external_domain" {
+  value = var.external_domain
+}

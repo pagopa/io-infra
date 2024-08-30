@@ -3,6 +3,17 @@ variable "project" {
   description = "IO prefix, short environment and short location"
 }
 
+variable "prefix" {
+  type    = string
+  default = "io"
+  validation {
+    condition = (
+      length(var.prefix) < 6
+    )
+    error_message = "Max length is 6 chars."
+  }
+}
+
 variable "location" {
   type        = string
   description = "Azure region"
@@ -18,10 +29,24 @@ variable "tags" {
   description = "Resource tags"
 }
 
-variable "resource_group_common" {
+variable "resource_groups" {
+  type        = map(string)
+  description = "Resource group names"
+}
+
+variable "datasources" {
+  type        = map(any)
+  description = "Common datasources"
+}
+
+variable "external_domain" {
   type        = string
-  description = "Name of common resource group"
-  default     = null
+  description = "Domain for delegation"
+}
+
+variable "public_dns_zones" {
+  type        = map(any)
+  description = "Public dns zones information"
 }
 
 variable "vnet_common" {
@@ -32,6 +57,11 @@ variable "vnet_common" {
     resource_group_name = string
   })
   description = "Information of the common VNet"
+}
+
+variable "cidr_subnet" {
+  type        = list(string)
+  description = "Application gateway address space."
 }
 
 variable "key_vault" {
@@ -53,83 +83,38 @@ variable "key_vault_common" {
 }
 
 ## Application Gateway
-variable "app_gateway_api_certificate_name" {
-  type        = string
-  description = "Application gateway api certificate name on Key Vault"
+variable "certificates" {
+  type = map(string)
+  description = "Information of the certificates"
 }
 
-variable "app_gateway_api_app_certificate_name" {
-  type        = string
-  description = "Application gateway api certificate name on Key Vault"
+variable "backend_hostnames" {
+  type = map(string)
+  description = "Information of the backend hostnames"
 }
 
-variable "app_gateway_api_web_certificate_name" {
-  type        = string
-  description = "Application gateway api certificate name on Key Vault"
-}
-
-variable "app_gateway_api_mtls_certificate_name" {
-  type        = string
-  description = "Application gateway api certificate name on Key Vault"
-}
-
-variable "app_gateway_api_io_italia_it_certificate_name" {
-  type        = string
-  description = "Application gateway api certificate name on Key Vault"
-}
-
-variable "app_gateway_app_backend_io_italia_it_certificate_name" {
-  type        = string
-  description = "Application gateway api certificate name on Key Vault"
-}
-
-variable "app_gateway_developerportal_backend_io_italia_it_certificate_name" {
-  type        = string
-  description = "Application gateway api certificate name on Key Vault"
-}
-
-variable "app_gateway_api_io_selfcare_pagopa_it_certificate_name" {
-  type        = string
-  description = "Application gateway api certificate name on Key Vault"
-}
-
-variable "app_gateway_oauth_io_pagopa_it_certificate_name" {
-  type        = string
-  description = "Application gateway oauth certificate name on Key Vault"
-}
-
-variable "app_gateway_firmaconio_selfcare_pagopa_it_certificate_name" {
-  type        = string
-  description = "Application gateway api certificate name on Key Vault"
-}
-
-variable "app_gateway_continua_io_pagopa_it_certificate_name" {
-  type        = string
-  description = "Application gateway continua certificate name on Key Vault"
-}
-
-variable "app_gateway_selfcare_io_pagopa_it_certificate_name" {
-  type        = string
-  description = "Application gateway selfcare-io certificate name on Key Vault"
-}
-
-variable "app_gateway_min_capacity" {
+variable "min_capacity" {
   type    = number
   default = 0
 }
 
-variable "app_gateway_max_capacity" {
+variable "max_capacity" {
   type    = number
   default = 2
 }
 
-variable "app_gateway_alerts_enabled" {
+variable "alerts_enabled" {
   type        = bool
   description = "Enable alerts"
   default     = true
 }
 
-variable "app_gateway_deny_paths" {
+variable "deny_paths" {
   type        = list(string)
   description = "Regex patterns to deny requests"
+}
+
+variable "error_action_group_id" {
+  type        = string
+  description = "Azure Monitor error action group id"
 }
