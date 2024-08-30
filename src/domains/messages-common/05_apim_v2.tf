@@ -350,7 +350,7 @@ module "apim_v2_messages_citizen_l1_api_v1" {
   subscription_required = true
   service_url           = null
 
-  subscription_key_parameter_names = {
+  subscription_key_names = {
     header = "x-functions-key"
     query= "subscription-key"
   }
@@ -381,7 +381,7 @@ module "apim_v2_messages_citizen_l2_api_v1" {
   path         = "messages/l2/api/v1"
   protocols    = ["https"]
 
-  subscription_key_parameter_names = {
+  subscription_key_names = {
     header = "x-functions-key"
     query= "subscription-key"
   }
