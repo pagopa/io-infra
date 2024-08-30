@@ -127,3 +127,8 @@ data "azurerm_storage_account" "storage_assets_cdn" {
   name                = replace(format("%s-stcdnassets", var.project), "-", "")
   resource_group_name = local.resource_group_name_common
 }
+
+data "azurerm_storage_account" "function_elt_internal_storage" {
+  name                = module.function_elt.storage_account_internal_function_name
+  resource_group_name = var.resource_group_name
+}
