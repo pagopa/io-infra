@@ -551,6 +551,11 @@ module "app_gw" {
           backend               = "session-manager-app",
           rewrite_rule_set_name = "rewrite-rule-set-api-app"
         },
+        metadata = {
+          paths                 = ["/metadata"]
+          backend               = "session-manager-app",
+          rewrite_rule_set_name = "rewrite-rule-set-api-app"
+        },
         acs = {
           paths                 = ["/assertionConsumerService"]
           backend               = "session-manager-app",
