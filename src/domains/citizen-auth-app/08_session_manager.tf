@@ -140,7 +140,6 @@ locals {
     FAST_LOGIN_API_URL = var.fastlogin_enabled ? "https://${module.function_fast_login[0].default_hostname}" : ""
 
     # Functions Lollipop config
-    FF_LOLLIPOP_ENABLED    = "1"
     LOLLIPOP_API_BASE_PATH = "/api/v1"
     LOLLIPOP_API_URL       = "https://${module.function_lollipop_itn.default_hostname}"
     LOLLIPOP_API_KEY       = data.azurerm_key_vault_secret.functions_lollipop_api_key.value
@@ -151,10 +150,6 @@ locals {
     # Fast Login config
     FF_FAST_LOGIN = "ALL"
     LV_TEST_USERS = module.tests.test_users.all
-
-    # UNIQUE EMAIL ENFORCEMENT
-    FF_UNIQUE_EMAIL_ENFORCEMENT    = "ALL"
-    UNIQUE_EMAIL_ENFORCEMENT_USERS = data.azurerm_key_vault_secret.session_manager_UNIQUE_EMAIL_ENFORCEMENT_USER.value
 
     # MITIGATION APP BUG EMAIL VALIDATION
     IS_SPID_EMAIL_PERSISTENCE_ENABLED = "false"
@@ -219,9 +214,6 @@ locals {
     # PAGOPA config
     PAGOPA_BASE_PATH             = "/pagopa/api/v1"
     ALLOW_PAGOPA_IP_SOURCE_RANGE = data.azurerm_key_vault_secret.session_manager_ALLOW_PAGOPA_IP_SOURCE_RANGE.value
-
-    # Feature Flag
-    FF_USER_AGE_LIMIT_ENABLED = 1
   }
 }
 
