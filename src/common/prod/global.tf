@@ -13,13 +13,13 @@ module "global" {
 
     vnets = {
       weu = {
-        id   = module.networking_weu.vnet_common.id
-        name = module.networking_weu.vnet_common.name
+        id   = local.core.networking.weu.vnet_common.id
+        name = local.core.networking.weu.vnet_common.name
       }
 
       itn = {
-        id   = module.networking_itn.vnet_common.id
-        name = module.networking_itn.vnet_common.name
+        id   = local.core.networking.itn.vnet_common.id
+        name = local.core.networking.itn.vnet_common.name
       }
 
       beta = {
