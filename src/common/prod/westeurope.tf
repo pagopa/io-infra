@@ -10,7 +10,7 @@ module "event_hubs_weu" {
   project        = local.project_weu_legacy
 
   resource_groups       = local.resource_groups
-  servicebus_dns_zone   = local.core.global.dns.private_dns_zones.servicebus
+  servicebus_dns_zone   = module.global.dns.private_dns_zones.servicebus
   vnet_common           = local.core.networking.weu.vnet_common
   key_vault             = local.core.key_vault.weu.kv
   error_action_group_id = data.azurerm_monitor_action_group.error_action_group.id
@@ -298,8 +298,8 @@ module "application_gateway_weu" {
   vnet_common      = local.core.networking.weu.vnet_common
   key_vault        = local.core.key_vault.weu.kv
   key_vault_common = local.core.key_vault.weu.kv_common
-  external_domain  = local.core.global.dns.external_domain
-  public_dns_zones = local.core.global.dns.public_dns_zones
+  external_domain  = module.global.dns.external_domain
+  public_dns_zones = module.global.dns.public_dns_zones
 
   backend_hostnames = {
     firmaconio_selfcare_web_app = data.azurerm_linux_web_app.firmaconio_selfcare_web_app.default_hostname
