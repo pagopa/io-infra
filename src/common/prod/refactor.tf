@@ -1,265 +1,582 @@
 import {
-  to = module.event_hubs_weu.azurerm_key_vault_secret.event_hub_keys["import-command.io-fn-elt"]
-  id = "https://io-p-kv.vault.azure.net/secrets/evh-import-command-io-fn-elt-key/08b9efc3140c4bbba3002fb15c2946ac"
+  to = module.networking_weu.module.vnet_common.azurerm_virtual_network.this
+  id = "/subscriptions/ec285037-c673-4f58-b594-d7c480da4e8b/resourceGroups/io-p-rg-common/providers/Microsoft.Network/virtualNetworks/io-p-vnet-common"
 }
-
 import {
-  to = module.event_hubs_weu.azurerm_key_vault_secret.event_hub_keys["import-command.ops"]
-  id = "https://io-p-kv.vault.azure.net/secrets/evh-import-command-ops-key/b60ef5738d4c426693e5d770eca733be"
+  to = module.networking_weu.module.pep_snet.azurerm_subnet.this
+  id = "/subscriptions/ec285037-c673-4f58-b594-d7c480da4e8b/resourceGroups/io-p-rg-common/providers/Microsoft.Network/virtualNetworks/io-p-vnet-common/subnets/pendpoints"
 }
-
 import {
-  to = module.event_hubs_weu.azurerm_key_vault_secret.event_hub_keys["io-cosmosdb-message-status-for-view.io-cdc"]
-  id = "https://io-p-kv.vault.azure.net/secrets/evh-io-cosmosdb-message-status-for-view-io-cdc-key/44830537963d4b64ba98e2f3bfe842c0"
+  to = module.global.module.dns.azurerm_dns_a_record.api_app_io_pagopa_it
+  id = "/subscriptions/ec285037-c673-4f58-b594-d7c480da4e8b/resourceGroups/io-p-rg-external/providers/Microsoft.Network/dnsZones/io.pagopa.it/A/api-app"
 }
-
 import {
-  to = module.event_hubs_weu.azurerm_key_vault_secret.event_hub_keys["io-cosmosdb-message-status-for-view.io-messages"]
-  id = "https://io-p-kv.vault.azure.net/secrets/evh-io-cosmosdb-message-status-for-view-io-messages-key/941b9f708f8040638c7960e1970d9dac"
+  to = module.global.module.dns.azurerm_dns_a_record.api_internal_io_italia_it
+  id = "/subscriptions/ec285037-c673-4f58-b594-d7c480da4e8b/resourceGroups/io-p-rg-external/providers/Microsoft.Network/dnsZones/io.italia.it/A/api-internal"
 }
-
 import {
-  to = module.event_hubs_weu.azurerm_key_vault_secret.event_hub_keys["io-cosmosdb-message-status.io-cdc"]
-  id = "https://io-p-kv.vault.azure.net/secrets/evh-io-cosmosdb-message-status-io-cdc-key/7dad5971086f4d058470283a32682a3d"
+  to = module.global.module.dns.azurerm_dns_a_record.api_io_italia_it
+  id = "/subscriptions/ec285037-c673-4f58-b594-d7c480da4e8b/resourceGroups/io-p-rg-external/providers/Microsoft.Network/dnsZones/io.italia.it/A/api"
 }
-
 import {
-  to = module.event_hubs_weu.azurerm_key_vault_secret.event_hub_keys["io-cosmosdb-message-status.io-messages"]
-  id = "https://io-p-kv.vault.azure.net/secrets/evh-io-cosmosdb-message-status-io-messages-key/b8622fb3177141a7974f1a421b58983c"
+  to = module.global.module.dns.azurerm_dns_a_record.api_io_pagopa_it
+  id = "/subscriptions/ec285037-c673-4f58-b594-d7c480da4e8b/resourceGroups/io-p-rg-external/providers/Microsoft.Network/dnsZones/io.pagopa.it/A/api"
 }
-
 import {
-  to = module.event_hubs_weu.azurerm_key_vault_secret.event_hub_keys["io-cosmosdb-profiles.io-fn-elt"]
-  id = "https://io-p-kv.vault.azure.net/secrets/evh-io-cosmosdb-profiles-io-fn-elt-key/054648e5a2b54d57b87affd80ada2df5"
+  to = module.global.module.dns.azurerm_dns_a_record.api_io_selfcare_pagopa_it
+  id = "/subscriptions/ec285037-c673-4f58-b594-d7c480da4e8b/resourceGroups/io-p-rg-external/providers/Microsoft.Network/dnsZones/io.selfcare.pagopa.it/A/api"
 }
-
 import {
-  to = module.event_hubs_weu.azurerm_key_vault_secret.event_hub_keys["io-cosmosdb-profiles.pdnd"]
-  id = "https://io-p-kv.vault.azure.net/secrets/evh-io-cosmosdb-profiles-pdnd-key/4b5a24bdbb964e85b3f1790e45699b41"
+  to = module.global.module.dns.azurerm_dns_a_record.api_mtls_io_pagopa_it
+  id = "/subscriptions/ec285037-c673-4f58-b594-d7c480da4e8b/resourceGroups/io-p-rg-external/providers/Microsoft.Network/dnsZones/io.pagopa.it/A/api-mtls"
 }
-
 import {
-  to = module.event_hubs_weu.azurerm_key_vault_secret.event_hub_keys["io-cosmosdb-services.io-fn-elt"]
-  id = "https://io-p-kv.vault.azure.net/secrets/evh-io-cosmosdb-services-io-fn-elt-key/9fa19a20e49c449bbda4ecc2973c500b"
+  to = module.global.module.dns.azurerm_dns_a_record.api_web_io_pagopa_it
+  id = "/subscriptions/ec285037-c673-4f58-b594-d7c480da4e8b/resourceGroups/io-p-rg-external/providers/Microsoft.Network/dnsZones/io.pagopa.it/A/api-web"
 }
-
 import {
-  to = module.event_hubs_weu.azurerm_key_vault_secret.event_hub_keys["io-cosmosdb-services.pdnd"]
-  id = "https://io-p-kv.vault.azure.net/secrets/evh-io-cosmosdb-services-pdnd-key/5a08bcae79d84402b53618c4dc1ce65f"
+  to = module.global.module.dns.azurerm_dns_a_record.continua_io_pagopa_it
+  id = "/subscriptions/ec285037-c673-4f58-b594-d7c480da4e8b/resourceGroups/io-p-rg-external/providers/Microsoft.Network/dnsZones/io.pagopa.it/A/continua"
 }
-
 import {
-  to = module.event_hubs_weu.azurerm_key_vault_secret.event_hub_keys["pdnd-io-cosmosdb-message-status.io-fn-elt"]
-  id = "https://io-p-kv.vault.azure.net/secrets/evh-pdnd-io-cosmosdb-message-status-io-fn-elt-key/ecf9695481a64e6eaa6f34ad9a07cc4a"
+  to = module.global.module.dns.azurerm_dns_a_record.app_backend_io_italia_it
+  id = "/subscriptions/ec285037-c673-4f58-b594-d7c480da4e8b/resourceGroups/io-p-rg-external/providers/Microsoft.Network/dnsZones/io.italia.it/A/app-backend"
 }
-
 import {
-  to = module.event_hubs_weu.azurerm_key_vault_secret.event_hub_keys["pdnd-io-cosmosdb-message-status.pdnd"]
-  id = "https://io-p-kv.vault.azure.net/secrets/evh-pdnd-io-cosmosdb-message-status-pdnd-key/66a3e87abae7411f87a2a29eeeb99397"
+  to = module.global.module.dns.azurerm_dns_a_record.developerportal_backend_io_italia_it
+  id = "/subscriptions/ec285037-c673-4f58-b594-d7c480da4e8b/resourceGroups/io-p-rg-external/providers/Microsoft.Network/dnsZones/io.italia.it/A/developerportal-backend"
 }
-
 import {
-  to = module.event_hubs_weu.azurerm_key_vault_secret.event_hub_keys["pdnd-io-cosmosdb-messages.io-fn-elt"]
-  id = "https://io-p-kv.vault.azure.net/secrets/evh-pdnd-io-cosmosdb-messages-io-fn-elt-key/fe247a088d16414098ee8359d43e0e70"
+  to = module.global.module.dns.azurerm_dns_a_record.firmaconio_selfcare_pagopa_it
+  id = "/subscriptions/ec285037-c673-4f58-b594-d7c480da4e8b/resourceGroups/io-p-rg-external/providers/Microsoft.Network/dnsZones/firmaconio.selfcare.pagopa.it/A/@"
 }
-
 import {
-  to = module.event_hubs_weu.azurerm_key_vault_secret.event_hub_keys["pdnd-io-cosmosdb-messages.pdnd"]
-  id = "https://io-p-kv.vault.azure.net/secrets/evh-pdnd-io-cosmosdb-messages-pdnd-key/a5ab3a6f63d24f51a8330d618bb5a130"
+  to = module.global.module.dns.azurerm_dns_a_record.oauth_io_pagopa_it
+  id = "/subscriptions/ec285037-c673-4f58-b594-d7c480da4e8b/resourceGroups/io-p-rg-external/providers/Microsoft.Network/dnsZones/io.pagopa.it/A/oauth"
 }
-
 import {
-  to = module.event_hubs_weu.azurerm_key_vault_secret.event_hub_keys["pdnd-io-cosmosdb-notification-status.io-fn-elt"]
-  id = "https://io-p-kv.vault.azure.net/secrets/evh-pdnd-io-cosmosdb-notification-status-io-fn-elt-key/2425d2f15f6e40fc8602426f9c6ecb25"
+  to = module.global.module.dns.azurerm_dns_a_record.openid_provider_io_pagopa_it
+  id = "/subscriptions/ec285037-c673-4f58-b594-d7c480da4e8b/resourceGroups/io-p-rg-external/providers/Microsoft.Network/dnsZones/io.pagopa.it/A/openid-provider"
 }
-
 import {
-  to = module.event_hubs_weu.azurerm_key_vault_secret.event_hub_keys["pdnd-io-cosmosdb-notification-status.pdnd"]
-  id = "https://io-p-kv.vault.azure.net/secrets/evh-pdnd-io-cosmosdb-notification-status-pdnd-key/2e7a3c36d01246d59b2a304e1b8244cc"
+  to = module.global.module.dns.azurerm_dns_a_record.selfcare_io_pagopa_it
+  id = "/subscriptions/ec285037-c673-4f58-b594-d7c480da4e8b/resourceGroups/io-p-rg-external/providers/Microsoft.Network/dnsZones/io.pagopa.it/A/selfcare"
 }
-
 import {
-  to = module.event_hubs_weu.azurerm_key_vault_secret.event_hub_keys["pdnd-io-cosmosdb-service-preferences.io-fn-elt"]
-  id = "https://io-p-kv.vault.azure.net/secrets/evh-pdnd-io-cosmosdb-service-preferences-io-fn-elt-key/a92476402501461eb8b358c6d8eeff6c"
+  to = module.global.module.dns.azurerm_dns_caa_record.firmaconio_selfcare_pagopa_it
+  id = "/subscriptions/ec285037-c673-4f58-b594-d7c480da4e8b/resourceGroups/io-p-rg-external/providers/Microsoft.Network/dnsZones/firmaconio.selfcare.pagopa.it/CAA/@"
 }
-
-
 import {
-  to = module.event_hubs_weu.azurerm_key_vault_secret.event_hub_keys["pdnd-io-cosmosdb-service-preferences.pdnd"]
-  id = "https://io-p-kv.vault.azure.net/secrets/evh-pdnd-io-cosmosdb-service-preferences-pdnd-key/30610dd23b2248149f042755e154b444"
+  to = module.global.module.dns.azurerm_dns_caa_record.io_italia_it
+  id = "/subscriptions/ec285037-c673-4f58-b594-d7c480da4e8b/resourceGroups/io-p-rg-external/providers/Microsoft.Network/dnsZones/io.italia.it/CAA/@"
 }
-
 import {
-  to = module.event_hubs_weu.azurerm_resource_group.event_rg
-  id = "/subscriptions/ec285037-c673-4f58-b594-d7c480da4e8b/resourceGroups/io-p-evt-rg"
+  to = module.global.module.dns.azurerm_dns_caa_record.io_pagopa_it
+  id = "/subscriptions/ec285037-c673-4f58-b594-d7c480da4e8b/resourceGroups/io-p-rg-external/providers/Microsoft.Network/dnsZones/io.pagopa.it/CAA/@"
 }
-
 import {
-  to = module.event_hubs_weu.module.event_hub.azurerm_eventhub.events["import-command"]
-  id = "/subscriptions/ec285037-c673-4f58-b594-d7c480da4e8b/resourceGroups/io-p-evt-rg/providers/Microsoft.EventHub/namespaces/io-p-evh-ns/eventhubs/import-command"
+  to = module.global.module.dns.azurerm_dns_caa_record.io_selfcare_pagopa_it
+  id = "/subscriptions/ec285037-c673-4f58-b594-d7c480da4e8b/resourceGroups/io-p-rg-external/providers/Microsoft.Network/dnsZones/io.selfcare.pagopa.it/CAA/@"
 }
-
 import {
-  to = module.event_hubs_weu.module.event_hub.azurerm_eventhub.events["io-cosmosdb-message-status"]
-  id = "/subscriptions/ec285037-c673-4f58-b594-d7c480da4e8b/resourceGroups/io-p-evt-rg/providers/Microsoft.EventHub/namespaces/io-p-evh-ns/eventhubs/io-cosmosdb-message-status"
+  to = module.global.module.dns.azurerm_dns_caa_record.ioweb_it
+  id = "/subscriptions/ec285037-c673-4f58-b594-d7c480da4e8b/resourceGroups/io-p-rg-external/providers/Microsoft.Network/dnsZones/ioapp.it/CAA/@"
 }
-
 import {
-  to = module.event_hubs_weu.module.event_hub.azurerm_eventhub.events["io-cosmosdb-message-status-for-view"]
-  id = "/subscriptions/ec285037-c673-4f58-b594-d7c480da4e8b/resourceGroups/io-p-evt-rg/providers/Microsoft.EventHub/namespaces/io-p-evh-ns/eventhubs/io-cosmosdb-message-status-for-view"
+  to = module.global.module.dns.azurerm_dns_cname_record.sender
+  id = "/subscriptions/ec285037-c673-4f58-b594-d7c480da4e8b/resourceGroups/io-p-rg-external/providers/Microsoft.Network/dnsZones/io.italia.it/CNAME/sender"
 }
-
 import {
-  to = module.event_hubs_weu.module.event_hub.azurerm_eventhub.events["io-cosmosdb-profiles"]
-  id = "/subscriptions/ec285037-c673-4f58-b594-d7c480da4e8b/resourceGroups/io-p-evt-rg/providers/Microsoft.EventHub/namespaces/io-p-evh-ns/eventhubs/io-cosmosdb-profiles"
+  to = module.global.module.dns.azurerm_dns_ns_record.firma_io_pagopa_it_ns
+  id = "/subscriptions/ec285037-c673-4f58-b594-d7c480da4e8b/resourceGroups/io-p-rg-external/providers/Microsoft.Network/dnsZones/io.pagopa.it/NS/firma"
 }
-
 import {
-  to = module.event_hubs_weu.module.event_hub.azurerm_eventhub.events["io-cosmosdb-services"]
-  id = "/subscriptions/ec285037-c673-4f58-b594-d7c480da4e8b/resourceGroups/io-p-evt-rg/providers/Microsoft.EventHub/namespaces/io-p-evh-ns/eventhubs/io-cosmosdb-services"
+  to = module.global.module.dns.azurerm_dns_txt_record.io_italia_it
+  id = "/subscriptions/ec285037-c673-4f58-b594-d7c480da4e8b/resourceGroups/io-p-rg-external/providers/Microsoft.Network/dnsZones/io.italia.it/TXT/@"
 }
-
 import {
-  to = module.event_hubs_weu.module.event_hub.azurerm_eventhub.events["pdnd-io-cosmosdb-message-status"]
-  id = "/subscriptions/ec285037-c673-4f58-b594-d7c480da4e8b/resourceGroups/io-p-evt-rg/providers/Microsoft.EventHub/namespaces/io-p-evh-ns/eventhubs/pdnd-io-cosmosdb-message-status"
+  to = module.global.module.dns.azurerm_dns_txt_record.zendeskverification_io_italia_it
+  id = "/subscriptions/ec285037-c673-4f58-b594-d7c480da4e8b/resourceGroups/io-p-rg-external/providers/Microsoft.Network/dnsZones/io.italia.it/TXT/zendeskverification"
 }
-
 import {
-  to = module.event_hubs_weu.module.event_hub.azurerm_eventhub.events["pdnd-io-cosmosdb-messages"]
-  id = "/subscriptions/ec285037-c673-4f58-b594-d7c480da4e8b/resourceGroups/io-p-evt-rg/providers/Microsoft.EventHub/namespaces/io-p-evh-ns/eventhubs/pdnd-io-cosmosdb-messages"
+  to = module.global.module.dns.azurerm_dns_zone.firmaconio_selfcare_pagopa_it
+  id = "/subscriptions/ec285037-c673-4f58-b594-d7c480da4e8b/resourceGroups/io-p-rg-external/providers/Microsoft.Network/dnsZones/firmaconio.selfcare.pagopa.it"
 }
-
 import {
-  to = module.event_hubs_weu.module.event_hub.azurerm_eventhub.events["pdnd-io-cosmosdb-notification-status"]
-  id = "/subscriptions/ec285037-c673-4f58-b594-d7c480da4e8b/resourceGroups/io-p-evt-rg/providers/Microsoft.EventHub/namespaces/io-p-evh-ns/eventhubs/pdnd-io-cosmosdb-notification-status"
+  to = module.global.module.dns.azurerm_dns_zone.io_italia_it
+  id = "/subscriptions/ec285037-c673-4f58-b594-d7c480da4e8b/resourceGroups/io-p-rg-external/providers/Microsoft.Network/dnsZones/io.italia.it"
 }
-
 import {
-  to = module.event_hubs_weu.module.event_hub.azurerm_eventhub.events["pdnd-io-cosmosdb-service-preferences"]
-  id = "/subscriptions/ec285037-c673-4f58-b594-d7c480da4e8b/resourceGroups/io-p-evt-rg/providers/Microsoft.EventHub/namespaces/io-p-evh-ns/eventhubs/pdnd-io-cosmosdb-service-preferences"
+  to = module.global.module.dns.azurerm_dns_zone.io_pagopa_it
+  id = "/subscriptions/ec285037-c673-4f58-b594-d7c480da4e8b/resourceGroups/io-p-rg-external/providers/Microsoft.Network/dnsZones/io.pagopa.it"
 }
-
 import {
-  to = module.event_hubs_weu.module.event_hub.azurerm_eventhub_authorization_rule.events["import-command.io-fn-elt"]
-  id = "/subscriptions/ec285037-c673-4f58-b594-d7c480da4e8b/resourceGroups/io-p-evt-rg/providers/Microsoft.EventHub/namespaces/io-p-evh-ns/eventhubs/import-command/authorizationRules/io-fn-elt"
+  to = module.global.module.dns.azurerm_dns_zone.io_selfcare_pagopa_it
+  id = "/subscriptions/ec285037-c673-4f58-b594-d7c480da4e8b/resourceGroups/io-p-rg-external/providers/Microsoft.Network/dnsZones/io.selfcare.pagopa.it"
 }
-
 import {
-  to = module.event_hubs_weu.module.event_hub.azurerm_eventhub_authorization_rule.events["import-command.ops"]
-  id = "/subscriptions/ec285037-c673-4f58-b594-d7c480da4e8b/resourceGroups/io-p-evt-rg/providers/Microsoft.EventHub/namespaces/io-p-evh-ns/eventhubs/import-command/authorizationRules/ops"
+  to = module.global.module.dns.azurerm_dns_zone.ioweb_it
+  id = "/subscriptions/ec285037-c673-4f58-b594-d7c480da4e8b/resourceGroups/io-p-rg-external/providers/Microsoft.Network/dnsZones/ioapp.it"
 }
-
 import {
-  to = module.event_hubs_weu.module.event_hub.azurerm_eventhub_authorization_rule.events["io-cosmosdb-message-status-for-view.io-cdc"]
-  id = "/subscriptions/ec285037-c673-4f58-b594-d7c480da4e8b/resourceGroups/io-p-evt-rg/providers/Microsoft.EventHub/namespaces/io-p-evh-ns/eventhubs/io-cosmosdb-message-status-for-view/authorizationRules/io-cdc"
+  to = module.global.module.dns.azurerm_private_dns_a_record.api_app_internal_io
+  id = "/subscriptions/ec285037-c673-4f58-b594-d7c480da4e8b/resourceGroups/io-p-rg-internal/providers/Microsoft.Network/privateDnsZones/internal.io.pagopa.it/A/api-app"
 }
-
 import {
-  to = module.event_hubs_weu.module.event_hub.azurerm_eventhub_authorization_rule.events["io-cosmosdb-message-status-for-view.io-messages"]
-  id = "/subscriptions/ec285037-c673-4f58-b594-d7c480da4e8b/resourceGroups/io-p-evt-rg/providers/Microsoft.EventHub/namespaces/io-p-evh-ns/eventhubs/io-cosmosdb-message-status-for-view/authorizationRules/io-messages"
+  to = module.global.module.dns.azurerm_private_dns_zone.azure_api_net
+  id = "/subscriptions/ec285037-c673-4f58-b594-d7c480da4e8b/resourceGroups/io-p-rg-common/providers/Microsoft.Network/privateDnsZones/azure-api.net"
 }
-
 import {
-  to = module.event_hubs_weu.module.event_hub.azurerm_eventhub_authorization_rule.events["io-cosmosdb-message-status.io-cdc"]
-  id = "/subscriptions/ec285037-c673-4f58-b594-d7c480da4e8b/resourceGroups/io-p-evt-rg/providers/Microsoft.EventHub/namespaces/io-p-evh-ns/eventhubs/io-cosmosdb-message-status/authorizationRules/io-cdc"
+  to = module.global.module.dns.azurerm_private_dns_zone.management_azure_api_net
+  id = "/subscriptions/ec285037-c673-4f58-b594-d7c480da4e8b/resourceGroups/io-p-rg-common/providers/Microsoft.Network/privateDnsZones/management.azure-api.net"
 }
-
 import {
-  to = module.event_hubs_weu.module.event_hub.azurerm_eventhub_authorization_rule.events["io-cosmosdb-message-status.io-messages"]
-  id = "/subscriptions/ec285037-c673-4f58-b594-d7c480da4e8b/resourceGroups/io-p-evt-rg/providers/Microsoft.EventHub/namespaces/io-p-evh-ns/eventhubs/io-cosmosdb-message-status/authorizationRules/io-messages"
+  to = module.global.module.dns.azurerm_private_dns_zone.scm_azure_api_net
+  id = "/subscriptions/ec285037-c673-4f58-b594-d7c480da4e8b/resourceGroups/io-p-rg-common/providers/Microsoft.Network/privateDnsZones/scm.azure-api.net"
 }
-
 import {
-  to = module.event_hubs_weu.module.event_hub.azurerm_eventhub_authorization_rule.events["io-cosmosdb-profiles.io-fn-elt"]
-  id = "/subscriptions/ec285037-c673-4f58-b594-d7c480da4e8b/resourceGroups/io-p-evt-rg/providers/Microsoft.EventHub/namespaces/io-p-evh-ns/eventhubs/io-cosmosdb-profiles/authorizationRules/io-fn-elt"
+  to = module.global.module.dns.azurerm_private_dns_zone_virtual_network_link.azure_api_net_vnet_common["weu"]
+  id = "/subscriptions/ec285037-c673-4f58-b594-d7c480da4e8b/resourceGroups/io-p-rg-common/providers/Microsoft.Network/privateDnsZones/azure-api.net/virtualNetworkLinks/io-p-vnet-common"
 }
-
 import {
-  to = module.event_hubs_weu.module.event_hub.azurerm_eventhub_authorization_rule.events["io-cosmosdb-profiles.pdnd"]
-  id = "/subscriptions/ec285037-c673-4f58-b594-d7c480da4e8b/resourceGroups/io-p-evt-rg/providers/Microsoft.EventHub/namespaces/io-p-evh-ns/eventhubs/io-cosmosdb-profiles/authorizationRules/pdnd"
+  to = module.global.module.dns.azurerm_private_dns_zone_virtual_network_link.azure_api_net_vnet_common["itn"]
+  id = "/subscriptions/ec285037-c673-4f58-b594-d7c480da4e8b/resourceGroups/io-p-rg-common/providers/Microsoft.Network/privateDnsZones/azure-api.net/virtualNetworkLinks/io-p-itn-common-vnet-01"
 }
-
 import {
-  to = module.event_hubs_weu.module.event_hub.azurerm_eventhub_authorization_rule.events["io-cosmosdb-services.io-fn-elt"]
-  id = "/subscriptions/ec285037-c673-4f58-b594-d7c480da4e8b/resourceGroups/io-p-evt-rg/providers/Microsoft.EventHub/namespaces/io-p-evh-ns/eventhubs/io-cosmosdb-services/authorizationRules/io-fn-elt"
+  to = module.global.module.dns.azurerm_private_dns_zone.internal_io_pagopa_it
+  id = "/subscriptions/ec285037-c673-4f58-b594-d7c480da4e8b/resourceGroups/io-p-rg-internal/providers/Microsoft.Network/privateDnsZones/internal.io.pagopa.it"
 }
-
 import {
-  to = module.event_hubs_weu.module.event_hub.azurerm_eventhub_authorization_rule.events["io-cosmosdb-services.pdnd"]
-  id = "/subscriptions/ec285037-c673-4f58-b594-d7c480da4e8b/resourceGroups/io-p-evt-rg/providers/Microsoft.EventHub/namespaces/io-p-evh-ns/eventhubs/io-cosmosdb-services/authorizationRules/pdnd"
+  to = module.global.module.dns.azurerm_private_dns_zone.privatelink_azurecr_io
+  id = "/subscriptions/ec285037-c673-4f58-b594-d7c480da4e8b/resourceGroups/io-p-rg-common/providers/Microsoft.Network/privateDnsZones/privatelink.azurecr.io"
 }
-
 import {
-  to = module.event_hubs_weu.module.event_hub.azurerm_eventhub_authorization_rule.events["pdnd-io-cosmosdb-message-status.io-fn-elt"]
-  id = "/subscriptions/ec285037-c673-4f58-b594-d7c480da4e8b/resourceGroups/io-p-evt-rg/providers/Microsoft.EventHub/namespaces/io-p-evh-ns/eventhubs/pdnd-io-cosmosdb-message-status/authorizationRules/io-fn-elt"
+  to = module.global.module.dns.azurerm_private_dns_zone.privatelink_azurewebsites
+  id = "/subscriptions/ec285037-c673-4f58-b594-d7c480da4e8b/resourceGroups/io-p-rg-common/providers/Microsoft.Network/privateDnsZones/privatelink.azurewebsites.net"
 }
-
 import {
-  to = module.event_hubs_weu.module.event_hub.azurerm_eventhub_authorization_rule.events["pdnd-io-cosmosdb-message-status.pdnd"]
-  id = "/subscriptions/ec285037-c673-4f58-b594-d7c480da4e8b/resourceGroups/io-p-evt-rg/providers/Microsoft.EventHub/namespaces/io-p-evh-ns/eventhubs/pdnd-io-cosmosdb-message-status/authorizationRules/pdnd"
+  to = module.global.module.dns.azurerm_private_dns_zone.privatelink_blob_core
+  id = "/subscriptions/ec285037-c673-4f58-b594-d7c480da4e8b/resourceGroups/io-p-rg-common/providers/Microsoft.Network/privateDnsZones/privatelink.blob.core.windows.net"
 }
-
 import {
-  to = module.event_hubs_weu.module.event_hub.azurerm_eventhub_authorization_rule.events["pdnd-io-cosmosdb-messages.io-fn-elt"]
-  id = "/subscriptions/ec285037-c673-4f58-b594-d7c480da4e8b/resourceGroups/io-p-evt-rg/providers/Microsoft.EventHub/namespaces/io-p-evh-ns/eventhubs/pdnd-io-cosmosdb-messages/authorizationRules/io-fn-elt"
+  to = module.global.module.dns.azurerm_private_dns_zone.privatelink_documents
+  id = "/subscriptions/ec285037-c673-4f58-b594-d7c480da4e8b/resourceGroups/io-p-rg-common/providers/Microsoft.Network/privateDnsZones/privatelink.documents.azure.com"
 }
-
 import {
-  to = module.event_hubs_weu.module.event_hub.azurerm_eventhub_authorization_rule.events["pdnd-io-cosmosdb-messages.pdnd"]
-  id = "/subscriptions/ec285037-c673-4f58-b594-d7c480da4e8b/resourceGroups/io-p-evt-rg/providers/Microsoft.EventHub/namespaces/io-p-evh-ns/eventhubs/pdnd-io-cosmosdb-messages/authorizationRules/pdnd"
+  to = module.global.module.dns.azurerm_private_dns_zone.privatelink_file_core
+  id = "/subscriptions/ec285037-c673-4f58-b594-d7c480da4e8b/resourceGroups/io-p-rg-common/providers/Microsoft.Network/privateDnsZones/privatelink.file.core.windows.net"
 }
-
 import {
-  to = module.event_hubs_weu.module.event_hub.azurerm_eventhub_authorization_rule.events["pdnd-io-cosmosdb-notification-status.io-fn-elt"]
-  id = "/subscriptions/ec285037-c673-4f58-b594-d7c480da4e8b/resourceGroups/io-p-evt-rg/providers/Microsoft.EventHub/namespaces/io-p-evh-ns/eventhubs/pdnd-io-cosmosdb-notification-status/authorizationRules/io-fn-elt"
+  to = module.global.module.dns.azurerm_private_dns_zone.privatelink_mongo_cosmos
+  id = "/subscriptions/ec285037-c673-4f58-b594-d7c480da4e8b/resourceGroups/io-p-rg-common/providers/Microsoft.Network/privateDnsZones/privatelink.mongo.cosmos.azure.com"
 }
-
 import {
-  to = module.event_hubs_weu.module.event_hub.azurerm_eventhub_authorization_rule.events["pdnd-io-cosmosdb-notification-status.pdnd"]
-  id = "/subscriptions/ec285037-c673-4f58-b594-d7c480da4e8b/resourceGroups/io-p-evt-rg/providers/Microsoft.EventHub/namespaces/io-p-evh-ns/eventhubs/pdnd-io-cosmosdb-notification-status/authorizationRules/pdnd"
+  to = module.global.module.dns.azurerm_private_dns_zone.privatelink_mysql_database_azure_com
+  id = "/subscriptions/ec285037-c673-4f58-b594-d7c480da4e8b/resourceGroups/io-p-rg-common/providers/Microsoft.Network/privateDnsZones/privatelink.mysql.database.azure.com"
 }
-
 import {
-  to = module.event_hubs_weu.module.event_hub.azurerm_eventhub_authorization_rule.events["pdnd-io-cosmosdb-service-preferences.io-fn-elt"]
-  id = "/subscriptions/ec285037-c673-4f58-b594-d7c480da4e8b/resourceGroups/io-p-evt-rg/providers/Microsoft.EventHub/namespaces/io-p-evh-ns/eventhubs/pdnd-io-cosmosdb-service-preferences/authorizationRules/io-fn-elt"
+  to = module.global.module.dns.azurerm_private_dns_zone.privatelink_postgres_database_azure_com
+  id = "/subscriptions/ec285037-c673-4f58-b594-d7c480da4e8b/resourceGroups/io-p-rg-common/providers/Microsoft.Network/privateDnsZones/privatelink.postgres.database.azure.com"
 }
-
 import {
-  to = module.event_hubs_weu.module.event_hub.azurerm_eventhub_authorization_rule.events["pdnd-io-cosmosdb-service-preferences.pdnd"]
-  id = "/subscriptions/ec285037-c673-4f58-b594-d7c480da4e8b/resourceGroups/io-p-evt-rg/providers/Microsoft.EventHub/namespaces/io-p-evh-ns/eventhubs/pdnd-io-cosmosdb-service-preferences/authorizationRules/pdnd"
+  to = module.global.module.dns.azurerm_private_dns_zone.privatelink_queue_core
+  id = "/subscriptions/ec285037-c673-4f58-b594-d7c480da4e8b/resourceGroups/io-p-rg-common/providers/Microsoft.Network/privateDnsZones/privatelink.queue.core.windows.net"
 }
-
 import {
-  to = module.event_hubs_weu.module.event_hub.azurerm_eventhub_consumer_group.events["io-cosmosdb-message-status-for-view.io-messages"]
-  id = "/subscriptions/ec285037-c673-4f58-b594-d7c480da4e8b/resourceGroups/io-p-evt-rg/providers/Microsoft.EventHub/namespaces/io-p-evh-ns/eventhubs/io-cosmosdb-message-status-for-view/consumerGroups/io-messages"
+  to = module.global.module.dns.azurerm_private_dns_zone.privatelink_redis_cache
+  id = "/subscriptions/ec285037-c673-4f58-b594-d7c480da4e8b/resourceGroups/io-p-rg-common/providers/Microsoft.Network/privateDnsZones/privatelink.redis.cache.windows.net"
 }
-
 import {
-  to = module.event_hubs_weu.module.event_hub.azurerm_eventhub_consumer_group.events["io-cosmosdb-message-status.io-messages"]
-  id = "/subscriptions/ec285037-c673-4f58-b594-d7c480da4e8b/resourceGroups/io-p-evt-rg/providers/Microsoft.EventHub/namespaces/io-p-evh-ns/eventhubs/io-cosmosdb-message-status/consumerGroups/io-messages"
+  to = module.global.module.dns.azurerm_private_dns_zone.privatelink_servicebus
+  id = "/subscriptions/ec285037-c673-4f58-b594-d7c480da4e8b/resourceGroups/io-p-evt-rg/providers/Microsoft.Network/privateDnsZones/privatelink.servicebus.windows.net"
 }
-
 import {
-  to = module.event_hubs_weu.module.event_hub.azurerm_eventhub_namespace.this
-  id = "/subscriptions/ec285037-c673-4f58-b594-d7c480da4e8b/resourceGroups/io-p-evt-rg/providers/Microsoft.EventHub/namespaces/io-p-evh-ns"
+  to = module.global.module.dns.azurerm_private_dns_zone.privatelink_srch
+  id = "/subscriptions/ec285037-c673-4f58-b594-d7c480da4e8b/resourceGroups/io-p-rg-common/providers/Microsoft.Network/privateDnsZones/privatelink.search.windows.net"
 }
-
 import {
-  to = module.event_hubs_weu.module.event_hub.azurerm_monitor_metric_alert.this["active_connections"]
-  id = "/subscriptions/ec285037-c673-4f58-b594-d7c480da4e8b/resourceGroups/io-p-evt-rg/providers/Microsoft.Insights/metricAlerts/io-p-evh-ns-ACTIVE_CONNECTIONS"
+  to = module.global.module.dns.azurerm_private_dns_zone.privatelink_table_core
+  id = "/subscriptions/ec285037-c673-4f58-b594-d7c480da4e8b/resourceGroups/io-p-rg-common/providers/Microsoft.Network/privateDnsZones/privatelink.table.core.windows.net"
 }
-
 import {
-  to = module.event_hubs_weu.module.event_hub.azurerm_monitor_metric_alert.this["error_trx"]
-  id = "/subscriptions/ec285037-c673-4f58-b594-d7c480da4e8b/resourceGroups/io-p-evt-rg/providers/Microsoft.Insights/metricAlerts/io-p-evh-ns-ERROR_TRX"
+  to = module.global.module.dns.azurerm_private_dns_zone_virtual_network_link.azurewebsites_private_vnet["beta"]
+  id = "/subscriptions/ec285037-c673-4f58-b594-d7c480da4e8b/resourceGroups/io-p-rg-common/providers/Microsoft.Network/privateDnsZones/privatelink.azurewebsites.net/virtualNetworkLinks/io-p-weu-beta-vnet"
 }
-
 import {
-  to = module.event_hubs_weu.module.event_hub.azurerm_monitor_metric_alert.this["no_trx"]
-  id = "/subscriptions/ec285037-c673-4f58-b594-d7c480da4e8b/resourceGroups/io-p-evt-rg/providers/Microsoft.Insights/metricAlerts/io-p-evh-ns-NO_TRX"
+  to = module.global.module.dns.azurerm_private_dns_zone_virtual_network_link.azurewebsites_private_vnet["prod01"]
+  id = "/subscriptions/ec285037-c673-4f58-b594-d7c480da4e8b/resourceGroups/io-p-rg-common/providers/Microsoft.Network/privateDnsZones/privatelink.azurewebsites.net/virtualNetworkLinks/io-p-weu-prod01-vnet"
 }
-
 import {
-  to = module.event_hubs_weu.module.eventhub_snet.azurerm_subnet.this
-  id = "/subscriptions/ec285037-c673-4f58-b594-d7c480da4e8b/resourceGroups/io-p-rg-common/providers/Microsoft.Network/virtualNetworks/io-p-vnet-common/subnets/io-p-eventhub-snet"
+  to = module.global.module.dns.azurerm_private_dns_zone_virtual_network_link.azurewebsites_private_vnet["weu"]
+  id = "/subscriptions/ec285037-c673-4f58-b594-d7c480da4e8b/resourceGroups/io-p-rg-common/providers/Microsoft.Network/privateDnsZones/privatelink.azurewebsites.net/virtualNetworkLinks/io-p-vnet-common"
 }
+import {
+  to = module.global.module.dns.azurerm_private_dns_zone_virtual_network_link.azurewebsites_private_vnet["itn"]
+  id = "/subscriptions/ec285037-c673-4f58-b594-d7c480da4e8b/resourceGroups/io-p-rg-common/providers/Microsoft.Network/privateDnsZones/privatelink.azurewebsites.net/virtualNetworkLinks/io-p-itn-common-vnet-01"
+}
+import {
+  to = module.networking_weu.azurerm_nat_gateway.this
+  id = "/subscriptions/ec285037-c673-4f58-b594-d7c480da4e8b/resourceGroups/io-p-rg-common/providers/Microsoft.Network/natGateways/io-p-natgw"
+}
+import {
+  to = module.networking_weu.azurerm_nat_gateway_public_ip_association.this_pip_01[0]
+  id = "/subscriptions/ec285037-c673-4f58-b594-d7c480da4e8b/resourceGroups/io-p-rg-common/providers/Microsoft.Network/natGateways/io-p-natgw|/subscriptions/ec285037-c673-4f58-b594-d7c480da4e8b/resourceGroups/io-p-rg-common/providers/Microsoft.Network/publicIPAddresses/io-p-natgw-pip-01"
+}
+import {
+  to = module.networking_weu.azurerm_nat_gateway_public_ip_association.this_pip_01[1]
+  id = "/subscriptions/ec285037-c673-4f58-b594-d7c480da4e8b/resourceGroups/io-p-rg-common/providers/Microsoft.Network/natGateways/io-p-natgw|/subscriptions/ec285037-c673-4f58-b594-d7c480da4e8b/resourceGroups/io-p-rg-common/providers/Microsoft.Network/publicIPAddresses/io-p-natgw-pip-02"
+}
+import {
+  to = module.networking_weu.azurerm_public_ip.this_01[0]
+  id = "/subscriptions/ec285037-c673-4f58-b594-d7c480da4e8b/resourceGroups/io-p-rg-common/providers/Microsoft.Network/publicIPAddresses/io-p-natgw-pip-01"
+}
+import {
+  to = module.networking_weu.azurerm_public_ip.this_01[1]
+  id = "/subscriptions/ec285037-c673-4f58-b594-d7c480da4e8b/resourceGroups/io-p-rg-common/providers/Microsoft.Network/publicIPAddresses/io-p-natgw-pip-02"
+}
+import {
+  to = module.vnet_peering_weu.azurerm_virtual_network_peering.source["beta"]
+  id = "/subscriptions/ec285037-c673-4f58-b594-d7c480da4e8b/resourceGroups/io-p-rg-common/providers/Microsoft.Network/virtualNetworks/io-p-vnet-common/virtualNetworkPeerings/io-p-vnet-common-to-io-p-weu-beta-vnet"
+}
+import {
+  to = module.vnet_peering_weu.azurerm_virtual_network_peering.target["beta"]
+  id = "/subscriptions/ec285037-c673-4f58-b594-d7c480da4e8b/resourceGroups/io-p-weu-beta-vnet-rg/providers/Microsoft.Network/virtualNetworks/io-p-weu-beta-vnet/virtualNetworkPeerings/io-p-weu-beta-vnet-to-io-p-vnet-common"
+}
+import {
+  to = module.vnet_peering_weu.azurerm_virtual_network_peering.source["prod01"]
+  id = "/subscriptions/ec285037-c673-4f58-b594-d7c480da4e8b/resourceGroups/io-p-rg-common/providers/Microsoft.Network/virtualNetworks/io-p-vnet-common/virtualNetworkPeerings/io-p-vnet-common-to-io-p-weu-prod01-vnet"
+}
+import {
+  to = module.vnet_peering_weu.azurerm_virtual_network_peering.target["prod01"]
+  id = "/subscriptions/ec285037-c673-4f58-b594-d7c480da4e8b/resourceGroups/io-p-weu-prod01-vnet-rg/providers/Microsoft.Network/virtualNetworks/io-p-weu-prod01-vnet/virtualNetworkPeerings/io-p-weu-prod01-vnet-to-io-p-vnet-common"
+}
+import {
+  to = module.global.module.dns.azurerm_private_dns_zone_virtual_network_link.blob_core_private_vnet["beta"]
+  id = "/subscriptions/ec285037-c673-4f58-b594-d7c480da4e8b/resourceGroups/io-p-rg-common/providers/Microsoft.Network/privateDnsZones/privatelink.blob.core.windows.net/virtualNetworkLinks/io-p-weu-beta-vnet"
+}
+import {
+  to = module.global.module.dns.azurerm_private_dns_zone_virtual_network_link.blob_core_private_vnet["itn"]
+  id = "/subscriptions/ec285037-c673-4f58-b594-d7c480da4e8b/resourceGroups/io-p-rg-common/providers/Microsoft.Network/privateDnsZones/privatelink.blob.core.windows.net/virtualNetworkLinks/io-p-itn-common-vnet-01"
+}
+import {
+  to = module.global.module.dns.azurerm_private_dns_zone_virtual_network_link.blob_core_private_vnet["prod01"]
+  id = "/subscriptions/ec285037-c673-4f58-b594-d7c480da4e8b/resourceGroups/io-p-rg-common/providers/Microsoft.Network/privateDnsZones/privatelink.blob.core.windows.net/virtualNetworkLinks/io-p-weu-prod01-vnet"
+}
+import {
+  to = module.global.module.dns.azurerm_private_dns_zone_virtual_network_link.blob_core_private_vnet["weu"]
+  id = "/subscriptions/ec285037-c673-4f58-b594-d7c480da4e8b/resourceGroups/io-p-rg-common/providers/Microsoft.Network/privateDnsZones/privatelink.blob.core.windows.net/virtualNetworkLinks/io-p-vnet-common"
+}
+import {
+  to = module.global.module.dns.azurerm_private_dns_zone_virtual_network_link.documents_private_vnet["beta"]
+  id = "/subscriptions/ec285037-c673-4f58-b594-d7c480da4e8b/resourceGroups/io-p-rg-common/providers/Microsoft.Network/privateDnsZones/privatelink.documents.azure.com/virtualNetworkLinks/io-p-weu-beta-vnet"
+}
+import {
+  to = module.global.module.dns.azurerm_private_dns_zone_virtual_network_link.documents_private_vnet["itn"]
+  id = "/subscriptions/ec285037-c673-4f58-b594-d7c480da4e8b/resourceGroups/io-p-rg-common/providers/Microsoft.Network/privateDnsZones/privatelink.documents.azure.com/virtualNetworkLinks/io-p-itn-common-vnet-01"
+}
+import {
+  to = module.global.module.dns.azurerm_private_dns_zone_virtual_network_link.documents_private_vnet["prod01"]
+  id = "/subscriptions/ec285037-c673-4f58-b594-d7c480da4e8b/resourceGroups/io-p-rg-common/providers/Microsoft.Network/privateDnsZones/privatelink.documents.azure.com/virtualNetworkLinks/io-p-weu-prod01-vnet"
+}
+import {
+  to = module.global.module.dns.azurerm_private_dns_zone_virtual_network_link.documents_private_vnet["weu"]
+  id = "/subscriptions/ec285037-c673-4f58-b594-d7c480da4e8b/resourceGroups/io-p-rg-common/providers/Microsoft.Network/privateDnsZones/privatelink.documents.azure.com/virtualNetworkLinks/io-p-vnet-common"
+}
+import {
+  to = module.global.module.dns.azurerm_private_dns_zone_virtual_network_link.file_core_private_vnet["beta"]
+  id = "/subscriptions/ec285037-c673-4f58-b594-d7c480da4e8b/resourceGroups/io-p-rg-common/providers/Microsoft.Network/privateDnsZones/privatelink.file.core.windows.net/virtualNetworkLinks/io-p-weu-beta-vnet"
+}
+import {
+  to = module.global.module.dns.azurerm_private_dns_zone_virtual_network_link.file_core_private_vnet["prod01"]
+  id = "/subscriptions/ec285037-c673-4f58-b594-d7c480da4e8b/resourceGroups/io-p-rg-common/providers/Microsoft.Network/privateDnsZones/privatelink.file.core.windows.net/virtualNetworkLinks/io-p-weu-prod01-vnet"
+}
+import {
+  to = module.global.module.dns.azurerm_private_dns_zone_virtual_network_link.file_core_private_vnet["weu"]
+  id = "/subscriptions/ec285037-c673-4f58-b594-d7c480da4e8b/resourceGroups/io-p-rg-common/providers/Microsoft.Network/privateDnsZones/privatelink.file.core.windows.net/virtualNetworkLinks/io-p-vnet-common"
+}
+import {
+  to = module.global.module.dns.azurerm_private_dns_zone_virtual_network_link.file_core_private_vnet["itn"]
+  id = "/subscriptions/ec285037-c673-4f58-b594-d7c480da4e8b/resourceGroups/io-p-rg-common/providers/Microsoft.Network/privateDnsZones/privatelink.file.core.windows.net/virtualNetworkLinks/io-p-itn-common-vnet-01"
+}
+import {
+  to = module.global.module.dns.azurerm_private_dns_zone_virtual_network_link.internal_io_pagopa_it_private_vnet["beta"]
+  id = "/subscriptions/ec285037-c673-4f58-b594-d7c480da4e8b/resourceGroups/io-p-rg-internal/providers/Microsoft.Network/privateDnsZones/internal.io.pagopa.it/virtualNetworkLinks/io-p-weu-beta-vnet"
+}
+import {
+  to = module.global.module.dns.azurerm_private_dns_zone_virtual_network_link.internal_io_pagopa_it_private_vnet["itn"]
+  id = "/subscriptions/ec285037-c673-4f58-b594-d7c480da4e8b/resourceGroups/io-p-rg-internal/providers/Microsoft.Network/privateDnsZones/internal.io.pagopa.it/virtualNetworkLinks/io-p-itn-common-vnet-01"
+}
+import {
+  to = module.global.module.dns.azurerm_private_dns_zone_virtual_network_link.internal_io_pagopa_it_private_vnet["prod01"]
+  id = "/subscriptions/ec285037-c673-4f58-b594-d7c480da4e8b/resourceGroups/io-p-rg-internal/providers/Microsoft.Network/privateDnsZones/internal.io.pagopa.it/virtualNetworkLinks/io-p-weu-prod01-vnet"
+}
+import {
+  to = module.global.module.dns.azurerm_private_dns_zone_virtual_network_link.internal_io_pagopa_it_private_vnet["weu"]
+  id = "/subscriptions/ec285037-c673-4f58-b594-d7c480da4e8b/resourceGroups/io-p-rg-internal/providers/Microsoft.Network/privateDnsZones/internal.io.pagopa.it/virtualNetworkLinks/io-p-private-vnet-common"
+}
+import {
+  to = module.global.module.dns.azurerm_private_dns_zone_virtual_network_link.management_azure_api_net_vnet_common["weu"]
+  id = "/subscriptions/ec285037-c673-4f58-b594-d7c480da4e8b/resourceGroups/io-p-rg-common/providers/Microsoft.Network/privateDnsZones/management.azure-api.net/virtualNetworkLinks/io-p-vnet-common"
+}
+import {
+  to = module.global.module.dns.azurerm_private_dns_zone_virtual_network_link.management_azure_api_net_vnet_common["itn"]
+  id = "/subscriptions/ec285037-c673-4f58-b594-d7c480da4e8b/resourceGroups/io-p-rg-common/providers/Microsoft.Network/privateDnsZones/management.azure-api.net/virtualNetworkLinks/io-p-itn-common-vnet-01"
+}
+import {
+  to = module.global.module.dns.azurerm_private_dns_zone_virtual_network_link.mongo_cosmos_private_vnet["beta"]
+  id = "/subscriptions/ec285037-c673-4f58-b594-d7c480da4e8b/resourceGroups/io-p-rg-common/providers/Microsoft.Network/privateDnsZones/privatelink.mongo.cosmos.azure.com/virtualNetworkLinks/io-p-weu-beta-vnet"
+}
+import {
+  to = module.global.module.dns.azurerm_private_dns_zone_virtual_network_link.mongo_cosmos_private_vnet["prod01"]
+  id = "/subscriptions/ec285037-c673-4f58-b594-d7c480da4e8b/resourceGroups/io-p-rg-common/providers/Microsoft.Network/privateDnsZones/privatelink.mongo.cosmos.azure.com/virtualNetworkLinks/io-p-weu-prod01-vnet"
+}
+import {
+  to = module.global.module.dns.azurerm_private_dns_zone_virtual_network_link.mongo_cosmos_private_vnet["weu"]
+  id = "/subscriptions/ec285037-c673-4f58-b594-d7c480da4e8b/resourceGroups/io-p-rg-common/providers/Microsoft.Network/privateDnsZones/privatelink.mongo.cosmos.azure.com/virtualNetworkLinks/io-p-vnet-common"
+}
+import {
+  to = module.global.module.dns.azurerm_private_dns_zone_virtual_network_link.mongo_cosmos_private_vnet["itn"]
+  id = "/subscriptions/ec285037-c673-4f58-b594-d7c480da4e8b/resourceGroups/io-p-rg-common/providers/Microsoft.Network/privateDnsZones/privatelink.mongo.cosmos.azure.com/virtualNetworkLinks/io-p-itn-common-vnet-01"
+}
+import {
+  to = module.global.module.dns.azurerm_private_dns_zone_virtual_network_link.privatelink_azurecr_io_vnet["beta"]
+  id = "/subscriptions/ec285037-c673-4f58-b594-d7c480da4e8b/resourceGroups/io-p-rg-common/providers/Microsoft.Network/privateDnsZones/privatelink.azurecr.io/virtualNetworkLinks/io-p-weu-beta-vnet"
+}
+import {
+  to = module.global.module.dns.azurerm_private_dns_zone_virtual_network_link.privatelink_azurecr_io_vnet["prod01"]
+  id = "/subscriptions/ec285037-c673-4f58-b594-d7c480da4e8b/resourceGroups/io-p-rg-common/providers/Microsoft.Network/privateDnsZones/privatelink.azurecr.io/virtualNetworkLinks/io-p-weu-prod01-vnet"
+}
+import {
+  to = module.global.module.dns.azurerm_private_dns_zone_virtual_network_link.privatelink_azurecr_io_vnet["weu"]
+  id = "/subscriptions/ec285037-c673-4f58-b594-d7c480da4e8b/resourceGroups/io-p-rg-common/providers/Microsoft.Network/privateDnsZones/privatelink.azurecr.io/virtualNetworkLinks/io-p-vnet-common"
+}
+import {
+  to = module.global.module.dns.azurerm_private_dns_zone_virtual_network_link.privatelink_azurecr_io_vnet["itn"]
+  id = "/subscriptions/ec285037-c673-4f58-b594-d7c480da4e8b/resourceGroups/io-p-rg-common/providers/Microsoft.Network/privateDnsZones/privatelink.azurecr.io/virtualNetworkLinks/io-p-itn-common-vnet-01"
+}
+import {
+  to = module.global.module.dns.azurerm_private_dns_zone_virtual_network_link.privatelink_mysql_database_azure_com_vnet["beta"]
+  id = "/subscriptions/ec285037-c673-4f58-b594-d7c480da4e8b/resourceGroups/io-p-rg-common/providers/Microsoft.Network/privateDnsZones/privatelink.mysql.database.azure.com/virtualNetworkLinks/io-p-weu-beta-vnet"
+}
+import {
+  to = module.global.module.dns.azurerm_private_dns_zone_virtual_network_link.privatelink_mysql_database_azure_com_vnet["prod01"]
+  id = "/subscriptions/ec285037-c673-4f58-b594-d7c480da4e8b/resourceGroups/io-p-rg-common/providers/Microsoft.Network/privateDnsZones/privatelink.mysql.database.azure.com/virtualNetworkLinks/io-p-weu-prod01-vnet"
+}
+import {
+  to = module.global.module.dns.azurerm_private_dns_zone_virtual_network_link.privatelink_mysql_database_azure_com_vnet["weu"]
+  id = "/subscriptions/ec285037-c673-4f58-b594-d7c480da4e8b/resourceGroups/io-p-rg-common/providers/Microsoft.Network/privateDnsZones/privatelink.mysql.database.azure.com/virtualNetworkLinks/io-p-vnet-common"
+}
+import {
+  to = module.global.module.dns.azurerm_private_dns_zone_virtual_network_link.privatelink_mysql_database_azure_com_vnet["itn"]
+  id = "/subscriptions/ec285037-c673-4f58-b594-d7c480da4e8b/resourceGroups/io-p-rg-common/providers/Microsoft.Network/privateDnsZones/privatelink.mysql.database.azure.com/virtualNetworkLinks/io-p-itn-common-vnet-01"
+}
+import {
+  to = module.global.module.dns.azurerm_private_dns_zone_virtual_network_link.privatelink_postgres_database_azure_com_vnet["beta"]
+  id = "/subscriptions/ec285037-c673-4f58-b594-d7c480da4e8b/resourceGroups/io-p-rg-common/providers/Microsoft.Network/privateDnsZones/privatelink.postgres.database.azure.com/virtualNetworkLinks/io-p-weu-beta-vnet"
+}
+import {
+  to = module.global.module.dns.azurerm_private_dns_zone_virtual_network_link.privatelink_postgres_database_azure_com_vnet["prod01"]
+  id = "/subscriptions/ec285037-c673-4f58-b594-d7c480da4e8b/resourceGroups/io-p-rg-common/providers/Microsoft.Network/privateDnsZones/privatelink.postgres.database.azure.com/virtualNetworkLinks/io-p-weu-prod01-vnet"
+}
+import {
+  to = module.global.module.dns.azurerm_private_dns_zone_virtual_network_link.privatelink_postgres_database_azure_com_vnet["weu"]
+  id = "/subscriptions/ec285037-c673-4f58-b594-d7c480da4e8b/resourceGroups/io-p-rg-common/providers/Microsoft.Network/privateDnsZones/privatelink.postgres.database.azure.com/virtualNetworkLinks/io-p-vnet-common"
+}
+import {
+  to = module.global.module.dns.azurerm_private_dns_zone_virtual_network_link.privatelink_postgres_database_azure_com_vnet["itn"]
+  id = "/subscriptions/ec285037-c673-4f58-b594-d7c480da4e8b/resourceGroups/io-p-rg-common/providers/Microsoft.Network/privateDnsZones/privatelink.postgres.database.azure.com/virtualNetworkLinks/io-p-itn-common-vnet-01"
+}
+import {
+  to = module.global.module.dns.azurerm_private_dns_zone_virtual_network_link.queue_core_private_vnet["beta"]
+  id = "/subscriptions/ec285037-c673-4f58-b594-d7c480da4e8b/resourceGroups/io-p-rg-common/providers/Microsoft.Network/privateDnsZones/privatelink.queue.core.windows.net/virtualNetworkLinks/io-p-weu-beta-vnet"
+}
+import {
+  to = module.global.module.dns.azurerm_private_dns_zone_virtual_network_link.queue_core_private_vnet["prod01"]
+  id = "/subscriptions/ec285037-c673-4f58-b594-d7c480da4e8b/resourceGroups/io-p-rg-common/providers/Microsoft.Network/privateDnsZones/privatelink.queue.core.windows.net/virtualNetworkLinks/io-p-weu-prod01-vnet"
+}
+import {
+  to = module.global.module.dns.azurerm_private_dns_zone_virtual_network_link.queue_core_private_vnet["weu"]
+  id = "/subscriptions/ec285037-c673-4f58-b594-d7c480da4e8b/resourceGroups/io-p-rg-common/providers/Microsoft.Network/privateDnsZones/privatelink.queue.core.windows.net/virtualNetworkLinks/io-p-vnet-common"
+}
+import {
+  to = module.global.module.dns.azurerm_private_dns_zone_virtual_network_link.queue_core_private_vnet["itn"]
+  id = "/subscriptions/ec285037-c673-4f58-b594-d7c480da4e8b/resourceGroups/io-p-rg-common/providers/Microsoft.Network/privateDnsZones/privatelink.queue.core.windows.net/virtualNetworkLinks/io-p-itn-common-vnet-01"
+}
+import {
+  to = module.global.module.dns.azurerm_private_dns_zone_virtual_network_link.redis_private_vnet["beta"]
+  id = "/subscriptions/ec285037-c673-4f58-b594-d7c480da4e8b/resourceGroups/io-p-rg-common/providers/Microsoft.Network/privateDnsZones/privatelink.redis.cache.windows.net/virtualNetworkLinks/io-p-weu-beta-vnet"
+}
+import {
+  to = module.global.module.dns.azurerm_private_dns_zone_virtual_network_link.redis_private_vnet["prod01"]
+  id = "/subscriptions/ec285037-c673-4f58-b594-d7c480da4e8b/resourceGroups/io-p-rg-common/providers/Microsoft.Network/privateDnsZones/privatelink.redis.cache.windows.net/virtualNetworkLinks/io-p-weu-prod01-vnet"
+}
+import {
+  to = module.global.module.dns.azurerm_private_dns_zone_virtual_network_link.redis_private_vnet["weu"]
+  id = "/subscriptions/ec285037-c673-4f58-b594-d7c480da4e8b/resourceGroups/io-p-rg-common/providers/Microsoft.Network/privateDnsZones/privatelink.redis.cache.windows.net/virtualNetworkLinks/io-p-redis-common-common"
+}
+import {
+  to = module.global.module.dns.azurerm_private_dns_zone_virtual_network_link.redis_private_vnet["itn"]
+  id = "/subscriptions/ec285037-c673-4f58-b594-d7c480da4e8b/resourceGroups/io-p-rg-common/providers/Microsoft.Network/privateDnsZones/privatelink.redis.cache.windows.net/virtualNetworkLinks/io-p-itn-common-vnet-01"
+}
+import {
+  to = module.global.module.dns.azurerm_private_dns_zone_virtual_network_link.servicebus_private_vnet["prod01"]
+  id = "/subscriptions/ec285037-c673-4f58-b594-d7c480da4e8b/resourceGroups/io-p-evt-rg/providers/Microsoft.Network/privateDnsZones/privatelink.servicebus.windows.net/virtualNetworkLinks/io-p-weu-prod01-vnet"
+}
+import {
+  to = module.global.module.dns.azurerm_private_dns_zone_virtual_network_link.servicebus_private_vnet["beta"]
+  id = "/subscriptions/ec285037-c673-4f58-b594-d7c480da4e8b/resourceGroups/io-p-evt-rg/providers/Microsoft.Network/privateDnsZones/privatelink.servicebus.windows.net/virtualNetworkLinks/io-p-weu-beta-vnet"
+}
+import {
+  to = module.global.module.dns.azurerm_private_dns_zone_virtual_network_link.servicebus_private_vnet["weu"]
+  id = "/subscriptions/ec285037-c673-4f58-b594-d7c480da4e8b/resourceGroups/io-p-evt-rg/providers/Microsoft.Network/privateDnsZones/privatelink.servicebus.windows.net/virtualNetworkLinks/io-p-evh-ns-private-dns-zone-link-01"
+}
+import {
+  to = module.global.module.dns.azurerm_private_dns_zone_virtual_network_link.servicebus_private_vnet["itn"]
+  id = "/subscriptions/ec285037-c673-4f58-b594-d7c480da4e8b/resourceGroups/io-p-evt-rg/providers/Microsoft.Network/privateDnsZones/privatelink.servicebus.windows.net/virtualNetworkLinks/io-p-itn-common-vnet-01"
+}
+import {
+  to = module.global.module.dns.azurerm_private_dns_zone_virtual_network_link.srch_private_vnet_common["weu"]
+  id = "/subscriptions/ec285037-c673-4f58-b594-d7c480da4e8b/resourceGroups/io-p-rg-common/providers/Microsoft.Network/privateDnsZones/privatelink.search.windows.net/virtualNetworkLinks/io-p-vnet-common"
+}
+import {
+  to = module.global.module.dns.azurerm_private_dns_zone_virtual_network_link.srch_private_vnet_common["itn"]
+  id = "/subscriptions/ec285037-c673-4f58-b594-d7c480da4e8b/resourceGroups/io-p-rg-common/providers/Microsoft.Network/privateDnsZones/privatelink.search.windows.net/virtualNetworkLinks/io-p-itn-common-vnet-01"
+}
+import {
+  to = module.global.module.dns.azurerm_private_dns_zone_virtual_network_link.scm_azure_api_net_vnet_common["weu"]
+  id = "/subscriptions/ec285037-c673-4f58-b594-d7c480da4e8b/resourceGroups/io-p-rg-common/providers/Microsoft.Network/privateDnsZones/scm.azure-api.net/virtualNetworkLinks/io-p-vnet-common"
+}
+import {
+  to = module.global.module.dns.azurerm_private_dns_zone_virtual_network_link.scm_azure_api_net_vnet_common["itn"]
+  id = "/subscriptions/ec285037-c673-4f58-b594-d7c480da4e8b/resourceGroups/io-p-rg-common/providers/Microsoft.Network/privateDnsZones/scm.azure-api.net/virtualNetworkLinks/io-p-itn-common-vnet-01"
+}
+import {
+  to = module.global.module.dns.azurerm_private_dns_zone_virtual_network_link.table_core_private_vnet["beta"]
+  id = "/subscriptions/ec285037-c673-4f58-b594-d7c480da4e8b/resourceGroups/io-p-rg-common/providers/Microsoft.Network/privateDnsZones/privatelink.table.core.windows.net/virtualNetworkLinks/io-p-weu-beta-vnet"
+}
+import {
+  to = module.global.module.dns.azurerm_private_dns_zone_virtual_network_link.table_core_private_vnet["prod01"]
+  id = "/subscriptions/ec285037-c673-4f58-b594-d7c480da4e8b/resourceGroups/io-p-rg-common/providers/Microsoft.Network/privateDnsZones/privatelink.table.core.windows.net/virtualNetworkLinks/io-p-weu-prod01-vnet"
+}
+import {
+  to = module.global.module.dns.azurerm_private_dns_zone_virtual_network_link.table_core_private_vnet["weu"]
+  id = "/subscriptions/ec285037-c673-4f58-b594-d7c480da4e8b/resourceGroups/io-p-rg-common/providers/Microsoft.Network/privateDnsZones/privatelink.table.core.windows.net/virtualNetworkLinks/io-p-vnet-common"
+}
+import {
+  to = module.global.module.dns.azurerm_private_dns_zone_virtual_network_link.table_core_private_vnet["itn"]
+  id = "/subscriptions/ec285037-c673-4f58-b594-d7c480da4e8b/resourceGroups/io-p-rg-common/providers/Microsoft.Network/privateDnsZones/privatelink.table.core.windows.net/virtualNetworkLinks/io-p-itn-common-vnet-01"
+}
+# moved {
+#   from = module.networking
+#   to   = module.networking_itn
+# }
+
+# moved {
+#   from = module.networking_itn.module.vnet_itn_common.azurerm_virtual_network.this
+#   to   = module.networking_itn.module.vnet_common.azurerm_virtual_network.this
+# }
+
+# moved {
+#   from = module.networking_itn.module.vnet_peering_itn_common_weu_beta.azurerm_virtual_network_peering.source
+#   to   = module.vnet_peering_itn.azurerm_virtual_network_peering.source["beta"]
+# }
+
+# moved {
+#   from = module.networking_itn.module.vnet_peering_itn_common_weu_beta.azurerm_virtual_network_peering.target
+#   to   = module.vnet_peering_itn.azurerm_virtual_network_peering.target["beta"]
+# }
+
+# moved {
+#   from = module.networking_itn.module.vnet_peering_itn_common_weu_prod01.azurerm_virtual_network_peering.source
+#   to   = module.vnet_peering_itn.azurerm_virtual_network_peering.source["prod01"]
+# }
+
+# moved {
+#   from = module.networking_itn.module.vnet_peering_itn_common_weu_prod01.azurerm_virtual_network_peering.target
+#   to   = module.vnet_peering_itn.azurerm_virtual_network_peering.target["prod01"]
+# }
+
+# moved {
+#   from = module.networking_itn.module.vnet_peering_weu_common_itn_common.azurerm_virtual_network_peering.target
+#   to   = module.vnet_peering_itn.azurerm_virtual_network_peering.source["weu"]
+# }
+
+# moved {
+#   from = module.networking_itn.module.vnet_peering_weu_common_itn_common.azurerm_virtual_network_peering.source
+#   to   = module.vnet_peering_weu.azurerm_virtual_network_peering.source["itn"]
+# }
+
+# moved {
+#   from = module.networking_itn.azurerm_private_dns_zone_virtual_network_link.azure_api_net_vnet_itn_common
+#   to   = module.global.module.dns.azurerm_private_dns_zone_virtual_network_link.azure_api_net_vnet_common["itn"]
+# }
+
+# moved {
+#   from = module.networking_itn.azurerm_private_dns_zone_virtual_network_link.blob_core_private_vnet_itn_common
+#   to   = module.global.module.dns.azurerm_private_dns_zone_virtual_network_link.blob_core_private_vnet["itn"]
+# }
+
+# moved {
+#   from = module.networking_itn.azurerm_private_dns_zone_virtual_network_link.documents_private_vnet_itn_common
+#   to   = module.global.module.dns.azurerm_private_dns_zone_virtual_network_link.documents_private_vnet["itn"]
+# }
+
+# moved {
+#   from = module.networking_itn.azurerm_private_dns_zone_virtual_network_link.file_core_private_vnet_itn_common
+#   to   = module.global.module.dns.azurerm_private_dns_zone_virtual_network_link.file_core_private_vnet["itn"]
+# }
+
+# moved {
+#   from = module.networking_itn.azurerm_private_dns_zone_virtual_network_link.internal_io_pagopa_it_private_vnet_itn_common
+#   to   = module.global.module.dns.azurerm_private_dns_zone_virtual_network_link.internal_io_pagopa_it_private_vnet["itn"]
+# }
+
+# moved {
+#   from = module.networking_itn.azurerm_private_dns_zone_virtual_network_link.management_azure_api_net_vnet_itn_common
+#   to   = module.global.module.dns.azurerm_private_dns_zone_virtual_network_link.management_azure_api_net_vnet_common["itn"]
+# }
+
+# moved {
+#   from = module.networking_itn.azurerm_private_dns_zone_virtual_network_link.mongo_cosmos_private_vnet_itn_common
+#   to   = module.global.module.dns.azurerm_private_dns_zone_virtual_network_link.mongo_cosmos_private_vnet["itn"]
+# }
+
+# moved {
+#   from = module.networking_itn.azurerm_private_dns_zone_virtual_network_link.privatelink_postgres_database_azure_com_vnet_itn_common
+#   to   = module.global.module.dns.azurerm_private_dns_zone_virtual_network_link.privatelink_postgres_database_azure_com_vnet["itn"]
+# }
+
+# moved {
+#   from = module.networking_itn.azurerm_private_dns_zone_virtual_network_link.queue_core_private_vnet_itn_common
+#   to   = module.global.module.dns.azurerm_private_dns_zone_virtual_network_link.queue_core_private_vnet["itn"]
+# }
+
+# moved {
+#   from = module.networking_itn.azurerm_private_dns_zone_virtual_network_link.redis_private_vnet_itn_common
+#   to   = module.global.module.dns.azurerm_private_dns_zone_virtual_network_link.redis_private_vnet["itn"]
+# }
+
+# moved {
+#   from = module.networking_itn.azurerm_private_dns_zone_virtual_network_link.scm_azure_api_net_vnet_itn_common
+#   to   = module.global.module.dns.azurerm_private_dns_zone_virtual_network_link.scm_azure_api_net_vnet_common["itn"]
+# }
+
+# moved {
+#   from = module.networking_itn.azurerm_private_dns_zone_virtual_network_link.servicebus_private_vnet_itn_common
+#   to   = module.global.module.dns.azurerm_private_dns_zone_virtual_network_link.servicebus_private_vnet["itn"]
+# }
+
+# moved {
+#   from = module.networking_itn.azurerm_private_dns_zone_virtual_network_link.srch_private_vnet_itn_common
+#   to   = module.global.module.dns.azurerm_private_dns_zone_virtual_network_link.srch_private_vnet_common["itn"]
+# }
+
+# moved {
+#   from = module.networking_itn.azurerm_private_dns_zone_virtual_network_link.table_core_private_vnet_itn_common
+#   to   = module.global.module.dns.azurerm_private_dns_zone_virtual_network_link.table_core_private_vnet["itn"]
+# }
+
+# moved {
+#   from = module.networking_itn.azurerm_private_dns_zone_virtual_network_link.azurewebsites_private_vnet_itn_common
+#   to   = module.global.module.dns.azurerm_private_dns_zone_virtual_network_link.azurewebsites_private_vnet["itn"]
+# }
