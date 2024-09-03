@@ -97,18 +97,18 @@ redis_common = {
 apim_publisher_name = "IO"
 apim_v2_sku         = "Premium_2"
 apim_autoscale = {
-  enabled                       = false
-  default_instances             = 1
-  minimum_instances             = 1
-  maximum_instances             = 5
+  enabled                       = true
+  default_instances             = 5
+  minimum_instances             = 4
+  maximum_instances             = 6
   scale_out_capacity_percentage = 50
-  scale_out_time_window         = "PT10M"
-  scale_out_value               = "2"
-  scale_out_cooldown            = "PT45M"
-  scale_in_capacity_percentage  = 30
-  scale_in_time_window          = "PT30M"
+  scale_out_time_window         = "PT3M"
+  scale_out_value               = "1"
+  scale_out_cooldown            = "PT5M"
+  scale_in_capacity_percentage  = 20
+  scale_in_time_window          = "PT5M"
   scale_in_value                = "1"
-  scale_in_cooldown             = "PT30M"
+  scale_in_cooldown             = "PT5M"
 }
 
 # azure devops

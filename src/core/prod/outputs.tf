@@ -11,7 +11,3 @@ output "key_vault" {
     weu = module.key_vault_weu
   }
 }
-
-output "global" {
-  value = module.global
-}

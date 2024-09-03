@@ -341,7 +341,7 @@ data "http" "messages_citizen_openapi" {
 }
 
 module "apim_v2_messages_citizen_l1_api_v1" {
-  source = "github.com/pagopa/terraform-azurerm-v3//api_management_api?ref=v8.17.0"
+  source = "github.com/pagopa/terraform-azurerm-v3//api_management_api?ref=v8.40.0"
 
   name                  = format("%s-%s-messages-citizen-api-01", local.product, var.location_short)
   api_management_name   = data.azurerm_api_management.apim_v2_api.name
@@ -349,6 +349,11 @@ module "apim_v2_messages_citizen_l1_api_v1" {
   product_ids           = [module.apim_v2_product_messages_backend.product_id]
   subscription_required = true
   service_url           = null
+
+  subscription_key_names = {
+    header = "x-functions-key"
+    query  = "subscription-key"
+  }
 
   description  = "IO Messages Citizen - L1 - API"
   display_name = "IO Messages Citizen - L1 - API"
@@ -362,7 +367,7 @@ module "apim_v2_messages_citizen_l1_api_v1" {
 }
 
 module "apim_v2_messages_citizen_l2_api_v1" {
-  source = "github.com/pagopa/terraform-azurerm-v3//api_management_api?ref=v8.17.0"
+  source = "github.com/pagopa/terraform-azurerm-v3//api_management_api?ref=v8.40.0"
 
   name                  = format("%s-%s-messages-citizen-api-02", local.product, var.location_short)
   api_management_name   = data.azurerm_api_management.apim_v2_api.name
@@ -375,6 +380,11 @@ module "apim_v2_messages_citizen_l2_api_v1" {
   display_name = "IO Messages Citizen - L2 - API"
   path         = "messages/l2/api/v1"
   protocols    = ["https"]
+
+  subscription_key_names = {
+    header = "x-functions-key"
+    query  = "subscription-key"
+  }
 
   content_format = "openapi"
   content_value  = data.http.messages_citizen_openapi.body
