@@ -1,16 +1,4 @@
 removed {
-  from = module.networking_weu.module.vnet_common.azurerm_virtual_network.this
-  lifecycle {
-    destroy = false
-  }
-}
-removed {
-  from = module.networking_weu.module.pep_snet.azurerm_subnet.this
-  lifecycle {
-    destroy = false
-  }
-}
-removed {
   from = module.global.module.dns.azurerm_dns_a_record.api_app_io_pagopa_it
   lifecycle {
     destroy = false
@@ -203,13 +191,7 @@ removed {
   }
 }
 removed {
-  from = module.global.module.dns.azurerm_private_dns_zone_virtual_network_link.azure_api_net_vnet_common["weu"]
-  lifecycle {
-    destroy = false
-  }
-}
-removed {
-  from = module.global.module.dns.azurerm_private_dns_zone_virtual_network_link.azure_api_net_vnet_common["itn"]
+  from = module.global.module.dns.azurerm_private_dns_zone_virtual_network_link.azure_api_net_vnet_common
   lifecycle {
     destroy = false
   }
@@ -299,403 +281,103 @@ removed {
   }
 }
 removed {
-  from = module.global.module.dns.azurerm_private_dns_zone_virtual_network_link.azurewebsites_private_vnet["beta"]
+  from = module.global.module.dns.azurerm_private_dns_zone_virtual_network_link.azurewebsites_private_vnet
   lifecycle {
     destroy = false
   }
 }
 removed {
-  from = module.global.module.dns.azurerm_private_dns_zone_virtual_network_link.azurewebsites_private_vnet["prod01"]
+  from = module.global.module.dns.azurerm_private_dns_zone_virtual_network_link.blob_core_private_vnet
   lifecycle {
     destroy = false
   }
 }
 removed {
-  from = module.global.module.dns.azurerm_private_dns_zone_virtual_network_link.azurewebsites_private_vnet["weu"]
+  from = module.global.module.dns.azurerm_private_dns_zone_virtual_network_link.documents_private_vnet
   lifecycle {
     destroy = false
   }
 }
 removed {
-  from = module.global.module.dns.azurerm_private_dns_zone_virtual_network_link.azurewebsites_private_vnet["itn"]
+  from = module.global.module.dns.azurerm_private_dns_zone_virtual_network_link.file_core_private_vnet
   lifecycle {
     destroy = false
   }
 }
 removed {
-  from = module.networking_weu.azurerm_nat_gateway.this
+  from = module.global.module.dns.azurerm_private_dns_zone_virtual_network_link.internal_io_pagopa_it_private_vnet
   lifecycle {
     destroy = false
   }
 }
 removed {
-  from = module.networking_weu.azurerm_nat_gateway_public_ip_association.this_pip_01[0]
+  from = module.global.module.dns.azurerm_private_dns_zone_virtual_network_link.management_azure_api_net_vnet_common
   lifecycle {
     destroy = false
   }
 }
 removed {
-  from = module.networking_weu.azurerm_nat_gateway_public_ip_association.this_pip_01[1]
+  from = module.global.module.dns.azurerm_private_dns_zone_virtual_network_link.mongo_cosmos_private_vnet
   lifecycle {
     destroy = false
   }
 }
 removed {
-  from = module.networking_weu.azurerm_public_ip.this_01[0]
+  from = module.global.module.dns.azurerm_private_dns_zone_virtual_network_link.srch_private_vnet_common
   lifecycle {
     destroy = false
   }
 }
 removed {
-  from = module.networking_weu.azurerm_public_ip.this_01[1]
+  from = module.global.module.dns.azurerm_private_dns_zone_virtual_network_link.srch_private_vnet_common
   lifecycle {
     destroy = false
   }
 }
 removed {
-  from = module.vnet_peering_weu.azurerm_virtual_network_peering.source["beta"]
+  from = module.global.module.dns.azurerm_private_dns_zone_virtual_network_link.privatelink_azurecr_io_vnet
   lifecycle {
     destroy = false
   }
 }
 removed {
-  from = module.vnet_peering_weu.azurerm_virtual_network_peering.target["beta"]
+  from = module.global.module.dns.azurerm_private_dns_zone_virtual_network_link.privatelink_mysql_database_azure_com_vnet
   lifecycle {
     destroy = false
   }
 }
 removed {
-  from = module.vnet_peering_weu.azurerm_virtual_network_peering.source["prod01"]
+  from = module.global.module.dns.azurerm_private_dns_zone_virtual_network_link.privatelink_postgres_database_azure_com_vnet
   lifecycle {
     destroy = false
   }
 }
 removed {
-  from = module.vnet_peering_weu.azurerm_virtual_network_peering.target["prod01"]
+  from = module.global.module.dns.azurerm_private_dns_zone_virtual_network_link.queue_core_private_vnet
   lifecycle {
     destroy = false
   }
 }
 removed {
-  from = module.global.module.dns.azurerm_private_dns_zone_virtual_network_link.blob_core_private_vnet["beta"]
+  from = module.global.module.dns.azurerm_private_dns_zone_virtual_network_link.redis_private_vnet
   lifecycle {
     destroy = false
   }
 }
 removed {
-  from = module.global.module.dns.azurerm_private_dns_zone_virtual_network_link.blob_core_private_vnet["itn"]
+  from = module.global.module.dns.azurerm_private_dns_zone_virtual_network_link.servicebus_private_vnet
   lifecycle {
     destroy = false
   }
 }
 removed {
-  from = module.global.module.dns.azurerm_private_dns_zone_virtual_network_link.blob_core_private_vnet["prod01"]
+  from = module.global.module.dns.azurerm_private_dns_zone_virtual_network_link.scm_azure_api_net_vnet_common
   lifecycle {
     destroy = false
   }
 }
 removed {
-  from = module.global.module.dns.azurerm_private_dns_zone_virtual_network_link.blob_core_private_vnet["weu"]
-  lifecycle {
-    destroy = false
-  }
-}
-removed {
-  from = module.global.module.dns.azurerm_private_dns_zone_virtual_network_link.documents_private_vnet["beta"]
-  lifecycle {
-    destroy = false
-  }
-}
-removed {
-  from = module.global.module.dns.azurerm_private_dns_zone_virtual_network_link.documents_private_vnet["itn"]
-  lifecycle {
-    destroy = false
-  }
-}
-removed {
-  from = module.global.module.dns.azurerm_private_dns_zone_virtual_network_link.documents_private_vnet["prod01"]
-  lifecycle {
-    destroy = false
-  }
-}
-removed {
-  from = module.global.module.dns.azurerm_private_dns_zone_virtual_network_link.documents_private_vnet["weu"]
-  lifecycle {
-    destroy = false
-  }
-}
-removed {
-  from = module.global.module.dns.azurerm_private_dns_zone_virtual_network_link.file_core_private_vnet["beta"]
-  lifecycle {
-    destroy = false
-  }
-}
-removed {
-  from = module.global.module.dns.azurerm_private_dns_zone_virtual_network_link.file_core_private_vnet["prod01"]
-  lifecycle {
-    destroy = false
-  }
-}
-removed {
-  from = module.global.module.dns.azurerm_private_dns_zone_virtual_network_link.file_core_private_vnet["weu"]
-  lifecycle {
-    destroy = false
-  }
-}
-removed {
-  from = module.global.module.dns.azurerm_private_dns_zone_virtual_network_link.file_core_private_vnet["itn"]
-  lifecycle {
-    destroy = false
-  }
-}
-removed {
-  from = module.global.module.dns.azurerm_private_dns_zone_virtual_network_link.internal_io_pagopa_it_private_vnet["beta"]
-  lifecycle {
-    destroy = false
-  }
-}
-removed {
-  from = module.global.module.dns.azurerm_private_dns_zone_virtual_network_link.internal_io_pagopa_it_private_vnet["itn"]
-  lifecycle {
-    destroy = false
-  }
-}
-removed {
-  from = module.global.module.dns.azurerm_private_dns_zone_virtual_network_link.internal_io_pagopa_it_private_vnet["prod01"]
-  lifecycle {
-    destroy = false
-  }
-}
-removed {
-  from = module.global.module.dns.azurerm_private_dns_zone_virtual_network_link.internal_io_pagopa_it_private_vnet["weu"]
-  lifecycle {
-    destroy = false
-  }
-}
-removed {
-  from = module.global.module.dns.azurerm_private_dns_zone_virtual_network_link.management_azure_api_net_vnet_common["weu"]
-  lifecycle {
-    destroy = false
-  }
-}
-removed {
-  from = module.global.module.dns.azurerm_private_dns_zone_virtual_network_link.management_azure_api_net_vnet_common["itn"]
-  lifecycle {
-    destroy = false
-  }
-}
-removed {
-  from = module.global.module.dns.azurerm_private_dns_zone_virtual_network_link.mongo_cosmos_private_vnet["beta"]
-  lifecycle {
-    destroy = false
-  }
-}
-removed {
-  from = module.global.module.dns.azurerm_private_dns_zone_virtual_network_link.mongo_cosmos_private_vnet["prod01"]
-  lifecycle {
-    destroy = false
-  }
-}
-removed {
-  from = module.global.module.dns.azurerm_private_dns_zone_virtual_network_link.mongo_cosmos_private_vnet["weu"]
-  lifecycle {
-    destroy = false
-  }
-}
-removed {
-  from = module.global.module.dns.azurerm_private_dns_zone_virtual_network_link.mongo_cosmos_private_vnet["itn"]
-  lifecycle {
-    destroy = false
-  }
-}
-removed {
-  from = module.global.module.dns.azurerm_private_dns_zone_virtual_network_link.privatelink_azurecr_io_vnet["beta"]
-  lifecycle {
-    destroy = false
-  }
-}
-removed {
-  from = module.global.module.dns.azurerm_private_dns_zone_virtual_network_link.privatelink_azurecr_io_vnet["prod01"]
-  lifecycle {
-    destroy = false
-  }
-}
-removed {
-  from = module.global.module.dns.azurerm_private_dns_zone_virtual_network_link.privatelink_azurecr_io_vnet["weu"]
-  lifecycle {
-    destroy = false
-  }
-}
-removed {
-  from = module.global.module.dns.azurerm_private_dns_zone_virtual_network_link.privatelink_azurecr_io_vnet["itn"]
-  lifecycle {
-    destroy = false
-  }
-}
-removed {
-  from = module.global.module.dns.azurerm_private_dns_zone_virtual_network_link.privatelink_mysql_database_azure_com_vnet["beta"]
-  lifecycle {
-    destroy = false
-  }
-}
-removed {
-  from = module.global.module.dns.azurerm_private_dns_zone_virtual_network_link.privatelink_mysql_database_azure_com_vnet["prod01"]
-  lifecycle {
-    destroy = false
-  }
-}
-removed {
-  from = module.global.module.dns.azurerm_private_dns_zone_virtual_network_link.privatelink_mysql_database_azure_com_vnet["weu"]
-  lifecycle {
-    destroy = false
-  }
-}
-removed {
-  from = module.global.module.dns.azurerm_private_dns_zone_virtual_network_link.privatelink_mysql_database_azure_com_vnet["itn"]
-  lifecycle {
-    destroy = false
-  }
-}
-removed {
-  from = module.global.module.dns.azurerm_private_dns_zone_virtual_network_link.privatelink_postgres_database_azure_com_vnet["beta"]
-  lifecycle {
-    destroy = false
-  }
-}
-removed {
-  from = module.global.module.dns.azurerm_private_dns_zone_virtual_network_link.privatelink_postgres_database_azure_com_vnet["prod01"]
-  lifecycle {
-    destroy = false
-  }
-}
-removed {
-  from = module.global.module.dns.azurerm_private_dns_zone_virtual_network_link.privatelink_postgres_database_azure_com_vnet["weu"]
-  lifecycle {
-    destroy = false
-  }
-}
-removed {
-  from = module.global.module.dns.azurerm_private_dns_zone_virtual_network_link.privatelink_postgres_database_azure_com_vnet["itn"]
-  lifecycle {
-    destroy = false
-  }
-}
-removed {
-  from = module.global.module.dns.azurerm_private_dns_zone_virtual_network_link.queue_core_private_vnet["beta"]
-  lifecycle {
-    destroy = false
-  }
-}
-removed {
-  from = module.global.module.dns.azurerm_private_dns_zone_virtual_network_link.queue_core_private_vnet["prod01"]
-  lifecycle {
-    destroy = false
-  }
-}
-removed {
-  from = module.global.module.dns.azurerm_private_dns_zone_virtual_network_link.queue_core_private_vnet["weu"]
-  lifecycle {
-    destroy = false
-  }
-}
-removed {
-  from = module.global.module.dns.azurerm_private_dns_zone_virtual_network_link.queue_core_private_vnet["itn"]
-  lifecycle {
-    destroy = false
-  }
-}
-removed {
-  from = module.global.module.dns.azurerm_private_dns_zone_virtual_network_link.redis_private_vnet["beta"]
-  lifecycle {
-    destroy = false
-  }
-}
-removed {
-  from = module.global.module.dns.azurerm_private_dns_zone_virtual_network_link.redis_private_vnet["prod01"]
-  lifecycle {
-    destroy = false
-  }
-}
-removed {
-  from = module.global.module.dns.azurerm_private_dns_zone_virtual_network_link.redis_private_vnet["weu"]
-  lifecycle {
-    destroy = false
-  }
-}
-removed {
-  from = module.global.module.dns.azurerm_private_dns_zone_virtual_network_link.redis_private_vnet["itn"]
-  lifecycle {
-    destroy = false
-  }
-}
-removed {
-  from = module.global.module.dns.azurerm_private_dns_zone_virtual_network_link.servicebus_private_vnet["prod01"]
-  lifecycle {
-    destroy = false
-  }
-}
-removed {
-  from = module.global.module.dns.azurerm_private_dns_zone_virtual_network_link.servicebus_private_vnet["beta"]
-  lifecycle {
-    destroy = false
-  }
-}
-removed {
-  from = module.global.module.dns.azurerm_private_dns_zone_virtual_network_link.servicebus_private_vnet["weu"]
-  lifecycle {
-    destroy = false
-  }
-}
-removed {
-  from = module.global.module.dns.azurerm_private_dns_zone_virtual_network_link.servicebus_private_vnet["itn"]
-  lifecycle {
-    destroy = false
-  }
-}
-removed {
-  from = module.global.module.dns.azurerm_private_dns_zone_virtual_network_link.srch_private_vnet_common["weu"]
-  lifecycle {
-    destroy = false
-  }
-}
-removed {
-  from = module.global.module.dns.azurerm_private_dns_zone_virtual_network_link.srch_private_vnet_common["itn"]
-  lifecycle {
-    destroy = false
-  }
-}
-removed {
-  from = module.global.module.dns.azurerm_private_dns_zone_virtual_network_link.scm_azure_api_net_vnet_common["weu"]
-  lifecycle {
-    destroy = false
-  }
-}
-removed {
-  from = module.global.module.dns.azurerm_private_dns_zone_virtual_network_link.scm_azure_api_net_vnet_common["itn"]
-  lifecycle {
-    destroy = false
-  }
-}
-removed {
-  from = module.global.module.dns.azurerm_private_dns_zone_virtual_network_link.table_core_private_vnet["beta"]
-  lifecycle {
-    destroy = false
-  }
-}
-removed {
-  from = module.global.module.dns.azurerm_private_dns_zone_virtual_network_link.table_core_private_vnet["prod01"]
-  lifecycle {
-    destroy = false
-  }
-}
-removed {
-  from = module.global.module.dns.azurerm_private_dns_zone_virtual_network_link.table_core_private_vnet["weu"]
-  lifecycle {
-    destroy = false
-  }
-}
-removed {
-  from = module.global.module.dns.azurerm_private_dns_zone_virtual_network_link.table_core_private_vnet["itn"]
+  from = module.global.module.dns.azurerm_private_dns_zone_virtual_network_link.table_core_private_vnet
   lifecycle {
     destroy = false
   }
