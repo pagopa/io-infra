@@ -44,3 +44,10 @@ variable "ng_number" {
   description = "Number of nat gateways to deploy"
   default     = 1
 }
+
+
+variable "ng_ippres_number" {
+  type        = number
+  description = "Number of Public IP Prefix assigned to the nat gateway"
+  default     = 3
+}
