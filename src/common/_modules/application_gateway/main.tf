@@ -2,8 +2,8 @@
 module "app_gw" {
   source = "github.com/pagopa/terraform-azurerm-v3//app_gateway?ref=v8.31.0"
 
-  resource_group_name = azurerm_resource_group.rg_external.name
-  location            = azurerm_resource_group.rg_external.location
+  resource_group_name = var.resource_groups.external
+  location            = var.location
   name                = format("%s-appgateway", var.project)
   zones               = [1, 2, 3]
 
@@ -20,10 +20,10 @@ module "app_gw" {
 
     apim = {
       protocol                    = "Https"
-      host                        = format("api-app.internal.%s.%s", var.dns_zone_io, var.external_domain)
+      host                        = format("api-app.internal.%s", var.public_dns_zones.io.name)
       port                        = 443
       ip_addresses                = null # with null value use fqdns
-      fqdns                       = [format("api-app.internal.%s.%s", var.dns_zone_io, var.external_domain)]
+      fqdns                       = [format("api-app.internal.%s", var.public_dns_zones.io.name)]
       probe                       = "/status-0123456789abcdef"
       probe_name                  = "probe-apim"
       request_timeout             = 180
@@ -36,8 +36,8 @@ module "app_gw" {
       port         = 443
       ip_addresses = null # with null value use fqdns
       fqdns = [
-        module.appservice_app_backendl1.default_site_hostname,
-        module.appservice_app_backendl2.default_site_hostname,
+        var.backend_hostnames.app_backendl1,
+        var.backend_hostnames.app_backendl2,
       ]
       probe                       = "/info"
       probe_name                  = "probe-appbackend-app"
@@ -107,7 +107,7 @@ module "app_gw" {
       port         = 443
       ip_addresses = null # with null value use fqdns
       fqdns = [
-        data.azurerm_linux_web_app.firmaconio_selfcare_web_app.default_hostname,
+        var.backend_hostnames.firmaconio_selfcare_web_app,
       ]
       probe                       = "/health"
       probe_name                  = "probe-firmaconio-selfcare-backend"
@@ -187,13 +187,13 @@ module "app_gw" {
 
     api-io-pagopa-it = {
       protocol           = "Https"
-      host               = format("api.%s.%s", var.dns_zone_io, var.external_domain)
+      host               = format("api.%s", var.public_dns_zones.io.name)
       port               = 443
       ssl_profile_name   = null
       firewall_policy_id = null
 
       certificate = {
-        name = var.app_gateway_api_certificate_name
+        name = var.certificates.api
         id = replace(
           data.azurerm_key_vault_certificate.app_gw_api.secret_id,
           "/${data.azurerm_key_vault_certificate.app_gw_api.version}",
@@ -204,13 +204,13 @@ module "app_gw" {
 
     api-mtls-io-pagopa-it = {
       protocol           = "Https"
-      host               = format("api-mtls.%s.%s", var.dns_zone_io, var.external_domain)
+      host               = format("api-mtls.%s", var.public_dns_zones.io.name)
       port               = 443
       ssl_profile_name   = format("%s-api-mtls-profile", var.project)
       firewall_policy_id = null
 
       certificate = {
-        name = var.app_gateway_api_mtls_certificate_name
+        name = var.certificates.api_mtls
         id = replace(
           data.azurerm_key_vault_certificate.app_gw_api_mtls.secret_id,
           "/${data.azurerm_key_vault_certificate.app_gw_api_mtls.version}",
@@ -227,7 +227,7 @@ module "app_gw" {
       firewall_policy_id = null
 
       certificate = {
-        name = var.app_gateway_api_io_italia_it_certificate_name
+        name = var.certificates.api_io_italia_it
         id = replace(
           data.azurerm_key_vault_certificate.app_gw_api_io_italia_it.secret_id,
           "/${data.azurerm_key_vault_certificate.app_gw_api_io_italia_it.version}",
@@ -238,13 +238,13 @@ module "app_gw" {
 
     api-app-io-pagopa-it = {
       protocol           = "Https"
-      host               = format("api-app.%s.%s", var.dns_zone_io, var.external_domain)
+      host               = format("api-app.%s", var.public_dns_zones.io.name)
       port               = 443
       ssl_profile_name   = null
       firewall_policy_id = azurerm_web_application_firewall_policy.api_app.id
 
       certificate = {
-        name = var.app_gateway_api_app_certificate_name
+        name = var.certificates.api_app
         id = replace(
           data.azurerm_key_vault_certificate.app_gw_api_app.secret_id,
           "/${data.azurerm_key_vault_certificate.app_gw_api_app.version}",
@@ -255,13 +255,13 @@ module "app_gw" {
 
     api-web-io-pagopa-it = {
       protocol           = "Https"
-      host               = format("api-web.%s.%s", var.dns_zone_io, var.external_domain)
+      host               = format("api-web.%s", var.public_dns_zones.io.name)
       port               = 443
       ssl_profile_name   = null
       firewall_policy_id = azurerm_web_application_firewall_policy.api_app.id
 
       certificate = {
-        name = var.app_gateway_api_web_certificate_name
+        name = var.certificates.api_web
         id = replace(
           data.azurerm_key_vault_certificate.app_gw_api_web.secret_id,
           "/${data.azurerm_key_vault_certificate.app_gw_api_web.version}",
@@ -278,7 +278,7 @@ module "app_gw" {
       firewall_policy_id = azurerm_web_application_firewall_policy.api_app.id
 
       certificate = {
-        name = var.app_gateway_app_backend_io_italia_it_certificate_name
+        name = var.certificates.app_backend_io_italia_it
         id = replace(
           data.azurerm_key_vault_certificate.app_gw_app_backend_io_italia_it.secret_id,
           "/${data.azurerm_key_vault_certificate.app_gw_app_backend_io_italia_it.version}",
@@ -295,7 +295,7 @@ module "app_gw" {
       firewall_policy_id = null
 
       certificate = {
-        name = var.app_gateway_developerportal_backend_io_italia_it_certificate_name
+        name = var.certificates.developerportal_backend_io_italia_it
         id = replace(
           data.azurerm_key_vault_certificate.app_gw_developerportal_backend_io_italia_it.secret_id,
           "/${data.azurerm_key_vault_certificate.app_gw_developerportal_backend_io_italia_it.version}",
@@ -306,13 +306,13 @@ module "app_gw" {
 
     api-io-selfcare-pagopa-it = {
       protocol           = "Https"
-      host               = "api.${var.dns_zone_io_selfcare}.${var.external_domain}"
+      host               = "api.${var.public_dns_zones.io_selfcare_pagopa_it.name}"
       port               = 443
       ssl_profile_name   = null
       firewall_policy_id = null
 
       certificate = {
-        name = var.app_gateway_api_io_selfcare_pagopa_it_certificate_name
+        name = var.certificates.api_io_selfcare_pagopa_it
         id = replace(
           data.azurerm_key_vault_certificate.app_gw_api_io_selfcare_pagopa_it.secret_id,
           "/${data.azurerm_key_vault_certificate.app_gw_api_io_selfcare_pagopa_it.version}",
@@ -323,13 +323,13 @@ module "app_gw" {
 
     firmaconio-selfcare-pagopa-it = {
       protocol           = "Https"
-      host               = format("%s.%s", var.dns_zone_firmaconio_selfcare, var.external_domain)
+      host               = format("%s.", var.public_dns_zones.firmaconio_selfcare_pagopa_it.name)
       port               = 443
       ssl_profile_name   = null
       firewall_policy_id = null
 
       certificate = {
-        name = var.app_gateway_firmaconio_selfcare_pagopa_it_certificate_name
+        name = var.certificates.firmaconio_selfcare_pagopa_it
         id = replace(
           data.azurerm_key_vault_certificate.app_gw_firmaconio_selfcare_pagopa_it.secret_id,
           "/${data.azurerm_key_vault_certificate.app_gw_firmaconio_selfcare_pagopa_it.version}",
@@ -340,13 +340,13 @@ module "app_gw" {
 
     continua-io-pagopa-it = {
       protocol           = "Https"
-      host               = format("continua.%s.%s", var.dns_zone_io, var.external_domain)
+      host               = format("continua.%s", var.public_dns_zones.io.name)
       port               = 443
       ssl_profile_name   = null
       firewall_policy_id = null
 
       certificate = {
-        name = var.app_gateway_continua_io_pagopa_it_certificate_name
+        name = var.certificates.continua_io_pagopa_it
         id = replace(
           data.azurerm_key_vault_certificate.app_gw_continua.secret_id,
           "/${data.azurerm_key_vault_certificate.app_gw_continua.version}",
@@ -357,13 +357,13 @@ module "app_gw" {
 
     selfcare-io-pagopa-it = {
       protocol           = "Https"
-      host               = format("selfcare.%s.%s", var.dns_zone_io, var.external_domain)
+      host               = format("selfcare.%s", var.public_dns_zones.io.name)
       port               = 443
       ssl_profile_name   = format("%s-ssl-profile", var.project)
       firewall_policy_id = null
 
       certificate = {
-        name = var.app_gateway_selfcare_io_pagopa_it_certificate_name
+        name = var.certificates.selfcare_io_pagopa_it
         id = replace(
           data.azurerm_key_vault_certificate.app_gw_selfcare_io.secret_id,
           "/${data.azurerm_key_vault_certificate.app_gw_selfcare_io.version}",
@@ -374,13 +374,13 @@ module "app_gw" {
 
     oauth-io-pagopa-it = {
       protocol           = "Https"
-      host               = format("oauth.%s.%s", var.dns_zone_io, var.external_domain)
+      host               = format("oauth.%s", var.public_dns_zones.io.name)
       port               = 443
       ssl_profile_name   = null
       firewall_policy_id = null
 
       certificate = {
-        name = var.app_gateway_oauth_io_pagopa_it_certificate_name
+        name = var.certificates.oauth_io_pagopa_it
         id = replace(
           data.azurerm_key_vault_certificate.app_gw_oauth.secret_id,
           "/${data.azurerm_key_vault_certificate.app_gw_oauth.version}",
@@ -809,15 +809,15 @@ module "app_gw" {
   identity_ids = [azurerm_user_assigned_identity.appgateway.id]
 
   # Scaling
-  # app_gateway_min_capacity = var.app_gateway_min_capacity
+  # min_capacity = var.min_capacity
   app_gateway_min_capacity = "10"
-  app_gateway_max_capacity = var.app_gateway_max_capacity
+  app_gateway_max_capacity = var.max_capacity
 
-  alerts_enabled = var.app_gateway_alerts_enabled
+  alerts_enabled = var.alerts_enabled
 
   action = [
     {
-      action_group_id    = data.azurerm_monitor_action_group.error_action_group.id
+      action_group_id    = var.error_action_group_id
       webhook_properties = null
     }
   ]
