@@ -15,7 +15,7 @@ data "azurerm_resource_group" "sec_rg" {
 #tfsec:ignore:AZU023
 resource "azurerm_key_vault_secret" "appinsights_instrumentation_key" {
   name         = "appinsights-instrumentation-key"
-  value        = azurerm_application_insights.application_insights.instrumentation_key
+  value        = data.azurerm_application_insights.application_insights.instrumentation_key
   content_type = "only instrumentation key"
 
   key_vault_id = data.azurerm_key_vault.key_vault_common.id
@@ -24,7 +24,7 @@ resource "azurerm_key_vault_secret" "appinsights_instrumentation_key" {
 #tfsec:ignore:AZU023
 resource "azurerm_key_vault_secret" "appinsights_connection_string" {
   name         = "appinsights-connection-string"
-  value        = azurerm_application_insights.application_insights.connection_string
+  value        = data.azurerm_application_insights.application_insights.connection_string
   content_type = "full connection string, example InstrumentationKey=XXXXX"
 
   key_vault_id = data.azurerm_key_vault.key_vault_common.id
