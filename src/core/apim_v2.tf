@@ -128,7 +128,7 @@ module "apim_v2" {
 
   application_insights = {
     enabled             = true
-    instrumentation_key = azurerm_application_insights.application_insights.instrumentation_key
+    instrumentation_key = data.azurerm_application_insights.application_insights.instrumentation_key
   }
 
   lock_enable = false # no lock
@@ -139,7 +139,7 @@ module "apim_v2" {
 
   action = [
     {
-      action_group_id    = azurerm_monitor_action_group.error_action_group.id
+      action_group_id    = data.azurerm_monitor_action_group.error_action_group.id
       webhook_properties = null
     }
   ]
