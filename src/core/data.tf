@@ -283,6 +283,16 @@ data "azurerm_linux_function_app" "app_messages_2" {
   name                = "${local.project}-app-messages-fn-2"
 }
 
+data "azurerm_linux_function_app" "citizen_func_01" {
+  resource_group_name = "io-p-itn-msgs-rg-01"
+  name                = "io-p-itn-msgs-citizen-func-01"
+}
+
+data "azurerm_linux_function_app" "citizen_func_02" {
+  resource_group_name = "io-p-itn-msgs-rg-01"
+  name                = "io-p-itn-msgs-citizen-func-02"
+}
+
 #
 # ELT
 #

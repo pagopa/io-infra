@@ -16,6 +16,9 @@ module "networking_itn" {
   vnet_cidr_block = "10.20.0.0/16"
   pep_snet_cidr   = ["10.20.2.0/23"]
 
+  ng_number     = 3
+  ng_ips_number = 0
+
   tags = local.tags
 }
 
