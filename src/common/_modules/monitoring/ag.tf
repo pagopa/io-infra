@@ -1,7 +1,7 @@
 resource "azurerm_monitor_action_group" "error" {
   resource_group_name = var.resource_group_common
-  name                = local.nonstandard.weu.ag_error
-  short_name          = local.nonstandard.weu.ag_error
+  name                = try(local.nonstandard[var.location_short].ag_error, "${var.project}-error-ag-01")
+  short_name          = try(local.nonstandard[var.location_short].ag_error, "${var.project}-error-ag-01")
 
   email_receiver {
     name                    = "email"
@@ -26,8 +26,8 @@ resource "azurerm_monitor_action_group" "error" {
 
 resource "azurerm_monitor_action_group" "quarantine_error" {
   resource_group_name = var.resource_group_common
-  name                = local.nonstandard.weu.ag_quarantine_error
-  short_name          = local.nonstandard.weu.ag_quarantine_error_short
+  name                = try(local.nonstandard[var.location_short].ag_quarantine_error, "${var.project}-quarantineerror-ag-01")
+  short_name          = try(local.nonstandard[var.location_short].ag_quarantine_error_short, "${var.project}-qerr-ag-01")
 
   email_receiver {
     name                    = "slack"
@@ -41,8 +41,8 @@ resource "azurerm_monitor_action_group" "quarantine_error" {
 # the action group that publish to the channel of the trial-system project
 resource "azurerm_monitor_action_group" "trial_system_error" {
   resource_group_name = var.resource_group_common
-  name                = local.nonstandard.weu.ag_ts_error
-  short_name          = local.nonstandard.weu.ag_ts_error_short
+  name                = try(local.nonstandard[var.location_short].ag_ts_error, "${var.project}-ts-error-ag-01")
+  short_name          = try(local.nonstandard[var.location_short].ag_ts_error_short, "${var.project}-ts-error-ag-01")
 
   email_receiver {
     name                    = "slack"
@@ -54,9 +54,9 @@ resource "azurerm_monitor_action_group" "trial_system_error" {
 }
 
 resource "azurerm_monitor_action_group" "email" {
-  name                = "EmailPagoPA"
+  name                = try(local.nonstandard[var.location_short].email_pagopa, "${var.project}-email-ag-01")
   resource_group_name = var.resource_group_common
-  short_name          = "EmailPagoPA"
+  short_name          = try(local.nonstandard[var.location_short].email_pagopa, "${var.project}-email-ag-01")
 
   email_receiver {
     name                    = "sendtooperations"
@@ -68,9 +68,9 @@ resource "azurerm_monitor_action_group" "email" {
 }
 
 resource "azurerm_monitor_action_group" "slack" {
-  name                = "SlackPagoPA"
+  name                = try(local.nonstandard[var.location_short].slack_pagopa, "${var.project}-slack-ag-01")
   resource_group_name = var.resource_group_common
-  short_name          = "SlackPagoPA"
+  short_name          = try(local.nonstandard[var.location_short].slack_pagopa, "${var.project}-slack-ag-01")
 
   email_receiver {
     name                    = "sendtoslack"
