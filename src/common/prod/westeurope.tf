@@ -13,7 +13,7 @@ module "event_hubs_weu" {
   servicebus_dns_zone   = module.global.dns.private_dns_zones.servicebus
   vnet_common           = local.core.networking.weu.vnet_common
   key_vault             = local.core.key_vault.weu.kv
-  error_action_group_id = data.azurerm_monitor_action_group.error_action_group.id
+  error_action_group_id = module.monitoring_weu.action_groups.error
 
   cidr_subnet = ["10.0.10.0/24"]
   sku_name    = "Standard"
@@ -326,7 +326,7 @@ module "application_gateway_weu" {
   max_capacity          = 50
   alerts_enabled        = true
   deny_paths            = ["\\/admin\\/(.*)"]
-  error_action_group_id = data.azurerm_monitor_action_group.error_action_group.id
+  error_action_group_id = module.monitoring_weu.action_groups.error
 
   tags = local.tags
 }
