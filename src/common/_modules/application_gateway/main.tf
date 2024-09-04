@@ -4,7 +4,7 @@ module "app_gw" {
 
   resource_group_name = var.resource_groups.external
   location            = var.location
-  name                = format("%s-appgateway", var.project)
+  name                = try(local.nonstandard[var.location_short].agw, "${var.project}-agw-01")
   zones               = [1, 2, 3]
 
   # SKU

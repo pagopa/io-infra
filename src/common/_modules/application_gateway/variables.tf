@@ -84,12 +84,12 @@ variable "key_vault_common" {
 
 ## Application Gateway
 variable "certificates" {
-  type = map(string)
+  type        = map(string)
   description = "Information of the certificates"
 }
 
 variable "backend_hostnames" {
-  type = map(string)
+  type        = map(string)
   description = "Information of the backend hostnames"
 }
 

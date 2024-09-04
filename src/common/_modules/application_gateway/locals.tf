@@ -16,12 +16,14 @@ locals {
     ]
     response_header_configurations = []
   }
-  
+
   nonstandard = {
     weu = {
-      evh-rg   = "${var.project}-evt-rg"
-      evh-snet = "${var.project}-eventhub-snet"
-      evh-ns   = "${var.project}-evh-ns"
+      waf_api_app = "${var.project}-waf-appgateway-api-app-policy"
+      agw         = "${var.project}-appgateway"
+      snet        = "${var.project}-appgateway-snet"
+      pip         = "${var.project}-appgateway-pip"
+      id          = "${var.project}-appgateway-identity"
     }
   }
 }

@@ -1,5 +1,5 @@
 resource "azurerm_web_application_firewall_policy" "api_app" {
-  name                = format("%s-waf-appgateway-api-app-policy", var.project)
+  name                = try(local.nonstandard[var.location_short].waf_api_app, "${var.project}-waf-agw-api-app-01")
   resource_group_name = var.resource_groups.external
   location            = var.location
 
