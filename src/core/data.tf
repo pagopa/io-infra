@@ -203,21 +203,6 @@ data "azurerm_linux_function_app" "services_app_backend_function_app" {
   name                = format("%s-itn-svc-app-be-func-01", local.project)
 }
 
-
-#
-# MANAGED IDENTITIES
-#
-
-data "azurerm_user_assigned_identity" "managed_identity_io_infra_ci" {
-  name                = "${local.project}-infra-github-ci-identity"
-  resource_group_name = "${local.project}-identity-rg"
-}
-
-data "azurerm_user_assigned_identity" "managed_identity_io_infra_cd" {
-  name                = "${local.project}-infra-github-cd-identity"
-  resource_group_name = "${local.project}-identity-rg"
-}
-
 #
 # CGN
 #
