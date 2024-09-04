@@ -12,6 +12,7 @@
 |------|--------|---------|
 | <a name="module_event_hubs_weu"></a> [event\_hubs\_weu](#module\_event\_hubs\_weu) | ../_modules/event_hubs | n/a |
 | <a name="module_global"></a> [global](#module\_global) | ../_modules/global | n/a |
+| <a name="module_monitoring_weu"></a> [monitoring\_weu](#module\_monitoring\_weu) | ../_modules/monitoring | n/a |
 
 ## Resources
 
