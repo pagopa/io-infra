@@ -859,7 +859,7 @@ module "app_gw" {
 
   action = [
     {
-      action_group_id    = azurerm_monitor_action_group.error_action_group.id
+      action_group_id    = data.azurerm_monitor_action_group.error_action_group.id
       webhook_properties = null
     }
   ]
