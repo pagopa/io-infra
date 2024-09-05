@@ -31,7 +31,7 @@ resource "azurerm_key_vault_access_policy" "kv_adgroup_admin" {
   certificate_permissions = ["Get", "List", "Update", "Create", "Import", "Delete", "Restore", "Recover", ]
 }
 
-resource "azurerm_key_vault_access_policy" "access_policy_kv_io_infra_ci" {
+resource "azurerm_key_vault_access_policy" "kv_io_infra_ci" {
   key_vault_id = azurerm_key_vault.kv.id
 
   tenant_id = var.tenant_id
@@ -42,7 +42,7 @@ resource "azurerm_key_vault_access_policy" "access_policy_kv_io_infra_ci" {
   certificate_permissions = ["Get", "List"]
 }
 
-resource "azurerm_key_vault_access_policy" "access_policy_kv_io_infra_cd" {
+resource "azurerm_key_vault_access_policy" "kv_io_infra_cd" {
   key_vault_id = azurerm_key_vault.kv.id
 
   tenant_id = var.tenant_id
