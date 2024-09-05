@@ -82,6 +82,12 @@ module "key_vault_weu" {
   resource_group_common = data.azurerm_resource_group.common_weu.name
   tenant_id             = data.azurerm_client_config.current.tenant_id
 
+  azure_ad_group_admin_object_id            = data.azuread_group.adgroup_admin.object_id
+  azure_ad_group_developers_object_id       = data.azuread_group.adgroup_developers.object_id
+  io_infra_ci_managed_identity_principal_id = data.azurerm_user_assigned_identity.managed_identity_io_infra_ci.principal_id
+  io_infra_cd_managed_identity_principal_id = data.azurerm_user_assigned_identity.managed_identity_io_infra_cd.principal_id
+  platform_iac_sp_object_id                 = data.azuread_service_principal.platform_iac_sp.object_id
+
   tags = local.tags
 }
 
