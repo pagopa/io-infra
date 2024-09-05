@@ -14,56 +14,56 @@ data "azurerm_key_vault_certificate" "api_app_internal_io_pagopa_it" {
 }
 
 # APIM subnet
-module "apim_v2_snet" {
-  source               = "github.com/pagopa/terraform-azurerm-v3//subnet?ref=v8.27.0"
-  name                 = "apimv2api"
-  resource_group_name  = azurerm_resource_group.rg_common.name
-  virtual_network_name = data.azurerm_virtual_network.common.name
-  address_prefixes     = var.cidr_subnet_apim_v2
+# module "apim_v2_snet" {
+#   source               = "github.com/pagopa/terraform-azurerm-v3//subnet?ref=v8.27.0"
+#   name                 = "apimv2api"
+#   resource_group_name  = azurerm_resource_group.rg_common.name
+#   virtual_network_name = data.azurerm_virtual_network.common.name
+#   address_prefixes     = var.cidr_subnet_apim_v2
 
-  private_endpoint_network_policies_enabled = true
+#   private_endpoint_network_policies_enabled = true
 
-  service_endpoints = [
-    "Microsoft.Web",
-  ]
-}
+#   service_endpoints = [
+#     "Microsoft.Web",
+#   ]
+# }
 
-resource "azurerm_network_security_group" "nsg_apim" {
-  name                = format("%s-apim-v2-nsg", local.project)
-  resource_group_name = azurerm_resource_group.rg_common.name
-  location            = azurerm_resource_group.rg_common.location
+# resource "azurerm_network_security_group" "nsg_apim" {
+#   name                = format("%s-apim-v2-nsg", local.project)
+#   resource_group_name = azurerm_resource_group.rg_common.name
+#   location            = azurerm_resource_group.rg_common.location
 
-  security_rule {
-    name                       = "managementapim"
-    priority                   = 100
-    direction                  = "Inbound"
-    access                     = "Allow"
-    protocol                   = "Tcp"
-    source_port_range          = "*"
-    destination_port_range     = "3443"
-    source_address_prefix      = "ApiManagement"
-    destination_address_prefix = "VirtualNetwork"
-  }
+#   security_rule {
+#     name                       = "managementapim"
+#     priority                   = 100
+#     direction                  = "Inbound"
+#     access                     = "Allow"
+#     protocol                   = "Tcp"
+#     source_port_range          = "*"
+#     destination_port_range     = "3443"
+#     source_address_prefix      = "ApiManagement"
+#     destination_address_prefix = "VirtualNetwork"
+#   }
 
-  tags = var.tags
-}
+#   tags = var.tags
+# }
 
-resource "azurerm_subnet_network_security_group_association" "snet_nsg" {
-  subnet_id                 = module.apim_v2_snet.id
-  network_security_group_id = azurerm_network_security_group.nsg_apim.id
-}
+# resource "azurerm_subnet_network_security_group_association" "snet_nsg" {
+#   subnet_id                 = module.apim_v2_snet.id
+#   network_security_group_id = azurerm_network_security_group.nsg_apim.id
+# }
 
-resource "azurerm_public_ip" "public_ip_apim" {
-  name                = format("%s-apim-v2-public-ip", local.project)
-  resource_group_name = azurerm_resource_group.rg_common.name
-  location            = azurerm_resource_group.rg_common.location
-  allocation_method   = "Static"
-  sku                 = "Standard"
-  domain_name_label   = "apimio"
-  zones               = ["1", "2", "3"]
+# resource "azurerm_public_ip" "public_ip_apim" {
+#   name                = format("%s-apim-v2-public-ip", local.project)
+#   resource_group_name = azurerm_resource_group.rg_common.name
+#   location            = azurerm_resource_group.rg_common.location
+#   allocation_method   = "Static"
+#   sku                 = "Standard"
+#   domain_name_label   = "apimio"
+#   zones               = ["1", "2", "3"]
 
-  tags = var.tags
-}
+#   tags = var.tags
+# }
 
 
 # ###########################

@@ -35,7 +35,6 @@
 | <a name="module_apim_v2_product_admin"></a> [apim\_v2\_product\_admin](#module\_apim\_v2\_product\_admin) | github.com/pagopa/terraform-azurerm-v3//api_management_product | v8.27.0 |
 | <a name="module_apim_v2_product_public"></a> [apim\_v2\_product\_public](#module\_apim\_v2\_product\_public) | github.com/pagopa/terraform-azurerm-v3//api_management_product | v8.27.0 |
 | <a name="module_apim_v2_product_services"></a> [apim\_v2\_product\_services](#module\_apim\_v2\_product\_services) | github.com/pagopa/terraform-azurerm-v3//api_management_product | v8.27.0 |
-| <a name="module_apim_v2_snet"></a> [apim\_v2\_snet](#module\_apim\_v2\_snet) | github.com/pagopa/terraform-azurerm-v3//subnet | v8.27.0 |
 | <a name="module_app_backend_web_test_api"></a> [app\_backend\_web\_test\_api](#module\_app\_backend\_web\_test\_api) | github.com/pagopa/terraform-azurerm-v3//application_insights_web_test_preview | v8.29.1 |
 | <a name="module_app_backendl1_snet"></a> [app\_backendl1\_snet](#module\_app\_backendl1\_snet) | github.com/pagopa/terraform-azurerm-v3//subnet | v8.27.0 |
 | <a name="module_app_backendl2_snet"></a> [app\_backendl2\_snet](#module\_app\_backendl2\_snet) | github.com/pagopa/terraform-azurerm-v3//subnet | v8.27.0 |
@@ -108,9 +107,7 @@
 | [azurerm_monitor_metric_alert.cosmos_api_throttling_alert](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/monitor_metric_alert) | resource |
 | [azurerm_monitor_metric_alert.iopstapi_throttling_low_availability](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/monitor_metric_alert) | resource |
 | [azurerm_monitor_metric_alert.too_many_http_5xx](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/monitor_metric_alert) | resource |
-| [azurerm_network_security_group.nsg_apim](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/network_security_group) | resource |
 | [azurerm_private_endpoint.locked_profiles_storage_table](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/private_endpoint) | resource |
-| [azurerm_public_ip.public_ip_apim](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/public_ip) | resource |
 | [azurerm_resource_group.assets_cdn_rg](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/resource_group) | resource |
 | [azurerm_resource_group.azdo_rg](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/resource_group) | resource |
 | [azurerm_resource_group.data](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/resource_group) | resource |
@@ -130,7 +127,6 @@
 | [azurerm_subnet_nat_gateway_association.app_backendl1_snet](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/subnet_nat_gateway_association) | resource |
 | [azurerm_subnet_nat_gateway_association.app_backendl2_snet](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/subnet_nat_gateway_association) | resource |
 | [azurerm_subnet_nat_gateway_association.app_backendli_snet](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/subnet_nat_gateway_association) | resource |
-| [azurerm_subnet_network_security_group_association.snet_nsg](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/subnet_network_security_group_association) | resource |
 | [azurerm_api_management.trial_system](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/api_management) | data source |
 | [azurerm_api_management_group.api_v2_lollipop_assertion_read](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/api_management_group) | data source |
 | [azurerm_api_management_product.apim_v2_product_lollipop](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/api_management_product) | data source |

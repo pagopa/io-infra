@@ -10,7 +10,7 @@
 
 | Name | Source | Version |
 |------|--------|---------|
-| <a name="module_application_gateway_weu"></a> [application\_gateway\_weu](#module\_application\_gateway\_weu) | ../_modules/application_gateway | n/a |
+| <a name="module_apim"></a> [apim](#module\_apim) | ../_modules/apim | n/a |
 | <a name="module_event_hubs_weu"></a> [event\_hubs\_weu](#module\_event\_hubs\_weu) | ../_modules/event_hubs | n/a |
 | <a name="module_global"></a> [global](#module\_global) | ../_modules/global | n/a |
 | <a name="module_monitoring_weu"></a> [monitoring\_weu](#module\_monitoring\_weu) | ../_modules/monitoring | n/a |

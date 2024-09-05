@@ -330,3 +330,7 @@ module "application_gateway_weu" {
 
   tags = merge(local.tags, { Source = "https://github.com/pagopa/io-infra" })
 }
+
+module "apim" {
+  source = "../_modules/apim"
+}
