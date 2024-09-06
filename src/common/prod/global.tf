@@ -43,7 +43,7 @@ module "global" {
       firmaconio_selfcare = "firmaconio.selfcare"
     }
 
-    app_gateway_public_ip = module.application_gateway_weu.public_ip
+    app_gateway_public_ip = module.application_gateway_weu.public_ip.address
 
     # TODO: remove when apim v2 module is implemented
     apim_v2_private_ip = data.azurerm_api_management.apim_v2.private_ip_addresses[0]
