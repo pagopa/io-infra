@@ -4,7 +4,7 @@ resource "azurerm_subnet" "agw_snet" {
   resource_group_name               = var.resource_groups.common
   virtual_network_name              = var.vnet_common.name
   address_prefixes                  = var.cidr_subnet
-  private_endpoint_network_policies = "ENABLED"
+  private_endpoint_network_policies = "Enabled"
 
   service_endpoints = [
     "Microsoft.Web",
