@@ -12,7 +12,7 @@ module "app_gw" {
   sku_tier = "WAF_v2"
 
   # Networking
-  subnet_id    = module.appgateway_snet.id
+  subnet_id    = azurerm_subnet.agw_snet.id
   public_ip_id = azurerm_public_ip.appgateway_public_ip.id
 
   # Configure backends
