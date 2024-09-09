@@ -97,6 +97,12 @@ locals {
       SERVICE_PREFERENCES_FAILURE_QUEUE_NAME = local.service_preferences_failure_queue_name
       PROFILES_FAILURE_QUEUE_NAME            = local.profiles_failure_queue_name
 
+      # PDV integration env variables
+      PDV_TOKENIZER_API_KEY   = data.azurerm_key_vault_secret.pdv_tokenizer_api_key.value,
+      PDV_TOKENIZER_BASE_URL  = "https://api.tokenizer.pdv.pagopa.it",
+      PDV_TOKENIZER_BASE_PATH = "/tokenizer/v1",
+      #
+
       INTERNAL_TEST_FISCAL_CODES = module.tests.test_users.all
     }
   }
