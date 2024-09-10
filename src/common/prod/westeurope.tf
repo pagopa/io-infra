@@ -9,7 +9,7 @@ module "event_hubs_weu" {
   location_short = local.location_short[data.azurerm_resource_group.common_weu.location]
   project        = local.project_weu_legacy
 
-  resource_groups       = local.resource_groups
+  resource_groups       = local.resource_groups[local.location_short[data.azurerm_resource_group.common_weu.location]]
   servicebus_dns_zone   = module.global.dns.private_dns_zones.servicebus
   vnet_common           = local.core.networking.weu.vnet_common
   key_vault             = local.core.key_vault.weu.kv
@@ -293,7 +293,7 @@ module "application_gateway_weu" {
     azurerm_client_config = data.azurerm_client_config.current
   }
 
-  resource_groups = local.resource_groups
+  resource_groups = local.resource_groups[local.location_short[data.azurerm_resource_group.common_weu.location]]
 
   vnet_common      = local.core.networking.weu.vnet_common
   key_vault        = local.core.key_vault.weu.kv
