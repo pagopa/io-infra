@@ -16,6 +16,12 @@ data "azurerm_subnet" "services_cms_backoffice_snet_itn" {
   resource_group_name  = "${var.project}-itn-common-rg-01"
 }
 
+data "azurerm_subnet" "self_hosted_runner_snet" {
+  name                 = "io-p-github-runner-snet"
+  virtual_network_name = local.vnet_name_common
+  resource_group_name  = local.resource_group_name_common
+}
+
 data "azurerm_cosmosdb_account" "cosmos_api" {
   name                = "${var.project}-cosmos-api"
   resource_group_name = "${var.project}-rg-internal"

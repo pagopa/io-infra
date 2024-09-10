@@ -44,6 +44,9 @@ module "function_devportalservicedata" {
   subnet_id   = var.subnet_id
   allowed_ips = var.app_insights_ips
   allowed_subnets = [
+    # self hosted runners subnet
+    data.azurerm_subnet.self_hosted_runner_snet.id,
+    #
     var.subnet_id,
   ]
 
@@ -90,6 +93,9 @@ module "function_devportalservicedata_staging_slot" {
     [],
   )
   allowed_subnets = [
+    # self hosted runners subnet
+    data.azurerm_subnet.self_hosted_runner_snet.id,
+    #
     data.azurerm_subnet.snet_azdoa.id
   ]
 
