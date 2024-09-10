@@ -184,24 +184,6 @@ module "app_gw" {
 
   # Configure listeners
   listeners = {
-
-    api-io-pagopa-it = {
-      protocol           = "Https"
-      host               = format("api.%s", var.public_dns_zones.io.name)
-      port               = 443
-      ssl_profile_name   = null
-      firewall_policy_id = null
-
-      certificate = {
-        name = var.certificates.api
-        id = replace(
-          data.azurerm_key_vault_certificate.app_gw_api.secret_id,
-          "/${data.azurerm_key_vault_certificate.app_gw_api.version}",
-          ""
-        )
-      }
-    }
-
     api-mtls-io-pagopa-it = {
       protocol           = "Https"
       host               = format("api-mtls.%s", var.public_dns_zones.io.name)
@@ -231,6 +213,125 @@ module "app_gw" {
         id = replace(
           data.azurerm_key_vault_certificate.app_gw_api_io_italia_it.secret_id,
           "/${data.azurerm_key_vault_certificate.app_gw_api_io_italia_it.version}",
+          ""
+        )
+      }
+    }
+    
+    api-io-pagopa-it = {
+      protocol           = "Https"
+      host               = format("api.%s", var.public_dns_zones.io.name)
+      port               = 443
+      ssl_profile_name   = null
+      firewall_policy_id = null
+
+      certificate = {
+        name = var.certificates.api
+        id = replace(
+          data.azurerm_key_vault_certificate.app_gw_api.secret_id,
+          "/${data.azurerm_key_vault_certificate.app_gw_api.version}",
+          ""
+        )
+      }
+    }
+
+    api-io-selfcare-pagopa-it = {
+      protocol           = "Https"
+      host               = "api.${var.public_dns_zones.io_selfcare_pagopa_it.name}"
+      port               = 443
+      ssl_profile_name   = null
+      firewall_policy_id = null
+
+      certificate = {
+        name = var.certificates.api_io_selfcare_pagopa_it
+        id = replace(
+          data.azurerm_key_vault_certificate.app_gw_api_io_selfcare_pagopa_it.secret_id,
+          "/${data.azurerm_key_vault_certificate.app_gw_api_io_selfcare_pagopa_it.version}",
+          ""
+        )
+      }
+    }
+
+    continua-io-pagopa-it = {
+      protocol           = "Https"
+      host               = format("continua.%s", var.public_dns_zones.io.name)
+      port               = 443
+      ssl_profile_name   = null
+      firewall_policy_id = null
+
+      certificate = {
+        name = var.certificates.continua_io_pagopa_it
+        id = replace(
+          data.azurerm_key_vault_certificate.app_gw_continua.secret_id,
+          "/${data.azurerm_key_vault_certificate.app_gw_continua.version}",
+          ""
+        )
+      }
+    }
+
+    developerportal-backend-io-italia-it = {
+      protocol           = "Https"
+      host               = "developerportal-backend.io.italia.it"
+      port               = 443
+      ssl_profile_name   = null
+      firewall_policy_id = null
+
+      certificate = {
+        name = var.certificates.developerportal_backend_io_italia_it
+        id = replace(
+          data.azurerm_key_vault_certificate.app_gw_developerportal_backend_io_italia_it.secret_id,
+          "/${data.azurerm_key_vault_certificate.app_gw_developerportal_backend_io_italia_it.version}",
+          ""
+        )
+      }
+    }
+
+    firmaconio-selfcare-pagopa-it = {
+      protocol           = "Https"
+      host               = var.public_dns_zones.firmaconio_selfcare_pagopa_it.name
+      port               = 443
+      ssl_profile_name   = null
+      firewall_policy_id = null
+
+      certificate = {
+        name = var.certificates.firmaconio_selfcare_pagopa_it
+        id = replace(
+          data.azurerm_key_vault_certificate.app_gw_firmaconio_selfcare_pagopa_it.secret_id,
+          "/${data.azurerm_key_vault_certificate.app_gw_firmaconio_selfcare_pagopa_it.version}",
+          ""
+        )
+      }
+    }
+
+    oauth-io-pagopa-it = {
+      protocol           = "Https"
+      host               = format("oauth.%s", var.public_dns_zones.io.name)
+      port               = 443
+      ssl_profile_name   = null
+      firewall_policy_id = null
+
+      certificate = {
+        name = var.certificates.oauth_io_pagopa_it
+        id = replace(
+          data.azurerm_key_vault_certificate.app_gw_oauth.secret_id,
+          "/${data.azurerm_key_vault_certificate.app_gw_oauth.version}",
+          ""
+        )
+      }
+    }
+
+    selfcare-io-pagopa-it = {
+      protocol           = "Https"
+      host               = format("selfcare.%s", var.public_dns_zones.io.name)
+      port               = 443
+      ssl_profile_name   = format("%s-ssl-profile", var.project)
+      firewall_policy_id = null
+
+      certificate = {
+        name = var.certificates.selfcare_io_pagopa_it
+        id = replace(
+          data.azurerm_key_vault_certificate.app_gw_selfcare_io.secret_id,
+          "/${data.azurerm_key_vault_certificate.app_gw_selfcare_io.version}",
           ""
         )
       }
@@ -282,108 +383,6 @@ module "app_gw" {
         id = replace(
           data.azurerm_key_vault_certificate.app_gw_app_backend_io_italia_it.secret_id,
           "/${data.azurerm_key_vault_certificate.app_gw_app_backend_io_italia_it.version}",
-          ""
-        )
-      }
-    }
-
-    developerportal-backend-io-italia-it = {
-      protocol           = "Https"
-      host               = "developerportal-backend.io.italia.it"
-      port               = 443
-      ssl_profile_name   = null
-      firewall_policy_id = null
-
-      certificate = {
-        name = var.certificates.developerportal_backend_io_italia_it
-        id = replace(
-          data.azurerm_key_vault_certificate.app_gw_developerportal_backend_io_italia_it.secret_id,
-          "/${data.azurerm_key_vault_certificate.app_gw_developerportal_backend_io_italia_it.version}",
-          ""
-        )
-      }
-    }
-
-    api-io-selfcare-pagopa-it = {
-      protocol           = "Https"
-      host               = "api.${var.public_dns_zones.io_selfcare_pagopa_it.name}"
-      port               = 443
-      ssl_profile_name   = null
-      firewall_policy_id = null
-
-      certificate = {
-        name = var.certificates.api_io_selfcare_pagopa_it
-        id = replace(
-          data.azurerm_key_vault_certificate.app_gw_api_io_selfcare_pagopa_it.secret_id,
-          "/${data.azurerm_key_vault_certificate.app_gw_api_io_selfcare_pagopa_it.version}",
-          ""
-        )
-      }
-    }
-
-    firmaconio-selfcare-pagopa-it = {
-      protocol           = "Https"
-      host               = format("%s.", var.public_dns_zones.firmaconio_selfcare_pagopa_it.name)
-      port               = 443
-      ssl_profile_name   = null
-      firewall_policy_id = null
-
-      certificate = {
-        name = var.certificates.firmaconio_selfcare_pagopa_it
-        id = replace(
-          data.azurerm_key_vault_certificate.app_gw_firmaconio_selfcare_pagopa_it.secret_id,
-          "/${data.azurerm_key_vault_certificate.app_gw_firmaconio_selfcare_pagopa_it.version}",
-          ""
-        )
-      }
-    }
-
-    continua-io-pagopa-it = {
-      protocol           = "Https"
-      host               = format("continua.%s", var.public_dns_zones.io.name)
-      port               = 443
-      ssl_profile_name   = null
-      firewall_policy_id = null
-
-      certificate = {
-        name = var.certificates.continua_io_pagopa_it
-        id = replace(
-          data.azurerm_key_vault_certificate.app_gw_continua.secret_id,
-          "/${data.azurerm_key_vault_certificate.app_gw_continua.version}",
-          ""
-        )
-      }
-    }
-
-    selfcare-io-pagopa-it = {
-      protocol           = "Https"
-      host               = format("selfcare.%s", var.public_dns_zones.io.name)
-      port               = 443
-      ssl_profile_name   = format("%s-ssl-profile", var.project)
-      firewall_policy_id = null
-
-      certificate = {
-        name = var.certificates.selfcare_io_pagopa_it
-        id = replace(
-          data.azurerm_key_vault_certificate.app_gw_selfcare_io.secret_id,
-          "/${data.azurerm_key_vault_certificate.app_gw_selfcare_io.version}",
-          ""
-        )
-      }
-    }
-
-    oauth-io-pagopa-it = {
-      protocol           = "Https"
-      host               = format("oauth.%s", var.public_dns_zones.io.name)
-      port               = 443
-      ssl_profile_name   = null
-      firewall_policy_id = null
-
-      certificate = {
-        name = var.certificates.oauth_io_pagopa_it
-        id = replace(
-          data.azurerm_key_vault_certificate.app_gw_oauth.secret_id,
-          "/${data.azurerm_key_vault_certificate.app_gw_oauth.version}",
           ""
         )
       }
