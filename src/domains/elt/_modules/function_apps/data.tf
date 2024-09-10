@@ -113,6 +113,11 @@ data "azurerm_key_vault_secret" "services_exclusion_list" {
   key_vault_id = data.azurerm_key_vault.kv_common.id
 }
 
+data "azurerm_key_vault_secret" "pdv_tokenizer_api_key" {
+  name         = "func-elt-PDV-TOKENIZER-API-KEY"
+  key_vault_id = data.azurerm_key_vault.kv_common.id
+}
+
 data "azurerm_storage_account" "storage_api" {
   name                = replace("${var.project}stapi", "-", "")
   resource_group_name = local.resource_group_name_internal
