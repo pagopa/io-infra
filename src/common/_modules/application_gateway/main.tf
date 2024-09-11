@@ -217,7 +217,7 @@ module "app_gw" {
         )
       }
     }
-    
+
     api-io-pagopa-it = {
       protocol           = "Https"
       host               = format("api.%s", var.public_dns_zones.io.name)
