@@ -669,7 +669,7 @@ module "appservice_app_backendl1" {
   allowed_subnets = [
     data.azurerm_subnet.services_snet[0].id,
     data.azurerm_subnet.services_snet[1].id,
-    module.appgateway_snet.id,
+    data.azurerm_subnet.appgateway_snet.id,
     module.apim_v2_snet.id,
   ]
 
@@ -720,7 +720,7 @@ module "appservice_app_backendl1_slot_staging" {
     module.azdoa_snet[0].id,
     data.azurerm_subnet.services_snet[0].id,
     data.azurerm_subnet.services_snet[1].id,
-    module.appgateway_snet.id,
+    data.azurerm_subnet.appgateway_snet.id,
     module.apim_v2_snet.id,
   ]
 
@@ -799,7 +799,7 @@ module "appservice_app_backendl2" {
   allowed_subnets = [
     data.azurerm_subnet.services_snet[0].id,
     data.azurerm_subnet.services_snet[1].id,
-    module.appgateway_snet.id,
+    data.azurerm_subnet.appgateway_snet.id,
     module.apim_v2_snet.id,
   ]
 
@@ -850,7 +850,7 @@ module "appservice_app_backendl2_slot_staging" {
     module.azdoa_snet[0].id,
     data.azurerm_subnet.services_snet[0].id,
     data.azurerm_subnet.services_snet[1].id,
-    module.appgateway_snet.id,
+    data.azurerm_subnet.appgateway_snet.id,
     module.apim_v2_snet.id,
   ]
 

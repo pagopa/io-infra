@@ -9,11 +9,11 @@ module "event_hubs_weu" {
   location_short = local.location_short[data.azurerm_resource_group.common_weu.location]
   project        = local.project_weu_legacy
 
-  resource_group_common = data.azurerm_resource_group.common_weu.name
+  resource_groups       = local.resource_groups[local.location_short[data.azurerm_resource_group.common_weu.location]]
   servicebus_dns_zone   = module.global.dns.private_dns_zones.servicebus
   vnet_common           = local.core.networking.weu.vnet_common
   key_vault             = local.core.key_vault.weu.kv
-  error_action_group_id = data.azurerm_monitor_action_group.error_action_group.id
+  error_action_group_id = module.monitoring_weu.action_groups.error
 
   cidr_subnet = ["10.0.10.0/24"]
   sku_name    = "Standard"
@@ -280,4 +280,53 @@ module "monitoring_weu" {
   ]
 
   tags = local.tags
+}
+module "application_gateway_weu" {
+  source = "../_modules/application_gateway"
+
+  location       = data.azurerm_resource_group.common_weu.location
+  location_short = local.location_short[data.azurerm_resource_group.common_weu.location]
+  project        = local.project_weu_legacy
+  prefix         = local.prefix
+
+  datasources = {
+    azurerm_client_config = data.azurerm_client_config.current
+  }
+
+  resource_groups = local.resource_groups[local.location_short[data.azurerm_resource_group.common_weu.location]]
+
+  vnet_common      = local.core.networking.weu.vnet_common
+  key_vault        = local.core.key_vault.weu.kv
+  key_vault_common = local.core.key_vault.weu.kv_common
+  external_domain  = module.global.dns.external_domain
+  public_dns_zones = module.global.dns.public_dns_zones
+
+  backend_hostnames = {
+    firmaconio_selfcare_web_app = data.azurerm_linux_web_app.firmaconio_selfcare_web_app.default_hostname
+    app_backendl1               = data.azurerm_linux_web_app.app_backendl1.default_hostname
+    app_backendl2               = data.azurerm_linux_web_app.app_backendl2.default_hostname
+  }
+  certificates = {
+    api                                  = "api-io-pagopa-it"
+    api_mtls                             = "api-mtls-io-pagopa-it"
+    api_app                              = "api-app-io-pagopa-it"
+    api_web                              = "api-web-io-pagopa-it"
+    api_io_italia_it                     = "api-io-italia-it"
+    app_backend_io_italia_it             = "app-backend-io-italia-it"
+    developerportal_backend_io_italia_it = "developerportal-backend-io-italia-it"
+    api_io_selfcare_pagopa_it            = "api-io-selfcare-pagopa-it"
+    firmaconio_selfcare_pagopa_it        = "firmaconio-selfcare-pagopa-it"
+    continua_io_pagopa_it                = "continua-io-pagopa-it"
+    selfcare_io_pagopa_it                = "selfcare-io-pagopa-it"
+    oauth_io_pagopa_it                   = "oauth-io-pagopa-it"
+  }
+
+  cidr_subnet           = ["10.0.13.0/24"]
+  min_capacity          = 4 # 4 capacity=baseline, 10 capacity=high volume event, 15 capacity=very high volume event
+  max_capacity          = 50
+  alerts_enabled        = true
+  deny_paths            = ["\\/admin\\/(.*)"]
+  error_action_group_id = module.monitoring_weu.action_groups.error
+
+  tags = merge(local.tags, { Source = "https://github.com/pagopa/io-infra" })
 }

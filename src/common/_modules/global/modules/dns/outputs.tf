@@ -10,7 +10,7 @@ output "public_dns_zones" {
     }
 
     firmaconio_selfcare_pagopa_it = {
-      name = azurerm_dns_zone.io_pagopa_it.name
+      name = azurerm_dns_zone.firmaconio_selfcare_pagopa_it.name
     }
 
     io_italia_it = {
@@ -21,7 +21,7 @@ output "public_dns_zones" {
     }
 
     io_selfcare_pagopa_it = {
-      name = azurerm_dns_zone.io_pagopa_it.name
+      name = azurerm_dns_zone.io_selfcare_pagopa_it.name
       api  = trimsuffix(azurerm_dns_a_record.api_io_selfcare_pagopa_it.fqdn, ".")
     }
 
@@ -35,4 +35,8 @@ output "private_dns_zones" {
   value = {
     servicebus = azurerm_private_dns_zone.privatelink_servicebus
   }
+}
+
+output "external_domain" {
+  value = var.external_domain
 }

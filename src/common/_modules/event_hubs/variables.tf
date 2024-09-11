@@ -27,10 +27,9 @@ variable "servicebus_dns_zone" {
   description = "Private link servicebus dns zone information"
 }
 
-variable "resource_group_common" {
-  type        = string
-  description = "Name of common resource group"
-  default     = null
+variable "resource_groups" {
+  type        = map(string)
+  description = "Resource group names"
 }
 
 variable "vnet_common" {

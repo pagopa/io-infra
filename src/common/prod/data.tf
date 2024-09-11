@@ -1,15 +1,3 @@
-# TODO: remove when monitor module is implemented
-data "azurerm_monitor_action_group" "error_action_group" {
-  resource_group_name = "${local.project_weu_legacy}-rg-common"
-  name                = "${replace(local.project_weu_legacy, "-", "")}error"
-}
-
-# TODO: remove when app gateway module is implemented
-data "azurerm_public_ip" "appgateway_public_ip" {
-  name                = format("${local.project_weu_legacy}-appgateway-pip")
-  resource_group_name = "${local.project_weu_legacy}-rg-external"
-}
-
 # TODO: remove when apim v2 module is implemented
 data "azurerm_api_management" "apim_v2" {
   name                = "${local.project_weu_legacy}-apim-v2-api"
@@ -35,4 +23,23 @@ data "terraform_remote_state" "core" {
     container_name       = "terraform-state"
     key                  = "io-infra.core.prod.italynorth.tfstate"
   }
+}
+
+data "azurerm_client_config" "current" {}
+
+data "azurerm_linux_web_app" "firmaconio_selfcare_web_app" {
+  name                = "${local.project_weu_legacy}-sign-backoffice-app"
+  resource_group_name = "${local.project_weu_legacy}-sign-backend-rg"
+}
+
+# TODO: remove if app_backend module is moved in core or common
+data "azurerm_linux_web_app" "app_backendl1" {
+  name                = "${local.project_weu_legacy}-app-appbackendl1"
+  resource_group_name = "${local.project_weu_legacy}-rg-linux"
+}
+
+# TODO: remove if app_backend module is moved in core or common
+data "azurerm_linux_web_app" "app_backendl2" {
+  name                = "${local.project_weu_legacy}-app-appbackendl2"
+  resource_group_name = "${local.project_weu_legacy}-rg-linux"
 }
