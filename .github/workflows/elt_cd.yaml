@@ -6,7 +6,7 @@ on:
     branches:
       - main
     paths:
-      - "src/domains/elt/**"
+      - "src/domains/elt**"
 
 jobs:
   release_prod:

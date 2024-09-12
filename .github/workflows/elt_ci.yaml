@@ -10,7 +10,7 @@ on:
       - reopened
       - ready_for_review
     paths:
-      - "src/domains/elt/**"
+      - "src/domains/elt**"
       - ".github/workflows/elt_**"
 
 jobs:
