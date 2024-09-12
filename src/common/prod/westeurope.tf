@@ -350,6 +350,10 @@ module "apim_weu" {
   vnet_common = local.core.networking.weu.vnet_common
   cidr_subnet = "10.0.100.0/24"
 
+  datasources = {
+    azurerm_client_config = data.azurerm_client_config.current
+  }
+
   key_vault        = local.core.key_vault.weu.kv
   key_vault_common = local.core.key_vault.weu.kv_common
 

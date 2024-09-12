@@ -79,3 +79,8 @@ variable "key_vault_common" {
   })
   description = "Information of the Key Vault Common"
 }
+
+variable "datasources" {
+  type        = map(any)
+  description = "Common datasources"
+}
