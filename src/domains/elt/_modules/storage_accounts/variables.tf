@@ -17,3 +17,12 @@ variable "resource_group_name" {
   type        = string
   description = "Name of the resource group where resources will be created"
 }
+
+variable "resource_group_name_itn" {
+  type        = string
+  description = "Name of the resource group where resources will be created in ItalyNorth"
+}
+
+variable "project_itn" {
+  type = string
+}

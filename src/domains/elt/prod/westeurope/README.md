@@ -19,6 +19,7 @@
 | Name | Type |
 |------|------|
 | [azurerm_resource_group.elt_rg](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/resource_group) | resource |
+| [azurerm_resource_group.itn_elt](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/resource_group) | resource |
 
 ## Inputs
 
