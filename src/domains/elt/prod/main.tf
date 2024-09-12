@@ -34,7 +34,7 @@ resource "azurerm_resource_group" "itn_elt" {
 }
 
 module "networking" {
-  source = "../../_modules/networking"
+  source = "../_modules/networking"
 
   project = local.project
 
@@ -46,7 +46,7 @@ module "networking" {
 }
 
 module "storage_accounts" {
-  source = "../../_modules/storage_accounts"
+  source = "../_modules/storage_accounts"
 
   project                 = local.project
   project_itn             = local.project_itn
@@ -58,7 +58,7 @@ module "storage_accounts" {
 }
 
 module "function_apps" {
-  source = "../../_modules/function_apps"
+  source = "../_modules/function_apps"
 
   project                         = local.project
   location                        = local.location
