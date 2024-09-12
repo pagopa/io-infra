@@ -4,14 +4,15 @@ module "apim_v2" {
   subnet_id                 = azurerm_subnet.apim.id
   location                  = var.location
   name                      = try(local.nonstandard[var.location_short].apim_name, "${var.project}-apim-01")
-  resource_group_name       = var.resource_group_common
+  resource_group_name       = var.resource_group_internal
   publisher_name            = "IO"
   publisher_email           = data.azurerm_key_vault_secret.apim_publisher_email.value
   notification_sender_email = data.azurerm_key_vault_secret.apim_publisher_email.value
-  sku_name                  = "Premium_2"
+  sku_name                  = "Premium_4"
   virtual_network_type      = "Internal"
   zones                     = ["1", "2"]
 
+  redis_cache_id       = null
   public_ip_address_id = azurerm_public_ip.apim.id
 
   hostname_configuration = {
@@ -48,9 +49,10 @@ module "apim_v2" {
     portal           = null
   }
 
+  management_logger_applicaiton_insight_enabled = true
   application_insights = {
     enabled             = true
-    instrumentation_key = data.azurerm_application_insights.application_insights.instrumentation_key
+    instrumentation_key = var.ai_instrumentation_key
   }
 
   autoscale = {
@@ -70,7 +72,7 @@ module "apim_v2" {
 
   action = [
     {
-      action_group_id    = data.azurerm_monitor_action_group.error_action_group.id
+      action_group_id    = var.action_group_id
       webhook_properties = null
     }
   ]

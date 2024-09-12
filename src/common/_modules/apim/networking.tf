@@ -1,10 +1,10 @@
 resource "azurerm_subnet" "apim" {
   name                 = try(local.nonstandard[var.location_short].snet_name, "${var.project}-apim-snet-01")
-  resource_group_name  = var.resource_group_common
-  virtual_network_name = var.vnet_name
-  address_prefixes     = var.cidr_subnet_apim
+  resource_group_name  = var.vnet_common.resource_group_name
+  virtual_network_name = var.vnet_common.name
+  address_prefixes     = [var.cidr_subnet]
 
-  private_endpoint_network_policies_enabled = true
+  private_endpoint_network_policies = "Enabled"
 
   service_endpoints = [
     "Microsoft.Web",

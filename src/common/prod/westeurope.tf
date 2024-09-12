@@ -2,6 +2,10 @@ data "azurerm_resource_group" "common_weu" {
   name = format("%s-rg-common", local.project_weu_legacy)
 }
 
+data "azurerm_resource_group" "internal_weu" {
+  name = format("%s-rg-internal", local.project_weu_legacy)
+}
+
 module "event_hubs_weu" {
   source = "../_modules/event_hubs"
 
@@ -281,6 +285,7 @@ module "monitoring_weu" {
 
   tags = local.tags
 }
+
 module "application_gateway_weu" {
   source = "../_modules/application_gateway"
 
@@ -331,6 +336,25 @@ module "application_gateway_weu" {
   tags = merge(local.tags, { Source = "https://github.com/pagopa/io-infra" })
 }
 
-module "apim" {
+module "apim_weu" {
   source = "../_modules/apim"
+
+  location       = data.azurerm_resource_group.common_weu.location
+  location_short = local.location_short[data.azurerm_resource_group.common_weu.location]
+  project        = local.project_weu_legacy
+  prefix         = local.prefix
+
+  resource_group_common   = data.azurerm_resource_group.common_weu.name
+  resource_group_internal = data.azurerm_resource_group.internal_weu.name
+
+  vnet_common = local.core.networking.weu.vnet_common
+  cidr_subnet = "10.0.100.0/24"
+
+  key_vault        = local.core.key_vault.weu.kv
+  key_vault_common = local.core.key_vault.weu.kv_common
+
+  action_group_id        = module.monitoring_weu.action_groups.error
+  ai_instrumentation_key = module.monitoring_weu.appi_instrumentation_key
+
+  tags = local.tags
 }
