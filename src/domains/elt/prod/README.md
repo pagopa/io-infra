@@ -10,9 +10,9 @@
 
 | Name | Source | Version |
 |------|--------|---------|
-| <a name="module_function_apps"></a> [function\_apps](#module\_function\_apps) | ../../_modules/function_apps | n/a |
-| <a name="module_networking"></a> [networking](#module\_networking) | ../../_modules/networking | n/a |
-| <a name="module_storage_accounts"></a> [storage\_accounts](#module\_storage\_accounts) | ../../_modules/storage_accounts | n/a |
+| <a name="module_function_apps"></a> [function\_apps](#module\_function\_apps) | ../_modules/function_apps | n/a |
+| <a name="module_networking"></a> [networking](#module\_networking) | ../_modules/networking | n/a |
+| <a name="module_storage_accounts"></a> [storage\_accounts](#module\_storage\_accounts) | ../_modules/storage_accounts | n/a |
 
 ## Resources
 

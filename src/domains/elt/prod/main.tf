@@ -51,6 +51,7 @@ module "storage_accounts" {
   project                 = local.project
   project_itn             = local.project_itn
   location                = local.location
+  location_itn            = local.location_itn
   resource_group_name     = azurerm_resource_group.elt_rg.name
   resource_group_name_itn = azurerm_resource_group.itn_elt.name
 

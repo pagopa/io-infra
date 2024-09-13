@@ -41,9 +41,37 @@ module "storage_account_itn_elt" {
   tags = var.tags
 }
 
+module "storage_account_itn_elt_02" {
+  source = "github.com/pagopa/terraform-azurerm-v3//storage_account?ref=v7.67.1"
+
+  name                = replace(format("%s-elt-st-02", var.project_itn), "-", "")
+  resource_group_name = var.resource_group_name_itn
+  location            = var.location_itn
+
+  account_kind                  = "StorageV2"
+  account_tier                  = "Standard"
+  account_replication_type      = "ZRS"
+  access_tier                   = "Hot"
+  public_network_access_enabled = true
+
+  blob_versioning_enabled = true
+
+  advanced_threat_protection    = false
+  enable_low_availability_alert = false
+
+  tags = var.tags
+}
+
+
 resource "azurerm_storage_container" "messages_step_final_itn" {
   name                  = "messages-report-step-final"
   storage_account_name  = module.storage_account_itn_elt.name
+  container_access_type = "private"
+}
+
+resource "azurerm_storage_container" "messages_step_final_itn_02" {
+  name                  = "messages-report-step-final"
+  storage_account_name  = module.storage_account_itn_elt_02.name
   container_access_type = "private"
 }
 
@@ -53,9 +81,20 @@ resource "azurerm_storage_container" "messages_report_step1_itn" {
   container_access_type = "private"
 }
 
+resource "azurerm_storage_container" "messages_report_step1_itn_02" {
+  name                  = "messages-report-step1"
+  storage_account_name  = module.storage_account_itn_elt_02.name
+  container_access_type = "private"
+}
+
 resource "azurerm_storage_table" "fnelterrors_itn" {
   name                 = "fnelterrors"
   storage_account_name = module.storage_account_itn_elt.name
+}
+
+resource "azurerm_storage_table" "fnelterrors_itn_02" {
+  name                 = "fnelterrors"
+  storage_account_name = module.storage_account_itn_elt_02.name
 }
 
 resource "azurerm_storage_table" "fnelterrors_messages_itn" {
@@ -63,9 +102,19 @@ resource "azurerm_storage_table" "fnelterrors_messages_itn" {
   storage_account_name = module.storage_account_itn_elt.name
 }
 
+resource "azurerm_storage_table" "fnelterrors_messages_itn_02" {
+  name                 = "fnelterrorsMessages"
+  storage_account_name = module.storage_account_itn_elt_02.name
+}
+
 resource "azurerm_storage_table" "fnelterrors_message_status_itn" {
   name                 = "fnelterrorsMessageStatus"
   storage_account_name = module.storage_account_itn_elt.name
+}
+
+resource "azurerm_storage_table" "fnelterrors_message_status_itn_02" {
+  name                 = "fnelterrorsMessageStatus"
+  storage_account_name = module.storage_account_itn_elt_02.name
 }
 
 resource "azurerm_storage_table" "fnelterrors_notification_status_itn" {
@@ -73,12 +122,27 @@ resource "azurerm_storage_table" "fnelterrors_notification_status_itn" {
   storage_account_name = module.storage_account_itn_elt.name
 }
 
+resource "azurerm_storage_table" "fnelterrors_notification_status_itn_02" {
+  name                 = "fnelterrorsNotificationStatus"
+  storage_account_name = module.storage_account_itn_elt_02.name
+}
+
 resource "azurerm_storage_table" "fneltcommands_itn" {
   name                 = "fneltcommands"
   storage_account_name = module.storage_account_itn_elt.name
 }
 
+resource "azurerm_storage_table" "fneltcommands_itn_02" {
+  name                 = "fneltcommands"
+  storage_account_name = module.storage_account_itn_elt_02.name
+}
+
 resource "azurerm_storage_table" "fneltexports_itn" {
   name                 = "fneltexports"
   storage_account_name = module.storage_account_itn_elt.name
+}
+
+resource "azurerm_storage_table" "fneltexports_itn_02" {
+  name                 = "fneltexports"
+  storage_account_name = module.storage_account_itn_elt_02.name
 }

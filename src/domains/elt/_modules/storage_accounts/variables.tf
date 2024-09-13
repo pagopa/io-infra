@@ -8,6 +8,11 @@ variable "location" {
   description = "Azure region"
 }
 
+variable "location_itn" {
+  type        = string
+  description = "Azure ItalyNorth region"
+}
+
 variable "tags" {
   type        = map(any)
   description = "Resource tags"
