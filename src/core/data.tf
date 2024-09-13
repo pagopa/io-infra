@@ -16,6 +16,20 @@ data "azurerm_cosmosdb_account" "cosmos_remote_content" {
 }
 
 #
+# APIM
+#
+data "azurerm_subnet" "apim" {
+  name                 = "apimv2api"
+  resource_group_name  = azurerm_resource_group.rg_common.name
+  virtual_network_name = data.azurerm_virtual_network.common.name
+}
+
+data "azurerm_api_management" "apim" {
+  name                = "io-p-apim-v2-api"
+  resource_group_name = "io-p-rg-internal"
+}
+
+#
 # Logs resources
 #
 
