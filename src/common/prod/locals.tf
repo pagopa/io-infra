@@ -40,6 +40,15 @@ locals {
     allowed_subnets = ["fn3admin", "fn3app1", "fn3app2", "fn3appasync", "fn3assets", "fn3public", "fn3services", "fn3slackbot"]
   }
 
+  app_backends = {
+    l1 = {
+      override_app_settings = {}
+    },
+    l2 = {
+      override_app_settings = {}
+    }
+  }
+
   eventhubs = [
     {
       name              = "io-cosmosdb-services"
