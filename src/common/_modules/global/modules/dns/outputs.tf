@@ -40,3 +40,7 @@ output "private_dns_zones" {
 output "external_domain" {
   value = var.external_domain
 }
+
+output "dns_default_ttl_sec" {
+  value = var.dns_default_ttl_sec
+}

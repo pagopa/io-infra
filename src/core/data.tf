@@ -325,11 +325,6 @@ data "azurerm_linux_function_app" "function_app" {
   resource_group_name = format("%s-app-rg-%d", local.project, count.index + 1)
 }
 
-data "azurerm_linux_function_app" "function_assets_cdn" {
-  name                = format("%s-assets-cdn-fn", local.project)
-  resource_group_name = format("%s-assets-cdn-rg", local.project)
-}
-
 data "azurerm_api_management" "trial_system" {
   provider            = azurerm.prod-trial
   name                = "ts-p-itn-apim-01"

@@ -1,50 +1,63 @@
 removed {
-  from = module.apim_v2_product_admin.azurerm_api_management_product_policy.this
+  from = module.assets_cdn
+
   lifecycle {
     destroy = false
   }
 }
 
 removed {
-  from = module.apim_v2_product_admin.azurerm_api_management_product.this
+  from = azurerm_resource_group.assets_cdn_rg
+
   lifecycle {
     destroy = false
   }
 }
 
 removed {
-  from = module.api_v2_admin.azurerm_api_management_product_api.this
+  from = azurerm_dns_cname_record.assets_cdn_io_pagopa_it
+
   lifecycle {
     destroy = false
   }
 }
 
 removed {
-  from = azurerm_api_management_named_value.io_fn3_admin_url_v2
+  from = azurerm_dns_cname_record.assets_cdn_io_italia_it
+
   lifecycle {
     destroy = false
   }
 }
 
 removed {
-  from = module.api_v2_admin.azurerm_api_management_api_policy.this
+  from = azurerm_cdn_profile.assets_cdn_profile
+
   lifecycle {
     destroy = false
   }
 }
 
 removed {
-  from = module.api_v2_admin.azurerm_api_management_api.this
+  from = azurerm_cdn_endpoint_custom_domain.assets_cdn_io_italia_it
+
   lifecycle {
     destroy = false
   }
 }
-
 
 removed {
-  from = azurerm_api_management_named_value.io_fn3_admin_key_v2
+  from = azurerm_cdn_endpoint_custom_domain.assets_cdn
+
   lifecycle {
     destroy = false
   }
 }
 
+removed {
+  from = azurerm_cdn_endpoint.assets_cdn_endpoint
+
+  lifecycle {
+    destroy = false
+  }
+}
