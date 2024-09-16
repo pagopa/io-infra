@@ -415,7 +415,7 @@ module "redis_weu" {
 }
 
 module "app_backend_weu" {
-  for_each = { for name, settings in local.app_backends }
+  for_each = { for name, settings in local.app_backends : name => settings }
   source = "../_modules/app_backend"
 
   location       = data.azurerm_resource_group.common_weu.location
