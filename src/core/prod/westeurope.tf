@@ -108,3 +108,23 @@ module "vpn_weu" {
 
   tags = local.tags
 }
+
+module "azdoa_weu" {
+  source = "../_modules/azure_devops_agent"
+
+  location            = data.azurerm_resource_group.common_weu.location
+  location_short      = local.location_short[data.azurerm_resource_group.common_weu.location]
+  resource_group_name = data.azurerm_resource_group.common_weu.name
+  project             = local.project_weu_legacy
+
+  vnet_common     = module.networking_weu.vnet_common
+  resource_groups = local.resource_groups[local.location_short[data.azurerm_resource_group.common_weu.location]]
+  datasources = {
+    azurerm_client_config = data.azurerm_client_config.current
+  }
+
+  image_name  = "azdo-agent-ubuntu2204-image-v2"
+  cidr_subnet = ["10.0.250.0/24"]
+
+  tags = local.tags
+}
