@@ -28,11 +28,6 @@ variable "cidr_subnet" {
   description = "Azure DevOps agent network address space"
 }
 
-variable "image_name" {
-  type        = string
-  description = "Azure DevOps Agent image name"
-}
-
 variable "vnet_common" {
   type = object({
     id                  = string

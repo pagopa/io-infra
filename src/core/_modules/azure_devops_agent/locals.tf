@@ -7,4 +7,6 @@ locals {
       li_loadtest = "${var.project}-azdoa-vmss-loadtest-li"
     }
   }
+
+  image_name = "azdo-agent-ubuntu2204-image-v2"
 }

@@ -123,7 +123,6 @@ module "azdoa_weu" {
     azurerm_client_config = data.azurerm_client_config.current
   }
 
-  image_name  = "azdo-agent-ubuntu2204-image-v2"
   cidr_subnet = ["10.0.250.0/24"]
 
   tags = local.tags

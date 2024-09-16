@@ -21,12 +21,12 @@ module "azdoa_snet" {
 
 module "azdoa_li_infra" {
   source              = "github.com/pagopa/terraform-azurerm-v3//azure_devops_agent?ref=v8.27.0"
-  name                = try(local.nonstandard[var.location_short].li_infra, "${var.project}-azdoa-vmss-li-infra-01")
+  name                = try(local.nonstandard[var.location_short].li_infra, "${var.project}-azdoa-infra-vmss-01")
   resource_group_name = azurerm_resource_group.azdoa_rg.name
   subnet_id           = module.azdoa_snet.id
   subscription_id     = var.datasources.azurerm_client_config.subscription_id
   location            = var.location
-  source_image_name   = var.image_name
+  source_image_name   = local.image_name
   vm_sku              = "Standard_B2als_v2"
 
   tags = var.tags
@@ -34,12 +34,12 @@ module "azdoa_li_infra" {
 
 module "azdoa_loadtest_li" {
   source              = "github.com/pagopa/terraform-azurerm-v3//azure_devops_agent?ref=v8.27.0"
-  name                = try(local.nonstandard[var.location_short].li_loadtest, "${var.project}-azdoa-vmss-li-loadtest-01")
+  name                = try(local.nonstandard[var.location_short].li_loadtest, "${var.project}-azdoa-loadtest-vmss-01")
   resource_group_name = azurerm_resource_group.azdoa_rg.name
   subnet_id           = module.azdoa_snet.id
   subscription_id     = var.datasources.azurerm_client_config.subscription_id
   location            = var.location
-  source_image_name   = var.image_name
+  source_image_name   = local.image_name
   vm_sku              = "Standard_D8ds_v5"
 
   tags = var.tags
