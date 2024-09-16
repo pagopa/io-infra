@@ -462,3 +462,13 @@ data "azurerm_subnet" "appgateway_snet" {
   resource_group_name  = azurerm_resource_group.rg_common.name
   virtual_network_name = data.azurerm_virtual_network.common.name
 }
+
+#
+# Azure DevOps Agent
+#
+
+data "azurerm_subnet" "azdoa_snet" {
+  name                 = "azure-devops"
+  resource_group_name  = azurerm_resource_group.rg_common.name
+  virtual_network_name = data.azurerm_virtual_network.common.name
+}
