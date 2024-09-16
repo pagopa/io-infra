@@ -38,6 +38,16 @@ variable "name" {
     type = "string"
 }
 
+variable "vnet_common" {
+  type = object({
+    id                  = string
+    name                = string
+    address_space       = list(string)
+    resource_group_name = string
+  })
+  description = "Information of the common VNet"
+}
+
 variable "override_app_settings" {
     type = map(string)
 }
@@ -71,8 +81,8 @@ variable "error_action_group_id" {
 
 variable "nat_gateway" {
   type = object({
-    name = string
     id = string
+    name = string
     resource_group_name = string
   })
 }

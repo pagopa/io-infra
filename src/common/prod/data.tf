@@ -61,6 +61,13 @@ data "azurerm_subnet" "cosmos_api_allowed" {
 
 
 # App Backend
+data "azurerm_subnet" "services_snet" {
+  count                = 2
+  name                 = format("%s-services-snet-%d", local.project_weu_legacy, count.index + 1)
+  virtual_network_name = local.core.networking.weu.vnet_common.name
+  resource_group_name  = local.core.networking.weu.vnet_common.resource_group_name
+}
+
 data "azurerm_subnet" "functions_fast_login_snet" {
   name                 = "${local.project_weu}-fast-login-snet"
   virtual_network_name = local.core.networking.weu.vnet_common.name

@@ -14,3 +14,11 @@ output "pep_snet" {
     address_prefixes = module.pep_snet.address_prefixes
   }
 }
+
+output "nat_gateway" {
+  value = {
+    id = azurerm_nat_gateway.this.id
+    name = azurerm_nat_gateway.this.name
+    resource_group_name = azurerm_nat_gateway.this.resource_group_name
+  }
+}
