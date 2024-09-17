@@ -81,7 +81,7 @@ resource "azurerm_monitor_metric_alert" "alert_nh_common_pns_errors" {
 
   # Action groups for alerts
   action {
-    action_group_id = data.azurerm_monitor_action_group.error_action_group.id
+    action_group_id = data.azurerm_monitor_action_group.io_com_action_group.id
   }
 
   tags = local.tags
@@ -112,7 +112,7 @@ resource "azurerm_monitor_metric_alert" "alert_nh_common_anomalous_pns_success_v
 
   # Action groups for alerts
   action {
-    action_group_id = data.azurerm_monitor_action_group.error_action_group.id
+    action_group_id = data.azurerm_monitor_action_group.io_com_action_group.id
   }
 
   tags = local.tags
