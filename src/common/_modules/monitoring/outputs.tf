@@ -20,3 +20,11 @@ output "appi_instrumentation_key" {
   value     = azurerm_application_insights.appi.instrumentation_key
   sensitive = true
 }
+
+output "log" {
+  value = {
+    id                  = azurerm_log_analytics_workspace.log.id
+    name                = azurerm_log_analytics_workspace.log.name
+    resource_group_name = azurerm_log_analytics_workspace.log.resource_group_name
+  }
+}
