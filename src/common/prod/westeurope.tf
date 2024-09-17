@@ -362,3 +362,23 @@ module "apim_weu" {
 
   tags = local.tags
 }
+
+module "assets_cdn_weu" {
+  source = "../_modules/assets_cdn"
+
+  location       = data.azurerm_resource_group.common_weu.location
+  location_short = local.location_short[data.azurerm_resource_group.common_weu.location]
+  project        = local.project_weu_legacy
+
+  resource_groups     = local.resource_groups[local.location_short[data.azurerm_resource_group.common_weu.location]]
+  key_vault_common    = local.core.key_vault.weu.kv_common
+  external_domain     = module.global.dns.external_domain
+  public_dns_zones    = module.global.dns.public_dns_zones
+  dns_default_ttl_sec = module.global.dns.dns_default_ttl_sec
+  assets_cdn_fn = {
+    name     = data.azurerm_linux_function_app.function_assets_cdn.name
+    hostname = data.azurerm_linux_function_app.function_assets_cdn.default_hostname
+  }
+
+  tags = local.tags
+}

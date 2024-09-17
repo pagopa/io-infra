@@ -23,7 +23,7 @@ variable "vnets" {
 
 variable "dns_default_ttl_sec" {
   type        = number
-  description = "value"
+  description = "Default TTL of DNS records"
   default     = 3600
 }
 
