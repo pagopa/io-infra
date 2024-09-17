@@ -9,8 +9,8 @@ module "apim_v2_io_backend_product" {
   display_name = "IO BACKEND"
   description  = "Product for IO backend"
 
-  api_management_name = module.apim_v2.name
-  resource_group_name = module.apim_v2.resource_group_name
+  api_management_name = data.azurerm_api_management.apim.name
+  resource_group_name = data.azurerm_api_management.apim.resource_group_name
 
   published             = true
   subscription_required = true
@@ -33,8 +33,8 @@ locals {
 ## BPD
 resource "azurerm_api_management_api_version_set" "io_backend_bpd_api_v2" {
   name                = format("%s-io-backend-bpd-api", var.env_short)
-  resource_group_name = module.apim_v2.resource_group_name
-  api_management_name = module.apim_v2.name
+  resource_group_name = data.azurerm_api_management.apim.resource_group_name
+  api_management_name = data.azurerm_api_management.apim.name
   display_name        = "${local.apim_v2_io_backend_api.display_name} - bpd"
   versioning_scheme   = "Segment"
 }
@@ -43,8 +43,8 @@ module "apim_v2_io_backend_bpd_api_v1" {
   source = "github.com/pagopa/terraform-azurerm-v3//api_management_api?ref=v8.27.0"
 
   name                  = format("%s-io-backend-bpd-api", var.env_short)
-  api_management_name   = module.apim_v2.name
-  resource_group_name   = module.apim_v2.resource_group_name
+  api_management_name   = data.azurerm_api_management.apim.name
+  resource_group_name   = data.azurerm_api_management.apim.resource_group_name
   product_ids           = [module.apim_v2_io_backend_product.product_id]
   subscription_required = local.apim_v2_io_backend_api.subscription_required
   version_set_id        = azurerm_api_management_api_version_set.io_backend_bpd_api_v2.id
@@ -68,8 +68,8 @@ module "apim_v2_io_backend_bpd_api_v1" {
 ## MYPORTAL
 resource "azurerm_api_management_api_version_set" "io_backend_myportal_api_v2" {
   name                = format("%s-io-backend-myportal-api", var.env_short)
-  resource_group_name = module.apim_v2.resource_group_name
-  api_management_name = module.apim_v2.name
+  resource_group_name = data.azurerm_api_management.apim.resource_group_name
+  api_management_name = data.azurerm_api_management.apim.name
   display_name        = "${local.apim_v2_io_backend_api.display_name} - myportal"
   versioning_scheme   = "Segment"
 }
@@ -78,8 +78,8 @@ module "apim_v2_io_backend_myportal_api_v1" {
   source = "github.com/pagopa/terraform-azurerm-v3//api_management_api?ref=v8.27.0"
 
   name                  = format("%s-io-backend-myportal-api", var.env_short)
-  api_management_name   = module.apim_v2.name
-  resource_group_name   = module.apim_v2.resource_group_name
+  api_management_name   = data.azurerm_api_management.apim.name
+  resource_group_name   = data.azurerm_api_management.apim.resource_group_name
   product_ids           = [module.apim_v2_io_backend_product.product_id]
   subscription_required = local.apim_v2_io_backend_api.subscription_required
   version_set_id        = azurerm_api_management_api_version_set.io_backend_myportal_api_v2.id
@@ -103,8 +103,8 @@ module "apim_v2_io_backend_myportal_api_v1" {
 ## PAGOPA
 resource "azurerm_api_management_api_version_set" "io_backend_pagopa_api_v2" {
   name                = format("%s-io-backend-pagopa-api", var.env_short)
-  resource_group_name = module.apim_v2.resource_group_name
-  api_management_name = module.apim_v2.name
+  resource_group_name = data.azurerm_api_management.apim.resource_group_name
+  api_management_name = data.azurerm_api_management.apim.name
   display_name        = "${local.apim_v2_io_backend_api.display_name} - pagopa"
   versioning_scheme   = "Segment"
 }
@@ -113,8 +113,8 @@ module "apim_v2_io_backend_pagopa_api_v1" {
   source = "github.com/pagopa/terraform-azurerm-v3//api_management_api?ref=v8.27.0"
 
   name                  = format("%s-io-backend-pagopa-api", var.env_short)
-  api_management_name   = module.apim_v2.name
-  resource_group_name   = module.apim_v2.resource_group_name
+  api_management_name   = data.azurerm_api_management.apim.name
+  resource_group_name   = data.azurerm_api_management.apim.resource_group_name
   product_ids           = [module.apim_v2_io_backend_product.product_id]
   subscription_required = local.apim_v2_io_backend_api.subscription_required
   version_set_id        = azurerm_api_management_api_version_set.io_backend_pagopa_api_v2.id
@@ -138,8 +138,8 @@ module "apim_v2_io_backend_pagopa_api_v1" {
 ## APP
 resource "azurerm_api_management_api_version_set" "io_backend_app_api_v2" {
   name                = format("%s-io-backend-app-api", var.env_short)
-  resource_group_name = module.apim_v2.resource_group_name
-  api_management_name = module.apim_v2.name
+  resource_group_name = data.azurerm_api_management.apim.resource_group_name
+  api_management_name = data.azurerm_api_management.apim.name
   display_name        = "${local.apim_v2_io_backend_api.display_name} - app"
   versioning_scheme   = "Segment"
 }
@@ -148,8 +148,8 @@ module "apim_v2_io_backend_app_api_v1" {
   source = "github.com/pagopa/terraform-azurerm-v3//api_management_api?ref=v8.27.0"
 
   name                  = format("%s-io-backend-app-api", var.env_short)
-  api_management_name   = module.apim_v2.name
-  resource_group_name   = module.apim_v2.resource_group_name
+  api_management_name   = data.azurerm_api_management.apim.name
+  resource_group_name   = data.azurerm_api_management.apim.resource_group_name
   product_ids           = [module.apim_v2_io_backend_product.product_id]
   subscription_required = local.apim_v2_io_backend_api.subscription_required
   version_set_id        = azurerm_api_management_api_version_set.io_backend_app_api_v2.id
@@ -179,8 +179,8 @@ module "apim_v2_io_backend_app_api_v1" {
 ## AUTH
 resource "azurerm_api_management_api_version_set" "io_backend_auth_api_v2" {
   name                = format("%s-io-backend-auth-api", var.env_short)
-  resource_group_name = module.apim_v2.resource_group_name
-  api_management_name = module.apim_v2.name
+  resource_group_name = data.azurerm_api_management.apim.resource_group_name
+  api_management_name = data.azurerm_api_management.apim.name
   display_name        = "${local.apim_v2_io_backend_api.display_name} - auth"
   versioning_scheme   = "Segment"
 }
@@ -189,8 +189,8 @@ module "apim_v2_io_backend_auth_api_v1" {
   source = "github.com/pagopa/terraform-azurerm-v3//api_management_api?ref=v8.27.0"
 
   name                  = format("%s-io-backend-auth-api", var.env_short)
-  api_management_name   = module.apim_v2.name
-  resource_group_name   = module.apim_v2.resource_group_name
+  api_management_name   = data.azurerm_api_management.apim.name
+  resource_group_name   = data.azurerm_api_management.apim.resource_group_name
   product_ids           = [module.apim_v2_io_backend_product.product_id]
   subscription_required = local.apim_v2_io_backend_api.subscription_required
   version_set_id        = azurerm_api_management_api_version_set.io_backend_auth_api_v2.id
@@ -213,8 +213,8 @@ module "apim_v2_io_backend_auth_api_v1" {
 ## CGN
 resource "azurerm_api_management_api_version_set" "io_backend_cgn_api_v2" {
   name                = format("%s-io-backend-cgn-api", var.env_short)
-  resource_group_name = module.apim_v2.resource_group_name
-  api_management_name = module.apim_v2.name
+  resource_group_name = data.azurerm_api_management.apim.resource_group_name
+  api_management_name = data.azurerm_api_management.apim.name
   display_name        = "${local.apim_v2_io_backend_api.display_name} - cgn"
   versioning_scheme   = "Segment"
 }
@@ -223,8 +223,8 @@ module "apim_v2_io_backend_cgn_api_v1" {
   source = "github.com/pagopa/terraform-azurerm-v3//api_management_api?ref=v8.27.0"
 
   name                  = format("%s-io-backend-cgn-api", var.env_short)
-  api_management_name   = module.apim_v2.name
-  resource_group_name   = module.apim_v2.resource_group_name
+  api_management_name   = data.azurerm_api_management.apim.name
+  resource_group_name   = data.azurerm_api_management.apim.resource_group_name
   product_ids           = [module.apim_v2_io_backend_product.product_id]
   subscription_required = local.apim_v2_io_backend_api.subscription_required
   version_set_id        = azurerm_api_management_api_version_set.io_backend_cgn_api_v2.id
@@ -248,8 +248,8 @@ module "apim_v2_io_backend_cgn_api_v1" {
 ## EUCOVIDCERT
 resource "azurerm_api_management_api_version_set" "io_backend_eucovidcert_api_v2" {
   name                = format("%s-io-backend-eucovidcert-api", var.env_short)
-  resource_group_name = module.apim_v2.resource_group_name
-  api_management_name = module.apim_v2.name
+  resource_group_name = data.azurerm_api_management.apim.resource_group_name
+  api_management_name = data.azurerm_api_management.apim.name
   display_name        = "${local.apim_v2_io_backend_api.display_name} - eucovidcert"
   versioning_scheme   = "Segment"
 }
@@ -258,8 +258,8 @@ module "apim_v2_io_backend_eucovidcert_api_v1" {
   source = "github.com/pagopa/terraform-azurerm-v3//api_management_api?ref=v8.27.0"
 
   name                  = format("%s-io-backend-eucovidcert-api", var.env_short)
-  api_management_name   = module.apim_v2.name
-  resource_group_name   = module.apim_v2.resource_group_name
+  api_management_name   = data.azurerm_api_management.apim.name
+  resource_group_name   = data.azurerm_api_management.apim.resource_group_name
   product_ids           = [module.apim_v2_io_backend_product.product_id]
   subscription_required = local.apim_v2_io_backend_api.subscription_required
   version_set_id        = azurerm_api_management_api_version_set.io_backend_eucovidcert_api_v2.id
@@ -283,8 +283,8 @@ module "apim_v2_io_backend_eucovidcert_api_v1" {
 ## MITVOUCHER
 resource "azurerm_api_management_api_version_set" "io_backend_mitvoucher_api_v2" {
   name                = format("%s-io-backend-mitvoucher-api", var.env_short)
-  resource_group_name = module.apim_v2.resource_group_name
-  api_management_name = module.apim_v2.name
+  resource_group_name = data.azurerm_api_management.apim.resource_group_name
+  api_management_name = data.azurerm_api_management.apim.name
   display_name        = "${local.apim_v2_io_backend_api.display_name} - mitvoucher"
   versioning_scheme   = "Segment"
 }
@@ -293,8 +293,8 @@ module "apim_v2_io_backend_mitvoucher_api_v1" {
   source = "github.com/pagopa/terraform-azurerm-v3//api_management_api?ref=v8.27.0"
 
   name                  = format("%s-io-backend-mitvoucher-api", var.env_short)
-  api_management_name   = module.apim_v2.name
-  resource_group_name   = module.apim_v2.resource_group_name
+  api_management_name   = data.azurerm_api_management.apim.name
+  resource_group_name   = data.azurerm_api_management.apim.resource_group_name
   product_ids           = [module.apim_v2_io_backend_product.product_id]
   subscription_required = local.apim_v2_io_backend_api.subscription_required
   version_set_id        = azurerm_api_management_api_version_set.io_backend_mitvoucher_api_v2.id
@@ -318,8 +318,8 @@ module "apim_v2_io_backend_mitvoucher_api_v1" {
 ## NOTIFICATIONS
 resource "azurerm_api_management_api_version_set" "io_backend_notifications_api_v2" {
   name                = format("%s-io-backend-notifications-api", var.env_short)
-  resource_group_name = module.apim_v2.resource_group_name
-  api_management_name = module.apim_v2.name
+  resource_group_name = data.azurerm_api_management.apim.resource_group_name
+  api_management_name = data.azurerm_api_management.apim.name
   display_name        = "${local.apim_v2_io_backend_api.display_name} - notifications"
   versioning_scheme   = "Segment"
 }
@@ -328,8 +328,8 @@ module "apim_v2_io_backend_notifications_api_v1" {
   source = "github.com/pagopa/terraform-azurerm-v3//api_management_api?ref=v8.27.0"
 
   name                  = format("%s-io-backend-notifications-api", var.env_short)
-  api_management_name   = module.apim_v2.name
-  resource_group_name   = module.apim_v2.resource_group_name
+  api_management_name   = data.azurerm_api_management.apim.name
+  resource_group_name   = data.azurerm_api_management.apim.resource_group_name
   product_ids           = [module.apim_v2_io_backend_product.product_id]
   subscription_required = local.apim_v2_io_backend_api.subscription_required
   version_set_id        = azurerm_api_management_api_version_set.io_backend_notifications_api_v2.id
@@ -353,8 +353,8 @@ module "apim_v2_io_backend_notifications_api_v1" {
 ## PUBLIC
 resource "azurerm_api_management_api_version_set" "io_backend_public_api_v2" {
   name                = format("%s-io-backend-public-api", var.env_short)
-  resource_group_name = module.apim_v2.resource_group_name
-  api_management_name = module.apim_v2.name
+  resource_group_name = data.azurerm_api_management.apim.resource_group_name
+  api_management_name = data.azurerm_api_management.apim.name
   display_name        = "${local.apim_v2_io_backend_api.display_name} - public"
   versioning_scheme   = "Segment"
 }
@@ -363,8 +363,8 @@ module "apim_v2_io_backend_public_api_v1" {
   source = "github.com/pagopa/terraform-azurerm-v3//api_management_api?ref=v8.27.0"
 
   name                  = format("%s-io-backend-public-api", var.env_short)
-  api_management_name   = module.apim_v2.name
-  resource_group_name   = module.apim_v2.resource_group_name
+  api_management_name   = data.azurerm_api_management.apim.name
+  resource_group_name   = data.azurerm_api_management.apim.resource_group_name
   product_ids           = [module.apim_v2_io_backend_product.product_id]
   subscription_required = local.apim_v2_io_backend_api.subscription_required
   version_set_id        = azurerm_api_management_api_version_set.io_backend_public_api_v2.id
@@ -388,8 +388,8 @@ module "apim_v2_io_backend_public_api_v1" {
 ## SESSION
 resource "azurerm_api_management_api_version_set" "io_backend_session_api_v2" {
   name                = format("%s-io-backend-session-api", var.env_short)
-  resource_group_name = module.apim_v2.resource_group_name
-  api_management_name = module.apim_v2.name
+  resource_group_name = data.azurerm_api_management.apim.resource_group_name
+  api_management_name = data.azurerm_api_management.apim.name
   display_name        = "${local.apim_v2_io_backend_api.display_name} - session"
   versioning_scheme   = "Segment"
 }
@@ -398,8 +398,8 @@ module "apim_v2_io_backend_session_api_v1" {
   source = "github.com/pagopa/terraform-azurerm-v3//api_management_api?ref=v8.27.0"
 
   name                  = format("%s-io-backend-session-api", var.env_short)
-  api_management_name   = module.apim_v2.name
-  resource_group_name   = module.apim_v2.resource_group_name
+  api_management_name   = data.azurerm_api_management.apim.name
+  resource_group_name   = data.azurerm_api_management.apim.resource_group_name
   product_ids           = [module.apim_v2_io_backend_product.product_id]
   subscription_required = local.apim_v2_io_backend_api.subscription_required
   version_set_id        = azurerm_api_management_api_version_set.io_backend_session_api_v2.id

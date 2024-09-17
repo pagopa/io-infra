@@ -16,6 +16,20 @@ data "azurerm_cosmosdb_account" "cosmos_remote_content" {
 }
 
 #
+# APIM
+#
+data "azurerm_subnet" "apim" {
+  name                 = "apimv2api"
+  resource_group_name  = azurerm_resource_group.rg_common.name
+  virtual_network_name = data.azurerm_virtual_network.common.name
+}
+
+data "azurerm_api_management" "apim" {
+  name                = "io-p-apim-v2-api"
+  resource_group_name = "io-p-rg-internal"
+}
+
+#
 # Logs resources
 #
 
@@ -311,11 +325,6 @@ data "azurerm_linux_function_app" "function_app" {
   resource_group_name = format("%s-app-rg-%d", local.project, count.index + 1)
 }
 
-data "azurerm_linux_function_app" "function_assets_cdn" {
-  name                = format("%s-assets-cdn-fn", local.project)
-  resource_group_name = format("%s-assets-cdn-rg", local.project)
-}
-
 data "azurerm_api_management" "trial_system" {
   provider            = azurerm.prod-trial
   name                = "ts-p-itn-apim-01"
@@ -445,6 +454,16 @@ data "azurerm_dns_a_record" "api_io_italia_it" {
 
 data "azurerm_subnet" "appgateway_snet" {
   name                 = "${local.project}-appgateway-snet"
+  resource_group_name  = azurerm_resource_group.rg_common.name
+  virtual_network_name = data.azurerm_virtual_network.common.name
+}
+
+#
+# Azure DevOps Agent
+#
+
+data "azurerm_subnet" "azdoa_snet" {
+  name                 = "azure-devops"
   resource_group_name  = azurerm_resource_group.rg_common.name
   virtual_network_name = data.azurerm_virtual_network.common.name
 }

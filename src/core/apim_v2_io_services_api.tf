@@ -2,8 +2,8 @@ module "apim_v2_product_services" {
   source = "github.com/pagopa/terraform-azurerm-v3//api_management_product?ref=v8.27.0"
 
   product_id            = "io-services-api"
-  api_management_name   = module.apim_v2.name
-  resource_group_name   = module.apim_v2.resource_group_name
+  api_management_name   = data.azurerm_api_management.apim.name
+  resource_group_name   = data.azurerm_api_management.apim.resource_group_name
   display_name          = "IO SERVICES API"
   description           = "SERVICES API for IO platform."
   subscription_required = true
@@ -15,8 +15,8 @@ module "apim_v2_product_services" {
 
 resource "azurerm_api_management_api_operation_policy" "submit_message_for_user_policy_v2" {
   api_name            = "io-services-api"
-  api_management_name = module.apim_v2.name
-  resource_group_name = module.apim_v2.resource_group_name
+  api_management_name = data.azurerm_api_management.apim.name
+  resource_group_name = data.azurerm_api_management.apim.resource_group_name
   operation_id        = "submitMessageforUser"
 
   xml_content = file("./api/io_services/v1/post_submitmessageforuser_policy/policy.xml")
@@ -24,8 +24,8 @@ resource "azurerm_api_management_api_operation_policy" "submit_message_for_user_
 
 resource "azurerm_api_management_api_operation_policy" "submit_message_for_user_with_fiscalcode_in_body_policy_v2" {
   api_name            = "io-services-api"
-  api_management_name = module.apim_v2.name
-  resource_group_name = module.apim_v2.resource_group_name
+  api_management_name = data.azurerm_api_management.apim.name
+  resource_group_name = data.azurerm_api_management.apim.resource_group_name
   operation_id        = "submitMessageforUserWithFiscalCodeInBody"
 
   xml_content = file("./api/io_services/v1/post_submitmessageforuserwithfiscalcodeinbody_policy/policy.xml")
@@ -34,8 +34,8 @@ resource "azurerm_api_management_api_operation_policy" "submit_message_for_user_
 # Named Value fn3-services
 resource "azurerm_api_management_named_value" "io_fn3_services_url_v2" {
   name                = "io-fn3-services-url"
-  api_management_name = module.apim_v2.name
-  resource_group_name = module.apim_v2.resource_group_name
+  api_management_name = data.azurerm_api_management.apim.name
+  resource_group_name = data.azurerm_api_management.apim.resource_group_name
   display_name        = "io-fn3-services-url"
   value               = "https://io-p-fn3-services.azurewebsites.net"
 }
@@ -47,8 +47,8 @@ data "azurerm_key_vault_secret" "io_fn3_services_key_secret_v2" {
 
 resource "azurerm_api_management_named_value" "io_fn3_services_key_v2" {
   name                = "io-fn3-services-key"
-  api_management_name = module.apim_v2.name
-  resource_group_name = module.apim_v2.resource_group_name
+  api_management_name = data.azurerm_api_management.apim.name
+  resource_group_name = data.azurerm_api_management.apim.resource_group_name
   display_name        = "io-fn3-services-key"
   value               = data.azurerm_key_vault_secret.io_fn3_services_key_secret_v2.value
   secret              = "true"
@@ -63,8 +63,8 @@ data "azurerm_key_vault_secret" "io_fn3_eucovidcert_key_secret_v2" {
 
 resource "azurerm_api_management_named_value" "io_fn3_eucovidcert_key_v2" {
   name                = "io-fn3-eucovidcert-key"
-  api_management_name = module.apim_v2.name
-  resource_group_name = module.apim_v2.resource_group_name
+  api_management_name = data.azurerm_api_management.apim.name
+  resource_group_name = data.azurerm_api_management.apim.resource_group_name
   display_name        = "io-fn3-eucovidcert-key"
   value               = data.azurerm_key_vault_secret.io_fn3_eucovidcert_key_secret_v2.value
   secret              = "true"
@@ -73,8 +73,8 @@ resource "azurerm_api_management_named_value" "io_fn3_eucovidcert_key_v2" {
 # alternative url, for differential routing (example: progressive rollout)
 resource "azurerm_api_management_named_value" "io_fn3_eucovidcert_url_alt_v2" {
   name                = "io-fn3-eucovidcert-url-alt"
-  api_management_name = module.apim_v2.name
-  resource_group_name = module.apim_v2.resource_group_name
+  api_management_name = data.azurerm_api_management.apim.name
+  resource_group_name = data.azurerm_api_management.apim.resource_group_name
   display_name        = "io-fn3-eucovidcert-url-alt"
   value               = "https://io-p-eucovidcert-fn.azurewebsites.net"
 }
@@ -87,8 +87,8 @@ data "azurerm_key_vault_secret" "api_gad_client_certificate_verified_header_secr
 
 resource "azurerm_api_management_named_value" "api_gad_client_certificate_verified_header_v2" {
   name                = "apigad-gad-client-certificate-verified-header"
-  api_management_name = module.apim_v2.name
-  resource_group_name = module.apim_v2.resource_group_name
+  api_management_name = data.azurerm_api_management.apim.name
+  resource_group_name = data.azurerm_api_management.apim.resource_group_name
   display_name        = "apigad-gad-client-certificate-verified-header"
   value               = data.azurerm_key_vault_secret.api_gad_client_certificate_verified_header_secret_v2.value
   secret              = "true"
@@ -98,8 +98,8 @@ module "api_v2_services" {
   source = "github.com/pagopa/terraform-azurerm-v3//api_management_api?ref=v8.27.0"
 
   name                = "io-services-api"
-  api_management_name = module.apim_v2.name
-  resource_group_name = module.apim_v2.resource_group_name
+  api_management_name = data.azurerm_api_management.apim.name
+  resource_group_name = data.azurerm_api_management.apim.resource_group_name
   revision            = "1"
   display_name        = "IO SERVICES API"
   description         = "SERVICES API for IO platform."
