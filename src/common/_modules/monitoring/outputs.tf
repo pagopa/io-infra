@@ -7,3 +7,16 @@ output "action_groups" {
     slack              = azurerm_monitor_action_group.slack.id
   }
 }
+
+output "appi" {
+  value = {
+    id                  = azurerm_application_insights.appi.id
+    name                = azurerm_application_insights.appi.name
+    resource_group_name = azurerm_application_insights.appi.resource_group_name
+  }
+}
+
+output "appi_instrumentation_key" {
+  value     = azurerm_application_insights.appi.instrumentation_key
+  sensitive = true
+}
