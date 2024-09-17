@@ -42,7 +42,7 @@ locals {
       CGN_OPERATOR_SEARCH_API_KEY = data.azurerm_key_vault_secret.app_backend_CGN_OPERATOR_SEARCH_API_KEY_PROD.value
       EUCOVIDCERT_API_URL         = "https://${data.azurerm_linux_function_app.eucovidcert.default_hostname}/api/v1"
       EUCOVIDCERT_API_KEY         = data.azurerm_key_vault_secret.fn_eucovidcert_API_KEY_APPBACKEND.value
-      APP_MESSAGES_API_KEY        = data.azurerm_key_vault_secret.app_backend_APP_CITIZEN_APIM_KEY.value
+      APP_MESSAGES_API_KEY        = data.azurerm_key_vault_secret.app_backend_APP_MESSAGES_API_KEY.value
       LOLLIPOP_API_URL            = "https://${data.azurerm_linux_function_app.lollipop_function.default_hostname}"
       LOLLIPOP_API_KEY            = data.azurerm_key_vault_secret.app_backend_LOLLIPOP_ITN_API_KEY.value
       TRIAL_SYSTEM_API_URL        = "https://ts-p-itn-api-func-01.azurewebsites.net" # PROD-TRIAL subscription
@@ -71,7 +71,7 @@ locals {
       ALLOW_NOTIFY_IP_SOURCE_RANGE = "127.0.0.0/0"
 
       // LOCK / UNLOCK SESSION ENDPOINTS
-      ALLOW_SESSION_HANDLER_IP_SOURCE_RANGE = module.apim_v2_snet.address_prefixes[0]
+      ALLOW_SESSION_HANDLER_IP_SOURCE_RANGE = data.azurerm_subnet.apim.address_prefixes[0]
 
       // PAGOPA
       PAGOPA_API_URL_PROD = "https://api.platform.pagopa.it/checkout/auth/payments/v1"
@@ -279,19 +279,19 @@ locals {
       IS_APPBACKENDLI = "false"
       // FUNCTIONS
       API_URL              = "https://${data.azurerm_linux_function_app.function_app[1].default_hostname}/api/v1"
-      APP_MESSAGES_API_URL = "https://api-app.internal.io.pagopa.it/messages/l1/api/v1"
+      APP_MESSAGES_API_URL = "https://io-p-itn-msgs-citizen-func-01.azurewebsites.net/api/v1"
     }
     app_settings_l2 = {
       IS_APPBACKENDLI = "false"
       // FUNCTIONS
       API_URL              = "https://${data.azurerm_linux_function_app.function_app[1].default_hostname}/api/v1"
-      APP_MESSAGES_API_URL = "https://api-app.internal.io.pagopa.it/messages/l2/api/v1"
+      APP_MESSAGES_API_URL = "https://io-p-itn-msgs-citizen-func-02.azurewebsites.net/api/v1"
     }
     app_settings_li = {
       IS_APPBACKENDLI = "true"
       // FUNCTIONS
       API_URL              = "https://${data.azurerm_linux_function_app.function_app[1].default_hostname}/api/v1" # not used
-      APP_MESSAGES_API_URL = "https://api-app.internal.io.pagopa.it/messages/l1/api/v1"                           # not used
+      APP_MESSAGES_API_URL = "https://io-p-itn-msgs-citizen-func-01.azurewebsites.net/api/v1"                     # not used
     }
   }
 
@@ -670,7 +670,7 @@ module "appservice_app_backendl1" {
     data.azurerm_subnet.services_snet[0].id,
     data.azurerm_subnet.services_snet[1].id,
     data.azurerm_subnet.appgateway_snet.id,
-    module.apim_v2_snet.id,
+    data.azurerm_subnet.apim.id,
   ]
 
   allowed_ips = concat(
@@ -717,11 +717,11 @@ module "appservice_app_backendl1_slot_staging" {
   ip_restriction_default_action = "Deny"
 
   allowed_subnets = [
-    module.azdoa_snet[0].id,
+    data.azurerm_subnet.azdoa_snet.id,
     data.azurerm_subnet.services_snet[0].id,
     data.azurerm_subnet.services_snet[1].id,
     data.azurerm_subnet.appgateway_snet.id,
-    module.apim_v2_snet.id,
+    data.azurerm_subnet.apim.id,
   ]
 
   allowed_ips = concat(
@@ -800,7 +800,7 @@ module "appservice_app_backendl2" {
     data.azurerm_subnet.services_snet[0].id,
     data.azurerm_subnet.services_snet[1].id,
     data.azurerm_subnet.appgateway_snet.id,
-    module.apim_v2_snet.id,
+    data.azurerm_subnet.apim.id,
   ]
 
   allowed_ips = concat(
@@ -847,11 +847,11 @@ module "appservice_app_backendl2_slot_staging" {
   ip_restriction_default_action = "Deny"
 
   allowed_subnets = [
-    module.azdoa_snet[0].id,
+    data.azurerm_subnet.azdoa_snet.id,
     data.azurerm_subnet.services_snet[0].id,
     data.azurerm_subnet.services_snet[1].id,
     data.azurerm_subnet.appgateway_snet.id,
-    module.apim_v2_snet.id,
+    data.azurerm_subnet.apim.id,
   ]
 
   allowed_ips = concat(
@@ -964,7 +964,7 @@ module "appservice_app_backendli_slot_staging" {
   ip_restriction_default_action = "Deny"
 
   allowed_subnets = [
-    module.azdoa_snet[0].id,
+    data.azurerm_subnet.azdoa_snet.id,
     data.azurerm_subnet.services_snet[0].id,
     data.azurerm_subnet.services_snet[1].id,
     data.azurerm_subnet.admin_snet.id,
