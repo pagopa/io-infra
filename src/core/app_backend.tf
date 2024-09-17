@@ -717,7 +717,7 @@ module "appservice_app_backendl1_slot_staging" {
   ip_restriction_default_action = "Deny"
 
   allowed_subnets = [
-    module.azdoa_snet[0].id,
+    data.azurerm_subnet.azdoa_snet.id,
     data.azurerm_subnet.services_snet[0].id,
     data.azurerm_subnet.services_snet[1].id,
     data.azurerm_subnet.appgateway_snet.id,
@@ -847,7 +847,7 @@ module "appservice_app_backendl2_slot_staging" {
   ip_restriction_default_action = "Deny"
 
   allowed_subnets = [
-    module.azdoa_snet[0].id,
+    data.azurerm_subnet.azdoa_snet.id,
     data.azurerm_subnet.services_snet[0].id,
     data.azurerm_subnet.services_snet[1].id,
     data.azurerm_subnet.appgateway_snet.id,
@@ -964,7 +964,7 @@ module "appservice_app_backendli_slot_staging" {
   ip_restriction_default_action = "Deny"
 
   allowed_subnets = [
-    module.azdoa_snet[0].id,
+    data.azurerm_subnet.azdoa_snet.id,
     data.azurerm_subnet.services_snet[0].id,
     data.azurerm_subnet.services_snet[1].id,
     data.azurerm_subnet.admin_snet.id,
