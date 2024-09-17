@@ -27,7 +27,13 @@ data "azurerm_key_vault_secret" "ntfns_common_ntf_common_api_key_sandbox" {
   key_vault_id = data.azurerm_key_vault.weu_common.id
 }
 
+// TODO: check if this can be removed
 data "azurerm_monitor_action_group" "error_action_group" {
   resource_group_name = "io-p-rg-common"
   name                = "ioperror"
+}
+
+data "azurerm_monitor_action_group" "io_com_action_group" {
+  name                = "io-p-com-error-ag-01"
+  resource_group_name = "io-p-itn-msgs-rg-01"
 }
