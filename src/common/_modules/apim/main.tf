@@ -8,7 +8,7 @@ module "apim_v2" {
   publisher_name            = "IO"
   publisher_email           = data.azurerm_key_vault_secret.apim_publisher_email.value
   notification_sender_email = data.azurerm_key_vault_secret.apim_publisher_email.value
-  sku_name                  = "Premium_4"
+  sku_name                  = "Premium_2"
   virtual_network_type      = "Internal"
   zones                     = ["1", "2"]
 
@@ -57,8 +57,8 @@ module "apim_v2" {
 
   autoscale = {
     enabled                       = true
-    default_instances             = 5
-    minimum_instances             = 4
+    default_instances             = 3
+    minimum_instances             = 2
     maximum_instances             = 6
     scale_out_capacity_percentage = 50
     scale_out_time_window         = "PT3M"
