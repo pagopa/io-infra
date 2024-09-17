@@ -50,6 +50,11 @@ variable "storage_account_primary_connection_string" {
   description = "Storage account primary connection string used to handle errors"
 }
 
+variable "storage_account_itn_primary_connection_string" {
+  type      = string
+  sensitive = true
+}
+
 variable "storage_account_tables" {
   type = object({
     fnelterrors                     = string
