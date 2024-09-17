@@ -425,6 +425,7 @@ module "app_backend_weu" {
 
   name = each.key
   vnet_common = local.core.networking.weu.vnet_common
+  nat_gateway = local.core.networking.weu.nat_gateway
   resource_groups = local.resource_groups[local.location_short[data.azurerm_resource_group.common_weu.location]]
   datasources = {
     azurerm_client_config = data.azurerm_client_config.current
@@ -432,14 +433,15 @@ module "app_backend_weu" {
 
   key_vault        = local.core.key_vault.weu.kv
   key_vault_common = local.core.key_vault.weu.kv_common
+
   allowed_subnets = concat([
         data.azurerm_subnet.appgateway_snet.id,
         data.azurerm_subnet.apim.id,
   ], data.azurerm_subnet.services_snet.*.id)
+
   azdoa_subnet = local.core.azure_devops_agent[local.location_short[data.azurerm_resource_group.common_weu.location]].subnet
   error_action_group_id = module.monitoring_weu.action_groups.error
-  application_insights = module.monitoring.appi
-  nat_gateway = local.core.networking.weu.nat_gateway
+  application_insights = module.monitoring_weu.appi
 
   override_app_settings = each.value.override_app_settings
   tags = local.tags
