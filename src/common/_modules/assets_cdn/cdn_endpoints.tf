@@ -1,5 +1,5 @@
 resource "azurerm_cdn_endpoint" "assets_cdn_endpoint" {
-  name                          = try(local.nonstandard[var.location_short].cdne, "${var.project}-assets-cdn-cdne-01")
+  name                          = try(local.nonstandard[var.location_short].cdne, "${var.project}-assets-cdne-01")
   resource_group_name           = azurerm_resource_group.assets_cdn_rg.name
   location                      = var.location
   profile_name                  = azurerm_cdn_profile.assets_cdn_profile.name

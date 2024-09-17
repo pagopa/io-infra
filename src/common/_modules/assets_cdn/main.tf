@@ -8,7 +8,7 @@ resource "azurerm_resource_group" "assets_cdn_rg" {
 module "assets_cdn" {
   source = "github.com/pagopa/terraform-azurerm-v3//storage_account?ref=v8.27.0"
 
-  name                            = replace(try(local.nonstandard[var.location_short].st, "${var.project}-assets-cdn-st-01"), "-", "")
+  name                            = replace(try(local.nonstandard[var.location_short].st, "${var.project}-assets-st-01"), "-", "")
   account_kind                    = "StorageV2"
   account_tier                    = "Standard"
   access_tier                     = "Hot"
@@ -27,7 +27,7 @@ module "assets_cdn" {
 }
 
 resource "azurerm_cdn_profile" "assets_cdn_profile" {
-  name                = try(local.nonstandard[var.location_short].cdnp, "${var.project}-assets-cdn-cdnp-01")
+  name                = try(local.nonstandard[var.location_short].cdnp, "${var.project}-assets-cdnp-01")
   resource_group_name = azurerm_resource_group.assets_cdn_rg.name
   location            = var.location
   sku                 = "Standard_Microsoft"
