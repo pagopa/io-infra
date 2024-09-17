@@ -6,14 +6,14 @@ on:
     branches:
       - main
     paths:
-      - "src/domains/elt**"
+      - "src/domains/elt/**"
 
 jobs:
   release_prod:
-    uses: ./.github/workflows/call_release.yaml
+    uses: pagopa/dx/.github/workflows/infra_apply.yaml@main
     name: Terraform Apply
     secrets: inherit
     with:
       environment: prod
-      dir: "src/domains/elt/prod/westeurope"
+      base_path: "src/domains/elt"
       use_private_agent: true

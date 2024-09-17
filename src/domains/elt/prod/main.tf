@@ -26,8 +26,15 @@ resource "azurerm_resource_group" "elt_rg" {
   tags = local.tags
 }
 
+resource "azurerm_resource_group" "itn_elt" {
+  name     = format("%s-elt-rg-01", local.project_itn)
+  location = local.location_itn
+
+  tags = local.tags
+}
+
 module "networking" {
-  source = "../../_modules/networking"
+  source = "../_modules/networking"
 
   project = local.project
 
@@ -39,17 +46,20 @@ module "networking" {
 }
 
 module "storage_accounts" {
-  source = "../../_modules/storage_accounts"
+  source = "../_modules/storage_accounts"
 
-  project             = local.project
-  location            = local.location
-  resource_group_name = azurerm_resource_group.elt_rg.name
+  project                 = local.project
+  project_itn             = local.project_itn
+  location                = local.location
+  location_itn            = local.location_itn
+  resource_group_name     = azurerm_resource_group.elt_rg.name
+  resource_group_name_itn = azurerm_resource_group.itn_elt.name
 
   tags = local.tags
 }
 
 module "function_apps" {
-  source = "../../_modules/function_apps"
+  source = "../_modules/function_apps"
 
   project                         = local.project
   location                        = local.location
@@ -59,9 +69,10 @@ module "function_apps" {
   vnet_name = module.networking.vnet_common.name
   subnet_id = module.networking.subnet_elt.id
 
-  storage_account_name                      = module.storage_accounts.storage_account_elt.name
-  storage_account_primary_access_key        = module.storage_accounts.storage_account_elt_primary_access_key
-  storage_account_primary_connection_string = module.storage_accounts.storage_account_elt_primary_connection_string
+  storage_account_name                          = module.storage_accounts.storage_account_elt.name
+  storage_account_primary_access_key            = module.storage_accounts.storage_account_elt_primary_access_key
+  storage_account_primary_connection_string     = module.storage_accounts.storage_account_elt_primary_connection_string
+  storage_account_itn_primary_connection_string = module.storage_accounts.storage_account_elt_itn_primary_connection_string
 
   storage_account_tables = {
     fnelterrors                     = module.storage_accounts.storage_account_tables.fnelterrors

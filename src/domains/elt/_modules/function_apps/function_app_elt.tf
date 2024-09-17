@@ -61,6 +61,7 @@ locals {
       ERROR_STORAGE_TABLE_NOTIFICATION_STATUS = var.storage_account_tables.fnelterrors_notification_status
 
       COMMAND_STORAGE                = var.storage_account_primary_connection_string
+      BLOB_COMMAND_STORAGE           = var.storage_account_itn_primary_connection_string
       COMMAND_STORAGE_TABLE          = var.storage_account_tables.fneltcommands
       IMPORT_TOPIC_NAME              = "import-command"
       IMPORT_TOPIC_CONNECTION_STRING = data.azurerm_eventhub_authorization_rule.evh_ns_import_command_fn.primary_connection_string
