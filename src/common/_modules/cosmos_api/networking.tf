@@ -3,7 +3,7 @@ resource "azurerm_private_endpoint" "sql" {
   name                = "${azurerm_cosmosdb_account.this.name}-sql-endpoint"
   location            = azurerm_cosmosdb_account.this.location
   resource_group_name = azurerm_cosmosdb_account.this.resource_group_name
-  subnet_id           = data.azurerm_subnet.pep.id
+  subnet_id           = var.pep_snet.id
 
   private_service_connection {
     name                           = "${azurerm_cosmosdb_account.this.name}-sql"
@@ -14,8 +14,8 @@ resource "azurerm_private_endpoint" "sql" {
 
   private_dns_zone_group {
     name                 = "private-dns-zone-group"
-    private_dns_zone_ids = [data.azurerm_private_dns_zone.documents.id]
+    private_dns_zone_ids = [var.documents_dns_zone.id]
   }
 
-  tags = local.tags
+  tags = var.tags
 }

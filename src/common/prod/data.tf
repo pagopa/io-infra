@@ -49,3 +49,12 @@ data "azurerm_linux_function_app" "function_assets_cdn" {
   name                = "${local.project_weu_legacy}-assets-cdn-fn"
   resource_group_name = "${local.project_weu_legacy}-assets-cdn-rg"
 }
+
+# Cosmos API
+data "azurerm_subnet" "cosmos_api_allowed" {
+  for_each = toset(local.cosmos_api.allowed_subnets)
+
+  name                 = each.value
+  virtual_network_name = local.core.networking.weu.vnet_common.name
+  resource_group_name  = local.core.networking.weu.vnet_common.resource_group_name
+}

@@ -1,21 +1,5 @@
 locals {
-  prefix             = "io"
-  env_short          = "p"
-  project            = "${local.prefix}-${local.env_short}"
-  location           = "westeurope"
-  secondary_location = "northeurope"
-
-  resource_group_name_internal = "${local.project}-rg-internal"
-
-  tags = {
-    CostCenter  = "TS310 - PAGAMENTI & SERVIZI"
-    CreatedBy   = "Terraform"
-    Environment = "Prod"
-    Owner       = "IO"
-    Source      = "https://github.com/pagopa/io-infra/blob/main/src/cosmos-api/prod"
-  }
-
-  cosmosdb_containers = [
+    cosmosdb_containers = [
     {
       name                  = "activations"
       partition_key_path    = "/fiscalCode"
@@ -207,4 +191,25 @@ locals {
       }
     },
   ]
+}
+
+import {
+    to = module.cosmos_api_weu.azurerm_private_endpoint.sql
+    id = "/subscriptions/ec285037-c673-4f58-b594-d7c480da4e8b/resourceGroups/io-p-rg-internal/providers/Microsoft.Network/privateEndpoints/io-p-cosmos-api-sql-endpoint"
+}
+
+import {
+    to = module.cosmos_api_weu.azurerm_cosmosdb_sql_database.db
+    id = "/subscriptions/ec285037-c673-4f58-b594-d7c480da4e8b/resourceGroups/io-p-rg-internal/providers/Microsoft.DocumentDB/databaseAccounts/io-p-cosmos-api/sqlDatabases/db"
+}
+
+import {
+    for_each = [for container in local.cosmosdb_containers : container.name]
+    to = module.cosmos_api_weu.azurerm_cosmosdb_sql_container.these[each.value]
+    id = "/subscriptions/ec285037-c673-4f58-b594-d7c480da4e8b/resourceGroups/io-p-rg-internal/providers/Microsoft.DocumentDB/databaseAccounts/io-p-cosmos-api/sqlDatabases/db/containers/${each.value}"
+}
+
+import {
+    to = module.cosmos_api_weu.azurerm_cosmosdb_account.this
+    id = "/subscriptions/ec285037-c673-4f58-b594-d7c480da4e8b/resourceGroups/io-p-rg-internal/providers/Microsoft.DocumentDB/databaseAccounts/io-p-cosmos-api"
 }
