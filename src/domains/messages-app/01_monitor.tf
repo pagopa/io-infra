@@ -26,3 +26,8 @@ data "azurerm_monitor_action_group" "email" {
   resource_group_name = var.monitor_resource_group_name
   name                = local.monitor_action_group_email_name
 }
+
+data "azurerm_monitor_action_group" "io_com_action_group" {
+  name                = "io-p-com-error-ag-01"
+  resource_group_name = "io-p-itn-msgs-rg-01"
+}
