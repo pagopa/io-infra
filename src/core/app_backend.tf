@@ -291,7 +291,7 @@ locals {
       IS_APPBACKENDLI = "true"
       // FUNCTIONS
       API_URL              = "https://${data.azurerm_linux_function_app.function_app[1].default_hostname}/api/v1" # not used
-      APP_MESSAGES_API_URL = "https://io-p-itn-msgs-citizen-func-01.azurewebsites.net/api/v1"                           # not used
+      APP_MESSAGES_API_URL = "https://io-p-itn-msgs-citizen-func-01.azurewebsites.net/api/v1"                     # not used
     }
   }
 
