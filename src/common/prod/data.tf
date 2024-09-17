@@ -43,3 +43,9 @@ data "azurerm_linux_web_app" "app_backendl2" {
   name                = "${local.project_weu_legacy}-app-appbackendl2"
   resource_group_name = "${local.project_weu_legacy}-rg-linux"
 }
+
+# CDN
+data "azurerm_linux_function_app" "function_assets_cdn" {
+  name                = "${local.project_weu_legacy}-assets-cdn-fn"
+  resource_group_name = "${local.project_weu_legacy}-assets-cdn-rg"
+}
