@@ -8,7 +8,7 @@ resource "azurerm_subnet" "github_runner" {
     "Microsoft.Web"
   ]
 
-  private_endpoint_network_policies_enabled = true
+  private_endpoint_network_policies = "Enabled"
 }
 
 resource "azurerm_container_app_environment" "github_runner" {

@@ -20,7 +20,7 @@ variable "resource_group_name" {
 
 variable "cidr_subnet" {
   type        = string
-  description = "Azure DevOps agent network address space"
+  description = "Container App Environment network address space"
 }
 
 variable "vnet_common" {
@@ -33,5 +33,6 @@ variable "vnet_common" {
 }
 
 variable "log_analytics_workspace_id" {
-  type = string
+  type        = string
+  description = "Id of the Log Analytics Workspace to use as log database"
 }
