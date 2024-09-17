@@ -185,7 +185,7 @@ module "push_notif_function" {
   # Action groups for alerts
   action = [
     {
-      action_group_id    = data.azurerm_monitor_action_group.error_action_group.id
+      action_group_id    = data.azurerm_monitor_action_group.io_com_action_group.id
       webhook_properties = {}
     }
   ]
