@@ -118,6 +118,11 @@ data "azurerm_key_vault_secret" "app_backend_PRE_SHARED_KEY" {
   key_vault_id = data.azurerm_key_vault.key_vault_common.id
 }
 
+data "azurerm_storage_account" "locked_profiles_storage" {
+  name                = replace("${local.project}-locked-profiles-st", "-", "")
+  resource_group_name = "${local.project}-rg-internal"
+}
+
 
 # -----------------------------------------------
 # Alerts
