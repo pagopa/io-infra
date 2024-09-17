@@ -33,7 +33,8 @@ module "storage_account_itn_elt" {
   access_tier                   = "Hot"
   public_network_access_enabled = true
 
-  blob_versioning_enabled = true
+  blob_versioning_enabled  = true
+  blob_change_feed_enabled = true
 
   advanced_threat_protection    = false
   enable_low_availability_alert = false
