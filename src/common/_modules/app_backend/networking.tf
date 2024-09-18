@@ -1,6 +1,6 @@
 module "app_backend_snet" {
   source                                    = "github.com/pagopa/terraform-azurerm-v3//subnet?ref=v8.27.0"
-  name                                      = "appbackend${var.name}"
+  name                                      = "appbackend${local.name}"
   address_prefixes                          = var.cidr_subnet
   resource_group_name                       = var.resource_groups.common
   virtual_network_name                      = var.vnet_common.name

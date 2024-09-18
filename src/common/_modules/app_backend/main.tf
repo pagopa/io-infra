@@ -11,11 +11,11 @@ module "appservice_app_backend" {
 
   # App service plan
   plan_type = "internal"
-  plan_name = format("%s-plan-appappbackend${var.name}", var.project)
+  plan_name = format("%s-plan-appappbackend${local.name}", var.project)
   sku_name  = var.app_backend_plan_sku_size
 
   # App service
-  name                = format("%s-app-appbackend${var.name}", var.project)
+  name                = format("%s-app-appbackend${local.name}", var.project)
   resource_group_name = azurerm_resource_group.rg_linux.name
   location            = var.location
 

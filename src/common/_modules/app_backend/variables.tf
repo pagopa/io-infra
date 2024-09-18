@@ -34,8 +34,8 @@ variable "resource_groups" {
   description = "Resource group names"
 }
 
-variable "name" {
-    type = "string"
+variable "index" {
+    type = "number"
 }
 
 variable "vnet_common" {
