@@ -382,3 +382,20 @@ module "assets_cdn_weu" {
 
   tags = local.tags
 }
+
+module "cosmos_api_weu" {
+  source = "../_modules/cosmos_api"
+
+  location       = data.azurerm_resource_group.common_weu.location
+  location_short = local.location_short[data.azurerm_resource_group.common_weu.location]
+  project        = local.project_weu_legacy
+
+  resource_groups     = local.resource_groups[local.location_short[data.azurerm_resource_group.common_weu.location]]
+  vnet_common         = local.core.networking.weu.vnet_common
+  pep_snet            = local.core.networking.weu.pep_snet
+  secondary_location  = "northeurope"
+  documents_dns_zone  = module.global.dns.private_dns_zones.documents
+  allowed_subnets_ids = values(data.azurerm_subnet.cosmos_api_allowed)[*].id
+
+  tags = local.tags
+}

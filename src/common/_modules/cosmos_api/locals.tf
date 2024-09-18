@@ -1,20 +1,5 @@
 locals {
-  prefix             = "io"
-  env_short          = "p"
-  project            = "${local.prefix}-${local.env_short}"
-  location           = "westeurope"
-  secondary_location = "northeurope"
-
-  resource_group_name_internal = "${local.project}-rg-internal"
-
-  tags = {
-    CostCenter  = "TS310 - PAGAMENTI & SERVIZI"
-    CreatedBy   = "Terraform"
-    Environment = "Prod"
-    Owner       = "IO"
-    Source      = "https://github.com/pagopa/io-infra/blob/main/src/cosmos-api/prod"
-  }
-
+  ip_range_filter = ["52.174.88.118", "40.91.208.65", "13.69.64.208/28", "13.69.71.192/27", "13.93.36.78", "20.86.93.32/27", "20.86.93.64/28", "20.126.243.151", "20.126.241.238", "20.103.132.139", "20.103.131.1"]
   cosmosdb_containers = [
     {
       name                  = "activations"
@@ -68,6 +53,7 @@ locals {
       name                  = "message-status"
       partition_key_path    = "/messageId"
       partition_key_version = null
+      default_ttl           = -1
       autoscale_settings = {
         max_throughput = 67000
       }
@@ -84,6 +70,7 @@ locals {
       name                  = "messages"
       partition_key_path    = "/fiscalCode"
       partition_key_version = null
+      default_ttl           = -1
       autoscale_settings = {
         max_throughput = 46000
       }
