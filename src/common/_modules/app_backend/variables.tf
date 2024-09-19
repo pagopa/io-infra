@@ -36,6 +36,7 @@ variable "resource_groups" {
 
 variable "index" {
   type = number
+  default = 1
 }
 
 variable "name" {

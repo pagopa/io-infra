@@ -479,7 +479,6 @@ module "app_backend_li_weu" {
   }
 
   name  = "li"
-  index = 1
   is_li = true
 
   vnet_common  = local.core.networking.weu.vnet_common
