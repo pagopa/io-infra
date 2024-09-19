@@ -3,11 +3,11 @@ module "appservice_app_backend" {
 
   # App service plan
   plan_type = "internal"
-  plan_name = "${var.project}-plan-appappbackend${var.name}"
+  plan_name = try(local.nonstandard[var.location_short].asp, "${var.project}-appbe-${name}-asp-01")
   sku_name  = var.plan_sku
 
   # App service
-  name                = "${var.project}-app-appbackend${var.name}"
+  name                = try(local.nonstandard[var.location_short].app, "${var.project}-appbe-${name}-app-01")
   resource_group_name = var.resource_groups.linux
   location            = var.location
 
@@ -89,7 +89,7 @@ module "appservice_app_backend_slot_staging" {
 
 ## web availabolity test
 module "app_backend_web_test_api" {
-  count = var.is_li ? 0 : 1
+  count  = var.is_li ? 0 : 1
   source = "github.com/pagopa/terraform-azurerm-v3//application_insights_web_test_preview?ref=v8.29.1"
 
   subscription_id                   = var.datasources.azurerm_client_config.subscription_id

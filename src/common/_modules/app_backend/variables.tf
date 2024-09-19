@@ -35,7 +35,7 @@ variable "resource_groups" {
 }
 
 variable "index" {
-  type = number
+  type    = number
   default = 1
 }
 
@@ -46,9 +46,9 @@ variable "name" {
 }
 
 variable "is_li" {
-  type = bool
+  type        = bool
   description = "Is this backend li type (async)?"
-  default = false
+  default     = false
 }
 
 variable "vnet_common" {
@@ -157,7 +157,7 @@ variable "autoscale" {
     minimum = optional(number)
     maximum = optional(number)
   })
-  default = null
+  default     = null
   description = "Autoscale capacity information"
 }
 

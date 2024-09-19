@@ -499,7 +499,7 @@ module "app_backend_li_weu" {
       // aks prod01
       "51.105.109.140/32"
   ])
-  slot_allowed_ips = module.monitoring_weu.appi.reserved_ips
+  slot_allowed_ips           = module.monitoring_weu.appi.reserved_ips
   apim_snet_address_prefixes = module.apim_weu.snet.address_prefixes
 
   app_settings_override = local.app_backendli.app_settings_override

@@ -29,4 +29,12 @@ locals {
 
   citizen_auth_revoke_queue_name = "pubkeys-revoke-v2"
 
+  nonstandard = {
+    weu = {
+      asp  = "${var.project}-plan-appappbackend${var.name}"
+      app  = "${var.project}-app-appbackend${var.name}"
+      snet = "appbackend${var.name}"
+    }
+  }
+
 }

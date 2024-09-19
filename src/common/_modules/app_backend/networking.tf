@@ -1,5 +1,5 @@
 resource "azurerm_subnet" "snet" {
-  name                              = "appbackend${var.name}"
+  name                              = try(local.nonstandard[var.location_short].snet, "${var.project}-appbe-${name}-snet-01")
   address_prefixes                  = var.cidr_subnet
   resource_group_name               = var.resource_groups.common
   virtual_network_name              = var.vnet_common.name
