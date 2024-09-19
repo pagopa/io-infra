@@ -3,11 +3,11 @@ module "appservice_app_backend" {
 
   # App service plan
   plan_type = "internal"
-  plan_name = try(local.nonstandard[var.location_short].asp, "${var.project}-appbe-${name}-asp-01")
+  plan_name = try(local.nonstandard[var.location_short].asp, "${var.project}-appbe-${var.name}-asp-01")
   sku_name  = var.plan_sku
 
   # App service
-  name                = try(local.nonstandard[var.location_short].app, "${var.project}-appbe-${name}-app-01")
+  name                = try(local.nonstandard[var.location_short].app, "${var.project}-appbe-${var.name}-app-01")
   resource_group_name = var.resource_groups.linux
   location            = var.location
 
