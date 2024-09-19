@@ -1,9 +1,9 @@
 resource "azurerm_subnet" "snet" {
-  name                                      = "appbackend${var.name}"
-  address_prefixes                          = var.cidr_subnet
-  resource_group_name                       = var.resource_groups.common
-  virtual_network_name                      = var.vnet_common.name
-  private_endpoint_network_policies         = "Enabled"
+  name                              = "appbackend${var.name}"
+  address_prefixes                  = var.cidr_subnet
+  resource_group_name               = var.resource_groups.common
+  virtual_network_name              = var.vnet_common.name
+  private_endpoint_network_policies = "Enabled"
 
   service_endpoints = [
     "Microsoft.Web",
@@ -19,7 +19,7 @@ resource "azurerm_subnet" "snet" {
 }
 
 resource "azurerm_subnet_nat_gateway_association" "snet" {
-  for_each = { for ng in var.nat_gateways : ng.id => ng }
+  for_each       = { for ng in var.nat_gateways : ng.id => ng }
   nat_gateway_id = each.key
   subnet_id      = azurerm_subnet.snet.id
 }

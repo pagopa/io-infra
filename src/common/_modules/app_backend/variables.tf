@@ -35,13 +35,19 @@ variable "resource_groups" {
 }
 
 variable "index" {
-    type = number
+  type = number
 }
 
 variable "name" {
-  type = string
+  type        = string
   description = "Name of the backend (l1, l2, li, ...)"
-  default = null
+  default     = null
+}
+
+variable "is_li" {
+  type = bool
+  description = "Is this backend li type (async)?"
+  default = false
 }
 
 variable "vnet_common" {
@@ -60,12 +66,20 @@ variable "plan_sku" {
   default     = "P1v3"
 }
 
-variable "override_app_settings" {
-    type = map(string)
+variable "allowed_subnets" {
+  type = list(string)
 }
 
-variable "allowed_subnets" {
-    type = list(string)
+variable "slot_allowed_subnets" {
+  type = list(string)
+}
+
+variable "allowed_ips" {
+  type = list(string)
+}
+
+variable "slot_allowed_ips" {
+  type = list(string)
 }
 
 variable "cidr_subnet" {
@@ -73,21 +87,13 @@ variable "cidr_subnet" {
   description = "App backend address space"
 }
 
-variable "azdoa_subnet" {
-  type = object({
-    id               = string
-    name             = string
-    address_prefixes = list(string)
-  })
-}
-
 variable "application_insights" {
-    type = object({
-      id = string
-      name = string
-      resource_group_name = string
-      reserved_ips = list(string)
-    })
+  type = object({
+    id                  = string
+    name                = string
+    resource_group_name = string
+    reserved_ips        = list(string)
+  })
 }
 
 variable "ai_instrumentation_key" {
@@ -105,8 +111,8 @@ variable "apim_snet_address_prefixes" {
 
 variable "nat_gateways" {
   type = list(object({
-    id = string
-    name = string
+    id                  = string
+    name                = string
     resource_group_name = string
   }))
 }
@@ -136,12 +142,12 @@ variable "datasources" {
 
 variable "redis_common" {
   type = object({
-    hostname = string
-    ssl_port = number
+    hostname           = string
+    ssl_port           = number
     primary_access_key = string
   })
   description = "Connection information to the common redis cluster"
-  sensitive = true
+  sensitive   = true
 }
 
 variable "autoscale" {
@@ -150,7 +156,7 @@ variable "autoscale" {
     minimum = number
     maximum = number
   })
-
+  default = {}
   description = "Autoscale capacity information"
 }
 
@@ -161,17 +167,17 @@ variable "citizen_auth_assertion_storage_name" {
 }
 
 variable "app_settings_override" {
-  type = map(any)
-  default = {}
+  type        = map(string)
+  default     = {}
   description = "Map of values that override the common app settings stored in app_settings.tf"
 }
 
 variable "functions_hostnames" {
   type = object({
-    assets_cdn = string
+    assets_cdn           = string
     services_app_backend = string
-    lollipop = string
-    eucovidcert = string
-    cgn = string
+    lollipop             = string
+    eucovidcert          = string
+    cgn                  = string
   })
 }

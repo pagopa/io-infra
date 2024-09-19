@@ -14,7 +14,7 @@ output "key_vault" {
 
 output "azure_devops_agent" {
   value = {
-      weu = module.azdoa_weu
-      itn = null
+    weu = module.azdoa_weu
+    itn = null
   }
 }

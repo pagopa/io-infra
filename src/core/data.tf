@@ -131,7 +131,7 @@ data "azurerm_storage_account" "locked_profiles_storage" {
 resource "azurerm_monitor_metric_alert" "cosmos_api_throttling_alert" {
 
   name                = "[IO-COMMONS | ${data.azurerm_cosmosdb_account.cosmos_api.name}] Throttling"
-  resource_group_name = azurerm_resource_group.rg_linux.name
+  resource_group_name = "${local.project}-rg-linux"
   scopes              = [data.azurerm_cosmosdb_account.cosmos_api.id]
   # TODO: add Runbook for checking errors
   description   = "One or more collections consumed throughput (RU/s) exceed provisioned throughput. Please, consider to increase RU for these collections. Runbook: https://pagopa.atlassian.net/wiki/spaces/IC/pages/723452380/CosmosDB+-+Increase+Max+RU"

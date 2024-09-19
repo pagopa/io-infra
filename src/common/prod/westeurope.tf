@@ -307,8 +307,8 @@ module "application_gateway_weu" {
   public_dns_zones = module.global.dns.public_dns_zones
 
   backend_hostnames = {
-    firmaconio_selfcare_web_app = data.azurerm_linux_web_app.firmaconio_selfcare_web_app.default_hostname
-    app_backends       = module.app_backend_weu[*].default_hostname
+    firmaconio_selfcare_web_app = [data.azurerm_linux_web_app.firmaconio_selfcare_web_app.default_hostname]
+    app_backends                = [for appbe in module.app_backend_weu : appbe.default_hostname]
   }
   certificates = {
     api                                  = "api-io-pagopa-it"
@@ -413,51 +413,116 @@ module "redis_weu" {
   tags = local.tags
 }
 
+
+# TODO: move in new resource_groups module when implemented
+resource "azurerm_resource_group" "rg_linux" {
+  name     = "${local.project_weu_legacy}-rg-linux"
+  location = data.azurerm_resource_group.common_weu.location
+
+  tags = local.tags
+}
 module "app_backend_weu" {
   for_each = { for index, settings in local.app_backends : index => settings }
-  source = "../_modules/app_backend"
+  source   = "../_modules/app_backend"
 
-  location       = data.azurerm_resource_group.common_weu.location
-  location_short = local.location_short[data.azurerm_resource_group.common_weu.location]
-  project        = local.project_weu_legacy
-  prefix         = local.prefix
+  location        = data.azurerm_resource_group.common_weu.location
+  location_short  = local.location_short[data.azurerm_resource_group.common_weu.location]
+  project         = local.project_weu_legacy
+  prefix          = local.prefix
   resource_groups = local.resource_groups[local.location_short[data.azurerm_resource_group.common_weu.location]]
   datasources = {
     azurerm_client_config = data.azurerm_client_config.current
   }
 
-  name = each.key
+  name  = each.key
   index = index(values(local.app_backends), each.value) + 1
-  
-  vnet_common = local.core.networking.weu.vnet_common
-  cidr_subnet = local.app_backends[each.key].cidr_subnet
-  nat_gateways = local.core.networking.weu.nat_gateways
-  allowed_subnets = concat([
-    module.application_gateway_weu.snet.id,
-    module.apim_weu.snet.id,
-  ], data.azurerm_subnet.services_snet.*.id)
-  azdoa_subnet = local.core.azure_devops_agent[local.location_short[data.azurerm_resource_group.common_weu.location]].snet
+
+  vnet_common                = local.core.networking.weu.vnet_common
+  cidr_subnet                = local.app_backends[each.key].cidr_subnet
+  nat_gateways               = local.core.networking.weu.nat_gateways
+  allowed_subnets            = concat(data.azurerm_subnet.services_snet.*.id, [module.application_gateway_weu.snet.id, module.apim_weu.snet.id])
+  slot_allowed_subnets       = concat([var.azdoa_subnet.id], data.azurerm_subnet.services_snet.*.id, [module.application_gateway_weu.snet.id, module.apim_weu.snet.id])
+  allowed_ips                = module.monitoring.appi.reserved_ips
+  slot_allowed_ips           = module.monitoring.appi.reserved_ips
   apim_snet_address_prefixes = module.apim_weu.snet.address_prefixes
 
-  override_app_settings = each.value.override_app_settings
-  functions_hostnames = { for name, function in local.functions : name => function.default_hostname }
+  app_settings_override = each.value.app_settings_override
+  functions_hostnames   = { for name, function in local.functions : name => function.default_hostname }
+
+  key_vault        = local.core.key_vault.weu.kv
+  key_vault_common = local.core.key_vault.weu.kv_common
+
+  error_action_group_id  = module.monitoring_weu.action_groups.error
+  application_insights   = module.monitoring_weu.appi
+  ai_instrumentation_key = module.monitoring_weu.appi_instrumentation_key
+
+  # TODO: remove data once moved redis to modules
+  redis_common = {
+    hostname           = data.azurerm_redis_cache.redis_common.hostname
+    ssl_port           = data.azurerm_redis_cache.redis_common.ssl_port
+    primary_access_key = data.azurerm_redis_cache.redis_common.primary_access_key
+  }
+
+  tags = local.tags
+}
+
+module "app_backend_li_weu" {
+  source = "../_modules/app_backend"
+
+  location        = data.azurerm_resource_group.common_weu.location
+  location_short  = local.location_short[data.azurerm_resource_group.common_weu.location]
+  project         = local.project_weu_legacy
+  prefix          = local.prefix
+  resource_groups = local.resource_groups[local.location_short[data.azurerm_resource_group.common_weu.location]]
+  datasources = {
+    azurerm_client_config = data.azurerm_client_config.current
+  }
+
+  name  = "li"
+  index = 1
+  is_li = true
+
+  vnet_common  = local.core.networking.weu.vnet_common
+  cidr_subnet  = local.app_backends[each.key].cidr_subnet
+  nat_gateways = local.core.networking.weu.nat_gateways
+  allowed_subnets = concat(data.azurerm_subnet.services_snet.*.id,
+    [
+      data.azurerm_subnet.admin_snet.id,
+      data.azurerm_subnet.functions_fast_login_snet.id,
+      data.azurerm_subnet.functions_service_messages_snet.id,
+      data.azurerm_subnet.itn_msgs_sending_func_snet.id
+  ])
+  slot_allowed_subnets = concat([var.azdoa_subnet.id], data.azurerm_subnet.services_snet.*.id, [data.azurerm_subnet.admin_snet.id])
+  allowed_ips = concat(module.monitoring.appi.reserved_ips,
+    [
+      // aks beta
+      "51.124.16.195/32",
+      // aks prod01
+      "51.105.109.140/32"
+  ])
+  slot_allowed_ips = module.monitoring.appi.reserved_ips
+  apim_snet_address_prefixes = module.apim_weu.snet.address_prefixes
+
+  app_settings_override = each.value.app_settings_override
+  functions_hostnames   = { for name, function in local.functions : name => function.default_hostname }
 
   autoscale = {
     default = 10
     minimum = 2
     maximum = 30
   }
-  
+
   key_vault        = local.core.key_vault.weu.kv
   key_vault_common = local.core.key_vault.weu.kv_common
 
-  error_action_group_id = module.monitoring_weu.action_groups.error
-  application_insights = module.monitoring_weu.appi
+  error_action_group_id  = module.monitoring_weu.action_groups.error
+  application_insights   = module.monitoring_weu.appi
   ai_instrumentation_key = module.monitoring_weu.appi_instrumentation_key
 
+  # TODO: remove data once moved redis to modules
   redis_common = {
-    hostname      = data.azurerm_redis_cache.redis_common.hostname
-    ssl_port     = data.azurerm_redis_cache.redis_common.ssl_port
+    hostname           = data.azurerm_redis_cache.redis_common.hostname
+    ssl_port           = data.azurerm_redis_cache.redis_common.ssl_port
     primary_access_key = data.azurerm_redis_cache.redis_common.primary_access_key
   }
 

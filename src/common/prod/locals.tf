@@ -27,6 +27,7 @@ locals {
       external = "${local.project_weu_legacy}-rg-external"
       event    = "${local.project_weu_legacy}-evt-rg"
       sec      = "${local.project_weu_legacy}-sec-rg"
+      linux    = "${local.project_weu_legacy}-rg-linux"
     }
 
     itn = {
@@ -35,6 +36,7 @@ locals {
       external = "${local.project_itn}-common-rg-01"
       event    = "${local.project_itn}-common-rg-01"
       sec      = "${local.project_itn}-sec-rg-01"
+      linux    = "${local.project_itn}-common-rg-01"
     }
   }
 
@@ -45,7 +47,7 @@ locals {
   app_backends = {
     l1 = {
       cidr_subnet = ["10.0.152.0/24"]
-      override_app_settings = {
+      app_settings_override = {
         IS_APPBACKENDLI = "false"
         // FUNCTIONS
         API_URL              = "https://${data.azurerm_linux_function_app.function_app[1].default_hostname}/api/v1"
@@ -54,7 +56,7 @@ locals {
     },
     l2 = {
       cidr_subnet = ["10.0.153.0/24"]
-      override_app_settings = {
+      app_settings_override = {
         IS_APPBACKENDLI = "false"
         // FUNCTIONS
         API_URL              = "https://${data.azurerm_linux_function_app.function_app[1].default_hostname}/api/v1"
@@ -65,7 +67,7 @@ locals {
 
   app_backendli = {
     cidr_subnet = ["10.0.154.0/24"]
-    override_app_settings = {
+    app_settings_override = {
       IS_APPBACKENDLI = "true"
       // FUNCTIONS
       API_URL              = "https://${data.azurerm_linux_function_app.function_app[1].default_hostname}/api/v1" # not used
@@ -74,11 +76,11 @@ locals {
   }
 
   functions = {
-    assets_cdn = data.azurerm_linux_function_app.function_assets_cdn
+    assets_cdn           = data.azurerm_linux_function_app.function_assets_cdn
     services_app_backend = data.azurerm_linux_function_app.services_app_backend_function_app
-    lollipop = data.azurerm_linux_function_app.lollipop_function
-    eucovidcert = data.azurerm_linux_function_app.eucovidcert
-    cgn = data.azurerm_linux_function_app.function_cgn
+    lollipop             = data.azurerm_linux_function_app.lollipop_function
+    eucovidcert          = data.azurerm_linux_function_app.eucovidcert
+    cgn                  = data.azurerm_linux_function_app.function_cgn
   }
 
   eventhubs = [

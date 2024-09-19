@@ -1,11 +1,3 @@
-
-resource "azurerm_resource_group" "rg_linux" {
-  name     = format("%s-rg-linux", var.project)
-  location = var.location
-
-  tags = var.tags
-}
-
 module "appservice_app_backend" {
   source = "github.com/pagopa/terraform-azurerm-v3//app_service?ref=v8.31.0"
 
@@ -16,7 +8,7 @@ module "appservice_app_backend" {
 
   # App service
   name                = "${var.project}-app-appbackend${var.name}"
-  resource_group_name = azurerm_resource_group.rg_linux.name
+  resource_group_name = var.resource_groups.linux
   location            = var.location
 
   node_version                 = "18-lts"
@@ -25,8 +17,8 @@ module "appservice_app_backend" {
   health_check_path            = "/ping"
   health_check_maxpingfailures = 2
 
-  auto_heal_enabled = true
-  auto_heal_settings = {
+  auto_heal_enabled = var.is_li ? false : true # for li is disabled
+  auto_heal_settings = var.is_li ? null : {
     startup_time           = "00:05:00"
     slow_requests_count    = 50
     slow_requests_interval = "00:01:00"
@@ -41,11 +33,8 @@ module "appservice_app_backend" {
   ip_restriction_default_action = "Deny"
 
   allowed_subnets = var.allowed_subnets
-  
-  allowed_ips = concat(
-    [],
-    var.application_insights.reserved_ips,
-  )
+
+  allowed_ips = var.slot_allowed_ips
 
   subnet_id        = azurerm_subnet.snet.id
   vnet_integration = true
@@ -62,7 +51,7 @@ module "appservice_app_backend_slot_staging" {
 
   # App service
   name                = "staging"
-  resource_group_name = azurerm_resource_group.rg_linux.name
+  resource_group_name = var.resource_groups.linux
   location            = var.location
 
   always_on         = true
@@ -70,8 +59,8 @@ module "appservice_app_backend_slot_staging" {
   app_command_line  = local.app_command_line
   health_check_path = "/ping"
 
-  auto_heal_enabled = true
-  auto_heal_settings = {
+  auto_heal_enabled = var.is_li ? false : true # for li is disabled
+  auto_heal_settings = var.is_li ? null : {
     startup_time           = "00:05:00"
     slow_requests_count    = 50
     slow_requests_interval = "00:01:00"
@@ -85,7 +74,7 @@ module "appservice_app_backend_slot_staging" {
 
   ip_restriction_default_action = "Deny"
 
-  allowed_subnets = concat(var.allowed_subnets, [var.azdoa_subnet.id])
+  allowed_subnets = var.slot_allowed_subnets
 
   allowed_ips = concat(
     [],
@@ -100,7 +89,7 @@ module "appservice_app_backend_slot_staging" {
 
 ## web availabolity test
 module "app_backend_web_test_api" {
-  source   = "github.com/pagopa/terraform-azurerm-v3//application_insights_web_test_preview?ref=v8.29.1"
+  source = "github.com/pagopa/terraform-azurerm-v3//application_insights_web_test_preview?ref=v8.29.1"
 
   subscription_id                   = var.datasources.azurerm_client_config.subscription_id
   name                              = module.appservice_app_backend.default_site_hostname
@@ -126,7 +115,7 @@ resource "azurerm_monitor_metric_alert" "too_many_http_5xx" {
   enabled = false
 
   name                = "[IO-COMMONS | ${module.appservice_app_backend.name}] Too many 5xx"
-  resource_group_name = azurerm_resource_group.rg_linux.name
+  resource_group_name = var.resource_groups.linux
   scopes              = [module.appservice_app_backend.id]
   # TODO: add Runbook for checking errors
   description   = "Whenever the total http server errors exceeds a dynamic threashold. Runbook: ${"https://pagopa.atlassian.net"}/wiki/spaces/IC/pages/585072814/Appbackendlx+-+Too+many+errors"

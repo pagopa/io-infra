@@ -31,11 +31,11 @@ module "app_gw" {
     }
 
     appbackend-app = {
-      protocol     = "Https"
-      host         = null
-      port         = 443
-      ip_addresses = null # with null value use fqdns
-      fqdns = var.backend_hostnames.app_backends
+      protocol                    = "Https"
+      host                        = null
+      port                        = 443
+      ip_addresses                = null # with null value use fqdns
+      fqdns                       = var.backend_hostnames.app_backends
       probe                       = "/info"
       probe_name                  = "probe-appbackend-app"
       request_timeout             = 10
@@ -99,13 +99,11 @@ module "app_gw" {
     }
 
     firmaconio-selfcare-backend = {
-      protocol     = "Https"
-      host         = null
-      port         = 443
-      ip_addresses = null # with null value use fqdns
-      fqdns = [
-        var.backend_hostnames.firmaconio_selfcare_web_app,
-      ]
+      protocol                    = "Https"
+      host                        = null
+      port                        = 443
+      ip_addresses                = null # with null value use fqdns
+      fqdns                       = var.backend_hostnames.firmaconio_selfcare_web_app
       probe                       = "/health"
       probe_name                  = "probe-firmaconio-selfcare-backend"
       request_timeout             = 180
