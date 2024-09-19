@@ -169,11 +169,6 @@ resource "azurerm_monitor_metric_alert" "cosmos_api_throttling_alert" {
     webhook_properties = {}
   }
 
-  action {
-    action_group_id    = data.azurerm_monitor_action_group.io_com_action_group.id
-    webhook_properties = {}
-  }
-
   tags = var.tags
 }
 
