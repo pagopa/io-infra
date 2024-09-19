@@ -51,7 +51,9 @@ locals {
       LOLLIPOP_API_URL            = "https://${data.azurerm_linux_function_app.lollipop_function.default_hostname}"
       LOLLIPOP_API_KEY            = data.azurerm_key_vault_secret.app_backend_LOLLIPOP_ITN_API_KEY.value
       TRIAL_SYSTEM_API_URL        = "https://ts-p-itn-api-func-01.azurewebsites.net" # PROD-TRIAL subscription
+      TRIAL_SYSTEM_APIM_URL       = "https://api.trial.pagopa.it" # Add this variable to avoid downtime
       TRIAL_SYSTEM_API_KEY        = data.azurerm_key_vault_secret.app_backend_TRIAL_SYSTEM_API_KEY.value
+      TRIAL_SYSTEM_APIM_KEY       = data.azurerm_key_vault_secret.app_backend_TRIAL_SYSTEM_APIM_KEY.value
       IO_WALLET_API_URL           = "https://io-p-itn-wallet-user-func-01.azurewebsites.net"
       IO_WALLET_API_KEY           = data.azurerm_key_vault_secret.app_backend_IO_WALLET_API_KEY.value
 
@@ -64,6 +66,7 @@ locals {
       IO_SIGN_API_BASE_PATH             = "/api/v1/sign"
       LOLLIPOP_API_BASE_PATH            = "/api/v1"
       TRIAL_SYSTEM_API_BASE_PATH        = "/api/v1"
+      TRIAL_SYSTEM_APIM_BASE_PATH        = "/manage/api/v1" # Add this variable to avoid downtime
       IO_WALLET_API_BASE_PATH           = "/api/v1/wallet"
 
       // REDIS
@@ -502,6 +505,11 @@ data "azurerm_key_vault_secret" "app_backend_LOLLIPOP_ITN_API_KEY" {
 
 data "azurerm_key_vault_secret" "app_backend_TRIAL_SYSTEM_API_KEY" {
   name         = "appbackend-TRIAL-SYSTEM-API-KEY"
+  key_vault_id = data.azurerm_key_vault.key_vault_common.id
+}
+
+data "azurerm_key_vault_secret" "app_backend_TRIAL_SYSTEM_APIM_KEY" {
+  name         = "appbackend-TRIAL-SYSTEM-APIM-KEY"
   key_vault_id = data.azurerm_key_vault.key_vault_common.id
 }
 
