@@ -89,6 +89,7 @@ module "appservice_app_backend_slot_staging" {
 
 ## web availabolity test
 module "app_backend_web_test_api" {
+  count = var.is_li ? 0 : 1
   source = "github.com/pagopa/terraform-azurerm-v3//application_insights_web_test_preview?ref=v8.29.1"
 
   subscription_id                   = var.datasources.azurerm_client_config.subscription_id

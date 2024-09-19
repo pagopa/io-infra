@@ -441,9 +441,9 @@ module "app_backend_weu" {
   cidr_subnet                = local.app_backends[each.key].cidr_subnet
   nat_gateways               = local.core.networking.weu.nat_gateways
   allowed_subnets            = concat(data.azurerm_subnet.services_snet.*.id, [module.application_gateway_weu.snet.id, module.apim_weu.snet.id])
-  slot_allowed_subnets       = concat([var.azdoa_subnet.id], data.azurerm_subnet.services_snet.*.id, [module.application_gateway_weu.snet.id, module.apim_weu.snet.id])
-  allowed_ips                = module.monitoring.appi.reserved_ips
-  slot_allowed_ips           = module.monitoring.appi.reserved_ips
+  slot_allowed_subnets       = concat([local.azdoa_snet_id["weu"]], data.azurerm_subnet.services_snet.*.id, [module.application_gateway_weu.snet.id, module.apim_weu.snet.id])
+  allowed_ips                = module.monitoring_weu.appi.reserved_ips
+  slot_allowed_ips           = module.monitoring_weu.appi.reserved_ips
   apim_snet_address_prefixes = module.apim_weu.snet.address_prefixes
 
   app_settings_override = each.value.app_settings_override
@@ -482,7 +482,7 @@ module "app_backend_li_weu" {
   is_li = true
 
   vnet_common  = local.core.networking.weu.vnet_common
-  cidr_subnet  = local.app_backends[each.key].cidr_subnet
+  cidr_subnet  = local.app_backendli.cidr_subnet
   nat_gateways = local.core.networking.weu.nat_gateways
   allowed_subnets = concat(data.azurerm_subnet.services_snet.*.id,
     [
@@ -491,18 +491,18 @@ module "app_backend_li_weu" {
       data.azurerm_subnet.functions_service_messages_snet.id,
       data.azurerm_subnet.itn_msgs_sending_func_snet.id
   ])
-  slot_allowed_subnets = concat([var.azdoa_subnet.id], data.azurerm_subnet.services_snet.*.id, [data.azurerm_subnet.admin_snet.id])
-  allowed_ips = concat(module.monitoring.appi.reserved_ips,
+  slot_allowed_subnets = concat([local.azdoa_snet_id["weu"]], data.azurerm_subnet.services_snet.*.id, [data.azurerm_subnet.admin_snet.id])
+  allowed_ips = concat(module.monitoring_weu.appi.reserved_ips,
     [
       // aks beta
       "51.124.16.195/32",
       // aks prod01
       "51.105.109.140/32"
   ])
-  slot_allowed_ips = module.monitoring.appi.reserved_ips
+  slot_allowed_ips = module.monitoring_weu.appi.reserved_ips
   apim_snet_address_prefixes = module.apim_weu.snet.address_prefixes
 
-  app_settings_override = each.value.app_settings_override
+  app_settings_override = local.app_backendli.app_settings_override
   functions_hostnames   = { for name, function in local.functions : name => function.default_hostname }
 
   autoscale = {

@@ -49,23 +49,6 @@ data "azurerm_subnet" "services_snet" {
   resource_group_name  = local.core.networking.weu.vnet_common.resource_group_name
 }
 
-data "azurerm_subnet" "functions_fast_login_snet" {
-  name                 = "${local.project_weu}-fast-login-snet"
-  virtual_network_name = local.core.networking.weu.vnet_common.name
-  resource_group_name  = local.core.networking.weu.vnet_common.resource_group_name
-}
-
-data "azurerm_subnet" "functions_service_messages_snet" {
-  name                 = "${local.project_weu_legacy}-fn-service-messages-snet"
-  virtual_network_name = local.core.networking.weu.vnet_common.name
-  resource_group_name  = local.core.networking.weu.vnet_common.resource_group_name
-}
-
-data "azurerm_subnet" "itn_msgs_sending_func_snet" {
-  name                 = "${local.project_itn}-msgs-sending-func-snet-01"
-  virtual_network_name = local.core.networking.itn.vnet_common.name
-  resource_group_name  = local.core.networking.itn.vnet_common.resource_group_name
-}
 # TODO: remove after moving redis configuration in common
 data "azurerm_redis_cache" "redis_common" {
   name                = "${local.project_weu_legacy}-redis-common"

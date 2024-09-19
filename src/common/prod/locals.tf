@@ -75,6 +75,11 @@ locals {
     }
   }
 
+  azdoa_snet_id = {
+    weu = local.core.azure_devops_agent["weu"].snet.id
+    itn = null
+  }
+
   functions = {
     assets_cdn           = data.azurerm_linux_function_app.function_assets_cdn
     services_app_backend = data.azurerm_linux_function_app.services_app_backend_function_app

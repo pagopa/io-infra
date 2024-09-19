@@ -1,6 +1,6 @@
 resource "azurerm_monitor_autoscale_setting" "backendli" {
   count = var.is_li ? 1 : 0
-  name                = format("%s-autoscale", module.appservice_app_backendli.name)
+  name                = format("%s-autoscale", module.appservice_app_backend.name)
   resource_group_name = var.resource_groups.linux
   location            = var.location
   target_resource_id  = module.appservice_app_backend.plan_id
@@ -47,7 +47,7 @@ resource "azurerm_monitor_autoscale_setting" "backendli" {
       rule {
         metric_trigger {
           metric_name              = "Requests"
-          metric_resource_id       = module.appservice_app_backendli.id
+          metric_resource_id       = module.appservice_app_backend.id
           metric_namespace         = "microsoft.web/sites"
           time_grain               = "PT1M"
           statistic                = "Average"
@@ -69,7 +69,7 @@ resource "azurerm_monitor_autoscale_setting" "backendli" {
       rule {
         metric_trigger {
           metric_name              = "CpuPercentage"
-          metric_resource_id       = module.appservice_app_backendli.plan_id
+          metric_resource_id       = module.appservice_app_backend.plan_id
           metric_namespace         = "microsoft.web/serverfarms"
           time_grain               = "PT1M"
           statistic                = "Average"
@@ -93,7 +93,7 @@ resource "azurerm_monitor_autoscale_setting" "backendli" {
       rule {
         metric_trigger {
           metric_name              = "Requests"
-          metric_resource_id       = module.appservice_app_backendli.id
+          metric_resource_id       = module.appservice_app_backend.id
           metric_namespace         = "microsoft.web/sites"
           time_grain               = "PT1M"
           statistic                = "Average"
@@ -115,7 +115,7 @@ resource "azurerm_monitor_autoscale_setting" "backendli" {
       rule {
         metric_trigger {
           metric_name              = "CpuPercentage"
-          metric_resource_id       = module.appservice_app_backendli.plan_id
+          metric_resource_id       = module.appservice_app_backend.plan_id
           metric_namespace         = "microsoft.web/serverfarms"
           time_grain               = "PT1M"
           statistic                = "Average"
@@ -138,7 +138,7 @@ resource "azurerm_monitor_autoscale_setting" "backendli" {
 }
 
 locals {
-  autoscale_profiles = [
+  autoscale_profiles = var.autoscale != null ? [
     {
       name = "{\"name\":\"default\",\"for\":\"evening\"}",
 
@@ -195,5 +195,5 @@ locals {
         maximum = var.autoscale.maximum
       }
     }
-  ]
+  ] : null
 }

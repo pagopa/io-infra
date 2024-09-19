@@ -153,11 +153,11 @@ variable "redis_common" {
 
 variable "autoscale" {
   type = object({
-    default = number
-    minimum = number
-    maximum = number
+    default = optional(number)
+    minimum = optional(number)
+    maximum = optional(number)
   })
-  default = {}
+  default = null
   description = "Autoscale capacity information"
 }
 
