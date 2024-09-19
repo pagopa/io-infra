@@ -17,6 +17,8 @@ locals {
 
   core = data.terraform_remote_state.core.outputs
 
+  function_app_count = 2
+
   # TODO: edit this block when resource groups module is implemented
   resource_groups = {
     weu = {
@@ -42,11 +44,41 @@ locals {
 
   app_backends = {
     l1 = {
-      override_app_settings = {}
+      cidr_subnet = ["10.0.152.0/24"]
+      override_app_settings = {
+        IS_APPBACKENDLI = "false"
+        // FUNCTIONS
+        API_URL              = "https://${data.azurerm_linux_function_app.function_app[1].default_hostname}/api/v1"
+        APP_MESSAGES_API_URL = format("https://io-p-itn-msgs-citizen-func-01.azurewebsites.net/api/v1")
+      }
     },
     l2 = {
-      override_app_settings = {}
+      cidr_subnet = ["10.0.153.0/24"]
+      override_app_settings = {
+        IS_APPBACKENDLI = "false"
+        // FUNCTIONS
+        API_URL              = "https://${data.azurerm_linux_function_app.function_app[1].default_hostname}/api/v1"
+        APP_MESSAGES_API_URL = format("https://io-p-itn-msgs-citizen-func-02.azurewebsites.net/api/v1")
+      }
     }
+  }
+
+  app_backendli = {
+    cidr_subnet = ["10.0.154.0/24"]
+    override_app_settings = {
+      IS_APPBACKENDLI = "true"
+      // FUNCTIONS
+      API_URL              = "https://${data.azurerm_linux_function_app.function_app[1].default_hostname}/api/v1" # not used
+      APP_MESSAGES_API_URL = "https://io-p-itn-msgs-citizen-func-01.azurewebsites.net/api/v1"                     # not used
+    }
+  }
+
+  functions = {
+    assets_cdn = data.azurerm_linux_function_app.function_assets_cdn
+    services_app_backend = data.azurerm_linux_function_app.services_app_backend_function_app
+    lollipop = data.azurerm_linux_function_app.lollipop_function
+    eucovidcert = data.azurerm_linux_function_app.eucovidcert
+    cgn = data.azurerm_linux_function_app.function_cgn
   }
 
   eventhubs = [

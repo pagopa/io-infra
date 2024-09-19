@@ -15,10 +15,10 @@ output "pep_snet" {
   }
 }
 
-output "nat_gateway" {
-  value = {
-    id = azurerm_nat_gateway.this.id
-    name = azurerm_nat_gateway.this.name
-    resource_group_name = azurerm_nat_gateway.this.resource_group_name
-  }
+output "nat_gateways" {
+  value = [for key, ng in azurerm_nat_gateway.this : {
+    id = azurerm_nat_gateway.this[key].id
+    name = azurerm_nat_gateway.this[key].name
+    resource_group_name = azurerm_nat_gateway.this[key].resource_group_name
+  }]
 }

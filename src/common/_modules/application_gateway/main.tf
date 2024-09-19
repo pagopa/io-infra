@@ -35,10 +35,7 @@ module "app_gw" {
       host         = null
       port         = 443
       ip_addresses = null # with null value use fqdns
-      fqdns = [
-        var.backend_hostnames.app_backendl1,
-        var.backend_hostnames.app_backendl2,
-      ]
+      fqdns = var.backend_hostnames.app_backends
       probe                       = "/info"
       probe_name                  = "probe-appbackend-app"
       request_timeout             = 10

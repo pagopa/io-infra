@@ -11,17 +11,17 @@ module "appservice_app_backend" {
 
   # App service plan
   plan_type = "internal"
-  plan_name = format("%s-plan-appappbackend${local.name}", var.project)
-  sku_name  = var.app_backend_plan_sku_size
+  plan_name = "${var.project}-plan-appappbackend${var.name}"
+  sku_name  = var.plan_sku
 
   # App service
-  name                = format("%s-app-appbackend${local.name}", var.project)
+  name                = "${var.project}-app-appbackend${var.name}"
   resource_group_name = azurerm_resource_group.rg_linux.name
   location            = var.location
 
   node_version                 = "18-lts"
   always_on                    = true
-  app_command_line             = local.app_backend.app_command_line
+  app_command_line             = local.app_command_line
   health_check_path            = "/ping"
   health_check_maxpingfailures = 2
 
@@ -34,21 +34,20 @@ module "appservice_app_backend" {
   }
 
   app_settings = merge(
-    local.app_backend.app_settings_common,
-    local.app_backend.app_settings,
+    local.app_settings_common,
     var.app_settings_override
   )
 
   ip_restriction_default_action = "Deny"
 
-  allowed_subnets = var.allowed_subnets.*.id
+  allowed_subnets = var.allowed_subnets
   
   allowed_ips = concat(
     [],
-    local.app_insights_ips_west_europe,
+    var.application_insights.reserved_ips,
   )
 
-  subnet_id        = module.app_backend_snet.id
+  subnet_id        = azurerm_subnet.snet.id
   vnet_integration = true
 
   tags = var.tags
@@ -68,7 +67,7 @@ module "appservice_app_backend_slot_staging" {
 
   always_on         = true
   node_version      = "18-lts"
-  app_command_line  = local.app_backend.app_command_line
+  app_command_line  = local.app_command_line
   health_check_path = "/ping"
 
   auto_heal_enabled = true
@@ -80,20 +79,19 @@ module "appservice_app_backend_slot_staging" {
   }
 
   app_settings = merge(
-    local.app_backend.app_settings_common,
-    local.app_backend.app_settings,
+    local.app_settings_common,
     var.app_settings_override
   )
 
   ip_restriction_default_action = "Deny"
 
-  allowed_subnets = concat(var.allowed_subnets.*.id, [var.azdoa_subnet.id])
+  allowed_subnets = concat(var.allowed_subnets, [var.azdoa_subnet.id])
 
   allowed_ips = concat(
     [],
   )
 
-  subnet_id        = module.app_backend_snet.id
+  subnet_id        = azurerm_subnet.snet.id
   vnet_integration = true
 
   tags = var.tags

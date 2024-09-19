@@ -139,3 +139,8 @@ data "azurerm_key_vault_secret" "app_backend_IO_WALLET_API_KEY" {
   name         = "funciowallet-KEY-APPBACKEND"
   key_vault_id = var.key_vault_common.id
 }
+
+data "azurerm_key_vault_secret" "app_backend_PRE_SHARED_KEY" {
+  name         = "appbackend-PRE-SHARED-KEY"
+  key_vault_id = var.key_vault_common.id
+}

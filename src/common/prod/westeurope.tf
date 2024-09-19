@@ -308,8 +308,7 @@ module "application_gateway_weu" {
 
   backend_hostnames = {
     firmaconio_selfcare_web_app = data.azurerm_linux_web_app.firmaconio_selfcare_web_app.default_hostname
-    app_backendl1               = data.azurerm_linux_web_app.app_backendl1.default_hostname
-    app_backendl2               = data.azurerm_linux_web_app.app_backendl2.default_hostname
+    app_backends       = module.app_backend_weu[*].default_hostname
   }
   certificates = {
     api                                  = "api-io-pagopa-it"
@@ -415,34 +414,52 @@ module "redis_weu" {
 }
 
 module "app_backend_weu" {
-  for_each = { for name, settings in local.app_backends : name => settings }
+  for_each = { for index, settings in local.app_backends : index => settings }
   source = "../_modules/app_backend"
 
   location       = data.azurerm_resource_group.common_weu.location
   location_short = local.location_short[data.azurerm_resource_group.common_weu.location]
   project        = local.project_weu_legacy
   prefix         = local.prefix
-
-  name = each.key
-  vnet_common = local.core.networking.weu.vnet_common
-  nat_gateway = local.core.networking.weu.nat_gateway
   resource_groups = local.resource_groups[local.location_short[data.azurerm_resource_group.common_weu.location]]
   datasources = {
     azurerm_client_config = data.azurerm_client_config.current
   }
 
+  name = each.key
+  index = index(values(local.app_backends), each.value) + 1
+  
+  vnet_common = local.core.networking.weu.vnet_common
+  cidr_subnet = local.app_backends[each.key].cidr_subnet
+  nat_gateways = local.core.networking.weu.nat_gateways
+  allowed_subnets = concat([
+    module.application_gateway_weu.snet.id,
+    module.apim_weu.snet.id,
+  ], data.azurerm_subnet.services_snet.*.id)
+  azdoa_subnet = local.core.azure_devops_agent[local.location_short[data.azurerm_resource_group.common_weu.location]].snet
+  apim_snet_address_prefixes = module.apim_weu.snet.address_prefixes
+
+  override_app_settings = each.value.override_app_settings
+  functions_hostnames = { for name, function in local.functions : name => function.default_hostname }
+
+  autoscale = {
+    default = 10
+    minimum = 2
+    maximum = 30
+  }
+  
   key_vault        = local.core.key_vault.weu.kv
   key_vault_common = local.core.key_vault.weu.kv_common
 
-  allowed_subnets = concat([
-        data.azurerm_subnet.appgateway_snet.id,
-        data.azurerm_subnet.apim.id,
-  ], data.azurerm_subnet.services_snet.*.id)
-
-  azdoa_subnet = local.core.azure_devops_agent[local.location_short[data.azurerm_resource_group.common_weu.location]].subnet
   error_action_group_id = module.monitoring_weu.action_groups.error
   application_insights = module.monitoring_weu.appi
+  ai_instrumentation_key = module.monitoring_weu.appi_instrumentation_key
 
-  override_app_settings = each.value.override_app_settings
+  redis_common = {
+    hostname      = data.azurerm_redis_cache.redis_common.hostname
+    ssl_port     = data.azurerm_redis_cache.redis_common.ssl_port
+    primary_access_key = data.azurerm_redis_cache.redis_common.primary_access_key
+  }
+
   tags = local.tags
 }

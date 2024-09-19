@@ -1,7 +1,7 @@
 #tfsec:ignore:AZU023
 resource "azurerm_key_vault_secret" "appbackend-REDIS-PASSWORD" {
   name         = "appbackend-REDIS-PASSWORD"
-  value        = data.azurerm_redis_cache.redis_common.primary_access_key
+  value        = var.redis_common.primary_access_key
   key_vault_id = var.key_vault_common.id
   content_type = "string"
 }
@@ -49,7 +49,7 @@ resource "azurerm_key_vault_secret" "appbackend_LOLLIPOP_ASSERTIONS_STORAGE" {
 #tfsec:ignore:AZU023
 resource "azurerm_key_vault_secret" "appbackend_THIRD_PARTY_CONFIG_LIST" {
   name         = "appbackend-THIRD-PARTY-CONFIG-LIST"
-  value        = local.app_backend.app_settings_common.THIRD_PARTY_CONFIG_LIST
+  value        = local.app_settings_common.THIRD_PARTY_CONFIG_LIST
   key_vault_id = var.key_vault_common.id
   content_type = "string"
 }

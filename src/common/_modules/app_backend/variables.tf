@@ -35,7 +35,13 @@ variable "resource_groups" {
 }
 
 variable "index" {
-    type = "number"
+    type = number
+}
+
+variable "name" {
+  type = string
+  description = "Name of the backend (l1, l2, li, ...)"
+  default = null
 }
 
 variable "vnet_common" {
@@ -48,14 +54,23 @@ variable "vnet_common" {
   description = "Information of the common VNet"
 }
 
+variable "plan_sku" {
+  description = "App backend app plan sku size"
+  type        = string
+  default     = "P1v3"
+}
+
 variable "override_app_settings" {
     type = map(string)
 }
 
 variable "allowed_subnets" {
-    type = object({
-      id = string 
-    })
+    type = list(string)
+}
+
+variable "cidr_subnet" {
+  type        = list(string)
+  description = "App backend address space"
 }
 
 variable "azdoa_subnet" {
@@ -71,7 +86,12 @@ variable "application_insights" {
       id = string
       name = string
       resource_group_name = string
+      reserved_ips = list(string)
     })
+}
+
+variable "ai_instrumentation_key" {
+  type = string
 }
 
 variable "error_action_group_id" {
@@ -79,12 +99,16 @@ variable "error_action_group_id" {
   description = "Azure Monitor error action group id"
 }
 
-variable "nat_gateway" {
-  type = object({
+variable "apim_snet_address_prefixes" {
+  type = list(string)
+}
+
+variable "nat_gateways" {
+  type = list(object({
     id = string
     name = string
     resource_group_name = string
-  })
+  }))
 }
 
 variable "key_vault_common" {
@@ -108,4 +132,46 @@ variable "key_vault" {
 variable "datasources" {
   type        = map(any)
   description = "Common datasources"
+}
+
+variable "redis_common" {
+  type = object({
+    hostname = string
+    ssl_port = number
+    primary_access_key = string
+  })
+  description = "Connection information to the common redis cluster"
+  sensitive = true
+}
+
+variable "autoscale" {
+  type = object({
+    default = number
+    minimum = number
+    maximum = number
+  })
+
+  description = "Autoscale capacity information"
+}
+
+variable "citizen_auth_assertion_storage_name" {
+  type        = string
+  description = "Use storage name from citizen_auth domain"
+  default     = "lollipop-assertions-st"
+}
+
+variable "app_settings_override" {
+  type = map(any)
+  default = {}
+  description = "Map of values that override the common app settings stored in app_settings.tf"
+}
+
+variable "functions_hostnames" {
+  type = object({
+    assets_cdn = string
+    services_app_backend = string
+    lollipop = string
+    eucovidcert = string
+    cgn = string
+  })
 }
