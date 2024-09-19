@@ -118,6 +118,11 @@ data "azurerm_key_vault_secret" "app_backend_PRE_SHARED_KEY" {
   key_vault_id = data.azurerm_key_vault.key_vault_common.id
 }
 
+data "azurerm_storage_account" "locked_profiles_storage" {
+  name                = replace("${local.project}-locked-profiles-st", "-", "")
+  resource_group_name = "${local.project}-rg-internal"
+}
+
 
 # -----------------------------------------------
 # Alerts
@@ -162,38 +167,6 @@ resource "azurerm_monitor_metric_alert" "cosmos_api_throttling_alert" {
       values   = ["*"]
     }
 
-  }
-
-  action {
-    action_group_id    = data.azurerm_monitor_action_group.error_action_group.id
-    webhook_properties = {}
-  }
-
-  tags = var.tags
-}
-
-
-resource "azurerm_monitor_metric_alert" "iopstapi_throttling_low_availability" {
-
-  name                = "[IO-COMMONS | ${module.storage_api.name}] Low Availability"
-  resource_group_name = azurerm_resource_group.rg_linux.name
-  scopes              = [module.storage_api.id]
-  # TODO: add Runbook for checking errors
-  description   = "The average availability is less than 99.8%. Runbook: not needed."
-  severity      = 0
-  window_size   = "PT5M"
-  frequency     = "PT5M"
-  auto_mitigate = false
-
-  # Metric info
-  # https://learn.microsoft.com/en-us/azure/azure-monitor/essentials/metrics-supported#microsoftstoragestorageaccounts
-  criteria {
-    metric_namespace       = "Microsoft.Storage/storageAccounts"
-    metric_name            = "Availability"
-    aggregation            = "Average"
-    operator               = "LessThan"
-    threshold              = 99.8
-    skip_metric_validation = false
   }
 
   action {

@@ -11,7 +11,7 @@ output "storage_account_elt_primary_access_key" {
 }
 
 output "storage_account_elt_itn_primary_connection_string" {
-  value     = module.storage_account_itn_elt.primary_connection_string
+  value     = module.storage_account_itn_elt_02.primary_connection_string
   sensitive = true
 }
 
