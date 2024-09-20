@@ -1,13 +1,9 @@
-data "azurerm_resource_group" "common_weu" {
-  name = format("%s-rg-common", local.project_weu_legacy)
-}
-
 module "networking_weu" {
   source = "../_modules/networking"
 
-  location            = data.azurerm_resource_group.common_weu.location
-  location_short      = local.location_short[data.azurerm_resource_group.common_weu.location]
-  resource_group_name = data.azurerm_resource_group.common_weu.name
+  location            = azurerm_resource_group.common_weu.location
+  location_short      = local.location_short[azurerm_resource_group.common_weu.location]
+  resource_group_name = azurerm_resource_group.common_weu.name
   project             = local.project_weu_legacy
 
   vnet_cidr_block = "10.0.0.0/16"
@@ -66,8 +62,8 @@ module "vnet_peering_weu" {
 module "container_registry" {
   source = "../_modules/container_registry"
 
-  location       = data.azurerm_resource_group.common_weu.location
-  location_short = local.location_short[data.azurerm_resource_group.common_weu.location]
+  location       = azurerm_resource_group.common_weu.location
+  location_short = local.location_short[azurerm_resource_group.common_weu.location]
   project        = local.project_weu_legacy
 
   tags = merge(local.tags, { Source = "https://github.com/pagopa/io-infra" })
@@ -76,10 +72,11 @@ module "container_registry" {
 module "key_vault_weu" {
   source = "../_modules/key_vaults"
 
-  location              = data.azurerm_resource_group.common_weu.location
-  location_short        = local.location_short[data.azurerm_resource_group.common_weu.location]
+  location              = azurerm_resource_group.common_weu.location
+  location_short        = local.location_short[azurerm_resource_group.common_weu.location]
   project               = local.project_weu_legacy
-  resource_group_common = data.azurerm_resource_group.common_weu.name
+  resource_group_name   = azurerm_resource_group.sec_weu.name
+  resource_group_common = azurerm_resource_group.common_weu.name
   tenant_id             = data.azurerm_client_config.current.tenant_id
 
   azure_ad_group_admin_object_id            = data.azuread_group.adgroup_admin.object_id
@@ -94,9 +91,9 @@ module "key_vault_weu" {
 module "vpn_weu" {
   source = "../_modules/vpn"
 
-  location            = data.azurerm_resource_group.common_weu.location
-  location_short      = local.location_short[data.azurerm_resource_group.common_weu.location]
-  resource_group_name = data.azurerm_resource_group.common_weu.name
+  location            = azurerm_resource_group.common_weu.location
+  location_short      = local.location_short[azurerm_resource_group.common_weu.location]
+  resource_group_name = azurerm_resource_group.common_weu.name
   project             = local.project_weu_legacy
   prefix              = local.prefix
   env_short           = local.env_short
@@ -112,13 +109,13 @@ module "vpn_weu" {
 module "azdoa_weu" {
   source = "../_modules/azure_devops_agent"
 
-  location            = data.azurerm_resource_group.common_weu.location
-  location_short      = local.location_short[data.azurerm_resource_group.common_weu.location]
-  resource_group_name = data.azurerm_resource_group.common_weu.name
+  location            = azurerm_resource_group.common_weu.location
+  location_short      = local.location_short[azurerm_resource_group.common_weu.location]
+  resource_group_name = azurerm_resource_group.common_weu.name
   project             = local.project_weu_legacy
 
   vnet_common     = module.networking_weu.vnet_common
-  resource_groups = local.resource_groups[local.location_short[data.azurerm_resource_group.common_weu.location]]
+  resource_groups = local.resource_groups[local.location_short[azurerm_resource_group.common_weu.location]]
   datasources = {
     azurerm_client_config = data.azurerm_client_config.current
   }

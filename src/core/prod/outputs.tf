@@ -12,9 +12,20 @@ output "key_vault" {
   }
 }
 
-output "azure_devops_agent" {
+output "resource_groups" {
   value = {
-    weu = module.azdoa_weu
-    itn = null
+    itn = {
+      location   = "italynorth"
+      common     = azurerm_resource_group.common_itn.name
+      dashboards = azurerm_resource_group.dashboards_itn.name
+      github_id  = azurerm_resource_group.github_managed_identity_itn.name
+    }
+    weu = {
+      location = "westeurope"
+      common   = azurerm_resource_group.common_weu.name
+      internal = azurerm_resource_group.internal_weu.name
+      external = azurerm_resource_group.external_weu.name
+      sec_weu  = azurerm_resource_group.security.name
+    }
   }
 }
