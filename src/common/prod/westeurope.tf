@@ -399,3 +399,17 @@ module "cosmos_api_weu" {
 
   tags = local.tags
 }
+
+module "redis_weu" {
+  source = "../_modules/redis"
+
+  location       = data.azurerm_resource_group.common_weu.location
+  location_short = local.location_short[data.azurerm_resource_group.common_weu.location]
+  project        = local.project_weu_legacy
+
+  resource_group_name      = local.resource_groups[local.location_short[data.azurerm_resource_group.common_weu.location]].common
+  vnet_common              = local.core.networking.weu.vnet_common
+  cidr_subnet_redis_common = "10.0.200.0/24"
+
+  tags = local.tags
+}
