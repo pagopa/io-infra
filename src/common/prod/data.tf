@@ -1,9 +1,3 @@
-# TODO: remove when apim v2 module is implemented
-data "azurerm_api_management" "apim_v2" {
-  name                = "${local.project_weu_legacy}-apim-v2-api"
-  resource_group_name = "${local.project_weu_legacy}-rg-internal"
-}
-
 data "azurerm_virtual_network" "weu_beta" {
   name                = "${local.project_weu}-beta-vnet"
   resource_group_name = "${local.project_weu}-beta-vnet-rg"
@@ -47,12 +41,6 @@ data "azurerm_subnet" "services_snet" {
   name                 = format("%s-services-snet-%d", local.project_weu_legacy, count.index + 1)
   virtual_network_name = local.core.networking.weu.vnet_common.name
   resource_group_name  = local.core.networking.weu.vnet_common.resource_group_name
-}
-
-# TODO: remove after moving redis configuration in common
-data "azurerm_redis_cache" "redis_common" {
-  name                = "${local.project_weu_legacy}-redis-common"
-  resource_group_name = local.core.networking.weu.vnet_common.resource_group_name
 }
 
 # Functions
