@@ -13,6 +13,7 @@ output "appi" {
     id                  = azurerm_application_insights.appi.id
     name                = azurerm_application_insights.appi.name
     resource_group_name = azurerm_application_insights.appi.resource_group_name
+    location            = azurerm_application_insights.appi.location
     reserved_ips        = local.appi_reserved_ips
   }
 }

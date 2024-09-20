@@ -93,6 +93,7 @@ variable "application_insights" {
     id                  = string
     name                = string
     resource_group_name = string
+    location            = string
     reserved_ips        = list(string)
   })
 }

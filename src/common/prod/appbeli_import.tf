@@ -44,11 +44,11 @@ import {
 }
 
 import {
-  to = module.app_backend_li_weu.module.app_backend_web_test_api.azurerm_template_deployment.this
-  id = "/subscriptions/ec285037-c673-4f58-b594-d7c480da4e8b/resourceGroups/io-p-rg-common/providers/Microsoft.Resources/deployments/io-p-app-appbackendli.azurewebsites.net-test"
+  to = module.app_backend_li_weu.azurerm_application_insights_standard_web_test.web_tests
+  id = "/subscriptions/ec285037-c673-4f58-b594-d7c480da4e8b/resourceGroups/io-p-rg-common/providers/Microsoft.Insights/webTests/io-p-app-appbackendli.azurewebsites.net-test-io-p-ai-common"
 }
 
 import {
-  to = module.app_backend_li_weu.module.app_backend_web_test_api.azurerm_monitor_metric_alert.this
+  to = module.app_backend_li_weu.azurerm_monitor_metric_alert.metric_alerts
   id = "/subscriptions/ec285037-c673-4f58-b594-d7c480da4e8b/resourceGroups/io-p-rg-common/providers/Microsoft.Insights/metricAlerts/io-p-app-appbackendli.azurewebsites.net-test-io-p-ai-common"
 }
