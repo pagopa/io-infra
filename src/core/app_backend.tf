@@ -9,7 +9,7 @@ locals {
       WEBSITE_RUN_FROM_PACKAGE                        = "1"
       WEBSITE_DNS_SERVER                              = "168.63.129.16"
 
-      APPINSIGHTS_INSTRUMENTATIONKEY = azurerm_application_insights.application_insights.instrumentation_key
+      APPINSIGHTS_INSTRUMENTATIONKEY = data.azurerm_application_insights.application_insights.instrumentation_key
 
       // ENVIRONMENT
       NODE_ENV = "production"
@@ -71,7 +71,7 @@ locals {
       ALLOW_NOTIFY_IP_SOURCE_RANGE = "127.0.0.0/0"
 
       // LOCK / UNLOCK SESSION ENDPOINTS
-      ALLOW_SESSION_HANDLER_IP_SOURCE_RANGE = module.apim_v2_snet.address_prefixes[0]
+      ALLOW_SESSION_HANDLER_IP_SOURCE_RANGE = data.azurerm_subnet.apim.address_prefixes[0]
 
       // PAGOPA
       PAGOPA_API_URL_PROD = "https://api.platform.pagopa.it/checkout/auth/payments/v1"
@@ -98,8 +98,8 @@ locals {
       PUSH_NOTIFICATIONS_STORAGE_CONNECTION_STRING = data.azurerm_storage_account.push_notifications_storage.primary_connection_string
       PUSH_NOTIFICATIONS_QUEUE_NAME                = local.storage_account_notifications_queue_push_notifications
 
-      LOCKED_PROFILES_STORAGE_CONNECTION_STRING = module.locked_profiles_storage.primary_connection_string
-      LOCKED_PROFILES_TABLE_NAME                = azurerm_storage_table.locked_profiles.name
+      LOCKED_PROFILES_STORAGE_CONNECTION_STRING = data.azurerm_storage_account.locked_profiles_storage.primary_connection_string
+      LOCKED_PROFILES_TABLE_NAME                = "lockedprofiles"
 
       // Feature flags
       FF_BONUS_ENABLED           = 1
@@ -279,19 +279,19 @@ locals {
       IS_APPBACKENDLI = "false"
       // FUNCTIONS
       API_URL              = "https://${data.azurerm_linux_function_app.function_app[1].default_hostname}/api/v1"
-      APP_MESSAGES_API_URL = "https://${data.azurerm_linux_function_app.app_messages_1.default_hostname}/api/v1"
+      APP_MESSAGES_API_URL = "https://io-p-itn-msgs-citizen-func-01.azurewebsites.net/api/v1"
     }
     app_settings_l2 = {
       IS_APPBACKENDLI = "false"
       // FUNCTIONS
       API_URL              = "https://${data.azurerm_linux_function_app.function_app[1].default_hostname}/api/v1"
-      APP_MESSAGES_API_URL = "https://${data.azurerm_linux_function_app.app_messages_2.default_hostname}/api/v1"
+      APP_MESSAGES_API_URL = "https://io-p-itn-msgs-citizen-func-02.azurewebsites.net/api/v1"
     }
     app_settings_li = {
       IS_APPBACKENDLI = "true"
       // FUNCTIONS
       API_URL              = "https://${data.azurerm_linux_function_app.function_app[1].default_hostname}/api/v1" # not used
-      APP_MESSAGES_API_URL = "https://${data.azurerm_linux_function_app.app_messages_1.default_hostname}/api/v1"  # not used
+      APP_MESSAGES_API_URL = "https://io-p-itn-msgs-citizen-func-01.azurewebsites.net/api/v1"                     # not used
     }
   }
 
@@ -462,6 +462,11 @@ data "azurerm_key_vault_secret" "app_backend_PECSERVER_ARUBA_TOKEN_SECRET" {
 
 data "azurerm_key_vault_secret" "app_backend_APP_MESSAGES_API_KEY" {
   name         = "appbackend-APP-MESSAGES-API-KEY"
+  key_vault_id = data.azurerm_key_vault.key_vault_common.id
+}
+
+data "azurerm_key_vault_secret" "app_backend_APP_CITIZEN_APIM_KEY" {
+  name         = "appbackend-APP-CITIZEN-APIM-KEY"
   key_vault_id = data.azurerm_key_vault.key_vault_common.id
 }
 
@@ -664,8 +669,8 @@ module "appservice_app_backendl1" {
   allowed_subnets = [
     data.azurerm_subnet.services_snet[0].id,
     data.azurerm_subnet.services_snet[1].id,
-    module.appgateway_snet.id,
-    module.apim_v2_snet.id,
+    data.azurerm_subnet.appgateway_snet.id,
+    data.azurerm_subnet.apim.id,
   ]
 
   allowed_ips = concat(
@@ -712,11 +717,11 @@ module "appservice_app_backendl1_slot_staging" {
   ip_restriction_default_action = "Deny"
 
   allowed_subnets = [
-    module.azdoa_snet[0].id,
+    data.azurerm_subnet.azdoa_snet.id,
     data.azurerm_subnet.services_snet[0].id,
     data.azurerm_subnet.services_snet[1].id,
-    module.appgateway_snet.id,
-    module.apim_v2_snet.id,
+    data.azurerm_subnet.appgateway_snet.id,
+    data.azurerm_subnet.apim.id,
   ]
 
   allowed_ips = concat(
@@ -794,8 +799,8 @@ module "appservice_app_backendl2" {
   allowed_subnets = [
     data.azurerm_subnet.services_snet[0].id,
     data.azurerm_subnet.services_snet[1].id,
-    module.appgateway_snet.id,
-    module.apim_v2_snet.id,
+    data.azurerm_subnet.appgateway_snet.id,
+    data.azurerm_subnet.apim.id,
   ]
 
   allowed_ips = concat(
@@ -842,11 +847,11 @@ module "appservice_app_backendl2_slot_staging" {
   ip_restriction_default_action = "Deny"
 
   allowed_subnets = [
-    module.azdoa_snet[0].id,
+    data.azurerm_subnet.azdoa_snet.id,
     data.azurerm_subnet.services_snet[0].id,
     data.azurerm_subnet.services_snet[1].id,
-    module.appgateway_snet.id,
-    module.apim_v2_snet.id,
+    data.azurerm_subnet.appgateway_snet.id,
+    data.azurerm_subnet.apim.id,
   ]
 
   allowed_ips = concat(
@@ -959,7 +964,7 @@ module "appservice_app_backendli_slot_staging" {
   ip_restriction_default_action = "Deny"
 
   allowed_subnets = [
-    module.azdoa_snet[0].id,
+    data.azurerm_subnet.azdoa_snet.id,
     data.azurerm_subnet.services_snet[0].id,
     data.azurerm_subnet.services_snet[1].id,
     data.azurerm_subnet.admin_snet.id,
@@ -1122,15 +1127,15 @@ module "app_backend_web_test_api" {
   name                              = format("%s-test", each.value.name)
   location                          = azurerm_resource_group.rg_common.location
   resource_group                    = azurerm_resource_group.rg_common.name
-  application_insight_name          = azurerm_application_insights.application_insights.name
+  application_insight_name          = data.azurerm_application_insights.application_insights.name
   request_url                       = format("https://%s%s", each.value.host, each.value.path)
   expected_http_status              = each.value.http_status
   ssl_cert_remaining_lifetime_check = 7
-  application_insight_id            = azurerm_application_insights.application_insights.id
+  application_insight_id            = data.azurerm_application_insights.application_insights.id
 
   actions = [
     {
-      action_group_id = azurerm_monitor_action_group.error_action_group.id,
+      action_group_id = data.azurerm_monitor_action_group.error_action_group.id,
     }
   ]
 }
@@ -1175,7 +1180,7 @@ resource "azurerm_monitor_metric_alert" "too_many_http_5xx" {
   }
 
   action {
-    action_group_id    = azurerm_monitor_action_group.error_action_group.id
+    action_group_id    = data.azurerm_monitor_action_group.error_action_group.id
     webhook_properties = null
   }
 

@@ -96,6 +96,10 @@ locals {
     WEBSITE_NODE_DEFAULT_VERSION = "20.12.2"
     WEBSITE_RUN_FROM_PACKAGE     = "1"
 
+    // HEALTHCHECK VARIABLES
+    WEBSITE_SWAP_WARMUP_PING_PATH     = "/healthcheck"
+    WEBSITE_SWAP_WARMUP_PING_STATUSES = "200"
+
     // ENVIRONMENT
     NODE_ENV = "production"
 
@@ -136,7 +140,6 @@ locals {
     FAST_LOGIN_API_URL = var.fastlogin_enabled ? "https://${module.function_fast_login[0].default_hostname}" : ""
 
     # Functions Lollipop config
-    FF_LOLLIPOP_ENABLED    = "1"
     LOLLIPOP_API_BASE_PATH = "/api/v1"
     LOLLIPOP_API_URL       = "https://${module.function_lollipop_itn.default_hostname}"
     LOLLIPOP_API_KEY       = data.azurerm_key_vault_secret.functions_lollipop_api_key.value
@@ -147,10 +150,6 @@ locals {
     # Fast Login config
     FF_FAST_LOGIN = "ALL"
     LV_TEST_USERS = module.tests.test_users.all
-
-    # UNIQUE EMAIL ENFORCEMENT
-    FF_UNIQUE_EMAIL_ENFORCEMENT    = "ALL"
-    UNIQUE_EMAIL_ENFORCEMENT_USERS = data.azurerm_key_vault_secret.session_manager_UNIQUE_EMAIL_ENFORCEMENT_USER.value
 
     # MITIGATION APP BUG EMAIL VALIDATION
     IS_SPID_EMAIL_PERSISTENCE_ENABLED = "false"
@@ -169,8 +168,8 @@ locals {
     BACKEND_HOST = "https://${trimsuffix(data.azurerm_dns_a_record.api_app_io_pagopa_it.fqdn, ".")}"
 
     # Locked profile storage
-    LOCKED_PROFILES_STORAGE_CONNECTION_STRING = data.azurerm_storage_account.locked_profiles_storage.primary_connection_string
-    LOCKED_PROFILES_TABLE_NAME                = "lockedprofiles"
+    LOCKED_PROFILES_STORAGE_CONNECTION_STRING = module.locked_profiles_storage.primary_connection_string
+    LOCKED_PROFILES_TABLE_NAME                = azurerm_storage_table.locked_profiles.name
 
     # Spid logs config
     SPID_LOG_QUEUE_NAME                = "spidmsgitems"
@@ -215,9 +214,6 @@ locals {
     # PAGOPA config
     PAGOPA_BASE_PATH             = "/pagopa/api/v1"
     ALLOW_PAGOPA_IP_SOURCE_RANGE = data.azurerm_key_vault_secret.session_manager_ALLOW_PAGOPA_IP_SOURCE_RANGE.value
-
-    # Feature Flag
-    FF_USER_AGE_LIMIT_ENABLED = 1
   }
 }
 
@@ -241,7 +237,7 @@ module "session_manager_weu" {
 
   always_on                    = true
   node_version                 = "20-lts"
-  app_command_line             = "npm run start"
+  app_command_line             = ""
   health_check_path            = "/healthcheck"
   health_check_maxpingfailures = 2
 
@@ -289,7 +285,7 @@ module "session_manager_weu_staging" {
 
   always_on         = true
   node_version      = "20-lts"
-  app_command_line  = "npm run start"
+  app_command_line  = ""
   health_check_path = "/healthcheck"
 
   auto_heal_enabled = true

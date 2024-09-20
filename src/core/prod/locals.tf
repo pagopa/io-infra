@@ -14,4 +14,23 @@ locals {
     Owner       = "IO"
     Source      = "https://github.com/pagopa/io-infra/blob/main/src/core/prod"
   }
+
+  # TODO: edit this block when resource groups module is implemented
+  resource_groups = {
+    weu = {
+      common   = "${local.project_weu_legacy}-rg-common"
+      internal = "${local.project_weu_legacy}-rg-internal"
+      external = "${local.project_weu_legacy}-rg-external"
+      event    = "${local.project_weu_legacy}-evt-rg"
+      sec      = "${local.project_weu_legacy}-sec-rg"
+    }
+
+    itn = {
+      common   = "${local.project_itn}-common-rg-01"
+      internal = "${local.project_itn}-common-rg-01"
+      external = "${local.project_itn}-common-rg-01"
+      event    = "${local.project_itn}-common-rg-01"
+      sec      = "${local.project_itn}-sec-rg-01"
+    }
+  }
 }

@@ -13,7 +13,8 @@ module "networking_weu" {
   vnet_cidr_block = "10.0.0.0/16"
   pep_snet_cidr   = ["10.0.240.0/23"]
 
-  ng_ips_number = 2
+  ng_ips_number    = 2
+  ng_ippres_number = 0
 
   tags = merge(local.tags, { Source = "https://github.com/pagopa/io-infra" })
 }
@@ -81,7 +82,13 @@ module "key_vault_weu" {
   resource_group_common = data.azurerm_resource_group.common_weu.name
   tenant_id             = data.azurerm_client_config.current.tenant_id
 
-  tags = merge(local.tags)
+  azure_ad_group_admin_object_id            = data.azuread_group.adgroup_admin.object_id
+  azure_ad_group_developers_object_id       = data.azuread_group.adgroup_developers.object_id
+  io_infra_ci_managed_identity_principal_id = data.azurerm_user_assigned_identity.managed_identity_io_infra_ci.principal_id
+  io_infra_cd_managed_identity_principal_id = data.azurerm_user_assigned_identity.managed_identity_io_infra_cd.principal_id
+  platform_iac_sp_object_id                 = data.azuread_service_principal.platform_iac_sp.object_id
+
+  tags = local.tags
 }
 
 module "vpn_weu" {
@@ -98,6 +105,25 @@ module "vpn_weu" {
   vnet_common              = module.networking_weu.vnet_common
   vpn_cidr_subnet          = ["10.0.133.0/24"]
   dnsforwarder_cidr_subnet = ["10.0.252.8/29"]
+
+  tags = local.tags
+}
+
+module "azdoa_weu" {
+  source = "../_modules/azure_devops_agent"
+
+  location            = data.azurerm_resource_group.common_weu.location
+  location_short      = local.location_short[data.azurerm_resource_group.common_weu.location]
+  resource_group_name = data.azurerm_resource_group.common_weu.name
+  project             = local.project_weu_legacy
+
+  vnet_common     = module.networking_weu.vnet_common
+  resource_groups = local.resource_groups[local.location_short[data.azurerm_resource_group.common_weu.location]]
+  datasources = {
+    azurerm_client_config = data.azurerm_client_config.current
+  }
+
+  cidr_subnet = ["10.0.250.0/24"]
 
   tags = local.tags
 }

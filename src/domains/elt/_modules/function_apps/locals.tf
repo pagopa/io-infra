@@ -15,4 +15,7 @@ locals {
   event_hub_connection = "${format("%s-evh-ns", var.project)}.servicebus.windows.net:9093"
 
   pn_service_id = "01G40DWQGKY5GRWSNM4303VNRP"
+
+  service_preferences_failure_queue_name = "pdnd-io-cosmosdb-service-preferences-failure"
+  profiles_failure_queue_name            = "pdnd-io-cosmosdb-profiles-failure"
 }

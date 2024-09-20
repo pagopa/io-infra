@@ -1,11 +1,13 @@
-output "networking_itn" {
+output "networking" {
   value = {
-    name = module.networking_itn.vnet_common.name
+    itn = module.networking_itn
+    weu = module.networking_weu
   }
 }
 
-output "networking_weu" {
+output "key_vault" {
   value = {
-    name = module.networking_weu.vnet_common.name
+    itn = null
+    weu = module.key_vault_weu
   }
 }

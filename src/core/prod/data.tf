@@ -12,14 +12,25 @@ data "azurerm_virtual_network" "weu_prod01" {
   resource_group_name = "${local.project_weu}-prod01-vnet-rg"
 }
 
-# TODO: remove when app gateway module is implemented
-data "azurerm_public_ip" "appgateway_public_ip" {
-  name                = format("${local.project_weu_legacy}-appgateway-pip")
-  resource_group_name = "${local.project_weu_legacy}-rg-external"
+data "azuread_group" "adgroup_admin" {
+  display_name = "${local.prefix}-${local.env_short}-adgroup-admin"
 }
 
-# TODO: remove when apim v2 module is implemented
-data "azurerm_api_management" "apim_v2" {
-  name                = "${local.project_weu_legacy}-apim-v2-api"
-  resource_group_name = "${local.project_weu_legacy}-rg-internal"
+data "azuread_group" "adgroup_developers" {
+  display_name = "${local.prefix}-${local.env_short}-adgroup-developers"
+}
+
+#pagopaspa-cstar-platform-iac-projects-{subscription}
+data "azuread_service_principal" "platform_iac_sp" {
+  display_name = "pagopaspa-io-platform-iac-projects-${data.azurerm_subscription.current.subscription_id}"
+}
+
+data "azurerm_user_assigned_identity" "managed_identity_io_infra_ci" {
+  name                = "${local.prefix}-${local.env_short}-infra-github-ci-identity"
+  resource_group_name = "${local.prefix}-${local.env_short}-identity-rg"
+}
+
+data "azurerm_user_assigned_identity" "managed_identity_io_infra_cd" {
+  name                = "${local.prefix}-${local.env_short}-infra-github-cd-identity"
+  resource_group_name = "${local.prefix}-${local.env_short}-identity-rg"
 }

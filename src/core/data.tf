@@ -16,6 +16,20 @@ data "azurerm_cosmosdb_account" "cosmos_remote_content" {
 }
 
 #
+# APIM
+#
+data "azurerm_subnet" "apim" {
+  name                 = "apimv2api"
+  resource_group_name  = azurerm_resource_group.rg_common.name
+  virtual_network_name = data.azurerm_virtual_network.common.name
+}
+
+data "azurerm_api_management" "apim" {
+  name                = "io-p-apim-v2-api"
+  resource_group_name = "io-p-rg-internal"
+}
+
+#
 # Logs resources
 #
 
@@ -104,6 +118,11 @@ data "azurerm_key_vault_secret" "app_backend_PRE_SHARED_KEY" {
   key_vault_id = data.azurerm_key_vault.key_vault_common.id
 }
 
+data "azurerm_storage_account" "locked_profiles_storage" {
+  name                = replace("${local.project}-locked-profiles-st", "-", "")
+  resource_group_name = "${local.project}-rg-internal"
+}
+
 
 # -----------------------------------------------
 # Alerts
@@ -151,39 +170,7 @@ resource "azurerm_monitor_metric_alert" "cosmos_api_throttling_alert" {
   }
 
   action {
-    action_group_id    = azurerm_monitor_action_group.error_action_group.id
-    webhook_properties = {}
-  }
-
-  tags = var.tags
-}
-
-
-resource "azurerm_monitor_metric_alert" "iopstapi_throttling_low_availability" {
-
-  name                = "[IO-COMMONS | ${module.storage_api.name}] Low Availability"
-  resource_group_name = azurerm_resource_group.rg_linux.name
-  scopes              = [module.storage_api.id]
-  # TODO: add Runbook for checking errors
-  description   = "The average availability is less than 99.8%. Runbook: not needed."
-  severity      = 0
-  window_size   = "PT5M"
-  frequency     = "PT5M"
-  auto_mitigate = false
-
-  # Metric info
-  # https://learn.microsoft.com/en-us/azure/azure-monitor/essentials/metrics-supported#microsoftstoragestorageaccounts
-  criteria {
-    metric_namespace       = "Microsoft.Storage/storageAccounts"
-    metric_name            = "Availability"
-    aggregation            = "Average"
-    operator               = "LessThan"
-    threshold              = 99.8
-    skip_metric_validation = false
-  }
-
-  action {
-    action_group_id    = azurerm_monitor_action_group.error_action_group.id
+    action_group_id    = data.azurerm_monitor_action_group.error_action_group.id
     webhook_properties = {}
   }
 
@@ -201,21 +188,6 @@ data "azurerm_linux_web_app" "cms_backoffice_app_itn" {
 data "azurerm_linux_function_app" "services_app_backend_function_app" {
   resource_group_name = format("%s-itn-svc-rg-01", local.project)
   name                = format("%s-itn-svc-app-be-func-01", local.project)
-}
-
-
-#
-# MANAGED IDENTITIES
-#
-
-data "azurerm_user_assigned_identity" "managed_identity_io_infra_ci" {
-  name                = "${local.project}-infra-github-ci-identity"
-  resource_group_name = "${local.project}-identity-rg"
-}
-
-data "azurerm_user_assigned_identity" "managed_identity_io_infra_cd" {
-  name                = "${local.project}-infra-github-cd-identity"
-  resource_group_name = "${local.project}-identity-rg"
 }
 
 #
@@ -283,6 +255,16 @@ data "azurerm_linux_function_app" "app_messages_2" {
   name                = "${local.project}-app-messages-fn-2"
 }
 
+data "azurerm_linux_function_app" "citizen_func_01" {
+  resource_group_name = "io-p-itn-msgs-rg-01"
+  name                = "io-p-itn-msgs-citizen-func-01"
+}
+
+data "azurerm_linux_function_app" "citizen_func_02" {
+  resource_group_name = "io-p-itn-msgs-rg-01"
+  name                = "io-p-itn-msgs-citizen-func-02"
+}
+
 #
 # ELT
 #
@@ -314,11 +296,6 @@ data "azurerm_linux_function_app" "function_app" {
   count               = var.function_app_count
   name                = format("%s-app-fn-%d", local.project, count.index + 1)
   resource_group_name = format("%s-app-rg-%d", local.project, count.index + 1)
-}
-
-data "azurerm_linux_function_app" "function_assets_cdn" {
-  name                = format("%s-assets-cdn-fn", local.project)
-  resource_group_name = format("%s-assets-cdn-rg", local.project)
 }
 
 data "azurerm_api_management" "trial_system" {
@@ -442,4 +419,24 @@ data "azurerm_dns_a_record" "api_io_italia_it" {
   name                = "api"
   zone_name           = data.azurerm_dns_zone.io_italia_it.name
   resource_group_name = "${local.project}-rg-external"
+}
+
+#
+# AppGateway
+#
+
+data "azurerm_subnet" "appgateway_snet" {
+  name                 = "${local.project}-appgateway-snet"
+  resource_group_name  = azurerm_resource_group.rg_common.name
+  virtual_network_name = data.azurerm_virtual_network.common.name
+}
+
+#
+# Azure DevOps Agent
+#
+
+data "azurerm_subnet" "azdoa_snet" {
+  name                 = "azure-devops"
+  resource_group_name  = azurerm_resource_group.rg_common.name
+  virtual_network_name = data.azurerm_virtual_network.common.name
 }

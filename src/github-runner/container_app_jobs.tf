@@ -22,5 +22,11 @@ module "container_app_job" {
     polling_interval = 20
   }
 
+  container = {
+    cpu    = 1
+    memory = "2Gi"
+    image  = "ghcr.io/pagopa/github-self-hosted-runner-azure:latest"
+  }
+
   tags = var.tags
 }

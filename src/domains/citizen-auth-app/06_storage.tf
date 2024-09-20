@@ -13,12 +13,6 @@ data "azurerm_storage_account" "logs" {
   resource_group_name = format("%s-rg-operations", local.product)
 }
 
-
-data "azurerm_storage_account" "locked_profiles_storage" {
-  name                = replace(format("%s-locked-profiles-st", local.product), "-", "")
-  resource_group_name = format("%s-rg-internal", local.product)
-}
-
 data "azurerm_storage_account" "push_notifications_storage" {
   name                = replace(format("%s-weu-messages-notifst", local.product), "-", "")
   resource_group_name = format("%s-weu-messages-notifications-rg", local.product)

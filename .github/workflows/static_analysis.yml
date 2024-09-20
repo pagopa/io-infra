@@ -44,8 +44,6 @@ jobs:
           newmap[src/domains/profile-app]="."
           newmap[src/domains/profile-common]="."
           newmap[src/domains/functions]="."
-          newmap[src/domains/sign]="."
-          newmap[src/cosmos-api]="./prod"
           newmap[src/github-runner]="."
           newmap[src/packer]="."
 

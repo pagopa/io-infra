@@ -63,23 +63,6 @@ cidr_subnet_dnsforwarder = ["10.0.252.8/29"]
 # just for reminder: declared in https://github.com/pagopa/io-infra/blob/main/src/domains/ioweb-app/env/weu-prod01/terraform.tfvars
 # subnet for ioweb_profile -> cidr_subnet_fniowebprofile = ["10.0.117.0/24"]
 
-app_gateway_api_certificate_name                                  = "api-io-pagopa-it"
-app_gateway_api_mtls_certificate_name                             = "api-mtls-io-pagopa-it"
-app_gateway_api_app_certificate_name                              = "api-app-io-pagopa-it"
-app_gateway_api_web_certificate_name                              = "api-web-io-pagopa-it"
-app_gateway_api_io_italia_it_certificate_name                     = "api-io-italia-it"
-app_gateway_app_backend_io_italia_it_certificate_name             = "app-backend-io-italia-it"
-app_gateway_developerportal_backend_io_italia_it_certificate_name = "developerportal-backend-io-italia-it"
-app_gateway_api_io_selfcare_pagopa_it_certificate_name            = "api-io-selfcare-pagopa-it"
-app_gateway_firmaconio_selfcare_pagopa_it_certificate_name        = "firmaconio-selfcare-pagopa-it"
-app_gateway_continua_io_pagopa_it_certificate_name                = "continua-io-pagopa-it"
-app_gateway_selfcare_io_pagopa_it_certificate_name                = "selfcare-io-pagopa-it"
-app_gateway_oauth_io_pagopa_it_certificate_name                   = "oauth-io-pagopa-it"
-app_gateway_min_capacity                                          = 4 # 4 capacity=baseline, 10 capacity=high volume event, 15 capacity=very high volume event
-app_gateway_max_capacity                                          = 50
-app_gateway_alerts_enabled                                        = true
-app_gateway_deny_paths                                            = ["\\/admin\\/(.*)"]
-
 ## REDIS COMMON ##
 redis_common = {
   capacity                      = 2
@@ -97,18 +80,18 @@ redis_common = {
 apim_publisher_name = "IO"
 apim_v2_sku         = "Premium_2"
 apim_autoscale = {
-  enabled                       = false
-  default_instances             = 1
-  minimum_instances             = 1
-  maximum_instances             = 5
+  enabled                       = true
+  default_instances             = 5
+  minimum_instances             = 4
+  maximum_instances             = 6
   scale_out_capacity_percentage = 50
-  scale_out_time_window         = "PT10M"
-  scale_out_value               = "2"
-  scale_out_cooldown            = "PT45M"
-  scale_in_capacity_percentage  = 30
-  scale_in_time_window          = "PT30M"
+  scale_out_time_window         = "PT3M"
+  scale_out_value               = "1"
+  scale_out_cooldown            = "PT5M"
+  scale_in_capacity_percentage  = 20
+  scale_in_time_window          = "PT5M"
   scale_in_value                = "1"
-  scale_in_cooldown             = "PT30M"
+  scale_in_cooldown             = "PT5M"
 }
 
 # azure devops
@@ -371,6 +354,26 @@ eventhubs = [
   },
   {
     name              = "pdnd-io-cosmosdb-service-preferences"
+    partitions        = 30
+    message_retention = 7
+    consumers         = []
+    keys = [
+      {
+        name   = "io-fn-elt"
+        listen = false
+        send   = true
+        manage = false
+      },
+      {
+        name   = "pdnd"
+        listen = true
+        send   = false
+        manage = false
+      }
+    ]
+  },
+  {
+    name              = "pdnd-io-cosmosdb-profiles"
     partitions        = 30
     message_retention = 7
     consumers         = []

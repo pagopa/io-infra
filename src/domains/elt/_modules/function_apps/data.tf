@@ -82,6 +82,13 @@ data "azurerm_eventhub_authorization_rule" "evh_ns_pdnd_io_cosmos_service_prefer
   resource_group_name = "${var.project}-evt-rg"
 }
 
+data "azurerm_eventhub_authorization_rule" "evh_ns_pdnd_io_cosmos_profiles_fn" {
+  name                = "io-fn-elt"
+  namespace_name      = "${var.project}-evh-ns"
+  eventhub_name       = "pdnd-io-cosmosdb-profiles"
+  resource_group_name = "${var.project}-evt-rg"
+}
+
 data "azurerm_eventhub_authorization_rule" "evh_ns_import_command_fn" {
   name                = "io-fn-elt"
   namespace_name      = "${var.project}-evh-ns"
@@ -106,6 +113,11 @@ data "azurerm_key_vault_secret" "services_exclusion_list" {
   key_vault_id = data.azurerm_key_vault.kv_common.id
 }
 
+data "azurerm_key_vault_secret" "pdv_tokenizer_api_key" {
+  name         = "func-elt-PDV-TOKENIZER-API-KEY"
+  key_vault_id = data.azurerm_key_vault.kv_common.id
+}
+
 data "azurerm_storage_account" "storage_api" {
   name                = replace("${var.project}stapi", "-", "")
   resource_group_name = local.resource_group_name_internal
@@ -119,4 +131,9 @@ data "azurerm_storage_account" "storage_api_replica" {
 data "azurerm_storage_account" "storage_assets_cdn" {
   name                = replace(format("%s-stcdnassets", var.project), "-", "")
   resource_group_name = local.resource_group_name_common
+}
+
+data "azurerm_storage_account" "function_elt_internal_storage" {
+  name                = module.function_elt.storage_account_internal_function_name
+  resource_group_name = var.resource_group_name
 }
