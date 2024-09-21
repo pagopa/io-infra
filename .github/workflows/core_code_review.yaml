@@ -23,7 +23,7 @@ on:
 
 jobs:
   prod_itn_core_code_review:
-    uses: pagopa/dx/.github/workflows/infra_plan.yaml@terraform-registry-scaffolding
+    uses: pagopa/dx/.github/workflows/infra_plan.yaml@main
     name: Prod - Code Review
     secrets: inherit
     with:
