@@ -517,11 +517,10 @@ module "app_backend_li_weu" {
   application_insights   = module.monitoring_weu.appi
   ai_instrumentation_key = module.monitoring_weu.appi_instrumentation_key
 
-  # TODO: remove data once moved redis to modules
   redis_common = {
-    hostname           = data.azurerm_redis_cache.redis_common.hostname
-    ssl_port           = data.azurerm_redis_cache.redis_common.ssl_port
-    primary_access_key = data.azurerm_redis_cache.redis_common.primary_access_key
+    hostname           = module.redis_weu.hostname
+    ssl_port           = module.redis_weu.ssl_port
+    primary_access_key = module.redis_weu.primary_access_key
   }
 
   tags = local.tags

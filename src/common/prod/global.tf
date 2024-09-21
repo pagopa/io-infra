@@ -46,7 +46,7 @@ module "global" {
     app_gateway_public_ip = module.application_gateway_weu.public_ip.address
 
     # TODO: remove when apim v2 module is implemented
-    apim_v2_private_ip = data.azurerm_api_management.apim_v2.private_ip_addresses[0]
+    apim_v2_private_ip = module.apim_weu.public_ip.address
   }
 
   tags = merge(local.tags, { Source = "https://github.com/pagopa/io-infra" })
