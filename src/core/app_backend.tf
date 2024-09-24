@@ -287,19 +287,21 @@ locals {
       IS_APPBACKENDLI = "false"
       // FUNCTIONS
       API_URL              = "https://${data.azurerm_linux_function_app.function_app[1].default_hostname}/api/v1"
-      APP_MESSAGES_API_URL = "https://io-p-app-messages-fn-1.azurewebsites.net"
+      APP_MESSAGES_API_URL =
+      "https://io-p-app-messages-fn-1.azurewebsites.net/api/v1"
     }
     app_settings_l2 = {
       IS_APPBACKENDLI = "false"
       // FUNCTIONS
       API_URL              = "https://${data.azurerm_linux_function_app.function_app[1].default_hostname}/api/v1"
-      APP_MESSAGES_API_URL = "https://io-p-app-messages-fn-2.azurewebsites.net"
+      APP_MESSAGES_API_URL =
+      "https://io-p-app-messages-fn-2.azurewebsites.net/api/v1"
     }
     app_settings_li = {
       IS_APPBACKENDLI = "true"
       // FUNCTIONS
       API_URL              = "https://${data.azurerm_linux_function_app.function_app[1].default_hostname}/api/v1" # not used
-      APP_MESSAGES_API_URL = "https://io-p-app-messages-fn-1.azurewebsites.net"                                   # not used
+      APP_MESSAGES_API_URL = "https://io-p-app-messages-fn-1.azurewebsites.net/api/v1"                                   # not used
     }
   }
 
