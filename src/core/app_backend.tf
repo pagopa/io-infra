@@ -301,6 +301,7 @@ locals {
       // FUNCTIONS
       API_URL              = "https://${data.azurerm_linux_function_app.function_app[1].default_hostname}/api/v1" # not used
       APP_MESSAGES_API_URL = "https://io-p-app-messages-fn-1.azurewebsites.net/api/v1"                            # not used
+      APP_MESSAGES_API_KEY = data.azurerm_key_vault_secret.app_backend_APP_MESSAGES_API_KEY.value
     }
   }
 
