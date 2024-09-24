@@ -109,7 +109,7 @@ locals {
 }
 
 module "function_messages_cqrs_snet" {
-  source = "github.com/pagopa/terraform-azurerm-v3//subnet?ref=v8.27.0"
+  source = "github.com/pagopa/terraform-azurerm-v3//subnet?ref=v8.44.0"
 
   name                                      = format("%s-fn-messages-cqrs-snet", local.product)
   address_prefixes                          = var.cidr_subnet_fnmessagescqrs
@@ -133,7 +133,7 @@ module "function_messages_cqrs_snet" {
 }
 
 module "function_messages_cqrs" {
-  source = "github.com/pagopa/terraform-azurerm-v3//function_app?ref=v8.27.0"
+  source = "github.com/pagopa/terraform-azurerm-v3//function_app?ref=v8.44.0"
 
   resource_group_name = azurerm_resource_group.backend_messages_rg.name
   name                = format("%s-messages-cqrs-fn", local.product)
@@ -235,7 +235,7 @@ module "function_messages_cqrs" {
 }
 
 module "function_messages_cqrs_staging_slot" {
-  source = "github.com/pagopa/terraform-azurerm-v3//function_app_slot?ref=v8.27.0"
+  source = "github.com/pagopa/terraform-azurerm-v3//function_app_slot?ref=v8.44.0"
 
   name                = "staging"
   location            = var.location
