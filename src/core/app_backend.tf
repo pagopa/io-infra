@@ -65,7 +65,6 @@ locals {
       IO_SIGN_API_BASE_PATH             = "/api/v1/sign"
       LOLLIPOP_API_BASE_PATH            = "/api/v1"
       TRIAL_SYSTEM_API_BASE_PATH        = "/api/v1"
-      TRIAL_SYSTEM_APIM_BASE_PATH       = "/manage/api/v1" # Add this variable to avoid downtime
       IO_WALLET_API_BASE_PATH           = "/api/v1/wallet"
 
       // REDIS
