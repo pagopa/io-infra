@@ -47,7 +47,6 @@ locals {
       CGN_OPERATOR_SEARCH_API_KEY = data.azurerm_key_vault_secret.app_backend_CGN_OPERATOR_SEARCH_API_KEY_PROD.value
       EUCOVIDCERT_API_URL         = "https://${data.azurerm_linux_function_app.eucovidcert.default_hostname}/api/v1"
       EUCOVIDCERT_API_KEY         = data.azurerm_key_vault_secret.fn_eucovidcert_API_KEY_APPBACKEND.value
-      APP_MESSAGES_API_KEY        = data.azurerm_key_vault_secret.app_backend_APP_MESSAGES_API_KEY.value
       LOLLIPOP_API_URL            = "https://${data.azurerm_linux_function_app.lollipop_function.default_hostname}"
       LOLLIPOP_API_KEY            = data.azurerm_key_vault_secret.app_backend_LOLLIPOP_ITN_API_KEY.value
       TRIAL_SYSTEM_API_URL        = "https://ts-p-itn-api-func-01.azurewebsites.net" # PROD-TRIAL subscription
@@ -287,19 +286,21 @@ locals {
       IS_APPBACKENDLI = "false"
       // FUNCTIONS
       API_URL              = "https://${data.azurerm_linux_function_app.function_app[1].default_hostname}/api/v1"
-      APP_MESSAGES_API_URL = "https://io-p-itn-msgs-citizen-func-01.azurewebsites.net/api/v1"
+      APP_MESSAGES_API_URL = "https://io-p-app-messages-fn-1.azurewebsites.net/api/v1"
+      APP_MESSAGES_API_KEY = data.azurerm_key_vault_secret.app_backend_APP_MESSAGES_API_KEY.value
     }
     app_settings_l2 = {
       IS_APPBACKENDLI = "false"
       // FUNCTIONS
       API_URL              = "https://${data.azurerm_linux_function_app.function_app[1].default_hostname}/api/v1"
-      APP_MESSAGES_API_URL = "https://io-p-itn-msgs-citizen-func-02.azurewebsites.net/api/v1"
+      APP_MESSAGES_API_URL = "https://io-p-app-messages-fn-2.azurewebsites.net/api/v1"
+      APP_MESSAGES_API_KEY = data.azurerm_key_vault_secret.app_backend_APP_MESSAGES_API_KEY_02.value
     }
     app_settings_li = {
       IS_APPBACKENDLI = "true"
       // FUNCTIONS
       API_URL              = "https://${data.azurerm_linux_function_app.function_app[1].default_hostname}/api/v1" # not used
-      APP_MESSAGES_API_URL = "https://io-p-itn-msgs-citizen-func-01.azurewebsites.net/api/v1"                     # not used
+      APP_MESSAGES_API_URL = "https://io-p-app-messages-fn-1.azurewebsites.net/api/v1"                            # not used
     }
   }
 
@@ -470,6 +471,11 @@ data "azurerm_key_vault_secret" "app_backend_PECSERVER_ARUBA_TOKEN_SECRET" {
 
 data "azurerm_key_vault_secret" "app_backend_APP_MESSAGES_API_KEY" {
   name         = "appbackend-APP-MESSAGES-API-KEY"
+  key_vault_id = data.azurerm_key_vault.key_vault_common.id
+}
+
+data "azurerm_key_vault_secret" "app_backend_APP_MESSAGES_API_KEY_02" {
+  name         = "appbackend-APP-MESSAGES-API-KEY-02"
   key_vault_id = data.azurerm_key_vault.key_vault_common.id
 }
 
