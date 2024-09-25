@@ -46,6 +46,11 @@ data "azurerm_private_dns_zone" "privatelink_table_core" {
   resource_group_name = local.vnet_common_resource_group_name
 }
 
+data "azurerm_subnet" "private_endpoints_subnet_itn" {
+  name                 = "io-p-itn-pep-snet-01"
+  virtual_network_name = "io-p-itn-common-vnet-01"
+  resource_group_name  = "io-p-itn-common-rg-01"
+}
 
 ## Redis Common subnet
 module "redis_common_snet" {
@@ -56,4 +61,19 @@ module "redis_common_snet" {
   virtual_network_name = local.vnet_common_name
 
   private_endpoint_network_policies_enabled = false
+}
+
+## Cosmos Private Endpoint
+resource "azurerm_private_endpoint" "cosmos_db" {
+  name                = coalesce("${local.product}-citizen-auth-account", format("%s-private-endpoint-sql", module.cosmosdb_account.name))
+  location            = azurerm_resource_group.data_rg.location
+  resource_group_name = azurerm_resource_group.data_rg.name
+  subnet_id           = data.azurerm_subnet.private_endpoints_subnet_itn.id
+
+  private_service_connection {
+    name                           = coalesce("${local.product}-citizen-auth-account-private-endpoint", format("%s-private-endpoint-sql", module.cosmosdb_account.name))
+    private_connection_resource_id = module.cosmosdb_account.id
+    is_manual_connection           = false
+    subresource_names              = ["Sql"]
+  }
 }
