@@ -183,7 +183,12 @@ variable "function_lollipop_autoscale_default" {
 
 variable "cidr_subnet_fnfastlogin" {
   type        = list(string)
-  description = "Function Lollipop address space."
+  description = "Function Fast Login address space."
+}
+
+variable "cidr_subnet_fnfastlogin_itn" {
+  type        = string
+  description = "Function Fast Login on ITN region address space."
 }
 
 variable "function_fastlogin_kind" {

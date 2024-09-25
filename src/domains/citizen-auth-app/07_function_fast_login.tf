@@ -13,6 +13,11 @@ data "azurerm_app_service" "app_backend_li" {
   resource_group_name = format("%s-rg-linux", local.product)
 }
 
+data "azurerm_virtual_network" "vnet_common_itn" {
+  name                = "${local.common_project_itn}-common-vnet-01"
+  resource_group_name = "${local.common_project_itn}-common-rg-01"
+}
+
 locals {
   function_fast_login = {
     app_settings = {
@@ -66,6 +71,13 @@ resource "azurerm_resource_group" "fast_login_rg" {
   tags = var.tags
 }
 
+resource "azurerm_resource_group" "fast_login_rg_itn" {
+  name     = format("%s-fast-login-rg-01", local.common_project_itn)
+  location = local.itn_location
+
+  tags = var.tags
+}
+
 # Subnet to host admin function
 module "fast_login_snet" {
   count                                     = var.fastlogin_enabled ? 1 : 0
@@ -89,6 +101,61 @@ module "fast_login_snet" {
       actions = ["Microsoft.Network/virtualNetworks/subnets/action"]
     }
   }
+}
+
+resource "azurerm_subnet" "fast_login_snet_itn" {
+  name                                      = format("%s-fast-login-snet-01", local.common_project_itn)
+  address_prefixes                          = [var.cidr_subnet_fnfastlogin_itn]
+  resource_group_name                       = data.azurerm_virtual_network.vnet_common.resource_group_name
+  virtual_network_name                      = data.azurerm_virtual_network.vnet_common.name
+
+  service_endpoints = [
+    "Microsoft.Web",
+    "Microsoft.AzureCosmosDB",
+    "Microsoft.Storage",
+  ]
+
+  delegation {
+    name = "default"
+    service_delegation {
+      name    = "Microsoft.Web/serverFarms"
+      actions = ["Microsoft.Network/virtualNetworks/subnets/action"]
+    }
+  }
+
+  private_link_service_network_policies_enabled = true
+  private_endpoint_network_policies_enabled     = true
+}
+
+module "function_fast_login_itn" {
+  source = "github.com/pagopa/dx//infra/modules/azure_function_app?ref=ab0875ad30b1901d743ff19eafc85e8386c035ca"
+
+  environment = {
+    prefix          = var.prefix
+    env_short       = var.env_short
+    location        = local.itn_location
+    domain          = "authnid"
+    app_name        = "lv"
+    instance_number = "01"
+  }
+
+  resource_group_name = azurerm_resource_group.fast_login_rg_itn.name
+  health_check_path   = "/info"
+  node_version        = 18
+
+  subnet_cidr                          = var.cidr_subnet_fnfastlogin_itn
+  subnet_pep_id                        = azurerm_subnet.fast_login_snet_itn.id
+  private_dns_zone_resource_group_name = data.azurerm_virtual_network.vnet_common.resource_group_name
+
+  virtual_network = {
+    name                = data.azurerm_virtual_network.vnet_common_itn.name
+    resource_group_name = data.azurerm_virtual_network.vnet_common_itn.resource_group_name
+  }
+
+  app_settings      = local.function_fast_login.app_settings
+  slot_app_settings = local.function_fast_login.app_settings
+
+  tags = var.tags
 }
 
 module "function_fast_login" {

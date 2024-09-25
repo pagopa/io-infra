@@ -57,6 +57,7 @@ function_lollipop_autoscale_default = 10
 
 # Functions Fast Login
 cidr_subnet_fnfastlogin              = ["10.0.17.128/26"]
+cidr_subnet_fnfastlogin_itn          = "10.20.6.128/26"
 function_fastlogin_kind              = "Linux"
 function_fastlogin_sku_size          = "P1v3"
 function_fastlogin_autoscale_minimum = 2
