@@ -1,3 +1,8 @@
+data "azurerm_redis_cache" "redis_common" {
+  name                = format("%s-redis-common", local.project)
+  resource_group_name = azurerm_resource_group.rg_common.name
+}
+
 ### Common resources
 
 locals {
@@ -42,11 +47,12 @@ locals {
       CGN_OPERATOR_SEARCH_API_KEY = data.azurerm_key_vault_secret.app_backend_CGN_OPERATOR_SEARCH_API_KEY_PROD.value
       EUCOVIDCERT_API_URL         = "https://${data.azurerm_linux_function_app.eucovidcert.default_hostname}/api/v1"
       EUCOVIDCERT_API_KEY         = data.azurerm_key_vault_secret.fn_eucovidcert_API_KEY_APPBACKEND.value
-      APP_MESSAGES_API_KEY        = data.azurerm_key_vault_secret.app_backend_APP_MESSAGES_API_KEY.value
       LOLLIPOP_API_URL            = "https://${data.azurerm_linux_function_app.lollipop_function.default_hostname}"
       LOLLIPOP_API_KEY            = data.azurerm_key_vault_secret.app_backend_LOLLIPOP_ITN_API_KEY.value
       TRIAL_SYSTEM_API_URL        = "https://ts-p-itn-api-func-01.azurewebsites.net" # PROD-TRIAL subscription
+      TRIAL_SYSTEM_APIM_URL       = "https://api.trial.pagopa.it"                    # Add this variable to avoid downtime
       TRIAL_SYSTEM_API_KEY        = data.azurerm_key_vault_secret.app_backend_TRIAL_SYSTEM_API_KEY.value
+      TRIAL_SYSTEM_APIM_KEY       = data.azurerm_key_vault_secret.app_backend_TRIAL_SYSTEM_APIM_KEY.value
       IO_WALLET_API_URL           = "https://io-p-itn-wallet-user-func-01.azurewebsites.net"
       IO_WALLET_API_KEY           = data.azurerm_key_vault_secret.app_backend_IO_WALLET_API_KEY.value
 
@@ -59,6 +65,7 @@ locals {
       IO_SIGN_API_BASE_PATH             = "/api/v1/sign"
       LOLLIPOP_API_BASE_PATH            = "/api/v1"
       TRIAL_SYSTEM_API_BASE_PATH        = "/api/v1"
+      TRIAL_SYSTEM_APIM_BASE_PATH       = "/manage/api/v1" # Add this variable to avoid downtime
       IO_WALLET_API_BASE_PATH           = "/api/v1/wallet"
 
       // REDIS
@@ -279,19 +286,22 @@ locals {
       IS_APPBACKENDLI = "false"
       // FUNCTIONS
       API_URL              = "https://${data.azurerm_linux_function_app.function_app[1].default_hostname}/api/v1"
-      APP_MESSAGES_API_URL = "https://io-p-itn-msgs-citizen-func-01.azurewebsites.net/api/v1"
+      APP_MESSAGES_API_URL = "https://io-p-app-messages-fn-1.azurewebsites.net/api/v1"
+      APP_MESSAGES_API_KEY = data.azurerm_key_vault_secret.app_backend_APP_MESSAGES_API_KEY.value
     }
     app_settings_l2 = {
       IS_APPBACKENDLI = "false"
       // FUNCTIONS
       API_URL              = "https://${data.azurerm_linux_function_app.function_app[1].default_hostname}/api/v1"
-      APP_MESSAGES_API_URL = "https://io-p-itn-msgs-citizen-func-02.azurewebsites.net/api/v1"
+      APP_MESSAGES_API_URL = "https://io-p-app-messages-fn-2.azurewebsites.net/api/v1"
+      APP_MESSAGES_API_KEY = data.azurerm_key_vault_secret.app_backend_APP_MESSAGES_API_KEY_02.value
     }
     app_settings_li = {
       IS_APPBACKENDLI = "true"
       // FUNCTIONS
       API_URL              = "https://${data.azurerm_linux_function_app.function_app[1].default_hostname}/api/v1" # not used
-      APP_MESSAGES_API_URL = "https://io-p-itn-msgs-citizen-func-01.azurewebsites.net/api/v1"                     # not used
+      APP_MESSAGES_API_URL = "https://io-p-app-messages-fn-1.azurewebsites.net/api/v1"                            # not used
+      APP_MESSAGES_API_KEY = data.azurerm_key_vault_secret.app_backend_APP_MESSAGES_API_KEY.value                 # not used
     }
   }
 
@@ -465,6 +475,11 @@ data "azurerm_key_vault_secret" "app_backend_APP_MESSAGES_API_KEY" {
   key_vault_id = data.azurerm_key_vault.key_vault_common.id
 }
 
+data "azurerm_key_vault_secret" "app_backend_APP_MESSAGES_API_KEY_02" {
+  name         = "appbackend-APP-MESSAGES-API-KEY-02"
+  key_vault_id = data.azurerm_key_vault.key_vault_common.id
+}
+
 data "azurerm_key_vault_secret" "app_backend_APP_CITIZEN_APIM_KEY" {
   name         = "appbackend-APP-CITIZEN-APIM-KEY"
   key_vault_id = data.azurerm_key_vault.key_vault_common.id
@@ -497,6 +512,11 @@ data "azurerm_key_vault_secret" "app_backend_LOLLIPOP_ITN_API_KEY" {
 
 data "azurerm_key_vault_secret" "app_backend_TRIAL_SYSTEM_API_KEY" {
   name         = "appbackend-TRIAL-SYSTEM-API-KEY"
+  key_vault_id = data.azurerm_key_vault.key_vault_common.id
+}
+
+data "azurerm_key_vault_secret" "app_backend_TRIAL_SYSTEM_APIM_KEY" {
+  name         = "appbackend-TRIAL-SYSTEM-APIM-KEY"
   key_vault_id = data.azurerm_key_vault.key_vault_common.id
 }
 
