@@ -65,8 +65,8 @@ module "redis_common_snet" {
 
 ## Cosmos Private Endpoint
 resource "azurerm_private_endpoint" "cosmos_db" {
-  name                = coalesce("${local.product}-citizen-auth-account", format("%s-private-endpoint-sql", module.cosmosdb_account.name))
-  location            = azurerm_resource_group.data_rg.location
+  name                = coalesce("${local.product}-citizen-auth-account", format("%s-private-endpoint-sql-itn", module.cosmosdb_account.name))
+  location            = "italynorth"
   resource_group_name = azurerm_resource_group.data_rg.name
   subnet_id           = data.azurerm_subnet.private_endpoints_subnet_itn.id
 
