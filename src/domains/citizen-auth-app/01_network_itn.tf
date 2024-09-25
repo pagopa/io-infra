@@ -38,6 +38,28 @@ module "fn_app_profile_snet" {
   }
 }
 
+module "fn_app_profile_async_snet" {
+  source                                    = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v8.44.0"
+  name                                      = format("%s-app-profile-async-snet", local.common_project_itn)
+  address_prefixes                          = var.cidr_subnet_app_profile_async_itn
+  resource_group_name                       = data.azurerm_virtual_network.common_vnet_italy_north.resource_group_name
+  virtual_network_name                      = data.azurerm_virtual_network.common_vnet_italy_north.name
+  private_endpoint_network_policies_enabled = true
+
+  service_endpoints = [
+    "Microsoft.Web",
+    "Microsoft.AzureCosmosDB",
+    "Microsoft.Storage",
+  ]
+
+  delegation = {
+    name = "default"
+    service_delegation = {
+      name    = "Microsoft.Web/serverFarms"
+      actions = ["Microsoft.Network/virtualNetworks/subnets/action"]
+    }
+  }
+}
 
 #########################
 # Private Endpoints
@@ -171,6 +193,50 @@ resource "azurerm_private_endpoint" "staging_function_profile_itn_sites" {
     private_connection_resource_id = module.function_profile[count.index].id
     is_manual_connection           = false
     subresource_names              = ["sites-${module.function_profile_staging_slot[count.index].name}"]
+  }
+
+  private_dns_zone_group {
+    name                 = "private-dns-zone-group"
+    private_dns_zone_ids = [data.azurerm_private_dns_zone.privatelink_azurewebsites_net.id]
+  }
+
+  tags = var.tags
+}
+
+## itn-app-profile-async-fn
+
+resource "azurerm_private_endpoint" "function_app_profile_async_itn_sites" {
+  name                = format("%s-app-profile-async-fn-pep", local.common_project_itn)
+  location            = local.itn_location
+  resource_group_name = azurerm_resource_group.function_app_profile_async_rg.name
+  subnet_id           = data.azurerm_subnet.itn_pep.id
+
+  private_service_connection {
+    name                           = format("%s-app-profile-async-fn-pep", local.common_project_itn)
+    private_connection_resource_id = module.function_app_profile_async.id
+    is_manual_connection           = false
+    subresource_names              = ["sites"]
+  }
+
+  private_dns_zone_group {
+    name                 = "private-dns-zone-group"
+    private_dns_zone_ids = [data.azurerm_private_dns_zone.privatelink_azurewebsites_net.id]
+  }
+
+  tags = var.tags
+}
+
+resource "azurerm_private_endpoint" "staging_function_app_profile_async_itn_sites" {
+  name                = format("%s-app-profile-async-fn-staging-pep", local.common_project_itn)
+  location            = local.itn_location
+  resource_group_name = azurerm_resource_group.function_app_profile_async_rg.name
+  subnet_id           = data.azurerm_subnet.itn_pep.id
+
+  private_service_connection {
+    name                           = format("%s-app-profile-async-fn-staging-pep", local.common_project_itn)
+    private_connection_resource_id = module.function_app_profile_async.id
+    is_manual_connection           = false
+    subresource_names              = ["sites-${module.function_app_profile_async_staging_slot.name}"]
   }
 
   private_dns_zone_group {

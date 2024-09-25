@@ -13,3 +13,10 @@ resource "azurerm_resource_group" "function_app_profile_rg" {
 
   tags = var.tags
 }
+
+resource "azurerm_resource_group" "function_app_profile_async_rg" {
+  name     = format("%s-app-profile-async-rg", local.common_project_itn)
+  location = local.itn_location
+
+  tags = var.tags
+}

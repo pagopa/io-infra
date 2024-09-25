@@ -71,6 +71,15 @@ function_app_profile_kind     = "Linux"
 function_app_profile_sku_tier = "PremiumV3"
 function_app_profile_sku_size = "P1v3"
 
+# Functions app profile async (located in Italy North)
+cidr_subnet_app_profile_async_itn    = ["10.20.6.192/26"]
+function_app_profile_async_kind      = "Linux"
+function_app_profile_async_sku_tier  = "PremiumV3"
+function_app_profile_async_sku_size  = "P1v3"
+function_app_async_autoscale_minimum = 3 # 2 instance to achieve redundancy and failover
+function_app_async_autoscale_maximum = 30
+function_app_async_autoscale_default = 10
+
 # Session manager
 cidr_subnet_session_manager = ["10.0.149.0/26"]
 session_manager_autoscale_settings = {

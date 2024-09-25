@@ -5,7 +5,7 @@
 | Name | Version |
 |------|---------|
 | <a name="requirement_azuread"></a> [azuread](#requirement\_azuread) | <= 2.33.0 |
-| <a name="requirement_azurerm"></a> [azurerm](#requirement\_azurerm) | <= 3.105.0 |
+| <a name="requirement_azurerm"></a> [azurerm](#requirement\_azurerm) | <= 3.116.0 |
 | <a name="requirement_helm"></a> [helm](#requirement\_helm) | = 2.8.0 |
 | <a name="requirement_kubernetes"></a> [kubernetes](#requirement\_kubernetes) | = 2.17.0 |
 | <a name="requirement_null"></a> [null](#requirement\_null) | <= 3.2.1 |
@@ -16,10 +16,16 @@
 |------|--------|---------|
 | <a name="module_fast_login_snet"></a> [fast\_login\_snet](#module\_fast\_login\_snet) | git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet | v8.22.0 |
 <<<<<<< HEAD
+<<<<<<< HEAD
 | <a name="module_fast_login_snet_itn"></a> [fast\_login\_snet\_itn](#module\_fast\_login\_snet\_itn) | git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet | v8.22.0 |
 =======
+=======
+| <a name="module_fn_app_profile_async_snet"></a> [fn\_app\_profile\_async\_snet](#module\_fn\_app\_profile\_async\_snet) | git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet | v8.44.0 |
+>>>>>>> 348a84c ([#IOPID-2038] added fn app profile async)
 | <a name="module_fn_app_profile_snet"></a> [fn\_app\_profile\_snet](#module\_fn\_app\_profile\_snet) | git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet | v8.44.0 |
 | <a name="module_function_app_profile"></a> [function\_app\_profile](#module\_function\_app\_profile) | git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app | v8.44.0 |
+| <a name="module_function_app_profile_async"></a> [function\_app\_profile\_async](#module\_function\_app\_profile\_async) | git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app | v8.44.0 |
+| <a name="module_function_app_profile_async_staging_slot"></a> [function\_app\_profile\_async\_staging\_slot](#module\_function\_app\_profile\_async\_staging\_slot) | git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app_slot | v8.44.0 |
 | <a name="module_function_app_profile_staging_slot"></a> [function\_app\_profile\_staging\_slot](#module\_function\_app\_profile\_staging\_slot) | git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app_slot | v8.44.0 |
 >>>>>>> 2802152 (pre-commit run)
 | <a name="module_function_fast_login"></a> [function\_fast\_login](#module\_function\_fast\_login) | git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app | v8.22.0 |
@@ -40,12 +46,15 @@
 | Name | Type |
 |------|------|
 | [azurerm_monitor_autoscale_setting.function_app_profile](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/monitor_autoscale_setting) | resource |
+| [azurerm_monitor_autoscale_setting.function_app_profile_async](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/monitor_autoscale_setting) | resource |
 | [azurerm_monitor_autoscale_setting.function_fast_login](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/monitor_autoscale_setting) | resource |
 | [azurerm_monitor_autoscale_setting.function_lollipop_itn](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/monitor_autoscale_setting) | resource |
+| [azurerm_monitor_metric_alert.function_app_profile_async_health_check](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/monitor_metric_alert) | resource |
 | [azurerm_monitor_metric_alert.function_app_profile_health_check](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/monitor_metric_alert) | resource |
 | [azurerm_monitor_scheduled_query_rules_alert_v2.alert_function_lollipop_itn_HandlePubKeyRevoke_failure](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/monitor_scheduled_query_rules_alert_v2) | resource |
 | [azurerm_monitor_scheduled_query_rules_alert_v2.samlresponse_missing_detection_alert](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/monitor_scheduled_query_rules_alert_v2) | resource |
 | [azurerm_private_dns_a_record.ingress](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/private_dns_a_record) | resource |
+<<<<<<< HEAD
 <<<<<<< HEAD
 | [azurerm_private_endpoint.function_fast_login_itn_sites](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/private_endpoint) | resource |
 | [azurerm_private_endpoint.function_lollipop_itn_sites](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/private_endpoint) | resource |
@@ -57,14 +66,19 @@
 | [azurerm_resource_group.fast_login_rg](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/resource_group) | resource |
 | [azurerm_resource_group.fast_login_rg_itn](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/resource_group) | resource |
 =======
+=======
+| [azurerm_private_endpoint.function_app_profile_async_itn_sites](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/private_endpoint) | resource |
+>>>>>>> 348a84c ([#IOPID-2038] added fn app profile async)
 | [azurerm_private_endpoint.function_app_profile_itn_sites](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/private_endpoint) | resource |
 | [azurerm_private_endpoint.function_lollipop_itn_sites](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/private_endpoint) | resource |
 | [azurerm_private_endpoint.locked_profiles_storage_table](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/private_endpoint) | resource |
 | [azurerm_private_endpoint.session_manager_sites](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/private_endpoint) | resource |
+| [azurerm_private_endpoint.staging_function_app_profile_async_itn_sites](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/private_endpoint) | resource |
 | [azurerm_private_endpoint.staging_function_app_profile_itn_sites](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/private_endpoint) | resource |
 | [azurerm_private_endpoint.staging_function_lollipop_itn_sites](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/private_endpoint) | resource |
 | [azurerm_private_endpoint.staging_session_manager_sites](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/private_endpoint) | resource |
 | [azurerm_resource_group.fast_login_rg](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/resource_group) | resource |
+| [azurerm_resource_group.function_app_profile_async_rg](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/resource_group) | resource |
 | [azurerm_resource_group.function_app_profile_rg](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/resource_group) | resource |
 >>>>>>> 2802152 (pre-commit run)
 | [azurerm_resource_group.lollipop_rg_itn](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/resource_group) | resource |
@@ -171,9 +185,13 @@
 |------|-------------|------|---------|:--------:|
 | <a name="input_application_insights_name"></a> [application\_insights\_name](#input\_application\_insights\_name) | Specifies the name of the Application Insights. | `string` | n/a | yes |
 <<<<<<< HEAD
+<<<<<<< HEAD
 | <a name="input_cidr_subnet_fnfastlogin"></a> [cidr\_subnet\_fnfastlogin](#input\_cidr\_subnet\_fnfastlogin) | Function Fast Login address space. | `list(string)` | n/a | yes |
 | <a name="input_cidr_subnet_fnfastlogin_itn"></a> [cidr\_subnet\_fnfastlogin\_itn](#input\_cidr\_subnet\_fnfastlogin\_itn) | Function Fast Login on ITN region address space. | `list(string)` | n/a | yes |
 =======
+=======
+| <a name="input_cidr_subnet_app_profile_async_itn"></a> [cidr\_subnet\_app\_profile\_async\_itn](#input\_cidr\_subnet\_app\_profile\_async\_itn) | Function app address space. | `list(string)` | n/a | yes |
+>>>>>>> 348a84c ([#IOPID-2038] added fn app profile async)
 | <a name="input_cidr_subnet_app_profile_itn"></a> [cidr\_subnet\_app\_profile\_itn](#input\_cidr\_subnet\_app\_profile\_itn) | Function app address space. | `list(string)` | n/a | yes |
 | <a name="input_cidr_subnet_fnfastlogin"></a> [cidr\_subnet\_fnfastlogin](#input\_cidr\_subnet\_fnfastlogin) | Function Lollipop address space. | `list(string)` | n/a | yes |
 >>>>>>> 2802152 (pre-commit run)
@@ -187,6 +205,12 @@
 | <a name="input_env_short"></a> [env\_short](#input\_env\_short) | n/a | `string` | n/a | yes |
 | <a name="input_external_domain"></a> [external\_domain](#input\_external\_domain) | Domain for delegation | `string` | `"pagopa.it"` | no |
 | <a name="input_fastlogin_enabled"></a> [fastlogin\_enabled](#input\_fastlogin\_enabled) | Fast login LC creation flag | `bool` | `false` | no |
+| <a name="input_function_app_profile_async_autoscale_default"></a> [function\_app\_profile\_async\_autoscale\_default](#input\_function\_app\_profile\_async\_autoscale\_default) | The number of instances that are available for scaling if metrics are not available for evaluation. | `number` | `1` | no |
+| <a name="input_function_app_profile_async_autoscale_maximum"></a> [function\_app\_profile\_async\_autoscale\_maximum](#input\_function\_app\_profile\_async\_autoscale\_maximum) | The maximum number of instances for this resource. | `number` | `30` | no |
+| <a name="input_function_app_profile_async_autoscale_minimum"></a> [function\_app\_profile\_async\_autoscale\_minimum](#input\_function\_app\_profile\_async\_autoscale\_minimum) | The minimum number of instances for this resource. | `number` | `1` | no |
+| <a name="input_function_app_profile_async_kind"></a> [function\_app\_profile\_async\_kind](#input\_function\_app\_profile\_async\_kind) | App service plan kind | `string` | `null` | no |
+| <a name="input_function_app_profile_async_sku_size"></a> [function\_app\_profile\_async\_sku\_size](#input\_function\_app\_profile\_async\_sku\_size) | App service plan sku size | `string` | `null` | no |
+| <a name="input_function_app_profile_async_sku_tier"></a> [function\_app\_profile\_async\_sku\_tier](#input\_function\_app\_profile\_async\_sku\_tier) | App service plan sku tier | `string` | `null` | no |
 | <a name="input_function_app_profile_count"></a> [function\_app\_profile\_count](#input\_function\_app\_profile\_count) | ############################### Function App Profile ############################### | `number` | `2` | no |
 | <a name="input_function_app_profile_kind"></a> [function\_app\_profile\_kind](#input\_function\_app\_profile\_kind) | App service plan kind | `string` | `null` | no |
 | <a name="input_function_app_profile_sku_size"></a> [function\_app\_profile\_sku\_size](#input\_function\_app\_profile\_sku\_size) | App service plan sku size | `string` | `null` | no |
