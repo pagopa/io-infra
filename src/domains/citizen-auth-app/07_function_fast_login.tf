@@ -99,10 +99,10 @@ module "fast_login_snet" {
 }
 
 resource "azurerm_subnet" "fast_login_snet_itn" {
-  name                                      = format("%s-fast-login-snet-01", local.common_project_itn)
-  address_prefixes                          = [var.cidr_subnet_fnfastlogin_itn]
-  resource_group_name                       = data.azurerm_virtual_network.vnet_common.resource_group_name
-  virtual_network_name                      = data.azurerm_virtual_network.vnet_common.name
+  name                 = format("%s-fast-login-snet-01", local.common_project_itn)
+  address_prefixes     = [var.cidr_subnet_fnfastlogin_itn]
+  resource_group_name  = data.azurerm_virtual_network.vnet_common.resource_group_name
+  virtual_network_name = data.azurerm_virtual_network.vnet_common.name
 
   service_endpoints = [
     "Microsoft.Web",
@@ -149,15 +149,15 @@ module "function_fast_login_itn" {
 
   app_settings = merge(
     local.function_fast_login.app_settings,
-    { "REDIS_URL"      = data.azurerm_redis_cache.redis_common_itn.hostname,
-      "REDIS_PORT"     = data.azurerm_redis_cache.redis_common_itn.ssl_port,
-      "REDIS_PASSWORD" = data.azurerm_redis_cache.redis_common_itn.primary_access_key },
+    { "REDIS_URL"  = data.azurerm_redis_cache.redis_common_itn.hostname,
+      "REDIS_PORT" = data.azurerm_redis_cache.redis_common_itn.ssl_port,
+    "REDIS_PASSWORD" = data.azurerm_redis_cache.redis_common_itn.primary_access_key },
   )
   slot_app_settings = merge(
     local.function_fast_login.app_settings,
-    { "REDIS_URL"      = data.azurerm_redis_cache.redis_common_itn.hostname,
-      "REDIS_PORT"     = data.azurerm_redis_cache.redis_common_itn.ssl_port,
-      "REDIS_PASSWORD" = data.azurerm_redis_cache.redis_common_itn.primary_access_key },
+    { "REDIS_URL"  = data.azurerm_redis_cache.redis_common_itn.hostname,
+      "REDIS_PORT" = data.azurerm_redis_cache.redis_common_itn.ssl_port,
+    "REDIS_PASSWORD" = data.azurerm_redis_cache.redis_common_itn.primary_access_key },
   )
 
   tags = var.tags
@@ -190,9 +190,9 @@ module "function_fast_login" {
 
   app_settings = merge(
     local.function_fast_login.app_settings,
-    { "REDIS_URL"      = data.azurerm_redis_cache.redis_common.hostname,
-      "REDIS_PORT"     = data.azurerm_redis_cache.redis_common.ssl_port,
-      "REDIS_PASSWORD" = data.azurerm_redis_cache.redis_common.primary_access_key },
+    { "REDIS_URL"  = data.azurerm_redis_cache.redis_common.hostname,
+      "REDIS_PORT" = data.azurerm_redis_cache.redis_common.ssl_port,
+    "REDIS_PASSWORD" = data.azurerm_redis_cache.redis_common.primary_access_key },
   )
 
   sticky_app_setting_names = []
@@ -252,9 +252,9 @@ module "function_fast_login_staging_slot" {
 
   app_settings = merge(
     local.function_fast_login.app_settings,
-    { "REDIS_URL"      = data.azurerm_redis_cache.redis_common.hostname,
-      "REDIS_PORT"     = data.azurerm_redis_cache.redis_common.ssl_port,
-      "REDIS_PASSWORD" = data.azurerm_redis_cache.redis_common.primary_access_key }
+    { "REDIS_URL"  = data.azurerm_redis_cache.redis_common.hostname,
+      "REDIS_PORT" = data.azurerm_redis_cache.redis_common.ssl_port,
+    "REDIS_PASSWORD" = data.azurerm_redis_cache.redis_common.primary_access_key }
   )
 
   subnet_id = module.fast_login_snet[0].id

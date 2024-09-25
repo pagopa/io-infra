@@ -3,7 +3,7 @@ data "azurerm_resource_group" "data_rg" {
 }
 
 data "azurerm_resource_group" "data_rg_itn" {
-  name     = "${local.project_itn}-data-rg-01"
+  name = "${local.project_itn}-data-rg-01"
 }
 
 # CITIZEN AUTH
