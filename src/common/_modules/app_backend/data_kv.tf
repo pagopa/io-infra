@@ -144,3 +144,8 @@ data "azurerm_key_vault_secret" "app_backend_PRE_SHARED_KEY" {
   name         = "appbackend-PRE-SHARED-KEY"
   key_vault_id = var.key_vault_common.id
 }
+
+data "azurerm_key_vault_secret" "app_backend_TRIAL_SYSTEM_APIM_KEY" {
+  name         = "appbackend-TRIAL-SYSTEM-APIM-KEY"
+  key_vault_id = data.azurerm_key_vault.key_vault_common.id
+}
