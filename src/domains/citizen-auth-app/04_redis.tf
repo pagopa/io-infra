@@ -4,6 +4,11 @@ data "azurerm_redis_cache" "redis_common" {
   resource_group_name = data.azurerm_resource_group.data_rg.name
 }
 
+data "azurerm_redis_cache" "redis_common_itn" {
+  name                = format("%s-redis-std-v6", local.project_itn)
+  resource_group_name = data.azurerm_resource_group.data_rg_itn.name
+}
+
 ### IO-core domain Redis Common
 data "azurerm_resource_group" "core_domain_common_rg" {
   name = format("%s-rg-common", local.product)

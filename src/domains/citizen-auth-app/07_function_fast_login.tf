@@ -36,11 +36,6 @@ locals {
       COSMOS_DB_NAME           = "citizen-auth"
       COSMOS_CONNECTION_STRING = format("AccountEndpoint=%s;AccountKey=%s;", data.azurerm_cosmosdb_account.cosmos_citizen_auth.endpoint, data.azurerm_cosmosdb_account.cosmos_citizen_auth.primary_key)
 
-      # REDIS
-      REDIS_URL      = data.azurerm_redis_cache.redis_common.hostname
-      REDIS_PORT     = data.azurerm_redis_cache.redis_common.ssl_port
-      REDIS_PASSWORD = data.azurerm_redis_cache.redis_common.primary_access_key
-
       // --------------------------
       //  Config for getAssertion
       // --------------------------
@@ -152,8 +147,18 @@ module "function_fast_login_itn" {
     resource_group_name = data.azurerm_virtual_network.vnet_common_itn.resource_group_name
   }
 
-  app_settings      = local.function_fast_login.app_settings
-  slot_app_settings = local.function_fast_login.app_settings
+  app_settings = merge(
+    local.function_fast_login.app_settings,
+    { "REDIS_URL"      = data.azurerm_redis_cache.redis_common_itn.hostname,
+      "REDIS_PORT"     = data.azurerm_redis_cache.redis_common_itn.ssl_port,
+      "REDIS_PASSWORD" = data.azurerm_redis_cache.redis_common_itn.primary_access_key },
+  )
+  slot_app_settings = merge(
+    local.function_fast_login.app_settings,
+    { "REDIS_URL"      = data.azurerm_redis_cache.redis_common_itn.hostname,
+      "REDIS_PORT"     = data.azurerm_redis_cache.redis_common_itn.ssl_port,
+      "REDIS_PASSWORD" = data.azurerm_redis_cache.redis_common_itn.primary_access_key },
+  )
 
   tags = var.tags
 }
@@ -185,7 +190,9 @@ module "function_fast_login" {
 
   app_settings = merge(
     local.function_fast_login.app_settings,
-    {},
+    { "REDIS_URL"      = data.azurerm_redis_cache.redis_common.hostname,
+      "REDIS_PORT"     = data.azurerm_redis_cache.redis_common.ssl_port,
+      "REDIS_PASSWORD" = data.azurerm_redis_cache.redis_common.primary_access_key },
   )
 
   sticky_app_setting_names = []
@@ -245,7 +252,9 @@ module "function_fast_login_staging_slot" {
 
   app_settings = merge(
     local.function_fast_login.app_settings,
-    {},
+    { "REDIS_URL"      = data.azurerm_redis_cache.redis_common.hostname,
+      "REDIS_PORT"     = data.azurerm_redis_cache.redis_common.ssl_port,
+      "REDIS_PASSWORD" = data.azurerm_redis_cache.redis_common.primary_access_key }
   )
 
   subnet_id = module.fast_login_snet[0].id
