@@ -268,3 +268,35 @@ variable "dns_zone_io" {
   default     = null
   description = "The dns subdomain."
 }
+
+################################
+# Function App Profile
+################################
+variable "function_app_profile_count" {
+  type    = number
+  default = 2
+}
+
+variable "cidr_subnet_app_profile_itn" {
+  type        = list(string)
+  description = "Function app address space."
+}
+
+variable "function_app_profile_kind" {
+  type        = string
+  description = "App service plan kind"
+  default     = null
+}
+
+variable "function_app_profile_sku_tier" {
+  type        = string
+  description = "App service plan sku tier"
+  default     = null
+}
+
+variable "function_app_profile_sku_size" {
+  type        = string
+  description = "App service plan sku size"
+  default     = null
+}
+#################
