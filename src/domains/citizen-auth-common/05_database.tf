@@ -6,7 +6,7 @@ resource "azurerm_resource_group" "data_rg" {
 }
 
 module "cosmosdb_account" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3//cosmosdb_account?ref=v8.44.0"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3//cosmosdb_account?ref=v8.44.1"
 
   name                = "${local.product}-${var.domain}-account"
   domain              = upper(var.domain)
@@ -49,7 +49,7 @@ module "cosmosdb_account" {
 }
 
 module "cosmosdb_sql_database_citizen_auth" {
-  source              = "git::https://github.com/pagopa/terraform-azurerm-v3//cosmosdb_sql_database?ref=v8.44.0"
+  source              = "git::https://github.com/pagopa/terraform-azurerm-v3//cosmosdb_sql_database?ref=v8.44.1"
   name                = "citizen-auth"
   resource_group_name = azurerm_resource_group.data_rg.name
   account_name        = module.cosmosdb_account.name

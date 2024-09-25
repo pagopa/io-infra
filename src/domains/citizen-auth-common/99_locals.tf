@@ -24,7 +24,6 @@ locals {
   fn_fast_login_resource_group_name = "${local.product}-weu-fast-login-rg"
 }
 
-
 # Region ITN
 locals {
   project_itn        = "${var.prefix}-${var.env_short}-${local.itn_location_short}-${var.domain}"
