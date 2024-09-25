@@ -154,12 +154,20 @@ locals {
   }
 }
 
+resource "azurerm_resource_group" "function_app_profile_rg" {
+  count    = var.function_app_profile_count
+  name     = format("%s-app-profile-rg-0%d", local.project_itn, count.index + 1)
+  location = local.itn_location
+
+  tags = var.tags
+}
+
 module "function_app_profile" {
   count  = var.function_app_profile_count
   source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app?ref=v8.44.0"
 
   resource_group_name = azurerm_resource_group.function_app_profile_rg[count.index].name
-  name                = format("%s-app-profile-fn-%d", local.common_project_itn, count.index + 1)
+  name                = format("%s-profile-fn-0%d", local.short_project_itn, count.index + 1)
   location            = local.itn_location
   health_check_path   = "/api/v1/info"
 

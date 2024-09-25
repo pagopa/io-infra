@@ -12,15 +12,20 @@ locals {
   }
 }
 
+resource "azurerm_resource_group" "function_app_profile_async_rg" {
+  name     = format("%s-app-profile-async-rg-01", local.project_itn)
+  location = local.itn_location
+
+  tags = var.tags
+}
+
 module "function_app_profile_async" {
   source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app?ref=v8.44.0"
 
   resource_group_name = azurerm_resource_group.function_app_profile_async_rg.name
-  # NOTE: the name with the region added to it would exceed the storage account
-  # name limit of 24 characters
-  name              = format("%s-app-profile-async-fn", local.product)
-  location          = local.itn_location
-  health_check_path = "/api/v1/info"
+  name                = format("%s-as-prof-fn-01", local.short_project_itn)
+  location            = local.itn_location
+  health_check_path   = "/api/v1/info"
 
   node_version    = "18"
   runtime_version = "~4"

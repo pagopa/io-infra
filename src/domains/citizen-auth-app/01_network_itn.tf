@@ -17,7 +17,7 @@ data "azurerm_subnet" "itn_pep" {
 module "fn_app_profile_snet" {
   count                                     = var.function_app_profile_count
   source                                    = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v8.44.0"
-  name                                      = format("%s-app-profile-snet-%d", local.common_project_itn, count.index + 1)
+  name                                      = format("%s-app-profile-snet-0%d", local.project_itn, count.index + 1)
   address_prefixes                          = [var.cidr_subnet_app_profile_itn[count.index]]
   resource_group_name                       = data.azurerm_virtual_network.common_vnet_italy_north.resource_group_name
   virtual_network_name                      = data.azurerm_virtual_network.common_vnet_italy_north.name
@@ -40,7 +40,7 @@ module "fn_app_profile_snet" {
 
 module "fn_app_profile_async_snet" {
   source                                    = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v8.44.0"
-  name                                      = format("%s-app-profile-async-snet", local.common_project_itn)
+  name                                      = format("%s-app-profile-async-snet-01", local.project_itn)
   address_prefixes                          = var.cidr_subnet_app_profile_async_itn
   resource_group_name                       = data.azurerm_virtual_network.common_vnet_italy_north.resource_group_name
   virtual_network_name                      = data.azurerm_virtual_network.common_vnet_italy_north.name
@@ -206,13 +206,13 @@ resource "azurerm_private_endpoint" "staging_function_profile_itn_sites" {
 ## itn-app-profile-async-fn
 
 resource "azurerm_private_endpoint" "function_app_profile_async_itn_sites" {
-  name                = format("%s-app-profile-async-fn-pep", local.common_project_itn)
+  name                = format("%s-app-profile-async-pep-01", local.project_itn)
   location            = local.itn_location
   resource_group_name = azurerm_resource_group.function_app_profile_async_rg.name
   subnet_id           = data.azurerm_subnet.itn_pep.id
 
   private_service_connection {
-    name                           = format("%s-app-profile-async-fn-pep", local.common_project_itn)
+    name                           = format("%s-app-profile-async-pep-01", local.common_project_itn)
     private_connection_resource_id = module.function_app_profile_async.id
     is_manual_connection           = false
     subresource_names              = ["sites"]
@@ -227,13 +227,13 @@ resource "azurerm_private_endpoint" "function_app_profile_async_itn_sites" {
 }
 
 resource "azurerm_private_endpoint" "staging_function_app_profile_async_itn_sites" {
-  name                = format("%s-app-profile-async-fn-staging-pep", local.common_project_itn)
+  name                = format("%s-app-profile-async-staging-pep-01", local.project_itn)
   location            = local.itn_location
   resource_group_name = azurerm_resource_group.function_app_profile_async_rg.name
   subnet_id           = data.azurerm_subnet.itn_pep.id
 
   private_service_connection {
-    name                           = format("%s-app-profile-async-fn-staging-pep", local.common_project_itn)
+    name                           = format("%s-app-profile-async-staging-pep-01", local.common_project_itn)
     private_connection_resource_id = module.function_app_profile_async.id
     is_manual_connection           = false
     subresource_names              = ["sites-${module.function_app_profile_async_staging_slot.name}"]
