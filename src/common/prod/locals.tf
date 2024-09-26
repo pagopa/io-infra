@@ -86,11 +86,11 @@ locals {
     lollipop             = data.azurerm_linux_function_app.lollipop_function.default_hostname
     eucovidcert          = data.azurerm_linux_function_app.eucovidcert.default_hostname
     cgn                  = data.azurerm_linux_function_app.function_cgn.default_hostname
-    iosign               = data.azurerm_linux_function_app.function_cgn.io_sign_user.default_hostname
-    cgnonboarding        = data.azurerm_linux_function_app.function_cgn.cgnonboardingportal.default_hostname
-    trial_system_api     = data.azurerm_linux_function_app.function_cgn.trial_system_api.default_hostname
+    iosign               = data.azurerm_linux_function_app.io_sign_user.default_hostname
+    cgnonboarding        = data.azurerm_linux_function_app.cgnonboardingportal.default_hostname
+    trial_system_api     = data.azurerm_linux_function_app.trial_system_api.default_hostname
     trial_system_apim    = "api.trial.pagopa.it"
-    iowallet             = data.azurerm_linux_function_app.function_cgn.wallet_user.default_hostname
+    iowallet             = data.azurerm_linux_function_app.wallet_user.default_hostname
   }
 
   eventhubs = [
