@@ -71,7 +71,13 @@ data "azurerm_key_vault_secret" "app_backend_PECSERVER_ARUBA_TOKEN_SECRET" {
 }
 
 data "azurerm_key_vault_secret" "app_backend_APP_MESSAGES_API_KEY" {
-  name         = "appbackend-APP-MESSAGES-API-KEY"
+  count = 2
+  name         = count.index % 2 == 0 ? "appbackend-APP-MESSAGES-API-KEY" : "appbackend-APP-MESSAGES-API-KEY-02"
+  key_vault_id = var.key_vault_common.id
+}
+
+data "azurerm_key_vault_secret" "app_backend_APP_MESSAGES_API_KEY_02" {
+  name         = "appbackend-APP-MESSAGES-API-KEY-02"
   key_vault_id = var.key_vault_common.id
 }
 

@@ -38,7 +38,7 @@ locals {
     CGN_OPERATOR_SEARCH_API_KEY = data.azurerm_key_vault_secret.app_backend_CGN_OPERATOR_SEARCH_API_KEY_PROD.value
     EUCOVIDCERT_API_URL         = "https://${var.backend_hostnames.eucovidcert}/api/v1"
     EUCOVIDCERT_API_KEY         = data.azurerm_key_vault_secret.fn_eucovidcert_API_KEY_APPBACKEND.value
-    APP_MESSAGES_API_KEY        = data.azurerm_key_vault_secret.app_backend_APP_MESSAGES_API_KEY.value
+    APP_MESSAGES_API_KEY        = data.azurerm_key_vault_secret.app_backend_APP_MESSAGES_API_KEY[(var.index - 1) % 2].value
     LOLLIPOP_API_URL            = "https://${var.backend_hostnames.lollipop}"
     LOLLIPOP_API_KEY            = data.azurerm_key_vault_secret.app_backend_LOLLIPOP_ITN_API_KEY.value
     TRIAL_SYSTEM_API_URL        = "https://${var.backend_hostnames.trial_system_api}"  # PROD-TRIAL subscription

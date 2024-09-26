@@ -34,7 +34,7 @@ module "appservice_app_backend" {
 
   allowed_subnets = var.allowed_subnets
 
-  allowed_ips = var.slot_allowed_ips
+  allowed_ips = var.allowed_ips
 
   subnet_id        = azurerm_subnet.snet.id
   vnet_integration = true
@@ -76,9 +76,7 @@ module "appservice_app_backend_slot_staging" {
 
   allowed_subnets = var.slot_allowed_subnets
 
-  allowed_ips = concat(
-    [],
-  )
+  allowed_ips = var.slot_allowed_ips
 
   subnet_id        = azurerm_subnet.snet.id
   vnet_integration = true
