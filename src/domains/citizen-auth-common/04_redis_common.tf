@@ -37,6 +37,7 @@ module "redis_common" {
     },
   ]
 
+  data_persistence_authentication_method = null
 
   private_endpoint = {
     enabled              = true
