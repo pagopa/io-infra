@@ -85,6 +85,12 @@ data "azurerm_linux_function_app" "wallet_user" {
   name                = "${local.project_itn}-wallet-user-func-01"
 }
 
+data "azurerm_api_management" "trial_system" {
+  provider            = azurerm.prod-trial
+  name                = "ts-p-itn-apim-01"
+  resource_group_name = "ts-p-itn-routing-rg-01"
+}
+
 data "azurerm_subnet" "admin_snet" {
   name                 = "${local.project_weu_legacy}-admin-snet"
   resource_group_name  = local.core.networking.weu.vnet_common.resource_group_name
