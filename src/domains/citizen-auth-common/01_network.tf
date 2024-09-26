@@ -54,7 +54,7 @@ data "azurerm_subnet" "private_endpoints_subnet_itn" {
 
 ## Redis Common subnet
 module "redis_common_snet" {
-  source               = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v7.62.0"
+  source               = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v8.44.0"
   name                 = format("%s-redis-snet", local.project)
   address_prefixes     = var.cidr_subnet_redis_common
   resource_group_name  = local.vnet_common_resource_group_name
@@ -65,13 +65,13 @@ module "redis_common_snet" {
 
 ## Cosmos Private Endpoint
 resource "azurerm_private_endpoint" "cosmos_db" {
-  name                = coalesce("${local.product}-citizen-auth-account", format("%s-private-endpoint-sql-itn", module.cosmosdb_account.name))
+  name                = "${local.product}-citizen-auth-account"
   location            = "italynorth"
   resource_group_name = azurerm_resource_group.data_rg.name
   subnet_id           = data.azurerm_subnet.private_endpoints_subnet_itn.id
 
   private_service_connection {
-    name                           = coalesce("${local.product}-citizen-auth-account-private-endpoint", format("%s-private-endpoint-sql", module.cosmosdb_account.name))
+    name                           = "${local.product}-citizen-auth-account-private-endpoint"
     private_connection_resource_id = module.cosmosdb_account.id
     is_manual_connection           = false
     subresource_names              = ["Sql"]
