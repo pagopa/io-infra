@@ -14,3 +14,7 @@ output "public_ip" {
     resource_group_name = azurerm_public_ip.apim.resource_group_name
   }
 }
+
+output "private_ips" {
+  value = module.apim_v2.private_ip_addresses
+}
