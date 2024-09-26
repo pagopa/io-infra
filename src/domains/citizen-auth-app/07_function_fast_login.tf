@@ -123,13 +123,13 @@ resource "azurerm_subnet" "fast_login_snet_itn" {
 }
 
 module "function_fast_login_itn" {
-  source = "github.com/pagopa/dx//infra/modules/azure_function_app?ref=ab0875ad30b1901d743ff19eafc85e8386c035ca"
+  source = "github.com/pagopa/dx//infra/modules/azure_function_app?ref=c9c0857c9937d99e330e0af0bcfadfbbe6a3c61b"
 
   environment = {
     prefix          = var.prefix
     env_short       = var.env_short
     location        = local.itn_location
-    domain          = "authnid"
+    domain          = "auth"
     app_name        = "lv"
     instance_number = "01"
   }
@@ -137,6 +137,7 @@ module "function_fast_login_itn" {
   resource_group_name = azurerm_resource_group.fast_login_rg_itn.name
   health_check_path   = "/info"
   node_version        = 18
+  tier                = "xl"
 
   subnet_cidr                          = var.cidr_subnet_fnfastlogin_itn
   subnet_pep_id                        = azurerm_subnet.fast_login_snet_itn.id
