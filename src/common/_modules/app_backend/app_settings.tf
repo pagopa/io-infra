@@ -30,22 +30,22 @@ locals {
 
     // FUNCTIONS
     API_KEY                     = data.azurerm_key_vault_secret.app_backend_API_KEY.value
-    CGN_API_URL                 = "https://${var.functions_hostnames.cgn}"
+    CGN_API_URL                 = "https://${var.backend_hostnames.cgn}"
     CGN_API_KEY                 = data.azurerm_key_vault_secret.app_backend_CGN_API_KEY.value
-    IO_SIGN_API_URL             = "https://io-p-sign-user-func.azurewebsites.net"
+    IO_SIGN_API_URL             = "https://${var.backend_hostnames.iosign}"
     IO_SIGN_API_KEY             = data.azurerm_key_vault_secret.app_backend_IO_SIGN_API_KEY.value
-    CGN_OPERATOR_SEARCH_API_URL = "https://cgnonboardingportal-p-op.azurewebsites.net" # prod subscription
+    CGN_OPERATOR_SEARCH_API_URL = "https://${var.hostnames.cgnonboarding}" # prod subscription
     CGN_OPERATOR_SEARCH_API_KEY = data.azurerm_key_vault_secret.app_backend_CGN_OPERATOR_SEARCH_API_KEY_PROD.value
-    EUCOVIDCERT_API_URL         = "https://${var.functions_hostnames.eucovidcert}/api/v1"
+    EUCOVIDCERT_API_URL         = "https://${var.backend_hostnames.eucovidcert}/api/v1"
     EUCOVIDCERT_API_KEY         = data.azurerm_key_vault_secret.fn_eucovidcert_API_KEY_APPBACKEND.value
     APP_MESSAGES_API_KEY        = data.azurerm_key_vault_secret.app_backend_APP_MESSAGES_API_KEY.value
-    LOLLIPOP_API_URL            = "https://${var.functions_hostnames.lollipop}"
+    LOLLIPOP_API_URL            = "https://${var.backend_hostnames.lollipop}"
     LOLLIPOP_API_KEY            = data.azurerm_key_vault_secret.app_backend_LOLLIPOP_ITN_API_KEY.value
-    TRIAL_SYSTEM_API_URL        = "https://ts-p-itn-api-func-01.azurewebsites.net" # PROD-TRIAL subscription
-    TRIAL_SYSTEM_APIM_URL       = "https://api.trial.pagopa.it"                    # Add this variable to avoid downtime
+    TRIAL_SYSTEM_API_URL        = "https://${var.backend_hostnames.trial_system_api}" # PROD-TRIAL subscription
+    TRIAL_SYSTEM_APIM_URL       = "https://${var.backend_hostnames.trial_system_apim}" # Add this variable to avoid downtime
     TRIAL_SYSTEM_API_KEY        = data.azurerm_key_vault_secret.app_backend_TRIAL_SYSTEM_API_KEY.value
     TRIAL_SYSTEM_APIM_KEY       = data.azurerm_key_vault_secret.app_backend_TRIAL_SYSTEM_APIM_KEY.value
-    IO_WALLET_API_URL           = "https://io-p-itn-wallet-user-func-01.azurewebsites.net"
+    IO_WALLET_API_URL           = "https://${var.backend_hostnames.iowallet}"
     IO_WALLET_API_KEY           = data.azurerm_key_vault_secret.app_backend_IO_WALLET_API_KEY.value
 
     // EXPOSED API
@@ -271,7 +271,7 @@ locals {
 
     // Services App Backend
     SERVICES_APP_BACKEND_BASE_PATH     = "/api/v2"
-    SERVICES_APP_BACKEND_API_URL       = "https://${var.functions_hostnames.services_app_backend}"
+    SERVICES_APP_BACKEND_API_URL       = "https://${var.backend_hostnames.services_app_backend}"
     SERVICES_APP_BACKEND_API_BASE_PATH = "/api/v1"
   }
 }

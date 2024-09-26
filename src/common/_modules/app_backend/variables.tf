@@ -174,12 +174,17 @@ variable "app_settings_override" {
   description = "Map of values that override the common app settings stored in app_settings.tf"
 }
 
-variable "functions_hostnames" {
+variable "backend_hostnames" {
   type = object({
     assets_cdn           = string
     services_app_backend = string
     lollipop             = string
     eucovidcert          = string
     cgn                  = string
+    iosign               = string
+    cgnonboarding        = string
+    trial_system_api     = string
+    trial_system_apim    = string
+    iowallet             = string
   })
 }

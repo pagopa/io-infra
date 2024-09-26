@@ -75,6 +75,26 @@ data "azurerm_linux_function_app" "function_cgn" {
   name                = "${local.project_weu_legacy}-cgn-fn"
 }
 
+data "azurerm_linux_function_app" "io_sign_user" {
+  resource_group_name = "${local.project_weu_legacy}-cgn-be-rg"
+  name                = "${local.project_weu_legacy}-sign-backend-rg"
+}
+
+data "azurerm_linux_function_app" "cgnonboardingportal" {
+  resource_group_name = "cgnonboardingportal-p-search-rg"
+  name                = "cgnonboardingportal-p-op"
+}
+
+data "azurerm_linux_function_app" "trial_system_api" {
+  resource_group_name = "ts-${local.env_short}-itn-api-rg-01"
+  name                = "ts-${local.env_short}-itn-api-func-01"
+}
+
+data "azurerm_linux_function_app" "wallet_user" {
+  resource_group_name = "${local.project_itn}-wallet-rg-01"
+  name                = "${local.project_itn}-wallet-user-func-01"
+}
+
 data "azurerm_subnet" "admin_snet" {
   name                 = "${local.project_weu_legacy}-admin-snet"
   resource_group_name  = local.core.networking.weu.vnet_common.resource_group_name
