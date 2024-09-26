@@ -34,7 +34,7 @@ locals {
     CGN_API_KEY                 = data.azurerm_key_vault_secret.app_backend_CGN_API_KEY.value
     IO_SIGN_API_URL             = "https://${var.backend_hostnames.iosign}"
     IO_SIGN_API_KEY             = data.azurerm_key_vault_secret.app_backend_IO_SIGN_API_KEY.value
-    CGN_OPERATOR_SEARCH_API_URL = "https://${var.hostnames.cgnonboarding}" # prod subscription
+    CGN_OPERATOR_SEARCH_API_URL = "https://${var.backend_hostnames.cgnonboarding}" # prod subscription
     CGN_OPERATOR_SEARCH_API_KEY = data.azurerm_key_vault_secret.app_backend_CGN_OPERATOR_SEARCH_API_KEY_PROD.value
     EUCOVIDCERT_API_URL         = "https://${var.backend_hostnames.eucovidcert}/api/v1"
     EUCOVIDCERT_API_KEY         = data.azurerm_key_vault_secret.fn_eucovidcert_API_KEY_APPBACKEND.value
