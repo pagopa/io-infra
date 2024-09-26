@@ -42,6 +42,10 @@ locals {
     "UEETST00A00A000X",
     "UEETST00A00A001X",
   ]
+
+  test_users_fast_login_load_test_light = [
+    for i in range(0, 200) : format("LVTEST00A00A%03dX", i)
+  ]
 }
 
 output "test_users" {
@@ -75,5 +79,19 @@ output "test_users" {
     eu_covid_cert_flat = join(",",
       flatten([local.test_users_eu_covid_cert])
     )
+
+    light = join(",",
+      flatten([
+        local.test_users_internal,
+        local.test_users_internal_load,
+        local.test_users_store_review,
+        local.test_users_eu_covid_cert,
+        local.test_users_fast_login_load_test_light,
+        local.test_users_unique_email_test,
+        ]
+      )
+    )
+
+    unique_email_test = local.test_users_unique_email_test
   }
 }

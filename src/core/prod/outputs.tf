@@ -11,3 +11,10 @@ output "key_vault" {
     weu = module.key_vault_weu
   }
 }
+
+output "azure_devops_agent" {
+  value = {
+    weu = module.azdoa_weu
+    itn = null
+  }
+}
