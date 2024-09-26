@@ -43,6 +43,7 @@ No inputs.
 
 | Name | Description |
 |------|-------------|
+| <a name="output_azure_devops_agent"></a> [azure\_devops\_agent](#output\_azure\_devops\_agent) | n/a |
 | <a name="output_key_vault"></a> [key\_vault](#output\_key\_vault) | n/a |
 | <a name="output_networking"></a> [networking](#output\_networking) | n/a |
 <!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
