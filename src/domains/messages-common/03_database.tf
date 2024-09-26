@@ -43,9 +43,9 @@ module "cosmosdb_account_mongodb_reminder" {
   main_geo_location_location       = azurerm_resource_group.data_rg.location
   main_geo_location_zone_redundant = false
   additional_geo_locations = [{
-    location          = "northeurope"
+    location          = "italynorth"
     failover_priority = 1
-    zone_redundant    = false
+    zone_redundant    = true
   }]
   consistency_policy = {
     consistency_level       = "Session"
@@ -303,9 +303,9 @@ module "cosmosdb_account_remote_content" {
   main_geo_location_zone_redundant = true
 
   additional_geo_locations = [{
-    location          = "northeurope"
+    location          = "italynorth"
     failover_priority = 1
-    zone_redundant    = false
+    zone_redundant    = true
   }]
 
   consistency_policy = {
