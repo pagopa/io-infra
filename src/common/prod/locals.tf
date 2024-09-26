@@ -89,7 +89,7 @@ locals {
     iosign               = data.azurerm_linux_function_app.io_sign_user.default_hostname
     cgnonboarding        = "cgnonboardingportal-p-op.azurewebsites.net"
     trial_system_api     = "ts-p-itn-api-func-01.azurewebsites.net"
-    trial_system_apim    = "api.trial.pagopa.it"
+    trial_system_apim    = data.azurerm_api_management.trial_system.gateway_url
     iowallet             = data.azurerm_linux_function_app.wallet_user.default_hostname
   }
 
