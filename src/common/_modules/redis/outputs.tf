@@ -7,15 +7,15 @@ output "snet" {
 }
 
 output "primary_access_key" {
-    value = azurerm_redis_cache.common.primary_access_key
-    sensitive = true
+  value     = azurerm_redis_cache.common.primary_access_key
+  sensitive = true
 }
 
 output "hostname" {
-    value = azurerm_redis_cache.common.hostname
-    sensitive = true
+  value     = azurerm_redis_cache.common.hostname
+  sensitive = true
 }
 
 output "ssl_port" {
-    value = azurerm_redis_cache.common.ssl_port
+  value = azurerm_redis_cache.common.ssl_port
 }

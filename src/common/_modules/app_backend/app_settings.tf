@@ -41,7 +41,7 @@ locals {
     APP_MESSAGES_API_KEY        = data.azurerm_key_vault_secret.app_backend_APP_MESSAGES_API_KEY.value
     LOLLIPOP_API_URL            = "https://${var.backend_hostnames.lollipop}"
     LOLLIPOP_API_KEY            = data.azurerm_key_vault_secret.app_backend_LOLLIPOP_ITN_API_KEY.value
-    TRIAL_SYSTEM_API_URL        = "https://${var.backend_hostnames.trial_system_api}" # PROD-TRIAL subscription
+    TRIAL_SYSTEM_API_URL        = "https://${var.backend_hostnames.trial_system_api}"  # PROD-TRIAL subscription
     TRIAL_SYSTEM_APIM_URL       = "https://${var.backend_hostnames.trial_system_apim}" # Add this variable to avoid downtime
     TRIAL_SYSTEM_API_KEY        = data.azurerm_key_vault_secret.app_backend_TRIAL_SYSTEM_API_KEY.value
     TRIAL_SYSTEM_APIM_KEY       = data.azurerm_key_vault_secret.app_backend_TRIAL_SYSTEM_APIM_KEY.value
