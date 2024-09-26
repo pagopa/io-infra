@@ -21,8 +21,7 @@ data "azurerm_virtual_network" "vnet_common_itn" {
 locals {
   function_fast_login = {
     app_settings = {
-      FUNCTIONS_WORKER_PROCESS_COUNT = 4
-      NODE_ENV                       = "production"
+      NODE_ENV = "production"
 
       // Keepalive fields are all optionals
       FETCH_KEEPALIVE_ENABLED             = "true"
@@ -191,8 +190,9 @@ module "function_fast_login" {
 
   app_settings = merge(
     local.function_fast_login.app_settings,
-    { "REDIS_URL"  = data.azurerm_redis_cache.redis_common.hostname,
-      "REDIS_PORT" = data.azurerm_redis_cache.redis_common.ssl_port,
+    { "FUNCTIONS_WORKER_PROCESS_COUNT" = 4,
+      "REDIS_URL"                      = data.azurerm_redis_cache.redis_common.hostname,
+      "REDIS_PORT"                     = data.azurerm_redis_cache.redis_common.ssl_port,
     "REDIS_PASSWORD" = data.azurerm_redis_cache.redis_common.primary_access_key },
   )
 
@@ -253,8 +253,9 @@ module "function_fast_login_staging_slot" {
 
   app_settings = merge(
     local.function_fast_login.app_settings,
-    { "REDIS_URL"  = data.azurerm_redis_cache.redis_common.hostname,
-      "REDIS_PORT" = data.azurerm_redis_cache.redis_common.ssl_port,
+    { "FUNCTIONS_WORKER_PROCESS_COUNT" = 4,
+      "REDIS_URL"                      = data.azurerm_redis_cache.redis_common.hostname,
+      "REDIS_PORT"                     = data.azurerm_redis_cache.redis_common.ssl_port,
     "REDIS_PASSWORD" = data.azurerm_redis_cache.redis_common.primary_access_key }
   )
 
