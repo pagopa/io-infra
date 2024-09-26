@@ -89,7 +89,7 @@ variable "certificates" {
 }
 
 variable "backend_hostnames" {
-  type        = map(string)
+  type        = map(list(string))
   description = "Information of the backend hostnames"
 }
 
