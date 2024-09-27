@@ -1,5 +1,6 @@
 locals {
   app_settings_common = {
+    IS_APPBACKENDLI = var.is_li ? "true" : "false"
     # No downtime on slots swap
     WEBSITE_ADD_SITENAME_BINDINGS_IN_APPHOST_CONFIG = "1"
     WEBSITE_RUN_FROM_PACKAGE                        = "1"
@@ -29,6 +30,7 @@ locals {
     AUTHENTICATION_BASE_PATH = ""
 
     // FUNCTIONS
+    API_URL                     = "https://${var.backend_hostnames.app[1]}/api/v1" 
     API_KEY                     = data.azurerm_key_vault_secret.app_backend_API_KEY.value
     CGN_API_URL                 = "https://${var.backend_hostnames.cgn}"
     CGN_API_KEY                 = data.azurerm_key_vault_secret.app_backend_CGN_API_KEY.value
@@ -38,7 +40,8 @@ locals {
     CGN_OPERATOR_SEARCH_API_KEY = data.azurerm_key_vault_secret.app_backend_CGN_OPERATOR_SEARCH_API_KEY_PROD.value
     EUCOVIDCERT_API_URL         = "https://${var.backend_hostnames.eucovidcert}/api/v1"
     EUCOVIDCERT_API_KEY         = data.azurerm_key_vault_secret.fn_eucovidcert_API_KEY_APPBACKEND.value
-    APP_MESSAGES_API_KEY        = data.azurerm_key_vault_secret.app_backend_APP_MESSAGES_API_KEY[(var.index - 1) % 2].value
+    APP_MESSAGES_API_URL        = "https://${var.backend_hostnames.app_messages[(var.index - 1) % local.app_messages_count]}/api/v1"
+    APP_MESSAGES_API_KEY        = data.azurerm_key_vault_secret.app_backend_APP_MESSAGES_API_KEY[(var.index - 1) % local.app_messages_count].value
     LOLLIPOP_API_URL            = "https://${var.backend_hostnames.lollipop}"
     LOLLIPOP_API_KEY            = data.azurerm_key_vault_secret.app_backend_LOLLIPOP_ITN_API_KEY.value
     TRIAL_SYSTEM_API_URL        = "https://${var.backend_hostnames.trial_system_api}" # PROD-TRIAL subscription

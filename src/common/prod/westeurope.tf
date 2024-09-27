@@ -411,8 +411,18 @@ module "redis_weu" {
   tags = local.tags
 }
 
+
+
+moved {
+  from = module.app_backend_weu["l1"]
+  to   = module.app_backend_weu["1"]
+}
+moved {
+  from = module.app_backend_weu["l2"]
+  to   = module.app_backend_weu["2"]
+}
 module "app_backend_weu" {
-  for_each = { for index, settings in local.app_backends : index => settings }
+  for_each = local.app_backends
   source   = "../_modules/app_backend"
 
   location                = "westeurope"
@@ -427,11 +437,11 @@ module "app_backend_weu" {
     azurerm_client_config = data.azurerm_client_config.current
   }
 
-  name  = each.key
-  index = index(values(local.app_backends), each.value) + 1
+  name  = "l${each.key}"
+  index = each.key
 
   vnet_common                = local.core.networking.weu.vnet_common
-  cidr_subnet                = local.app_backends[each.key].cidr_subnet
+  cidr_subnet                = each.value.cidr_subnet
   nat_gateways               = local.core.networking.weu.nat_gateways
   allowed_subnets            = concat(data.azurerm_subnet.services_snet.*.id, [module.application_gateway_weu.snet.id, module.apim_weu.snet.id])
   slot_allowed_subnets       = concat([local.azdoa_snet_id["weu"]], data.azurerm_subnet.services_snet.*.id, [module.application_gateway_weu.snet.id, module.apim_weu.snet.id])
@@ -439,7 +449,6 @@ module "app_backend_weu" {
   slot_allowed_ips           = module.monitoring_weu.appi.reserved_ips
   apim_snet_address_prefixes = module.apim_weu.snet.address_prefixes
 
-  app_settings_override = each.value.app_settings_override
   backend_hostnames     = local.backend_hostnames
 
   key_vault        = local.core.key_vault.weu.kv
