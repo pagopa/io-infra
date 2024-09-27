@@ -18,9 +18,9 @@ variable "tags" {
   description = "Resource tags"
 }
 
-variable "resource_groups" {
-  type        = map(string)
-  description = "Resource group names"
+variable "resource_group_internal" {
+  type        = string
+  description = "Internal resource group names"
 }
 
 variable "vnet_common" {
