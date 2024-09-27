@@ -421,6 +421,7 @@ moved {
   from = module.app_backend_weu["l2"]
   to   = module.app_backend_weu["2"]
 }
+
 module "app_backend_weu" {
   for_each = local.app_backends
   source   = "../_modules/app_backend"
@@ -506,7 +507,6 @@ module "app_backend_li_weu" {
   slot_allowed_ips           = []
   apim_snet_address_prefixes = module.apim_weu.snet.address_prefixes
 
-  app_settings_override = local.app_backendli.app_settings_override
   backend_hostnames     = local.backend_hostnames
 
   autoscale = {

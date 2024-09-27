@@ -59,12 +59,6 @@ locals {
 
   app_backendli = {
     cidr_subnet = ["10.0.154.0/24"]
-    app_settings_override = {
-      IS_APPBACKENDLI = "true"
-      // FUNCTIONS
-      API_URL              = "https://${data.azurerm_linux_function_app.function_profile[1].default_hostname}/api/v1"
-      APP_MESSAGES_API_URL = "https://io-p-app-messages-fn-1.azurewebsites.net/api/v1"
-    }
   }
 
   azdoa_snet_id = {
