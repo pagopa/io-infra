@@ -13,11 +13,6 @@ data "azurerm_app_service" "app_backend_li" {
   resource_group_name = format("%s-rg-linux", local.product)
 }
 
-data "azurerm_virtual_network" "vnet_common_itn" {
-  name                = "${local.common_project_itn}-common-vnet-01"
-  resource_group_name = "${local.common_project_itn}-common-rg-01"
-}
-
 locals {
   function_fast_login = {
     app_settings = {
@@ -100,8 +95,8 @@ module "fast_login_snet" {
 resource "azurerm_subnet" "fast_login_snet_itn" {
   name                 = format("%s-fast-login-snet-01", local.common_project_itn)
   address_prefixes     = [var.cidr_subnet_fnfastlogin_itn]
-  resource_group_name  = data.azurerm_virtual_network.vnet_common.resource_group_name
-  virtual_network_name = data.azurerm_virtual_network.vnet_common.name
+  resource_group_name  = data.azurerm_virtual_network.common_vnet_italy_north.resource_group_name
+  virtual_network_name = data.azurerm_virtual_network.common_vnet_italy_north.name
 
   service_endpoints = [
     "Microsoft.Web",
@@ -143,8 +138,8 @@ module "function_fast_login_itn" {
   private_dns_zone_resource_group_name = data.azurerm_virtual_network.vnet_common.resource_group_name
 
   virtual_network = {
-    name                = data.azurerm_virtual_network.vnet_common_itn.name
-    resource_group_name = data.azurerm_virtual_network.vnet_common_itn.resource_group_name
+    name                = data.azurerm_virtual_network.common_vnet_italy_north.name
+    resource_group_name = data.azurerm_virtual_network.common_vnet_italy_north.resource_group_name
   }
 
   app_settings = merge(
