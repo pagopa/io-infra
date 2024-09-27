@@ -3,7 +3,7 @@
 * [REDIS V6]
 */
 module "redis_common" {
-  source                = "git::https://github.com/pagopa/terraform-azurerm-v3.git//redis_cache?ref=v7.62.0"
+  source                = "git::https://github.com/pagopa/terraform-azurerm-v3.git//redis_cache?ref=v8.44.0"
   name                  = format("%s-redis-std-v6", local.project)
   resource_group_name   = azurerm_resource_group.data_rg.name
   location              = azurerm_resource_group.data_rg.location
@@ -36,7 +36,6 @@ module "redis_common" {
       start_hour_utc = 23
     },
   ]
-
 
   private_endpoint = {
     enabled              = true
