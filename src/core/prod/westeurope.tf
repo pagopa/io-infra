@@ -62,11 +62,12 @@ module "vnet_peering_weu" {
 module "container_registry" {
   source = "../_modules/container_registry"
 
-  location       = azurerm_resource_group.common_weu.location
-  location_short = local.location_short[azurerm_resource_group.common_weu.location]
-  project        = local.project_weu_legacy
+  location            = azurerm_resource_group.common_weu.location
+  location_short      = local.location_short[azurerm_resource_group.common_weu.location]
+  project             = local.project_weu_legacy
+  resource_group_name = azurerm_resource_group.acr_weu.name
 
-  tags = merge(local.tags, { Source = "https://github.com/pagopa/io-infra" })
+  tags = local.tags
 }
 
 module "key_vault_weu" {

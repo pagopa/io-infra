@@ -59,3 +59,39 @@ resource "azurerm_resource_group" "sec_weu" {
 
   tags = local.tags
 }
+
+resource "azurerm_resource_group" "acr_weu" {
+  name     = format("%s-container-registry-rg", local.project_weu_legacy)
+  location = "westeurope"
+
+  tags = local.tags
+}
+
+moved {
+  from = module.container_registry.azurerm_resource_group.container_registry
+  to   = azurerm_resource_group.acr_weu
+}
+
+resource "azurerm_resource_group" "assets_cdn_weu" {
+  name     = format("%s-assets-cdn-rg", local.project_weu_legacy)
+  location = "westeurope"
+
+  tags = local.tags
+}
+
+import {
+  id = "/subscriptions/ec285037-c673-4f58-b594-d7c480da4e8b/resourceGroups/io-p-assets-cdn-rg"
+  to = azurerm_resource_group.assets_cdn_weu
+}
+
+resource "azurerm_resource_group" "linux_weu" {
+  name     = "${local.project_weu_legacy}-rg-linux"
+  location = "westeurope"
+
+  tags = local.tags
+}
+
+import {
+  id = "/subscriptions/ec285037-c673-4f58-b594-d7c480da4e8b/resourceGroups/io-p-rg-linux"
+  to = azurerm_resource_group.linux_weu
+}
