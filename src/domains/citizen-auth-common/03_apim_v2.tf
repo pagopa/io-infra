@@ -15,7 +15,7 @@ resource "azurerm_api_management_group" "api_lollipop_assertion_read_v2" {
 }
 
 module "apim_v2_product_lollipop" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3//api_management_product?ref=v8.44.0"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3//api_management_product?ref=v8.44.1"
 
   product_id   = "io-lollipop-api"
   display_name = "IO LOLLIPOP API"
@@ -32,7 +32,7 @@ module "apim_v2_product_lollipop" {
 }
 
 module "apim_v2_lollipop_api_v1" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3//api_management_api?ref=v8.44.0"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3//api_management_api?ref=v8.44.1"
 
   name                  = format("%s-lollipop-api", local.product)
   api_management_name   = data.azurerm_api_management.apim_v2_api.name
@@ -149,7 +149,7 @@ resource "azurerm_api_management_group" "api_fast_login_operation_v2" {
 }
 
 module "apim_v2_product_fast_login_operation" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3//api_management_product?ref=v8.44.0"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3//api_management_product?ref=v8.44.1"
 
   product_id   = "io-fast-login-operation-api"
   display_name = "IO FAST-LOGIN OPERATION API"
@@ -171,7 +171,7 @@ data "azurerm_linux_function_app" "functions_fast_login" {
 }
 
 module "apim_v2_fast_login_operation_api_v1" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3//api_management_api?ref=v8.44.0"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3//api_management_api?ref=v8.44.1"
 
   name                  = format("%s-fast-login-operation-api", local.product)
   api_management_name   = data.azurerm_api_management.apim_v2_api.name
