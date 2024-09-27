@@ -92,30 +92,6 @@ module "fast_login_snet" {
   }
 }
 
-resource "azurerm_subnet" "fast_login_snet_itn" {
-  name                 = format("%s-fast-login-snet-01", local.common_project_itn)
-  address_prefixes     = [var.cidr_subnet_fnfastlogin_itn]
-  resource_group_name  = data.azurerm_virtual_network.common_vnet_italy_north.resource_group_name
-  virtual_network_name = data.azurerm_virtual_network.common_vnet_italy_north.name
-
-  service_endpoints = [
-    "Microsoft.Web",
-    "Microsoft.AzureCosmosDB",
-    "Microsoft.Storage",
-  ]
-
-  delegation {
-    name = "default"
-    service_delegation {
-      name    = "Microsoft.Web/serverFarms"
-      actions = ["Microsoft.Network/virtualNetworks/subnets/action"]
-    }
-  }
-
-  private_link_service_network_policies_enabled = true
-  private_endpoint_network_policies_enabled     = true
-}
-
 module "function_fast_login_itn" {
   source = "github.com/pagopa/dx//infra/modules/azure_function_app?ref=15236aabcaf855b5b00709bcbb9b0ec177ba71b9"
 
@@ -134,7 +110,7 @@ module "function_fast_login_itn" {
   tier                = "xl"
 
   subnet_cidr                          = var.cidr_subnet_fnfastlogin_itn
-  subnet_pep_id                        = azurerm_subnet.fast_login_snet_itn.id
+  subnet_pep_id                        = data.azurerm_subnet.itn_pep.id
   private_dns_zone_resource_group_name = data.azurerm_virtual_network.vnet_common.resource_group_name
 
   virtual_network = {
