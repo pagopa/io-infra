@@ -795,3 +795,78 @@ resource "azurerm_monitor_autoscale_setting" "function_fast_login" {
 
   tags = var.tags
 }
+
+module "function_fast_login_itn_autoscale" {
+  source = "github.com/pagopa/dx//infra/modules/azure_app_service_plan_autoscaler?ref=15236aabcaf855b5b00709bcbb9b0ec177ba71b9"
+
+  resource_group_name = azurerm_resource_group.fast_login_rg_itn.name
+  target_service      = module.function_fast_login_itn.function_app.plan.id
+
+  scheduler = {
+    high_load = {
+      name    = "evening"
+      minimum = 4
+      default = 10
+      start = {
+        hour    = 19
+        minutes = 30
+      }
+      end = {
+        hour    = 22
+        minutes = 59
+      }
+    },
+    low_load = {
+      name    = "night"
+      minimum = 2
+      default = 10
+      start = {
+        hour    = 23
+        minutes = 00
+      }
+      end = {
+        hour    = 05
+        minutes = 00
+      }
+    },
+    normal_load = {
+      minimum = 3
+      default = 10
+    }
+    maximum = 30
+  }
+
+  scale_metrics = {
+    requests = {
+      statistic_increase        = "Max"
+      time_window_increase      = 1
+      time_aggregation          = "Maximum"
+      upper_threshold           = 2500
+      increase_by               = 2
+      cooldown_increase         = 1
+      statistic_decrease        = "Average"
+      time_window_decrease      = 5
+      time_aggregation_decrease = "Average"
+      lower_threshold           = 200
+      decrease_by               = 1
+      cooldown_decrease         = 1
+    }
+    cpu = {
+      upper_threshold           = 35
+      lower_threshold           = 15
+      increase_by               = 3
+      decrease_by               = 1
+      cooldown_increase         = 1
+      cooldown_decrease         = 20
+      statistic_increase        = "Max"
+      statistic_decrease        = "Average"
+      time_aggregation_increase = "Maximum"
+      time_aggregation_decrease = "Average"
+      time_window_increase      = 1
+      time_window_decrease      = 5
+    }
+    memory = null
+  }
+
+  tags = var.tags
+}
