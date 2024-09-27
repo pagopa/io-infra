@@ -16,7 +16,7 @@
 |------|--------|---------|
 | <a name="module_fast_login_snet"></a> [fast\_login\_snet](#module\_fast\_login\_snet) | git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet | v8.22.0 |
 | <a name="module_function_fast_login"></a> [function\_fast\_login](#module\_function\_fast\_login) | git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app | v8.22.0 |
-| <a name="module_function_fast_login_itn"></a> [function\_fast\_login\_itn](#module\_function\_fast\_login\_itn) | github.com/pagopa/dx//infra/modules/azure_function_app | c9c0857c9937d99e330e0af0bcfadfbbe6a3c61b |
+| <a name="module_function_fast_login_itn"></a> [function\_fast\_login\_itn](#module\_function\_fast\_login\_itn) | github.com/pagopa/dx//infra/modules/azure_function_app | 15236aabcaf855b5b00709bcbb9b0ec177ba71b9 |
 | <a name="module_function_fast_login_staging_slot"></a> [function\_fast\_login\_staging\_slot](#module\_function\_fast\_login\_staging\_slot) | git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app_slot | v8.22.0 |
 | <a name="module_function_lollipop_itn"></a> [function\_lollipop\_itn](#module\_function\_lollipop\_itn) | github.com/pagopa/terraform-azurerm-v3//function_app | v8.28.2 |
 | <a name="module_function_lollipop_staging_slot_itn"></a> [function\_lollipop\_staging\_slot\_itn](#module\_function\_lollipop\_staging\_slot\_itn) | github.com/pagopa/terraform-azurerm-v3//function_app_slot | v8.28.2 |
@@ -122,7 +122,6 @@
 | [azurerm_virtual_network.common_vnet_italy_north](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/virtual_network) | data source |
 | [azurerm_virtual_network.vnet](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/virtual_network) | data source |
 | [azurerm_virtual_network.vnet_common](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/virtual_network) | data source |
-| [azurerm_virtual_network.vnet_common_itn](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/virtual_network) | data source |
 
 ## Inputs
 
