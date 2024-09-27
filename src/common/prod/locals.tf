@@ -67,8 +67,8 @@ locals {
   }
 
   backend_hostnames = {
-    app                  = [ for key, value in data.azurerm_linux_function_app.function_app : value.default_hostname ]
-    app_messages         = [ for key, value in data.azurerm_linux_function_app.app_messages : value.default_hostname ]
+    app                  = [for key, value in data.azurerm_linux_function_app.function_app : value.default_hostname]
+    app_messages         = [for key, value in data.azurerm_linux_function_app.app_messages : value.default_hostname]
     assets_cdn           = data.azurerm_linux_function_app.function_assets_cdn.default_hostname
     services_app_backend = data.azurerm_linux_function_app.services_app_backend_function_app.default_hostname
     lollipop             = data.azurerm_linux_function_app.lollipop_function.default_hostname

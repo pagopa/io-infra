@@ -450,7 +450,7 @@ module "app_backend_weu" {
   slot_allowed_ips           = module.monitoring_weu.appi.reserved_ips
   apim_snet_address_prefixes = module.apim_weu.snet.address_prefixes
 
-  backend_hostnames     = local.backend_hostnames
+  backend_hostnames = local.backend_hostnames
 
   key_vault        = local.core.key_vault.weu.kv
   key_vault_common = local.core.key_vault.weu.kv_common
@@ -507,7 +507,7 @@ module "app_backend_li_weu" {
   slot_allowed_ips           = []
   apim_snet_address_prefixes = module.apim_weu.snet.address_prefixes
 
-  backend_hostnames     = local.backend_hostnames
+  backend_hostnames = local.backend_hostnames
 
   autoscale = {
     default = 10

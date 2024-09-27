@@ -30,7 +30,7 @@ locals {
     AUTHENTICATION_BASE_PATH = ""
 
     // FUNCTIONS
-    API_URL                     = "https://${var.backend_hostnames.app[1]}/api/v1" 
+    API_URL                     = "https://${var.backend_hostnames.app[1]}/api/v1"
     API_KEY                     = data.azurerm_key_vault_secret.app_backend_API_KEY.value
     CGN_API_URL                 = "https://${var.backend_hostnames.cgn}"
     CGN_API_KEY                 = data.azurerm_key_vault_secret.app_backend_CGN_API_KEY.value
