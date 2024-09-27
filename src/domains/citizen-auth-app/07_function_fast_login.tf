@@ -122,7 +122,7 @@ resource "azurerm_subnet" "fast_login_snet_itn" {
 }
 
 module "function_fast_login_itn" {
-  source = "github.com/pagopa/dx//infra/modules/azure_function_app?ref=c9c0857c9937d99e330e0af0bcfadfbbe6a3c61b"
+  source = "github.com/pagopa/dx//infra/modules/azure_function_app?ref=15236aabcaf855b5b00709bcbb9b0ec177ba71b9"
 
   environment = {
     prefix          = var.prefix
