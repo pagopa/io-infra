@@ -187,7 +187,7 @@ variable "cidr_subnet_fnfastlogin" {
 }
 
 variable "cidr_subnet_fnfastlogin_itn" {
-  type        = string
+  type        = list(string)
   description = "Function Fast Login on ITN region address space."
 }
 
@@ -204,6 +204,12 @@ variable "function_fastlogin_sku_tier" {
 }
 
 variable "function_fastlogin_sku_size" {
+  type        = string
+  description = "App service plan sku size"
+  default     = null
+}
+
+variable "function_fastlogin_sku_size_itn" {
   type        = string
   description = "App service plan sku size"
   default     = null
