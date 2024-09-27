@@ -803,9 +803,9 @@ module "app_gw" {
   identity_ids = [azurerm_user_assigned_identity.appgateway.id]
 
   # Scaling
-  # min_capacity = var.min_capacity
-  app_gateway_min_capacity = "10"
-  app_gateway_max_capacity = var.max_capacity
+  # 4 capacity=baseline, 10 capacity=high volume event, 15 capacity=very high volume event
+  app_gateway_min_capacity = "20"
+  app_gateway_max_capacity = "100"
 
   alerts_enabled = var.alerts_enabled
 

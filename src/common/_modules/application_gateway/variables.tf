@@ -93,16 +93,6 @@ variable "backend_hostnames" {
   description = "Information of the backend hostnames"
 }
 
-variable "min_capacity" {
-  type    = number
-  default = 0
-}
-
-variable "max_capacity" {
-  type    = number
-  default = 2
-}
-
 variable "alerts_enabled" {
   type        = bool
   description = "Enable alerts"
