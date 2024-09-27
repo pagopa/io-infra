@@ -23,3 +23,14 @@ locals {
   fn_fast_login_name                = "${local.product}-weu-fast-login-fn"
   fn_fast_login_resource_group_name = "${local.product}-weu-fast-login-rg"
 }
+
+# Region ITN
+locals {
+  project_itn        = "${var.prefix}-${var.env_short}-${local.itn_location_short}-${var.domain}"
+  itn_location       = "italynorth"
+  itn_location_short = "itn"
+  common_project_itn = "${local.product}-${local.itn_location_short}"
+
+  vnet_common_name_itn                = "${local.common_project_itn}-common-vnet-01"
+  vnet_common_resource_group_name_itn = "${local.common_project_itn}-common-rg-01"
+}
