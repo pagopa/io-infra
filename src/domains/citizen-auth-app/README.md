@@ -19,10 +19,10 @@
 | <a name="module_fn_profile_async_snet"></a> [fn\_profile\_async\_snet](#module\_fn\_profile\_async\_snet) | git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet | v8.44.0 |
 | <a name="module_fn_profile_snet"></a> [fn\_profile\_snet](#module\_fn\_profile\_snet) | git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet | v8.44.0 |
 | <a name="module_function_fast_login"></a> [function\_fast\_login](#module\_function\_fast\_login) | git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app | v8.22.0 |
-| <a name="module_function_fast_login_itn"></a> [function\_fast\_login\_itn](#module\_function\_fast\_login\_itn) | git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app | v8.22.0 |
+| <a name="module_function_fast_login_itn"></a> [function\_fast\_login\_itn](#module\_function\_fast\_login\_itn) | git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app | v8.44.0 |
 | <a name="module_function_fast_login_itn_autoscale"></a> [function\_fast\_login\_itn\_autoscale](#module\_function\_fast\_login\_itn\_autoscale) | github.com/pagopa/dx//infra/modules/azure_app_service_plan_autoscaler | 15236aabcaf855b5b00709bcbb9b0ec177ba71b9 |
 | <a name="module_function_fast_login_staging_slot"></a> [function\_fast\_login\_staging\_slot](#module\_function\_fast\_login\_staging\_slot) | git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app_slot | v8.22.0 |
-| <a name="module_function_fast_login_staging_slot_itn"></a> [function\_fast\_login\_staging\_slot\_itn](#module\_function\_fast\_login\_staging\_slot\_itn) | git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app_slot | v8.22.0 |
+| <a name="module_function_fast_login_staging_slot_itn"></a> [function\_fast\_login\_staging\_slot\_itn](#module\_function\_fast\_login\_staging\_slot\_itn) | git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app_slot | v8.44.0 |
 | <a name="module_function_lollipop_itn"></a> [function\_lollipop\_itn](#module\_function\_lollipop\_itn) | github.com/pagopa/terraform-azurerm-v3//function_app | v8.28.2 |
 | <a name="module_function_lollipop_staging_slot_itn"></a> [function\_lollipop\_staging\_slot\_itn](#module\_function\_lollipop\_staging\_slot\_itn) | github.com/pagopa/terraform-azurerm-v3//function_app_slot | v8.28.2 |
 | <a name="module_function_profile"></a> [function\_profile](#module\_function\_profile) | git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app | v8.44.0 |

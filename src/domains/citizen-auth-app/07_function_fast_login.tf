@@ -118,7 +118,7 @@ module "fast_login_snet_itn" {
 }
 
 module "function_fast_login_itn" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app?ref=v8.22.0"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app?ref=v8.44.0"
 
   resource_group_name          = azurerm_resource_group.fast_login_rg_itn.name
   name                         = format("%s-auth-lv-fn-01", local.common_project_itn)
@@ -126,6 +126,8 @@ module "function_fast_login_itn" {
   domain                       = "auth"
   health_check_path            = "/info"
   health_check_maxpingfailures = "2"
+
+  enable_function_app_public_network_access = false
 
   node_version    = "18"
   runtime_version = "~4"
@@ -165,12 +167,6 @@ module "function_fast_login_itn" {
   subnet_id = module.fast_login_snet_itn.id
 
   allowed_subnets = [
-    module.fast_login_snet_itn.id,
-    data.azurerm_subnet.apim_v2_snet.id,
-    data.azurerm_subnet.app_backend_l1_snet.id,
-    data.azurerm_subnet.app_backend_l2_snet.id,
-    data.azurerm_subnet.ioweb_profile_snet.id,
-    module.session_manager_snet.id,
   ]
 
   # Action groups for alerts
@@ -185,7 +181,7 @@ module "function_fast_login_itn" {
 }
 
 module "function_fast_login_staging_slot_itn" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app_slot?ref=v8.22.0"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app_slot?ref=v8.44.0"
 
   name                = "staging"
   location            = local.itn_location
@@ -214,11 +210,7 @@ module "function_fast_login_staging_slot_itn" {
   subnet_id = module.fast_login_snet_itn.id
 
   allowed_subnets = [
-    module.fast_login_snet_itn.id,
     data.azurerm_subnet.azdoa_snet[0].id,
-    data.azurerm_subnet.apim_v2_snet.id,
-    data.azurerm_subnet.app_backend_l1_snet.id,
-    data.azurerm_subnet.app_backend_l2_snet.id
   ]
 
   tags = var.tags
