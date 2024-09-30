@@ -800,7 +800,9 @@ module "function_fast_login_itn_autoscale" {
   source = "github.com/pagopa/dx//infra/modules/azure_app_service_plan_autoscaler?ref=15236aabcaf855b5b00709bcbb9b0ec177ba71b9"
 
   resource_group_name = azurerm_resource_group.fast_login_rg_itn.name
-  target_service      = module.function_fast_login_itn.app_service_plan_id
+  target_service = {
+    function_app_name = module.function_fast_login_itn.name
+  }
 
   scheduler = {
     high_load = {
@@ -818,7 +820,7 @@ module "function_fast_login_itn_autoscale" {
     },
     low_load = {
       name    = "night"
-      minimum = 2
+      minimum = 3
       default = 10
       start = {
         hour    = 23
