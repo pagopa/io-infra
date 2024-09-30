@@ -148,7 +148,9 @@ locals {
 
     #List of the functions'name to be disabled in both prod and slot
     functions_disabled = [
-      "OnProfileUpdate"
+      "OnProfileUpdate",
+      "StoreSpidLogs",
+      "MigrateServicePreferenceFromLegacy"
     ]
   }
 }
@@ -209,10 +211,7 @@ module "function_profile" {
 
   subnet_id = module.fn_profile_snet[count.index].id
 
-  sticky_app_setting_names = concat([
-    "AzureWebJobs.HandleNHNotificationCall.Disabled",
-    "AzureWebJobs.StoreSpidLogs.Disabled"
-    ],
+  sticky_app_setting_names = concat(
     [
       for to_disable in local.function_profile.functions_disabled :
       format("AzureWebJobs.%s.Disabled", to_disable)
@@ -232,8 +231,6 @@ module "function_profile_staging_slot" {
   function_app_id     = module.function_profile[count.index].id
   app_service_plan_id = module.function_profile[count.index].app_service_plan_id
   health_check_path   = "/api/v1/info"
-
-  enable_function_app_public_network_access = false
 
   storage_account_name               = module.function_profile[count.index].storage_account.name
   storage_account_access_key         = module.function_profile[count.index].storage_account.primary_access_key
