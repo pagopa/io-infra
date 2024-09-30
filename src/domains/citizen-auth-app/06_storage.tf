@@ -23,7 +23,7 @@ data "azurerm_storage_account" "push_notifications_storage" {
   resource_group_name = format("%s-weu-messages-notifications-rg", local.product)
 }
 
-# Storages used by fn-app-profile
+# Storages used by fn-profile
 data "azurerm_storage_account" "storage_api" {
   name                = replace(format("%s-st-api", local.product), "-", "")
   resource_group_name = data.azurerm_resource_group.rg_internal.name

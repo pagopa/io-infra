@@ -54,7 +54,7 @@ locals {
 }
 
 locals {
-  function_app_profile = {
+  function_profile = {
     app_settings_common = {
       FUNCTIONS_WORKER_RUNTIME       = "node"
       FUNCTIONS_WORKER_PROCESS_COUNT = 4
@@ -154,19 +154,19 @@ locals {
   }
 }
 
-resource "azurerm_resource_group" "function_app_profile_rg" {
-  count    = var.function_app_profile_count
-  name     = format("%s-app-profile-rg-0%d", local.project_itn, count.index + 1)
+resource "azurerm_resource_group" "function_profile_rg" {
+  count    = var.function_profile_count
+  name     = format("%s-profile-rg-0%d", local.project_itn, count.index + 1)
   location = local.itn_location
 
   tags = var.tags
 }
 
-module "function_app_profile" {
-  count  = var.function_app_profile_count
+module "function_profile" {
+  count  = var.function_profile_count
   source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app?ref=v8.44.0"
 
-  resource_group_name = azurerm_resource_group.function_app_profile_rg[count.index].name
+  resource_group_name = azurerm_resource_group.function_profile_rg[count.index].name
   name                = format("%s-profile-fn-0%d", local.short_project_itn, count.index + 1)
   location            = local.itn_location
   health_check_path   = "/api/v1/info"
@@ -178,19 +178,19 @@ module "function_app_profile" {
   application_insights_instrumentation_key = data.azurerm_application_insights.application_insights.instrumentation_key
 
   app_service_plan_info = {
-    kind                         = var.function_app_profile_kind
-    sku_tier                     = var.function_app_profile_sku_tier
-    sku_size                     = var.function_app_profile_sku_size
+    kind                         = var.function_profile_kind
+    sku_tier                     = var.function_profile_sku_tier
+    sku_size                     = var.function_profile_sku_size
     maximum_elastic_worker_count = 0
     worker_count                 = null
     zone_balancing_enabled       = true
   }
 
   app_settings = merge(
-    local.function_app_profile.app_settings_common,
+    local.function_profile.app_settings_common,
     {
       # Disabled functions on slot triggered by cosmosDB change feed
-      for to_disable in local.function_app_profile.functions_disabled :
+      for to_disable in local.function_profile.functions_disabled :
       format("AzureWebJobs.%s.Disabled", to_disable) => "1"
     }
   )
@@ -206,14 +206,14 @@ module "function_app_profile" {
     "blobs_retention_days"       = 1,
   }
 
-  subnet_id = module.fn_app_profile_snet[count.index].id
+  subnet_id = module.fn_profile_snet[count.index].id
 
   sticky_app_setting_names = concat([
     "AzureWebJobs.HandleNHNotificationCall.Disabled",
     "AzureWebJobs.StoreSpidLogs.Disabled"
     ],
     [
-      for to_disable in local.function_app_profile.functions_disabled :
+      for to_disable in local.function_profile.functions_disabled :
       format("AzureWebJobs.%s.Disabled", to_disable)
     ]
   )
@@ -221,20 +221,20 @@ module "function_app_profile" {
   tags = var.tags
 }
 
-module "function_app_profile_staging_slot" {
-  count  = var.function_app_profile_count
+module "function_profile_staging_slot" {
+  count  = var.function_profile_count
   source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app_slot?ref=v8.44.0"
 
   name                = "staging"
   location            = local.itn_location
-  resource_group_name = azurerm_resource_group.function_app_profile_rg[count.index].name
-  function_app_id     = module.function_app_profile[count.index].id
-  app_service_plan_id = module.function_app_profile[count.index].app_service_plan_id
+  resource_group_name = azurerm_resource_group.function_profile_rg[count.index].name
+  function_app_id     = module.function_profile[count.index].id
+  app_service_plan_id = module.function_profile[count.index].app_service_plan_id
   health_check_path   = "/api/v1/info"
 
-  storage_account_name               = module.function_app_profile[count.index].storage_account.name
-  storage_account_access_key         = module.function_app_profile[count.index].storage_account.primary_access_key
-  internal_storage_connection_string = module.function_app_profile[count.index].storage_account_internal_function.primary_connection_string
+  storage_account_name               = module.function_profile[count.index].storage_account.name
+  storage_account_access_key         = module.function_profile[count.index].storage_account.primary_access_key
+  internal_storage_connection_string = module.function_profile[count.index].storage_account_internal_function.primary_connection_string
 
   node_version                             = "18"
   always_on                                = "true"
@@ -242,15 +242,15 @@ module "function_app_profile_staging_slot" {
   application_insights_instrumentation_key = data.azurerm_application_insights.application_insights.instrumentation_key
 
   app_settings = merge(
-    local.function_app_profile.app_settings_common,
+    local.function_profile.app_settings_common,
     {
       # Disabled functions on slot triggered by cosmosDB change feed
-      for to_disable in local.function_app_profile.functions_disabled :
+      for to_disable in local.function_profile.functions_disabled :
       format("AzureWebJobs.%s.Disabled", to_disable) => "1"
     }
   )
 
-  subnet_id = module.fn_app_profile_snet[count.index].id
+  subnet_id = module.fn_profile_snet[count.index].id
 
   allowed_subnets = [
     data.azurerm_subnet.azdoa_snet[0].id,
@@ -259,12 +259,12 @@ module "function_app_profile_staging_slot" {
   tags = var.tags
 }
 
-resource "azurerm_monitor_autoscale_setting" "function_app_profile" {
-  count               = var.function_app_profile_count
-  name                = format("%s-autoscale", module.function_app_profile[count.index].name)
-  resource_group_name = azurerm_resource_group.function_app_profile_rg[count.index].name
+resource "azurerm_monitor_autoscale_setting" "function_profile" {
+  count               = var.function_profile_count
+  name                = format("%s-autoscale", module.function_profile[count.index].name)
+  resource_group_name = azurerm_resource_group.function_profile_rg[count.index].name
   location            = local.itn_location
-  target_resource_id  = module.function_app_profile[count.index].app_service_plan_id
+  target_resource_id  = module.function_profile[count.index].app_service_plan_id
 
   dynamic "profile" {
     for_each = [
@@ -359,7 +359,7 @@ resource "azurerm_monitor_autoscale_setting" "function_app_profile" {
       rule {
         metric_trigger {
           metric_name              = "Requests"
-          metric_resource_id       = module.function_app_profile[count.index].id
+          metric_resource_id       = module.function_profile[count.index].id
           metric_namespace         = "microsoft.web/sites"
           time_grain               = "PT1M"
           statistic                = "Max"
@@ -381,7 +381,7 @@ resource "azurerm_monitor_autoscale_setting" "function_app_profile" {
       rule {
         metric_trigger {
           metric_name              = "CpuPercentage"
-          metric_resource_id       = module.function_app_profile[count.index].app_service_plan_id
+          metric_resource_id       = module.function_profile[count.index].app_service_plan_id
           metric_namespace         = "microsoft.web/serverfarms"
           time_grain               = "PT1M"
           statistic                = "Max"
@@ -403,7 +403,7 @@ resource "azurerm_monitor_autoscale_setting" "function_app_profile" {
       rule {
         metric_trigger {
           metric_name              = "Requests"
-          metric_resource_id       = module.function_app_profile[count.index].id
+          metric_resource_id       = module.function_profile[count.index].id
           metric_namespace         = "microsoft.web/sites"
           time_grain               = "PT1M"
           statistic                = "Average"
@@ -425,7 +425,7 @@ resource "azurerm_monitor_autoscale_setting" "function_app_profile" {
       rule {
         metric_trigger {
           metric_name              = "CpuPercentage"
-          metric_resource_id       = module.function_app_profile[count.index].app_service_plan_id
+          metric_resource_id       = module.function_profile[count.index].app_service_plan_id
           metric_namespace         = "microsoft.web/serverfarms"
           time_grain               = "PT1M"
           statistic                = "Average"
@@ -449,13 +449,13 @@ resource "azurerm_monitor_autoscale_setting" "function_app_profile" {
 
 ## Alerts
 
-resource "azurerm_monitor_metric_alert" "function_app_profile_health_check" {
-  count = var.function_app_profile_count
+resource "azurerm_monitor_metric_alert" "function_profile_health_check" {
+  count = var.function_profile_count
 
-  name                = "${module.function_app_profile[count.index].name}-health-check-failed"
-  resource_group_name = azurerm_resource_group.function_app_profile_rg[count.index].name
-  scopes              = [module.function_app_profile[count.index].id]
-  description         = "${module.function_app_profile[count.index].name} health check failed"
+  name                = "${module.function_profile[count.index].name}-health-check-failed"
+  resource_group_name = azurerm_resource_group.function_profile_rg[count.index].name
+  scopes              = [module.function_profile[count.index].id]
+  description         = "${module.function_profile[count.index].name} health check failed"
   severity            = 1
   frequency           = "PT5M"
   auto_mitigate       = false

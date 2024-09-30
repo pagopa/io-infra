@@ -272,29 +272,29 @@ variable "dns_zone_io" {
 ################################
 # Function App Profile
 ################################
-variable "function_app_profile_count" {
+variable "function_profile_count" {
   type    = number
   default = 2
 }
 
-variable "cidr_subnet_app_profile_itn" {
+variable "cidr_subnet_profile_itn" {
   type        = list(string)
   description = "Function app address space."
 }
 
-variable "function_app_profile_kind" {
+variable "function_profile_kind" {
   type        = string
   description = "App service plan kind"
   default     = null
 }
 
-variable "function_app_profile_sku_tier" {
+variable "function_profile_sku_tier" {
   type        = string
   description = "App service plan sku tier"
   default     = null
 }
 
-variable "function_app_profile_sku_size" {
+variable "function_profile_sku_size" {
   type        = string
   description = "App service plan sku size"
   default     = null
@@ -302,42 +302,42 @@ variable "function_app_profile_sku_size" {
 #############################
 # Function App Profile Async
 #############################
-variable "cidr_subnet_app_profile_async_itn" {
+variable "cidr_subnet_profile_async_itn" {
   type        = list(string)
   description = "Function app address space."
 }
 
-variable "function_app_profile_async_kind" {
+variable "function_profile_async_kind" {
   type        = string
   description = "App service plan kind"
   default     = null
 }
 
-variable "function_app_profile_async_sku_tier" {
+variable "function_profile_async_sku_tier" {
   type        = string
   description = "App service plan sku tier"
   default     = null
 }
 
-variable "function_app_profile_async_sku_size" {
+variable "function_profile_async_sku_size" {
   type        = string
   description = "App service plan sku size"
   default     = null
 }
 
-variable "function_app_profile_async_autoscale_minimum" {
+variable "function_profile_async_autoscale_minimum" {
   type        = number
   description = "The minimum number of instances for this resource."
   default     = 1
 }
 
-variable "function_app_profile_async_autoscale_maximum" {
+variable "function_profile_async_autoscale_maximum" {
   type        = number
   description = "The maximum number of instances for this resource."
   default     = 30
 }
 
-variable "function_app_profile_async_autoscale_default" {
+variable "function_profile_async_autoscale_default" {
   type        = number
   description = "The number of instances that are available for scaling if metrics are not available for evaluation."
   default     = 1
