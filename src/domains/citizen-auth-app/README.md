@@ -247,7 +247,7 @@
 | <a name="input_function_profile_async_kind"></a> [function\_profile\_async\_kind](#input\_function\_profile\_async\_kind) | App service plan kind | `string` | `null` | no |
 | <a name="input_function_profile_async_sku_size"></a> [function\_profile\_async\_sku\_size](#input\_function\_profile\_async\_sku\_size) | App service plan sku size | `string` | `null` | no |
 | <a name="input_function_profile_async_sku_tier"></a> [function\_profile\_async\_sku\_tier](#input\_function\_profile\_async\_sku\_tier) | App service plan sku tier | `string` | `null` | no |
-| <a name="input_function_profile_count"></a> [function\_profile\_count](#input\_function\_profile\_count) | ############################### Function App Profile ############################### | `number` | `2` | no |
+| <a name="input_function_profile_count"></a> [function\_profile\_count](#input\_function\_profile\_count) | ############################### Function Profile ############################### | `number` | `2` | no |
 | <a name="input_function_profile_kind"></a> [function\_profile\_kind](#input\_function\_profile\_kind) | App service plan kind | `string` | `null` | no |
 | <a name="input_function_profile_sku_size"></a> [function\_profile\_sku\_size](#input\_function\_profile\_sku\_size) | App service plan sku size | `string` | `null` | no |
 | <a name="input_function_profile_sku_tier"></a> [function\_profile\_sku\_tier](#input\_function\_profile\_sku\_tier) | App service plan sku tier | `string` | `null` | no |
