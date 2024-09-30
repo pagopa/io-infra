@@ -32,7 +32,7 @@ locals {
 
 ## BPD
 resource "azurerm_api_management_api_version_set" "io_backend_bpd_api_v2" {
-  name                = format("%s-io-backend-bpd-api", var.env_short)
+  name                = format("%s-io-backend-bpd-api", local.env_short)
   resource_group_name = data.azurerm_api_management.apim.resource_group_name
   api_management_name = data.azurerm_api_management.apim.name
   display_name        = "${local.apim_v2_io_backend_api.display_name} - bpd"
@@ -42,7 +42,7 @@ resource "azurerm_api_management_api_version_set" "io_backend_bpd_api_v2" {
 module "apim_v2_io_backend_bpd_api_v1" {
   source = "github.com/pagopa/terraform-azurerm-v3//api_management_api?ref=v8.27.0"
 
-  name                  = format("%s-io-backend-bpd-api", var.env_short)
+  name                  = format("%s-io-backend-bpd-api", local.env_short)
   api_management_name   = data.azurerm_api_management.apim.name
   resource_group_name   = data.azurerm_api_management.apim.resource_group_name
   product_ids           = [module.apim_v2_io_backend_product.product_id]
@@ -67,7 +67,7 @@ module "apim_v2_io_backend_bpd_api_v1" {
 
 ## MYPORTAL
 resource "azurerm_api_management_api_version_set" "io_backend_myportal_api_v2" {
-  name                = format("%s-io-backend-myportal-api", var.env_short)
+  name                = format("%s-io-backend-myportal-api", local.env_short)
   resource_group_name = data.azurerm_api_management.apim.resource_group_name
   api_management_name = data.azurerm_api_management.apim.name
   display_name        = "${local.apim_v2_io_backend_api.display_name} - myportal"
@@ -77,7 +77,7 @@ resource "azurerm_api_management_api_version_set" "io_backend_myportal_api_v2" {
 module "apim_v2_io_backend_myportal_api_v1" {
   source = "github.com/pagopa/terraform-azurerm-v3//api_management_api?ref=v8.27.0"
 
-  name                  = format("%s-io-backend-myportal-api", var.env_short)
+  name                  = format("%s-io-backend-myportal-api", local.env_short)
   api_management_name   = data.azurerm_api_management.apim.name
   resource_group_name   = data.azurerm_api_management.apim.resource_group_name
   product_ids           = [module.apim_v2_io_backend_product.product_id]
@@ -102,7 +102,7 @@ module "apim_v2_io_backend_myportal_api_v1" {
 
 ## PAGOPA
 resource "azurerm_api_management_api_version_set" "io_backend_pagopa_api_v2" {
-  name                = format("%s-io-backend-pagopa-api", var.env_short)
+  name                = format("%s-io-backend-pagopa-api", local.env_short)
   resource_group_name = data.azurerm_api_management.apim.resource_group_name
   api_management_name = data.azurerm_api_management.apim.name
   display_name        = "${local.apim_v2_io_backend_api.display_name} - pagopa"
@@ -112,7 +112,7 @@ resource "azurerm_api_management_api_version_set" "io_backend_pagopa_api_v2" {
 module "apim_v2_io_backend_pagopa_api_v1" {
   source = "github.com/pagopa/terraform-azurerm-v3//api_management_api?ref=v8.27.0"
 
-  name                  = format("%s-io-backend-pagopa-api", var.env_short)
+  name                  = format("%s-io-backend-pagopa-api", local.env_short)
   api_management_name   = data.azurerm_api_management.apim.name
   resource_group_name   = data.azurerm_api_management.apim.resource_group_name
   product_ids           = [module.apim_v2_io_backend_product.product_id]
@@ -137,7 +137,7 @@ module "apim_v2_io_backend_pagopa_api_v1" {
 
 ## APP
 resource "azurerm_api_management_api_version_set" "io_backend_app_api_v2" {
-  name                = format("%s-io-backend-app-api", var.env_short)
+  name                = format("%s-io-backend-app-api", local.env_short)
   resource_group_name = data.azurerm_api_management.apim.resource_group_name
   api_management_name = data.azurerm_api_management.apim.name
   display_name        = "${local.apim_v2_io_backend_api.display_name} - app"
@@ -147,7 +147,7 @@ resource "azurerm_api_management_api_version_set" "io_backend_app_api_v2" {
 module "apim_v2_io_backend_app_api_v1" {
   source = "github.com/pagopa/terraform-azurerm-v3//api_management_api?ref=v8.27.0"
 
-  name                  = format("%s-io-backend-app-api", var.env_short)
+  name                  = format("%s-io-backend-app-api", local.env_short)
   api_management_name   = data.azurerm_api_management.apim.name
   resource_group_name   = data.azurerm_api_management.apim.resource_group_name
   product_ids           = [module.apim_v2_io_backend_product.product_id]
@@ -178,7 +178,7 @@ module "apim_v2_io_backend_app_api_v1" {
 
 ## AUTH
 resource "azurerm_api_management_api_version_set" "io_backend_auth_api_v2" {
-  name                = format("%s-io-backend-auth-api", var.env_short)
+  name                = format("%s-io-backend-auth-api", local.env_short)
   resource_group_name = data.azurerm_api_management.apim.resource_group_name
   api_management_name = data.azurerm_api_management.apim.name
   display_name        = "${local.apim_v2_io_backend_api.display_name} - auth"
@@ -188,7 +188,7 @@ resource "azurerm_api_management_api_version_set" "io_backend_auth_api_v2" {
 module "apim_v2_io_backend_auth_api_v1" {
   source = "github.com/pagopa/terraform-azurerm-v3//api_management_api?ref=v8.27.0"
 
-  name                  = format("%s-io-backend-auth-api", var.env_short)
+  name                  = format("%s-io-backend-auth-api", local.env_short)
   api_management_name   = data.azurerm_api_management.apim.name
   resource_group_name   = data.azurerm_api_management.apim.resource_group_name
   product_ids           = [module.apim_v2_io_backend_product.product_id]
@@ -212,7 +212,7 @@ module "apim_v2_io_backend_auth_api_v1" {
 
 ## CGN
 resource "azurerm_api_management_api_version_set" "io_backend_cgn_api_v2" {
-  name                = format("%s-io-backend-cgn-api", var.env_short)
+  name                = format("%s-io-backend-cgn-api", local.env_short)
   resource_group_name = data.azurerm_api_management.apim.resource_group_name
   api_management_name = data.azurerm_api_management.apim.name
   display_name        = "${local.apim_v2_io_backend_api.display_name} - cgn"
@@ -222,7 +222,7 @@ resource "azurerm_api_management_api_version_set" "io_backend_cgn_api_v2" {
 module "apim_v2_io_backend_cgn_api_v1" {
   source = "github.com/pagopa/terraform-azurerm-v3//api_management_api?ref=v8.27.0"
 
-  name                  = format("%s-io-backend-cgn-api", var.env_short)
+  name                  = format("%s-io-backend-cgn-api", local.env_short)
   api_management_name   = data.azurerm_api_management.apim.name
   resource_group_name   = data.azurerm_api_management.apim.resource_group_name
   product_ids           = [module.apim_v2_io_backend_product.product_id]
@@ -247,7 +247,7 @@ module "apim_v2_io_backend_cgn_api_v1" {
 
 ## EUCOVIDCERT
 resource "azurerm_api_management_api_version_set" "io_backend_eucovidcert_api_v2" {
-  name                = format("%s-io-backend-eucovidcert-api", var.env_short)
+  name                = format("%s-io-backend-eucovidcert-api", local.env_short)
   resource_group_name = data.azurerm_api_management.apim.resource_group_name
   api_management_name = data.azurerm_api_management.apim.name
   display_name        = "${local.apim_v2_io_backend_api.display_name} - eucovidcert"
@@ -257,7 +257,7 @@ resource "azurerm_api_management_api_version_set" "io_backend_eucovidcert_api_v2
 module "apim_v2_io_backend_eucovidcert_api_v1" {
   source = "github.com/pagopa/terraform-azurerm-v3//api_management_api?ref=v8.27.0"
 
-  name                  = format("%s-io-backend-eucovidcert-api", var.env_short)
+  name                  = format("%s-io-backend-eucovidcert-api", local.env_short)
   api_management_name   = data.azurerm_api_management.apim.name
   resource_group_name   = data.azurerm_api_management.apim.resource_group_name
   product_ids           = [module.apim_v2_io_backend_product.product_id]
@@ -282,7 +282,7 @@ module "apim_v2_io_backend_eucovidcert_api_v1" {
 
 ## MITVOUCHER
 resource "azurerm_api_management_api_version_set" "io_backend_mitvoucher_api_v2" {
-  name                = format("%s-io-backend-mitvoucher-api", var.env_short)
+  name                = format("%s-io-backend-mitvoucher-api", local.env_short)
   resource_group_name = data.azurerm_api_management.apim.resource_group_name
   api_management_name = data.azurerm_api_management.apim.name
   display_name        = "${local.apim_v2_io_backend_api.display_name} - mitvoucher"
@@ -292,7 +292,7 @@ resource "azurerm_api_management_api_version_set" "io_backend_mitvoucher_api_v2"
 module "apim_v2_io_backend_mitvoucher_api_v1" {
   source = "github.com/pagopa/terraform-azurerm-v3//api_management_api?ref=v8.27.0"
 
-  name                  = format("%s-io-backend-mitvoucher-api", var.env_short)
+  name                  = format("%s-io-backend-mitvoucher-api", local.env_short)
   api_management_name   = data.azurerm_api_management.apim.name
   resource_group_name   = data.azurerm_api_management.apim.resource_group_name
   product_ids           = [module.apim_v2_io_backend_product.product_id]
@@ -317,7 +317,7 @@ module "apim_v2_io_backend_mitvoucher_api_v1" {
 
 ## NOTIFICATIONS
 resource "azurerm_api_management_api_version_set" "io_backend_notifications_api_v2" {
-  name                = format("%s-io-backend-notifications-api", var.env_short)
+  name                = format("%s-io-backend-notifications-api", local.env_short)
   resource_group_name = data.azurerm_api_management.apim.resource_group_name
   api_management_name = data.azurerm_api_management.apim.name
   display_name        = "${local.apim_v2_io_backend_api.display_name} - notifications"
@@ -327,7 +327,7 @@ resource "azurerm_api_management_api_version_set" "io_backend_notifications_api_
 module "apim_v2_io_backend_notifications_api_v1" {
   source = "github.com/pagopa/terraform-azurerm-v3//api_management_api?ref=v8.27.0"
 
-  name                  = format("%s-io-backend-notifications-api", var.env_short)
+  name                  = format("%s-io-backend-notifications-api", local.env_short)
   api_management_name   = data.azurerm_api_management.apim.name
   resource_group_name   = data.azurerm_api_management.apim.resource_group_name
   product_ids           = [module.apim_v2_io_backend_product.product_id]
@@ -352,7 +352,7 @@ module "apim_v2_io_backend_notifications_api_v1" {
 
 ## PUBLIC
 resource "azurerm_api_management_api_version_set" "io_backend_public_api_v2" {
-  name                = format("%s-io-backend-public-api", var.env_short)
+  name                = format("%s-io-backend-public-api", local.env_short)
   resource_group_name = data.azurerm_api_management.apim.resource_group_name
   api_management_name = data.azurerm_api_management.apim.name
   display_name        = "${local.apim_v2_io_backend_api.display_name} - public"
@@ -362,7 +362,7 @@ resource "azurerm_api_management_api_version_set" "io_backend_public_api_v2" {
 module "apim_v2_io_backend_public_api_v1" {
   source = "github.com/pagopa/terraform-azurerm-v3//api_management_api?ref=v8.27.0"
 
-  name                  = format("%s-io-backend-public-api", var.env_short)
+  name                  = format("%s-io-backend-public-api", local.env_short)
   api_management_name   = data.azurerm_api_management.apim.name
   resource_group_name   = data.azurerm_api_management.apim.resource_group_name
   product_ids           = [module.apim_v2_io_backend_product.product_id]
@@ -387,7 +387,7 @@ module "apim_v2_io_backend_public_api_v1" {
 
 ## SESSION
 resource "azurerm_api_management_api_version_set" "io_backend_session_api_v2" {
-  name                = format("%s-io-backend-session-api", var.env_short)
+  name                = format("%s-io-backend-session-api", local.env_short)
   resource_group_name = data.azurerm_api_management.apim.resource_group_name
   api_management_name = data.azurerm_api_management.apim.name
   display_name        = "${local.apim_v2_io_backend_api.display_name} - session"
@@ -397,7 +397,7 @@ resource "azurerm_api_management_api_version_set" "io_backend_session_api_v2" {
 module "apim_v2_io_backend_session_api_v1" {
   source = "github.com/pagopa/terraform-azurerm-v3//api_management_api?ref=v8.27.0"
 
-  name                  = format("%s-io-backend-session-api", var.env_short)
+  name                  = format("%s-io-backend-session-api", local.env_short)
   api_management_name   = data.azurerm_api_management.apim.name
   resource_group_name   = data.azurerm_api_management.apim.resource_group_name
   product_ids           = [module.apim_v2_io_backend_product.product_id]
