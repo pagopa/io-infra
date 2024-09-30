@@ -2,10 +2,10 @@ module "event_hubs_weu" {
   source = "../_modules/event_hubs"
 
   location                  = "westeurope"
-  location_short            = local.core.location.westeurope
+  location_short            = local.core.resource_groups.westeurope.location_short
   project                   = local.project_weu_legacy
-  resource_group_common     = local.core.resource_group.westeurope.common
-  resource_group_assets_cdn = local.core.resource_group.westeurope.assets_cdn
+  resource_group_common     = local.core.resource_groups.westeurope.common
+  resource_group_assets_cdn = local.core.resource_groups.westeurope.assets_cdn
 
   servicebus_dns_zone   = module.global.dns.private_dns_zones.servicebus
   vnet_common           = local.core.networking.weu.vnet_common
@@ -37,9 +37,9 @@ module "monitoring_weu" {
   source = "../_modules/monitoring"
 
   location              = "westeurope"
-  location_short        = local.core.location.westeurope
+  location_short        = local.core.resource_groups.westeurope.location_short
   project               = local.project_weu_legacy
-  resource_group_common = local.core.resource_group.westeurope.common
+  resource_group_common = local.core.resource_groups.westeurope.common
 
   kv_id = local.core.key_vault.weu.kv.id
 
@@ -283,12 +283,12 @@ module "application_gateway_weu" {
   source = "../_modules/application_gateway"
 
   location                = "westeurope"
-  location_short          = local.core.location.westeurope
+  location_short          = local.core.resource_groups.westeurope.location_short
   project                 = local.project_weu_legacy
   prefix                  = local.prefix
-  resource_group_external = local.core.resource_group.westeurope.external
-  resource_group_security = local.core.resource_group.westeurope.sec
-  resource_group_common   = local.core.resource_group.westeurope.common
+  resource_group_external = local.core.resource_groups.westeurope.external
+  resource_group_security = local.core.resource_groups.westeurope.sec
+  resource_group_common   = local.core.resource_groups.westeurope.common
 
   datasources = {
     azurerm_client_config = data.azurerm_client_config.current
@@ -333,11 +333,11 @@ module "apim_weu" {
   source = "../_modules/apim"
 
   location                = "westeurope"
-  location_short          = local.core.location.westeurope
+  location_short          = local.core.resource_groups.westeurope.location_short
   project                 = local.project_weu_legacy
   prefix                  = local.prefix
-  resource_group_common   = local.core.resource_group.westeurope.common
-  resource_group_internal = local.core.resource_group.westeurope.internal
+  resource_group_common   = local.core.resource_groups.westeurope.common
+  resource_group_internal = local.core.resource_groups.westeurope.internal
 
   vnet_common = local.core.networking.weu.vnet_common
   cidr_subnet = "10.0.100.0/24"
@@ -359,11 +359,11 @@ module "assets_cdn_weu" {
   source = "../_modules/assets_cdn"
 
   location                  = "westeurope"
-  location_short            = local.core.location.westeurope
+  location_short            = local.core.resource_groups.westeurope.location_short
   project                   = local.project_weu_legacy
-  resource_group_common     = local.core.resource_group.westeurope.common
-  resource_group_assets_cdn = local.core.resource_group.westeurope.assets_cdn
-  resource_group_external   = local.core.resource_group.westeurope.external
+  resource_group_common     = local.core.resource_groups.westeurope.common
+  resource_group_assets_cdn = local.core.resource_groups.westeurope.assets_cdn
+  resource_group_external   = local.core.resource_groups.westeurope.external
 
   key_vault_common    = local.core.key_vault.weu.kv_common
   external_domain     = module.global.dns.external_domain
@@ -381,10 +381,10 @@ module "cosmos_api_weu" {
   source = "../_modules/cosmos_api"
 
   location       = "westeurope"
-  location_short = local.core.location.westeurope
+  location_short = local.core.resource_groups.westeurope.location_short
   project        = local.project_weu_legacy
 
-  resource_group_internal = local.core.resource_group.westeurope.internal
+  resource_group_internal = local.core.resource_groups.westeurope.internal
   vnet_common             = local.core.networking.weu.vnet_common
   pep_snet                = local.core.networking.weu.pep_snet
   secondary_location      = "northeurope"
@@ -398,21 +398,14 @@ module "redis_weu" {
   source = "../_modules/redis"
 
   location       = "westeurope"
-  location_short = local.core.location.westeurope
+  location_short = local.core.resource_groups.westeurope.location_short
   project        = local.project_weu_legacy
 
-  resource_group_common    = local.core.resource_group.westeurope.common
+  resource_group_common    = local.core.resource_groups.westeurope.common
   vnet_common              = local.core.networking.weu.vnet_common
   cidr_subnet_redis_common = "10.0.200.0/24"
 
   tags = local.tags
-}
-
-removed {
-  from = azurerm_resource_group.rg_linux
-  lifecycle {
-    destroy = false
-  }
 }
 
 module "app_backend_weu" {
@@ -420,12 +413,12 @@ module "app_backend_weu" {
   source   = "../_modules/app_backend"
 
   location                = "westeurope"
-  location_short          = local.core.location.westeurope
+  location_short          = local.core.resource_groups.westeurope.location_short
   project                 = local.project_weu_legacy
   prefix                  = local.prefix
-  resource_group_linux    = local.core.resource_group.westeurope.linux
-  resource_group_internal = local.core.resource_group.westeurope.internal
-  resource_group_common   = local.core.resource_group.westeurope.common
+  resource_group_linux    = local.core.resource_groups.westeurope.linux
+  resource_group_internal = local.core.resource_groups.westeurope.internal
+  resource_group_common   = local.core.resource_groups.westeurope.common
 
   datasources = {
     azurerm_client_config = data.azurerm_client_config.current
@@ -466,12 +459,12 @@ module "app_backend_li_weu" {
   source = "../_modules/app_backend"
 
   location                = "westeurope"
-  location_short          = local.core.location.westeurope
+  location_short          = local.core.resource_groups.westeurope.location_short
   project                 = local.project_weu_legacy
   prefix                  = local.prefix
-  resource_group_linux    = local.core.resource_group.westeurope.linux
-  resource_group_internal = local.core.resource_group.westeurope.internal
-  resource_group_common   = local.core.resource_group.westeurope.common
+  resource_group_linux    = local.core.resource_groups.westeurope.linux
+  resource_group_internal = local.core.resource_groups.westeurope.internal
+  resource_group_common   = local.core.resource_groups.westeurope.common
 
   datasources = {
     azurerm_client_config = data.azurerm_client_config.current
