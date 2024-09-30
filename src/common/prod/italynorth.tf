@@ -21,7 +21,7 @@ module "github_runner_itn" {
   tags = local.tags
 }
 
-module "private_endpoints_itn" {
+module "private_endpoints" {
   source = "../_modules/private_endpoint"
 
   project             = local.project_itn

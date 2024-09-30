@@ -25,5 +25,15 @@ variable "pep_snet_id" {
 
 variable "dns_zones" {
   type        = map(any)
-  description = "DNS zones"
+  description = <<EOF
+  Map of private DNS zones
+
+  Example:
+  {
+    postgres = {
+      'id' = 'XXXX'
+    },
+    ...
+  }
+  EOF
 }
