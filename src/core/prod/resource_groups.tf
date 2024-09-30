@@ -69,11 +69,6 @@ resource "azurerm_resource_group" "assets_cdn_weu" {
   tags = local.tags
 }
 
-import {
-  id = "/subscriptions/ec285037-c673-4f58-b594-d7c480da4e8b/resourceGroups/io-p-assets-cdn-rg"
-  to = azurerm_resource_group.assets_cdn_weu
-}
-
 resource "azurerm_resource_group" "linux_weu" {
   name     = "${local.project_weu_legacy}-rg-linux"
   location = "westeurope"

@@ -61,3 +61,8 @@ variable "allowed_subnets_ids" {
   type        = list(string)
   description = "List of the IDs of the subnets allowed to contact the cosmos account"
 }
+
+variable "error_action_group_id" {
+  type        = string
+  description = "Azure Monitor error action group id"
+}
