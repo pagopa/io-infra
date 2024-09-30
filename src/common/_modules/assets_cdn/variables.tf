@@ -18,9 +18,19 @@ variable "tags" {
   description = "Resource tags"
 }
 
-variable "resource_groups" {
-  type        = map(string)
-  description = "Resource group names"
+variable "resource_group_assets_cdn" {
+  type        = string
+  description = "Assets CDN resource group name"
+}
+
+variable "resource_group_external" {
+  type        = string
+  description = "External resource group name"
+}
+
+variable "resource_group_common" {
+  type        = string
+  description = "Common resource group name"
 }
 
 variable "dns_default_ttl_sec" {
