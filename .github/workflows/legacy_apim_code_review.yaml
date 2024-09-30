@@ -1,8 +1,8 @@
-name: PR - Common TF Validation
+name: PR - Legacy APIM TF Validation
 
 # This pipeline starts automatically when a PR is opened.
-##
-# It is responsible for managing changes related to "common" infrastructure,
+#
+# It is responsible for managing only a couple of legacy API groups on APIM.
 
 on:
   workflow_dispatch:
@@ -14,15 +14,14 @@ on:
       - reopened
       - ready_for_review
     paths:
-      - "src/common/prod/**"
-      - "src/common/_modules/**"
-      - ".github/workflows/common_code_review.yaml"
+      - "src/legacy-apim/**"
+      - ".github/workflows/legacy_apim_code_review.yaml"
 
 jobs:
-  prod_itn_common_code_review:
+  prod_legacy_apim_code_review:
     uses: pagopa/dx/.github/workflows/infra_plan.yaml@main
     name: Prod - Code Review
     secrets: inherit
     with:
       environment: prod
-      base_path: src/common
+      base_path: src/legacy-apim

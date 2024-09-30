@@ -18,9 +18,9 @@ variable "tags" {
   description = "Resource tags"
 }
 
-variable "resource_groups" {
-  type        = map(string)
-  description = "Resource group names"
+variable "resource_group_internal" {
+  type        = string
+  description = "Internal resource group names"
 }
 
 variable "vnet_common" {
@@ -60,4 +60,9 @@ variable "documents_dns_zone" {
 variable "allowed_subnets_ids" {
   type        = list(string)
   description = "List of the IDs of the subnets allowed to contact the cosmos account"
+}
+
+variable "error_action_group_id" {
+  type        = string
+  description = "Azure Monitor error action group id"
 }

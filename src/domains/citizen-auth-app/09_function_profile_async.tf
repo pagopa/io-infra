@@ -42,8 +42,9 @@ module "function_profile_async" {
 
   app_settings = merge(
     local.function_profile_async.app_settings_common, {
-      "AzureWebJobs.StoreSpidLogs.Disabled"   = "0",
-      "AzureWebJobs.OnProfileUpdate.Disabled" = "0",
+      "AzureWebJobs.MigrateServicePreferenceFromLegacy.Disabled" = "1",
+      "AzureWebJobs.StoreSpidLogs.Disabled"                      = "1",
+      "AzureWebJobs.OnProfileUpdate.Disabled"                    = "1",
     }
   )
 
@@ -61,9 +62,9 @@ module "function_profile_async" {
   subnet_id = module.fn_profile_async_snet.id
 
   sticky_app_setting_names = concat([
-    "AzureWebJobs.HandleNHNotificationCall.Disabled",
     "AzureWebJobs.StoreSpidLogs.Disabled",
-    "AzureWebJobs.OnProfileUpdate.Disabled"
+    "AzureWebJobs.OnProfileUpdate.Disabled",
+    "AzureWebJobs.MigrateServicePreferenceFromLegacy.Disabled"
     ]
   )
 
@@ -80,8 +81,6 @@ module "function_profile_async_staging_slot" {
   app_service_plan_id = module.function_profile_async.app_service_plan_id
   health_check_path   = "/api/v1/info"
 
-  enable_function_app_public_network_access = false
-
   storage_account_name               = module.function_profile_async.storage_account.name
   storage_account_access_key         = module.function_profile_async.storage_account.primary_access_key
   internal_storage_connection_string = module.function_profile_async.storage_account_internal_function.primary_connection_string
@@ -93,8 +92,9 @@ module "function_profile_async_staging_slot" {
 
   app_settings = merge(
     local.function_profile_async.app_settings_common, {
-      "AzureWebJobs.StoreSpidLogs.Disabled"   = "1",
-      "AzureWebJobs.OnProfileUpdate.Disabled" = "1",
+      "AzureWebJobs.MigrateServicePreferenceFromLegacy.Disabled" = "1",
+      "AzureWebJobs.StoreSpidLogs.Disabled"                      = "1",
+      "AzureWebJobs.OnProfileUpdate.Disabled"                    = "1",
     }
   )
 

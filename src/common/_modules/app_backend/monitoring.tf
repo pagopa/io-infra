@@ -1,6 +1,6 @@
 resource "azurerm_application_insights_standard_web_test" "web_tests" {
   name                    = format("%s-test-%s", module.appservice_app_backend.default_site_hostname, var.application_insights.name)
-  resource_group_name     = var.resource_groups.common
+  resource_group_name     = var.resource_group_common
   location                = var.application_insights.location
   application_insights_id = var.application_insights.id
   geo_locations           = ["emea-nl-ams-azr"] # https://learn.microsoft.com/en-us/previous-versions/azure/azure-monitor/app/monitor-web-app-availability#location-population-tags
@@ -23,7 +23,7 @@ resource "azurerm_application_insights_standard_web_test" "web_tests" {
 
 resource "azurerm_monitor_metric_alert" "metric_alerts" {
   name                = format("%s-test-%s", module.appservice_app_backend.default_site_hostname, var.application_insights.name)
-  resource_group_name = var.resource_groups.common
+  resource_group_name = var.resource_group_common
   severity            = 1
   scopes = [
     var.application_insights.id,
@@ -47,7 +47,7 @@ resource "azurerm_monitor_metric_alert" "too_many_http_5xx" {
   enabled = false
 
   name                = "[IO-COMMONS | ${module.appservice_app_backend.name}] Too many 5xx"
-  resource_group_name = var.resource_groups.linux
+  resource_group_name = var.resource_group_linux
   scopes              = [module.appservice_app_backend.id]
   # TODO: add Runbook for checking errors
   description   = "Whenever the total http server errors exceeds a dynamic threashold. Runbook: ${"https://pagopa.atlassian.net"}/wiki/spaces/IC/pages/585072814/Appbackendlx+-+Too+many+errors"
