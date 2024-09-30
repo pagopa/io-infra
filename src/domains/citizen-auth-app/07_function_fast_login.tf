@@ -118,7 +118,7 @@ module "fast_login_snet_itn" {
 }
 
 module "function_fast_login_itn" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app?ref=v8.22.0"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app?ref=v8.44.0"
 
   resource_group_name          = azurerm_resource_group.fast_login_rg_itn.name
   name                         = format("%s-auth-lv-fn-01", local.common_project_itn)
@@ -181,7 +181,7 @@ module "function_fast_login_itn" {
 }
 
 module "function_fast_login_staging_slot_itn" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app_slot?ref=v8.22.0"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app_slot?ref=v8.44.0"
 
   name                = "staging"
   location            = local.itn_location
