@@ -15,24 +15,9 @@
 | Name | Source | Version |
 |------|--------|---------|
 | <a name="module_fast_login_snet"></a> [fast\_login\_snet](#module\_fast\_login\_snet) | git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet | v8.22.0 |
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
 | <a name="module_fast_login_snet_itn"></a> [fast\_login\_snet\_itn](#module\_fast\_login\_snet\_itn) | git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet | v8.22.0 |
-=======
-=======
-| <a name="module_fn_app_profile_async_snet"></a> [fn\_app\_profile\_async\_snet](#module\_fn\_app\_profile\_async\_snet) | git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet | v8.44.0 |
->>>>>>> 348a84c ([#IOPID-2038] added fn app profile async)
-| <a name="module_fn_app_profile_snet"></a> [fn\_app\_profile\_snet](#module\_fn\_app\_profile\_snet) | git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet | v8.44.0 |
-| <a name="module_function_app_profile"></a> [function\_app\_profile](#module\_function\_app\_profile) | git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app | v8.44.0 |
-| <a name="module_function_app_profile_async"></a> [function\_app\_profile\_async](#module\_function\_app\_profile\_async) | git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app | v8.44.0 |
-| <a name="module_function_app_profile_async_staging_slot"></a> [function\_app\_profile\_async\_staging\_slot](#module\_function\_app\_profile\_async\_staging\_slot) | git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app_slot | v8.44.0 |
-| <a name="module_function_app_profile_staging_slot"></a> [function\_app\_profile\_staging\_slot](#module\_function\_app\_profile\_staging\_slot) | git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app_slot | v8.44.0 |
->>>>>>> 2802152 (pre-commit run)
-=======
 | <a name="module_fn_profile_async_snet"></a> [fn\_profile\_async\_snet](#module\_fn\_profile\_async\_snet) | git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet | v8.44.0 |
 | <a name="module_fn_profile_snet"></a> [fn\_profile\_snet](#module\_fn\_profile\_snet) | git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet | v8.44.0 |
->>>>>>> e4d9c3f (changed fn-app-profile name to fn-profile)
 | <a name="module_function_fast_login"></a> [function\_fast\_login](#module\_function\_fast\_login) | git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app | v8.22.0 |
 | <a name="module_function_fast_login_itn"></a> [function\_fast\_login\_itn](#module\_function\_fast\_login\_itn) | git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app | v8.22.0 |
 | <a name="module_function_fast_login_itn_autoscale"></a> [function\_fast\_login\_itn\_autoscale](#module\_function\_fast\_login\_itn\_autoscale) | github.com/pagopa/dx//infra/modules/azure_app_service_plan_autoscaler | 15236aabcaf855b5b00709bcbb9b0ec177ba71b9 |
@@ -63,43 +48,21 @@
 | [azurerm_monitor_scheduled_query_rules_alert_v2.alert_function_lollipop_itn_HandlePubKeyRevoke_failure](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/monitor_scheduled_query_rules_alert_v2) | resource |
 | [azurerm_monitor_scheduled_query_rules_alert_v2.samlresponse_missing_detection_alert](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/monitor_scheduled_query_rules_alert_v2) | resource |
 | [azurerm_private_dns_a_record.ingress](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/private_dns_a_record) | resource |
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
 | [azurerm_private_endpoint.function_fast_login_itn_sites](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/private_endpoint) | resource |
-| [azurerm_private_endpoint.function_lollipop_itn_sites](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/private_endpoint) | resource |
-| [azurerm_private_endpoint.locked_profiles_storage_table](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/private_endpoint) | resource |
-| [azurerm_private_endpoint.session_manager_sites](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/private_endpoint) | resource |
-| [azurerm_private_endpoint.staging_function_fast_login_itn_sites](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/private_endpoint) | resource |
-| [azurerm_private_endpoint.staging_function_lollipop_itn_sites](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/private_endpoint) | resource |
-| [azurerm_private_endpoint.staging_session_manager_sites](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/private_endpoint) | resource |
-| [azurerm_resource_group.fast_login_rg](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/resource_group) | resource |
-| [azurerm_resource_group.fast_login_rg_itn](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/resource_group) | resource |
-=======
-=======
-| [azurerm_private_endpoint.function_app_profile_async_itn_sites](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/private_endpoint) | resource |
->>>>>>> 348a84c ([#IOPID-2038] added fn app profile async)
-| [azurerm_private_endpoint.function_app_profile_itn_sites](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/private_endpoint) | resource |
-=======
->>>>>>> e4d9c3f (changed fn-app-profile name to fn-profile)
 | [azurerm_private_endpoint.function_lollipop_itn_sites](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/private_endpoint) | resource |
 | [azurerm_private_endpoint.function_profile_async_itn_sites](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/private_endpoint) | resource |
 | [azurerm_private_endpoint.function_profile_itn_sites](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/private_endpoint) | resource |
 | [azurerm_private_endpoint.locked_profiles_storage_table](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/private_endpoint) | resource |
 | [azurerm_private_endpoint.session_manager_sites](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/private_endpoint) | resource |
+| [azurerm_private_endpoint.staging_function_fast_login_itn_sites](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/private_endpoint) | resource |
 | [azurerm_private_endpoint.staging_function_lollipop_itn_sites](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/private_endpoint) | resource |
 | [azurerm_private_endpoint.staging_function_profile_async_itn_sites](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/private_endpoint) | resource |
 | [azurerm_private_endpoint.staging_function_profile_itn_sites](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/private_endpoint) | resource |
 | [azurerm_private_endpoint.staging_session_manager_sites](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/private_endpoint) | resource |
 | [azurerm_resource_group.fast_login_rg](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/resource_group) | resource |
-<<<<<<< HEAD
-| [azurerm_resource_group.function_app_profile_async_rg](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/resource_group) | resource |
-| [azurerm_resource_group.function_app_profile_rg](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/resource_group) | resource |
->>>>>>> 2802152 (pre-commit run)
-=======
+| [azurerm_resource_group.fast_login_rg_itn](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/resource_group) | resource |
 | [azurerm_resource_group.function_profile_async_rg](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/resource_group) | resource |
 | [azurerm_resource_group.function_profile_rg](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/resource_group) | resource |
->>>>>>> e4d9c3f (changed fn-app-profile name to fn-profile)
 | [azurerm_resource_group.lollipop_rg_itn](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/resource_group) | resource |
 | [azurerm_resource_group.session_manager_rg_weu](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/resource_group) | resource |
 | [azurerm_storage_table.locked_profiles](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/storage_table) | resource |
@@ -203,20 +166,8 @@
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
 | <a name="input_application_insights_name"></a> [application\_insights\_name](#input\_application\_insights\_name) | Specifies the name of the Application Insights. | `string` | n/a | yes |
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
 | <a name="input_cidr_subnet_fnfastlogin"></a> [cidr\_subnet\_fnfastlogin](#input\_cidr\_subnet\_fnfastlogin) | Function Fast Login address space. | `list(string)` | n/a | yes |
 | <a name="input_cidr_subnet_fnfastlogin_itn"></a> [cidr\_subnet\_fnfastlogin\_itn](#input\_cidr\_subnet\_fnfastlogin\_itn) | Function Fast Login on ITN region address space. | `list(string)` | n/a | yes |
-=======
-=======
-| <a name="input_cidr_subnet_app_profile_async_itn"></a> [cidr\_subnet\_app\_profile\_async\_itn](#input\_cidr\_subnet\_app\_profile\_async\_itn) | Function app address space. | `list(string)` | n/a | yes |
->>>>>>> 348a84c ([#IOPID-2038] added fn app profile async)
-| <a name="input_cidr_subnet_app_profile_itn"></a> [cidr\_subnet\_app\_profile\_itn](#input\_cidr\_subnet\_app\_profile\_itn) | Function app address space. | `list(string)` | n/a | yes |
-=======
->>>>>>> e4d9c3f (changed fn-app-profile name to fn-profile)
-| <a name="input_cidr_subnet_fnfastlogin"></a> [cidr\_subnet\_fnfastlogin](#input\_cidr\_subnet\_fnfastlogin) | Function Lollipop address space. | `list(string)` | n/a | yes |
->>>>>>> 2802152 (pre-commit run)
 | <a name="input_cidr_subnet_fnlollipop"></a> [cidr\_subnet\_fnlollipop](#input\_cidr\_subnet\_fnlollipop) | Function Lollipop address space. | `list(string)` | n/a | yes |
 | <a name="input_cidr_subnet_fnlollipop_itn"></a> [cidr\_subnet\_fnlollipop\_itn](#input\_cidr\_subnet\_fnlollipop\_itn) | Function Lollipop address space. | `list(string)` | n/a | yes |
 | <a name="input_cidr_subnet_profile_async_itn"></a> [cidr\_subnet\_profile\_async\_itn](#input\_cidr\_subnet\_profile\_async\_itn) | Function app address space. | `list(string)` | n/a | yes |
