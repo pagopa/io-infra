@@ -36,4 +36,8 @@ locals {
   itn_location_short = "itn"
   project_itn        = "${var.prefix}-${var.env_short}-${local.itn_location_short}-${var.domain}"
   common_project_itn = "${local.product}-${local.itn_location_short}"
+
+  # auth n identity domain
+  short_domain      = "auth"
+  short_project_itn = "${local.product}-${local.itn_location_short}-${local.short_domain}"
 }
