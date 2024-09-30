@@ -41,7 +41,8 @@ module "monitoring_weu" {
   project               = local.project_weu_legacy
   resource_group_common = local.core.resource_groups.westeurope.common
 
-  kv_id = local.core.key_vault.weu.kv.id
+  kv_id        = local.core.key_vault.weu.kv.id
+  kv_common_id = local.core.key_vault.weu.kv_common.id
 
   test_urls = [
     {
@@ -390,6 +391,8 @@ module "cosmos_api_weu" {
   secondary_location      = "northeurope"
   documents_dns_zone      = module.global.dns.private_dns_zones.documents
   allowed_subnets_ids     = values(data.azurerm_subnet.cosmos_api_allowed)[*].id
+
+  error_action_group_id = module.monitoring_weu.action_groups.error
 
   tags = local.tags
 }
