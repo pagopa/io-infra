@@ -170,6 +170,8 @@ module "function_profile" {
   location            = local.itn_location
   health_check_path   = "/api/v1/info"
 
+  enable_function_app_public_network_access = false
+
   node_version    = "18"
   runtime_version = "~4"
 
@@ -230,6 +232,8 @@ module "function_profile_staging_slot" {
   function_app_id     = module.function_profile[count.index].id
   app_service_plan_id = module.function_profile[count.index].app_service_plan_id
   health_check_path   = "/api/v1/info"
+
+  enable_function_app_public_network_access = false
 
   storage_account_name               = module.function_profile[count.index].storage_account.name
   storage_account_access_key         = module.function_profile[count.index].storage_account.primary_access_key

@@ -23,6 +23,8 @@ module "function_profile_async" {
   location            = local.itn_location
   health_check_path   = "/api/v1/info"
 
+  enable_function_app_public_network_access = false
+
   node_version    = "18"
   runtime_version = "~4"
 
@@ -77,6 +79,8 @@ module "function_profile_async_staging_slot" {
   function_app_id     = module.function_profile_async.id
   app_service_plan_id = module.function_profile_async.app_service_plan_id
   health_check_path   = "/api/v1/info"
+
+  enable_function_app_public_network_access = false
 
   storage_account_name               = module.function_profile_async.storage_account.name
   storage_account_access_key         = module.function_profile_async.storage_account.primary_access_key
