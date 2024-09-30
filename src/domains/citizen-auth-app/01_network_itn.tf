@@ -83,6 +83,8 @@ resource "azurerm_private_endpoint" "function_fast_login_itn_sites" {
     private_dns_zone_ids = [data.azurerm_private_dns_zone.privatelink_azurewebsites_net.id]
   }
 
+  depends_on = [module.function_fast_login_itn]
+
   tags = var.tags
 }
 
@@ -103,6 +105,8 @@ resource "azurerm_private_endpoint" "staging_function_fast_login_itn_sites" {
     name                 = "private-dns-zone-group"
     private_dns_zone_ids = [data.azurerm_private_dns_zone.privatelink_azurewebsites_net.id]
   }
+
+  depends_on = [module.function_fast_login_itn, module.function_fast_login_staging_slot_itn]
 
   tags = var.tags
 }
