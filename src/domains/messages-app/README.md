@@ -16,7 +16,10 @@
 |------|--------|---------|
 | <a name="module_app_messages_function"></a> [app\_messages\_function](#module\_app\_messages\_function) | github.com/pagopa/terraform-azurerm-v3//function_app | v8.27.0 |
 | <a name="module_app_messages_function_staging_slot"></a> [app\_messages\_function\_staging\_slot](#module\_app\_messages\_function\_staging\_slot) | github.com/pagopa/terraform-azurerm-v3//function_app_slot | v8.27.0 |
+| <a name="module_app_messages_function_staging_slot_xl"></a> [app\_messages\_function\_staging\_slot\_xl](#module\_app\_messages\_function\_staging\_slot\_xl) | github.com/pagopa/terraform-azurerm-v3//function_app_slot | v8.27.0 |
+| <a name="module_app_messages_function_xl"></a> [app\_messages\_function\_xl](#module\_app\_messages\_function\_xl) | github.com/pagopa/terraform-azurerm-v3//function_app | v8.27.0 |
 | <a name="module_app_messages_snet"></a> [app\_messages\_snet](#module\_app\_messages\_snet) | github.com/pagopa/terraform-azurerm-v3//subnet | v8.27.0 |
+| <a name="module_app_messages_snet_xl"></a> [app\_messages\_snet\_xl](#module\_app\_messages\_snet\_xl) | github.com/pagopa/terraform-azurerm-v3//subnet | v8.27.0 |
 | <a name="module_event_hub"></a> [event\_hub](#module\_event\_hub) | github.com/pagopa/terraform-azurerm-v3//eventhub | v8.27.0 |
 | <a name="module_function_messages_cqrs"></a> [function\_messages\_cqrs](#module\_function\_messages\_cqrs) | github.com/pagopa/terraform-azurerm-v3//function_app | v8.27.0 |
 | <a name="module_function_messages_cqrs_snet"></a> [function\_messages\_cqrs\_snet](#module\_function\_messages\_cqrs\_snet) | github.com/pagopa/terraform-azurerm-v3//subnet | v8.27.0 |
@@ -38,12 +41,14 @@
 | [azurerm_key_vault_secret.event_hub_keys](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_secret) | resource |
 | [azurerm_key_vault_secret.services_storage_connection_string](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_secret) | resource |
 | [azurerm_monitor_autoscale_setting.app_messages_function](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/monitor_autoscale_setting) | resource |
+| [azurerm_monitor_autoscale_setting.app_messages_function_xl](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/monitor_autoscale_setting) | resource |
 | [azurerm_monitor_autoscale_setting.function_messages_cqrs](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/monitor_autoscale_setting) | resource |
 | [azurerm_monitor_autoscale_setting.push_notif_function](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/monitor_autoscale_setting) | resource |
 | [azurerm_monitor_metric_alert.tls_cert_check](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/monitor_metric_alert) | resource |
 | [azurerm_private_dns_a_record.ingress](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/private_dns_a_record) | resource |
 | [azurerm_private_endpoint.services_storage_blob](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/private_endpoint) | resource |
 | [azurerm_resource_group.app_messages_rg](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/resource_group) | resource |
+| [azurerm_resource_group.app_messages_rg_xl](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/resource_group) | resource |
 | [azurerm_resource_group.backend_messages_rg](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/resource_group) | resource |
 | [azurerm_resource_group.data_process_rg](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/resource_group) | resource |
 | [azurerm_resource_group.event_rg](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/resource_group) | resource |
@@ -117,6 +122,7 @@
 | <a name="input_app_messages_count"></a> [app\_messages\_count](#input\_app\_messages\_count) | ############################## Messages functions ############################## | `number` | `0` | no |
 | <a name="input_application_insights_name"></a> [application\_insights\_name](#input\_application\_insights\_name) | Specifies the name of the Application Insights. | `string` | n/a | yes |
 | <a name="input_cidr_subnet_appmessages"></a> [cidr\_subnet\_appmessages](#input\_cidr\_subnet\_appmessages) | App messages address space. | `list(string)` | `[]` | no |
+| <a name="input_cidr_subnet_appmessages_xl"></a> [cidr\_subnet\_appmessages\_xl](#input\_cidr\_subnet\_appmessages\_xl) | App messages address space. | `list(string)` | `[]` | no |
 | <a name="input_cidr_subnet_fnmessagescqrs"></a> [cidr\_subnet\_fnmessagescqrs](#input\_cidr\_subnet\_fnmessagescqrs) | Fn cqrs address space. | `list(string)` | n/a | yes |
 | <a name="input_cidr_subnet_fnservicemessages"></a> [cidr\_subnet\_fnservicemessages](#input\_cidr\_subnet\_fnservicemessages) | Functions service messages address space. | `list(string)` | n/a | yes |
 | <a name="input_cidr_subnet_push_notif"></a> [cidr\_subnet\_push\_notif](#input\_cidr\_subnet\_push\_notif) | Function push-notif address space. | `list(string)` | n/a | yes |
