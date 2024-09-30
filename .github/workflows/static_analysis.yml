@@ -26,9 +26,6 @@ jobs:
           # map value with path to domain root and path to config entry point
           declare -A newmap
 
-          newmap[src/core]="."
-          newmap[src/.template-app]="."
-          newmap[src/.template-common]="."
           newmap[src/aks-platform]="."
           newmap[src/domains/cgn]="./prod"
           newmap[src/domains/selfcare]="./prod/westeurope"

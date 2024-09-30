@@ -1,6 +1,6 @@
 resource "azurerm_cosmosdb_account" "this" {
   name                = "${var.project}-cosmos-api"
-  resource_group_name = var.resource_groups.internal
+  resource_group_name = var.resource_group_internal
   location            = var.location
 
   offer_type        = "Standard"

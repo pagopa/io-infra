@@ -10,15 +10,15 @@ data "azurerm_storage_account" "lollipop_assertions_storage" {
 
 data "azurerm_storage_account" "logs" {
   name                = replace("${var.project}-stlogs", "-", "")
-  resource_group_name = lookup(var.resource_groups, "operations", "${var.project}-rg-operations")
+  resource_group_name = "${var.project}-rg-operations"
 }
 
 data "azurerm_storage_account" "notifications" {
   name                = replace("${var.project}-stnotifications", "-", "")
-  resource_group_name = lookup(var.resource_groups, "internal", "${var.project}-rg-internal")
+  resource_group_name = var.resource_group_internal
 }
 
 data "azurerm_storage_account" "push_notifications_storage" {
   name                = replace(format("${var.project}-weu-messages-notifst"), "-", "")
-  resource_group_name = lookup(var.resource_groups, "notifications", "${var.project}-weu-messages-notifications-rg")
+  resource_group_name = "${var.project}-weu-messages-notifications-rg"
 }
