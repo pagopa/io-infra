@@ -5,7 +5,7 @@ data "azurerm_key_vault" "key_vault" {
 
 data "azurerm_key_vault" "key_vault_common" {
   name                = format("%s-kv-common", local.project)
-  resource_group_name = azurerm_resource_group.rg_common.name
+  resource_group_name = data.azurerm_resource_group.rg_common.name
 }
 
 data "azurerm_resource_group" "sec_rg" {

@@ -17,3 +17,8 @@ variable "tags" {
   type        = map(any)
   description = "Resource tags"
 }
+
+variable "resource_group_name" {
+  type        = string
+  description = "Resource group where create resources"
+}
