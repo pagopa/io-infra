@@ -57,7 +57,7 @@ locals {
   function_profile = {
     app_settings_common = {
       FUNCTIONS_WORKER_RUNTIME       = "node"
-      FUNCTIONS_WORKER_PROCESS_COUNT = 4
+      FUNCTIONS_WORKER_PROCESS_COUNT = 8
       NODE_ENV                       = "production"
 
       COSMOSDB_NAME              = "db"
@@ -142,9 +142,8 @@ locals {
       SPID_LOGS_PUBLIC_KEY = trimspace(data.azurerm_key_vault_secret.fn_app_SPID_LOGS_PUBLIC_KEY.value)
       AZURE_NH_ENDPOINT    = data.azurerm_key_vault_secret.fn_app_AZURE_NH_ENDPOINT.value
     }
-    app_settings_1 = {
-    }
-    app_settings_2 = {
+    app_settings_async = {
+      FUNCTIONS_WORKER_PROCESS_COUNT = 4
     }
 
     #List of the functions'name to be disabled in both prod and slot
@@ -156,7 +155,7 @@ locals {
 
 resource "azurerm_resource_group" "function_profile_rg" {
   count    = var.function_profile_count
-  name     = format("%s-profile-rg-0%d", local.project_itn, count.index + 1)
+  name     = format("%s-profile-rg-0%d", local.common_project_itn, count.index + 1)
   location = local.itn_location
 
   tags = var.tags
@@ -320,7 +319,7 @@ resource "azurerm_monitor_autoscale_setting" "function_profile" {
 
         capacity = {
           default = 10
-          minimum = 2
+          minimum = 3
           maximum = 30
         }
       }

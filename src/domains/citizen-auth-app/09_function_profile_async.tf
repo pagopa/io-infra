@@ -4,11 +4,7 @@
 
 locals {
   function_profile_async = {
-    app_settings_common = local.function_profile.app_settings_common
-    app_settings_1 = {
-    }
-    app_settings_2 = {
-    }
+    app_settings_common = merge(local.function_profile.app_settings_common, local.function_profile.app_settings_async)
   }
 }
 

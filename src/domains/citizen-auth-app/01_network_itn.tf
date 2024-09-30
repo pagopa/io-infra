@@ -206,7 +206,7 @@ resource "azurerm_private_endpoint" "staging_function_profile_itn_sites" {
 ## itn-profile-async-fn
 
 resource "azurerm_private_endpoint" "function_profile_async_itn_sites" {
-  name                = format("%s-profile-async-pep-01", local.project_itn)
+  name                = format("%s-profile-async-pep-01", local.common_project_itn)
   location            = local.itn_location
   resource_group_name = azurerm_resource_group.function_profile_async_rg.name
   subnet_id           = data.azurerm_subnet.itn_pep.id
@@ -227,7 +227,7 @@ resource "azurerm_private_endpoint" "function_profile_async_itn_sites" {
 }
 
 resource "azurerm_private_endpoint" "staging_function_profile_async_itn_sites" {
-  name                = format("%s-profile-async-staging-pep-01", local.project_itn)
+  name                = format("%s-profile-async-staging-pep-01", local.common_project_itn)
   location            = local.itn_location
   resource_group_name = azurerm_resource_group.function_profile_async_rg.name
   subnet_id           = data.azurerm_subnet.itn_pep.id

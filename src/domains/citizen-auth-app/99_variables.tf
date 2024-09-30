@@ -270,7 +270,7 @@ variable "dns_zone_io" {
 }
 
 ################################
-# Function App Profile
+# Function Profile
 ################################
 variable "function_profile_count" {
   type    = number
@@ -300,7 +300,7 @@ variable "function_profile_sku_size" {
   default     = null
 }
 #############################
-# Function App Profile Async
+# Function Profile Async
 #############################
 variable "cidr_subnet_profile_async_itn" {
   type        = list(string)
