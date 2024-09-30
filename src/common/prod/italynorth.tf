@@ -28,8 +28,8 @@ module "private_endpoints_itn" {
   location            = "italynorth"
   resource_group_name = local.resource_groups.itn.common
 
-  vnet_common = local.core.networking.itn.vnet_common
-  pep_snet_id = data.azurerm_subnet.itn_pep_snet.id
+  pep_snet_id = local.core.networking.itn.pep_snet.id
+  dns_zones   = module.global.dns.private_dns_zones
 
   tags = local.tags
 }

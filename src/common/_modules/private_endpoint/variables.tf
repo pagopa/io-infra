@@ -18,17 +18,12 @@ variable "resource_group_name" {
   description = "Resource group namee"
 }
 
-variable "vnet_common" {
-  type = object({
-    id                  = string
-    name                = string
-    address_space       = list(string)
-    resource_group_name = string
-  })
-  description = "Information of the common VNet"
-}
-
 variable "pep_snet_id" {
   type        = string
   description = "ID of the private endpoint subnet"
+}
+
+variable "dns_zones" {
+  type        = map(any)
+  description = "DNS zones"
 }
