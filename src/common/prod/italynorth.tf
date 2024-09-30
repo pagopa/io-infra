@@ -20,3 +20,16 @@ module "github_runner_itn" {
 
   tags = local.tags
 }
+
+module "private_endpoints_itn" {
+  source = "../_modules/private_endpoint"
+
+  project             = local.project_itn
+  location            = "italynorth"
+  resource_group_name = local.resource_groups.itn.common
+
+  vnet_common = local.core.networking.itn.vnet_common
+  pep_snet_id = data.azurerm_subnet.itn_pep_snet.id
+
+  tags = local.tags
+}
