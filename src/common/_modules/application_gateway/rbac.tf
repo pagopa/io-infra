@@ -1,6 +1,6 @@
 ## user assined identity: (application gateway) ##
 resource "azurerm_user_assigned_identity" "appgateway" {
-  resource_group_name = var.resource_groups.sec
+  resource_group_name = var.resource_group_security
   location            = var.location
   name                = try(local.nonstandard[var.location_short].id, "${var.project}-agw-id-01")
 

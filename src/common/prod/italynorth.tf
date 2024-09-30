@@ -9,7 +9,7 @@ module "github_runner_itn" {
   source = "../_modules/github_runner"
 
   project             = local.project_itn
-  location            = azurerm_resource_group.github_runner.location
+  location            = "italynorth"
   resource_group_name = azurerm_resource_group.github_runner.name
 
   vnet_common = local.core.networking.itn.vnet_common

@@ -5,11 +5,6 @@ resource "azurerm_resource_group" "common_itn" {
   tags = local.tags
 }
 
-moved {
-  from = azurerm_resource_group.vnet
-  to   = azurerm_resource_group.common_itn
-}
-
 resource "azurerm_resource_group" "dashboards_itn" {
   name     = "${local.project_itn}-common-dashboards-rg-01"
   location = "italynorth"
@@ -67,11 +62,6 @@ resource "azurerm_resource_group" "acr_weu" {
   tags = local.tags
 }
 
-moved {
-  from = module.container_registry.azurerm_resource_group.container_registry
-  to   = azurerm_resource_group.acr_weu
-}
-
 resource "azurerm_resource_group" "assets_cdn_weu" {
   name     = format("%s-assets-cdn-rg", local.project_weu_legacy)
   location = "westeurope"
@@ -79,19 +69,9 @@ resource "azurerm_resource_group" "assets_cdn_weu" {
   tags = local.tags
 }
 
-import {
-  id = "/subscriptions/ec285037-c673-4f58-b594-d7c480da4e8b/resourceGroups/io-p-assets-cdn-rg"
-  to = azurerm_resource_group.assets_cdn_weu
-}
-
 resource "azurerm_resource_group" "linux_weu" {
   name     = "${local.project_weu_legacy}-rg-linux"
   location = "westeurope"
 
   tags = local.tags
-}
-
-import {
-  id = "/subscriptions/ec285037-c673-4f58-b594-d7c480da4e8b/resourceGroups/io-p-rg-linux"
-  to = azurerm_resource_group.linux_weu
 }
