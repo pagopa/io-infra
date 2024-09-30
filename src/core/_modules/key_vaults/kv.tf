@@ -1,7 +1,7 @@
 resource "azurerm_key_vault" "kv" {
   name                = local.nonstandard[var.location_short].kv
-  location            = azurerm_resource_group.sec.location
-  resource_group_name = azurerm_resource_group.sec.name
+  location            = var.location
+  resource_group_name = var.resource_group_name
   tenant_id           = var.tenant_id
   sku_name            = "standard"
 
