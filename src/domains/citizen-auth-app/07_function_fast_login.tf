@@ -127,6 +127,8 @@ module "function_fast_login_itn" {
   health_check_path            = "/info"
   health_check_maxpingfailures = "2"
 
+  enable_function_app_public_network_access = false
+
   node_version    = "18"
   runtime_version = "~4"
 
@@ -165,12 +167,6 @@ module "function_fast_login_itn" {
   subnet_id = module.fast_login_snet_itn.id
 
   allowed_subnets = [
-    module.fast_login_snet_itn.id,
-    data.azurerm_subnet.apim_v2_snet.id,
-    data.azurerm_subnet.app_backend_l1_snet.id,
-    data.azurerm_subnet.app_backend_l2_snet.id,
-    data.azurerm_subnet.ioweb_profile_snet.id,
-    module.session_manager_snet.id,
   ]
 
   # Action groups for alerts
@@ -194,6 +190,8 @@ module "function_fast_login_staging_slot_itn" {
   app_service_plan_id = module.function_fast_login_itn.app_service_plan_id
   health_check_path   = "/info"
 
+  enable_function_app_public_network_access = false
+
   storage_account_name               = module.function_fast_login_itn.storage_account.name
   storage_account_access_key         = module.function_fast_login_itn.storage_account.primary_access_key
   internal_storage_connection_string = module.function_fast_login_itn.storage_account_internal_function.primary_connection_string
@@ -214,11 +212,7 @@ module "function_fast_login_staging_slot_itn" {
   subnet_id = module.fast_login_snet_itn.id
 
   allowed_subnets = [
-    module.fast_login_snet_itn.id,
     data.azurerm_subnet.azdoa_snet[0].id,
-    data.azurerm_subnet.apim_v2_snet.id,
-    data.azurerm_subnet.app_backend_l1_snet.id,
-    data.azurerm_subnet.app_backend_l2_snet.id
   ]
 
   tags = var.tags
