@@ -17,49 +17,11 @@ on:
       - "src/legacy-apim/**"
       - ".github/workflows/legacy_apim_code_review.yaml"
 
-env:
-  ARM_SUBSCRIPTION_ID: ${{ secrets.ARM_SUBSCRIPTION_ID }}
-  ARM_TENANT_ID: ${{ secrets.ARM_TENANT_ID }}
-  ARM_USE_OIDC: true
-  ARM_USE_AZUREAD: true
-  ARM_STORAGE_USE_AZUREAD: true
-  DIR: src/legacy-apim
-  AZURE_ENVIRONMENT: prod
-  ARM_CLIENT_ID: ${{ secrets.ARM_CLIENT_ID }}
-  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
 jobs:
-  tf_plan:
-    name: Terraform Plan
-    runs-on: self-hosted
-    environment: prod-ci
-    concurrency:
-      group: ${{ github.workflow }}-ci
-      cancel-in-progress: true
-    permissions:
-      id-token: write
-      contents: read
-      pull-requests: write
-
-    steps:
-      - name: Checkout
-        id: checkout
-        uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
-        with:
-          persist-credentials: false
-          fetch-depth: 0
-
-      - name: Setup terraform
-        id: setup-version
-        # https://github.com/pagopa/terraform-install-action/commits/main
-        uses: pagopa/terraform-install-action@1f76f593176e58c423b88d72273a612ba7ba430b
-
-      - name: Terraform plan
-        # from https://github.com/pagopa/terraform-plan-azure-action/commits/main
-        uses: pagopa/terraform-plan-azure-action@392aca28cbb33f5dc28215dfb72385e136fd813b
-        with:
-          client_id: ${{ env.ARM_CLIENT_ID }}
-          tenant_id: ${{ env.ARM_TENANT_ID }}
-          subscription_id: ${{ env.ARM_SUBSCRIPTION_ID }}
-          dir: ${{ env.DIR }}
-          azure_environment: ${{ env.AZURE_ENVIRONMENT }}
+  prod_legacy_apim_code_review:
+    uses: pagopa/dx/.github/workflows/infra_plan.yaml@main
+    name: Prod - Code Review
+    secrets: inherit
+    with:
+      environment: prod
+      base_path: src/legacy-apim
