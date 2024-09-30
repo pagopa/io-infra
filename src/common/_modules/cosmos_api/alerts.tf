@@ -24,7 +24,7 @@ resource "azurerm_monitor_metric_alert" "throttling_alert" {
     dimension {
       name     = "Region"
       operator = "Include"
-      values   = ["West Europe"]
+      values   = [var.location]
     }
     dimension {
       name     = "StatusCode"
