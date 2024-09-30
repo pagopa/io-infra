@@ -8,12 +8,16 @@ data "azurerm_cosmosdb_account" "cosmos_remote_content" {
   resource_group_name = "io-p-messages-data-rg"
 }
 
+data "azurerm_resource_group" "rg_common" {
+  name = "io-p-rg-common"
+}
+
 #
 # APIM
 #
 data "azurerm_subnet" "apim" {
   name                 = "apimv2api"
-  resource_group_name  = azurerm_resource_group.rg_common.name
+  resource_group_name  = data.azurerm_resource_group.rg_common.name
   virtual_network_name = data.azurerm_virtual_network.common.name
 }
 
@@ -264,7 +268,7 @@ data "azurerm_linux_function_app" "citizen_func_02" {
 
 data "azurerm_subnet" "function_let_snet" {
   name                 = "fn3eltout"
-  resource_group_name  = azurerm_resource_group.rg_common.name
+  resource_group_name  = data.azurerm_resource_group.rg_common.name
   virtual_network_name = data.azurerm_virtual_network.common.name
 }
 
@@ -274,14 +278,14 @@ data "azurerm_subnet" "function_let_snet" {
 
 data "azurerm_subnet" "admin_snet" {
   name                 = format("%s-admin-snet", local.project)
-  resource_group_name  = azurerm_resource_group.rg_common.name
+  resource_group_name  = data.azurerm_resource_group.rg_common.name
   virtual_network_name = data.azurerm_virtual_network.common.name
 }
 
 data "azurerm_subnet" "services_snet" {
   count                = var.function_services_count
   name                 = format("%s-services-snet-%d", local.project, count.index + 1)
-  resource_group_name  = azurerm_resource_group.rg_common.name
+  resource_group_name  = data.azurerm_resource_group.rg_common.name
   virtual_network_name = data.azurerm_virtual_network.common.name
 }
 
@@ -420,7 +424,7 @@ data "azurerm_dns_a_record" "api_io_italia_it" {
 
 data "azurerm_subnet" "appgateway_snet" {
   name                 = "${local.project}-appgateway-snet"
-  resource_group_name  = azurerm_resource_group.rg_common.name
+  resource_group_name  = data.azurerm_resource_group.rg_common.name
   virtual_network_name = data.azurerm_virtual_network.common.name
 }
 
@@ -430,6 +434,6 @@ data "azurerm_subnet" "appgateway_snet" {
 
 data "azurerm_subnet" "azdoa_snet" {
   name                 = "azure-devops"
-  resource_group_name  = azurerm_resource_group.rg_common.name
+  resource_group_name  = data.azurerm_resource_group.rg_common.name
   virtual_network_name = data.azurerm_virtual_network.common.name
 }
