@@ -90,6 +90,8 @@ module "function_lollipop_itn" {
   health_check_path            = "/info"
   health_check_maxpingfailures = "2"
 
+  enable_function_app_public_network_access = false
+
   storage_account_info = {
     account_kind                      = "StorageV2"
     account_tier                      = "Standard"
