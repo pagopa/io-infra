@@ -1,11 +1,8 @@
 name: PR - Common TF Validation
 
 # This pipeline starts automatically when a PR is opened.
-#
-# It is responsible for managing changes related solely to the NEW infrastructure.
-# Therefore, it checks whether the changes have occurred only in the directories listed in "paths."
-#
-## NOTE: 'NEW infrastructure' refers to the new Terraform infrastructure located in the src/common/prod folder, which no longer requires the terraform.sh script to be applied.
+##
+# It is responsible for managing changes related to "common" infrastructure,
 
 on:
   workflow_dispatch:

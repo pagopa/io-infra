@@ -1,10 +1,8 @@
-name: WEU - Core TF Validation (PROD)
+name: PR - Legacy APIM TF Validation
 
 # This pipeline starts automatically when a PR is opened.
 #
-# It is responsible for managing only the legacy part (West Europe), 
-# ensuring that changes have occurred exclusively within the directories listed in "paths." 
-# It ignores the folders related to the new infrastructure, indicated by the symbol '!', which denotes an excluded path.
+# It is responsible for managing only a couple of legacy API groups on APIM.
 
 on:
   workflow_dispatch:
@@ -16,11 +14,8 @@ on:
       - reopened
       - ready_for_review
     paths:
-      - "src/core/**"
-      - ".github/workflows/core_code_review_weu.yaml"
-      - "!src/core/prod/**"
-      - "!src/core/_modules/**"
-      - "!.github/workflows/core_code_review.yaml"
+      - "src/legacy-apim/**"
+      - ".github/workflows/legacy_apim_code_review.yaml"
 
 env:
   ARM_SUBSCRIPTION_ID: ${{ secrets.ARM_SUBSCRIPTION_ID }}
@@ -28,7 +23,7 @@ env:
   ARM_USE_OIDC: true
   ARM_USE_AZUREAD: true
   ARM_STORAGE_USE_AZUREAD: true
-  DIR: src/core
+  DIR: src/legacy-apim
   AZURE_ENVIRONMENT: prod
   ARM_CLIENT_ID: ${{ secrets.ARM_CLIENT_ID }}
   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -45,7 +40,7 @@ jobs:
       id-token: write
       contents: read
       pull-requests: write
-    
+
     steps:
       - name: Checkout
         id: checkout

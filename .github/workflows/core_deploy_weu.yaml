@@ -1,29 +1,25 @@
-name: WEU - Core TF Apply (PROD)
+name: Release - Legacy APIM TF Apply
 
 # This pipeline starts automatically when a PR is merged into 'main'.
 #
-# It is responsible for managing only the legacy part (West Europe), 
-# ensuring that changes have occurred exclusively within the directories listed in "paths." 
-# It ignores the folders related to the new mode, indicated by the symbol '!', which denotes an excluded path.
+# It is responsible for managing only a couple of legacy API groups on APIM.
 #
-# This pipeline will use the terraform.sh script, which first executes a plan and then an apply, both of which must be approved by the team.
+# This pipeline will use the terraform.sh script, which first executes a plan and then an apply,
+# where the latter must be approved by the team.
 
-on: 
+on:
   workflow_dispatch:
   push:
     branches:
       - main
     paths:
-      - "src/core/**"
-      - ".github/workflows/core_deploy_weu.yaml"
-      - "!src/core/prod/**"
-      - "!src/core/_modules/**"
-      - "!.github/workflows/core_deploy.yaml"
-      
+      - "src/legacy-apim/**"
+      - ".github/workflows/legacy_apim_deploy.yaml"
+
 permissions:
   id-token: write
   contents: read
-        
+
 concurrency:
   group: ${{ github.workflow }}-cd
   cancel-in-progress: true
@@ -35,7 +31,7 @@ env:
   ARM_USE_OIDC: true
   ARM_USE_AZUREAD: true
   ARM_STORAGE_USE_AZUREAD: true
-  DIR: src/core
+  DIR: src/legacy-apim
   AZURE_ENVIRONMENT: prod
   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
