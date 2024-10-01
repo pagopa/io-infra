@@ -20,7 +20,7 @@ on:
 
 jobs:
   prod_itn_common_code_review:
-    uses: pagopa/dx/.github/workflows/infra_plan.yaml@refactor-tf-plan
+    uses: pagopa/dx/.github/workflows/infra_plan.yaml@main
     name: Prod - Code Review
     secrets: inherit
     with:
