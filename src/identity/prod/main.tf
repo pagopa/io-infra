@@ -96,7 +96,7 @@ resource "azurerm_role_assignment" "ci_trial_system" {
 resource "azurerm_role_assignment" "cd_trial_system" {
   provider             = azurerm.prod-trial
   scope                = data.azurerm_subscription.trial_system.id
-  principal_id         = module.federated_identities.federated_ci_identity.id
+  principal_id         = module.federated_identities.federated_cd_identity.id
   role_definition_name = "Reader"
 }
 
