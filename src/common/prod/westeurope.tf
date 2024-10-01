@@ -481,7 +481,6 @@ module "app_backend_li_weu" {
   allowed_subnets = concat(data.azurerm_subnet.services_snet.*.id,
     [
       data.azurerm_subnet.admin_snet.id,
-      data.azurerm_subnet.functions_fast_login_snet.id,
       data.azurerm_subnet.itn_auth_fast_login_func_snet.id,
       data.azurerm_subnet.itn_msgs_sending_func_snet.id
   ])
