@@ -12,7 +12,7 @@ resource "azurerm_private_endpoint" "this" {
   subnet_id           = var.pep_snet_id
 
   private_service_connection {
-    name                           = "${var.project}-${each.key}-pep-01"
+    name                           = "${var.project}-${each.key}"
     private_connection_resource_id = each.value.resource_id
     is_manual_connection           = false
     subresource_names              = each.value.subresource_names
