@@ -29,9 +29,19 @@ variable "tags" {
   description = "Resource tags"
 }
 
-variable "resource_groups" {
-  type        = map(string)
-  description = "Resource group names"
+variable "resource_group_linux" {
+  type        = string
+  description = "Linux resource group name"
+}
+
+variable "resource_group_internal" {
+  type        = string
+  description = "Internal resource group name"
+}
+
+variable "resource_group_common" {
+  type        = string
+  description = "Common resource group name"
 }
 
 variable "index" {

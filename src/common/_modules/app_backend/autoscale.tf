@@ -1,7 +1,7 @@
 resource "azurerm_monitor_autoscale_setting" "backendli" {
   count               = var.is_li ? 1 : 0
   name                = "${module.appservice_app_backend.name}-autoscale"
-  resource_group_name = var.resource_groups.linux
+  resource_group_name = var.resource_group_linux
   location            = var.location
   target_resource_id  = module.appservice_app_backend.plan_id
 

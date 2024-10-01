@@ -183,7 +183,12 @@ variable "function_lollipop_autoscale_default" {
 
 variable "cidr_subnet_fnfastlogin" {
   type        = list(string)
-  description = "Function Lollipop address space."
+  description = "Function Fast Login address space."
+}
+
+variable "cidr_subnet_fnfastlogin_itn" {
+  type        = list(string)
+  description = "Function Fast Login on ITN region address space."
 }
 
 variable "function_fastlogin_kind" {
@@ -199,6 +204,12 @@ variable "function_fastlogin_sku_tier" {
 }
 
 variable "function_fastlogin_sku_size" {
+  type        = string
+  description = "App service plan sku size"
+  default     = null
+}
+
+variable "function_fastlogin_sku_size_itn" {
   type        = string
   description = "App service plan sku size"
   default     = null
@@ -257,3 +268,78 @@ variable "dns_zone_io" {
   default     = null
   description = "The dns subdomain."
 }
+
+################################
+# Function Profile
+################################
+variable "function_profile_count" {
+  type    = number
+  default = 2
+}
+
+variable "cidr_subnet_profile_itn" {
+  type        = list(string)
+  description = "Function app address space."
+}
+
+variable "function_profile_kind" {
+  type        = string
+  description = "App service plan kind"
+  default     = null
+}
+
+variable "function_profile_sku_tier" {
+  type        = string
+  description = "App service plan sku tier"
+  default     = null
+}
+
+variable "function_profile_sku_size" {
+  type        = string
+  description = "App service plan sku size"
+  default     = null
+}
+#############################
+# Function Profile Async
+#############################
+variable "cidr_subnet_profile_async_itn" {
+  type        = list(string)
+  description = "Function app address space."
+}
+
+variable "function_profile_async_kind" {
+  type        = string
+  description = "App service plan kind"
+  default     = null
+}
+
+variable "function_profile_async_sku_tier" {
+  type        = string
+  description = "App service plan sku tier"
+  default     = null
+}
+
+variable "function_profile_async_sku_size" {
+  type        = string
+  description = "App service plan sku size"
+  default     = null
+}
+
+variable "function_profile_async_autoscale_minimum" {
+  type        = number
+  description = "The minimum number of instances for this resource."
+  default     = 1
+}
+
+variable "function_profile_async_autoscale_maximum" {
+  type        = number
+  description = "The maximum number of instances for this resource."
+  default     = 30
+}
+
+variable "function_profile_async_autoscale_default" {
+  type        = number
+  description = "The number of instances that are available for scaling if metrics are not available for evaluation."
+  default     = 1
+}
+#############################

@@ -2,7 +2,7 @@
 module "app_gw" {
   source = "github.com/pagopa/terraform-azurerm-v3//app_gateway?ref=v8.31.0"
 
-  resource_group_name = var.resource_groups.external
+  resource_group_name = var.resource_group_external
   location            = var.location
   name                = try(local.nonstandard[var.location_short].agw, "${var.project}-agw-01")
   zones               = [1, 2, 3]

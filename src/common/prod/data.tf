@@ -97,6 +97,12 @@ data "azurerm_subnet" "admin_snet" {
   virtual_network_name = local.core.networking.weu.vnet_common.name
 }
 
+data "azurerm_subnet" "itn_auth_fast_login_func_snet" {
+  name                 = "${local.project_itn}-citizen-auth-fast-login-snet-01"
+  resource_group_name  = local.core.networking.itn.vnet_common.resource_group_name
+  virtual_network_name = local.core.networking.itn.vnet_common.name
+}
+
 data "azurerm_subnet" "functions_fast_login_snet" {
   name                 = "${local.project_weu}-fast-login-snet"
   resource_group_name  = local.core.networking.weu.vnet_common.resource_group_name

@@ -137,7 +137,7 @@ locals {
 
     # Functions Fast Login config
     FAST_LOGIN_API_KEY = data.azurerm_key_vault_secret.functions_fast_login_api_key.value
-    FAST_LOGIN_API_URL = var.fastlogin_enabled ? "https://${module.function_fast_login[0].default_hostname}" : ""
+    FAST_LOGIN_API_URL = var.fastlogin_enabled ? "https://${module.function_fast_login_itn.default_hostname}" : ""
 
     # Functions Lollipop config
     LOLLIPOP_API_BASE_PATH = "/api/v1"

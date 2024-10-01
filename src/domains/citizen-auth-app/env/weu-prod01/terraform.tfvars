@@ -57,11 +57,28 @@ function_lollipop_autoscale_default = 10
 
 # Functions Fast Login
 cidr_subnet_fnfastlogin              = ["10.0.17.128/26"]
+cidr_subnet_fnfastlogin_itn          = ["10.20.18.0/26"]
 function_fastlogin_kind              = "Linux"
 function_fastlogin_sku_size          = "P1v3"
+function_fastlogin_sku_size_itn      = "P2mv3"
 function_fastlogin_autoscale_minimum = 2
 function_fastlogin_autoscale_maximum = 20
 function_fastlogin_autoscale_default = 10
+
+# Functions app profile (located in Italy North)
+cidr_subnet_profile_itn   = ["10.20.6.64/26", "10.20.6.128/26"]
+function_profile_kind     = "Linux"
+function_profile_sku_tier = "PremiumV3"
+function_profile_sku_size = "P2mv3"
+
+# Functions app profile async (located in Italy North)
+cidr_subnet_profile_async_itn            = ["10.20.6.192/26"]
+function_profile_async_kind              = "Linux"
+function_profile_async_sku_tier          = "PremiumV3"
+function_profile_async_sku_size          = "P1v3"
+function_profile_async_autoscale_minimum = 3 # 3 instance to achieve redundancy and failover
+function_profile_async_autoscale_maximum = 30
+function_profile_async_autoscale_default = 10
 
 # Session manager
 cidr_subnet_session_manager = ["10.0.149.0/26"]
