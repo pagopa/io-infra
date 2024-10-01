@@ -20,3 +20,16 @@ module "github_runner_itn" {
 
   tags = local.tags
 }
+
+module "private_endpoints" {
+  source = "../_modules/private_endpoint"
+
+  project             = local.project_itn
+  location            = "italynorth"
+  resource_group_name = local.resource_groups.itn.common
+
+  pep_snet_id = local.core.networking.itn.pep_snet.id
+  dns_zones   = module.global.dns.private_dns_zones
+
+  tags = local.tags
+}

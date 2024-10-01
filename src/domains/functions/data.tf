@@ -28,6 +28,11 @@ data "azurerm_monitor_action_group" "error_action_group" {
   resource_group_name = local.rg_common_name
 }
 
+data "azurerm_monitor_action_group" "io_com_action_group" {
+  name                = "io-p-com-error-ag-01"
+  resource_group_name = "io-p-itn-msgs-rg-01"
+}
+
 data "azurerm_subnet" "ioweb_profile_snet" {
   name                 = format("%s-%s-ioweb-profile-snet", local.project, var.location_short)
   virtual_network_name = local.vnet_common_name
