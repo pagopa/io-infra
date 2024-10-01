@@ -8,7 +8,7 @@ module "appservice_app_backend" {
 
   # App service
   name                = try(local.nonstandard[var.location_short].app, "${var.project}-appbe-${var.name}-app-01")
-  resource_group_name = var.resource_groups.linux
+  resource_group_name = var.resource_group_linux
   location            = var.location
 
   node_version                 = "18-lts"
@@ -51,7 +51,7 @@ module "appservice_app_backend_slot_staging" {
 
   # App service
   name                = "staging"
-  resource_group_name = var.resource_groups.linux
+  resource_group_name = var.resource_group_linux
   location            = var.location
 
   always_on         = true

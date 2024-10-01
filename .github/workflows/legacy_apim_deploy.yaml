@@ -1,0 +1,26 @@
+name: Release - Legacy APIM TF Apply
+
+# This pipeline starts automatically when a PR is merged into 'main'.
+#
+# It is responsible for managing only a couple of legacy API groups on APIM.
+#
+# This pipeline will use the terraform.sh script, which first executes a plan and then an apply,
+# where the latter must be approved by the team.
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+    paths:
+      - "src/legacy-apim/**"
+      - ".github/workflows/legacy_apim_deploy.yaml"
+
+jobs:
+  prod_legacy_apim_deploy:
+    uses: pagopa/dx/.github/workflows/infra_apply.yaml@main
+    name: Prod - Code Deploy
+    secrets: inherit
+    with:
+      environment: prod
+      base_path: src/legacy-apim

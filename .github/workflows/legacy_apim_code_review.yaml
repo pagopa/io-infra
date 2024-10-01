@@ -1,0 +1,27 @@
+name: PR - Legacy APIM TF Validation
+
+# This pipeline starts automatically when a PR is opened.
+#
+# It is responsible for managing only a couple of legacy API groups on APIM.
+
+on:
+  workflow_dispatch:
+  pull_request:
+    types:
+      - opened
+      - edited
+      - synchronize
+      - reopened
+      - ready_for_review
+    paths:
+      - "src/legacy-apim/**"
+      - ".github/workflows/legacy_apim_code_review.yaml"
+
+jobs:
+  prod_legacy_apim_code_review:
+    uses: pagopa/dx/.github/workflows/infra_plan.yaml@main
+    name: Prod - Code Review
+    secrets: inherit
+    with:
+      environment: prod
+      base_path: src/legacy-apim
