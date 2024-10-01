@@ -1,6 +1,6 @@
 # see https://help.github.com/en/articles/about-code-owners#example-of-a-codeowners-file
 
-* @pagopa/io-backend-admin @pagopa/io-backend-contributors
+* @pagopa/io-backend-admin @pagopa/io-backend-contributors @pagopa/engineering-team-cloud-eng
 
 /src/domains/sign @pagopa/io-backend-admin @pagopa/io-backend-contributors @pagopa/io-sign-maintainers
 
