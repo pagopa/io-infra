@@ -236,11 +236,11 @@ data "azurerm_key_vault_secret" "functions_fast_login_api_key" {
   key_vault_id = module.key_vault.id
 }
 
-resource "azurerm_api_management_named_value" "io_fn_weu_fast_login_operation_key_v2" {
-  name                = "io-fn-weu-fast-login-operation-key"
+resource "azurerm_api_management_named_value" "io_fn_itn_fast_login_operation_key_v2" {
+  name                = "io-fn-itn-fast-login-operation-key"
   api_management_name = data.azurerm_api_management.apim_v2_api.name
   resource_group_name = data.azurerm_api_management.apim_v2_api.resource_group_name
-  display_name        = "io-fn-weu-fast-login-operation-key"
+  display_name        = "io-fn-itn-fast-login-operation-key"
   value               = data.azurerm_key_vault_secret.functions_fast_login_api_key.value
   secret              = "true"
 }

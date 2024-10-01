@@ -71,7 +71,7 @@ locals {
       // Fast Login config
       // -------------------------
       FAST_LOGIN_API_KEY         = data.azurerm_key_vault_secret.functions_fast_login_api_key.value
-      FAST_LOGIN_CLIENT_BASE_URL = "https://io-p-weu-fast-login-fn.azurewebsites.net"
+      FAST_LOGIN_CLIENT_BASE_URL = "https://io-p-itn-auth-lv-fn-01.azurewebsites.net"
 
       // -------------------------
       // Functions App config

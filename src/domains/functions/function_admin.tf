@@ -173,7 +173,7 @@ resource "azurerm_resource_group" "admin_rg" {
 
 # Subnet to host admin function
 module "admin_snet" {
-  source                                    = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v7.61.0"
+  source                                    = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v7.67.1"
   name                                      = format("%s-admin-snet", local.project)
   address_prefixes                          = var.cidr_subnet_fnadmin
   resource_group_name                       = local.rg_common_name
@@ -196,7 +196,7 @@ module "admin_snet" {
 }
 
 module "function_admin" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app?ref=v7.61.0"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app?ref=v7.67.1"
 
   resource_group_name = azurerm_resource_group.admin_rg.name
   name                = format("%s-admin-fn", local.project)
@@ -260,7 +260,7 @@ module "function_admin" {
 }
 
 module "function_admin_staging_slot" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app_slot?ref=v7.61.0"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app_slot?ref=v7.67.1"
 
   name                = "staging"
   location            = var.location

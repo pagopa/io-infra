@@ -20,8 +20,8 @@ locals {
   fast_login_backend_url = "https://%s/api/v1"
 
   # Fast Login references refers to src/domains/citizen-auth-app/07_functions_fast_login.tf
-  fn_fast_login_name                = "${local.product}-weu-fast-login-fn"
-  fn_fast_login_resource_group_name = "${local.product}-weu-fast-login-rg"
+  fn_fast_login_name                = "${local.common_project_itn}-auth-lv-fn-01"
+  fn_fast_login_resource_group_name = "${local.common_project_itn}-fast-login-rg-01"
 }
 
 # Region ITN
