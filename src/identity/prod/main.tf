@@ -116,7 +116,7 @@ resource "azurerm_role_assignment" "cd_cgn" {
 
 resource "azurerm_role_assignment" "cd_cgn_postgresql" {
   provider             = azurerm.prod-cgn
-  scope                = "${data.azurerm_subscription.cgn.id}/resourceGroups/cgnonboardingportal-p-db-rg/providers/Microsoft.DBforPostgreSQL/servers/cgnonboardingportal-p-db-postgresql"
+  scope                = data.azurerm_postgresql_server.cgn_psql.id
   principal_id         = module.federated_identities.federated_cd_identity.id
   role_definition_name = "Contributor"
 }
