@@ -77,7 +77,7 @@ locals {
       // Functions App config
       // -------------------------
       FUNCTIONS_APP_API_KEY         = data.azurerm_key_vault_secret.functions_app_api_key.value
-      FUNCTIONS_APP_CLIENT_BASE_URL = "https://io-p-itn-app-profil-fn-2.azurewebsites.net"
+      FUNCTIONS_APP_CLIENT_BASE_URL = "https://io-p-itn-auth-profile-fn-02.azurewebsites.net"
 
       // -------------------------
       // Hub Spid Login for ioweb config
@@ -164,8 +164,8 @@ module "function_ioweb_profile" {
   allowed_subnets = [
     module.ioweb_profile_snet.id,
     data.azurerm_subnet.apim_v2_snet.id,
-    data.azurerm_subnet.function_app_snet[0].id,
-    data.azurerm_subnet.function_app_snet[1].id,
+    data.azurerm_subnet.function_profile_snet[0].id,
+    data.azurerm_subnet.function_profile_snet[1].id,
   ]
 
   enable_healthcheck = false
@@ -210,8 +210,8 @@ module "function_ioweb_profile_staging_slot" {
     module.ioweb_profile_snet.id,
     data.azurerm_subnet.azdoa_snet[0].id,
     data.azurerm_subnet.apim_v2_snet.id,
-    data.azurerm_subnet.function_app_snet[0].id,
-    data.azurerm_subnet.function_app_snet[1].id,
+    data.azurerm_subnet.function_profile_snet[0].id,
+    data.azurerm_subnet.function_profile_snet[1].id,
   ]
 
   tags = var.tags
