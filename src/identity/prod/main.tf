@@ -26,6 +26,13 @@ provider "azurerm" {
   features {}
 }
 
+provider "azurerm" {
+  alias           = "uat-cgn"
+  subscription_id = "d1a90d9f-6ee1-4fb2-a149-7aedbf3ed49d"
+
+  features {}
+}
+
 module "federated_identities" {
   source = "github.com/pagopa/dx//infra/modules/azure_federated_identity_with_github?ref=main"
 
@@ -88,6 +95,20 @@ resource "azurerm_role_assignment" "ci_trial_system" {
 resource "azurerm_role_assignment" "cd_trial_system" {
   provider             = azurerm.prod-trial
   scope                = data.azurerm_subscription.trial_system.id
+  principal_id         = module.federated_identities.federated_ci_identity.id
+  role_definition_name = "Reader"
+}
+
+resource "azurerm_role_assignment" "ci_cgn_uat" {
+  provider             = azurerm.uat-cgn
+  scope                = data.azurerm_subscription.cgn_uat.id
+  principal_id         = module.federated_identities.federated_ci_identity.id
+  role_definition_name = "Reader"
+}
+
+resource "azurerm_role_assignment" "cd_cgn_uat" {
+  provider             = azurerm.uat-cgn
+  scope                = data.azurerm_subscription.cgn_uat.id
   principal_id         = module.federated_identities.federated_ci_identity.id
   role_definition_name = "Reader"
 }
