@@ -110,6 +110,13 @@ resource "azurerm_role_assignment" "ci_cgn" {
 resource "azurerm_role_assignment" "cd_cgn" {
   provider             = azurerm.prod-cgn
   scope                = data.azurerm_subscription.cgn.id
-  principal_id         = module.federated_identities.federated_ci_identity.id
+  principal_id         = module.federated_identities.federated_cd_identity.id
   role_definition_name = "Reader"
+}
+
+resource "azurerm_role_assignment" "cd_cgn_postgresql" {
+  provider             = azurerm.prod-cgn
+  scope                = data.azurerm_postgresql_server.cgn_psql.id
+  principal_id         = module.federated_identities.federated_cd_identity.id
+  role_definition_name = "Contributor"
 }
