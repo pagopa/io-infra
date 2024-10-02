@@ -6,7 +6,7 @@ data "azurerm_key_vault_secret" "first_lollipop_consumer_subscription_key" {
 locals {
   function_lollipop = {
     app_settings = {
-      FUNCTIONS_WORKER_PROCESS_COUNT = 4
+      FUNCTIONS_WORKER_PROCESS_COUNT = 8
       NODE_ENV                       = "production"
 
       // Keepalive fields are all optionals
@@ -89,6 +89,8 @@ module "function_lollipop_itn" {
   domain                       = "IO-COMMONS"
   health_check_path            = "/info"
   health_check_maxpingfailures = "2"
+
+  enable_function_app_public_network_access = false
 
   storage_account_info = {
     account_kind                      = "StorageV2"

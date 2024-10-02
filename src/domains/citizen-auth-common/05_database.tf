@@ -6,7 +6,7 @@ resource "azurerm_resource_group" "data_rg" {
 }
 
 module "cosmosdb_account" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3//cosmosdb_account?ref=v7.62.0"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3//cosmosdb_account?ref=v8.44.1"
 
   name                = "${local.product}-${var.domain}-account"
   domain              = upper(var.domain)
@@ -27,9 +27,9 @@ module "cosmosdb_account" {
   main_geo_location_location       = azurerm_resource_group.data_rg.location
   main_geo_location_zone_redundant = true
   additional_geo_locations = [{
-    location          = "northeurope"
+    location          = "italynorth"
     failover_priority = 1
-    zone_redundant    = false
+    zone_redundant    = true
   }]
   consistency_policy = {
     consistency_level       = "Session"
@@ -49,7 +49,7 @@ module "cosmosdb_account" {
 }
 
 module "cosmosdb_sql_database_citizen_auth" {
-  source              = "git::https://github.com/pagopa/terraform-azurerm-v3//cosmosdb_sql_database?ref=v7.62.0"
+  source              = "git::https://github.com/pagopa/terraform-azurerm-v3//cosmosdb_sql_database?ref=v8.44.1"
   name                = "citizen-auth"
   resource_group_name = azurerm_resource_group.data_rg.name
   account_name        = module.cosmosdb_account.name

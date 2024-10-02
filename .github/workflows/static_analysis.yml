@@ -26,9 +26,6 @@ jobs:
           # map value with path to domain root and path to config entry point
           declare -A newmap
 
-          newmap[src/core]="."
-          newmap[src/.template-app]="."
-          newmap[src/.template-common]="."
           newmap[src/aks-platform]="."
           newmap[src/domains/cgn]="./prod"
           newmap[src/domains/selfcare]="./prod/westeurope"
@@ -105,5 +102,5 @@ jobs:
 
       - name: run_pre_commit_terraform
         run: |
-          TAG="v1.83.0@sha256:94ec10f1587b22ffae28f46ebaefc317ae2ba8eb61f6be02af6a41f33a6a57cb"
+          TAG="v1.96.1@sha256:9aea677ac51d67eb96b3bbb4cf93b16afdde5476f984e75e87888850d18146c9"
           docker run -v $(pwd):/lint -w /lint ghcr.io/antonbabenko/pre-commit-terraform:$TAG run -a

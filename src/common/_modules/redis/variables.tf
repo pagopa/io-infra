@@ -18,9 +18,9 @@ variable "tags" {
   description = "Resource tags"
 }
 
-variable "resource_group_name" {
+variable "resource_group_common" {
   type        = string
-  description = "Resource group"
+  description = "Common resource group name"
 }
 
 variable "vnet_common" {
@@ -34,5 +34,6 @@ variable "vnet_common" {
 }
 
 variable "cidr_subnet_redis_common" {
-  type = string
+  type        = string
+  description = "CIDR block for Redis subnet"
 }
