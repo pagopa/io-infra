@@ -151,9 +151,6 @@ locals {
     FF_FAST_LOGIN = "ALL"
     LV_TEST_USERS = module.tests.test_users.all
 
-    # MITIGATION APP BUG EMAIL VALIDATION
-    IS_SPID_EMAIL_PERSISTENCE_ENABLED = "false"
-
     # IOLOGIN redirect
     FF_IOLOGIN         = "BETA"
     IOLOGIN_TEST_USERS = data.azurerm_key_vault_secret.session_manager_IOLOGIN_TEST_USERS.value
