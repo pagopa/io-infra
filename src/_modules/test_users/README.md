@@ -12,12 +12,13 @@ To use this module, include it in your Terraform configuration and access the `u
 
 ```hcl
 module "test_users" {
-  source = "github.com/pagopa/dx//infra/modules/test_users?ref=main"
+  source = "../../common/_modules"
 }
 
 output "test_users" {
   value = module.test_users.users
 }
+```
 
 <!-- BEGIN_TF_DOCS -->
 ## Requirements
