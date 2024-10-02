@@ -149,7 +149,9 @@ locals {
 
     # Fast Login config
     FF_FAST_LOGIN = "ALL"
-    LV_TEST_USERS = module.tests.test_users.all
+    # TODO: change this variable to a list of regex to reduce characters and fix
+    # E2BIG errors on linux spawn syscall when using PM2
+    LV_TEST_USERS = ""
 
     # IOLOGIN redirect
     FF_IOLOGIN         = "BETA"
@@ -158,7 +160,9 @@ locals {
     IOLOGIN_CANARY_USERS_REGEX = "^([(0-9)|(a-f)|(A-F)]{63}0)$"
 
     # Test Login config
-    TEST_LOGIN_FISCAL_CODES = module.tests.test_users.all
+    # TODO: change this variable to a list of regex to reduce characters and fix
+    # E2BIG errors on linux spawn syscall when using PM2
+    TEST_LOGIN_FISCAL_CODES = ""
     TEST_LOGIN_PASSWORD     = data.azurerm_key_vault_secret.session_manager_TEST_LOGIN_PASSWORD.value
 
 
@@ -286,7 +290,7 @@ module "session_manager_weu_staging" {
   # 1. index.js file is generated from the deploy pipeline
   # 2. the linux container for app services already has pm2 installed
   #    (refer to https://learn.microsoft.com/en-us/azure/app-service/configure-language-nodejs?pivots=platform-linux#run-with-pm2)
-  app_command_line  = "pm2 start index.js --no-daemon"
+  app_command_line  = "pm2 start index.js -i max --no-daemon"
   health_check_path = "/healthcheck"
 
   auto_heal_enabled = true
