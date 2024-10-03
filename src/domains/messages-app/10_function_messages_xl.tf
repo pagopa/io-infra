@@ -69,7 +69,9 @@ module "app_messages_function_xl" {
   app_settings = merge(
     local.function_app_messages.app_settings_common,
     {
-      FUNCTIONS_WORKER_PROCESS_COUNT = 8
+      FUNCTIONS_WORKER_PROCESS_COUNT    = 8,
+      WEBSITE_SWAP_WARMUP_PING_PATH     = "/api/v1/info",
+      WEBSITE_SWAP_WARMUP_PING_STATUSES = "200"
     }
   )
 
@@ -126,6 +128,10 @@ module "app_messages_function_staging_slot_xl" {
 
   app_settings = merge(
     local.function_app_messages.app_settings_common,
+    {
+      WEBSITE_SWAP_WARMUP_PING_PATH     = "/api/v1/info",
+      WEBSITE_SWAP_WARMUP_PING_STATUSES = "200"
+    }
   )
 
   subnet_id = module.app_messages_snet[count.index].id
