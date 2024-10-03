@@ -6,6 +6,11 @@
 
 <!--- Describe the major changes introduced by this PR -->
 
+### Dependencies
+
+<!--- If this PR depends on or is related to other PRs, 
+list them here using the GitHub syntax: `depends on #123` -->
+
 ### Testing
 
 <!--- Describe the testing steps you have performed -->
