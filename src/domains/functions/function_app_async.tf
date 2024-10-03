@@ -69,8 +69,9 @@ module "function_app_async" {
 
   app_settings = merge(
     local.function_app_async.app_settings_common, {
-      "AzureWebJobs.StoreSpidLogs.Disabled"   = "0",
-      "AzureWebJobs.OnProfileUpdate.Disabled" = "0",
+      "AzureWebJobs.StoreSpidLogs.Disabled"                      = "1",
+      "AzureWebJobs.OnProfileUpdate.Disabled"                    = "1",
+      "AzureWebJobs.MigrateServicePreferenceFromLegacy.Disabled" = "1",
     }
   )
 
@@ -122,8 +123,9 @@ module "function_app_async_staging_slot" {
 
   app_settings = merge(
     local.function_app_async.app_settings_common, {
-      "AzureWebJobs.StoreSpidLogs.Disabled"   = "1",
-      "AzureWebJobs.OnProfileUpdate.Disabled" = "1",
+      "AzureWebJobs.StoreSpidLogs.Disabled"                      = "1",
+      "AzureWebJobs.OnProfileUpdate.Disabled"                    = "1",
+      "AzureWebJobs.MigrateServicePreferenceFromLegacy.Disabled" = "1",
     }
   )
 
