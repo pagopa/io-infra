@@ -17,7 +17,7 @@ locals {
 
   core = data.terraform_remote_state.core.outputs
 
-  function_app_count = 2
+  function_profile_count = 2
 
   # TODO: edit this block when resource groups module is implemented
   resource_groups = {
@@ -50,7 +50,7 @@ locals {
       app_settings_override = {
         IS_APPBACKENDLI = "false"
         // FUNCTIONS
-        API_URL              = "https://${data.azurerm_linux_function_app.function_app[1].default_hostname}/api/v1"
+        API_URL              = "https://${data.azurerm_linux_function_app.function_profile[1].default_hostname}/api/v1"
         APP_MESSAGES_API_URL = "https://io-p-app-messages-fn-1.azurewebsites.net/api/v1"
       }
     },
@@ -59,7 +59,7 @@ locals {
       app_settings_override = {
         IS_APPBACKENDLI = "false"
         // FUNCTIONS
-        API_URL              = "https://${data.azurerm_linux_function_app.function_app[1].default_hostname}/api/v1"
+        API_URL              = "https://${data.azurerm_linux_function_app.function_profile[1].default_hostname}/api/v1"
         APP_MESSAGES_API_URL = "https://io-p-app-messages-fn-2.azurewebsites.net/api/v1"
       }
     }
@@ -70,7 +70,7 @@ locals {
     app_settings_override = {
       IS_APPBACKENDLI = "true"
       // FUNCTIONS
-      API_URL              = "https://${data.azurerm_linux_function_app.function_app[1].default_hostname}/api/v1" # not used
+      API_URL              = "https://${data.azurerm_linux_function_app.function_profile[1].default_hostname}/api/v1"
       APP_MESSAGES_API_URL = "https://io-p-app-messages-fn-1.azurewebsites.net/api/v1"
     }
   }
@@ -276,3 +276,4 @@ locals {
     }
   ]
 }
+

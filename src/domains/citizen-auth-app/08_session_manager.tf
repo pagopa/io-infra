@@ -133,7 +133,7 @@ locals {
 
     # Functions App config
     API_KEY = data.azurerm_key_vault_secret.functions_app_api_key.value
-    API_URL = "https://io-p-app-fn-1.azurewebsites.net"
+    API_URL = "https://io-p-itn-auth-profile-fn-01.azurewebsites.net"
 
     # Functions Fast Login config
     FAST_LOGIN_API_KEY = data.azurerm_key_vault_secret.functions_fast_login_api_key.value
@@ -236,9 +236,13 @@ module "session_manager_weu" {
   resource_group_name = azurerm_resource_group.session_manager_rg_weu.name
   location            = var.location
 
-  always_on                    = true
-  node_version                 = "20-lts"
-  app_command_line             = ""
+  always_on    = true
+  node_version = "20-lts"
+  # NOTE:
+  # 1. index.js file is generated from the deploy pipeline
+  # 2. the linux container for app services already has pm2 installed
+  #    (refer to https://learn.microsoft.com/en-us/azure/app-service/configure-language-nodejs?pivots=platform-linux#run-with-pm2)
+  app_command_line             = "pm2 start index.js -i max --no-daemon"
   health_check_path            = "/healthcheck"
   health_check_maxpingfailures = 2
 
@@ -287,9 +291,13 @@ module "session_manager_weu_04" {
   resource_group_name = azurerm_resource_group.session_manager_rg_weu.name
   location            = var.location
 
-  always_on                    = true
-  node_version                 = "20-lts"
-  app_command_line             = ""
+  always_on    = true
+  node_version = "20-lts"
+  # NOTE:
+  # 1. index.js file is generated from the deploy pipeline
+  # 2. the linux container for app services already has pm2 installed
+  #    (refer to https://learn.microsoft.com/en-us/azure/app-service/configure-language-nodejs?pivots=platform-linux#run-with-pm2)
+  app_command_line             = "pm2 start index.js -i max --no-daemon"
   health_check_path            = "/healthcheck"
   health_check_maxpingfailures = 2
 

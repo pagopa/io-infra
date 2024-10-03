@@ -12,7 +12,7 @@ module "redis_messages" {
   resource_group_name = azurerm_resource_group.app_messages_common_rg.name
   location            = azurerm_resource_group.app_messages_common_rg.location
 
-  capacity              = 0
+  capacity              = 2
   family                = "C"
   sku_name              = "Standard"
   redis_version         = "6"
