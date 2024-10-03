@@ -1,3 +1,8 @@
+data "azurerm_nat_gateway" "nat_gateway" {
+  name                = "${local.product}-natgw"
+  resource_group_name = local.vnet_common_resource_group_name
+}
+
 resource "azurerm_resource_group" "app_messages_rg_xl" {
   name     = format("%s-weu-com-rg-01", local.product)
   location = var.location
@@ -75,10 +80,10 @@ module "app_messages_function_xl" {
     }
   )
 
-  subnet_id = module.app_messages_snet[count.index].id
+  subnet_id = module.app_messages_snet_xl[count.index].id
 
   allowed_subnets = [
-    module.app_messages_snet[count.index].id,
+    module.app_messages_snet_xl[count.index].id,
     data.azurerm_subnet.app_backendl1_snet.id,
     data.azurerm_subnet.app_backendl2_snet.id,
     data.azurerm_subnet.apim_snet.id,
@@ -134,10 +139,10 @@ module "app_messages_function_staging_slot_xl" {
     }
   )
 
-  subnet_id = module.app_messages_snet[count.index].id
+  subnet_id = module.app_messages_snet_xl[count.index].id
 
   allowed_subnets = [
-    module.app_messages_snet[count.index].id,
+    module.app_messages_snet_xl[count.index].id,
     data.azurerm_subnet.app_backendl1_snet.id,
     data.azurerm_subnet.app_backendl2_snet.id,
     data.azurerm_subnet.azdoa_snet.id,
@@ -611,4 +616,10 @@ resource "azurerm_monitor_autoscale_setting" "app_messages_function_xl" {
   }
 
   tags = var.tags
+}
+
+resource "azurerm_subnet_nat_gateway_association" "net_gateway_association_subnet_citizen_func_xl" {
+  count          = var.app_messages_count
+  nat_gateway_id = data.azurerm_nat_gateway.nat_gateway.id
+  subnet_id      = module.app_messages_snet_xl[count.index].id
 }
