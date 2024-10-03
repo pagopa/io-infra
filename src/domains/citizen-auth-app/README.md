@@ -31,8 +31,11 @@
 | <a name="module_function_profile_staging_slot"></a> [function\_profile\_staging\_slot](#module\_function\_profile\_staging\_slot) | git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app_slot | v8.44.0 |
 | <a name="module_locked_profiles_storage"></a> [locked\_profiles\_storage](#module\_locked\_profiles\_storage) | github.com/pagopa/terraform-azurerm-v3//storage_account | v8.27.0 |
 | <a name="module_session_manager_snet"></a> [session\_manager\_snet](#module\_session\_manager\_snet) | github.com/pagopa/terraform-azurerm-v3//subnet | v8.22.0 |
+| <a name="module_session_manager_snet_04"></a> [session\_manager\_snet\_04](#module\_session\_manager\_snet\_04) | github.com/pagopa/terraform-azurerm-v3//subnet | v8.22.0 |
 | <a name="module_session_manager_weu"></a> [session\_manager\_weu](#module\_session\_manager\_weu) | github.com/pagopa/terraform-azurerm-v3//app_service | v8.28.1 |
+| <a name="module_session_manager_weu_04"></a> [session\_manager\_weu\_04](#module\_session\_manager\_weu\_04) | github.com/pagopa/terraform-azurerm-v3//app_service | v8.28.1 |
 | <a name="module_session_manager_weu_staging"></a> [session\_manager\_weu\_staging](#module\_session\_manager\_weu\_staging) | github.com/pagopa/terraform-azurerm-v3//app_service_slot | v8.28.1 |
+| <a name="module_session_manager_weu_staging_04"></a> [session\_manager\_weu\_staging\_04](#module\_session\_manager\_weu\_staging\_04) | github.com/pagopa/terraform-azurerm-v3//app_service_slot | v8.28.1 |
 | <a name="module_tests"></a> [tests](#module\_tests) | ../tests | n/a |
 
 ## Resources
@@ -54,11 +57,13 @@
 | [azurerm_private_endpoint.function_profile_itn_sites](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/private_endpoint) | resource |
 | [azurerm_private_endpoint.locked_profiles_storage_table](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/private_endpoint) | resource |
 | [azurerm_private_endpoint.session_manager_sites](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/private_endpoint) | resource |
+| [azurerm_private_endpoint.session_manager_sites_04](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/private_endpoint) | resource |
 | [azurerm_private_endpoint.staging_function_fast_login_itn_sites](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/private_endpoint) | resource |
 | [azurerm_private_endpoint.staging_function_lollipop_itn_sites](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/private_endpoint) | resource |
 | [azurerm_private_endpoint.staging_function_profile_async_itn_sites](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/private_endpoint) | resource |
 | [azurerm_private_endpoint.staging_function_profile_itn_sites](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/private_endpoint) | resource |
 | [azurerm_private_endpoint.staging_session_manager_sites](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/private_endpoint) | resource |
+| [azurerm_private_endpoint.staging_session_manager_sites_04](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/private_endpoint) | resource |
 | [azurerm_resource_group.fast_login_rg](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/resource_group) | resource |
 | [azurerm_resource_group.fast_login_rg_itn](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/resource_group) | resource |
 | [azurerm_resource_group.function_profile_async_rg](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/resource_group) | resource |
@@ -68,6 +73,7 @@
 | [azurerm_storage_table.locked_profiles](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/storage_table) | resource |
 | [azurerm_subnet.lollipop_snet_itn](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/subnet) | resource |
 | [azurerm_subnet_nat_gateway_association.session_manager_snet](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/subnet_nat_gateway_association) | resource |
+| [azurerm_subnet_nat_gateway_association.session_manager_snet_04](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/subnet_nat_gateway_association) | resource |
 | [azuread_group.adgroup_admin](https://registry.terraform.io/providers/hashicorp/azuread/latest/docs/data-sources/group) | data source |
 | [azuread_group.adgroup_developers](https://registry.terraform.io/providers/hashicorp/azuread/latest/docs/data-sources/group) | data source |
 | [azuread_group.adgroup_externals](https://registry.terraform.io/providers/hashicorp/azuread/latest/docs/data-sources/group) | data source |
@@ -173,6 +179,7 @@
 | <a name="input_cidr_subnet_profile_async_itn"></a> [cidr\_subnet\_profile\_async\_itn](#input\_cidr\_subnet\_profile\_async\_itn) | Function app address space. | `list(string)` | n/a | yes |
 | <a name="input_cidr_subnet_profile_itn"></a> [cidr\_subnet\_profile\_itn](#input\_cidr\_subnet\_profile\_itn) | Function app address space. | `list(string)` | n/a | yes |
 | <a name="input_cidr_subnet_session_manager"></a> [cidr\_subnet\_session\_manager](#input\_cidr\_subnet\_session\_manager) | Session manager app service address space. | `list(string)` | n/a | yes |
+| <a name="input_cidr_subnet_session_manager_04"></a> [cidr\_subnet\_session\_manager\_04](#input\_cidr\_subnet\_session\_manager\_04) | Session manager app service instance 4 address space. | `list(string)` | n/a | yes |
 | <a name="input_dns_zone_io"></a> [dns\_zone\_io](#input\_dns\_zone\_io) | The dns subdomain. | `string` | `null` | no |
 | <a name="input_domain"></a> [domain](#input\_domain) | n/a | `string` | n/a | yes |
 | <a name="input_enable_azdoa"></a> [enable\_azdoa](#input\_enable\_azdoa) | Specifies Azure Devops Agent enabling | `bool` | `true` | no |
