@@ -403,7 +403,7 @@ resource "azurerm_monitor_autoscale_setting" "app_messages_function_xl" {
 
     capacity {
       default = 10
-      minimum = 20
+      minimum = 3
       maximum = 30
     }
 
@@ -501,7 +501,7 @@ resource "azurerm_monitor_autoscale_setting" "app_messages_function_xl" {
 
     capacity {
       default = 10
-      minimum = 20
+      minimum = 3
       maximum = 30
     }
 
