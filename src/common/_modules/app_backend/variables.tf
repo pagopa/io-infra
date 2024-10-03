@@ -186,6 +186,8 @@ variable "app_settings_override" {
 
 variable "backend_hostnames" {
   type = object({
+    app                  = list(string)
+    app_messages         = list(string)
     assets_cdn           = string
     services_app_backend = string
     lollipop             = string
