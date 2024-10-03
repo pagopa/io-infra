@@ -196,8 +196,9 @@ push_notif_function_autoscale_default = 10
 ###############################
 # Messages functions
 ###############################
-app_messages_count      = 2
-cidr_subnet_appmessages = ["10.0.127.0/24", "10.0.128.0/24"]
+app_messages_count         = 2
+cidr_subnet_appmessages    = ["10.0.127.0/24", "10.0.128.0/24"]
+cidr_subnet_appmessages_xl = ["10.0.210.0/24", "10.0.211.0/24"]
 
 ###############################
 # Messages cqrs functions

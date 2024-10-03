@@ -316,6 +316,12 @@ variable "cidr_subnet_appmessages" {
   default     = []
 }
 
+variable "cidr_subnet_appmessages_xl" {
+  type        = list(string)
+  description = "App messages address space."
+  default     = []
+}
+
 variable "pn_service_id" {
   type        = string
   description = "The Service ID of PN service"
