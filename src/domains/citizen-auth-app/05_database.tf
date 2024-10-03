@@ -11,3 +11,9 @@ data "azurerm_cosmosdb_account" "cosmos_citizen_auth" {
   name                = format("%s-%s-account", local.product, var.domain)
   resource_group_name = data.azurerm_resource_group.data_rg.name
 }
+
+# COMMON
+data "azurerm_cosmosdb_account" "cosmos_api" {
+  name                = format("%s-cosmos-api", local.product)
+  resource_group_name = data.azurerm_resource_group.rg_internal.name
+}

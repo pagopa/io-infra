@@ -29,6 +29,11 @@ variable "kv_id" {
   description = "Id of the IO KeyVault"
 }
 
+variable "kv_common_id" {
+  type        = string
+  description = "Id of the IO Common KeyVault"
+}
+
 variable "test_urls" {
   type = list(object({
     name                              = string

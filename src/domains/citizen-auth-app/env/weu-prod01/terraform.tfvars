@@ -65,8 +65,24 @@ function_fastlogin_autoscale_minimum = 2
 function_fastlogin_autoscale_maximum = 20
 function_fastlogin_autoscale_default = 10
 
+# Functions app profile (located in Italy North)
+cidr_subnet_profile_itn   = ["10.20.6.64/26", "10.20.6.128/26"]
+function_profile_kind     = "Linux"
+function_profile_sku_tier = "PremiumV3"
+function_profile_sku_size = "P2mv3"
+
+# Functions app profile async (located in Italy North)
+cidr_subnet_profile_async_itn            = ["10.20.6.192/26"]
+function_profile_async_kind              = "Linux"
+function_profile_async_sku_tier          = "PremiumV3"
+function_profile_async_sku_size          = "P1v3"
+function_profile_async_autoscale_minimum = 3 # 3 instance to achieve redundancy and failover
+function_profile_async_autoscale_maximum = 30
+function_profile_async_autoscale_default = 10
+
 # Session manager
-cidr_subnet_session_manager = ["10.0.149.0/26"]
+cidr_subnet_session_manager    = ["10.0.149.0/26"]
+cidr_subnet_session_manager_04 = ["10.0.149.64/26"]
 session_manager_autoscale_settings = {
   autoscale_minimum = 3
   autoscale_default = 3

@@ -6,7 +6,7 @@ module "redis_common_backup_zrs" {
   account_tier                    = "Premium"
   access_tier                     = "Hot"
   account_replication_type        = "ZRS"
-  resource_group_name             = var.resource_group_name
+  resource_group_name             = var.resource_group_common
   location                        = var.location
   advanced_threat_protection      = true
   use_legacy_defender_version     = false

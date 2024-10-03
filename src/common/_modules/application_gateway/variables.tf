@@ -29,9 +29,19 @@ variable "tags" {
   description = "Resource tags"
 }
 
-variable "resource_groups" {
-  type        = map(string)
-  description = "Resource group names"
+variable "resource_group_external" {
+  type        = string
+  description = "External resource group names"
+}
+
+variable "resource_group_common" {
+  type        = string
+  description = "Common resource group names"
+}
+
+variable "resource_group_security" {
+  type        = string
+  description = "Sec resource group names"
 }
 
 variable "datasources" {
