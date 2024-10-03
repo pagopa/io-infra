@@ -412,17 +412,6 @@ module "redis_weu" {
   tags = local.tags
 }
 
-
-
-moved {
-  from = module.app_backend_weu["l1"]
-  to   = module.app_backend_weu["1"]
-}
-moved {
-  from = module.app_backend_weu["l2"]
-  to   = module.app_backend_weu["2"]
-}
-
 module "app_backend_weu" {
   for_each = local.app_backends
   source   = "../_modules/app_backend"
