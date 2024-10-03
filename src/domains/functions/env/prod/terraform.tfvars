@@ -24,7 +24,7 @@ cidr_subnet_services    = ["10.0.139.0/26", "10.0.139.64/26"]
 # Functions App
 function_app_kind     = "Linux"
 function_app_sku_tier = "PremiumV3"
-function_app_sku_size = "P2mv3"
+function_app_sku_size = "P1v3"
 
 # Functions Services
 function_services_kind              = "Linux"
