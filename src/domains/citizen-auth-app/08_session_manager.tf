@@ -376,9 +376,13 @@ module "session_manager_weu_staging_04" {
   resource_group_name = azurerm_resource_group.session_manager_rg_weu.name
   location            = var.location
 
-  always_on         = true
-  node_version      = "20-lts"
-  app_command_line  = ""
+  always_on    = true
+  node_version = "20-lts"
+  # NOTE:
+  # 1. index.js file is generated from the deploy pipeline
+  # 2. the linux container for app services already has pm2 installed
+  #    (refer to https://learn.microsoft.com/en-us/azure/app-service/configure-language-nodejs?pivots=platform-linux#run-with-pm2)
+  app_command_line  = "pm2 start index.js -i max --no-daemon"
   health_check_path = "/healthcheck"
 
   auto_heal_enabled = true
