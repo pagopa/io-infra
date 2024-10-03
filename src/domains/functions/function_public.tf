@@ -20,8 +20,6 @@ locals {
       FETCH_KEEPALIVE_TIMEOUT             = "60000"
 
       # UNIQUE EMAIL ENFORCEMENT
-      FF_UNIQUE_EMAIL_ENFORCEMENT             = "ALL"
-      UNIQUE_EMAIL_ENFORCEMENT_USERS          = jsonencode(split(",", data.azurerm_key_vault_secret.app_backend_UNIQUE_EMAIL_ENFORCEMENT_USER.value))
       PROFILE_EMAIL_STORAGE_CONNECTION_STRING = data.azurerm_storage_account.citizen_auth_common.primary_connection_string
       PROFILE_EMAIL_STORAGE_TABLE_NAME        = "profileEmails"
 
@@ -38,7 +36,7 @@ locals {
 
 #tfsec:ignore:azure-storage-queue-services-logging-enabled:exp:2022-05-01 # already ignored, maybe a bug in tfsec
 module "function_public" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app?ref=v7.61.0"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app?ref=v7.67.1"
 
   resource_group_name = azurerm_resource_group.shared_rg.name
   name                = format("%s-public-fn", local.project)
@@ -87,7 +85,7 @@ module "function_public" {
 }
 
 module "function_public_staging_slot" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app_slot?ref=v7.61.0"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app_slot?ref=v7.67.1"
 
   name                = "staging"
   location            = var.location

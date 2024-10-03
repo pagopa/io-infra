@@ -193,6 +193,10 @@ module "function_elt" {
     {
       action_group_id    = data.azurerm_monitor_action_group.error_action_group.id
       webhook_properties = {}
+    },
+    {
+      action_group_id    = data.azurerm_monitor_action_group.io_com_action_group.id
+      webhook_properties = {}
     }
   ]
 

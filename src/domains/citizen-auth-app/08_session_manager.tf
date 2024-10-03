@@ -87,7 +87,7 @@ resource "azurerm_resource_group" "session_manager_rg_weu" {
 
 locals {
 
-  app_name_weu = format("%s-session-manager-app-03", local.common_project)
+  app_name_weu = format("%s-session-manager-app", local.common_project)
 
   app_settings_common = {
     WEBSITES_ENABLE_APP_SERVICE_STORAGE = false
@@ -149,10 +149,9 @@ locals {
 
     # Fast Login config
     FF_FAST_LOGIN = "ALL"
-    LV_TEST_USERS = module.tests.test_users.all
-
-    # MITIGATION APP BUG EMAIL VALIDATION
-    IS_SPID_EMAIL_PERSISTENCE_ENABLED = "false"
+    # TODO: change this variable to a list of regex to reduce characters and fix
+    # E2BIG errors on linux spawn syscall when using PM2
+    LV_TEST_USERS = module.tests.test_users.light
 
     # IOLOGIN redirect
     FF_IOLOGIN         = "BETA"
@@ -161,7 +160,9 @@ locals {
     IOLOGIN_CANARY_USERS_REGEX = "^([(0-9)|(a-f)|(A-F)]{63}0)$"
 
     # Test Login config
-    TEST_LOGIN_FISCAL_CODES = module.tests.test_users.all
+    # TODO: change this variable to a list of regex to reduce characters and fix
+    # E2BIG errors on linux spawn syscall when using PM2
+    TEST_LOGIN_FISCAL_CODES = module.tests.test_users.light
     TEST_LOGIN_PASSWORD     = data.azurerm_key_vault_secret.session_manager_TEST_LOGIN_PASSWORD.value
 
 
@@ -231,13 +232,17 @@ module "session_manager_weu" {
   sku_name               = var.session_manager_plan_sku_name
 
   # App service
-  name                = local.app_name_weu
+  name                = "${local.app_name_weu}-03"
   resource_group_name = azurerm_resource_group.session_manager_rg_weu.name
   location            = var.location
 
-  always_on                    = true
-  node_version                 = "20-lts"
-  app_command_line             = ""
+  always_on    = true
+  node_version = "20-lts"
+  # NOTE:
+  # 1. index.js file is generated from the deploy pipeline
+  # 2. the linux container for app services already has pm2 installed
+  #    (refer to https://learn.microsoft.com/en-us/azure/app-service/configure-language-nodejs?pivots=platform-linux#run-with-pm2)
+  app_command_line             = "pm2 start index.js -i max --no-daemon"
   health_check_path            = "/healthcheck"
   health_check_maxpingfailures = 2
 
@@ -252,7 +257,7 @@ module "session_manager_weu" {
   app_settings = merge(
     local.app_settings_common,
     {
-      APPINSIGHTS_CLOUD_ROLE_NAME = local.app_name_weu
+      APPINSIGHTS_CLOUD_ROLE_NAME = "${local.app_name_weu}-03"
     }
   )
   sticky_settings = concat(["APPINSIGHTS_CLOUD_ROLE_NAME"])
@@ -272,6 +277,52 @@ module "session_manager_weu" {
   tags = var.tags
 }
 
+module "session_manager_weu_04" {
+  source = "github.com/pagopa/terraform-azurerm-v3//app_service?ref=v8.28.1"
+
+  # App service plan
+  plan_type              = "internal"
+  plan_name              = format("%s-session-manager-asp-04", local.common_project)
+  zone_balancing_enabled = true
+  sku_name               = var.session_manager_plan_sku_name
+
+  # App service
+  name                = "${local.app_name_weu}-04"
+  resource_group_name = azurerm_resource_group.session_manager_rg_weu.name
+  location            = var.location
+
+  always_on    = true
+  node_version = "20-lts"
+  # NOTE:
+  # 1. index.js file is generated from the deploy pipeline
+  # 2. the linux container for app services already has pm2 installed
+  #    (refer to https://learn.microsoft.com/en-us/azure/app-service/configure-language-nodejs?pivots=platform-linux#run-with-pm2)
+  app_command_line             = "pm2 start index.js -i max --no-daemon"
+  health_check_path            = "/healthcheck"
+  health_check_maxpingfailures = 2
+
+  auto_heal_enabled = true
+  auto_heal_settings = {
+    startup_time           = "00:05:00"
+    slow_requests_count    = 50
+    slow_requests_interval = "00:01:00"
+    slow_requests_time     = "00:00:10"
+  }
+
+  app_settings = merge(
+    local.app_settings_common,
+    {
+      APPINSIGHTS_CLOUD_ROLE_NAME = "${local.app_name_weu}-04"
+    }
+  )
+  sticky_settings = concat(["APPINSIGHTS_CLOUD_ROLE_NAME"])
+
+  subnet_id        = module.session_manager_snet_04.id
+  vnet_integration = true
+
+  tags = var.tags
+}
+
 ## staging slot
 module "session_manager_weu_staging" {
   source = "github.com/pagopa/terraform-azurerm-v3//app_service_slot?ref=v8.28.1"
@@ -283,9 +334,13 @@ module "session_manager_weu_staging" {
   resource_group_name = azurerm_resource_group.session_manager_rg_weu.name
   location            = var.location
 
-  always_on         = true
-  node_version      = "20-lts"
-  app_command_line  = ""
+  always_on    = true
+  node_version = "20-lts"
+  # NOTE:
+  # 1. index.js file is generated from the deploy pipeline
+  # 2. the linux container for app services already has pm2 installed
+  #    (refer to https://learn.microsoft.com/en-us/azure/app-service/configure-language-nodejs?pivots=platform-linux#run-with-pm2)
+  app_command_line  = "pm2 start index.js -i max --no-daemon"
   health_check_path = "/healthcheck"
 
   auto_heal_enabled = true
@@ -314,6 +369,46 @@ module "session_manager_weu_staging" {
   allowed_ips = []
 
   subnet_id        = module.session_manager_snet.id
+  vnet_integration = true
+
+  tags = var.tags
+}
+
+module "session_manager_weu_staging_04" {
+  source = "github.com/pagopa/terraform-azurerm-v3//app_service_slot?ref=v8.28.1"
+
+  app_service_id   = module.session_manager_weu_04.id
+  app_service_name = module.session_manager_weu_04.name
+
+  name                = "staging"
+  resource_group_name = azurerm_resource_group.session_manager_rg_weu.name
+  location            = var.location
+
+  always_on    = true
+  node_version = "20-lts"
+  # NOTE:
+  # 1. index.js file is generated from the deploy pipeline
+  # 2. the linux container for app services already has pm2 installed
+  #    (refer to https://learn.microsoft.com/en-us/azure/app-service/configure-language-nodejs?pivots=platform-linux#run-with-pm2)
+  app_command_line  = "pm2 start index.js -i max --no-daemon"
+  health_check_path = "/healthcheck"
+
+  auto_heal_enabled = true
+  auto_heal_settings = {
+    startup_time           = "00:05:00"
+    slow_requests_count    = 50
+    slow_requests_interval = "00:01:00"
+    slow_requests_time     = "00:00:10"
+  }
+
+  app_settings = merge(
+    local.app_settings_common,
+    {
+      APPINSIGHTS_CLOUD_ROLE_NAME = "${module.session_manager_weu.name}-staging"
+    }
+  )
+
+  subnet_id        = module.session_manager_snet_04.id
   vnet_integration = true
 
   tags = var.tags

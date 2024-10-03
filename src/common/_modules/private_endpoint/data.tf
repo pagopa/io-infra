@@ -1,10 +1,4 @@
-data "azurerm_subscription" "trial_system" {
-  provider = azurerm.prod-trial
-}
-
-data "azurerm_subscription" "cgn" {
-  provider = azurerm.prod-cgn
-}
+# CGN PostgreSQL Single Server
 
 data "azurerm_postgresql_server" "cgn_psql" {
   provider            = azurerm.prod-cgn
