@@ -342,7 +342,7 @@ resource "azurerm_cosmosdb_sql_container" "message_configuration" {
   partition_key_version = 2
 
   autoscale_settings {
-    max_throughput = 2000
+    max_throughput = 10000
   }
 
   indexing_policy {

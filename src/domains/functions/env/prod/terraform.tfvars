@@ -30,7 +30,7 @@ function_app_sku_size = "P1v3"
 function_services_kind              = "Linux"
 function_services_sku_tier          = "PremiumV3"
 function_services_sku_size          = "P1v3"
-function_services_autoscale_minimum = 1
+function_services_autoscale_minimum = 6
 function_services_autoscale_maximum = 30
 function_services_autoscale_default = 10
 

@@ -138,7 +138,9 @@ locals {
 
     #List of the functions'name to be disabled in both prod and slot
     functions_disabled = [
-      "OnProfileUpdate"
+      "OnProfileUpdate",
+      "MigrateServicePreferenceFromLegacy",
+      "StoreSpidLogs"
     ]
   }
 }
