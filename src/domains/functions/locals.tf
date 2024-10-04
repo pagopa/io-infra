@@ -17,8 +17,7 @@ locals {
   apim_hostname_api_internal = "api-internal.io.italia.it"
 
   # MESSAGES
-  message_content_container_name                         = "message-content"
-  storage_account_notifications_queue_push_notifications = "push-notifications"
+  message_content_container_name = "message-content"
 
   service_api_url = "https://api-app.internal.io.pagopa.it/"
 }
