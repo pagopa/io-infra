@@ -27,6 +27,12 @@ data "azurerm_subnet" "snet_backendl2" {
   resource_group_name  = local.resource_group_name_common
 }
 
+data "azurerm_subnet" "snet_backendl3" {
+  name                 = "appbackendl3"
+  virtual_network_name = local.vnet_name_common
+  resource_group_name  = local.resource_group_name_common
+}
+
 data "azurerm_subnet" "snet_backendli" {
   name                 = "appbackendli"
   virtual_network_name = local.vnet_name_common
@@ -80,5 +86,16 @@ data "azurerm_key_vault_secret" "fn_cgn_CGN_DATA_BACKUP_CONNECTION" {
 
 data "azurerm_monitor_action_group" "error_action_group" {
   name                = "${replace("${var.project}", "-", "")}error"
+  resource_group_name = local.resource_group_name_common
+}
+
+data "azurerm_subnet" "private_endpoints_subnet" {
+  name                 = "pendpoints"
+  virtual_network_name = local.vnet_name_common
+  resource_group_name  = local.resource_group_name_common
+}
+
+data "azurerm_private_dns_zone" "function_app" {
+  name                = "privatelink.azurewebsites.net"
   resource_group_name = local.resource_group_name_common
 }
