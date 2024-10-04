@@ -88,7 +88,7 @@ data "azurerm_linux_function_app" "io_sign_user" {
 
 data "azurerm_linux_function_app" "wallet_user" {
   resource_group_name = "${local.project_itn}-wallet-rg-01"
-  name                = "${local.project_itn}-wallet-user-func-01"
+  name                = "${local.project_itn}-wallet-user-func-02"
 }
 
 data "azurerm_api_management" "trial_system" {
