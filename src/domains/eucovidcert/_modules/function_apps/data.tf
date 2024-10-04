@@ -27,6 +27,12 @@ data "azurerm_subnet" "snet_backendl2" {
   resource_group_name  = local.resource_group_name_common
 }
 
+data "azurerm_subnet" "snet_backendl2" {
+  name                 = "appbackendl3"
+  virtual_network_name = local.vnet_name_common
+  resource_group_name  = local.resource_group_name_common
+}
+
 data "azurerm_subnet" "snet_pblevtdispatcher" {
   name                 = "fnpblevtdispatcherout"
   virtual_network_name = local.vnet_name_common
@@ -111,5 +117,16 @@ data "azurerm_key_vault_secret" "fn_eucovidcert_FNSERVICES_API_KEY" {
 
 data "azurerm_monitor_action_group" "error_action_group" {
   name                = "${replace("${var.project}", "-", "")}error"
+  resource_group_name = local.resource_group_name_common
+}
+
+data "azurerm_subnet" "private_endpoints_subnet" {
+  name                 = "pendpoints"
+  virtual_network_name = local.vnet_name_common
+  resource_group_name  = local.resource_group_name_common
+}
+
+data "azurerm_private_dns_zone" "function_app" {
+  name                = "privatelink.azurewebsites.net"
   resource_group_name = local.resource_group_name_common
 }

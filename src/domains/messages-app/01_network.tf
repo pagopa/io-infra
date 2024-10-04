@@ -64,6 +64,12 @@ data "azurerm_subnet" "app_backendl2_snet" {
   resource_group_name  = local.vnet_common_resource_group_name
 }
 
+data "azurerm_subnet" "app_backendl3_snet" {
+  name                 = "appbackendl3"
+  virtual_network_name = local.vnet_common_name
+  resource_group_name  = local.vnet_common_resource_group_name
+}
+
 data "azurerm_subnet" "apim_snet" {
   name                 = "apimv2api"
   virtual_network_name = local.vnet_common_name
@@ -85,4 +91,16 @@ data "azurerm_subnet" "github_snet" {
 data "azurerm_private_dns_zone" "privatelink_servicebus_windows_net" {
   name                = "privatelink.servicebus.windows.net"
   resource_group_name = format("%s-evt-rg", local.product)
+}
+
+
+data "azurerm_subnet" "private_endpoints_subnet" {
+  name                 = "pendpoints"
+  virtual_network_name = local.vnet_common_name
+  resource_group_name  = local.vnet_common_resource_group_name
+}
+
+data "azurerm_private_dns_zone" "function_app" {
+  name                = "privatelink.azurewebsites.net"
+  resource_group_name = local.vnet_common_resource_group_name
 }

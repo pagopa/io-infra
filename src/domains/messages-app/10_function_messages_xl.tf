@@ -86,6 +86,7 @@ module "app_messages_function_xl" {
     module.app_messages_snet_xl[count.index].id,
     data.azurerm_subnet.app_backendl1_snet.id,
     data.azurerm_subnet.app_backendl2_snet.id,
+    data.azurerm_subnet.app_backendl3_snet.id,
     data.azurerm_subnet.apim_snet.id,
   ]
 
@@ -145,6 +146,7 @@ module "app_messages_function_staging_slot_xl" {
     module.app_messages_snet_xl[count.index].id,
     data.azurerm_subnet.app_backendl1_snet.id,
     data.azurerm_subnet.app_backendl2_snet.id,
+    data.azurerm_subnet.app_backendl3_snet.id,
     data.azurerm_subnet.azdoa_snet.id,
     data.azurerm_subnet.github_snet.id,
   ]
@@ -622,4 +624,92 @@ resource "azurerm_subnet_nat_gateway_association" "net_gateway_association_subne
   count          = var.app_messages_count
   nat_gateway_id = data.azurerm_nat_gateway.nat_gateway.id
   subnet_id      = module.app_messages_snet_xl[count.index].id
+}
+
+resource "azurerm_private_endpoint" "function_sites_xl" {
+  count               = var.app_messages_count
+  name                = format("%s-weu-com-citizen-func-pep-0%d", local.product, count.index + 1)
+  location            = azurerm_resource_group.app_messages_rg_xl.location
+  resource_group_name = azurerm_resource_group.app_messages_rg_xl.name
+  subnet_id           = data.azurerm_subnet.private_endpoints_subnet.id
+
+  private_service_connection {
+    name                           = format("%s-weu-com-citizen-func-pep-0%d", local.product, count.index + 1)
+    private_connection_resource_id = module.app_messages_function_xl.id
+    is_manual_connection           = false
+    subresource_names              = ["sites"]
+  }
+
+  private_dns_zone_group {
+    name                 = "private-dns-zone-group"
+    private_dns_zone_ids = [data.azurerm_private_dns_zone.function_app.id]
+  }
+
+  tags = var.tags
+}
+
+resource "azurerm_private_endpoint" "staging_function_sites_xl" {
+  count  = var.app_messages_count
+  name                = format("%s-weu-com-citizen-func-staging-pep-0%d", local.product, count.index + 1)
+  location            = azurerm_resource_group.app_messages_rg_xl.location
+  resource_group_name = azurerm_resource_group.app_messages_rg_xl.name
+  subnet_id           = data.azurerm_subnet.private_endpoints_subnet.id
+
+  private_service_connection {
+    name                           = format("%s-weu-com-citizen-func-staging-pep-0%d", local.product, count.index + 1)
+    private_connection_resource_id = module.app_messages_function_xl.id
+    is_manual_connection           = false
+    subresource_names              = ["sites-${module.app_messages_function_staging_slot_xl.name}"]
+  }
+
+  private_dns_zone_group {
+    name                 = "private-dns-zone-group"
+    private_dns_zone_ids = [data.azurerm_private_dns_zone.function_app.id]
+  }
+
+  tags = var.tags
+}
+
+resource "azurerm_private_endpoint" "function_sites_xl" {
+  count               = var.app_messages_count
+  name                = format("%s-weu-com-citizen-func-pep-0%d", local.product, count.index + 1)
+  location            = azurerm_resource_group.app_messages_rg_xl.location
+  resource_group_name = azurerm_resource_group.app_messages_rg_xl.name
+  subnet_id           = data.azurerm_subnet.private_endpoints_subnet.id
+
+  private_service_connection {
+    name                           = format("%s-weu-com-citizen-func-pep-0%d", local.product, count.index + 1)
+    private_connection_resource_id = module.app_messages_function_xl.id
+    is_manual_connection           = false
+    subresource_names              = ["sites"]
+  }
+
+  private_dns_zone_group {
+    name                 = "private-dns-zone-group"
+    private_dns_zone_ids = [data.azurerm_private_dns_zone.function_app.id]
+  }
+
+  tags = var.tags
+}
+
+resource "azurerm_private_endpoint" "staging_function_sites_xl" {
+  count  = var.app_messages_count
+  name                = format("%s-weu-com-citizen-func-staging-pep-0%d", local.product, count.index + 1)
+  location            = azurerm_resource_group.app_messages_rg_xl.location
+  resource_group_name = azurerm_resource_group.app_messages_rg_xl.name
+  subnet_id           = data.azurerm_subnet.private_endpoints_subnet.id
+
+  private_service_connection {
+    name                           = format("%s-weu-com-citizen-func-staging-pep-0%d", local.product, count.index + 1)
+    private_connection_resource_id = module.app_messages_function_xl.id
+    is_manual_connection           = false
+    subresource_names              = ["sites-${module.app_messages_function_staging_slot_xl.name}"]
+  }
+
+  private_dns_zone_group {
+    name                 = "private-dns-zone-group"
+    private_dns_zone_ids = [data.azurerm_private_dns_zone.function_app.id]
+  }
+
+  tags = var.tags
 }
