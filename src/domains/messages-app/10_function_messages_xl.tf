@@ -693,7 +693,7 @@ resource "azurerm_private_endpoint" "function_sites_xl" {
 }
 
 resource "azurerm_private_endpoint" "staging_function_sites_xl" {
-  count  = var.app_messages_count
+  count               = var.app_messages_count
   name                = format("%s-weu-com-citizen-func-staging-pep-0%d", local.product, count.index + 1)
   location            = azurerm_resource_group.app_messages_rg_xl.location
   resource_group_name = azurerm_resource_group.app_messages_rg_xl.name

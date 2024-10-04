@@ -717,7 +717,7 @@ resource "azurerm_private_endpoint" "function_sites" {
 }
 
 resource "azurerm_private_endpoint" "staging_function_sites" {
-  count  = var.app_messages_count
+  count               = var.app_messages_count
   name                = format("%s-app-messages-fn-staging-pep-%d", local.product, count.index + 1)
   location            = azurerm_resource_group.app_messages_rg[count.index].location
   resource_group_name = azurerm_resource_group.app_messages_rg[count.index].name

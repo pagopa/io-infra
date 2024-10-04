@@ -68,14 +68,14 @@ locals {
 
   backend_hostnames = {
     app                  = [for key, value in data.azurerm_linux_function_app.function_profile : value.default_hostname]
-    app_messages         = [for key, value in data.azurerm_linux_function_app.app_messages : value.default_hostname] # NOPE
+    app_messages         = [for key, value in data.azurerm_linux_function_app.app_messages : value.default_hostname]
     assets_cdn           = data.azurerm_linux_function_app.function_assets_cdn.default_hostname
     services_app_backend = data.azurerm_linux_function_app.services_app_backend_function_app.default_hostname
     lollipop             = data.azurerm_linux_function_app.lollipop_function.default_hostname
-    eucovidcert          = data.azurerm_linux_function_app.eucovidcert.default_hostname # NOPE ok
-    cgn                  = data.azurerm_linux_function_app.function_cgn.default_hostname # NOPE ok
+    eucovidcert          = data.azurerm_linux_function_app.eucovidcert.default_hostname
+    cgn                  = data.azurerm_linux_function_app.function_cgn.default_hostname
     iosign               = data.azurerm_linux_function_app.io_sign_user.default_hostname
-    cgnonboarding        = "cgnonboardingportal-p-op.azurewebsites.net" # NOPE
+    cgnonboarding        = "cgnonboardingportal-p-op.azurewebsites.net"
     trial_system_api     = "ts-p-itn-api-func-01.azurewebsites.net"
     trial_system_apim    = data.azurerm_api_management.trial_system.gateway_url
     iowallet             = data.azurerm_linux_function_app.wallet_user.default_hostname
