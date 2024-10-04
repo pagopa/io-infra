@@ -274,7 +274,7 @@ resource "azurerm_monitor_autoscale_setting" "function_profile" {
 
         capacity = {
           default = 10
-          minimum = 3
+          minimum = 5
           maximum = 30
         }
       },
@@ -288,7 +288,7 @@ resource "azurerm_monitor_autoscale_setting" "function_profile" {
 
         capacity = {
           default = 10
-          minimum = 3
+          minimum = 5
           maximum = 30
         }
       },
@@ -302,7 +302,7 @@ resource "azurerm_monitor_autoscale_setting" "function_profile" {
 
         capacity = {
           default = 10
-          minimum = 4
+          minimum = 5
           maximum = 30
         }
       },
@@ -316,7 +316,7 @@ resource "azurerm_monitor_autoscale_setting" "function_profile" {
 
         capacity = {
           default = 10
-          minimum = 3
+          minimum = 5
           maximum = 30
         }
       }
