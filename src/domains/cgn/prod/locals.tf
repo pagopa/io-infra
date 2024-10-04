@@ -4,7 +4,7 @@ locals {
   project   = "${local.prefix}-${local.env_short}"
 
   location           = "westeurope"
-  secondary_location = "northeurope"
+  secondary_location = "italynorth"
 
   tags = {
     CostCenter     = "TS310 - PAGAMENTI & SERVIZI"

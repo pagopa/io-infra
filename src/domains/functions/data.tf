@@ -187,3 +187,9 @@ data "azurerm_subnet" "app_backendl2_snet" {
   resource_group_name  = local.rg_common_name
   virtual_network_name = local.vnet_common_name
 }
+
+data "azurerm_subnet" "app_backendl3_snet" {
+  name                 = "appbackendl3"
+  resource_group_name  = local.rg_common_name
+  virtual_network_name = local.vnet_common_name
+}

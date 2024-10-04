@@ -27,8 +27,8 @@ data "azurerm_subnet" "snet_backendl2" {
   resource_group_name  = local.resource_group_name_common
 }
 
-data "azurerm_subnet" "snet_pblevtdispatcher" {
-  name                 = "fnpblevtdispatcherout"
+data "azurerm_subnet" "snet_backendl3" {
+  name                 = "appbackendl3"
   virtual_network_name = local.vnet_name_common
   resource_group_name  = local.resource_group_name_common
 }
