@@ -303,7 +303,8 @@ module "application_gateway_weu" {
 
   backend_hostnames = {
     firmaconio_selfcare_web_app = [data.azurerm_linux_web_app.firmaconio_selfcare_web_app.default_hostname]
-    app_backends                = [for appbe in module.app_backend_weu : appbe.default_hostname]
+    # app_backends                = [for appbe in module.app_backend_weu : appbe.default_hostname]
+    app_backends = [module.app_backend_weu["1"].default_hostname, module.app_backend_weu["2"].default_hostname]
   }
   certificates = {
     api                                  = "api-io-pagopa-it"
@@ -412,7 +413,7 @@ module "redis_weu" {
 }
 
 module "app_backend_weu" {
-  for_each = { for index, settings in local.app_backends : index => settings }
+  for_each = local.app_backends
   source   = "../_modules/app_backend"
 
   location                = "westeurope"
@@ -427,11 +428,11 @@ module "app_backend_weu" {
     azurerm_client_config = data.azurerm_client_config.current
   }
 
-  name  = each.key
-  index = index(values(local.app_backends), each.value) + 1
+  name  = "l${each.key}"
+  index = each.key
 
   vnet_common                = local.core.networking.weu.vnet_common
-  cidr_subnet                = local.app_backends[each.key].cidr_subnet
+  cidr_subnet                = each.value.cidr_subnet
   nat_gateways               = local.core.networking.weu.nat_gateways
   allowed_subnets            = concat(data.azurerm_subnet.services_snet.*.id, [module.application_gateway_weu.snet.id, module.apim_weu.snet.id])
   slot_allowed_subnets       = concat([local.azdoa_snet_id["weu"]], data.azurerm_subnet.services_snet.*.id, [module.application_gateway_weu.snet.id, module.apim_weu.snet.id])
@@ -439,8 +440,7 @@ module "app_backend_weu" {
   slot_allowed_ips           = module.monitoring_weu.appi.reserved_ips
   apim_snet_address_prefixes = module.apim_weu.snet.address_prefixes
 
-  app_settings_override = each.value.app_settings_override
-  backend_hostnames     = local.backend_hostnames
+  backend_hostnames = local.backend_hostnames
 
   key_vault        = local.core.key_vault.weu.kv
   key_vault_common = local.core.key_vault.weu.kv_common
@@ -497,8 +497,7 @@ module "app_backend_li_weu" {
   slot_allowed_ips           = []
   apim_snet_address_prefixes = module.apim_weu.snet.address_prefixes
 
-  app_settings_override = local.app_backendli.app_settings_override
-  backend_hostnames     = local.backend_hostnames
+  backend_hostnames = local.backend_hostnames
 
   autoscale = {
     default = 10

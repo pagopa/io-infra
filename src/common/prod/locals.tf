@@ -17,7 +17,8 @@ locals {
 
   core = data.terraform_remote_state.core.outputs
 
-  function_app_count = 2
+  function_profile_count = 2
+  app_messages_count     = 2
 
   # TODO: edit this block when resource groups module is implemented
   resource_groups = {
@@ -45,34 +46,19 @@ locals {
   }
 
   app_backends = {
-    l1 = {
+    1 = {
       cidr_subnet = ["10.0.152.0/24"]
-      app_settings_override = {
-        IS_APPBACKENDLI = "false"
-        // FUNCTIONS
-        API_URL              = "https://${data.azurerm_linux_function_app.function_app[1].default_hostname}/api/v1"
-        APP_MESSAGES_API_URL = "https://io-p-app-messages-fn-1.azurewebsites.net/api/v1"
-      }
     },
-    l2 = {
+    2 = {
       cidr_subnet = ["10.0.153.0/24"]
-      app_settings_override = {
-        IS_APPBACKENDLI = "false"
-        // FUNCTIONS
-        API_URL              = "https://${data.azurerm_linux_function_app.function_app[1].default_hostname}/api/v1"
-        APP_MESSAGES_API_URL = "https://io-p-app-messages-fn-2.azurewebsites.net/api/v1"
-      }
+    },
+    3 = {
+      cidr_subnet = ["10.0.156.0/24"]
     }
   }
 
   app_backendli = {
     cidr_subnet = ["10.0.154.0/24"]
-    app_settings_override = {
-      IS_APPBACKENDLI = "true"
-      // FUNCTIONS
-      API_URL              = "https://${data.azurerm_linux_function_app.function_app[1].default_hostname}/api/v1" # not used
-      APP_MESSAGES_API_URL = "https://io-p-app-messages-fn-1.azurewebsites.net/api/v1"
-    }
   }
 
   azdoa_snet_id = {
@@ -81,6 +67,8 @@ locals {
   }
 
   backend_hostnames = {
+    app                  = [for key, value in data.azurerm_linux_function_app.function_profile : value.default_hostname]
+    app_messages         = [for key, value in data.azurerm_linux_function_app.app_messages : value.default_hostname]
     assets_cdn           = data.azurerm_linux_function_app.function_assets_cdn.default_hostname
     services_app_backend = data.azurerm_linux_function_app.services_app_backend_function_app.default_hostname
     lollipop             = data.azurerm_linux_function_app.lollipop_function.default_hostname
@@ -276,3 +264,4 @@ locals {
     }
   ]
 }
+
