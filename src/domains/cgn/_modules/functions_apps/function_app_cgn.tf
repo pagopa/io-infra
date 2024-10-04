@@ -40,9 +40,9 @@ module "function_cgn" {
     var.subnet_id,
     data.azurerm_subnet.snet_backendl1.id,
     data.azurerm_subnet.snet_backendl2.id,
-    data.azurerm_subnet.snet_backendl3.id,
     data.azurerm_subnet.snet_backendli.id,
     data.azurerm_subnet.snet_apim_v2.id,
+    data.azurerm_subnet.snet_backendl3.id
   ]
 
   sticky_app_setting_names = [
@@ -90,9 +90,9 @@ module "function_cgn_staging_slot" {
     data.azurerm_subnet.snet_azdoa.id,
     data.azurerm_subnet.snet_backendl1.id,
     data.azurerm_subnet.snet_backendl2.id,
-    data.azurerm_subnet.snet_backendl3.id,
     data.azurerm_subnet.snet_backendli.id,
     data.azurerm_subnet.snet_apim_v2.id,
+    data.azurerm_subnet.snet_backendl3.id,
   ]
 
   tags = var.tags
