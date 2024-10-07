@@ -30,6 +30,6 @@ resource "azurerm_private_endpoint" "cosno_payments_itn" {
     name                           = "${local.project_itn}-msgs-payments-cosno-pep-01"
     private_connection_resource_id = module.cosmosdb_account_mongodb.id
     is_manual_connection           = false
-    subresource_names              = ["Sql"]
+    subresource_names              = ["MongoDB"]
   }
 }

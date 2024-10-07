@@ -57,7 +57,7 @@ resource "azurerm_private_endpoint" "cosno_reminder_itn" {
     name                           = "${local.project_itn}-msgs-reminder-cosno-pep-01"
     private_connection_resource_id = module.cosmosdb_account_mongodb_reminder.id
     is_manual_connection           = false
-    subresource_names              = ["Sql"]
+    subresource_names              = ["MongoDB"]
   }
 }
 
@@ -69,7 +69,7 @@ resource "azurerm_private_endpoint" "cosno_remote_content_itn" {
 
   private_service_connection {
     name                           = "${local.project_itn}-msgs-remote-content-cosno-pep-01"
-    private_connection_resource_id = module.cosmosdb_account_mongodb_reminder.id
+    private_connection_resource_id = module.cosmosdb_account_remote_content.id
     is_manual_connection           = false
     subresource_names              = ["Sql"]
   }
