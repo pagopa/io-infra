@@ -138,7 +138,9 @@ locals {
 
     #List of the functions'name to be disabled in both prod and slot
     functions_disabled = [
-      "OnProfileUpdate"
+      "OnProfileUpdate",
+      "MigrateServicePreferenceFromLegacy",
+      "StoreSpidLogs"
     ]
   }
 }
@@ -237,6 +239,7 @@ module "function_app" {
     data.azurerm_subnet.app_backendli_snet.id,
     data.azurerm_subnet.ioweb_profile_snet.id,
     data.azurerm_subnet.session_manager_snet.id,
+    data.azurerm_subnet.app_backendl3_snet.id
   ]
 
   sticky_app_setting_names = concat([
@@ -289,6 +292,7 @@ module "function_app_staging_slot" {
     data.azurerm_subnet.app_backendl1_snet.id,
     data.azurerm_subnet.app_backendl2_snet.id,
     data.azurerm_subnet.app_backendli_snet.id,
+    data.azurerm_subnet.app_backendl3_snet.id
   ]
 
   tags = var.tags

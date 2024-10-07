@@ -13,6 +13,13 @@ output "subnet_pendpoints" {
   }
 }
 
+output "subnet_pep_itn" {
+  value = {
+    id   = data.azurerm_subnet.pep_snet_itn.id
+    name = data.azurerm_subnet.pep_snet_itn.name
+  }
+}
+
 output "subnet_redis" {
   value = {
     id   = module.subnet_redis.id

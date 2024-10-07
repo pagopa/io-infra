@@ -213,6 +213,7 @@ data "azurerm_key_vault_secret" "reminder_mysql_db_server_adm_username" {
   name         = "${local.product}-${var.domain}-REMINDER-MYSQL-DB-ADM-USERNAME"
   key_vault_id = module.key_vault.id
 }
+
 data "azurerm_key_vault_secret" "reminder_mysql_db_server_adm_password" {
   name         = "${local.product}-${var.domain}-REMINDER-MYSQL-DB-ADM-PASSWORD"
   key_vault_id = module.key_vault.id
@@ -342,7 +343,7 @@ resource "azurerm_cosmosdb_sql_container" "message_configuration" {
   partition_key_version = 2
 
   autoscale_settings {
-    max_throughput = 2000
+    max_throughput = 10000
   }
 
   indexing_policy {

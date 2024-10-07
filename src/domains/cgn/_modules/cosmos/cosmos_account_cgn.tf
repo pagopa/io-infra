@@ -45,3 +45,19 @@ module "cosmos_account_cgn" {
 
   tags = var.tags
 }
+
+resource "azurerm_private_endpoint" "cosno_remote_content_itn" {
+  name                = "${var.project}-itn-cgn-cosno-pep-01"
+  location            = "italynorth"
+  resource_group_name = var.resource_group_name
+  subnet_id           = var.private_endpoint_subnet_id_itn
+
+  private_service_connection {
+    name                           = "${var.project}-itn-cgn-cosno-pep-01"
+    private_connection_resource_id = module.cosmos_account_cgn.id
+    is_manual_connection           = false
+    subresource_names              = ["Sql"]
+  }
+
+  tags = var.tags
+}
