@@ -1,6 +1,7 @@
 locals {
-  project = "${var.prefix}-${var.env_short}-${var.location_short}-${var.domain}"
-  product = "${var.prefix}-${var.env_short}"
+  project     = "${var.prefix}-${var.env_short}-${var.location_short}-${var.domain}"
+  product     = "${var.prefix}-${var.env_short}"
+  project_itn = "${var.prefix}-${var.env_short}-itn"
 
   app_insights_ips_west_europe = [
     "51.144.56.96/28",
@@ -16,6 +17,9 @@ locals {
 
   vnet_common_name                = "${local.product}-vnet-common"
   vnet_common_resource_group_name = "${local.product}-rg-common"
+
+  vnet_common_name_itn                = "${local.project_itn}-common-vnet-01"
+  vnet_common_resource_group_name_itn = "${local.project_itn}-common-rg-01"
 
   acr_name                = replace("${local.product}commonacr", "-", "")
   acr_resource_group_name = "${local.product}-container-registry-rg"
