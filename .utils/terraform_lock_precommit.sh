@@ -17,7 +17,7 @@ for lockfile in $staged_lock_files; do
   # Go to the directory
   cd "$dir" || exit
 
-  Run terraform providers lock
+  # Run terraform providers lock
   terraform providers lock \
     -platform=windows_amd64 \
     -platform=darwin_amd64 \
