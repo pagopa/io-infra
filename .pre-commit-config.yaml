@@ -1,18 +1,32 @@
 repos:
-  - repo: https://github.com/antonbabenko/pre-commit-terraform
-    rev: v1.83.0
+  - repo: local
     hooks:
+      - id: terraform-providers-lock-staged
+        name: Terraform Providers Lock (on staged .terraform.lock.hcl files)
+        entry: ./.utils/terraform_lock_precommit.sh
+        language: script
+        pass_filenames: false
+        verbose: true
+
+  - repo: https://github.com/antonbabenko/pre-commit-terraform
+    rev: v1.96.1
+    hooks:
+      - id: terraform_tflint
+        args:
+          - --args=--disable-rule terraform_required_version
+          - --args=--config=__GIT_WORKING_DIR__/.tflint.hcl
       - id: terraform_fmt
       - id: terraform_docs
+        name: terraform_docs on modules
         args:
+          # - --hook-config=--create-file-if-not-exist=true
           - --args=--hide providers
-      - id: terraform_tfsec
-        args:
-          - --args=--exclude-downloaded-modules
       - id: terraform_validate
-        exclude: '(\/_?modules\/.*)'
         args:
-          - --tf-init-args=-lockfile=readonly
           - --args=-json
           - --args=-no-color
           - --hook-config=--retry-once-with-cleanup=true
+      - id: terraform_trivy
+        args:
+          - --args=--skip-dirs="**/.terraform"
+          - --args=--ignorefile=__GIT_WORKING_DIR__/.trivyignore
