@@ -27,3 +27,8 @@ variable "private_endpoint_subnet_id" {
   type        = string
   description = "Id of the subnet which has private endpoints"
 }
+
+variable "private_endpoint_subnet_id_itn" {
+  type        = string
+  description = "Id of the subnet which has private endpoints"
+}

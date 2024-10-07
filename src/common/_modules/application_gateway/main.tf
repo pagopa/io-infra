@@ -48,7 +48,8 @@ module "app_gw" {
       port         = 443
       ip_addresses = null # with null value use fqdns
       fqdns = [
-        data.azurerm_linux_web_app.session_manager.default_hostname
+        data.azurerm_linux_web_app.session_manager_03.default_hostname,
+        data.azurerm_linux_web_app.session_manager_04.default_hostname
       ]
       probe                       = "/healthcheck"
       probe_name                  = "probe-session-manager-app"
@@ -803,8 +804,7 @@ module "app_gw" {
   identity_ids = [azurerm_user_assigned_identity.appgateway.id]
 
   # Scaling
-  # min_capacity = var.min_capacity
-  app_gateway_min_capacity = "10"
+  app_gateway_min_capacity = var.min_capacity
   app_gateway_max_capacity = var.max_capacity
 
   alerts_enabled = var.alerts_enabled

@@ -12,8 +12,13 @@ data "azurerm_linux_web_app" "appservice_continua" {
   resource_group_name = "${var.project}-continua-rg"
 }
 
-data "azurerm_linux_web_app" "session_manager" {
+data "azurerm_linux_web_app" "session_manager_03" {
   name                = "io-p-weu-session-manager-app-03"
+  resource_group_name = "io-p-weu-session-manager-rg-01"
+}
+
+data "azurerm_linux_web_app" "session_manager_04" {
+  name                = "io-p-weu-session-manager-app-04"
   resource_group_name = "io-p-weu-session-manager-rg-01"
 }
 
