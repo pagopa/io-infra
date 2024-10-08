@@ -9,8 +9,11 @@ AVD-GIT-0004
 # The minimum TLS version for Storage Accounts should be TLS1_2
 AVD-AZU-0011
 
-# Secret should have an expiry date specified
+# LOW: Secret should have an expiry date specified
 AVD-AZU-0017
 
-# Secret does not have a content-type specified
+# LOW: Secret does not have a content-type specified
 AVD-AZU-0015
+
+# CRITICAL: Vault network ACL does not block access by default
+AVD-AZU-0013
