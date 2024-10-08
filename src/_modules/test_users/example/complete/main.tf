@@ -1,5 +1,5 @@
 module "test_users" {
-  source = "../"
+  source = "../../"
 }
 
 output "test_users" {
