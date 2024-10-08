@@ -25,6 +25,10 @@ output "test_users" {
 
 No requirements.
 
+## Providers
+
+No providers.
+
 ## Modules
 
 No modules.
