@@ -43,5 +43,5 @@ __TMP
 __azurite_*
 /.idea
 
-# **/modules/**/.terraform.lock.hcl
-# **/_modules/**/.terraform.lock.hcl
+**/modules/**/.terraform.lock.hcl
+**/_modules/**/.terraform.lock.hcl
