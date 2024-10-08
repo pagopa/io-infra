@@ -1,10 +1,14 @@
 <!-- markdownlint-disable -->
-<!-- BEGINNING OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
+<!-- BEGIN_TF_DOCS -->
 ## Requirements
 
 | Name | Version |
 |------|---------|
 | <a name="requirement_azurerm"></a> [azurerm](#requirement\_azurerm) | <= 3.92.0 |
+
+## Providers
+
+No providers.
 
 ## Modules
 
@@ -38,4 +42,4 @@ No inputs.
 | <a name="output_resource_group_cgn_be"></a> [resource\_group\_cgn\_be](#output\_resource\_group\_cgn\_be) | n/a |
 | <a name="output_storage_account_cgn"></a> [storage\_account\_cgn](#output\_storage\_account\_cgn) | n/a |
 | <a name="output_storage_account_legal_backup"></a> [storage\_account\_legal\_backup](#output\_storage\_account\_legal\_backup) | n/a |
-<!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
+<!-- END_TF_DOCS -->

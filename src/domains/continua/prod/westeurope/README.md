@@ -1,10 +1,16 @@
 <!-- markdownlint-disable -->
-<!-- BEGINNING OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
+<!-- BEGIN_TF_DOCS -->
 ## Requirements
 
 | Name | Version |
 |------|---------|
 | <a name="requirement_azurerm"></a> [azurerm](#requirement\_azurerm) | <= 3.97.1 |
+
+## Providers
+
+| Name | Version |
+|------|---------|
+| <a name="provider_azurerm"></a> [azurerm](#provider\_azurerm) | 3.94.0 |
 
 ## Modules
 
@@ -29,4 +35,4 @@ No inputs.
 |------|-------------|
 | <a name="output_app_service_continua"></a> [app\_service\_continua](#output\_app\_service\_continua) | n/a |
 | <a name="output_app_service_plan_continua"></a> [app\_service\_plan\_continua](#output\_app\_service\_plan\_continua) | n/a |
-<!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
+<!-- END_TF_DOCS -->

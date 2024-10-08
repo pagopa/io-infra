@@ -21,11 +21,13 @@ repos:
             src\/(?:.*\/)?(?:_?modules)\/.*
           )$
       - id: terraform_validate
+        exclude: '(\/_?modules\/.*)'
         args:
           - --args=-json
           - --args=-no-color
           - --hook-config=--retry-once-with-cleanup=true
       - id: terraform_trivy
+        files: ^src/
         args:
           - --args=--skip-dirs="**/.terraform"
           - --args=--ignorefile=__GIT_WORKING_DIR__/.trivyignore
