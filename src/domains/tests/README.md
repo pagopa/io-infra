@@ -11,7 +11,9 @@ No providers.
 
 ## Modules
 
-No modules.
+| Name | Source | Version |
+|------|--------|---------|
+| <a name="module_test_users"></a> [test\_users](#module\_test\_users) | ../../_modules/test_users | n/a |
 
 ## Resources
 
