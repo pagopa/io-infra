@@ -186,12 +186,6 @@ variable "function_fastlogin_kind" {
   default     = null
 }
 
-variable "function_fastlogin_sku_tier" {
-  type        = string
-  description = "App service plan sku tier"
-  default     = null
-}
-
 variable "function_fastlogin_sku_size" {
   type        = string
   description = "App service plan sku size"
@@ -276,12 +270,6 @@ variable "function_profile_kind" {
   default     = null
 }
 
-variable "function_profile_sku_tier" {
-  type        = string
-  description = "App service plan sku tier"
-  default     = null
-}
-
 variable "function_profile_sku_size" {
   type        = string
   description = "App service plan sku size"
@@ -298,12 +286,6 @@ variable "cidr_subnet_profile_async_itn" {
 variable "function_profile_async_kind" {
   type        = string
   description = "App service plan kind"
-  default     = null
-}
-
-variable "function_profile_async_sku_tier" {
-  type        = string
-  description = "App service plan sku tier"
   default     = null
 }
 

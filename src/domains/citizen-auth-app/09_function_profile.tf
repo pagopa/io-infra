@@ -178,7 +178,6 @@ module "function_profile" {
 
   app_service_plan_info = {
     kind                         = var.function_profile_kind
-    sku_tier                     = var.function_profile_sku_tier
     sku_size                     = var.function_profile_sku_size
     maximum_elastic_worker_count = 0
     worker_count                 = null
