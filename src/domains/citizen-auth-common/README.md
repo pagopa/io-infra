@@ -31,9 +31,7 @@
 | <a name="module_key_vault"></a> [key\_vault](#module\_key\_vault) | git::https://github.com/pagopa/terraform-azurerm-v3.git//key_vault | v8.44.1 |
 | <a name="module_lollipop_assertions_storage"></a> [lollipop\_assertions\_storage](#module\_lollipop\_assertions\_storage) | github.com/pagopa/terraform-azurerm-v3//storage_account | v8.12.0 |
 | <a name="module_lollipop_assertions_storage_customer_managed_key"></a> [lollipop\_assertions\_storage\_customer\_managed\_key](#module\_lollipop\_assertions\_storage\_customer\_managed\_key) | git::https://github.com/pagopa/terraform-azurerm-v3//storage_account_customer_managed_key | v8.12.0 |
-| <a name="module_redis_common"></a> [redis\_common](#module\_redis\_common) | git::https://github.com/pagopa/terraform-azurerm-v3.git//redis_cache | v8.44.1 |
 | <a name="module_redis_common_itn"></a> [redis\_common\_itn](#module\_redis\_common\_itn) | git::https://github.com/pagopa/terraform-azurerm-v3.git//redis_cache | v8.44.1 |
-| <a name="module_redis_common_snet"></a> [redis\_common\_snet](#module\_redis\_common\_snet) | git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet | v8.44.1 |
 | <a name="module_redis_common_snet_itn"></a> [redis\_common\_snet\_itn](#module\_redis\_common\_snet\_itn) | git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet | v8.44.1 |
 
 ## Resources
@@ -121,7 +119,6 @@
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
 | <a name="input_application_insights_name"></a> [application\_insights\_name](#input\_application\_insights\_name) | Specifies the name of the Application Insights. | `string` | n/a | yes |
-| <a name="input_cidr_subnet_redis_common"></a> [cidr\_subnet\_redis\_common](#input\_cidr\_subnet\_redis\_common) | Redis Common address space. | `list(string)` | n/a | yes |
 | <a name="input_cidr_subnet_redis_common_itn"></a> [cidr\_subnet\_redis\_common\_itn](#input\_cidr\_subnet\_redis\_common\_itn) | Redis Common address space. | `list(string)` | n/a | yes |
 | <a name="input_citizen_auth_database"></a> [citizen\_auth\_database](#input\_citizen\_auth\_database) | n/a | <pre>map(<br>    object({<br>      max_throughput = number<br>      ttl            = number<br>    })<br>  )</pre> | n/a | yes |
 | <a name="input_domain"></a> [domain](#input\_domain) | n/a | `string` | n/a | yes |
