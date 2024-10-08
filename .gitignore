@@ -42,3 +42,6 @@ __TMP
 .metals/
 __azurite_*
 /.idea
+
+**/modules/**/.terraform.lock.hcl
+**/_modules/**/.terraform.lock.hcl

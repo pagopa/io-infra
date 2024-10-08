@@ -1,10 +1,16 @@
 <!-- markdownlint-disable -->
-<!-- BEGINNING OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
+<!-- BEGIN_TF_DOCS -->
 ## Requirements
 
 | Name | Version |
 |------|---------|
 | <a name="requirement_azurerm"></a> [azurerm](#requirement\_azurerm) | <= 3.84.0 |
+
+## Providers
+
+| Name | Version |
+|------|---------|
+| <a name="provider_azurerm"></a> [azurerm](#provider\_azurerm) | 3.84.0 |
 
 ## Modules
 
@@ -48,4 +54,4 @@
 | <a name="output_cae_name"></a> [cae\_name](#output\_cae\_name) | Container App Environment name |
 | <a name="output_subnet_id"></a> [subnet\_id](#output\_subnet\_id) | Subnet id |
 | <a name="output_subnet_name"></a> [subnet\_name](#output\_subnet\_name) | Subnet name |
-<!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
+<!-- END_TF_DOCS -->
