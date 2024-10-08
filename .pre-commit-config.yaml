@@ -1,18 +1,40 @@
 repos:
-  - repo: https://github.com/antonbabenko/pre-commit-terraform
-    rev: v1.83.0
+  - repo: https://github.com/pagopa/dx
+    rev: c7410ed50d211e756cd4bbb8152e1b275b4485b4
     hooks:
+      - id: terraform_providers_lock_staged
+
+  - repo: https://github.com/antonbabenko/pre-commit-terraform
+    rev: v1.96.1
+    hooks:
+      - id: terraform_tflint
+        args:
+          - --args=--disable-rule terraform_required_version
+          - --args=--disable-rule terraform_required_providers
+          - --args=--disable-rule terraform_unused_declarations
+          - --args=--disable-rule terraform_deprecated_interpolation
+          - --args=--disable-rule terraform_deprecated_index
+          - --args=--disable-rule terraform_typed_variables
+          - --args=--disable-rule terraform_map_duplicate_keys
+          - --args=--disable-rule terraform_module_pinned_source
+          - --args=--config=__GIT_WORKING_DIR__/.tflint.hcl
       - id: terraform_fmt
       - id: terraform_docs
+        name: terraform_docs on resources
         args:
-          - --args=--hide providers
-      - id: terraform_tfsec
-        args:
-          - --args=--exclude-downloaded-modules
+          - --hook-config=--create-file-if-not-exist=true
+        exclude: |
+          (?x)^(
+            src\/(?:.*\/)?(?:_?modules)\/.*
+          )$
       - id: terraform_validate
         exclude: '(\/_?modules\/.*)'
         args:
-          - --tf-init-args=-lockfile=readonly
           - --args=-json
           - --args=-no-color
           - --hook-config=--retry-once-with-cleanup=true
+      - id: terraform_trivy
+        files: ^src/
+        args:
+          - --args=--skip-dirs="**/.terraform"
+          - --args=--ignorefile=__GIT_WORKING_DIR__/.trivyignore
