@@ -13,10 +13,13 @@ repos:
           - --args=--config=__GIT_WORKING_DIR__/.tflint.hcl
       - id: terraform_fmt
       - id: terraform_docs
-        name: terraform_docs on modules
+        name: terraform_docs on resources
         args:
-          # - --hook-config=--create-file-if-not-exist=true
-          - --args=--hide providers
+          - --hook-config=--create-file-if-not-exist=true
+        exclude: |
+          (?x)^(
+            src\/(?:.*\/)?(?:_?modules)\/.*
+          )$
       - id: terraform_validate
         args:
           - --args=-json
