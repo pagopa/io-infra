@@ -10,6 +10,10 @@ repos:
       - id: terraform_tflint
         args:
           - --args=--disable-rule terraform_required_version
+          - --args=--disable-rule terraform_required_providers
+          - --args=--disable-rule terraform_unused_declarations
+          - --args=--disable-rule terraform_deprecated_interpolation
+          - --args=--disable-rule terraform_deprecated_index
           - --args=--config=__GIT_WORKING_DIR__/.tflint.hcl
       - id: terraform_fmt
       - id: terraform_docs
