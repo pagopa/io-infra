@@ -151,7 +151,7 @@ locals {
     FF_FAST_LOGIN = "ALL"
     # TODO: change this variable to a list of regex to reduce characters and fix
     # E2BIG errors on linux spawn syscall when using PM2
-    LV_TEST_USERS = module.tests.test_users.light
+    LV_TEST_USERS = module.tests.users.light
 
     # IOLOGIN redirect
     FF_IOLOGIN         = "BETA"
@@ -162,7 +162,7 @@ locals {
     # Test Login config
     # TODO: change this variable to a list of regex to reduce characters and fix
     # E2BIG errors on linux spawn syscall when using PM2
-    TEST_LOGIN_FISCAL_CODES = module.tests.test_users.light
+    TEST_LOGIN_FISCAL_CODES = module.tests.users.light
     TEST_LOGIN_PASSWORD     = data.azurerm_key_vault_secret.session_manager_TEST_LOGIN_PASSWORD.value
 
 

@@ -1,17 +1,15 @@
-# tests
+# example
 
 <!-- BEGIN_TF_DOCS -->
 ## Requirements
 
 No requirements.
 
-## Providers
-
-No providers.
-
 ## Modules
 
-No modules.
+| Name | Source | Version |
+|------|--------|---------|
+| <a name="module_test_users"></a> [test\_users](#module\_test\_users) | ../ | n/a |
 
 ## Resources
 

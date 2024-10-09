@@ -43,7 +43,7 @@
 | <a name="module_session_manager_weu_04"></a> [session\_manager\_weu\_04](#module\_session\_manager\_weu\_04) | github.com/pagopa/terraform-azurerm-v3//app_service | v8.28.1 |
 | <a name="module_session_manager_weu_staging"></a> [session\_manager\_weu\_staging](#module\_session\_manager\_weu\_staging) | github.com/pagopa/terraform-azurerm-v3//app_service_slot | v8.28.1 |
 | <a name="module_session_manager_weu_staging_04"></a> [session\_manager\_weu\_staging\_04](#module\_session\_manager\_weu\_staging\_04) | github.com/pagopa/terraform-azurerm-v3//app_service_slot | v8.28.1 |
-| <a name="module_tests"></a> [tests](#module\_tests) | ../tests | n/a |
+| <a name="module_tests"></a> [tests](#module\_tests) | ../../_modules/test_users | n/a |
 
 ## Resources
 
