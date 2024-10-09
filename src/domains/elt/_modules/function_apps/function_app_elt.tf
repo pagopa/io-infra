@@ -104,7 +104,7 @@ locals {
       PDV_TOKENIZER_BASE_PATH = "/tokenizer/v1",
       #
 
-      INTERNAL_TEST_FISCAL_CODES = module.tests.test_users.all
+      INTERNAL_TEST_FISCAL_CODES = module.tests.users.all
     }
   }
 }

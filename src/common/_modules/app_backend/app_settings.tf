@@ -170,7 +170,7 @@ locals {
         schemaKind         = "PN",
         jsonSchema         = "unused",
         isLollipopEnabled  = "true",
-        disableLollipopFor = split(",", module.tests.test_users.light),
+        disableLollipopFor = split(",", module.tests.users.light),
         prodEnvironment = {
           baseUrl = local.endpoints.pn,
           detailsAuthentication = {
@@ -180,7 +180,7 @@ locals {
           }
         },
         testEnvironment = {
-          testUsers = split(",", module.tests.test_users.light),
+          testUsers = split(",", module.tests.users.light),
           baseUrl   = local.endpoints.pn_test,
           detailsAuthentication = {
             type            = "API_KEY",
@@ -262,7 +262,7 @@ locals {
 
     // UNIQUE EMAIL ENFORCEMENT
     FF_UNIQUE_EMAIL_ENFORCEMENT    = "ALL"
-    UNIQUE_EMAIL_ENFORCEMENT_USERS = join(",", [data.azurerm_key_vault_secret.app_backend_UNIQUE_EMAIL_ENFORCEMENT_USER.value, module.tests.test_users.unique_email_test[0]])
+    UNIQUE_EMAIL_ENFORCEMENT_USERS = join(",", [data.azurerm_key_vault_secret.app_backend_UNIQUE_EMAIL_ENFORCEMENT_USER.value, module.tests.users.unique_email_test[0]])
 
     // DEPRECATED APP SETTINGS
     // The following variables must be removed after a update
