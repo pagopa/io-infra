@@ -73,12 +73,6 @@ variable "lollipop_enabled" {
   description = "Lollipop function enabled?"
 }
 
-variable "fastlogin_enabled" {
-  type        = bool
-  default     = false
-  description = "Fast login LC creation flag"
-}
-
 ### External resources
 
 variable "monitor_resource_group_name" {
@@ -181,11 +175,6 @@ variable "function_lollipop_autoscale_default" {
 
 # Function Fast Login
 
-variable "cidr_subnet_fnfastlogin" {
-  type        = list(string)
-  description = "Function Fast Login address space."
-}
-
 variable "cidr_subnet_fnfastlogin_itn" {
   type        = list(string)
   description = "Function Fast Login on ITN region address space."
@@ -197,19 +186,7 @@ variable "function_fastlogin_kind" {
   default     = null
 }
 
-variable "function_fastlogin_sku_tier" {
-  type        = string
-  description = "App service plan sku tier"
-  default     = null
-}
-
 variable "function_fastlogin_sku_size" {
-  type        = string
-  description = "App service plan sku size"
-  default     = null
-}
-
-variable "function_fastlogin_sku_size_itn" {
   type        = string
   description = "App service plan sku size"
   default     = null
@@ -293,12 +270,6 @@ variable "function_profile_kind" {
   default     = null
 }
 
-variable "function_profile_sku_tier" {
-  type        = string
-  description = "App service plan sku tier"
-  default     = null
-}
-
 variable "function_profile_sku_size" {
   type        = string
   description = "App service plan sku size"
@@ -315,12 +286,6 @@ variable "cidr_subnet_profile_async_itn" {
 variable "function_profile_async_kind" {
   type        = string
   description = "App service plan kind"
-  default     = null
-}
-
-variable "function_profile_async_sku_tier" {
-  type        = string
-  description = "App service plan sku tier"
   default     = null
 }
 
