@@ -215,7 +215,7 @@ locals {
       # devportal configs
       CLIENT_NAME                = "io-p-developer-portal-app"
       POLICY_NAME                = "B2C_1_SignUpInSecure"
-      RESET_PASSWORD_POLICY_NAME = "B2C_1_SignUpInSecure" #Then new userflow handle sign up/sign in and password reset, no need for a dedicade reset password policy anymore
+      RESET_PASSWORD_POLICY_NAME = "B2C_1_SignUpInSecure" # Then new userflow handles sign up/sign in and password reset, no need for a dedicate password reset policy anymore
       POST_LOGIN_URL             = "https://${var.devportal_frontend_hostname}"
       POST_LOGOUT_URL            = "https://${var.devportal_frontend_hostname}"
       REPLY_URL                  = "https://${var.devportal_frontend_hostname}"
