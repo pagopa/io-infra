@@ -57,17 +57,6 @@ data "azurerm_subnet" "private_endpoints_subnet_itn" {
   resource_group_name  = "io-p-itn-common-rg-01"
 }
 
-## Redis Common subnet
-module "redis_common_snet" {
-  source               = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v8.44.1"
-  name                 = format("%s-redis-snet", local.project)
-  address_prefixes     = var.cidr_subnet_redis_common
-  resource_group_name  = local.vnet_common_resource_group_name
-  virtual_network_name = local.vnet_common_name
-
-  private_endpoint_network_policies_enabled = false
-}
-
 ## Cosmos Private Endpoint
 resource "azurerm_private_endpoint" "cosmos_db" {
   name                = "${local.project_itn}-account-sql-pep-01"
@@ -82,6 +71,8 @@ resource "azurerm_private_endpoint" "cosmos_db" {
     subresource_names              = ["Sql"]
   }
 }
+
+## Redis Common subnet
 module "redis_common_snet_itn" {
   source               = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v8.44.1"
   name                 = format("%s-redis-snet", local.project_itn)
