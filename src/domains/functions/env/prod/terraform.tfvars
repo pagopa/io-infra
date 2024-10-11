@@ -17,30 +17,15 @@ lock_enable    = true
 cidr_subnet_fnadmin     = ["10.0.15.0/26"]
 cidr_subnet_shared_1    = ["10.0.16.0/26"]
 cidr_subnet_fncdnassets = ["10.0.131.0/24"]
-cidr_subnet_app         = ["10.0.132.0/26", "10.0.132.64/26"]
-cidr_subnet_app_async   = ["10.0.132.128/26"]
 cidr_subnet_services    = ["10.0.139.0/26", "10.0.139.64/26"]
-
-# Functions App
-function_app_kind     = "Linux"
-function_app_sku_tier = "PremiumV3"
-function_app_sku_size = "P1v3"
 
 # Functions Services
 function_services_kind              = "Linux"
 function_services_sku_tier          = "PremiumV3"
 function_services_sku_size          = "P1v3"
-function_services_autoscale_minimum = 1
+function_services_autoscale_minimum = 6
 function_services_autoscale_maximum = 30
 function_services_autoscale_default = 10
-
-# Functions App Async
-function_app_async_kind              = "Linux"
-function_app_async_sku_tier          = "PremiumV3"
-function_app_async_sku_size          = "P1v3"
-function_app_async_autoscale_minimum = 3 # 2 instance to achieve redundancy and failover
-function_app_async_autoscale_maximum = 30
-function_app_async_autoscale_default = 10
 
 # Functions Admin
 function_admin_kind              = "Linux"

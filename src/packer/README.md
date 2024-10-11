@@ -1,6 +1,6 @@
 # packer
 
-<!-- BEGINNING OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
+<!-- BEGIN_TF_DOCS -->
 ## Requirements
 
 | Name | Version |
@@ -8,6 +8,12 @@
 | <a name="requirement_azuread"></a> [azuread](#requirement\_azuread) | = 2.10.0 |
 | <a name="requirement_azurerm"></a> [azurerm](#requirement\_azurerm) | = 3.36.0 |
 | <a name="requirement_null"></a> [null](#requirement\_null) | = 3.1.0 |
+
+## Providers
+
+| Name | Version |
+|------|---------|
+| <a name="provider_azurerm"></a> [azurerm](#provider\_azurerm) | 3.36.0 |
 
 ## Modules
 
@@ -37,4 +43,4 @@
 ## Outputs
 
 No outputs.
-<!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
+<!-- END_TF_DOCS -->

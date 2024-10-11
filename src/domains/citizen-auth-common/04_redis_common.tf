@@ -2,12 +2,19 @@
 /**
 * [REDIS V6]
 */
-module "redis_common" {
-  source                = "git::https://github.com/pagopa/terraform-azurerm-v3.git//redis_cache?ref=v7.62.0"
-  name                  = format("%s-redis-std-v6", local.project)
-  resource_group_name   = azurerm_resource_group.data_rg.name
-  location              = azurerm_resource_group.data_rg.location
-  capacity              = 1
+resource "azurerm_resource_group" "data_rg_itn" {
+  name     = "${local.project_itn}-data-rg-01"
+  location = local.itn_location
+
+  tags = var.tags
+}
+
+module "redis_common_itn" {
+  source                = "git::https://github.com/pagopa/terraform-azurerm-v3.git//redis_cache?ref=v8.44.1"
+  name                  = format("%s-redis-std-v6", local.project_itn)
+  resource_group_name   = azurerm_resource_group.data_rg_itn.name
+  location              = azurerm_resource_group.data_rg_itn.location
+  capacity              = 3
   family                = "C"
   sku_name              = "Standard"
   redis_version         = "6"
@@ -40,8 +47,8 @@ module "redis_common" {
 
   private_endpoint = {
     enabled              = true
-    virtual_network_id   = data.azurerm_virtual_network.vnet_common.id
-    subnet_id            = module.redis_common_snet.id
+    virtual_network_id   = data.azurerm_virtual_network.vnet_common_itn.id
+    subnet_id            = module.redis_common_snet_itn.id
     private_dns_zone_ids = [data.azurerm_private_dns_zone.privatelink_redis_cache.id]
   }
 

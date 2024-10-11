@@ -5,7 +5,7 @@ module "vnet_common" {
   location            = var.location
   resource_group_name = var.resource_group_name
 
-  address_space        = [module.subnet_addrs.base_cidr_block]
+  address_space        = [var.vnet_cidr_block]
   ddos_protection_plan = local.ddos_protection_plan
 
   tags = var.tags

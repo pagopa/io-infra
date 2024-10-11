@@ -73,12 +73,6 @@ variable "lollipop_enabled" {
   description = "Lollipop function enabled?"
 }
 
-variable "fastlogin_enabled" {
-  type        = bool
-  default     = false
-  description = "Fast login LC creation flag"
-}
-
 ### External resources
 
 variable "monitor_resource_group_name" {
@@ -181,20 +175,14 @@ variable "function_lollipop_autoscale_default" {
 
 # Function Fast Login
 
-variable "cidr_subnet_fnfastlogin" {
+variable "cidr_subnet_fnfastlogin_itn" {
   type        = list(string)
-  description = "Function Lollipop address space."
+  description = "Function Fast Login on ITN region address space."
 }
 
 variable "function_fastlogin_kind" {
   type        = string
   description = "App service plan kind"
-  default     = null
-}
-
-variable "function_fastlogin_sku_tier" {
-  type        = string
-  description = "App service plan sku tier"
   default     = null
 }
 
@@ -230,6 +218,11 @@ variable "cidr_subnet_session_manager" {
   description = "Session manager app service address space."
 }
 
+variable "cidr_subnet_session_manager_04" {
+  type        = list(string)
+  description = "Session manager app service instance 4 address space."
+}
+
 variable "session_manager_plan_sku_name" {
   description = "App service plan sku name"
   type        = string
@@ -257,3 +250,66 @@ variable "dns_zone_io" {
   default     = null
   description = "The dns subdomain."
 }
+
+################################
+# Function Profile
+################################
+variable "function_profile_count" {
+  type    = number
+  default = 2
+}
+
+variable "cidr_subnet_profile_itn" {
+  type        = list(string)
+  description = "Function app address space."
+}
+
+variable "function_profile_kind" {
+  type        = string
+  description = "App service plan kind"
+  default     = null
+}
+
+variable "function_profile_sku_size" {
+  type        = string
+  description = "App service plan sku size"
+  default     = null
+}
+#############################
+# Function Profile Async
+#############################
+variable "cidr_subnet_profile_async_itn" {
+  type        = list(string)
+  description = "Function app address space."
+}
+
+variable "function_profile_async_kind" {
+  type        = string
+  description = "App service plan kind"
+  default     = null
+}
+
+variable "function_profile_async_sku_size" {
+  type        = string
+  description = "App service plan sku size"
+  default     = null
+}
+
+variable "function_profile_async_autoscale_minimum" {
+  type        = number
+  description = "The minimum number of instances for this resource."
+  default     = 1
+}
+
+variable "function_profile_async_autoscale_maximum" {
+  type        = number
+  description = "The maximum number of instances for this resource."
+  default     = 30
+}
+
+variable "function_profile_async_autoscale_default" {
+  type        = number
+  description = "The number of instances that are available for scaling if metrics are not available for evaluation."
+  default     = 1
+}
+#############################

@@ -16,8 +16,7 @@ data "azurerm_app_service" "app_backend_li" {
 locals {
   function_fast_login = {
     app_settings = {
-      FUNCTIONS_WORKER_PROCESS_COUNT = 4
-      NODE_ENV                       = "production"
+      NODE_ENV = "production"
 
       // Keepalive fields are all optionals
       FETCH_KEEPALIVE_ENABLED             = "true"
@@ -27,14 +26,16 @@ locals {
       FETCH_KEEPALIVE_FREE_SOCKET_TIMEOUT = "30000"
       FETCH_KEEPALIVE_TIMEOUT             = "60000"
 
+      FUNCTIONS_WORKER_PROCESS_COUNT = 8
+
+      # Redis
+      REDIS_URL      = data.azurerm_redis_cache.redis_common_itn.hostname
+      REDIS_PORT     = data.azurerm_redis_cache.redis_common_itn.ssl_port
+      REDIS_PASSWORD = data.azurerm_redis_cache.redis_common_itn.primary_access_key
+
       # COSMOS
       COSMOS_DB_NAME           = "citizen-auth"
       COSMOS_CONNECTION_STRING = format("AccountEndpoint=%s;AccountKey=%s;", data.azurerm_cosmosdb_account.cosmos_citizen_auth.endpoint, data.azurerm_cosmosdb_account.cosmos_citizen_auth.primary_key)
-
-      # REDIS
-      REDIS_URL      = data.azurerm_redis_cache.redis_common.hostname
-      REDIS_PORT     = data.azurerm_redis_cache.redis_common.ssl_port
-      REDIS_PASSWORD = data.azurerm_redis_cache.redis_common.primary_access_key
 
       // --------------------------
       //  Config for getAssertion
@@ -58,23 +59,23 @@ locals {
   }
 }
 
-resource "azurerm_resource_group" "fast_login_rg" {
-  count    = var.fastlogin_enabled ? 1 : 0
-  name     = format("%s-fast-login-rg", local.common_project)
-  location = var.location
+
+resource "azurerm_resource_group" "fast_login_rg_itn" {
+  name     = format("%s-fast-login-rg-01", local.common_project_itn)
+  location = local.itn_location
 
   tags = var.tags
 }
 
-# Subnet to host admin function
-module "fast_login_snet" {
-  count                                     = var.fastlogin_enabled ? 1 : 0
+## Create resources for fast-login on ITN Region
+
+module "fast_login_snet_itn" {
   source                                    = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v8.22.0"
-  name                                      = format("%s-fast-login-snet", local.common_project)
-  address_prefixes                          = var.cidr_subnet_fnfastlogin
-  resource_group_name                       = data.azurerm_virtual_network.vnet_common.resource_group_name
-  virtual_network_name                      = data.azurerm_virtual_network.vnet_common.name
-  private_endpoint_network_policies_enabled = false
+  name                                      = format("%s-fast-login-snet-01", local.project_itn)
+  address_prefixes                          = var.cidr_subnet_fnfastlogin_itn
+  resource_group_name                       = data.azurerm_virtual_network.common_vnet_italy_north.resource_group_name
+  virtual_network_name                      = data.azurerm_virtual_network.common_vnet_italy_north.name
+  private_endpoint_network_policies_enabled = true
 
   service_endpoints = [
     "Microsoft.Web",
@@ -91,16 +92,17 @@ module "fast_login_snet" {
   }
 }
 
-module "function_fast_login" {
-  count  = var.fastlogin_enabled ? 1 : 0
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app?ref=v8.22.0"
+module "function_fast_login_itn" {
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app?ref=v8.44.0"
 
-  resource_group_name          = azurerm_resource_group.fast_login_rg[0].name
-  name                         = format("%s-fast-login-fn", local.common_project)
-  location                     = var.location
-  domain                       = "IO-COMMONS"
+  resource_group_name          = azurerm_resource_group.fast_login_rg_itn.name
+  name                         = format("%s-auth-lv-fn-01", local.common_project_itn)
+  location                     = local.itn_location
+  domain                       = "auth"
   health_check_path            = "/info"
   health_check_maxpingfailures = "2"
+
+  enable_function_app_public_network_access = false
 
   node_version    = "18"
   runtime_version = "~4"
@@ -113,19 +115,16 @@ module "function_fast_login" {
     sku_size                     = var.function_fastlogin_sku_size
     maximum_elastic_worker_count = 0
     worker_count                 = null
-    zone_balancing_enabled       = false
+    zone_balancing_enabled       = true
   }
 
-  app_settings = merge(
-    local.function_fast_login.app_settings,
-    {},
-  )
+  app_settings = local.function_fast_login.app_settings
 
   sticky_app_setting_names = []
 
   internal_storage = {
     "enable"                     = true,
-    "private_endpoint_subnet_id" = data.azurerm_subnet.private_endpoints_subnet.id,
+    "private_endpoint_subnet_id" = data.azurerm_subnet.itn_pep.id,
     "private_dns_zone_blob_ids"  = [data.azurerm_private_dns_zone.privatelink_blob_core_windows_net.id],
     "private_dns_zone_queue_ids" = [data.azurerm_private_dns_zone.privatelink_queue_core_windows_net.id],
     "private_dns_zone_table_ids" = [data.azurerm_private_dns_zone.privatelink_table_core_windows_net.id],
@@ -134,15 +133,9 @@ module "function_fast_login" {
     "blobs_retention_days"       = 0,
   }
 
-  subnet_id = module.fast_login_snet[0].id
+  subnet_id = module.fast_login_snet_itn.id
 
   allowed_subnets = [
-    module.fast_login_snet[0].id,
-    data.azurerm_subnet.apim_v2_snet.id,
-    data.azurerm_subnet.app_backend_l1_snet.id,
-    data.azurerm_subnet.app_backend_l2_snet.id,
-    data.azurerm_subnet.ioweb_profile_snet.id,
-    module.session_manager_snet.id,
   ]
 
   # Action groups for alerts
@@ -156,500 +149,108 @@ module "function_fast_login" {
   tags = var.tags
 }
 
-module "function_fast_login_staging_slot" {
-  count  = var.fastlogin_enabled ? 1 : 0
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app_slot?ref=v8.22.0"
+module "function_fast_login_staging_slot_itn" {
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app_slot?ref=v8.44.0"
 
   name                = "staging"
-  location            = var.location
-  resource_group_name = azurerm_resource_group.fast_login_rg[0].name
-  function_app_id     = module.function_fast_login[0].id
-  app_service_plan_id = module.function_fast_login[0].app_service_plan_id
+  location            = local.itn_location
+  resource_group_name = azurerm_resource_group.fast_login_rg_itn.name
+  function_app_id     = module.function_fast_login_itn.id
+  app_service_plan_id = module.function_fast_login_itn.app_service_plan_id
   health_check_path   = "/info"
 
-  storage_account_name               = module.function_fast_login[0].storage_account.name
-  storage_account_access_key         = module.function_fast_login[0].storage_account.primary_access_key
-  internal_storage_connection_string = module.function_fast_login[0].storage_account_internal_function.primary_connection_string
+  storage_account_name               = module.function_fast_login_itn.storage_account.name
+  storage_account_access_key         = module.function_fast_login_itn.storage_account.primary_access_key
+  internal_storage_connection_string = module.function_fast_login_itn.storage_account_internal_function.primary_connection_string
 
   node_version                             = "18"
   always_on                                = "true"
   runtime_version                          = "~4"
   application_insights_instrumentation_key = data.azurerm_application_insights.application_insights.instrumentation_key
 
-  app_settings = merge(
-    local.function_fast_login.app_settings,
-    {},
-  )
+  app_settings = local.function_fast_login.app_settings
 
-  subnet_id = module.fast_login_snet[0].id
+  subnet_id = module.fast_login_snet_itn.id
 
   allowed_subnets = [
-    module.fast_login_snet[0].id,
     data.azurerm_subnet.azdoa_snet[0].id,
-    data.azurerm_subnet.apim_v2_snet.id,
-    data.azurerm_subnet.app_backend_l1_snet.id,
-    data.azurerm_subnet.app_backend_l2_snet.id
   ]
 
   tags = var.tags
 }
 
-resource "azurerm_monitor_autoscale_setting" "function_fast_login" {
-  name                = "${replace(module.function_fast_login[0].name, "fn", "as")}-01"
-  resource_group_name = azurerm_resource_group.fast_login_rg[0].name
-  location            = var.location
-  target_resource_id  = module.function_fast_login[0].app_service_plan_id
+module "function_fast_login_itn_autoscale" {
+  source = "github.com/pagopa/dx//infra/modules/azure_app_service_plan_autoscaler?ref=15236aabcaf855b5b00709bcbb9b0ec177ba71b9"
 
-  profile {
-    name = "evening"
+  resource_group_name = azurerm_resource_group.fast_login_rg_itn.name
+  target_service = {
+    function_app_name = module.function_fast_login_itn.name
+  }
 
-    capacity {
-      default = 10
+  scheduler = {
+    high_load = {
+      name    = "evening"
       minimum = 4
-      maximum = 20
-    }
-
-    recurrence {
-      timezone = "W. Europe Standard Time"
-      hours    = [19]
-      minutes  = [30]
-      days = [
-        "Monday",
-        "Tuesday",
-        "Wednesday",
-        "Thursday",
-        "Friday",
-        "Saturday",
-        "Sunday"
-      ]
-    }
-
-    rule {
-      metric_trigger {
-        metric_name              = "Requests"
-        metric_resource_id       = module.function_fast_login[0].id
-        metric_namespace         = "microsoft.web/sites"
-        time_grain               = "PT1M"
-        statistic                = "Max"
-        time_window              = "PT1M"
-        time_aggregation         = "Maximum"
-        operator                 = "GreaterThan"
-        threshold                = 2500
-        divide_by_instance_count = true
-      }
-
-      scale_action {
-        direction = "Increase"
-        type      = "ChangeCount"
-        value     = "2"
-        cooldown  = "PT1M"
-      }
-    }
-
-    rule {
-      metric_trigger {
-        metric_name              = "CpuPercentage"
-        metric_resource_id       = module.function_fast_login[0].app_service_plan_id
-        metric_namespace         = "microsoft.web/serverfarms"
-        time_grain               = "PT1M"
-        statistic                = "Max"
-        time_window              = "PT1M"
-        time_aggregation         = "Maximum"
-        operator                 = "GreaterThan"
-        threshold                = 35
-        divide_by_instance_count = false
-      }
-
-      scale_action {
-        direction = "Increase"
-        type      = "ChangeCount"
-        value     = "4"
-        cooldown  = "PT1M"
-      }
-    }
-
-    rule {
-      metric_trigger {
-        metric_name              = "Requests"
-        metric_resource_id       = module.function_fast_login[0].id
-        metric_namespace         = "microsoft.web/sites"
-        time_grain               = "PT1M"
-        statistic                = "Average"
-        time_window              = "PT5M"
-        time_aggregation         = "Average"
-        operator                 = "LessThan"
-        threshold                = 200
-        divide_by_instance_count = true
-      }
-
-      scale_action {
-        direction = "Decrease"
-        type      = "ChangeCount"
-        value     = "1"
-        cooldown  = "PT1M"
-      }
-    }
-
-    rule {
-      metric_trigger {
-        metric_name              = "CpuPercentage"
-        metric_resource_id       = module.function_fast_login[0].app_service_plan_id
-        metric_namespace         = "microsoft.web/serverfarms"
-        time_grain               = "PT1M"
-        statistic                = "Average"
-        time_window              = "PT5M"
-        time_aggregation         = "Average"
-        operator                 = "LessThan"
-        threshold                = 15
-        divide_by_instance_count = false
-      }
-
-      scale_action {
-        direction = "Decrease"
-        type      = "ChangeCount"
-        value     = "1"
-        cooldown  = "PT1M"
-      }
-    }
-  }
-
-  profile {
-    name = "night"
-
-    capacity {
       default = 10
-      minimum = 2
-      maximum = 15
-    }
-
-    recurrence {
-      timezone = "W. Europe Standard Time"
-      hours    = [23]
-      minutes  = [0]
-      days = [
-        "Monday",
-        "Tuesday",
-        "Wednesday",
-        "Thursday",
-        "Friday",
-        "Saturday",
-        "Sunday"
-      ]
-    }
-
-    rule {
-      metric_trigger {
-        metric_name              = "Requests"
-        metric_resource_id       = module.function_fast_login[0].id
-        metric_namespace         = "microsoft.web/sites"
-        time_grain               = "PT1M"
-        statistic                = "Max"
-        time_window              = "PT1M"
-        time_aggregation         = "Maximum"
-        operator                 = "GreaterThan"
-        threshold                = 3200
-        divide_by_instance_count = true
+      start = {
+        hour    = 19
+        minutes = 30
       }
-
-      scale_action {
-        direction = "Increase"
-        type      = "ChangeCount"
-        value     = "2"
-        cooldown  = "PT1M"
+      end = {
+        hour    = 22
+        minutes = 59
       }
-    }
-
-    rule {
-      metric_trigger {
-        metric_name              = "CpuPercentage"
-        metric_resource_id       = module.function_fast_login[0].app_service_plan_id
-        metric_namespace         = "microsoft.web/serverfarms"
-        time_grain               = "PT1M"
-        statistic                = "Max"
-        time_window              = "PT1M"
-        time_aggregation         = "Maximum"
-        operator                 = "GreaterThan"
-        threshold                = 45
-        divide_by_instance_count = false
-      }
-
-      scale_action {
-        direction = "Increase"
-        type      = "ChangeCount"
-        value     = "3"
-        cooldown  = "PT2M"
-      }
-    }
-
-    rule {
-      metric_trigger {
-        metric_name              = "Requests"
-        metric_resource_id       = module.function_fast_login[0].id
-        metric_namespace         = "microsoft.web/sites"
-        time_grain               = "PT1M"
-        statistic                = "Average"
-        time_window              = "PT5M"
-        time_aggregation         = "Average"
-        operator                 = "LessThan"
-        threshold                = 500
-        divide_by_instance_count = true
-      }
-
-      scale_action {
-        direction = "Decrease"
-        type      = "ChangeCount"
-        value     = "1"
-        cooldown  = "PT1M"
-      }
-    }
-
-    rule {
-      metric_trigger {
-        metric_name              = "CpuPercentage"
-        metric_resource_id       = module.function_fast_login[0].app_service_plan_id
-        metric_namespace         = "microsoft.web/serverfarms"
-        time_grain               = "PT1M"
-        statistic                = "Average"
-        time_window              = "PT5M"
-        time_aggregation         = "Average"
-        operator                 = "LessThan"
-        threshold                = 20
-        divide_by_instance_count = false
-      }
-
-      scale_action {
-        direction = "Decrease"
-        type      = "ChangeCount"
-        value     = "1"
-        cooldown  = "PT2M"
-      }
-    }
-  }
-
-  profile {
-    name = "{\"name\":\"default\",\"for\":\"evening\"}"
-
-    recurrence {
-      timezone = "W. Europe Standard Time"
-      hours    = [22]
-      minutes  = [59]
-      days = [
-        "Monday",
-        "Tuesday",
-        "Wednesday",
-        "Thursday",
-        "Friday",
-        "Saturday",
-        "Sunday"
-      ]
-    }
-
-    capacity {
-      default = 10
+    },
+    low_load = {
+      name    = "night"
       minimum = 3
-      maximum = 30
+      default = 10
+      start = {
+        hour    = 23
+        minutes = 00
+      }
+      end = {
+        hour    = 05
+        minutes = 00
+      }
+    },
+    normal_load = {
+      minimum = 3
+      default = 10
     }
-
-    rule {
-      metric_trigger {
-        metric_name              = "Requests"
-        metric_resource_id       = module.function_fast_login[0].id
-        metric_namespace         = "microsoft.web/sites"
-        time_grain               = "PT1M"
-        statistic                = "Max"
-        time_window              = "PT1M"
-        time_aggregation         = "Maximum"
-        operator                 = "GreaterThan"
-        threshold                = 3000
-        divide_by_instance_count = true
-      }
-
-      scale_action {
-        direction = "Increase"
-        type      = "ChangeCount"
-        value     = "2"
-        cooldown  = "PT1M"
-      }
-    }
-
-    rule {
-      metric_trigger {
-        metric_name              = "CpuPercentage"
-        metric_resource_id       = module.function_fast_login[0].app_service_plan_id
-        metric_namespace         = "microsoft.web/serverfarms"
-        time_grain               = "PT1M"
-        statistic                = "Max"
-        time_window              = "PT1M"
-        time_aggregation         = "Maximum"
-        operator                 = "GreaterThan"
-        threshold                = 35
-        divide_by_instance_count = false
-      }
-
-      scale_action {
-        direction = "Increase"
-        type      = "ChangeCount"
-        value     = "4"
-        cooldown  = "PT1M"
-      }
-    }
-
-    rule {
-      metric_trigger {
-        metric_name              = "Requests"
-        metric_resource_id       = module.function_fast_login[0].id
-        metric_namespace         = "microsoft.web/sites"
-        time_grain               = "PT1M"
-        statistic                = "Average"
-        time_window              = "PT5M"
-        time_aggregation         = "Average"
-        operator                 = "LessThan"
-        threshold                = 300
-        divide_by_instance_count = true
-      }
-
-      scale_action {
-        direction = "Decrease"
-        type      = "ChangeCount"
-        value     = "1"
-        cooldown  = "PT1M"
-      }
-    }
-
-    rule {
-      metric_trigger {
-        metric_name              = "CpuPercentage"
-        metric_resource_id       = module.function_fast_login[0].app_service_plan_id
-        metric_namespace         = "microsoft.web/serverfarms"
-        time_grain               = "PT1M"
-        statistic                = "Average"
-        time_window              = "PT5M"
-        time_aggregation         = "Average"
-        operator                 = "LessThan"
-        threshold                = 15
-        divide_by_instance_count = false
-      }
-
-      scale_action {
-        direction = "Decrease"
-        type      = "ChangeCount"
-        value     = "1"
-        cooldown  = "PT2M"
-      }
-    }
+    maximum = 30
   }
 
-  profile {
-    name = "{\"name\":\"default\",\"for\":\"night\"}"
-
-    recurrence {
-      timezone = "W. Europe Standard Time"
-      hours    = [5]
-      minutes  = [0]
-      days = [
-        "Monday",
-        "Tuesday",
-        "Wednesday",
-        "Thursday",
-        "Friday",
-        "Saturday",
-        "Sunday"
-      ]
+  scale_metrics = {
+    requests = {
+      statistic_increase        = "Max"
+      time_window_increase      = 1
+      time_aggregation          = "Maximum"
+      upper_threshold           = 2500
+      increase_by               = 2
+      cooldown_increase         = 1
+      statistic_decrease        = "Average"
+      time_window_decrease      = 5
+      time_aggregation_decrease = "Average"
+      lower_threshold           = 200
+      decrease_by               = 1
+      cooldown_decrease         = 1
     }
-
-    capacity {
-      default = 10
-      minimum = 3
-      maximum = 30
+    cpu = {
+      upper_threshold           = 35
+      lower_threshold           = 15
+      increase_by               = 3
+      decrease_by               = 1
+      cooldown_increase         = 1
+      cooldown_decrease         = 20
+      statistic_increase        = "Max"
+      statistic_decrease        = "Average"
+      time_aggregation_increase = "Maximum"
+      time_aggregation_decrease = "Average"
+      time_window_increase      = 1
+      time_window_decrease      = 5
     }
-
-    rule {
-      metric_trigger {
-        metric_name              = "Requests"
-        metric_resource_id       = module.function_fast_login[0].id
-        metric_namespace         = "microsoft.web/sites"
-        time_grain               = "PT1M"
-        statistic                = "Max"
-        time_window              = "PT1M"
-        time_aggregation         = "Maximum"
-        operator                 = "GreaterThan"
-        threshold                = 3000
-        divide_by_instance_count = true
-      }
-
-      scale_action {
-        direction = "Increase"
-        type      = "ChangeCount"
-        value     = "2"
-        cooldown  = "PT1M"
-      }
-    }
-
-    rule {
-      metric_trigger {
-        metric_name              = "CpuPercentage"
-        metric_resource_id       = module.function_fast_login[0].app_service_plan_id
-        metric_namespace         = "microsoft.web/serverfarms"
-        time_grain               = "PT1M"
-        statistic                = "Max"
-        time_window              = "PT1M"
-        time_aggregation         = "Maximum"
-        operator                 = "GreaterThan"
-        threshold                = 35
-        divide_by_instance_count = false
-      }
-
-      scale_action {
-        direction = "Increase"
-        type      = "ChangeCount"
-        value     = "4"
-        cooldown  = "PT1M"
-      }
-    }
-
-    rule {
-      metric_trigger {
-        metric_name              = "Requests"
-        metric_resource_id       = module.function_fast_login[0].id
-        metric_namespace         = "microsoft.web/sites"
-        time_grain               = "PT1M"
-        statistic                = "Average"
-        time_window              = "PT5M"
-        time_aggregation         = "Average"
-        operator                 = "LessThan"
-        threshold                = 300
-        divide_by_instance_count = true
-      }
-
-      scale_action {
-        direction = "Decrease"
-        type      = "ChangeCount"
-        value     = "1"
-        cooldown  = "PT1M"
-      }
-    }
-
-    rule {
-      metric_trigger {
-        metric_name              = "CpuPercentage"
-        metric_resource_id       = module.function_fast_login[0].app_service_plan_id
-        metric_namespace         = "microsoft.web/serverfarms"
-        time_grain               = "PT1M"
-        statistic                = "Average"
-        time_window              = "PT5M"
-        time_aggregation         = "Average"
-        operator                 = "LessThan"
-        threshold                = 15
-        divide_by_instance_count = false
-      }
-
-      scale_action {
-        direction = "Decrease"
-        type      = "ChangeCount"
-        value     = "1"
-        cooldown  = "PT2M"
-      }
-    }
+    memory = null
   }
 
   tags = var.tags

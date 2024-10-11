@@ -35,6 +35,7 @@ output "private_dns_zones" {
   value = {
     servicebus = azurerm_private_dns_zone.privatelink_servicebus
     documents  = azurerm_private_dns_zone.privatelink_documents
+    postgres   = azurerm_private_dns_zone.privatelink_postgres_database_azure_com
   }
 }
 

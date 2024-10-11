@@ -14,96 +14,10 @@ on:
 
 jobs:
   static_analysis:
-    runs-on: ubuntu-latest
-
-    steps:
-      - uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
-
-      - name: init_terraform_folders
-        run: |
-          pids=()
-
-          # map value with path to domain root and path to config entry point
-          declare -A newmap
-
-          newmap[src/core]="."
-          newmap[src/.template-app]="."
-          newmap[src/.template-common]="."
-          newmap[src/aks-platform]="."
-          newmap[src/domains/cgn]="./prod"
-          newmap[src/domains/selfcare]="./prod/westeurope"
-          newmap[src/domains/citizen-auth-app]="."
-          newmap[src/domains/citizen-auth-common]="."
-          newmap[src/domains/ioweb-app]="."
-          newmap[src/domains/ioweb-common]="."
-          newmap[src/domains/elk]="."
-          newmap[src/domains/messages-app]="."
-          newmap[src/domains/messages-common]="."
-          newmap[src/domains/payments-app]="."
-          newmap[src/domains/payments-common]="."
-          newmap[src/domains/profile-app]="."
-          newmap[src/domains/profile-common]="."
-          newmap[src/domains/functions]="."
-          newmap[src/github-runner]="."
-          newmap[src/packer]="."
-
-          TAG=$(cat .terraform-version)
-
-          docker pull hashicorp/terraform:$TAG
-
-          for f in "${!newmap[@]}"; do
-            pushd "$f"
-            # get the folder name of the current module
-            module_path=$(basename "$f")
-
-            # replace '.' with empty string
-            relativePath="${newmap[$f]//./}"
-
-            if [[ -f "99_main.tf" ]]; then
-              sed -i -e 's/  backend "azurerm" {}//g' 99_main.tf # use local backend
-            elif [[ -f "main.tf" ]]; then
-              sed -i -e 's/  backend "azurerm" {}//g' main.tf # use local backend
-            elif [[ -f "$(pwd)/$relativePath/main.tf" ]]; then
-              sed -i -e '/backend "azurerm" {/,/}/d' $(pwd)/$relativePath/main.tf # use local backend
-
-              # explaination: https://github.com/pagopa/io-infra/pull/906
-
-              # pushd "_modules"
-              # modules=$(find . -type d)
-
-              # for module in modules; do
-              #   folder_name=$(basename "$folder")
-              #   echo "DEBUG - run docker in folder: $folder_name"
-              #   docker run -v $(pwd):/tmp -w /tmp hashicorp/terraform:$TAG -chdir="./$folder_name" init &
-              #   pids+=($!)
-              # done
-              # popd
-            fi
-
-            # initialize the current module (eg selfcare) from the root level of the module (eg src/domains/)
-            # this allows the import of modules present at the same level (eg tests)
-            docker run -v $(dirname $(pwd)):/tmp -w /tmp hashicorp/terraform:$TAG -chdir="$module_path/${newmap[$f]}" init &
-            pids+=($!)
-
-            popd
-
-          done
-
-          # Wait for each specific process to terminate.
-          # Instead of this loop, a single call to 'wait' would wait for all the jobs
-          # to terminate, but it would not give us their exit status.
-          #
-          for pid in "${pids[@]}"; do
-            #
-            # Waiting on a specific PID makes the wait command return with the exit
-            # status of that process. Because of the 'set -e' setting, any exit status
-            # other than zero causes the current shell to terminate with that exit
-            # status as well.
-            #
-            wait "$pid"
-          done
-
-      - name: run_pre_commit_terraform
-        run: |
-          TAG="v1.83.0@sha256:94ec10f1587b22ffae28f46ebaefc317ae2ba8eb61f6be02af6a41f33a6a57cb"
-          docker run -v $(pwd):/lint -w /lint ghcr.io/antonbabenko/pre-commit-terraform:$TAG run -a
+    uses:  pagopa/dx/.github/workflows/static_analysis.yaml@main
+    name: Terraform Validation
+    secrets: inherit
+    with:
+      terraform_version: "1.7.5"
+      pre_commit_tf_tag: "v1.96.1@sha256:9aea677ac51d67eb96b3bbb4cf93b16afdde5476f984e75e87888850d18146c9"
+      enable_modified_files_detection: false

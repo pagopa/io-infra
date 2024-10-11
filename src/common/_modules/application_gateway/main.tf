@@ -2,7 +2,7 @@
 module "app_gw" {
   source = "github.com/pagopa/terraform-azurerm-v3//app_gateway?ref=v8.31.0"
 
-  resource_group_name = var.resource_groups.external
+  resource_group_name = var.resource_group_external
   location            = var.location
   name                = try(local.nonstandard[var.location_short].agw, "${var.project}-agw-01")
   zones               = [1, 2, 3]
@@ -31,14 +31,11 @@ module "app_gw" {
     }
 
     appbackend-app = {
-      protocol     = "Https"
-      host         = null
-      port         = 443
-      ip_addresses = null # with null value use fqdns
-      fqdns = [
-        var.backend_hostnames.app_backendl1,
-        var.backend_hostnames.app_backendl2,
-      ]
+      protocol                    = "Https"
+      host                        = null
+      port                        = 443
+      ip_addresses                = null # with null value use fqdns
+      fqdns                       = var.backend_hostnames.app_backends
       probe                       = "/info"
       probe_name                  = "probe-appbackend-app"
       request_timeout             = 10
@@ -51,7 +48,8 @@ module "app_gw" {
       port         = 443
       ip_addresses = null # with null value use fqdns
       fqdns = [
-        data.azurerm_linux_web_app.session_manager.default_hostname
+        data.azurerm_linux_web_app.session_manager_03.default_hostname,
+        data.azurerm_linux_web_app.session_manager_04.default_hostname
       ]
       probe                       = "/healthcheck"
       probe_name                  = "probe-session-manager-app"
@@ -102,13 +100,11 @@ module "app_gw" {
     }
 
     firmaconio-selfcare-backend = {
-      protocol     = "Https"
-      host         = null
-      port         = 443
-      ip_addresses = null # with null value use fqdns
-      fqdns = [
-        var.backend_hostnames.firmaconio_selfcare_web_app,
-      ]
+      protocol                    = "Https"
+      host                        = null
+      port                        = 443
+      ip_addresses                = null # with null value use fqdns
+      fqdns                       = var.backend_hostnames.firmaconio_selfcare_web_app
       probe                       = "/health"
       probe_name                  = "probe-firmaconio-selfcare-backend"
       request_timeout             = 180
@@ -808,8 +804,7 @@ module "app_gw" {
   identity_ids = [azurerm_user_assigned_identity.appgateway.id]
 
   # Scaling
-  # min_capacity = var.min_capacity
-  app_gateway_min_capacity = "10"
+  app_gateway_min_capacity = var.min_capacity
   app_gateway_max_capacity = var.max_capacity
 
   alerts_enabled = var.alerts_enabled

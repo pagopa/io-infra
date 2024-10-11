@@ -104,7 +104,7 @@ locals {
       PDV_TOKENIZER_BASE_PATH = "/tokenizer/v1",
       #
 
-      INTERNAL_TEST_FISCAL_CODES = module.tests.test_users.all
+      INTERNAL_TEST_FISCAL_CODES = module.tests.users.all
     }
   }
 }
@@ -192,6 +192,10 @@ module "function_elt" {
   action = [
     {
       action_group_id    = data.azurerm_monitor_action_group.error_action_group.id
+      webhook_properties = {}
+    },
+    {
+      action_group_id    = data.azurerm_monitor_action_group.io_com_action_group.id
       webhook_properties = {}
     }
   ]

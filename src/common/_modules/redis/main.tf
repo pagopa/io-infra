@@ -1,6 +1,6 @@
 resource "azurerm_redis_cache" "common" {
   name                          = try(local.nonstandard[var.location_short].redis_common, "${var.project}-common-redis-01")
-  resource_group_name           = var.resource_group_name
+  resource_group_name           = var.resource_group_common
   location                      = var.location
   capacity                      = 2
   shard_count                   = 4
