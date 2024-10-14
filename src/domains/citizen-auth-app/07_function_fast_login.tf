@@ -201,23 +201,10 @@ module "function_fast_login_itn_autoscale" {
         minutes = 59
       }
     },
-    low_load = {
-      name    = "night"
-      minimum = 3
-      default = 10
-      start = {
-        hour    = 23
-        minutes = 00
-      }
-      end = {
-        hour    = 05
-        minutes = 00
-      }
-    },
     normal_load = {
       minimum = 3
       default = 10
-    }
+    },
     maximum = 30
   }
 
