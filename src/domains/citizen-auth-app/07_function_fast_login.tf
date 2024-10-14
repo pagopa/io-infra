@@ -220,7 +220,7 @@ module "function_fast_login_itn_autoscale" {
     },
     gate0 = {
       name    = "auth_gate0"
-      minimum = 8
+      minimum = 20
       default = 10
       start = {
         hour    = 8

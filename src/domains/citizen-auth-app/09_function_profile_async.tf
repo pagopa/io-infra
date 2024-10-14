@@ -212,7 +212,7 @@ resource "azurerm_monitor_autoscale_setting" "function_profile_async" {
 
     capacity {
       default = 10
-      minimum = 6
+      minimum = 20
       maximum = 30
     }
 
