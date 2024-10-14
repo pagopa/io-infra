@@ -105,6 +105,11 @@ locals {
       #
 
       INTERNAL_TEST_FISCAL_CODES = module.tests.users.all
+
+      # REDIS CACHE CONFIG FOR PDV IDs
+      REDIS_URL      = data.azurerm_redis_cache.ioauth_redis_common_itn.hostname
+      REDIS_PORT     = data.azurerm_redis_cache.ioauth_redis_common_itn.ssl_port
+      REDIS_PASSWORD = data.azurerm_redis_cache.ioauth_redis_common_itn.primary_access_key
     }
   }
 }
