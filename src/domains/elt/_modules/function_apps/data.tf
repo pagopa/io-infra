@@ -142,3 +142,9 @@ data "azurerm_storage_account" "function_elt_internal_storage" {
   name                = module.function_elt.storage_account_internal_function_name
   resource_group_name = var.resource_group_name
 }
+
+# Citizen-auth domain Redis Common
+data "azurerm_redis_cache" "ioauth_redis_common_itn" {
+  name                = format("%s-itn-citizen-auth-redis-std-v6", var.project)
+  resource_group_name = format("%s-itn-citizen-auth-data-rg-01", var.project)
+}
