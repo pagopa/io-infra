@@ -414,9 +414,9 @@ resource "azurerm_monitor_autoscale_setting" "function_services_autoscale" {
     name = "wallet_gate0"
 
     capacity {
-      minimum = 8
-      maximum = 30
-      default = 10
+      default = var.function_services_autoscale_default
+      minimum = var.function_services_autoscale_minimum
+      maximum = var.function_services_autoscale_maximum
     }
 
     fixed_date {
