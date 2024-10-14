@@ -220,12 +220,13 @@ module "function_profile_staging_slot" {
   count  = var.function_profile_count
   source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app_slot?ref=v8.44.0"
 
-  name                = "staging"
-  location            = local.itn_location
-  resource_group_name = azurerm_resource_group.function_profile_rg[count.index].name
-  function_app_id     = module.function_profile[count.index].id
-  app_service_plan_id = module.function_profile[count.index].app_service_plan_id
-  health_check_path   = "/api/v1/info"
+  name                         = "staging"
+  location                     = local.itn_location
+  resource_group_name          = azurerm_resource_group.function_profile_rg[count.index].name
+  function_app_id              = module.function_profile[count.index].id
+  app_service_plan_id          = module.function_profile[count.index].app_service_plan_id
+  health_check_path            = "/api/v1/info"
+  health_check_maxpingfailures = 2
 
   storage_account_name               = module.function_profile[count.index].storage_account.name
   storage_account_access_key         = module.function_profile[count.index].storage_account.primary_access_key
@@ -273,21 +274,7 @@ resource "azurerm_monitor_autoscale_setting" "function_profile" {
 
         capacity = {
           default = 10
-          minimum = 5
-          maximum = 30
-        }
-      },
-      {
-        name = "{\"name\":\"default\",\"for\":\"night\"}",
-
-        recurrence = {
-          hours   = 5
-          minutes = 0
-        }
-
-        capacity = {
-          default = 10
-          minimum = 5
+          minimum = 3
           maximum = 30
         }
       },
@@ -301,23 +288,9 @@ resource "azurerm_monitor_autoscale_setting" "function_profile" {
 
         capacity = {
           default = 10
-          minimum = 5
+          minimum = 4
           maximum = 30
         }
-      },
-      {
-        name = "night"
-
-        recurrence = {
-          hours   = 23
-          minutes = 0
-        }
-
-        capacity = {
-          default = 10
-          minimum = 5
-          maximum = 30
-        },
       }
     ]
     iterator = profile_info
@@ -442,7 +415,7 @@ resource "azurerm_monitor_autoscale_setting" "function_profile" {
   }
 
   profile {
-    name = "auth_gate0"
+    name = "wallet_gate0"
 
     fixed_date {
       timezone = "W. Europe Standard Time"
@@ -451,8 +424,8 @@ resource "azurerm_monitor_autoscale_setting" "function_profile" {
     }
 
     capacity {
-      default = 10
-      minimum = 20
+      default = 20
+      minimum = 15
       maximum = 30
     }
 

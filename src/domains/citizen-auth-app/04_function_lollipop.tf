@@ -181,7 +181,7 @@ module "function_lollipop_staging_slot_itn" {
 }
 
 resource "azurerm_monitor_autoscale_setting" "function_lollipop_itn" {
-  name                = "${replace(module.function_lollipop_itn.name, "-fn-", "-as-")}-01"
+  name                = replace(module.function_lollipop_itn.name, "-fn-", "-as-")
   resource_group_name = azurerm_resource_group.lollipop_rg_itn.name
   location            = local.itn_location
   target_resource_id  = module.function_lollipop_itn.app_service_plan_id
@@ -191,7 +191,7 @@ resource "azurerm_monitor_autoscale_setting" "function_lollipop_itn" {
 
     capacity {
       default = 10
-      minimum = 5
+      minimum = 4
       maximum = 20
     }
 
@@ -295,119 +295,6 @@ resource "azurerm_monitor_autoscale_setting" "function_lollipop_itn" {
         type      = "ChangeCount"
         value     = "1"
         cooldown  = "PT1M"
-      }
-    }
-  }
-
-  profile {
-    name = "night"
-
-    capacity {
-      default = 10
-      minimum = 3
-      maximum = 15
-    }
-
-    recurrence {
-      timezone = "W. Europe Standard Time"
-      hours    = [23]
-      minutes  = [0]
-      days = [
-        "Monday",
-        "Tuesday",
-        "Wednesday",
-        "Thursday",
-        "Friday",
-        "Saturday",
-        "Sunday"
-      ]
-    }
-
-    rule {
-      metric_trigger {
-        metric_name              = "Requests"
-        metric_resource_id       = module.function_lollipop_itn.id
-        metric_namespace         = "microsoft.web/sites"
-        time_grain               = "PT1M"
-        statistic                = "Max"
-        time_window              = "PT1M"
-        time_aggregation         = "Maximum"
-        operator                 = "GreaterThan"
-        threshold                = 3200
-        divide_by_instance_count = true
-      }
-
-      scale_action {
-        direction = "Increase"
-        type      = "ChangeCount"
-        value     = "2"
-        cooldown  = "PT1M"
-      }
-    }
-
-    rule {
-      metric_trigger {
-        metric_name              = "CpuPercentage"
-        metric_resource_id       = module.function_lollipop_itn.app_service_plan_id
-        metric_namespace         = "microsoft.web/serverfarms"
-        time_grain               = "PT1M"
-        statistic                = "Max"
-        time_window              = "PT1M"
-        time_aggregation         = "Maximum"
-        operator                 = "GreaterThan"
-        threshold                = 45
-        divide_by_instance_count = false
-      }
-
-      scale_action {
-        direction = "Increase"
-        type      = "ChangeCount"
-        value     = "3"
-        cooldown  = "PT2M"
-      }
-    }
-
-    rule {
-      metric_trigger {
-        metric_name              = "Requests"
-        metric_resource_id       = module.function_lollipop_itn.id
-        metric_namespace         = "microsoft.web/sites"
-        time_grain               = "PT1M"
-        statistic                = "Average"
-        time_window              = "PT5M"
-        time_aggregation         = "Average"
-        operator                 = "LessThan"
-        threshold                = 500
-        divide_by_instance_count = true
-      }
-
-      scale_action {
-        direction = "Decrease"
-        type      = "ChangeCount"
-        value     = "1"
-        cooldown  = "PT1M"
-      }
-    }
-
-    rule {
-      metric_trigger {
-        metric_name              = "CpuPercentage"
-        metric_resource_id       = module.function_lollipop_itn.app_service_plan_id
-        metric_namespace         = "microsoft.web/serverfarms"
-        time_grain               = "PT1M"
-        statistic                = "Average"
-        time_window              = "PT5M"
-        time_aggregation         = "Average"
-        operator                 = "LessThan"
-        threshold                = 20
-        divide_by_instance_count = false
-      }
-
-      scale_action {
-        direction = "Decrease"
-        type      = "ChangeCount"
-        value     = "1"
-        cooldown  = "PT2M"
       }
     }
   }
@@ -526,126 +413,7 @@ resource "azurerm_monitor_autoscale_setting" "function_lollipop_itn" {
   }
 
   profile {
-    name = "{\"name\":\"default\",\"for\":\"night\"}"
-
-    recurrence {
-      timezone = "W. Europe Standard Time"
-      hours    = [5]
-      minutes  = [0]
-      days = [
-        "Monday",
-        "Tuesday",
-        "Wednesday",
-        "Thursday",
-        "Friday",
-        "Saturday",
-        "Sunday"
-      ]
-    }
-
-    capacity {
-      default = 10
-      minimum = 3
-      maximum = 30
-    }
-
-    rule {
-      metric_trigger {
-        metric_name              = "Requests"
-        metric_resource_id       = module.function_lollipop_itn.id
-        metric_namespace         = "microsoft.web/sites"
-        time_grain               = "PT1M"
-        statistic                = "Max"
-        time_window              = "PT1M"
-        time_aggregation         = "Maximum"
-        operator                 = "GreaterThan"
-        threshold                = 3000
-        divide_by_instance_count = true
-      }
-
-      scale_action {
-        direction = "Increase"
-        type      = "ChangeCount"
-        value     = "2"
-        cooldown  = "PT1M"
-      }
-    }
-
-    rule {
-      metric_trigger {
-        metric_name              = "CpuPercentage"
-        metric_resource_id       = module.function_lollipop_itn.app_service_plan_id
-        metric_namespace         = "microsoft.web/serverfarms"
-        time_grain               = "PT1M"
-        statistic                = "Max"
-        time_window              = "PT1M"
-        time_aggregation         = "Maximum"
-        operator                 = "GreaterThan"
-        threshold                = 35
-        divide_by_instance_count = false
-      }
-
-      scale_action {
-        direction = "Increase"
-        type      = "ChangeCount"
-        value     = "4"
-        cooldown  = "PT1M"
-      }
-    }
-
-    rule {
-      metric_trigger {
-        metric_name              = "Requests"
-        metric_resource_id       = module.function_lollipop_itn.id
-        metric_namespace         = "microsoft.web/sites"
-        time_grain               = "PT1M"
-        statistic                = "Average"
-        time_window              = "PT5M"
-        time_aggregation         = "Average"
-        operator                 = "LessThan"
-        threshold                = 300
-        divide_by_instance_count = true
-      }
-
-      scale_action {
-        direction = "Decrease"
-        type      = "ChangeCount"
-        value     = "1"
-        cooldown  = "PT1M"
-      }
-    }
-
-    rule {
-      metric_trigger {
-        metric_name              = "CpuPercentage"
-        metric_resource_id       = module.function_lollipop_itn.app_service_plan_id
-        metric_namespace         = "microsoft.web/serverfarms"
-        time_grain               = "PT1M"
-        statistic                = "Average"
-        time_window              = "PT5M"
-        time_aggregation         = "Average"
-        operator                 = "LessThan"
-        threshold                = 15
-        divide_by_instance_count = false
-      }
-
-      scale_action {
-        direction = "Decrease"
-        type      = "ChangeCount"
-        value     = "1"
-        cooldown  = "PT2M"
-      }
-    }
-  }
-
-  profile {
-    name = "auth_gate0"
-
-    capacity {
-      default = 10
-      minimum = 20
-      maximum = 30
-    }
+    name = "wallet_gate0"
 
     fixed_date {
       timezone = "W. Europe Standard Time"
@@ -653,6 +421,12 @@ resource "azurerm_monitor_autoscale_setting" "function_lollipop_itn" {
       end      = "2024-10-15T23:30:00.000Z"
     }
 
+    capacity {
+      default = 20
+      minimum = 15
+      maximum = 30
+    }
+
     rule {
       metric_trigger {
         metric_name              = "Requests"
@@ -741,6 +515,8 @@ resource "azurerm_monitor_autoscale_setting" "function_lollipop_itn" {
       }
     }
   }
+
+  tags = var.tags
 }
 
 # ---------------------------------
