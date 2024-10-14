@@ -415,7 +415,7 @@ resource "azurerm_monitor_autoscale_setting" "function_services_autoscale" {
 
     capacity {
       default = var.function_services_autoscale_default
-      minimum = var.function_services_autoscale_minimum
+      minimum = 6
       maximum = var.function_services_autoscale_maximum
     }
 
