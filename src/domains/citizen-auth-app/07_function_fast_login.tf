@@ -217,7 +217,20 @@ module "function_fast_login_itn_autoscale" {
     normal_load = {
       minimum = 3
       default = 10
-    }
+    },
+    gate0 = {
+      name    = "auth_gate0"
+      minimum = 8
+      default = 10
+      start = {
+        hour    = 8
+        minutes = 00
+      }
+      end = {
+        hour    = 23
+        minutes = 30
+      }
+    },
     maximum = 30
   }
 
