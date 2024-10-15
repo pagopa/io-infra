@@ -21,12 +21,35 @@ variable "data_factory" {
   }))
 }
 
-variable "containers" {
-  type = list(object({
-    name                 = string
-    storage_account_name = string
-    container_name       = string
-  }))
+variable "what_to_migrate" {
+  type = object({
+    blob = optional(object(
+      {
+        enabled = bool
+        containers = optional(list(string), [])
+      }), 
+      { enabled = false }
+    )
+    table = optional(object(
+      {
+        enabled = bool
+        tables = list(string)
+      }), 
+      { enabled = false }
+    )
+  })
 
-  description = "List of containers to migrate."
+  # validate that at least one between blob and table is enabled
+  validation {
+    condition     = anytrue([var.what_to_migrate.blob.enabled, var.what_to_migrate.table.enabled])
+    error_message = "At least one between blob and table should be enabled."
+  }
+
+  # validate that if table is enabled, at least one table is specified
+  validation {
+    condition     = !(var.what_to_migrate.table.enabled && length(var.what_to_migrate.table.tables) == 0)
+    error_message = "If table is enabled, at least one table should be specified."
+  }
+
+  description = "List of databases, file shares, containers and tables to migrate."
 }
