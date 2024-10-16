@@ -24,7 +24,7 @@ To use this module, include it in your Terraform configuration and access the ou
 
 ```hcl
 module "common_names" {
-  source = "../../_modules/retrieve_common_values"
+  source = "../../_modules/common_values"
 }
 
 output "some_resource_name" {
