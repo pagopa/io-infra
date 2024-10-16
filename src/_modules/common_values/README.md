@@ -17,7 +17,7 @@ output "some_resource_name" {
 
 ## Usage
 
-To use this module, include it in your Terraform configuration and access the outputs to retrieve the informations.
+Include the module in your Terraform configuration and access the outputs to retrieve the information.
 
 ### Example Usage
 
