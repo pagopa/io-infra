@@ -3,8 +3,6 @@ resource "azurerm_data_factory_pipeline" "pipeline_container" {
   name            = "${module.naming_convention.prefix}-adf-${each.value.name}-blob-${module.naming_convention.suffix}"
   data_factory_id = var.data_factory.id
 
-  variables = each.value.variables
-
   depends_on = [
     azurerm_data_factory_custom_dataset.dataset_container
   ]
@@ -30,14 +28,14 @@ resource "azurerm_data_factory_pipeline" "pipeline_container" {
               type                     = "AzureBlobStorageReadSettings"
               recursive                = true
               enablePartitionDiscovery = false
-              wildcardFileName         = each.value.wildcard_file_name
+              wildcardFileName         = "*" # Copy all files
             }
             formatSettings = {
               type = "JsonReadSettings"
             }
           }
           sink = {
-            type = "JsonSink"
+            type = "JsonSink" # Check for binary
             storeSettings = {
               type = "AzureBlobStorageWriteSettings"
             }
@@ -49,13 +47,13 @@ resource "azurerm_data_factory_pipeline" "pipeline_container" {
         }
         inputs = [
           {
-            referenceName = each.value.input_dataset
+            referenceName = azurerm_data_factory_custom_dataset.source_dataset_container
             type          = "DatasetReference"
           }
         ]
         outputs = [
           {
-            referenceName = each.value.output_dataset
+            referenceName = azurerm_data_factory_custom_dataset.target_dataset_container
             type          = "DatasetReference"
           }
         ]

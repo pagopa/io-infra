@@ -21,6 +21,20 @@ variable "data_factory" {
   }))
 }
 
+variable "storage_accounts" {
+  type = object({
+    source = object({
+      name = string
+      resource_group_name = string
+    })
+
+    target = object({
+      name = string
+      resource_group_name = string
+    })
+  })
+}
+
 variable "what_to_migrate" {
   type = object({
     blob = optional(object(

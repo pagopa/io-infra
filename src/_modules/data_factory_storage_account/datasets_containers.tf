@@ -5,17 +5,15 @@ resource "azurerm_data_factory_custom_dataset" "dataset_container" {
   type            = "AzureBlob"
 
   linked_service {
-    name = azurerm_data_factory_linked_service_azure_blob_storage.linked_service_container[each.key].name
-    # parameters = each.value.parameters
+    name = azurerm_data_factory_linked_service_azure_blob_storage.source_linked_service_blob.name
   }
 
   type_properties_json = jsonencode({
     linkedServiceName = {
-      referenceName = azurerm_data_factory_linked_service_azure_blob_storage.linked_service_container[each.key].name
+      referenceName = azurerm_data_factory_linked_service_azure_blob_storage.source_linked_service_blob.name
       type          = "LinkedServiceReference"
     }
     type       = "AzureBlob"
-    fileName   = each.value.file_name
-    folderPath = each.value.folder_path
+    folderPath = each.value.name
   })
 }
