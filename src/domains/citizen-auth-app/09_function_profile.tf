@@ -220,12 +220,13 @@ module "function_profile_staging_slot" {
   count  = var.function_profile_count
   source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app_slot?ref=v8.44.0"
 
-  name                = "staging"
-  location            = local.itn_location
-  resource_group_name = azurerm_resource_group.function_profile_rg[count.index].name
-  function_app_id     = module.function_profile[count.index].id
-  app_service_plan_id = module.function_profile[count.index].app_service_plan_id
-  health_check_path   = "/api/v1/info"
+  name                         = "staging"
+  location                     = local.itn_location
+  resource_group_name          = azurerm_resource_group.function_profile_rg[count.index].name
+  function_app_id              = module.function_profile[count.index].id
+  app_service_plan_id          = module.function_profile[count.index].app_service_plan_id
+  health_check_path            = "/api/v1/info"
+  health_check_maxpingfailures = 2
 
   storage_account_name               = module.function_profile[count.index].storage_account.name
   storage_account_access_key         = module.function_profile[count.index].storage_account.primary_access_key
@@ -273,21 +274,7 @@ resource "azurerm_monitor_autoscale_setting" "function_profile" {
 
         capacity = {
           default = 10
-          minimum = 5
-          maximum = 30
-        }
-      },
-      {
-        name = "{\"name\":\"default\",\"for\":\"night\"}",
-
-        recurrence = {
-          hours   = 5
-          minutes = 0
-        }
-
-        capacity = {
-          default = 10
-          minimum = 5
+          minimum = 3
           maximum = 30
         }
       },
@@ -301,21 +288,7 @@ resource "azurerm_monitor_autoscale_setting" "function_profile" {
 
         capacity = {
           default = 10
-          minimum = 5
-          maximum = 30
-        }
-      },
-      {
-        name = "night"
-
-        recurrence = {
-          hours   = 23
-          minutes = 0
-        }
-
-        capacity = {
-          default = 10
-          minimum = 5
+          minimum = 4
           maximum = 30
         }
       }
@@ -437,6 +410,110 @@ resource "azurerm_monitor_autoscale_setting" "function_profile" {
           value     = "1"
           cooldown  = "PT2M"
         }
+      }
+    }
+  }
+
+  profile {
+    name = "wallet_gate0"
+
+    fixed_date {
+      timezone = "W. Europe Standard Time"
+      start    = "2024-10-15T08:00:00.000Z"
+      end      = "2024-10-15T23:30:00.000Z"
+    }
+
+    capacity {
+      default = 20
+      minimum = 15
+      maximum = 30
+    }
+
+    rule {
+      metric_trigger {
+        metric_name              = "Requests"
+        metric_resource_id       = module.function_profile[count.index].id
+        metric_namespace         = "microsoft.web/sites"
+        time_grain               = "PT1M"
+        statistic                = "Max"
+        time_window              = "PT2M"
+        time_aggregation         = "Maximum"
+        operator                 = "GreaterThan"
+        threshold                = 2000
+        divide_by_instance_count = true
+      }
+
+      scale_action {
+        direction = "Increase"
+        type      = "ChangeCount"
+        value     = "2"
+        cooldown  = "PT1M"
+      }
+    }
+
+    rule {
+      metric_trigger {
+        metric_name              = "CpuPercentage"
+        metric_resource_id       = module.function_profile[count.index].app_service_plan_id
+        metric_namespace         = "microsoft.web/serverfarms"
+        time_grain               = "PT1M"
+        statistic                = "Max"
+        time_window              = "PT1M"
+        time_aggregation         = "Maximum"
+        operator                 = "GreaterThan"
+        threshold                = 40
+        divide_by_instance_count = false
+      }
+
+      scale_action {
+        direction = "Increase"
+        type      = "ChangeCount"
+        value     = "4"
+        cooldown  = "PT1M"
+      }
+    }
+
+    rule {
+      metric_trigger {
+        metric_name              = "Requests"
+        metric_resource_id       = module.function_profile[count.index].id
+        metric_namespace         = "microsoft.web/sites"
+        time_grain               = "PT1M"
+        statistic                = "Average"
+        time_window              = "PT5M"
+        time_aggregation         = "Average"
+        operator                 = "LessThan"
+        threshold                = 200
+        divide_by_instance_count = true
+      }
+
+      scale_action {
+        direction = "Decrease"
+        type      = "ChangeCount"
+        value     = "1"
+        cooldown  = "PT1M"
+      }
+    }
+
+    rule {
+      metric_trigger {
+        metric_name              = "CpuPercentage"
+        metric_resource_id       = module.function_profile[count.index].app_service_plan_id
+        metric_namespace         = "microsoft.web/serverfarms"
+        time_grain               = "PT1M"
+        statistic                = "Average"
+        time_window              = "PT5M"
+        time_aggregation         = "Average"
+        operator                 = "LessThan"
+        threshold                = 15
+        divide_by_instance_count = false
+      }
+
+      scale_action {
+        direction = "Decrease"
+        type      = "ChangeCount"
+        value     = "1"
+        cooldown  = "PT2M"
       }
     }
   }
