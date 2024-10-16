@@ -19,7 +19,7 @@ resource "azurerm_data_factory_pipeline" "pipeline_container" {
         userProperties = []
         typeProperties = {
           source = {
-            type = "JsonSource"
+            type = "BinarySource"
             storeSettings = {
               type                     = "AzureBlobStorageReadSettings"
               recursive                = true
@@ -27,16 +27,16 @@ resource "azurerm_data_factory_pipeline" "pipeline_container" {
               wildcardFileName         = "*" # Copy all files
             }
             formatSettings = {
-              type = "JsonReadSettings"
+              type = ""
             }
           }
           sink = {
-            type = "JsonSink"
+            type = "BinarySink"
             storeSettings = {
               type = "AzureBlobStorageWriteSettings"
             }
             formatSettings = {
-              type = "JsonWriteSettings"
+              type = ""
             }
           }
           enableStaging = false
