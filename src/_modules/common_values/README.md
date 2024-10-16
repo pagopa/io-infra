@@ -2,7 +2,7 @@
 
 ## Description
 
-This Terraform module does not require any input and provides some outputs containg common information for whole io-infra repository.
+This Terraform module does not require any input and provides some outputs containg common information for whole `io-infra` repository.
 To update the module with new information add into the outputs.tf
 ```hcl
 output "some_resource_name" {
