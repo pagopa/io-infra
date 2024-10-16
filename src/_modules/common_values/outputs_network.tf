@@ -34,3 +34,32 @@ output "pep_subnets" {
     }
   }
 }
+
+output "dns_zones" {
+  description = <<EOF
+  WHAT: All common dns zones
+  EOF
+  value = {
+    io_italia = {
+      name                = "io.italia.it"
+      resource_group_name = "${local.project_weu_legacy}-rg-external"
+    }
+    io_papopa = {
+      name                = "io.pagopa.it"
+      resource_group_name = "${local.project_weu_legacy}-rg-external"
+    }
+    io_selfcare = {
+      name                = "io.selfcare.pagopa.it"
+      resource_group_name = "${local.project_weu_legacy}-rg-external"
+    }
+    firmaconio_selfcare = {
+      name                = "firmaconio.selfcare.pagopa.it"
+      resource_group_name = "${local.project_weu_legacy}-rg-external"
+    }
+    io_web = {
+      name                = "ioapp.it"
+      resource_group_name = "${local.project_weu_legacy}-rg-external"
+    }
+  }
+
+}

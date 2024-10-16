@@ -28,3 +28,7 @@ output "pep_snet" {
 output "resource_groups" {
   value = module.common_values.resource_groups
 }
+
+output "dns_zones" {
+  value = module.common_values.dns_zones
+}
