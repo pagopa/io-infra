@@ -1,9 +1,7 @@
 resource "azurerm_data_factory_pipeline" "pipeline_table" {
   for_each        = local.tables
-  name            = "${module.naming_convention.prefix}-adf-${each.value.name}-table-${module.naming_convention.suffix}"
+  name            = "${module.naming_convention.prefix}-adf-${var.storage_accounts.source.name}-${each.value.name}-table-${module.naming_convention.suffix}"
   data_factory_id = var.data_factory.id
-
-  variables = each.value.variables
 
   depends_on = [
     azurerm_data_factory_custom_dataset.dataset_table
@@ -31,19 +29,19 @@ resource "azurerm_data_factory_pipeline" "pipeline_table" {
           sink = {
             type              = "AzureTableSink"
             writeBatchSize    = 10000
-            writeBatchTimeout = "00:00:30"
+            writeBatchTimeout = "00:02:00"
           }
           enableStaging = false
         }
         inputs = [
           {
-            referenceName = each.value.input_dataset
+            referenceName = azurerm_data_factory_custom_dataset.source_dataset_table
             type          = "DatasetReference"
           }
         ]
         outputs = [
           {
-            referenceName = each.value.output_dataset
+            referenceName = azurerm_data_factory_custom_dataset.target_dataset_table
             type          = "DatasetReference"
           }
         ]
