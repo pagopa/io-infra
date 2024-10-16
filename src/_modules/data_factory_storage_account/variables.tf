@@ -11,25 +11,20 @@ variable "environment" {
   description = "Values which are used to generate resource names and location short names. They are all mandatory except for domain, which should not be used only in the case of a resource used by multiple domains."
 }
 
-variable "data_factory" {
-  description = "Data Factory information."
-  type = map(object({
-    id                  = string
-    name                = string
-    location            = string
-    resource_group_name = string
-  }))
+variable "data_factory_id" {
+  description = "Data Factory id where to create resources."
+  type        = string
 }
 
 variable "storage_accounts" {
   type = object({
     source = object({
-      name = string
+      name                = string
       resource_group_name = string
     })
 
     target = object({
-      name = string
+      name                = string
       resource_group_name = string
     })
   })
@@ -39,16 +34,16 @@ variable "what_to_migrate" {
   type = object({
     blob = optional(object(
       {
-        enabled = bool
+        enabled    = bool
         containers = optional(list(string), [])
-      }), 
+      }),
       { enabled = false }
     )
     table = optional(object(
       {
         enabled = bool
-        tables = list(string)
-      }), 
+        tables  = list(string)
+      }),
       { enabled = false }
     )
   })

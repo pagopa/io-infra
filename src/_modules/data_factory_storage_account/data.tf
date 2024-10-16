@@ -9,6 +9,6 @@ data "azurerm_storage_account" "target" {
 }
 
 data "azurerm_storage_containers" "this" {
-  for_each = var.what_to_migrate.blob.enabled && length(var.what_to_migrate.blob.containers) == 0 ? [1] : []
+  for_each           = var.what_to_migrate.blob.enabled && length(var.what_to_migrate.blob.containers) == 0 ? [1] : []
   storage_account_id = data.azurerm_storage_account.source.id
 }
