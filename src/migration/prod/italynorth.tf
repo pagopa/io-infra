@@ -1,5 +1,5 @@
 resource "azurerm_resource_group" "migration" {
-  name     = "${local.project_itn}-${local.environment.domain}-${local.environment.app_name}-rg-01"
+  name     = "${local.project_itn}-${local.environment.domain}-${local.environment.app_name}-rg-${local.environment.instance_number}"
   location = "italynorth"
 
   tags = local.tags
@@ -8,7 +8,7 @@ resource "azurerm_resource_group" "migration" {
 # Create Azure Data Factory instances
 # Enables system-assigned managed identity for secure access to resources
 resource "azurerm_data_factory" "this" {
-  name                = "${local.project_itn}-${local.environment.domain}-${local.environment.app_name}-adf-01"
+  name                = "${local.project_itn}-${local.environment.domain}-${local.environment.app_name}-adf-${local.environment.instance_number}"
   location            = "italynorth"
   resource_group_name = azurerm_resource_group.migration.name
 
@@ -20,7 +20,7 @@ resource "azurerm_data_factory" "this" {
 }
 
 resource "azurerm_data_factory_integration_runtime_azure" "azure_runtime" {
-  name            = "${local.project_itn}-${local.environment.domain}-${local.environment.app_name}-adfir-01"
+  name            = "${local.project_itn}-${local.environment.domain}-${local.environment.app_name}-adfir-${local.environment.instance_number}"
   location        = "italynorth"
   data_factory_id = azurerm_data_factory.this.id
 }
