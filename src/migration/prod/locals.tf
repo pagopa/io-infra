@@ -25,11 +25,18 @@ locals {
   }
 
   storage_accounts = [
-    {
-      source = { name = "iopweuabc", resource_group_name = "abc" }
-      target = { name = "iopitnabc", resource_group_name = "abc" }
-      blob   = { enabled = true }
-      table  = { enabled = true }
-    }
+    # Copy both containers and tables
+    # {
+    #   source = { name = "stdevbiptest1", resource_group_name = "RG-BIP-DEV-TEST" }
+    #   target = { name = "stbipdevtest1", resource_group_name = "dev-fasanorg" }
+    # },
+    #
+    # Copy only selected containers and tables
+    # {
+      #   source = { name = "stdevbiptest1", resource_group_name = "RG-BIP-DEV-TEST" }
+      #   target = { name = "stbipdevtest1", resource_group_name = "dev-fasanorg" }
+    #   blob = {enabled = true, containers = ["c1", "c2", "c3"]}
+    #   table = {enabled = true, tables = ["t1", "t2", "t3"]}
+    # }
   ]
 }

@@ -1,6 +1,6 @@
 resource "azurerm_data_factory_custom_dataset" "source_dataset_table" {
-  for_each        = local.tables
-  name            = "${module.naming_convention.prefix}-adf-${var.storage_accounts.source.name}-${each.value.name}-table-${module.naming_convention.suffix}"
+  for_each        = toset(local.tables)
+  name            = "${module.naming_convention.prefix}-adf-${var.storage_accounts.source.name}-${each.value}-table-${module.naming_convention.suffix}"
   data_factory_id = var.data_factory_id
   type            = "AzureTable"
 
@@ -9,13 +9,13 @@ resource "azurerm_data_factory_custom_dataset" "source_dataset_table" {
   }
 
   type_properties_json = jsonencode({
-    tableName = each.value.name
+    tableName = each.value
   })
 }
 
 resource "azurerm_data_factory_custom_dataset" "target_dataset_table" {
-  for_each        = local.tables
-  name            = "${module.naming_convention.prefix}-adf-${var.storage_accounts.target.name}-${each.value.name}-table-${module.naming_convention.suffix}"
+  for_each        = toset(local.tables)
+  name            = "${module.naming_convention.prefix}-adf-${var.storage_accounts.target.name}-${each.value}-table-${module.naming_convention.suffix}"
   data_factory_id = var.data_factory_id
   type            = "AzureTable"
 
@@ -24,6 +24,6 @@ resource "azurerm_data_factory_custom_dataset" "target_dataset_table" {
   }
 
   type_properties_json = jsonencode({
-    tableName = each.value.name
+    tableName = each.value
   })
 }

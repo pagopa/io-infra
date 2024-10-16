@@ -1,6 +1,6 @@
 output "pipelines" {
   value = {
-    for pipeline in concat(azurerm_data_factory_pipeline.pipeline_container, azurerm_data_factory_pipeline.pipeline_table)
+    for pipeline in merge(azurerm_data_factory_pipeline.pipeline_container, azurerm_data_factory_pipeline.pipeline_table)
     : pipeline.name => {
       id   = pipeline.id
       name = pipeline.name

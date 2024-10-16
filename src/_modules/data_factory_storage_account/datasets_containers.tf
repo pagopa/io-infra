@@ -1,6 +1,6 @@
 resource "azurerm_data_factory_custom_dataset" "source_dataset_container" {
-  for_each        = local.containers
-  name            = "${module.naming_convention.prefix}-adf-${var.storage_accounts.source.name}-${each.value.name}-blob-${module.naming_convention.suffix}"
+  for_each        = toset(local.containers)
+  name            = "${module.naming_convention.prefix}-adf-${var.storage_accounts.source.name}-${each.value}-blob-${module.naming_convention.suffix}"
   data_factory_id = var.data_factory_id
   type            = "AzureBlob"
 
@@ -14,13 +14,13 @@ resource "azurerm_data_factory_custom_dataset" "source_dataset_container" {
       type          = "LinkedServiceReference"
     }
     type       = "AzureBlob"
-    folderPath = each.value.name
+    folderPath = each.value
   })
 }
 
 resource "azurerm_data_factory_custom_dataset" "target_dataset_container" {
-  for_each        = local.containers
-  name            = "${module.naming_convention.prefix}-adf-${var.storage_accounts.target.name}-${each.value.name}-blob-${module.naming_convention.suffix}"
+  for_each        = toset(local.containers)
+  name            = "${module.naming_convention.prefix}-adf-${var.storage_accounts.target.name}-${each.value}-blob-${module.naming_convention.suffix}"
   data_factory_id = var.data_factory_id
   type            = "AzureBlob"
 
@@ -34,6 +34,6 @@ resource "azurerm_data_factory_custom_dataset" "target_dataset_container" {
       type          = "LinkedServiceReference"
     }
     type       = "AzureBlob"
-    folderPath = each.value.name
+    folderPath = each.value
   })
 }
