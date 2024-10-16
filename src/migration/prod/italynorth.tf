@@ -12,7 +12,8 @@ resource "azurerm_data_factory" "this" {
   location            = "italynorth"
   resource_group_name = azurerm_resource_group.migration.name
 
-  public_network_enabled = false
+  public_network_enabled          = false
+  managed_virtual_network_enabled = true
 
   identity {
     type = "SystemAssigned"
