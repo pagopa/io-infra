@@ -16,6 +16,11 @@ variable "data_factory_id" {
   type        = string
 }
 
+variable "data_factory_principal_id" {
+  description = "Data Factory principal id to grant access to."
+  type        = string
+}
+
 variable "storage_accounts" {
   type = object({
     source = object({
@@ -42,7 +47,7 @@ variable "what_to_migrate" {
     table = optional(object(
       {
         enabled = bool
-        tables  = list(string)
+        tables  = optional(list(string), [])
       }),
       { enabled = false }
     )
@@ -54,11 +59,5 @@ variable "what_to_migrate" {
     error_message = "At least one between blob and table should be enabled."
   }
 
-  # validate that if table is enabled, at least one table is specified
-  validation {
-    condition     = !(var.what_to_migrate.table.enabled && length(var.what_to_migrate.table.tables) == 0)
-    error_message = "If table is enabled, at least one table should be specified."
-  }
-
-  description = "List of databases, file shares, containers and tables to migrate."
+  description = "List of storage account containers and tables to migrate."
 }

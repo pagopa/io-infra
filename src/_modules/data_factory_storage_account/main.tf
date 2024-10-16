@@ -1,3 +1,12 @@
+terraform {
+  required_providers {
+    azapi = {
+      source  = "Azure/azapi"
+      version = "<= 1.15.0"
+    }
+  }
+}
+
 module "naming_convention" {
   source = "github.com/pagopa/dx//infra/modules/azure_naming_convention/?ref=main"
 

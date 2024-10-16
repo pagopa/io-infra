@@ -7,6 +7,15 @@ locals {
   project_weu_legacy = "${local.prefix}-${local.env_short}"
   secondary_project  = "${local.prefix}-${local.env_short}-${local.location_short.germanywestcentral}"
 
+  environment = {
+    prefix          = local.prefix
+    env_short       = local.env_short
+    location        = "italynorth"
+    domain          = "eng"
+    app_name        = "migitn"
+    instance_number = "01"
+  }
+
   tags = {
     CostCenter  = "TS310 - PAGAMENTI & SERVIZI"
     CreatedBy   = "Terraform"
@@ -14,4 +23,13 @@ locals {
     Owner       = "IO"
     Source      = "https://github.com/pagopa/io-infra/blob/main/src/migration/prod"
   }
+
+  storage_accounts = [
+    {
+      source = { name = "iopweuabc", resource_group_name = "abc" }
+      target = { name = "iopitnabc", resource_group_name = "abc" }
+      blob   = { enabled = true }
+      table  = { enabled = true }
+    }
+  ]
 }

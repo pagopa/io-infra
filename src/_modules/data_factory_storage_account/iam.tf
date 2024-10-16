@@ -1,6 +1,6 @@
 module "roles" {
   source       = "github.com/pagopa/dx//infra/modules/azure_role_assignments?ref=main"
-  principal_id = var.function_app.user_func_02.principal_id
+  principal_id = var.data_factory_principal_id
 
   storage_blob = var.what_to_migrate.blob.enabled ? [
     {
