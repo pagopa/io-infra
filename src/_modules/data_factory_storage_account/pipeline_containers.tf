@@ -43,13 +43,13 @@ resource "azurerm_data_factory_pipeline" "pipeline_container" {
         }
         inputs = [
           {
-            referenceName = azurerm_data_factory_custom_dataset.source_dataset_container
+            referenceName = azurerm_data_factory_custom_dataset.source_dataset_container[each.value]
             type          = "DatasetReference"
           }
         ]
         outputs = [
           {
-            referenceName = azurerm_data_factory_custom_dataset.target_dataset_container
+            referenceName = azurerm_data_factory_custom_dataset.target_dataset_container[each.value]
             type          = "DatasetReference"
           }
         ]

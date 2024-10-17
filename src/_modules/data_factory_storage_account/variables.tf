@@ -39,17 +39,17 @@ variable "what_to_migrate" {
   type = object({
     blob = optional(object(
       {
-        enabled    = bool
+        enabled    = optional(bool, true)
         containers = optional(list(string), [])
       }),
-      { enabled = false }
+      { enabled = true, containers = [] }
     )
     table = optional(object(
       {
-        enabled = bool
+        enabled = optional(bool, true)
         tables  = optional(list(string), [])
       }),
-      { enabled = false }
+      { enabled = true, tables = [] }
     )
   })
 
