@@ -28,12 +28,11 @@ repos:
             src\/(?:.*\/)?(?:_?modules)\/.*
           )$
       - id: terraform_validate
-        exclude: '(\/_?modules\/.*|\.terraform/|\.terraform.lock.hcl)' #'(\/_?modules\/.*)'
+        exclude: '(\/_?modules\/.*)'
         args:
           - --args=-json
           - --args=-no-color
           - --hook-config=--retry-once-with-cleanup=true
-          - --hook-config=--parallelism-ci-cpu-cores=1
           # - --hook-config=--parallelism-ci-cpu-cores=4
           # - --hook-config=--parallelism-limit=CPU*2
       - id: terraform_trivy
