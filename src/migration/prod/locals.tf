@@ -11,8 +11,7 @@ locals {
     prefix          = local.prefix
     env_short       = local.env_short
     location        = "italynorth"
-    domain          = "eng"
-    app_name        = "migitn"
+    app_name        = "migration"
     instance_number = "01"
   }
 
@@ -25,6 +24,16 @@ locals {
   }
 
   storage_accounts = [
+    {
+      source = {
+        name                = "stdevbiptest1"
+        resource_group_name = "RG-BIP-DEV-TEST"
+      }
+      target = {
+        name                = "stbipdevtest"
+        resource_group_name = "dev-fasanorg"
+      }
+    }
     # Copy both containers and tables
     # {
     #   source = { name = "stdevbiptest1", resource_group_name = "RG-BIP-DEV-TEST" }

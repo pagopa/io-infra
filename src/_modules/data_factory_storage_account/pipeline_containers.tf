@@ -1,7 +1,8 @@
 resource "azurerm_data_factory_pipeline" "pipeline_container" {
   for_each        = toset(local.containers)
-  name            = "${module.naming_convention.prefix}-adf-${var.storage_accounts.source.name}-${each.value}-blob-${module.naming_convention.suffix}"
+  name            = replace("${module.naming_convention.prefix}-adf-${var.storage_accounts.source.name}-${each.value}-blob-${module.naming_convention.suffix}", "-", "_")
   data_factory_id = var.data_factory_id
+  folder = "${var.storage_accounts.source.name}/blob"
 
   activities_json = jsonencode(
     [
@@ -43,13 +44,13 @@ resource "azurerm_data_factory_pipeline" "pipeline_container" {
         }
         inputs = [
           {
-            referenceName = azurerm_data_factory_custom_dataset.source_dataset_container[each.value]
+            referenceName = azurerm_data_factory_custom_dataset.source_dataset_container[each.value].name
             type          = "DatasetReference"
           }
         ]
         outputs = [
           {
-            referenceName = azurerm_data_factory_custom_dataset.target_dataset_container[each.value]
+            referenceName = azurerm_data_factory_custom_dataset.target_dataset_container[each.value].name
             type          = "DatasetReference"
           }
         ]

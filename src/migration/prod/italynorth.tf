@@ -1,5 +1,5 @@
 resource "azurerm_resource_group" "migration" {
-  name     = "${local.project_itn}-${local.environment.domain}-${local.environment.app_name}-rg-${local.environment.instance_number}"
+  name     = "${local.project_itn}-${local.environment.app_name}-rg-${local.environment.instance_number}"
   location = "italynorth"
 
   tags = local.tags
@@ -8,7 +8,7 @@ resource "azurerm_resource_group" "migration" {
 # Create Azure Data Factory instances
 # Enables system-assigned managed identity for secure access to resources
 resource "azurerm_data_factory" "this" {
-  name                = "${local.project_itn}-${local.environment.domain}-${local.environment.app_name}-adf-${local.environment.instance_number}"
+  name                = "${local.project_itn}-${local.environment.app_name}-adf-${local.environment.instance_number}"
   location            = "italynorth"
   resource_group_name = azurerm_resource_group.migration.name
 
@@ -23,7 +23,7 @@ resource "azurerm_data_factory" "this" {
 }
 
 resource "azurerm_data_factory_integration_runtime_azure" "azure_runtime" {
-  name            = "${local.project_itn}-${local.environment.domain}-${local.environment.app_name}-adfir-${local.environment.instance_number}"
+  name            = "${local.project_itn}-${local.environment.app_name}-adfir-${local.environment.instance_number}"
   location        = "italynorth"
   data_factory_id = azurerm_data_factory.this.id
 }
@@ -44,12 +44,12 @@ module "migrate_storage_accounts" {
 
   what_to_migrate = {
     blob = {
-      enabled    = each.value.blob.enabled
+      enabled    = try(each.value.blob.enabled, true)
       containers = try(each.value.blob.containers, [])
     }
 
     table = {
-      enabled = each.value.table.enabled
+      enabled = try(each.value.table.enabled, true)
       tables  = try(each.value.table.tables, [])
     }
   }

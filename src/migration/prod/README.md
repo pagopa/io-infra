@@ -34,5 +34,8 @@ No inputs.
 
 ## Outputs
 
-No outputs.
+| Name | Description |
+|------|-------------|
+| <a name="output_data_factory"></a> [data\_factory](#output\_data\_factory) | n/a |
+| <a name="output_data_factory_st_pipelines"></a> [data\_factory\_st\_pipelines](#output\_data\_factory\_st\_pipelines) | n/a |
 <!-- END_TF_DOCS -->

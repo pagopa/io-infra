@@ -3,7 +3,7 @@ resource "azurerm_data_factory_linked_service_azure_table_storage" "source_linke
   name            = "${module.naming_convention.prefix}-adf-${var.storage_accounts.source.name}-table-${module.naming_convention.suffix}"
   data_factory_id = var.data_factory_id
 
-  connection_string = data.azurerm_storage_account.source.primary_table_endpoint
+  connection_string = data.azurerm_storage_account.source.primary_connection_string
 }
 
 resource "azurerm_data_factory_linked_service_azure_table_storage" "target_linked_service_table" {
@@ -11,5 +11,5 @@ resource "azurerm_data_factory_linked_service_azure_table_storage" "target_linke
   name            = "${module.naming_convention.prefix}-adf-${var.storage_accounts.target.name}-table-${module.naming_convention.suffix}"
   data_factory_id = var.data_factory_id
 
-  connection_string = data.azurerm_storage_account.target.primary_table_endpoint
+  connection_string = data.azurerm_storage_account.target.primary_connection_string
 }

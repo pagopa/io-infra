@@ -30,3 +30,11 @@ module "roles" {
     }
   ] : []
 }
+
+# add to var.data_factory_principal_id the Storage Account Contributor role using the azurerm_role_assignment resourcew
+resource "azurerm_role_assignment" "storage_account_contributor" {
+  count                = var.what_to_migrate.table.enabled ? 1 : 0
+  scope                = data.azurerm_storage_account.target.id
+  role_definition_name = "Storage Account Contributor"
+  principal_id         = var.data_factory_principal_id
+}
