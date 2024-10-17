@@ -34,6 +34,7 @@ repos:
           - --args=-no-color
           - --hook-config=--retry-once-with-cleanup=true
           - --hook-config=--parallelism-limit=CPU*4
+          - --hook-config=--parallelism-ci-cpu-cores=4
       - id: terraform_trivy
         files: ^src/
         args:
