@@ -92,27 +92,27 @@ output "private_dns_zones" {
       name                = "privatelink.mongo.cosmos.azure.com"
       resource_group_name = "${local.project_weu_legacy}-rg-common"
     }
-    servicebus = {
+    eventhub = {
       name                = "privatelink.servicebus.windows.net"
       resource_group_name = "${local.project_weu_legacy}-rg-common"
     }
-    documents = {
+    cosmos = {
       name                = "privatelink.documents.azure.com"
       resource_group_name = "${local.project_weu_legacy}-rg-common"
     }
-    blob_core = {
+    storage_account_blob = {
       name                = "privatelink.blob.core.windows.net"
       resource_group_name = "${local.project_weu_legacy}-rg-common"
     }
-    queue_core = {
+    storage_account_queue = {
       name                = "privatelink.queue.core.windows.net"
       resource_group_name = "${local.project_weu_legacy}-rg-common"
     }
-    table_core = {
+    storage_account_table = {
       name                = "privatelink.table.core.windows.net"
       resource_group_name = "${local.project_weu_legacy}-rg-common"
     }
-    azurewebsites = {
+    app_service = {
       name                = "privatelink.azurewebsites.net"
       resource_group_name = "${local.project_weu_legacy}-rg-common"
     }
