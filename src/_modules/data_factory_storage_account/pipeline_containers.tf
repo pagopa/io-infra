@@ -1,8 +1,8 @@
 resource "azurerm_data_factory_pipeline" "pipeline_container" {
   for_each        = toset(local.containers)
-  name            = replace("${module.naming_convention.prefix}-adf-${var.storage_accounts.source.name}-${each.value}-blob-${module.naming_convention.suffix}", "-", "_")
+  name            = replace("${module.naming_convention.prefix}-adf-${var.storage_accounts.source.name}-${each.value}-blob-${module.naming_convention.suffix}", "/[$-]/", "_")
   data_factory_id = var.data_factory_id
-  folder = "${var.storage_accounts.source.name}/blob"
+  folder          = "${var.storage_accounts.source.name}/blob"
 
   activities_json = jsonencode(
     [
