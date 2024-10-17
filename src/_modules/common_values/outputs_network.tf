@@ -23,7 +23,7 @@ output "virtual_networks" {
 
 output "pep_subnets" {
   description = <<EOF
-  WHAT: All subnets into itn and weu regions
+  WHAT: Private Endpoint dedicated subnets into itn and weu regions
   EOF
   value = {
     itn = {
