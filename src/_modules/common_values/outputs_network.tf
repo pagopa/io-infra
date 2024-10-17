@@ -61,5 +61,76 @@ output "dns_zones" {
       resource_group_name = "${local.project_weu_legacy}-rg-external"
     }
   }
+}
 
+output "private_dns_zones" {
+  description = <<EOF
+  WHAT: All private dns zones
+  EOF
+  value = {
+    io_papopa = {
+      name                = "internal.io.pagopa.it"
+      resource_group_name = "${local.project_weu_legacy}-rg-internal"
+    }
+    redis = {
+      name                = "privatelink.redis.cache.windows.net"
+      resource_group_name = "${local.project_weu_legacy}-rg-common"
+    }
+    postgres = {
+      name                = "privatelink.postgres.database.azure.com"
+      resource_group_name = "${local.project_weu_legacy}-rg-common"
+    }
+    mysql = {
+      name                = "privatelink.mysql.database.azure.com"
+      resource_group_name = "${local.project_weu_legacy}-rg-common"
+    }
+    azurecr = {
+      name                = "privatelink.azurecr.io"
+      resource_group_name = "${local.project_weu_legacy}-rg-common"
+    }
+    mongo = {
+      name                = "privatelink.mongo.cosmos.azure.com"
+      resource_group_name = "${local.project_weu_legacy}-rg-common"
+    }
+    servicebus = {
+      name                = "privatelink.servicebus.windows.net"
+      resource_group_name = "${local.project_weu_legacy}-rg-common"
+    }
+    documents = {
+      name                = "privatelink.documents.azure.com"
+      resource_group_name = "${local.project_weu_legacy}-rg-common"
+    }
+    blob_core = {
+      name                = "privatelink.blob.core.windows.net"
+      resource_group_name = "${local.project_weu_legacy}-rg-common"
+    }
+    queue_core = {
+      name                = "privatelink.queue.core.windows.net"
+      resource_group_name = "${local.project_weu_legacy}-rg-common"
+    }
+    table_core = {
+      name                = "privatelink.table.core.windows.net"
+      resource_group_name = "${local.project_weu_legacy}-rg-common"
+    }
+    azurewebsites = {
+      name                = "privatelink.azurewebsites.net"
+      resource_group_name = "${local.project_weu_legacy}-rg-common"
+    }
+    search = {
+      name                = "privatelink.search.windows.net"
+      resource_group_name = "${local.project_weu_legacy}-rg-common"
+    }
+    azure_api = {
+      name                = "azure-api.net"
+      resource_group_name = "${local.project_weu_legacy}-rg-common"
+    }
+    management_azure_api = {
+      name                = "management.azure-api.net"
+      resource_group_name = "${local.project_weu_legacy}-rg-common"
+    }
+    scm_azure_api = {
+      name                = "scm.azure-api.net"
+      resource_group_name = "${local.project_weu_legacy}-rg-common"
+    }
+  }
 }
