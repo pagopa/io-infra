@@ -312,4 +312,42 @@ variable "function_profile_async_autoscale_default" {
   description = "The number of instances that are available for scaling if metrics are not available for evaluation."
   default     = 1
 }
-#############################
+################################
+# Function Public
+################################
+
+variable "function_public_autoscale_minimum" {
+  type        = number
+  description = "The minimum number of instances for this resource."
+  default     = 1
+}
+
+variable "function_public_autoscale_maximum" {
+  type        = number
+  description = "The maximum number of instances for this resource."
+  default     = 3
+}
+
+variable "function_public_autoscale_default" {
+  type        = number
+  description = "The number of instances that are available for scaling if metrics are not available for evaluation."
+  default     = 1
+}
+
+variable "cidr_subnet_fnpublic_itn" {
+  type        = list(string)
+  description = "Function Fast Login on ITN region address space."
+}
+
+variable "function_public_kind" {
+  type        = string
+  description = "App service plan kind"
+  default     = null
+}
+
+variable "function_public_sku_size" {
+  type        = string
+  description = "App service plan sku size"
+  default     = null
+}
+##################################

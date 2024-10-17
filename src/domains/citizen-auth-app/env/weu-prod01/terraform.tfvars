@@ -74,6 +74,14 @@ function_profile_async_autoscale_minimum = 3 # 3 instance to achieve redundancy 
 function_profile_async_autoscale_maximum = 30
 function_profile_async_autoscale_default = 10
 
+# Functions public ITN
+cidr_subnet_fnpublic_itn          = ["10.20.18.64/26"]
+function_public_kind              = "Linux"
+function_public_sku_size          = "P1v3"
+function_public_autoscale_minimum = 1
+function_public_autoscale_maximum = 30
+function_public_autoscale_default = 10
+
 # Session manager
 cidr_subnet_session_manager    = ["10.0.149.0/26"]
 cidr_subnet_session_manager_04 = ["10.0.149.64/26"]
