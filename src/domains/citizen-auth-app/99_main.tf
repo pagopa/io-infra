@@ -46,3 +46,7 @@ provider "helm" {
     config_path = "${var.k8s_kube_config_path_prefix}/config-${local.aks_name}"
   }
 }
+
+module "common_values" {
+  source = "../_modules/common_values"
+}

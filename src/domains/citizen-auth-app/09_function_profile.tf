@@ -415,12 +415,12 @@ resource "azurerm_monitor_autoscale_setting" "function_profile" {
   }
 
   profile {
-    name = "wallet_gate0"
+    name = "auth_${module.common_values.scaling_gate.name}"
 
     fixed_date {
-      timezone = "W. Europe Standard Time"
-      start    = "2024-10-15T08:00:00.000Z"
-      end      = "2024-10-15T23:30:00.000Z"
+      timezone = "${module.common_values.scaling_gate.timezone}"
+      start    = "${module.common_values.scaling_gate.start}"
+      end      = "${module.common_values.scaling_gate.end}"
     }
 
     capacity {
