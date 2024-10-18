@@ -201,6 +201,13 @@ module "function_fast_login_itn_autoscale" {
         minutes = 59
       }
     },
+    spot_load = {
+      name       = "auth-${module.common_values.scaling_gate.name}"
+      minimum    = 6
+      default    = 20
+      start_date = module.common_values.scaling_gate.start
+      end_date   = module.common_values.scaling_gate.end
+    },
     normal_load = {
       minimum = 3
       default = 10
