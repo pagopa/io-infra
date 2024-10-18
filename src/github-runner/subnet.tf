@@ -1,5 +1,5 @@
 module "subnet_runner" {
-  source = "github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v7.46.0"
+  source = "github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v8.50.0"
 
   name                 = "${local.project}-github-runner-snet"
   resource_group_name  = data.azurerm_resource_group.rg_common.name
