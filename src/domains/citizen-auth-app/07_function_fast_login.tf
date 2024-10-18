@@ -202,7 +202,7 @@ module "function_fast_login_itn_autoscale" {
       }
     },
     spot_load = {
-      name       = "auth-${module.common_values.scaling_gate.name}"
+      name       = "auth_${module.common_values.scaling_gate.name}"
       minimum    = 6
       default    = 20
       start_date = module.common_values.scaling_gate.start
