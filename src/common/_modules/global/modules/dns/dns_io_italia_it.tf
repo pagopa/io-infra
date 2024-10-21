@@ -29,6 +29,30 @@ resource "azurerm_dns_caa_record" "io_italia_it" {
     value = "mailto:security+caa@pagopa.it"
   }
 
+  record {
+    flags = 0
+    tag   = "issue"
+    value = "amazon.com"
+  }
+
+  record {
+    flags = 0
+    tag   = "issue"
+    value = "amazontrust.com"
+  }
+
+  record {
+    flags = 0
+    tag   = "issue"
+    value = "awstrust.com"
+  }
+
+  record {
+    flags = 0
+    tag   = "issue"
+    value = "amazonaws.com"
+  }
+
   tags = var.tags
 }
 
@@ -116,7 +140,7 @@ resource "azurerm_dns_cname_record" "sender" {
 
 # CNAME for firma con io AWS certificate
 resource "azurerm_dns_cname_record" "firmaconio" {
-  name                = "_c8fedcbb95e9a1a9970e790248192e40.firma.io.italia.it."
+  name                = "_c8fedcbb95e9a1a9970e790248192e40.firma"
   zone_name           = azurerm_dns_zone.io_italia_it.name
   resource_group_name = var.resource_groups.external
   ttl                 = var.dns_default_ttl_sec
