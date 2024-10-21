@@ -29,6 +29,30 @@ resource "azurerm_dns_caa_record" "io_italia_it" {
     value = "mailto:security+caa@pagopa.it"
   }
 
+  record {
+    flags = 0
+    tag   = "issue"
+    value = "amazon.com"
+  }
+
+  record {
+    flags = 0
+    tag   = "issue"
+    value = "amazontrust.com"
+  }
+
+  record {
+    flags = 0
+    tag   = "issue"
+    value = "awstrust.com"
+  }
+
+  record {
+    flags = 0
+    tag   = "issue"
+    value = "amazonaws.com"
+  }
+
   tags = var.tags
 }
 
