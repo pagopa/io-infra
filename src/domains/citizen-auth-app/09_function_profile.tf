@@ -415,7 +415,7 @@ resource "azurerm_monitor_autoscale_setting" "function_profile" {
   }
 
   profile {
-    name = "auth_${module.common_values.scaling_gate.name}"
+    name = module.common_values.scaling_gate.name
 
     fixed_date {
       timezone = module.common_values.scaling_gate.timezone
