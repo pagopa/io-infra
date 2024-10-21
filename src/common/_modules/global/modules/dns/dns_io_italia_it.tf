@@ -113,3 +113,12 @@ resource "azurerm_dns_cname_record" "sender" {
   ttl                 = var.dns_default_ttl_sec
   record              = "bounce.musvc.com"
 }
+
+# CNAME for firma con io AWS certificate
+resource "azurerm_dns_cname_record" "firmaconio" {
+  name                = "_c8fedcbb95e9a1a9970e790248192e40.firma.io.italia.it."
+  zone_name           = azurerm_dns_zone.io_italia_it.name
+  resource_group_name = var.resource_groups.external
+  ttl                 = var.dns_default_ttl_sec
+  record              = "_cb7cf3d1c765ecd7191512dc77371b57.djqtsrsxkq.acm-validations.aws."
+}
