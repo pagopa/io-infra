@@ -618,7 +618,7 @@ resource "azurerm_monitor_autoscale_setting" "app_messages_function_xl" {
   }
 
   profile {
-    name = "wallet_${module.common_values.scaling_gate.name}"
+    name = module.common_values.scaling_gate.name
 
     capacity {
       minimum = 6
