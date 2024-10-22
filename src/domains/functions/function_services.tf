@@ -411,7 +411,7 @@ resource "azurerm_monitor_autoscale_setting" "function_services_autoscale" {
   }
 
   profile {
-    name = "wallet_${module.common_values.scaling_gate.name}"
+    name = module.common_values.scaling_gate.name
 
     capacity {
       default = var.function_services_autoscale_default

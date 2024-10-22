@@ -121,7 +121,7 @@ module "function_assets_cdn_autoscale" {
   }
   scheduler = {
     spot_load = {
-      name       = "wallet_${module.common_values.scaling_gate.name}"
+      name       = module.common_values.scaling_gate.name
       minimum    = 3
       default    = 3
       start_date = module.common_values.scaling_gate.start
