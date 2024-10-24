@@ -249,13 +249,13 @@ resource "azurerm_private_endpoint" "staging_function_profile_async_itn_sites" {
 
 ## fn-public-itn pep
 resource "azurerm_private_endpoint" "function_public_itn_sites" {
-  name                = "${local.common_project_itn}-public-fn-pep-01"
+  name                = "${local.common_project_itn}-public-func-pep-01"
   location            = local.itn_location
   resource_group_name = azurerm_resource_group.public_rg_itn.name
   subnet_id           = data.azurerm_subnet.itn_pep.id
 
   private_service_connection {
-    name                           = "${local.common_project_itn}-public-fn-pep-01"
+    name                           = "${local.common_project_itn}-public-func-pep-01"
     private_connection_resource_id = module.function_public_itn.id
     is_manual_connection           = false
     subresource_names              = ["sites"]
@@ -272,13 +272,13 @@ resource "azurerm_private_endpoint" "function_public_itn_sites" {
 }
 
 resource "azurerm_private_endpoint" "staging_function_public_itn_sites" {
-  name                = "${local.common_project_itn}-fast-login-fn-staging-pep-01"
+  name                = "${local.common_project_itn}-fast-login-func-staging-pep-01"
   location            = local.itn_location
   resource_group_name = azurerm_resource_group.public_rg_itn.name
   subnet_id           = data.azurerm_subnet.itn_pep.id
 
   private_service_connection {
-    name                           = "${local.common_project_itn}-public-fn-staging-pep-01"
+    name                           = "${local.common_project_itn}-public-func-staging-pep-01"
     private_connection_resource_id = module.function_public_itn.id
     is_manual_connection           = false
     subresource_names              = ["sites-${module.function_public_staging_slot_itn.name}"]
