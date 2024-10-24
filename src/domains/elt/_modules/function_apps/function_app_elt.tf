@@ -54,7 +54,7 @@ locals {
       TARGETKAFKAAUTH_transactionalId     = "IO_ELT"
       TARGETKAFKAAUTH_topic               = "dummy" #Needed by KafkaProducerTopicConfig decoder
 
-      SERVICE_PREFERENCES_TOPIC_NAME              = data.azurerm_eventhub_authorization_rule.evh_ns_profiles_send_auth_rule.eventhub_name
+      SERVICE_PREFERENCES_TOPIC_NAME              = data.azurerm_eventhub_authorization_rule.evh_ns_service_preferences_send_auth_rule.eventhub_name
       SERVICE_PREFERENCES_TOPIC_CONNECTION_STRING = data.azurerm_eventhub_authorization_rule.evh_ns_service_preferences_send_auth_rule.primary_connection_string
       SERVICE_PREFERENCES_LEASES_PREFIX           = "service-preferences-003"
 
