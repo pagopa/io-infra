@@ -72,7 +72,7 @@ module "function_public_itn" {
   domain              = "auth"
   health_check_path   = "/info"
 
-  node_version    = "18"
+  node_version    = "20"
   runtime_version = "~4"
 
   app_service_plan_info = {
@@ -131,7 +131,7 @@ module "function_public_staging_slot_itn" {
   storage_account_name       = module.function_public_itn.storage_account.name
   storage_account_access_key = module.function_public_itn.storage_account.primary_access_key
 
-  node_version                             = "18"
+  node_version                             = "20"
   always_on                                = "true"
   runtime_version                          = "~4"
   application_insights_instrumentation_key = data.azurerm_application_insights.application_insights.instrumentation_key
