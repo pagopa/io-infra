@@ -50,16 +50,6 @@ data "azurerm_key_vault_secret" "app_backend_TEST_CGN_FISCAL_CODES" {
   key_vault_id = var.key_vault_common.id
 }
 
-data "azurerm_key_vault_secret" "app_backend_JWT_MIT_VOUCHER_TOKEN_PRIVATE_ES_KEY" {
-  name         = "appbackend-mitvoucher-JWT-PRIVATE-ES-KEY"
-  key_vault_id = var.key_vault_common.id
-}
-
-data "azurerm_key_vault_secret" "app_backend_JWT_MIT_VOUCHER_TOKEN_AUDIENCE" {
-  name         = "appbackend-mitvoucher-JWT-AUDIENCE"
-  key_vault_id = var.key_vault_common.id
-}
-
 data "azurerm_key_vault_secret" "app_backend_PECSERVER_TOKEN_SECRET" {
   name         = "appbackend-PECSERVER-TOKEN-SECRET"
   key_vault_id = var.key_vault_common.id
