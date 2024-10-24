@@ -2,10 +2,6 @@ data "azurerm_monitor_action_group" "quarantine_error_action_group" {
   resource_group_name = local.resource_group_name_common
   name                = "${replace(var.project, "-", "")}quarantineerror"
 }
-data "azurerm_monitor_action_group" "error_action_group" {
-  resource_group_name = local.resource_group_name_common
-  name                = "${replace(var.project, "-", "")}error"
-}
 
 resource "azurerm_monitor_diagnostic_setting" "queue_diagnostic_setting" {
   name                       = "${var.project}-fnelt-internal-st-queue-ds-01"
