@@ -180,7 +180,7 @@ module "function_fast_login_staging_slot_itn" {
 }
 
 module "function_fast_login_itn_autoscale" {
-  source = "github.com/pagopa/dx//infra/modules/azure_app_service_plan_autoscaler?ref=15236aabcaf855b5b00709bcbb9b0ec177ba71b9"
+  source = "github.com/pagopa/dx//infra/modules/azure_app_service_plan_autoscaler?ref=main"
 
   resource_group_name = azurerm_resource_group.fast_login_rg_itn.name
   target_service = {
@@ -200,6 +200,13 @@ module "function_fast_login_itn_autoscale" {
         hour    = 22
         minutes = 59
       }
+    },
+    spot_load = {
+      name       = "${module.common_values.scaling_gate.name}"
+      minimum    = 6
+      default    = 20
+      start_date = module.common_values.scaling_gate.start
+      end_date   = module.common_values.scaling_gate.end
     },
     normal_load = {
       minimum = 3

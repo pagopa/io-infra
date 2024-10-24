@@ -29,6 +29,7 @@
 | <a name="module_app_messages_function_xl"></a> [app\_messages\_function\_xl](#module\_app\_messages\_function\_xl) | github.com/pagopa/terraform-azurerm-v3//function_app | v8.27.0 |
 | <a name="module_app_messages_snet"></a> [app\_messages\_snet](#module\_app\_messages\_snet) | github.com/pagopa/terraform-azurerm-v3//subnet | v8.27.0 |
 | <a name="module_app_messages_snet_xl"></a> [app\_messages\_snet\_xl](#module\_app\_messages\_snet\_xl) | github.com/pagopa/terraform-azurerm-v3//subnet | v8.27.0 |
+| <a name="module_common_values"></a> [common\_values](#module\_common\_values) | ../../_modules/common_values | n/a |
 | <a name="module_event_hub"></a> [event\_hub](#module\_event\_hub) | github.com/pagopa/terraform-azurerm-v3//eventhub | v8.27.0 |
 | <a name="module_function_messages_cqrs"></a> [function\_messages\_cqrs](#module\_function\_messages\_cqrs) | github.com/pagopa/terraform-azurerm-v3//function_app | v8.27.0 |
 | <a name="module_function_messages_cqrs_snet"></a> [function\_messages\_cqrs\_snet](#module\_function\_messages\_cqrs\_snet) | github.com/pagopa/terraform-azurerm-v3//subnet | v8.27.0 |
