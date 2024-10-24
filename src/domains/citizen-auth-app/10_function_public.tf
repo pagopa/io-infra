@@ -48,12 +48,6 @@ module "function_public_snet_itn" {
   virtual_network_name                      = data.azurerm_virtual_network.common_vnet_italy_north.name
   private_endpoint_network_policies_enabled = true
 
-  service_endpoints = [
-    "Microsoft.Web",
-    "Microsoft.AzureCosmosDB",
-    "Microsoft.Storage",
-  ]
-
   delegation = {
     name = "default"
     service_delegation = {
@@ -104,7 +98,6 @@ module "function_public_itn" {
   subnet_id = module.function_public_snet_itn.id
 
   allowed_subnets = [
-    data.azurerm_subnet.apim_v2_snet.id,
   ]
 
   # Action groups for alerts
@@ -144,7 +137,6 @@ module "function_public_staging_slot_itn" {
 
   allowed_subnets = [
     data.azurerm_subnet.azdoa_snet[0].id,
-    data.azurerm_subnet.apim_v2_snet.id,
   ]
 
   tags = var.tags
