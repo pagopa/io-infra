@@ -618,18 +618,18 @@ resource "azurerm_monitor_autoscale_setting" "app_messages_function_xl" {
   }
 
   profile {
-    name = "wallet_gate0"
+    name = module.common_values.scaling_gate.name
 
     capacity {
-      minimum = 8
+      minimum = 6
       maximum = 30
       default = 10
     }
 
     fixed_date {
-      timezone = "W. Europe Standard Time"
-      start    = "2024-10-15T08:00:00.000Z"
-      end      = "2024-10-15T23:30:00.000Z"
+      timezone = module.common_values.scaling_gate.timezone
+      start    = module.common_values.scaling_gate.start
+      end      = module.common_values.scaling_gate.end
     }
 
     rule {
@@ -720,14 +720,6 @@ resource "azurerm_monitor_autoscale_setting" "app_messages_function_xl" {
       }
     }
   }
-
-  # profile {
-  #   name = "{\"name\":\"default\",\"for\":\"gate0\"}"
-
-  #   capacity {
-
-  #   }
-  # }
 
   tags = var.tags
 }

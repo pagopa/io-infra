@@ -36,7 +36,7 @@ locals {
 
 # Subnet to host fn cdn assets function
 module "function_assets_cdn_snet" {
-  source                                    = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v7.67.1"
+  source                                    = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v8.52.0"
   name                                      = format("%s-assets-cdn-fn-snet", local.project)
   address_prefixes                          = var.cidr_subnet_fncdnassets
   resource_group_name                       = local.rg_common_name
@@ -59,7 +59,7 @@ module "function_assets_cdn_snet" {
 }
 
 module "function_assets_cdn" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app?ref=v7.67.1"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app?ref=v8.52.0"
 
   resource_group_name = local.rg_assets_cdn_name
   name                = "${local.project}-assets-cdn-fn"
@@ -89,7 +89,7 @@ module "function_assets_cdn" {
 
 module "function_assets_cdn_staging_slot" {
   count  = var.function_assets_cdn_sku_tier == "PremiumV3" ? 1 : 0
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app_slot?ref=v7.67.1"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app_slot?ref=v8.52.0"
 
   name                = "staging"
   location            = var.location
@@ -113,110 +113,58 @@ module "function_assets_cdn_staging_slot" {
   tags = var.tags
 }
 
-resource "azurerm_monitor_autoscale_setting" "function_assets_cdn" {
-  count               = var.function_assets_cdn_sku_tier == "PremiumV3" ? 1 : 0
-  name                = format("%s-autoscale", module.function_assets_cdn.name)
-  resource_group_name = data.azurerm_resource_group.backend_messages_rg.name
-  location            = var.location
-  target_resource_id  = module.function_assets_cdn.app_service_plan_id
-
-  profile {
-    name = "default"
-
-    capacity {
-      default = var.function_assets_cdn_autoscale_default
-      minimum = var.function_assets_cdn_autoscale_minimum
-      maximum = var.function_assets_cdn_autoscale_maximum
-    }
-
-    rule {
-      metric_trigger {
-        metric_name              = "Requests"
-        metric_resource_id       = module.function_assets_cdn.id
-        metric_namespace         = "microsoft.web/sites"
-        time_grain               = "PT1M"
-        statistic                = "Average"
-        time_window              = "PT5M"
-        time_aggregation         = "Average"
-        operator                 = "GreaterThan"
-        threshold                = 3500
-        divide_by_instance_count = false
-      }
-
-      scale_action {
-        direction = "Increase"
-        type      = "ChangeCount"
-        value     = "2"
-        cooldown  = "PT5M"
-      }
-    }
-
-    rule {
-      metric_trigger {
-        metric_name              = "CpuPercentage"
-        metric_resource_id       = module.function_assets_cdn.app_service_plan_id
-        metric_namespace         = "microsoft.web/serverfarms"
-        time_grain               = "PT1M"
-        statistic                = "Average"
-        time_window              = "PT5M"
-        time_aggregation         = "Average"
-        operator                 = "GreaterThan"
-        threshold                = 60
-        divide_by_instance_count = false
-      }
-
-      scale_action {
-        direction = "Increase"
-        type      = "ChangeCount"
-        value     = "2"
-        cooldown  = "PT5M"
-      }
-    }
-
-    rule {
-      metric_trigger {
-        metric_name              = "Requests"
-        metric_resource_id       = module.function_assets_cdn.id
-        metric_namespace         = "microsoft.web/sites"
-        time_grain               = "PT1M"
-        statistic                = "Average"
-        time_window              = "PT5M"
-        time_aggregation         = "Average"
-        operator                 = "LessThan"
-        threshold                = 2500
-        divide_by_instance_count = false
-      }
-
-      scale_action {
-        direction = "Decrease"
-        type      = "ChangeCount"
-        value     = "1"
-        cooldown  = "PT20M"
-      }
-    }
-
-    rule {
-      metric_trigger {
-        metric_name              = "CpuPercentage"
-        metric_resource_id       = module.function_assets_cdn.app_service_plan_id
-        metric_namespace         = "microsoft.web/serverfarms"
-        time_grain               = "PT1M"
-        statistic                = "Average"
-        time_window              = "PT5M"
-        time_aggregation         = "Average"
-        operator                 = "LessThan"
-        threshold                = 30
-        divide_by_instance_count = false
-      }
-
-      scale_action {
-        direction = "Decrease"
-        type      = "ChangeCount"
-        value     = "1"
-        cooldown  = "PT20M"
-      }
-    }
+module "function_assets_cdn_autoscale" {
+  source              = "github.com/pagopa/dx//infra/modules/azure_app_service_plan_autoscaler?ref=main"
+  resource_group_name = local.rg_assets_cdn_name
+  target_service = {
+    function_app_name = module.function_assets_cdn.name
   }
+  scheduler = {
+    spot_load = {
+      name       = module.common_values.scaling_gate.name
+      minimum    = 3
+      default    = 3
+      start_date = module.common_values.scaling_gate.start
+      end_date   = module.common_values.scaling_gate.end
+    },
+    normal_load = {
+      minimum = 2
+      default = 2
+    },
+    maximum = 10
+  }
+  scale_metrics = {
+    requests = {
+      statistic_increase        = "Max"
+      time_window_increase      = 1
+      time_aggregation          = "Maximum"
+      upper_threshold           = 2500
+      increase_by               = 2
+      cooldown_increase         = 1
+      statistic_decrease        = "Average"
+      time_window_decrease      = 5
+      time_aggregation_decrease = "Average"
+      lower_threshold           = 200
+      decrease_by               = 1
+      cooldown_decrease         = 1
+    }
+    cpu = {
+      upper_threshold           = 35
+      lower_threshold           = 15
+      increase_by               = 3
+      decrease_by               = 1
+      cooldown_increase         = 1
+      cooldown_decrease         = 20
+      statistic_increase        = "Max"
+      statistic_decrease        = "Average"
+      time_aggregation_increase = "Maximum"
+      time_aggregation_decrease = "Average"
+      time_window_increase      = 1
+      time_window_decrease      = 5
+    }
+    memory = null
+  }
+  tags = var.tags
 }
 
 ## Alerts

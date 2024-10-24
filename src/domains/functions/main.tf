@@ -2,7 +2,7 @@ terraform {
   required_providers {
     azurerm = {
       source  = "hashicorp/azurerm"
-      version = "<= 3.97.1"
+      version = "<= 3.116.0"
     }
     azuread = {
       source  = "hashicorp/azuread"
@@ -17,3 +17,6 @@ provider "azurerm" {
   features {}
 }
 
+module "common_values" {
+  source = "../../_modules/common_values"
+}
