@@ -1,6 +1,7 @@
 name: Continuous Integration on prod functions
 
 on:
+  merge_group:
   workflow_dispatch:
   pull_request:
     types:

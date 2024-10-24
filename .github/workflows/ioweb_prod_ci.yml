@@ -1,6 +1,7 @@
 name: Continuous Integration on prod ioweb
 
 on:
+  merge_group:
   workflow_dispatch:
   pull_request:
     types:

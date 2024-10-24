@@ -5,6 +5,7 @@ name: PR - Common TF Validation
 # It is responsible for managing changes related to "common" infrastructure,
 
 on:
+  merge_group:
   workflow_dispatch:
   pull_request:
     types:

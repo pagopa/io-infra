@@ -5,6 +5,7 @@ name: PR - Core TF Validation
 # It is responsible for managing changes related to "core" infrastructure,
 
 on:
+  merge_group:
   workflow_dispatch:
   pull_request:
     types:
