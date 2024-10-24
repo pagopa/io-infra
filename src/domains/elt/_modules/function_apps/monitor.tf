@@ -1,8 +1,3 @@
-data "azurerm_monitor_action_group" "quarantine_error_action_group" {
-  resource_group_name = local.resource_group_name_common
-  name                = "${replace(var.project, "-", "")}quarantineerror"
-}
-
 resource "azurerm_monitor_diagnostic_setting" "queue_diagnostic_setting" {
   name                       = "${var.project}-fnelt-internal-st-queue-ds-01"
   target_resource_id         = "${data.azurerm_storage_account.function_elt_internal_storage.id}/queueServices/default"
