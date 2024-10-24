@@ -104,7 +104,6 @@ module "function_public_itn" {
   subnet_id = module.function_public_snet_itn.id
 
   allowed_subnets = [
-    module.function_public_snet_itn.id,
     data.azurerm_subnet.apim_v2_snet.id,
   ]
 
@@ -144,7 +143,6 @@ module "function_public_staging_slot_itn" {
   subnet_id = module.function_public_snet_itn.id
 
   allowed_subnets = [
-    module.function_public_snet_itn.id,
     data.azurerm_subnet.azdoa_snet[0].id,
     data.azurerm_subnet.apim_v2_snet.id,
   ]
