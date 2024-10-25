@@ -111,36 +111,3 @@ variable "cidr_subnet_redis_common_itn" {
   type        = list(string)
   description = "Redis Common address space."
 }
-
-################################
-# Function Shared
-################################
-
-variable "cidr_subnet_shared_1" {
-  type = list(string)
-}
-
-variable "plan_shared_1_kind" {
-  type        = string
-  description = "App service plan kind"
-  default     = null
-}
-
-variable "plan_shared_1_sku_tier" {
-  type        = string
-  description = "App service plan sku tier"
-  default     = null
-}
-
-variable "plan_shared_1_sku_size" {
-  type        = string
-  description = "App service plan sku size"
-  default     = null
-}
-
-variable "plan_shared_1_sku_capacity" {
-  description = "Shared functions app plan capacity"
-  type        = number
-  default     = 1
-}
-###########################

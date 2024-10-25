@@ -74,6 +74,12 @@ function_profile_async_autoscale_minimum = 3 # 3 instance to achieve redundancy 
 function_profile_async_autoscale_maximum = 30
 function_profile_async_autoscale_default = 10
 
+# shared plan
+cidr_subnet_shared_1   = ["10.20.18.64/25"]
+plan_shared_1_kind     = "Linux"
+plan_shared_1_sku_tier = "PremiumV3"
+plan_shared_1_sku_size = "P1v3"
+
 # Functions public ITN
 function_public_autoscale_minimum = 1
 function_public_autoscale_maximum = 30

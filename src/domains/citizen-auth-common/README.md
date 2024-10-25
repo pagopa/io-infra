@@ -33,7 +33,6 @@
 | <a name="module_lollipop_assertions_storage_customer_managed_key"></a> [lollipop\_assertions\_storage\_customer\_managed\_key](#module\_lollipop\_assertions\_storage\_customer\_managed\_key) | git::https://github.com/pagopa/terraform-azurerm-v3//storage_account_customer_managed_key | v8.12.0 |
 | <a name="module_redis_common_itn"></a> [redis\_common\_itn](#module\_redis\_common\_itn) | git::https://github.com/pagopa/terraform-azurerm-v3.git//redis_cache | v8.44.1 |
 | <a name="module_redis_common_snet_itn"></a> [redis\_common\_snet\_itn](#module\_redis\_common\_snet\_itn) | git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet | v8.44.1 |
-| <a name="module_shared_snet_itn"></a> [shared\_snet\_itn](#module\_shared\_snet\_itn) | git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet | v8.44.1 |
 
 ## Resources
 
@@ -53,7 +52,6 @@
 | [azurerm_api_management_subscription.pagopa_v2](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_subscription) | resource |
 | [azurerm_api_management_user.fast_login_operation_user_v2](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_user) | resource |
 | [azurerm_api_management_user.pagopa_user_v2](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_user) | resource |
-| [azurerm_app_service_plan.shared_plan_itn](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/app_service_plan) | resource |
 | [azurerm_cosmosdb_sql_container.lollipop_pubkeys](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/cosmosdb_sql_container) | resource |
 | [azurerm_key_vault_access_policy.access_policy_io_infra_cd](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_access_policy) | resource |
 | [azurerm_key_vault_access_policy.access_policy_io_infra_ci](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_access_policy) | resource |
@@ -75,7 +73,6 @@
 | [azurerm_resource_group.data_rg](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/resource_group) | resource |
 | [azurerm_resource_group.data_rg_itn](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/resource_group) | resource |
 | [azurerm_resource_group.sec_rg](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/resource_group) | resource |
-| [azurerm_resource_group.shared_rg_itn](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/resource_group) | resource |
 | [azurerm_storage_container.immutable_lv_audit_logs_storage_logs](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/storage_container) | resource |
 | [azurerm_storage_container.lollipop_assertions_storage_assertions](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/storage_container) | resource |
 | [azurerm_storage_management_policy.immutable_lv_audit_logs_storage_management_policy](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/storage_management_policy) | resource |
@@ -123,7 +120,6 @@
 |------|-------------|------|---------|:--------:|
 | <a name="input_application_insights_name"></a> [application\_insights\_name](#input\_application\_insights\_name) | Specifies the name of the Application Insights. | `string` | n/a | yes |
 | <a name="input_cidr_subnet_redis_common_itn"></a> [cidr\_subnet\_redis\_common\_itn](#input\_cidr\_subnet\_redis\_common\_itn) | Redis Common address space. | `list(string)` | n/a | yes |
-| <a name="input_cidr_subnet_shared_1"></a> [cidr\_subnet\_shared\_1](#input\_cidr\_subnet\_shared\_1) | n/a | `list(string)` | n/a | yes |
 | <a name="input_citizen_auth_database"></a> [citizen\_auth\_database](#input\_citizen\_auth\_database) | n/a | <pre>map(<br>    object({<br>      max_throughput = number<br>      ttl            = number<br>    })<br>  )</pre> | n/a | yes |
 | <a name="input_domain"></a> [domain](#input\_domain) | n/a | `string` | n/a | yes |
 | <a name="input_enable_azdoa"></a> [enable\_azdoa](#input\_enable\_azdoa) | Specifies Azure Devops Agent enabling | `bool` | `true` | no |
@@ -136,10 +132,6 @@
 | <a name="input_log_analytics_workspace_name"></a> [log\_analytics\_workspace\_name](#input\_log\_analytics\_workspace\_name) | Specifies the name of the Log Analytics Workspace. | `string` | n/a | yes |
 | <a name="input_log_analytics_workspace_resource_group_name"></a> [log\_analytics\_workspace\_resource\_group\_name](#input\_log\_analytics\_workspace\_resource\_group\_name) | The name of the resource group in which the Log Analytics workspace is located in. | `string` | n/a | yes |
 | <a name="input_monitor_resource_group_name"></a> [monitor\_resource\_group\_name](#input\_monitor\_resource\_group\_name) | Monitor resource group name | `string` | n/a | yes |
-| <a name="input_plan_shared_1_kind"></a> [plan\_shared\_1\_kind](#input\_plan\_shared\_1\_kind) | App service plan kind | `string` | `null` | no |
-| <a name="input_plan_shared_1_sku_capacity"></a> [plan\_shared\_1\_sku\_capacity](#input\_plan\_shared\_1\_sku\_capacity) | Shared functions app plan capacity | `number` | `1` | no |
-| <a name="input_plan_shared_1_sku_size"></a> [plan\_shared\_1\_sku\_size](#input\_plan\_shared\_1\_sku\_size) | App service plan sku size | `string` | `null` | no |
-| <a name="input_plan_shared_1_sku_tier"></a> [plan\_shared\_1\_sku\_tier](#input\_plan\_shared\_1\_sku\_tier) | App service plan sku tier | `string` | `null` | no |
 | <a name="input_prefix"></a> [prefix](#input\_prefix) | n/a | `string` | n/a | yes |
 | <a name="input_tags"></a> [tags](#input\_tags) | n/a | `map(any)` | <pre>{<br>  "CreatedBy": "Terraform"<br>}</pre> | no |
 
