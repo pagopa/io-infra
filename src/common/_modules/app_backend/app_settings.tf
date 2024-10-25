@@ -56,7 +56,6 @@ locals {
     CGN_API_BASE_PATH                 = "/api/v1/cgn"
     CGN_OPERATOR_SEARCH_API_BASE_PATH = "/api/v1/cgn/operator-search"
     EUCOVIDCERT_API_BASE_PATH         = "/api/v1/eucovidcert"
-    MIT_VOUCHER_API_BASE_PATH         = "/api/v1/mitvoucher/auth"
     IO_SIGN_API_BASE_PATH             = "/api/v1/sign"
     LOLLIPOP_API_BASE_PATH            = "/api/v1"
     TRIAL_SYSTEM_API_BASE_PATH        = "/api/v1"
@@ -85,12 +84,6 @@ locals {
     MYPORTAL_BASE_PATH             = "/myportal/api/v1"
     ALLOW_MYPORTAL_IP_SOURCE_RANGE = data.azurerm_key_vault_secret.app_backend_ALLOW_MYPORTAL_IP_SOURCE_RANGE.value
 
-    // MIT_VOUCHER JWT
-    JWT_MIT_VOUCHER_TOKEN_ISSUER         = "app-backend.io.italia.it"
-    JWT_MIT_VOUCHER_TOKEN_EXPIRATION     = 1200
-    JWT_MIT_VOUCHER_TOKEN_PRIVATE_ES_KEY = data.azurerm_key_vault_secret.app_backend_JWT_MIT_VOUCHER_TOKEN_PRIVATE_ES_KEY.value
-    JWT_MIT_VOUCHER_TOKEN_AUDIENCE       = data.azurerm_key_vault_secret.app_backend_JWT_MIT_VOUCHER_TOKEN_AUDIENCE.value
-
     // BPD
     JWT_SUPPORT_TOKEN_PRIVATE_RSA_KEY = data.azurerm_key_vault_secret.app_backend_JWT_SUPPORT_TOKEN_PRIVATE_RSA_KEY.value
 
@@ -107,7 +100,6 @@ locals {
     FF_BONUS_ENABLED           = 1
     FF_CGN_ENABLED             = 1
     FF_EUCOVIDCERT_ENABLED     = 1
-    FF_MIT_VOUCHER_ENABLED     = 1
     FF_IO_SIGN_ENABLED         = 1
     FF_IO_WALLET_ENABLED       = 1
     FF_IO_WALLET_TRIAL_ENABLED = 1
