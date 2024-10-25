@@ -12,10 +12,12 @@ locals {
     "51.144.56.176/28",
   ]
 
-  event_hub_connection = "${format("%s-evh-ns", var.project)}.servicebus.windows.net:9093"
+  event_hub_connection      = "${format("%s-evh-ns", var.project)}.servicebus.windows.net:9093"
+  auth_event_hub_connection = "${format("%s-itn-auth-elt-evhns-01", var.project)}.servicebus.windows.net:9093"
 
   pn_service_id = "01G40DWQGKY5GRWSNM4303VNRP"
 
   service_preferences_failure_queue_name = "pdnd-io-cosmosdb-service-preferences-failure"
   profiles_failure_queue_name            = "pdnd-io-cosmosdb-profiles-failure"
+  profile_deletion_failure_queue_name    = "pdnd-io-cosmosdb-profile-deletion-failure"
 }

@@ -8,6 +8,11 @@ data "azurerm_monitor_action_group" "error_action_group" {
   resource_group_name = local.resource_group_name_common
 }
 
+data "azurerm_monitor_action_group" "quarantine_error_action_group" {
+  name                = "${replace(var.project, "-", "")}quarantineerror"
+  resource_group_name = local.resource_group_name_common
+}
+
 data "azurerm_monitor_action_group" "io_com_action_group" {
   name                = "io-p-com-error-ag-01"
   resource_group_name = "io-p-itn-msgs-rg-01"
@@ -107,6 +112,37 @@ data "azurerm_eventhub_authorization_rule" "evh_ns_io_cosmos_profiles_fn" {
   eventhub_name       = "io-cosmosdb-profiles"
   resource_group_name = "${var.project}-evt-rg"
 }
+
+// ---------------------
+// A&I Event Hub Topic
+// ---------------------
+
+data "azurerm_eventhub_authorization_rule" "evh_ns_service_preferences_send_auth_rule" {
+  name                = "io-fn-elt"
+  namespace_name      = "${var.project}-itn-auth-elt-evhns-01"
+  eventhub_name       = "${var.project}-itn-auth-elt-service-preferences-01"
+  resource_group_name = "${var.project}-itn-auth-elt-rg-01"
+}
+
+data "azurerm_eventhub_authorization_rule" "evh_ns_profiles_send_auth_rule" {
+  name                = "io-fn-elt"
+  namespace_name      = "${var.project}-itn-auth-elt-evhns-01"
+  eventhub_name       = "${var.project}-itn-auth-elt-profiles-01"
+  resource_group_name = "${var.project}-itn-auth-elt-rg-01"
+}
+
+
+data "azurerm_eventhub_authorization_rule" "evh_ns_profile_deletion_send_auth_rule" {
+  name                = "io-fn-elt"
+  namespace_name      = "${var.project}-itn-auth-elt-evhns-01"
+  eventhub_name       = "${var.project}-itn-auth-elt-profile-deletion-01"
+  resource_group_name = "${var.project}-itn-auth-elt-rg-01"
+}
+
+// ---------------------
+// /end A&I Event Hub Topic
+// ---------------------
+
 
 data "azurerm_key_vault" "kv_common" {
   name                = "${var.project}-kv-common"

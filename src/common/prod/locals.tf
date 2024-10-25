@@ -75,7 +75,7 @@ locals {
     eucovidcert          = data.azurerm_linux_function_app.eucovidcert.default_hostname
     cgn                  = data.azurerm_linux_function_app.function_cgn.default_hostname
     iosign               = data.azurerm_linux_function_app.io_sign_user.default_hostname
-    cgnonboarding        = "cgnonboardingportal-p-op.azurewebsites.net"
+    cgnonboarding        = "io-p-itn-cgn-search-func-01.azurewebsites.net"
     trial_system_api     = "ts-p-itn-api-func-01.azurewebsites.net"
     trial_system_apim    = data.azurerm_api_management.trial_system.gateway_url
     iowallet             = data.azurerm_linux_function_app.wallet_user.default_hostname
