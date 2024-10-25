@@ -54,3 +54,9 @@ module "vnet_peering_itn" {
     }
   }
 }
+
+module "custom_roles" {
+  source = "../_modules/custom_roles"
+
+  subscription_id = data.azurerm_subscription.current.id
+}
