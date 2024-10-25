@@ -8,7 +8,6 @@ resource "azurerm_role_definition" "pagopa_opex_contributor" {
       "Microsoft.Portal/dashboards/write",
       "Microsoft.Portal/dashboards/read",
       "Microsoft.Portal/dashboards/delete",
-      "Microsoft.Portal/dashboards/sharedDashboard/principalAssignments/write",
     ]
     not_actions = []
   }
