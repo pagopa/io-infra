@@ -8,6 +8,11 @@ data "azurerm_monitor_action_group" "error_action_group" {
   resource_group_name = local.resource_group_name_common
 }
 
+data "azurerm_monitor_action_group" "quarantine_error_action_group" {
+  name                = "${replace(var.project, "-", "")}quarantineerror"
+  resource_group_name = local.resource_group_name_common
+}
+
 data "azurerm_monitor_action_group" "io_com_action_group" {
   name                = "io-p-com-error-ag-01"
   resource_group_name = "io-p-itn-msgs-rg-01"
