@@ -333,21 +333,4 @@ variable "function_public_autoscale_default" {
   description = "The number of instances that are available for scaling if metrics are not available for evaluation."
   default     = 1
 }
-
-variable "cidr_subnet_fnpublic_itn" {
-  type        = list(string)
-  description = "Function Fast Login on ITN region address space."
-}
-
-variable "function_public_kind" {
-  type        = string
-  description = "App service plan kind"
-  default     = null
-}
-
-variable "function_public_sku_size" {
-  type        = string
-  description = "App service plan sku size"
-  default     = null
-}
 ##################################

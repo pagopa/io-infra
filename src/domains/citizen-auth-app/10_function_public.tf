@@ -32,35 +32,27 @@ locals {
   }
 }
 
-resource "azurerm_resource_group" "public_rg_itn" {
-  name     = format("%s-public-rg-01", local.short_project_itn)
-  location = local.itn_location
-
-  tags = var.tags
+# shared plan data
+data "azurerm_resource_group" "shared_rg_itn" {
+  name = format("%s-shared-rg-01", local.common_project_itn)
 }
 
-
-module "function_public_snet_itn" {
-  source                                    = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v8.44.0"
-  name                                      = format("%s-public-snet-01", local.short_project_itn)
-  address_prefixes                          = var.cidr_subnet_fnpublic_itn
-  resource_group_name                       = data.azurerm_virtual_network.common_vnet_italy_north.resource_group_name
-  virtual_network_name                      = data.azurerm_virtual_network.common_vnet_italy_north.name
-  private_endpoint_network_policies_enabled = true
-
-  delegation = {
-    name = "default"
-    service_delegation = {
-      name    = "Microsoft.Web/serverFarms"
-      actions = ["Microsoft.Network/virtualNetworks/subnets/action"]
-    }
-  }
+data "azurerm_app_service_plan" "shared_plan_itn" {
+  name                = format("%s-shared-asp-01", local.common_project_itn)
+  resource_group_name = data.azurerm_resource_group.shared_rg_itn.name
 }
+
+data "azurerm_subnet" "shared_snet_itn" {
+  name                 = format("%s-shared-snet-01", local.common_project_itn)
+  virtual_network_name = data.azurerm_virtual_network.common_vnet_italy_north.name
+  resource_group_name  = data.azurerm_resource_group.italy_north_common_rg.name
+}
+#
 
 module "function_public_itn" {
   source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app?ref=v8.44.0"
 
-  resource_group_name = azurerm_resource_group.public_rg_itn.name
+  resource_group_name = data.azurerm_resource_group.shared_rg_itn.name
   name                = format("%s-public-func-01", local.short_project_itn)
   location            = local.itn_location
   domain              = "auth"
@@ -69,13 +61,7 @@ module "function_public_itn" {
   node_version    = "20"
   runtime_version = "~4"
 
-  app_service_plan_info = {
-    kind                         = var.function_public_kind
-    sku_size                     = var.function_public_sku_size
-    maximum_elastic_worker_count = 0
-    worker_count                 = null
-    zone_balancing_enabled       = true
-  }
+  app_service_plan_id = data.azurerm_app_service_plan.shared_plan_itn.id
 
   always_on                                = "true"
   application_insights_instrumentation_key = data.azurerm_application_insights.application_insights.instrumentation_key
@@ -95,7 +81,7 @@ module "function_public_itn" {
     "blobs_retention_days"       = 0,
   }
 
-  subnet_id = module.function_public_snet_itn.id
+  subnet_id = data.azurerm_subnet.shared_snet_itn.id
 
   allowed_subnets = [
   ]
@@ -116,7 +102,7 @@ module "function_public_staging_slot_itn" {
 
   name                = "staging"
   location            = local.itn_location
-  resource_group_name = azurerm_resource_group.public_rg_itn.name
+  resource_group_name = data.azurerm_resource_group.shared_rg_itn.name
   function_app_id     = module.function_public_itn.id
   app_service_plan_id = module.function_public_itn.app_service_plan_id
   health_check_path   = "/info"
@@ -133,7 +119,7 @@ module "function_public_staging_slot_itn" {
     local.function_public.app_settings_common,
   )
 
-  subnet_id = module.function_public_snet_itn.id
+  subnet_id = data.azurerm_subnet.shared_snet_itn.id
 
   allowed_subnets = [
     data.azurerm_subnet.azdoa_snet[0].id,
@@ -144,7 +130,7 @@ module "function_public_staging_slot_itn" {
 
 resource "azurerm_monitor_autoscale_setting" "function_public_itn" {
   name                = format("%s-autoscale", module.function_public_itn.name)
-  resource_group_name = azurerm_resource_group.public_rg_itn.name
+  resource_group_name = data.azurerm_resource_group.shared_rg_itn.name
   location            = local.itn_location
   target_resource_id  = module.function_public_itn.app_service_plan_id
 
