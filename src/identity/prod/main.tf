@@ -41,7 +41,7 @@ module "federated_identities" {
   env_short = local.env_short
   env       = local.env
   domain    = local.domain
-
+  location  = local.location
   repositories = [local.repo_name]
 
   continuos_integration = {
