@@ -33,7 +33,8 @@ locals {
 }
 
 module "function_public_itn" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app?ref=v8.44.0"
+  source     = "git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app?ref=v8.44.0"
+  depends_on = [azurerm_app_service_plan.shared_plan_itn, module.shared_snet_itn]
 
   resource_group_name = azurerm_resource_group.shared_rg_itn.name
   name                = format("%s-public-func-01", local.short_project_itn)
@@ -81,7 +82,8 @@ module "function_public_itn" {
 }
 
 module "function_public_staging_slot_itn" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app_slot?ref=v8.44.0"
+  source     = "git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app_slot?ref=v8.44.0"
+  depends_on = [azurerm_app_service_plan.shared_plan_itn, module.shared_snet_itn]
 
   name                = "staging"
   location            = local.itn_location
