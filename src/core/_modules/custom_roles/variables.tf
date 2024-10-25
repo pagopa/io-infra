@@ -1,4 +1,4 @@
 variable "subscription_id" {
   type        = string
-  description = "Id of the subscription to use as roles' scope"
+  description = "The subscription ID used as the scope for role definitions."
 }
