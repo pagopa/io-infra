@@ -45,13 +45,27 @@ locals {
       NOTIFICATION_STATUS_TOPIC_CONNECTION_STRING = data.azurerm_eventhub_authorization_rule.evh_ns_pdnd_io_cosmos_notification_status_fn.primary_connection_string
       NOTIFICATION_STATUS_LEASES_PREFIX           = "notification-status-001"
 
-      SERVICE_PREFERENCES_TOPIC_NAME              = "pdnd-io-cosmosdb-service-preferences"
-      SERVICE_PREFERENCES_TOPIC_CONNECTION_STRING = data.azurerm_eventhub_authorization_rule.evh_ns_pdnd_io_cosmos_service_preferences_fn.primary_connection_string
-      SERVICE_PREFERENCES_LEASES_PREFIX           = "service-preferences-001"
+      // A&I Event Hub
+      TARGETKAFKAAUTH_clientId            = "IO_FUNCTIONS_ELT"
+      TARGETKAFKAAUTH_brokers             = local.auth_event_hub_connection
+      TARGETKAFKAAUTH_ssl                 = "true"
+      TARGETKAFKAAUTH_maxInFlightRequests = "1"
+      TARGETKAFKAAUTH_idempotent          = "true"
+      TARGETKAFKAAUTH_transactionalId     = "IO_ELT"
+      TARGETKAFKAAUTH_topic               = "dummy" #Needed by KafkaProducerTopicConfig decoder
 
-      PROFILES_TOPIC_NAME              = "pdnd-io-cosmosdb-profiles"
-      PROFILES_TOPIC_CONNECTION_STRING = data.azurerm_eventhub_authorization_rule.evh_ns_pdnd_io_cosmos_profiles_fn.primary_connection_string
-      PROFILES_LEASES_PREFIX           = "profiles-001"
+      SERVICE_PREFERENCES_TOPIC_NAME              = data.azurerm_eventhub_authorization_rule.evh_ns_service_preferences_send_auth_rule.eventhub_name
+      SERVICE_PREFERENCES_TOPIC_CONNECTION_STRING = data.azurerm_eventhub_authorization_rule.evh_ns_service_preferences_send_auth_rule.primary_connection_string
+      SERVICE_PREFERENCES_LEASES_PREFIX           = "service-preferences-003"
+
+      PROFILES_TOPIC_NAME              = data.azurerm_eventhub_authorization_rule.evh_ns_profiles_send_auth_rule.eventhub_name
+      PROFILES_TOPIC_CONNECTION_STRING = data.azurerm_eventhub_authorization_rule.evh_ns_profiles_send_auth_rule.primary_connection_string
+      PROFILES_LEASES_PREFIX           = "profiles-003"
+
+      DELETES_TOPIC_NAME              = data.azurerm_eventhub_authorization_rule.evh_ns_profile_deletion_send_auth_rule.eventhub_name
+      DELETES_TOPIC_CONNECTION_STRING = data.azurerm_eventhub_authorization_rule.evh_ns_profile_deletion_send_auth_rule.primary_connection_string
+      DELETES_LEASES_PREFIX           = "profile-deletion-001"
+
 
       ERROR_STORAGE_ACCOUNT                   = var.storage_account_name
       ERROR_STORAGE_KEY                       = var.storage_account_primary_access_key
@@ -97,6 +111,7 @@ locals {
       SERVICES_FAILURE_QUEUE_NAME            = "pdnd-io-cosmosdb-services-failure"
       SERVICE_PREFERENCES_FAILURE_QUEUE_NAME = local.service_preferences_failure_queue_name
       PROFILES_FAILURE_QUEUE_NAME            = local.profiles_failure_queue_name
+      DELETES_FAILURE_QUEUE_NAME             = local.profile_deletion_failure_queue_name
 
       # PDV integration env variables
       PDV_TOKENIZER_API_KEY   = data.azurerm_key_vault_secret.pdv_tokenizer_api_key.value,
@@ -134,7 +149,7 @@ module "function_elt" {
   app_service_plan_info = {
     kind                         = "elastic"
     sku_tier                     = "ElasticPremium"
-    sku_size                     = "EP1"
+    sku_size                     = "EP2"
     maximum_elastic_worker_count = 1
     worker_count                 = null
     zone_balancing_enabled       = null
@@ -153,6 +168,7 @@ module "function_elt" {
       "AzureWebJobs.AnalyticsServiceStorageQueueInboundProcessorAdapter.Disabled"          = "0"
       "AzureWebJobs.AnalyticsServicePreferencesChangeFeedInboundProcessorAdapter.Disabled" = "1"
       "AzureWebJobs.AnalyticsProfilesChangeFeedInboundProcessorAdapter.Disabled"           = "1"
+      "AzureWebJobs.AnalyticsUserDataProcessingChangeFeedInboundProcessorAdapter.Disabled" = "1"
     }
   )
 
@@ -181,7 +197,9 @@ module "function_elt" {
       local.service_preferences_failure_queue_name,
       "${local.service_preferences_failure_queue_name}-poison",
       local.profiles_failure_queue_name,
-      "${local.profiles_failure_queue_name}-poison"
+      "${local.profiles_failure_queue_name}-poison",
+      local.profile_deletion_failure_queue_name,
+      "${local.profile_deletion_failure_queue_name}-poison"
     ],
     "containers"           = [],
     "blobs_retention_days" = 1,

@@ -312,4 +312,57 @@ variable "function_profile_async_autoscale_default" {
   description = "The number of instances that are available for scaling if metrics are not available for evaluation."
   default     = 1
 }
-#############################
+################################
+# Shared plan
+################################
+
+variable "cidr_subnet_shared_1" {
+  type = list(string)
+}
+
+variable "plan_shared_1_kind" {
+  type        = string
+  description = "App service plan kind"
+  default     = null
+}
+
+variable "plan_shared_1_sku_tier" {
+  type        = string
+  description = "App service plan sku tier"
+  default     = null
+}
+
+variable "plan_shared_1_sku_size" {
+  type        = string
+  description = "App service plan sku size"
+  default     = null
+}
+
+variable "plan_shared_1_sku_capacity" {
+  description = "Shared functions app plan capacity"
+  type        = number
+  default     = 1
+}
+###########################
+################################
+# Function Public
+################################
+
+variable "function_public_autoscale_minimum" {
+  type        = number
+  description = "The minimum number of instances for this resource."
+  default     = 1
+}
+
+variable "function_public_autoscale_maximum" {
+  type        = number
+  description = "The maximum number of instances for this resource."
+  default     = 3
+}
+
+variable "function_public_autoscale_default" {
+  type        = number
+  description = "The number of instances that are available for scaling if metrics are not available for evaluation."
+  default     = 1
+}
+##################################
