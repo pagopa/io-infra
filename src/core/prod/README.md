@@ -19,6 +19,7 @@
 |------|--------|---------|
 | <a name="module_azdoa_weu"></a> [azdoa\_weu](#module\_azdoa\_weu) | ../_modules/azure_devops_agent | n/a |
 | <a name="module_container_registry"></a> [container\_registry](#module\_container\_registry) | ../_modules/container_registry | n/a |
+| <a name="module_custom_roles"></a> [custom\_roles](#module\_custom\_roles) | ../_modules/custom_roles | n/a |
 | <a name="module_key_vault_weu"></a> [key\_vault\_weu](#module\_key\_vault\_weu) | ../_modules/key_vaults | n/a |
 | <a name="module_networking_itn"></a> [networking\_itn](#module\_networking\_itn) | ../_modules/networking | n/a |
 | <a name="module_networking_weu"></a> [networking\_weu](#module\_networking\_weu) | ../_modules/networking | n/a |
