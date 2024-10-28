@@ -6,14 +6,14 @@
 
 | Name | Version |
 |------|---------|
-| <a name="requirement_azurerm"></a> [azurerm](#requirement\_azurerm) | <= 3.105.0 |
+| <a name="requirement_azurerm"></a> [azurerm](#requirement\_azurerm) | <= 3.116.0 |
 
 ## Providers
 
 | Name | Version |
 |------|---------|
-| <a name="provider_azurerm.prod-cgn"></a> [azurerm.prod-cgn](#provider\_azurerm.prod-cgn) | 3.105.0 |
-| <a name="provider_azurerm.prod-trial"></a> [azurerm.prod-trial](#provider\_azurerm.prod-trial) | 3.105.0 |
+| <a name="provider_azurerm.prod-cgn"></a> [azurerm.prod-cgn](#provider\_azurerm.prod-cgn) | 3.116.0 |
+| <a name="provider_azurerm.prod-trial"></a> [azurerm.prod-trial](#provider\_azurerm.prod-trial) | 3.116.0 |
 
 ## Modules
 
