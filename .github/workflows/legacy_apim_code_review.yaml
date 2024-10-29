@@ -5,6 +5,7 @@ name: PR - Legacy APIM TF Validation
 # It is responsible for managing only a couple of legacy API groups on APIM.
 
 on:
+  merge_group:
   workflow_dispatch:
   pull_request:
     types:
