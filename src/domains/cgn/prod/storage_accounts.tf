@@ -7,5 +7,8 @@ module "storage_accounts" {
 
   subnet_pendpoints_id = module.networking.subnet_pendpoints.id
 
+  environment   = local.itn_environment
+  resource_group_common = module.common_values.resource_groups.weu.common
+
   tags = local.tags
 }

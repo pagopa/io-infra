@@ -6,6 +6,14 @@ locals {
   location           = "westeurope"
   secondary_location = "italynorth"
 
+  itn_environment = {
+    prefix          = local.prefix
+    env_short       = local.env_short
+    location        = local.secondary_location
+    domain          = "cgn"
+    instance_number = "01"
+  }
+
   tags = {
     CostCenter     = "TS310 - PAGAMENTI & SERVIZI"
     CreatedBy      = "Terraform"
