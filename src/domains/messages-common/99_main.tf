@@ -30,5 +30,5 @@ data "azurerm_subscription" "current" {}
 data "azurerm_client_config" "current" {}
 
 module "common_values" {
-  source = "../../../_modules/common_values"
+  source = "../../_modules/common_values"
 }
