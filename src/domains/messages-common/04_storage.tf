@@ -80,3 +80,20 @@ resource "azurerm_key_vault_secret" "push_notifications_storage_connection_strin
 
   key_vault_id = module.key_vault.id
 }
+
+
+#####################################################
+module "azure_storage_account" {
+  source = "github.com/pagopa/dx//infra/modules/azure_storage_account?ref=main"
+
+  environment         = var.environment
+  tier                = "l"
+  resource_group_name = var.resource_group_name
+
+  force_public_network_access_enabled = true
+
+  access_tier = "Hot"
+
+
+  tags = var.tags
+}

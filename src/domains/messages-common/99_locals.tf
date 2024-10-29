@@ -17,4 +17,30 @@ locals {
 
   apim_v2_name             = "${local.product}-apim-v2-api"
   apim_resource_group_name = "${local.product}-rg-internal"
+
+  prefix    = "io"
+  env_short = "p"
+
+  location           = "westeurope"
+  secondary_location = "italynorth"
+
+  itn_environment = {
+    prefix          = local.prefix
+    env_short       = local.env_short
+    location        = local.secondary_location
+    domain          = "message-common"
+    instance_number = "01"
+  }
+
+  tags = {
+    CostCenter     = "TS310 - PAGAMENTI & SERVIZI"
+    CreatedBy      = "Terraform"
+    Environment    = "Prod"
+    Owner          = "IO"
+    ManagementTeam = "Comunicazione"
+    Source         = "https://github.com/pagopa/io-infra/blob/4b82c3e0296174eb27ddbebdb15b4cad17e19430/src/domains/messages-common/04_storage.tf#L35"
+  }
 }
+
+
+
