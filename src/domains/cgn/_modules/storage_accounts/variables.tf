@@ -36,6 +36,6 @@ variable "environment" {
 }
 
 variable "resource_group_common" {
-  type = string
+  type        = string
   description = "Name of the common resource group"
 }

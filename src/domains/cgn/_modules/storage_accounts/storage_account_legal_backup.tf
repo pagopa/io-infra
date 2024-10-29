@@ -40,8 +40,8 @@ resource "azurerm_private_endpoint" "private_endpoint_storage_account_legal_back
 
 ### ITN
 module "azure_storage_account" {
-  source = "github.com/pagopa/dx//infra/modules/azure_storage_account?ref=main"
-  environment         = merge(var.environment, { app_name = "legalbackupstorage" })
+  source      = "github.com/pagopa/dx//infra/modules/azure_storage_account?ref=main"
+  environment = merge(var.environment, { app_name = "legalbackupstorage" })
 
   tier                = "l"
   resource_group_name = var.resource_group_name
@@ -52,7 +52,7 @@ module "azure_storage_account" {
   force_public_network_access_enabled = true
 
   subservices_enabled = {
-    blob  = true
+    blob = true
   }
 
   tags = var.tags
