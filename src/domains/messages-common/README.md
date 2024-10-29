@@ -28,6 +28,8 @@
 | <a name="module_apim_v2_product_notifications"></a> [apim\_v2\_product\_notifications](#module\_apim\_v2\_product\_notifications) | github.com/pagopa/terraform-azurerm-v3//api_management_product | v8.27.0 |
 | <a name="module_apim_v2_service_messages_internal_api_v1"></a> [apim\_v2\_service\_messages\_internal\_api\_v1](#module\_apim\_v2\_service\_messages\_internal\_api\_v1) | github.com/pagopa/terraform-azurerm-v3//api_management_api | v8.27.0 |
 | <a name="module_apim_v2_service_messages_manage_api_v1"></a> [apim\_v2\_service\_messages\_manage\_api\_v1](#module\_apim\_v2\_service\_messages\_manage\_api\_v1) | github.com/pagopa/terraform-azurerm-v3//api_management_api | v8.27.0 |
+| <a name="module_azure_storage_account"></a> [azure\_storage\_account](#module\_azure\_storage\_account) | github.com/pagopa/dx//infra/modules/azure_storage_account | main |
+| <a name="module_common_values"></a> [common\_values](#module\_common\_values) | ../../_modules/common_values | n/a |
 | <a name="module_cosmosdb_account_mongodb_reminder"></a> [cosmosdb\_account\_mongodb\_reminder](#module\_cosmosdb\_account\_mongodb\_reminder) | github.com/pagopa/terraform-azurerm-v3//cosmosdb_account | v8.27.0 |
 | <a name="module_cosmosdb_account_remote_content"></a> [cosmosdb\_account\_remote\_content](#module\_cosmosdb\_account\_remote\_content) | github.com/pagopa/terraform-azurerm-v3//cosmosdb_account | v8.27.0 |
 | <a name="module_cosmosdb_sql_database_remote_content"></a> [cosmosdb\_sql\_database\_remote\_content](#module\_cosmosdb\_sql\_database\_remote\_content) | github.com/pagopa/terraform-azurerm-v3//cosmosdb_sql_database | v8.27.0 |
