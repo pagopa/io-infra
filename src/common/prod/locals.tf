@@ -73,7 +73,7 @@ locals {
     services_app_backend = data.azurerm_linux_function_app.services_app_backend_function_app.default_hostname
     lollipop             = data.azurerm_linux_function_app.lollipop_function.default_hostname
     eucovidcert          = data.azurerm_linux_function_app.eucovidcert.default_hostname
-    cgn                  = data.azurerm_linux_function_app.function_cgn.default_hostname
+    cgn                  = "io-p-itn-cgn-card-func-01.azurewebsites.net"
     iosign               = data.azurerm_linux_function_app.io_sign_user.default_hostname
     cgnonboarding        = "io-p-itn-cgn-search-func-01.azurewebsites.net"
     trial_system_api     = "ts-p-itn-api-func-01.azurewebsites.net"
