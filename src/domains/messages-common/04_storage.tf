@@ -97,7 +97,7 @@ module "azure_storage_account" {
   access_tier = "Hot"
 
   subservices_enabled = {
-    table = true
+    queue = true
   }
 
   tags = var.tags
