@@ -17,9 +17,9 @@ module "function_cgn" {
 
   app_settings = merge(
     local.function_cgn.app_settings_common, {
-      "AzureWebJobs.ContinueEycaActivation.Disabled" = "0",
-      "AzureWebJobs.UpdateExpiredCgn.Disabled"       = "0",
-      "AzureWebJobs.UpdateExpiredEyca.Disabled"      = "0"
+      "AzureWebJobs.ContinueEycaActivation.Disabled" = "1",
+      "AzureWebJobs.UpdateExpiredCgn.Disabled"       = "1",
+      "AzureWebJobs.UpdateExpiredEyca.Disabled"      = "1"
     }
   )
 
