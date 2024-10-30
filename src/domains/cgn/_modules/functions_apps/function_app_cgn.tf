@@ -23,6 +23,9 @@ module "function_cgn" {
     }
   )
 
+  sticky_app_setting_names = [
+  ]
+
   internal_storage = {
     "enable"                     = true,
     "private_endpoint_subnet_id" = var.subnet_private_endpoints_id,
@@ -43,12 +46,6 @@ module "function_cgn" {
     data.azurerm_subnet.snet_backendli.id,
     data.azurerm_subnet.snet_apim_v2.id,
     data.azurerm_subnet.snet_backendl3.id
-  ]
-
-  sticky_app_setting_names = [
-    "AzureWebJobs.ContinueEycaActivation.Disabled",
-    "AzureWebJobs.UpdateExpiredCgn.Disabled",
-    "AzureWebJobs.UpdateExpiredEyca.Disabled"
   ]
 
   tags = var.tags
