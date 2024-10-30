@@ -271,8 +271,9 @@ module "session_manager_weu" {
   ]
   allowed_ips = []
 
-  subnet_id        = module.session_manager_snet.id
-  vnet_integration = true
+  subnet_id                     = module.session_manager_snet.id
+  vnet_integration              = true
+  public_network_access_enabled = false
 
   tags = var.tags
 }
@@ -368,8 +369,9 @@ module "session_manager_weu_staging" {
   ]
   allowed_ips = []
 
-  subnet_id        = module.session_manager_snet.id
-  vnet_integration = true
+  subnet_id                     = module.session_manager_snet.id
+  vnet_integration              = true
+  public_network_access_enabled = false
 
   tags = var.tags
 }
@@ -404,7 +406,7 @@ module "session_manager_weu_staging_04" {
   app_settings = merge(
     local.app_settings_common,
     {
-      APPINSIGHTS_CLOUD_ROLE_NAME = "${module.session_manager_weu.name}-staging"
+      APPINSIGHTS_CLOUD_ROLE_NAME = "${module.session_manager_weu_04.name}-staging"
     }
   )
 
