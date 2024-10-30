@@ -84,3 +84,9 @@ variable "datasources" {
   type        = map(any)
   description = "Common datasources"
 }
+
+variable "migration" {
+  type = bool
+  default = false
+  description = "Specify if it is a migration"
+}

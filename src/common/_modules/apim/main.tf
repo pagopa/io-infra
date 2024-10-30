@@ -8,7 +8,7 @@ module "apim_v2" {
   publisher_name            = "IO"
   publisher_email           = data.azurerm_key_vault_secret.apim_publisher_email.value
   notification_sender_email = data.azurerm_key_vault_secret.apim_publisher_email.value
-  sku_name                  = "Premium_2"
+  sku_name                  = var.migration ? "Developer_2" : "Premium_2"
   virtual_network_type      = "Internal"
   zones                     = ["1", "2"]
 
