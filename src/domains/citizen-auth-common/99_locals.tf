@@ -12,12 +12,8 @@ locals {
   acr_name                = replace("${local.product}commonacr", "-", "")
   acr_resource_group_name = "${local.product}-container-registry-rg"
 
-  # WEU
   apim_v2_name             = "${local.product}-apim-v2-api"
   apim_resource_group_name = "${local.product}-rg-internal"
-  # ITN
-  apim_itn_name                = "${local.product}-itn-apim-01"
-  apim_itn_resource_group_name = "${local.product}-itn-common-rg-01"
 
   lollipop_jwt_host = "api.io.pagopa.it"
 
@@ -37,4 +33,7 @@ locals {
 
   vnet_common_name_itn                = "${local.common_project_itn}-common-vnet-01"
   vnet_common_resource_group_name_itn = "${local.common_project_itn}-common-rg-01"
+
+  apim_itn_name                = "${local.product}-${itn_location_short}-apim-01"
+  apim_itn_resource_group_name = "${local.product}-${itn_location_short}-common-rg-01"
 }
