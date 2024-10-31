@@ -19,6 +19,10 @@
 
 | Name | Source | Version |
 |------|--------|---------|
+| <a name="module_apim_itn_fast_login_operation_api_v1"></a> [apim\_itn\_fast\_login\_operation\_api\_v1](#module\_apim\_itn\_fast\_login\_operation\_api\_v1) | git::https://github.com/pagopa/terraform-azurerm-v3//api_management_api | v8.44.1 |
+| <a name="module_apim_itn_lollipop_api_v1"></a> [apim\_itn\_lollipop\_api\_v1](#module\_apim\_itn\_lollipop\_api\_v1) | git::https://github.com/pagopa/terraform-azurerm-v3//api_management_api | v8.44.1 |
+| <a name="module_apim_itn_product_fast_login_operation"></a> [apim\_itn\_product\_fast\_login\_operation](#module\_apim\_itn\_product\_fast\_login\_operation) | git::https://github.com/pagopa/terraform-azurerm-v3//api_management_product | v8.44.1 |
+| <a name="module_apim_itn_product_lollipop"></a> [apim\_itn\_product\_lollipop](#module\_apim\_itn\_product\_lollipop) | git::https://github.com/pagopa/terraform-azurerm-v3//api_management_product | v8.44.1 |
 | <a name="module_apim_v2_fast_login_operation_api_v1"></a> [apim\_v2\_fast\_login\_operation\_api\_v1](#module\_apim\_v2\_fast\_login\_operation\_api\_v1) | git::https://github.com/pagopa/terraform-azurerm-v3//api_management_api | v8.44.1 |
 | <a name="module_apim_v2_lollipop_api_v1"></a> [apim\_v2\_lollipop\_api\_v1](#module\_apim\_v2\_lollipop\_api\_v1) | git::https://github.com/pagopa/terraform-azurerm-v3//api_management_api | v8.44.1 |
 | <a name="module_apim_v2_product_fast_login_operation"></a> [apim\_v2\_product\_fast\_login\_operation](#module\_apim\_v2\_product\_fast\_login\_operation) | git::https://github.com/pagopa/terraform-azurerm-v3//api_management_product | v8.44.1 |
@@ -85,6 +89,7 @@
 | [azuread_group.adgroup_externals](https://registry.terraform.io/providers/hashicorp/azuread/latest/docs/data-sources/group) | data source |
 | [azuread_group.adgroup_security](https://registry.terraform.io/providers/hashicorp/azuread/latest/docs/data-sources/group) | data source |
 | [azuread_service_principal.platform_iac_sp](https://registry.terraform.io/providers/hashicorp/azuread/latest/docs/data-sources/service_principal) | data source |
+| [azurerm_api_management.apim_itn_api](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/api_management) | data source |
 | [azurerm_api_management.apim_v2_api](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/api_management) | data source |
 | [azurerm_application_insights.application_insights](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/application_insights) | data source |
 | [azurerm_client_config.current](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/client_config) | data source |

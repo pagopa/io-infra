@@ -14,3 +14,24 @@ resource "azurerm_api_management_named_value" "io_fn_cgnmerchant_key_v2" {
   value               = data.azurerm_key_vault_secret.io_fn_cgnmerchant_key_secret_v2.value
   secret              = "true"
 }
+
+#################
+# ITN MIGRATION #
+#################
+
+# resource "azurerm_api_management_named_value" "io_fn_cgnmerchant_url_itn" {
+#   name                = "io-fn-cgnmerchant-url"
+#   api_management_name = data.azurerm_api_management.apim_itn.name
+#   resource_group_name = data.azurerm_api_management.apim_itn.resource_group_name
+#   display_name        = "io-fn-cgnmerchant-url"
+#   value               = "https://io-p-itn-cgn-merchant-func-01.azurewebsites.net"
+# }
+
+# resource "azurerm_api_management_named_value" "io_fn_cgnmerchant_key_itn" {
+#   name                = "io-fn-cgnmerchant-key"
+#   api_management_name = data.azurerm_api_management.apim_itn.name
+#   resource_group_name = data.azurerm_api_management.apim_itn.resource_group_name
+#   display_name        = "io-fn-cgnmerchant-key"
+#   value               = data.azurerm_key_vault_secret.io_fn_cgnmerchant_key_secret_v2.value
+#   secret              = "true"
+# }

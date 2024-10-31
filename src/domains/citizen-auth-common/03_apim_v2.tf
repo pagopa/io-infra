@@ -1,8 +1,3 @@
-data "azurerm_api_management" "apim_v2_api" {
-  name                = local.apim_v2_name
-  resource_group_name = local.apim_resource_group_name
-}
-
 ####################################################################################
 # Lollipop APIM Product
 ####################################################################################
@@ -60,11 +55,6 @@ resource "azurerm_api_management_named_value" "io_fn_itn_lollipop_url_v2" {
   resource_group_name = data.azurerm_api_management.apim_v2_api.resource_group_name
   display_name        = "io-fn-itn-lollipop-url"
   value               = "https://${data.azurerm_linux_function_app.lollipop_function.default_hostname}"
-}
-
-data "azurerm_key_vault_secret" "io_fn_itn_lollipop_key_secret_v2" {
-  name         = "io-fn-itn-lollipop-KEY-APIM"
-  key_vault_id = module.key_vault.id
 }
 
 resource "azurerm_api_management_named_value" "io_fn_itn_lollipop_key_v2" {
@@ -165,11 +155,6 @@ module "apim_v2_product_fast_login_operation" {
   policy_xml = file("./api_product/fast_login_operation/_base_policy.xml")
 }
 
-data "azurerm_linux_function_app" "functions_fast_login" {
-  name                = local.fn_fast_login_name
-  resource_group_name = local.fn_fast_login_resource_group_name
-}
-
 module "apim_v2_fast_login_operation_api_v1" {
   source = "git::https://github.com/pagopa/terraform-azurerm-v3//api_management_api?ref=v8.44.1"
 
@@ -231,11 +216,6 @@ resource "azurerm_api_management_subscription" "pagopa_operation_v2" {
 
 
 # Named Value fn-fast-login
-data "azurerm_key_vault_secret" "functions_fast_login_api_key" {
-  name         = "io-fn-weu-fast-login-KEY-APIM"
-  key_vault_id = module.key_vault.id
-}
-
 resource "azurerm_api_management_named_value" "io_fn_itn_fast_login_operation_key_v2" {
   name                = "io-fn-itn-fast-login-operation-key"
   api_management_name = data.azurerm_api_management.apim_v2_api.name

@@ -1,8 +1,3 @@
-data "azurerm_api_management" "apim_v2_api" {
-  name                = local.apim_v2_name
-  resource_group_name = local.apim_resource_group_name
-}
-
 module "apim_v2_bff_api" {
   source = "git::https://github.com/pagopa/terraform-azurerm-v3//api_management_api?ref=v4.1.5"
 
@@ -33,16 +28,6 @@ resource "azurerm_api_management_api_operation_policy" "unlock_user_session_poli
   operation_id        = "unlockUserSession"
 
   xml_content = file("./api/bff/post_unlockusersession_policy/policy.xml")
-}
-
-data "azurerm_key_vault" "key_vault_common" {
-  name                = format("%s-ioweb-kv", local.product)
-  resource_group_name = format("%s-ioweb-sec-rg", local.product)
-}
-
-data "azurerm_key_vault_secret" "io_fn3_services_key_secret" {
-  name         = "ioweb-profile-api-key-apim"
-  key_vault_id = data.azurerm_key_vault.key_vault_common.id
 }
 
 resource "azurerm_api_management_named_value" "io_fn3_services_key_v2" {

@@ -1,14 +1,14 @@
 # API Product
 
-module "apim_v2_product_ioweb" {
+module "apim_itn_product_ioweb" {
   source = "git::https://github.com/pagopa/terraform-azurerm-v3//api_management_product?ref=v4.1.5"
 
   product_id   = "io-web-api"
   display_name = "IO WEB API"
   description  = "Product for IO WEB Api & Authentication"
 
-  api_management_name = data.azurerm_api_management.apim_v2_api.name
-  resource_group_name = data.azurerm_api_management.apim_v2_api.resource_group_name
+  api_management_name = data.azurerm_api_management.apim_itn_api.name
+  resource_group_name = data.azurerm_api_management.apim_itn_api.resource_group_name
 
   published             = true
   subscription_required = false
@@ -17,13 +17,13 @@ module "apim_v2_product_ioweb" {
   policy_xml = file("./api_product/ioweb/_base_policy.xml")
 }
 
-module "apim_v2_spid_login_api" {
+module "apim_itn_spid_login_api" {
   source = "git::https://github.com/pagopa/terraform-azurerm-v3//api_management_api?ref=v4.1.5"
 
   name                  = format("%s-ioweb-auth", local.product)
-  api_management_name   = data.azurerm_api_management.apim_v2_api.name
-  resource_group_name   = data.azurerm_api_management.apim_v2_api.resource_group_name
-  product_ids           = [module.apim_v2_product_ioweb.product_id]
+  api_management_name   = data.azurerm_api_management.apim_itn_api.name
+  resource_group_name   = data.azurerm_api_management.apim_itn_api.resource_group_name
+  product_ids           = [module.apim_itn_product_ioweb.product_id]
   subscription_required = false
 
   service_url = format("https://%s", module.spid_login.default_site_hostname)
@@ -41,11 +41,11 @@ module "apim_v2_spid_login_api" {
   xml_content = file("./api/ioweb/spid-login/_base_policy.xml")
 }
 
-resource "azurerm_api_management_api_operation_policy" "spid_acs" {
-  api_name            = format("%s-ioweb-auth", local.product)
-  api_management_name = data.azurerm_api_management.apim_v2_api.name
-  resource_group_name = data.azurerm_api_management.apim_v2_api.resource_group_name
-  operation_id        = "postACS"
+# resource "azurerm_api_management_api_operation_policy" "spid_acs" {
+#   api_name            = format("%s-ioweb-auth", local.product)
+#   api_management_name = data.azurerm_api_management.apim_itn_api.name
+#   resource_group_name = data.azurerm_api_management.apim_itn_api.resource_group_name
+#   operation_id        = "postACS"
 
-  xml_content = file("./api/ioweb/spid-login/_postacs_policy.xml")
-}
+#   xml_content = file("./api/ioweb/spid-login/_postacs_policy.xml")
+# }
