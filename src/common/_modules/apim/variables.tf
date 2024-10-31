@@ -86,7 +86,7 @@ variable "datasources" {
 }
 
 variable "migration" {
-  type = bool
-  default = false
+  type        = bool
+  default     = false
   description = "Specify if it is a migration"
 }
