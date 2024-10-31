@@ -37,6 +37,7 @@ module "private_endpoints" {
 module "apim_itn" {
   source = "../_modules/apim"
 
+  migration               = true
   location                = "italynorth"
   location_short          = local.core.resource_groups.italynorth.location_short
   project                 = local.project_itn
