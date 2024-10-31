@@ -1,6 +1,7 @@
 name: Continuous Integration on load-test
 
 on:
+  merge_group:
   workflow_dispatch:
   pull_request:
     types:
