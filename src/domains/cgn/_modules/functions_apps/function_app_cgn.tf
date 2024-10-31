@@ -17,11 +17,14 @@ module "function_cgn" {
 
   app_settings = merge(
     local.function_cgn.app_settings_common, {
-      "AzureWebJobs.ContinueEycaActivation.Disabled" = "0",
-      "AzureWebJobs.UpdateExpiredCgn.Disabled"       = "0",
-      "AzureWebJobs.UpdateExpiredEyca.Disabled"      = "0"
+      "AzureWebJobs.ContinueEycaActivation.Disabled" = "1",
+      "AzureWebJobs.UpdateExpiredCgn.Disabled"       = "1",
+      "AzureWebJobs.UpdateExpiredEyca.Disabled"      = "1"
     }
   )
+
+  sticky_app_setting_names = [
+  ]
 
   internal_storage = {
     "enable"                     = true,
@@ -43,12 +46,6 @@ module "function_cgn" {
     data.azurerm_subnet.snet_backendli.id,
     data.azurerm_subnet.snet_apim_v2.id,
     data.azurerm_subnet.snet_backendl3.id
-  ]
-
-  sticky_app_setting_names = [
-    "AzureWebJobs.ContinueEycaActivation.Disabled",
-    "AzureWebJobs.UpdateExpiredCgn.Disabled",
-    "AzureWebJobs.UpdateExpiredEyca.Disabled"
   ]
 
   tags = var.tags
