@@ -35,14 +35,6 @@ function_admin_autoscale_minimum = 1
 function_admin_autoscale_maximum = 3
 function_admin_autoscale_default = 1
 
-# Functions shared
-plan_shared_1_kind                = "Linux"
-plan_shared_1_sku_tier            = "PremiumV3"
-plan_shared_1_sku_size            = "P1v3"
-function_public_autoscale_minimum = 1
-function_public_autoscale_maximum = 30
-function_public_autoscale_default = 10
-
 
 # Function CDN Assets
 function_assets_cdn_kind              = "Linux"
