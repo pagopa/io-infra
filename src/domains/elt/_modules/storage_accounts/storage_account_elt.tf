@@ -147,3 +147,22 @@ resource "azurerm_storage_table" "fneltexports_itn_02" {
   name                 = "fneltexports"
   storage_account_name = module.storage_account_itn_elt_02.name
 }
+
+module "azure_storage_account" {
+  source = "github.com/pagopa/dx//infra/modules/azure_storage_account?ref=main"
+
+  environment         = var.environment
+  resource_group_name = var.resource_group_name
+  access_tier        = "Hot"
+
+  subservices_enabled = {
+    blob  = true
+    file  = false
+    queue  = false
+    table  = true
+  }
+
+  force_public_network_access_enabled = true
+
+  tags = var.tags
+}
