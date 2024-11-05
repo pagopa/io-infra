@@ -48,6 +48,11 @@ variable "secondary_location" {
   default = null
 }
 
+variable "secondary_location_pep_snet_id" {
+  type        = string
+  description = "Id of the subnet holding private endpoints in the secondary location"
+}
+
 variable "documents_dns_zone" {
   type = object({
     id                  = string
