@@ -139,3 +139,22 @@ resource "azurerm_storage_management_policy" "immutable_spid_logs_storage_manage
     }
   }
 }
+
+module "ioplvlogsimmst" {
+  source = "github.com/pagopa/dx//infra/modules/azure_storage_account?ref=main"
+
+  environment         = var.env
+  resource_group_name = var.resource_group_name ###TO CHECK
+  access_tier        = "Hot"
+
+  subservices_enabled = {
+    blob  = false
+    file  = false
+    queue  = false
+    table  = true
+  }
+
+  force_public_network_access_enabled = false
+
+  tags = var.tags
+}
