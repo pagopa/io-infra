@@ -16,10 +16,10 @@ module "cosmosdb_account" {
   enable_free_tier    = false
   kind                = "GlobalDocumentDB"
 
-  public_network_access_enabled       = false
-  private_endpoint_enabled            = false
-  subnet_id                           = data.azurerm_subnet.private_endpoints_subnet.id
-  is_virtual_network_filter_enabled   = false
+  public_network_access_enabled     = false
+  private_endpoint_enabled          = false
+  subnet_id                         = data.azurerm_subnet.private_endpoints_subnet.id
+  is_virtual_network_filter_enabled = false
 
   main_geo_location_location       = "italynorth"
   main_geo_location_zone_redundant = true
