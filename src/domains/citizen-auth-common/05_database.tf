@@ -17,17 +17,14 @@ module "cosmosdb_account" {
   kind                = "GlobalDocumentDB"
 
   public_network_access_enabled       = false
-  private_endpoint_enabled            = true
-  private_endpoint_sql_name           = "${local.product}-citizen-auth-account"
-  private_service_connection_sql_name = "${local.product}-citizen-auth-account-private-endpoint"
-  private_dns_zone_sql_ids            = [data.azurerm_private_dns_zone.privatelink_documents_azure_com.id]
+  private_endpoint_enabled            = false
   subnet_id                           = data.azurerm_subnet.private_endpoints_subnet.id
   is_virtual_network_filter_enabled   = false
 
-  main_geo_location_location       = azurerm_resource_group.data_rg.location
+  main_geo_location_location       = "italynorth"
   main_geo_location_zone_redundant = true
   additional_geo_locations = [{
-    location          = "italynorth"
+    location          = azurerm_resource_group.data_rg.location
     failover_priority = 1
     zone_redundant    = true
   }]

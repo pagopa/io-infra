@@ -70,6 +70,11 @@ resource "azurerm_private_endpoint" "cosmos_db" {
     is_manual_connection           = false
     subresource_names              = ["Sql"]
   }
+
+  private_dns_zone_group {
+    name                 = "private-dns-zone-group"
+    private_dns_zone_ids = [data.azurerm_private_dns_zone.privatelink_documents_azure_com.id]
+  }
 }
 
 ## Redis Common subnet
