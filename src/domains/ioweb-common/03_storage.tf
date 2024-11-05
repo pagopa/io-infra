@@ -140,7 +140,7 @@ resource "azurerm_storage_management_policy" "immutable_spid_logs_storage_manage
   }
 }
 
-module "ioplvlogsimmst" {
+module "azure_storage_account" {
   source = "github.com/pagopa/dx//infra/modules/azure_storage_account?ref=main"
 
   environment         = var.env
