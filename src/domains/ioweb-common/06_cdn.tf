@@ -111,3 +111,30 @@ module "landing_cdn" {
 
   tags = var.tags
 }
+
+module "CES-463-migtrate-iopweuiowebportalsa" {
+  source = "github.com/pagopa/dx//infra/modules/azure_storage_account?ref=main"
+
+  environment         = var.env
+  resource_group_name = var.resource_group_name ###To DO
+  access_tier        = "Hot"
+
+  subservices_enabled = {
+    blob  = true
+    file  = false
+    queue  = false
+    table  = false
+  }
+
+
+  force_public_network_access_enabled = true
+
+  ###TO DO
+  static_website = {
+    enabled            = true
+    index_document     = "index.html"
+    error_404_document = "404.html"
+  }
+
+  tags = var.tags
+}
