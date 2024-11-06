@@ -39,5 +39,16 @@ locals {
 
   # auth n identity domain
   short_domain      = "auth"
-  short_project_itn = "${local.product}-${local.itn_location_short}-${local.short_domain}"
+  
+  prefix = "io"
+  env_short = "p"
+  domain = "redis"
+  instance_number = "01"
+  itn_environment = {
+    prefix          = local.prefix
+    env_short       = local.env_short
+    location        = var.location
+    domain          = local.domain
+    instance_number = local.instance_number
+    }
 }

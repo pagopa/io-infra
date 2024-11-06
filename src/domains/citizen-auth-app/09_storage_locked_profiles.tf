@@ -53,8 +53,8 @@ resource "azurerm_storage_table" "locked_profiles" {
 module "azure_storage_account" {
   source = "github.com/pagopa/dx//infra/modules/azure_storage_account?ref=main"
 
-  environment         = var.env
-  resource_group_name = var.resource_group_name ###TO CHECK
+  environment         = local.itn_environment
+  resource_group_name = azurerm_resource_group.rg_internal.name
   access_tier        = "Hot"
 
   ###TO CHECK
