@@ -341,7 +341,7 @@ variable "plan_shared_1_sku_size" {
 variable "plan_shared_1_sku_capacity" {
   description = "Shared functions app plan capacity"
   type        = number
-  default     = 1
+  default     = 3
 }
 ###########################
 ################################
