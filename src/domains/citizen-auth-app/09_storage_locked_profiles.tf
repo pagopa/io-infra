@@ -48,3 +48,27 @@ resource "azurerm_storage_table" "locked_profiles" {
   name                 = "lockedprofiles"
   storage_account_name = module.locked_profiles_storage.name
 }
+
+
+module "azure_storage_account" {
+  source = "github.com/pagopa/dx//infra/modules/azure_storage_account?ref=main"
+
+  environment         = var.env
+  resource_group_name = var.resource_group_name ###TO CHECK
+  access_tier        = "Hot"
+
+  ###TO CHECK
+  subnet_pep_id                        = data.azurerm_subnet.pep.id
+  private_dns_zone_resource_group_name = "${local.environment.prefix}-${local.environment.env_short}-rg-common"
+  
+  subservices_enabled = {
+    blob  = false
+    file  = false
+    queue  = false
+    table  = true
+  }
+
+  force_public_network_access_enabled = false
+
+  tags = var.tags
+}
