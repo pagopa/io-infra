@@ -19,7 +19,7 @@ module "redis_common_backup_zrs" {
 module "azure_storage_account" {
   source = "github.com/pagopa/dx//infra/modules/azure_storage_account?ref=main"
 
-  environment         = var.environment 
+  environment         = local.itn_environment 
   resource_group_name = var.resource_group_name
   access_tier        = "Hot"
 
