@@ -151,8 +151,8 @@ resource "azurerm_storage_table" "fneltexports_itn_02" {
 module "azure_storage_account" {
   source = "github.com/pagopa/dx//infra/modules/azure_storage_account?ref=main"
 
-  environment         = var.environment
-  resource_group_name = var.resource_group_name
+  environment         = local.itn_environment
+  resource_group_name = var.resource_group_name_itn
   access_tier        = "Hot"
 
   subservices_enabled = {
