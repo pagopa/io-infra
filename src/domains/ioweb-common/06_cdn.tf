@@ -115,8 +115,8 @@ module "landing_cdn" {
 module "azure_storage_account" {
   source = "github.com/pagopa/dx//infra/modules/azure_storage_account?ref=main"
 
-  environment         = var.env
-  resource_group_name = var.resource_group_name ###To DO
+  environment         = local.itn_environment
+  resource_group_name = azurerm_resource_group.fe_rg.name
   access_tier        = "Hot"
 
   subservices_enabled = {
@@ -129,11 +129,10 @@ module "azure_storage_account" {
 
   force_public_network_access_enabled = true
 
-  ###TO DO
   static_website = {
     enabled            = true
     index_document     = "index.html"
-    error_404_document = "404.html"
+    error_404_document = "index.html"
   }
 
   tags = var.tags

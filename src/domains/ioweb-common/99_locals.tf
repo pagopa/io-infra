@@ -16,3 +16,14 @@ locals {
 
   spid_login_base_path = "ioweb/auth/v1"
 }
+
+###Italy North
+locals {
+  itn_environment = {
+    prefix          = var.prefix
+    env_short       = var.env_short
+    location        = var.location
+    domain          = var.domain
+    instance_number = var.instance
+    }
+}
