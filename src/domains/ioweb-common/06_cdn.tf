@@ -112,7 +112,7 @@ module "landing_cdn" {
   tags = var.tags
 }
 
-module "CES-463-migtrate-iopweuiowebportalsa" {
+module "azure_storage_account" {
   source = "github.com/pagopa/dx//infra/modules/azure_storage_account?ref=main"
 
   environment         = var.env
