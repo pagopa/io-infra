@@ -385,12 +385,13 @@ module "cosmos_api_weu" {
   location_short = local.core.resource_groups.westeurope.location_short
   project        = local.project_weu_legacy
 
-  resource_group_internal = local.core.resource_groups.westeurope.internal
-  vnet_common             = local.core.networking.weu.vnet_common
-  pep_snet                = local.core.networking.weu.pep_snet
-  secondary_location      = "northeurope"
-  documents_dns_zone      = module.global.dns.private_dns_zones.documents
-  allowed_subnets_ids     = values(data.azurerm_subnet.cosmos_api_allowed)[*].id
+  resource_group_internal        = local.core.resource_groups.westeurope.internal
+  vnet_common                    = local.core.networking.weu.vnet_common
+  pep_snet                       = local.core.networking.weu.pep_snet
+  secondary_location             = "italynorth"
+  secondary_location_pep_snet_id = local.core.networking.itn.pep_snet.id
+  documents_dns_zone             = module.global.dns.private_dns_zones.documents
+  allowed_subnets_ids            = values(data.azurerm_subnet.cosmos_api_allowed)[*].id
 
   error_action_group_id = module.monitoring_weu.action_groups.error
 

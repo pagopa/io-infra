@@ -233,3 +233,33 @@ resource "azurerm_api_management_named_value" "api_fast_login_operation_group_na
   value               = azurerm_api_management_group.api_fast_login_operation_v2.display_name
   secret              = "false"
 }
+
+####################################################################################
+# PagoPA General PN APIM User
+####################################################################################
+resource "azurerm_api_management_user" "pn_user_v2" {
+  user_id             = "pnapimuser"
+  api_management_name = data.azurerm_api_management.apim_v2_api.name
+  resource_group_name = data.azurerm_api_management.apim_v2_api.resource_group_name
+  first_name          = "PNAPIMuser"
+  last_name           = "PNAPIMuser"
+  email               = "pn-apim-user@pagopa.it"
+  state               = "active"
+}
+
+resource "azurerm_api_management_group_user" "pn_group_v2" {
+  user_id             = azurerm_api_management_user.pn_user_v2.user_id
+  api_management_name = data.azurerm_api_management.apim_v2_api.name
+  resource_group_name = data.azurerm_api_management.apim_v2_api.resource_group_name
+  group_name          = azurerm_api_management_group.api_lollipop_assertion_read_v2.name
+}
+
+resource "azurerm_api_management_subscription" "pn_lc_subscription_v2" {
+  user_id             = azurerm_api_management_user.pn_user_v2.id
+  api_management_name = data.azurerm_api_management.apim_v2_api.name
+  resource_group_name = data.azurerm_api_management.apim_v2_api.resource_group_name
+  product_id          = module.apim_v2_product_lollipop.id
+  display_name        = "PN LC"
+  state               = "active"
+  allow_tracing       = false
+}
