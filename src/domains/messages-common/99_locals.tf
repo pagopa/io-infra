@@ -18,3 +18,13 @@ locals {
   apim_v2_name             = "${local.product}-apim-v2-api"
   apim_resource_group_name = "${local.product}-rg-internal"
 }
+###Italy North
+locals {
+  itn_environment = {
+    prefix          = var.prefix
+    env_short       = var.env_short
+    location        = var.location
+    domain          = var.domain
+    instance_number = var.instance
+    }
+}

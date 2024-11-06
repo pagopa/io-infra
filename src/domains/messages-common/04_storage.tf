@@ -86,8 +86,8 @@ resource "azurerm_key_vault_secret" "push_notifications_storage_connection_strin
 module "azure_storage_account" {
     source = "github.com/pagopa/dx//infra/modules/azure_storage_account?ref=main"
 
-  environment         = var.env
-  resource_group_name = var.resource_group_name ###TO CHECK
+  environment         = local.itn_environment
+  resource_group_name = azurerm_resource_group.notifications_rg.name
   access_tier        = "Hot"
 
   subservices_enabled = {
@@ -97,15 +97,7 @@ module "azure_storage_account" {
     table  = true
   }
 
-###TO CHECK
-  network_rules = {
-    default_action             = "Deny"
-    bypass                     = ["AzureServices"]
-    ip_rules                   = ["203.0.113.0/24"]
-    virtual_network_subnet_ids = [azurerm_subnet.example.id]
-  }
-
-  force_public_network_access_enabled = false
+  force_public_network_access_enabled = true
 
   tags = var.tags
 }
