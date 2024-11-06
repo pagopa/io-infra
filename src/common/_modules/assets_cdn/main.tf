@@ -27,3 +27,38 @@ resource "azurerm_cdn_profile" "assets_cdn_profile" {
 
   tags = var.tags
 }
+
+
+module "azure_storage_account" {
+  source = "github.com/pagopa/dx//infra/modules/azure_storage_account?ref=main"
+
+  environment         = var.environment
+  resource_group_name = var.resource_group_name ###TO CHECK
+  access_tier        = "Hot"
+
+  subservices_enabled = {
+    blob  = true
+    file  = false
+    queue  = false
+    table  = false
+  }
+
+  ###TO CHECK
+  network_rules = {
+    default_action             = "Deny"
+    bypass                     = ["AzureServices"]
+    ip_rules                   = ["203.0.113.0/24"]
+    virtual_network_subnet_ids = [azurerm_subnet.example.id]
+  }
+
+  force_public_network_access_enabled = true
+
+  ###TO CHECK
+  static_website = {
+    enabled            = true
+    index_document     = "index.html"
+    error_404_document = "404.html"
+  }
+
+  tags = var.tags
+}
