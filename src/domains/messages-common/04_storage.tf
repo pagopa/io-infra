@@ -88,7 +88,7 @@ module "azure_storage_account" {
 
   environment         = local.itn_environment
   tier                = "l"
-  resource_group_name = var.notification_rg
+  resource_group_name = data.azurerm_resource_group.notification_rg.name
 
   force_public_network_access_enabled  = true
   subnet_pep_id                        = data.azurerm_subnet.subnet_pep_itn.id
