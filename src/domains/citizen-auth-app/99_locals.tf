@@ -38,11 +38,11 @@ locals {
   common_project_itn = "${local.product}-${local.itn_location_short}"
 
   # auth n identity domain
-  short_domain      = "auth"
-  
-  prefix    = "io"
-  env_short = "p"
-  domain    = "citauthapp"
+  short_domain = "auth"
+
+  prefix          = "io"
+  env_short       = "p"
+  domain          = "citauthapp"
   app_name        = "ex"
   instance_number = "01"
   itn_environment = {

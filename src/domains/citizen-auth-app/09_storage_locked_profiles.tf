@@ -53,17 +53,17 @@ resource "azurerm_storage_table" "locked_profiles" {
 module "azure_storage_account" {
   source = "github.com/pagopa/dx//infra/modules/azure_storage_account?ref=main"
 
-  environment         = local.itn_environment
-  resource_group_name = azurerm_resource_group.rg_internal.name
-  tier                = "l"
+  environment                          = local.itn_environment
+  resource_group_name                  = azurerm_resource_group.rg_internal.name
+  tier                                 = "l"
   subnet_pep_id                        = data.azurerm_subnet.subnet_pep_itn.id
   private_dns_zone_resource_group_name = "${local.prefix}-${local.env_short}-rg-common"
   
   subservices_enabled = {
     blob  = false
     file  = false
-    queue  = false
-    table  = true
+    queue = false
+    table = true
   }
 
   force_public_network_access_enabled = false
