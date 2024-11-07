@@ -14,8 +14,8 @@ data "azurerm_log_analytics_workspace" "law_common" {
 }
 
 data "azurerm_virtual_network" "vnet_itn" {
-  name                = "${var.project}-itn-common-vnet-01"
-  resource_group_name = "${var.project}-itn-common-rg-01"
+  name                = "${local.prefix}-${local.env_short}-itn-common-vnet-01"
+  resource_group_name = "${local.prefix}-${local.env_short}-itn-common-rg-01"
 }
 
 data "azurerm_subnet" "subnet_pep_itn" {
