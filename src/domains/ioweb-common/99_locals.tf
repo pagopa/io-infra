@@ -19,11 +19,13 @@ locals {
 
 ###Italy North
 locals {
+  app_name = "ex"
   itn_environment = {
     prefix          = var.prefix
     env_short       = var.env_short
     location        = var.location
+    app_name        = local.app_name
     domain          = var.domain
     instance_number = var.instance
-    }
+  }
 }
