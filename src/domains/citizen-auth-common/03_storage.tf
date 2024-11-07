@@ -282,29 +282,28 @@ resource "azurerm_storage_queue" "profiles_to_sanitize" {
 module "azure_storage_account" {
   source = "github.com/pagopa/dx//infra/modules/azure_storage_account?ref=main"
 
-  environment         = local.itn_environment
-  resource_group_name = azurerm_resource_group.data_rg_itn.name
-  access_tier        = "Hot"
-
+  environment                          = local.itn_environment
+  resource_group_name                  = azurerm_resource_group.data_rg_itn.name
+  tier                                 = "l"
   subnet_pep_id                        = data.azurerm_subnet.subnet_pep_itn.id
-  private_dns_zone_resource_group_name = "${local.prefix}-${local.env_short}-itn-common-rg-01"
+  private_dns_zone_resource_group_name = "${local.prefix}-${local.env_short}-rg-common"
 
   subservices_enabled = {
     blob  = true
     file  = false
-    queue  = false
-    table  = true
+    queue = false
+    table = true
   }
 
   force_public_network_access_enabled = false
-    
+
   ###TO CHECK
-  customer_managed_key = {
-    enabled                   = true
-    type                      = "kv"
-    user_assigned_identity_id = azurerm_user_assigned_identity.example.id
-    key_vault_key_id          = "your-key-vault-key-id"
-  }
+  # customer_managed_key = {
+  #   enabled                   = true
+  #   type                      = "kv"
+  #   user_assigned_identity_id = azurerm_user_assigned_identity.example.id
+  #   key_vault_key_id          = "your-key-vault-key-id"
+  # }
 
   tags = var.tags
 }
