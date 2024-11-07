@@ -63,10 +63,10 @@ module "azure_storage_account" {
   private_dns_zone_resource_group_name = "${local.prefix}-${local.env_short}-rg-common"
 
   subservices_enabled = {
-    blob   = true
-    file   = false
-    queue  = false
-    table  = false
+    blob  = true
+    file  = false
+    queue = false
+    table = false
   }
 
   force_public_network_access_enabled = true

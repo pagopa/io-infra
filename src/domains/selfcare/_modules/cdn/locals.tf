@@ -12,5 +12,5 @@ locals {
     domain          = local.domain
     app_name        = local.app_name
     instance_number = local.instance_number
-    }
+  }
 }
