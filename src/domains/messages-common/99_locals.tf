@@ -23,11 +23,14 @@ locals {
 
   location           = "westeurope"
   secondary_location = "italynorth"
+  app_name           = "ex"
+
 
   itn_environment = {
     prefix          = local.prefix
     env_short       = local.env_short
     location        = local.secondary_location
+    app_name        = local.app_name
     domain          = "message-common"
     instance_number = "01"
   }

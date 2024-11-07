@@ -91,8 +91,8 @@ module "azure_storage_account" {
   resource_group_name = var.resource_group_name
 
   force_public_network_access_enabled  = true
-  subnet_pep_id                        = module.common_values.pep_subnets.weu.id
-  private_dns_zone_resource_group_name = module.common_values.resource_groups.weu.common
+  subnet_pep_id                        = data.azurerm_subnet.subnet_pep_itn.id
+  private_dns_zone_resource_group_name = "${local.prefix}-${local.env_short}-rg-common"
 
   access_tier = "Hot"
 
