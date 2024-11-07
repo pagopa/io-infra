@@ -19,18 +19,17 @@ module "redis_common_backup_zrs" {
 module "azure_storage_account" {
   source = "github.com/pagopa/dx//infra/modules/azure_storage_account?ref=main"
 
-  environment         = local.itn_environment 
-  resource_group_name = var.resource_group_name
-  access_tier        = "Hot"
-
+  environment                          = local.itn_environment
+  resource_group_name                  = var.resource_group_name
+  tier                                 = "l"
   subnet_pep_id                        = data.azurerm_subnet.subnet_pep_itn.id
-  private_dns_zone_resource_group_name = "${local.prefix}-${local.env_short}-itn-common-rg-01"
+  private_dns_zone_resource_group_name = "${local.prefix}-${local.env_short}-rg-common"
 
   subservices_enabled = {
     blob  = true
     file  = false
-    queue  = false
-    table  = false
+    queue = false
+    table = false
   }
 
   force_public_network_access_enabled = true
