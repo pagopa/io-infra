@@ -20,7 +20,7 @@ module "azure_storage_account" {
   source = "github.com/pagopa/dx//infra/modules/azure_storage_account?ref=main"
 
   environment                          = local.itn_environment
-  resource_group_name                  = var.resource_group_name
+  resource_group_name                  = var.resource_group_common
   tier                                 = "l"
   subnet_pep_id                        = data.azurerm_subnet.subnet_pep_itn.id
   private_dns_zone_resource_group_name = "${local.prefix}-${local.env_short}-rg-common"
