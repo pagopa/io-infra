@@ -1,5 +1,5 @@
-resource "azurerm_resource_group" "notification_rg" {
-  name     = "${local.product}-${var.domain}-notification-rg"
+data "azurerm_resource_group" "notification_rg" {
+  name     = "${local.prefix}-${local.env_short}-${local.location}-messages-notifications-rg"
   location = var.location
 
   tags = var.tags
