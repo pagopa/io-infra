@@ -35,6 +35,8 @@ module "azure_storage_account" {
   environment         = local.itn_environment
   resource_group_name = var.resource_group_common
   access_tier        = "Hot"
+  subnet_pep_id                        = data.azurerm_subnet.subnet_pep_itn.id
+  private_dns_zone_resource_group_name = "${local.prefix}-${local.env_short}-itn-common-rg-01"
 
   subservices_enabled = {
     blob  = true

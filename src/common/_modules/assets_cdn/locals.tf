@@ -12,7 +12,7 @@ locals {
 locals {
   prefix = "io"
   env_short = "p"
-  domain = "redis"
+  domain = "assetscdn"
   instance_number = "01"
   itn_environment = {
     prefix          = local.prefix
