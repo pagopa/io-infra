@@ -38,7 +38,7 @@ locals {
   apim_itn_resource_group_name = "${local.product}-${local.itn_location_short}-common-rg-01"
   prefix = "io"
   env_short = "p"
-  domain = "redis"
+  domain = "citizenauthcommon"
   instance_number = "01"
   itn_environment = {
     prefix          = local.prefix
