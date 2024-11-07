@@ -13,7 +13,7 @@ data "azurerm_user_assigned_identity" "managed_identity_io_infra_cd" {
 }
 
 # azure storage account existing resource group
-data "azurerm_resource_group" "core_ext" {
+data "azurerm_resource_group" "citizen-auth-data-rg" {
   name = format("%s-citizen-auth-data-rg", local.product)
 }
 
