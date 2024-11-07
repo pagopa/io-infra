@@ -59,6 +59,9 @@ module "azure_storage_account" {
   resource_group_name = var.resource_group_name
   access_tier        = "Hot"
 
+  subnet_pep_id                        = data.azurerm_subnet.subnet_pep_itn.id
+  private_dns_zone_resource_group_name = "${local.prefix}-${local.env_short}-itn-common-rg-01"
+
   subservices_enabled = {
     blob  = true
     file  = false
@@ -68,7 +71,6 @@ module "azure_storage_account" {
 
   force_public_network_access_enabled = true
 
-  ###TO DO
   static_website = {
     enabled            = true
     index_document     = "index.html"
