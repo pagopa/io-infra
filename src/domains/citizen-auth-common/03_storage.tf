@@ -287,8 +287,8 @@ module "azure_storage_account" {
   tier                = "l"
   resource_group_name = var.resource_group_name
 
-  subnet_pep_id                        = var.subnet_pendpoints_id
-  private_dns_zone_resource_group_name = var.resource_group_common
+  subnet_pep_id                        = data.azurerm_subnet.subnet_pep_itn.id
+  private_dns_zone_resource_group_name = "${local.prefix}-${local.env_short}-rg-common"
 
   force_public_network_access_enabled = false
 
@@ -299,7 +299,7 @@ module "azure_storage_account" {
     queue = true
   }
 
-  action_group_id = data.azurerm_monitor_action_group.example.id
+  action_group_id = data.azurerm_monitor_action_group.error_action_group.id
 
   tags = var.tags
 }

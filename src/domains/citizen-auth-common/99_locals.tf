@@ -37,12 +37,15 @@ locals {
   location           = "westeurope"
   secondary_location = "italynorth"
 
+  app_name = "ex"
+
   itn_environment = {
     prefix          = var.prefix
     env_short       = var.env_short
     location        = var.location_short
+    app_name        = local.app_name
     domain          = "citizen-auth-common"
     instance_number = "01"
   }
-  
+
 }
