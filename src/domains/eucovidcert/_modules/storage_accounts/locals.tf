@@ -2,7 +2,7 @@
 locals {
   prefix = "io"
   env_short = "p"
-  domain = "redis"
+  domain = "eucovidcert"
   instance_number = "01"
   itn_environment = {
     prefix          = local.prefix
