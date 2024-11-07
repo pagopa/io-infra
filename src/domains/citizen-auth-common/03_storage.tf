@@ -285,7 +285,7 @@ module "azure_storage_account" {
 
   environment         = var.environment
   tier                = "l"
-  resource_group_name = var.resource_group_name
+  resource_group_name = data.azurerm_resource_group.data_rg_itn.name
 
   subnet_pep_id                        = data.azurerm_subnet.subnet_pep_itn.id
   private_dns_zone_resource_group_name = "${local.prefix}-${local.env_short}-rg-common"
