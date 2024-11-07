@@ -1,8 +1,8 @@
 ###Italy North
 locals {
-  prefix = "io"
-  env_short = "p"
-  domain = "selfcare"
+  prefix          = "io"
+  env_short       = "p"
+  domain          = "selfcare"
   app_name        = "ex"
   instance_number = "01"
   itn_environment = {
