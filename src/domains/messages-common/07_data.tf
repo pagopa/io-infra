@@ -1,3 +1,10 @@
+resource "azurerm_resource_group" "notification_rg" {
+  name     = "${local.product}-${var.domain}-notification-rg"
+  location = var.location
+
+  tags = var.tags
+}
+
 data "azurerm_virtual_network" "vnet_itn" {
   name                = "${local.prefix}-${local.env_short}-itn-common-vnet-01"
   resource_group_name = "${local.prefix}-${local.env_short}-itn-common-rg-01"

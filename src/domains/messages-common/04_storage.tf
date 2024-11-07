@@ -86,9 +86,9 @@ resource "azurerm_key_vault_secret" "push_notifications_storage_connection_strin
 module "azure_storage_account" {
   source = "github.com/pagopa/dx//infra/modules/azure_storage_account?ref=main"
 
-  environment         = var.environment
+  environment         = local.itn_environment
   tier                = "l"
-  resource_group_name = var.resource_group_name
+  resource_group_name = var.notification_rg
 
   force_public_network_access_enabled  = true
   subnet_pep_id                        = data.azurerm_subnet.subnet_pep_itn.id
