@@ -21,20 +21,20 @@ module "apim_itn_bff_api" {
   xml_content = file("./api/bff/policy.xml")
 }
 
-# resource "azurerm_api_management_api_operation_policy" "unlock_user_session_policy" {
-#   api_name            = format("%s-ioweb-bff", local.product)
-#   api_management_name = data.azurerm_api_management.apim_itn_api.name
-#   resource_group_name = data.azurerm_api_management.apim_itn_api.resource_group_name
-#   operation_id        = "unlockUserSession"
+resource "azurerm_api_management_api_operation_policy" "unlock_user_session_policy_itn" {
+  api_name            = format("%s-ioweb-bff", local.product)
+  api_management_name = data.azurerm_api_management.apim_itn_api.name
+  resource_group_name = data.azurerm_api_management.apim_itn_api.resource_group_name
+  operation_id        = "unlockUserSession"
 
-#   xml_content = file("./api/bff/post_unlockusersession_policy/policy.xml")
-# }
+  xml_content = file("./api/bff/post_unlockusersession_policy/policy.xml")
+}
 
-# resource "azurerm_api_management_named_value" "io_fn3_services_key_itn" {
-#   name                = "ioweb-profile-api-key"
-#   api_management_name = data.azurerm_api_management.apim_itn_api.name
-#   resource_group_name = data.azurerm_api_management.apim_itn_api.resource_group_name
-#   display_name        = "ioweb-profile-api-key"
-#   value               = data.azurerm_key_vault_secret.io_fn3_services_key_secret.value
-#   secret              = "true"
-# }
+resource "azurerm_api_management_named_value" "io_fn3_services_key_itn" {
+  name                = "ioweb-profile-api-key"
+  api_management_name = data.azurerm_api_management.apim_itn_api.name
+  resource_group_name = data.azurerm_api_management.apim_itn_api.resource_group_name
+  display_name        = "ioweb-profile-api-key"
+  value               = data.azurerm_key_vault_secret.io_fn3_services_key_secret.value
+  secret              = "true"
+}

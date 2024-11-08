@@ -3,13 +3,3 @@ resource "azurerm_role_assignment" "service_contributor_v2" {
   role_definition_name = "API Management Service Contributor"
   principal_id         = data.azurerm_key_vault_secret.cgn_onboarding_backend_identity_v2.value
 }
-
-#################
-# ITN MIGRATION #
-#################
-
-# resource "azurerm_role_assignment" "service_contributor_itn" {
-#   scope                = data.azurerm_api_management.apim_itn.id
-#   role_definition_name = "API Management Service Contributor"
-#   principal_id         = data.azurerm_key_vault_secret.cgn_onboarding_backend_identity_v2.value
-# }

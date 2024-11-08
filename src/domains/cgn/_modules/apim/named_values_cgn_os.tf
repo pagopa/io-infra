@@ -23,34 +23,3 @@ resource "azurerm_api_management_named_value" "cgnonboardingportal_os_header_nam
   value               = data.azurerm_key_vault_secret.cgnonboardingportal_os_header_name.value
   secret              = true
 }
-
-#################
-# ITN MIGRATION #
-#################
-
-# resource "azurerm_api_management_named_value" "cgnonboardingportal_os_url_value_itn" {
-#   name                = "cgnonboardingportal-os-url"
-#   api_management_name = data.azurerm_api_management.apim_itn.name
-#   resource_group_name = data.azurerm_api_management.apim_itn.resource_group_name
-#   display_name        = "cgnonboardingportal-os-url"
-#   value               = "https://io-p-itn-cgn-search-func-01.azurewebsites.net"
-# }
-
-# resource "azurerm_api_management_named_value" "cgnonboardingportal_os_key_itn" {
-#   name                = "cgnonboardingportal-os-key"
-#   api_management_name = data.azurerm_api_management.apim_itn.name
-#   resource_group_name = data.azurerm_api_management.apim_itn.resource_group_name
-#   display_name        = "cgnonboardingportal-os-key"
-#   value               = data.azurerm_key_vault_secret.cgnonboardingportal_os_key.value
-#   secret              = true
-# }
-
-# resource "azurerm_api_management_named_value" "cgnonboardingportal_os_header_name_itn" {
-#   name                = "cgnonboardingportal-os-header-name"
-#   api_management_name = data.azurerm_api_management.apim_itn.name
-#   resource_group_name = data.azurerm_api_management.apim_itn.resource_group_name
-#   display_name        = "cgnonboardingportal-os-header-name"
-#   value               = data.azurerm_key_vault_secret.cgnonboardingportal_os_header_name.value
-#   secret              = true
-# }
-
