@@ -45,6 +45,10 @@ module "azure_storage_account" {
     table = false
   }
 
+  blob_features = {
+    versioning = true
+  }
+
   force_public_network_access_enabled = true
 
   static_website = {
