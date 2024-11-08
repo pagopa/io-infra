@@ -8,12 +8,12 @@ module "apim_v2" {
   publisher_name            = "IO"
   publisher_email           = data.azurerm_key_vault_secret.apim_publisher_email.value
   notification_sender_email = data.azurerm_key_vault_secret.apim_publisher_email.value
-  sku_name                  = var.migration ? "Developer_1" : "Premium_2"
+  sku_name                  = var.migration ? "Premium_1" : "Premium_2"
   virtual_network_type      = "Internal"
-  zones                     = var.migration ? null : ["1", "2"]
+  zones                     = var.migration ? ["1"] : ["1", "2"]
 
   redis_cache_id       = null
-  public_ip_address_id = var.migration ? null : azurerm_public_ip.apim.id
+  public_ip_address_id = azurerm_public_ip.apim.id
 
   hostname_configuration = var.migration ? null : {
     proxy = [
