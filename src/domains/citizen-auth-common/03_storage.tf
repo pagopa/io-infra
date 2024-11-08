@@ -283,7 +283,7 @@ resource "azurerm_storage_queue" "profiles_to_sanitize" {
 module "azure_storage_account" {
   source = "github.com/pagopa/dx//infra/modules/azure_storage_account?ref=main"
 
-  environment         = var.environment
+  environment         = local.itn_environment
   tier                = "l"
   resource_group_name = data.azurerm_resource_group.data_rg_itn.name
 
