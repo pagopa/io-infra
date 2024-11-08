@@ -163,6 +163,16 @@ module "azure_storage_account" {
     queue = false
     table = true
   }
+  blob_features = {
+    immutability_policy = {
+      enabled = false
+    }
+    versioning = true
+    change_feed = {
+      enabled = true
+    }
+  }
+
 
   force_public_network_access_enabled = true
 
