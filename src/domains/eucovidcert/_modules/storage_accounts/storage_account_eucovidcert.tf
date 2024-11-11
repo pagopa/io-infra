@@ -16,15 +16,15 @@ module "storage_account_eucovidcert" {
   tags = var.tags
 }
 
-module "azure_storage_account" {
+module "storage_account_eucovidcert_itn" {
   source = "github.com/pagopa/dx//infra/modules/azure_storage_account?ref=main"
 
   environment         = local.itn_environment
   resource_group_name = var.resource_group_name
   access_tier         = "Hot"
 
-  subnet_pep_id                        = data.azurerm_subnet.subnet_pep_itn.id
-  private_dns_zone_resource_group_name = "${local.prefix}-${local.env_short}-itn-common-rg-01"
+  subnet_pep_id                        = module.common_values.pep_subnets.itn.id
+  private_dns_zone_resource_group_name = module.common_values.resource_groups.weu.common
 
   subservices_enabled = {
     blob  = false
