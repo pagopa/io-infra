@@ -7,7 +7,7 @@ output "scaling_gate" {
   value = {
     name     = "wallet_gate2"
     timezone = "W. Europe Standard Time"
-    start    = "2024-11-06T08:00:00.000Z"
-    end      = "2024-11-06T22:00:00.000Z"
+    start    = "2024-11-06T08:00:00Z"
+    end      = "2024-11-06T22:00:00Z"
   }
 }
