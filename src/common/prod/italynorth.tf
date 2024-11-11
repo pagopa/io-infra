@@ -33,30 +33,3 @@ module "private_endpoints" {
 
   tags = local.tags
 }
-
-module "apim_itn" {
-  source = "../_modules/apim"
-
-  migration               = true
-  location                = "italynorth"
-  location_short          = local.core.resource_groups.italynorth.location_short
-  project                 = local.project_itn
-  prefix                  = local.prefix
-  resource_group_common   = local.resource_groups.itn.common
-  resource_group_internal = local.resource_groups.itn.internal
-
-  vnet_common = local.core.networking.itn.vnet_common
-  cidr_subnet = "10.20.100.0/24"
-
-  datasources = {
-    azurerm_client_config = data.azurerm_client_config.current
-  }
-
-  key_vault        = local.core.key_vault.weu.kv
-  key_vault_common = local.core.key_vault.weu.kv_common
-
-  action_group_id        = module.monitoring_weu.action_groups.error
-  ai_instrumentation_key = module.monitoring_weu.appi_instrumentation_key
-
-  tags = local.tags
-}
