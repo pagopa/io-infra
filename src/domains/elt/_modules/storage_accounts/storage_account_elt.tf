@@ -148,14 +148,14 @@ resource "azurerm_storage_table" "fneltexports_itn_02" {
   storage_account_name = module.storage_account_itn_elt_02.name
 }
 
-module "azure_storage_account" {
+module "storage_account_elt_itn" {
   source = "github.com/pagopa/dx//infra/modules/azure_storage_account?ref=main"
 
   environment                          = local.itn_environment
   resource_group_name                  = var.resource_group_name_itn
   tier                                 = "l"
-  subnet_pep_id                        = data.azurerm_subnet.subnet_pep_itn.id
-  private_dns_zone_resource_group_name = "${local.prefix}-${local.env_short}-rg-common"
+  subnet_pep_id                        = module.common_values.pep_subnets.itn.id
+  private_dns_zone_resource_group_name = module.common_values.resource_groups.weu.common
 
   subservices_enabled = {
     blob  = true
