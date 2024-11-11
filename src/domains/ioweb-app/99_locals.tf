@@ -28,3 +28,18 @@ locals {
   bff_base_path             = "ioweb/backend/api/v1"
   bff_backend_url           = "https://%s/api/v1"
 }
+
+# Region ITN
+locals {
+  itn_location       = "italynorth"
+  itn_location_short = "itn"
+  project_itn        = "${var.prefix}-${var.env_short}-${local.itn_location_short}-${var.domain}"
+  common_project_itn = "${local.product}-${local.itn_location_short}"
+
+  # auth n identity domain
+  short_domain      = "auth"
+  short_project_itn = "${local.product}-${local.itn_location_short}-${local.short_domain}"
+
+  vnet_common_name_itn                = "${local.common_project_itn}-common-vnet-01"
+  vnet_common_resource_group_name_itn = "${local.common_project_itn}-common-rg-01"
+}

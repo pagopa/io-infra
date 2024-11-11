@@ -168,7 +168,8 @@ module "app_messages_function" {
     data.azurerm_subnet.app_backendl1_snet.id,
     data.azurerm_subnet.app_backendl2_snet.id,
     data.azurerm_subnet.apim_snet.id,
-    data.azurerm_subnet.app_backendl3_snet.id
+    data.azurerm_subnet.app_backendl3_snet.id,
+    data.azurerm_subnet.apim_itn_snet.id,
   ]
 
   allowed_ips = concat(

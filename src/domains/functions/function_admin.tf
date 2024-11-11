@@ -97,9 +97,9 @@ locals {
 
       AssetsStorageConnection = data.azurerm_storage_account.assets_cdn.primary_connection_string
 
-      AZURE_APIM                = "io-p-apim-v2-api"
+      AZURE_APIM                = "io-p-itn-apim-01"
       AZURE_APIM_HOST           = local.apim_hostname_api_internal
-      AZURE_APIM_RESOURCE_GROUP = "io-p-rg-internal"
+      AZURE_APIM_RESOURCE_GROUP = "io-p-itn-common-rg-01"
 
       MESSAGE_CONTAINER_NAME = local.message_content_container_name
 
@@ -241,6 +241,7 @@ module "function_admin" {
   allowed_subnets = [
     module.admin_snet.id,
     data.azurerm_subnet.apim_v2_snet.id,
+    data.azurerm_subnet.apim_itn_snet.id,
   ]
 
   # Action groups for alerts
@@ -292,6 +293,7 @@ module "function_admin_staging_slot" {
     module.admin_snet.id,
     data.azurerm_subnet.azdoa_snet.id,
     data.azurerm_subnet.apim_v2_snet.id,
+    data.azurerm_subnet.apim_itn_snet.id,
   ]
 
   tags = var.tags
