@@ -39,7 +39,7 @@ resource "azurerm_private_endpoint" "private_endpoint_storage_account_legal_back
 }
 
 ### ITN
-module "azure_storage_account" {
+module "storage_account_legal_backup_itn" {
   source      = "github.com/pagopa/dx//infra/modules/azure_storage_account?ref=main"
   environment = merge(var.environment, { app_name = "legalbackup" })
 
