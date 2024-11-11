@@ -16,7 +16,7 @@ module "redis_common_backup_zrs" {
   tags = var.tags
 }
 
-module "azure_storage_account" {
+module "redis_common_backup_zrs_itn" {
   source = "github.com/pagopa/dx//infra/modules/azure_storage_account?ref=main"
 
   environment                          = local.itn_environment
