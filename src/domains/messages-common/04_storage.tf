@@ -81,21 +81,19 @@ resource "azurerm_key_vault_secret" "push_notifications_storage_connection_strin
   key_vault_id = module.key_vault.id
 }
 
-
 #####################################################
-module "azure_storage_account" {
+module "push_notifications_storage_itn" {
   source = "github.com/pagopa/dx//infra/modules/azure_storage_account?ref=main"
 
   environment         = local.itn_environment
   tier                = "l"
-  resource_group_name = data.azurerm_resource_group.notification_rg.name
+  resource_group_name = "${local.prefix}-${local.env_short}-${local.location}-messages-notifications-rg"
 
   force_public_network_access_enabled  = true
-  subnet_pep_id                        = data.azurerm_subnet.subnet_pep_itn.id
-  private_dns_zone_resource_group_name = "${local.prefix}-${local.env_short}-rg-common"
+  subnet_pep_id                        = module.common_values.pep_subnets.itn.id
+  private_dns_zone_resource_group_name = module.common_values.resource_groups.weu.common
 
   access_tier = "Hot"
-
   subservices_enabled = {
     queue = true
   }
