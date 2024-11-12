@@ -140,14 +140,14 @@ resource "azurerm_storage_management_policy" "immutable_spid_logs_storage_manage
   }
 }
 
-module "azure_storage_account" {
+module "immutable_spid_logs_storage_itn" {
   source = "github.com/pagopa/dx//infra/modules/azure_storage_account?ref=main"
 
   environment                          = local.itn_environment
   resource_group_name                  = azurerm_resource_group.storage_rg.name
   tier                                 = "l"
-  subnet_pep_id                        = data.azurerm_subnet.subnet_pep_itn.id
-  private_dns_zone_resource_group_name = "${local.prefix}-${local.env_short}-rg-common"
+  subnet_pep_id                        = module.common_values.pep_subnets.itn.id
+  private_dns_zone_resource_group_name = module.common_values.resource_groups.weu.common
 
   subservices_enabled = {
     blob  = true
