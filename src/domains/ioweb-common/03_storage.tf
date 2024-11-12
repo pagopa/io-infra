@@ -156,6 +156,15 @@ module "immutable_spid_logs_storage_itn" {
     table = true
   }
 
+  blob_features = {
+    immutability_policy = {
+      enabled                       = true
+      allow_protected_append_writes = true
+      period_since_creation_in_days = 730
+    }
+    versioning = true
+  }
+
   force_public_network_access_enabled = false
 
   ###To CHECK
