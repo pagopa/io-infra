@@ -84,7 +84,7 @@ locals {
       PROFILE_TOPIC_CONNECTION_STRING = data.azurerm_eventhub_authorization_rule.evh_ns_io_cosmos_profiles_fn.primary_connection_string
 
       COSMOSDB_REPLICA_NAME     = "db"
-      COSMOSDB_REPLICA_URI      = replace(data.azurerm_cosmosdb_account.cosmos_api.endpoint, "io-p-cosmos-api", "io-p-cosmos-api-northeurope")
+      COSMOSDB_REPLICA_URI      = data.azurerm_cosmosdb_account.cosmos_api.endpoint
       COSMOSDB_REPLICA_KEY      = data.azurerm_cosmosdb_account.cosmos_api.primary_key
       COSMOSDB_REPLICA_LOCATION = var.secondary_location_display_name
 
@@ -150,8 +150,8 @@ module "function_elt" {
     kind                         = "elastic"
     sku_tier                     = "ElasticPremium"
     sku_size                     = "EP2"
-    maximum_elastic_worker_count = 1
-    worker_count                 = null
+    maximum_elastic_worker_count = 5
+    worker_count                 = 3
     zone_balancing_enabled       = null
   }
 
