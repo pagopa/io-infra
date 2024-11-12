@@ -37,17 +37,14 @@ locals {
   apim_itn_name                = "${local.product}-${local.itn_location_short}-apim-01"
   apim_itn_resource_group_name = "${local.product}-${local.itn_location_short}-common-rg-01"
 
-  prefix    = "io"
-  env_short = "p"
-  # domain          = "citizenauth"
   app_name        = "citizenauth"
-  instance_number = "01"
+  
   itn_environment = {
-    prefix    = local.prefix
-    env_short = local.env_short
+    prefix    = var.prefix
+    env_short = var.env_short
     location  = var.location
     # domain          = local.domain
     app_name        = local.app_name
-    instance_number = local.instance_number
+    instance_number = "01"
   }
 }
