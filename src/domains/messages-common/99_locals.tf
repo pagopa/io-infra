@@ -17,4 +17,16 @@ locals {
 
   apim_v2_name             = "${local.product}-apim-v2-api"
   apim_resource_group_name = "${local.product}-rg-internal"
+
+  secondary_location = "italynorth"
+  app_name           = "notif"
+
+  itn_environment = {
+    prefix          = var.prefix
+    env_short       = var.env_short
+    location        = local.secondary_location
+    app_name        = local.app_name
+    domain          = "messages"
+    instance_number = "01"
+  }
 }
