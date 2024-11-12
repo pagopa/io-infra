@@ -111,13 +111,3 @@ variable "cidr_subnet_redis_common_itn" {
   type        = list(string)
   description = "Redis Common address space."
 }
-
-variable "subnet_pendpoints_id" {
-  type        = string
-  description = "Id of the subnet which holds private endpoints"
-}
-
-variable "resource_group_common" {
-  type        = string
-  description = "Name of the common resource group"
-}

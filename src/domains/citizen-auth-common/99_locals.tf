@@ -34,17 +34,14 @@ locals {
   vnet_common_name_itn                = "${local.common_project_itn}-common-vnet-01"
   vnet_common_resource_group_name_itn = "${local.common_project_itn}-common-rg-01"
 
-  location           = "westeurope"
-  secondary_location = "italynorth"
-
-  app_name = "ex"
+  app_name = "lollipopassertions"
 
   itn_environment = {
     prefix          = var.prefix
     env_short       = var.env_short
-    location        = var.location_short
+    location        = local.itn_location
     app_name        = local.app_name
-    domain          = "citizen-auth-common"
+    # domain          = "citizen-auth-common"
     instance_number = "01"
   }
 
