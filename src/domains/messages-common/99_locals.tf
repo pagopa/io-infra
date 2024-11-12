@@ -20,7 +20,7 @@ locals {
 }
 ###Italy North
 locals {
-  app_name = "ex"
+  app_name = "messages"
   itn_environment = {
     prefix          = var.prefix
     env_short       = var.env_short
