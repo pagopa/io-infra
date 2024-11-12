@@ -118,8 +118,8 @@ module "azure_storage_account" {
   environment                          = local.itn_environment
   resource_group_name                  = azurerm_resource_group.fe_rg.name
   tier                                 = "l"
-  subnet_pep_id                        = data.azurerm_subnet.subnet_pep_itn.id
-  private_dns_zone_resource_group_name = "${local.prefix}-${local.env_short}-rg-common"
+  subnet_pep_id                        = module.common_values.pep_subnets.itn.id
+  private_dns_zone_resource_group_name = module.common_values.resource_groups.weu.common
 
   subservices_enabled = {
     blob  = true
@@ -128,6 +128,9 @@ module "azure_storage_account" {
     table = false
   }
 
+  blob_features = {
+    versioning = true
+  }
 
   force_public_network_access_enabled = true
 

@@ -19,7 +19,7 @@ locals {
 
 ###Italy North
 locals {
-  app_name = "ex"
+  app_name = "iowebportal"
   itn_environment = {
     prefix          = var.prefix
     env_short       = var.env_short
