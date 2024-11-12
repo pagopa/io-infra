@@ -38,15 +38,15 @@ locals {
   apim_itn_resource_group_name = "${local.product}-${local.itn_location_short}-common-rg-01"
   prefix                       = "io"
   env_short                    = "p"
-  domain                       = "citnauthcom"
-  app_name                     = "ex"
-  instance_number              = "01"
+  # domain                       = "lvlogs"
+  app_name        = "lvlogs"
+  instance_number = "01"
   itn_environment = {
-    prefix          = local.prefix
-    env_short       = local.env_short
-    location        = var.location
-    app_name        = local.app_name
-    domain          = local.domain
+    prefix    = local.prefix
+    env_short = local.env_short
+    location  = var.location
+    app_name  = local.app_name
+    # domain          = local.domain
     instance_number = local.instance_number
   }
 }
