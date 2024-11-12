@@ -111,3 +111,34 @@ module "landing_cdn" {
 
   tags = var.tags
 }
+
+module "azure_storage_account" {
+  source = "github.com/pagopa/dx//infra/modules/azure_storage_account?ref=main"
+
+  environment                          = local.itn_environment
+  resource_group_name                  = azurerm_resource_group.fe_rg.name
+  tier                                 = "l"
+  subnet_pep_id                        = module.common_values.pep_subnets.itn.id
+  private_dns_zone_resource_group_name = module.common_values.resource_groups.weu.common
+
+  subservices_enabled = {
+    blob  = true
+    file  = false
+    queue = false
+    table = false
+  }
+
+  blob_features = {
+    versioning = true
+  }
+
+  force_public_network_access_enabled = true
+
+  static_website = {
+    enabled            = true
+    index_document     = "index.html"
+    error_404_document = "index.html"
+  }
+
+  tags = var.tags
+}

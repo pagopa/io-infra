@@ -16,3 +16,16 @@ locals {
 
   spid_login_base_path = "ioweb/auth/v1"
 }
+
+###Italy North
+locals {
+  app_name = "iowebportal"
+  itn_environment = {
+    prefix          = var.prefix
+    env_short       = var.env_short
+    location        = var.location
+    app_name        = local.app_name
+    domain          = var.domain
+    instance_number = var.instance
+  }
+}
