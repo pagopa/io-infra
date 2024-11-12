@@ -40,17 +40,15 @@ locals {
   # auth n identity domain
   short_domain = "auth"
 
-  prefix          = "io"
-  env_short       = "p"
   domain          = "citauthapp"
-  app_name        = "ex"
-  instance_number = "01"
+  app_name        = "lockedprofiles"
+
   itn_environment = {
-    prefix          = local.prefix
-    env_short       = local.env_short
-    location        = var.location
+    prefix          = var.prefix
+    env_short       = var.env_short
+    location        = local.itn_location
     app_name        = local.app_name
-    domain          = local.domain
-    instance_number = local.instance_number
+    # domain          = local.domain
+    instance_number = "01"
   }
 }
