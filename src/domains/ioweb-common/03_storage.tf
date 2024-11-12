@@ -139,3 +139,41 @@ resource "azurerm_storage_management_policy" "immutable_spid_logs_storage_manage
     }
   }
 }
+
+module "immutable_spid_logs_storage_itn" {
+  source = "github.com/pagopa/dx//infra/modules/azure_storage_account?ref=main"
+
+  environment                          = local.itn_environment
+  resource_group_name                  = azurerm_resource_group.storage_rg.name
+  tier                                 = "l"
+  subnet_pep_id                        = module.common_values.pep_subnets.itn.id
+  private_dns_zone_resource_group_name = module.common_values.resource_groups.weu.common
+
+  subservices_enabled = {
+    blob  = true
+    file  = false
+    queue = false
+    table = true
+  }
+
+  blob_features = {
+    immutability_policy = {
+      enabled                       = true
+      allow_protected_append_writes = true
+      period_since_creation_in_days = 730
+    }
+    versioning = true
+  }
+
+  force_public_network_access_enabled = false
+
+  ###To CHECK
+  # customer_managed_key = {
+  #   enabled                   = true
+  #   type                      = "kv"
+  #   user_assigned_identity_id = azurerm_user_assigned_identity.example.id
+  #   key_vault_key_id          = "your-key-vault-key-id"
+  # }
+
+  tags = var.tags
+}
