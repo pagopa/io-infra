@@ -106,6 +106,11 @@ resource "azurerm_private_dns_zone" "privatelink_srch" {
   resource_group_name = var.resource_groups.common
 }
 
+resource "azurerm_private_dns_zone" "privatelink_vault" {
+  name                = "privatelink.vaultcore.azure.net"
+  resource_group_name = var.resource_groups.common
+}
+
 resource "azurerm_private_dns_zone" "azure_api_net" {
   name                = "azure-api.net"
   resource_group_name = var.resource_groups.common

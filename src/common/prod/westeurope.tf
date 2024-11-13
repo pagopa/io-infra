@@ -101,9 +101,18 @@ module "monitoring_weu" {
     },
     {
       # CIE https://app-backend.io.italia.it/login?authLevel=SpidL2&entityID=xx_servizicie
-      name                              = "CIE",
+      name                              = "CIE L2",
       host                              = module.global.dns.public_dns_zones.io_italia_it.app_backend
       path                              = "/login?authLevel=SpidL2&entityID=xx_servizicie",
+      frequency                         = 900
+      http_status                       = 200,
+      ssl_cert_remaining_lifetime_check = 1,
+    },
+    {
+      # CIE https://app-backend.io.italia.it/login?authLevel=SpidL3&entityID=xx_servizicie
+      name                              = "CIE L3",
+      host                              = module.global.dns.public_dns_zones.io_italia_it.app_backend
+      path                              = "/login?authLevel=SpidL3&entityID=xx_servizicie",
       frequency                         = 900
       http_status                       = 200,
       ssl_cert_remaining_lifetime_check = 1,
@@ -385,12 +394,13 @@ module "cosmos_api_weu" {
   location_short = local.core.resource_groups.westeurope.location_short
   project        = local.project_weu_legacy
 
-  resource_group_internal = local.core.resource_groups.westeurope.internal
-  vnet_common             = local.core.networking.weu.vnet_common
-  pep_snet                = local.core.networking.weu.pep_snet
-  secondary_location      = "northeurope"
-  documents_dns_zone      = module.global.dns.private_dns_zones.documents
-  allowed_subnets_ids     = values(data.azurerm_subnet.cosmos_api_allowed)[*].id
+  resource_group_internal        = local.core.resource_groups.westeurope.internal
+  vnet_common                    = local.core.networking.weu.vnet_common
+  pep_snet                       = local.core.networking.weu.pep_snet
+  secondary_location             = "italynorth"
+  secondary_location_pep_snet_id = local.core.networking.itn.pep_snet.id
+  documents_dns_zone             = module.global.dns.private_dns_zones.documents
+  allowed_subnets_ids            = values(data.azurerm_subnet.cosmos_api_allowed)[*].id
 
   error_action_group_id = module.monitoring_weu.action_groups.error
 
@@ -482,6 +492,7 @@ module "app_backend_li_weu" {
     [
       data.azurerm_subnet.admin_snet.id,
       data.azurerm_subnet.itn_auth_fast_login_func_snet.id,
+      data.azurerm_subnet.itn_auth_lv_func_snet.id,
       data.azurerm_subnet.itn_msgs_sending_func_snet.id
   ])
   slot_allowed_subnets = concat([local.azdoa_snet_id["weu"]], data.azurerm_subnet.services_snet.*.id, [data.azurerm_subnet.admin_snet.id])

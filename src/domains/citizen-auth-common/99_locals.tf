@@ -19,9 +19,9 @@ locals {
 
   fast_login_backend_url = "https://%s/api/v1"
 
-  # Fast Login references refers to src/domains/citizen-auth-app/07_functions_fast_login.tf
-  fn_fast_login_name                = "${local.common_project_itn}-auth-lv-fn-01"
-  fn_fast_login_resource_group_name = "${local.common_project_itn}-fast-login-rg-01"
+  # Fast Login references refers to io-auth-n-identity-domain/infra/resources/prod/function_lv.tf
+  fn_fast_login_name                = "${local.common_project_itn}-auth-lv-func-02"
+  fn_fast_login_resource_group_name = "${local.common_project_itn}-auth-lv-rg-01"
 }
 
 # Region ITN
@@ -33,4 +33,7 @@ locals {
 
   vnet_common_name_itn                = "${local.common_project_itn}-common-vnet-01"
   vnet_common_resource_group_name_itn = "${local.common_project_itn}-common-rg-01"
+
+  apim_itn_name                = "${local.product}-${local.itn_location_short}-apim-01"
+  apim_itn_resource_group_name = "${local.product}-${local.itn_location_short}-common-rg-01"
 }
