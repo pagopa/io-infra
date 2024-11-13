@@ -37,8 +37,8 @@ locals {
   apim_itn_name                = "${local.product}-${local.itn_location_short}-apim-01"
   apim_itn_resource_group_name = "${local.product}-${local.itn_location_short}-common-rg-01"
 
-  app_name        = "citizenauth"
-  
+  app_name = "citizenauth"
+
   itn_environment = {
     prefix    = var.prefix
     env_short = var.env_short

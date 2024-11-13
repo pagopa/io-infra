@@ -28,6 +28,7 @@
 | <a name="module_immutable_lv_audit_logs_storage"></a> [immutable\_lv\_audit\_logs\_storage](#module\_immutable\_lv\_audit\_logs\_storage) | git::https://github.com/pagopa/terraform-azurerm-v3//storage_account | v8.12.0 |
 | <a name="module_immutable_lv_audit_logs_storage_customer_managed_key"></a> [immutable\_lv\_audit\_logs\_storage\_customer\_managed\_key](#module\_immutable\_lv\_audit\_logs\_storage\_customer\_managed\_key) | git::https://github.com/pagopa/terraform-azurerm-v3//storage_account_customer_managed_key | v8.12.0 |
 | <a name="module_io_citizen_auth_storage"></a> [io\_citizen\_auth\_storage](#module\_io\_citizen\_auth\_storage) | git::https://github.com/pagopa/terraform-azurerm-v3//storage_account | v8.12.0 |
+| <a name="module_io_citizen_auth_storage_itn"></a> [io\_citizen\_auth\_storage\_itn](#module\_io\_citizen\_auth\_storage\_itn) | github.com/pagopa/dx//infra/modules/azure_storage_account | main |
 | <a name="module_key_vault"></a> [key\_vault](#module\_key\_vault) | git::https://github.com/pagopa/terraform-azurerm-v3.git//key_vault | v8.44.1 |
 | <a name="module_lollipop_assertions_storage"></a> [lollipop\_assertions\_storage](#module\_lollipop\_assertions\_storage) | github.com/pagopa/terraform-azurerm-v3//storage_account | v8.12.0 |
 | <a name="module_lollipop_assertions_storage_customer_managed_key"></a> [lollipop\_assertions\_storage\_customer\_managed\_key](#module\_lollipop\_assertions\_storage\_customer\_managed\_key) | git::https://github.com/pagopa/terraform-azurerm-v3//storage_account_customer_managed_key | v8.12.0 |
