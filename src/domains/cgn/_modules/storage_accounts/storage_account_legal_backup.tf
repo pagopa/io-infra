@@ -37,3 +37,23 @@ resource "azurerm_private_endpoint" "private_endpoint_storage_account_legal_back
     private_dns_zone_ids = [data.azurerm_private_dns_zone.privatelink_blob_core.id]
   }
 }
+
+### ITN
+module "storage_account_legal_backup_itn" {
+  source      = "github.com/pagopa/dx//infra/modules/azure_storage_account?ref=main"
+  environment = merge(var.environment, { app_name = "legalbackup" })
+
+  tier                = "l"
+  resource_group_name = var.resource_group_name
+
+  subnet_pep_id                        = var.subnet_pendpoints_id
+  private_dns_zone_resource_group_name = var.resource_group_common
+
+  force_public_network_access_enabled = true
+
+  subservices_enabled = {
+    blob = true
+  }
+
+  tags = var.tags
+}
