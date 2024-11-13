@@ -81,6 +81,11 @@ data "azurerm_linux_function_app" "io_sign_user" {
   name                = "${local.project_weu_legacy}-sign-user-func"
 }
 
+data "azurerm_linux_function_app" "io_fims_user" {
+  resource_group_name = "${local.project_itn}-fims-rg-01"
+  name                = "${local.project_itn}-fims-user-func-01"
+}
+
 data "azurerm_linux_function_app" "wallet_user" {
   resource_group_name = "${local.project_itn}-wallet-rg-01"
   name                = "${local.project_itn}-wallet-user-func-02"
