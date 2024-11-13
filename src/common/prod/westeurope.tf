@@ -498,8 +498,6 @@ module "app_backend_li_weu" {
   slot_allowed_subnets = concat([local.azdoa_snet_id["weu"]], data.azurerm_subnet.services_snet.*.id, [data.azurerm_subnet.admin_snet.id])
   allowed_ips = concat(module.monitoring_weu.appi.reserved_ips,
     [
-      // aks beta
-      "51.124.16.195/32",
       // aks prod01
       "51.105.109.140/32"
   ])
