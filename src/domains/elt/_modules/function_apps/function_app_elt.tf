@@ -166,9 +166,9 @@ module "function_elt" {
       "AzureWebJobs.AnalyticsMessageStatusStorageQueueInbloundAdapter.Disabled"            = "0"
       "AzureWebJobs.AnalyticsServiceChangeFeedInboundProcessorAdapter.Disabled"            = "0"
       "AzureWebJobs.AnalyticsServiceStorageQueueInboundProcessorAdapter.Disabled"          = "0"
-      "AzureWebJobs.AnalyticsServicePreferencesChangeFeedInboundProcessorAdapter.Disabled" = "0"
-      "AzureWebJobs.AnalyticsProfilesChangeFeedInboundProcessorAdapter.Disabled"           = "0"
-      "AzureWebJobs.AnalyticsUserDataProcessingChangeFeedInboundProcessorAdapter.Disabled" = "0"
+      "AzureWebJobs.AnalyticsServicePreferencesChangeFeedInboundProcessorAdapter.Disabled" = "1"
+      "AzureWebJobs.AnalyticsProfilesChangeFeedInboundProcessorAdapter.Disabled"           = "1"
+      "AzureWebJobs.AnalyticsUserDataProcessingChangeFeedInboundProcessorAdapter.Disabled" = "1"
     }
   )
 
