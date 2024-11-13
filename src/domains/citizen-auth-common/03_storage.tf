@@ -277,3 +277,25 @@ resource "azurerm_storage_queue" "profiles_to_sanitize" {
   name                 = "profiles-to-sanitize"
   storage_account_name = module.io_citizen_auth_storage.name
 }
+
+
+module "io_citizen_auth_storage_itn" {
+  source = "github.com/pagopa/dx//infra/modules/azure_storage_account?ref=main"
+
+  environment                          = local.itn_environment
+  resource_group_name                  = "${local.project_itn}-data-rg-01"
+  tier                                 = "l"
+  subnet_pep_id                        = module.common_values.pep_subnets.itn.id
+  private_dns_zone_resource_group_name = module.common_values.resource_groups.weu.common
+
+  subservices_enabled = {
+    blob  = false
+    file  = false
+    queue = true
+    table = true
+  }
+
+  force_public_network_access_enabled = false
+
+  tags = var.tags
+}
