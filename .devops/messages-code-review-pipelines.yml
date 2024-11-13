@@ -75,12 +75,7 @@ stages:
 #
   - stage: tf_plan_app_on_aks_on_prod01
     dependsOn: [tf_plan_common_on_prod]
-    condition: and(
-      or
-      (
-        in(dependencies.tf_plan_common_on_prod.result, 'Succeeded', 'SucceededWithIssues', 'Skipped')
-      ),
-      eq(${{parameters.APP_PROD01}}, true))
+    condition: and(succeeded(), eq(${{parameters.APP_PROD01}}, true))
     pool:
       name: io-prod-linux
     jobs:
