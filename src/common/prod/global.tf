@@ -22,11 +22,6 @@ module "global" {
         name = local.core.networking.itn.vnet_common.name
       }
 
-      beta = {
-        id   = data.azurerm_virtual_network.weu_beta.id
-        name = data.azurerm_virtual_network.weu_beta.name
-      }
-
       prod01 = {
         id   = data.azurerm_virtual_network.weu_prod01.id
         name = data.azurerm_virtual_network.weu_prod01.name

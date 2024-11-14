@@ -15,6 +15,11 @@ data "azurerm_key_vault_secret" "app_backend_IO_SIGN_API_KEY" {
   key_vault_id = var.key_vault_common.id
 }
 
+data "azurerm_key_vault_secret" "app_backend_IO_FIMS_API_KEY" {
+  name         = "funciofims-KEY-APPBACKEND"
+  key_vault_id = var.key_vault_common.id
+}
+
 data "azurerm_key_vault_secret" "app_backend_CGN_OPERATOR_SEARCH_API_KEY_PROD" {
   name         = "funccgnoperatorsearch-KEY-PROD-APPBACKEND"
   key_vault_id = var.key_vault_common.id
