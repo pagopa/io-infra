@@ -292,21 +292,17 @@ module "cosmosdb_account_remote_content" {
   enable_free_tier    = false
   kind                = "GlobalDocumentDB"
 
-  public_network_access_enabled       = false
-  private_endpoint_enabled            = true
-  subnet_id                           = data.azurerm_subnet.private_endpoints_subnet.id
-  private_dns_zone_sql_ids            = [data.azurerm_private_dns_zone.privatelink_documents_azure_com.id]
-  private_service_connection_sql_name = "${local.product}-messages-remote-content-private-endpoint"
-  private_endpoint_sql_name           = "${local.product}-messages-remote-content"
-  is_virtual_network_filter_enabled   = false
+  public_network_access_enabled     = false
+  private_endpoint_enabled          = false
+  is_virtual_network_filter_enabled = false
 
-  main_geo_location_location       = azurerm_resource_group.data_rg.location
+  main_geo_location_location       = "italynorth"
   main_geo_location_zone_redundant = true
 
   additional_geo_locations = [{
-    location          = "italynorth"
+    location          = "spaincentral"
     failover_priority = 1
-    zone_redundant    = true
+    zone_redundant    = false
   }]
 
   consistency_policy = {
