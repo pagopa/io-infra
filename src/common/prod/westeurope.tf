@@ -101,9 +101,18 @@ module "monitoring_weu" {
     },
     {
       # CIE https://app-backend.io.italia.it/login?authLevel=SpidL2&entityID=xx_servizicie
-      name                              = "CIE",
+      name                              = "CIE L2",
       host                              = module.global.dns.public_dns_zones.io_italia_it.app_backend
       path                              = "/login?authLevel=SpidL2&entityID=xx_servizicie",
+      frequency                         = 900
+      http_status                       = 200,
+      ssl_cert_remaining_lifetime_check = 1,
+    },
+    {
+      # CIE https://app-backend.io.italia.it/login?authLevel=SpidL3&entityID=xx_servizicie
+      name                              = "CIE L3",
+      host                              = module.global.dns.public_dns_zones.io_italia_it.app_backend
+      path                              = "/login?authLevel=SpidL3&entityID=xx_servizicie",
       frequency                         = 900
       http_status                       = 200,
       ssl_cert_remaining_lifetime_check = 1,
@@ -489,8 +498,6 @@ module "app_backend_li_weu" {
   slot_allowed_subnets = concat([local.azdoa_snet_id["weu"]], data.azurerm_subnet.services_snet.*.id, [data.azurerm_subnet.admin_snet.id])
   allowed_ips = concat(module.monitoring_weu.appi.reserved_ips,
     [
-      // aks beta
-      "51.124.16.195/32",
       // aks prod01
       "51.105.109.140/32"
   ])
