@@ -57,7 +57,7 @@ variable "location_string" {
 
 variable "instance" {
   type        = string
-  description = "One of beta, prod01, prod02"
+  description = "One of prod01"
 }
 
 variable "lock_enable" {

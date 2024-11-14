@@ -24,9 +24,9 @@ module "cosmosdb_account" {
   main_geo_location_location       = "italynorth"
   main_geo_location_zone_redundant = true
   additional_geo_locations = [{
-    location          = azurerm_resource_group.data_rg.location
+    location          = "spaincentral"
     failover_priority = 1
-    zone_redundant    = true
+    zone_redundant    = false
   }]
   consistency_policy = {
     consistency_level       = "Session"

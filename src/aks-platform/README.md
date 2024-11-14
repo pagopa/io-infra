@@ -5,7 +5,7 @@
 | Name | Version |
 |------|---------|
 | <a name="requirement_azuread"></a> [azuread](#requirement\_azuread) | <= 2.33.0 |
-| <a name="requirement_azurerm"></a> [azurerm](#requirement\_azurerm) | <= 3.71.0 |
+| <a name="requirement_azurerm"></a> [azurerm](#requirement\_azurerm) | <= 3.116.0 |
 | <a name="requirement_helm"></a> [helm](#requirement\_helm) | = 2.8.0 |
 | <a name="requirement_kubernetes"></a> [kubernetes](#requirement\_kubernetes) | = 2.17.0 |
 | <a name="requirement_null"></a> [null](#requirement\_null) | <= 3.2.1 |
@@ -15,7 +15,7 @@
 | Name | Version |
 |------|---------|
 | <a name="provider_azuread"></a> [azuread](#provider\_azuread) | 2.33.0 |
-| <a name="provider_azurerm"></a> [azurerm](#provider\_azurerm) | 3.71.0 |
+| <a name="provider_azurerm"></a> [azurerm](#provider\_azurerm) | 3.116.0 |
 | <a name="provider_helm"></a> [helm](#provider\_helm) | 2.8.0 |
 | <a name="provider_kubernetes"></a> [kubernetes](#provider\_kubernetes) | 2.17.0 |
 | <a name="provider_null"></a> [null](#provider\_null) | 3.2.1 |
@@ -24,10 +24,10 @@
 
 | Name | Source | Version |
 |------|--------|---------|
-| <a name="module_aks"></a> [aks](#module\_aks) | git::https://github.com/pagopa/terraform-azurerm-v3.git//kubernetes_cluster | v7.27.2 |
-| <a name="module_aks_snet"></a> [aks\_snet](#module\_aks\_snet) | git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet | v7.26.0 |
-| <a name="module_aks_user_snet"></a> [aks\_user\_snet](#module\_aks\_user\_snet) | git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet | v7.26.0 |
-| <a name="module_keda_pod_identity"></a> [keda\_pod\_identity](#module\_keda\_pod\_identity) | git::https://github.com/pagopa/terraform-azurerm-v3.git//kubernetes_pod_identity | v7.26.0 |
+| <a name="module_aks"></a> [aks](#module\_aks) | git::https://github.com/pagopa/terraform-azurerm-v3.git//kubernetes_cluster | v8.54.0 |
+| <a name="module_aks_snet"></a> [aks\_snet](#module\_aks\_snet) | git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet | v8.54.0 |
+| <a name="module_aks_user_snet"></a> [aks\_user\_snet](#module\_aks\_user\_snet) | git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet | v8.54.0 |
+| <a name="module_keda_pod_identity"></a> [keda\_pod\_identity](#module\_keda\_pod\_identity) | git::https://github.com/pagopa/terraform-azurerm-v3.git//kubernetes_pod_identity | v8.54.0 |
 | <a name="module_nginx_ingress"></a> [nginx\_ingress](#module\_nginx\_ingress) | terraform-module/release/helm | 2.8.0 |
 
 ## Resources

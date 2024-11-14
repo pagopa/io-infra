@@ -10,7 +10,7 @@ data "azurerm_virtual_network" "vnet_common" {
 
 # System Node Pool Subnet
 module "aks_snet" {
-  source                                    = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v7.26.0"
+  source                                    = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v8.54.0"
   name                                      = "${local.project}-aks-snet"
   address_prefixes                          = var.aks_system_cidr_subnet
   resource_group_name                       = data.azurerm_virtual_network.vnet.resource_group_name
@@ -20,7 +20,7 @@ module "aks_snet" {
 
 # User Node Pool Subnet
 module "aks_user_snet" {
-  source                                    = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v7.26.0"
+  source                                    = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v8.54.0"
   name                                      = "${local.project}-aks-user-snet"
   address_prefixes                          = var.aks_user_cidr_subnet
   resource_group_name                       = data.azurerm_virtual_network.vnet.resource_group_name

@@ -323,8 +323,9 @@ module "session_manager_weu_04" {
   )
   sticky_settings = concat(["APPINSIGHTS_CLOUD_ROLE_NAME"])
 
-  subnet_id        = module.session_manager_snet_04.id
-  vnet_integration = true
+  subnet_id                     = module.session_manager_snet_04.id
+  vnet_integration              = true
+  public_network_access_enabled = false
 
   tags = var.tags
 }
@@ -415,8 +416,9 @@ module "session_manager_weu_staging_04" {
     }
   )
 
-  subnet_id        = module.session_manager_snet_04.id
-  vnet_integration = true
+  subnet_id                     = module.session_manager_snet_04.id
+  vnet_integration              = true
+  public_network_access_enabled = false
 
   tags = var.tags
 }

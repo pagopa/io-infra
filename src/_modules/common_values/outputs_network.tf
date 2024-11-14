@@ -9,10 +9,6 @@ output "virtual_networks" {
     }
     weu = {
       common = local.core.networking.weu.vnet_common
-      beta = {
-        name                = data.azurerm_virtual_network.weu_beta.name
-        resource_group_name = data.azurerm_virtual_network.weu_beta.resource_group_name
-      }
       prod01 = {
         name                = data.azurerm_virtual_network.weu_prod01.name
         resource_group_name = data.azurerm_virtual_network.weu_prod01.resource_group_name

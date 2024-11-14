@@ -73,4 +73,9 @@ resource "azurerm_private_endpoint" "cosno_remote_content_itn" {
     is_manual_connection           = false
     subresource_names              = ["Sql"]
   }
+
+  private_dns_zone_group {
+    name                 = "private-dns-zone-group"
+    private_dns_zone_ids = [data.azurerm_private_dns_zone.privatelink_documents_azure_com.id]
+  }
 }

@@ -33,16 +33,6 @@ module "vnet_peering_itn" {
       use_remote_gateways = true
     }
 
-    beta = {
-      name                = data.azurerm_virtual_network.weu_beta.name
-      id                  = data.azurerm_virtual_network.weu_beta.id
-      resource_group_name = data.azurerm_virtual_network.weu_beta.resource_group_name
-      use_remote_gateways = false
-      symmetrical = {
-        enabled = true
-      }
-    }
-
     prod01 = {
       name                = data.azurerm_virtual_network.weu_prod01.name
       id                  = data.azurerm_virtual_network.weu_prod01.id

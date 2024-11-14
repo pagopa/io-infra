@@ -56,15 +56,15 @@ locals {
 
       SERVICE_PREFERENCES_TOPIC_NAME              = data.azurerm_eventhub_authorization_rule.evh_ns_service_preferences_send_auth_rule.eventhub_name
       SERVICE_PREFERENCES_TOPIC_CONNECTION_STRING = data.azurerm_eventhub_authorization_rule.evh_ns_service_preferences_send_auth_rule.primary_connection_string
-      SERVICE_PREFERENCES_LEASES_PREFIX           = "service-preferences-003"
+      SERVICE_PREFERENCES_LEASES_PREFIX           = "service-preferences-004"
 
       PROFILES_TOPIC_NAME              = data.azurerm_eventhub_authorization_rule.evh_ns_profiles_send_auth_rule.eventhub_name
       PROFILES_TOPIC_CONNECTION_STRING = data.azurerm_eventhub_authorization_rule.evh_ns_profiles_send_auth_rule.primary_connection_string
-      PROFILES_LEASES_PREFIX           = "profiles-003"
+      PROFILES_LEASES_PREFIX           = "profiles-004"
 
       DELETES_TOPIC_NAME              = data.azurerm_eventhub_authorization_rule.evh_ns_profile_deletion_send_auth_rule.eventhub_name
       DELETES_TOPIC_CONNECTION_STRING = data.azurerm_eventhub_authorization_rule.evh_ns_profile_deletion_send_auth_rule.primary_connection_string
-      DELETES_LEASES_PREFIX           = "profile-deletion-001"
+      DELETES_LEASES_PREFIX           = "profile-deletion-002"
 
 
       ERROR_STORAGE_ACCOUNT                   = var.storage_account_name
@@ -84,7 +84,7 @@ locals {
       PROFILE_TOPIC_CONNECTION_STRING = data.azurerm_eventhub_authorization_rule.evh_ns_io_cosmos_profiles_fn.primary_connection_string
 
       COSMOSDB_REPLICA_NAME     = "db"
-      COSMOSDB_REPLICA_URI      = replace(data.azurerm_cosmosdb_account.cosmos_api.endpoint, "io-p-cosmos-api", "io-p-cosmos-api-northeurope")
+      COSMOSDB_REPLICA_URI      = data.azurerm_cosmosdb_account.cosmos_api.endpoint
       COSMOSDB_REPLICA_KEY      = data.azurerm_cosmosdb_account.cosmos_api.primary_key
       COSMOSDB_REPLICA_LOCATION = var.secondary_location_display_name
 
@@ -150,8 +150,8 @@ module "function_elt" {
     kind                         = "elastic"
     sku_tier                     = "ElasticPremium"
     sku_size                     = "EP2"
-    maximum_elastic_worker_count = 1
-    worker_count                 = null
+    maximum_elastic_worker_count = 5
+    worker_count                 = 3
     zone_balancing_enabled       = null
   }
 
@@ -166,9 +166,9 @@ module "function_elt" {
       "AzureWebJobs.AnalyticsMessageStatusStorageQueueInbloundAdapter.Disabled"            = "0"
       "AzureWebJobs.AnalyticsServiceChangeFeedInboundProcessorAdapter.Disabled"            = "0"
       "AzureWebJobs.AnalyticsServiceStorageQueueInboundProcessorAdapter.Disabled"          = "0"
-      "AzureWebJobs.AnalyticsServicePreferencesChangeFeedInboundProcessorAdapter.Disabled" = "1"
-      "AzureWebJobs.AnalyticsProfilesChangeFeedInboundProcessorAdapter.Disabled"           = "1"
-      "AzureWebJobs.AnalyticsUserDataProcessingChangeFeedInboundProcessorAdapter.Disabled" = "1"
+      "AzureWebJobs.AnalyticsServicePreferencesChangeFeedInboundProcessorAdapter.Disabled" = "0"
+      "AzureWebJobs.AnalyticsProfilesChangeFeedInboundProcessorAdapter.Disabled"           = "0"
+      "AzureWebJobs.AnalyticsUserDataProcessingChangeFeedInboundProcessorAdapter.Disabled" = "0"
     }
   )
 
