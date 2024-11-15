@@ -47,3 +47,75 @@ resource "azurerm_public_ip" "apim" {
 
   tags = var.tags
 }
+
+###############
+# FOR TESTING #
+###############
+
+# Define the A Records for APIM ITN
+
+resource "azurerm_private_dns_a_record" "apim_azure_api_net" {
+  count = var.migration ? 1 : 0
+
+  name                = module.apim_v2.name
+  zone_name           = data.azurerm_private_dns_zone.azure_api_net[0].name
+  resource_group_name = var.resource_group_common
+  ttl                 = 3600
+  records             = module.apim_v2.private_ip_addresses
+
+  tags = var.tags
+}
+
+resource "azurerm_private_dns_a_record" "apim_management_azure_api_net" {
+  count = var.migration ? 1 : 0
+
+  name                = module.apim_v2.name
+  zone_name           = data.azurerm_private_dns_zone.management_azure_api_net[0].name
+  resource_group_name = var.resource_group_common
+  ttl                 = 3600
+  records             = module.apim_v2.private_ip_addresses
+
+  tags = var.tags
+}
+
+resource "azurerm_private_dns_a_record" "apim_scm_azure_api_net" {
+  count = var.migration ? 1 : 0
+
+  name                = module.apim_v2.name
+  zone_name           = data.azurerm_private_dns_zone.scm_azure_api_net[0].name
+  resource_group_name = var.resource_group_common
+  ttl                 = 3600
+  records             = module.apim_v2.private_ip_addresses
+
+  tags = var.tags
+}
+
+# Link A Records into the VNet
+
+resource "azurerm_private_dns_zone_virtual_network_link" "azure_api_link" {
+  count = var.migration ? 1 : 0
+
+  name                  = format("%s-vnet", var.project)
+  resource_group_name   = var.vnet_common.resource_group_name
+  private_dns_zone_name = data.azurerm_private_dns_zone.azure_api_net[0].name
+  virtual_network_id    = var.vnet_common.id
+}
+
+
+resource "azurerm_private_dns_zone_virtual_network_link" "management_api_link" {
+  count = var.migration ? 1 : 0
+
+  name                  = format("%s-vnet", var.project)
+  resource_group_name   = var.vnet_common.resource_group_name
+  private_dns_zone_name = data.azurerm_private_dns_zone.management_azure_api_net[0].name
+  virtual_network_id    = var.vnet_common.id
+}
+
+resource "azurerm_private_dns_zone_virtual_network_link" "scm_apim_link" {
+  count = var.migration ? 1 : 0
+
+  name                  = format("%s-vnet", var.project)
+  resource_group_name   = var.vnet_common.resource_group_name
+  private_dns_zone_name = data.azurerm_private_dns_zone.scm_azure_api_net[0].name
+  virtual_network_id    = var.vnet_common.id
+}
