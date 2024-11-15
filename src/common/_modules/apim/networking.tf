@@ -89,33 +89,3 @@ resource "azurerm_private_dns_a_record" "apim_scm_azure_api_net" {
 
   tags = var.tags
 }
-
-# Link A Records into the VNet
-
-resource "azurerm_private_dns_zone_virtual_network_link" "azure_api_link" {
-  count = var.migration ? 1 : 0
-
-  name                  = format("%s-vnet", var.project)
-  resource_group_name   = var.vnet_common.resource_group_name
-  private_dns_zone_name = data.azurerm_private_dns_zone.azure_api_net[0].name
-  virtual_network_id    = var.vnet_common.id
-}
-
-
-resource "azurerm_private_dns_zone_virtual_network_link" "management_api_link" {
-  count = var.migration ? 1 : 0
-
-  name                  = format("%s-vnet", var.project)
-  resource_group_name   = var.vnet_common.resource_group_name
-  private_dns_zone_name = data.azurerm_private_dns_zone.management_azure_api_net[0].name
-  virtual_network_id    = var.vnet_common.id
-}
-
-resource "azurerm_private_dns_zone_virtual_network_link" "scm_apim_link" {
-  count = var.migration ? 1 : 0
-
-  name                  = format("%s-vnet", var.project)
-  resource_group_name   = var.vnet_common.resource_group_name
-  private_dns_zone_name = data.azurerm_private_dns_zone.scm_azure_api_net[0].name
-  virtual_network_id    = var.vnet_common.id
-}
