@@ -1,0 +1,100 @@
+data "azuread_client_config" "current" {}
+
+provider "azurerm" {
+  alias           = "prod-esercenti"
+  subscription_id = "74da48a3-b0e7-489d-8172-da79801086ed"
+
+  features {}
+}
+
+locals {
+  role_definition_names = {
+    cgn = [
+      "Reader",
+      "API Management Service Reader Role",
+      "API Management Service Contributor"
+    ]
+    apim_client = [
+      "Reader",
+      "API Management Service Reader Role",
+      "Contributor"
+    ]
+    dev_portal = [
+      "Reader",
+      "API Management Service Reader Role",
+      "Contributor"
+    ]
+  }
+}
+
+# CGN
+
+data "azurerm_linux_web_app" "portal_backend_1" {
+  provider            = azurerm.prod-esercenti
+  name                = "cgnonboardingportal-p-portal-backend1"
+  resource_group_name = "cgnonboardingportal-p-api-rg"
+}
+
+resource "azurerm_role_assignment" "cgn_backend1_role" {
+  for_each             = toset(local.role_definition_names.cgn)
+  principal_id         = data.azurerm_linux_web_app.portal_backend_1.identity[0].principal_id
+  role_definition_name = each.value
+  scope                = module.apim_itn.id
+}
+
+# APIM CLIENT
+
+resource "azuread_application" "apim_client_app" {
+  display_name = "io-p-apim-api-management-client"
+  owners       = [data.azuread_client_config.current.object_id]
+}
+
+resource "azuread_service_principal" "apim_client_svc" {
+  client_id = azuread_application.apim_client_app.client_id
+  owners    = [data.azuread_client_config.current.object_id]
+}
+
+resource "azurerm_role_assignment" "apim_client_role" {
+  for_each             = toset(local.role_definition_names.apim_client)
+  principal_id         = azuread_service_principal.apim_client_svc.id
+  role_definition_name = each.value
+  scope                = module.apim_itn.id
+}
+
+# IO SIGN
+
+data "azurerm_linux_web_app" "sign_backoffice_app" {
+  name                = "io-p-sign-backoffice-app"
+  resource_group_name = "io-p-sign-backend-rg"
+}
+
+resource "azurerm_role_assignment" "sign_backoffice_app_role" {
+  principal_id         = data.azurerm_linux_web_app.sign_backoffice_app.identity[0].principal_id
+  role_definition_name = "API Management Service Contributor"
+  scope                = module.apim_itn.id
+}
+
+resource "azurerm_role_assignment" "staging_sign_backoffice_app_role" {
+  principal_id         = "c44b5cc2-8342-4403-adc7-56113a3b511f"
+  role_definition_name = "API Management Service Contributor"
+  scope                = module.apim_itn.id
+}
+
+# DEVELOPER PORTAL
+
+resource "azuread_application" "dev_portal_app" {
+  display_name = "io-prod-sp-developer-portal"
+  owners       = [data.azuread_client_config.current.object_id]
+}
+
+resource "azuread_service_principal" "dev_portal_svc" {
+  client_id = azuread_application.dev_portal_app.client_id
+  owners    = [data.azuread_client_config.current.object_id]
+}
+
+resource "azurerm_role_assignment" "dev_portal_role" {
+  for_each             = toset(local.role_definition_names.dev_portal)
+  principal_id         = azuread_service_principal.dev_portal_svc.id
+  role_definition_name = each.value
+  scope                = module.apim_itn.id
+}
