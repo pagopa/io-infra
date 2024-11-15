@@ -1,8 +1,3 @@
-data "azurerm_virtual_network" "weu_beta" {
-  name                = "${local.project_weu}-beta-vnet"
-  resource_group_name = "${local.project_weu}-beta-vnet-rg"
-}
-
 data "azurerm_virtual_network" "weu_prod01" {
   name                = "${local.project_weu}-prod01-vnet"
   resource_group_name = "${local.project_weu}-prod01-vnet-rg"
@@ -76,14 +71,14 @@ data "azurerm_linux_function_app" "eucovidcert" {
   name                = "${local.project_weu_legacy}-eucovidcert-fn"
 }
 
-data "azurerm_linux_function_app" "function_cgn" {
-  resource_group_name = "${local.project_weu_legacy}-cgn-be-rg"
-  name                = "${local.project_weu_legacy}-cgn-fn"
-}
-
 data "azurerm_linux_function_app" "io_sign_user" {
   resource_group_name = "${local.project_weu_legacy}-sign-backend-rg"
   name                = "${local.project_weu_legacy}-sign-user-func"
+}
+
+data "azurerm_linux_function_app" "io_fims_user" {
+  resource_group_name = "${local.project_itn}-fims-rg-01"
+  name                = "${local.project_itn}-fims-user-func-01"
 }
 
 data "azurerm_linux_function_app" "wallet_user" {

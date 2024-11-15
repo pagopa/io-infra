@@ -194,6 +194,7 @@ variable "backend_hostnames" {
     eucovidcert          = string
     cgn                  = string
     iosign               = string
+    iofims               = string
     cgnonboarding        = string
     trial_system_api     = string
     trial_system_apim    = string
