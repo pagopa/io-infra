@@ -71,11 +71,6 @@ data "azurerm_linux_function_app" "eucovidcert" {
   name                = "${local.project_weu_legacy}-eucovidcert-fn"
 }
 
-data "azurerm_linux_function_app" "function_cgn" {
-  resource_group_name = "${local.project_weu_legacy}-cgn-be-rg"
-  name                = "${local.project_weu_legacy}-cgn-fn"
-}
-
 data "azurerm_linux_function_app" "io_sign_user" {
   resource_group_name = "${local.project_weu_legacy}-sign-backend-rg"
   name                = "${local.project_weu_legacy}-sign-user-func"
