@@ -1,5 +1,3 @@
-data "azuread_client_config" "current" {}
-
 provider "azurerm" {
   alias           = "prod-esercenti"
   subscription_id = "74da48a3-b0e7-489d-8172-da79801086ed"
@@ -44,19 +42,13 @@ resource "azurerm_role_assignment" "cgn_backend1_role" {
 
 # APIM CLIENT
 
-resource "azuread_application" "apim_client_app" {
+data "azuread_service_principal" "apim_client_svc" {
   display_name = "io-p-apim-api-management-client"
-  owners       = [data.azuread_client_config.current.object_id]
-}
-
-resource "azuread_service_principal" "apim_client_svc" {
-  client_id = azuread_application.apim_client_app.client_id
-  owners    = [data.azuread_client_config.current.object_id]
 }
 
 resource "azurerm_role_assignment" "apim_client_role" {
   for_each             = toset(local.role_definition_names.apim_client)
-  principal_id         = azuread_service_principal.apim_client_svc.id
+  principal_id         = data.azuread_service_principal.apim_client_svc.id
   role_definition_name = each.value
   scope                = module.apim_itn.id
 }
@@ -82,19 +74,13 @@ resource "azurerm_role_assignment" "staging_sign_backoffice_app_role" {
 
 # DEVELOPER PORTAL
 
-resource "azuread_application" "dev_portal_app" {
+data "azuread_service_principal" "dev_portal_svc" {
   display_name = "io-prod-sp-developer-portal"
-  owners       = [data.azuread_client_config.current.object_id]
-}
-
-resource "azuread_service_principal" "dev_portal_svc" {
-  client_id = azuread_application.dev_portal_app.client_id
-  owners    = [data.azuread_client_config.current.object_id]
 }
 
 resource "azurerm_role_assignment" "dev_portal_role" {
   for_each             = toset(local.role_definition_names.dev_portal)
-  principal_id         = azuread_service_principal.dev_portal_svc.id
+  principal_id         = data.azuread_service_principal.dev_portal_svc.id
   role_definition_name = each.value
   scope                = module.apim_itn.id
 }
