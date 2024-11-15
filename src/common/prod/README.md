@@ -38,17 +38,12 @@
 
 | Name | Type |
 |------|------|
-| [azuread_application.apim_client_app](https://registry.terraform.io/providers/hashicorp/azuread/latest/docs/resources/application) | resource |
-| [azuread_application.dev_portal_app](https://registry.terraform.io/providers/hashicorp/azuread/latest/docs/resources/application) | resource |
-| [azuread_service_principal.apim_client_svc](https://registry.terraform.io/providers/hashicorp/azuread/latest/docs/resources/service_principal) | resource |
-| [azuread_service_principal.dev_portal_svc](https://registry.terraform.io/providers/hashicorp/azuread/latest/docs/resources/service_principal) | resource |
 | [azurerm_resource_group.github_runner](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/resource_group) | resource |
 | [azurerm_role_assignment.apim_client_role](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/role_assignment) | resource |
 | [azurerm_role_assignment.cgn_backend1_role](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/role_assignment) | resource |
 | [azurerm_role_assignment.dev_portal_role](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/role_assignment) | resource |
-| [azurerm_role_assignment.sign_backoffice_app_role](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/role_assignment) | resource |
-| [azurerm_role_assignment.staging_sign_backoffice_app_role](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/role_assignment) | resource |
-| [azuread_client_config.current](https://registry.terraform.io/providers/hashicorp/azuread/latest/docs/data-sources/client_config) | data source |
+| [azuread_service_principal.apim_client_svc](https://registry.terraform.io/providers/hashicorp/azuread/latest/docs/data-sources/service_principal) | data source |
+| [azuread_service_principal.dev_portal_svc](https://registry.terraform.io/providers/hashicorp/azuread/latest/docs/data-sources/service_principal) | data source |
 | [azurerm_api_management.trial_system](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/api_management) | data source |
 | [azurerm_client_config.current](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/client_config) | data source |
 | [azurerm_linux_function_app.app_messages_xl](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/linux_function_app) | data source |
@@ -62,7 +57,6 @@
 | [azurerm_linux_function_app.wallet_user](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/linux_function_app) | data source |
 | [azurerm_linux_web_app.firmaconio_selfcare_web_app](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/linux_web_app) | data source |
 | [azurerm_linux_web_app.portal_backend_1](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/linux_web_app) | data source |
-| [azurerm_linux_web_app.sign_backoffice_app](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/linux_web_app) | data source |
 | [azurerm_subnet.admin_snet](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/subnet) | data source |
 | [azurerm_subnet.cosmos_api_allowed](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/subnet) | data source |
 | [azurerm_subnet.itn_auth_fast_login_func_snet](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/subnet) | data source |
