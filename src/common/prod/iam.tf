@@ -53,25 +53,6 @@ resource "azurerm_role_assignment" "apim_client_role" {
   scope                = module.apim_itn.id
 }
 
-# IO SIGN
-
-data "azurerm_linux_web_app" "sign_backoffice_app" {
-  name                = "io-p-sign-backoffice-app"
-  resource_group_name = "io-p-sign-backend-rg"
-}
-
-resource "azurerm_role_assignment" "sign_backoffice_app_role" {
-  principal_id         = data.azurerm_linux_web_app.sign_backoffice_app.identity[0].principal_id
-  role_definition_name = "API Management Service Contributor"
-  scope                = module.apim_itn.id
-}
-
-resource "azurerm_role_assignment" "staging_sign_backoffice_app_role" {
-  principal_id         = "c44b5cc2-8342-4403-adc7-56113a3b511f"
-  role_definition_name = "API Management Service Contributor"
-  scope                = module.apim_itn.id
-}
-
 # DEVELOPER PORTAL
 
 data "azuread_service_principal" "dev_portal_svc" {
