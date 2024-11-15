@@ -20,3 +20,11 @@ locals {
 
   spid_login_base_path = "ioweb/auth/v1"
 }
+
+# Region ITN
+locals {
+  itn_location       = "italynorth"
+  itn_location_short = "itn"
+  project_itn        = "${local.product}-${local.itn_location_short}-${var.domain}"
+  common_project_itn = "${local.product}-${local.itn_location_short}"
+}

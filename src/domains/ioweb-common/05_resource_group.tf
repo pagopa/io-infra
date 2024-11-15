@@ -18,3 +18,7 @@ resource "azurerm_resource_group" "storage_rg" {
 
   tags = var.tags
 }
+
+data "azurerm_resource_group" "common_rg_weu" {
+  name = "${local.product}-rg-common"
+}
