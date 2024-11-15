@@ -1,8 +1,3 @@
-data "azurerm_virtual_network" "weu_beta" {
-  name                = "${local.project_weu}-beta-vnet"
-  resource_group_name = "${local.project_weu}-beta-vnet-rg"
-}
-
 data "azurerm_virtual_network" "weu_prod01" {
   name                = "${local.project_weu}-prod01-vnet"
   resource_group_name = "${local.project_weu}-prod01-vnet-rg"
@@ -86,6 +81,11 @@ data "azurerm_linux_function_app" "io_sign_user" {
   name                = "${local.project_weu_legacy}-sign-user-func"
 }
 
+data "azurerm_linux_function_app" "io_fims_user" {
+  resource_group_name = "${local.project_itn}-fims-rg-01"
+  name                = "${local.project_itn}-fims-user-func-01"
+}
+
 data "azurerm_linux_function_app" "wallet_user" {
   resource_group_name = "${local.project_itn}-wallet-rg-01"
   name                = "${local.project_itn}-wallet-user-func-02"
@@ -105,6 +105,12 @@ data "azurerm_subnet" "admin_snet" {
 
 data "azurerm_subnet" "itn_auth_fast_login_func_snet" {
   name                 = "${local.project_itn}-citizen-auth-fast-login-snet-01"
+  resource_group_name  = local.core.networking.itn.vnet_common.resource_group_name
+  virtual_network_name = local.core.networking.itn.vnet_common.name
+}
+
+data "azurerm_subnet" "itn_auth_lv_func_snet" {
+  name                 = "${local.project_itn}-auth-lv-func-snet-02"
   resource_group_name  = local.core.networking.itn.vnet_common.resource_group_name
   virtual_network_name = local.core.networking.itn.vnet_common.name
 }

@@ -76,6 +76,11 @@ data "azurerm_key_vault_secret" "session_manager_IOLOGIN_TEST_USERS" {
   key_vault_id = data.azurerm_key_vault.kv.id
 }
 
+data "azurerm_linux_function_app" "itn_auth_lv_func" {
+  name                = "${local.short_project_itn}-lv-func-02"
+  resource_group_name = "${local.short_project_itn}-lv-rg-01"
+}
+
 ###########
 
 resource "azurerm_resource_group" "session_manager_rg_weu" {
@@ -137,7 +142,7 @@ locals {
 
     # Functions Fast Login config
     FAST_LOGIN_API_KEY = data.azurerm_key_vault_secret.functions_fast_login_api_key.value
-    FAST_LOGIN_API_URL = "https://${module.function_fast_login_itn.default_hostname}"
+    FAST_LOGIN_API_URL = "https://${data.azurerm_linux_function_app.itn_auth_lv_func.default_hostname}"
 
     # Functions Lollipop config
     LOLLIPOP_API_BASE_PATH = "/api/v1"
@@ -271,8 +276,9 @@ module "session_manager_weu" {
   ]
   allowed_ips = []
 
-  subnet_id        = module.session_manager_snet.id
-  vnet_integration = true
+  subnet_id                     = module.session_manager_snet.id
+  vnet_integration              = true
+  public_network_access_enabled = false
 
   tags = var.tags
 }
@@ -317,8 +323,9 @@ module "session_manager_weu_04" {
   )
   sticky_settings = concat(["APPINSIGHTS_CLOUD_ROLE_NAME"])
 
-  subnet_id        = module.session_manager_snet_04.id
-  vnet_integration = true
+  subnet_id                     = module.session_manager_snet_04.id
+  vnet_integration              = true
+  public_network_access_enabled = false
 
   tags = var.tags
 }
@@ -368,8 +375,9 @@ module "session_manager_weu_staging" {
   ]
   allowed_ips = []
 
-  subnet_id        = module.session_manager_snet.id
-  vnet_integration = true
+  subnet_id                     = module.session_manager_snet.id
+  vnet_integration              = true
+  public_network_access_enabled = false
 
   tags = var.tags
 }
@@ -404,12 +412,13 @@ module "session_manager_weu_staging_04" {
   app_settings = merge(
     local.app_settings_common,
     {
-      APPINSIGHTS_CLOUD_ROLE_NAME = "${module.session_manager_weu.name}-staging"
+      APPINSIGHTS_CLOUD_ROLE_NAME = "${module.session_manager_weu_04.name}-staging"
     }
   )
 
-  subnet_id        = module.session_manager_snet_04.id
-  vnet_integration = true
+  subnet_id                     = module.session_manager_snet_04.id
+  vnet_integration              = true
+  public_network_access_enabled = false
 
   tags = var.tags
 }
