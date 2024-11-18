@@ -361,22 +361,22 @@ module "app_gw" {
       }
     }
 
-    # ipatente-io-pagopa-it = {
-    #   protocol           = "Https"
-    #   host               = format("ipatente.%s", var.public_dns_zones.io.name)
-    #   port               = 443
-    #   ssl_profile_name   = format("%s-ssl-profile", var.project)
-    #   firewall_policy_id = null
+    ipatente-io-pagopa-it = {
+      protocol           = "Https"
+      host               = format("ipatente.%s", var.public_dns_zones.io.name)
+      port               = 443
+      ssl_profile_name   = format("%s-ssl-profile", var.project)
+      firewall_policy_id = null
 
-    #   certificate = {
-    #     name = var.certificates.ipatente_io_pagopa_it
-    #     id = replace(
-    #       data.azurerm_key_vault_certificate.app_gw_ipatente_io.secret_id,
-    #       "/${data.azurerm_key_vault_certificate.app_gw_ipatente_io.version}",
-    #       ""
-    #     )
-    #   }
-    # }
+      certificate = {
+        name = var.certificates.ipatente_io_pagopa_it
+        id = replace(
+          data.azurerm_key_vault_certificate.app_gw_ipatente_io.secret_id,
+          "/${data.azurerm_key_vault_certificate.app_gw_ipatente_io.version}",
+          ""
+        )
+      }
+    }
 
     api-app-io-pagopa-it = {
       protocol           = "Https"
@@ -519,11 +519,11 @@ module "app_gw" {
     }
 
 
-    # ipatente-io-pagopa-it = {
-    #   listener     = "ipatente-io-pagopa-it"
-    #   url_map_name = "io-ipatente-path-based-rule"
-    #   priority     = 130
-    # }
+    ipatente-io-pagopa-it = {
+      listener     = "ipatente-io-pagopa-it"
+      url_map_name = "io-ipatente-path-based-rule"
+      priority     = 130
+    }
   }
 
   url_path_map = {
@@ -599,22 +599,22 @@ module "app_gw" {
       }
     }
 
-    # io-ipatente-path-based-rule = {
-    #   default_backend               = "ipatente-vehicles-io-app"
-    #   default_rewrite_rule_set_name = "rewrite-rule-set-api-app"
-    #   path_rule = {
-    #     ipatente-vehicles = {
-    #       paths                 = ["/veh/*"]
-    #       backend               = "ipatente-vehicles-io-app",
-    #       rewrite_rule_set_name = "rewrite-rule-set-api-app-remove-base-path-ipatente-vehicles"
-    #     },
-    #     ipatente-licences = {
-    #       paths                 = ["/lic/*"]
-    #       backend               = "ipatente-licences-io-app",
-    #       rewrite_rule_set_name = "rewrite-rule-set-api-app-remove-base-path-ipatente-licences"
-    #     },
-    #   }
-    # }
+    io-ipatente-path-based-rule = {
+      default_backend               = "ipatente-vehicles-io-app"
+      default_rewrite_rule_set_name = "rewrite-rule-set-api-app"
+      path_rule = {
+        ipatente-vehicles = {
+          paths                 = ["/veh/*"]
+          backend               = "ipatente-vehicles-io-app",
+          rewrite_rule_set_name = "rewrite-rule-set-api-app-remove-base-path-ipatente-vehicles"
+        },
+        ipatente-licences = {
+          paths                 = ["/lic/*"]
+          backend               = "ipatente-licences-io-app",
+          rewrite_rule_set_name = "rewrite-rule-set-api-app-remove-base-path-ipatente-licences"
+        },
+      }
+    }
   }
 
   rewrite_rule_sets = [
@@ -867,52 +867,52 @@ module "app_gw" {
         response_header_configurations = []
       }]
     },
-    # {
-    #   name = "rewrite-rule-set-api-app-remove-base-path-ipatente-vehicles"
-    #   rewrite_rules = [
-    #     local.io_backend_ip_headers_rule,
-    #     {
-    #       name          = "strip_base_ipatente_vehicles_path"
-    #       rule_sequence = 200
-    #       conditions = [{
-    #         variable    = "var_uri_path"
-    #         pattern     = "/veh/(.*)"
-    #         ignore_case = true
-    #         negate      = false
-    #       }]
-    #       url = {
-    #         path         = "/{var_uri_path_1}"
-    #         query_string = null
-    #         reroute      = false
-    #         components   = "path_only"
-    #       }
-    #       request_header_configurations  = []
-    #       response_header_configurations = []
-    #   }]
-    # },
-    # {
-    #   name = "rewrite-rule-set-api-app-remove-base-path-ipatente-licences"
-    #   rewrite_rules = [
-    #     local.io_backend_ip_headers_rule,
-    #     {
-    #       name          = "strip_base_ipatente_licences_path"
-    #       rule_sequence = 200
-    #       conditions = [{
-    #         variable    = "var_uri_path"
-    #         pattern     = "/lic/(.*)"
-    #         ignore_case = true
-    #         negate      = false
-    #       }]
-    #       url = {
-    #         path         = "/{var_uri_path_1}"
-    #         query_string = null
-    #         reroute      = false
-    #         components   = "path_only"
-    #       }
-    #       request_header_configurations  = []
-    #       response_header_configurations = []
-    #   }]
-    # }
+    {
+      name = "rewrite-rule-set-api-app-remove-base-path-ipatente-vehicles"
+      rewrite_rules = [
+        local.io_backend_ip_headers_rule,
+        {
+          name          = "strip_base_ipatente_vehicles_path"
+          rule_sequence = 200
+          conditions = [{
+            variable    = "var_uri_path"
+            pattern     = "/veh/(.*)"
+            ignore_case = true
+            negate      = false
+          }]
+          url = {
+            path         = "/{var_uri_path_1}"
+            query_string = null
+            reroute      = false
+            components   = "path_only"
+          }
+          request_header_configurations  = []
+          response_header_configurations = []
+      }]
+    },
+    {
+      name = "rewrite-rule-set-api-app-remove-base-path-ipatente-licences"
+      rewrite_rules = [
+        local.io_backend_ip_headers_rule,
+        {
+          name          = "strip_base_ipatente_licences_path"
+          rule_sequence = 200
+          conditions = [{
+            variable    = "var_uri_path"
+            pattern     = "/lic/(.*)"
+            ignore_case = true
+            negate      = false
+          }]
+          url = {
+            path         = "/{var_uri_path_1}"
+            query_string = null
+            reroute      = false
+            components   = "path_only"
+          }
+          request_header_configurations  = []
+          response_header_configurations = []
+      }]
+    }
   ]
 
   # TLS
