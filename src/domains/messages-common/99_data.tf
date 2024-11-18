@@ -35,6 +35,12 @@ data "azurerm_api_management_product" "apim_v2_product_services" {
   resource_group_name = data.azurerm_api_management.apim_v2_api.resource_group_name
 }
 
+data "azurerm_api_management_product" "apim_itn_product_services" {
+  product_id          = "io-services-api"
+  api_management_name = data.azurerm_api_management.apim_itn_api.name
+  resource_group_name = data.azurerm_api_management.apim_itn_api.resource_group_name
+}
+
 data "http" "messages_sending_external_openapi" {
   url = "https://raw.githubusercontent.com/pagopa/io-functions-services-messages/master/openapi/index_external.yaml"
 }
