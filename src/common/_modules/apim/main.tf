@@ -8,12 +8,12 @@ module "apim_v2" {
   publisher_name            = "IO"
   publisher_email           = data.azurerm_key_vault_secret.apim_publisher_email.value
   notification_sender_email = data.azurerm_key_vault_secret.apim_publisher_email.value
-  sku_name                  = var.migration ? "Developer_1" : "Premium_2"
+  sku_name                  = "Premium_2"
   virtual_network_type      = "Internal"
-  zones                     = var.migration ? null : ["1", "2"]
+  zones                     = ["1", "2"]
 
   redis_cache_id       = null
-  public_ip_address_id = var.migration ? null : azurerm_public_ip.apim.id
+  public_ip_address_id = azurerm_public_ip.apim.id
 
   hostname_configuration = var.migration ? null : {
     proxy = [
@@ -51,12 +51,12 @@ module "apim_v2" {
 
   management_logger_applicaiton_insight_enabled = true
   application_insights = {
-    enabled             = var.migration ? false : true
+    enabled             = true
     instrumentation_key = var.ai_instrumentation_key
   }
 
   autoscale = {
-    enabled                       = var.migration ? false : true
+    enabled                       = true
     default_instances             = 3
     minimum_instances             = 2
     maximum_instances             = 6
@@ -78,7 +78,7 @@ module "apim_v2" {
   ]
 
   # https://docs.microsoft.com/en-us/azure/azure-monitor/essentials/metrics-supported#microsoftapimanagementservice
-  metric_alerts = var.migration ? {} : {
+  metric_alerts = {
     capacity = {
       description   = "Apim used capacity is too high. Runbook: https://pagopa.atlassian.net/wiki/spaces/IC/pages/791642113/APIM+Capacity"
       frequency     = "PT5M"
