@@ -31,8 +31,16 @@ variable "cosmos_accounts" {
     target = object({
       name                = string
       resource_group_name = string
+      write_behavior      = optional(string, "upsert")
     })
   })
+
+  description = "Cosmos accounts to migrate. The target account must have a write_behavior defined. The write_behavior must be one of the following values: insert, upsert."
+
+  validation {
+    condition     = contains(["insert", "upsert"], var.cosmos_accounts.target.write_behavior)
+    error_message = "The write_behavior must be one of the following values: insert or upsert."
+  }
 }
 
 variable "what_to_migrate" {

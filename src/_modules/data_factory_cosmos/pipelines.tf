@@ -1,32 +1,33 @@
 resource "azurerm_data_factory_pipeline" "pipeline" {
-  for_each            = local.containers_per_database
-  name                = replace("${module.naming_convention.prefix}-adf-${var.cosmos_accounts.source.name}-${each.value.database}-${each.value.container}-cosmos-${module.naming_convention.suffix}", "/[$-]/", "_")
-  data_factory_id     = var.data_factory_id
-  description         = "Copy data from Cosmos (${var.cosmos_accounts.source.name}) to (${var.cosmos_accounts.target.name})"
-  folder              = "${var.cosmos_accounts.source.name}"
+  for_each        = local.containers_per_database
+  name            = replace(each.value.container.name, "/[$-]/", "_")
+  data_factory_id = var.data_factory_id
+  description     = "Copy data from Cosmos (${var.cosmos_accounts.source.name}) to (${var.cosmos_accounts.target.name})"
+  folder          = "cosmos/account=${var.cosmos_accounts.source.name}/db=${each.value.container.database_name}"
 
   activities_json = jsonencode([
     {
-      "name" = "CopyFromCosmosToCosmos"
-      "type" = "Copy"
-      "inputs" = [
+      name = "CopyFromCosmosToCosmos"
+      type = "Copy"
+      inputs = [
         {
-          "referenceName" = azurerm_data_factory_dataset_cosmosdb_sqlapi.source_dataset[each.key].name
-          "type"          = "DatasetReference"
+          referenceName = azurerm_data_factory_dataset_cosmosdb_sqlapi.source_dataset[each.key].name
+          type          = "DatasetReference"
         }
       ]
-      "outputs" = [
+      outputs = [
         {
-          "referenceName" = azurerm_data_factory_dataset_cosmosdb_sqlapi.target_dataset[each.key].name
-          "type"          = "DatasetReference"
+          referenceName = azurerm_data_factory_dataset_cosmosdb_sqlapi.target_dataset[each.key].name
+          type          = "DatasetReference"
         }
       ]
-      "typeProperties" = {
-        "source" = {
-          "type" = "CosmosDbSqlApiSource"
+      typeProperties = {
+        source = {
+          type = "CosmosDbSqlApiSource"
         }
-        "sink" = {
-          "type" = "CosmosDbSqlApiSink"
+        sink = {
+          type          = "CosmosDbSqlApiSink"
+          writeBehavior = var.cosmos_accounts.target.write_behavior
         }
       }
     }

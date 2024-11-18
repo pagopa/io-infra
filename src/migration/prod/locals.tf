@@ -40,12 +40,12 @@ locals {
   ]
 
   cosmos_accounts = [
-    # Copy all databases
+    # Copy all databases (with write_behavior to insert)
     # {
     #   source = { name = "<SOURCE_COSMOS_ACCOUNT_NAME>", resource_group_name = "<SOURCE_COSMOS_ACCOUNT_RG_NAME>" }
-    #   target = { name = "<TARGET_COSMOS_ACCOUNT_NAME>", resource_group_name = "<TARGET_COSMOS_ACCOUNT_RG_NAME>" }
+    #   target = { name = "<TARGET_COSMOS_ACCOUNT_NAME>", resource_group_name = "<TARGET_COSMOS_ACCOUNT_RG_NAME>", write_behavior = "insert" }
     # },
-    # Copy only selected databases
+    # Copy only selected databases (with write_behavior defaulting to upsert)
     # {
     #   source = { name = "<SOURCE_COSMOS_ACCOUNT_NAME>", resource_group_name = "<SOURCE_COSMOS_ACCOUNT_RG_NAME>" }
     #   target = { name = "<TARGET_COSMOS_ACCOUNT_NAME>", resource_group_name = "<TARGET_COSMOS_ACCOUNT_RG_NAME>" }
