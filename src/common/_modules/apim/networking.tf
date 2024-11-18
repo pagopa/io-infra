@@ -59,7 +59,7 @@ resource "azurerm_private_dns_a_record" "apim_azure_api_net" {
 
   name                = module.apim_v2.name
   zone_name           = data.azurerm_private_dns_zone.azure_api_net[0].name
-  resource_group_name = var.resource_group_common
+  resource_group_name = "io-p-rg-common"
   ttl                 = 3600
   records             = module.apim_v2.private_ip_addresses
 
@@ -71,7 +71,7 @@ resource "azurerm_private_dns_a_record" "apim_management_azure_api_net" {
 
   name                = module.apim_v2.name
   zone_name           = data.azurerm_private_dns_zone.management_azure_api_net[0].name
-  resource_group_name = var.resource_group_common
+  resource_group_name = "io-p-rg-common"
   ttl                 = 3600
   records             = module.apim_v2.private_ip_addresses
 
@@ -83,7 +83,7 @@ resource "azurerm_private_dns_a_record" "apim_scm_azure_api_net" {
 
   name                = module.apim_v2.name
   zone_name           = data.azurerm_private_dns_zone.scm_azure_api_net[0].name
-  resource_group_name = var.resource_group_common
+  resource_group_name = "io-p-rg-common"
   ttl                 = 3600
   records             = module.apim_v2.private_ip_addresses
 
