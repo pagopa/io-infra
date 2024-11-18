@@ -9,8 +9,7 @@ locals {
   role_definition_names = {
     cgn = [
       "Reader",
-      "API Management Service Reader Role",
-      "API Management Service Contributor"
+      "API Management Service Reader Role"
     ]
     apim_client = [
       "Reader",
