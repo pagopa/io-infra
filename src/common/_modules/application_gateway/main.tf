@@ -138,6 +138,34 @@ module "app_gw" {
       request_timeout             = 10
       pick_host_name_from_backend = true
     }
+
+    ipatente-vehicles-io-app = {
+      protocol     = "Https"
+      host         = null
+      port         = 443
+      ip_addresses = null # with null value use fqdns
+      fqdns = [
+        data.azurerm_linux_web_app.ipatente_vehicles_app_itn.default_hostname,
+      ]
+      probe                       = "/api/info"
+      probe_name                  = "probe-ipatente-vehicles-io-app"
+      request_timeout             = 10
+      pick_host_name_from_backend = true
+    }
+
+    ipatente-licences-io-app = {
+      protocol     = "Https"
+      host         = null
+      port         = 443
+      ip_addresses = null # with null value use fqdns
+      fqdns = [
+        data.azurerm_linux_web_app.ipatente_licences_app_itn.default_hostname,
+      ]
+      probe                       = "/api/info"
+      probe_name                  = "probe-ipatente-licences-io-app"
+      request_timeout             = 10
+      pick_host_name_from_backend = true
+    }
   }
 
   ssl_profiles = [{
@@ -333,6 +361,23 @@ module "app_gw" {
       }
     }
 
+    # ipatente-io-pagopa-it = {
+    #   protocol           = "Https"
+    #   host               = format("ipatente.%s", var.public_dns_zones.io.name)
+    #   port               = 443
+    #   ssl_profile_name   = format("%s-ssl-profile", var.project)
+    #   firewall_policy_id = null
+
+    #   certificate = {
+    #     name = var.certificates.ipatente_io_pagopa_it
+    #     id = replace(
+    #       data.azurerm_key_vault_certificate.app_gw_ipatente_io.secret_id,
+    #       "/${data.azurerm_key_vault_certificate.app_gw_ipatente_io.version}",
+    #       ""
+    #     )
+    #   }
+    # }
+
     api-app-io-pagopa-it = {
       protocol           = "Https"
       host               = format("api-app.%s", var.public_dns_zones.io.name)
@@ -472,6 +517,13 @@ module "app_gw" {
       url_map_name = "io-backend-path-based-rule"
       priority     = 70
     }
+
+
+    # ipatente-io-pagopa-it = {
+    #   listener     = "ipatente-io-pagopa-it"
+    #   url_map_name = "io-ipatente-path-based-rule"
+    #   priority     = 130
+    # }
   }
 
   url_path_map = {
@@ -546,6 +598,23 @@ module "app_gw" {
         },
       }
     }
+
+    # io-ipatente-path-based-rule = {
+    #   default_backend               = "ipatente-vehicles-io-app"
+    #   default_rewrite_rule_set_name = "rewrite-rule-set-api-app"
+    #   path_rule = {
+    #     ipatente-vehicles = {
+    #       paths                 = ["/veh/*"]
+    #       backend               = "ipatente-vehicles-io-app",
+    #       rewrite_rule_set_name = "rewrite-rule-set-api-app-remove-base-path-ipatente-vehicles"
+    #     },
+    #     ipatente-licences = {
+    #       paths                 = ["/lic/*"]
+    #       backend               = "ipatente-licences-io-app",
+    #       rewrite_rule_set_name = "rewrite-rule-set-api-app-remove-base-path-ipatente-licences"
+    #     },
+    #   }
+    # }
   }
 
   rewrite_rule_sets = [
@@ -797,7 +866,53 @@ module "app_gw" {
         ]
         response_header_configurations = []
       }]
-    }
+    },
+    # {
+    #   name = "rewrite-rule-set-api-app-remove-base-path-ipatente-vehicles"
+    #   rewrite_rules = [
+    #     local.io_backend_ip_headers_rule,
+    #     {
+    #       name          = "strip_base_ipatente_vehicles_path"
+    #       rule_sequence = 200
+    #       conditions = [{
+    #         variable    = "var_uri_path"
+    #         pattern     = "/veh/(.*)"
+    #         ignore_case = true
+    #         negate      = false
+    #       }]
+    #       url = {
+    #         path         = "/{var_uri_path_1}"
+    #         query_string = null
+    #         reroute      = false
+    #         components   = "path_only"
+    #       }
+    #       request_header_configurations  = []
+    #       response_header_configurations = []
+    #   }]
+    # },
+    # {
+    #   name = "rewrite-rule-set-api-app-remove-base-path-ipatente-licences"
+    #   rewrite_rules = [
+    #     local.io_backend_ip_headers_rule,
+    #     {
+    #       name          = "strip_base_ipatente_licences_path"
+    #       rule_sequence = 200
+    #       conditions = [{
+    #         variable    = "var_uri_path"
+    #         pattern     = "/lic/(.*)"
+    #         ignore_case = true
+    #         negate      = false
+    #       }]
+    #       url = {
+    #         path         = "/{var_uri_path_1}"
+    #         query_string = null
+    #         reroute      = false
+    #         components   = "path_only"
+    #       }
+    #       request_header_configurations  = []
+    #       response_header_configurations = []
+    #   }]
+    # }
   ]
 
   # TLS
