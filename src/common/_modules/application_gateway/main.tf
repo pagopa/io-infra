@@ -361,23 +361,6 @@ module "app_gw" {
       }
     }
 
-    ipatente-io-pagopa-it = {
-      protocol           = "Https"
-      host               = format("ipatente.%s", var.public_dns_zones.io.name)
-      port               = 443
-      ssl_profile_name   = format("%s-ssl-profile", var.project)
-      firewall_policy_id = null
-
-      certificate = {
-        name = var.certificates.ipatente_io_pagopa_it
-        id = replace(
-          data.azurerm_key_vault_certificate.app_gw_ipatente_io.secret_id,
-          "/${data.azurerm_key_vault_certificate.app_gw_ipatente_io.version}",
-          ""
-        )
-      }
-    }
-
     api-app-io-pagopa-it = {
       protocol           = "Https"
       host               = format("api-app.%s", var.public_dns_zones.io.name)
@@ -424,6 +407,23 @@ module "app_gw" {
         id = replace(
           data.azurerm_key_vault_certificate.app_gw_app_backend_io_italia_it.secret_id,
           "/${data.azurerm_key_vault_certificate.app_gw_app_backend_io_italia_it.version}",
+          ""
+        )
+      }
+    }
+
+    ipatente-io-pagopa-it = {
+      protocol           = "Https"
+      host               = format("ipatente.%s", var.public_dns_zones.io.name)
+      port               = 443
+      ssl_profile_name   = format("%s-ssl-profile", var.project)
+      firewall_policy_id = null
+
+      certificate = {
+        name = var.certificates.ipatente_io_pagopa_it
+        id = replace(
+          data.azurerm_key_vault_certificate.app_gw_ipatente_io.secret_id,
+          "/${data.azurerm_key_vault_certificate.app_gw_ipatente_io.version}",
           ""
         )
       }
