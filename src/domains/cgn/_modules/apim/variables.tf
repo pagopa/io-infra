@@ -13,3 +13,10 @@ variable "env_short" {
   description = "Short environment name"
 }
 
+variable "apim" {
+  type = object({
+    name                = string
+    resource_group_name = string
+  })
+  description = "API Management"
+}
