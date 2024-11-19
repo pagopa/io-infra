@@ -256,7 +256,7 @@ resource "azurerm_api_management_subscription" "pn_lc_subscription_itn" {
   user_id             = azurerm_api_management_user.pn_user_itn.id
   api_management_name = data.azurerm_api_management.apim_itn_api.name
   resource_group_name = data.azurerm_api_management.apim_itn_api.resource_group_name
-  product_id          = module.apim_itn_product_lollipop.product_id
+  product_id          = module.apim_itn_product_lollipop.id
   display_name        = "PN LC"
   state               = "active"
   allow_tracing       = false
