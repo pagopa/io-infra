@@ -1,5 +1,5 @@
 data "azurerm_key_vault_secret" "fast_login_subscription_key" {
-  name         = "fast-login-subscription-key-v2"
+  name         = "fast-login-subscription-key-itn"
   key_vault_id = data.azurerm_key_vault.kv.id
 }
 
