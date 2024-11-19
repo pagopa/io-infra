@@ -146,3 +146,13 @@ resource "azurerm_dns_a_record" "ipatente_io_pagopa_it" {
 
   tags = var.tags
 }
+
+# ipatente.io.pagopa.it
+resource "azurerm_dns_ns_record" "ipatente_io_pagopa_it_ns" {
+  name                = "ipatente"
+  zone_name           = azurerm_dns_zone.io_pagopa_it.name
+  resource_group_name = var.resource_groups.external
+  records = azurerm_dns_zone.ipatente_io_pagopa_it.name_servers
+  ttl  = var.dns_default_ttl_sec
+  tags = var.tags
+}
