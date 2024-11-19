@@ -135,3 +135,14 @@ resource "azurerm_dns_a_record" "openid_provider_io_pagopa_it" {
 
   tags = var.tags
 }
+
+# ipatente.io.pagopa.it
+resource "azurerm_dns_a_record" "ipatente_io_pagopa_it" {
+  name                = "ipatente"
+  zone_name           = azurerm_dns_zone.io_pagopa_it.name
+  resource_group_name = var.resource_groups.external
+  ttl                 = var.dns_default_ttl_sec
+  records             = [var.app_gateway_public_ip]
+
+  tags = var.tags
+}

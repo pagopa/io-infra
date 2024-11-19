@@ -17,3 +17,11 @@ variable "function_cgn_merchant_hostname" {
   type        = string
   description = "CGN Function App hostname to set in API groups"
 }
+
+variable "apim" {
+  type = object({
+    name                = string
+    resource_group_name = string
+  })
+  description = "API Management"
+}
