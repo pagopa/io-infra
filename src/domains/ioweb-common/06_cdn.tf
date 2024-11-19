@@ -22,6 +22,8 @@ module "landing_cdn" {
   index_document     = "index.html"
   error_404_document = "it/404/index.html"
 
+  advanced_threat_protection_enabled = true
+
   dns_zone_name                = data.azurerm_dns_zone.ioapp_it.name
   dns_zone_resource_group_name = data.azurerm_resource_group.core_ext.name
 
