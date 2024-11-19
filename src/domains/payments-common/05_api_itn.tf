@@ -1,12 +1,12 @@
-module "apim_v2_product_payments" {
+module "apim_itn_product_payments" {
   source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_product?ref=v4.1.8"
 
   product_id   = "io-payments-api"
   display_name = "IO PAYMENTS API"
   description  = "Product for IO payments"
 
-  api_management_name = data.azurerm_api_management.apim_v2_api.name
-  resource_group_name = data.azurerm_api_management.apim_v2_api.resource_group_name
+  api_management_name = data.azurerm_api_management.apim_itn_api.name
+  resource_group_name = data.azurerm_api_management.apim_itn_api.resource_group_name
 
   published             = true
   subscription_required = true
@@ -15,13 +15,13 @@ module "apim_v2_product_payments" {
   policy_xml = file("./api_product/payments/_base_policy.xml")
 }
 
-module "apim_v2_payments_updater_api_v1" {
+module "apim_itn_payments_updater_api_v1" {
   source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api?ref=v4.1.8"
 
   name                  = format("%s-payments-updater-api", local.product)
-  api_management_name   = data.azurerm_api_management.apim_v2_api.name
-  resource_group_name   = data.azurerm_api_management.apim_v2_api.resource_group_name
-  product_ids           = [module.apim_v2_product_payments.product_id]
+  api_management_name   = data.azurerm_api_management.apim_itn_api.name
+  resource_group_name   = data.azurerm_api_management.apim_itn_api.resource_group_name
+  product_ids           = [module.apim_itn_product_payments.product_id]
   subscription_required = true
   service_url           = null
 
