@@ -249,3 +249,4 @@ module "function_fast_login_itn_autoscale" {
 
   tags = var.tags
 }
+
