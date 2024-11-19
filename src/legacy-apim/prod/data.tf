@@ -1,6 +1,13 @@
+# APIM in WEU
 data "azurerm_api_management" "apim" {
-  name                = "io-p-apim-v2-api"
-  resource_group_name = "io-p-rg-internal"
+  name                = local.apim_v2_name
+  resource_group_name = local.apim_resource_group_name
+}
+
+# APIM in ITN
+data "azurerm_api_management" "apim_itn" {
+  name                = local.apim_itn_name
+  resource_group_name = local.apim_itn_resource_group_name
 }
 
 data "azurerm_key_vault" "key_vault_common" {

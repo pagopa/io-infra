@@ -20,6 +20,14 @@
 
 | Name | Source | Version |
 |------|--------|---------|
+| <a name="module_apim_itn_messages_citizen_l1_api_v1"></a> [apim\_itn\_messages\_citizen\_l1\_api\_v1](#module\_apim\_itn\_messages\_citizen\_l1\_api\_v1) | github.com/pagopa/terraform-azurerm-v3//api_management_api | v8.40.0 |
+| <a name="module_apim_itn_messages_citizen_l2_api_v1"></a> [apim\_itn\_messages\_citizen\_l2\_api\_v1](#module\_apim\_itn\_messages\_citizen\_l2\_api\_v1) | github.com/pagopa/terraform-azurerm-v3//api_management_api | v8.40.0 |
+| <a name="module_apim_itn_messages_sending_external_api_v1"></a> [apim\_itn\_messages\_sending\_external\_api\_v1](#module\_apim\_itn\_messages\_sending\_external\_api\_v1) | github.com/pagopa/terraform-azurerm-v3//api_management_api | v8.17.0 |
+| <a name="module_apim_itn_messages_sending_internal_api_v1"></a> [apim\_itn\_messages\_sending\_internal\_api\_v1](#module\_apim\_itn\_messages\_sending\_internal\_api\_v1) | github.com/pagopa/terraform-azurerm-v3//api_management_api | v8.27.0 |
+| <a name="module_apim_itn_product_messages_backend"></a> [apim\_itn\_product\_messages\_backend](#module\_apim\_itn\_product\_messages\_backend) | github.com/pagopa/terraform-azurerm-v3//api_management_product | v8.27.0 |
+| <a name="module_apim_itn_product_notifications"></a> [apim\_itn\_product\_notifications](#module\_apim\_itn\_product\_notifications) | github.com/pagopa/terraform-azurerm-v3//api_management_product | v8.27.0 |
+| <a name="module_apim_itn_service_messages_internal_api_v1"></a> [apim\_itn\_service\_messages\_internal\_api\_v1](#module\_apim\_itn\_service\_messages\_internal\_api\_v1) | github.com/pagopa/terraform-azurerm-v3//api_management_api | v8.27.0 |
+| <a name="module_apim_itn_service_messages_manage_api_v1"></a> [apim\_itn\_service\_messages\_manage\_api\_v1](#module\_apim\_itn\_service\_messages\_manage\_api\_v1) | github.com/pagopa/terraform-azurerm-v3//api_management_api | v8.27.0 |
 | <a name="module_apim_v2_messages_citizen_l1_api_v1"></a> [apim\_v2\_messages\_citizen\_l1\_api\_v1](#module\_apim\_v2\_messages\_citizen\_l1\_api\_v1) | github.com/pagopa/terraform-azurerm-v3//api_management_api | v8.40.0 |
 | <a name="module_apim_v2_messages_citizen_l2_api_v1"></a> [apim\_v2\_messages\_citizen\_l2\_api\_v1](#module\_apim\_v2\_messages\_citizen\_l2\_api\_v1) | github.com/pagopa/terraform-azurerm-v3//api_management_api | v8.40.0 |
 | <a name="module_apim_v2_messages_sending_external_api_v1"></a> [apim\_v2\_messages\_sending\_external\_api\_v1](#module\_apim\_v2\_messages\_sending\_external\_api\_v1) | github.com/pagopa/terraform-azurerm-v3//api_management_api | v8.17.0 |
@@ -31,6 +39,7 @@
 | <a name="module_cosmosdb_account_mongodb_reminder"></a> [cosmosdb\_account\_mongodb\_reminder](#module\_cosmosdb\_account\_mongodb\_reminder) | github.com/pagopa/terraform-azurerm-v3//cosmosdb_account | v8.27.0 |
 | <a name="module_cosmosdb_account_remote_content"></a> [cosmosdb\_account\_remote\_content](#module\_cosmosdb\_account\_remote\_content) | github.com/pagopa/terraform-azurerm-v3//cosmosdb_account | v8.27.0 |
 | <a name="module_cosmosdb_sql_database_remote_content"></a> [cosmosdb\_sql\_database\_remote\_content](#module\_cosmosdb\_sql\_database\_remote\_content) | github.com/pagopa/terraform-azurerm-v3//cosmosdb_sql_database | v8.27.0 |
+| <a name="module_io-backend_notification_itn_api_v1"></a> [io-backend\_notification\_itn\_api\_v1](#module\_io-backend\_notification\_itn\_api\_v1) | github.com/pagopa/terraform-azurerm-v3//api_management_api | v8.27.0 |
 | <a name="module_io-backend_notification_v2_api_v1"></a> [io-backend\_notification\_v2\_api\_v1](#module\_io-backend\_notification\_v2\_api\_v1) | github.com/pagopa/terraform-azurerm-v3//api_management_api | v8.27.0 |
 | <a name="module_key_vault"></a> [key\_vault](#module\_key\_vault) | github.com/pagopa/terraform-azurerm-v3//key_vault | v8.27.0 |
 | <a name="module_mongdb_collection_reminder"></a> [mongdb\_collection\_reminder](#module\_mongdb\_collection\_reminder) | github.com/pagopa/terraform-azurerm-v3//cosmosdb_mongodb_collection | v8.27.0 |
@@ -44,20 +53,35 @@
 
 | Name | Type |
 |------|------|
+| [azurerm_api_management_group.apimessagereadadvanced_itn](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_group) | resource |
 | [azurerm_api_management_group.apimessagereadadvanced_v2](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_group) | resource |
+| [azurerm_api_management_group.apimessagewriteadvanced_itn](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_group) | resource |
 | [azurerm_api_management_group.apimessagewriteadvanced_v2](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_group) | resource |
+| [azurerm_api_management_group.apinewmessagenotify_itn](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_group) | resource |
 | [azurerm_api_management_group.apinewmessagenotify_v2](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_group) | resource |
+| [azurerm_api_management_group.apipaymentupdater_itn](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_group) | resource |
 | [azurerm_api_management_group.apipaymentupdater_v2](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_group) | resource |
+| [azurerm_api_management_group.apiremindernotify_itn](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_group) | resource |
 | [azurerm_api_management_group.apiremindernotify_v2](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_group) | resource |
 | [azurerm_api_management_group.apiremotecontentconfigurationwrite](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_group) | resource |
+| [azurerm_api_management_group.apiremotecontentconfigurationwrite_itn](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_group) | resource |
+| [azurerm_api_management_group.apithirdpartymessagewrite_itn](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_group) | resource |
 | [azurerm_api_management_group.apithirdpartymessagewrite_v2](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_group) | resource |
+| [azurerm_api_management_group_user.payment_group_itn](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_group_user) | resource |
 | [azurerm_api_management_group_user.payment_group_v2](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_group_user) | resource |
+| [azurerm_api_management_group_user.reminder_group_itn](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_group_user) | resource |
 | [azurerm_api_management_group_user.reminder_group_v2](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_group_user) | resource |
 | [azurerm_api_management_named_value.io_messages_backend_key](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_named_value) | resource |
+| [azurerm_api_management_named_value.io_messages_backend_key_itn](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_named_value) | resource |
 | [azurerm_api_management_named_value.io_p_messages_sending_func_key](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_named_value) | resource |
+| [azurerm_api_management_named_value.io_p_messages_sending_func_key_itn](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_named_value) | resource |
+| [azurerm_api_management_subscription.messages_backend_itn](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_subscription) | resource |
 | [azurerm_api_management_subscription.messages_backend_v2](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_subscription) | resource |
+| [azurerm_api_management_subscription.payment_updater_reminder_itn](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_subscription) | resource |
 | [azurerm_api_management_subscription.payment_updater_reminder_v2](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_subscription) | resource |
+| [azurerm_api_management_subscription.reminder_itn](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_subscription) | resource |
 | [azurerm_api_management_subscription.reminder_v2](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_subscription) | resource |
+| [azurerm_api_management_user.reminder_user_itn](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_user) | resource |
 | [azurerm_api_management_user.reminder_user_v2](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_user) | resource |
 | [azurerm_cosmosdb_mongo_database.db_reminder](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/cosmosdb_mongo_database) | resource |
 | [azurerm_cosmosdb_sql_container.message_configuration](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/cosmosdb_sql_container) | resource |
@@ -79,7 +103,9 @@
 | [azurerm_key_vault_secret.payments_io-p-payment-updates-weu-prod01-evh-reminder_jaas-connection-string](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_secret) | resource |
 | [azurerm_key_vault_secret.push_notifications_storage_connection_string](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_secret) | resource |
 | [azurerm_key_vault_secret.reminder_mysql_db_server_url](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_secret) | resource |
+| [azurerm_key_vault_secret.reminder_paymentapi_subscription_primary_key_itn](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_secret) | resource |
 | [azurerm_key_vault_secret.reminder_paymentapi_subscription_primary_key_v2](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_secret) | resource |
+| [azurerm_key_vault_secret.reminder_subscription_primary_key_itn](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_secret) | resource |
 | [azurerm_key_vault_secret.reminder_subscription_primary_key_v2](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_secret) | resource |
 | [azurerm_mysql_flexible_database.reminder_mysql_db](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/mysql_flexible_database) | resource |
 | [azurerm_mysql_flexible_server.reminder_mysql_server](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/mysql_flexible_server) | resource |
@@ -97,8 +123,11 @@
 | [azuread_group.adgroup_externals](https://registry.terraform.io/providers/hashicorp/azuread/latest/docs/data-sources/group) | data source |
 | [azuread_group.adgroup_security](https://registry.terraform.io/providers/hashicorp/azuread/latest/docs/data-sources/group) | data source |
 | [azuread_service_principal.platform_iac_sp](https://registry.terraform.io/providers/hashicorp/azuread/latest/docs/data-sources/service_principal) | data source |
+| [azurerm_api_management.apim_itn_api](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/api_management) | data source |
 | [azurerm_api_management.apim_v2_api](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/api_management) | data source |
+| [azurerm_api_management_product.apim_itn_product_services](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/api_management_product) | data source |
 | [azurerm_api_management_product.apim_v2_product_services](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/api_management_product) | data source |
+| [azurerm_api_management_product.payment_updater_product_itn](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/api_management_product) | data source |
 | [azurerm_api_management_product.payment_updater_product_v2](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/api_management_product) | data source |
 | [azurerm_application_insights.application_insights](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/application_insights) | data source |
 | [azurerm_client_config.current](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/client_config) | data source |
