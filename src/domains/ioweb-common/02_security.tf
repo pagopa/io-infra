@@ -66,6 +66,32 @@ resource "azurerm_key_vault_access_policy" "access_policy_io_infra_cd" {
   certificate_permissions = ["Get", "List"]
 }
 
+# -----------------------------------
+#  Auth&Identity monorepo pipelines
+# -----------------------------------
+
+resource "azurerm_key_vault_access_policy" "access_policy_auth_n_identity_infra_ci" {
+  key_vault_id = module.key_vault.id
+
+  tenant_id = data.azurerm_client_config.current.tenant_id
+  object_id = data.azurerm_user_assigned_identity.managed_identity_auth_n_identity_infra_ci.principal_id
+
+  key_permissions         = ["Get", "List", "GetRotationPolicy"]
+  secret_permissions      = ["Get", "List"]
+  certificate_permissions = ["Get", "List"]
+}
+
+resource "azurerm_key_vault_access_policy" "access_policy_auth_n_identity_infra_cd" {
+  key_vault_id = module.key_vault.id
+
+  tenant_id = data.azurerm_client_config.current.tenant_id
+  object_id = data.azurerm_user_assigned_identity.managed_identity_auth_n_identity_infra_cd.principal_id
+
+  key_permissions         = ["Get", "List", "GetRotationPolicy"]
+  secret_permissions      = ["Get", "List", "Set"]
+  certificate_permissions = ["Get", "List", "Create", "Update"]
+}
+
 #
 # Azure DevOps policy
 #
