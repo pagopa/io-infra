@@ -68,7 +68,7 @@ data "azurerm_subnet" "apim_v2_snet" {
 }
 
 data "azurerm_subnet" "apim_itn_snet" {
-  name                 = "io-p-itn-apim-pip-01"
+  name                 = "io-p-itn-apim-snet-01"
   virtual_network_name = local.vnet_common_name_itn
   resource_group_name  = local.vnet_common_resource_group_name_itn
 }
