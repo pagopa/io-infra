@@ -26,16 +26,30 @@ locals {
   storage_accounts = [
     # Copy both containers and tables
     # {
-    #   source = { name = "stdevbiptest1", resource_group_name = "RG-BIP-DEV-TEST" }
-    #   target = { name = "stbipdevtest1", resource_group_name = "dev-fasanorg" }
+    #   source = { name = "<SOURCE_STORAGE_ACCOUNT_NAME>", resource_group_name = "<SOURCE_STORAGE_ACCOUNT_RG_NAME>" }
+    #   target = { name = "<TARGET_STORAGE_ACCOUNT_NAME>", resource_group_name = "<TARGET_STORAGE_ACCOUNT_RG_NAME>" }
     # },
     #
     # Copy only selected containers and tables
     # {
-    #   source = { name = "stdevbiptest1", resource_group_name = "RG-BIP-DEV-TEST" }
-    #   target = { name = "stbipdevtest1", resource_group_name = "dev-fasanorg" }
+    #   source = { name = "<SOURCE_STORAGE_ACCOUNT_NAME>", resource_group_name = "<SOURCE_STORAGE_ACCOUNT_RG_NAME>" }
+    #   target = { name = "<TARGET_STORAGE_ACCOUNT_NAME>", resource_group_name = "<TARGET_STORAGE_ACCOUNT_RG_NAME>" }
     #   blob = {enabled = true, containers = ["c1", "c2", "c3"]}
     #   table = {enabled = true, tables = ["t1", "t2", "t3"]}
+    # }
+  ]
+
+  cosmos_accounts = [
+    # Copy all databases (with write_behavior to insert)
+    # {
+    #   source = { name = "<SOURCE_COSMOS_ACCOUNT_NAME>", resource_group_name = "<SOURCE_COSMOS_ACCOUNT_RG_NAME>" }
+    #   target = { name = "<TARGET_COSMOS_ACCOUNT_NAME>", resource_group_name = "<TARGET_COSMOS_ACCOUNT_RG_NAME>", write_behavior = "insert" }
+    # },
+    # Copy only selected databases (with write_behavior defaulting to upsert)
+    # {
+    #   source = { name = "<SOURCE_COSMOS_ACCOUNT_NAME>", resource_group_name = "<SOURCE_COSMOS_ACCOUNT_RG_NAME>" }
+    #   target = { name = "<TARGET_COSMOS_ACCOUNT_NAME>", resource_group_name = "<TARGET_COSMOS_ACCOUNT_RG_NAME>" }
+    #   databases = ["db1", "db2", "db3"]
     # }
   ]
 }
