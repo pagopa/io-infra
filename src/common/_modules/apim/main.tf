@@ -8,19 +8,19 @@ module "apim_v2" {
   publisher_name            = "IO"
   publisher_email           = data.azurerm_key_vault_secret.apim_publisher_email.value
   notification_sender_email = data.azurerm_key_vault_secret.apim_publisher_email.value
-  sku_name                  = "Premium_2"
+  sku_name                  = var.migration ? "Premium_1" : "Premium_2"
   virtual_network_type      = "Internal"
   zones                     = ["1", "2"]
 
   redis_cache_id       = null
   public_ip_address_id = azurerm_public_ip.apim.id
 
-  hostname_configuration = var.migration ? null : {
+  hostname_configuration = {
     proxy = [
       {
         # io-p-apim-api.azure-api.net
-        default_ssl_binding = false
-        host_name           = "io-p-apim-v2-api.azure-api.net"
+        default_ssl_binding = var.migration ? true : false
+        host_name           = var.migration ? "io-p-itn-apim-01.azure-api.net" : "io-p-apim-v2-api.azure-api.net"
         key_vault_id        = null
       },
       {
