@@ -109,54 +109,6 @@ resource "azurerm_private_endpoint" "staging_function_lollipop_itn_sites" {
   tags = var.tags
 }
 
-## fn-fast-login-itn
-
-resource "azurerm_private_endpoint" "function_fast_login_itn_sites" {
-  name                = "${local.common_project_itn}-fast-login-fn-pep-01"
-  location            = local.itn_location
-  resource_group_name = azurerm_resource_group.fast_login_rg_itn.name
-  subnet_id           = data.azurerm_subnet.itn_pep.id
-
-  private_service_connection {
-    name                           = "${local.common_project_itn}-fast-login-fn-pep-01"
-    private_connection_resource_id = module.function_fast_login_itn.id
-    is_manual_connection           = false
-    subresource_names              = ["sites"]
-  }
-
-  private_dns_zone_group {
-    name                 = "private-dns-zone-group"
-    private_dns_zone_ids = [data.azurerm_private_dns_zone.privatelink_azurewebsites_net.id]
-  }
-
-  depends_on = [module.function_fast_login_itn]
-
-  tags = var.tags
-}
-
-resource "azurerm_private_endpoint" "staging_function_fast_login_itn_sites" {
-  name                = "${local.common_project_itn}-fast-login-fn-staging-pep-01"
-  location            = local.itn_location
-  resource_group_name = azurerm_resource_group.fast_login_rg_itn.name
-  subnet_id           = data.azurerm_subnet.itn_pep.id
-
-  private_service_connection {
-    name                           = "${local.common_project_itn}-fast-login-fn-staging-pep-01"
-    private_connection_resource_id = module.function_fast_login_itn.id
-    is_manual_connection           = false
-    subresource_names              = ["sites-${module.function_fast_login_staging_slot_itn.name}"]
-  }
-
-  private_dns_zone_group {
-    name                 = "private-dns-zone-group"
-    private_dns_zone_ids = [data.azurerm_private_dns_zone.privatelink_azurewebsites_net.id]
-  }
-
-  depends_on = [module.function_fast_login_itn, module.function_fast_login_staging_slot_itn]
-
-  tags = var.tags
-}
-
 ## itn-profile-fn
 
 resource "azurerm_private_endpoint" "function_profile_itn_sites" {
