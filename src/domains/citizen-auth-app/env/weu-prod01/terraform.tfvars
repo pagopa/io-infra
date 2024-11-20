@@ -53,14 +53,6 @@ function_lollipop_autoscale_minimum = 3
 function_lollipop_autoscale_maximum = 20
 function_lollipop_autoscale_default = 10
 
-# Functions Fast Login
-cidr_subnet_fnfastlogin_itn          = ["10.20.18.0/26"]
-function_fastlogin_kind              = "Linux"
-function_fastlogin_sku_size          = "P2mv3"
-function_fastlogin_autoscale_minimum = 2
-function_fastlogin_autoscale_maximum = 20
-function_fastlogin_autoscale_default = 10
-
 # Functions app profile (located in Italy North)
 cidr_subnet_profile_itn   = ["10.20.6.64/26", "10.20.6.128/26"]
 function_profile_kind     = "Linux"
