@@ -1,6 +1,8 @@
 locals {
-  prefix             = "io"
-  env_short          = "p"
+  # prefix             = "io"
+  prefix = "ps"
+  # env_short          = "p"
+  env_short          = "d"
   location_short     = { westeurope = "weu", italynorth = "itn", germanywestcentral = "gwc", northeurope = "neu" }
   project_itn        = "${local.prefix}-${local.env_short}-${local.location_short.italynorth}"
   project_weu        = "${local.prefix}-${local.env_short}-${local.location_short.westeurope}"
@@ -16,11 +18,11 @@ locals {
   }
 
   tags = {
-    CostCenter  = "TS310 - PAGAMENTI & SERVIZI"
-    CreatedBy   = "Terraform"
-    Environment = "Prod"
-    Owner       = "IO"
-    Source      = "https://github.com/pagopa/io-infra/blob/main/src/migration/prod"
+    # CostCenter  = "TS310 - PAGAMENTI & SERVIZI"
+    # CreatedBy   = "Terraform"
+    # Environment = "Prod"
+    # Owner       = "IO"
+    # Source      = "https://github.com/pagopa/io-infra/blob/main/src/migration/prod"
   }
 
   storage_accounts = [
@@ -51,5 +53,9 @@ locals {
     #   target = { name = "<TARGET_COSMOS_ACCOUNT_NAME>", resource_group_name = "<TARGET_COSMOS_ACCOUNT_RG_NAME>" }
     #   databases = ["db1", "db2", "db3"]
     # }
+    {
+      source = { name = "ps-d-itn-cosno-14", resource_group_name = "ps-d-itn-migration-rg-01" }
+      target = { name = "ps-d-itn-cosno-13", resource_group_name = "ps-d-itn-migration-rg-01" }
+    }
   ]
 }
