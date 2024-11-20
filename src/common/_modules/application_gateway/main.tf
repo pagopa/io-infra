@@ -521,13 +521,6 @@ module "app_gw" {
       priority              = 120
     }
 
-    oauth-io-pagopa-it = {
-      listener              = "oauth-io-pagopa-it"
-      backend               = "fims-op-app"
-      rewrite_rule_set_name = "rewrite-rule-set-fims-op-app"
-      priority              = 120
-    }
-
     vehicles-ipatente-io-pagopa-it = {
       listener              = "vehicles-ipatente-io-pagopa-it"
       backend               = "vehicles-ipatente-io-app"
