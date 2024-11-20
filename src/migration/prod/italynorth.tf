@@ -54,3 +54,22 @@ module "migrate_storage_accounts" {
     }
   }
 }
+
+module "migrate_cosmos_accounts" {
+  for_each = { for migration in local.cosmos_accounts : "${migration.source.name}|${migration.target.name}" => migration }
+  source   = "../../_modules/data_factory_cosmos"
+
+  environment = local.environment
+
+  data_factory_id           = azurerm_data_factory.this.id
+  data_factory_principal_id = azurerm_data_factory.this.identity[0].principal_id
+
+  cosmos_accounts = {
+    source = each.value.source
+    target = each.value.target
+  }
+
+  what_to_migrate = {
+    databases = try(each.value.databases, [])
+  }
+}
