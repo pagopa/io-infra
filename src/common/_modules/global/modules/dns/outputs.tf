@@ -28,6 +28,10 @@ output "public_dns_zones" {
     ioweb_it = {
       name = azurerm_dns_zone.ioweb_it.name
     }
+
+    ipatente_io_pagopa_it = {
+      name = azurerm_dns_zone.ipatente_io_pagopa_it.name
+    }
   }
 }
 
