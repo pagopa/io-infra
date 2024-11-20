@@ -27,7 +27,7 @@ resource "azurerm_dns_caa_record" "ipatente_io_pagopa_it" {
 }
 
 # vehicles.ipatente.io.pagopa.it
-resource "azurerm_dns_a_record" "ipatente_io_pagopa_it" {
+resource "azurerm_dns_a_record" "vehicles_ipatente_io_pagopa_it" {
   name                = "vehicles"
   zone_name           = azurerm_dns_zone.ipatente_io_pagopa_it.name
   resource_group_name = var.resource_groups.external
@@ -38,7 +38,7 @@ resource "azurerm_dns_a_record" "ipatente_io_pagopa_it" {
 }
 
 # licences.ipatente.io.pagopa.it
-resource "azurerm_dns_a_record" "ipatente_io_pagopa_it" {
+resource "azurerm_dns_a_record" "licences_ipatente_io_pagopa_it" {
   name                = "licences"
   zone_name           = azurerm_dns_zone.ipatente_io_pagopa_it.name
   resource_group_name = var.resource_groups.external
