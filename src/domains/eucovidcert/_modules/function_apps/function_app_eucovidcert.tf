@@ -79,7 +79,8 @@ module "function_eucovidcert_staging_slot" {
     data.azurerm_subnet.snet_backendl1.id,
     data.azurerm_subnet.snet_backendl2.id,
     data.azurerm_subnet.snet_apim_v2.id,
-    data.azurerm_subnet.snet_backendl3.id
+    data.azurerm_subnet.snet_backendl3.id,
+    data.azurerm_subnet.apim_itn_snet.id
   ]
 
   tags = var.tags
