@@ -421,11 +421,7 @@ module "app_gw" {
 
       certificate = {
         name = var.certificates.vehicles_ipatente_io_pagopa_it
-        id = replace(
-          data.azurerm_key_vault_certificate.app_gw_vehicles_ipatente_io.secret_id,
-          "/${data.azurerm_key_vault_certificate.app_gw_vehicles_ipatente_io.version}",
-          ""
-        )
+        id   = data.azurerm_key_vault_certificate.app_gw_vehicles_ipatente_io.versionless_secret_id
       }
     }
 
@@ -438,7 +434,7 @@ module "app_gw" {
 
       certificate = {
         name = var.certificates.licences_ipatente_io_pagopa_it
-        id = data.azurerm_key_vault_certificate.app_gw_licences_ipatente_io.versionless_secret_id
+        id   = data.azurerm_key_vault_certificate.app_gw_licences_ipatente_io.versionless_secret_id
       }
     }
   }
