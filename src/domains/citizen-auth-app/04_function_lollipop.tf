@@ -1,5 +1,5 @@
 data "azurerm_key_vault_secret" "first_lollipop_consumer_subscription_key" {
-  name         = "first-lollipop-consumer-pagopa-subscription-key-v2" # itn" Change it for itn switch
+  name         = "first-lollipop-consumer-pagopa-subscription-key-itn"
   key_vault_id = data.azurerm_key_vault.kv.id
 }
 
