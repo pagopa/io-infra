@@ -524,7 +524,7 @@ module "app_gw" {
       listener              = "licences-ipatente-io-pagopa-it"
       backend               = "licences-ipatente-io-app"
       rewrite_rule_set_name = "rewrite-rule-set-licences-ipatente-io-app"
-      priority              = 140
+      priority              = 131
     }
   }
 
