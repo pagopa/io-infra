@@ -327,7 +327,8 @@ module "application_gateway_weu" {
     continua_io_pagopa_it                = "continua-io-pagopa-it"
     selfcare_io_pagopa_it                = "selfcare-io-pagopa-it"
     oauth_io_pagopa_it                   = "oauth-io-pagopa-it"
-    ipatente_io_pagopa_it                = "ipatente-io-pagopa-it"
+    vehicles_ipatente_io_pagopa_it       = "vehicles-ipatente-io-pagopa-it"
+    licences_ipatente_io_pagopa_it       = "licences-ipatente-io-pagopa-it"
   }
 
   cidr_subnet           = ["10.0.13.0/24"]

@@ -120,8 +120,13 @@ data "azurerm_key_vault_certificate" "app_gw_selfcare_io" {
   key_vault_id = var.key_vault.id
 }
 
-data "azurerm_key_vault_certificate" "app_gw_ipatente_io" {
-  name         = var.certificates.ipatente_io_pagopa_it
+data "azurerm_key_vault_certificate" "app_gw_vehicles_ipatente_io" {
+  name         = var.certificates.vehicles_ipatente_io_pagopa_it
+  key_vault_id = var.key_vault.id
+}
+
+data "azurerm_key_vault_certificate" "app_gw_licences_ipatente_io" {
+  name         = var.certificates.licences_ipatente_io_pagopa_it
   key_vault_id = var.key_vault.id
 }
 
