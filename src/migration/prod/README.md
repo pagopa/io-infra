@@ -18,6 +18,7 @@
 
 | Name | Source | Version |
 |------|--------|---------|
+| <a name="module_migrate_cosmos_accounts"></a> [migrate\_cosmos\_accounts](#module\_migrate\_cosmos\_accounts) | ../../_modules/data_factory_cosmos | n/a |
 | <a name="module_migrate_storage_accounts"></a> [migrate\_storage\_accounts](#module\_migrate\_storage\_accounts) | ../../_modules/data_factory_storage_account | n/a |
 
 ## Resources
@@ -37,5 +38,6 @@ No inputs.
 | Name | Description |
 |------|-------------|
 | <a name="output_data_factory"></a> [data\_factory](#output\_data\_factory) | n/a |
+| <a name="output_data_factory_cosmos_pipelines"></a> [data\_factory\_cosmos\_pipelines](#output\_data\_factory\_cosmos\_pipelines) | n/a |
 | <a name="output_data_factory_st_pipelines"></a> [data\_factory\_st\_pipelines](#output\_data\_factory\_st\_pipelines) | n/a |
 <!-- END_TF_DOCS -->
