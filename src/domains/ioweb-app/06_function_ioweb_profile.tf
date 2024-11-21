@@ -166,6 +166,7 @@ module "function_ioweb_profile" {
     data.azurerm_subnet.apim_v2_snet.id,
     data.azurerm_subnet.function_profile_snet[0].id,
     data.azurerm_subnet.function_profile_snet[1].id,
+    data.azurerm_subnet.apim_itn_snet.id,
   ]
 
   enable_healthcheck = false
@@ -212,6 +213,7 @@ module "function_ioweb_profile_staging_slot" {
     data.azurerm_subnet.apim_v2_snet.id,
     data.azurerm_subnet.function_profile_snet[0].id,
     data.azurerm_subnet.function_profile_snet[1].id,
+    data.azurerm_subnet.apim_itn_snet.id,
   ]
 
   tags = var.tags
