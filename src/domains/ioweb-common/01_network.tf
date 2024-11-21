@@ -32,6 +32,12 @@ data "azurerm_subnet" "apim_v2_snet" {
   resource_group_name  = local.vnet_common_resource_group_name
 }
 
+data "azurerm_subnet" "apim_itn_snet" {
+  name                 = "io-p-itn-apim-snet-01"
+  virtual_network_name = local.vnet_common_name_itn
+  resource_group_name  = local.vnet_common_resource_group_name_itn
+}
+
 data "azurerm_subnet" "ioweb_profile_snet" {
   name                 = format("%s-%s-ioweb-profile-snet", local.product, var.location_short)
   virtual_network_name = local.vnet_common_name
