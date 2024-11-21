@@ -95,7 +95,6 @@ locals {
 
 # Region ITN
 locals {
-  itn_location       = "italynorth"
   itn_location_short = "itn"
 
   vnet_common_name_itn                = "${var.project}-${local.itn_location_short}-common-vnet-01"
