@@ -52,3 +52,12 @@ locals {
     }
   }
 }
+
+# Region ITN
+locals {
+  itn_location       = "italynorth"
+  itn_location_short = "itn"
+
+  vnet_common_name_itn                = "io-p-itn-common-vnet-01"
+  vnet_common_resource_group_name_itn = "io-p-itn-common-rg-01"
+}
