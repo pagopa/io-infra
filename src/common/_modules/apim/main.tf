@@ -19,7 +19,7 @@ module "apim_v2" {
     proxy = [
       {
         # io-p-apim-api.azure-api.net
-        default_ssl_binding = var.migration ? true : false
+        default_ssl_binding = false
         host_name           = var.migration ? "io-p-itn-apim-01.azure-api.net" : "io-p-apim-v2-api.azure-api.net"
         key_vault_id        = null
       },
