@@ -24,7 +24,7 @@ resource "azurerm_key_vault_access_policy" "adgroup_admin" {
   tenant_id = data.azurerm_client_config.current.tenant_id
   object_id = data.azuread_group.adgroup_admin.object_id
 
-  key_permissions         = ["Get", "List", "Update", "Create", "Import", "Delete", ]
+  key_permissions         = ["Get", "List", "Update", "Create", "Import", "Delete", "GetRotationPolicy"]
   secret_permissions      = ["Get", "List", "Set", "Delete", "Restore", "Recover", ]
   storage_permissions     = []
   certificate_permissions = ["Get", "List", "Update", "Create", "Import", "Delete", "Restore", "Recover", ]
@@ -37,7 +37,7 @@ resource "azurerm_key_vault_access_policy" "adgroup_developers" {
   tenant_id = data.azurerm_client_config.current.tenant_id
   object_id = data.azuread_group.adgroup_developers.object_id
 
-  key_permissions         = ["Get", "List", "Update", "Create", "Import", "Delete", ]
+  key_permissions         = ["Get", "List", "Update", "Create", "Import", "Delete", "GetRotationPolicy"]
   secret_permissions      = ["Get", "List", "Set", "Delete", "Restore", "Recover", ]
   storage_permissions     = []
   certificate_permissions = ["Get", "List", "Update", "Create", "Import", "Delete", "Restore", "Recover", ]
@@ -50,7 +50,7 @@ resource "azurerm_key_vault_access_policy" "access_policy_io_infra_ci" {
   tenant_id = data.azurerm_client_config.current.tenant_id
   object_id = data.azurerm_user_assigned_identity.managed_identity_io_infra_ci.principal_id
 
-  key_permissions         = ["Get", "List"]
+  key_permissions         = ["Get", "List", "GetRotationPolicy"]
   secret_permissions      = ["Get", "List"]
   certificate_permissions = ["Get", "List"]
 }
@@ -61,7 +61,7 @@ resource "azurerm_key_vault_access_policy" "access_policy_io_infra_cd" {
   tenant_id = data.azurerm_client_config.current.tenant_id
   object_id = data.azurerm_user_assigned_identity.managed_identity_io_infra_cd.principal_id
 
-  key_permissions         = ["Get", "List"]
+  key_permissions         = ["Get", "List", "GetRotationPolicy"]
   secret_permissions      = ["Get", "List"]
   certificate_permissions = ["Get", "List"]
 }
