@@ -5,7 +5,7 @@
 | Name | Version |
 |------|---------|
 | <a name="requirement_azuread"></a> [azuread](#requirement\_azuread) | <= 2.33.0 |
-| <a name="requirement_azurerm"></a> [azurerm](#requirement\_azurerm) | <= 3.40.0 |
+| <a name="requirement_azurerm"></a> [azurerm](#requirement\_azurerm) | <= 3.116.0 |
 | <a name="requirement_null"></a> [null](#requirement\_null) | <= 3.2.1 |
 
 ## Providers
@@ -13,25 +13,26 @@
 | Name | Version |
 |------|---------|
 | <a name="provider_azuread"></a> [azuread](#provider\_azuread) | 2.33.0 |
-| <a name="provider_azurerm"></a> [azurerm](#provider\_azurerm) | 3.40.0 |
-| <a name="provider_tls"></a> [tls](#provider\_tls) | 4.0.4 |
+| <a name="provider_azurerm"></a> [azurerm](#provider\_azurerm) | 3.116.0 |
+| <a name="provider_tls"></a> [tls](#provider\_tls) | 4.0.6 |
 
 ## Modules
 
 | Name | Source | Version |
 |------|--------|---------|
-| <a name="module_apim_itn_product_ioweb"></a> [apim\_itn\_product\_ioweb](#module\_apim\_itn\_product\_ioweb) | git::https://github.com/pagopa/terraform-azurerm-v3//api_management_product | v4.1.5 |
-| <a name="module_apim_itn_spid_login_api"></a> [apim\_itn\_spid\_login\_api](#module\_apim\_itn\_spid\_login\_api) | git::https://github.com/pagopa/terraform-azurerm-v3//api_management_api | v4.1.5 |
-| <a name="module_apim_v2_product_ioweb"></a> [apim\_v2\_product\_ioweb](#module\_apim\_v2\_product\_ioweb) | git::https://github.com/pagopa/terraform-azurerm-v3//api_management_product | v4.1.5 |
-| <a name="module_apim_v2_spid_login_api"></a> [apim\_v2\_spid\_login\_api](#module\_apim\_v2\_spid\_login\_api) | git::https://github.com/pagopa/terraform-azurerm-v3//api_management_api | v4.1.5 |
-| <a name="module_immutable_spid_logs_storage"></a> [immutable\_spid\_logs\_storage](#module\_immutable\_spid\_logs\_storage) | git::https://github.com/pagopa/terraform-azurerm-v3//storage_account | v7.32.1 |
-| <a name="module_immutable_spid_logs_storage_customer_managed_key"></a> [immutable\_spid\_logs\_storage\_customer\_managed\_key](#module\_immutable\_spid\_logs\_storage\_customer\_managed\_key) | git::https://github.com/pagopa/terraform-azurerm-v3//storage_account_customer_managed_key | v7.32.1 |
-| <a name="module_key_vault"></a> [key\_vault](#module\_key\_vault) | git::https://github.com/pagopa/terraform-azurerm-v3.git//key_vault | v4.1.3 |
-| <a name="module_landing_cdn"></a> [landing\_cdn](#module\_landing\_cdn) | github.com/pagopa/terraform-azurerm-v3.git//cdn | v7.59.0 |
-| <a name="module_redis_spid_login"></a> [redis\_spid\_login](#module\_redis\_spid\_login) | git::https://github.com/pagopa/terraform-azurerm-v3.git//redis_cache | v6.11.2 |
-| <a name="module_redis_spid_login_snet"></a> [redis\_spid\_login\_snet](#module\_redis\_spid\_login\_snet) | git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet | v4.1.15 |
-| <a name="module_spid_login"></a> [spid\_login](#module\_spid\_login) | git::https://github.com/pagopa/terraform-azurerm-v3.git//app_service | v4.1.15 |
-| <a name="module_spid_login_snet"></a> [spid\_login\_snet](#module\_spid\_login\_snet) | git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet | v4.1.15 |
+| <a name="module_apim_itn_product_ioweb"></a> [apim\_itn\_product\_ioweb](#module\_apim\_itn\_product\_ioweb) | git::https://github.com/pagopa/terraform-azurerm-v3//api_management_product | v8.56.0 |
+| <a name="module_apim_itn_spid_login_api"></a> [apim\_itn\_spid\_login\_api](#module\_apim\_itn\_spid\_login\_api) | git::https://github.com/pagopa/terraform-azurerm-v3//api_management_api | v8.56.0 |
+| <a name="module_apim_v2_product_ioweb"></a> [apim\_v2\_product\_ioweb](#module\_apim\_v2\_product\_ioweb) | git::https://github.com/pagopa/terraform-azurerm-v3//api_management_product | v8.56.0 |
+| <a name="module_apim_v2_spid_login_api"></a> [apim\_v2\_spid\_login\_api](#module\_apim\_v2\_spid\_login\_api) | git::https://github.com/pagopa/terraform-azurerm-v3//api_management_api | v8.56.0 |
+| <a name="module_immutable_spid_logs_storage"></a> [immutable\_spid\_logs\_storage](#module\_immutable\_spid\_logs\_storage) | git::https://github.com/pagopa/terraform-azurerm-v3//storage_account | v8.56.0 |
+| <a name="module_immutable_spid_logs_storage_customer_managed_key"></a> [immutable\_spid\_logs\_storage\_customer\_managed\_key](#module\_immutable\_spid\_logs\_storage\_customer\_managed\_key) | git::https://github.com/pagopa/terraform-azurerm-v3//storage_account_customer_managed_key | v8.56.0 |
+| <a name="module_io_web_profile_itn_fe_st"></a> [io\_web\_profile\_itn\_fe\_st](#module\_io\_web\_profile\_itn\_fe\_st) | github.com/pagopa/dx//infra/modules/azure_storage_account | main |
+| <a name="module_key_vault"></a> [key\_vault](#module\_key\_vault) | git::https://github.com/pagopa/terraform-azurerm-v3.git//key_vault | v8.56.0 |
+| <a name="module_landing_cdn"></a> [landing\_cdn](#module\_landing\_cdn) | github.com/pagopa/terraform-azurerm-v3.git//cdn | v8.56.0 |
+| <a name="module_redis_spid_login"></a> [redis\_spid\_login](#module\_redis\_spid\_login) | git::https://github.com/pagopa/terraform-azurerm-v3.git//redis_cache | v8.56.0 |
+| <a name="module_redis_spid_login_snet"></a> [redis\_spid\_login\_snet](#module\_redis\_spid\_login\_snet) | git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet | v8.56.0 |
+| <a name="module_spid_login"></a> [spid\_login](#module\_spid\_login) | git::https://github.com/pagopa/terraform-azurerm-v3.git//app_service | v8.56.0 |
+| <a name="module_spid_login_snet"></a> [spid\_login\_snet](#module\_spid\_login\_snet) | git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet | v8.56.0 |
 
 ## Resources
 
@@ -53,6 +54,7 @@
 | [azurerm_private_endpoint.immutable_spid_logs_storage_blob](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/private_endpoint) | resource |
 | [azurerm_resource_group.common_rg](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/resource_group) | resource |
 | [azurerm_resource_group.fe_rg](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/resource_group) | resource |
+| [azurerm_resource_group.io_web_profile_itn_fe_rg](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/resource_group) | resource |
 | [azurerm_resource_group.sec_rg](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/resource_group) | resource |
 | [azurerm_resource_group.storage_rg](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/resource_group) | resource |
 | [azurerm_storage_container.immutable_audit_logs](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/storage_container) | resource |
@@ -78,17 +80,20 @@
 | [azurerm_monitor_action_group.slack](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/monitor_action_group) | data source |
 | [azurerm_private_dns_zone.privatelink_blob_core_windows_net](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/private_dns_zone) | data source |
 | [azurerm_private_dns_zone.privatelink_redis_cache](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/private_dns_zone) | data source |
+| [azurerm_resource_group.common_rg_weu](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/resource_group) | data source |
 | [azurerm_resource_group.core_ext](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/resource_group) | data source |
 | [azurerm_resource_group.monitor_rg](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/resource_group) | data source |
 | [azurerm_subnet.apim_v2_snet](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/subnet) | data source |
 | [azurerm_subnet.azdoa_snet](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/subnet) | data source |
 | [azurerm_subnet.ioweb_profile_snet](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/subnet) | data source |
 | [azurerm_subnet.private_endpoints_subnet](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/subnet) | data source |
+| [azurerm_subnet.private_endpoints_subnet_itn](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/subnet) | data source |
 | [azurerm_subscription.current](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/subscription) | data source |
 | [azurerm_user_assigned_identity.managed_identity_auth_n_identity_infra_cd](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/user_assigned_identity) | data source |
 | [azurerm_user_assigned_identity.managed_identity_auth_n_identity_infra_ci](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/user_assigned_identity) | data source |
 | [azurerm_user_assigned_identity.managed_identity_io_infra_cd](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/user_assigned_identity) | data source |
 | [azurerm_user_assigned_identity.managed_identity_io_infra_ci](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/user_assigned_identity) | data source |
+| [azurerm_virtual_network.common_itn](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/virtual_network) | data source |
 | [azurerm_virtual_network.vnet_common](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/virtual_network) | data source |
 
 ## Inputs

@@ -40,7 +40,7 @@ data "azurerm_subnet" "ioweb_profile_snet" {
 
 ## redis spid login subnet
 module "redis_spid_login_snet" {
-  source               = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v4.1.15"
+  source               = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v8.56.0"
   name                 = format("%s-redis-spid-login-snet", local.project)
   address_prefixes     = var.subnets_cidrs.redis_spid_login
   resource_group_name  = local.vnet_common_resource_group_name
@@ -51,7 +51,7 @@ module "redis_spid_login_snet" {
 
 ## spid_login subnet
 module "spid_login_snet" {
-  source               = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v4.1.15"
+  source               = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v8.56.0"
   name                 = format("%s-spid-login-snet", local.project)
   address_prefixes     = var.subnets_cidrs.spid_login
   resource_group_name  = local.vnet_common_resource_group_name
