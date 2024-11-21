@@ -20,8 +20,8 @@
 
 | Name | Source | Version |
 |------|--------|---------|
-| <a name="module_apim_itn_product_ioweb"></a> [apim\_itn\_product\_ioweb](#module\_apim\_itn\_product\_ioweb) | git::https://github.com/pagopa/terraform-azurerm-v3//api_management_product | v4.1.5 |
-| <a name="module_apim_itn_spid_login_api"></a> [apim\_itn\_spid\_login\_api](#module\_apim\_itn\_spid\_login\_api) | git::https://github.com/pagopa/terraform-azurerm-v3//api_management_api | v4.1.5 |
+| <a name="module_apim_itn_product_ioweb"></a> [apim\_itn\_product\_ioweb](#module\_apim\_itn\_product\_ioweb) | git::https://github.com/pagopa/terraform-azurerm-v3//api_management_product | v8.56.0 |
+| <a name="module_apim_itn_spid_login_api"></a> [apim\_itn\_spid\_login\_api](#module\_apim\_itn\_spid\_login\_api) | git::https://github.com/pagopa/terraform-azurerm-v3//api_management_api | v8.56.0 |
 | <a name="module_apim_v2_product_ioweb"></a> [apim\_v2\_product\_ioweb](#module\_apim\_v2\_product\_ioweb) | git::https://github.com/pagopa/terraform-azurerm-v3//api_management_product | v8.56.0 |
 | <a name="module_apim_v2_spid_login_api"></a> [apim\_v2\_spid\_login\_api](#module\_apim\_v2\_spid\_login\_api) | git::https://github.com/pagopa/terraform-azurerm-v3//api_management_api | v8.56.0 |
 | <a name="module_immutable_spid_logs_storage"></a> [immutable\_spid\_logs\_storage](#module\_immutable\_spid\_logs\_storage) | git::https://github.com/pagopa/terraform-azurerm-v3//storage_account | v8.56.0 |
@@ -114,8 +114,8 @@
 | <a name="input_prefix"></a> [prefix](#input\_prefix) | n/a | `string` | n/a | yes |
 | <a name="input_spid_login_plan_sku_size"></a> [spid\_login\_plan\_sku\_size](#input\_spid\_login\_plan\_sku\_size) | App backend app plan sku size | `string` | `"P1v3"` | no |
 | <a name="input_spid_login_plan_sku_tier"></a> [spid\_login\_plan\_sku\_tier](#input\_spid\_login\_plan\_sku\_tier) | App backend app plan sku tier | `string` | `"PremiumV3"` | no |
-| <a name="input_subnets_cidrs"></a> [subnets\_cidrs](#input\_subnets\_cidrs) | The CIDR address prefixes of the subnets | <pre>map(<br>    list(string)<br>  )</pre> | n/a | yes |
-| <a name="input_tags"></a> [tags](#input\_tags) | n/a | `map(any)` | <pre>{<br>  "CreatedBy": "Terraform"<br>}</pre> | no |
+| <a name="input_subnets_cidrs"></a> [subnets\_cidrs](#input\_subnets\_cidrs) | The CIDR address prefixes of the subnets | <pre>map(<br/>    list(string)<br/>  )</pre> | n/a | yes |
+| <a name="input_tags"></a> [tags](#input\_tags) | n/a | `map(any)` | <pre>{<br/>  "CreatedBy": "Terraform"<br/>}</pre> | no |
 
 ## Outputs
 
