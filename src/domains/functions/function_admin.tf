@@ -327,7 +327,6 @@ resource "azurerm_monitor_scheduled_query_rules_alert_v2" "alert_failed_delete_p
 exceptions
 | where cloud_RoleName == "${module.function_admin.name}"
 | where customDimensions.name startswith "user.data.delete"
-| where customDimensions.isReplay == true
     QUERY
     operator                = "GreaterThanOrEqual"
     time_aggregation_method = "Count"
@@ -371,7 +370,6 @@ resource "azurerm_monitor_scheduled_query_rules_alert_v2" "alert_failed_download
 exceptions
 | where cloud_RoleName == "${module.function_admin.name}"
 | where customDimensions.name startswith "user.data.download"
-| where customDimensions.isReplay == true
     QUERY
     operator                = "GreaterThanOrEqual"
     time_aggregation_method = "Count"
