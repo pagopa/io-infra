@@ -317,14 +317,15 @@ resource "azurerm_monitor_scheduled_query_rules_alert_v2" "alert_failed_delete_p
   auto_mitigation_enabled = false
   location                = azurerm_resource_group.admin_rg.location
 
-  // check once every minute(evaluation_frequency)
-  // on the last minute of data(window_duration)
+  // check once every day(evaluation_frequency)
+  // on the last 24 hours of data(window_duration)
   evaluation_frequency = "P1D"
   window_duration      = "P1D"
 
   criteria {
     query                   = <<-QUERY
 exceptions
+| where cloud_RoleName == "${module.function_admin.name}"
 | where customDimensions.name startswith "user.data.delete"
 | where customDimensions.isReplay == true
     QUERY
@@ -360,14 +361,15 @@ resource "azurerm_monitor_scheduled_query_rules_alert_v2" "alert_failed_download
   auto_mitigation_enabled = false
   location                = azurerm_resource_group.admin_rg.location
 
-  // check once every minute(evaluation_frequency)
-  // on the last minute of data(window_duration)
+  // check once every day(evaluation_frequency)
+  // on the last 24 hours of data(window_duration)
   evaluation_frequency = "P1D"
   window_duration      = "P1D"
 
   criteria {
     query                   = <<-QUERY
 exceptions
+| where cloud_RoleName == "${module.function_admin.name}"
 | where customDimensions.name startswith "user.data.download"
 | where customDimensions.isReplay == true
     QUERY
