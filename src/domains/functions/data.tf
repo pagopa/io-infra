@@ -78,12 +78,12 @@ data "azurerm_key_vault_secret" "app_backend_PRE_SHARED_KEY" {
 # MAILUP
 
 data "azurerm_key_vault_secret" "common_MAILUP_USERNAME" {
-  name         = "common-MAILUP2-USERNAME"
+  name         = "common-MAILUP-AI-USERNAME"
   key_vault_id = data.azurerm_key_vault.common.id
 }
 
 data "azurerm_key_vault_secret" "common_MAILUP_SECRET" {
-  name         = "common-MAILUP2-SECRET"
+  name         = "common-MAILUP-AI-SECRET"
   key_vault_id = data.azurerm_key_vault.common.id
 }
 

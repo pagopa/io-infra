@@ -9,12 +9,12 @@ data "azurerm_key_vault_secret" "ioweb_profile_function_api_key" {
 }
 
 data "azurerm_key_vault_secret" "common_MAILUP_USERNAME" {
-  name         = "common-MAILUP2-USERNAME"
+  name         = "common-MAILUP-AI-USERNAME"
   key_vault_id = data.azurerm_key_vault.kv_common.id
 }
 
 data "azurerm_key_vault_secret" "common_MAILUP_SECRET" {
-  name         = "common-MAILUP2-SECRET"
+  name         = "common-MAILUP-AI-SECRET"
   key_vault_id = data.azurerm_key_vault.kv_common.id
 }
 
