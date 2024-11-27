@@ -2,12 +2,12 @@
 # SECRETS
 ########################
 data "azurerm_key_vault_secret" "fn_services_mailup_username" {
-  name         = "common-MAILUP-USERNAME"
+  name         = "common-MAILUP-TMP-USERNAME"
   key_vault_id = data.azurerm_key_vault.common.id
 }
 
 data "azurerm_key_vault_secret" "fn_services_mailup_secret" {
-  name         = "common-MAILUP-SECRET"
+  name         = "common-MAILUP-TMP-SECRET"
   key_vault_id = data.azurerm_key_vault.common.id
 }
 
