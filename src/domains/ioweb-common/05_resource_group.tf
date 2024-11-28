@@ -22,3 +22,8 @@ resource "azurerm_resource_group" "storage_rg" {
 data "azurerm_resource_group" "common_rg_weu" {
   name = "${local.product}-rg-common"
 }
+
+# core domain external rg
+data "azurerm_resource_group" "core_ext" {
+  name = format("%s-rg-external", local.product)
+}
