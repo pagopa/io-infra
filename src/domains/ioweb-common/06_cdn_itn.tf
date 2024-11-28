@@ -4,7 +4,7 @@ data "azurerm_dns_zone" "ioapp_it" {
 }
 
 resource "azurerm_resource_group" "io_web_profile_itn_fe_rg" {
-  name     = format("%s-ioweb-fe-rg-01", local.project_itn)
+  name     = format("%s-fe-rg-01", local.project_itn)
   location = local.itn_location
 }
 
