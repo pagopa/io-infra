@@ -303,3 +303,19 @@ module "lollipop_assertions_storage_itn" {
 
   tags = var.tags
 }
+
+resource "azurerm_storage_container_itn" "lollipop_assertions_storage_assertions_itn" {
+  name                  = "assertions"
+  storage_account_name  = module.lollipop_assertions_storage_itn.name
+  container_access_type = "private"
+}
+
+resource "azurerm_storage_queue" "lollipop_assertions_storage_revoke_queue_itn" {
+  name                 = "pubkeys-revoke" # This value is used in src/core/99_variables.tf#citizen_auth_revoke_queue_name
+  storage_account_name = module.lollipop_assertions_storage_itn.name
+}
+
+resource "azurerm_storage_queue" "lollipop_assertions_storage_revoke_queue_v2_itn" {
+  name                 = "pubkeys-revoke-v2"
+  storage_account_name = module.lollipop_assertions_storage_itn.name
+}
