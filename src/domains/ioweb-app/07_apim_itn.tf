@@ -7,7 +7,7 @@ module "apim_itn_bff_api" {
   product_ids           = ["io-web-api"]
   subscription_required = false
 
-  service_url = format(local.bff_backend_url, module.function_ioweb_profile.default_hostname)
+  service_url = format(local.bff_backend_url, data.azurerm_linux_function_app.function_web_profile.default_hostname)
 
   description  = "Bff API for IO Web platform"
   display_name = "IO Web - Bff"
