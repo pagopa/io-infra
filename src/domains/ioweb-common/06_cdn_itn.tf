@@ -61,6 +61,22 @@ resource "azurerm_cdn_frontdoor_profile" "portal_profile" {
   tags = var.tags
 }
 
+data "azurerm_key_vault_certificate" "portal_custom_certificate" {
+  name         = "account-ioapp-it"
+  key_vault_id = module.key_vault.id
+}
+
+resource "azurerm_cdn_frontdoor_secret" "portal_certificate" {
+  name                     = "certificate"
+  cdn_frontdoor_profile_id = azurerm_cdn_frontdoor_profile.portal_profile.id
+
+  secret {
+    customer_certificate {
+      key_vault_certificate_id = data.azurerm_key_vault_certificate.portal_custom_certificate.id
+    }
+  }
+}
+
 resource "azurerm_cdn_frontdoor_custom_domain" "portal_custom_domain" {
   name                     = format("%s-profile-fdd-01", local.project_itn)
   cdn_frontdoor_profile_id = azurerm_cdn_frontdoor_profile.portal_profile.id
@@ -70,8 +86,9 @@ resource "azurerm_cdn_frontdoor_custom_domain" "portal_custom_domain" {
 
   tls {
     # Certificate managed by us and put in a kv
-    certificate_type    = "CustomerCertificate"
-    minimum_tls_version = "TLS12"
+    certificate_type        = "CustomerCertificate"
+    minimum_tls_version     = "TLS12"
+    cdn_frontdoor_secret_id = azurerm_cdn_frontdoor_secret.portal_certificate.id
   }
 }
 
