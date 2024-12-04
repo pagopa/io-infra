@@ -98,6 +98,10 @@ resource "azurerm_cdn_endpoint" "portal_cdn_endpoint" {
   location            = local.itn_location
   resource_group_name = azurerm_resource_group.io_web_profile_itn_fe_rg.name
 
+  is_https_allowed = true
+  # a redirect to https is present on cdn_endpoint global rule
+  is_http_allowed = true
+
   querystring_caching_behaviour = "BypassCaching"
 
   origin {
