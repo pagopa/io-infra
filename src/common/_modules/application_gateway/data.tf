@@ -23,8 +23,8 @@ data "azurerm_linux_web_app" "session_manager_04" {
 }
 
 data "azurerm_linux_web_app" "fims_op_app" {
-  name                = "io-p-weu-fims-op-app-01"
-  resource_group_name = "io-p-weu-fims-rg-01"
+  name                = "io-p-itn-fims-op-app-01"
+  resource_group_name = "io-p-itn-fims-rg-01"
 }
 
 data "azurerm_linux_web_app" "appservice_devportal_be" {
