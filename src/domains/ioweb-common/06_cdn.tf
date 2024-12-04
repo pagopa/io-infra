@@ -112,7 +112,7 @@ module "landing_cdn" {
   tags = var.tags
 }
 
-module "azure_storage_account" {
+module "landing_cdn_itn" {
   source = "github.com/pagopa/dx//infra/modules/azure_storage_account?ref=main"
 
   environment                          = local.itn_environment
