@@ -44,6 +44,12 @@ data "azurerm_subnet" "ioweb_profile_snet" {
   resource_group_name  = local.vnet_common_resource_group_name
 }
 
+data "azurerm_subnet" "ioweb_profile_snet_itn" {
+  name                 = format("%s-auth-webprof-func-snet-01", local.common_project_itn)
+  virtual_network_name = local.vnet_common_name_itn
+  resource_group_name  = local.vnet_common_resource_group_name_itn
+}
+
 ## redis spid login subnet
 module "redis_spid_login_snet" {
   source               = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v8.56.0"
