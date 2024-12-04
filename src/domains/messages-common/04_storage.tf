@@ -83,7 +83,7 @@ resource "azurerm_key_vault_secret" "push_notifications_storage_connection_strin
 
 
 
-module "azure_storage_account_itn" {
+module "push_notifications_storage_itn" {
   source = "github.com/pagopa/dx//infra/modules/azure_storage_account?ref=main"
 
   environment                          = local.itn_environment
@@ -102,4 +102,9 @@ module "azure_storage_account_itn" {
   force_public_network_access_enabled = true
 
   tags = var.tags
+}
+
+resource "azurerm_storage_queue" "push_notifications_queue" {
+  name                 = "push-notifications"
+  storage_account_name = module.push_notifications_storage_itn.name
 }
