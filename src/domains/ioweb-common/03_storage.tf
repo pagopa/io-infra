@@ -177,3 +177,18 @@ module "immutable_spid_logs_storage_itn" {
 
   tags = var.tags
 }
+
+# Containers
+resource "azurerm_storage_container" "immutable_spid_logs_itn" {
+  depends_on            = [module.immutable_spid_logs_storage_itn, azurerm_private_endpoint.immutable_spid_logs_storage_blob]
+  name                  = "spidlogs"
+  storage_account_name  = module.immutable_spid_logs_storage_itn.name
+  container_access_type = "private"
+}
+
+resource "azurerm_storage_container" "immutable_audit_logs" {
+  depends_on            = [module.immutable_spid_logs_storage_itn, azurerm_private_endpoint.immutable_spid_logs_storage_blob]
+  name                  = "auditlogs"
+  storage_account_name  = module.immutable_spid_logs_storage_itn.name
+  container_access_type = "private"
+}
