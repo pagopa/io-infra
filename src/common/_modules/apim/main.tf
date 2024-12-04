@@ -58,8 +58,8 @@ module "apim_v2" {
   autoscale = {
     enabled                       = true
     default_instances             = 3
-    minimum_instances             = 2
-    maximum_instances             = 6
+    minimum_instances             = var.migration ? 1 : 2
+    maximum_instances             = var.migration ? 1 : 2
     scale_out_capacity_percentage = 50
     scale_out_time_window         = "PT3M"
     scale_out_value               = "1"
