@@ -53,61 +53,40 @@ module "io_web_profile_itn_fe_st" {
   tags = var.tags
 }
 
+#####################
+# CDN
+#####################
 resource "azurerm_cdn_frontdoor_profile" "portal_profile" {
-  name                = format("%s-profile-portal-afd-01", local.project_itn)
+  name                = format("%s-%s-profile-portal-afd-01", local.product, var.domain)
   resource_group_name = azurerm_resource_group.io_web_profile_itn_fe_rg.name
   sku_name            = "Standard_AzureFrontDoor"
 
   tags = var.tags
 }
 
-data "azurerm_key_vault_certificate" "portal_custom_certificate" {
-  name         = "account-ioapp-it"
-  key_vault_id = module.key_vault.id
-}
-
-resource "azurerm_cdn_frontdoor_secret" "portal_certificate" {
-  name                     = "certificate"
+resource "azurerm_cdn_frontdoor_endpoint" "portal_cdn_endpoint" {
+  name                     = format("%s-profile-fde-01", local.project_itn)
   cdn_frontdoor_profile_id = azurerm_cdn_frontdoor_profile.portal_profile.id
 
-  secret {
-    customer_certificate {
-      key_vault_certificate_id = data.azurerm_key_vault_certificate.portal_custom_certificate.id
-    }
-  }
+  tags = var.tags
 }
 
-resource "azurerm_cdn_frontdoor_custom_domain" "portal_custom_domain" {
-  name                     = format("%s-profile-fdd-01", local.project_itn)
+resource "azurerm_cdn_frontdoor_origin_group" "portal_cdn_origin_group" {
+  name                     = format("%s-profile-fdog-01", local.project_itn)
   cdn_frontdoor_profile_id = azurerm_cdn_frontdoor_profile.portal_profile.id
 
-  dns_zone_id = data.azurerm_dns_zone.ioapp_it.id
-  host_name   = "account.ioapp.it"
-
-  tls {
-    # Certificate managed by us and put in a kv
-    certificate_type        = "CustomerCertificate"
-    minimum_tls_version     = "TLS12"
-    cdn_frontdoor_secret_id = azurerm_cdn_frontdoor_secret.portal_certificate.id
+  load_balancing {
+    # latency in milliseconds for probes to fall into the lowest latency bucket.
+    # defaults to 50
+    additional_latency_in_milliseconds = 5
   }
 }
 
-resource "azurerm_cdn_endpoint" "portal_cdn_endpoint" {
-  name                = format("%s-profile-fde-01", local.project_itn)
-  profile_name        = azurerm_cdn_frontdoor_profile.portal_profile.name
-  location            = local.itn_location
-  resource_group_name = azurerm_resource_group.io_web_profile_itn_fe_rg.name
-
-  is_https_allowed = true
-  # a redirect to https is present on cdn_endpoint global rule
-  is_http_allowed = true
-
-  querystring_caching_behaviour = "BypassCaching"
-
-  origin {
-    name      = "primary"
-    host_name = module.io_web_profile_itn_fe_st.primary_web_host
-  }
+resource "azurerm_cdn_frontdoor_origin" "portal_cdn_origin" {
+  name                           = format("%s-profile-fdo-01", local.project_itn)
+  cdn_frontdoor_origin_group_id  = azurerm_cdn_frontdoor_origin_group.portal_cdn_origin_group.id
+  host_name                      = module.io_web_profile_itn_fe_st.primary_web_host
+  certificate_name_check_enabled = true
 }
 
 resource "azurerm_cdn_frontdoor_rule_set" "portal_cdn_rule_set" {
@@ -116,6 +95,8 @@ resource "azurerm_cdn_frontdoor_rule_set" "portal_cdn_rule_set" {
 }
 
 resource "azurerm_cdn_frontdoor_rule" "portal_cdn_rule_global" {
+  depends_on = [azurerm_cdn_frontdoor_origin_group.portal_cdn_origin_group, azurerm_cdn_frontdoor_origin.portal_cdn_origin]
+
   name                      = "Global"
   cdn_frontdoor_rule_set_id = azurerm_cdn_frontdoor_rule_set.portal_cdn_rule_set.id
 
@@ -142,39 +123,10 @@ resource "azurerm_cdn_frontdoor_rule" "portal_cdn_rule_global" {
   }
 }
 
-resource "azurerm_cdn_frontdoor_rule" "portal_cdn_rule_force_https" {
-  name                      = "EnforceHTTPS"
-  cdn_frontdoor_rule_set_id = azurerm_cdn_frontdoor_rule_set.portal_cdn_rule_set.id
-
-  # NOTE: A Front Door Rule with a lesser order value will be applied before a rule with a greater order value.
-  # If the Front Door Rule has an order value of 0 they do not require any conditions and the actions will always be applied.
-  order = 1
-
-  # IF
-  conditions {
-    request_scheme_condition {
-      operator     = "Equal"
-      match_values = ["HTTP"]
-    }
-  }
-  # THEN
-  actions {
-    url_redirect_action {
-      # 302 Found
-      redirect_type     = "Found"
-      redirect_protocol = "Https"
-      # Leave blank to preserve the incoming host.
-      destination_hostname = ""
-      destination_path     = ""
-    }
-  }
-}
-
 # This rule ensures that root files are always taken from the blob storage, therefore
 # surpassing the caching internal capabilities of the CDN profile.
-# This rule function is based from BypassCaching behaviour mode of the CDN
-# profile
 resource "azurerm_cdn_frontdoor_rule" "portal_cdn_rule_rootfiles" {
+  depends_on                = [azurerm_cdn_frontdoor_origin_group.portal_cdn_origin_group, azurerm_cdn_frontdoor_origin.portal_cdn_origin]
   name                      = "TakeRootFilesFromStorage"
   cdn_frontdoor_rule_set_id = azurerm_cdn_frontdoor_rule_set.portal_cdn_rule_set.id
 
@@ -185,11 +137,6 @@ resource "azurerm_cdn_frontdoor_rule" "portal_cdn_rule_rootfiles" {
   # IF
   conditions {
     request_uri_condition {
-      operator         = "Contains"
-      negate_condition = true
-      match_values     = ["?"]
-    }
-    request_uri_condition {
       operator     = "EndsWith"
       match_values = ["/"]
     }
@@ -197,14 +144,53 @@ resource "azurerm_cdn_frontdoor_rule" "portal_cdn_rule_rootfiles" {
   }
   # THEN
   actions {
-    url_redirect_action {
-      # 302 Found
-      redirect_type     = "Found"
-      redirect_protocol = "Https"
-      # Leave blank to preserve the incoming host.
-      destination_hostname = ""
-      destination_path     = ""
-      query_string         = "refresh=true"
+    route_configuration_override_action {
+      cache_behavior = "Disabled"
     }
   }
 }
+
+resource "azurerm_cdn_frontdoor_route" "portal_cdn_route" {
+  depends_on = [
+    azurerm_cdn_frontdoor_origin_group.portal_cdn_origin_group,
+    azurerm_cdn_frontdoor_origin.portal_cdn_origin,
+    azurerm_cdn_frontdoor_endpoint.portal_cdn_endpoint,
+    azurerm_cdn_frontdoor_rule_set.portal_cdn_rule_set
+  ]
+
+  name    = format("%s-profile-fdr-01", local.project_itn)
+  enabled = true
+
+  cdn_frontdoor_origin_group_id = azurerm_cdn_frontdoor_origin_group.portal_cdn_origin_group.id
+  cdn_frontdoor_origin_ids      = [azurerm_cdn_frontdoor_origin.portal_cdn_origin.id]
+  cdn_frontdoor_endpoint_id     = azurerm_cdn_frontdoor_endpoint.portal_cdn_endpoint.id
+  cdn_frontdoor_rule_set_ids    = [azurerm_cdn_frontdoor_rule_set.portal_cdn_rule_set.id]
+
+  supported_protocols    = ["Http", "Https"]
+  https_redirect_enabled = true
+  patterns_to_match      = ["/*"]
+
+  cache {
+    query_string_caching_behavior = "IgnoreQueryString"
+    compression_enabled           = false
+  }
+}
+
+resource "azurerm_cdn_frontdoor_custom_domain" "portal_custom_domain" {
+  name                     = format("%s-profile-fdd-01", local.project_itn)
+  cdn_frontdoor_profile_id = azurerm_cdn_frontdoor_profile.portal_profile.id
+
+  dns_zone_id = data.azurerm_dns_zone.ioapp_it.id
+  host_name   = "account.ioapp.it"
+
+  tls {
+    certificate_type    = "ManagedCertificate"
+    minimum_tls_version = "TLS12"
+  }
+}
+
+resource "azurerm_cdn_frontdoor_custom_domain_association" "portal_cdn_domain_association" {
+  cdn_frontdoor_custom_domain_id = azurerm_cdn_frontdoor_custom_domain.portal_custom_domain.id
+  cdn_frontdoor_route_ids        = [azurerm_cdn_frontdoor_route.portal_cdn_route.id]
+}
+#####################
