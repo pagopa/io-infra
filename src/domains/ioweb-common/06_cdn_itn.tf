@@ -6,6 +6,8 @@ data "azurerm_dns_zone" "ioapp_it" {
 resource "azurerm_resource_group" "io_web_profile_itn_fe_rg" {
   name     = format("%s-fe-rg-01", local.project_itn)
   location = local.itn_location
+
+  tags = var.tags
 }
 
 module "io_web_profile_itn_fe_st" {
@@ -46,6 +48,7 @@ module "io_web_profile_itn_fe_st" {
   }
 
   static_website = {
+    enabled            = true
     index_document     = "index.html"
     error_404_document = "it/404/index.html"
   }
@@ -84,6 +87,7 @@ resource "azurerm_cdn_frontdoor_origin_group" "portal_cdn_origin_group" {
 
 resource "azurerm_cdn_frontdoor_origin" "portal_cdn_origin" {
   name                           = format("%s-profile-fdo-01", local.project_itn)
+  enabled                        = true
   cdn_frontdoor_origin_group_id  = azurerm_cdn_frontdoor_origin_group.portal_cdn_origin_group.id
   host_name                      = module.io_web_profile_itn_fe_st.primary_web_host
   certificate_name_check_enabled = true
