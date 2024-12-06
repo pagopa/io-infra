@@ -3,6 +3,11 @@ data "azurerm_dns_zone" "ioapp_it" {
   resource_group_name = data.azurerm_resource_group.core_ext.name
 }
 
+data "azurerm_dns_zone" "account_ioapp_it" {
+  name                = "account.ioapp.it"
+  resource_group_name = data.azurerm_resource_group.core_ext.name
+}
+
 resource "azurerm_resource_group" "io_web_profile_itn_fe_rg" {
   name     = format("%s-fe-rg-01", local.project_itn)
   location = local.itn_location
@@ -184,7 +189,7 @@ resource "azurerm_cdn_frontdoor_custom_domain" "portal_custom_domain" {
   name                     = format("%s-profile-fdd-01", local.project_itn)
   cdn_frontdoor_profile_id = azurerm_cdn_frontdoor_profile.portal_profile.id
 
-  dns_zone_id = data.azurerm_dns_zone.ioapp_it.id
+  dns_zone_id = data.azurerm_dns_zone.account_ioapp_it.id
   host_name   = "account.ioapp.it"
 
   tls {
