@@ -132,7 +132,7 @@ resource "azurerm_cdn_frontdoor_rule" "portal_cdn_rule_rootfiles" {
 
   # NOTE: A Front Door Rule with a lesser order value will be applied before a rule with a greater order value.
   # If the Front Door Rule has an order value of 0 they do not require any conditions and the actions will always be applied.
-  order = 2
+  order = 1
 
   # IF
   conditions {
