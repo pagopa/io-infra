@@ -198,3 +198,29 @@ resource "azurerm_cdn_frontdoor_custom_domain_association" "portal_cdn_domain_as
   cdn_frontdoor_route_ids        = [azurerm_cdn_frontdoor_route.portal_cdn_route.id]
 }
 #####################
+
+#####################
+# DNS ZONE UPDATE
+#####################
+resource "azurerm_dns_cname_record" "account" {
+  name                = "account"
+  zone_name           = data.azurerm_dns_zone.ioapp_it.name
+  resource_group_name = data.azurerm_resource_group.core_ext.name
+  ttl                 = "3600"
+  target_resource_id  = azurerm_cdn_frontdoor_endpoint.portal_cdn_endpoint.id
+}
+
+resource "azurerm_dns_txt_record" "dns_txt" {
+  name                = "_dnsauth.account"
+  zone_name           = data.azurerm_dns_zone.ioapp_it.name
+  resource_group_name = data.azurerm_resource_group.core_ext.name
+  ttl                 = "3600"
+  record {
+    value = azurerm_cdn_frontdoor_custom_domain.portal_custom_domain.validation_token
+  }
+  tags = merge(var.tags, {
+    origin = "account.ioapp.it"
+    cdn    = azurerm_cdn_frontdoor_profile.portal_profile.name
+  })
+}
+####################
