@@ -3,11 +3,6 @@ data "azurerm_dns_zone" "ioapp_it" {
   resource_group_name = data.azurerm_resource_group.core_ext.name
 }
 
-data "azurerm_dns_zone" "account_ioapp_it" {
-  name                = "account.ioapp.it"
-  resource_group_name = data.azurerm_resource_group.core_ext.name
-}
-
 resource "azurerm_resource_group" "io_web_profile_itn_fe_rg" {
   name     = format("%s-fe-rg-01", local.project_itn)
   location = local.itn_location
@@ -36,9 +31,7 @@ module "io_web_profile_itn_fe_st" {
   subnet_pep_id                        = data.azurerm_subnet.private_endpoints_subnet_itn.id
   private_dns_zone_resource_group_name = data.azurerm_resource_group.common_rg_weu.name
 
-  # storage should be accessible by CDN via private endpoint
-  # see https://learn.microsoft.com/en-us/azure/frontdoor/standard-premium/how-to-enable-private-link-storage-account
-  force_public_network_access_enabled = false
+  force_public_network_access_enabled = true
   subservices_enabled = {
     blob = true
   }
@@ -96,6 +89,7 @@ resource "azurerm_cdn_frontdoor_origin" "portal_cdn_origin" {
   cdn_frontdoor_origin_group_id  = azurerm_cdn_frontdoor_origin_group.portal_cdn_origin_group.id
   host_name                      = module.io_web_profile_itn_fe_st.primary_web_host
   certificate_name_check_enabled = true
+  origin_host_header             = module.io_web_profile_itn_fe_st.primary_web_host
 }
 
 resource "azurerm_cdn_frontdoor_rule_set" "portal_cdn_rule_set" {
@@ -170,10 +164,11 @@ resource "azurerm_cdn_frontdoor_route" "portal_cdn_route" {
   name    = format("%s-profile-fdr-01", local.project_itn)
   enabled = true
 
-  cdn_frontdoor_origin_group_id = azurerm_cdn_frontdoor_origin_group.portal_cdn_origin_group.id
-  cdn_frontdoor_origin_ids      = [azurerm_cdn_frontdoor_origin.portal_cdn_origin.id]
-  cdn_frontdoor_endpoint_id     = azurerm_cdn_frontdoor_endpoint.portal_cdn_endpoint.id
-  cdn_frontdoor_rule_set_ids    = [azurerm_cdn_frontdoor_rule_set.portal_cdn_rule_set.id]
+  cdn_frontdoor_origin_group_id   = azurerm_cdn_frontdoor_origin_group.portal_cdn_origin_group.id
+  cdn_frontdoor_origin_ids        = [azurerm_cdn_frontdoor_origin.portal_cdn_origin.id]
+  cdn_frontdoor_endpoint_id       = azurerm_cdn_frontdoor_endpoint.portal_cdn_endpoint.id
+  cdn_frontdoor_rule_set_ids      = [azurerm_cdn_frontdoor_rule_set.portal_cdn_rule_set.id]
+  cdn_frontdoor_custom_domain_ids = [azurerm_cdn_frontdoor_custom_domain.portal_custom_domain.id]
 
   supported_protocols    = ["Http", "Https"]
   https_redirect_enabled = true
@@ -186,10 +181,10 @@ resource "azurerm_cdn_frontdoor_route" "portal_cdn_route" {
 }
 
 resource "azurerm_cdn_frontdoor_custom_domain" "portal_custom_domain" {
-  name                     = format("%s-profile-fdd-01", local.project_itn)
+  name                     = "account-ioapp-it"
   cdn_frontdoor_profile_id = azurerm_cdn_frontdoor_profile.portal_profile.id
 
-  dns_zone_id = data.azurerm_dns_zone.account_ioapp_it.id
+  dns_zone_id = data.azurerm_dns_zone.ioapp_it.id
   host_name   = "account.ioapp.it"
 
   tls {
