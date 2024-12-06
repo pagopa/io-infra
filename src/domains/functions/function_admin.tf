@@ -97,9 +97,9 @@ locals {
 
       AssetsStorageConnection = data.azurerm_storage_account.assets_cdn.primary_connection_string
 
-      AZURE_APIM                = "io-p-apim-v2-api" # "io-p-itn-apim-01" Change for new APIM in ITN
+      AZURE_APIM                = "io-p-itn-apim-01"
       AZURE_APIM_HOST           = local.apim_hostname_api_internal
-      AZURE_APIM_RESOURCE_GROUP = "io-p-rg-internal" # "io-p-itn-common-rg-01"
+      AZURE_APIM_RESOURCE_GROUP = "io-p-itn-common-rg-01"
 
       MESSAGE_CONTAINER_NAME = local.message_content_container_name
 
