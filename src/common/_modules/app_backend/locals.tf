@@ -17,6 +17,7 @@ locals {
     io_receipt       = "01HD63674XJ1R6XCNHH24PCRR2"
     third_party_mock = "01GQQDPM127KFGG6T3660D5TXD"
     pn_remote_config = "01HMVMHCZZ8D0VTFWMRHBM5D6F"
+    io_wallet_trial  = "01J2GN4TA8FB6DPTAX3T3YD6M1"
   }
 
   endpoints = {

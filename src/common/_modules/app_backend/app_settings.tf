@@ -46,6 +46,10 @@ locals {
     APP_MESSAGES_API_KEY        = data.azurerm_key_vault_secret.app_backend_APP_MESSAGES_API_KEY[(var.index - 1) % local.app_messages_count].value
     LOLLIPOP_API_URL            = "https://${var.backend_hostnames.lollipop}"
     LOLLIPOP_API_KEY            = data.azurerm_key_vault_secret.app_backend_LOLLIPOP_ITN_API_KEY.value
+    TRIAL_SYSTEM_API_URL        = "https://ts-p-itn-api-func-01.azurewebsites.net" # not working anymore
+    TRIAL_SYSTEM_APIM_URL       = "https://ts-p-itn-apim-01.azure-api.net"         # not working anymore
+    TRIAL_SYSTEM_API_KEY        = data.azurerm_key_vault_secret.app_backend_TRIAL_SYSTEM_API_KEY.value
+    TRIAL_SYSTEM_APIM_KEY       = data.azurerm_key_vault_secret.app_backend_TRIAL_SYSTEM_APIM_KEY.value
     IO_WALLET_API_URL           = "https://${var.backend_hostnames.iowallet}"
     IO_WALLET_API_KEY           = data.azurerm_key_vault_secret.app_backend_IO_WALLET_API_KEY.value
 
@@ -57,6 +61,8 @@ locals {
     IO_SIGN_API_BASE_PATH             = "/api/v1/sign"
     IO_FIMS_API_BASE_PATH             = "/api/v1/fims"
     LOLLIPOP_API_BASE_PATH            = "/api/v1"
+    TRIAL_SYSTEM_API_BASE_PATH        = "/api/v1"
+    TRIAL_SYSTEM_APIM_BASE_PATH       = "/manage/api/v1"
     IO_WALLET_API_BASE_PATH           = "/api/v1/wallet"
 
     // REDIS
@@ -94,12 +100,13 @@ locals {
     LOCKED_PROFILES_TABLE_NAME                = "lockedprofiles"
 
     // Feature flags
-    FF_BONUS_ENABLED       = 1
-    FF_CGN_ENABLED         = 1
-    FF_EUCOVIDCERT_ENABLED = 1
-    FF_IO_SIGN_ENABLED     = 1
-    FF_IO_FIMS_ENABLED     = 1
-    FF_IO_WALLET_ENABLED   = 1
+    FF_BONUS_ENABLED           = 1
+    FF_CGN_ENABLED             = 1
+    FF_EUCOVIDCERT_ENABLED     = 1
+    FF_IO_SIGN_ENABLED         = 1
+    FF_IO_FIMS_ENABLED         = 1
+    FF_IO_WALLET_ENABLED       = 1
+    FF_IO_WALLET_TRIAL_ENABLED = 0
 
     FF_ROUTING_PUSH_NOTIF                      = "ALL" # possible values are: BETA, CANARY, ALL, NONE
     FF_ROUTING_PUSH_NOTIF_BETA_TESTER_SHA_LIST = data.azurerm_key_vault_secret.app_backend_APP_MESSAGES_BETA_FISCAL_CODES.value
@@ -107,6 +114,7 @@ locals {
     FF_ROUTING_PUSH_NOTIF_CANARY_SHA_USERS_REGEX = "^([(0-9)|(a-f)|(A-F)]{63}[(0-4)]{1})$"
 
     FF_PN_ACTIVATION_ENABLED = "1"
+    FF_TRIAL_SYSTEM_ENABLED  = "1"
 
     // SUPPORT_TOKEN
     JWT_SUPPORT_TOKEN_ISSUER     = "app-backend.io.italia.it"
@@ -139,6 +147,9 @@ locals {
 
     // Service ID IO-SIGN
     IO_SIGN_SERVICE_ID = local.service_ids.io_sign
+
+    // IO Wallet TRIAL ID
+    IO_WALLET_TRIAL_ID = local.service_ids.io_wallet_trial
 
     // PN Service Activation
     PN_ACTIVATION_BASE_PATH = "/api/v1/pn"
