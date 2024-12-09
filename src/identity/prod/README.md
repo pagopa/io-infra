@@ -13,7 +13,6 @@
 | Name | Version |
 |------|---------|
 | <a name="provider_azurerm.prod-cgn"></a> [azurerm.prod-cgn](#provider\_azurerm.prod-cgn) | 3.116.0 |
-| <a name="provider_azurerm.prod-trial"></a> [azurerm.prod-trial](#provider\_azurerm.prod-trial) | 3.116.0 |
 
 ## Modules
 
@@ -27,12 +26,9 @@
 |------|------|
 | [azurerm_role_assignment.cd_cgn](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/role_assignment) | resource |
 | [azurerm_role_assignment.cd_cgn_postgresql](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/role_assignment) | resource |
-| [azurerm_role_assignment.cd_trial_system](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/role_assignment) | resource |
 | [azurerm_role_assignment.ci_cgn](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/role_assignment) | resource |
-| [azurerm_role_assignment.ci_trial_system](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/role_assignment) | resource |
 | [azurerm_postgresql_server.cgn_psql](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/postgresql_server) | data source |
 | [azurerm_subscription.cgn](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/subscription) | data source |
-| [azurerm_subscription.trial_system](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/subscription) | data source |
 
 ## Inputs
 
