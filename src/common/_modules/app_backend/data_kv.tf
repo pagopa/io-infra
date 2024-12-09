@@ -101,11 +101,6 @@ data "azurerm_key_vault_secret" "app_backend_LOLLIPOP_ITN_API_KEY" {
   key_vault_id = var.key_vault_common.id
 }
 
-data "azurerm_key_vault_secret" "app_backend_TRIAL_SYSTEM_API_KEY" {
-  name         = "appbackend-TRIAL-SYSTEM-API-KEY"
-  key_vault_id = var.key_vault_common.id
-}
-
 data "azurerm_key_vault_secret" "app_backend_UNIQUE_EMAIL_ENFORCEMENT_USER" {
   name         = "appbackend-UNIQUE-EMAIL-ENFORCEMENT-USER"
   key_vault_id = var.key_vault_common.id
@@ -138,10 +133,5 @@ data "azurerm_key_vault_secret" "app_backend_IO_WALLET_API_KEY" {
 
 data "azurerm_key_vault_secret" "app_backend_PRE_SHARED_KEY" {
   name         = "appbackend-PRE-SHARED-KEY"
-  key_vault_id = var.key_vault_common.id
-}
-
-data "azurerm_key_vault_secret" "app_backend_TRIAL_SYSTEM_APIM_KEY" {
-  name         = "appbackend-TRIAL-SYSTEM-APIM-KEY"
   key_vault_id = var.key_vault_common.id
 }
