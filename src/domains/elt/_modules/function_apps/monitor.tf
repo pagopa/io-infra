@@ -25,7 +25,11 @@ resource "azurerm_monitor_scheduled_query_rules_alert_v2" "service_preferences_f
   location            = var.location
 
   scopes                  = [data.azurerm_storage_account.function_elt_internal_storage.id]
-  description             = "Permanent failures processing Service Preferences export to PDND. REQUIRED MANUAL ACTION"
+  description             = <<-EOT
+    Permanent failures processing Service Preferences export to PDND. REQUIRED MANUAL ACTION.
+    For more info see runbook
+    https://pagopa.atlassian.net/wiki/spaces/IAEI/pages/1417412755/Fallimenti+ingestion+data-lake
+  EOT
   severity                = 1
   auto_mitigation_enabled = false
 
@@ -59,7 +63,11 @@ resource "azurerm_monitor_scheduled_query_rules_alert_v2" "profiles_failure_aler
   location            = var.location
 
   scopes                  = [data.azurerm_storage_account.function_elt_internal_storage.id]
-  description             = "Permanent failures processing Profiles export to PDND. REQUIRED MANUAL ACTION"
+  description             = <<-EOT
+    Permanent failures processing Profiles export to PDND. REQUIRED MANUAL ACTION.
+    For more info see runbook
+    https://pagopa.atlassian.net/wiki/spaces/IAEI/pages/1417412755/Fallimenti+ingestion+data-lake
+  EOT
   severity                = 1
   auto_mitigation_enabled = false
 
@@ -93,7 +101,11 @@ resource "azurerm_monitor_scheduled_query_rules_alert_v2" "profile_deletion_fail
   location            = var.location
 
   scopes                  = [data.azurerm_storage_account.function_elt_internal_storage.id]
-  description             = "Permanent failures processing Profiles export to PDND. REQUIRED MANUAL ACTION"
+  description             = <<-EOT
+    Permanent failures processing Profiles deletions export to PDND. REQUIRED MANUAL ACTION.
+    For more info see runbook
+    https://pagopa.atlassian.net/wiki/spaces/IAEI/pages/1417412755/Fallimenti+ingestion+data-lake
+  EOT
   severity                = 1
   auto_mitigation_enabled = false
 

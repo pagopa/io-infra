@@ -20,19 +20,12 @@
 
 ## Modules
 
-| Name | Source | Version |
-|------|--------|---------|
-| <a name="module_apim_itn_bff_api"></a> [apim\_itn\_bff\_api](#module\_apim\_itn\_bff\_api) | git::https://github.com/pagopa/terraform-azurerm-v3//api_management_api | v4.1.5 |
-| <a name="module_apim_v2_bff_api"></a> [apim\_v2\_bff\_api](#module\_apim\_v2\_bff\_api) | git::https://github.com/pagopa/terraform-azurerm-v3//api_management_api | v4.1.5 |
+No modules.
 
 ## Resources
 
 | Name | Type |
 |------|------|
-| [azurerm_api_management_api_operation_policy.unlock_user_session_policy](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_api_operation_policy) | resource |
-| [azurerm_api_management_api_operation_policy.unlock_user_session_policy_itn](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_api_operation_policy) | resource |
-| [azurerm_api_management_named_value.io_fn3_services_key_itn](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_named_value) | resource |
-| [azurerm_api_management_named_value.io_fn3_services_key_v2](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_named_value) | resource |
 | [azurerm_key_vault_secret.exchange_jwt_private_key](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_secret) | resource |
 | [azurerm_key_vault_secret.exchange_jwt_pub_key](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_secret) | resource |
 | [azurerm_key_vault_secret.magic_link_jwe_private_key](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_secret) | resource |
