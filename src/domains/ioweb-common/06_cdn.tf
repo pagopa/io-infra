@@ -1,13 +1,3 @@
-# core domain external rg
-data "azurerm_resource_group" "core_ext" {
-  name = format("%s-rg-external", local.product)
-}
-
-data "azurerm_dns_zone" "ioapp_it" {
-  name                = "ioapp.it"
-  resource_group_name = data.azurerm_resource_group.core_ext.name
-}
-
 module "landing_cdn" {
   source = "github.com/pagopa/terraform-azurerm-v3.git//cdn?ref=v8.56.0"
 

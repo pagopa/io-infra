@@ -38,13 +38,7 @@ data "azurerm_subnet" "apim_itn_snet" {
   resource_group_name  = local.vnet_common_resource_group_name_itn
 }
 
-data "azurerm_subnet" "ioweb_profile_snet" {
-  name                 = format("%s-%s-ioweb-profile-snet", local.product, var.location_short)
-  virtual_network_name = local.vnet_common_name
-  resource_group_name  = local.vnet_common_resource_group_name
-}
-
-data "azurerm_subnet" "ioweb_profile_snet_itn" {
+data "azurerm_subnet" "ioweb_profile_itn_snet" {
   name                 = format("%s-auth-webprof-func-snet-01", local.common_project_itn)
   virtual_network_name = local.vnet_common_name_itn
   resource_group_name  = local.vnet_common_resource_group_name_itn
