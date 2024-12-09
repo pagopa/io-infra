@@ -54,3 +54,8 @@ variable "apim_v2_private_ip" {
   type        = string
   description = "Private IP of the API Management v2"
 }
+
+variable "apim_itn_private_ip" {
+  type        = string
+  description = "Private IP of the API Management ITN"
+}
