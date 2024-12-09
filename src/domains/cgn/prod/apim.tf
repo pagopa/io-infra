@@ -1,8 +1,8 @@
 module "apim" {
   source = "../_modules/apim"
 
-  project                        = local.project
-  env_short                      = local.env_short
+  project   = local.project
+  env_short = local.env_short
 
   apim = {
     name                = local.apim_v2_name
@@ -15,8 +15,8 @@ module "apim" {
 module "apim_itn" {
   source = "../_modules/apim"
 
-  project                        = local.project
-  env_short                      = local.env_short
+  project   = local.project
+  env_short = local.env_short
 
   apim = {
     name                = local.apim_itn_name
