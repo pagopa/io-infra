@@ -9,12 +9,12 @@ data "azurerm_key_vault_secret" "ioweb_profile_function_api_key" {
 }
 
 data "azurerm_key_vault_secret" "common_MAILUP_USERNAME" {
-  name         = "common-MAILUP2-USERNAME"
+  name         = "common-MAILUP-AI-USERNAME"
   key_vault_id = data.azurerm_key_vault.kv_common.id
 }
 
 data "azurerm_key_vault_secret" "common_MAILUP_SECRET" {
-  name         = "common-MAILUP2-SECRET"
+  name         = "common-MAILUP-AI-SECRET"
   key_vault_id = data.azurerm_key_vault.kv_common.id
 }
 
@@ -121,7 +121,7 @@ locals {
 
       # Login Email variables
       MAGIC_LINK_SERVICE_API_KEY    = data.azurerm_key_vault_secret.ioweb_profile_function_api_key.value
-      MAGIC_LINK_SERVICE_PUBLIC_URL = format("https://%s-%s-%s-ioweb-profile-fn.azurewebsites.net", var.prefix, var.env_short, var.location_short)
+      MAGIC_LINK_SERVICE_PUBLIC_URL = format("https://%s-auth-webprof-func-01.azurewebsites.net", local.common_project_itn)
       IOWEB_ACCESS_REF              = "https://ioapp.it"
       #
 

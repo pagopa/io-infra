@@ -5,9 +5,9 @@ output "scaling_gate" {
   HOW: These values ​​will be used for scaling the different resources (function app, app services, etc.)
   EOF
   value = {
-    name     = "wallet_gate2"
+    name     = "wallet_ga"
     timezone = "W. Europe Standard Time"
-    start    = "2024-11-06T08:00:00Z"
-    end      = "2024-11-06T22:00:00Z"
+    start    = "2024-12-04T08:00:00Z"
+    end      = "2024-12-04T21:30:00Z"
   }
 }

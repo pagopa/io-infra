@@ -104,9 +104,9 @@ locals {
     FF_CGN_ENABLED             = 1
     FF_EUCOVIDCERT_ENABLED     = 1
     FF_IO_SIGN_ENABLED         = 1
-    FF_IO_FIMS_ENABLED         = 0
+    FF_IO_FIMS_ENABLED         = 1
     FF_IO_WALLET_ENABLED       = 1
-    FF_IO_WALLET_TRIAL_ENABLED = 1
+    FF_IO_WALLET_TRIAL_ENABLED = 0
 
     FF_ROUTING_PUSH_NOTIF                      = "ALL" # possible values are: BETA, CANARY, ALL, NONE
     FF_ROUTING_PUSH_NOTIF_BETA_TESTER_SHA_LIST = data.azurerm_key_vault_secret.app_backend_APP_MESSAGES_BETA_FISCAL_CODES.value

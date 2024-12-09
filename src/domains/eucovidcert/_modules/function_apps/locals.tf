@@ -52,3 +52,11 @@ locals {
     }
   }
 }
+
+# Region ITN
+locals {
+  itn_location_short = "itn"
+
+  vnet_common_name_itn                = "${var.project}-${local.itn_location_short}-common-vnet-01"
+  vnet_common_resource_group_name_itn = "${var.project}-${local.itn_location_short}-common-rg-01"
+}

@@ -2,12 +2,12 @@
 # SECRETS
 ########################
 data "azurerm_key_vault_secret" "fn_services_mailup_username" {
-  name         = "common-MAILUP-USERNAME"
+  name         = "common-MAILUP-TMP-USERNAME"
   key_vault_id = data.azurerm_key_vault.common.id
 }
 
 data "azurerm_key_vault_secret" "fn_services_mailup_secret" {
-  name         = "common-MAILUP-SECRET"
+  name         = "common-MAILUP-TMP-SECRET"
   key_vault_id = data.azurerm_key_vault.common.id
 }
 
@@ -236,6 +236,7 @@ module "function_services" {
     data.azurerm_subnet.azdoa_snet.id,
     data.azurerm_subnet.apim_v2_snet.id,
     data.azurerm_subnet.function_eucovidcert_snet.id,
+    data.azurerm_subnet.apim_itn_snet.id,
   ]
 
   # Action groups for alerts
@@ -300,6 +301,7 @@ module "function_services_staging_slot" {
     data.azurerm_subnet.azdoa_snet.id,
     data.azurerm_subnet.apim_v2_snet.id,
     data.azurerm_subnet.function_eucovidcert_snet.id,
+    data.azurerm_subnet.apim_itn_snet.id,
   ]
 
   tags = var.tags

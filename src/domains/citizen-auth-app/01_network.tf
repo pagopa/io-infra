@@ -80,12 +80,6 @@ data "azurerm_subnet" "app_backend_l3_snet" {
   resource_group_name  = local.vnet_common_resource_group_name
 }
 
-data "azurerm_subnet" "ioweb_profile_snet" {
-  name                 = format("%s-ioweb-profile-snet", local.common_project)
-  virtual_network_name = local.vnet_common_name
-  resource_group_name  = local.vnet_common_resource_group_name
-}
-
 data "azurerm_subnet" "fims_op_app_snet_01" {
   name                 = "io-p-weu-fims-op-app-snet-01"
   virtual_network_name = local.vnet_common_name
@@ -96,6 +90,12 @@ data "azurerm_subnet" "apim_v2_snet" {
   name                 = "apimv2api"
   virtual_network_name = local.vnet_common_name
   resource_group_name  = local.vnet_common_resource_group_name
+}
+
+data "azurerm_subnet" "apim_itn_snet" {
+  name                 = "io-p-itn-apim-snet-01"
+  virtual_network_name = local.vnet_common_name_itn
+  resource_group_name  = local.vnet_common_resource_group_name_itn
 }
 
 data "azurerm_subnet" "azdoa_snet" {
