@@ -26,6 +26,12 @@ provider "azurerm" {
   features {}
 }
 
+provider "azurerm" {
+  alias           = "prod-selc"
+  subscription_id = "813119d7-0943-46ed-8ebe-cebe24f9106c"
+
+  features {}
+}
 
 module "federated_identities" {
   source = "github.com/pagopa/dx//infra/modules/azure_federated_identity_with_github?ref=main"
@@ -96,6 +102,13 @@ resource "azurerm_role_assignment" "cd_cgn" {
 resource "azurerm_role_assignment" "cd_cgn_postgresql" {
   provider             = azurerm.prod-cgn
   scope                = data.azurerm_postgresql_server.cgn_psql.id
+  principal_id         = module.federated_identities.federated_cd_identity.id
+  role_definition_name = "Contributor"
+}
+
+resource "azurerm_role_assignment" "cd_selc_evhns" {
+  provider             = azurerm.prod-selc
+  scope                = "/subscriptions/813119d7-0943-46ed-8ebe-cebe24f9106c/resourceGroups/selc-p-event-rg/providers/Microsoft.EventHub/namespaces/selc-p-eventhub-ns"
   principal_id         = module.federated_identities.federated_cd_identity.id
   role_definition_name = "Contributor"
 }
