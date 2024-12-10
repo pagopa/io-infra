@@ -121,7 +121,7 @@ locals {
 
       # Login Email variables
       MAGIC_LINK_SERVICE_API_KEY    = data.azurerm_key_vault_secret.ioweb_profile_function_api_key.value
-      MAGIC_LINK_SERVICE_PUBLIC_URL = format("https://%s-%s-%s-ioweb-profile-fn.azurewebsites.net", var.prefix, var.env_short, var.location_short)
+      MAGIC_LINK_SERVICE_PUBLIC_URL = format("https://%s-auth-webprof-func-01.azurewebsites.net", local.common_project_itn)
       IOWEB_ACCESS_REF              = "https://ioapp.it"
       #
 
@@ -410,110 +410,6 @@ resource "azurerm_monitor_autoscale_setting" "function_profile" {
           value     = "1"
           cooldown  = "PT2M"
         }
-      }
-    }
-  }
-
-  profile {
-    name = module.common_values.scaling_gate.name
-
-    fixed_date {
-      timezone = module.common_values.scaling_gate.timezone
-      start    = module.common_values.scaling_gate.start
-      end      = module.common_values.scaling_gate.end
-    }
-
-    capacity {
-      default = 20
-      minimum = 15
-      maximum = 30
-    }
-
-    rule {
-      metric_trigger {
-        metric_name              = "Requests"
-        metric_resource_id       = module.function_profile[count.index].id
-        metric_namespace         = "microsoft.web/sites"
-        time_grain               = "PT1M"
-        statistic                = "Max"
-        time_window              = "PT2M"
-        time_aggregation         = "Maximum"
-        operator                 = "GreaterThan"
-        threshold                = 2000
-        divide_by_instance_count = true
-      }
-
-      scale_action {
-        direction = "Increase"
-        type      = "ChangeCount"
-        value     = "2"
-        cooldown  = "PT1M"
-      }
-    }
-
-    rule {
-      metric_trigger {
-        metric_name              = "CpuPercentage"
-        metric_resource_id       = module.function_profile[count.index].app_service_plan_id
-        metric_namespace         = "microsoft.web/serverfarms"
-        time_grain               = "PT1M"
-        statistic                = "Max"
-        time_window              = "PT1M"
-        time_aggregation         = "Maximum"
-        operator                 = "GreaterThan"
-        threshold                = 40
-        divide_by_instance_count = false
-      }
-
-      scale_action {
-        direction = "Increase"
-        type      = "ChangeCount"
-        value     = "4"
-        cooldown  = "PT1M"
-      }
-    }
-
-    rule {
-      metric_trigger {
-        metric_name              = "Requests"
-        metric_resource_id       = module.function_profile[count.index].id
-        metric_namespace         = "microsoft.web/sites"
-        time_grain               = "PT1M"
-        statistic                = "Average"
-        time_window              = "PT5M"
-        time_aggregation         = "Average"
-        operator                 = "LessThan"
-        threshold                = 200
-        divide_by_instance_count = true
-      }
-
-      scale_action {
-        direction = "Decrease"
-        type      = "ChangeCount"
-        value     = "1"
-        cooldown  = "PT1M"
-      }
-    }
-
-    rule {
-      metric_trigger {
-        metric_name              = "CpuPercentage"
-        metric_resource_id       = module.function_profile[count.index].app_service_plan_id
-        metric_namespace         = "microsoft.web/serverfarms"
-        time_grain               = "PT1M"
-        statistic                = "Average"
-        time_window              = "PT5M"
-        time_aggregation         = "Average"
-        operator                 = "LessThan"
-        threshold                = 15
-        divide_by_instance_count = false
-      }
-
-      scale_action {
-        direction = "Decrease"
-        type      = "ChangeCount"
-        value     = "1"
-        cooldown  = "PT2M"
       }
     }
   }

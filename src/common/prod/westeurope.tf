@@ -329,11 +329,13 @@ module "application_gateway_weu" {
     oauth_io_pagopa_it                   = "oauth-io-pagopa-it"
     vehicles_ipatente_io_pagopa_it       = "vehicles-ipatente-io-pagopa-it"
     licences_ipatente_io_pagopa_it       = "licences-ipatente-io-pagopa-it"
+    payments_ipatente_io_pagopa_it       = "payments-ipatente-io-pagopa-it"
+    practices_ipatente_io_pagopa_it      = "practices-ipatente-io-pagopa-it"
   }
 
   cidr_subnet           = ["10.0.13.0/24"]
-  min_capacity          = 20 # 4 capacity=baseline, 10 capacity=high volume event, 15 capacity=very high volume event
-  max_capacity          = 100
+  min_capacity          = 10 # 4 capacity=baseline, 10 capacity=high volume event, 15 capacity=very high volume event
+  max_capacity          = 80
   alerts_enabled        = true
   deny_paths            = ["\\/admin\\/(.*)"]
   error_action_group_id = module.monitoring_weu.action_groups.error

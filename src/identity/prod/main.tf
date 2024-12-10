@@ -20,13 +20,6 @@ provider "azurerm" {
 }
 
 provider "azurerm" {
-  alias           = "prod-trial"
-  subscription_id = "a2124115-ba74-462f-832a-9192cbd03649"
-
-  features {}
-}
-
-provider "azurerm" {
   alias           = "prod-cgn"
   subscription_id = "74da48a3-b0e7-489d-8172-da79801086ed"
 
@@ -90,20 +83,6 @@ module "federated_identities" {
   }
 
   tags = local.tags
-}
-
-resource "azurerm_role_assignment" "ci_trial_system" {
-  provider             = azurerm.prod-trial
-  scope                = data.azurerm_subscription.trial_system.id
-  principal_id         = module.federated_identities.federated_ci_identity.id
-  role_definition_name = "Reader"
-}
-
-resource "azurerm_role_assignment" "cd_trial_system" {
-  provider             = azurerm.prod-trial
-  scope                = data.azurerm_subscription.trial_system.id
-  principal_id         = module.federated_identities.federated_cd_identity.id
-  role_definition_name = "Reader"
 }
 
 resource "azurerm_role_assignment" "ci_cgn" {

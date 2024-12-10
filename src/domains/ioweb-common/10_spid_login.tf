@@ -115,7 +115,7 @@ module "spid_login" {
   allowed_subnets = [
     data.azurerm_subnet.azdoa_snet.id,
     data.azurerm_subnet.apim_v2_snet.id,
-    data.azurerm_subnet.ioweb_profile_snet.id,
+    data.azurerm_subnet.ioweb_profile_itn_snet.id,
     data.azurerm_subnet.apim_itn_snet.id,
   ]
   allowed_ips = []
