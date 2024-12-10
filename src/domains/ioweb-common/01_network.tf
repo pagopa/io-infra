@@ -32,15 +32,21 @@ data "azurerm_subnet" "apim_v2_snet" {
   resource_group_name  = local.vnet_common_resource_group_name
 }
 
-data "azurerm_subnet" "ioweb_profile_snet" {
-  name                 = format("%s-%s-ioweb-profile-snet", local.product, var.location_short)
-  virtual_network_name = local.vnet_common_name
-  resource_group_name  = local.vnet_common_resource_group_name
+data "azurerm_subnet" "apim_itn_snet" {
+  name                 = "io-p-itn-apim-snet-01"
+  virtual_network_name = local.vnet_common_name_itn
+  resource_group_name  = local.vnet_common_resource_group_name_itn
+}
+
+data "azurerm_subnet" "ioweb_profile_itn_snet" {
+  name                 = format("%s-auth-webprof-func-snet-01", local.common_project_itn)
+  virtual_network_name = local.vnet_common_name_itn
+  resource_group_name  = local.vnet_common_resource_group_name_itn
 }
 
 ## redis spid login subnet
 module "redis_spid_login_snet" {
-  source               = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v4.1.15"
+  source               = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v8.56.0"
   name                 = format("%s-redis-spid-login-snet", local.project)
   address_prefixes     = var.subnets_cidrs.redis_spid_login
   resource_group_name  = local.vnet_common_resource_group_name
@@ -51,7 +57,7 @@ module "redis_spid_login_snet" {
 
 ## spid_login subnet
 module "spid_login_snet" {
-  source               = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v4.1.15"
+  source               = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v8.56.0"
   name                 = format("%s-spid-login-snet", local.project)
   address_prefixes     = var.subnets_cidrs.spid_login
   resource_group_name  = local.vnet_common_resource_group_name

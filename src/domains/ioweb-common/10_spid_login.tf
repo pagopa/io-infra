@@ -7,15 +7,12 @@ locals {
 ## App service spid login ##
 ############################
 module "spid_login" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//app_service?ref=v4.1.15"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//app_service?ref=v8.56.0"
 
   # App service plan
-  plan_type     = "internal"
-  plan_name     = format("%s-plan-spid-login", local.project)
-  plan_kind     = "Linux"
-  plan_reserved = true # Mandatory for Linux plan
-  plan_sku_tier = var.spid_login_plan_sku_tier
-  plan_sku_size = var.spid_login_plan_sku_size
+  plan_type = "internal"
+  plan_name = format("%s-plan-spid-login", local.project)
+  sku_name  = var.spid_login_plan_sku_size
 
   # App service
   name                = format("%s-spid-login", local.project)
@@ -24,9 +21,11 @@ module "spid_login" {
 
 
   always_on         = true
-  linux_fx_version  = "NODE|18-lts"
+  node_version      = "18-lts"
   app_command_line  = "npm run start"
   health_check_path = "/healthcheck"
+
+  ip_restriction_default_action = "Deny"
 
   app_settings = {
     WEBSITES_ENABLE_APP_SERVICE_STORAGE = false
@@ -34,7 +33,6 @@ module "spid_login" {
 
     WEBSITE_NODE_DEFAULT_VERSION = "18.13.0"
     WEBSITE_RUN_FROM_PACKAGE     = "1"
-    WEBSITE_VNET_ROUTE_ALL       = "1"
     WEBSITE_DNS_SERVER           = "168.63.129.16"
 
     // ENVIRONMENT
@@ -117,7 +115,8 @@ module "spid_login" {
   allowed_subnets = [
     data.azurerm_subnet.azdoa_snet.id,
     data.azurerm_subnet.apim_v2_snet.id,
-    data.azurerm_subnet.ioweb_profile_snet.id,
+    data.azurerm_subnet.ioweb_profile_itn_snet.id,
+    data.azurerm_subnet.apim_itn_snet.id,
   ]
   allowed_ips = []
 

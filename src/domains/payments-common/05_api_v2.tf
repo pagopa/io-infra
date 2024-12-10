@@ -1,8 +1,3 @@
-data "azurerm_api_management" "apim_v2_api" {
-  name                = local.apim_v2_name
-  resource_group_name = local.apim_resource_group_name
-}
-
 module "apim_v2_product_payments" {
   source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_product?ref=v4.1.8"
 

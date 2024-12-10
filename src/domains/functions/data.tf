@@ -33,6 +33,11 @@ data "azurerm_monitor_action_group" "io_com_action_group" {
   resource_group_name = "io-p-itn-msgs-rg-01"
 }
 
+data "azurerm_monitor_action_group" "io_auth_error_action_group" {
+  name                = "io-p-itn-auth-error-ag-01"
+  resource_group_name = "io-p-itn-auth-common-rg-01"
+}
+
 data "azurerm_private_dns_zone" "privatelink_queue_core" {
   name                = "privatelink.queue.core.windows.net"
   resource_group_name = local.rg_common_name
@@ -73,12 +78,12 @@ data "azurerm_key_vault_secret" "app_backend_PRE_SHARED_KEY" {
 # MAILUP
 
 data "azurerm_key_vault_secret" "common_MAILUP_USERNAME" {
-  name         = "common-MAILUP2-USERNAME"
+  name         = "common-MAILUP-AI-USERNAME"
   key_vault_id = data.azurerm_key_vault.common.id
 }
 
 data "azurerm_key_vault_secret" "common_MAILUP_SECRET" {
-  name         = "common-MAILUP2-SECRET"
+  name         = "common-MAILUP-AI-SECRET"
   key_vault_id = data.azurerm_key_vault.common.id
 }
 
@@ -115,6 +120,12 @@ data "azurerm_subnet" "apim_v2_snet" {
   name                 = "apimv2api"
   resource_group_name  = local.rg_common_name
   virtual_network_name = local.vnet_common_name
+}
+
+data "azurerm_subnet" "apim_itn_snet" {
+  name                 = "io-p-itn-apim-snet-01"
+  resource_group_name  = local.vnet_common_resource_group_name_itn
+  virtual_network_name = local.vnet_common_name_itn
 }
 
 data "azurerm_subnet" "azdoa_snet" {

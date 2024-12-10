@@ -1,13 +1,7 @@
-data "azurerm_api_management" "apim_v2_api" {
-  name                = local.apim_v2_name
-  resource_group_name = local.apim_resource_group_name
-}
-
-
 # API Product
 
 module "apim_v2_product_ioweb" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3//api_management_product?ref=v4.1.5"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3//api_management_product?ref=v8.56.0"
 
   product_id   = "io-web-api"
   display_name = "IO WEB API"
@@ -24,7 +18,7 @@ module "apim_v2_product_ioweb" {
 }
 
 module "apim_v2_spid_login_api" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3//api_management_api?ref=v4.1.5"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3//api_management_api?ref=v8.56.0"
 
   name                  = format("%s-ioweb-auth", local.product)
   api_management_name   = data.azurerm_api_management.apim_v2_api.name

@@ -9,6 +9,12 @@ data "azurerm_subnet" "snet_apim_v2" {
   resource_group_name  = local.resource_group_name_common
 }
 
+data "azurerm_subnet" "apim_itn_snet" {
+  name                 = "io-p-itn-apim-snet-01"
+  virtual_network_name = local.vnet_common_name_itn
+  resource_group_name  = local.vnet_common_resource_group_name_itn
+}
+
 data "azurerm_subnet" "snet_azdoa" {
   name                 = "azure-devops"
   virtual_network_name = local.vnet_name_common

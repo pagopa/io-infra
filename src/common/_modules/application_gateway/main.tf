@@ -138,6 +138,34 @@ module "app_gw" {
       request_timeout             = 10
       pick_host_name_from_backend = true
     }
+
+    vehicles-ipatente-io-app = {
+      protocol     = "Https"
+      host         = null
+      port         = 443
+      ip_addresses = null # with null value use fqdns
+      fqdns = [
+        data.azurerm_linux_web_app.ipatente_vehicles_app_itn.default_hostname,
+      ]
+      probe                       = "/api/info"
+      probe_name                  = "probe-vehicles-ipatente-io-app"
+      request_timeout             = 10
+      pick_host_name_from_backend = true
+    }
+
+    licences-ipatente-io-app = {
+      protocol     = "Https"
+      host         = null
+      port         = 443
+      ip_addresses = null # with null value use fqdns
+      fqdns = [
+        data.azurerm_linux_web_app.ipatente_licences_app_itn.default_hostname,
+      ]
+      probe                       = "/api/info"
+      probe_name                  = "probe-licences-ipatente-io-app"
+      request_timeout             = 10
+      pick_host_name_from_backend = true
+    }
   }
 
   ssl_profiles = [{
@@ -383,6 +411,32 @@ module "app_gw" {
         )
       }
     }
+
+    vehicles-ipatente-io-pagopa-it = {
+      protocol           = "Https"
+      host               = format("vehicles.%s", var.public_dns_zones.ipatente_io_pagopa_it.name)
+      port               = 443
+      ssl_profile_name   = format("%s-ssl-profile", var.project)
+      firewall_policy_id = null
+
+      certificate = {
+        name = var.certificates.vehicles_ipatente_io_pagopa_it
+        id   = data.azurerm_key_vault_certificate.app_gw_vehicles_ipatente_io.versionless_secret_id
+      }
+    }
+
+    licences-ipatente-io-pagopa-it = {
+      protocol           = "Https"
+      host               = format("licences.%s", var.public_dns_zones.ipatente_io_pagopa_it.name)
+      port               = 443
+      ssl_profile_name   = format("%s-ssl-profile", var.project)
+      firewall_policy_id = null
+
+      certificate = {
+        name = var.certificates.licences_ipatente_io_pagopa_it
+        id   = data.azurerm_key_vault_certificate.app_gw_licences_ipatente_io.versionless_secret_id
+      }
+    }
   }
 
   # maps listener to backend
@@ -457,6 +511,20 @@ module "app_gw" {
       backend               = "fims-op-app"
       rewrite_rule_set_name = "rewrite-rule-set-fims-op-app"
       priority              = 120
+    }
+
+    vehicles-ipatente-io-pagopa-it = {
+      listener              = "vehicles-ipatente-io-pagopa-it"
+      backend               = "vehicles-ipatente-io-app"
+      rewrite_rule_set_name = "rewrite-rule-set-vehicles-ipatente-io-app"
+      priority              = 130
+    }
+
+    licences-ipatente-io-pagopa-it = {
+      listener              = "licences-ipatente-io-pagopa-it"
+      backend               = "licences-ipatente-io-app"
+      rewrite_rule_set_name = "rewrite-rule-set-licences-ipatente-io-app"
+      priority              = 131
     }
   }
 
@@ -797,6 +865,14 @@ module "app_gw" {
         ]
         response_header_configurations = []
       }]
+    },
+    {
+      name          = "rewrite-rule-set-vehicles-ipatente-io-app"
+      rewrite_rules = [local.io_backend_ip_headers_rule]
+    },
+    {
+      name          = "rewrite-rule-set-licences-ipatente-io-app"
+      rewrite_rules = [local.io_backend_ip_headers_rule]
     }
   ]
 

@@ -9,7 +9,7 @@ module "cosmos_account_cgn" {
   offer_type = "Standard"
   kind       = "GlobalDocumentDB"
 
-  main_geo_location_zone_redundant = false
+  main_geo_location_zone_redundant = true
 
   enable_free_tier          = false
   enable_automatic_failover = true
@@ -26,7 +26,7 @@ module "cosmos_account_cgn" {
     {
       location          = var.secondary_location
       failover_priority = 1
-      zone_redundant    = true
+      zone_redundant    = false
     }
   ]
 
@@ -36,12 +36,7 @@ module "cosmos_account_cgn" {
 
   ip_range = ""
 
-  # private endpoint
-  private_endpoint_sql_name           = "${var.project}-cosmos-cgn-sql-endpoint"
-  private_endpoint_enabled            = true
-  private_service_connection_sql_name = "${var.project}-cosmos-cgn-sql-endpoint"
-  subnet_id                           = var.private_endpoint_subnet_id
-  private_dns_zone_sql_ids            = [data.azurerm_private_dns_zone.privatelink_documents.id]
+  private_endpoint_enabled = false
 
   tags = var.tags
 }
@@ -57,6 +52,11 @@ resource "azurerm_private_endpoint" "cosno_remote_content_itn" {
     private_connection_resource_id = module.cosmos_account_cgn.id
     is_manual_connection           = false
     subresource_names              = ["Sql"]
+  }
+
+  private_dns_zone_group {
+    name                 = "private-dns-zone-group"
+    private_dns_zone_ids = [data.azurerm_private_dns_zone.privatelink_documents.id]
   }
 
   tags = var.tags

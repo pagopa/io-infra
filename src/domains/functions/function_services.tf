@@ -2,12 +2,12 @@
 # SECRETS
 ########################
 data "azurerm_key_vault_secret" "fn_services_mailup_username" {
-  name         = "common-MAILUP-USERNAME"
+  name         = "common-MAILUP-TMP-USERNAME"
   key_vault_id = data.azurerm_key_vault.common.id
 }
 
 data "azurerm_key_vault_secret" "fn_services_mailup_secret" {
-  name         = "common-MAILUP-SECRET"
+  name         = "common-MAILUP-TMP-SECRET"
   key_vault_id = data.azurerm_key_vault.common.id
 }
 
@@ -236,6 +236,7 @@ module "function_services" {
     data.azurerm_subnet.azdoa_snet.id,
     data.azurerm_subnet.apim_v2_snet.id,
     data.azurerm_subnet.function_eucovidcert_snet.id,
+    data.azurerm_subnet.apim_itn_snet.id,
   ]
 
   # Action groups for alerts
@@ -300,6 +301,7 @@ module "function_services_staging_slot" {
     data.azurerm_subnet.azdoa_snet.id,
     data.azurerm_subnet.apim_v2_snet.id,
     data.azurerm_subnet.function_eucovidcert_snet.id,
+    data.azurerm_subnet.apim_itn_snet.id,
   ]
 
   tags = var.tags
@@ -406,110 +408,6 @@ resource "azurerm_monitor_autoscale_setting" "function_services_autoscale" {
         type      = "ChangeCount"
         value     = "1"
         cooldown  = "PT10M"
-      }
-    }
-  }
-
-  profile {
-    name = module.common_values.scaling_gate.name
-
-    capacity {
-      default = var.function_services_autoscale_default
-      minimum = 6
-      maximum = var.function_services_autoscale_maximum
-    }
-
-    fixed_date {
-      timezone = module.common_values.scaling_gate.timezone
-      start    = module.common_values.scaling_gate.start
-      end      = module.common_values.scaling_gate.end
-    }
-
-    rule {
-      metric_trigger {
-        metric_name              = "Requests"
-        metric_resource_id       = module.function_services[count.index].id
-        metric_namespace         = "microsoft.web/sites"
-        time_grain               = "PT1M"
-        statistic                = "Max"
-        time_window              = "PT1M"
-        time_aggregation         = "Maximum"
-        operator                 = "GreaterThan"
-        threshold                = 3000
-        divide_by_instance_count = true
-      }
-
-      scale_action {
-        direction = "Increase"
-        type      = "ChangeCount"
-        value     = "2"
-        cooldown  = "PT1M"
-      }
-    }
-
-    rule {
-      metric_trigger {
-        metric_name              = "CpuPercentage"
-        metric_resource_id       = module.function_services[count.index].app_service_plan_id
-        metric_namespace         = "microsoft.web/serverfarms"
-        time_grain               = "PT1M"
-        statistic                = "Max"
-        time_window              = "PT1M"
-        time_aggregation         = "Maximum"
-        operator                 = "GreaterThan"
-        threshold                = 40
-        divide_by_instance_count = false
-      }
-
-      scale_action {
-        direction = "Increase"
-        type      = "ChangeCount"
-        value     = "3"
-        cooldown  = "PT2M"
-      }
-    }
-
-    rule {
-      metric_trigger {
-        metric_name              = "Requests"
-        metric_resource_id       = module.function_services[count.index].id
-        metric_namespace         = "microsoft.web/sites"
-        time_grain               = "PT1M"
-        statistic                = "Average"
-        time_window              = "PT5M"
-        time_aggregation         = "Average"
-        operator                 = "LessThan"
-        threshold                = 300
-        divide_by_instance_count = true
-      }
-
-      scale_action {
-        direction = "Decrease"
-        type      = "ChangeCount"
-        value     = "1"
-        cooldown  = "PT1M"
-      }
-    }
-
-    rule {
-      metric_trigger {
-        metric_name              = "CpuPercentage"
-        metric_resource_id       = module.function_services[count.index].app_service_plan_id
-        metric_namespace         = "microsoft.web/serverfarms"
-        time_grain               = "PT1M"
-        statistic                = "Average"
-        time_window              = "PT5M"
-        time_aggregation         = "Average"
-        operator                 = "LessThan"
-        threshold                = 15
-        divide_by_instance_count = false
-      }
-
-      scale_action {
-        direction = "Decrease"
-        type      = "ChangeCount"
-        value     = "1"
-        cooldown  = "PT2M"
       }
     }
   }

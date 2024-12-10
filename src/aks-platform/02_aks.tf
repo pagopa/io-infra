@@ -6,7 +6,7 @@ resource "azurerm_resource_group" "aks_rg" {
 }
 
 module "aks" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//kubernetes_cluster?ref=v7.27.2"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//kubernetes_cluster?ref=v8.54.0"
 
   name                       = local.aks_name
   location                   = var.location
@@ -68,7 +68,6 @@ module "aks" {
   }
   # end network
 
-  rbac_enabled        = true
   aad_admin_group_ids = [data.azuread_group.adgroup_admin.object_id, data.azuread_group.adgroup_developers.object_id]
 
   addon_azure_policy_enabled                     = true

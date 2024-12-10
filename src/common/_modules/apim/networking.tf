@@ -47,3 +47,60 @@ resource "azurerm_public_ip" "apim" {
 
   tags = var.tags
 }
+
+###############
+# FOR TESTING #
+###############
+
+# Define the A Records for APIM ITN
+
+resource "azurerm_private_dns_a_record" "apim_azure_api_net" {
+  count = var.migration ? 1 : 0
+
+  name                = module.apim_v2.name
+  zone_name           = data.azurerm_private_dns_zone.azure_api_net[0].name
+  resource_group_name = "io-p-rg-common"
+  ttl                 = 3600
+  records             = module.apim_v2.private_ip_addresses
+
+  tags = var.tags
+}
+
+resource "azurerm_private_dns_a_record" "apim_management_azure_api_net" {
+  count = var.migration ? 1 : 0
+
+  name                = module.apim_v2.name
+  zone_name           = data.azurerm_private_dns_zone.management_azure_api_net[0].name
+  resource_group_name = "io-p-rg-common"
+  ttl                 = 3600
+  records             = module.apim_v2.private_ip_addresses
+
+  tags = var.tags
+}
+
+resource "azurerm_private_dns_a_record" "apim_scm_azure_api_net" {
+  count = var.migration ? 1 : 0
+
+  name                = module.apim_v2.name
+  zone_name           = data.azurerm_private_dns_zone.scm_azure_api_net[0].name
+  resource_group_name = "io-p-rg-common"
+  ttl                 = 3600
+  records             = module.apim_v2.private_ip_addresses
+
+  tags = var.tags
+}
+
+# Delete when return to 2 instances
+resource "azurerm_public_ip" "apim_tmp" {
+  count = var.migration ? 1 : 0
+
+  name                = try(local.nonstandard[var.location_short].pip_name, "${var.project}-apim-tmp-pip-01")
+  resource_group_name = var.resource_group_common
+  location            = var.location
+  allocation_method   = "Static"
+  sku                 = "Standard"
+  domain_name_label   = "apimiotmp"
+  zones               = ["1", "2", "3"]
+
+  tags = var.tags
+}

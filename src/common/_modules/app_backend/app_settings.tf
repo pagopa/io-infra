@@ -36,6 +36,8 @@ locals {
     CGN_API_KEY                 = data.azurerm_key_vault_secret.app_backend_CGN_API_KEY.value
     IO_SIGN_API_URL             = "https://${var.backend_hostnames.iosign}"
     IO_SIGN_API_KEY             = data.azurerm_key_vault_secret.app_backend_IO_SIGN_API_KEY.value
+    IO_FIMS_API_URL             = "https://${var.backend_hostnames.iofims}"
+    IO_FIMS_API_KEY             = data.azurerm_key_vault_secret.app_backend_IO_FIMS_API_KEY.value
     CGN_OPERATOR_SEARCH_API_URL = "https://${var.backend_hostnames.cgnonboarding}" # prod subscription
     CGN_OPERATOR_SEARCH_API_KEY = data.azurerm_key_vault_secret.app_backend_CGN_OPERATOR_SEARCH_API_KEY_PROD.value
     EUCOVIDCERT_API_URL         = "https://${var.backend_hostnames.eucovidcert}/api/v1"
@@ -44,8 +46,8 @@ locals {
     APP_MESSAGES_API_KEY        = data.azurerm_key_vault_secret.app_backend_APP_MESSAGES_API_KEY[(var.index - 1) % local.app_messages_count].value
     LOLLIPOP_API_URL            = "https://${var.backend_hostnames.lollipop}"
     LOLLIPOP_API_KEY            = data.azurerm_key_vault_secret.app_backend_LOLLIPOP_ITN_API_KEY.value
-    TRIAL_SYSTEM_API_URL        = "https://${var.backend_hostnames.trial_system_api}" # PROD-TRIAL subscription
-    TRIAL_SYSTEM_APIM_URL       = var.backend_hostnames.trial_system_apim             # Add this variable to avoid downtime
+    TRIAL_SYSTEM_API_URL        = "https://ts-p-itn-api-func-01.azurewebsites.net" # not working anymore
+    TRIAL_SYSTEM_APIM_URL       = "https://ts-p-itn-apim-01.azure-api.net"         # not working anymore
     TRIAL_SYSTEM_API_KEY        = data.azurerm_key_vault_secret.app_backend_TRIAL_SYSTEM_API_KEY.value
     TRIAL_SYSTEM_APIM_KEY       = data.azurerm_key_vault_secret.app_backend_TRIAL_SYSTEM_APIM_KEY.value
     IO_WALLET_API_URL           = "https://${var.backend_hostnames.iowallet}"
@@ -57,6 +59,7 @@ locals {
     CGN_OPERATOR_SEARCH_API_BASE_PATH = "/api/v1/cgn/operator-search"
     EUCOVIDCERT_API_BASE_PATH         = "/api/v1/eucovidcert"
     IO_SIGN_API_BASE_PATH             = "/api/v1/sign"
+    IO_FIMS_API_BASE_PATH             = "/api/v1/fims"
     LOLLIPOP_API_BASE_PATH            = "/api/v1"
     TRIAL_SYSTEM_API_BASE_PATH        = "/api/v1"
     TRIAL_SYSTEM_APIM_BASE_PATH       = "/manage/api/v1"
@@ -101,8 +104,9 @@ locals {
     FF_CGN_ENABLED             = 1
     FF_EUCOVIDCERT_ENABLED     = 1
     FF_IO_SIGN_ENABLED         = 1
+    FF_IO_FIMS_ENABLED         = 1
     FF_IO_WALLET_ENABLED       = 1
-    FF_IO_WALLET_TRIAL_ENABLED = 1
+    FF_IO_WALLET_TRIAL_ENABLED = 0
 
     FF_ROUTING_PUSH_NOTIF                      = "ALL" # possible values are: BETA, CANARY, ALL, NONE
     FF_ROUTING_PUSH_NOTIF_BETA_TESTER_SHA_LIST = data.azurerm_key_vault_secret.app_backend_APP_MESSAGES_BETA_FISCAL_CODES.value

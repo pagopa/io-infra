@@ -19,6 +19,8 @@
 
 | Name | Source | Version |
 |------|--------|---------|
+| <a name="module_apim_itn_payments_updater_api_v1"></a> [apim\_itn\_payments\_updater\_api\_v1](#module\_apim\_itn\_payments\_updater\_api\_v1) | git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api | v4.1.8 |
+| <a name="module_apim_itn_product_payments"></a> [apim\_itn\_product\_payments](#module\_apim\_itn\_product\_payments) | git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_product | v4.1.8 |
 | <a name="module_apim_v2_payments_updater_api_v1"></a> [apim\_v2\_payments\_updater\_api\_v1](#module\_apim\_v2\_payments\_updater\_api\_v1) | git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api | v4.1.8 |
 | <a name="module_apim_v2_product_payments"></a> [apim\_v2\_product\_payments](#module\_apim\_v2\_product\_payments) | git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_product | v4.1.8 |
 | <a name="module_cosmosdb_account_mongodb"></a> [cosmosdb\_account\_mongodb](#module\_cosmosdb\_account\_mongodb) | git::https://github.com/pagopa/terraform-azurerm-v3.git//cosmosdb_account | v4.1.8 |
@@ -47,6 +49,7 @@
 | [azuread_group.adgroup_externals](https://registry.terraform.io/providers/hashicorp/azuread/latest/docs/data-sources/group) | data source |
 | [azuread_group.adgroup_security](https://registry.terraform.io/providers/hashicorp/azuread/latest/docs/data-sources/group) | data source |
 | [azuread_service_principal.platform_iac_sp](https://registry.terraform.io/providers/hashicorp/azuread/latest/docs/data-sources/service_principal) | data source |
+| [azurerm_api_management.apim_itn_api](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/api_management) | data source |
 | [azurerm_api_management.apim_v2_api](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/api_management) | data source |
 | [azurerm_application_insights.application_insights](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/application_insights) | data source |
 | [azurerm_client_config.current](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/client_config) | data source |
@@ -69,7 +72,7 @@
 | <a name="input_domain"></a> [domain](#input\_domain) | n/a | `string` | n/a | yes |
 | <a name="input_env"></a> [env](#input\_env) | n/a | `string` | n/a | yes |
 | <a name="input_env_short"></a> [env\_short](#input\_env\_short) | n/a | `string` | n/a | yes |
-| <a name="input_instance"></a> [instance](#input\_instance) | One of beta, prod01, prod02 | `string` | n/a | yes |
+| <a name="input_instance"></a> [instance](#input\_instance) | One of prod01 | `string` | n/a | yes |
 | <a name="input_location"></a> [location](#input\_location) | One of westeurope, northeurope | `string` | n/a | yes |
 | <a name="input_location_short"></a> [location\_short](#input\_location\_short) | One of wue, neu | `string` | n/a | yes |
 | <a name="input_log_analytics_workspace_name"></a> [log\_analytics\_workspace\_name](#input\_log\_analytics\_workspace\_name) | Specifies the name of the Log Analytics Workspace. | `string` | n/a | yes |

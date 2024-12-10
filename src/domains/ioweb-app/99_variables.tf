@@ -57,7 +57,7 @@ variable "location_string" {
 
 variable "instance" {
   type        = string
-  description = "One of beta, prod01, prod02"
+  description = "One of prod01"
 }
 
 variable "lock_enable" {
@@ -122,25 +122,6 @@ variable "tls_cert_check_helm" {
     image_tag     = string
   })
   description = "tls cert helm chart configuration"
-}
-
-###################
-# ioweb-profile-fn
-###################
-variable "cidr_subnet_fniowebprofile" {
-  type        = list(string)
-  description = "Functions ioweb profile address space"
-  default     = null
-}
-
-variable "function_ioweb_profile" {
-  type = object({
-    autoscale_minimum = number
-    autoscale_maximum = number
-    autoscale_default = number
-    sku_size          = string
-    kind              = string
-  })
 }
 
 variable "enable_azdoa" {

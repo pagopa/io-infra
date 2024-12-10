@@ -23,8 +23,8 @@ data "azurerm_linux_web_app" "session_manager_04" {
 }
 
 data "azurerm_linux_web_app" "fims_op_app" {
-  name                = "io-p-weu-fims-op-app-01"
-  resource_group_name = "io-p-weu-fims-rg-01"
+  name                = "io-p-itn-fims-op-app-01"
+  resource_group_name = "io-p-itn-fims-rg-01"
 }
 
 data "azurerm_linux_web_app" "appservice_devportal_be" {
@@ -35,6 +35,16 @@ data "azurerm_linux_web_app" "appservice_devportal_be" {
 data "azurerm_linux_web_app" "appservice_selfcare_be" {
   name                = "${var.project}-app-selfcare-be"
   resource_group_name = "${var.project}-selfcare-be-rg"
+}
+
+data "azurerm_linux_web_app" "ipatente_vehicles_app_itn" {
+  name                = "${var.project}-itn-ipatente-vehicles-app-01"
+  resource_group_name = "${var.project}-itn-ipatente-rg-01"
+}
+
+data "azurerm_linux_web_app" "ipatente_licences_app_itn" {
+  name                = "${var.project}-itn-ipatente-licences-app-01"
+  resource_group_name = "${var.project}-itn-ipatente-rg-01"
 }
 
 #######################
@@ -107,6 +117,16 @@ data "azurerm_key_vault_certificate" "app_gw_oauth" {
 
 data "azurerm_key_vault_certificate" "app_gw_selfcare_io" {
   name         = var.certificates.selfcare_io_pagopa_it
+  key_vault_id = var.key_vault.id
+}
+
+data "azurerm_key_vault_certificate" "app_gw_vehicles_ipatente_io" {
+  name         = var.certificates.vehicles_ipatente_io_pagopa_it
+  key_vault_id = var.key_vault.id
+}
+
+data "azurerm_key_vault_certificate" "app_gw_licences_ipatente_io" {
+  name         = var.certificates.licences_ipatente_io_pagopa_it
   key_vault_id = var.key_vault.id
 }
 

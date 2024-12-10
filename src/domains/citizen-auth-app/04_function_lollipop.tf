@@ -1,5 +1,5 @@
 data "azurerm_key_vault_secret" "first_lollipop_consumer_subscription_key" {
-  name         = "first-lollipop-consumer-pagopa-subscription-key-v2"
+  name         = "first-lollipop-consumer-pagopa-subscription-key-v2" # itn" Change it for itn switch
   key_vault_id = data.azurerm_key_vault.kv.id
 }
 
@@ -320,110 +320,6 @@ resource "azurerm_monitor_autoscale_setting" "function_lollipop_itn" {
     capacity {
       default = 10
       minimum = 3
-      maximum = 30
-    }
-
-    rule {
-      metric_trigger {
-        metric_name              = "Requests"
-        metric_resource_id       = module.function_lollipop_itn.id
-        metric_namespace         = "microsoft.web/sites"
-        time_grain               = "PT1M"
-        statistic                = "Max"
-        time_window              = "PT1M"
-        time_aggregation         = "Maximum"
-        operator                 = "GreaterThan"
-        threshold                = 3000
-        divide_by_instance_count = true
-      }
-
-      scale_action {
-        direction = "Increase"
-        type      = "ChangeCount"
-        value     = "2"
-        cooldown  = "PT1M"
-      }
-    }
-
-    rule {
-      metric_trigger {
-        metric_name              = "CpuPercentage"
-        metric_resource_id       = module.function_lollipop_itn.app_service_plan_id
-        metric_namespace         = "microsoft.web/serverfarms"
-        time_grain               = "PT1M"
-        statistic                = "Max"
-        time_window              = "PT1M"
-        time_aggregation         = "Maximum"
-        operator                 = "GreaterThan"
-        threshold                = 35
-        divide_by_instance_count = false
-      }
-
-      scale_action {
-        direction = "Increase"
-        type      = "ChangeCount"
-        value     = "4"
-        cooldown  = "PT1M"
-      }
-    }
-
-    rule {
-      metric_trigger {
-        metric_name              = "Requests"
-        metric_resource_id       = module.function_lollipop_itn.id
-        metric_namespace         = "microsoft.web/sites"
-        time_grain               = "PT1M"
-        statistic                = "Average"
-        time_window              = "PT5M"
-        time_aggregation         = "Average"
-        operator                 = "LessThan"
-        threshold                = 300
-        divide_by_instance_count = true
-      }
-
-      scale_action {
-        direction = "Decrease"
-        type      = "ChangeCount"
-        value     = "1"
-        cooldown  = "PT1M"
-      }
-    }
-
-    rule {
-      metric_trigger {
-        metric_name              = "CpuPercentage"
-        metric_resource_id       = module.function_lollipop_itn.app_service_plan_id
-        metric_namespace         = "microsoft.web/serverfarms"
-        time_grain               = "PT1M"
-        statistic                = "Average"
-        time_window              = "PT5M"
-        time_aggregation         = "Average"
-        operator                 = "LessThan"
-        threshold                = 15
-        divide_by_instance_count = false
-      }
-
-      scale_action {
-        direction = "Decrease"
-        type      = "ChangeCount"
-        value     = "1"
-        cooldown  = "PT2M"
-      }
-    }
-  }
-
-  profile {
-    name = module.common_values.scaling_gate.name
-
-    fixed_date {
-      timezone = module.common_values.scaling_gate.timezone
-      start    = module.common_values.scaling_gate.start
-      end      = module.common_values.scaling_gate.end
-    }
-
-    capacity {
-      default = 20
-      minimum = 15
       maximum = 30
     }
 

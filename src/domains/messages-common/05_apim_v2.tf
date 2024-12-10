@@ -1,8 +1,3 @@
-data "azurerm_api_management" "apim_v2_api" {
-  name                = local.apim_v2_name
-  resource_group_name = local.apim_resource_group_name
-}
-
 resource "azurerm_api_management_group" "apiremotecontentconfigurationwrite" {
   name                = "apiremotecontentconfigurationwrite"
   api_management_name = data.azurerm_api_management.apim_v2_api.name
@@ -133,13 +128,6 @@ resource "azurerm_key_vault_secret" "reminder_subscription_primary_key_v2" {
 }
 
 ########################################
-
-data "azurerm_api_management_product" "payment_updater_product_v2" {
-  product_id          = "io-payments-api"
-  api_management_name = data.azurerm_api_management.apim_v2_api.name
-  resource_group_name = data.azurerm_api_management.apim_v2_api.resource_group_name
-}
-
 resource "azurerm_api_management_group_user" "payment_group_v2" {
   user_id             = azurerm_api_management_user.reminder_user_v2.user_id
   group_name          = azurerm_api_management_group.apipaymentupdater_v2.name
@@ -168,11 +156,6 @@ resource "azurerm_key_vault_secret" "reminder_paymentapi_subscription_primary_ke
 ################ API MANAGE ###################
 ###############################################
 
-data "azurerm_key_vault_secret" "io_p_messages_sending_func_key" {
-  name         = "io-p-messages-sending-func-key"
-  key_vault_id = module.key_vault.id
-}
-
 resource "azurerm_api_management_named_value" "io_p_messages_sending_func_key" {
   name                = "io-p-messages-sending-func-key"
   display_name        = "io-p-messages-sending-func-key"
@@ -182,19 +165,9 @@ resource "azurerm_api_management_named_value" "io_p_messages_sending_func_key" {
   secret              = "true"
 }
 
-data "azurerm_api_management_product" "apim_v2_product_services" {
-  product_id          = "io-services-api"
-  api_management_name = data.azurerm_api_management.apim_v2_api.name
-  resource_group_name = data.azurerm_api_management.apim_v2_api.resource_group_name
-}
-
 # APIM APIs
 
 # MESSAGES SENDING FUNC EXTERNAL
-data "http" "messages_sending_external_openapi" {
-  url = "https://raw.githubusercontent.com/pagopa/io-functions-services-messages/master/openapi/index_external.yaml"
-}
-
 module "apim_v2_messages_sending_external_api_v1" {
   source = "github.com/pagopa/terraform-azurerm-v3//api_management_api?ref=v8.17.0"
 
@@ -217,10 +190,6 @@ module "apim_v2_messages_sending_external_api_v1" {
 }
 
 # MESSAGES SENDING FUNC INTERNAL
-data "http" "messages_sending_internal_openapi" {
-  url = "https://raw.githubusercontent.com/pagopa/io-functions-services-messages/master/openapi/index.yaml"
-}
-
 module "apim_v2_messages_sending_internal_api_v1" {
   source = "github.com/pagopa/terraform-azurerm-v3//api_management_api?ref=v8.27.0"
 
@@ -243,10 +212,6 @@ module "apim_v2_messages_sending_internal_api_v1" {
 }
 
 # SERVICE MESSAGE MANAGE (TO REMOVE)
-data "http" "service_messages_manage_openapi" {
-  url = "https://raw.githubusercontent.com/pagopa/io-functions-services-messages/833616dceab72bd65c4d3875c64eb75787b19258/openapi/index_external.yaml"
-}
-
 module "apim_v2_service_messages_manage_api_v1" {
   source = "github.com/pagopa/terraform-azurerm-v3//api_management_api?ref=v8.27.0"
 
@@ -269,10 +234,6 @@ module "apim_v2_service_messages_manage_api_v1" {
 }
 
 # SERVICE MESSAGE INTERNAL (TO REMOVE)
-data "http" "service_messages_internal_openapi" {
-  url = "https://raw.githubusercontent.com/pagopa/io-functions-services-messages/833616dceab72bd65c4d3875c64eb75787b19258/openapi/index.yaml"
-}
-
 module "apim_v2_service_messages_internal_api_v1" {
   source = "github.com/pagopa/terraform-azurerm-v3//api_management_api?ref=v8.27.0"
 
@@ -322,11 +283,6 @@ resource "azurerm_api_management_subscription" "messages_backend_v2" {
   allow_tracing       = false
 }
 
-data "azurerm_key_vault_secret" "io_messages_backend_func_key" {
-  name         = "io-p-messages-backend-func-key"
-  key_vault_id = module.key_vault.id
-}
-
 resource "azurerm_api_management_named_value" "io_messages_backend_key" {
   name                = "io-messages-backend-key"
   api_management_name = data.azurerm_api_management.apim_v2_api.name
@@ -334,10 +290,6 @@ resource "azurerm_api_management_named_value" "io_messages_backend_key" {
   display_name        = "io-messages-backend-key"
   value               = data.azurerm_key_vault_secret.io_messages_backend_func_key.value
   secret              = "true"
-}
-
-data "http" "messages_citizen_openapi" {
-  url = "https://raw.githubusercontent.com/pagopa/io-messages/main/apps/citizen-func/openapi/index.yaml"
 }
 
 module "apim_v2_messages_citizen_l1_api_v1" {

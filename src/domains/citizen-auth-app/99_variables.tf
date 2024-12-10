@@ -57,7 +57,7 @@ variable "location_string" {
 
 variable "instance" {
   type        = string
-  description = "One of beta, prod01, prod02"
+  description = "One of prod01, prod02"
 }
 
 variable "tags" {
@@ -171,43 +171,6 @@ variable "function_lollipop_autoscale_default" {
   type        = number
   description = "The number of instances that are available for scaling if metrics are not available for evaluation."
   default     = 3
-}
-
-# Function Fast Login
-
-variable "cidr_subnet_fnfastlogin_itn" {
-  type        = list(string)
-  description = "Function Fast Login on ITN region address space."
-}
-
-variable "function_fastlogin_kind" {
-  type        = string
-  description = "App service plan kind"
-  default     = null
-}
-
-variable "function_fastlogin_sku_size" {
-  type        = string
-  description = "App service plan sku size"
-  default     = null
-}
-
-variable "function_fastlogin_autoscale_minimum" {
-  type        = number
-  description = "The minimum number of instances for this resource."
-  default     = 1
-}
-
-variable "function_fastlogin_autoscale_maximum" {
-  type        = number
-  description = "The maximum number of instances for this resource."
-  default     = 3
-}
-
-variable "function_fastlogin_autoscale_default" {
-  type        = number
-  description = "The number of instances that are available for scaling if metrics are not available for evaluation."
-  default     = 1
 }
 
 ####################
@@ -341,7 +304,7 @@ variable "plan_shared_1_sku_size" {
 variable "plan_shared_1_sku_capacity" {
   description = "Shared functions app plan capacity"
   type        = number
-  default     = 1
+  default     = 3
 }
 ###########################
 ################################

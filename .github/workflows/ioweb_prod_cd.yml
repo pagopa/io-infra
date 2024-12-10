@@ -83,7 +83,6 @@ jobs:
           if-no-files-found: error
           path: |
             **/tfplan-prod-*
-            **/tfplan-weu-beta-*
             **/tfplan-weu-prod01-*
 
     outputs:
