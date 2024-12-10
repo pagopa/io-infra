@@ -466,31 +466,31 @@ module "app_gw" {
       }
     }
 
-    # payments-ipatente-io-pagopa-it = {
-    #   protocol           = "Https"
-    #   host               = format("payments.%s", var.public_dns_zones.ipatente_io_pagopa_it.name)
-    #   port               = 443
-    #   ssl_profile_name   = format("%s-ssl-profile", var.project)
-    #   firewall_policy_id = null
+    payments-ipatente-io-pagopa-it = {
+      protocol           = "Https"
+      host               = format("payments.%s", var.public_dns_zones.ipatente_io_pagopa_it.name)
+      port               = 443
+      ssl_profile_name   = format("%s-ssl-profile", var.project)
+      firewall_policy_id = null
 
-    #   certificate = {
-    #     name = var.certificates.payments_ipatente_io_pagopa_it
-    #     id   = data.azurerm_key_vault_certificate.app_gw_payments_ipatente_io.versionless_secret_id
-    #   }
-    # }
+      certificate = {
+        name = var.certificates.payments_ipatente_io_pagopa_it
+        id   = data.azurerm_key_vault_certificate.app_gw_payments_ipatente_io.versionless_secret_id
+      }
+    }
 
-    # practices-ipatente-io-pagopa-it = {
-    #   protocol           = "Https"
-    #   host               = format("practices.%s", var.public_dns_zones.ipatente_io_pagopa_it.name)
-    #   port               = 443
-    #   ssl_profile_name   = format("%s-ssl-profile", var.project)
-    #   firewall_policy_id = null
+    practices-ipatente-io-pagopa-it = {
+      protocol           = "Https"
+      host               = format("practices.%s", var.public_dns_zones.ipatente_io_pagopa_it.name)
+      port               = 443
+      ssl_profile_name   = format("%s-ssl-profile", var.project)
+      firewall_policy_id = null
 
-    #   certificate = {
-    #     name = var.certificates.practices_ipatente_io_pagopa_it
-    #     id   = data.azurerm_key_vault_certificate.app_gw_practices_ipatente_io.versionless_secret_id
-    #   }
-    # }
+      certificate = {
+        name = var.certificates.practices_ipatente_io_pagopa_it
+        id   = data.azurerm_key_vault_certificate.app_gw_practices_ipatente_io.versionless_secret_id
+      }
+    }
   }
 
   # maps listener to backend
@@ -581,19 +581,19 @@ module "app_gw" {
       priority              = 131
     }
 
-    # payments-ipatente-io-pagopa-it = {
-    #   listener              = "payments-ipatente-io-pagopa-it"
-    #   backend               = "payments-ipatente-io-app"
-    #   rewrite_rule_set_name = "rewrite-rule-set-payments-ipatente-io-app"
-    #   priority              = 130
-    # }
+    payments-ipatente-io-pagopa-it = {
+      listener              = "payments-ipatente-io-pagopa-it"
+      backend               = "payments-ipatente-io-app"
+      rewrite_rule_set_name = "rewrite-rule-set-payments-ipatente-io-app"
+      priority              = 132
+    }
 
-    # practices-ipatente-io-pagopa-it = {
-    #   listener              = "practices-ipatente-io-pagopa-it"
-    #   backend               = "practices-ipatente-io-app"
-    #   rewrite_rule_set_name = "rewrite-rule-set-practices-ipatente-io-app"
-    #   priority              = 131
-    # }
+    practices-ipatente-io-pagopa-it = {
+      listener              = "practices-ipatente-io-pagopa-it"
+      backend               = "practices-ipatente-io-app"
+      rewrite_rule_set_name = "rewrite-rule-set-practices-ipatente-io-app"
+      priority              = 133
+    }
   }
 
   routes_path_based = {
