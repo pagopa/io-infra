@@ -146,7 +146,7 @@ locals {
 
     # Functions Lollipop config
     LOLLIPOP_API_BASE_PATH = "/api/v1"
-    LOLLIPOP_API_URL       = "https://${module.function_lollipop_itn.default_hostname}"
+    LOLLIPOP_API_URL       = "https://${data.azurerm_linux_function_app.function_lollipop_itn_v2.default_hostname}"
     LOLLIPOP_API_KEY       = data.azurerm_key_vault_secret.functions_lollipop_api_key.value
 
     LOLLIPOP_REVOKE_STORAGE_CONNECTION_STRING = data.azurerm_storage_account.lollipop_assertion_storage.primary_connection_string
