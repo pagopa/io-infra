@@ -290,8 +290,6 @@ module "lollipop_assertions_storage_itn" {
   subnet_pep_id                        = module.common_values.pep_subnets.itn.id
   private_dns_zone_resource_group_name = module.common_values.resource_groups.weu.common
 
-  force_public_network_access_enabled = false
-
   access_tier = "Hot"
 
   subservices_enabled = {
