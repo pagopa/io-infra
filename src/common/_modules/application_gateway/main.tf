@@ -570,14 +570,14 @@ module "app_gw" {
     vehicles-ipatente-io-pagopa-it = {
       listener              = "vehicles-ipatente-io-pagopa-it"
       backend               = "vehicles-ipatente-io-app"
-      rewrite_rule_set_name = "rewrite-rule-set-vehicles-ipatente-io-app"
+      rewrite_rule_set_name = "rewrite-rule-set-ipatente-io-app"
       priority              = 130
     }
 
     licences-ipatente-io-pagopa-it = {
       listener              = "licences-ipatente-io-pagopa-it"
       backend               = "licences-ipatente-io-app"
-      rewrite_rule_set_name = "rewrite-rule-set-licences-ipatente-io-app"
+      rewrite_rule_set_name = "rewrite-rule-set-ipatente-io-app"
       priority              = 131
     }
 
@@ -935,21 +935,29 @@ module "app_gw" {
       }]
     },
     {
-      name          = "rewrite-rule-set-vehicles-ipatente-io-app"
-      rewrite_rules = [local.io_backend_ip_headers_rule]
+      name = "rewrite-rule-set-ipatente-io-app"
+      rewrite_rules = [{
+        name          = "http-headers-fims-op-app"
+        rule_sequence = 100
+        conditions    = []
+        url           = null
+        request_header_configurations = [
+          {
+            header_name  = "X-Forwarded-For"
+            header_value = "{var_client_ip}"
+          },
+          {
+            header_name  = "X-Forwarded-Host"
+            header_value = "{var_host}"
+          },
+          {
+            header_name  = "X-Client-Ip"
+            header_value = "{var_client_ip}"
+          },
+        ]
+        response_header_configurations = []
+      }]
     },
-    {
-      name          = "rewrite-rule-set-licences-ipatente-io-app"
-      rewrite_rules = [local.io_backend_ip_headers_rule]
-    },
-    {
-      name          = "rewrite-rule-set-payments-ipatente-io-app"
-      rewrite_rules = [local.io_backend_ip_headers_rule]
-    },
-    {
-      name          = "rewrite-rule-set-practices-ipatente-io-app"
-      rewrite_rules = [local.io_backend_ip_headers_rule]
-    }
   ]
 
   # TLS
