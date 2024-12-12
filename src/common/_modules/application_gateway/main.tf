@@ -584,14 +584,14 @@ module "app_gw" {
     payments-ipatente-io-pagopa-it = {
       listener              = "payments-ipatente-io-pagopa-it"
       backend               = "payments-ipatente-io-app"
-      rewrite_rule_set_name = "rewrite-rule-set-payments-ipatente-io-app"
+      rewrite_rule_set_name = "rewrite-rule-set-ipatente-io-app"
       priority              = 132
     }
 
     practices-ipatente-io-pagopa-it = {
       listener              = "practices-ipatente-io-pagopa-it"
       backend               = "practices-ipatente-io-app"
-      rewrite_rule_set_name = "rewrite-rule-set-practices-ipatente-io-app"
+      rewrite_rule_set_name = "rewrite-rule-set-ipatente-io-app"
       priority              = 133
     }
   }
