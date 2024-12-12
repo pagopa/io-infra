@@ -41,7 +41,7 @@ locals {
     env_short       = var.env_short
     location        = local.itn_location
     app_name        = local.app_name
-    # domain          = "citizen-auth-common"
+    domain          = "auth"
     instance_number = "01"
   }
 
