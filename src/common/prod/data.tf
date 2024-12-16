@@ -62,8 +62,8 @@ data "azurerm_linux_function_app" "services_app_backend_function_app" {
 }
 
 data "azurerm_linux_function_app" "lollipop_function" {
-  name                = "${local.project_itn}-lollipop-fn-01"
-  resource_group_name = "${local.project_itn}-lollipop-rg-01"
+  name                = "${local.project_itn}-auth-lollipop-func-02"
+  resource_group_name = "${local.project_itn}-auth-lollipop-rg-02"
 }
 
 data "azurerm_linux_function_app" "eucovidcert" {
