@@ -118,7 +118,7 @@ module "function_lollipop_itn" {
 
   app_settings = merge(
     local.function_lollipop.app_settings,
-    { "AzureWebJobs.HandlePubKeyRevoke.Disabled" = "0" },
+    { "AzureWebJobs.HandlePubKeyRevoke.Disabled" = "1" },
   )
 
   sticky_app_setting_names = ["AzureWebJobs.HandlePubKeyRevoke.Disabled"]
