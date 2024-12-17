@@ -181,24 +181,12 @@ variable "cidr_subnet_session_manager" {
   description = "Session manager app service address space."
 }
 
-variable "cidr_subnet_session_manager_04" {
-  type        = list(string)
-  description = "Session manager app service instance 4 address space."
-}
-
 variable "session_manager_plan_sku_name" {
   description = "App service plan sku name"
   type        = string
   default     = "P1v3"
 }
 
-variable "session_manager_autoscale_settings" {
-  type = object({
-    autoscale_minimum = number
-    autoscale_maximum = number
-    autoscale_default = number
-  })
-}
 ####################
 
 # DNS
