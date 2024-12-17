@@ -44,12 +44,6 @@ data "azurerm_linux_function_app" "function_assets_cdn" {
   resource_group_name = "${local.project_weu_legacy}-assets-cdn-rg"
 }
 
-data "azurerm_linux_function_app" "function_profile" {
-  count               = local.function_profile_count
-  name                = "${local.project_itn}-auth-profile-fn-0${count.index + 1}"
-  resource_group_name = "${local.project_itn}-profile-rg-0${count.index + 1}"
-}
-
 data "azurerm_linux_function_app" "app_messages_xl" {
   count               = local.app_messages_count
   name                = "${local.project_weu_legacy}-weu-com-citizen-func-0${count.index + 1}"
