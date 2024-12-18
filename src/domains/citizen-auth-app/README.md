@@ -180,7 +180,7 @@
 | <a name="input_function_profile_async_autoscale_minimum"></a> [function\_profile\_async\_autoscale\_minimum](#input\_function\_profile\_async\_autoscale\_minimum) | The minimum number of instances for this resource. | `number` | `1` | no |
 | <a name="input_function_profile_async_kind"></a> [function\_profile\_async\_kind](#input\_function\_profile\_async\_kind) | App service plan kind | `string` | `null` | no |
 | <a name="input_function_profile_async_sku_size"></a> [function\_profile\_async\_sku\_size](#input\_function\_profile\_async\_sku\_size) | App service plan sku size | `string` | `null` | no |
-| <a name="input_function_profile_count"></a> [function\_profile\_count](#input\_function\_profile\_count) | ############################### Function Profile ############################### | `number` | `2` | no |
+| <a name="input_function_profile_count"></a> [function\_profile\_count](#input\_function\_profile\_count) | ############################### Function Profile ############################### | `number` | `1` | no |
 | <a name="input_function_profile_kind"></a> [function\_profile\_kind](#input\_function\_profile\_kind) | App service plan kind | `string` | `null` | no |
 | <a name="input_function_profile_sku_size"></a> [function\_profile\_sku\_size](#input\_function\_profile\_sku\_size) | App service plan sku size | `string` | `null` | no |
 | <a name="input_function_public_autoscale_default"></a> [function\_public\_autoscale\_default](#input\_function\_public\_autoscale\_default) | The number of instances that are available for scaling if metrics are not available for evaluation. | `number` | `1` | no |
