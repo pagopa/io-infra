@@ -52,9 +52,6 @@ locals {
     2 = {
       cidr_subnet = ["10.0.153.0/24"]
     },
-    3 = {
-      cidr_subnet = ["10.0.156.0/24"]
-    }
   }
 
   app_backendli = {
