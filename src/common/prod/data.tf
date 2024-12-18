@@ -45,7 +45,7 @@ data "azurerm_linux_function_app" "function_assets_cdn" {
 }
 
 data "azurerm_linux_function_app" "function_profile" {
-  name                = "${local.project_itn}-auth-profile-func-03"
+  name                = "${local.project_itn}-auth-profile-fn-01"
   resource_group_name = "${local.project_itn}-profile-rg-0${count.index + 1}"
 }
 

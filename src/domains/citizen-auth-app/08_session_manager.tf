@@ -138,7 +138,7 @@ locals {
 
     # Functions App config
     API_KEY = data.azurerm_key_vault_secret.functions_app_api_key.value
-    API_URL = "https://io-p-itn-auth-profile-func-03.azurewebsites.net"
+    API_URL = "https://io-p-itn-auth-profile-fn-01.azurewebsites.net"
 
     # Functions Fast Login config
     FAST_LOGIN_API_KEY = data.azurerm_key_vault_secret.functions_fast_login_api_key.value
