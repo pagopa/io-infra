@@ -138,28 +138,6 @@ module "session_manager_snet" {
   }
 }
 
-module "session_manager_snet_04" {
-  source               = "github.com/pagopa/terraform-azurerm-v3//subnet?ref=v8.22.0"
-  name                 = format("%s-session-manager-snet-04", local.common_project)
-  address_prefixes     = var.cidr_subnet_session_manager_04
-  resource_group_name  = data.azurerm_virtual_network.common_vnet.resource_group_name
-  virtual_network_name = data.azurerm_virtual_network.common_vnet.name
-
-  private_endpoint_network_policies_enabled = true
-
-  service_endpoints = [
-    "Microsoft.Web",
-  ]
-
-  delegation = {
-    name = "default"
-    service_delegation = {
-      name    = "Microsoft.Web/serverFarms"
-      actions = ["Microsoft.Network/virtualNetworks/subnets/action"]
-    }
-  }
-}
-
 #########################
 # Private Endpoints
 #########################
@@ -173,27 +151,6 @@ resource "azurerm_private_endpoint" "session_manager_sites" {
   private_service_connection {
     name                           = "${local.common_project}-session-manager-app-pep-01"
     private_connection_resource_id = module.session_manager_weu.id
-    is_manual_connection           = false
-    subresource_names              = ["sites"]
-  }
-
-  private_dns_zone_group {
-    name                 = "private-dns-zone-group"
-    private_dns_zone_ids = [data.azurerm_private_dns_zone.privatelink_azurewebsites_net.id]
-  }
-
-  tags = var.tags
-}
-
-resource "azurerm_private_endpoint" "session_manager_sites_04" {
-  name                = "${local.common_project}-session-manager-app-pep-04"
-  location            = var.location
-  resource_group_name = azurerm_resource_group.session_manager_rg_weu.name
-  subnet_id           = data.azurerm_subnet.private_endpoints_subnet.id
-
-  private_service_connection {
-    name                           = "${local.common_project}-session-manager-app-pep-04"
-    private_connection_resource_id = module.session_manager_weu_04.id
     is_manual_connection           = false
     subresource_names              = ["sites"]
   }
@@ -227,27 +184,6 @@ resource "azurerm_private_endpoint" "staging_session_manager_sites" {
   tags = var.tags
 }
 
-resource "azurerm_private_endpoint" "staging_session_manager_sites_04" {
-  name                = "${local.common_project}-session-manager-staging-app-pep-04"
-  location            = var.location
-  resource_group_name = azurerm_resource_group.session_manager_rg_weu.name
-  subnet_id           = data.azurerm_subnet.private_endpoints_subnet.id
-
-  private_service_connection {
-    name                           = "${local.common_project}-session-manager-staging-app-pep-04"
-    private_connection_resource_id = module.session_manager_weu_04.id
-    is_manual_connection           = false
-    subresource_names              = ["sites-${module.session_manager_weu_staging_04.name}"]
-  }
-
-  private_dns_zone_group {
-    name                 = "private-dns-zone-group"
-    private_dns_zone_ids = [data.azurerm_private_dns_zone.privatelink_azurewebsites_net.id]
-  }
-
-  tags = var.tags
-}
-
 data "azurerm_nat_gateway" "nat_gateway" {
   name                = "${local.product}-natgw"
   resource_group_name = format("%s-rg-common", local.product)
@@ -256,11 +192,6 @@ data "azurerm_nat_gateway" "nat_gateway" {
 resource "azurerm_subnet_nat_gateway_association" "session_manager_snet" {
   nat_gateway_id = data.azurerm_nat_gateway.nat_gateway.id
   subnet_id      = module.session_manager_snet.id
-}
-
-resource "azurerm_subnet_nat_gateway_association" "session_manager_snet_04" {
-  nat_gateway_id = data.azurerm_nat_gateway.nat_gateway.id
-  subnet_id      = module.session_manager_snet_04.id
 }
 
 data "azurerm_resource_group" "rg_external" {

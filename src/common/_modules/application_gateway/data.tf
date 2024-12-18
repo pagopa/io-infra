@@ -17,11 +17,6 @@ data "azurerm_linux_web_app" "session_manager_03" {
   resource_group_name = "io-p-weu-session-manager-rg-01"
 }
 
-data "azurerm_linux_web_app" "session_manager_04" {
-  name                = "io-p-weu-session-manager-app-04"
-  resource_group_name = "io-p-weu-session-manager-rg-01"
-}
-
 data "azurerm_linux_web_app" "fims_op_app" {
   name                = "io-p-itn-fims-op-app-01"
   resource_group_name = "io-p-itn-fims-rg-01"
