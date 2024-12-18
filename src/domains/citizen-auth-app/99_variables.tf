@@ -207,7 +207,7 @@ variable "dns_zone_io" {
 ################################
 variable "function_profile_count" {
   type    = number
-  default = 2
+  default = 1
 }
 
 variable "cidr_subnet_profile_itn" {

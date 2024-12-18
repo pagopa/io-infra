@@ -17,7 +17,7 @@ locals {
 
   core = data.terraform_remote_state.core.outputs
 
-  function_profile_count = 2
+  function_profile_count = 1
   app_messages_count     = 2
 
   # TODO: edit this block when resource groups module is implemented
