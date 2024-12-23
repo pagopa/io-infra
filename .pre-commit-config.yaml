@@ -1,11 +1,13 @@
 repos:
   - repo: https://github.com/pagopa/dx
-    rev: c7410ed50d211e756cd4bbb8152e1b275b4485b4
+    rev: 498e30be0ec7abd03f71148b939cde1c784f8135
     hooks:
       - id: terraform_providers_lock_staged
-
+      - id: lock_modules
+        exclude: ^.*/(_modules|modules|\.terraform)(/.*)?$
+        files: src/(common|core|github_runner|identity|migration|repository)
   - repo: https://github.com/antonbabenko/pre-commit-terraform
-    rev: v1.96.1
+    rev: v1.96.2
     hooks:
       - id: terraform_tflint
         args:
