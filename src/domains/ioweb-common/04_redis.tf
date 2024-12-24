@@ -3,7 +3,7 @@
 * [REDIS V6]
 */
 module "redis_spid_login" {
-  source                = "git::https://github.com/pagopa/terraform-azurerm-v3.git//redis_cache?ref=v6.11.2"
+  source                = "git::https://github.com/pagopa/terraform-azurerm-v3.git//redis_cache?ref=v8.56.0"
   name                  = format("%s-redis-std-v6", local.project)
   resource_group_name   = azurerm_resource_group.common_rg.name
   location              = azurerm_resource_group.common_rg.location
@@ -12,6 +12,7 @@ module "redis_spid_login" {
   sku_name              = "Standard"
   redis_version         = "6"
   enable_authentication = true
+  zones                 = null
 
   // when azure can apply patch?
   patch_schedules = [{

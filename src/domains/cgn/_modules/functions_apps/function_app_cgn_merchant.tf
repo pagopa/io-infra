@@ -23,7 +23,8 @@ module "function_cgn_merchant" {
 
   allowed_subnets = [
     var.subnet_id,
-    data.azurerm_subnet.snet_apim_v2.id
+    data.azurerm_subnet.snet_apim_v2.id,
+    data.azurerm_subnet.apim_itn_snet.id,
   ]
 
   tags = var.tags
@@ -57,7 +58,8 @@ module "function_cgn_merchant_staging_slot" {
   allowed_subnets = [
     var.subnet_id,
     data.azurerm_subnet.snet_azdoa.id,
-    data.azurerm_subnet.snet_apim_v2.id
+    data.azurerm_subnet.snet_apim_v2.id,
+    data.azurerm_subnet.apim_itn_snet.id,
   ]
 
   tags = var.tags

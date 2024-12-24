@@ -40,4 +40,7 @@ locals {
   # auth n identity domain
   short_domain      = "auth"
   short_project_itn = "${local.product}-${local.itn_location_short}-${local.short_domain}"
+
+  vnet_common_name_itn                = "${local.common_project_itn}-common-vnet-01"
+  vnet_common_resource_group_name_itn = "${local.common_project_itn}-common-rg-01"
 }

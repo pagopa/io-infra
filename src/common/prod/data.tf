@@ -45,9 +45,8 @@ data "azurerm_linux_function_app" "function_assets_cdn" {
 }
 
 data "azurerm_linux_function_app" "function_profile" {
-  count               = local.function_profile_count
-  name                = "${local.project_itn}-auth-profile-fn-0${count.index + 1}"
-  resource_group_name = "${local.project_itn}-profile-rg-0${count.index + 1}"
+  name                = "${local.project_itn}-auth-profile-fn-01"
+  resource_group_name = "${local.project_itn}-profile-rg-01"
 }
 
 data "azurerm_linux_function_app" "app_messages_xl" {
@@ -62,8 +61,8 @@ data "azurerm_linux_function_app" "services_app_backend_function_app" {
 }
 
 data "azurerm_linux_function_app" "lollipop_function" {
-  name                = "${local.project_itn}-lollipop-fn-01"
-  resource_group_name = "${local.project_itn}-lollipop-rg-01"
+  name                = "${local.project_itn}-auth-lollipop-func-02"
+  resource_group_name = "${local.project_itn}-auth-lollipop-rg-02"
 }
 
 data "azurerm_linux_function_app" "eucovidcert" {
@@ -84,12 +83,6 @@ data "azurerm_linux_function_app" "io_fims_user" {
 data "azurerm_linux_function_app" "wallet_user" {
   resource_group_name = "${local.project_itn}-wallet-rg-01"
   name                = "${local.project_itn}-wallet-user-func-02"
-}
-
-data "azurerm_api_management" "trial_system" {
-  provider            = azurerm.prod-trial
-  name                = "ts-p-itn-apim-01"
-  resource_group_name = "ts-p-itn-routing-rg-01"
 }
 
 data "azurerm_subnet" "admin_snet" {

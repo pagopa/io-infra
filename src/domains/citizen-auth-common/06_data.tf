@@ -25,11 +25,11 @@ data "azurerm_user_assigned_identity" "managed_identity_auth_n_identity_infra_cd
 
 # ITN LOLLIPOP FUNCTION
 data "azurerm_resource_group" "lollipop_function_rg" {
-  name = format("%s-itn-lollipop-rg-01", local.product)
+  name = format("%s-auth-lollipop-rg-02", local.common_project_itn)
 }
 
 data "azurerm_linux_function_app" "lollipop_function" {
-  name                = format("%s-itn-lollipop-fn-01", local.product)
+  name                = format("%s-auth-lollipop-func-02", local.common_project_itn)
   resource_group_name = data.azurerm_resource_group.lollipop_function_rg.name
 }
 #######################
