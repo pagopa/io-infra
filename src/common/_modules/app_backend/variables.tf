@@ -196,8 +196,6 @@ variable "backend_hostnames" {
     iosign               = string
     iofims               = string
     cgnonboarding        = string
-    trial_system_api     = string
-    trial_system_apim    = string
     iowallet             = string
   })
 }

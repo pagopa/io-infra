@@ -10,10 +10,10 @@ module "apim_v2" {
   notification_sender_email = data.azurerm_key_vault_secret.apim_publisher_email.value
   sku_name                  = var.migration ? "Premium_1" : "Premium_2"
   virtual_network_type      = "Internal"
-  zones                     = ["1", "2"]
+  zones                     = var.migration ? ["1"] : ["1", "2"]
 
   redis_cache_id       = null
-  public_ip_address_id = azurerm_public_ip.apim.id
+  public_ip_address_id = var.migration ? azurerm_public_ip.apim_tmp[0].id : azurerm_public_ip.apim.id
 
   hostname_configuration = {
     proxy = [
@@ -57,9 +57,9 @@ module "apim_v2" {
 
   autoscale = {
     enabled                       = true
-    default_instances             = 3
-    minimum_instances             = 2
-    maximum_instances             = 6
+    default_instances             = var.migration ? 1 : 3
+    minimum_instances             = var.migration ? 1 : 2
+    maximum_instances             = var.migration ? 1 : 6
     scale_out_capacity_percentage = 50
     scale_out_time_window         = "PT3M"
     scale_out_value               = "1"

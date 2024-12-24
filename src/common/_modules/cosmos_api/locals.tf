@@ -87,7 +87,10 @@ locals {
       name                  = "notifications"
       partition_key_path    = "/messageId"
       partition_key_version = null
-      throughput            = 3800
+
+      autoscale_settings = {
+        max_throughput = 11000
+      }
     },
     {
       name               = "operations-leases-services"

@@ -152,6 +152,28 @@ resource "azurerm_monitor_autoscale_setting" "function_public_itn" {
 
     rule {
       metric_trigger {
+        metric_name              = "Requests"
+        metric_resource_id       = data.azurerm_linux_function_app.function_web_profile.id
+        metric_namespace         = "microsoft.web/sites"
+        time_grain               = "PT1M"
+        statistic                = "Average"
+        time_window              = "PT5M"
+        time_aggregation         = "Average"
+        operator                 = "GreaterThan"
+        threshold                = 3000
+        divide_by_instance_count = false
+      }
+
+      scale_action {
+        direction = "Increase"
+        type      = "ChangeCount"
+        value     = "2"
+        cooldown  = "PT5M"
+      }
+    }
+
+    rule {
+      metric_trigger {
         metric_name              = "CpuPercentage"
         metric_resource_id       = module.function_public_itn.app_service_plan_id
         metric_namespace         = "microsoft.web/serverfarms"
@@ -176,6 +198,28 @@ resource "azurerm_monitor_autoscale_setting" "function_public_itn" {
       metric_trigger {
         metric_name              = "Requests"
         metric_resource_id       = module.function_public_itn.id
+        metric_namespace         = "microsoft.web/sites"
+        time_grain               = "PT1M"
+        statistic                = "Average"
+        time_window              = "PT5M"
+        time_aggregation         = "Average"
+        operator                 = "LessThan"
+        threshold                = 2000
+        divide_by_instance_count = false
+      }
+
+      scale_action {
+        direction = "Decrease"
+        type      = "ChangeCount"
+        value     = "1"
+        cooldown  = "PT20M"
+      }
+    }
+
+    rule {
+      metric_trigger {
+        metric_name              = "Requests"
+        metric_resource_id       = data.azurerm_linux_function_app.function_web_profile.id
         metric_namespace         = "microsoft.web/sites"
         time_grain               = "PT1M"
         statistic                = "Average"

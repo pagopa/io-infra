@@ -44,13 +44,3 @@ tls_cert_check_helm = {
 ### Aks
 
 ingress_load_balancer_ip = "10.11.0.254"
-
-### Fn ioweb-profile
-cidr_subnet_fniowebprofile = ["10.0.117.0/24"]
-function_ioweb_profile = {
-  kind              = "Linux"
-  sku_size          = "P1v3"
-  autoscale_minimum = 2
-  autoscale_maximum = 30
-  autoscale_default = 2
-}
