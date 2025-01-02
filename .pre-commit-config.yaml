@@ -1,6 +1,6 @@
 repos:
   - repo: https://github.com/pagopa/dx
-    rev: 498e30be0ec7abd03f71148b939cde1c784f8135
+    rev: 83b57f9f84da82d2f0c04c5a45f7f9395db21b45
     hooks:
       - id: terraform_providers_lock_staged
       - id: lock_modules
