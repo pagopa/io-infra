@@ -5,6 +5,13 @@ resource "azurerm_resource_group" "common_itn" {
   tags = local.tags
 }
 
+resource "azurerm_resource_group" "agw_itn" {
+  name     = "${local.project_itn}-agw-rg-01"
+  location = "italynorth"
+
+  tags = local.tags
+}
+
 resource "azurerm_resource_group" "dashboards_itn" {
   name     = "${local.project_itn}-common-dashboards-rg-01"
   location = "italynorth"

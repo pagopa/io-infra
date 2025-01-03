@@ -87,7 +87,6 @@ module "app_messages_function_xl" {
     data.azurerm_subnet.app_backendl1_snet.id,
     data.azurerm_subnet.app_backendl2_snet.id,
     data.azurerm_subnet.apim_snet.id,
-    data.azurerm_subnet.app_backendl3_snet.id,
     data.azurerm_subnet.apim_itn_snet.id,
   ]
 
@@ -149,7 +148,6 @@ module "app_messages_function_staging_slot_xl" {
     data.azurerm_subnet.app_backendl2_snet.id,
     data.azurerm_subnet.azdoa_snet.id,
     data.azurerm_subnet.github_snet.id,
-    data.azurerm_subnet.app_backendl3_snet.id
   ]
 
   allowed_ips = concat(
