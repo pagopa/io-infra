@@ -12,7 +12,7 @@ module "networking_weu" {
   ng_ips_number    = 2
   ng_ippres_number = 0
 
-  tags = merge(local.tags, { Source = "https://github.com/pagopa/io-infra" })
+  tags = local.tags
 }
 
 module "vnet_peering_weu" {
