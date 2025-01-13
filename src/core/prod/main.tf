@@ -19,3 +19,16 @@ terraform {
 provider "azurerm" {
   features {}
 }
+
+module "naming_convention" {
+  source  = "pagopa/dx-azure-naming-convention/azurerm"
+  version = "0.0.1"
+
+  environment = {
+    prefix          = local.prefix
+    env_short       = local.env_short
+    location        = "italynorth"
+    app_name        = "test"
+    instance_number = "01"
+  }
+}
