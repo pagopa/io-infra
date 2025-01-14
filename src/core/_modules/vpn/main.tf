@@ -1,13 +1,8 @@
-## VPN
-
-module "vpn_snet" {
-  source                                    = "github.com/pagopa/terraform-azurerm-v3//subnet?ref=v8.33.1"
-  name                                      = "GatewaySubnet"
-  address_prefixes                          = var.vpn_cidr_subnet
-  resource_group_name                       = var.resource_group_name
-  virtual_network_name                      = var.vnet_common.name
-  service_endpoints                         = []
-  private_endpoint_network_policies_enabled = false
+resource "azurerm_subnet" "vpn" {
+  name                 = "GatewaySubnet"
+  address_prefixes     = var.vpn_cidr_subnet
+  virtual_network_name = var.vnet_common.name
+  resource_group_name  = var.resource_group_name
 }
 
 module "vpn" {
@@ -18,7 +13,7 @@ module "vpn" {
   resource_group_name = var.resource_group_name
   sku                 = var.vpn_sku
   pip_sku             = var.vpn_pip_sku
-  subnet_id           = module.vpn_snet.id
+  subnet_id           = azurerm_subnet.vpn.id
 
   vpn_client_configuration = [
     {
