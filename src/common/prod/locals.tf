@@ -8,11 +8,12 @@ locals {
   secondary_project  = "${local.prefix}-${local.env_short}-${local.location_short.germanywestcentral}"
 
   tags = {
-    CostCenter  = "TS310 - PAGAMENTI & SERVIZI"
-    CreatedBy   = "Terraform"
-    Environment = "Prod"
-    Owner       = "IO"
-    Source      = "https://github.com/pagopa/io-infra/blob/main/src/common/prod"
+    CostCenter     = "TS000 - Tecnologia e Servizi"
+    CreatedBy      = "Terraform"
+    Environment    = "Prod"
+    BusinessUnit   = "App IO"
+    Source         = "https://github.com/pagopa/io-infra/blob/main/src/common/prod"
+    ManagementTeam = "IO Platform"
   }
 
   core = data.terraform_remote_state.core.outputs
