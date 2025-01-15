@@ -340,7 +340,7 @@ module "application_gateway_weu" {
   deny_paths            = ["\\/admin\\/(.*)"]
   error_action_group_id = module.monitoring_weu.action_groups.error
 
-  tags = merge(local.tags, { Source = "https://github.com/pagopa/io-infra" })
+  tags = local.tags
 }
 
 module "apim_weu" {
