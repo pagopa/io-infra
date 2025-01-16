@@ -68,8 +68,18 @@ module "key_vault_weu" {
   resource_group_common = azurerm_resource_group.common_weu.name
   tenant_id             = data.azurerm_client_config.current.tenant_id
 
-  azure_ad_group_admin_object_id            = data.azuread_group.adgroup_admin.object_id
-  azure_ad_group_developers_object_id       = data.azuread_group.adgroup_developers.object_id
+  azure_adgroup_admin_object_id             = data.azuread_group.admin.object_id
+  azure_adgroup_developers_object_id        = data.azuread_group.developers.object_id
+  azure_adgroup_wallet_admins_object_id     = data.azuread_group.wallet_admins.object_id
+  azure_adgroup_wallet_devs_object_id       = data.azuread_group.wallet_devs.object_id
+  azure_adgroup_com_admins_object_id        = data.azuread_group.com_admins.object_id
+  azure_adgroup_com_devs_object_id          = data.azuread_group.com_devs.object_id
+  azure_adgroup_svc_admins_object_id        = data.azuread_group.svc_admins.object_id
+  azure_adgroup_svc_devs_object_id          = data.azuread_group.svc_devs.object_id
+  azure_adgroup_auth_admins_object_id       = data.azuread_group.auth_admins.object_id
+  azure_adgroup_auth_devs_object_id         = data.azuread_group.auth_devs.object_id
+  azure_adgroup_bonus_admins_object_id      = data.azuread_group.bonus_admins.object_id
+  azure_adgroup_bonus_devs_object_id        = data.azuread_group.bonus_devs.object_id
   io_infra_ci_managed_identity_principal_id = data.azurerm_user_assigned_identity.managed_identity_io_infra_ci.principal_id
   io_infra_cd_managed_identity_principal_id = data.azurerm_user_assigned_identity.managed_identity_io_infra_cd.principal_id
   platform_iac_sp_object_id                 = data.azuread_service_principal.platform_iac_sp.object_id

@@ -23,7 +23,7 @@ resource "azurerm_key_vault_access_policy" "kv_adgroup_admin" {
   key_vault_id = azurerm_key_vault.kv.id
 
   tenant_id = var.tenant_id
-  object_id = var.azure_ad_group_admin_object_id
+  object_id = var.azure_adgroup_admin_object_id
 
   key_permissions         = ["Get", "List", "Update", "Create", "Import", "Delete", ]
   secret_permissions      = ["Get", "List", "Set", "Delete", "Restore", "Recover", ]
@@ -57,7 +57,7 @@ resource "azurerm_key_vault_access_policy" "kv_adgroup_developers" {
   key_vault_id = azurerm_key_vault.kv.id
 
   tenant_id = var.tenant_id
-  object_id = var.azure_ad_group_developers_object_id
+  object_id = var.azure_adgroup_developers_object_id
 
   key_permissions         = ["Get", "List", "Update", "Create", "Import", "Delete", ]
   secret_permissions      = ["Get", "List", "Set", "Delete", "Restore", "Recover", ]
@@ -85,4 +85,124 @@ resource "azurerm_key_vault_access_policy" "kv_azdevops_platform_iac" {
   secret_permissions      = ["Get", "List", "Set", ]
   storage_permissions     = []
   certificate_permissions = ["SetIssuers", "DeleteIssuers", "Purge", "List", "Get", "ManageContacts", ]
+}
+
+resource "azurerm_key_vault_access_policy" "kv_adgroup_wallet_admins" {
+  key_vault_id = azurerm_key_vault.kv.id
+
+  tenant_id = var.tenant_id
+  object_id = var.azure_adgroup_wallet_admins_object_id
+
+  key_permissions         = ["Get", "List", "Update", "Create", "Import", "Delete", ]
+  secret_permissions      = ["Get", "List", "Set", "Delete", "Restore", "Recover", ]
+  storage_permissions     = []
+  certificate_permissions = ["Get", "List", "Update", "Create", "Import", "Delete", "Restore", "Recover", ]
+}
+
+resource "azurerm_key_vault_access_policy" "kv_adgroup_wallet_devs" {
+  key_vault_id = azurerm_key_vault.kv.id
+
+  tenant_id = var.tenant_id
+  object_id = var.azure_adgroup_wallet_devs_object_id
+
+  key_permissions         = []
+  secret_permissions      = ["Get", "List", "Set", "Delete"]
+  storage_permissions     = []
+  certificate_permissions = []
+}
+
+resource "azurerm_key_vault_access_policy" "kv_adgroup_com_admins" {
+  key_vault_id = azurerm_key_vault.kv.id
+
+  tenant_id = var.tenant_id
+  object_id = var.azure_adgroup_com_admins_object_id
+
+  key_permissions         = ["Get", "List", "Update", "Create", "Import", "Delete", ]
+  secret_permissions      = ["Get", "List", "Set", "Delete", "Restore", "Recover", ]
+  storage_permissions     = []
+  certificate_permissions = ["Get", "List", "Update", "Create", "Import", "Delete", "Restore", "Recover", ]
+}
+
+resource "azurerm_key_vault_access_policy" "kv_adgroup_com_devs" {
+  key_vault_id = azurerm_key_vault.kv.id
+
+  tenant_id = var.tenant_id
+  object_id = var.azure_adgroup_com_devs_object_id
+
+  key_permissions         = []
+  secret_permissions      = ["Get", "List", "Set", "Delete"]
+  storage_permissions     = []
+  certificate_permissions = []
+}
+
+resource "azurerm_key_vault_access_policy" "kv_adgroup_svc_admins" {
+  key_vault_id = azurerm_key_vault.kv.id
+
+  tenant_id = var.tenant_id
+  object_id = var.azure_adgroup_svc_admins_object_id
+
+  key_permissions         = ["Get", "List", "Update", "Create", "Import", "Delete", ]
+  secret_permissions      = ["Get", "List", "Set", "Delete", "Restore", "Recover", ]
+  storage_permissions     = []
+  certificate_permissions = ["Get", "List", "Update", "Create", "Import", "Delete", "Restore", "Recover", ]
+}
+
+resource "azurerm_key_vault_access_policy" "kv_adgroup_svc_devs" {
+  key_vault_id = azurerm_key_vault.kv.id
+
+  tenant_id = var.tenant_id
+  object_id = var.azure_adgroup_svc_devs_object_id
+
+  key_permissions         = []
+  secret_permissions      = ["Get", "List", "Set", "Delete"]
+  storage_permissions     = []
+  certificate_permissions = []
+}
+
+resource "azurerm_key_vault_access_policy" "kv_adgroup_auth_admins" {
+  key_vault_id = azurerm_key_vault.kv.id
+
+  tenant_id = var.tenant_id
+  object_id = var.azure_adgroup_auth_devs_object_id
+
+  key_permissions         = ["Get", "List", "Update", "Create", "Import", "Delete", ]
+  secret_permissions      = ["Get", "List", "Set", "Delete", "Restore", "Recover", ]
+  storage_permissions     = []
+  certificate_permissions = ["Get", "List", "Update", "Create", "Import", "Delete", "Restore", "Recover", ]
+}
+
+resource "azurerm_key_vault_access_policy" "kv_adgroup_auth_devs" {
+  key_vault_id = azurerm_key_vault.kv.id
+
+  tenant_id = var.tenant_id
+  object_id = var.azure_adgroup_auth_devs_object_id
+
+  key_permissions         = []
+  secret_permissions      = ["Get", "List", "Set", "Delete"]
+  storage_permissions     = []
+  certificate_permissions = []
+}
+
+resource "azurerm_key_vault_access_policy" "kv_adgroup_bonus_admins" {
+  key_vault_id = azurerm_key_vault.kv.id
+
+  tenant_id = var.tenant_id
+  object_id = var.azure_adgroup_bonus_admins_object_id
+
+  key_permissions         = ["Get", "List", "Update", "Create", "Import", "Delete", ]
+  secret_permissions      = ["Get", "List", "Set", "Delete", "Restore", "Recover", ]
+  storage_permissions     = []
+  certificate_permissions = ["Get", "List", "Update", "Create", "Import", "Delete", "Restore", "Recover", ]
+}
+
+resource "azurerm_key_vault_access_policy" "kv_adgroup_bonus_devs" {
+  key_vault_id = azurerm_key_vault.kv.id
+
+  tenant_id = var.tenant_id
+  object_id = var.azure_adgroup_bonus_devs_object_id
+
+  key_permissions         = []
+  secret_permissions      = ["Get", "List", "Set", "Delete"]
+  storage_permissions     = []
+  certificate_permissions = []
 }
