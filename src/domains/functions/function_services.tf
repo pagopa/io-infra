@@ -46,6 +46,11 @@ data "azurerm_key_vault_secret" "fn_services_io_service_key" {
   key_vault_id = data.azurerm_key_vault.common.id
 }
 
+data "azurerm_key_vault_secret" "fn_services_pagopa_ecommerce_api_key" {
+  name         = "fnservices-PAGOPA-ECOMMERCE-API-KEY-PROD"
+  key_vault_id = data.azurerm_key_vault.common.id
+}
+
 #
 # APP CONFIGURATION
 #
@@ -86,6 +91,8 @@ locals {
       // we keep this while we wait for new app version to be deployed
       MAIL_FROM_DEFAULT = "IO - l'app dei servizi pubblici <no-reply@io.italia.it>"
 
+      PAGOPA_ECOMMERCE_BASE_URL = "https://api.platform.pagopa.it/checkout/auth/payments/v2"
+
       IO_FUNCTIONS_ADMIN_BASE_URL       = "https://api-app.internal.io.pagopa.it"
       APIM_BASE_URL                     = "https://api-app.internal.io.pagopa.it"
       DEFAULT_SUBSCRIPTION_PRODUCT_NAME = "io-services-api"
@@ -123,6 +130,7 @@ locals {
       WEBHOOK_NOTIFICATION_SERVICE_BLACKLIST = data.azurerm_key_vault_secret.fn_services_notification_service_blacklist_id.value
       IO_FUNCTIONS_ADMIN_API_TOKEN           = data.azurerm_key_vault_secret.fn_services_io_service_key.value
       APIM_SUBSCRIPTION_KEY                  = data.azurerm_key_vault_secret.fn_services_io_service_key.value
+      PAGOPA_ECOMMERCE_API_KEY               = data.azurerm_key_vault_secret.fn_services_pagopa_ecommerce_api_key.value
       BETA_USERS                             = data.azurerm_key_vault_secret.fn_services_beta_users.value
     }
     app_settings_1 = {
