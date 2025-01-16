@@ -91,7 +91,7 @@ locals {
       // we keep this while we wait for new app version to be deployed
       MAIL_FROM_DEFAULT = "IO - l'app dei servizi pubblici <no-reply@io.italia.it>"
 
-      PAGOPA_ECOMMERCE_BASE_URL         = "https://api.platform.pagopa.it/checkout/auth/payments/v2"
+      PAGOPA_ECOMMERCE_BASE_URL = "https://api.platform.pagopa.it/checkout/auth/payments/v2"
 
       IO_FUNCTIONS_ADMIN_BASE_URL       = "https://api-app.internal.io.pagopa.it"
       APIM_BASE_URL                     = "https://api-app.internal.io.pagopa.it"
