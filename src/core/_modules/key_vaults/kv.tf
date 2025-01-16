@@ -163,7 +163,7 @@ resource "azurerm_key_vault_access_policy" "kv_adgroup_auth_admins" {
   key_vault_id = azurerm_key_vault.kv.id
 
   tenant_id = var.tenant_id
-  object_id = var.azure_adgroup_auth_devs_object_id
+  object_id = var.azure_adgroup_auth_admins_object_id
 
   key_permissions         = ["Get", "List", "Update", "Create", "Import", "Delete", ]
   secret_permissions      = ["Get", "List", "Set", "Delete", "Restore", "Recover", ]
