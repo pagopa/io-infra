@@ -45,6 +45,13 @@ module "io_web_profile_itn_fe_st" {
     }
   }
 
+  network_rules = {
+    default_action             = "Allow"
+    bypass                     = []
+    ip_rules                   = []
+    virtual_network_subnet_ids = []
+  }
+
   static_website = {
     enabled            = true
     index_document     = "index.html"
