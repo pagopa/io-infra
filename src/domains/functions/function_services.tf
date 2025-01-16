@@ -48,7 +48,7 @@ data "azurerm_key_vault_secret" "fn_services_io_service_key" {
 
 data "azurerm_key_vault_secret" "fn_services_pagopa_ecommerce_api_key" {
   name         = "fnservices-PAGOPA-ECOMMERCE-API-KEY-PROD"
-  key_vault_id = var.key_vault_common.id
+  key_vault_id = data.azurerm_key_vault.common.id
 }
 
 #
