@@ -21,6 +21,27 @@ data "azurerm_linux_web_app" "firmaconio_selfcare_web_app" {
   resource_group_name = "${local.project_weu_legacy}-sign-backend-rg"
 }
 
+# AD Groups
+data "azuread_group" "wallet_admins" {
+  display_name = "${local.prefix}-${local.env_short}-adgroup-wallet-admins"
+}
+
+data "azuread_group" "com_admins" {
+  display_name = "${local.prefix}-${local.env_short}-adgroup-com-admins"
+}
+
+data "azuread_group" "svc_admins" {
+  display_name = "${local.prefix}-${local.env_short}-adgroup-svc-admins"
+}
+
+data "azuread_group" "auth_admins" {
+  display_name = "${local.prefix}-${local.env_short}-adgroup-auth-admins"
+}
+
+data "azuread_group" "bonus_admins" {
+  display_name = "${local.prefix}-${local.env_short}-adgroup-bonus-admins"
+}
+
 # Cosmos API
 data "azurerm_subnet" "cosmos_api_allowed" {
   for_each = toset(local.cosmos_api.allowed_subnets)
