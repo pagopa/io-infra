@@ -34,9 +34,9 @@ locals {
 
 module "function_public_itn" {
   source     = "git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app?ref=v8.44.0"
-  depends_on = [azurerm_app_service_plan.shared_plan_itn, module.shared_snet_itn]
+  depends_on = [module.shared_snet_itn]
 
-  resource_group_name = azurerm_resource_group.shared_rg_itn.name
+  resource_group_name = format("%s-shared-rg-01", local.project_itn)
   name                = format("%s-public-func-01", local.short_project_itn)
   location            = local.itn_location
   domain              = "auth"
@@ -45,7 +45,7 @@ module "function_public_itn" {
   node_version    = "20"
   runtime_version = "~4"
 
-  app_service_plan_id = azurerm_app_service_plan.shared_plan_itn.id
+  app_service_plan_id = data.azurerm_app_service_plan.shared_plan_itn.id
 
   always_on                                = "true"
   application_insights_instrumentation_key = data.azurerm_application_insights.application_insights.instrumentation_key
@@ -83,11 +83,11 @@ module "function_public_itn" {
 
 module "function_public_staging_slot_itn" {
   source     = "git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app_slot?ref=v8.44.0"
-  depends_on = [azurerm_app_service_plan.shared_plan_itn, module.shared_snet_itn]
+  depends_on = [module.shared_snet_itn]
 
   name                = "staging"
   location            = local.itn_location
-  resource_group_name = azurerm_resource_group.shared_rg_itn.name
+  resource_group_name = format("%s-shared-rg-01", local.project_itn)
   function_app_id     = module.function_public_itn.id
   app_service_plan_id = module.function_public_itn.app_service_plan_id
   health_check_path   = "/info"
@@ -111,153 +111,4 @@ module "function_public_staging_slot_itn" {
   ]
 
   tags = var.tags
-}
-
-resource "azurerm_monitor_autoscale_setting" "function_public_itn" {
-  name                = format("%s-autoscale", module.function_public_itn.name)
-  resource_group_name = azurerm_resource_group.shared_rg_itn.name
-  location            = local.itn_location
-  target_resource_id  = module.function_public_itn.app_service_plan_id
-
-  profile {
-    name = "default"
-
-    capacity {
-      default = var.function_public_autoscale_default
-      minimum = var.function_public_autoscale_minimum
-      maximum = var.function_public_autoscale_maximum
-    }
-
-    rule {
-      metric_trigger {
-        metric_name              = "Requests"
-        metric_resource_id       = module.function_public_itn.id
-        metric_namespace         = "microsoft.web/sites"
-        time_grain               = "PT1M"
-        statistic                = "Average"
-        time_window              = "PT5M"
-        time_aggregation         = "Average"
-        operator                 = "GreaterThan"
-        threshold                = 3000
-        divide_by_instance_count = false
-      }
-
-      scale_action {
-        direction = "Increase"
-        type      = "ChangeCount"
-        value     = "2"
-        cooldown  = "PT5M"
-      }
-    }
-
-    rule {
-      metric_trigger {
-        metric_name              = "Requests"
-        metric_resource_id       = data.azurerm_linux_function_app.function_web_profile.id
-        metric_namespace         = "microsoft.web/sites"
-        time_grain               = "PT1M"
-        statistic                = "Average"
-        time_window              = "PT5M"
-        time_aggregation         = "Average"
-        operator                 = "GreaterThan"
-        threshold                = 3000
-        divide_by_instance_count = false
-      }
-
-      scale_action {
-        direction = "Increase"
-        type      = "ChangeCount"
-        value     = "2"
-        cooldown  = "PT5M"
-      }
-    }
-
-    rule {
-      metric_trigger {
-        metric_name              = "CpuPercentage"
-        metric_resource_id       = module.function_public_itn.app_service_plan_id
-        metric_namespace         = "microsoft.web/serverfarms"
-        time_grain               = "PT1M"
-        statistic                = "Average"
-        time_window              = "PT5M"
-        time_aggregation         = "Average"
-        operator                 = "GreaterThan"
-        threshold                = 45
-        divide_by_instance_count = false
-      }
-
-      scale_action {
-        direction = "Increase"
-        type      = "ChangeCount"
-        value     = "2"
-        cooldown  = "PT5M"
-      }
-    }
-
-    rule {
-      metric_trigger {
-        metric_name              = "Requests"
-        metric_resource_id       = module.function_public_itn.id
-        metric_namespace         = "microsoft.web/sites"
-        time_grain               = "PT1M"
-        statistic                = "Average"
-        time_window              = "PT5M"
-        time_aggregation         = "Average"
-        operator                 = "LessThan"
-        threshold                = 2000
-        divide_by_instance_count = false
-      }
-
-      scale_action {
-        direction = "Decrease"
-        type      = "ChangeCount"
-        value     = "1"
-        cooldown  = "PT20M"
-      }
-    }
-
-    rule {
-      metric_trigger {
-        metric_name              = "Requests"
-        metric_resource_id       = data.azurerm_linux_function_app.function_web_profile.id
-        metric_namespace         = "microsoft.web/sites"
-        time_grain               = "PT1M"
-        statistic                = "Average"
-        time_window              = "PT5M"
-        time_aggregation         = "Average"
-        operator                 = "LessThan"
-        threshold                = 2000
-        divide_by_instance_count = false
-      }
-
-      scale_action {
-        direction = "Decrease"
-        type      = "ChangeCount"
-        value     = "1"
-        cooldown  = "PT20M"
-      }
-    }
-
-    rule {
-      metric_trigger {
-        metric_name              = "CpuPercentage"
-        metric_resource_id       = module.function_public_itn.app_service_plan_id
-        metric_namespace         = "microsoft.web/serverfarms"
-        time_grain               = "PT1M"
-        statistic                = "Average"
-        time_window              = "PT5M"
-        time_aggregation         = "Average"
-        operator                 = "LessThan"
-        threshold                = 30
-        divide_by_instance_count = false
-      }
-
-      scale_action {
-        direction = "Decrease"
-        type      = "ChangeCount"
-        value     = "1"
-        cooldown  = "PT20M"
-      }
-    }
-  }
 }
