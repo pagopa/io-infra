@@ -159,7 +159,7 @@ resource "azurerm_private_endpoint" "staging_function_profile_async_itn_sites" {
 resource "azurerm_private_endpoint" "function_public_itn_sites" {
   name                = "${local.common_project_itn}-public-func-pep-01"
   location            = local.itn_location
-  resource_group_name = azurerm_resource_group.shared_rg_itn.name
+  resource_group_name = format("%s-shared-rg-01", local.project_itn)
   subnet_id           = data.azurerm_subnet.itn_pep.id
 
   private_service_connection {
@@ -182,7 +182,7 @@ resource "azurerm_private_endpoint" "function_public_itn_sites" {
 resource "azurerm_private_endpoint" "staging_function_public_itn_sites" {
   name                = "${local.common_project_itn}-fast-login-func-staging-pep-01"
   location            = local.itn_location
-  resource_group_name = azurerm_resource_group.shared_rg_itn.name
+  resource_group_name = format("%s-shared-rg-01", local.project_itn)
   subnet_id           = data.azurerm_subnet.itn_pep.id
 
   private_service_connection {
