@@ -114,7 +114,8 @@ module "function_assets_cdn_staging_slot" {
 }
 
 module "function_assets_cdn_autoscale" {
-  source              = "github.com/pagopa/dx//infra/modules/azure_app_service_plan_autoscaler?ref=main"
+  source              = "pagopa/dx-azure-app-service-plan-autoscaler/azurerm"
+  version             = "~> 0"
   resource_group_name = local.rg_assets_cdn_name
   target_service = {
     function_app_name = module.function_assets_cdn.name
