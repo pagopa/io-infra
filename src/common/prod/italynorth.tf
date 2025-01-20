@@ -58,5 +58,11 @@ module "apim_itn" {
   action_group_id        = module.monitoring_weu.action_groups.error
   ai_instrumentation_key = module.monitoring_weu.appi_instrumentation_key
 
+  azure_adgroup_wallet_admins_object_id = data.azuread_group.wallet_admins.object_id
+  azure_adgroup_com_admins_object_id    = data.azuread_group.com_admins.object_id
+  azure_adgroup_svc_admins_object_id    = data.azuread_group.svc_admins.object_id
+  azure_adgroup_auth_admins_object_id   = data.azuread_group.auth_admins.object_id
+  azure_adgroup_bonus_admins_object_id  = data.azuread_group.bonus_admins.object_id
+
   tags = local.tags
 }
