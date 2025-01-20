@@ -67,7 +67,7 @@ jobs:
 
       # https://github.com/Azure/cli/releases
       - name: Azure CLI
-        uses: azure/cli@v1
+        uses: azure/cli@4db43908b9df2e7ac93c8275a8f9a448c59338dd # v1
         with:
           inlineScript: |
             set -e
