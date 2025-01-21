@@ -9,10 +9,11 @@ locals {
   repo_name = "io-infra"
 
   tags = {
-    CostCenter  = "TS310 - PAGAMENTI & SERVIZI"
-    CreatedBy   = "Terraform"
-    Environment = "Prod"
-    Owner       = "IO"
-    Source      = "https://github.com/pagopa/io-infra/blob/main/src/identity/prod"
+    CostCenter     = "TS000 - Tecnologia e Servizi"
+    CreatedBy      = "Terraform"
+    Environment    = "Prod"
+    BusinessUnit   = "App IO"
+    Source         = "https://github.com/pagopa/io-infra/blob/main/src/identity/prod"
+    ManagementTeam = "IO Platform"
   }
 }
