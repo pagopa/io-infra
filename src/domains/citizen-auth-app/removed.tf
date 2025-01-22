@@ -18,3 +18,10 @@ removed {
     destroy = false
   }
 }
+
+removed {
+  from = module.shared_snet_itn.azurerm_subnet.this
+  lifecycle {
+    destroy = false
+  }
+}
