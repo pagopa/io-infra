@@ -52,9 +52,5 @@ locals {
     #   target = { name = "<TARGET_COSMOS_ACCOUNT_NAME>", resource_group_name = "<TARGET_COSMOS_ACCOUNT_RG_NAME>" }
     #   databases = ["db1", "db2", "db3"]
     # }
-    {
-      source = { name = "ps-d-itn-cosno-14", resource_group_name = "ps-d-itn-migration-rg-01" }
-      target = { name = "ps-d-itn-cosno-13", resource_group_name = "ps-d-itn-migration-rg-01" }
-    }
   ]
 }
