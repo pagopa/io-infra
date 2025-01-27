@@ -89,3 +89,17 @@ module "iam_adgroup_bonus_admins" {
     }
   ]
 }
+
+module "iam_cgn_pe_backend_app_01" {
+  source = "github.com/pagopa/dx//infra/modules/azure_role_assignments?ref=main"
+
+  principal_id = data.azurerm_linux_web_app.cgn_pe_backend_app_01.identity[0].principal_id
+
+  apim = [
+    {
+      name                = module.apim_v2.name
+      resource_group_name = module.apim_v2.resource_group_name
+      role                = "owner"
+    }
+  ]
+}
