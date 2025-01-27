@@ -37,3 +37,10 @@ data "azurerm_private_dns_zone" "scm_azure_api_net" {
   name                = "scm.azure-api.net"
   resource_group_name = "io-p-rg-common"
 }
+
+data "azurerm_linux_web_app" "cgn_pe_backend_app_01" {
+  provider = azurerm.prod-cgn
+
+  name                = "io-p-itn-cgn-pe-backend-app-01"
+  resource_group_name = "io-p-itn-cgn-pe-rg-01"
+}
