@@ -1,17 +1,16 @@
-# resource "azurerm_resource_group" "migration" {
-#   name     = "${local.project_itn}-${local.environment.app_name}-rg-${local.environment.instance_number}"
-#   location = "italynorth"
+resource "azurerm_resource_group" "migration" {
+  name     = "${local.project_itn}-${local.environment.app_name}-rg-${local.environment.instance_number}"
+  location = "italynorth"
 
-#   tags = local.tags
-# }
+  tags = local.tags
+}
 
 # Create Azure Data Factory instances
 # Enables system-assigned managed identity for secure access to resources
 resource "azurerm_data_factory" "this" {
-  name     = "${local.project_itn}-${local.environment.app_name}-adf-${local.environment.instance_number}"
-  location = "italynorth"
-  # resource_group_name = azurerm_resource_group.migration.name
-  resource_group_name = "ps-d-itn-migration-rg-01"
+  name                = "${local.project_itn}-${local.environment.app_name}-adf-${local.environment.instance_number}"
+  location            = "italynorth"
+  resource_group_name = azurerm_resource_group.migration.name
 
   public_network_enabled          = false
   managed_virtual_network_enabled = true
