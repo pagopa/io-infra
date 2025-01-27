@@ -102,6 +102,13 @@ resource "azurerm_role_assignment" "ci_cgn" {
   role_definition_name = "Reader"
 }
 
+resource "azurerm_role_assignment" "ci_cgn_iac_reader" {
+  provider             = azurerm.prod-cgn
+  scope                = data.azurerm_subscription.cgn.id
+  principal_id         = module.federated_identities.federated_ci_identity.id
+  role_definition_name = "PagoPA IaC Reader"
+}
+
 resource "azurerm_role_assignment" "cd_cgn" {
   provider             = azurerm.prod-cgn
   scope                = data.azurerm_subscription.cgn.id
@@ -109,11 +116,11 @@ resource "azurerm_role_assignment" "cd_cgn" {
   role_definition_name = "Reader"
 }
 
-resource "azurerm_role_assignment" "cd_cgn_postgresql" {
+resource "azurerm_role_assignment" "cd_cgn_iac_reader" {
   provider             = azurerm.prod-cgn
-  scope                = data.azurerm_postgresql_server.cgn_psql.id
+  scope                = data.azurerm_subscription.cgn.id
   principal_id         = module.federated_identities.federated_cd_identity.id
-  role_definition_name = "Contributor"
+  role_definition_name = "PagoPA IaC Reader"
 }
 
 resource "azurerm_role_assignment" "cd_selc_evhns" {
