@@ -29,6 +29,7 @@ resource "azurerm_data_factory_pipeline" "pipeline" {
           type          = "CosmosDbSqlApiSink"
           writeBehavior = var.cosmos_accounts.target.write_behavior
         }
+        validateDataConsistency = true
       }
     }
   ])
