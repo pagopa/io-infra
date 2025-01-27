@@ -123,4 +123,3 @@ data "azurerm_subnet" "itn_msgs_sending_func_snet" {
   resource_group_name  = local.core.networking.itn.vnet_common.resource_group_name
   virtual_network_name = local.core.networking.itn.vnet_common.name
 }
-
