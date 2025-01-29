@@ -15,5 +15,5 @@ jobs:
     secrets: inherit
     with:
       environment: prod
-      base_path: "src/domains/bonus/prod"
+      base_path: "src/domains/bonus"
       use_private_agent: false
