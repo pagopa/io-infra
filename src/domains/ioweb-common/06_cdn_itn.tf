@@ -224,3 +224,21 @@ resource "azurerm_dns_txt_record" "dns_txt" {
   })
 }
 ####################
+
+#####################
+# CDN LOGS
+#####################
+
+resource "azurerm_monitor_diagnostic_setting" "diagnostic_settings_cdn_frontdoor" {
+  name                       = "${azurerm_cdn_frontdoor_profile.portal_profile.name}-cdn-profile-diagnostic-settings"
+  target_resource_id         = azurerm_cdn_frontdoor_profile.portal_profile.id
+  log_analytics_workspace_id = data.azurerm_log_analytics_workspace.log_analytics.id
+
+  enabled_log {
+    category_group = "allLogs"
+  }
+
+  metric {
+    category = "AllMetrics"
+  }
+}
