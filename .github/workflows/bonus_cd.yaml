@@ -1,0 +1,19 @@
+name: Continuous Delivery on bonus
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+    paths:
+      - "src/domains/bonus/**"
+
+jobs:
+  release_prod:
+    uses: pagopa/dx/.github/workflows/infra_apply.yaml@main
+    name: Terraform Apply
+    secrets: inherit
+    with:
+      environment: prod
+      base_path: "src/domains/bonus/prod"
+      use_private_agent: false
