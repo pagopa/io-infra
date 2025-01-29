@@ -2,6 +2,10 @@
     <inbound>
         <base />
         <choose>
+            <when condition="@(context.Subscription.Id.Equals("azure-deployc49a"))">
+                <!-- ApiRateLimit 250 for IO Novita e aggiornamenti service -->
+                <rate-limit-by-key calls="250" renewal-period="5" counter-key="@(context.Subscription.Id + "-" + context.User.Id)" retry-after-header-name="x-rate-limit-retry-after" remaining-calls-header-name="x-rate-limit-remaining" />
+            </when>
             <when condition="@(context.User.Groups.Select(g => g.Name).Contains("ApiNoRateLimit"))">
                 <!-- ApiNoRateLimit for internal/special users -->
             </when>
