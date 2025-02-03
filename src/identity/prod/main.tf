@@ -77,17 +77,9 @@ module "federated_identities" {
         "Storage Queue Data Contributor",
         "Storage Table Data Contributor",
         "Key Vault Contributor",
+        "Role Based Access Control Administrator",
       ]
       resource_groups = {
-        io-p-itn-common-rg-01 = [
-          "Role Based Access Control Administrator"
-        ],
-        io-p-rg-internal = [
-          "Role Based Access Control Administrator"
-        ],
-        io-p-rg-linux = [
-          "Role Based Access Control Administrator"
-        ]
       }
     }
   }
