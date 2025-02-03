@@ -61,15 +61,15 @@ resource "azurerm_private_endpoint" "cosno_reminder_itn" {
   }
 }
 
-resource "azurerm_private_endpoint" "cosno_io_com_itn" {
-  name                = "${local.project_itn}-io-com-cosno-pep-01"
+resource "azurerm_private_endpoint" "cosno_remote_content_itn" {
+  name                = "${local.project_itn}-msgs-remote-content-cosno-pep-01"
   location            = "italynorth"
   resource_group_name = azurerm_resource_group.data_rg.name
   subnet_id           = data.azurerm_subnet.pep_subnet_itn.id
 
   private_service_connection {
-    name                           = "${local.project_itn}-io-com-cosno-pep-01"
-    private_connection_resource_id = module.cosmosdb_account_io_com.id
+    name                           = "${local.project_itn}-msgs-remote-content-cosno-pep-01"
+    private_connection_resource_id = module.cosmosdb_account_remote_content.id
     is_manual_connection           = false
     subresource_names              = ["Sql"]
   }
