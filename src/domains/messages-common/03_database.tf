@@ -281,13 +281,13 @@ resource "azurerm_key_vault_secret" "reminder_mysql_db_server_url" {
 ############################
 # REMOTE CONTENT COSMOS
 ############################
-module "cosmosdb_account_remote_content" {
+module "cosmosdb_account_io_com" {
   source = "github.com/pagopa/terraform-azurerm-v3//cosmosdb_account?ref=v8.27.0"
 
-  name                = "${local.product}-${var.domain}-remote-content"
+  name                = "io-p-itn-com-cosno-01"
   domain              = upper(var.domain)
-  location            = azurerm_resource_group.data_rg.location
-  resource_group_name = azurerm_resource_group.data_rg.name
+  location            = "italynorth"
+  resource_group_name = "io-p-itn-com-rg-01"
   offer_type          = "Standard"
   enable_free_tier    = false
   kind                = "GlobalDocumentDB"
@@ -324,15 +324,15 @@ module "cosmosdb_account_remote_content" {
 
 module "cosmosdb_sql_database_remote_content" {
   source              = "github.com/pagopa/terraform-azurerm-v3//cosmosdb_sql_database?ref=v8.27.0"
-  name                = "remote-content"
-  resource_group_name = azurerm_resource_group.data_rg.name
-  account_name        = module.cosmosdb_account_remote_content.name
+  name                = "remote-content-cosmos-01"
+  resource_group_name = "io-p-itn-com-rg-01"
+  account_name        = module.cosmosdb_account_io_com.name
 }
 
 resource "azurerm_cosmosdb_sql_container" "message_configuration" {
   name                = "message-configuration"
-  resource_group_name = azurerm_resource_group.data_rg.name
-  account_name        = module.cosmosdb_account_remote_content.name
+  resource_group_name = "io-p-itn-com-rg-01"
+  account_name        = module.cosmosdb_account_io_com.name
   database_name       = module.cosmosdb_sql_database_remote_content.name
 
   partition_key_path    = "/configurationId"
@@ -358,7 +358,7 @@ resource "azurerm_cosmosdb_sql_container" "message_configuration" {
 resource "azurerm_cosmosdb_sql_container" "user_configurations" {
   name                = "user-configurations"
   resource_group_name = azurerm_resource_group.data_rg.name
-  account_name        = module.cosmosdb_account_remote_content.name
+  account_name        = module.cosmosdb_account_io_com.name
   database_name       = module.cosmosdb_sql_database_remote_content.name
 
   partition_key_path    = "/userId"
