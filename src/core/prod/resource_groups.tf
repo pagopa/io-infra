@@ -34,6 +34,13 @@ resource "azurerm_resource_group" "github_managed_identity_itn" {
   tags = local.tags
 }
 
+resource "azurerm_resource_group" "terraform_weu" {
+  name     = "terraform-state-rg"
+  location = "westeurope"
+
+  tags = local.tags
+}
+
 resource "azurerm_resource_group" "internal_weu" {
   name     = format("%s-rg-internal", local.project_weu_legacy)
   location = "westeurope"
