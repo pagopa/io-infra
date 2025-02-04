@@ -11,7 +11,8 @@ resource "azurerm_resource_group" "io_web_profile_itn_fe_rg" {
 }
 
 module "io_web_profile_itn_fe_st" {
-  source = "github.com/pagopa/dx//infra/modules/azure_storage_account?ref=main"
+  source  = "pagopa/dx-azure-storage-account/azurerm"
+  version = "~> 0"
 
   // s tier -> Standard LRS
   // l tier -> Standard ZRS
