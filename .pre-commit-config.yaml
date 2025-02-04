@@ -4,8 +4,8 @@ repos:
     hooks:
       - id: terraform_providers_lock_staged
       - id: lock_modules
-        exclude: ^.*/(_modules|modules|\.terraform)(/.*)?$
-        files: src/(common|core|github_runner|identity|migration|repository)
+        exclude: ^.*/(_modules|modules|\.terraform|env|templates|api|api_product)(/.*)?$
+        files: src/(common|core|github_runner|identity|migration|repository|domains)
   - repo: https://github.com/antonbabenko/pre-commit-terraform
     rev: v1.96.2
     hooks:

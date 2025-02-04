@@ -1,3 +1,8 @@
 {
-  "naming_convention": "b0f4e012251e566e638cba00f25d3e9e79e7ba67058e89d6f1a6b11062e203cb"
+  "storage_accounts_itn.iam_adgroup_admins": "70538ac55deebe95f1379ec5abe1f3dd207b468c18f69cdb1bc3e6a946e50b56",
+  "storage_accounts_itn.iam_adgroup_auth_admins": "70538ac55deebe95f1379ec5abe1f3dd207b468c18f69cdb1bc3e6a946e50b56",
+  "storage_accounts_itn.iam_adgroup_bonus_admins": "70538ac55deebe95f1379ec5abe1f3dd207b468c18f69cdb1bc3e6a946e50b56",
+  "storage_accounts_itn.iam_adgroup_com_admins": "70538ac55deebe95f1379ec5abe1f3dd207b468c18f69cdb1bc3e6a946e50b56",
+  "storage_accounts_itn.iam_adgroup_svc_admins": "70538ac55deebe95f1379ec5abe1f3dd207b468c18f69cdb1bc3e6a946e50b56",
+  "storage_accounts_itn.iam_adgroup_wallet_admins": "70538ac55deebe95f1379ec5abe1f3dd207b468c18f69cdb1bc3e6a946e50b56"
 }
