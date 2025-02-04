@@ -21,7 +21,7 @@ on:
 
 jobs:
   prod_itn_common_code_review:
-    uses: pagopa/dx/.github/workflows/infra_plan.yaml@fix-infra-plan-group
+    uses: pagopa/dx/.github/workflows/infra_plan.yaml@main
     name: Prod - Code Review
     secrets: inherit
     with:
