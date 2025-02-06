@@ -10,7 +10,7 @@ on:
 
 jobs:
   release_prod:
-    uses: pagopa/dx/.github/workflows/infra_apply.yaml@check-modules-lock-in-cicd
+    uses: pagopa/dx/.github/workflows/infra_apply.yaml@main
     name: Terraform Apply
     secrets: inherit
     with:

@@ -18,7 +18,7 @@ on:
 
 jobs:
   prod_legacy_apim_deploy:
-    uses: pagopa/dx/.github/workflows/infra_apply.yaml@check-modules-lock-in-cicd
+    uses: pagopa/dx/.github/workflows/infra_apply.yaml@main
     name: Prod - Code Deploy
     secrets: inherit
     with:

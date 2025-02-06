@@ -17,7 +17,7 @@ on:
       - ".github/workflows/common_deploy.yaml"
 jobs:
   prod_itn_common_deploy:
-    uses: pagopa/dx/.github/workflows/infra_apply.yaml@check-modules-lock-in-cicd
+    uses: pagopa/dx/.github/workflows/infra_apply.yaml@main
     name: Prod - Code Deploy
     secrets: inherit
     with:
