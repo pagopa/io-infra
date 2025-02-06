@@ -38,7 +38,7 @@ module "iam_adgroup_wallet_devs" {
     {
       storage_account_name = azurerm_storage_account.terraform.name
       resource_group_name  = azurerm_storage_account.terraform.resource_group_name
-      role                 = "reader"
+      role                 = "writer"
     }
   ]
 }
@@ -68,7 +68,7 @@ module "iam_adgroup_com_devs" {
     {
       storage_account_name = azurerm_storage_account.terraform.name
       resource_group_name  = azurerm_storage_account.terraform.resource_group_name
-      role                 = "reader"
+      role                 = "writer"
     }
   ]
 }
@@ -98,7 +98,7 @@ module "iam_adgroup_svc_devs" {
     {
       storage_account_name = azurerm_storage_account.terraform.name
       resource_group_name  = azurerm_storage_account.terraform.resource_group_name
-      role                 = "reader"
+      role                 = "writer"
     }
   ]
 }
@@ -128,7 +128,7 @@ module "iam_adgroup_auth_devs" {
     {
       storage_account_name = azurerm_storage_account.terraform.name
       resource_group_name  = azurerm_storage_account.terraform.resource_group_name
-      role                 = "reader"
+      role                 = "writer"
     }
   ]
 }
@@ -158,7 +158,7 @@ module "iam_adgroup_bonus_devs" {
     {
       storage_account_name = azurerm_storage_account.terraform.name
       resource_group_name  = azurerm_storage_account.terraform.resource_group_name
-      role                 = "reader"
+      role                 = "writer"
     }
   ]
 }
