@@ -21,7 +21,8 @@ resource "azurerm_key_vault_access_policy" "v2_common" {
 }
 
 module "iam_adgroup_wallet_admins" {
-  source = "github.com/pagopa/dx//infra/modules/azure_role_assignments?ref=main"
+  source  = "pagopa/dx-azure-role-assignments/azurerm"
+  version = "~> 0"
 
   principal_id = var.azure_adgroup_wallet_admins_object_id
 
@@ -35,7 +36,8 @@ module "iam_adgroup_wallet_admins" {
 }
 
 module "iam_adgroup_com_admins" {
-  source = "github.com/pagopa/dx//infra/modules/azure_role_assignments?ref=main"
+  source  = "pagopa/dx-azure-role-assignments/azurerm"
+  version = "~> 0"
 
   principal_id = var.azure_adgroup_com_admins_object_id
 
@@ -49,7 +51,8 @@ module "iam_adgroup_com_admins" {
 }
 
 module "iam_adgroup_svc_admins" {
-  source = "github.com/pagopa/dx//infra/modules/azure_role_assignments?ref=main"
+  source  = "pagopa/dx-azure-role-assignments/azurerm"
+  version = "~> 0"
 
   principal_id = var.azure_adgroup_svc_admins_object_id
 
@@ -63,7 +66,8 @@ module "iam_adgroup_svc_admins" {
 }
 
 module "iam_adgroup_auth_admins" {
-  source = "github.com/pagopa/dx//infra/modules/azure_role_assignments?ref=main"
+  source  = "pagopa/dx-azure-role-assignments/azurerm"
+  version = "~> 0"
 
   principal_id = var.azure_adgroup_auth_admins_object_id
 
@@ -77,7 +81,8 @@ module "iam_adgroup_auth_admins" {
 }
 
 module "iam_adgroup_bonus_admins" {
-  source = "github.com/pagopa/dx//infra/modules/azure_role_assignments?ref=main"
+  source  = "pagopa/dx-azure-role-assignments/azurerm"
+  version = "~> 0"
 
   principal_id = var.azure_adgroup_bonus_admins_object_id
 
@@ -91,7 +96,8 @@ module "iam_adgroup_bonus_admins" {
 }
 
 module "iam_cgn_pe_backend_app_01" {
-  source = "github.com/pagopa/dx//infra/modules/azure_role_assignments?ref=main"
+  source  = "pagopa/dx-azure-role-assignments/azurerm"
+  version = "~> 0"
 
   principal_id = data.azurerm_linux_web_app.cgn_pe_backend_app_01.identity[0].principal_id
 
