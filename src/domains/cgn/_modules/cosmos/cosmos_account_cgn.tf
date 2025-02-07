@@ -24,7 +24,12 @@ module "cosmos_account_cgn" {
 
   additional_geo_locations = [
     {
-      location          = var.secondary_location
+      location          = var.secondary_locations[0]
+      failover_priority = 0
+      zone_redundant    = false
+    },
+    {
+      location          = var.secondary_locations[1]
       failover_priority = 1
       zone_redundant    = false
     }
