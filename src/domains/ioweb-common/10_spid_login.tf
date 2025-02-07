@@ -1,6 +1,6 @@
 
 locals {
-  fe_domain = "https://ioapp.it"
+  fe_domain = "https://account.ioapp.it"
 }
 
 ############################
