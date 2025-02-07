@@ -1,0 +1,6 @@
+{
+  "migrate_cosmos_accounts.naming_convention": "5b1d21788783dcf33e17a9842f9f7c874c8c5f736c82e70979eb9c8785a74ce4",
+  "migrate_cosmos_accounts.roles": "70538ac55deebe95f1379ec5abe1f3dd207b468c18f69cdb1bc3e6a946e50b56",
+  "migrate_storage_accounts.naming_convention": "5b1d21788783dcf33e17a9842f9f7c874c8c5f736c82e70979eb9c8785a74ce4",
+  "migrate_storage_accounts.roles": "70538ac55deebe95f1379ec5abe1f3dd207b468c18f69cdb1bc3e6a946e50b56"
+}
