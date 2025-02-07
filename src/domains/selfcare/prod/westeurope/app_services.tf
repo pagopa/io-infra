@@ -39,3 +39,27 @@ module "app_services" {
 
   tags = local.tags
 }
+
+resource "azurerm_role_assignment" "devportal_be_apim_v2" {
+  role_definition_name = "API Management Service Operator Role"
+  scope                = data.azurerm_api_management.apim_v2_api.id
+  principal_id         = module.app_services.app_service_common.devportal_be.principal_id
+}
+
+resource "azurerm_role_assignment" "selfcare_be_apim_v2" {
+  role_definition_name = "API Management Service Operator Role"
+  scope                = data.azurerm_api_management.apim_v2_api.id
+  principal_id         = module.app_services.app_service_common.selfcare_be.principal_id
+}
+
+resource "azurerm_role_assignment" "devportal_be_apim_itn" {
+  role_definition_name = "API Management Service Operator Role"
+  scope                = data.azurerm_api_management.apim_itn_api.id
+  principal_id         = module.app_services.app_service_common.devportal_be.principal_id
+}
+
+resource "azurerm_role_assignment" "selfcare_be_apim_itn" {
+  role_definition_name = "API Management Service Operator Role"
+  scope                = data.azurerm_api_management.apim_itn_api.id
+  principal_id         = module.app_services.app_service_common.selfcare_be.principal_id
+}
