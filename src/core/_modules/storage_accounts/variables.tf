@@ -28,7 +28,17 @@ variable "azure_adgroup_wallet_admins_object_id" {
   description = "Object Id of the Entra group for subscription admins"
 }
 
+variable "azure_adgroup_wallet_devs_object_id" {
+  type        = string
+  description = "Object Id of the Entra group for subscription admins"
+}
+
 variable "azure_adgroup_com_admins_object_id" {
+  type        = string
+  description = "Object Id of the Entra group for subscription admins"
+}
+
+variable "azure_adgroup_com_devs_object_id" {
   type        = string
   description = "Object Id of the Entra group for subscription admins"
 }
@@ -38,12 +48,27 @@ variable "azure_adgroup_svc_admins_object_id" {
   description = "Object Id of the Entra group for subscription admins"
 }
 
+variable "azure_adgroup_svc_devs_object_id" {
+  type        = string
+  description = "Object Id of the Entra group for subscription admins"
+}
+
 variable "azure_adgroup_auth_admins_object_id" {
   type        = string
   description = "Object Id of the Entra group for subscription admins"
 }
 
+variable "azure_adgroup_auth_devs_object_id" {
+  type        = string
+  description = "Object Id of the Entra group for subscription admins"
+}
+
 variable "azure_adgroup_bonus_admins_object_id" {
+  type        = string
+  description = "Object Id of the Entra group for subscription admins"
+}
+
+variable "azure_adgroup_bonus_devs_object_id" {
   type        = string
   description = "Object Id of the Entra group for subscription admins"
 }

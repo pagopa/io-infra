@@ -48,6 +48,18 @@ resource "azurerm_resource_group" "internal_weu" {
   tags = local.tags
 }
 
+resource "azurerm_resource_group" "operations_weu" {
+  name     = format("%s-rg-operations", local.project_weu_legacy)
+  location = "westeurope"
+
+  tags = local.tags
+}
+
+import {
+  to = azurerm_resource_group.operations_weu
+  id = "/subscriptions/ec285037-c673-4f58-b594-d7c480da4e8b/resourceGroups/io-p-rg-operations"
+}
+
 resource "azurerm_resource_group" "external_weu" {
   name     = format("%s-rg-external", local.project_weu_legacy)
   location = "westeurope"
