@@ -16,7 +16,7 @@ module "exportdata_weu_01_com_admins" {
     {
       storage_account_name = azurerm_storage_account.exportdata_weu_01.name
       resource_group_name  = var.resource_group_operations
-      role                 = "writer"
+      role                 = "owner"
     }
   ]
 
