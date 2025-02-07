@@ -21,14 +21,14 @@ locals {
       ADMIN_API_KEY = data.azurerm_key_vault_secret.selfcare_apim_io_service_key.value
 
       # Apim connection
-      APIM_PRODUCT_NAME   = "io-services-api"
-      APIM_USER_GROUPS    = "apimessagewrite,apiinforead,apimessageread,apilimitedprofileread"
-      ARM_APIM            = "io-p-apim-v2-api" # io-p-itn-apim-01
-      ARM_RESOURCE_GROUP  = "io-p-rg-internal" # io-p-itn-common-rg-01
-      ARM_SUBSCRIPTION_ID = data.azurerm_subscription.current.subscription_id
-      ARM_TENANT_ID       = data.azurerm_client_config.current.tenant_id
-      # SERVICE_PRINCIPAL_CLIENT_ID = data.azurerm_key_vault_secret.apim_service_principal_client_id.value
-      # SERVICE_PRINCIPAL_SECRET    = data.azurerm_key_vault_secret.apim_service_principal_secret.value
+      APIM_PRODUCT_NAME           = "io-services-api"
+      APIM_USER_GROUPS            = "apimessagewrite,apiinforead,apimessageread,apilimitedprofileread"
+      ARM_APIM                    = "io-p-apim-v2-api" # For ITN Migration replace with io-p-itn-apim-01
+      ARM_RESOURCE_GROUP          = "io-p-rg-internal" # For ITN Migration replace with io-p-itn-common-rg-01
+      ARM_SUBSCRIPTION_ID         = data.azurerm_subscription.current.subscription_id
+      ARM_TENANT_ID               = data.azurerm_client_config.current.tenant_id
+      SERVICE_PRINCIPAL_CLIENT_ID = data.azurerm_key_vault_secret.apim_service_principal_client_id.value # Remove after ITN migration
+      SERVICE_PRINCIPAL_SECRET    = data.azurerm_key_vault_secret.apim_service_principal_secret.value    # Remove after ITN migration
       SERVICE_PRINCIPAL_TENANT_ID = data.azurerm_client_config.current.tenant_id
       USE_SERVICE_PRINCIPAL       = "1"
 
@@ -107,10 +107,10 @@ locals {
       COSMOSDB_URI                       = data.azurerm_cosmosdb_account.cosmos_api.endpoint
 
       // connection to APIM
-      # APIM_CLIENT_ID       = data.azurerm_key_vault_secret.apim_service_principal_client_id.value
-      APIM_RESOURCE_GROUP = "io-p-rg-internal" # io-p-itn-common-rg-01
-      # APIM_SECRET          = data.azurerm_key_vault_secret.apim_service_principal_secret.value
-      APIM_SERVICE_NAME    = "io-p-apim-v2-api" # io-p-itn-apim-01
+      APIM_RESOURCE_GROUP  = "io-p-rg-internal"                                                   # For ITN Migration replace with io-p-itn-common-rg-01
+      APIM_CLIENT_ID       = data.azurerm_key_vault_secret.apim_service_principal_client_id.value # Remove after ITN migration
+      APIM_SECRET          = data.azurerm_key_vault_secret.apim_service_principal_secret.value    # Remove after ITN migration
+      APIM_SERVICE_NAME    = "io-p-apim-v2-api"                                                   # For ITN Migration replace with io-p-itn-apim-01
       APIM_SUBSCRIPTION_ID = data.azurerm_subscription.current.subscription_id
       APIM_TENANT_ID       = data.azurerm_client_config.current.tenant_id
 
