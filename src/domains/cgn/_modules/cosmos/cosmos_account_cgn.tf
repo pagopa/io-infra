@@ -26,7 +26,7 @@ module "cosmos_account_cgn" {
     {
       location          = var.secondary_locations[0]
       failover_priority = 0
-      zone_redundant    = false
+      zone_redundant    = true
     },
     {
       location          = var.secondary_locations[1]
