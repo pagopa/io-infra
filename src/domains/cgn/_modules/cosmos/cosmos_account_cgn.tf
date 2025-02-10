@@ -20,14 +20,9 @@ module "cosmos_account_cgn" {
     max_staleness_prefix    = null
   }
 
-  main_geo_location_location = var.location
+  main_geo_location_location = var.secondary_locations[0]
 
   additional_geo_locations = [
-    {
-      location          = var.secondary_locations[0]
-      failover_priority = 0
-      zone_redundant    = true
-    },
     {
       location          = var.secondary_locations[1]
       failover_priority = 1
