@@ -414,6 +414,13 @@ module "cosmos_api_weu" {
 
   error_action_group_id = module.monitoring_weu.action_groups.error
 
+  azure_adgroup_com_admins_object_id  = data.azuread_group.com_admins.object_id
+  azure_adgroup_com_devs_object_id    = data.azuread_group.com_devs.object_id
+  azure_adgroup_svc_admins_object_id  = data.azuread_group.svc_admins.object_id
+  azure_adgroup_svc_devs_object_id    = data.azuread_group.svc_devs.object_id
+  azure_adgroup_auth_admins_object_id = data.azuread_group.auth_admins.object_id
+  azure_adgroup_auth_devs_object_id   = data.azuread_group.auth_devs.object_id
+
   tags = local.tags
 }
 
