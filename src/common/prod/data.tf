@@ -39,8 +39,16 @@ data "azuread_group" "svc_admins" {
   display_name = "${local.prefix}-${local.env_short}-adgroup-svc-admins"
 }
 
+data "azuread_group" "svc_devs" {
+  display_name = "${local.prefix}-${local.env_short}-adgroup-svc-developers"
+}
+
 data "azuread_group" "auth_admins" {
   display_name = "${local.prefix}-${local.env_short}-adgroup-auth-admins"
+}
+
+data "azuread_group" "auth_devs" {
+  display_name = "${local.prefix}-${local.env_short}-adgroup-auth-developers"
 }
 
 data "azuread_group" "bonus_admins" {
