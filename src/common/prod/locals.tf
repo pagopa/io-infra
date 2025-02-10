@@ -71,10 +71,10 @@ locals {
     services_app_backend = data.azurerm_linux_function_app.services_app_backend_function_app.default_hostname
     lollipop             = data.azurerm_linux_function_app.lollipop_function.default_hostname
     eucovidcert          = data.azurerm_linux_function_app.eucovidcert.default_hostname
-    cgn                  = "io-p-itn-cgn-card-func-01.azurewebsites.net"
+    cgn                  = "io-p-itn-cgn-card-func-02.azurewebsites.net"
     iosign               = data.azurerm_linux_function_app.io_sign_user.default_hostname
     iofims               = data.azurerm_linux_function_app.io_fims_user.default_hostname
-    cgnonboarding        = "io-p-itn-cgn-search-func-01.azurewebsites.net"
+    cgnonboarding        = "io-p-itn-cgn-search-func-02.azurewebsites.net"
     iowallet             = data.azurerm_linux_function_app.wallet_user.default_hostname
   }
 
