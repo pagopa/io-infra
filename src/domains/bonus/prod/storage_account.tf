@@ -6,12 +6,19 @@ resource "azurerm_storage_account" "bonus_backup_itn_01" {
   account_kind             = "StorageV2"
   account_tier             = "Standard"
   account_replication_type = "ZRS"
-  access_tier              = "Cool"
+  # access_tier              = "Cold" # not supported by the provider
 
-  public_network_access_enabled = true
+  public_network_access_enabled = false
 
-  shared_access_key_enabled       = false
+  network_rules {
+    default_action = "Deny"
+    bypass         = ["Logging", "Metrics", "AzureServices"]
+  }
+
+  allowed_copy_scope              = "AAD"
+  shared_access_key_enabled       = false # not supported for tables, plan throws an error
   default_to_oauth_authentication = true
+  allow_nested_items_to_be_public = false
 
   blob_properties {
     versioning_enabled       = true
@@ -20,10 +27,6 @@ resource "azurerm_storage_account" "bonus_backup_itn_01" {
 
     delete_retention_policy {
       days = 7
-    }
-
-    restore_policy {
-      days = 5
     }
 
     container_delete_retention_policy {
@@ -41,13 +44,20 @@ resource "azurerm_storage_account" "bonus_backup_gwc_01" {
 
   account_kind             = "StorageV2"
   account_tier             = "Standard"
-  account_replication_type = "ZRS"
-  access_tier              = "Cool"
+  account_replication_type = "LRS"
+  # access_tier              = "Cold" # not supported by the provider
 
-  public_network_access_enabled = true
+  public_network_access_enabled = false
 
-  shared_access_key_enabled       = false
+  network_rules {
+    default_action = "Deny"
+    bypass         = ["Logging", "Metrics", "AzureServices"]
+  }
+
+  allowed_copy_scope              = "AAD"
+  shared_access_key_enabled       = false # not supported for tables, plan throws an error
   default_to_oauth_authentication = true
+  allow_nested_items_to_be_public = false
 
   blob_properties {
     versioning_enabled       = true
@@ -56,10 +66,6 @@ resource "azurerm_storage_account" "bonus_backup_gwc_01" {
 
     delete_retention_policy {
       days = 7
-    }
-
-    restore_policy {
-      days = 5
     }
 
     container_delete_retention_policy {
@@ -86,40 +92,23 @@ resource "azurerm_storage_object_replication" "itn_01_to_gwc_01" {
     copy_blobs_created_after   = "Everything"
   }
 
-
   rules {
-    source_container_name      = azurerm_storage_container.bonus_activations_itn_01.name
-    destination_container_name = azurerm_storage_container.bonus_activations_gwc_01.name
+    source_container_name      = azurerm_storage_container.cosmosdb_itn_01.name
+    destination_container_name = azurerm_storage_container.cosmosdb_gwc_01.name
     copy_blobs_created_after   = "Everything"
   }
+}
 
-  rules {
-    source_container_name      = azurerm_storage_container.bonus_leases_itn_01.name
-    destination_container_name = azurerm_storage_container.bonus_leases_gwc_01.name
-    copy_blobs_created_after   = "Everything"
-  }
+resource "azurerm_management_lock" "st_itn_01" {
+  name       = azurerm_storage_account.bonus_backup_itn_01.name
+  scope      = azurerm_storage_account.bonus_backup_itn_01.id
+  lock_level = "ReadOnly"
+  notes      = "Data is immutable and offline, and should not be read or modified"
+}
 
-  rules {
-    source_container_name      = azurerm_storage_container.bonus_processing_itn_01.name
-    destination_container_name = azurerm_storage_container.bonus_processing_gwc_01.name
-    copy_blobs_created_after   = "Everything"
-  }
-
-  rules {
-    source_container_name      = azurerm_storage_container.change_feed_leases_itn_01.name
-    destination_container_name = azurerm_storage_container.change_feed_leases_gwc_01.name
-    copy_blobs_created_after   = "Everything"
-  }
-
-  rules {
-    source_container_name      = azurerm_storage_container.eligibility_checks_itn_01.name
-    destination_container_name = azurerm_storage_container.eligibility_checks_gwc_01.name
-    copy_blobs_created_after   = "Everything"
-  }
-
-  rules {
-    source_container_name      = azurerm_storage_container.user_bonuses_itn_01.name
-    destination_container_name = azurerm_storage_container.user_bonuses_gwc_01.name
-    copy_blobs_created_after   = "Everything"
-  }
+resource "azurerm_management_lock" "st_gwc_01" {
+  name       = azurerm_storage_account.bonus_backup_gwc_01.name
+  scope      = azurerm_storage_account.bonus_backup_gwc_01.id
+  lock_level = "ReadOnly"
+  notes      = "Data is immutable and offline, and should not be read or modified"
 }
