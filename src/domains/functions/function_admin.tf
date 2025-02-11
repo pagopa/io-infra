@@ -204,7 +204,7 @@ module "function_admin" {
   domain              = "IO-COMMONS"
   health_check_path   = "/info"
 
-  node_version    = "18"
+  node_version    = "20"
   runtime_version = "~4"
 
   always_on                                = "true"
@@ -274,7 +274,7 @@ module "function_admin_staging_slot" {
   storage_account_access_key         = module.function_admin.storage_account.primary_access_key
   internal_storage_connection_string = module.function_admin.storage_account_internal_function.primary_connection_string
 
-  node_version                             = "18"
+  node_version                             = "20"
   always_on                                = "true"
   runtime_version                          = "~4"
   application_insights_instrumentation_key = data.azurerm_application_insights.application_insights.instrumentation_key

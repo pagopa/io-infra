@@ -44,5 +44,5 @@ module "global" {
     apim_v2_private_ip = module.apim_weu.private_ips[0]
   }
 
-  tags = merge(local.tags, { Source = "https://github.com/pagopa/io-infra" })
+  tags = local.tags
 }

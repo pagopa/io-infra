@@ -19,27 +19,6 @@ output "cosmos_cgn" {
   }
 }
 
-output "function_app_cgn" {
-  value = {
-    id   = module.functions.function_app_cgn.id
-    name = module.functions.function_app_cgn.name
-  }
-}
-
-output "function_app_cgn_merchant" {
-  value = {
-    id   = module.functions.function_app_cgn_merchant.id
-    name = module.functions.function_app_cgn_merchant.name
-  }
-}
-
-output "redis" {
-  value = {
-    id   = module.redis.redis_cgn.id
-    name = module.redis.redis_cgn.name
-  }
-}
-
 output "storage_account_cgn" {
   value = {
     id   = module.storage_accounts.storage_account_cgn.id

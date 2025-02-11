@@ -8,9 +8,10 @@ data "terraform_remote_state" "core" {
 
   config = {
     resource_group_name  = "terraform-state-rg"
-    storage_account_name = "iopitntfst001"
+    storage_account_name = "iopitntfst02"
     container_name       = "terraform-state"
-    key                  = "io-infra.core.prod.italynorth.tfstate"
+    key                  = "io-infra.core.prod.tfstate"
+    use_azuread_auth     = true
   }
 }
 
@@ -19,6 +20,39 @@ data "azurerm_client_config" "current" {}
 data "azurerm_linux_web_app" "firmaconio_selfcare_web_app" {
   name                = "${local.project_weu_legacy}-sign-backoffice-app"
   resource_group_name = "${local.project_weu_legacy}-sign-backend-rg"
+}
+
+# AD Groups
+data "azuread_group" "wallet_admins" {
+  display_name = "${local.prefix}-${local.env_short}-adgroup-wallet-admins"
+}
+
+data "azuread_group" "com_admins" {
+  display_name = "${local.prefix}-${local.env_short}-adgroup-com-admins"
+}
+
+data "azuread_group" "com_devs" {
+  display_name = "${local.prefix}-${local.env_short}-adgroup-com-developers"
+}
+
+data "azuread_group" "svc_admins" {
+  display_name = "${local.prefix}-${local.env_short}-adgroup-svc-admins"
+}
+
+data "azuread_group" "svc_devs" {
+  display_name = "${local.prefix}-${local.env_short}-adgroup-svc-developers"
+}
+
+data "azuread_group" "auth_admins" {
+  display_name = "${local.prefix}-${local.env_short}-adgroup-auth-admins"
+}
+
+data "azuread_group" "auth_devs" {
+  display_name = "${local.prefix}-${local.env_short}-adgroup-auth-developers"
+}
+
+data "azuread_group" "bonus_admins" {
+  display_name = "${local.prefix}-${local.env_short}-adgroup-bonus-admins"
 }
 
 # Cosmos API
@@ -102,4 +136,3 @@ data "azurerm_subnet" "itn_msgs_sending_func_snet" {
   resource_group_name  = local.core.networking.itn.vnet_common.resource_group_name
   virtual_network_name = local.core.networking.itn.vnet_common.name
 }
-

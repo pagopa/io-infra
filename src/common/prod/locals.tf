@@ -8,11 +8,12 @@ locals {
   secondary_project  = "${local.prefix}-${local.env_short}-${local.location_short.germanywestcentral}"
 
   tags = {
-    CostCenter  = "TS310 - PAGAMENTI & SERVIZI"
-    CreatedBy   = "Terraform"
-    Environment = "Prod"
-    Owner       = "IO"
-    Source      = "https://github.com/pagopa/io-infra/blob/main/src/common/prod"
+    CostCenter     = "TS000 - Tecnologia e Servizi"
+    CreatedBy      = "Terraform"
+    Environment    = "Prod"
+    BusinessUnit   = "App IO"
+    Source         = "https://github.com/pagopa/io-infra/blob/main/src/common/prod"
+    ManagementTeam = "IO Platform"
   }
 
   core = data.terraform_remote_state.core.outputs
@@ -70,10 +71,10 @@ locals {
     services_app_backend = data.azurerm_linux_function_app.services_app_backend_function_app.default_hostname
     lollipop             = data.azurerm_linux_function_app.lollipop_function.default_hostname
     eucovidcert          = data.azurerm_linux_function_app.eucovidcert.default_hostname
-    cgn                  = "io-p-itn-cgn-card-func-01.azurewebsites.net"
+    cgn                  = "io-p-itn-cgn-card-func-02.azurewebsites.net"
     iosign               = data.azurerm_linux_function_app.io_sign_user.default_hostname
     iofims               = data.azurerm_linux_function_app.io_fims_user.default_hostname
-    cgnonboarding        = "io-p-itn-cgn-search-func-01.azurewebsites.net"
+    cgnonboarding        = "io-p-itn-cgn-search-func-02.azurewebsites.net"
     iowallet             = data.azurerm_linux_function_app.wallet_user.default_hostname
   }
 
