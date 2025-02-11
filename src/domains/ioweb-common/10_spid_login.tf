@@ -1,6 +1,6 @@
 
 locals {
-  fe_domain = "https://ioapp.it"
+  fe_domain = "https://account.ioapp.it"
 }
 
 ############################
@@ -21,7 +21,7 @@ module "spid_login" {
 
 
   always_on         = true
-  node_version      = "18-lts"
+  node_version      = "20-lts"
   app_command_line  = "npm run start"
   health_check_path = "/healthcheck"
 

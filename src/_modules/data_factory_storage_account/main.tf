@@ -8,7 +8,8 @@ terraform {
 }
 
 module "naming_convention" {
-  source = "github.com/pagopa/dx//infra/modules/azure_naming_convention/?ref=main"
+  source  = "pagopa/dx-azure-naming-convention/azurerm"
+  version = "~> 0"
 
   environment = {
     prefix          = var.environment.prefix

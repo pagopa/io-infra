@@ -14,7 +14,7 @@ module "redis_common_itn" {
   name                  = format("%s-redis-std-v6", local.project_itn)
   resource_group_name   = azurerm_resource_group.data_rg_itn.name
   location              = azurerm_resource_group.data_rg_itn.location
-  capacity              = 4
+  capacity              = 3
   family                = "C"
   sku_name              = "Standard"
   redis_version         = "6"

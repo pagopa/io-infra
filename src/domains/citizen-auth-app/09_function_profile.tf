@@ -122,7 +122,7 @@ locals {
       # Login Email variables
       MAGIC_LINK_SERVICE_API_KEY    = data.azurerm_key_vault_secret.ioweb_profile_function_api_key.value
       MAGIC_LINK_SERVICE_PUBLIC_URL = format("https://%s-auth-webprof-func-01.azurewebsites.net", local.common_project_itn)
-      IOWEB_ACCESS_REF              = "https://ioapp.it"
+      IOWEB_ACCESS_REF              = "https://account.ioapp.it"
       #
 
       # UNIQUE EMAIL ENFORCEMENT

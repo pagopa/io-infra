@@ -29,6 +29,7 @@ output "resource_groups" {
       acr            = azurerm_resource_group.acr_weu.name
       assets_cdn     = azurerm_resource_group.assets_cdn_weu.name
       linux          = azurerm_resource_group.linux_weu.name
+      operations     = azurerm_resource_group.operations_weu.name
     }
   }
 }

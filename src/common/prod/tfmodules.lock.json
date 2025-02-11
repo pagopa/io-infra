@@ -1,0 +1,22 @@
+{
+  "apim_itn.iam_adgroup_auth_admins": "70538ac55deebe95f1379ec5abe1f3dd207b468c18f69cdb1bc3e6a946e50b56",
+  "apim_itn.iam_adgroup_bonus_admins": "70538ac55deebe95f1379ec5abe1f3dd207b468c18f69cdb1bc3e6a946e50b56",
+  "apim_itn.iam_adgroup_com_admins": "70538ac55deebe95f1379ec5abe1f3dd207b468c18f69cdb1bc3e6a946e50b56",
+  "apim_itn.iam_adgroup_svc_admins": "70538ac55deebe95f1379ec5abe1f3dd207b468c18f69cdb1bc3e6a946e50b56",
+  "apim_itn.iam_adgroup_wallet_admins": "70538ac55deebe95f1379ec5abe1f3dd207b468c18f69cdb1bc3e6a946e50b56",
+  "apim_itn.iam_cgn_pe_backend_app_01": "70538ac55deebe95f1379ec5abe1f3dd207b468c18f69cdb1bc3e6a946e50b56",
+  "apim_weu.iam_adgroup_auth_admins": "70538ac55deebe95f1379ec5abe1f3dd207b468c18f69cdb1bc3e6a946e50b56",
+  "apim_weu.iam_adgroup_bonus_admins": "70538ac55deebe95f1379ec5abe1f3dd207b468c18f69cdb1bc3e6a946e50b56",
+  "apim_weu.iam_adgroup_com_admins": "70538ac55deebe95f1379ec5abe1f3dd207b468c18f69cdb1bc3e6a946e50b56",
+  "apim_weu.iam_adgroup_svc_admins": "70538ac55deebe95f1379ec5abe1f3dd207b468c18f69cdb1bc3e6a946e50b56",
+  "apim_weu.iam_adgroup_wallet_admins": "70538ac55deebe95f1379ec5abe1f3dd207b468c18f69cdb1bc3e6a946e50b56",
+  "apim_weu.iam_cgn_pe_backend_app_01": "70538ac55deebe95f1379ec5abe1f3dd207b468c18f69cdb1bc3e6a946e50b56",
+  "storage_accounts.exportdata_weu_01_com_admins": "70538ac55deebe95f1379ec5abe1f3dd207b468c18f69cdb1bc3e6a946e50b56",
+  "storage_accounts.exportdata_weu_01_com_devs": "70538ac55deebe95f1379ec5abe1f3dd207b468c18f69cdb1bc3e6a946e50b56",
+  "cosmos_api_weu.cosno_api_auth_admins": "70538ac55deebe95f1379ec5abe1f3dd207b468c18f69cdb1bc3e6a946e50b56",
+  "cosmos_api_weu.cosno_api_auth_devs": "70538ac55deebe95f1379ec5abe1f3dd207b468c18f69cdb1bc3e6a946e50b56",
+  "cosmos_api_weu.cosno_api_com_admins": "70538ac55deebe95f1379ec5abe1f3dd207b468c18f69cdb1bc3e6a946e50b56",
+  "cosmos_api_weu.cosno_api_com_devs": "70538ac55deebe95f1379ec5abe1f3dd207b468c18f69cdb1bc3e6a946e50b56",
+  "cosmos_api_weu.cosno_api_svc_admins": "70538ac55deebe95f1379ec5abe1f3dd207b468c18f69cdb1bc3e6a946e50b56",
+  "cosmos_api_weu.cosno_api_svc_devs": "70538ac55deebe95f1379ec5abe1f3dd207b468c18f69cdb1bc3e6a946e50b56"
+}

@@ -21,6 +21,11 @@ variable "data_factory_principal_id" {
   type        = string
 }
 
+variable "data_factory_integration_runtime_name" {
+  description = "Data Factory integration runtime name."
+  type        = string
+}
+
 variable "cosmos_accounts" {
   type = object({
     source = object({
@@ -31,7 +36,7 @@ variable "cosmos_accounts" {
     target = object({
       name                = string
       resource_group_name = string
-      write_behavior      = optional(string, "upsert")
+      write_behavior      = optional(string, "insert")
     })
   })
 

@@ -26,7 +26,7 @@
 | <a name="module_apim_v2_spid_login_api"></a> [apim\_v2\_spid\_login\_api](#module\_apim\_v2\_spid\_login\_api) | git::https://github.com/pagopa/terraform-azurerm-v3//api_management_api | v8.56.0 |
 | <a name="module_immutable_spid_logs_storage"></a> [immutable\_spid\_logs\_storage](#module\_immutable\_spid\_logs\_storage) | git::https://github.com/pagopa/terraform-azurerm-v3//storage_account | v8.56.0 |
 | <a name="module_immutable_spid_logs_storage_customer_managed_key"></a> [immutable\_spid\_logs\_storage\_customer\_managed\_key](#module\_immutable\_spid\_logs\_storage\_customer\_managed\_key) | git::https://github.com/pagopa/terraform-azurerm-v3//storage_account_customer_managed_key | v8.56.0 |
-| <a name="module_io_web_profile_itn_fe_st"></a> [io\_web\_profile\_itn\_fe\_st](#module\_io\_web\_profile\_itn\_fe\_st) | github.com/pagopa/dx//infra/modules/azure_storage_account | main |
+| <a name="module_io_web_profile_itn_fe_st"></a> [io\_web\_profile\_itn\_fe\_st](#module\_io\_web\_profile\_itn\_fe\_st) | pagopa/dx-azure-storage-account/azurerm | ~> 0 |
 | <a name="module_key_vault"></a> [key\_vault](#module\_key\_vault) | git::https://github.com/pagopa/terraform-azurerm-v3.git//key_vault | v8.56.0 |
 | <a name="module_landing_cdn"></a> [landing\_cdn](#module\_landing\_cdn) | github.com/pagopa/terraform-azurerm-v3.git//cdn | v8.56.0 |
 | <a name="module_redis_spid_login"></a> [redis\_spid\_login](#module\_redis\_spid\_login) | git::https://github.com/pagopa/terraform-azurerm-v3.git//redis_cache | v8.56.0 |
@@ -63,6 +63,7 @@
 | [azurerm_key_vault_secret.appinsights_connection_string](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_secret) | resource |
 | [azurerm_key_vault_secret.appinsights_instrumentation_key](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_secret) | resource |
 | [azurerm_key_vault_secret.spid_login_jwt_pub_key](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_secret) | resource |
+| [azurerm_monitor_diagnostic_setting.diagnostic_settings_cdn_frontdoor](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/monitor_diagnostic_setting) | resource |
 | [azurerm_private_endpoint.immutable_spid_logs_storage_blob](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/private_endpoint) | resource |
 | [azurerm_resource_group.common_rg](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/resource_group) | resource |
 | [azurerm_resource_group.fe_rg](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/resource_group) | resource |
@@ -127,8 +128,8 @@
 | <a name="input_prefix"></a> [prefix](#input\_prefix) | n/a | `string` | n/a | yes |
 | <a name="input_spid_login_plan_sku_size"></a> [spid\_login\_plan\_sku\_size](#input\_spid\_login\_plan\_sku\_size) | App backend app plan sku size | `string` | `"P1v3"` | no |
 | <a name="input_spid_login_plan_sku_tier"></a> [spid\_login\_plan\_sku\_tier](#input\_spid\_login\_plan\_sku\_tier) | App backend app plan sku tier | `string` | `"PremiumV3"` | no |
-| <a name="input_subnets_cidrs"></a> [subnets\_cidrs](#input\_subnets\_cidrs) | The CIDR address prefixes of the subnets | <pre>map(<br>    list(string)<br>  )</pre> | n/a | yes |
-| <a name="input_tags"></a> [tags](#input\_tags) | n/a | `map(any)` | <pre>{<br>  "CreatedBy": "Terraform"<br>}</pre> | no |
+| <a name="input_subnets_cidrs"></a> [subnets\_cidrs](#input\_subnets\_cidrs) | The CIDR address prefixes of the subnets | <pre>map(<br/>    list(string)<br/>  )</pre> | n/a | yes |
+| <a name="input_tags"></a> [tags](#input\_tags) | n/a | `map(any)` | <pre>{<br/>  "CreatedBy": "Terraform"<br/>}</pre> | no |
 
 ## Outputs
 

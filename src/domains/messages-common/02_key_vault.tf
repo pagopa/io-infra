@@ -46,13 +46,13 @@ resource "azurerm_key_vault_access_policy" "adgroup_developers" {
 # kv managed identities reader policy
 
 data "azurerm_user_assigned_identity" "managed_identity_io_messages_ci" {
-  name                = "io-p-messages-github-ci-identity"
-  resource_group_name = "${local.product}-identity-rg"
+  name                = "io-p-itn-msgs-infra-github-ci-id-01"
+  resource_group_name = "io-p-itn-msgs-rg-01"
 }
 
 data "azurerm_user_assigned_identity" "managed_identity_io_messages_cd" {
-  name                = "io-p-messages-github-cd-identity"
-  resource_group_name = "${local.product}-identity-rg"
+  name                = "io-p-itn-msgs-infra-github-cd-id-01"
+  resource_group_name = "io-p-itn-msgs-rg-01"
 }
 
 resource "azurerm_key_vault_access_policy" "access_policy_kv_io_infra_ci" {
