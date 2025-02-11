@@ -327,17 +327,20 @@ module "application_gateway_weu" {
     continua_io_pagopa_it                = "continua-io-pagopa-it"
     selfcare_io_pagopa_it                = "selfcare-io-pagopa-it"
     oauth_io_pagopa_it                   = "oauth-io-pagopa-it"
-    ipatente_io_pagopa_it                = "ipatente-io-pagopa-it"
+    vehicles_ipatente_io_pagopa_it       = "vehicles-ipatente-io-pagopa-it"
+    licences_ipatente_io_pagopa_it       = "licences-ipatente-io-pagopa-it"
+    payments_ipatente_io_pagopa_it       = "payments-ipatente-io-pagopa-it"
+    practices_ipatente_io_pagopa_it      = "practices-ipatente-io-pagopa-it"
   }
 
   cidr_subnet           = ["10.0.13.0/24"]
-  min_capacity          = 20 # 4 capacity=baseline, 10 capacity=high volume event, 15 capacity=very high volume event
-  max_capacity          = 100
+  min_capacity          = 7 # 4 capacity=baseline, 10 capacity=high volume event, 15 capacity=very high volume event
+  max_capacity          = 80
   alerts_enabled        = true
   deny_paths            = ["\\/admin\\/(.*)"]
   error_action_group_id = module.monitoring_weu.action_groups.error
 
-  tags = merge(local.tags, { Source = "https://github.com/pagopa/io-infra" })
+  tags = local.tags
 }
 
 module "apim_weu" {
@@ -362,6 +365,12 @@ module "apim_weu" {
 
   action_group_id        = module.monitoring_weu.action_groups.error
   ai_instrumentation_key = module.monitoring_weu.appi_instrumentation_key
+
+  azure_adgroup_wallet_admins_object_id = data.azuread_group.wallet_admins.object_id
+  azure_adgroup_com_admins_object_id    = data.azuread_group.com_admins.object_id
+  azure_adgroup_svc_admins_object_id    = data.azuread_group.svc_admins.object_id
+  azure_adgroup_auth_admins_object_id   = data.azuread_group.auth_admins.object_id
+  azure_adgroup_bonus_admins_object_id  = data.azuread_group.bonus_admins.object_id
 
   tags = local.tags
 }
@@ -405,6 +414,13 @@ module "cosmos_api_weu" {
 
   error_action_group_id = module.monitoring_weu.action_groups.error
 
+  azure_adgroup_com_admins_object_id  = data.azuread_group.com_admins.object_id
+  azure_adgroup_com_devs_object_id    = data.azuread_group.com_devs.object_id
+  azure_adgroup_svc_admins_object_id  = data.azuread_group.svc_admins.object_id
+  azure_adgroup_svc_devs_object_id    = data.azuread_group.svc_devs.object_id
+  azure_adgroup_auth_admins_object_id = data.azuread_group.auth_admins.object_id
+  azure_adgroup_auth_devs_object_id   = data.azuread_group.auth_devs.object_id
+
   tags = local.tags
 }
 
@@ -444,11 +460,11 @@ module "app_backend_weu" {
   vnet_common                = local.core.networking.weu.vnet_common
   cidr_subnet                = each.value.cidr_subnet
   nat_gateways               = local.core.networking.weu.nat_gateways
-  allowed_subnets            = concat(data.azurerm_subnet.services_snet.*.id, [module.application_gateway_weu.snet.id, module.apim_weu.snet.id])
-  slot_allowed_subnets       = concat([local.azdoa_snet_id["weu"]], data.azurerm_subnet.services_snet.*.id, [module.application_gateway_weu.snet.id, module.apim_weu.snet.id])
+  allowed_subnets            = concat(data.azurerm_subnet.services_snet.*.id, [module.application_gateway_weu.snet.id, module.apim_weu.snet.id, module.apim_itn.snet.id])
+  slot_allowed_subnets       = concat([local.azdoa_snet_id["weu"]], data.azurerm_subnet.services_snet.*.id, [module.application_gateway_weu.snet.id, module.apim_weu.snet.id, module.apim_itn.snet.id])
   allowed_ips                = module.monitoring_weu.appi.reserved_ips
   slot_allowed_ips           = module.monitoring_weu.appi.reserved_ips
-  apim_snet_address_prefixes = module.apim_weu.snet.address_prefixes
+  apim_snet_address_prefixes = module.apim_weu.snet.address_prefixes # module.apim_itn.snet.address_prefixes Change this for APIM ITN switch
 
   backend_hostnames = local.backend_hostnames
 
@@ -464,6 +480,12 @@ module "app_backend_weu" {
     ssl_port           = module.redis_weu.ssl_port
     primary_access_key = module.redis_weu.primary_access_key
   }
+
+  azure_adgroup_wallet_admins_object_id = data.azuread_group.wallet_admins.object_id
+  azure_adgroup_com_admins_object_id    = data.azuread_group.com_admins.object_id
+  azure_adgroup_svc_admins_object_id    = data.azuread_group.svc_admins.object_id
+  azure_adgroup_auth_admins_object_id   = data.azuread_group.auth_admins.object_id
+  azure_adgroup_bonus_admins_object_id  = data.azuread_group.bonus_admins.object_id
 
   tags = local.tags
 }
@@ -502,7 +524,7 @@ module "app_backend_li_weu" {
       "51.105.109.140/32"
   ])
   slot_allowed_ips           = []
-  apim_snet_address_prefixes = module.apim_weu.snet.address_prefixes
+  apim_snet_address_prefixes = module.apim_weu.snet.address_prefixes # module.apim_itn.snet.address_prefixes Change this for APIM ITN switch
 
   backend_hostnames = local.backend_hostnames
 
@@ -524,6 +546,25 @@ module "app_backend_li_weu" {
     ssl_port           = module.redis_weu.ssl_port
     primary_access_key = module.redis_weu.primary_access_key
   }
+
+  azure_adgroup_wallet_admins_object_id = data.azuread_group.wallet_admins.object_id
+  azure_adgroup_com_admins_object_id    = data.azuread_group.com_admins.object_id
+  azure_adgroup_svc_admins_object_id    = data.azuread_group.svc_admins.object_id
+  azure_adgroup_auth_admins_object_id   = data.azuread_group.auth_admins.object_id
+  azure_adgroup_bonus_admins_object_id  = data.azuread_group.bonus_admins.object_id
+
+  tags = local.tags
+}
+
+module "storage_accounts" {
+  source = "../_modules/storage_accounts"
+
+  project                   = local.project_weu_legacy
+  location                  = "westeurope"
+  resource_group_operations = local.core.resource_groups.westeurope.operations
+
+  azure_adgroup_com_admins_object_id = data.azuread_group.com_admins.object_id
+  azure_adgroup_com_devs_object_id   = data.azuread_group.com_devs.object_id
 
   tags = local.tags
 }

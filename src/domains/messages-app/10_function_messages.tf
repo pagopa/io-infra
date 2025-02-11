@@ -8,9 +8,9 @@ data "azurerm_cosmosdb_account" "cosmos_api" {
   resource_group_name = format("%s-rg-internal", local.product)
 }
 
-data "azurerm_cosmosdb_account" "cosmos_remote_content" {
-  name                = "${local.product}-messages-remote-content"
-  resource_group_name = "${local.product}-messages-data-rg"
+data "azurerm_cosmosdb_account" "io_com_cosmos" {
+  name                = "io-p-itn-com-cosno-01"
+  resource_group_name = "io-p-itn-com-rg-01"
 }
 
 data "azurerm_storage_account" "storage_api" {
@@ -38,9 +38,9 @@ locals {
       COSMOS_API_CONNECTION_STRING = format("AccountEndpoint=%s;AccountKey=%s;", data.azurerm_cosmosdb_account.cosmos_api.endpoint, data.azurerm_cosmosdb_account.cosmos_api.primary_key)
 
       // Remote Content CosmosDB
-      REMOTE_CONTENT_COSMOSDB_NAME = "remote-content"
-      REMOTE_CONTENT_COSMOSDB_URI  = data.azurerm_cosmosdb_account.cosmos_remote_content.endpoint
-      REMOTE_CONTENT_COSMOSDB_KEY  = data.azurerm_cosmosdb_account.cosmos_remote_content.primary_key
+      REMOTE_CONTENT_COSMOSDB_NAME = "remote-content-cosmos-01"
+      REMOTE_CONTENT_COSMOSDB_URI  = data.azurerm_cosmosdb_account.io_com_cosmos.endpoint
+      REMOTE_CONTENT_COSMOSDB_KEY  = data.azurerm_cosmosdb_account.io_com_cosmos.primary_key
 
       // Service to Remote Content configuration MAP
       SERVICE_TO_RC_CONFIGURATION_MAP = jsonencode({
@@ -168,7 +168,6 @@ module "app_messages_function" {
     data.azurerm_subnet.app_backendl1_snet.id,
     data.azurerm_subnet.app_backendl2_snet.id,
     data.azurerm_subnet.apim_snet.id,
-    data.azurerm_subnet.app_backendl3_snet.id,
     data.azurerm_subnet.apim_itn_snet.id,
   ]
 
@@ -223,7 +222,6 @@ module "app_messages_function_staging_slot" {
     data.azurerm_subnet.app_backendl1_snet.id,
     data.azurerm_subnet.app_backendl2_snet.id,
     data.azurerm_subnet.azdoa_snet.id,
-    data.azurerm_subnet.app_backendl3_snet.id
   ]
 
   allowed_ips = concat(

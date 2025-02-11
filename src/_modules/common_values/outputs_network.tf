@@ -5,14 +5,20 @@ output "virtual_networks" {
   EOF
   value = {
     itn = {
-      common = local.core.networking.itn.vnet_common
+      id                  = local.common.virtual_networks.itn.id
+      name                = local.common.virtual_networks.itn.name
+      resource_group_name = local.common.virtual_networks.itn.resource_group_name
     }
     weu = {
-      common = local.core.networking.weu.vnet_common
-      prod01 = {
-        name                = data.azurerm_virtual_network.weu_prod01.name
-        resource_group_name = data.azurerm_virtual_network.weu_prod01.resource_group_name
-      }
+      id                  = local.common.virtual_networks.weu.id
+      name                = local.common.virtual_networks.weu.name
+      resource_group_name = local.common.virtual_networks.weu.resource_group_name
+    }
+
+    prod01 = {
+      id                  = local.common.virtual_networks.prod01.id
+      name                = local.common.virtual_networks.prod01.name
+      resource_group_name = local.common.virtual_networks.prod01.resource_group_name
     }
   }
 }
@@ -23,10 +29,10 @@ output "pep_subnets" {
   EOF
   value = {
     itn = {
-      id = local.core.networking.itn.pep_snet.id
+      id = local.common.pep_subnets.itn.id
     },
     weu = {
-      id = local.core.networking.weu.pep_snet.id
+      id = local.common.pep_subnets.weu.id
     }
   }
 }

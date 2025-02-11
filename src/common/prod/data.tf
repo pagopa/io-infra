@@ -8,9 +8,10 @@ data "terraform_remote_state" "core" {
 
   config = {
     resource_group_name  = "terraform-state-rg"
-    storage_account_name = "iopitntfst001"
+    storage_account_name = "iopitntfst02"
     container_name       = "terraform-state"
-    key                  = "io-infra.core.prod.italynorth.tfstate"
+    key                  = "io-infra.core.prod.tfstate"
+    use_azuread_auth     = true
   }
 }
 
@@ -19,6 +20,39 @@ data "azurerm_client_config" "current" {}
 data "azurerm_linux_web_app" "firmaconio_selfcare_web_app" {
   name                = "${local.project_weu_legacy}-sign-backoffice-app"
   resource_group_name = "${local.project_weu_legacy}-sign-backend-rg"
+}
+
+# AD Groups
+data "azuread_group" "wallet_admins" {
+  display_name = "${local.prefix}-${local.env_short}-adgroup-wallet-admins"
+}
+
+data "azuread_group" "com_admins" {
+  display_name = "${local.prefix}-${local.env_short}-adgroup-com-admins"
+}
+
+data "azuread_group" "com_devs" {
+  display_name = "${local.prefix}-${local.env_short}-adgroup-com-developers"
+}
+
+data "azuread_group" "svc_admins" {
+  display_name = "${local.prefix}-${local.env_short}-adgroup-svc-admins"
+}
+
+data "azuread_group" "svc_devs" {
+  display_name = "${local.prefix}-${local.env_short}-adgroup-svc-developers"
+}
+
+data "azuread_group" "auth_admins" {
+  display_name = "${local.prefix}-${local.env_short}-adgroup-auth-admins"
+}
+
+data "azuread_group" "auth_devs" {
+  display_name = "${local.prefix}-${local.env_short}-adgroup-auth-developers"
+}
+
+data "azuread_group" "bonus_admins" {
+  display_name = "${local.prefix}-${local.env_short}-adgroup-bonus-admins"
 }
 
 # Cosmos API
@@ -45,9 +79,8 @@ data "azurerm_linux_function_app" "function_assets_cdn" {
 }
 
 data "azurerm_linux_function_app" "function_profile" {
-  count               = local.function_profile_count
-  name                = "${local.project_itn}-auth-profile-fn-0${count.index + 1}"
-  resource_group_name = "${local.project_itn}-profile-rg-0${count.index + 1}"
+  name                = "${local.project_itn}-auth-profile-fn-01"
+  resource_group_name = "${local.project_itn}-profile-rg-01"
 }
 
 data "azurerm_linux_function_app" "app_messages_xl" {
@@ -62,8 +95,8 @@ data "azurerm_linux_function_app" "services_app_backend_function_app" {
 }
 
 data "azurerm_linux_function_app" "lollipop_function" {
-  name                = "${local.project_itn}-lollipop-fn-01"
-  resource_group_name = "${local.project_itn}-lollipop-rg-01"
+  name                = "${local.project_itn}-auth-lollipop-func-02"
+  resource_group_name = "${local.project_itn}-auth-lollipop-rg-02"
 }
 
 data "azurerm_linux_function_app" "eucovidcert" {
@@ -86,12 +119,6 @@ data "azurerm_linux_function_app" "wallet_user" {
   name                = "${local.project_itn}-wallet-user-func-02"
 }
 
-data "azurerm_api_management" "trial_system" {
-  provider            = azurerm.prod-trial
-  name                = "ts-p-itn-apim-01"
-  resource_group_name = "ts-p-itn-routing-rg-01"
-}
-
 data "azurerm_subnet" "admin_snet" {
   name                 = "${local.project_weu_legacy}-admin-snet"
   resource_group_name  = local.core.networking.weu.vnet_common.resource_group_name
@@ -109,4 +136,3 @@ data "azurerm_subnet" "itn_msgs_sending_func_snet" {
   resource_group_name  = local.core.networking.itn.vnet_common.resource_group_name
   virtual_network_name = local.core.networking.itn.vnet_common.name
 }
-

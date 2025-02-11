@@ -20,22 +20,22 @@ provider "azurerm" {
 }
 
 provider "azurerm" {
-  alias           = "prod-trial"
-  subscription_id = "a2124115-ba74-462f-832a-9192cbd03649"
-
-  features {}
-}
-
-provider "azurerm" {
   alias           = "prod-cgn"
   subscription_id = "74da48a3-b0e7-489d-8172-da79801086ed"
 
   features {}
 }
 
+provider "azurerm" {
+  alias           = "prod-selc"
+  subscription_id = "813119d7-0943-46ed-8ebe-cebe24f9106c"
+
+  features {}
+}
 
 module "federated_identities" {
-  source = "github.com/pagopa/dx//infra/modules/azure_federated_identity_with_github?ref=main"
+  source  = "pagopa/dx-azure-federated-identity-with-github/azurerm"
+  version = "~> 0"
 
   prefix       = local.prefix
   env_short    = local.env_short
@@ -78,26 +78,14 @@ module "federated_identities" {
         "Storage Queue Data Contributor",
         "Storage Table Data Contributor",
         "Key Vault Contributor",
+        "Role Based Access Control Administrator",
       ]
-      resource_groups = {}
+      resource_groups = {
+      }
     }
   }
 
   tags = local.tags
-}
-
-resource "azurerm_role_assignment" "ci_trial_system" {
-  provider             = azurerm.prod-trial
-  scope                = data.azurerm_subscription.trial_system.id
-  principal_id         = module.federated_identities.federated_ci_identity.id
-  role_definition_name = "Reader"
-}
-
-resource "azurerm_role_assignment" "cd_trial_system" {
-  provider             = azurerm.prod-trial
-  scope                = data.azurerm_subscription.trial_system.id
-  principal_id         = module.federated_identities.federated_cd_identity.id
-  role_definition_name = "Reader"
 }
 
 resource "azurerm_role_assignment" "ci_cgn" {
@@ -107,6 +95,13 @@ resource "azurerm_role_assignment" "ci_cgn" {
   role_definition_name = "Reader"
 }
 
+resource "azurerm_role_assignment" "ci_cgn_iac_reader" {
+  provider             = azurerm.prod-cgn
+  scope                = data.azurerm_subscription.cgn.id
+  principal_id         = module.federated_identities.federated_ci_identity.id
+  role_definition_name = "PagoPA IaC Reader"
+}
+
 resource "azurerm_role_assignment" "cd_cgn" {
   provider             = azurerm.prod-cgn
   scope                = data.azurerm_subscription.cgn.id
@@ -114,9 +109,16 @@ resource "azurerm_role_assignment" "cd_cgn" {
   role_definition_name = "Reader"
 }
 
-resource "azurerm_role_assignment" "cd_cgn_postgresql" {
+resource "azurerm_role_assignment" "cd_cgn_iac_reader" {
   provider             = azurerm.prod-cgn
-  scope                = data.azurerm_postgresql_server.cgn_psql.id
+  scope                = data.azurerm_subscription.cgn.id
+  principal_id         = module.federated_identities.federated_cd_identity.id
+  role_definition_name = "PagoPA IaC Reader"
+}
+
+resource "azurerm_role_assignment" "cd_selc_evhns" {
+  provider             = azurerm.prod-selc
+  scope                = "/subscriptions/813119d7-0943-46ed-8ebe-cebe24f9106c/resourceGroups/selc-p-event-rg/providers/Microsoft.EventHub/namespaces/selc-p-eventhub-ns"
   principal_id         = module.federated_identities.federated_cd_identity.id
   role_definition_name = "Contributor"
 }

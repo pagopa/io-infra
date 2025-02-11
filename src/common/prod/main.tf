@@ -5,6 +5,7 @@ terraform {
     storage_account_name = "iopitntfst001"
     container_name       = "terraform-state"
     key                  = "io-infra.common.prod.tfstate"
+    use_azuread_auth     = true
   }
 
   required_providers {
@@ -17,11 +18,10 @@ terraform {
 
 provider "azurerm" {
   features {}
+  storage_use_azuread = true
 }
 
-provider "azurerm" {
-  alias           = "prod-trial"
-  subscription_id = "a2124115-ba74-462f-832a-9192cbd03649"
-
-  features {}
+import {
+  to = module.storage_accounts.azurerm_storage_account.exportdata_weu_01
+  id = "/subscriptions/ec285037-c673-4f58-b594-d7c480da4e8b/resourceGroups/io-p-rg-operations/providers/Microsoft.Storage/storageAccounts/iopstexportdata"
 }

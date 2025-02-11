@@ -24,3 +24,12 @@ data "azurerm_key_vault_secret" "io_fn3_services_key_secret" {
   name         = "ioweb-profile-api-key-apim"
   key_vault_id = data.azurerm_key_vault.key_vault_common.id
 }
+
+###########################
+# Function io-web-profile #
+###########################
+
+data "azurerm_linux_function_app" "function_web_profile" {
+  name                = format("%s-webprof-func-01", local.short_project_itn)
+  resource_group_name = format("%s-webprof-rg-01", local.short_project_itn)
+}

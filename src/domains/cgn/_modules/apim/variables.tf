@@ -13,11 +13,6 @@ variable "env_short" {
   description = "Short environment name"
 }
 
-variable "function_cgn_merchant_hostname" {
-  type        = string
-  description = "CGN Function App hostname to set in API groups"
-}
-
 variable "apim" {
   type = object({
     name                = string

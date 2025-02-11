@@ -27,9 +27,3 @@ data "azurerm_key_vault_secret" "alert_error_notification_opsgenie" {
   name         = "alert-error-notification-opsgenie"
   key_vault_id = var.kv_id
 }
-
-# point to the channel of the trial-system project
-data "azurerm_key_vault_secret" "alert_error_trial_slack" {
-  name         = "alert-error-trial-slack"
-  key_vault_id = var.kv_id
-}
