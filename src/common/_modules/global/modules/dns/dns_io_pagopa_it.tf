@@ -145,3 +145,13 @@ resource "azurerm_dns_ns_record" "ipatente_io_pagopa_it_ns" {
   ttl                 = var.dns_default_ttl_sec
   tags                = var.tags
 }
+
+# wallet.io.pagopa.it
+resource "azurerm_dns_ns_record" "wallet_io_pagopa_it_ns" {
+  name                = "wallet"
+  zone_name           = azurerm_dns_zone.io_pagopa_it.name
+  resource_group_name = var.resource_groups.external
+  records             = azurerm_dns_zone.wallet_io_pagopa_it.name_servers
+  ttl                 = 30
+  tags                = var.tags
+}
