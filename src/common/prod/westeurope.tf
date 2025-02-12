@@ -474,6 +474,7 @@ module "app_backend_weu" {
   error_action_group_id  = module.monitoring_weu.action_groups.error
   application_insights   = module.monitoring_weu.appi
   ai_instrumentation_key = module.monitoring_weu.appi_instrumentation_key
+  ai_connection_string   = module.monitoring_weu.appi_connection_string
 
   redis_common = {
     hostname           = module.redis_weu.hostname
@@ -540,6 +541,7 @@ module "app_backend_li_weu" {
   error_action_group_id  = module.monitoring_weu.action_groups.error
   application_insights   = module.monitoring_weu.appi
   ai_instrumentation_key = module.monitoring_weu.appi_instrumentation_key
+  ai_connection_string   = module.monitoring_weu.appi_connection_string
 
   redis_common = {
     hostname           = module.redis_weu.hostname
