@@ -33,7 +33,7 @@ data "azurerm_monitor_action_group" "quarantine_error_action_group" {
 }
 
 data "azurerm_monitor_action_group" "auth_n_identity_error_action_group" {
-  resource_group_name = var.monitor_resource_group_name
+  resource_group_name = "io-p-itn-auth-common-rg-01"
   name                = "io-p-itn-auth-error-ag-01"
 }
 
