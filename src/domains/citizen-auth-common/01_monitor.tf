@@ -32,6 +32,11 @@ data "azurerm_monitor_action_group" "quarantine_error_action_group" {
   name                = "${var.prefix}${var.env_short}quarantineerror"
 }
 
+data "azurerm_monitor_action_group" "auth_n_identity_error_action_group" {
+  resource_group_name = var.monitor_resource_group_name
+  name                = "io-p-itn-auth-error-ag-01"
+}
+
 #tfsec:ignore:AZU023
 resource "azurerm_key_vault_secret" "appinsights_instrumentation_key" {
   name         = "appinsights-instrumentation-key"

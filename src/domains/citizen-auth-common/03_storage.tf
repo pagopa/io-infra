@@ -277,3 +277,74 @@ resource "azurerm_storage_queue" "profiles_to_sanitize" {
   name                 = "profiles-to-sanitize"
   storage_account_name = module.io_citizen_auth_storage.name
 }
+
+resource "azurerm_storage_queue" "expired_user_sessions" {
+  depends_on           = [module.io_citizen_auth_storage, azurerm_private_endpoint.queue]
+  name                 = "expired-user-sessions"
+  storage_account_name = module.io_citizen_auth_storage.name
+}
+
+resource "azurerm_storage_queue" "expired_user_sessions_poison" {
+  depends_on           = [module.io_citizen_auth_storage, azurerm_private_endpoint.queue]
+  name                 = "expired-user-sessions-poison"
+  storage_account_name = module.io_citizen_auth_storage.name
+}
+
+
+# Diagnostic settings
+
+resource "azurerm_monitor_diagnostic_setting" "io_citizen_auth_storage_diagnostic_setting" {
+  name                       = "${module.io_citizen_auth_storage.name}-ds-01"
+  target_resource_id         = "${module.io_citizen_auth_storage.id}/queueServices/default"
+  log_analytics_workspace_id = data.azurerm_application_insights.application_insights.workspace_id
+
+  enabled_log {
+    category = "StorageWrite"
+  }
+
+  metric {
+    category = "Capacity"
+    enabled  = false
+  }
+  metric {
+    category = "Transaction"
+    enabled  = false
+  }
+}
+
+resource "azurerm_monitor_scheduled_query_rules_alert_v2" "expired_user_sessions_failure_alert_rule" {
+  enabled             = true
+  name                = "[CITIZEN-AUTH | ${module.io_citizen_auth_storage.name}] Failures on ${resource.azurerm_storage_queue.expired_user_sessions_poison.name} queue"
+  resource_group_name = azurerm_resource_group.data_rg.name
+  location            = var.location
+
+  scopes                  = [module.io_citizen_auth_storage.id]
+  description             = <<-EOT
+    Permanent failures processing ${resource.azurerm_storage_queue.expired_user_sessions.name} queue. REQUIRED MANUAL ACTION.
+  EOT
+  severity                = 1
+  auto_mitigation_enabled = false
+
+  // daily check
+  window_duration      = "P1D" # Select the interval that's used to group the data points by using the aggregation type function. Choose an Aggregation granularity (period) that's greater than the Frequency of evaluation to reduce the likelihood of missing the first evaluation period of an added time series.
+  evaluation_frequency = "P1D" # Select how often the alert rule is to be run. Select a frequency that's smaller than the aggregation granularity to generate a sliding window for the evaluation.
+
+  criteria {
+    query                   = <<-QUERY
+      StorageQueueLogs
+        | where OperationName contains "PutMessage"
+        | where Uri contains "${resource.azurerm_storage_queue.expired_user_sessions_poison.name}"
+      QUERY
+    operator                = "GreaterThan"
+    threshold               = 0
+    time_aggregation_method = "Count"
+  }
+
+  action {
+    action_groups = [
+      data.azurerm_monitor_action_group.auth_n_identity_error_action_group.id,
+    ]
+  }
+
+  tags = var.tags
+}
