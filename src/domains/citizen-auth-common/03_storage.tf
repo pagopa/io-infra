@@ -266,6 +266,28 @@ resource "azurerm_private_endpoint" "queue" {
   tags = var.tags
 }
 
+resource "azurerm_private_endpoint" "blob" {
+  depends_on          = [module.io_citizen_auth_storage]
+  name                = format("%s-blob-endpoint", module.io_citizen_auth_storage.name)
+  location            = var.location
+  resource_group_name = azurerm_resource_group.data_rg.name
+  subnet_id           = data.azurerm_subnet.private_endpoints_subnet.id
+
+  private_service_connection {
+    name                           = format("%s-blob", module.io_citizen_auth_storage.name)
+    private_connection_resource_id = module.io_citizen_auth_storage.id
+    is_manual_connection           = false
+    subresource_names              = ["blob"]
+  }
+
+  private_dns_zone_group {
+    name                 = "private-dns-zone-group"
+    private_dns_zone_ids = [data.azurerm_private_dns_zone.privatelink_blob_core_windows_net.id]
+  }
+
+  tags = var.tags
+}
+
 resource "azurerm_storage_table" "profile_emails" {
   depends_on           = [module.io_citizen_auth_storage, azurerm_private_endpoint.table]
   name                 = "profileEmails"
@@ -288,6 +310,13 @@ resource "azurerm_storage_queue" "expired_user_sessions_poison" {
   depends_on           = [module.io_citizen_auth_storage, azurerm_private_endpoint.queue]
   name                 = "expired-user-sessions-poison"
   storage_account_name = module.io_citizen_auth_storage.name
+}
+
+resource "azurerm_storage_container" "data_factory_exports" {
+  depends_on            = [module.io_citizen_auth_storage, azurerm_private_endpoint.blob]
+  name                  = "data-factory-exports"
+  storage_account_name  = module.io_citizen_auth_storage.name
+  container_access_type = "private"
 }
 
 
