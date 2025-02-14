@@ -38,3 +38,17 @@ resource "azurerm_role_assignment" "dev_portal_role" {
   role_definition_name = each.value
   scope                = module.apim_itn.id
 }
+
+# Dev Team
+
+resource "azurerm_role_assignment" "svc_devs_weu" {
+  principal_id         = data.azuread_group.svc_devs.object_id
+  role_definition_name = "PagoPA API Management Operator App"
+  scope                = module.apim_weu.id
+}
+
+resource "azurerm_role_assignment" "svc_devs_itn" {
+  principal_id         = data.azuread_group.svc_devs.object_id
+  role_definition_name = "PagoPA API Management Operator App"
+  scope                = module.apim_itn.id
+}
