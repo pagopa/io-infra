@@ -22,3 +22,15 @@ locals {
   apim_itn_name                = "${local.product}-itn-apim-01"
   apim_itn_resource_group_name = "${local.product}-itn-common-rg-01"
 }
+###Italy North
+locals {
+  app_name = "messages"
+  itn_environment = {
+    prefix          = var.prefix
+    env_short       = var.env_short
+    location        = var.location
+    app_name        = local.app_name
+    domain          = var.domain
+    instance_number = var.instance
+  }
+}
