@@ -1,0 +1,30 @@
+name: PR - Dev Common TF Validation
+
+# This pipeline starts automatically when a PR is opened.
+##
+# It is responsible for managing changes related to "common" infrastructure,
+
+on:
+  merge_group:
+  workflow_dispatch:
+  pull_request:
+    types:
+      - opened
+      - edited
+      - synchronize
+      - reopened
+      - ready_for_review
+    paths:
+      - "src/common/dev/**"
+      - "src/common/_modules/**"
+      - ".github/workflows/common_dev_code_review.yaml"
+
+jobs:
+  dev_itn_common_code_review:
+    uses: pagopa/dx/.github/workflows/infra_plan.yaml@main
+    name: Dev - Code Review
+    secrets: inherit
+    with:
+      environment: dev
+      base_path: src/common
+      use_private_agent: true
