@@ -23,4 +23,4 @@ jobs:
     with:
       environment: dev
       base_path: src/common
-      use_private_agent: true
+      use_private_agent: false
