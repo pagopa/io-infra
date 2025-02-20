@@ -77,6 +77,11 @@ resource "azurerm_dns_txt_record" "spf_ioweb_it" {
   record {
     value = "v=spf1 -all"
   }
+
+  record {
+    value = "google-site-verification=5hl_cVSx7flbf8w3CtMRXNHYlXtjtmzjNBuSX7SEyhg"
+  }
+
   tags = var.tags
 }
 
@@ -90,9 +95,17 @@ resource "azurerm_dns_cname_record" "zendesk" {
 }
 
 resource "azurerm_dns_cname_record" "aws_cert_validation_ioweb" {
-  name                = "_1b96136662809f31f497b4fcd6b32a8d"
+  name                = "_7ce011f45ecea256e0c064ca72caa4fc.www"
   zone_name           = azurerm_dns_zone.ioweb_it.name
   resource_group_name = var.resource_groups.external
   ttl                 = var.dns_default_ttl_sec
-  record              = "_2de3fc7bfdb25e6a4e58c29dc8b4dba6.zfyfvmchrl.acm-validations.aws."
+  record              = "_3af6a29172223d1e69982ed93c9beffb.zfyfvmchrl.acm-validations.aws."
+}
+
+resource "azurerm_dns_cname_record" "ioweb_www" {
+  name                = "www"
+  zone_name           = azurerm_dns_zone.ioweb_it.name
+  resource_group_name = var.resource_groups.external
+  ttl                 = var.dns_default_ttl_sec
+  record              = "d2m1nc4792c1zk.cloudfront.net"
 }
