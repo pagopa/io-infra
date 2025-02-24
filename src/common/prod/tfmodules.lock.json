@@ -18,5 +18,6 @@
   "cosmos_api_weu.cosno_api_com_admins": "52ca57b72bdf639846a472014cb2113d519bdc00dc4a642e925b97ad6b99d25c",
   "cosmos_api_weu.cosno_api_com_devs": "52ca57b72bdf639846a472014cb2113d519bdc00dc4a642e925b97ad6b99d25c",
   "cosmos_api_weu.cosno_api_svc_admins": "52ca57b72bdf639846a472014cb2113d519bdc00dc4a642e925b97ad6b99d25c",
-  "cosmos_api_weu.cosno_api_svc_devs": "52ca57b72bdf639846a472014cb2113d519bdc00dc4a642e925b97ad6b99d25c"
+  "cosmos_api_weu.cosno_api_svc_devs": "52ca57b72bdf639846a472014cb2113d519bdc00dc4a642e925b97ad6b99d25c",
+  "assets_cdn_weu.roles_svc_devs": "52ca57b72bdf639846a472014cb2113d519bdc00dc4a642e925b97ad6b99d25c"
 }
