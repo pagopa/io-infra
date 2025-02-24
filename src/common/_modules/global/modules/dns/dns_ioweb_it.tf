@@ -77,6 +77,11 @@ resource "azurerm_dns_txt_record" "spf_ioweb_it" {
   record {
     value = "v=spf1 -all"
   }
+
+  record {
+    value = "google-site-verification=5hl_cVSx7flbf8w3CtMRXNHYlXtjtmzjNBuSX7SEyhg"
+  }
+
   tags = var.tags
 }
 
