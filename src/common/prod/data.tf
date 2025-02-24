@@ -83,10 +83,9 @@ data "azurerm_linux_function_app" "function_profile" {
   resource_group_name = "${local.project_itn}-profile-rg-01"
 }
 
-data "azurerm_linux_function_app" "app_messages_xl" {
-  count               = local.app_messages_count
-  name                = "${local.project_weu_legacy}-weu-com-citizen-func-0${count.index + 1}"
-  resource_group_name = "${local.project_weu_legacy}-weu-com-rg-01"
+data "azurerm_linux_function_app" "com_citizen_func" {
+  name                = "${local.project_itn}-com-citizen-func-01"
+  resource_group_name = "${local.project_itn}-com-rg-01"
 }
 
 data "azurerm_linux_function_app" "services_app_backend_function_app" {
