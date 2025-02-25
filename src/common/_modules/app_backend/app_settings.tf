@@ -7,6 +7,8 @@ locals {
     WEBSITE_DNS_SERVER                              = "168.63.129.16"
 
     APPINSIGHTS_INSTRUMENTATIONKEY = var.ai_instrumentation_key
+    APPINSIGHTS_CONNECTION_STRING  = var.ai_connection_string
+    APPINSIGHTS_CLOUD_ROLE_NAME    = local.nonstandard.weu.app
 
     // ENVIRONMENT
     NODE_ENV = "production"
