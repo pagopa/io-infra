@@ -6,13 +6,13 @@ module "roles_svc_devs" {
 
   storage_blob = [
     {
-      storage_account_name = module.assets_cdn_weu.name
-      resource_group_name  = module.assets_cdn_weu.resource_group_name
+      storage_account_name = module.assets_cdn.name
+      resource_group_name  = module.assets_cdn.resource_group_name
       role                 = "reader"
     },
     {
-      storage_account_name = module.assets_cdn_weu.name
-      resource_group_name  = module.assets_cdn_weu.resource_group_name
+      storage_account_name = module.assets_cdn.name
+      resource_group_name  = module.assets_cdn.resource_group_name
       role                 = "writer"
     }
   ]
