@@ -474,6 +474,7 @@ module "app_backend_weu" {
   error_action_group_id  = module.monitoring_weu.action_groups.error
   application_insights   = module.monitoring_weu.appi
   ai_instrumentation_key = module.monitoring_weu.appi_instrumentation_key
+  ai_connection_string   = module.monitoring_weu.appi_connection_string
 
   redis_common = {
     hostname           = module.redis_weu.hostname
@@ -515,7 +516,8 @@ module "app_backend_li_weu" {
     [
       data.azurerm_subnet.admin_snet.id,
       data.azurerm_subnet.itn_auth_lv_func_snet.id,
-      data.azurerm_subnet.itn_msgs_sending_func_snet.id
+      data.azurerm_subnet.itn_msgs_sending_func_snet.id,
+      data.azurerm_subnet.itn_auth_prof_async_func_snet.id
   ])
   slot_allowed_subnets = concat([local.azdoa_snet_id["weu"]], data.azurerm_subnet.services_snet.*.id, [data.azurerm_subnet.admin_snet.id])
   allowed_ips = concat(module.monitoring_weu.appi.reserved_ips,
@@ -540,6 +542,7 @@ module "app_backend_li_weu" {
   error_action_group_id  = module.monitoring_weu.action_groups.error
   application_insights   = module.monitoring_weu.appi
   ai_instrumentation_key = module.monitoring_weu.appi_instrumentation_key
+  ai_connection_string   = module.monitoring_weu.appi_connection_string
 
   redis_common = {
     hostname           = module.redis_weu.hostname
