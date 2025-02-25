@@ -112,6 +112,10 @@ variable "ai_instrumentation_key" {
   type = string
 }
 
+variable "ai_connection_string" {
+  type = string
+}
+
 variable "error_action_group_id" {
   type        = string
   description = "Azure Monitor error action group id"

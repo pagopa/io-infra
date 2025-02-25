@@ -5,6 +5,7 @@ resource "github_repository" "this" {
   #tfsec:ignore:github-repositories-private
   visibility = "public"
 
+  allow_update_branch         = true
   allow_auto_merge            = true
   allow_rebase_merge          = false
   allow_merge_commit          = false
