@@ -6,13 +6,13 @@ module "roles_svc_devs" {
 
   storage_blob = [
     {
-      storage_account_name = "iopstcdnassets"
-      resource_group_name  = var.resource_group_assets_cdn
+      storage_account_name = module.assets.cdn.name
+      resource_group_name  = module.assets.cdn.name.resource_group_name
       role                 = "reader"
     },
     {
-      storage_account_name = "iopstcdnassets"
-      resource_group_name  = var.resource_group_assets_cdn
+      storage_account_name = module.assets.cdn.name
+      resource_group_name  = module.assets.cdn.name.resource_group_name
       role                 = "writer"
     }
   ]
