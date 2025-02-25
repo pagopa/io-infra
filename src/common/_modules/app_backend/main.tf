@@ -30,6 +30,8 @@ module "appservice_app_backend" {
     var.app_settings_override
   )
 
+  sticky_settings = concat(["APPINSIGHTS_CLOUD_ROLE_NAME", "APPINSIGHTS_SAMPLING_PERCENTAGE"])
+
   ip_restriction_default_action = "Deny"
 
   allowed_subnets = var.allowed_subnets
@@ -69,7 +71,11 @@ module "appservice_app_backend_slot_staging" {
 
   app_settings = merge(
     local.app_settings_common,
-    var.app_settings_override
+    var.app_settings_override,
+    {
+      "APPINSIGHTS_SAMPLING_PERCENTAGE" : 100,
+      "APPINSIGHTS_CLOUD_ROLE_NAME" : "${local.nonstandard.weu.app}-staging"
+    }
   )
 
   ip_restriction_default_action = "Deny"

@@ -8,9 +8,9 @@ variable "location" {
   description = "Azure region"
 }
 
-variable "secondary_location" {
-  type        = string
-  description = "Secondary Azure region used for replication purposes"
+variable "secondary_locations" {
+  type        = list(string)
+  description = "Secondary Azure regions used for replication purposes"
 }
 
 variable "tags" {

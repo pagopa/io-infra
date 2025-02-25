@@ -414,6 +414,13 @@ module "cosmos_api_weu" {
 
   error_action_group_id = module.monitoring_weu.action_groups.error
 
+  azure_adgroup_com_admins_object_id  = data.azuread_group.com_admins.object_id
+  azure_adgroup_com_devs_object_id    = data.azuread_group.com_devs.object_id
+  azure_adgroup_svc_admins_object_id  = data.azuread_group.svc_admins.object_id
+  azure_adgroup_svc_devs_object_id    = data.azuread_group.svc_devs.object_id
+  azure_adgroup_auth_admins_object_id = data.azuread_group.auth_admins.object_id
+  azure_adgroup_auth_devs_object_id   = data.azuread_group.auth_devs.object_id
+
   tags = local.tags
 }
 
@@ -467,6 +474,7 @@ module "app_backend_weu" {
   error_action_group_id  = module.monitoring_weu.action_groups.error
   application_insights   = module.monitoring_weu.appi
   ai_instrumentation_key = module.monitoring_weu.appi_instrumentation_key
+  ai_connection_string   = module.monitoring_weu.appi_connection_string
 
   redis_common = {
     hostname           = module.redis_weu.hostname
@@ -508,7 +516,8 @@ module "app_backend_li_weu" {
     [
       data.azurerm_subnet.admin_snet.id,
       data.azurerm_subnet.itn_auth_lv_func_snet.id,
-      data.azurerm_subnet.itn_msgs_sending_func_snet.id
+      data.azurerm_subnet.itn_msgs_sending_func_snet.id,
+      data.azurerm_subnet.itn_auth_prof_async_func_snet.id
   ])
   slot_allowed_subnets = concat([local.azdoa_snet_id["weu"]], data.azurerm_subnet.services_snet.*.id, [data.azurerm_subnet.admin_snet.id])
   allowed_ips = concat(module.monitoring_weu.appi.reserved_ips,
@@ -533,6 +542,7 @@ module "app_backend_li_weu" {
   error_action_group_id  = module.monitoring_weu.action_groups.error
   application_insights   = module.monitoring_weu.appi
   ai_instrumentation_key = module.monitoring_weu.appi_instrumentation_key
+  ai_connection_string   = module.monitoring_weu.appi_connection_string
 
   redis_common = {
     hostname           = module.redis_weu.hostname
@@ -545,6 +555,19 @@ module "app_backend_li_weu" {
   azure_adgroup_svc_admins_object_id    = data.azuread_group.svc_admins.object_id
   azure_adgroup_auth_admins_object_id   = data.azuread_group.auth_admins.object_id
   azure_adgroup_bonus_admins_object_id  = data.azuread_group.bonus_admins.object_id
+
+  tags = local.tags
+}
+
+module "storage_accounts" {
+  source = "../_modules/storage_accounts"
+
+  project                   = local.project_weu_legacy
+  location                  = "westeurope"
+  resource_group_operations = local.core.resource_groups.westeurope.operations
+
+  azure_adgroup_com_admins_object_id = data.azuread_group.com_admins.object_id
+  azure_adgroup_com_devs_object_id   = data.azuread_group.com_devs.object_id
 
   tags = local.tags
 }

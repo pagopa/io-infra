@@ -8,9 +8,10 @@ data "terraform_remote_state" "core" {
 
   config = {
     resource_group_name  = "terraform-state-rg"
-    storage_account_name = "iopitntfst001"
+    storage_account_name = "iopitntfst02"
     container_name       = "terraform-state"
-    key                  = "io-infra.core.prod.italynorth.tfstate"
+    key                  = "io-infra.core.prod.tfstate"
+    use_azuread_auth     = true
   }
 }
 
@@ -30,12 +31,24 @@ data "azuread_group" "com_admins" {
   display_name = "${local.prefix}-${local.env_short}-adgroup-com-admins"
 }
 
+data "azuread_group" "com_devs" {
+  display_name = "${local.prefix}-${local.env_short}-adgroup-com-developers"
+}
+
 data "azuread_group" "svc_admins" {
   display_name = "${local.prefix}-${local.env_short}-adgroup-svc-admins"
 }
 
+data "azuread_group" "svc_devs" {
+  display_name = "${local.prefix}-${local.env_short}-adgroup-svc-developers"
+}
+
 data "azuread_group" "auth_admins" {
   display_name = "${local.prefix}-${local.env_short}-adgroup-auth-admins"
+}
+
+data "azuread_group" "auth_devs" {
+  display_name = "${local.prefix}-${local.env_short}-adgroup-auth-developers"
 }
 
 data "azuread_group" "bonus_admins" {
@@ -114,6 +127,12 @@ data "azurerm_subnet" "admin_snet" {
 
 data "azurerm_subnet" "itn_auth_lv_func_snet" {
   name                 = "${local.project_itn}-auth-lv-func-snet-02"
+  resource_group_name  = local.core.networking.itn.vnet_common.resource_group_name
+  virtual_network_name = local.core.networking.itn.vnet_common.name
+}
+
+data "azurerm_subnet" "itn_auth_prof_async_func_snet" {
+  name                 = "${local.project_itn}-auth-profas-func-snet-02"
   resource_group_name  = local.core.networking.itn.vnet_common.resource_group_name
   virtual_network_name = local.core.networking.itn.vnet_common.name
 }
