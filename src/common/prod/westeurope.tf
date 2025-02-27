@@ -393,6 +393,7 @@ module "assets_cdn_weu" {
     name     = data.azurerm_linux_function_app.function_assets_cdn.name
     hostname = data.azurerm_linux_function_app.function_assets_cdn.default_hostname
   }
+  azure_adgroup_svc_devs_object_id = data.azuread_group.svc_devs.object_id
 
   tags = local.tags
 }
