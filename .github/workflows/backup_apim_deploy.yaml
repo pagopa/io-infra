@@ -57,7 +57,6 @@ jobs:
 
           echo "--- DEBUG ---"
           echo "$backup_name"
-          echo "$key"
 
           az apim backup \
             --backup-name "$backup_name" \
@@ -102,7 +101,6 @@ jobs:
 
           echo "--- DEBUG ---"
           echo "${{ env.APIM_BACKUP_NAME }}"
-          echo "$key"
 
           az apim restore \
             --backup-name "${{ env.APIM_BACKUP_NAME }}" \
