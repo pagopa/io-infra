@@ -1,92 +1,113 @@
-name: Run APIM Backup
+name: APIM Migration
 
-on: 
+on:
   workflow_dispatch:
     inputs:
-      environment:
-        type: string
-        required: true
-      storage_account_name:
-        type: string
-        required: true
-      storage_account_resource_group:
-        type: string
-        required: true
-      storage_account_container:
-        type: string
-        required: true
-      apim_name:
-        type: string
-        required: true
-      apim_resource_group:
-        type: string
-        required: true
       backup_name:
-        type: string
-        required: true
-      env_vars:
-        type: string
+        description: 'Name of the backup to restore'
         required: false
-        description: List of environment variables to set up, given in env=value format.
+        type: string
 
 env:
-  ARM_SUBSCRIPTION_ID: ${{ secrets.ARM_SUBSCRIPTION_ID }}
   ARM_TENANT_ID: ${{ secrets.ARM_TENANT_ID }}
+  STORAGE_ACCOUNT_RG: "io-p-rg-internal"
+  STORAGE_ACCOUNT_NAME: "iopapimbackupst01"
+  STORAGE_ACCOUNT_CONTAINER_NAME: "apim-backups"
 
 jobs:
   backup:
     name: 'Backup APIM'
-    runs-on: ubuntu-20.04
-    environment: ${{ inputs.environment }}-ci
+    runs-on: self-hosted
+    environment: prod-apim
+    if: github.event_name == 'workflow_dispatch' && github.event.inputs.backup_name == ''
+    timeout-minutes: 90
     permissions:
       id-token: write
       contents: read
-      pull-requests: write
     env:
       ARM_CLIENT_ID: ${{ secrets.ARM_CLIENT_ID }}
+      ARM_SUBSCRIPTION_ID: ${{ secrets.ARM_SUBSCRIPTION_ID }}
       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    outputs:
+      backup-name: ${{ steps.backup_name.outputs.backup_name }}
 
     steps:
-      - uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
-        name: Checkout
-
-      - name: Set Environment Variables
-        if: ${{ inputs.env_vars }}
-        run: |
-          for i in "${{ inputs.env_vars }}"
-          do
-            printf "%s\n" $i >> $GITHUB_ENV
-          done
-
       - name: Azure Login
-        uses: azure/login@6b2456866fc08b011acb422a92a4aa20e2c4de32 # v2.1.0
+        uses: azure/login@a65d910e8af852a8061c627c456678983e180302
         with:
           client-id: ${{ env.ARM_CLIENT_ID }}
           tenant-id: ${{ env.ARM_TENANT_ID }}
           subscription-id: ${{ env.ARM_SUBSCRIPTION_ID }}
 
-      # https://github.com/Azure/cli/releases
-      - name: Azure CLI
-        uses: azure/cli@v1
+      - name: Get current timestamp
+        id: backup_name
+        run: |
+          NOW="$(date +'%Y-%m-%dT%H:%M:%S')"
+          echo "backup_name=backup_$NOW" >> $GITHUB_ENV
+
+      - name: APIM Backup
+        if: ${{ inputs}}
+        run: |
+          set -e
+
+          key=$(az storage account keys list \
+            --resource-group ${{ env.STORAGE_ACCOUNT_RG }} \
+            --account-name ${{ env.STORAGE_ACCOUNT_NAME }} \
+            --query [0].value -o tsv)
+
+          echo "--- DEBUG ---"
+          echo "$backup_name"
+          echo "$key"
+
+          az apim backup \
+            --backup-name "$backup_name" \
+            --container-name "${{ env.STORAGE_ACCOUNT_CONTAINER_NAME }}" \
+            --name "io-p-apim-v2-api" \
+            --resource-group "io-p-rg-internal" \
+            --storage-account-key "$key" \
+            --storage-account-name "${{ env.STORAGE_ACCOUNT_NAME }}"
+
+  restore:
+    name: 'Restore APIM backup'
+    runs-on: self-hosted
+    environment: prod-apim
+    timeout-minutes: 90
+    needs: backup
+    if: always() && (needs.backup.result == 'success' || needs.backup.result == 'skipped')
+    permissions:
+      id-token: write
+      contents: read
+    env:
+      ARM_CLIENT_ID: ${{ secrets.ARM_CLIENT_ID }}
+      ARM_SUBSCRIPTION_ID: ${{ secrets.ARM_SUBSCRIPTION_ID }}
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      APIM_BACKUP_NAME: ${{ github.event.inputs.backup_name != '' && github.event.inputs.backup_name || needs.backup.outputs.backup-name }}
+
+    steps:
+      - name: Azure Login
+        uses: azure/login@a65d910e8af852a8061c627c456678983e180302
         with:
-          inlineScript: |
-            set -e
-            key=$(az storage account keys list \
+          client-id: ${{ env.ARM_CLIENT_ID }}
+          tenant-id: ${{ env.ARM_TENANT_ID }}
+          subscription-id: ${{ env.ARM_SUBSCRIPTION_ID }}
+
+      - name: APIM Restore
+        run: |
+          set -e
+
+          key=$(az storage account keys list \
             -g ${{ env.STORAGE_ACCOUNT_RG }} \
             -n ${{ env.STORAGE_ACCOUNT_NAME }} \
             --query [0].value -o tsv)
 
-            az apim backup \
-            --name ${{ env.APIM_NAME }} \
-            -g ${{ env.APIM_RG }} \
-            --backup-name ${{ env.BACKUP_NAME }} \
-            --storage-account-name ${{ env.STORAGE_ACCOUNT_NAME }} \
-            --storage-account-container ${{ env.STORAGE_ACCOUNT_CONTAINER }} \
-            --storage-account-key $key
-        env:
-          APIM_NAME: ${{ inputs.apim_name }}
-          APIM_RG: ${{ inputs.apim_resource_group }}
-          BACKUP_NAME: ${{ inputs.backup_name }}
-          STORAGE_ACCOUNT_CONTAINER: ${{ inputs.storage_account_container }}
-          STORAGE_ACCOUNT_RG: ${{ inputs.storage_account_resource_group }}
-          STORAGE_ACCOUNT_NAME: ${{ inputs.storage_account_name }}
+          echo "--- DEBUG ---"
+          echo "${{ env.APIM_BACKUP_NAME }}"
+          echo "$key"
+
+          az apim restore \
+            --backup-name "${{ env.APIM_BACKUP_NAME }}" \
+            --container-name "${{ env.STORAGE_ACCOUNT_CONTAINER_NAME }}" \
+            --name "io-p-itn-apim-01" \
+            --resource-group "io-p-itn-common-rg-01" \
+            --storage-account-key "$key" \
+            --storage-account-name "${{ env.STORAGE_ACCOUNT_NAME }}"
