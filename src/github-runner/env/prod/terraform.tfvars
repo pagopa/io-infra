@@ -12,11 +12,6 @@ tags = {
 
 resource_group_common_name = "io-p-rg-common"
 
-key_vault_common = {
-  name            = "io-p-kv-common"
-  pat_secret_name = "github-runner-pat"
-}
-
 networking = {
   vnet_common_name  = "io-p-vnet-common"
   subnet_cidr_block = "10.0.242.0/23"
