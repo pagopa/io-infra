@@ -28,5 +28,5 @@ resource "github_actions_environment_secret" "env_apim_prod_secrets" {
 resource "github_repository_environment_deployment_policy" "apim_prod_branch" {
   repository     = github_repository.this.name
   environment    = github_repository_environment.github_repository_environment_apim_prod.environment
-  branch_pattern = "apim-backup-restore-workflow"
+  branch_pattern = "main"
 }
