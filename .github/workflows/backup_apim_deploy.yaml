@@ -45,7 +45,14 @@ jobs:
           body=$(cat <<EOF
           {
             "properties": {
-              "value": "<policies>\n<inbound>\n<mock-response status-code=\"502\" content-type=\"application/json\"/>\n</inbound>\n<backend>\n</backend>\n<outbound>\n</outbound>\n<on-error>\n</on-error>\n</policies>",
+              "value": "<policies>
+                <inbound>
+                  <mock-response status-code=\"502\" content-type=\"application/json\"/>
+                </inbound>
+                <backend></backend>
+                <outbound></outbound>
+                <on-error></on-error>
+              </policies>",
               "format": "xml"
             }
           }
@@ -313,7 +320,63 @@ jobs:
           body=$(cat <<EOF
           {
             "properties": {
-              "value": "<policies>\n<inbound>\n<base />\n<choose>\n<when condition="@(context.User.Groups.Any(g => g.Name == "ApiAuthenticationClientCertificate") && !(context.Request.Headers.GetValueOrDefault("{{apigad-gad-client-certificate-verified-header}}", "false") == "true"))">\n<return-response>\n<set-status code="403" reason="Invalid client certificate" />\n</return-response>\n</when>\n</choose>\n<set-header name="x-user-id" exists-action="override">\n<value>@(context.User.Id)</value>\n</set-header>\n<set-header name="x-user-groups" exists-action="override">\n<value>@(String.Join(",", context.User.Groups.Select(g => g.Name)))</value>\n</set-header>\n<set-header name="x-subscription-id" exists-action="override">\n<value>@(context.Subscription.Id)</value>\n</set-header>\n<set-header name="x-user-email" exists-action="override">\n<value>@(context.User.Email)</value>\n</set-header>\n<choose>\n<when condition="@(context.Subscription.Id.StartsWith("MANAGE-GROUP-"))">\n<set-header name="x-user-groups-selc" exists-action="override">\n<value>@(context.Subscription.Id.Substring("MANAGE-GROUP-".Length))</value>\n</set-header>\n</when>\n<otherwise>\n<set-header name="x-user-groups-selc" exists-action="delete" />\n</otherwise>\n</choose>\n<cors>\n<allowed-origins>\n<origin>*</origin>\n</allowed-origins>\n<allowed-methods>\n<method>*</method>\n</allowed-methods>\n<allowed-headers>\n<header>*</header>\n</allowed-headers>\n<expose-headers>\n<header>*</header>\n</expose-headers>\n</cors>\n</inbound>\n<outbound>\n<base />\n</outbound>\n<backend>\n<base />\n</backend>\n<on-error>\n<base />\n</on-error>\n</policies>",
+              "value": "<policies>
+                <inbound>
+                  <base />
+                  <choose>
+                    <when condition=\"@(context.User.Groups.Any(g => g.Name == \"ApiAuthenticationClientCertificate\") && !(context.Request.Headers.GetValueOrDefault(\"{{apigad-gad-client-certificate-verified-header}}\", \"false\") == \"true\"))\">
+                      <return-response>
+                        <set-status code=\"403\" reason=\"Invalid client certificate\" />
+                      </return-response>
+                    </when>
+                  </choose>
+                  <set-header name=\"x-user-id\" exists-action=\"override\">
+                    <value>@(context.User.Id)</value>
+                  </set-header>
+                  <set-header name=\"x-user-groups\" exists-action=\"override\">
+                    <value>@(String.Join(\",\", context.User.Groups.Select(g => g.Name)))</value>
+                  </set-header>
+                  <set-header name=\"x-subscription-id\" exists-action=\"override\">
+                    <value>@(context.Subscription.Id)</value>
+                  </set-header>
+                  <set-header name=\"x-user-email\" exists-action=\"override\">
+                    <value>@(context.User.Email)</value>
+                  </set-header>
+                  <choose>
+                    <when condition=\"@(context.Subscription.Id.StartsWith(\"MANAGE-GROUP-\"))\">
+                      <set-header name=\"x-user-groups-selc\" exists-action=\"override\">
+                        <value>@(context.Subscription.Id.Substring(\"MANAGE-GROUP-\".Length))</value>
+                      </set-header>
+                    </when>
+                    <otherwise>
+                      <set-header name=\"x-user-groups-selc\" exists-action=\"delete\" />
+                    </otherwise>
+                  </choose>
+                  <cors>
+                    <allowed-origins>
+                      <origin>*</origin>
+                    </allowed-origins>
+                    <allowed-methods>
+                      <method>*</method>
+                    </allowed-methods>
+                    <allowed-headers>
+                      <header>*</header>
+                    </allowed-headers>
+                    <expose-headers>
+                      <header>*</header>
+                    </expose-headers>
+                  </cors>
+                </inbound>
+                <outbound>
+                  <base />
+                </outbound>
+                <backend>
+                  <base />
+                </backend>
+                <on-error>
+                  <base />
+                </on-error>
+              </policies>",
               "format": "xml"
             }
           }
@@ -329,4 +392,3 @@ jobs:
             --method put \
             --url "https://management.azure.com/subscriptions/$subscriptionId/resourceGroups/$resourceGroup/providers/Microsoft.ApiManagement/service/$serviceName/apis/$apiId/policies/policy?api-version=2024-05-01" \
             --body "$body"
-            # --body "{'properties': {'value': '<policies><inbound></inbound><backend><base /></backend><outbound><base /></outbound><on-error></on-error></policies>','format': 'xml'}}"
