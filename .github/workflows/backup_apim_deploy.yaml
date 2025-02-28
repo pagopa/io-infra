@@ -15,7 +15,7 @@ env:
   STORAGE_ACCOUNT_CONTAINER_NAME: "apim-backups"
 
 jobs:
-  svcappservices:
+  svcstopappservices:
     name: 'Stop SVC Apps'
     runs-on: ubuntu-latest
     environment: prod-apim
@@ -35,51 +35,45 @@ jobs:
           tenant-id: ${{ env.ARM_TENANT_ID }}
           subscription-id: ${{ env.ARM_SUBSCRIPTION_ID }}
 
-      - name: Stop Test AppService
+      - name: Stop SVC Backoffice
         run: |
           az webapp stop \
-            --name "io-d-test-apimmigration-app-01" \
-            --resource-group "dev-andreag"
+            --name "io-p-itn-svc-bo-app-01" \
+            --resource-group "io-p-itn-svc-rg-01"
 
-      - name: Stop Test AppService - staging
+      - name: Stop SVC Backoffice - staging
         run: |
           az webapp stop \
-            --name "io-d-test-apimmigration-app-01" \
-            --resource-group "dev-andreag" \
+            --name "io-p-itn-svc-bo-app-01" \
+            --resource-group "io-p-itn-svc-rg-01" \
             --slot "staging"
 
-      # - name: Stop SVC Backoffice
-      #   run: |
-      #     az webapp stop \
-      #       --name "io-p-itn-svc-bo-app-01" \
-      #       --resource-group "io-p-itn-svc-rg-01"
+      - name: Stop SVC DevPortal
+        run: |
+          az webapp stop \
+            --name "io-p-app-devportal-be" \
+            --resource-group "io-p-selfcare-be-rg"
 
-      # - name: Stop SVC DevPortal
-      #   run: |
-      #     az webapp stop \
-      #       --name "io-p-app-devportal-be" \
-      #       --resource-group "io-p-selfcare-be-rg"
+      - name: Stop SVC DevPortal - staging
+        run: |
+          az webapp stop \
+            --name "io-p-app-devportal-be" \
+            --resource-group "io-p-selfcare-be-rg" \
+            --slot "staging"
 
-      # - name: Stop SVC CMS Functions
-      #   run: |
-      #     az functionapp config appsettings set \
-      #       --name "io-p-itn-svc-cms-func-01" \
-      #       --resource-group "io-p-itn-svc-rg-01" \
-      #       --settings AzureWebJobs.CreateService.Disabled=true AzureWebJobs.RegenerateServiceKeys.Disabled=true
-
-      - name: Stop Test Functions
+      - name: Stop SVC CMS Functions
         run: |
           az functionapp config appsettings set \
-            --name "io-d-test-apimmigration-func-02" \
-            --resource-group "dev-andreag" \
-            --settings AzureWebJobs.TraceHeaders.Disabled=true AzureWebJobs.EnvVar.Disabled=false
+            --name "io-p-itn-svc-cms-func-01" \
+            --resource-group "io-p-itn-svc-rg-01" \
+            --settings AzureWebJobs.CreateService.Disabled=true AzureWebJobs.RegenerateServiceKeys.Disabled=true
 
-      - name: Stop Test Functions - staging
+      - name: Stop SVC CMS Functions - staging
         run: |
           az functionapp config appsettings set \
-            --name "io-d-test-apimmigration-func-02" \
-            --resource-group "dev-andreag" \
-            --settings AzureWebJobs.TraceHeaders.Disabled=true AzureWebJobs.EnvVar.Disabled=false \
+            --name "io-p-itn-svc-cms-func-01" \
+            --resource-group "io-p-itn-svc-rg-01" \
+            --settings AzureWebJobs.CreateService.Disabled=true AzureWebJobs.RegenerateServiceKeys.Disabled=true \
             --slot "staging"
 
   backup:
@@ -87,7 +81,7 @@ jobs:
     runs-on: self-hosted
     environment: prod-apim
     if: github.event_name == 'workflow_dispatch' && github.event.inputs.backup_name == ''
-    needs: [svcappservices]
+    needs: [svcstopappservices]
     timeout-minutes: 90
     permissions:
       id-token: write
@@ -177,3 +171,64 @@ jobs:
             --resource-group "io-p-itn-common-rg-01" \
             --storage-account-key "$key" \
             --storage-account-name "${{ env.STORAGE_ACCOUNT_NAME }}"
+
+  svcstartappservices:
+    name: 'Start SVC Apps'
+    runs-on: ubuntu-latest
+    environment: prod-apim
+    permissions:
+      id-token: write
+      contents: read
+    env:
+      ARM_CLIENT_ID: ${{ secrets.ARM_CLIENT_ID }}
+      ARM_SUBSCRIPTION_ID: ${{ secrets.ARM_SUBSCRIPTION_ID }}
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+    steps:
+      - name: Azure Login
+        uses: azure/login@a65d910e8af852a8061c627c456678983e180302
+        with:
+          client-id: ${{ env.ARM_CLIENT_ID }}
+          tenant-id: ${{ env.ARM_TENANT_ID }}
+          subscription-id: ${{ env.ARM_SUBSCRIPTION_ID }}
+
+      - name: Start SVC Backoffice
+        run: |
+          az webapp start \
+            --name "io-p-itn-svc-bo-app-01" \
+            --resource-group "io-p-itn-svc-rg-01"
+
+      - name: Start SVC Backoffice - staging
+        run: |
+          az webapp start \
+            --name "io-p-itn-svc-bo-app-01" \
+            --resource-group "io-p-itn-svc-rg-01" \
+            --slot "staging"
+
+      - name: Start SVC DevPortal
+        run: |
+          az webapp start \
+            --name "io-p-app-devportal-be" \
+            --resource-group "io-p-selfcare-be-rg"
+
+      - name: Start SVC DevPortal - staging
+        run: |
+          az webapp start \
+            --name "io-p-app-devportal-be" \
+            --resource-group "io-p-selfcare-be-rg" \
+            --slot "staging"
+
+      - name: Start SVC CMS Functions
+        run: |
+          az functionapp config appsettings set \
+            --name "io-p-itn-svc-cms-func-01" \
+            --resource-group "io-p-itn-svc-rg-01" \
+            --settings AzureWebJobs.CreateService.Disabled=false AzureWebJobs.RegenerateServiceKeys.Disabled=false
+
+      - name: Start SVC CMS Functions - staging
+        run: |
+          az functionapp config appsettings set \
+            --name "io-p-itn-svc-cms-func-01" \
+            --resource-group "io-p-itn-svc-rg-01" \
+            --settings AzureWebJobs.CreateService.Disabled=false AzureWebJobs.RegenerateServiceKeys.Disabled=false \
+            --slot "staging"
