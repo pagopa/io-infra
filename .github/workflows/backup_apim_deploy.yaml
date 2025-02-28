@@ -7,6 +7,11 @@ on:
         description: 'Name of the backup to restore'
         required: false
         type: string
+      skip_apim_backup:
+        description: 'True to skip APIM backup'
+        required: false
+        type: boolean
+        default: false
 
 env:
   ARM_TENANT_ID: ${{ secrets.ARM_TENANT_ID }}
@@ -15,10 +20,54 @@ env:
   STORAGE_ACCOUNT_CONTAINER_NAME: "apim-backups"
 
 jobs:
-  svcstopappservices:
+  svc_add_apim_mock_policy:
+    name: 'Add APIM mock policy to SVC APIs'
+    runs-on: ubuntu-latest
+    environment: prod-apim
+    permissions:
+      id-token: write
+      contents: read
+    env:
+      ARM_CLIENT_ID: ${{ secrets.ARM_CLIENT_ID }}
+      ARM_SUBSCRIPTION_ID: ${{ secrets.ARM_SUBSCRIPTION_ID }}
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+    steps:
+      - name: Azure Login
+        uses: azure/login@a65d910e8af852a8061c627c456678983e180302
+        with:
+          client-id: ${{ env.ARM_CLIENT_ID }}
+          tenant-id: ${{ env.ARM_TENANT_ID }}
+          subscription-id: ${{ env.ARM_SUBSCRIPTION_ID }}
+
+      - name: Add APIM mock Policy
+        run: |
+          body=$(cat <<EOF
+          {
+            "properties": {
+              "value": "<policies>\n<inbound>\n<mock-response status-code=\"502\" content-type=\"application/json\"/>\n</inbound>\n<backend>\n</backend>\n<outbound>\n</outbound>\n<on-error>\n</on-error>\n</policies>",
+              "format": "xml"
+            }
+          }
+          EOF
+          )
+
+          subscriptionId="d7de83e0-0571-40ad-b63a-64c942385eae"
+          resourceGroup="dev-andreag"
+          serviceName="dx-d-itn-test-slot-apim-01"
+          apiId="func02"
+
+          az rest \
+            --method put \
+            --url "https://management.azure.com/subscriptions/$subscriptionId/resourceGroups/$resourceGroup/providers/Microsoft.ApiManagement/service/$serviceName/apis/$apiId/policies/policy?api-version=2024-05-01" \
+            --body "$body"
+            # --body "{'properties': {'value': '<policies><inbound></inbound><backend><base /></backend><outbound><base /></outbound><on-error></on-error></policies>','format': 'xml'}}"
+
+  svc_stop_appservices:
     name: 'Stop SVC Apps'
     runs-on: ubuntu-latest
     environment: prod-apim
+    needs: [svc_add_apim_mock_policy]
     permissions:
       id-token: write
       contents: read
@@ -76,12 +125,12 @@ jobs:
             --settings AzureWebJobs.CreateService.Disabled=true AzureWebJobs.RegenerateServiceKeys.Disabled=true \
             --slot "staging"
 
-  backup:
+  weu_apim_backup:
     name: 'Backup APIM'
     runs-on: self-hosted
     environment: prod-apim
-    if: github.event_name == 'workflow_dispatch' && github.event.inputs.backup_name == ''
-    needs: [svcstopappservices]
+    if: github.event_name == 'workflow_dispatch' && github.event.inputs.backup_name == '' && github.event.inputs.skip_apim_backup == false
+    needs: [svc_stop_appservices]
     timeout-minutes: 90
     permissions:
       id-token: write
@@ -128,13 +177,13 @@ jobs:
             --storage-account-key "$key" \
             --storage-account-name "${{ env.STORAGE_ACCOUNT_NAME }}"
 
-  restore:
+  weu_apim_restore:
     name: 'Restore APIM backup'
     runs-on: self-hosted
     environment: prod-apim
     timeout-minutes: 90
-    needs: backup
-    if: always() && (needs.backup.result == 'success' || needs.backup.result == 'skipped')
+    needs: weu_apim_backup
+    if: always() && github.event.inputs.skip_apim_backup == false && (needs.weu_apim_backup.result == 'success' || needs.weu_apim_backup.result == 'skipped')
     permissions:
       id-token: write
       contents: read
@@ -172,10 +221,11 @@ jobs:
             --storage-account-key "$key" \
             --storage-account-name "${{ env.STORAGE_ACCOUNT_NAME }}"
 
-  svcstartappservices:
+  svc_start_appservices:
     name: 'Start SVC Apps'
     runs-on: ubuntu-latest
     environment: prod-apim
+    needs: [weu_apim_restore]
     permissions:
       id-token: write
       contents: read
@@ -232,3 +282,51 @@ jobs:
             --resource-group "io-p-itn-svc-rg-01" \
             --settings AzureWebJobs.CreateService.Disabled=false AzureWebJobs.RegenerateServiceKeys.Disabled=false \
             --slot "staging"
+
+      - name: Wait Apps to restart (1m)
+        run: sleep 60s
+        shell: bash
+
+  svc_remove_apim_mock_policy:
+    name: 'Remove APIM mock policy to SVC APIs'
+    runs-on: ubuntu-latest
+    environment: prod-apim
+    needs: [svc_start_appservices]
+    permissions:
+      id-token: write
+      contents: read
+    env:
+      ARM_CLIENT_ID: ${{ secrets.ARM_CLIENT_ID }}
+      ARM_SUBSCRIPTION_ID: ${{ secrets.ARM_SUBSCRIPTION_ID }}
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+    steps:
+      - name: Azure Login
+        uses: azure/login@a65d910e8af852a8061c627c456678983e180302
+        with:
+          client-id: ${{ env.ARM_CLIENT_ID }}
+          tenant-id: ${{ env.ARM_TENANT_ID }}
+          subscription-id: ${{ env.ARM_SUBSCRIPTION_ID }}
+
+      - name: Remove APIM mock Policy
+        run: |
+          body=$(cat <<EOF
+          {
+            "properties": {
+              "value": "<policies>\n<inbound>\n<base />\n<choose>\n<when condition="@(context.User.Groups.Any(g => g.Name == "ApiAuthenticationClientCertificate") && !(context.Request.Headers.GetValueOrDefault("{{apigad-gad-client-certificate-verified-header}}", "false") == "true"))">\n<return-response>\n<set-status code="403" reason="Invalid client certificate" />\n</return-response>\n</when>\n</choose>\n<set-header name="x-user-id" exists-action="override">\n<value>@(context.User.Id)</value>\n</set-header>\n<set-header name="x-user-groups" exists-action="override">\n<value>@(String.Join(",", context.User.Groups.Select(g => g.Name)))</value>\n</set-header>\n<set-header name="x-subscription-id" exists-action="override">\n<value>@(context.Subscription.Id)</value>\n</set-header>\n<set-header name="x-user-email" exists-action="override">\n<value>@(context.User.Email)</value>\n</set-header>\n<choose>\n<when condition="@(context.Subscription.Id.StartsWith("MANAGE-GROUP-"))">\n<set-header name="x-user-groups-selc" exists-action="override">\n<value>@(context.Subscription.Id.Substring("MANAGE-GROUP-".Length))</value>\n</set-header>\n</when>\n<otherwise>\n<set-header name="x-user-groups-selc" exists-action="delete" />\n</otherwise>\n</choose>\n<cors>\n<allowed-origins>\n<origin>*</origin>\n</allowed-origins>\n<allowed-methods>\n<method>*</method>\n</allowed-methods>\n<allowed-headers>\n<header>*</header>\n</allowed-headers>\n<expose-headers>\n<header>*</header>\n</expose-headers>\n</cors>\n</inbound>\n<outbound>\n<base />\n</outbound>\n<backend>\n<base />\n</backend>\n<on-error>\n<base />\n</on-error>\n</policies>",
+              "format": "xml"
+            }
+          }
+          EOF
+          )
+
+          subscriptionId="${{ secrets.ARM_SUBSCRIPTION_ID }}"
+          resourceGroup="io-p-itn-common-rg-01"
+          serviceName="io-p-itn-apim-01"
+          apiId="io-services-cms-api"
+
+          az rest \
+            --method put \
+            --url "https://management.azure.com/subscriptions/$subscriptionId/resourceGroups/$resourceGroup/providers/Microsoft.ApiManagement/service/$serviceName/apis/$apiId/policies/policy?api-version=2024-05-01" \
+            --body "$body"
+            # --body "{'properties': {'value': '<policies><inbound></inbound><backend><base /></backend><outbound><base /></outbound><on-error></on-error></policies>','format': 'xml'}}"
