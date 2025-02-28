@@ -16,7 +16,7 @@ env:
 
 jobs:
   svcappservices:
-    name: 'Stop Apps'
+    name: 'Stop SVC Apps'
     runs-on: ubuntu-latest
     environment: prod-apim
     permissions:
@@ -40,6 +40,13 @@ jobs:
           az webapp stop \
             --name "io-d-test-apimmigration-app-01" \
             --resource-group "dev-andreag"
+
+      - name: Stop Test AppService - staging
+        run: |
+          az webapp stop \
+            --name "io-d-test-apimmigration-app-01" \
+            --resource-group "dev-andreag" \
+            --slot "staging"
 
       # - name: Stop SVC Backoffice
       #   run: |
@@ -65,7 +72,15 @@ jobs:
           az functionapp config appsettings set \
             --name "io-d-test-apimmigration-func-02" \
             --resource-group "dev-andreag" \
-            --settings AzureWebJobs.TraceHeaders.Disabled=true
+            --settings AzureWebJobs.TraceHeaders.Disabled=true AzureWebJobs.EnvVar.Disabled=false
+
+      - name: Stop Test Functions - staging
+        run: |
+          az functionapp config appsettings set \
+            --name "io-d-test-apimmigration-func-02" \
+            --resource-group "dev-andreag" \
+            --settings AzureWebJobs.TraceHeaders.Disabled=true AzureWebJobs.EnvVar.Disabled=false \
+            --slot "staging"
 
   backup:
     name: 'Backup APIM'
