@@ -38,4 +38,12 @@ locals {
     }
     reviewers_teams = ["io-backend-contributors", "io-backend-admin", "engineering-team-cloud-eng"]
   }
+
+  apim_prod = {
+    secrets = {
+      "ARM_CLIENT_ID"       = data.azurerm_user_assigned_identity.identity_prod_apim.client_id,
+      "ARM_SUBSCRIPTION_ID" = data.azurerm_subscription.current.subscription_id
+    }
+    reviewers_teams = ["engineering-team-cloud-eng"]
+  }
 }
