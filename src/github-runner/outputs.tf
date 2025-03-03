@@ -17,13 +17,3 @@ output "cae_name" {
   value       = module.container_app_environment_runner.name
   description = "Container App Environment name"
 }
-
-output "ca_job_id" {
-  value       = module.container_app_job.id
-  description = "Container App job id"
-}
-
-output "ca_job_name" {
-  value       = module.container_app_job.name
-  description = "Container App job name"
-}

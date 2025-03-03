@@ -35,13 +35,6 @@ variable "resource_group_common_name" {
   type = string
 }
 
-variable "key_vault_common" {
-  type = object({
-    name            = string
-    pat_secret_name = string
-  })
-}
-
 variable "networking" {
   type = object({
     vnet_common_name  = string
