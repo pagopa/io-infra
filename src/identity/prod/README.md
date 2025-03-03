@@ -19,7 +19,7 @@
 
 | Name | Source | Version |
 |------|--------|---------|
-| <a name="module_federated_identities"></a> [federated\_identities](#module\_federated\_identities) | pagopa/dx-azure-federated-identity-with-github/azurerm | ~> 0 |
+| <a name="module_federated_identities"></a> [federated\_identities](#module\_federated\_identities) | pagopa/dx-azure-federated-identity-with-github/azurerm | ~>0.0 |
 
 ## Resources
 
