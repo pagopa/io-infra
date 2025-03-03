@@ -23,6 +23,9 @@ on:
         type: boolean
         default: false
 
+  schedule:
+    - cron: '0 5 * * 2' # Runs every Tuesday at 06:00 AM GMT+1 (05:00 AM UTC)
+
 env:
   ARM_TENANT_ID: ${{ secrets.ARM_TENANT_ID }}
   STORAGE_ACCOUNT_RG: "io-p-rg-internal"
