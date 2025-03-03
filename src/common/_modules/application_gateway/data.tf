@@ -149,7 +149,3 @@ data "azurerm_key_vault_secret" "app_gw_mtls_header_name" {
   name         = "mtls-header-name"
   key_vault_id = var.key_vault.id
 }
-
-data "azuread_service_principal" "app_gw_uai_kvreader" {
-  display_name = format("%s-uai-kvreader", var.project)
-}
