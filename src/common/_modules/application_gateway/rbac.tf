@@ -36,14 +36,3 @@ resource "azurerm_key_vault_access_policy" "app_gateway_policy_ioweb" {
   certificate_permissions = ["Get", "List"]
   storage_permissions     = []
 }
-
-## user assined identity: (old application gateway) ##
-resource "azurerm_key_vault_access_policy" "app_gw_uai_kvreader_common" {
-  key_vault_id            = var.key_vault_common.id
-  tenant_id               = var.datasources.azurerm_client_config.tenant_id
-  object_id               = data.azuread_service_principal.app_gw_uai_kvreader.object_id
-  key_permissions         = []
-  secret_permissions      = ["Get", "List"]
-  certificate_permissions = ["Get", "List"]
-  storage_permissions     = []
-}
