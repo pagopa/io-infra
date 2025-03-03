@@ -110,12 +110,14 @@ jobs:
 
       - name: Stop DemoApp
         run: |
+          # TODO: restore to the correct resource after tests
           az webapp stop \
             --name "io-d-test-apimmigration-app-01" \
             --resource-group "dev-andreag"
 
       - name: Stop DemoApp - staging
         run: |
+          # TODO: restore to the correct resource after tests
           az webapp stop \
             --name "io-d-test-apimmigration-app-01" \
             --resource-group "dev-andreag" \
@@ -123,6 +125,7 @@ jobs:
 
       - name: Stop DemoFunctions
         run: |
+          # TODO: restore to the correct resource after tests
           az functionapp config appsettings set \
             --name "io-d-test-apimmigration-func-01" \
             --resource-group "dev-andreag" \
@@ -130,6 +133,7 @@ jobs:
 
       - name: Stop DemoFunctions - staging
         run: |
+          # TODO: restore to the correct resource after tests
           az functionapp config appsettings set \
             --name "io-d-test-apimmigration-func-01" \
             --resource-group "dev-andreag" \
@@ -256,12 +260,14 @@ jobs:
 
       - name: Start DemoApp
         run: |
+          # TODO: restore to the correct resource after tests
           az webapp start \
             --name "io-d-test-apimmigration-app-01" \
             --resource-group "dev-andreag"
 
       - name: Start DemoApp - staging
         run: |
+          # TODO: restore to the correct resource after tests
           az webapp start \
             --name "io-d-test-apimmigration-app-01" \
             --resource-group "dev-andreag" \
@@ -269,6 +275,7 @@ jobs:
 
       - name: Start DemoFunctions
         run: |
+          # TODO: restore to the correct resource after tests
           az functionapp config appsettings set \
             --name "io-d-test-apimmigration-func-01" \
             --resource-group "dev-andreag" \
@@ -276,6 +283,7 @@ jobs:
 
       - name: Start DemoFunctions - staging
         run: |
+          # TODO: restore to the correct resource after tests
           az functionapp config appsettings set \
             --name "io-d-test-apimmigration-func-01" \
             --resource-group "dev-andreag" \
