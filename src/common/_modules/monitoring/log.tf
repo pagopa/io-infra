@@ -6,5 +6,13 @@ resource "azurerm_log_analytics_workspace" "log" {
   retention_in_days   = "90"
   daily_quota_gb      = "-1"
 
+  lifecycle {
+    ignore_changes = [
+      # Ignore changes to sku because the azurerm module doesn't support LACluster.
+      # This is a workaround for https://github.com/hashicorp/terraform-provider-azurerm/issues/28743
+      sku,
+    ]
+  }
+
   tags = var.tags
 }
