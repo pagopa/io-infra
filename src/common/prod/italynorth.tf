@@ -8,6 +8,8 @@ resource "azurerm_resource_group" "github_runner" {
 module "github_runner_itn" {
   source = "../_modules/github_runner"
 
+  prefix              = local.prefix
+  env_short           = local.env_short
   project             = local.project_itn
   location            = "italynorth"
   resource_group_name = azurerm_resource_group.github_runner.name
@@ -17,6 +19,11 @@ module "github_runner_itn" {
   cidr_subnet = "10.20.14.0/23"
 
   log_analytics_workspace_id = module.monitoring_weu.log.id
+
+  key_vault_pat_token = {
+    name                = local.core.key_vault.weu.kv_common.name
+    resource_group_name = local.core.key_vault.weu.kv_common.resource_group_name
+  }
 
   tags = local.tags
 }
