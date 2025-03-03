@@ -115,3 +115,9 @@ variable "azure_adgroup_bonus_admins_object_id" {
   type        = string
   description = "Object Id of the Entra group for subscription admins"
 }
+
+variable "min_api_version" {
+  type        = string
+  description = "(Optional) Minimum API version"
+  default     = null
+}

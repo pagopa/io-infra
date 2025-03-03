@@ -35,7 +35,7 @@ provider "azurerm" {
 
 module "federated_identities" {
   source  = "pagopa/dx-azure-federated-identity-with-github/azurerm"
-  version = "~> 0"
+  version = "~>0.0"
 
   prefix       = local.prefix
   env_short    = local.env_short
@@ -63,6 +63,9 @@ module "federated_identities" {
         terraform-state-rg = [
           "Storage Blob Data Contributor"
         ]
+        io-p-itn-github-runner-rg-01 = [
+          "Container Apps Jobs Operator"
+        ]
       }
     }
   }
@@ -81,6 +84,9 @@ module "federated_identities" {
         "Role Based Access Control Administrator",
       ]
       resource_groups = {
+        io-p-itn-github-runner-rg-01 = [
+          "Container Apps Jobs Operator"
+        ]
       }
     }
   }
