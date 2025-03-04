@@ -74,10 +74,8 @@ jobs:
           )
 
           subscriptionId="${{ secrets.ARM_SUBSCRIPTION_ID }}"
-
-          # TODO: restore to the correct resource after tests
-          resourceGroup="io-p-itn-common-rg-01"
-          serviceName="io-p-itn-apim-01"
+          resourceGroup="io-p-rg-internal"
+          serviceName="io-p-apim-v2-api"
           apiId="io-services-cms-api"
           apiVersion="2022-08-01"
 
@@ -108,36 +106,45 @@ jobs:
           tenant-id: ${{ env.ARM_TENANT_ID }}
           subscription-id: ${{ env.ARM_SUBSCRIPTION_ID }}
 
-      - name: Stop DemoApp
+      - name: Stop SVC Backoffice
         run: |
-          # TODO: restore to the correct resource after tests
           az webapp stop \
-            --name "io-d-test-apimmigration-app-01" \
-            --resource-group "dev-andreag"
+            --name "io-p-itn-svc-bo-app-01" \
+            --resource-group "io-p-itn-svc-rg-01"
 
-      - name: Stop DemoApp - staging
+      - name: Stop SVC Backoffice - staging
         run: |
-          # TODO: restore to the correct resource after tests
           az webapp stop \
-            --name "io-d-test-apimmigration-app-01" \
-            --resource-group "dev-andreag" \
+            --name "io-p-itn-svc-bo-app-01" \
+            --resource-group "io-p-itn-svc-rg-01" \
             --slot "staging"
 
-      - name: Stop DemoFunctions
+      - name: Stop SVC DevPortal
         run: |
-          # TODO: restore to the correct resource after tests
-          az functionapp config appsettings set \
-            --name "io-d-test-apimmigration-func-01" \
-            --resource-group "dev-andreag" \
-            --settings AzureWebJobs.TraceHeaders.Disabled=true
+          az webapp stop \
+            --name "io-p-app-devportal-be" \
+            --resource-group "io-p-selfcare-be-rg"
 
-      - name: Stop DemoFunctions - staging
+      - name: Stop SVC DevPortal - staging
         run: |
-          # TODO: restore to the correct resource after tests
+          az webapp stop \
+            --name "io-p-app-devportal-be" \
+            --resource-group "io-p-selfcare-be-rg" \
+            --slot "staging"
+
+      - name: Stop SVC CMS Functions
+        run: |
           az functionapp config appsettings set \
-            --name "io-d-test-apimmigration-func-01" \
-            --resource-group "dev-andreag" \
-            --settings AzureWebJobs.TraceHeaders.Disabled=true \
+            --name "io-p-itn-svc-cms-func-01" \
+            --resource-group "io-p-itn-svc-rg-01" \
+            --settings AzureWebJobs.CreateService.Disabled=true AzureWebJobs.RegenerateServiceKeys.Disabled=true
+
+      - name: Stop SVC CMS Functions - staging
+        run: |
+          az functionapp config appsettings set \
+            --name "io-p-itn-svc-cms-func-01" \
+            --resource-group "io-p-itn-svc-rg-01" \
+            --settings AzureWebJobs.CreateService.Disabled=true AzureWebJobs.RegenerateServiceKeys.Disabled=true \
             --slot "staging"
 
   weu_apim_backup:
@@ -258,36 +265,45 @@ jobs:
           tenant-id: ${{ env.ARM_TENANT_ID }}
           subscription-id: ${{ env.ARM_SUBSCRIPTION_ID }}
 
-      - name: Start DemoApp
+      - name: Start SVC Backoffice
         run: |
-          # TODO: restore to the correct resource after tests
           az webapp start \
-            --name "io-d-test-apimmigration-app-01" \
-            --resource-group "dev-andreag"
+            --name "io-p-itn-svc-bo-app-01" \
+            --resource-group "io-p-itn-svc-rg-01"
 
-      - name: Start DemoApp - staging
+      - name: Start SVC Backoffice - staging
         run: |
-          # TODO: restore to the correct resource after tests
           az webapp start \
-            --name "io-d-test-apimmigration-app-01" \
-            --resource-group "dev-andreag" \
+            --name "io-p-itn-svc-bo-app-01" \
+            --resource-group "io-p-itn-svc-rg-01" \
             --slot "staging"
 
-      - name: Start DemoFunctions
+      - name: Start SVC DevPortal
         run: |
-          # TODO: restore to the correct resource after tests
-          az functionapp config appsettings set \
-            --name "io-d-test-apimmigration-func-01" \
-            --resource-group "dev-andreag" \
-            --settings AzureWebJobs.TraceHeaders.Disabled=false
+          az webapp start \
+            --name "io-p-app-devportal-be" \
+            --resource-group "io-p-selfcare-be-rg"
 
-      - name: Start DemoFunctions - staging
+      - name: Start SVC DevPortal - staging
         run: |
-          # TODO: restore to the correct resource after tests
+          az webapp start \
+            --name "io-p-app-devportal-be" \
+            --resource-group "io-p-selfcare-be-rg" \
+            --slot "staging"
+
+      - name: Start SVC CMS Functions
+        run: |
           az functionapp config appsettings set \
-            --name "io-d-test-apimmigration-func-01" \
-            --resource-group "dev-andreag" \
-            --settings AzureWebJobs.TraceHeaders.Disabled=false \
+            --name "io-p-itn-svc-cms-func-01" \
+            --resource-group "io-p-itn-svc-rg-01" \
+            --settings AzureWebJobs.CreateService.Disabled=false AzureWebJobs.RegenerateServiceKeys.Disabled=false
+
+      - name: Start SVC CMS Functions - staging
+        run: |
+          az functionapp config appsettings set \
+            --name "io-p-itn-svc-cms-func-01" \
+            --resource-group "io-p-itn-svc-rg-01" \
+            --settings AzureWebJobs.CreateService.Disabled=false AzureWebJobs.RegenerateServiceKeys.Disabled=false \
             --slot "staging"
 
       - name: Wait Apps to restart (1m)
