@@ -133,3 +133,15 @@ data "azurerm_subnet" "azdoa_snet" {
   resource_group_name  = local.rg_common_name
   virtual_network_name = local.vnet_common_name
 }
+
+# APIM in WEU
+data "azurerm_api_management" "apim_v2_api" {
+  name                = "${local.project}-apim-v2-api"
+  resource_group_name = "${local.project}-rg-internal"
+}
+
+# APIM in ITN
+data "azurerm_api_management" "apim_itn_api" {
+  name                = local.apim_itn_name
+  resource_group_name = local.apim_itn_resource_group_name
+}
