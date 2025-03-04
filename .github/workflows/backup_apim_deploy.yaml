@@ -155,7 +155,7 @@ jobs:
       ARM_SUBSCRIPTION_ID: ${{ secrets.ARM_SUBSCRIPTION_ID }}
       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     outputs:
-      backup-name: ${{ steps.backup_name.outputs.backup_name }}
+      backup_blob_name: ${{ steps.backup_name.outputs.backup_name }}
 
     steps:
       - name: Azure Login
@@ -169,7 +169,7 @@ jobs:
         id: backup_name
         run: |
           NOW="$(date +'%Y-%m-%dT%H:%M:%S')"
-          echo "backup_name=backup_$NOW" >> $GITHUB_ENV
+          echo "backup_name=backup_$NOW" >> $GITHUB_OUTPUT
 
       - name: APIM Backup
         if: ${{ inputs}}
@@ -181,11 +181,13 @@ jobs:
             --account-name ${{ env.STORAGE_ACCOUNT_NAME }} \
             --query [0].value -o tsv)
 
+          backup_blob_name=${{ steps.backup_name.outputs.backup_name }}
+
           echo "--- DEBUG ---"
-          echo "$backup_name"
+          echo "$backup_blob_name"
 
           az apim backup \
-            --backup-name "$backup_name" \
+            --backup-name "$backup_blob_name" \
             --container-name "${{ env.STORAGE_ACCOUNT_CONTAINER_NAME }}" \
             --name "io-p-apim-v2-api" \
             --resource-group "io-p-rg-internal" \
@@ -206,7 +208,7 @@ jobs:
       ARM_CLIENT_ID: ${{ secrets.ARM_CLIENT_ID }}
       ARM_SUBSCRIPTION_ID: ${{ secrets.ARM_SUBSCRIPTION_ID }}
       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      APIM_BACKUP_NAME: ${{ inputs.backup_name != '' && inputs.backup_name || needs.weu_apim_backup.outputs.backup-name }}
+      APIM_BACKUP_BLOB_NAME: ${{ inputs.backup_name != '' && inputs.backup_name || needs.weu_apim_backup.outputs.backup_blob_name }}
 
     steps:
       - name: Azure Login
@@ -226,10 +228,10 @@ jobs:
             --query [0].value -o tsv)
 
           echo "--- DEBUG ---"
-          echo "${{ env.APIM_BACKUP_NAME }}"
+          echo "${{ env.APIM_BACKUP_BLOB_NAME }}"
 
           az apim restore \
-            --backup-name "${{ env.APIM_BACKUP_NAME }}" \
+            --backup-name "${{ env.APIM_BACKUP_BLOB_NAME }}" \
             --container-name "${{ env.STORAGE_ACCOUNT_CONTAINER_NAME }}" \
             --name "io-p-itn-apim-01" \
             --resource-group "io-p-itn-common-rg-01" \
