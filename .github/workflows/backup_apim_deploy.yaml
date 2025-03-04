@@ -179,7 +179,6 @@ jobs:
           echo "backup_name=backup_$NOW" >> $GITHUB_ENV
 
       - name: APIM Backup
-        if: ${{ inputs}}
         run: |
           set -e
 
