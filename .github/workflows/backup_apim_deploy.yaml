@@ -24,7 +24,7 @@ on:
         default: false
 
   schedule:
-    - cron: '0 9 4 3 *' # Runs on day-of-month 4 in March at 10:00 AM GMT+1 (09:00 AM UTC)
+    - cron: '30 4 5 3 *' # Runs at 05:30 GMT+1 (04:30 UTC) on day-of-month 5 in March
 
 env:
   ARM_TENANT_ID: ${{ secrets.ARM_TENANT_ID }}
