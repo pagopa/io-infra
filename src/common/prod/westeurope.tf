@@ -462,7 +462,7 @@ module "app_backend_weu" {
   cidr_subnet                = each.value.cidr_subnet
   nat_gateways               = local.core.networking.weu.nat_gateways
   allowed_subnets            = concat(data.azurerm_subnet.services_snet.*.id, [module.application_gateway_weu.snet.id, module.apim_weu.snet.id, module.apim_itn.snet.id])
-  slot_allowed_subnets       = concat([local.azdoa_snet_id["weu"]], data.azurerm_subnet.services_snet.*.id, [module.application_gateway_weu.snet.id, module.apim_weu.snet.id, module.apim_itn.snet.id])
+  slot_allowed_subnets       = concat([local.azdoa_snet_id["weu"]], data.azurerm_subnet.services_snet.*.id, [module.application_gateway_weu.snet.id, module.apim_weu.snet.id, module.apim_itn.snet.id, module.github_runner_itn.subnet.id])
   allowed_ips                = module.monitoring_weu.appi.reserved_ips
   slot_allowed_ips           = module.monitoring_weu.appi.reserved_ips
   apim_snet_address_prefixes = module.apim_weu.snet.address_prefixes # module.apim_itn.snet.address_prefixes Change this for APIM ITN switch
@@ -520,7 +520,7 @@ module "app_backend_li_weu" {
       data.azurerm_subnet.itn_msgs_sending_func_snet.id,
       data.azurerm_subnet.itn_auth_prof_async_func_snet.id
   ])
-  slot_allowed_subnets = concat([local.azdoa_snet_id["weu"]], data.azurerm_subnet.services_snet.*.id, [data.azurerm_subnet.admin_snet.id])
+  slot_allowed_subnets = concat([local.azdoa_snet_id["weu"]], data.azurerm_subnet.services_snet.*.id, [data.azurerm_subnet.admin_snet.id, module.github_runner_itn.subnet.id])
   allowed_ips = concat(module.monitoring_weu.appi.reserved_ips,
     [
       // aks prod01
