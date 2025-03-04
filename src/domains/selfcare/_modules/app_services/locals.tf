@@ -210,7 +210,7 @@ locals {
       SERVICE_PRINCIPAL_CLIENT_ID = data.azurerm_key_vault_secret.apim_service_principal_client_id.value # Remove after ITN migration
       SERVICE_PRINCIPAL_SECRET    = data.azurerm_key_vault_secret.apim_service_principal_secret.value    # Remove after ITN migration
       SERVICE_PRINCIPAL_TENANT_ID = data.azurerm_client_config.current.tenant_id
-      USE_SERVICE_PRINCIPAL       = "1"
+      USE_SERVICE_PRINCIPAL       = "0"
 
       # devportal configs
       CLIENT_NAME                = "io-p-developer-portal-app"

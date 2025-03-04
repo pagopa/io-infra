@@ -243,6 +243,7 @@ module "function_admin" {
     module.admin_snet.id,
     data.azurerm_subnet.apim_v2_snet.id,
     data.azurerm_subnet.apim_itn_snet.id,
+    data.azurerm_subnet.gh_runner.id
   ]
 
   # Action groups for alerts
@@ -296,6 +297,7 @@ module "function_admin_staging_slot" {
     data.azurerm_subnet.azdoa_snet.id,
     data.azurerm_subnet.apim_v2_snet.id,
     data.azurerm_subnet.apim_itn_snet.id,
+    data.azurerm_subnet.gh_runner.id
   ]
 
   tags = var.tags
