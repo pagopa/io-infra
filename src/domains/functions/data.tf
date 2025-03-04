@@ -4,9 +4,9 @@ data "azurerm_key_vault" "common" {
 }
 
 data "azurerm_subnet" "gh_runner" {
-  name                 = format("%s-itn-github-runner-snet-01", local.project)
-  virtual_network_name = format("%s-itn-common-vnet-01", local.project)
-  resource_group_name  = format("%s-itn-common-rg-01", local.project)
+  name                 = format("%s-github-runner-snet", local.project)
+  virtual_network_name = format("%s-vnet-common", local.project)
+  resource_group_name  = format("%s-rg-common", local.project)
 }
 
 data "azurerm_application_insights" "application_insights" {

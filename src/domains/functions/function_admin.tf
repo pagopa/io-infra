@@ -243,7 +243,6 @@ module "function_admin" {
     module.admin_snet.id,
     data.azurerm_subnet.apim_v2_snet.id,
     data.azurerm_subnet.apim_itn_snet.id,
-    data.azurerm_subnet.gh_runner.id
   ]
 
   # Action groups for alerts
