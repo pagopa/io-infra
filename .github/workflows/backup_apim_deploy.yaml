@@ -24,7 +24,7 @@ on:
         default: false
 
   schedule:
-    - cron: '0 5 4 3 *' # Runs on day-of-month 4 in March at 06:00 AM GMT+1 (05:00 AM UTC)
+    - cron: '0 9 4 3 *' # Runs on day-of-month 4 in March at 10:00 AM GMT+1 (09:00 AM UTC)
 
 env:
   ARM_TENANT_ID: ${{ secrets.ARM_TENANT_ID }}
@@ -206,7 +206,7 @@ jobs:
       ARM_CLIENT_ID: ${{ secrets.ARM_CLIENT_ID }}
       ARM_SUBSCRIPTION_ID: ${{ secrets.ARM_SUBSCRIPTION_ID }}
       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      APIM_BACKUP_NAME: ${{ inputs.backup_name != '' && inputs.backup_name || needs.backup.outputs.backup-name }}
+      APIM_BACKUP_NAME: ${{ inputs.backup_name != '' && inputs.backup_name || needs.weu_apim_backup.outputs.backup-name }}
 
     steps:
       - name: Azure Login
