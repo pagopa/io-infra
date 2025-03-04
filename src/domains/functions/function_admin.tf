@@ -198,11 +198,12 @@ module "admin_snet" {
 module "function_admin" {
   source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app?ref=v8.52.0"
 
-  resource_group_name = azurerm_resource_group.admin_rg.name
-  name                = format("%s-admin-fn", local.project)
-  location            = var.location
-  domain              = "IO-COMMONS"
-  health_check_path   = "/info"
+  resource_group_name     = azurerm_resource_group.admin_rg.name
+  name                    = format("%s-admin-fn", local.project)
+  location                = var.location
+  domain                  = "IO-COMMONS"
+  health_check_path       = "/info"
+  system_identity_enabled = true
 
   node_version    = "20"
   runtime_version = "~4"
@@ -264,11 +265,12 @@ module "function_admin" {
 module "function_admin_staging_slot" {
   source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app_slot?ref=v8.52.0"
 
-  name                = "staging"
-  location            = var.location
-  resource_group_name = azurerm_resource_group.admin_rg.name
-  function_app_id     = module.function_admin.id
-  health_check_path   = "/info"
+  name                    = "staging"
+  location                = var.location
+  resource_group_name     = azurerm_resource_group.admin_rg.name
+  function_app_id         = module.function_admin.id
+  health_check_path       = "/info"
+  system_identity_enabled = true
 
   storage_account_name               = module.function_admin.storage_account.name
   storage_account_access_key         = module.function_admin.storage_account.primary_access_key
@@ -492,4 +494,29 @@ resource "azurerm_monitor_autoscale_setting" "function_admin" {
       }
     }
   }
+}
+
+# Role assignments
+resource "azurerm_role_assignment" "function_admin_apim_v2" {
+  role_definition_name = "PagoPA API Management Operator App"
+  scope                = data.azurerm_api_management.apim_v2_api.id
+  principal_id         = module.function_admin.system_identity_principal
+}
+
+resource "azurerm_role_assignment" "function_admin_slot_apim_v2" {
+  role_definition_name = "PagoPA API Management Operator App"
+  scope                = data.azurerm_api_management.apim_v2_api.id
+  principal_id         = module.function_admin_staging_slot.system_identity_principal
+}
+
+resource "azurerm_role_assignment" "function_admin_apim_itn" {
+  role_definition_name = "PagoPA API Management Operator App"
+  scope                = data.azurerm_api_management.apim_itn_api.id
+  principal_id         = module.function_admin.system_identity_principal
+}
+
+resource "azurerm_role_assignment" "function_admin_slot_apim_itn" {
+  role_definition_name = "PagoPA API Management Operator App"
+  scope                = data.azurerm_api_management.apim_itn_api.id
+  principal_id         = module.function_admin_staging_slot.system_identity_principal
 }
