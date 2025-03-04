@@ -65,9 +65,8 @@ data "azurerm_key_vault_secret" "app_backend_PECSERVER_ARUBA_TOKEN_SECRET" {
   key_vault_id = var.key_vault_common.id
 }
 
-data "azurerm_key_vault_secret" "app_backend_APP_MESSAGES_API_KEY" {
-  count        = local.app_messages_count
-  name         = count.index % local.app_messages_count == 0 ? "appbackend-APP-MESSAGES-API-KEY" : format("appbackend-APP-MESSAGES-API-KEY-%02d", (count.index % local.app_messages_count) + 1)
+data "azurerm_key_vault_secret" "app_backend_COM_CITIZEN_FUNC_API_KEY" {
+  name         = "appbackend-COM-CITIZEN-FUNC-API-KEY"
   key_vault_id = var.key_vault_common.id
 }
 
