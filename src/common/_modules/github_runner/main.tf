@@ -41,7 +41,7 @@ module "container_app_github_runner" {
   container_app_environment = {
     id                          = azurerm_container_app_environment.github_runner.id
     location                    = azurerm_container_app_environment.github_runner.location
-    replica_timeout_in_seconds  = 5400
+    replica_timeout_in_seconds  = 10800
     polling_interval_in_seconds = 20
     cpu                         = 1
     memory                      = "2Gi"
