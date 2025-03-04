@@ -51,6 +51,7 @@ module "apim_itn" {
   prefix                  = local.prefix
   resource_group_common   = local.resource_groups.itn.common
   resource_group_internal = local.resource_groups.itn.internal
+  min_api_version         = "2021-08-01"
 
   vnet_common = local.core.networking.itn.vnet_common
   cidr_subnet = "10.20.100.0/24"

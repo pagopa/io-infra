@@ -30,7 +30,7 @@ data "azurerm_monitor_action_group" "error_action_group" {
 
 data "azurerm_monitor_action_group" "io_com_action_group" {
   name                = "io-p-com-error-ag-01"
-  resource_group_name = "io-p-itn-msgs-rg-01"
+  resource_group_name = "io-p-itn-com-rg-01"
 }
 
 data "azurerm_monitor_action_group" "io_auth_error_action_group" {
@@ -132,4 +132,16 @@ data "azurerm_subnet" "azdoa_snet" {
   name                 = "azure-devops"
   resource_group_name  = local.rg_common_name
   virtual_network_name = local.vnet_common_name
+}
+
+# APIM in WEU
+data "azurerm_api_management" "apim_v2_api" {
+  name                = "${local.project}-apim-v2-api"
+  resource_group_name = "${local.project}-rg-internal"
+}
+
+# APIM in ITN
+data "azurerm_api_management" "apim_itn_api" {
+  name                = local.apim_itn_name
+  resource_group_name = local.apim_itn_resource_group_name
 }

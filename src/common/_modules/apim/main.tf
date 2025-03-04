@@ -1,5 +1,5 @@
 module "apim_v2" {
-  source = "github.com/pagopa/terraform-azurerm-v3//api_management?ref=v8.27.0"
+  source = "github.com/pagopa/terraform-azurerm-v3//api_management?ref=v8.85.0"
 
   subnet_id                 = azurerm_subnet.apim.id
   location                  = var.location
@@ -11,6 +11,7 @@ module "apim_v2" {
   sku_name                  = var.migration ? "Premium_1" : "Premium_2"
   virtual_network_type      = "Internal"
   zones                     = var.migration ? ["1"] : ["1", "2"]
+  min_api_version           = var.min_api_version
 
   redis_cache_id       = null
   public_ip_address_id = var.migration ? azurerm_public_ip.apim_tmp[0].id : azurerm_public_ip.apim.id

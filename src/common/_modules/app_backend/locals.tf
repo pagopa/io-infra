@@ -30,7 +30,6 @@ locals {
   citizen_auth_revoke_queue_name = "pubkeys-revoke-v2"
 
   function_app_count = length(var.backend_hostnames.app)
-  app_messages_count = length(var.backend_hostnames.app_messages)
 
   nonstandard = {
     weu = {
