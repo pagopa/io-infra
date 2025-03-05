@@ -465,7 +465,7 @@ module "app_backend_weu" {
   slot_allowed_subnets       = concat([local.azdoa_snet_id["weu"]], data.azurerm_subnet.services_snet.*.id, [module.application_gateway_weu.snet.id, module.apim_weu.snet.id, module.apim_itn.snet.id, module.github_runner_itn.subnet.id])
   allowed_ips                = module.monitoring_weu.appi.reserved_ips
   slot_allowed_ips           = module.monitoring_weu.appi.reserved_ips
-  apim_snet_address_prefixes = module.apim_weu.snet.address_prefixes # module.apim_itn.snet.address_prefixes Change this for APIM ITN switch
+  apim_snet_address_prefixes = module.apim_itn.snet.address_prefixes
 
   backend_hostnames = local.backend_hostnames
 
@@ -527,7 +527,7 @@ module "app_backend_li_weu" {
       "51.105.109.140/32"
   ])
   slot_allowed_ips           = []
-  apim_snet_address_prefixes = module.apim_weu.snet.address_prefixes # module.apim_itn.snet.address_prefixes Change this for APIM ITN switch
+  apim_snet_address_prefixes = module.apim_itn.snet.address_prefixes
 
   backend_hostnames = local.backend_hostnames
 
