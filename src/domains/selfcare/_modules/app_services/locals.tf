@@ -21,11 +21,12 @@ locals {
       ADMIN_API_KEY = data.azurerm_key_vault_secret.selfcare_apim_io_service_key.value
 
       # Apim connection
-      APIM_PRODUCT_NAME   = "io-services-api"
-      APIM_USER_GROUPS    = "apimessagewrite,apiinforead,apimessageread,apilimitedprofileread"
-      ARM_APIM            = "io-p-itn-apim-01"
-      ARM_RESOURCE_GROUP  = "io-p-itn-common-rg-01"
-      ARM_SUBSCRIPTION_ID = data.azurerm_subscription.current.subscription_id
+      APIM_PRODUCT_NAME     = "io-services-api"
+      APIM_USER_GROUPS      = "apimessagewrite,apiinforead,apimessageread,apilimitedprofileread"
+      ARM_APIM              = "io-p-itn-apim-01"
+      ARM_RESOURCE_GROUP    = "io-p-itn-common-rg-01"
+      ARM_SUBSCRIPTION_ID   = data.azurerm_subscription.current.subscription_id
+      USE_SERVICE_PRINCIPAL = "0"
 
       FRONTEND_URL        = "https://${var.frontend_hostname}"
       BACKEND_URL         = "${var.backend_hostname}"
