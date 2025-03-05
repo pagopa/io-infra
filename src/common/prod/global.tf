@@ -40,9 +40,7 @@ module "global" {
 
     app_gateway_public_ip = module.application_gateway_weu.public_ip.address
 
-    # TODO: remove when apim v2 module is implemented
-    apim_v2_private_ip  = module.apim_weu.private_ips[0]
-    apim_itn_private_ip = module.apim_itn.private_ips[0]
+    apim_private_ip = module.apim_itn.private_ips[0]
   }
 
   tags = local.tags
