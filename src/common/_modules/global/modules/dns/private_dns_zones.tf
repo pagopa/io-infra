@@ -11,7 +11,7 @@ resource "azurerm_private_dns_a_record" "api_app_internal_io" {
   name                = "api-app"
   zone_name           = azurerm_private_dns_zone.internal_io_pagopa_it.name
   resource_group_name = var.resource_groups.internal
-  ttl                 = var.dns_default_ttl_sec
+  ttl                 = 10 # var.dns_default_ttl_sec
   records             = [var.apim_v2_private_ip]
 
   tags = var.tags
