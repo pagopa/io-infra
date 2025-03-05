@@ -3,6 +3,12 @@ data "azurerm_key_vault" "common" {
   resource_group_name = local.rg_common_name
 }
 
+data "azurerm_subnet" "gh_runner" {
+  name                 = format("%s-itn-github-runner-snet-01", local.project)
+  virtual_network_name = format("%s-itn-common-vnet-01", local.project)
+  resource_group_name  = format("%s-itn-common-rg-01", local.project)
+}
+
 data "azurerm_application_insights" "application_insights" {
   name                = format("%s-ai-common", local.project)
   resource_group_name = local.rg_common_name
@@ -132,4 +138,16 @@ data "azurerm_subnet" "azdoa_snet" {
   name                 = "azure-devops"
   resource_group_name  = local.rg_common_name
   virtual_network_name = local.vnet_common_name
+}
+
+# APIM in WEU
+data "azurerm_api_management" "apim_v2_api" {
+  name                = "${local.project}-apim-v2-api"
+  resource_group_name = "${local.project}-rg-internal"
+}
+
+# APIM in ITN
+data "azurerm_api_management" "apim_itn_api" {
+  name                = local.apim_itn_name
+  resource_group_name = local.apim_itn_resource_group_name
 }
