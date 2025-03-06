@@ -89,18 +89,3 @@ resource "azurerm_private_dns_a_record" "apim_scm_azure_api_net" {
 
   tags = var.tags
 }
-
-# Delete when return to 2 instances
-resource "azurerm_public_ip" "apim_tmp" {
-  count = var.migration ? 1 : 0
-
-  name                = try(local.nonstandard[var.location_short].pip_name, "${var.project}-apim-tmp-pip-01")
-  resource_group_name = var.resource_group_common
-  location            = var.location
-  allocation_method   = "Static"
-  sku                 = "Standard"
-  domain_name_label   = "apimiotmp"
-  zones               = ["1", "2", "3"]
-
-  tags = var.tags
-}

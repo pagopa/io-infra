@@ -41,6 +41,8 @@ module "function_profile_async" {
 
   app_settings = merge(
     local.function_profile_async.app_settings_common, {
+      "AzureWebJobs.MigrateServicePreferenceFromLegacy.Disabled" = "1",
+      "AzureWebJobs.OnProfileUpdate.Disabled"                    = "1",
     }
   )
 

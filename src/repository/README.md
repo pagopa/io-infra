@@ -25,8 +25,6 @@ No modules.
 
 | Name | Type |
 |------|------|
-| [github_actions_environment_secret.apim_end](https://registry.terraform.io/providers/integrations/github/6.1.0/docs/resources/actions_environment_secret) | resource |
-| [github_actions_environment_secret.apim_start](https://registry.terraform.io/providers/integrations/github/6.1.0/docs/resources/actions_environment_secret) | resource |
 | [github_actions_environment_secret.env_dev_cd_secrets](https://registry.terraform.io/providers/integrations/github/6.1.0/docs/resources/actions_environment_secret) | resource |
 | [github_actions_environment_secret.env_dev_ci_secrets](https://registry.terraform.io/providers/integrations/github/6.1.0/docs/resources/actions_environment_secret) | resource |
 | [github_actions_environment_secret.env_prod_cd_secrets](https://registry.terraform.io/providers/integrations/github/6.1.0/docs/resources/actions_environment_secret) | resource |
@@ -35,20 +33,15 @@ No modules.
 | [github_branch_default.default_main](https://registry.terraform.io/providers/integrations/github/6.1.0/docs/resources/branch_default) | resource |
 | [github_branch_protection.main](https://registry.terraform.io/providers/integrations/github/6.1.0/docs/resources/branch_protection) | resource |
 | [github_repository.this](https://registry.terraform.io/providers/integrations/github/6.1.0/docs/resources/repository) | resource |
-| [github_repository_environment.apim_end](https://registry.terraform.io/providers/integrations/github/6.1.0/docs/resources/repository_environment) | resource |
-| [github_repository_environment.apim_start](https://registry.terraform.io/providers/integrations/github/6.1.0/docs/resources/repository_environment) | resource |
 | [github_repository_environment.github_repository_environment_dev_cd](https://registry.terraform.io/providers/integrations/github/6.1.0/docs/resources/repository_environment) | resource |
 | [github_repository_environment.github_repository_environment_dev_ci](https://registry.terraform.io/providers/integrations/github/6.1.0/docs/resources/repository_environment) | resource |
 | [github_repository_environment.github_repository_environment_prod_cd](https://registry.terraform.io/providers/integrations/github/6.1.0/docs/resources/repository_environment) | resource |
 | [github_repository_environment.github_repository_environment_prod_ci](https://registry.terraform.io/providers/integrations/github/6.1.0/docs/resources/repository_environment) | resource |
-| [github_repository_environment_deployment_policy.apim_end_main](https://registry.terraform.io/providers/integrations/github/6.1.0/docs/resources/repository_environment_deployment_policy) | resource |
-| [github_repository_environment_deployment_policy.apim_start_main](https://registry.terraform.io/providers/integrations/github/6.1.0/docs/resources/repository_environment_deployment_policy) | resource |
 | [azurerm_client_config.current](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/client_config) | data source |
 | [azurerm_subscription.current](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/subscription) | data source |
 | [azurerm_subscription.dev_io](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/subscription) | data source |
 | [azurerm_user_assigned_identity.identity_dev_cd](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/user_assigned_identity) | data source |
 | [azurerm_user_assigned_identity.identity_dev_ci](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/user_assigned_identity) | data source |
-| [azurerm_user_assigned_identity.identity_prod_apim](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/user_assigned_identity) | data source |
 | [azurerm_user_assigned_identity.identity_prod_cd](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/user_assigned_identity) | data source |
 | [azurerm_user_assigned_identity.identity_prod_ci](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/user_assigned_identity) | data source |
 | [github_organization_teams.all](https://registry.terraform.io/providers/integrations/github/6.1.0/docs/data-sources/organization_teams) | data source |
