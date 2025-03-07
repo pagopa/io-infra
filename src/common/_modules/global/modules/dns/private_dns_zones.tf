@@ -135,3 +135,10 @@ resource "azurerm_private_dns_zone" "scm_azure_api_net" {
 
   tags = var.tags
 }
+
+resource "azurerm_private_dns_zone" "privatelink_itn_containerapps" {
+  name                = "privatelink.italynorth.azurecontainerapps.io"
+  resource_group_name = var.resource_groups.common
+
+  tags = var.tags
+}
