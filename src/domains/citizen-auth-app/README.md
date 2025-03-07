@@ -22,11 +22,8 @@
 | Name | Source | Version |
 |------|--------|---------|
 | <a name="module_common_values"></a> [common\_values](#module\_common\_values) | ../../_modules/common_values | n/a |
-| <a name="module_fn_profile_async_snet"></a> [fn\_profile\_async\_snet](#module\_fn\_profile\_async\_snet) | git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet | v8.44.0 |
 | <a name="module_fn_profile_snet"></a> [fn\_profile\_snet](#module\_fn\_profile\_snet) | git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet | v8.44.0 |
 | <a name="module_function_profile"></a> [function\_profile](#module\_function\_profile) | git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app | v8.44.0 |
-| <a name="module_function_profile_async"></a> [function\_profile\_async](#module\_function\_profile\_async) | git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app | v8.44.0 |
-| <a name="module_function_profile_async_staging_slot"></a> [function\_profile\_async\_staging\_slot](#module\_function\_profile\_async\_staging\_slot) | git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app_slot | v8.44.0 |
 | <a name="module_function_profile_staging_slot"></a> [function\_profile\_staging\_slot](#module\_function\_profile\_staging\_slot) | git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app_slot | v8.44.0 |
 | <a name="module_locked_profiles_storage"></a> [locked\_profiles\_storage](#module\_locked\_profiles\_storage) | github.com/pagopa/terraform-azurerm-v3//storage_account | v8.27.0 |
 | <a name="module_session_manager_snet"></a> [session\_manager\_snet](#module\_session\_manager\_snet) | github.com/pagopa/terraform-azurerm-v3//subnet | v8.22.0 |
@@ -39,19 +36,14 @@
 | Name | Type |
 |------|------|
 | [azurerm_monitor_autoscale_setting.function_profile](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/monitor_autoscale_setting) | resource |
-| [azurerm_monitor_autoscale_setting.function_profile_async](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/monitor_autoscale_setting) | resource |
-| [azurerm_monitor_metric_alert.function_profile_async_health_check](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/monitor_metric_alert) | resource |
 | [azurerm_monitor_metric_alert.function_profile_health_check](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/monitor_metric_alert) | resource |
 | [azurerm_monitor_scheduled_query_rules_alert_v2.samlresponse_missing_detection_alert](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/monitor_scheduled_query_rules_alert_v2) | resource |
 | [azurerm_private_dns_a_record.ingress](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/private_dns_a_record) | resource |
-| [azurerm_private_endpoint.function_profile_async_itn_sites](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/private_endpoint) | resource |
 | [azurerm_private_endpoint.function_profile_itn_sites](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/private_endpoint) | resource |
 | [azurerm_private_endpoint.locked_profiles_storage_table](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/private_endpoint) | resource |
 | [azurerm_private_endpoint.session_manager_sites](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/private_endpoint) | resource |
-| [azurerm_private_endpoint.staging_function_profile_async_itn_sites](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/private_endpoint) | resource |
 | [azurerm_private_endpoint.staging_function_profile_itn_sites](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/private_endpoint) | resource |
 | [azurerm_private_endpoint.staging_session_manager_sites](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/private_endpoint) | resource |
-| [azurerm_resource_group.function_profile_async_rg](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/resource_group) | resource |
 | [azurerm_resource_group.function_profile_rg](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/resource_group) | resource |
 | [azurerm_resource_group.session_manager_rg_weu](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/resource_group) | resource |
 | [azurerm_storage_table.locked_profiles](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/storage_table) | resource |
@@ -152,7 +144,6 @@
 | <a name="input_application_insights_name"></a> [application\_insights\_name](#input\_application\_insights\_name) | Specifies the name of the Application Insights. | `string` | n/a | yes |
 | <a name="input_cidr_subnet_fnlollipop"></a> [cidr\_subnet\_fnlollipop](#input\_cidr\_subnet\_fnlollipop) | Function Lollipop address space. | `list(string)` | n/a | yes |
 | <a name="input_cidr_subnet_fnlollipop_itn"></a> [cidr\_subnet\_fnlollipop\_itn](#input\_cidr\_subnet\_fnlollipop\_itn) | Function Lollipop address space. | `list(string)` | n/a | yes |
-| <a name="input_cidr_subnet_profile_async_itn"></a> [cidr\_subnet\_profile\_async\_itn](#input\_cidr\_subnet\_profile\_async\_itn) | Function app address space. | `list(string)` | n/a | yes |
 | <a name="input_cidr_subnet_profile_itn"></a> [cidr\_subnet\_profile\_itn](#input\_cidr\_subnet\_profile\_itn) | Function app address space. | `list(string)` | n/a | yes |
 | <a name="input_cidr_subnet_session_manager"></a> [cidr\_subnet\_session\_manager](#input\_cidr\_subnet\_session\_manager) | Session manager app service address space. | `list(string)` | n/a | yes |
 | <a name="input_cidr_subnet_shared_1"></a> [cidr\_subnet\_shared\_1](#input\_cidr\_subnet\_shared\_1) | n/a | `list(string)` | n/a | yes |
@@ -167,11 +158,6 @@
 | <a name="input_function_lollipop_autoscale_minimum"></a> [function\_lollipop\_autoscale\_minimum](#input\_function\_lollipop\_autoscale\_minimum) | The minimum number of instances for this resource. | `number` | `3` | no |
 | <a name="input_function_lollipop_kind"></a> [function\_lollipop\_kind](#input\_function\_lollipop\_kind) | App service plan kind | `string` | `null` | no |
 | <a name="input_function_lollipop_sku_size"></a> [function\_lollipop\_sku\_size](#input\_function\_lollipop\_sku\_size) | App service plan sku size | `string` | `null` | no |
-| <a name="input_function_profile_async_autoscale_default"></a> [function\_profile\_async\_autoscale\_default](#input\_function\_profile\_async\_autoscale\_default) | The number of instances that are available for scaling if metrics are not available for evaluation. | `number` | `1` | no |
-| <a name="input_function_profile_async_autoscale_maximum"></a> [function\_profile\_async\_autoscale\_maximum](#input\_function\_profile\_async\_autoscale\_maximum) | The maximum number of instances for this resource. | `number` | `30` | no |
-| <a name="input_function_profile_async_autoscale_minimum"></a> [function\_profile\_async\_autoscale\_minimum](#input\_function\_profile\_async\_autoscale\_minimum) | The minimum number of instances for this resource. | `number` | `1` | no |
-| <a name="input_function_profile_async_kind"></a> [function\_profile\_async\_kind](#input\_function\_profile\_async\_kind) | App service plan kind | `string` | `null` | no |
-| <a name="input_function_profile_async_sku_size"></a> [function\_profile\_async\_sku\_size](#input\_function\_profile\_async\_sku\_size) | App service plan sku size | `string` | `null` | no |
 | <a name="input_function_profile_count"></a> [function\_profile\_count](#input\_function\_profile\_count) | ############################### Function Profile ############################### | `number` | `1` | no |
 | <a name="input_function_profile_kind"></a> [function\_profile\_kind](#input\_function\_profile\_kind) | App service plan kind | `string` | `null` | no |
 | <a name="input_function_profile_sku_size"></a> [function\_profile\_sku\_size](#input\_function\_profile\_sku\_size) | App service plan sku size | `string` | `null` | no |
