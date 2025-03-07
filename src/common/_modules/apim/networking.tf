@@ -48,17 +48,11 @@ resource "azurerm_public_ip" "apim" {
   tags = var.tags
 }
 
-###############
-# FOR TESTING #
-###############
-
 # Define the A Records for APIM ITN
 
 resource "azurerm_private_dns_a_record" "apim_azure_api_net" {
-  count = var.migration ? 1 : 0
-
   name                = module.apim_v2.name
-  zone_name           = data.azurerm_private_dns_zone.azure_api_net[0].name
+  zone_name           = data.azurerm_private_dns_zone.azure_api_net.name
   resource_group_name = "io-p-rg-common"
   ttl                 = 3600
   records             = module.apim_v2.private_ip_addresses
@@ -67,10 +61,8 @@ resource "azurerm_private_dns_a_record" "apim_azure_api_net" {
 }
 
 resource "azurerm_private_dns_a_record" "apim_management_azure_api_net" {
-  count = var.migration ? 1 : 0
-
   name                = module.apim_v2.name
-  zone_name           = data.azurerm_private_dns_zone.management_azure_api_net[0].name
+  zone_name           = data.azurerm_private_dns_zone.management_azure_api_net.name
   resource_group_name = "io-p-rg-common"
   ttl                 = 3600
   records             = module.apim_v2.private_ip_addresses
@@ -79,10 +71,8 @@ resource "azurerm_private_dns_a_record" "apim_management_azure_api_net" {
 }
 
 resource "azurerm_private_dns_a_record" "apim_scm_azure_api_net" {
-  count = var.migration ? 1 : 0
-
   name                = module.apim_v2.name
-  zone_name           = data.azurerm_private_dns_zone.scm_azure_api_net[0].name
+  zone_name           = data.azurerm_private_dns_zone.scm_azure_api_net.name
   resource_group_name = "io-p-rg-common"
   ttl                 = 3600
   records             = module.apim_v2.private_ip_addresses

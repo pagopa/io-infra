@@ -96,7 +96,7 @@ resource "azurerm_dns_a_record" "api_internal_io_italia_it" {
   zone_name           = azurerm_dns_zone.io_italia_it.name
   resource_group_name = var.resource_groups.external
   ttl                 = var.dns_default_ttl_sec
-  records             = [var.apim_itn_private_ip]
+  records             = [var.apim_private_ip]
 
   tags = var.tags
 }

@@ -12,9 +12,7 @@ module "dns" {
   # TODO: remove data when app gateway module is implemented
   app_gateway_public_ip = var.dns.app_gateway_public_ip
 
-  # TODO: remove data when apim v2 module is implemented
-  apim_v2_private_ip  = var.dns.apim_v2_private_ip
-  apim_itn_private_ip = var.dns.apim_itn_private_ip
+  apim_private_ip = var.dns.apim_private_ip
 
   tags = var.tags
 }
