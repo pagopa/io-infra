@@ -19,7 +19,7 @@ data "azurerm_monitor_action_group" "error_action_group" {
 
 data "azurerm_monitor_action_group" "io_com_action_group" {
   name                = "io-p-com-error-ag-01"
-  resource_group_name = "io-p-itn-msgs-rg-01"
+  resource_group_name = "io-p-itn-com-rg-01"
 }
 
 data "azurerm_monitor_action_group" "slack" {
