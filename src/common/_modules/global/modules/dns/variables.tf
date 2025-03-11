@@ -49,13 +49,7 @@ variable "app_gateway_public_ip" {
   description = "Public IP of the app gateway"
 }
 
-# TODO: remove when apim v2 module is implemented
-variable "apim_v2_private_ip" {
+variable "apim_private_ip" {
   type        = string
-  description = "Private IP of the API Management v2"
-}
-
-variable "apim_itn_private_ip" {
-  type        = string
-  description = "Private IP of the API Management ITN"
+  description = "Private IP of the API Management"
 }

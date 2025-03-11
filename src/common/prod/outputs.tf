@@ -5,11 +5,6 @@ output "apim" {
       resource_group_common   = local.resource_groups.itn.common
       resource_group_internal = local.resource_groups.itn.internal
     }
-    weu = {
-      id                      = module.apim_weu.id
-      resource_group_common   = local.core.resource_groups.westeurope.common
-      resource_group_internal = local.core.resource_groups.westeurope.internal
-    }
   }
 }
 

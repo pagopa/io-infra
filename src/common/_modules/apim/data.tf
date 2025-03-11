@@ -13,27 +13,17 @@ data "azurerm_key_vault_certificate" "api_app_internal_io_pagopa_it" {
   key_vault_id = var.key_vault.id
 }
 
-###############
-# FOR TESTING #
-###############
-
 data "azurerm_private_dns_zone" "azure_api_net" {
-  count = var.migration ? 1 : 0
-
   name                = "azure-api.net"
   resource_group_name = "io-p-rg-common"
 }
 
 data "azurerm_private_dns_zone" "management_azure_api_net" {
-  count = var.migration ? 1 : 0
-
   name                = "management.azure-api.net"
   resource_group_name = "io-p-rg-common"
 }
 
 data "azurerm_private_dns_zone" "scm_azure_api_net" {
-  count = var.migration ? 1 : 0
-
   name                = "scm.azure-api.net"
   resource_group_name = "io-p-rg-common"
 }
