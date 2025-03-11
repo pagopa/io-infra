@@ -10,10 +10,10 @@ instance        = "prod01"
 tags = {
   CreatedBy      = "Terraform"
   Environment    = "Prod"
-  Owner          = "IO"
+  BusinessUnit   = "App IO"
   Source         = "https://github.com/pagopa/io-infra/blob/main/src/domains/messages-app"
   ManagementTeam = "IO Comunicazione"
-  CostCenter     = "TS310 - PAGAMENTI & SERVIZI"
+  CostCenter     = "TS000 - Tecnologia e Servizi"
 }
 
 ### External resources

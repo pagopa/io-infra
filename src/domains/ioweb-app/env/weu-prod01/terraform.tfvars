@@ -8,11 +8,12 @@ location_string = "West Europe"
 instance        = "prod01"
 
 tags = {
-  CreatedBy   = "Terraform"
-  Environment = "Prod"
-  Owner       = "IO"
-  Source      = "https://github.com/pagopa/io-infra/tree/main/src/domains/ioweb-app"
-  CostCenter  = "TS310 - PAGAMENTI & SERVIZI"
+  CreatedBy      = "Terraform"
+  Environment    = "Prod"
+  BusinessUnit   = "App IO"
+  Source         = "https://github.com/pagopa/io-infra/tree/main/src/domains/ioweb-app"
+  ManagementTeam = "IO Autenticazione"
+  CostCenter     = "TS000 - Tecnologia e Servizi"
 }
 
 ### External resources

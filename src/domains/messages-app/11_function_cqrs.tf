@@ -210,7 +210,6 @@ module "function_messages_cqrs" {
 
   allowed_subnets = [
     module.function_messages_cqrs_snet.id,
-    data.azurerm_subnet.apim_snet.id,
     data.azurerm_subnet.apim_itn_snet.id,
   ]
 

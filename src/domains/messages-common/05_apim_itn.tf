@@ -174,7 +174,7 @@ module "apim_itn_messages_sending_external_api_v1" {
   name                  = format("%s-%s-messages-sending-external-api-01", local.product, var.location_short)
   api_management_name   = data.azurerm_api_management.apim_itn_api.name
   resource_group_name   = data.azurerm_api_management.apim_itn_api.resource_group_name
-  product_ids           = [data.azurerm_api_management_product.apim_v2_product_services.product_id]
+  product_ids           = [data.azurerm_api_management_product.apim_itn_product_services.product_id]
   subscription_required = true
   service_url           = null
 
