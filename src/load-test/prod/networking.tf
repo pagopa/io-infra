@@ -4,6 +4,11 @@ resource "azurerm_virtual_network" "weu_load_test" {
   location            = azurerm_resource_group.load_test.location
   address_space       = ["10.40.0.0/22"]
 
+  ddos_protection_plan {
+    enable = true
+    id     = "/subscriptions/0da48c97-355f-4050-a520-f11a18b8be90/resourceGroups/sec-p-ddos/providers/Microsoft.Network/ddosProtectionPlans/sec-p-ddos-protection"
+  }
+
   tags = local.tags
 }
 
