@@ -9,11 +9,12 @@ instance         = "prod01"
 lollipop_enabled = true
 
 tags = {
-  CreatedBy   = "Terraform"
-  Environment = "Prod"
-  Owner       = "IO"
-  Source      = "https://github.com/pagopa/io-infra/tree/main/src/citizen-auth"
-  CostCenter  = "TS310 - PAGAMENTI & SERVIZI"
+  CreatedBy      = "Terraform"
+  Environment    = "Prod"
+  BusinessUnit   = "App IO"
+  ManagementTeam = "IO Autenticazione"
+  Source         = "https://github.com/pagopa/io-infra/tree/main/src/citizen-auth"
+  CostCenter     = "TS000 - Tecnologia e Servizi"
 }
 
 ### External resources

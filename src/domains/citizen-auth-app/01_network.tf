@@ -80,12 +80,6 @@ data "azurerm_subnet" "fims_op_app_snet_01" {
   resource_group_name  = local.vnet_common_resource_group_name
 }
 
-data "azurerm_subnet" "apim_v2_snet" {
-  name                 = "apimv2api"
-  virtual_network_name = local.vnet_common_name
-  resource_group_name  = local.vnet_common_resource_group_name
-}
-
 data "azurerm_subnet" "apim_itn_snet" {
   name                 = "io-p-itn-apim-snet-01"
   virtual_network_name = local.vnet_common_name_itn

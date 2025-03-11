@@ -8,11 +8,12 @@ location_full  = "West Europe"
 instance       = "common"
 
 tags = {
-  CreatedBy   = "Terraform"
-  Environment = "Prod"
-  Owner       = "IO"
-  Source      = "https://github.com/pagopa/io-infra/tree/main/src/citizen-auth-common"
-  CostCenter  = "TS310 - PAGAMENTI & SERVIZI"
+  CreatedBy      = "Terraform"
+  Environment    = "Prod"
+  ManagementTeam = "IO Autenticazione"
+  BusinessUnit   = "App IO"
+  Source         = "https://github.com/pagopa/io-infra/tree/main/src/citizen-auth-common"
+  CostCenter     = "TS000 - Tecnologia e Servizi"
 }
 
 ### Cosmos DB
