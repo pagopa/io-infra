@@ -11,7 +11,6 @@ module "subscriptionmigrations_db_flex_server" {
   sku_name                     = "GP_Standard_D2ds_v5"
   db_version                   = 11
   geo_redundant_backup_enabled = true
-  zone                         = 1
 
   private_endpoint_enabled = false
 
