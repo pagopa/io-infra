@@ -180,7 +180,7 @@ module "function_services" {
   location            = var.location
   health_check_path   = "/api/info"
 
-  node_version    = "18"
+  node_version    = "20"
   runtime_version = "~4"
 
   always_on                                = "true"
