@@ -1,11 +1,11 @@
 env_short = "p"
 
 tags = {
-  CreatedBy   = "Terraform"
-  Environment = "Prod"
-  Owner       = "IO"
-  Source      = "https://github.com/pagopa/io-infra"
-  CostCenter  = "TS310 - PAGAMENTI & SERVIZI"
+  BusinessUnit = "App IO"
+  CreatedBy    = "Terraform"
+  Environment  = "Prod"
+  Source       = "https://github.com/pagopa/io-infra"
+  CostCenter   = "TS000 - Tecnologia e Servizi"
 }
 
 location       = "westeurope"
