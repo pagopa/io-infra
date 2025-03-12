@@ -4,7 +4,7 @@ tags = {
   BusinessUnit = "App IO"
   CreatedBy    = "Terraform"
   Environment  = "Prod"
-  Source       = "https://github.com/pagopa/io-infra"
+  Source       = "https://github.com/pagopa/io-infra/blob/main/src/domains/functions"
   CostCenter   = "TS000 - Tecnologia e Servizi"
 }
 
