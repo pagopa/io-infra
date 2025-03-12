@@ -241,7 +241,6 @@ module "function_admin" {
 
   allowed_subnets = [
     module.admin_snet.id,
-    data.azurerm_subnet.apim_v2_snet.id,
     data.azurerm_subnet.apim_itn_snet.id,
     data.azurerm_subnet.gh_runner.id
   ]
@@ -295,7 +294,6 @@ module "function_admin_staging_slot" {
   allowed_subnets = [
     module.admin_snet.id,
     data.azurerm_subnet.azdoa_snet.id,
-    data.azurerm_subnet.apim_v2_snet.id,
     data.azurerm_subnet.apim_itn_snet.id,
     data.azurerm_subnet.gh_runner.id
   ]
@@ -499,18 +497,6 @@ resource "azurerm_monitor_autoscale_setting" "function_admin" {
 }
 
 # Role assignments
-resource "azurerm_role_assignment" "function_admin_apim_v2" {
-  role_definition_name = "PagoPA API Management Operator App"
-  scope                = data.azurerm_api_management.apim_v2_api.id
-  principal_id         = module.function_admin.system_identity_principal
-}
-
-resource "azurerm_role_assignment" "function_admin_slot_apim_v2" {
-  role_definition_name = "PagoPA API Management Operator App"
-  scope                = data.azurerm_api_management.apim_v2_api.id
-  principal_id         = module.function_admin_staging_slot.system_identity_principal
-}
-
 resource "azurerm_role_assignment" "function_admin_apim_itn" {
   role_definition_name = "PagoPA API Management Operator App"
   scope                = data.azurerm_api_management.apim_itn_api.id
