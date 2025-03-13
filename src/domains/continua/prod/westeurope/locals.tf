@@ -6,10 +6,10 @@ locals {
   location = "westeurope"
 
   tags = {
-    CostCenter     = "TS310 - PAGAMENTI & SERVIZI"
+    CostCenter     = "TS000 - Tecnologia e Servizi"
     CreatedBy      = "Terraform"
     Environment    = "Prod"
-    Owner          = "IO"
+    BusinessUnit   = "App IO"
     ManagementTeam = "IO Platform"
     Source         = "https://github.com/pagopa/io-infra/blob/main/src/domains/continua/prod/westeurope"
   }

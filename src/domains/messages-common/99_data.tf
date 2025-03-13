@@ -2,12 +2,6 @@
 # APIM #
 ########
 
-# APIM in WEU
-data "azurerm_api_management" "apim_v2_api" {
-  name                = local.apim_v2_name
-  resource_group_name = local.apim_resource_group_name
-}
-
 # APIM in ITN
 data "azurerm_api_management" "apim_itn_api" {
   name                = local.apim_itn_name
@@ -15,12 +9,6 @@ data "azurerm_api_management" "apim_itn_api" {
 }
 
 # For subscription payment_updater_reminder_v2
-
-data "azurerm_api_management_product" "payment_updater_product_v2" {
-  product_id          = "io-payments-api"
-  api_management_name = data.azurerm_api_management.apim_v2_api.name
-  resource_group_name = data.azurerm_api_management.apim_v2_api.resource_group_name
-}
 
 data "azurerm_api_management_product" "payment_updater_product_itn" {
   product_id          = "io-payments-api"
@@ -32,13 +20,6 @@ data "azurerm_api_management_product" "payment_updater_product_itn" {
 data "azurerm_key_vault_secret" "io_p_messages_sending_func_key" {
   name         = "io-p-messages-sending-func-key"
   key_vault_id = module.key_vault.id
-}
-
-# For APIM API module apim_v2_messages_sending_external_api_v1
-data "azurerm_api_management_product" "apim_v2_product_services" {
-  product_id          = "io-services-api"
-  api_management_name = data.azurerm_api_management.apim_v2_api.name
-  resource_group_name = data.azurerm_api_management.apim_v2_api.resource_group_name
 }
 
 data "azurerm_api_management_product" "apim_itn_product_services" {

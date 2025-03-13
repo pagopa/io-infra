@@ -167,7 +167,6 @@ module "app_messages_function" {
     module.app_messages_snet[count.index].id,
     data.azurerm_subnet.app_backendl1_snet.id,
     data.azurerm_subnet.app_backendl2_snet.id,
-    data.azurerm_subnet.apim_snet.id,
     data.azurerm_subnet.apim_itn_snet.id,
   ]
 

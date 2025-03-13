@@ -16,11 +16,6 @@ data "azurerm_key_vault_secret" "fn_services_webhook_channel_url" {
   key_vault_id = data.azurerm_key_vault.common.id
 }
 
-data "azurerm_key_vault_secret" "fn_services_webhook_channel_aks_url" {
-  name         = "appbackend-WEBHOOK-CHANNEL-AKS-URL"
-  key_vault_id = data.azurerm_key_vault.common.id
-}
-
 data "azurerm_key_vault_secret" "fn_services_sandbox_fiscal_code" {
   name         = "io-SANDBOX-FISCAL-CODE"
   key_vault_id = data.azurerm_key_vault.common.id
@@ -185,7 +180,7 @@ module "function_services" {
   location            = var.location
   health_check_path   = "/api/info"
 
-  node_version    = "18"
+  node_version    = "20"
   runtime_version = "~4"
 
   always_on                                = "true"
@@ -242,7 +237,6 @@ module "function_services" {
   allowed_subnets = [
     module.services_snet[count.index].id,
     data.azurerm_subnet.azdoa_snet.id,
-    data.azurerm_subnet.apim_v2_snet.id,
     data.azurerm_subnet.function_eucovidcert_snet.id,
     data.azurerm_subnet.apim_itn_snet.id,
   ]
@@ -285,7 +279,7 @@ module "function_services_staging_slot" {
   storage_account_access_key         = module.function_services[count.index].storage_account.primary_access_key
   internal_storage_connection_string = module.function_services[count.index].storage_account_internal_function.primary_connection_string
 
-  node_version                             = "18"
+  node_version                             = "20"
   always_on                                = "true"
   runtime_version                          = "~4"
   application_insights_instrumentation_key = data.azurerm_application_insights.application_insights.instrumentation_key
@@ -307,7 +301,6 @@ module "function_services_staging_slot" {
   allowed_subnets = [
     module.services_snet[count.index].id,
     data.azurerm_subnet.azdoa_snet.id,
-    data.azurerm_subnet.apim_v2_snet.id,
     data.azurerm_subnet.function_eucovidcert_snet.id,
     data.azurerm_subnet.apim_itn_snet.id,
   ]

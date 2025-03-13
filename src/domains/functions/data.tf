@@ -24,11 +24,6 @@ data "azurerm_cosmosdb_account" "cosmos_api" {
   resource_group_name = local.rg_internal_name
 }
 
-data "azurerm_virtual_network" "vnet_common" {
-  name                = format("%s-vnet-common", local.project)
-  resource_group_name = local.rg_common_name
-}
-
 data "azurerm_monitor_action_group" "error_action_group" {
   name                = "${var.prefix}${var.env_short}error"
   resource_group_name = local.rg_common_name
@@ -122,12 +117,6 @@ data "azurerm_subnet" "function_eucovidcert_snet" {
   virtual_network_name = local.vnet_common_name
 }
 
-data "azurerm_subnet" "apim_v2_snet" {
-  name                 = "apimv2api"
-  resource_group_name  = local.rg_common_name
-  virtual_network_name = local.vnet_common_name
-}
-
 data "azurerm_subnet" "apim_itn_snet" {
   name                 = "io-p-itn-apim-snet-01"
   resource_group_name  = local.vnet_common_resource_group_name_itn
@@ -138,12 +127,6 @@ data "azurerm_subnet" "azdoa_snet" {
   name                 = "azure-devops"
   resource_group_name  = local.rg_common_name
   virtual_network_name = local.vnet_common_name
-}
-
-# APIM in WEU
-data "azurerm_api_management" "apim_v2_api" {
-  name                = "${local.project}-apim-v2-api"
-  resource_group_name = "${local.project}-rg-internal"
 }
 
 # APIM in ITN
