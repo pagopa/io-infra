@@ -223,6 +223,7 @@ module "function_admin" {
   app_settings = merge(
     local.function_admin.app_settings_common, {
       # add settings here
+      test = sensitive("test")
     }
   )
 
@@ -255,8 +256,8 @@ module "function_admin" {
 
   client_certificate_mode = "Required"
   sticky_app_setting_names = [
-    "AzureWebJobs.UserDataProcessingTrigger.Disabled",
-    "AzureWebJobs.SanitizeProfileEmail.Disabled"
+    # "AzureWebJobs.UserDataProcessingTrigger.Disabled",
+    # "AzureWebJobs.SanitizeProfileEmail.Disabled"
   ]
 
   tags = var.tags
@@ -284,8 +285,8 @@ module "function_admin_staging_slot" {
   app_settings = merge(
     local.function_admin.app_settings_common, {
       # Disabled CosmosDB Trigger Activity on slot
-      "AzureWebJobs.UserDataProcessingTrigger.Disabled" = "1",
-      "AzureWebJobs.SanitizeProfileEmail.Disabled"      = "1"
+      # "AzureWebJobs.UserDataProcessingTrigger.Disabled" = "1",
+      # "AzureWebJobs.SanitizeProfileEmail.Disabled"      = "1"
     }
   )
 
