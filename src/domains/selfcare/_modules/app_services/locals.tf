@@ -114,7 +114,7 @@ locals {
       DB_NAME         = "db"
       DB_SCHEMA       = "SelfcareIOSubscriptionMigrations"
       DB_TABLE        = "migrations"
-      DB_USER         = "${var.subsmigrations_db_data.username}@${var.subsmigrations_db_data.host}"
+      DB_USER         = "${var.subsmigrations_db_data.username}"
       DB_PASSWORD     = var.subsmigrations_db_data.password
 
       // job queues
