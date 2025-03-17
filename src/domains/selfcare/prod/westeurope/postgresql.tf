@@ -6,9 +6,7 @@ module "postgresql" {
 
   resource_group_name = module.resource_groups.resource_group_selfcare_be.name
 
-  vnet_id                    = module.networking.vnet_common.id
-  dev_portal_subnet_id       = module.networking.subnet_developer_portal.id
-  private_endpoint_subnet_id = module.networking.subnet_pendpoints.id
+  dev_portal_subnet_id = module.networking.subnet_developer_portal.id
 
   tags = local.tags
 }
