@@ -11,6 +11,7 @@ module "subscriptionmigrations_db_flex_server" {
   sku_name                     = "GP_Standard_D2ds_v5"
   db_version                   = 11
   geo_redundant_backup_enabled = true
+  zone                         = 3
 
   private_endpoint_enabled = false
 
@@ -46,4 +47,11 @@ resource "azurerm_private_endpoint" "pep" {
   }
 
   tags = var.tags
+}
+
+resource "azurerm_postgresql_flexible_server_database" "subscriptionmigrations_db" {
+  name      = "db"
+  server_id = module.subscriptionmigrations_db_flex_server.id
+  charset   = "UTF8"
+  collation = "en_US.utf8"
 }
