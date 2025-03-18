@@ -20,13 +20,6 @@ data "azurerm_linux_web_app" "cgn_pe_backend_app_01" {
   resource_group_name = "io-p-itn-cgn-pe-rg-01"
 }
 
-data "azurerm_linux_web_app" "session-manager" {
-  provider = azurerm.prod-cgn
-
-  name                = "io-p-itn-cgn-pe-backend-app-02"
-  resource_group_name = "io-p-itn-cgn-pe-rg-01"
-}
-
 data "azurerm_resource_group" "session_manager_rg_weu" {
   name = "io-p-weu-session-manager-rg-01"
 }
