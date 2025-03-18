@@ -10,7 +10,7 @@ locals {
     PORT     = "3000"
 
     # Fallback
-    FALLBACK_URL            = "https://io.italia.it"
+    FALLBACK_URL            = "https://ioapp.it"
     FALLBACK_URL_ON_IOS     = "https://apps.apple.com/it/app/io/id1501681835"
     FALLBACK_URL_ON_ANDROID = "https://play.google.com/store/apps/details?id=it.pagopa.io.app"
 
@@ -35,7 +35,7 @@ module "appservice_continua" {
   app_command_line             = "yarn start"
   health_check_path            = "/health"
   health_check_maxpingfailures = 3
-  node_version                 = "18-lts"
+  node_version                 = "20-lts"
   app_settings                 = local.continua_appsvc_settings
   sticky_settings              = []
 
@@ -66,7 +66,7 @@ module "appservice_continua_slot_staging" {
   app_command_line  = "yarn start"
   app_settings      = local.continua_appsvc_settings
   health_check_path = "/health"
-  node_version      = "18-lts"
+  node_version      = "20-lts"
 
   vnet_integration = true
   subnet_id        = var.subnet_id

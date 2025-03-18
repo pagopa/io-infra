@@ -5,6 +5,14 @@ locals {
   identity_resource_group_name_dev = "${local.project_dev}-identity-rg"
   identity_resource_group_name     = "${local.project}-identity-rg"
 
+  jira_boards_ids = [
+    "CES",
+    "IOPLT",
+    "IOPID",
+    "IOCOM",
+    "IOPAE",
+  ]
+
   repo_secrets = {
     "ARM_TENANT_ID" = data.azurerm_client_config.current.tenant_id,
   }
