@@ -24,10 +24,6 @@ locals {
   acr_name                = replace("${local.product}commonacr", "-", "")
   acr_resource_group_name = "${local.product}-container-registry-rg"
 
-  # WEU
-  apim_v2_name             = "${local.product}-apim-v2-api"
-  apim_resource_group_name = "${local.product}-rg-internal"
-  # ITN
   apim_itn_name                = "${local.product}-itn-apim-01"
   apim_itn_resource_group_name = "${local.product}-itn-common-rg-01"
 }
