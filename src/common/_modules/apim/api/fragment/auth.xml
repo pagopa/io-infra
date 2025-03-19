@@ -2,7 +2,7 @@
   <!-- Extract the token from the Authorization Header -->
   <set-variable name="token" value="@(context.Request.Headers.GetValueOrDefault("Authorization","").Substring(7))" />
   <send-request mode="new" response-variable-name="introspectionResponse" timeout="10" ignore-error="false">
-    <set-url>{{session-manager-baseurl}}{{introspection-endpoint}}</set-url>
+    <set-url>https://{{session-manager-baseurl}}{{introspection-endpoint}}</set-url>
     <set-method>GET</set-method>
     <set-header name="Content-Type" exists-action="override">
       <value>application/json</value>
