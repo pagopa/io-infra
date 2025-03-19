@@ -1,6 +1,6 @@
 module "exportdata_weu_01_com_admins" {
-  source  = "pagopa/dx-azure-role-assignments/azurerm"
-  version = "~>0"
+  source  = "pagopa-dx/azure-role-assignments/azurerm"
+  version = "~> 0.0"
 
   principal_id = var.azure_adgroup_com_admins_object_id
 
@@ -30,8 +30,8 @@ module "exportdata_weu_01_com_admins" {
 }
 
 module "exportdata_weu_01_com_devs" {
-  source  = "pagopa/dx-azure-role-assignments/azurerm"
-  version = "~>0"
+  source  = "pagopa-dx/azure-role-assignments/azurerm"
+  version = "~> 0.0"
 
   principal_id = var.azure_adgroup_com_devs_object_id
 

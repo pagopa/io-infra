@@ -1,6 +1,6 @@
 module "roles_svc_devs" {
-  source  = "pagopa/dx-azure-role-assignments/azurerm"
-  version = "~>0"
+  source  = "pagopa-dx/azure-role-assignments/azurerm"
+  version = "~> 0.0"
 
   principal_id = var.azure_adgroup_svc_devs_object_id
 
