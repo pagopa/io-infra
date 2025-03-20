@@ -161,7 +161,7 @@ locals {
       INSTANT_DELETE_ENABLED_USERS = join(",", [data.azurerm_key_vault_secret.fn_admin_INSTANT_DELETE_ENABLED_USERS.value, module.tests.users.all])
 
       # Temporany
-      IOPSTLOGS_STORAGE_CONNECTION_STRING = data.azurerm_storage_account.logs.primary_connection_string,
+      IOPSTLOGS_STORAGE_CONNECTION_STRING = data.azurerm_storage_account.logs02.primary_connection_string,
       LOG_RSA_PK                          = trimspace(data.azurerm_key_vault_secret.fn_app_KEY_SPIDLOGS_PRIV.value)
     }
   }
