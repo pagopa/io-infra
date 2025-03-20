@@ -159,6 +159,10 @@ locals {
 
       # Instant delete
       INSTANT_DELETE_ENABLED_USERS = join(",", [data.azurerm_key_vault_secret.fn_admin_INSTANT_DELETE_ENABLED_USERS.value, module.tests.users.all])
+
+      # Temporany
+      IOPSTLOGS_STORAGE_CONNECTION_STRING = data.azurerm_storage_account.logs.primary_connection_string,
+      LOG_RSA_PK                          = trimspace(data.azurerm_key_vault_secret.fn_app_KEY_SPIDLOGS_PRIV.value)
     }
   }
 }
@@ -222,7 +226,7 @@ module "function_admin" {
 
   app_settings = merge(
     local.function_admin.app_settings_common, {
-      # add settings here
+      "AzureWebJobs.CheckXmlCryptoCVESamlResponse.Disabled" = "1",
     }
   )
 
@@ -256,7 +260,8 @@ module "function_admin" {
   client_certificate_mode = "Required"
   sticky_app_setting_names = [
     "AzureWebJobs.UserDataProcessingTrigger.Disabled",
-    "AzureWebJobs.SanitizeProfileEmail.Disabled"
+    "AzureWebJobs.SanitizeProfileEmail.Disabled",
+    "AzureWebJobs.CheckXmlCryptoCVESamlResponse.Disabled"
   ]
 
   tags = var.tags
@@ -284,8 +289,9 @@ module "function_admin_staging_slot" {
   app_settings = merge(
     local.function_admin.app_settings_common, {
       # Disabled CosmosDB Trigger Activity on slot
-      "AzureWebJobs.UserDataProcessingTrigger.Disabled" = "1",
-      "AzureWebJobs.SanitizeProfileEmail.Disabled"      = "1"
+      "AzureWebJobs.UserDataProcessingTrigger.Disabled"     = "1",
+      "AzureWebJobs.SanitizeProfileEmail.Disabled"          = "1"
+      "AzureWebJobs.CheckXmlCryptoCVESamlResponse.Disabled" = "1",
     }
   )
 

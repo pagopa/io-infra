@@ -65,16 +65,29 @@ data "azurerm_storage_account" "assets_cdn" {
   resource_group_name = local.rg_common_name
 }
 
+data "azurerm_storage_account" "logs" {
+  name                = replace("${local.project}-stlogs", "-", "")
+  resource_group_name = "${local.project}-rg-operations"
+}
+
+
 data "azurerm_key_vault" "key_vault_common" {
   name                = "${local.project}-kv-common"
   resource_group_name = local.rg_common_name
 }
 
 
+
 data "azurerm_key_vault_secret" "app_backend_PRE_SHARED_KEY" {
   name         = "appbackend-PRE-SHARED-KEY"
   key_vault_id = data.azurerm_key_vault.key_vault_common.id
 }
+
+data "azurerm_key_vault_secret" "fn_app_KEY_SPIDLOGS_PRIV" {
+  name         = "funcapp-KEY-SPIDLOGS-PRIV"
+  key_vault_id = data.azurerm_key_vault.common.id
+}
+
 
 # MAILUP
 
