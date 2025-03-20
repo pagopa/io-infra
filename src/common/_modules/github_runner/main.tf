@@ -26,8 +26,8 @@ resource "azurerm_container_app_environment" "github_runner" {
 }
 
 module "container_app_github_runner" {
-  source  = "pagopa/dx-github-selfhosted-runner-on-container-app-jobs/azurerm"
-  version = "~>1"
+  source  = "pagopa-dx/github-selfhosted-runner-on-container-app-jobs/azurerm"
+  version = "~> 1.0"
 
   environment = {
     prefix          = var.prefix

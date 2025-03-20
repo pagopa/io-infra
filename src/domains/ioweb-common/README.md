@@ -24,7 +24,7 @@
 | <a name="module_apim_itn_spid_login_api"></a> [apim\_itn\_spid\_login\_api](#module\_apim\_itn\_spid\_login\_api) | git::https://github.com/pagopa/terraform-azurerm-v3//api_management_api | v8.56.0 |
 | <a name="module_immutable_spid_logs_storage"></a> [immutable\_spid\_logs\_storage](#module\_immutable\_spid\_logs\_storage) | git::https://github.com/pagopa/terraform-azurerm-v3//storage_account | v8.56.0 |
 | <a name="module_immutable_spid_logs_storage_customer_managed_key"></a> [immutable\_spid\_logs\_storage\_customer\_managed\_key](#module\_immutable\_spid\_logs\_storage\_customer\_managed\_key) | git::https://github.com/pagopa/terraform-azurerm-v3//storage_account_customer_managed_key | v8.56.0 |
-| <a name="module_io_web_profile_itn_fe_st"></a> [io\_web\_profile\_itn\_fe\_st](#module\_io\_web\_profile\_itn\_fe\_st) | pagopa/dx-azure-storage-account/azurerm | ~> 0 |
+| <a name="module_io_web_profile_itn_fe_st"></a> [io\_web\_profile\_itn\_fe\_st](#module\_io\_web\_profile\_itn\_fe\_st) | pagopa-dx/azure-storage-account/azurerm | ~> 0.0 |
 | <a name="module_key_vault"></a> [key\_vault](#module\_key\_vault) | git::https://github.com/pagopa/terraform-azurerm-v3.git//key_vault | v8.56.0 |
 | <a name="module_landing_cdn"></a> [landing\_cdn](#module\_landing\_cdn) | github.com/pagopa/terraform-azurerm-v3.git//cdn | v8.56.0 |
 | <a name="module_redis_spid_login"></a> [redis\_spid\_login](#module\_redis\_spid\_login) | git::https://github.com/pagopa/terraform-azurerm-v3.git//redis_cache | v8.56.0 |

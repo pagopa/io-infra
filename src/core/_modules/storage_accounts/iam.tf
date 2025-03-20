@@ -1,6 +1,6 @@
 module "iam_adgroup_admins" {
-  source  = "pagopa/dx-azure-role-assignments/azurerm"
-  version = "~> 0"
+  source  = "pagopa-dx/azure-role-assignments/azurerm"
+  version = "~> 0.0"
 
   principal_id = var.azure_adgroup_admin_object_id
 
@@ -14,8 +14,8 @@ module "iam_adgroup_admins" {
 }
 
 module "iam_adgroup_wallet_admins" {
-  source  = "pagopa/dx-azure-role-assignments/azurerm"
-  version = "~> 0"
+  source  = "pagopa-dx/azure-role-assignments/azurerm"
+  version = "~> 0.0"
 
   principal_id = var.azure_adgroup_wallet_admins_object_id
 
@@ -29,8 +29,8 @@ module "iam_adgroup_wallet_admins" {
 }
 
 module "iam_adgroup_wallet_devs" {
-  source  = "pagopa/dx-azure-role-assignments/azurerm"
-  version = "~> 0"
+  source  = "pagopa-dx/azure-role-assignments/azurerm"
+  version = "~> 0.0"
 
   principal_id = var.azure_adgroup_wallet_devs_object_id
 
@@ -44,8 +44,8 @@ module "iam_adgroup_wallet_devs" {
 }
 
 module "iam_adgroup_com_admins" {
-  source  = "pagopa/dx-azure-role-assignments/azurerm"
-  version = "~> 0"
+  source  = "pagopa-dx/azure-role-assignments/azurerm"
+  version = "~> 0.0"
 
   principal_id = var.azure_adgroup_com_admins_object_id
 
@@ -59,8 +59,8 @@ module "iam_adgroup_com_admins" {
 }
 
 module "iam_adgroup_com_devs" {
-  source  = "pagopa/dx-azure-role-assignments/azurerm"
-  version = "~> 0"
+  source  = "pagopa-dx/azure-role-assignments/azurerm"
+  version = "~> 0.0"
 
   principal_id = var.azure_adgroup_com_devs_object_id
 
@@ -74,8 +74,8 @@ module "iam_adgroup_com_devs" {
 }
 
 module "iam_adgroup_svc_admins" {
-  source  = "pagopa/dx-azure-role-assignments/azurerm"
-  version = "~> 0"
+  source  = "pagopa-dx/azure-role-assignments/azurerm"
+  version = "~> 0.0"
 
   principal_id = var.azure_adgroup_svc_admins_object_id
 
@@ -89,8 +89,8 @@ module "iam_adgroup_svc_admins" {
 }
 
 module "iam_adgroup_svc_devs" {
-  source  = "pagopa/dx-azure-role-assignments/azurerm"
-  version = "~> 0"
+  source  = "pagopa-dx/azure-role-assignments/azurerm"
+  version = "~> 0.0"
 
   principal_id = var.azure_adgroup_svc_devs_object_id
 
@@ -104,8 +104,8 @@ module "iam_adgroup_svc_devs" {
 }
 
 module "iam_adgroup_auth_admins" {
-  source  = "pagopa/dx-azure-role-assignments/azurerm"
-  version = "~> 0"
+  source  = "pagopa-dx/azure-role-assignments/azurerm"
+  version = "~> 0.0"
 
   principal_id = var.azure_adgroup_auth_admins_object_id
 
@@ -119,8 +119,8 @@ module "iam_adgroup_auth_admins" {
 }
 
 module "iam_adgroup_auth_devs" {
-  source  = "pagopa/dx-azure-role-assignments/azurerm"
-  version = "~> 0"
+  source  = "pagopa-dx/azure-role-assignments/azurerm"
+  version = "~> 0.0"
 
   principal_id = var.azure_adgroup_auth_devs_object_id
 
@@ -134,8 +134,8 @@ module "iam_adgroup_auth_devs" {
 }
 
 module "iam_adgroup_bonus_admins" {
-  source  = "pagopa/dx-azure-role-assignments/azurerm"
-  version = "~> 0"
+  source  = "pagopa-dx/azure-role-assignments/azurerm"
+  version = "~> 0.0"
 
   principal_id = var.azure_adgroup_bonus_admins_object_id
 
@@ -149,8 +149,8 @@ module "iam_adgroup_bonus_admins" {
 }
 
 module "iam_adgroup_bonus_devs" {
-  source  = "pagopa/dx-azure-role-assignments/azurerm"
-  version = "~> 0"
+  source  = "pagopa-dx/azure-role-assignments/azurerm"
+  version = "~> 0.0"
 
   principal_id = var.azure_adgroup_bonus_devs_object_id
 

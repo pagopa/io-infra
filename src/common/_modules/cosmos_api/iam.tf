@@ -35,8 +35,8 @@ resource "azurerm_role_assignment" "cosno_api_auth_devs" {
 }
 
 module "cosno_api_com_admins" {
-  source  = "pagopa/dx-azure-role-assignments/azurerm"
-  version = "~>0"
+  source  = "pagopa-dx/azure-role-assignments/azurerm"
+  version = "~> 0.0"
 
   principal_id = var.azure_adgroup_com_admins_object_id
 
@@ -51,8 +51,8 @@ module "cosno_api_com_admins" {
 }
 
 module "cosno_api_com_devs" {
-  source  = "pagopa/dx-azure-role-assignments/azurerm"
-  version = "~>0"
+  source  = "pagopa-dx/azure-role-assignments/azurerm"
+  version = "~> 0.0"
 
   principal_id = var.azure_adgroup_com_devs_object_id
 
@@ -66,8 +66,8 @@ module "cosno_api_com_devs" {
   ]
 }
 module "cosno_api_svc_admins" {
-  source  = "pagopa/dx-azure-role-assignments/azurerm"
-  version = "~>0"
+  source  = "pagopa-dx/azure-role-assignments/azurerm"
+  version = "~> 0.0"
 
   principal_id = var.azure_adgroup_svc_admins_object_id
 
@@ -81,8 +81,8 @@ module "cosno_api_svc_admins" {
   ]
 }
 module "cosno_api_svc_devs" {
-  source  = "pagopa/dx-azure-role-assignments/azurerm"
-  version = "~>0"
+  source  = "pagopa-dx/azure-role-assignments/azurerm"
+  version = "~> 0.0"
 
   principal_id = var.azure_adgroup_svc_devs_object_id
 
@@ -96,8 +96,8 @@ module "cosno_api_svc_devs" {
   ]
 }
 module "cosno_api_auth_admins" {
-  source  = "pagopa/dx-azure-role-assignments/azurerm"
-  version = "~>0"
+  source  = "pagopa-dx/azure-role-assignments/azurerm"
+  version = "~> 0.0"
 
   principal_id = var.azure_adgroup_auth_admins_object_id
 
@@ -111,8 +111,8 @@ module "cosno_api_auth_admins" {
   ]
 }
 module "cosno_api_auth_devs" {
-  source  = "pagopa/dx-azure-role-assignments/azurerm"
-  version = "~>0"
+  source  = "pagopa-dx/azure-role-assignments/azurerm"
+  version = "~> 0.0"
 
   principal_id = var.azure_adgroup_auth_devs_object_id
 

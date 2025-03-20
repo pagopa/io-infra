@@ -2,7 +2,7 @@ terraform {
   required_providers {
     azurerm = {
       source  = "hashicorp/azurerm"
-      version = "~>3"
+      version = "~> 3.0"
     }
   }
 
@@ -21,8 +21,8 @@ provider "azurerm" {
 }
 
 module "federated_identities" {
-  source  = "pagopa/dx-azure-federated-identity-with-github/azurerm"
-  version = "~> 0"
+  source  = "pagopa-dx/azure-federated-identity-with-github/azurerm"
+  version = "~> 0.0"
 
   prefix       = local.prefix
   env_short    = local.env_short
