@@ -30,10 +30,10 @@ function_services_autoscale_default = 10
 # Functions Admin
 function_admin_kind              = "Linux"
 function_admin_sku_tier          = "PremiumV3"
-function_admin_sku_size          = "P1v3"
-function_admin_autoscale_minimum = 1
-function_admin_autoscale_maximum = 3
-function_admin_autoscale_default = 1
+function_admin_sku_size          = "P2v3"
+function_admin_autoscale_minimum = 3
+function_admin_autoscale_maximum = 30
+function_admin_autoscale_default = 3
 
 
 # Function CDN Assets
