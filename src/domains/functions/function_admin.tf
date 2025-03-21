@@ -162,7 +162,9 @@ locals {
 
       # Temporany
       IOPSTLOGS_STORAGE_CONNECTION_STRING = data.azurerm_storage_account.logs02.primary_connection_string,
-      LOG_RSA_PK                          = trimspace(data.azurerm_key_vault_secret.fn_app_KEY_SPIDLOGS_PRIV.value)
+      LOG_RSA_PK                          = trimspace(data.azurerm_key_vault_secret.fn_app_KEY_SPIDLOGS_PRIV.value),
+
+      IOWEBLOGS_STORAGE_CONNECTION_STRING = data.azurerm_storage_account.ioweb_spid_logs_storage.primary_connection_string
     }
   }
 }
@@ -226,7 +228,8 @@ module "function_admin" {
 
   app_settings = merge(
     local.function_admin.app_settings_common, {
-      "AzureWebJobs.CheckXmlCryptoCVESamlResponse.Disabled" = "1",
+      "AzureWebJobs.CheckXmlCryptoCVESamlResponse.Disabled"      = "1",
+      "AzureWebJobs.CheckIoWebXmlCryptoCVESamlResponse.Disabled" = "1"
     }
   )
 
@@ -261,7 +264,8 @@ module "function_admin" {
   sticky_app_setting_names = [
     "AzureWebJobs.UserDataProcessingTrigger.Disabled",
     "AzureWebJobs.SanitizeProfileEmail.Disabled",
-    "AzureWebJobs.CheckXmlCryptoCVESamlResponse.Disabled"
+    "AzureWebJobs.CheckXmlCryptoCVESamlResponse.Disabled",
+    "AzureWebJobs.CheckIoWebXmlCryptoCVESamlResponse.Disabled"
   ]
 
   tags = var.tags
@@ -289,9 +293,10 @@ module "function_admin_staging_slot" {
   app_settings = merge(
     local.function_admin.app_settings_common, {
       # Disabled CosmosDB Trigger Activity on slot
-      "AzureWebJobs.UserDataProcessingTrigger.Disabled"     = "1",
-      "AzureWebJobs.SanitizeProfileEmail.Disabled"          = "1"
-      "AzureWebJobs.CheckXmlCryptoCVESamlResponse.Disabled" = "1",
+      "AzureWebJobs.UserDataProcessingTrigger.Disabled"          = "1",
+      "AzureWebJobs.SanitizeProfileEmail.Disabled"               = "1",
+      "AzureWebJobs.CheckXmlCryptoCVESamlResponse.Disabled"      = "1",
+      "AzureWebJobs.CheckIoWebXmlCryptoCVESamlResponse.Disabled" = "1"
     }
   )
 

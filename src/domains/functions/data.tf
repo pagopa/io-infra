@@ -70,6 +70,10 @@ data "azurerm_storage_account" "logs02" {
   resource_group_name = "${local.project}-rg-operations"
 }
 
+data "azurerm_storage_account" "ioweb_spid_logs_storage" {
+  name                = "iopweuiowebspidlogsimst"
+  resource_group_name = "io-p-weu-ioweb-storage-rg"
+}
 
 data "azurerm_key_vault" "key_vault_common" {
   name                = "${local.project}-kv-common"
