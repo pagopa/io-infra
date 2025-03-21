@@ -164,7 +164,7 @@ locals {
       IOPSTLOGS_STORAGE_CONNECTION_STRING = data.azurerm_storage_account.logs02.primary_connection_string,
       LOG_RSA_PK                          = trimspace(data.azurerm_key_vault_secret.fn_app_KEY_SPIDLOGS_PRIV.value),
 
-      IOWEBLOGS_STORAGE_CONNECTION_STRING = data.azurerm_storage_account.ioweb_spid_logs_storage
+      IOWEBLOGS_STORAGE_CONNECTION_STRING = data.azurerm_storage_account.ioweb_spid_logs_storage.primary_connection_string
     }
   }
 }
@@ -294,7 +294,7 @@ module "function_admin_staging_slot" {
     local.function_admin.app_settings_common, {
       # Disabled CosmosDB Trigger Activity on slot
       "AzureWebJobs.UserDataProcessingTrigger.Disabled"          = "1",
-      "AzureWebJobs.SanitizeProfileEmail.Disabled"               = "1"
+      "AzureWebJobs.SanitizeProfileEmail.Disabled"               = "1",
       "AzureWebJobs.CheckXmlCryptoCVESamlResponse.Disabled"      = "1",
       "AzureWebJobs.CheckIoWebXmlCryptoCVESamlResponse.Disabled" = "1"
     }
