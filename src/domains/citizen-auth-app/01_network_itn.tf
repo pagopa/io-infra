@@ -48,7 +48,7 @@ resource "azurerm_private_endpoint" "function_profile_itn_sites" {
   count               = var.function_profile_count
   name                = format("%s-profile-pep-0%d", local.common_project_itn, count.index + 1)
   location            = local.itn_location
-  resource_group_name = azurerm_resource_group.function_profile_rg[count.index].name
+  resource_group_name = data.azurerm_resource_group.function_profile_rg[count.index].name
   subnet_id           = data.azurerm_subnet.itn_pep.id
 
   private_service_connection {
@@ -70,7 +70,7 @@ resource "azurerm_private_endpoint" "staging_function_profile_itn_sites" {
   count               = var.function_profile_count
   name                = format("%s-profile-staging-pep-0%d", local.common_project_itn, count.index + 1)
   location            = local.itn_location
-  resource_group_name = azurerm_resource_group.function_profile_rg[count.index].name
+  resource_group_name = data.azurerm_resource_group.function_profile_rg[count.index].name
   subnet_id           = data.azurerm_subnet.itn_pep.id
 
   private_service_connection {
