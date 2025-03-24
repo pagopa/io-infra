@@ -89,6 +89,7 @@ module "apim_v2" {
     scale_in_cooldown             = "PT5M"
   }
 
+  # https://docs.microsoft.com/en-us/azure/azure-monitor/essentials/metrics-supported#microsoftapimanagementservice
   metric_alerts = {
     capacity = {
       description   = "Apim used capacity is too high. Runbook: https://pagopa.atlassian.net/wiki/spaces/IC/pages/791642113/APIM+Capacity"
