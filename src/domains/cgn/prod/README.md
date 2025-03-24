@@ -4,11 +4,15 @@
 
 | Name | Version |
 |------|---------|
-| <a name="requirement_azurerm"></a> [azurerm](#requirement\_azurerm) | <= 3.92.0 |
+| <a name="requirement_azuread"></a> [azuread](#requirement\_azuread) | ~> 3.0 |
+| <a name="requirement_azurerm"></a> [azurerm](#requirement\_azurerm) | ~> 3.92 |
 
 ## Providers
 
-No providers.
+| Name | Version |
+|------|---------|
+| <a name="provider_azuread"></a> [azuread](#provider\_azuread) | 3.2.0 |
+| <a name="provider_azurerm"></a> [azurerm](#provider\_azurerm) | 3.94.0 |
 
 ## Modules
 
@@ -22,7 +26,10 @@ No providers.
 
 ## Resources
 
-No resources.
+| Name | Type |
+|------|------|
+| [azurerm_role_assignment.bonus_owner_cgn](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/role_assignment) | resource |
+| [azuread_group.bonus_admins](https://registry.terraform.io/providers/hashicorp/azuread/latest/docs/data-sources/group) | data source |
 
 ## Inputs
 
@@ -34,7 +41,6 @@ No inputs.
 |------|-------------|
 | <a name="output_cosmos_cgn"></a> [cosmos\_cgn](#output\_cosmos\_cgn) | n/a |
 | <a name="output_resource_group_cgn"></a> [resource\_group\_cgn](#output\_resource\_group\_cgn) | n/a |
-| <a name="output_resource_group_cgn_be"></a> [resource\_group\_cgn\_be](#output\_resource\_group\_cgn\_be) | n/a |
 | <a name="output_storage_account_cgn"></a> [storage\_account\_cgn](#output\_storage\_account\_cgn) | n/a |
 | <a name="output_storage_account_legal_backup"></a> [storage\_account\_legal\_backup](#output\_storage\_account\_legal\_backup) | n/a |
 <!-- END_TF_DOCS -->
