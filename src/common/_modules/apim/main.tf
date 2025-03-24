@@ -21,11 +21,13 @@ module "apim_v2" {
 
   public_ip_address_id         = azurerm_public_ip.apim.id
   enable_public_network_access = true
+  create_network_security_group = false
 
   virtual_network = {
     name                = var.vnet_common.name
-    resource_group_name = "io-p-rg-common" # var.vnet_common.resource_group_name
+    resource_group_name = var.vnet_common.resource_group_name
   }
+  private_dns_zone_resource_group_name = "io-p-rg-common"
 
   subnet_id                     = azurerm_subnet.apim.id
   virtual_network_type_internal = true
