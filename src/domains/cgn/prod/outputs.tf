@@ -5,13 +5,6 @@ output "resource_group_cgn" {
   }
 }
 
-output "resource_group_cgn_be" {
-  value = {
-    id   = module.resource_groups.resource_group_cgn_be.id
-    name = module.resource_groups.resource_group_cgn_be.name
-  }
-}
-
 output "cosmos_cgn" {
   value = {
     id   = module.cosmos.cosmos_account_cgn.id
