@@ -45,3 +45,13 @@ import {
   to = module.apim_itn.module.apim_v2.azurerm_api_management_diagnostic.applicationinsights[0]
   id = "/subscriptions/ec285037-c673-4f58-b594-d7c480da4e8b/resourceGroups/io-p-itn-common-rg-01/providers/Microsoft.ApiManagement/service/io-p-itn-apim-01/diagnostics/applicationinsights"
 }
+
+import {
+  to = module.apim_itn.module.apim_v2.azurerm_network_security_group.nsg_apim
+  id = "/subscriptions/ec285037-c673-4f58-b594-d7c480da4e8b/resourceGroups/io-p-itn-common-rg-01/providers/Microsoft.Network/networkSecurityGroups/io-p-itn-apim-nsg-01"
+}
+
+import {
+  to = module.apim_itn.module.apim_v2.azurerm_subnet_network_security_group_association.snet_nsg
+  id = "/subscriptions/ec285037-c673-4f58-b594-d7c480da4e8b/resourceGroups/io-p-itn-common-rg-01/providers/Microsoft.Network/virtualNetworks/io-p-itn-common-vnet-01/subnets/io-p-itn-apim-snet-01"
+}
