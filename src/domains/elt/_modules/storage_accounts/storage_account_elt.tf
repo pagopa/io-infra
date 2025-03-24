@@ -1,7 +1,7 @@
 #tfsec:ignore:azure-storage-default-action-deny
 #tfsec:ignore:azure-storage-queue-services-logging-enabled:exp:2022-05-01 # already ignored, maybe a bug in tfsec
 module "storage_account_elt" {
-  source = "github.com/pagopa/terraform-azurerm-v3//storage_account?ref=v7.67.1"
+  source = "github.com/pagopa/terraform-azurerm-v3//storage_account?ref=v8.86.0"
 
   name                = replace(format("%s-stelt", var.project), "-", "")
   resource_group_name = var.resource_group_name
@@ -21,7 +21,7 @@ module "storage_account_elt" {
 }
 
 module "storage_account_itn_elt" {
-  source = "github.com/pagopa/terraform-azurerm-v3//storage_account?ref=v7.67.1"
+  source = "github.com/pagopa/terraform-azurerm-v3//storage_account?ref=v8.86.0"
 
   name                = replace(format("%s-elt-st-01", var.project_itn), "-", "")
   resource_group_name = var.resource_group_name_itn
@@ -43,7 +43,7 @@ module "storage_account_itn_elt" {
 }
 
 module "storage_account_itn_elt_02" {
-  source = "github.com/pagopa/terraform-azurerm-v3//storage_account?ref=v7.67.1"
+  source = "github.com/pagopa/terraform-azurerm-v3//storage_account?ref=v8.86.0"
 
   name                = replace(format("%s-elt-st-02", var.project_itn), "-", "")
   resource_group_name = var.resource_group_name_itn
