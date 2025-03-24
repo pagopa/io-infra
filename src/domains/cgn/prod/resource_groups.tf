@@ -6,3 +6,9 @@ module "resource_groups" {
 
   tags = local.tags
 }
+
+resource "azurerm_role_assignment" "bonus_owner_cgn" {
+  scope                = module.resource_groups.resource_group_cgn.id
+  role_definition_name = "Owner"
+  principal_id         = data.azuread_group.bonus_admins.object_id
+}
