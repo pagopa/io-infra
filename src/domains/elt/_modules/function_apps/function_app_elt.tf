@@ -131,7 +131,7 @@ locals {
 
 #tfsec:ignore:azure-storage-queue-services-logging-enabled:exp:2022-05-01 # already ignored, maybe a bug in tfsec
 module "function_elt" {
-  source = "github.com/pagopa/terraform-azurerm-v3//function_app?ref=v7.67.1"
+  source = "github.com/pagopa/terraform-azurerm-v3//function_app?ref=v8.86.0"
 
   resource_group_name = var.resource_group_name
   name                = "${var.project}-fn-elt"
@@ -143,7 +143,7 @@ module "function_elt" {
   health_check_path                        = "/api/v1/info"
   subnet_id                                = var.subnet_id
   runtime_version                          = "~4"
-  node_version                             = "18"
+  node_version                             = "20"
   application_insights_instrumentation_key = data.azurerm_application_insights.application_insights.instrumentation_key
 
   app_service_plan_info = {
@@ -179,6 +179,7 @@ module "function_elt" {
     access_tier                       = "Hot"
     advanced_threat_protection_enable = true
     use_legacy_defender_version       = false
+    public_network_access_enabled     = false
   }
 
   internal_storage = {

@@ -1,5 +1,5 @@
 module "function_elt_snet" {
-  source = "github.com/pagopa/terraform-azurerm-v3//subnet?ref=v7.67.1"
+  source = "github.com/pagopa/terraform-azurerm-v3//subnet?ref=v8.86.0"
 
   name                 = "fn3eltout"
   address_prefixes     = var.cidr_subnet_elt
