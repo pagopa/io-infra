@@ -12,6 +12,7 @@
 | Name | Version |
 |------|---------|
 | <a name="provider_azuread"></a> [azuread](#provider\_azuread) | 3.2.0 |
+| <a name="provider_azurerm"></a> [azurerm](#provider\_azurerm) | 3.94.0 |
 
 ## Modules
 
@@ -27,6 +28,7 @@
 
 | Name | Type |
 |------|------|
+| [azurerm_role_assignment.bonus_owner_cgn](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/role_assignment) | resource |
 | [azuread_group.bonus_admins](https://registry.terraform.io/providers/hashicorp/azuread/latest/docs/data-sources/group) | data source |
 
 ## Inputs
