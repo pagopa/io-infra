@@ -79,8 +79,8 @@ data "azurerm_linux_function_app" "function_assets_cdn" {
 }
 
 data "azurerm_linux_function_app" "function_profile" {
-  name                = "${local.project_itn}-auth-profile-fn-01"
-  resource_group_name = "${local.project_itn}-profile-rg-01"
+  name                = "${local.project_itn}-auth-profile-func-02"
+  resource_group_name = "${local.project_itn}-auth-main-rg-01"
 }
 
 data "azurerm_linux_function_app" "com_citizen_func" {
