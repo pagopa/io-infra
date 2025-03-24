@@ -203,31 +203,6 @@ variable "dns_zone_io" {
 }
 
 ################################
-# Function Profile
-################################
-variable "function_profile_count" {
-  type    = number
-  default = 1
-}
-
-variable "cidr_subnet_profile_itn" {
-  type        = list(string)
-  description = "Function app address space."
-}
-
-variable "function_profile_kind" {
-  type        = string
-  description = "App service plan kind"
-  default     = null
-}
-
-variable "function_profile_sku_size" {
-  type        = string
-  description = "App service plan sku size"
-  default     = null
-}
-
-################################
 # Shared plan
 ################################
 
