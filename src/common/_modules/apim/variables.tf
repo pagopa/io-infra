@@ -58,10 +58,9 @@ variable "action_group_id" {
   type = string
 }
 
-variable "ai_connection_string" {
+variable "ai_instrumentation_key" {
   type = string
 }
-
 variable "key_vault" {
   type = object({
     id                  = string

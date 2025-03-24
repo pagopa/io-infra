@@ -1,38 +1,20 @@
 module "apim_v2" {
-  source = "github.com/pagopa/dx//infra/modules/azure_api_management?ref=feats/update-apim-module-with-ip-zones-capacity" # Remove after Tests
-  # source  = "pagopa-dx/azure-api-management/azurerm"
-  # version = "~> 0.1"
+  source = "github.com/pagopa/terraform-azurerm-v4//api_management?ref=v1.23.1"
 
-  environment = {
-    prefix          = var.prefix
-    env_short       = "p"
-    location        = var.location
-    app_name        = "apim"
-    instance_number = "01"
-  }
-
-  resource_group_name = var.resource_group_internal
-  tier                = "xl"
-  zones_override      = ["1", "2"]
-
-  publisher_email           = data.azurerm_key_vault_secret.apim_publisher_email.value
+  subnet_id                 = azurerm_subnet.apim.id
+  location                  = var.location
+  name                      = try(local.nonstandard[var.location_short].apim_name, "${var.project}-apim-01")
+  resource_group_name       = var.resource_group_internal
   publisher_name            = "IO"
+  publisher_email           = data.azurerm_key_vault_secret.apim_publisher_email.value
   notification_sender_email = data.azurerm_key_vault_secret.apim_publisher_email.value
+  sku_name                  = "Premium_2"
+  virtual_network_type      = "Internal"
+  zones                     = ["1", "2"]
+  min_api_version           = var.min_api_version
 
-  public_ip_address_id         = azurerm_public_ip.apim.id
-  enable_public_network_access = true
-  create_network_security_group = false
-
-  virtual_network = {
-    name                = var.vnet_common.name
-    resource_group_name = var.vnet_common.resource_group_name
-  }
-  private_dns_zone_resource_group_name = "io-p-rg-common"
-
-  subnet_id                     = azurerm_subnet.apim.id
-  virtual_network_type_internal = true
-
-  action_group_id = var.action_group_id
+  redis_cache_id       = null
+  public_ip_address_id = azurerm_public_ip.apim.id
 
   hostname_configuration = {
     proxy = [
@@ -68,13 +50,11 @@ module "apim_v2" {
     portal           = null
   }
 
+  management_logger_applicaiton_insight_enabled = true
   application_insights = {
     enabled             = true
-    connection_string   = var.ai_connection_string
-    sampling_percentage = 5.0
-    verbosity           = "error"
+    instrumentation_key = var.ai_instrumentation_key
   }
-
 
   autoscale = {
     enabled                       = true
@@ -90,6 +70,13 @@ module "apim_v2" {
     scale_in_value                = "1"
     scale_in_cooldown             = "PT5M"
   }
+
+  action = [
+    {
+      action_group_id    = var.action_group_id
+      webhook_properties = null
+    }
+  ]
 
   # https://docs.microsoft.com/en-us/azure/azure-monitor/essentials/metrics-supported#microsoftapimanagementservice
   metric_alerts = {
