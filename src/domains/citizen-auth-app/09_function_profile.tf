@@ -151,19 +151,23 @@ locals {
   }
 }
 
-resource "azurerm_resource_group" "function_profile_rg" {
-  count    = var.function_profile_count
-  name     = format("%s-profile-rg-0%d", local.common_project_itn, count.index + 1)
-  location = local.itn_location
+removed {
+  from = azurerm_resource_group.function_profile_rg
+  lifecycle {
+    destroy = false
+  }
+}
 
-  tags = var.tags
+data "azurerm_resource_group" "function_profile_rg" {
+  count = var.function_profile_count
+  name  = format("%s-profile-rg-0%d", local.common_project_itn, count.index + 1)
 }
 
 module "function_profile" {
   count  = var.function_profile_count
   source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app?ref=v8.44.0"
 
-  resource_group_name = azurerm_resource_group.function_profile_rg[count.index].name
+  resource_group_name = data.azurerm_resource_group.function_profile_rg[count.index].name
   name                = format("%s-profile-fn-0%d", local.short_project_itn, count.index + 1)
   location            = local.itn_location
   health_check_path   = "/api/v1/info"
@@ -222,7 +226,7 @@ module "function_profile_staging_slot" {
 
   name                         = "staging"
   location                     = local.itn_location
-  resource_group_name          = azurerm_resource_group.function_profile_rg[count.index].name
+  resource_group_name          = data.azurerm_resource_group.function_profile_rg[count.index].name
   function_app_id              = module.function_profile[count.index].id
   app_service_plan_id          = module.function_profile[count.index].app_service_plan_id
   health_check_path            = "/api/v1/info"
@@ -258,7 +262,7 @@ module "function_profile_staging_slot" {
 resource "azurerm_monitor_autoscale_setting" "function_profile" {
   count               = var.function_profile_count
   name                = format("%s-autoscale", module.function_profile[count.index].name)
-  resource_group_name = azurerm_resource_group.function_profile_rg[count.index].name
+  resource_group_name = data.azurerm_resource_group.function_profile_rg[count.index].name
   location            = local.itn_location
   target_resource_id  = module.function_profile[count.index].app_service_plan_id
 
@@ -421,7 +425,7 @@ resource "azurerm_monitor_metric_alert" "function_profile_health_check" {
   count = var.function_profile_count
 
   name                = "${module.function_profile[count.index].name}-health-check-failed"
-  resource_group_name = azurerm_resource_group.function_profile_rg[count.index].name
+  resource_group_name = data.azurerm_resource_group.function_profile_rg[count.index].name
   scopes              = [module.function_profile[count.index].id]
   description         = "${module.function_profile[count.index].name} health check failed"
   severity            = 1
