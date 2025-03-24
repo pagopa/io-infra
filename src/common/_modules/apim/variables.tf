@@ -58,7 +58,7 @@ variable "action_group_id" {
   type = string
 }
 
-variable "ai_instrumentation_key" {
+variable "ai_connection_string" {
   type = string
 }
 

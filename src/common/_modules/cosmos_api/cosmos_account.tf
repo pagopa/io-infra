@@ -7,7 +7,7 @@ resource "azurerm_cosmosdb_account" "this" {
   free_tier_enabled = false
 
   automatic_failover_enabled = false
-  ip_range_filter            = join(",", local.ip_range_filter)
+  ip_range_filter            = local.ip_range_filter
 
   geo_location {
     location          = "italynorth"

@@ -86,12 +86,6 @@ variable "auto_inflate_enabled" {
   default     = true
 }
 
-variable "zone_redundant" {
-  type        = bool
-  description = "Specifies if the EventHub Namespace should be Zone Redundant (created across Availability Zones)."
-  default     = true
-}
-
 variable "eventhubs" {
   description = "A list of event hubs to add to namespace."
   type = list(object({

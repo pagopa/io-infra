@@ -63,8 +63,8 @@ module "apim_itn" {
   key_vault        = local.core.key_vault.weu.kv
   key_vault_common = local.core.key_vault.weu.kv_common
 
-  action_group_id        = module.monitoring_weu.action_groups.error
-  ai_instrumentation_key = module.monitoring_weu.appi_instrumentation_key
+  action_group_id      = module.monitoring_weu.action_groups.error
+  ai_connection_string = module.monitoring_weu.appi_connection_string
 
   azure_adgroup_wallet_admins_object_id = data.azuread_group.wallet_admins.object_id
   azure_adgroup_com_admins_object_id    = data.azuread_group.com_admins.object_id

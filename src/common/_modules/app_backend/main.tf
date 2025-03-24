@@ -1,5 +1,5 @@
 module "appservice_app_backend" {
-  source = "github.com/pagopa/terraform-azurerm-v3//app_service?ref=v8.31.0"
+  source = "github.com/pagopa/terraform-azurerm-v4//app_service?ref=v1.23.0"
 
   # App service plan
   plan_type = "internal"
@@ -45,7 +45,7 @@ module "appservice_app_backend" {
 }
 
 module "appservice_app_backend_slot_staging" {
-  source = "github.com/pagopa/terraform-azurerm-v3//app_service_slot?ref=v8.31.0"
+  source = "github.com/pagopa/terraform-azurerm-v4//app_service_slot?ref=v1.23.0"
 
   # App service plan
   app_service_id   = module.appservice_app_backend.id

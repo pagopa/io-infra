@@ -19,63 +19,126 @@ resource "azurerm_web_application_firewall_policy" "api_app" {
 
       rule_group_override {
         rule_group_name = "REQUEST-913-SCANNER-DETECTION"
-        disabled_rules = [
-          "913100",
-          "913101",
-          "913102",
-          "913110",
-          "913120",
-        ]
+        rule {
+          id      = "913100"
+          enabled = false
+        }
+        rule {
+          id      = "913101"
+          enabled = false
+        }
+        rule {
+          id      = "913102"
+          enabled = false
+        }
+        rule {
+          id      = "913110"
+          enabled = false
+        }
+        rule {
+          id      = "913120"
+          enabled = false
+        }
       }
 
       rule_group_override {
         rule_group_name = "REQUEST-920-PROTOCOL-ENFORCEMENT"
-        disabled_rules = [
-          "920300",
-          "920320",
-        ]
+        rule {
+          id      = "920300"
+          enabled = false
+        }
+        rule {
+          id      = "920320"
+          enabled = false
+        }
       }
 
       rule_group_override {
         rule_group_name = "REQUEST-930-APPLICATION-ATTACK-LFI"
-        disabled_rules = [
-          "930120",
-        ]
+        rule {
+          id      = "930120"
+          enabled = false
+        }
       }
 
       rule_group_override {
         rule_group_name = "REQUEST-932-APPLICATION-ATTACK-RCE"
-        disabled_rules = [
-          "932150",
-        ]
+        rule {
+          id      = "932150"
+          enabled = false
+        }
       }
 
       rule_group_override {
         rule_group_name = "REQUEST-941-APPLICATION-ATTACK-XSS"
-        disabled_rules = [
-          "941130",
-        ]
+        rule {
+          id      = "941130"
+          enabled = false
+        }
       }
 
       rule_group_override {
         rule_group_name = "REQUEST-942-APPLICATION-ATTACK-SQLI"
-        disabled_rules = [
-          "942100",
-          "942120",
-          "942190",
-          "942200",
-          "942210",
-          "942240",
-          "942250",
-          "942260",
-          "942330",
-          "942340",
-          "942370",
-          "942380",
-          "942430",
-          "942440",
-          "942450",
-        ]
+        rule {
+          id      = "942100"
+          enabled = false
+        }
+        rule {
+          id      = "942120"
+          enabled = false
+        }
+        rule {
+          id      = "942190"
+          enabled = false
+        }
+        rule {
+          id      = "942200"
+          enabled = false
+        }
+        rule {
+          id      = "942210"
+          enabled = false
+        }
+        rule {
+          id      = "942240"
+          enabled = false
+        }
+        rule {
+          id      = "942250"
+          enabled = false
+        }
+        rule {
+          id      = "942260"
+          enabled = false
+        }
+        rule {
+          id      = "942330"
+          enabled = false
+        }
+        rule {
+          id      = "942340"
+          enabled = false
+        }
+        rule {
+          id      = "942370"
+          enabled = false
+        }
+        rule {
+          id      = "942380"
+          enabled = false
+        }
+        rule {
+          id      = "942430"
+          enabled = false
+        }
+        rule {
+          id      = "942440"
+          enabled = false
+        }
+        rule {
+          id      = "942450"
+          enabled = false
+        }
       }
 
     }
