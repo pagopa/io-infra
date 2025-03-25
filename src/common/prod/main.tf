@@ -11,7 +11,7 @@ terraform {
   required_providers {
     azurerm = {
       source  = "hashicorp/azurerm"
-      version = ">= 4.1.0, < 5.0.0"
+      version = "~> 4.1"
     }
   }
 }
@@ -20,12 +20,6 @@ provider "azurerm" {
   features {}
   storage_use_azuread = true
 }
-
-import {
-  to = module.storage_accounts.azurerm_storage_account.exportdata_weu_01
-  id = "/subscriptions/ec285037-c673-4f58-b594-d7c480da4e8b/resourceGroups/io-p-rg-operations/providers/Microsoft.Storage/storageAccounts/iopstexportdata"
-}
-
 import {
   to = module.apim_itn.module.apim_v2.azurerm_private_dns_a_record.apim_scm_azure_api_net
   id = "/subscriptions/ec285037-c673-4f58-b594-d7c480da4e8b/resourceGroups/io-p-rg-common/providers/Microsoft.Network/privateDnsZones/scm.azure-api.net/A/io-p-itn-apim-01"

@@ -36,4 +36,6 @@ resource "azurerm_private_endpoint" "private_endpoint_storage_account_legal_back
     name                 = "private-dns-zone-group"
     private_dns_zone_ids = [data.azurerm_private_dns_zone.privatelink_blob_core.id]
   }
+
+  tags = var.tags
 }

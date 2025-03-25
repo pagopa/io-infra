@@ -1,5 +1,5 @@
 module "redis_common_backup_zrs" {
-  source = "github.com/pagopa/terraform-azurerm-v4//storage_account?ref=v1.23.0"
+  source = "github.com/pagopa/terraform-azurerm-v4//storage_account?ref=v1.23.3"
 
   name                            = try(local.nonstandard[var.location_short].storage_account, "${var.project}-redis-common-st-01")
   account_kind                    = "StorageV2"
