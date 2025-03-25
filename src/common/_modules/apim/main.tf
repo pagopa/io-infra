@@ -1,7 +1,6 @@
 module "apim_v2" {
-  source = "github.com/pagopa/dx//infra/modules/azure_api_management?ref=feats/update-apim-module-with-ip-zones-capacity" # Remove after Tests
-  # source  = "pagopa-dx/azure-api-management/azurerm"
-  # version = "~> 0.1"
+  source  = "pagopa-dx/azure-api-management/azurerm"
+  version = "~> 1.1"
 
   environment = {
     prefix          = var.prefix
