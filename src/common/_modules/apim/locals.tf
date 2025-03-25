@@ -1,8 +1,6 @@
 locals {
   nonstandard = {
-    itn = {
-      autoscale_name = "${var.project}-apim-01-autoscale"
-    }
+    autoscale_name = "${var.project}-apim-01-autoscale"
   }
 
   apim_hostname_api_internal     = "api-internal.io.italia.it"

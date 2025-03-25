@@ -49,3 +49,15 @@ import {
   to = module.apim_itn.module.apim_v2.azurerm_subnet_network_security_group_association.snet_nsg
   id = "/subscriptions/ec285037-c673-4f58-b594-d7c480da4e8b/resourceGroups/io-p-itn-common-rg-01/providers/Microsoft.Network/virtualNetworks/io-p-itn-common-vnet-01/subnets/io-p-itn-apim-snet-01"
 }
+
+import {
+  to = module.apim_itn.module.apim_v2.azurerm_monitor_autoscale_setting.this[0]
+  id = "/subscriptions/ec285037-c673-4f58-b594-d7c480da4e8b/resourceGroups/io-p-itn-common-rg-01/providers/Microsoft.Insights/autoScaleSettings/io-p-itn-apim-01-autoscale"
+}
+
+# Resources that will be removed (terraform state rm) before imports
+# module.apim_itn.azurerm_private_dns_a_record.apim_azure_api_net
+# module.apim_itn.azurerm_private_dns_a_record.apim_management_azure_api_net
+# module.apim_itn.azurerm_private_dns_a_record.apim_scm_azure_api_net
+# module.apim_itn.module.apim_v2.azurerm_api_management_diagnostic.this[0]
+# module.apim_itn.module.apim_v2.azurerm_monitor_autoscale_setting.this[0]
