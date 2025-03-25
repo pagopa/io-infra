@@ -1,5 +1,5 @@
 module "assets_cdn" {
-  source = "github.com/pagopa/terraform-azurerm-v4//storage_account?ref=v1.23.0"
+  source = "github.com/pagopa/terraform-azurerm-v4//storage_account?ref=v1.23.3"
 
   name                            = replace(try(local.nonstandard[var.location_short].st, "${var.project}-assets-st-01"), "-", "")
   account_kind                    = "StorageV2"

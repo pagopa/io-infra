@@ -6,7 +6,7 @@ resource "azurerm_resource_group" "event_rg" {
 }
 
 module "eventhub_snet" {
-  source               = "github.com/pagopa/terraform-azurerm-v4//subnet?ref=v1.23.0"
+  source               = "github.com/pagopa/terraform-azurerm-v4//subnet?ref=v1.23.3"
   name                 = try(local.nonstandard[var.location_short].evh-snet, "${var.project}-evh-snet-01")
   address_prefixes     = var.cidr_subnet
   resource_group_name  = var.resource_group_common
@@ -15,7 +15,7 @@ module "eventhub_snet" {
 }
 
 module "event_hub" {
-  source              = "github.com/pagopa/terraform-azurerm-v4//eventhub?ref=v1.23.0"
+  source              = "github.com/pagopa/terraform-azurerm-v4//eventhub?ref=v1.23.3"
   name                = try(local.nonstandard[var.location_short].evh-ns, "${var.project}-evhns-01")
   location            = var.location
   resource_group_name = azurerm_resource_group.event_rg.name

@@ -1,6 +1,6 @@
 ## Application gateway ##
 module "app_gw" {
-  source = "github.com/pagopa/terraform-azurerm-v4//app_gateway?ref=v1.23.0"
+  source = "github.com/pagopa/terraform-azurerm-v4//app_gateway?ref=v1.23.3"
 
   resource_group_name = var.resource_group_external
   location            = var.location
