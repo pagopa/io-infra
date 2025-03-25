@@ -5,7 +5,7 @@ module "appservice_app_backend" {
   plan_type                       = "internal"
   plan_name                       = try(local.nonstandard[var.location_short].asp, "${var.project}-appbe-${var.name}-asp-01")
   sku_name                        = var.plan_sku
-  premium_plan_auto_scale_enabled = true
+  premium_plan_auto_scale_enabled = var.enable_premium_plan_autoscale
 
   # App service
   name                = try(local.nonstandard[var.location_short].app, "${var.project}-appbe-${var.name}-app-01")

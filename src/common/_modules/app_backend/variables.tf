@@ -228,3 +228,10 @@ variable "azure_adgroup_bonus_admins_object_id" {
   type        = string
   description = "Object Id of the Entra group for subscription admins"
 }
+
+variable "enable_premium_plan_autoscale" {
+  type        = bool
+  description = "Enable autoscale for premium plan"
+  default     = false
+
+}
