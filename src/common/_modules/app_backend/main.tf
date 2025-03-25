@@ -1,10 +1,11 @@
 module "appservice_app_backend" {
-  source = "github.com/pagopa/terraform-azurerm-v4//app_service?ref=v1.23.2"
+  source = "github.com/pagopa/terraform-azurerm-v4//app_service?ref=fixes/add-autoscale-var-app-service" #v1.23.2"
 
   # App service plan
-  plan_type = "internal"
-  plan_name = try(local.nonstandard[var.location_short].asp, "${var.project}-appbe-${var.name}-asp-01")
-  sku_name  = var.plan_sku
+  plan_type                       = "internal"
+  plan_name                       = try(local.nonstandard[var.location_short].asp, "${var.project}-appbe-${var.name}-asp-01")
+  sku_name                        = var.plan_sku
+  premium_plan_auto_scale_enabled = true
 
   # App service
   name                = try(local.nonstandard[var.location_short].app, "${var.project}-appbe-${var.name}-app-01")
