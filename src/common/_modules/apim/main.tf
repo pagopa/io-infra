@@ -1,4 +1,4 @@
-module "apim_v2" {
+module "apim" {
   source  = "pagopa-dx/azure-api-management/azurerm"
   version = "~> 1.1"
 
