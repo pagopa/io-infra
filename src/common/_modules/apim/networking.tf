@@ -11,31 +11,6 @@ resource "azurerm_subnet" "apim" {
   ]
 }
 
-resource "azurerm_network_security_group" "apim" {
-  name                = "${var.project}-apim-nsg-01"
-  resource_group_name = var.resource_group_common
-  location            = var.location
-
-  security_rule {
-    name                       = "managementapim"
-    priority                   = 100
-    direction                  = "Inbound"
-    access                     = "Allow"
-    protocol                   = "Tcp"
-    source_port_range          = "*"
-    destination_port_range     = "3443"
-    source_address_prefix      = "ApiManagement"
-    destination_address_prefix = "VirtualNetwork"
-  }
-
-  tags = var.tags
-}
-
-resource "azurerm_subnet_network_security_group_association" "apim" {
-  subnet_id                 = azurerm_subnet.apim.id
-  network_security_group_id = azurerm_network_security_group.apim.id
-}
-
 resource "azurerm_public_ip" "apim" {
   name                = "${var.project}-apim-pip-01"
   resource_group_name = var.resource_group_common
