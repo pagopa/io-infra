@@ -75,7 +75,6 @@ module "apim_v2" {
 
   autoscale = {
     enabled                       = true
-    legacy_name                   = local.nonstandard.autoscale_name
     default_instances             = 3
     minimum_instances             = 2
     maximum_instances             = 6

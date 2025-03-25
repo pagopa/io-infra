@@ -20,25 +20,8 @@ provider "azurerm" {
   features {}
   storage_use_azuread = true
 }
-import {
-  to = module.apim_itn.module.apim_v2.azurerm_private_dns_a_record.apim_scm_azure_api_net
-  id = "/subscriptions/ec285037-c673-4f58-b594-d7c480da4e8b/resourceGroups/io-p-rg-common/providers/Microsoft.Network/privateDnsZones/scm.azure-api.net/A/io-p-itn-apim-01"
-}
 
-import {
-  to = module.apim_itn.module.apim_v2.azurerm_private_dns_a_record.apim_management_azure_api_net
-  id = "/subscriptions/ec285037-c673-4f58-b594-d7c480da4e8b/resourceGroups/io-p-rg-common/providers/Microsoft.Network/privateDnsZones/management.azure-api.net/A/io-p-itn-apim-01"
-}
-
-import {
-  to = module.apim_itn.module.apim_v2.azurerm_private_dns_a_record.apim_azure_api_net
-  id = "/subscriptions/ec285037-c673-4f58-b594-d7c480da4e8b/resourceGroups/io-p-rg-common/providers/Microsoft.Network/privateDnsZones/azure-api.net/A/io-p-itn-apim-01"
-}
-
-import {
-  to = module.apim_itn.module.apim_v2.azurerm_api_management_diagnostic.applicationinsights[0]
-  id = "/subscriptions/ec285037-c673-4f58-b594-d7c480da4e8b/resourceGroups/io-p-itn-common-rg-01/providers/Microsoft.ApiManagement/service/io-p-itn-apim-01/diagnostics/applicationinsights"
-}
+# IMPORT
 
 import {
   to = module.apim_itn.module.apim_v2.azurerm_network_security_group.nsg_apim
@@ -50,14 +33,24 @@ import {
   id = "/subscriptions/ec285037-c673-4f58-b594-d7c480da4e8b/resourceGroups/io-p-itn-common-rg-01/providers/Microsoft.Network/virtualNetworks/io-p-itn-common-vnet-01/subnets/io-p-itn-apim-snet-01"
 }
 
-import {
-  to = module.apim_itn.module.apim_v2.azurerm_monitor_autoscale_setting.this[0]
-  id = "/subscriptions/ec285037-c673-4f58-b594-d7c480da4e8b/resourceGroups/io-p-itn-common-rg-01/providers/Microsoft.Insights/autoScaleSettings/io-p-itn-apim-01-autoscale"
+# MOVED
+
+moved {
+  from = module.apim_itn.azurerm_private_dns_a_record.apim_azure_api_net
+  to   = module.apim_itn.module.apim_v2.azurerm_private_dns_a_record.apim_azure_api_net
 }
 
-# Resources that will be removed (terraform state rm) before imports
-# module.apim_itn.azurerm_private_dns_a_record.apim_azure_api_net
-# module.apim_itn.azurerm_private_dns_a_record.apim_management_azure_api_net
-# module.apim_itn.azurerm_private_dns_a_record.apim_scm_azure_api_net
-# module.apim_itn.module.apim_v2.azurerm_api_management_diagnostic.this[0]
-# module.apim_itn.module.apim_v2.azurerm_monitor_autoscale_setting.this[0]
+moved {
+  from = module.apim_itn.azurerm_private_dns_a_record.apim_management_azure_api_net
+  to   = module.apim_itn.module.apim_v2.azurerm_private_dns_a_record.apim_management_azure_api_net
+}
+
+moved {
+  from = module.apim_itn.azurerm_private_dns_a_record.apim_scm_azure_api_net
+  to   = module.apim_itn.module.apim_v2.azurerm_private_dns_a_record.apim_scm_azure_api_net
+}
+
+moved {
+  from = module.apim_itn.module.apim_v2.azurerm_api_management_diagnostic.this[0]
+  to   = module.apim_itn.module.apim_v2.azurerm_api_management_diagnostic.applicationinsights[0]
+}

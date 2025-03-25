@@ -1,5 +1,5 @@
 resource "azurerm_subnet" "apim" {
-  name                 = try(local.nonstandard[var.location_short].snet_name, "${var.project}-apim-snet-01")
+  name                 = "${var.project}-apim-snet-01"
   resource_group_name  = var.vnet_common.resource_group_name
   virtual_network_name = var.vnet_common.name
   address_prefixes     = [var.cidr_subnet]
@@ -12,7 +12,7 @@ resource "azurerm_subnet" "apim" {
 }
 
 resource "azurerm_network_security_group" "apim" {
-  name                = try(local.nonstandard[var.location_short].nsg_name, "${var.project}-apim-nsg-01")
+  name                = "${var.project}-apim-nsg-01"
   resource_group_name = var.resource_group_common
   location            = var.location
 
@@ -37,7 +37,7 @@ resource "azurerm_subnet_network_security_group_association" "apim" {
 }
 
 resource "azurerm_public_ip" "apim" {
-  name                = try(local.nonstandard[var.location_short].pip_name, "${var.project}-apim-pip-01")
+  name                = "${var.project}-apim-pip-01"
   resource_group_name = var.resource_group_common
   location            = var.location
   allocation_method   = "Static"
