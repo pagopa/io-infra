@@ -73,10 +73,9 @@ module "apim_v2" {
     verbosity           = "error"
   }
 
-
   autoscale = {
-    enabled                       = true
-    legacy_name                   = local.nonstandard.itn.autoscale_name
+    enabled = true
+    # legacy_name                   = local.nonstandard.itn.autoscale_name
     default_instances             = 3
     minimum_instances             = 2
     maximum_instances             = 6
