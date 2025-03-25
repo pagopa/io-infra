@@ -6,17 +6,16 @@ resource "azurerm_resource_group" "event_rg" {
 }
 
 module "eventhub_snet" {
-  source                                    = "github.com/pagopa/terraform-azurerm-v3//subnet?ref=v8.35.0"
-  name                                      = try(local.nonstandard[var.location_short].evh-snet, "${var.project}-evh-snet-01")
-  address_prefixes                          = var.cidr_subnet
-  resource_group_name                       = var.resource_group_common
-  virtual_network_name                      = var.vnet_common.name
-  service_endpoints                         = ["Microsoft.EventHub"]
-  private_endpoint_network_policies_enabled = false
+  source               = "github.com/pagopa/terraform-azurerm-v4//subnet?ref=v1.23.3"
+  name                 = try(local.nonstandard[var.location_short].evh-snet, "${var.project}-evh-snet-01")
+  address_prefixes     = var.cidr_subnet
+  resource_group_name  = var.resource_group_common
+  virtual_network_name = var.vnet_common.name
+  service_endpoints    = ["Microsoft.EventHub"]
 }
 
 module "event_hub" {
-  source              = "github.com/pagopa/terraform-azurerm-v3//eventhub?ref=v8.35.0"
+  source              = "github.com/pagopa/terraform-azurerm-v4//eventhub?ref=v1.23.3"
   name                = try(local.nonstandard[var.location_short].evh-ns, "${var.project}-evhns-01")
   location            = var.location
   resource_group_name = azurerm_resource_group.event_rg.name
@@ -26,7 +25,6 @@ module "event_hub" {
   sku                      = var.sku_name
   capacity                 = var.capacity
   maximum_throughput_units = var.maximum_throughput_units
-  zone_redundant           = var.zone_redundant
   private_endpoint_created = false
 
   virtual_network_ids = [var.vnet_common.id]

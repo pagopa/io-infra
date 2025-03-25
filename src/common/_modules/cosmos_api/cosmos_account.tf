@@ -3,11 +3,12 @@ resource "azurerm_cosmosdb_account" "this" {
   resource_group_name = var.resource_group_internal
   location            = "westeurope"
 
-  offer_type        = "Standard"
-  free_tier_enabled = false
+  offer_type          = "Standard"
+  free_tier_enabled   = false
+  minimal_tls_version = "Tls"
 
   automatic_failover_enabled = false
-  ip_range_filter            = join(",", local.ip_range_filter)
+  ip_range_filter            = local.ip_range_filter
 
   geo_location {
     location          = "italynorth"

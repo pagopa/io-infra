@@ -11,7 +11,7 @@ terraform {
   required_providers {
     azurerm = {
       source  = "hashicorp/azurerm"
-      version = "<= 3.116.0"
+      version = "~> 4.1"
     }
   }
 }
@@ -19,9 +19,4 @@ terraform {
 provider "azurerm" {
   features {}
   storage_use_azuread = true
-}
-
-import {
-  to = module.storage_accounts.azurerm_storage_account.exportdata_weu_01
-  id = "/subscriptions/ec285037-c673-4f58-b594-d7c480da4e8b/resourceGroups/io-p-rg-operations/providers/Microsoft.Storage/storageAccounts/iopstexportdata"
 }

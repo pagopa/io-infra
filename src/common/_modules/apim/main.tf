@@ -1,5 +1,5 @@
 module "apim_v2" {
-  source = "github.com/pagopa/terraform-azurerm-v3//api_management?ref=v8.85.0"
+  source = "github.com/pagopa/terraform-azurerm-v4//api_management?ref=v1.23.3"
 
   subnet_id                 = azurerm_subnet.apim.id
   location                  = var.location

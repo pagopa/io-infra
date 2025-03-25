@@ -426,14 +426,15 @@ module "app_backend_weu" {
   name  = "l${each.key}"
   index = each.key
 
-  vnet_common                = local.core.networking.weu.vnet_common
-  cidr_subnet                = each.value.cidr_subnet
-  nat_gateways               = local.core.networking.weu.nat_gateways
-  allowed_subnets            = concat(data.azurerm_subnet.services_snet.*.id, [module.application_gateway_weu.snet.id, module.apim_itn.snet.id])
-  slot_allowed_subnets       = concat([local.azdoa_snet_id["weu"]], data.azurerm_subnet.services_snet.*.id, [module.application_gateway_weu.snet.id, module.apim_itn.snet.id, module.github_runner_itn.subnet.id])
-  allowed_ips                = module.monitoring_weu.appi.reserved_ips
-  slot_allowed_ips           = module.monitoring_weu.appi.reserved_ips
-  apim_snet_address_prefixes = module.apim_itn.snet.address_prefixes
+  vnet_common                   = local.core.networking.weu.vnet_common
+  cidr_subnet                   = each.value.cidr_subnet
+  nat_gateways                  = local.core.networking.weu.nat_gateways
+  allowed_subnets               = concat(data.azurerm_subnet.services_snet.*.id, [module.application_gateway_weu.snet.id, module.apim_itn.snet.id])
+  slot_allowed_subnets          = concat([local.azdoa_snet_id["weu"]], data.azurerm_subnet.services_snet.*.id, [module.application_gateway_weu.snet.id, module.apim_itn.snet.id, module.github_runner_itn.subnet.id])
+  allowed_ips                   = module.monitoring_weu.appi.reserved_ips
+  slot_allowed_ips              = module.monitoring_weu.appi.reserved_ips
+  apim_snet_address_prefixes    = module.apim_itn.snet.address_prefixes
+  enable_premium_plan_autoscale = true
 
   backend_hostnames = local.backend_hostnames
 
