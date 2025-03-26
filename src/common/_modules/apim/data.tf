@@ -13,21 +13,6 @@ data "azurerm_key_vault_certificate" "api_app_internal_io_pagopa_it" {
   key_vault_id = var.key_vault.id
 }
 
-data "azurerm_private_dns_zone" "azure_api_net" {
-  name                = "azure-api.net"
-  resource_group_name = "io-p-rg-common"
-}
-
-data "azurerm_private_dns_zone" "management_azure_api_net" {
-  name                = "management.azure-api.net"
-  resource_group_name = "io-p-rg-common"
-}
-
-data "azurerm_private_dns_zone" "scm_azure_api_net" {
-  name                = "scm.azure-api.net"
-  resource_group_name = "io-p-rg-common"
-}
-
 data "azurerm_linux_web_app" "cgn_pe_backend_app_01" {
   provider = azurerm.prod-cgn
 

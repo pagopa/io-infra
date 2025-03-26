@@ -1,7 +1,7 @@
-resource "azurerm_key_vault_access_policy" "apim_v2_kv_policy" {
+resource "azurerm_key_vault_access_policy" "apim_kv_policy" {
   key_vault_id = var.key_vault.id
   tenant_id    = var.datasources.azurerm_client_config.tenant_id
-  object_id    = module.apim_v2.principal_id
+  object_id    = module.apim.principal_id
 
   key_permissions         = []
   secret_permissions      = ["Get", "List"]
@@ -9,10 +9,10 @@ resource "azurerm_key_vault_access_policy" "apim_v2_kv_policy" {
   storage_permissions     = []
 }
 
-resource "azurerm_key_vault_access_policy" "v2_common" {
+resource "azurerm_key_vault_access_policy" "common" {
   key_vault_id = var.key_vault_common.id
   tenant_id    = var.datasources.azurerm_client_config.tenant_id
-  object_id    = module.apim_v2.principal_id
+  object_id    = module.apim.principal_id
 
   key_permissions         = []
   secret_permissions      = ["Get", "List"]
@@ -28,8 +28,8 @@ module "iam_adgroup_wallet_admins" {
 
   apim = [
     {
-      name                = module.apim_v2.name
-      resource_group_name = module.apim_v2.resource_group_name
+      name                = module.apim.name
+      resource_group_name = module.apim.resource_group_name
       role                = "owner"
     }
   ]
@@ -43,8 +43,8 @@ module "iam_adgroup_com_admins" {
 
   apim = [
     {
-      name                = module.apim_v2.name
-      resource_group_name = module.apim_v2.resource_group_name
+      name                = module.apim.name
+      resource_group_name = module.apim.resource_group_name
       role                = "owner"
     }
   ]
@@ -58,8 +58,8 @@ module "iam_adgroup_svc_admins" {
 
   apim = [
     {
-      name                = module.apim_v2.name
-      resource_group_name = module.apim_v2.resource_group_name
+      name                = module.apim.name
+      resource_group_name = module.apim.resource_group_name
       role                = "owner"
     }
   ]
@@ -73,8 +73,8 @@ module "iam_adgroup_auth_admins" {
 
   apim = [
     {
-      name                = module.apim_v2.name
-      resource_group_name = module.apim_v2.resource_group_name
+      name                = module.apim.name
+      resource_group_name = module.apim.resource_group_name
       role                = "owner"
     }
   ]
@@ -88,8 +88,8 @@ module "iam_adgroup_bonus_admins" {
 
   apim = [
     {
-      name                = module.apim_v2.name
-      resource_group_name = module.apim_v2.resource_group_name
+      name                = module.apim.name
+      resource_group_name = module.apim.resource_group_name
       role                = "owner"
     }
   ]
@@ -103,8 +103,8 @@ module "iam_cgn_pe_backend_app_01" {
 
   apim = [
     {
-      name                = module.apim_v2.name
-      resource_group_name = module.apim_v2.resource_group_name
+      name                = module.apim.name
+      resource_group_name = module.apim.resource_group_name
       role                = "owner"
     }
   ]
