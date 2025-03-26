@@ -29,15 +29,12 @@
 | <a name="module_apim_itn_service_messages_internal_api_v1"></a> [apim\_itn\_service\_messages\_internal\_api\_v1](#module\_apim\_itn\_service\_messages\_internal\_api\_v1) | github.com/pagopa/terraform-azurerm-v3//api_management_api | v8.27.0 |
 | <a name="module_apim_itn_service_messages_manage_api_v1"></a> [apim\_itn\_service\_messages\_manage\_api\_v1](#module\_apim\_itn\_service\_messages\_manage\_api\_v1) | github.com/pagopa/terraform-azurerm-v3//api_management_api | v8.27.0 |
 | <a name="module_cosmosdb_account_mongodb_reminder"></a> [cosmosdb\_account\_mongodb\_reminder](#module\_cosmosdb\_account\_mongodb\_reminder) | github.com/pagopa/terraform-azurerm-v3//cosmosdb_account | v8.27.0 |
-| <a name="module_cosmosdb_account_remote_content"></a> [cosmosdb\_account\_remote\_content](#module\_cosmosdb\_account\_remote\_content) | github.com/pagopa/terraform-azurerm-v3//cosmosdb_account | v8.27.0 |
-| <a name="module_cosmosdb_sql_database_remote_content"></a> [cosmosdb\_sql\_database\_remote\_content](#module\_cosmosdb\_sql\_database\_remote\_content) | github.com/pagopa/terraform-azurerm-v3//cosmosdb_sql_database | v8.27.0 |
 | <a name="module_io-backend_notification_itn_api_v1"></a> [io-backend\_notification\_itn\_api\_v1](#module\_io-backend\_notification\_itn\_api\_v1) | github.com/pagopa/terraform-azurerm-v3//api_management_api | v8.27.0 |
 | <a name="module_key_vault"></a> [key\_vault](#module\_key\_vault) | github.com/pagopa/terraform-azurerm-v3//key_vault | v8.27.0 |
 | <a name="module_mongdb_collection_reminder"></a> [mongdb\_collection\_reminder](#module\_mongdb\_collection\_reminder) | github.com/pagopa/terraform-azurerm-v3//cosmosdb_mongodb_collection | v8.27.0 |
 | <a name="module_mongdb_collection_reminder_sharded"></a> [mongdb\_collection\_reminder\_sharded](#module\_mongdb\_collection\_reminder\_sharded) | github.com/pagopa/terraform-azurerm-v3//cosmosdb_mongodb_collection | v8.27.0 |
 | <a name="module_push_notif_beta_storage"></a> [push\_notif\_beta\_storage](#module\_push\_notif\_beta\_storage) | github.com/pagopa/terraform-azurerm-v3//storage_account | v8.27.0 |
 | <a name="module_push_notifications_storage"></a> [push\_notifications\_storage](#module\_push\_notifications\_storage) | github.com/pagopa/terraform-azurerm-v3//storage_account | v8.27.0 |
-| <a name="module_redis_messages"></a> [redis\_messages](#module\_redis\_messages) | github.com/pagopa/terraform-azurerm-v3//redis_cache | v8.27.0 |
 | <a name="module_reminder_mysql_db_server_snet"></a> [reminder\_mysql\_db\_server\_snet](#module\_reminder\_mysql\_db\_server\_snet) | github.com/pagopa/terraform-azurerm-v3//subnet | v8.27.0 |
 
 ## Resources
@@ -60,8 +57,6 @@
 | [azurerm_api_management_subscription.reminder_itn](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_subscription) | resource |
 | [azurerm_api_management_user.reminder_user_itn](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_user) | resource |
 | [azurerm_cosmosdb_mongo_database.db_reminder](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/cosmosdb_mongo_database) | resource |
-| [azurerm_cosmosdb_sql_container.message_configuration](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/cosmosdb_sql_container) | resource |
-| [azurerm_cosmosdb_sql_container.user_configurations](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/cosmosdb_sql_container) | resource |
 | [azurerm_key_vault_access_policy.access_policy_kv_io_infra_cd](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_access_policy) | resource |
 | [azurerm_key_vault_access_policy.access_policy_kv_io_infra_ci](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_access_policy) | resource |
 | [azurerm_key_vault_access_policy.adgroup_admin](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_access_policy) | resource |
@@ -85,8 +80,6 @@
 | [azurerm_mysql_flexible_server.reminder_mysql_server](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/mysql_flexible_server) | resource |
 | [azurerm_mysql_flexible_server_configuration.max_connections](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/mysql_flexible_server_configuration) | resource |
 | [azurerm_private_endpoint.cosno_reminder_itn](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/private_endpoint) | resource |
-| [azurerm_private_endpoint.cosno_remote_content_itn](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/private_endpoint) | resource |
-| [azurerm_resource_group.app_messages_common_rg](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/resource_group) | resource |
 | [azurerm_resource_group.data_rg](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/resource_group) | resource |
 | [azurerm_resource_group.notifications_rg](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/resource_group) | resource |
 | [azurerm_resource_group.sec_rg](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/resource_group) | resource |
