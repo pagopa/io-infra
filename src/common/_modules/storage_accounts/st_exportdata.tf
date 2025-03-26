@@ -1,4 +1,6 @@
 resource "azurerm_storage_account" "exportdata_weu_01" {
+  count = var.location == "westeurope" ? 1 : 0
+
   name                     = replace("${var.project}stexportdata", "-", "")
   resource_group_name      = var.resource_group_operations
   location                 = var.location
