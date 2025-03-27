@@ -1,9 +1,3 @@
-resource "kubernetes_namespace" "namespace" {
-  metadata {
-    name = var.domain
-  }
-}
-
 module "pod_identity" {
   source = "github.com/pagopa/terraform-azurerm-v3//kubernetes_pod_identity?ref=v8.27.0"
 
@@ -13,7 +7,7 @@ module "pod_identity" {
   cluster_name        = local.aks_name
 
   identity_name = "${var.domain}-pod-identity"
-  namespace     = kubernetes_namespace.namespace.metadata[0].name
+  namespace     = var.domain
   key_vault_id  = data.azurerm_key_vault.kv.id
 
   secret_permissions      = ["Get"]
@@ -35,7 +29,7 @@ resource "helm_release" "reloader" {
   repository = "https://stakater.github.io/stakater-charts"
   chart      = "reloader"
   version    = var.reloader_helm.chart_version
-  namespace  = kubernetes_namespace.namespace.metadata[0].name
+  namespace  = var.domain
 
   set {
     name  = "reloader.watchGlobally"
@@ -56,7 +50,7 @@ resource "helm_release" "tls_cert_check" {
   chart      = "microservice-chart"
   repository = "https://pagopa.github.io/aks-microservice-chart-blueprint"
   version    = var.tls_cert_check_helm.chart_version
-  namespace  = kubernetes_namespace.namespace.metadata[0].name
+  namespace  = var.domain
 
   values = [
     "${templatefile("${path.module}/templates/tls-cert.yaml.tpl",
@@ -111,11 +105,11 @@ resource "helm_release" "cert-mounter" {
   chart      = "cert-mounter-blueprint"
   repository = "https://pagopa.github.io/aks-helm-cert-mounter-blueprint"
   version    = "1.0.4"
-  namespace  = kubernetes_namespace.namespace.metadata[0].name
+  namespace  = var.domain
 
   set {
     name  = "namespace"
-    value = kubernetes_namespace.namespace.metadata[0].name
+    value = var.domain
   }
 
   set {

@@ -31,6 +31,22 @@ data "azurerm_key_vault_secret" "apim_services_subscription_key" {
   key_vault_id = data.azurerm_key_vault.kv_common.id
 }
 
+data "azurerm_cosmosdb_account" "cosmos_api" {
+  name                = format("%s-cosmos-api", local.product)
+  resource_group_name = format("%s-rg-internal", local.product)
+}
+
+data "azurerm_cosmosdb_account" "io_com_cosmos" {
+  name                = "io-p-itn-com-cosno-01"
+  resource_group_name = "io-p-itn-com-rg-01"
+}
+
+
+data "azurerm_storage_account" "storage_api" {
+  name                = replace("${local.product}stapi", "-", "")
+  resource_group_name = format("%s-rg-internal", local.product)
+}
+
 locals {
   function_messages_cqrs = {
     app_settings = {
