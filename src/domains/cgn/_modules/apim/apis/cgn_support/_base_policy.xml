@@ -1,0 +1,12 @@
+<policies>
+  <inbound>
+      <base />
+      <set-backend-service base-url="{{io-cgn-support-func-url}}/api/v1/cgn-support" />
+      <set-header name="x-functions-key" exists-action="override">
+          <value>{{io-fn-cgnsupportfunc-key}}</value>
+      </set-header>
+  </inbound>
+  <outbound>
+      <base />
+  </outbound>
+</policies>
