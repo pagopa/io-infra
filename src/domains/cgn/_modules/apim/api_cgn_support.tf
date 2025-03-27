@@ -1,3 +1,11 @@
+resource "azurerm_api_management_group" "cgn_profile_info_read_group" {
+  name                = "CgnProfileInfoReadGroup"
+  api_management_name = data.azurerm_api_management.apim.name
+  resource_group_name = data.azurerm_api_management.apim.resource_group_name
+  display_name        = "CgnProfileInfoReadGroup"
+  description         = "A group that enables PagoPa Operation to read Cgn Info abbout user"
+}
+
 module "apim_v2_product_cgn_support_func" {
   source = "github.com/pagopa/terraform-azurerm-v3//api_management_product?ref=v7.64.0"
 
