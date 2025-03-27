@@ -55,6 +55,10 @@ data "azuread_group" "bonus_admins" {
   display_name = "${local.prefix}-${local.env_short}-adgroup-bonus-admins"
 }
 
+data "azuread_group" "admins" {
+  display_name = "${local.prefix}-${local.env_short}-adgroup-admin"
+}
+
 # Cosmos API
 data "azurerm_subnet" "cosmos_api_allowed" {
   for_each = toset(local.cosmos_api.allowed_subnets)
