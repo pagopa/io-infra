@@ -48,5 +48,5 @@ module "api_v2_cgn_support_func" {
   content_format = "openapi"
   content_value  = data.http.cgn_support_func_openapi.body
 
-  xml_content = file("${path.module}/apis/cgn_os/_base_policy.xml")
+  xml_content = file("${path.module}/apis/cgn_support/_base_policy.xml")
 }
