@@ -72,3 +72,8 @@ variable "azure_adgroup_bonus_devs_object_id" {
   type        = string
   description = "Object Id of the Entra group for subscription admins"
 }
+
+variable "messages_sp_object_id" {
+  type        = string
+  description = "Object Id of the Service Principal used by DevOps pipelines"
+}

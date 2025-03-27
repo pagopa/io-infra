@@ -162,3 +162,19 @@ module "iam_adgroup_bonus_devs" {
     }
   ]
 }
+
+module "iam_messages_sp" {
+  source  = "pagopa-dx/azure-role-assignments/azurerm"
+  version = "~> 0.0"
+
+  principal_id = var.messages_sp_object_id
+
+  # "Allow DevOps messages pipelines to read TF state file"
+  storage_blob = [
+    {
+      storage_account_name = azurerm_storage_account.terraform.name
+      resource_group_name  = azurerm_storage_account.terraform.resource_group_name
+      role                 = "writer"
+    }
+  ]
+}
