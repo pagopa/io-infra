@@ -70,5 +70,7 @@ module "storage_accounts_itn" {
   azure_adgroup_bonus_admins_object_id  = data.azuread_group.bonus_admins.object_id
   azure_adgroup_bonus_devs_object_id    = data.azuread_group.bonus_devs.object_id
 
+  messages_sp_object_id = data.azuread_service_principal.platform_iac_sp.object_id
+
   tags = local.tags
 }
