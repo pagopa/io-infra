@@ -80,3 +80,31 @@ resource "azurerm_key_vault_secret" "push_notifications_storage_connection_strin
 
   key_vault_id = module.key_vault.id
 }
+
+
+
+module "push_notifications_storage_itn" {
+  source = "github.com/pagopa/dx//infra/modules/azure_storage_account?ref=main"
+
+  environment                          = local.itn_environment
+  resource_group_name                  = azurerm_resource_group.notifications_rg.name
+  tier                                 = "l"
+  subnet_pep_id                        = module.common_values.pep_subnets.itn.id
+  private_dns_zone_resource_group_name = module.common_values.resource_groups.weu.common
+
+  subservices_enabled = {
+    blob  = false
+    file  = false
+    queue = false
+    table = true
+  }
+
+  force_public_network_access_enabled = true
+
+  tags = var.tags
+}
+
+resource "azurerm_storage_queue" "push_notifications_queue" {
+  name                 = "push-notifications"
+  storage_account_name = module.push_notifications_storage_itn.name
+}
