@@ -1,3 +1,5 @@
+data "azurerm_subscription" "current" {}
+
 data "azurerm_virtual_network" "weu_prod01" {
   name                = "${local.project_weu}-prod01-vnet"
   resource_group_name = "${local.project_weu}-prod01-vnet-rg"
@@ -53,6 +55,10 @@ data "azuread_group" "auth_devs" {
 
 data "azuread_group" "bonus_admins" {
   display_name = "${local.prefix}-${local.env_short}-adgroup-bonus-admins"
+}
+
+data "azuread_group" "admins" {
+  display_name = "${local.prefix}-${local.env_short}-adgroup-admin"
 }
 
 # Cosmos API
