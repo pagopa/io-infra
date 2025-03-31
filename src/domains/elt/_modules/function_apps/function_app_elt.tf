@@ -13,6 +13,8 @@ locals {
       FETCH_KEEPALIVE_FREE_SOCKET_TIMEOUT = "30000"
       FETCH_KEEPALIVE_TIMEOUT             = "60000"
 
+      APPLICATIONINSIGHTS_CONNECTION_STRING = data.azurerm_application_insights.application_insights.connection_string
+
       COSMOSDB_NAME                = "db"
       COSMOSDB_URI                 = data.azurerm_cosmosdb_account.cosmos_api.endpoint
       COSMOSDB_KEY                 = data.azurerm_cosmosdb_account.cosmos_api.primary_key
@@ -138,13 +140,15 @@ module "function_elt" {
   location            = var.location
   domain              = "IO-COMMONS"
 
-  storage_account_name                     = "${replace(var.project, "-", "")}stfnelt"
-  app_service_plan_name                    = "${var.project}-plan-fnelt"
-  health_check_path                        = "/api/v1/info"
-  subnet_id                                = var.subnet_id
-  runtime_version                          = "~4"
-  node_version                             = "20"
-  application_insights_instrumentation_key = data.azurerm_application_insights.application_insights.instrumentation_key
+  storage_account_name  = "${replace(var.project, "-", "")}stfnelt"
+  app_service_plan_name = "${var.project}-plan-fnelt"
+  health_check_path     = "/api/v1/info"
+  subnet_id             = var.subnet_id
+  runtime_version       = "~4"
+  node_version          = "20"
+
+  # TODO: change module to use connection string instead
+  application_insights_instrumentation_key = null
 
   app_service_plan_info = {
     kind                         = "elastic"
