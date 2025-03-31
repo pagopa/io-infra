@@ -71,10 +71,12 @@ module "retirements_itn_01_admins" {
   version = "~> 1.0"
 
   principal_id = var.azure_adgroup_admins_object_id
+  subscription_id = var.subscription_id
 
   storage_blob = [
     {
-      storage_account_id = azurerm_storage_account.retirements_itn_01[0].id
+      storage_account_name = azurerm_storage_account.retirements_itn_01[0].name
+      resource_group_name = azurerm_storage_account.retirements_itn_01[0].resource_group_name
       role               = "owner"
       description        = "Allow IO Admin to manage blob files"
     }
@@ -82,7 +84,8 @@ module "retirements_itn_01_admins" {
 
   storage_table = [
     {
-      storage_account_id = azurerm_storage_account.retirements_itn_01[0].id
+      storage_account_name = azurerm_storage_account.retirements_itn_01[0].name
+      resource_group_name = azurerm_storage_account.retirements_itn_01[0].resource_group_name
       role               = "owner"
       description        = "Allow IO Admin to manage tables"
     }

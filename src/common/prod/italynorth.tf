@@ -78,6 +78,7 @@ module "storage_accounts_itn" {
 
   location                  = "italynorth"
   project                   = local.project_itn
+  subscription_id           = data.azurerm_subscription.current.subscription_id
   resource_group_common     = local.core.resource_groups.italynorth.common
   resource_group_operations = local.core.resource_groups.westeurope.operations
 

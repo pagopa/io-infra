@@ -13,6 +13,11 @@ variable "project" {
   description = "IO prefix, short environment and short location"
 }
 
+variable "subscription_id" {
+  type        = string
+  description = "Azure subscription id"
+}
+
 variable "location" {
   type        = string
   description = "Azure region"
