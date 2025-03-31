@@ -5,8 +5,8 @@
   "apim_itn.iam_adgroup_svc_admins": "52ca57b72bdf639846a472014cb2113d519bdc00dc4a642e925b97ad6b99d25c",
   "apim_itn.iam_adgroup_wallet_admins": "52ca57b72bdf639846a472014cb2113d519bdc00dc4a642e925b97ad6b99d25c",
   "apim_itn.iam_cgn_pe_backend_app_01": "52ca57b72bdf639846a472014cb2113d519bdc00dc4a642e925b97ad6b99d25c",
-  "storage_accounts.exportdata_weu_01_com_admins": "e7a071f226351113e1a15ea25774adf6a0f0843b8b50dc71a1b37fc2e22c2a52",
-  "storage_accounts.exportdata_weu_01_com_devs": "e7a071f226351113e1a15ea25774adf6a0f0843b8b50dc71a1b37fc2e22c2a52",
+  "storage_accounts.exportdata_weu_01_com_admins": "5857038fb8bd4fd4209e97e49099b3a7b2dcf0010477fc3df9ea8a7e4993894f",
+  "storage_accounts.exportdata_weu_01_com_devs": "5857038fb8bd4fd4209e97e49099b3a7b2dcf0010477fc3df9ea8a7e4993894f",
   "cosmos_api_weu.cosno_api_auth_admins": "52ca57b72bdf639846a472014cb2113d519bdc00dc4a642e925b97ad6b99d25c",
   "cosmos_api_weu.cosno_api_auth_devs": "52ca57b72bdf639846a472014cb2113d519bdc00dc4a642e925b97ad6b99d25c",
   "cosmos_api_weu.cosno_api_com_admins": "52ca57b72bdf639846a472014cb2113d519bdc00dc4a642e925b97ad6b99d25c",
@@ -18,8 +18,8 @@
   "github_runner_itn.container_app_github_runner.naming_convention": "c71cfaa7ccaebb4dab588075d332bc788c21dc833f872218079e816c832aae69",
   "apim_itn.apim": "303103dc823c88aef01f89e4c1000d6c170c7cc1aa4b0adb1290eed11410216a",
   "apim_itn.apim.naming_convention": "c71cfaa7ccaebb4dab588075d332bc788c21dc833f872218079e816c832aae69",
-  "storage_accounts.retirements_itn_01_admins": "e7a071f226351113e1a15ea25774adf6a0f0843b8b50dc71a1b37fc2e22c2a52",
-  "storage_accounts_itn.exportdata_weu_01_com_admins": "e7a071f226351113e1a15ea25774adf6a0f0843b8b50dc71a1b37fc2e22c2a52",
-  "storage_accounts_itn.exportdata_weu_01_com_devs": "e7a071f226351113e1a15ea25774adf6a0f0843b8b50dc71a1b37fc2e22c2a52",
-  "storage_accounts_itn.retirements_itn_01_admins": "e7a071f226351113e1a15ea25774adf6a0f0843b8b50dc71a1b37fc2e22c2a52"
+  "storage_accounts.retirements_itn_01_admins": "5857038fb8bd4fd4209e97e49099b3a7b2dcf0010477fc3df9ea8a7e4993894f",
+  "storage_accounts_itn.exportdata_weu_01_com_admins": "5857038fb8bd4fd4209e97e49099b3a7b2dcf0010477fc3df9ea8a7e4993894f",
+  "storage_accounts_itn.exportdata_weu_01_com_devs": "5857038fb8bd4fd4209e97e49099b3a7b2dcf0010477fc3df9ea8a7e4993894f",
+  "storage_accounts_itn.retirements_itn_01_admins": "5857038fb8bd4fd4209e97e49099b3a7b2dcf0010477fc3df9ea8a7e4993894f"
 }
