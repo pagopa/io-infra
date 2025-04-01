@@ -12,11 +12,6 @@ resource "azurerm_private_endpoint" "sql" {
     subresource_names              = ["Sql"]
   }
 
-  private_dns_zone_group {
-    name                 = "private-dns-zone-group"
-    private_dns_zone_ids = [var.documents_dns_zone.id]
-  }
-
   tags = var.tags
 }
 
@@ -32,6 +27,11 @@ resource "azurerm_private_endpoint" "sql_itn" {
     private_connection_resource_id = azurerm_cosmosdb_account.this.id
     is_manual_connection           = false
     subresource_names              = ["Sql"]
+  }
+
+  private_dns_zone_group {
+    name                 = "private-dns-zone-group"
+    private_dns_zone_ids = [var.documents_dns_zone.id]
   }
 
   tags = var.tags
