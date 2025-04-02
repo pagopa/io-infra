@@ -7,7 +7,7 @@ resource "azurerm_cosmosdb_account" "this" {
   free_tier_enabled   = false
   minimal_tls_version = "Tls"
 
-  automatic_failover_enabled = false
+  automatic_failover_enabled = true
   ip_range_filter            = local.ip_range_filter
 
   geo_location {
