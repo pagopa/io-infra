@@ -376,7 +376,7 @@ module "cosmos_api_weu" {
   resource_group_internal        = local.core.resource_groups.westeurope.internal
   vnet_common                    = local.core.networking.weu.vnet_common
   pep_snet                       = local.core.networking.weu.pep_snet
-  secondary_location             = "westeurope"
+  secondary_location             = "spaincentral"
   secondary_location_pep_snet_id = local.core.networking.itn.pep_snet.id
   documents_dns_zone             = module.global.dns.private_dns_zones.documents
   allowed_subnets_ids            = values(data.azurerm_subnet.cosmos_api_allowed)[*].id
