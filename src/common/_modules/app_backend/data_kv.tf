@@ -80,6 +80,11 @@ data "azurerm_key_vault_secret" "app_backend_APP_MESSAGES_BETA_FISCAL_CODES" {
   key_vault_id = var.key_vault_common.id
 }
 
+data "azurerm_key_vault_secret" "app_backend_X_USER_BETA_FISCAL_CODES" {
+  name         = "appbackend-X-USER-BETA-FISCAL-CODES"
+  key_vault_id = var.key_vault_common.id
+}
+
 data "azurerm_key_vault_secret" "app_backend_PN_API_KEY_PROD" {
   name         = "appbackend-PN-API-KEY-PROD-ENV"
   key_vault_id = var.key_vault_common.id

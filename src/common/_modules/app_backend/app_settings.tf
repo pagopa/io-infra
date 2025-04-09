@@ -274,5 +274,10 @@ locals {
     SERVICES_APP_BACKEND_BASE_PATH     = "/api/v2"
     SERVICES_APP_BACKEND_API_URL       = "https://${var.backend_hostnames.services_app_backend}"
     SERVICES_APP_BACKEND_API_BASE_PATH = "/api/v1"
+
+    // IO Proxy authentication middleware feature flags configuration
+    FF_IO_X_USER_TOKEN                        = "NONE" # possible values are: BETA, CANARY, ALL, NONE
+    FF_IO_X_USER_TOKEN_BETA_TESTER_SHA_LIST   = data.azurerm_key_vault_secret.app_backend_X_USER_BETA_FISCAL_CODES.value
+    FF_IO_X_USER_TOKEN_CANARY_SHA_USERS_REGEX = "XYZ" # Disabled, no one user match this regex
   }
 }
