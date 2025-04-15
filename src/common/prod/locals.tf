@@ -42,7 +42,7 @@ locals {
   }
 
   cosmos_api = {
-    allowed_subnets = ["fn3admin", "fn3app1", "fn3app2", "fn3appasync", "fn3assets", "fn3public", "fn3services", "fn3slackbot"]
+    allowed_subnets = []
   }
 
   app_backends = {
