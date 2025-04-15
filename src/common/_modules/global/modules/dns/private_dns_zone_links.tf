@@ -198,7 +198,7 @@ resource "azurerm_private_dns_zone_virtual_network_link" "scm_azure_api_net_vnet
 }
 
 resource "azurerm_private_dns_zone_virtual_network_link" "privatelink_itn_containerapps_vnet_common" {
-  for_each              = { for name, vnet in var.vnets : name => vnet if contains(["itn"], name) }
+  for_each              = { for name, vnet in var.vnets : name => vnet if contains(["weu", "itn"], name) }
   name                  = each.value.name
   resource_group_name   = var.resource_groups.common
   private_dns_zone_name = azurerm_private_dns_zone.privatelink_itn_containerapps.name
