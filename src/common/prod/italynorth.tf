@@ -90,12 +90,12 @@ module "io_proxy_apim_itn" {
     azurerm_client_config = data.azurerm_client_config.current
   }
 
-  key_vault        = local.core.key_vault.weu.kv
+  key_vault = local.core.key_vault.weu.kv
 
   action_group_id      = module.monitoring_weu.action_groups.error
   ai_connection_string = module.monitoring_weu.appi_connection_string
 
-  azure_adgroup_platform_admins_object_id    = data.azuread_group.platform_admins.object_id
+  azure_adgroup_platform_admins_object_id = data.azuread_group.platform_admins.object_id
 
   tags = local.tags
 }

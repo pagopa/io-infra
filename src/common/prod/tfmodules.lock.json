@@ -14,10 +14,12 @@
   "cosmos_api_weu.cosno_api_svc_admins": "52ca57b72bdf639846a472014cb2113d519bdc00dc4a642e925b97ad6b99d25c",
   "cosmos_api_weu.cosno_api_svc_devs": "52ca57b72bdf639846a472014cb2113d519bdc00dc4a642e925b97ad6b99d25c",
   "assets_cdn_weu.roles_svc_devs": "52ca57b72bdf639846a472014cb2113d519bdc00dc4a642e925b97ad6b99d25c",
-  "github_runner_itn.container_app_github_runner": "4b7fa82a248dc3de15ce2bd3fb30ec2759bad6ed1eda574480fde5670a94bc1d",
-  "apim_itn.apim": "3a023e330a72a06e406dfa2f119be287fd00a9aa83290b9382d8a076ca8701ff",
+  "github_runner_itn.container_app_github_runner": "f741e1f13f89db250918f24d17dd092c4a4356e1f35a8ecf2d36ecacd37a8901",
+  "apim_itn.apim": "9ffe99761bb600277c850bc4a8e349e022665371d350ca13649ff576d162d43b",
   "storage_accounts.retirements_itn_01_admins": "33d9bd37ad1a300280d1add3089fefcfa1b6eb9073fe85a349b23140c78d4b77",
   "storage_accounts_itn.exportdata_weu_01_com_admins": "33d9bd37ad1a300280d1add3089fefcfa1b6eb9073fe85a349b23140c78d4b77",
   "storage_accounts_itn.exportdata_weu_01_com_devs": "33d9bd37ad1a300280d1add3089fefcfa1b6eb9073fe85a349b23140c78d4b77",
-  "storage_accounts_itn.retirements_itn_01_admins": "33d9bd37ad1a300280d1add3089fefcfa1b6eb9073fe85a349b23140c78d4b77"
+  "storage_accounts_itn.retirements_itn_01_admins": "33d9bd37ad1a300280d1add3089fefcfa1b6eb9073fe85a349b23140c78d4b77",
+  "io_proxy_apim_itn.iam_adgroup_product_admins": "52ca57b72bdf639846a472014cb2113d519bdc00dc4a642e925b97ad6b99d25c",
+  "io_proxy_apim_itn.io_proxy": "9ffe99761bb600277c850bc4a8e349e022665371d350ca13649ff576d162d43b"
 }
