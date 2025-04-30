@@ -1,6 +1,6 @@
 module "iam_adgroup_product_admins" {
   source  = "pagopa-dx/azure-role-assignments/azurerm"
-  version = "~> 0.0"
+  version = "~> 1.0"
 
   depends_on = [
     module.io_proxy
