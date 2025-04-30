@@ -6,7 +6,7 @@ module "io_proxy" {
     prefix          = var.prefix
     env_short       = "p"
     location        = var.location
-    app_name        = "io-proxy"
+    app_name        = "proxy"
     instance_number = "01"
   }
 
@@ -33,9 +33,9 @@ module "io_proxy" {
   hostname_configuration = {
     proxy = [
       {
-        # io-p-itn-io-proxy-01.azure-api.net
+        # io-p-itn-proxy-apim-01.azure-api.net
         default_ssl_binding = false
-        host_name           = "io-p-itn-io-proxy-01.azure-api.net"
+        host_name           = "io-p-itn-proxy-apim-01.azure-api.net"
         key_vault_id        = null
       },
     ]
@@ -54,7 +54,7 @@ module "io_proxy" {
   autoscale = {
     enabled                       = true
     default_instances             = 3
-    minimum_instances             = 2
+    minimum_instances             = 1
     maximum_instances             = 10
     scale_out_capacity_percentage = 50
     scale_out_time_window         = "PT3M"
