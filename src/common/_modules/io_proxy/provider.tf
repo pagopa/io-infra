@@ -1,6 +1,6 @@
 provider "azurerm" {
-  alias           = "prod-cgn"
-  subscription_id = "74da48a3-b0e7-489d-8172-da79801086ed"
+  alias           = "prod-io"
+  subscription_id = "ec285037-c673-4f58-b594-d7c480da4e8b"
 
   features {}
 }
