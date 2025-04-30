@@ -33,7 +33,7 @@ module "io_proxy" {
   hostname_configuration = {
     proxy = [
       {
-        # io-p-apim-api.azure-api.net
+        # io-p-itn-io-proxy-01.azure-api.net
         default_ssl_binding = false
         host_name           = "io-p-itn-io-proxy-01.azure-api.net"
         key_vault_id        = null
