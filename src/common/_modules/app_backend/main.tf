@@ -18,8 +18,8 @@ module "appservice_app_backend" {
   health_check_path            = "/ping"
   health_check_maxpingfailures = 2
 
-  auto_heal_enabled = var.is_li ? false : true # for li is disabled
-  auto_heal_settings = var.is_li ? null : {
+  auto_heal_enabled = true
+  auto_heal_settings = {
     startup_time           = "00:05:00"
     slow_requests_count    = 50
     slow_requests_interval = "00:01:00"
@@ -63,8 +63,8 @@ module "appservice_app_backend_slot_staging" {
   health_check_path            = "/ping"
   health_check_maxpingfailures = 2
 
-  auto_heal_enabled = var.is_li ? false : true # for li is disabled
-  auto_heal_settings = var.is_li ? null : {
+  auto_heal_enabled = true
+  auto_heal_settings = {
     startup_time           = "00:05:00"
     slow_requests_count    = 50
     slow_requests_interval = "00:01:00"
