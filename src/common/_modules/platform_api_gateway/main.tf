@@ -46,9 +46,24 @@ module "platform_api_gateway" {
 
   application_insights = {
     enabled             = true
-    connection_string   = var.ai_connection_string
+    id                  = var.application_insights.id
+    connection_string   = var.application_insights.connection_string
     sampling_percentage = 5.0
     verbosity           = "error"
+  }
+
+  monitoring = {
+    enabled                    = true
+    log_analytics_workspace_id = var.application_insights.log_analytics_workspace_id
+
+    logs = {
+      enabled = true
+      groups  = ["allLogs", "audit"]
+    }
+
+    metrics = {
+      enabled = true
+    }
   }
 
   autoscale = {

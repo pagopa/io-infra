@@ -92,8 +92,12 @@ module "platform_api_gateway_apim_itn" {
 
   key_vault = local.core.key_vault.weu.kv
 
-  action_group_id      = module.monitoring_weu.action_groups.error
-  ai_connection_string = module.monitoring_weu.appi_connection_string
+  action_group_id = module.monitoring_weu.action_groups.error
+  application_insights = {
+    id                         = module.monitoring_weu.appi.id
+    connection_string          = module.monitoring_weu.appi_connection_string
+    log_analytics_workspace_id = module.monitoring_weu.log.id
+  }
 
   azure_adgroup_platform_admins_object_id = data.azuread_group.platform_admins.object_id
 

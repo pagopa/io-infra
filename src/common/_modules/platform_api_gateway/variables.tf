@@ -58,8 +58,14 @@ variable "action_group_id" {
   type = string
 }
 
-variable "ai_connection_string" {
-  type = string
+
+variable "application_insights" {
+  type = object({
+    id                         = string
+    connection_string          = string
+    log_analytics_workspace_id = string
+  })
+  description = "Information of the Application Insights"
 }
 
 variable "key_vault" {
