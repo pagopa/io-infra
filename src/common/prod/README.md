@@ -27,8 +27,8 @@
 | <a name="module_event_hubs_weu"></a> [event\_hubs\_weu](#module\_event\_hubs\_weu) | ../_modules/event_hubs | n/a |
 | <a name="module_github_runner_itn"></a> [github\_runner\_itn](#module\_github\_runner\_itn) | ../_modules/github_runner | n/a |
 | <a name="module_global"></a> [global](#module\_global) | ../_modules/global | n/a |
-| <a name="module_io_proxy_apim_itn"></a> [io\_proxy\_apim\_itn](#module\_io\_proxy\_apim\_itn) | ../_modules/io_proxy | n/a |
 | <a name="module_monitoring_weu"></a> [monitoring\_weu](#module\_monitoring\_weu) | ../_modules/monitoring | n/a |
+| <a name="module_platform_api_gateway_apim_itn"></a> [platform\_api\_gateway\_apim\_itn](#module\_platform\_api\_gateway\_apim\_itn) | ../_modules/platform_api_gateway | n/a |
 | <a name="module_private_endpoints"></a> [private\_endpoints](#module\_private\_endpoints) | ../_modules/private_endpoint | n/a |
 | <a name="module_redis_weu"></a> [redis\_weu](#module\_redis\_weu) | ../_modules/redis | n/a |
 | <a name="module_storage_accounts"></a> [storage\_accounts](#module\_storage\_accounts) | ../_modules/storage_accounts | n/a |

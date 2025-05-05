@@ -73,8 +73,8 @@ module "apim_itn" {
   tags = local.tags
 }
 
-module "io_proxy_apim_itn" {
-  source = "../_modules/io_proxy"
+module "platform_api_gateway_apim_itn" {
+  source = "../_modules/platform_api_gateway"
 
   location                = "italynorth"
   location_short          = local.core.resource_groups.italynorth.location_short

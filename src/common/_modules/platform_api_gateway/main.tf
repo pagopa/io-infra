@@ -1,4 +1,4 @@
-module "io_proxy" {
+module "platform_api_gateway" {
   source  = "pagopa-dx/azure-api-management/azurerm"
   version = "~> 1.1"
 
@@ -6,7 +6,7 @@ module "io_proxy" {
     prefix          = var.prefix
     env_short       = "p"
     location        = var.location
-    app_name        = "proxy"
+    app_name        = "platform-api-gateway"
     instance_number = "01"
   }
 
@@ -25,7 +25,7 @@ module "io_proxy" {
   }
   private_dns_zone_resource_group_name = "io-p-rg-common"
 
-  subnet_id                     = azurerm_subnet.io_proxy.id
+  subnet_id                     = azurerm_subnet.platform_api_gateway.id
   virtual_network_type_internal = true
 
   action_group_id = var.action_group_id
@@ -33,9 +33,9 @@ module "io_proxy" {
   hostname_configuration = {
     proxy = [
       {
-        # io-p-itn-proxy-apim-01.azure-api.net
+        # io-p-itn-platform-api-gateway-apim-01.azure-api.net
         default_ssl_binding = false
-        host_name           = "io-p-itn-proxy-apim-01.azure-api.net"
+        host_name           = "io-p-itn-platform-api-gateway-apim-01.azure-api.net"
         key_vault_id        = null
       },
     ]
@@ -69,7 +69,7 @@ module "io_proxy" {
   # https://docs.microsoft.com/en-us/azure/azure-monitor/essentials/metrics-supported#microsoftapimanagementservice
   metric_alerts = {
     capacity = {
-      description   = "IO-PROXY Apim used capacity is too high. Runbook: https://pagopa.atlassian.net/wiki/spaces/IC/pages/791642113/APIM+Capacity"
+      description   = "IO API Gateway Apim used capacity is too high. Runbook: https://pagopa.atlassian.net/wiki/spaces/IC/pages/791642113/APIM+Capacity"
       frequency     = "PT5M"
       window_size   = "PT5M"
       severity      = 1
@@ -88,7 +88,7 @@ module "io_proxy" {
     }
 
     duration = {
-      description   = "IO-PROXY Apim abnormal response time"
+      description   = "IO API Gateway Apim abnormal response time"
       frequency     = "PT5M"
       window_size   = "PT5M"
       severity      = 2
@@ -111,7 +111,7 @@ module "io_proxy" {
     }
 
     requests_failed = {
-      description   = "IO-PROXY Apim abnormal failed requests"
+      description   = "IO API Gateway Apim abnormal failed requests"
       frequency     = "PT5M"
       window_size   = "PT5M"
       severity      = 2

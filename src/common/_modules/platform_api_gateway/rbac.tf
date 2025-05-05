@@ -3,7 +3,7 @@ module "iam_adgroup_product_admins" {
   version = "~> 1.0"
 
   depends_on = [
-    module.io_proxy
+    module.platform_api_gateway
   ]
 
   principal_id    = var.azure_adgroup_platform_admins_object_id
@@ -11,8 +11,8 @@ module "iam_adgroup_product_admins" {
 
   apim = [
     {
-      name                = module.io_proxy.name
-      resource_group_name = module.io_proxy.resource_group_name
+      name                = module.platform_api_gateway.name
+      resource_group_name = module.platform_api_gateway.resource_group_name
       description         = "Platform team admin group"
       role                = "owner"
     }

@@ -20,6 +20,6 @@
   "storage_accounts_itn.exportdata_weu_01_com_admins": "75197ddb43823de058e87f34980db910cf469610e2890ead4bdc9c096d1bf46e",
   "storage_accounts_itn.exportdata_weu_01_com_devs": "75197ddb43823de058e87f34980db910cf469610e2890ead4bdc9c096d1bf46e",
   "storage_accounts_itn.retirements_itn_01_admins": "75197ddb43823de058e87f34980db910cf469610e2890ead4bdc9c096d1bf46e",
-  "io_proxy_apim_itn.iam_adgroup_product_admins": "75197ddb43823de058e87f34980db910cf469610e2890ead4bdc9c096d1bf46e",
-  "io_proxy_apim_itn.io_proxy": "9ffe99761bb600277c850bc4a8e349e022665371d350ca13649ff576d162d43b"
+  "platform_api_gateway_apim_itn.iam_adgroup_product_admins": "75197ddb43823de058e87f34980db910cf469610e2890ead4bdc9c096d1bf46e",
+  "platform_api_gateway_apim_itn.platform_api_gateway": "9ffe99761bb600277c850bc4a8e349e022665371d350ca13649ff576d162d43b"
 }
