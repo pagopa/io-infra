@@ -7,6 +7,5 @@ resource "azurerm_subnet" "platform_api_gateway" {
   private_endpoint_network_policies = "Enabled"
 
   service_endpoints = [
-    "Microsoft.Web",
   ]
 }
