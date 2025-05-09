@@ -1,6 +1,6 @@
 {
-  "migrate_cosmos_accounts.naming_convention": "5b1d21788783dcf33e17a9842f9f7c874c8c5f736c82e70979eb9c8785a74ce4",
+  "migrate_cosmos_accounts.naming_convention": "d7973237e601af346ca3cc8797623f4edff8bdb94b661453d4242609f8d49118",
   "migrate_cosmos_accounts.roles": "52ca57b72bdf639846a472014cb2113d519bdc00dc4a642e925b97ad6b99d25c",
-  "migrate_storage_accounts.naming_convention": "5b1d21788783dcf33e17a9842f9f7c874c8c5f736c82e70979eb9c8785a74ce4",
+  "migrate_storage_accounts.naming_convention": "d7973237e601af346ca3cc8797623f4edff8bdb94b661453d4242609f8d49118",
   "migrate_storage_accounts.roles": "52ca57b72bdf639846a472014cb2113d519bdc00dc4a642e925b97ad6b99d25c"
 }
