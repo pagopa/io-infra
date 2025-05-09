@@ -16,7 +16,7 @@ resource "azurerm_api_management_product_policy" "platform_apim_product_policy" 
   api_management_name = module.platform_api_gateway.name
   resource_group_name = module.platform_api_gateway.resource_group_name
 
-  xml_content = file("./apis/base_policy.xml")
+  xml_content = file("${path.module}/apis/base_policy.xml")
 }
 
 resource "azurerm_api_management_group" "platform_apim_group" {
@@ -73,7 +73,7 @@ resource "azurerm_api_management_api_policy" "platform_app_backend_api_policy" {
   api_management_name = module.platform_api_gateway.name
   resource_group_name = module.platform_api_gateway.resource_group_name
 
-  xml_content = file("./apis/platform/_base_policy.xml")
+  xml_content = file("${path.module}/apis/platform/_base_policy.xml")
 }
 
 resource "azurerm_api_management_api_operation_policy" "get_services_status_operation_policy" {
@@ -85,5 +85,5 @@ resource "azurerm_api_management_api_operation_policy" "get_services_status_oper
   api_management_name = module.platform_api_gateway.name
   resource_group_name = module.platform_api_gateway.resource_group_name
   operation_id        = "getServicesStatus"
-  xml_content         = file("./apis/platform/v1/get_services_status_policy.xml")
+  xml_content         = file("${path.module}/apis/platform/v1/get_services_status_policy.xml")
 }
