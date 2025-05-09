@@ -52,7 +52,7 @@ resource "azurerm_api_management_api" "platform_app_backend_api" {
 
   description  = "IO Platform app-backend API"
   display_name = "Platform app-backend"
-  path         = "/"
+  path         = ""
   protocols    = ["https"]
 
   import {
