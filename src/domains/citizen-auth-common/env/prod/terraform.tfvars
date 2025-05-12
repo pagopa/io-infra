@@ -24,7 +24,7 @@ citizen_auth_database = {
     ttl            = -1
   }
   session_notifications = {
-    max_throughput = 9000
+    max_throughput = 1000
     ttl            = -1
   }
 }
