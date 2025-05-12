@@ -100,10 +100,10 @@ resource "azurerm_cosmosdb_sql_container" "session-notifications" {
   }
 
   autoscale_settings {
-    max_throughput = var.citizen_auth_database.lollipop_pubkeys.max_throughput
+    max_throughput = var.citizen_auth_database.session_notifications.max_throughput
   }
 
-  default_ttl = var.citizen_auth_database.lollipop_pubkeys.ttl
+  default_ttl = var.citizen_auth_database.session_notifications.ttl
 
 }
 
