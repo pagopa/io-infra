@@ -17,7 +17,7 @@ module "platform_api_gateway" {
   publisher_name            = "IO"
   notification_sender_email = data.azurerm_key_vault_secret.apim_publisher_email.value
 
-  enable_public_network_access = true
+  enable_public_network_access = false
 
   virtual_network = {
     name                = var.vnet_common.name
