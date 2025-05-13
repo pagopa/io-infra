@@ -48,7 +48,6 @@ resource "azurerm_api_management_api" "platform_app_backend_api" {
   subscription_required = false
 
   revision = 1
-  version  = "v1"
 
   description  = "IO Platform app-backend API"
   display_name = "Platform app-backend"
