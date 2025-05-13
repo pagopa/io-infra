@@ -73,6 +73,37 @@ module "apim_itn" {
   tags = local.tags
 }
 
+module "platform_api_gateway_apim_itn" {
+  source = "../_modules/platform_api_gateway"
+
+  location                = "italynorth"
+  location_short          = local.core.resource_groups.italynorth.location_short
+  project                 = local.project_itn
+  prefix                  = local.prefix
+  resource_group_common   = local.resource_groups.itn.common
+  resource_group_internal = local.resource_groups.itn.internal
+
+  vnet_common = local.core.networking.itn.vnet_common
+  cidr_subnet = "10.20.101.0/24"
+
+  datasources = {
+    azurerm_client_config = data.azurerm_client_config.current
+  }
+
+  key_vault = local.core.key_vault.weu.kv
+
+  action_group_id = module.monitoring_weu.action_groups.error
+  application_insights = {
+    id                         = module.monitoring_weu.appi.id
+    connection_string          = module.monitoring_weu.appi_connection_string
+    log_analytics_workspace_id = module.monitoring_weu.log.id
+  }
+
+  azure_adgroup_platform_admins_object_id = data.azuread_group.platform_admins.object_id
+
+  tags = local.tags
+}
+
 module "storage_accounts_itn" {
   source = "../_modules/storage_accounts"
 

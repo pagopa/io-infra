@@ -25,6 +25,10 @@ data "azurerm_linux_web_app" "firmaconio_selfcare_web_app" {
 }
 
 # AD Groups
+data "azuread_group" "platform_admins" {
+  display_name = "${local.prefix}-${local.env_short}-adgroup-platform-admins"
+}
+
 data "azuread_group" "wallet_admins" {
   display_name = "${local.prefix}-${local.env_short}-adgroup-wallet-admins"
 }
