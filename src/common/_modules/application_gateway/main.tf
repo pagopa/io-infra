@@ -30,6 +30,19 @@ module "app_gw" {
       pick_host_name_from_backend = false
     }
 
+    # TODO: change the backend to the new FQDN when api.internal.io.pagopa.it will be available
+    platform-api-gateway = {
+      protocol                    = "Https"
+      host                        = "io-p-itn-platform-api-gateway-apim-01.azure-api.net"
+      port                        = 443
+      ip_addresses                = null # with null value use fqdns
+      fqdns                       = ["io-p-itn-platform-api-gateway-apim-01.azure-api.net"]
+      probe                       = "/status-0123456789abcdef"
+      probe_name                  = "probe-platform-api-gateway"
+      request_timeout             = 10
+      pick_host_name_from_backend = false
+    }
+
     appbackend-app = {
       protocol                    = "Https"
       host                        = null
@@ -614,6 +627,27 @@ module "app_gw" {
       default_backend               = "appbackend-app"
       default_rewrite_rule_set_name = "rewrite-rule-set-api-app"
       path_rule = {
+        api-gateway-platform-info = {
+          paths                 = ["/info"]
+          backend               = "platform-api-gateway",
+          rewrite_rule_set_name = "rewrite-rule-set-api-app"
+        },
+        # TODO: in order to do a progressive rollout the following commented rules must be enabled progressivly
+        # api-gateway-platform-ping = {
+        #   paths                 = ["/api/v1/ping"]
+        #   backend               = "platform-api-gateway",
+        #   rewrite_rule_set_name = "rewrite-rule-set-api-app"
+        # },
+        # api-gateway-platform-status = {
+        #   paths                 = ["/.api/v1/status"]
+        #   backend               = "platform-api-gateway",
+        #   rewrite_rule_set_name = "rewrite-rule-set-api-app"
+        # },
+        # api-gateway-platform-trials = {
+        #   paths                 = ["/api/v1/trials/*"]
+        #   backend               = "platform-api-gateway",
+        #   rewrite_rule_set_name = "rewrite-rule-set-api-app"
+        # },
         session-manager = {
           paths                 = ["/session-manager/*"]
           backend               = "session-manager-app",
