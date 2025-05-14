@@ -75,7 +75,7 @@ resource "azurerm_api_management_api_policy" "platform_app_backend_api_policy" {
   xml_content = file("${path.module}/apis/platform/_base_policy.xml")
 }
 
-resource "azurerm_api_management_api_operation_policy" "get_services_status_operation_policy" {
+resource "azurerm_api_management_api_operation_policy" "get_ping_operation_policy" {
   depends_on = [
     azurerm_api_management_api.platform_app_backend_api
   ]
