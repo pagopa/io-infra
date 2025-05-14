@@ -16,7 +16,7 @@ resource "azurerm_api_management_product_policy" "platform_apim_product_policy" 
   api_management_name = module.platform_api_gateway.name
   resource_group_name = module.platform_api_gateway.resource_group_name
 
-  xml_content = file("${path.module}/apis/base_policy.xml")
+  xml_content = file("${path.module}/policies/platfrom/product_base_policy.xml")
 }
 
 resource "azurerm_api_management_group" "platform_apim_group" {
@@ -26,7 +26,7 @@ resource "azurerm_api_management_group" "platform_apim_group" {
   display_name        = "Platform APIM Product Owners"
   description         = "Owners of io-platform product with management rights"
   type                = "external"
-  external_id         = "aad://${var.azure_adgroup_platform_admins_object_id}"
+  external_id         = "aad://${data.azurerm_client_config.current.tenant_id}/groups/${var.azure_adgroup_platform_admins_object_id}"
 }
 
 resource "azurerm_api_management_product_group" "platform_apim_product_group" {
@@ -34,11 +34,6 @@ resource "azurerm_api_management_product_group" "platform_apim_product_group" {
   group_name          = azurerm_api_management_group.platform_apim_group.name
   api_management_name = module.platform_api_gateway.name
   resource_group_name = module.platform_api_gateway.resource_group_name
-}
-
-data "http" "platform_app_backend_openapi" {
-  # TODO: update this URL with master branch when the new openapi spec will be released
-  url = "https://raw.githubusercontent.com/pagopa/io-backend/refs/heads/refactor-openapi-specs/openapi/generated/api_platform.yaml"
 }
 
 resource "azurerm_api_management_api" "platform_app_backend_api" {
@@ -55,8 +50,8 @@ resource "azurerm_api_management_api" "platform_app_backend_api" {
   protocols    = ["https"]
 
   import {
-    content_format = "openapi"
-    content_value  = data.http.platform_app_backend_openapi.body
+    content_format = "openapi-link"
+    content_value  = "https://raw.githubusercontent.com/pagopa/io-backend/refs/heads/refactor-openapi-specs/openapi/generated/api_platform.yaml"
   }
 }
 
@@ -72,7 +67,7 @@ resource "azurerm_api_management_api_policy" "platform_app_backend_api_policy" {
   api_management_name = module.platform_api_gateway.name
   resource_group_name = module.platform_api_gateway.resource_group_name
 
-  xml_content = file("${path.module}/apis/platform/_base_policy.xml")
+  xml_content = file("${path.module}/policies/platform/v1/_base_policy.xml")
 }
 
 resource "azurerm_api_management_api_operation_policy" "get_services_status_operation_policy" {
@@ -84,5 +79,5 @@ resource "azurerm_api_management_api_operation_policy" "get_services_status_oper
   api_management_name = module.platform_api_gateway.name
   resource_group_name = module.platform_api_gateway.resource_group_name
   operation_id        = "getServicesStatus"
-  xml_content         = file("${path.module}/apis/platform/v1/get_services_status_policy.xml")
+  xml_content         = file("${path.module}/policies/platform/v1/get_services_status/policy.xml")
 }
