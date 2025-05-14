@@ -21,7 +21,7 @@ on:
 
 jobs:
   dev_itn_common_code_review:
-    uses: pagopa/dx/.github/workflows/infra_plan.yaml@main
+    uses: pagopa/dx/.github/workflows/infra_plan.yaml@check-modules-lock-in-cicd
     name: Dev - Code Review
     secrets: inherit
     with:
