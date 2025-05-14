@@ -75,6 +75,18 @@ resource "azurerm_api_management_api_policy" "platform_app_backend_api_policy" {
   xml_content = file("${path.module}/apis/platform/_base_policy.xml")
 }
 
+resource "azurerm_api_management_api_operation_policy" "get_ping_operation_policy" {
+  depends_on = [
+    azurerm_api_management_api.platform_app_backend_api
+  ]
+
+  api_name            = azurerm_api_management_api.platform_app_backend_api.name
+  api_management_name = module.platform_api_gateway.name
+  resource_group_name = module.platform_api_gateway.resource_group_name
+  operation_id        = "getPing"
+  xml_content         = file("${path.module}/apis/platform/v1/get_ping/policy.xml")
+}
+
 resource "azurerm_api_management_api_operation_policy" "get_services_status_operation_policy" {
   depends_on = [
     azurerm_api_management_api.platform_app_backend_api
@@ -84,5 +96,5 @@ resource "azurerm_api_management_api_operation_policy" "get_services_status_oper
   api_management_name = module.platform_api_gateway.name
   resource_group_name = module.platform_api_gateway.resource_group_name
   operation_id        = "getServicesStatus"
-  xml_content         = file("${path.module}/apis/platform/v1/get_services_status_policy.xml")
+  xml_content         = file("${path.module}/apis/platform/v1/get_services_status/policy.xml")
 }
