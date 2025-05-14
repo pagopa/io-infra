@@ -80,7 +80,7 @@ resource "azurerm_cosmosdb_sql_container" "session-notifications" {
   account_name        = module.cosmosdb_account.name
   database_name       = module.cosmosdb_sql_database_citizen_auth.name
 
-  partition_key_path    = "/expirationDate"
+  partition_key_path    = "/expiredAt"
   partition_key_version = 2
 
   indexing_policy {
