@@ -13,6 +13,8 @@
 <policies>
     <inbound>
         <base />
+        <!-- This line rewrites the request URI by removing "/platform-legacy" from the original URL path -->
+        <rewrite-uri template="@(context.Request.OriginalUrl.Path.Replace("/platform-legacy", ""))" />
         <!-- https://docs.microsoft.com/en-us/dotnet/api/system.random.next?view=net-6.0#system-random-next(system-int32-system-int32) -->
         <set-variable name="urlId" value="@{
             Random rnd = new Random();

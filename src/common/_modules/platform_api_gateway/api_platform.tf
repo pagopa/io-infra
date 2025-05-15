@@ -46,7 +46,7 @@ resource "azurerm_api_management_api" "platform_app_backend_api" {
 
   description  = "IO Platform app-backend API"
   display_name = "Platform app-backend"
-  path         = ""
+  path         = "/api/platform-legacy"
   protocols    = ["https"]
 
   import {
@@ -80,4 +80,40 @@ resource "azurerm_api_management_api_operation_policy" "get_services_status_oper
   resource_group_name = module.platform_api_gateway.resource_group_name
   operation_id        = "getServicesStatus"
   xml_content         = file("${path.module}/policies/platform/v1/get_services_status/policy.xml")
+}
+
+resource "azurerm_api_management_api_operation_policy" "get_ping_operation_policy" {
+  depends_on = [
+    azurerm_api_management_api.platform_app_backend_api
+  ]
+
+  api_name            = azurerm_api_management_api.platform_app_backend_api.name
+  api_management_name = module.platform_api_gateway.name
+  resource_group_name = module.platform_api_gateway.resource_group_name
+  operation_id        = "getPing"
+  xml_content         = file("${path.module}/policies/platform/v1/get_ping/policy.xml")
+}
+
+resource "azurerm_api_management_api_operation_policy" "get_server_info_operation_policy" {
+  depends_on = [
+    azurerm_api_management_api.platform_app_backend_api
+  ]
+
+  api_name            = azurerm_api_management_api.platform_app_backend_api.name
+  api_management_name = module.platform_api_gateway.name
+  resource_group_name = module.platform_api_gateway.resource_group_name
+  operation_id        = "getServicesStatus"
+  xml_content         = file("${path.module}/policies/platform/v1/get_server_info/policy.xml")
+}
+
+resource "azurerm_api_management_api_operation_policy" "redirect_operation_policy" {
+  depends_on = [
+    azurerm_api_management_api.platform_app_backend_api
+  ]
+
+  api_name            = azurerm_api_management_api.platform_app_backend_api.name
+  api_management_name = module.platform_api_gateway.name
+  resource_group_name = module.platform_api_gateway.resource_group_name
+  operation_id        = "Redirect"
+  xml_content         = file("${path.module}/policies/platform/v1/redirect/policy.xml")
 }
