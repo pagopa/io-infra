@@ -630,23 +630,28 @@ module "app_gw" {
         api-gateway-platform-info = {
           paths                 = ["/info"]
           backend               = "platform-api-gateway",
-          rewrite_rule_set_name = "rewrite-rule-set-api-app"
+          rewrite_rule_set_name = "rewrite-rule-set-api-app-rewrite-platform-legacy-root"
         },
         # TODO: in order to do a progressive rollout the following commented rules must be enabled progressivly
+        # api-gateway-platform-redirect = {
+        #  paths                 = ["/"]
+        #  backend               = "platform-api-gateway",
+        #  rewrite_rule_set_name = "rewrite-rule-set-api-app-rewrite-platform-legacy-root"
+        #},
         # api-gateway-platform-ping = {
         #   paths                 = ["/api/v1/ping"]
         #   backend               = "platform-api-gateway",
-        #   rewrite_rule_set_name = "rewrite-rule-set-api-app"
+        #   rewrite_rule_set_name = "rewrite-rule-set-api-app-rewrite-platform-legacy"
         # },
         # api-gateway-platform-status = {
-        #   paths                 = ["/.api/v1/status"]
+        #   paths                 = ["/api/v1/status"]
         #   backend               = "platform-api-gateway",
-        #   rewrite_rule_set_name = "rewrite-rule-set-api-app"
+        #   rewrite_rule_set_name = "rewrite-rule-set-api-app-rewrite-platform-legacy"
         # },
         # api-gateway-platform-trials = {
         #   paths                 = ["/api/v1/trials/*"]
         #   backend               = "platform-api-gateway",
-        #   rewrite_rule_set_name = "rewrite-rule-set-api-app"
+        #   rewrite_rule_set_name = "rewrite-rule-set-api-app-rewrite-platform-legacy"
         # },
         session-manager = {
           paths                 = ["/session-manager/*"]
@@ -771,6 +776,53 @@ module "app_gw" {
     {
       name          = "rewrite-rule-set-api-app"
       rewrite_rules = [local.io_backend_ip_headers_rule]
+    },
+    {
+      name = "rewrite-rule-set-api-app-rewrite-platform-legacy-root"
+      rewrite_rules = [
+        local.io_backend_ip_headers_rule,
+        {
+          name          = "rewrite-url-to-platform-legacy"
+          rule_sequence = 200
+          url = {
+            path         = "/api/platform-legacy{var_uri_path}"
+            query_string = null
+            reroute      = true
+            components   = "path_only"
+          }
+          request_header_configurations  = []
+          response_header_configurations = []
+        }
+      ]
+    },
+    {
+      name = "rewrite-rule-set-api-app-rewrite-platform-legacy"
+      rewrite_rules = [
+        local.io_backend_ip_headers_rule,
+        {
+          name          = "rewrite-url-to-api-platform-legacy"
+          rule_sequence = 100
+
+          # Condition to capture requests directed to any endpoint under /api/v1/
+          conditions = [
+            {
+              variable    = "var_uri_path"
+              pattern     = "^/api/v1/(.*)$"
+              ignore_case = true
+              negate      = false
+            }
+          ]
+
+          # URL rewriting preserving the specific endpoint
+          url = {
+            path = {
+              value = "/api/platform-legacy/v1/{var_uri_path_1}"
+            }
+          }
+          request_header_configurations  = []
+          response_header_configurations = []
+        }
+      ]
     },
     {
       name = "rewrite-rule-set-api-app-rewrite-to-session-manager"
