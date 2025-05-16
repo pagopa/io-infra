@@ -23,6 +23,10 @@ citizen_auth_database = {
     max_throughput = 9000
     ttl            = -1
   }
+  session_notifications = {
+    max_throughput = 1000
+    ttl            = -1
+  }
 }
 
 ### External resources
