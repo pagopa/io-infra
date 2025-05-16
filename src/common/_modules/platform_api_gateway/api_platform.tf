@@ -19,23 +19,6 @@ resource "azurerm_api_management_product_policy" "platform" {
   xml_content = file("${path.module}/policies/platform/product_base_policy.xml")
 }
 
-resource "azurerm_api_management_group" "platform" {
-  name                = "platform"
-  api_management_name = module.platform_api_gateway.name
-  resource_group_name = module.platform_api_gateway.resource_group_name
-  display_name        = "Platform APIM Product Owners"
-  description         = "Owners of io-platform product with management rights"
-  type                = "external"
-  external_id         = "aad://${data.azurerm_client_config.current.tenant_id}/groups/${var.azure_adgroup_platform_admins_object_id}"
-}
-
-resource "azurerm_api_management_product_group" "platform" {
-  product_id          = azurerm_api_management_product.platform.product_id
-  group_name          = azurerm_api_management_group.platform.name
-  api_management_name = module.platform_api_gateway.name
-  resource_group_name = module.platform_api_gateway.resource_group_name
-}
-
 resource "azurerm_api_management_api" "platform_legacy" {
   name                  = format("%s-p-platform-legacy-api", var.prefix)
   api_management_name   = module.platform_api_gateway.name

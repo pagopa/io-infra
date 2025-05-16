@@ -429,8 +429,8 @@ module "app_backend_weu" {
   vnet_common                   = local.core.networking.weu.vnet_common
   cidr_subnet                   = each.value.cidr_subnet
   nat_gateways                  = local.core.networking.weu.nat_gateways
-  allowed_subnets               = concat(data.azurerm_subnet.services_snet.*.id, [module.application_gateway_weu.snet.id, module.apim_itn.snet.id])
-  slot_allowed_subnets          = concat([local.azdoa_snet_id["weu"]], data.azurerm_subnet.services_snet.*.id, [module.application_gateway_weu.snet.id, module.apim_itn.snet.id, module.github_runner_itn.subnet.id])
+  allowed_subnets               = concat(data.azurerm_subnet.services_snet.*.id, [module.application_gateway_weu.snet.id, module.apim_itn.snet.id, module.platform_api_gateway_apim_itn.snet.id])
+  slot_allowed_subnets          = concat([local.azdoa_snet_id["weu"]], data.azurerm_subnet.services_snet.*.id, [module.application_gateway_weu.snet.id, module.apim_itn.snet.id, module.platform_api_gateway_apim_itn.snet.id, module.github_runner_itn.subnet.id])
   allowed_ips                   = module.monitoring_weu.appi.reserved_ips
   slot_allowed_ips              = module.monitoring_weu.appi.reserved_ips
   apim_snet_address_prefixes    = module.apim_itn.snet.address_prefixes
@@ -487,9 +487,10 @@ module "app_backend_li_weu" {
       data.azurerm_subnet.admin_snet.id,
       data.azurerm_subnet.itn_auth_lv_func_snet.id,
       data.azurerm_subnet.itn_msgs_sending_func_snet.id,
-      data.azurerm_subnet.itn_auth_prof_async_func_snet.id
+      data.azurerm_subnet.itn_auth_prof_async_func_snet.id,
+      module.platform_api_gateway_apim_itn.snet.id
   ])
-  slot_allowed_subnets = concat([local.azdoa_snet_id["weu"]], data.azurerm_subnet.services_snet.*.id, [data.azurerm_subnet.admin_snet.id, module.github_runner_itn.subnet.id])
+  slot_allowed_subnets = concat([local.azdoa_snet_id["weu"]], data.azurerm_subnet.services_snet.*.id, [data.azurerm_subnet.admin_snet.id, module.github_runner_itn.subnet.id, module.platform_api_gateway_apim_itn.snet.id])
   allowed_ips = concat(module.monitoring_weu.appi.reserved_ips,
     [
       // aks prod01
