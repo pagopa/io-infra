@@ -16,7 +16,7 @@ resource "azurerm_api_management_product_policy" "platform" {
   api_management_name = module.platform_api_gateway.name
   resource_group_name = module.platform_api_gateway.resource_group_name
 
-  xml_content = file("${path.module}/policies/platfrom/product_base_policy.xml")
+  xml_content = file("${path.module}/policies/platform/product_base_policy.xml")
 }
 
 resource "azurerm_api_management_group" "platform" {
