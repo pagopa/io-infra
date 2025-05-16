@@ -1,4 +1,4 @@
-resource "azurerm_api_management_product" "platform_apim_product" {
+resource "azurerm_api_management_product" "platform" {
   product_id   = "io-platform"
   display_name = "IO PLATFORM"
   description  = "Product for IO Platform APIs"
@@ -11,15 +11,15 @@ resource "azurerm_api_management_product" "platform_apim_product" {
   approval_required     = false
 }
 
-resource "azurerm_api_management_product_policy" "platform_apim_product_policy" {
-  product_id          = azurerm_api_management_product.platform_apim_product.product_id
+resource "azurerm_api_management_product_policy" "platform" {
+  product_id          = azurerm_api_management_product.platform.product_id
   api_management_name = module.platform_api_gateway.name
   resource_group_name = module.platform_api_gateway.resource_group_name
 
   xml_content = file("${path.module}/policies/platfrom/product_base_policy.xml")
 }
 
-resource "azurerm_api_management_group" "platform_apim_group" {
+resource "azurerm_api_management_group" "platform" {
   name                = "platform"
   api_management_name = module.platform_api_gateway.name
   resource_group_name = module.platform_api_gateway.resource_group_name
@@ -29,15 +29,15 @@ resource "azurerm_api_management_group" "platform_apim_group" {
   external_id         = "aad://${data.azurerm_client_config.current.tenant_id}/groups/${var.azure_adgroup_platform_admins_object_id}"
 }
 
-resource "azurerm_api_management_product_group" "platform_apim_product_group" {
-  product_id          = azurerm_api_management_product.platform_apim_product.product_id
-  group_name          = azurerm_api_management_group.platform_apim_group.name
+resource "azurerm_api_management_product_group" "platform" {
+  product_id          = azurerm_api_management_product.platform.product_id
+  group_name          = azurerm_api_management_group.platform.name
   api_management_name = module.platform_api_gateway.name
   resource_group_name = module.platform_api_gateway.resource_group_name
 }
 
-resource "azurerm_api_management_api" "platform_app_backend_api" {
-  name                  = format("%s-p-app-backend-platform-api", var.prefix)
+resource "azurerm_api_management_api" "platform_legacy" {
+  name                  = format("%s-p-platform-legacy-api", var.prefix)
   api_management_name   = module.platform_api_gateway.name
   resource_group_name   = module.platform_api_gateway.resource_group_name
   subscription_required = false
@@ -46,72 +46,56 @@ resource "azurerm_api_management_api" "platform_app_backend_api" {
 
   description  = "IO Platform app-backend API"
   display_name = "Platform app-backend"
-  path         = "/api/platform-legacy"
+  path         = "api/platform-legacy"
   protocols    = ["https"]
 
   import {
     content_format = "openapi-link"
-    content_value  = "https://raw.githubusercontent.com/pagopa/io-backend/refs/heads/refactor-openapi-specs/openapi/generated/api_platform.yaml"
+    content_value  = "https://raw.githubusercontent.com/pagopa/io-backend/refs/heads/refactor-openapi-specs/openapi/generated/api_platform_legacy.yaml"
   }
 }
 
-resource "azurerm_api_management_product_api" "platform_api_product_link" {
-  api_name            = azurerm_api_management_api.platform_app_backend_api.name
-  product_id          = azurerm_api_management_product.platform_apim_product.product_id
+resource "azurerm_api_management_product_api" "platform_platform_legacy" {
+  api_name            = azurerm_api_management_api.platform_legacy.name
+  product_id          = azurerm_api_management_product.platform.product_id
   api_management_name = module.platform_api_gateway.name
   resource_group_name = module.platform_api_gateway.resource_group_name
 }
 
-resource "azurerm_api_management_api_policy" "platform_app_backend_api_policy" {
-  api_name            = azurerm_api_management_api.platform_app_backend_api.name
+resource "azurerm_api_management_api_policy" "platform_legacy" {
+  api_name            = azurerm_api_management_api.platform_legacy.name
   api_management_name = module.platform_api_gateway.name
   resource_group_name = module.platform_api_gateway.resource_group_name
 
   xml_content = file("${path.module}/policies/platform/v1/_base_policy.xml")
 }
 
-resource "azurerm_api_management_api_operation_policy" "get_services_status_operation_policy" {
-  depends_on = [
-    azurerm_api_management_api.platform_app_backend_api
-  ]
-
-  api_name            = azurerm_api_management_api.platform_app_backend_api.name
+resource "azurerm_api_management_api_operation_policy" "platform_legacy_get_services_status" {
+  api_name            = azurerm_api_management_api.platform_legacy.name
   api_management_name = module.platform_api_gateway.name
   resource_group_name = module.platform_api_gateway.resource_group_name
   operation_id        = "getServicesStatus"
   xml_content         = file("${path.module}/policies/platform/v1/get_services_status/policy.xml")
 }
 
-resource "azurerm_api_management_api_operation_policy" "get_ping_operation_policy" {
-  depends_on = [
-    azurerm_api_management_api.platform_app_backend_api
-  ]
-
-  api_name            = azurerm_api_management_api.platform_app_backend_api.name
+resource "azurerm_api_management_api_operation_policy" "platform_legacy_get_ping" {
+  api_name            = azurerm_api_management_api.platform_legacy.name
   api_management_name = module.platform_api_gateway.name
   resource_group_name = module.platform_api_gateway.resource_group_name
   operation_id        = "getPing"
   xml_content         = file("${path.module}/policies/platform/v1/get_ping/policy.xml")
 }
 
-resource "azurerm_api_management_api_operation_policy" "get_server_info_operation_policy" {
-  depends_on = [
-    azurerm_api_management_api.platform_app_backend_api
-  ]
-
-  api_name            = azurerm_api_management_api.platform_app_backend_api.name
+resource "azurerm_api_management_api_operation_policy" "platform_legacy_get_server_info" {
+  api_name            = azurerm_api_management_api.platform_legacy.name
   api_management_name = module.platform_api_gateway.name
   resource_group_name = module.platform_api_gateway.resource_group_name
   operation_id        = "getServicesStatus"
   xml_content         = file("${path.module}/policies/platform/v1/get_server_info/policy.xml")
 }
 
-resource "azurerm_api_management_api_operation_policy" "redirect_operation_policy" {
-  depends_on = [
-    azurerm_api_management_api.platform_app_backend_api
-  ]
-
-  api_name            = azurerm_api_management_api.platform_app_backend_api.name
+resource "azurerm_api_management_api_operation_policy" "platform_legacy_redirect" {
+  api_name            = azurerm_api_management_api.platform_legacy.name
   api_management_name = module.platform_api_gateway.name
   resource_group_name = module.platform_api_gateway.resource_group_name
   operation_id        = "Redirect"
