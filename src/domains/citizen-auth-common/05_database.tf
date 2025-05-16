@@ -73,6 +73,40 @@ resource "azurerm_cosmosdb_sql_container" "lollipop_pubkeys" {
 
 }
 
+resource "azurerm_cosmosdb_sql_container" "session-notifications" {
+
+  name                = "session-notifications"
+  resource_group_name = azurerm_resource_group.data_rg.name
+  account_name        = module.cosmosdb_account.name
+  database_name       = module.cosmosdb_sql_database_citizen_auth.name
+
+  partition_key_path    = "/expiredAt"
+  partition_key_version = 2
+
+  indexing_policy {
+    indexing_mode = "consistent"
+
+    included_path {
+      path = "/*"
+    }
+
+    included_path {
+      path = "/notificationEvents/*"
+    }
+
+    excluded_path {
+      path = "/\"_etag\"/?"
+    }
+  }
+
+  autoscale_settings {
+    max_throughput = var.citizen_auth_database.session_notifications.max_throughput
+  }
+
+  default_ttl = var.citizen_auth_database.session_notifications.ttl
+
+}
+
 // ----------------------------------------------------
 // Alerts
 // ----------------------------------------------------

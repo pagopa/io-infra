@@ -74,11 +74,6 @@ data "azurerm_subnet" "app_backend_l2_snet" {
   resource_group_name  = local.vnet_common_resource_group_name
 }
 
-data "azurerm_subnet" "fims_op_app_snet_01" {
-  name                 = "io-p-weu-fims-op-app-snet-01"
-  virtual_network_name = local.vnet_common_name
-  resource_group_name  = local.vnet_common_resource_group_name
-}
 
 data "azurerm_subnet" "apim_itn_snet" {
   name                 = "io-p-itn-apim-snet-01"
