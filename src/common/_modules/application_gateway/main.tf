@@ -817,7 +817,10 @@ module "app_gw" {
           # URL rewriting preserving the specific endpoint
           url = {
             path = {
-              value = "/api/platform-legacy/v1/{var_uri_path_1}"
+              value        = "/api/platform-legacy/v1/{var_uri_path_1}"
+              query_string = null
+              reroute      = true
+              components   = "path_only"
             }
           }
           request_header_configurations  = []
