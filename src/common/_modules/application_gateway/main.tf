@@ -784,6 +784,7 @@ module "app_gw" {
         {
           name          = "rewrite-url-to-platform-legacy"
           rule_sequence = 200
+          conditions    = []
           url = {
             path         = "/api/platform-legacy{var_uri_path}"
             query_string = null
