@@ -1,7 +1,7 @@
 <policies>
     <inbound>
         <base />
-        <rewrite-uri template="@(context.Request.OriginalUrl.Path.Replace("/api", ""))" />
+        <rewrite-uri template="@(context.Request.Url.Path.Replace("/api", ""))" />
     </inbound>
     <backend>
         <base />
