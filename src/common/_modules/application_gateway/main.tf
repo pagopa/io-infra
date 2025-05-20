@@ -648,11 +648,11 @@ module "app_gw" {
         #   backend               = "platform-api-gateway",
         #   rewrite_rule_set_name = "rewrite-rule-set-api-app-rewrite-platform-legacy"
         # },
-        # api-gateway-platform-trials = {
-        #   paths                 = ["/api/v1/trials/*"]
-        #   backend               = "platform-api-gateway",
-        #   rewrite_rule_set_name = "rewrite-rule-set-api-app-rewrite-platform-legacy"
-        # },
+        api-gateway-platform-trials = {
+          paths                 = ["/api/v1/trials/*"]
+          backend               = "platform-api-gateway",
+          rewrite_rule_set_name = "rewrite-rule-set-api-app-rewrite-platform-legacy"
+        },
         session-manager = {
           paths                 = ["/session-manager/*"]
           backend               = "session-manager-app",
