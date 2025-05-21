@@ -633,9 +633,9 @@ module "app_gw" {
           rewrite_rule_set_name = "rewrite-rule-set-api-app-rewrite-platform-legacy-root"
         },
         api-gateway-platform-redirect = {
-         paths                 = ["/"]
-         backend               = "platform-api-gateway",
-         rewrite_rule_set_name = "rewrite-rule-set-api-app-rewrite-platform-legacy-root"
+          paths                 = ["/"]
+          backend               = "platform-api-gateway",
+          rewrite_rule_set_name = "rewrite-rule-set-api-app-rewrite-platform-legacy-root"
         },
         # TODO: in order to do a progressive rollout the following commented rule must be enabled
         # api-gateway-platform-ping = {
