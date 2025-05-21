@@ -47,12 +47,12 @@ data "azurerm_key_vault_secret" "fn_services_pagopa_ecommerce_api_key" {
 }
 
 data "azurerm_key_vault_secret" "sending_func_url" {
-  name         = "fnservices-SENDING_FUNC_API_URL"
+  name         = "fnservices-SENDING-FUNC-API-URL"
   key_vault_id = data.azurerm_key_vault.common.id
 }
 
 data "azurerm_key_vault_secret" "sending_func_key" {
-  name         = "fnservices-SENDING_FUNC_API_KEY"
+  name         = "fnservices-SENDING-FUNC-API-KEY"
   key_vault_id = data.azurerm_key_vault.common.id
 }
 
