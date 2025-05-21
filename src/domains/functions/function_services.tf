@@ -46,6 +46,16 @@ data "azurerm_key_vault_secret" "fn_services_pagopa_ecommerce_api_key" {
   key_vault_id = data.azurerm_key_vault.common.id
 }
 
+data "azurerm_key_vault_secret" "sending_func_url" {
+  name         = "fnservices-SENDING_FUNC_API_URL"
+  key_vault_id = data.azurerm_key_vault.common.id
+}
+
+data "azurerm_key_vault_secret" "sending_func_key" {
+  name         = "fnservices-SENDING_FUNC_API_KEY"
+  key_vault_id = data.azurerm_key_vault.common.id
+}
+
 #
 # APP CONFIGURATION
 #
@@ -127,6 +137,8 @@ locals {
       APIM_SUBSCRIPTION_KEY                  = data.azurerm_key_vault_secret.fn_services_io_service_key.value
       PAGOPA_ECOMMERCE_API_KEY               = data.azurerm_key_vault_secret.fn_services_pagopa_ecommerce_api_key.value
       BETA_USERS                             = data.azurerm_key_vault_secret.fn_services_beta_users.value
+      SENDING_FUNC_API_KEY                   = data.azurerm_key_vault_secret.sending_func_url.value
+      SENDING_FUNC_API_URL                   = data.azurerm_key_vault_secret.sending_func_key.value
     }
     app_settings_1 = {
     }
