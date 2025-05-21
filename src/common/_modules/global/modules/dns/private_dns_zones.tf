@@ -59,6 +59,13 @@ resource "azurerm_private_dns_zone" "privatelink_servicebus" {
   tags = var.tags
 }
 
+resource "azurerm_private_dns_zone" "privatelink_servicebus_common" {
+  name                = "privatelink.servicebus.windows.net"
+  resource_group_name = var.resource_groups.common
+
+  tags = var.tags
+}
+
 resource "azurerm_private_dns_zone" "privatelink_documents" {
   name                = "privatelink.documents.azure.com"
   resource_group_name = var.resource_groups.common
