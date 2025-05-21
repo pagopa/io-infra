@@ -29,6 +29,11 @@ variable "resource_group_internal" {
   description = "Name of internal resource group"
 }
 
+variable "resource_group_event" {
+  type        = string
+  description = "Name of event resource group"
+}
+
 variable "vnet_common" {
   type = object({
     name                = string

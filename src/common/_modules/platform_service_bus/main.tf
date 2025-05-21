@@ -12,8 +12,8 @@ module "platform_service_bus_namespace" {
 
   resource_group_name = var.resource_group_internal
 
-  subnet_pep_id                        = azurerm_subnet.platform_service_bus_namespace_subnet.id
-  private_dns_zone_resource_group_name = var.resource_group_internal
+  subnet_pep_id                        = data.azurerm_subnet.pep_snet.id
+  private_dns_zone_resource_group_name = var.resource_group_event
 
   // Premium SKU
   tier = "l"
