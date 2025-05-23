@@ -70,6 +70,7 @@ module "key_vault_weu" {
 
   azure_adgroup_admin_object_id             = data.azuread_group.admin.object_id
   azure_adgroup_developers_object_id        = data.azuread_group.developers.object_id
+  azure_adgroup_platform_admins_object_id   = data.azuread_group.platform_admins.object_id
   azure_adgroup_wallet_admins_object_id     = data.azuread_group.wallet_admins.object_id
   azure_adgroup_wallet_devs_object_id       = data.azuread_group.wallet_devs.object_id
   azure_adgroup_com_admins_object_id        = data.azuread_group.com_admins.object_id
