@@ -4,7 +4,7 @@
     This policy implements caching for the API with the following behavior:
     - Inbound: Checks the internal cache for a matching response before forwarding the request
     - Backend: Standard processing, no modifications
-    - Outbound: Stores API responses in the cache for 60 seconds ONLY for status codes 200 and 304
+    - Outbound: Stores API responses in the cache for 60 seconds ONLY for status codes 204
     - Error: Standard error handling
 
     The cache is configured as "internal" type with no downstream caching.
@@ -21,7 +21,7 @@
     <outbound>
         <base />
         <choose>
-            <when condition="@(context.Response.StatusCode == 200 || context.Response.StatusCode == 304)">
+            <when condition="@(context.Response.StatusCode == 204)">
                 <cache-store duration="60" />
             </when>
         </choose>
