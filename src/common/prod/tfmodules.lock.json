@@ -15,11 +15,11 @@
   "cosmos_api_weu.cosno_api_svc_devs": "52ca57b72bdf639846a472014cb2113d519bdc00dc4a642e925b97ad6b99d25c",
   "assets_cdn_weu.roles_svc_devs": "52ca57b72bdf639846a472014cb2113d519bdc00dc4a642e925b97ad6b99d25c",
   "github_runner_itn.container_app_github_runner": "df0074e2b91c6153a80a9e208a152e9c060936c85b5f7b1f2ced9a9f5aa901ec",
-  "apim_itn.apim": "e5925e67525443282aef8f432f9a2cfe2357acbfd20c86a753f890ac4fa65056",
+  "apim_itn.apim": "3cb279a9513f855c5f99711bd4a2ee372dd5939d14686a620774c45dc01ba571",
   "storage_accounts.retirements_itn_01_admins": "07cdce758d809d16a5154b997dcb2b017b7b443c53f5a6de776b9f0de6b19c9e",
   "storage_accounts_itn.exportdata_weu_01_com_admins": "07cdce758d809d16a5154b997dcb2b017b7b443c53f5a6de776b9f0de6b19c9e",
   "storage_accounts_itn.exportdata_weu_01_com_devs": "07cdce758d809d16a5154b997dcb2b017b7b443c53f5a6de776b9f0de6b19c9e",
   "storage_accounts_itn.retirements_itn_01_admins": "07cdce758d809d16a5154b997dcb2b017b7b443c53f5a6de776b9f0de6b19c9e",
   "platform_api_gateway_apim_itn.iam_adgroup_product_admins": "07cdce758d809d16a5154b997dcb2b017b7b443c53f5a6de776b9f0de6b19c9e",
-  "platform_api_gateway_apim_itn.platform_api_gateway": "e5925e67525443282aef8f432f9a2cfe2357acbfd20c86a753f890ac4fa65056"
+  "platform_api_gateway_apim_itn.platform_api_gateway": "3cb279a9513f855c5f99711bd4a2ee372dd5939d14686a620774c45dc01ba571"
 }
