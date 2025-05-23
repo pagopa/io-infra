@@ -1,16 +1,13 @@
-resource "azurerm_resource_group" "sec_rg" {
-  name     = "${local.product}-${var.domain}-sec-rg"
-  location = var.location
-
-  tags = var.tags
+data "azurerm_resource_group" "sec_rg" {
+  name = "${local.product}-${var.domain}-sec-rg"
 }
 
 module "key_vault" {
   source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//key_vault?ref=v8.44.1"
 
   name                       = "${local.product}-${var.domain}-kv"
-  location                   = azurerm_resource_group.sec_rg.location
-  resource_group_name        = azurerm_resource_group.sec_rg.name
+  location                   = data.azurerm_resource_group.sec_rg.location
+  resource_group_name        = data.azurerm_resource_group.sec_rg.name
   tenant_id                  = data.azurerm_client_config.current.tenant_id
   sku_name                   = "premium"
   soft_delete_retention_days = 90
