@@ -24,6 +24,6 @@ data "azurerm_storage_account" "push_notifications_storage" {
 }
 
 data "azurerm_storage_account" "itn_com_st" {
-  name = "${locals.project_itn}comst01"
-  resource_group_name = "${locals.project_itn}-com-rg-01"
+  name = "iopitncomst01"
+  resource_group_name = "io-p-itn-com-rg-01"
 }
