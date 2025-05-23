@@ -55,7 +55,9 @@ module "dns_forwarder" {
   name                = try(local.nonstandard[var.location_short].dns_forwarder, "${var.project}-dns-forwarder-ci-01")
   location            = var.location
   resource_group_name = var.resource_group_name
-  subnet_id           = module.dns_forwarder_snet.id
+
+  # workaround to avoid the intention to replace the resource because of the capitalization of the name
+  subnet_id = "/subscriptions/${upper(var.subscription_current.subscription_id)}/resourceGroups/${upper(var.resource_group_name)}/providers/Microsoft.Network/virtualNetworks/${upper(var.vnet_common.name)}/subnets/${upper(module.dns_forwarder_snet.name)}"
 
   tags = var.tags
 }
