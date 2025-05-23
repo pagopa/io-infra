@@ -632,17 +632,11 @@ module "app_gw" {
           backend               = "platform-api-gateway",
           rewrite_rule_set_name = "rewrite-rule-set-api-app-rewrite-platform-legacy-root"
         },
-        api-gateway-platform-redirect = {
-          paths                 = ["/"]
+        api-gateway-platform-ping = {
+          paths                 = ["/api/v1/ping"]
           backend               = "platform-api-gateway",
-          rewrite_rule_set_name = "rewrite-rule-set-api-app-rewrite-platform-legacy-root"
+          rewrite_rule_set_name = "rewrite-rule-set-api-app-rewrite-platform-legacy"
         },
-        # TODO: in order to do a progressive rollout the following commented rule must be enabled
-        # api-gateway-platform-ping = {
-        #   paths                 = ["/api/v1/ping"]
-        #   backend               = "platform-api-gateway",
-        #   rewrite_rule_set_name = "rewrite-rule-set-api-app-rewrite-platform-legacy"
-        # },
         api-gateway-platform-status = {
           paths                 = ["/api/v1/status"]
           backend               = "platform-api-gateway",
