@@ -129,11 +129,6 @@ locals {
 
       AZURE_SUBSCRIPTION_ID = data.azurerm_key_vault_secret.fn_admin_AZURE_SUBSCRIPTION_ID.value
 
-      ADB2C_TENANT_ID            = data.azurerm_key_vault_secret.adb2c_TENANT_NAME.value
-      ADB2C_CLIENT_ID            = data.azurerm_key_vault_secret.devportal_CLIENT_ID.value
-      ADB2C_CLIENT_KEY           = data.azurerm_key_vault_secret.devportal_CLIENT_SECRET.value
-      ADB2C_TOKEN_ATTRIBUTE_NAME = data.azurerm_key_vault_secret.adb2c_TOKEN_ATTRIBUTE_NAME.value
-
       SERVICE_PRINCIPAL_CLIENT_ID = data.azurerm_key_vault_secret.ad_APPCLIENT_APIM_ID.value
       SERVICE_PRINCIPAL_SECRET    = data.azurerm_key_vault_secret.ad_APPCLIENT_APIM_SECRET.value
       SERVICE_PRINCIPAL_TENANT_ID = data.azurerm_key_vault_secret.common_AZURE_TENANT_ID.value
