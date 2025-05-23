@@ -87,6 +87,18 @@ resource "azurerm_key_vault_access_policy" "kv_azdevops_platform_iac" {
   certificate_permissions = ["SetIssuers", "DeleteIssuers", "Purge", "List", "Get", "ManageContacts", ]
 }
 
+resource "azurerm_key_vault_access_policy" "kv_adgroup_platform_admins" {
+  key_vault_id = azurerm_key_vault.kv.id
+
+  tenant_id = var.tenant_id
+  object_id = var.azure_adgroup_platform_admins_object_id
+
+  key_permissions         = ["Get", "List", "Update", "Create", "Import", "Delete", ]
+  secret_permissions      = ["Get", "List", "Set", "Delete", "Restore", "Recover", ]
+  storage_permissions     = []
+  certificate_permissions = ["Get", "List", "Update", "Create", "Import", "Delete", "Restore", "Recover", ]
+}
+
 resource "azurerm_key_vault_access_policy" "kv_adgroup_wallet_admins" {
   key_vault_id = azurerm_key_vault.kv.id
 

@@ -23,6 +23,11 @@ variable "azure_adgroup_admin_object_id" {
   description = "Object Id of the Entra group for subscription admins"
 }
 
+variable "azure_adgroup_platform_admins_object_id" {
+  type        = string
+  description = "Object Id of the Entra group for subscription admins"
+}
+
 variable "azure_adgroup_wallet_admins_object_id" {
   type        = string
   description = "Object Id of the Entra group for subscription admins"
