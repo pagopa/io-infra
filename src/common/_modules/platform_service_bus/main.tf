@@ -12,7 +12,7 @@ module "platform_service_bus_namespace" {
 
   resource_group_name = var.resource_group_internal
 
-  subnet_pep_id                        = data.azurerm_subnet.pep_snet.id
+  subnet_pep_id                        = var.pep_snet_id
   private_dns_zone_resource_group_name = var.resource_group_event
 
   // Premium SKU

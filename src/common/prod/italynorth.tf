@@ -118,6 +118,7 @@ module "platform_service_bus_namespace_itn" {
   resource_group_event    = local.resource_groups.weu.event
   vnet_common             = local.core.networking.itn.vnet_common
   cidr_subnet             = "10.20.102.0/24"
+  pep_snet_id             = local.core.networking.itn.pep_snet.id
 
   tags = local.tags
 }
