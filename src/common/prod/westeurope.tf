@@ -390,6 +390,11 @@ module "cosmos_api_weu" {
   azure_adgroup_auth_admins_object_id = data.azuread_group.auth_admins.object_id
   azure_adgroup_auth_devs_object_id   = data.azuread_group.auth_devs.object_id
 
+  infra_identity_ids = [
+    data.azurerm_user_assigned_identity.auth_n_identity_infra_ci.principal_id,
+    data.azurerm_user_assigned_identity.auth_n_identity_infra_cd.principal_id,
+  ]
+
   tags = local.tags
 }
 
