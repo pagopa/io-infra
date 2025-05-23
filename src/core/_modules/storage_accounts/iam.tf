@@ -13,6 +13,21 @@ module "iam_adgroup_admins" {
   ]
 }
 
+module "iam_adgroup_platform_admins" {
+  source  = "pagopa-dx/azure-role-assignments/azurerm"
+  version = "~> 0.0"
+
+  principal_id = var.azure_adgroup_platform_admins_object_id
+
+  storage_blob = [
+    {
+      storage_account_name = azurerm_storage_account.terraform.name
+      resource_group_name  = azurerm_storage_account.terraform.resource_group_name
+      role                 = "writer"
+    }
+  ]
+}
+
 module "iam_adgroup_wallet_admins" {
   source  = "pagopa-dx/azure-role-assignments/azurerm"
   version = "~> 0.0"
