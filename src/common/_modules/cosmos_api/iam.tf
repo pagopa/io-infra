@@ -34,6 +34,14 @@ resource "azurerm_role_assignment" "cosno_api_auth_devs" {
   role_definition_name = "DocumentDB Account Contributor"
 }
 
+resource "azurerm_role_assignment" "cosno_api_identities" {
+  for_each = toset(var.infra_identity_ids)
+
+  scope                = azurerm_cosmosdb_account.this.id
+  principal_id         = each.value
+  role_definition_name = "DocumentDB Account Contributor"
+}
+
 module "cosno_api_com_admins" {
   source  = "pagopa-dx/azure-role-assignments/azurerm"
   version = "~> 0.0"

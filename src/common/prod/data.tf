@@ -65,6 +65,17 @@ data "azuread_group" "admins" {
   display_name = "${local.prefix}-${local.env_short}-adgroup-admin"
 }
 
+# Managed Identity
+data "azurerm_user_assigned_identity" "auth_n_identity_infra_ci" {
+  name                = "${local.prefix}-${local.env_short}-itn-auth-infra-github-ci-id-01"
+  resource_group_name = "${local.prefix}-${local.env_short}-itn-auth-rg-01"
+}
+
+data "azurerm_user_assigned_identity" "auth_n_identity_infra_cd" {
+  name                = "${local.prefix}-${local.env_short}-itn-auth-infra-github-cd-id-01"
+  resource_group_name = "${local.prefix}-${local.env_short}-itn-auth-rg-01"
+}
+
 # Cosmos API
 data "azurerm_subnet" "cosmos_api_allowed" {
   for_each = toset(local.cosmos_api.allowed_subnets)

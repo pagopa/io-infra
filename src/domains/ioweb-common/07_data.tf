@@ -13,13 +13,13 @@ data "azurerm_user_assigned_identity" "managed_identity_io_infra_cd" {
 }
 
 data "azurerm_user_assigned_identity" "managed_identity_auth_n_identity_infra_ci" {
-  name                = "${local.product}-auth-github-ci-identity"
-  resource_group_name = "${local.product}-identity-rg"
+  name                = "${local.product}-itn-auth-infra-github-ci-id-01"
+  resource_group_name = "${local.product}-itn-auth-rg-01"
 }
 
 data "azurerm_user_assigned_identity" "managed_identity_auth_n_identity_infra_cd" {
-  name                = "${local.product}-auth-github-cd-identity"
-  resource_group_name = "${local.product}-identity-rg"
+  name                = "${local.product}-itn-auth-infra-github-cd-id-01"
+  resource_group_name = "${local.product}-itn-auth-rg-01"
 }
 
 ########
