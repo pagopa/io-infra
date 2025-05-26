@@ -100,7 +100,7 @@ locals {
 
     IO_COM_QUEUE_STORAGE_CONNECTION_STRING        = data.azurerm_storage_account.itn_com_st.primary_connection_string
     IO_COM_PUSH_NOTIFICATIONS_QUEUE_NAME          = "push-notifications"
-    IO_COM_PUSH_NOTIFICATIONS_REDIRECT_PERCENTAGE = 0
+    IO_COM_PUSH_NOTIFICATIONS_REDIRECT_PERCENTAGE = 1
 
     LOCKED_PROFILES_STORAGE_CONNECTION_STRING = data.azurerm_storage_account.locked_profiles_storage.primary_connection_string
     LOCKED_PROFILES_TABLE_NAME                = "lockedprofiles"
