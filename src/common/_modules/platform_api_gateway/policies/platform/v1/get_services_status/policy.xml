@@ -21,7 +21,7 @@
     <outbound>
       <choose>
           <when condition="@(context.Response.StatusCode == 200 || context.Response.StatusCode == 304)">
-              <cache-store duration="60" />
+              <cache-store duration="60" cache-response="true"/>
           </when>
       </choose>
       <base />
