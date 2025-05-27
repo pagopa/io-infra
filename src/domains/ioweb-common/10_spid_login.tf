@@ -16,8 +16,8 @@ module "spid_login" {
 
   # App service
   name                = format("%s-spid-login", local.project)
-  resource_group_name = azurerm_resource_group.common_rg.name
-  location            = azurerm_resource_group.common_rg.location
+  resource_group_name = data.azurerm_resource_group.common_rg.name
+  location            = data.azurerm_resource_group.common_rg.location
 
 
   always_on         = true
