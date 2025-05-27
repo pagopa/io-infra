@@ -224,11 +224,7 @@ module "function_admin" {
   app_settings = merge(
     local.function_admin.app_settings_common, {
       "AzureWebJobs.CheckXmlCryptoCVESamlResponse.Disabled"      = "1",
-      "AzureWebJobs.CheckIoWebXmlCryptoCVESamlResponse.Disabled" = "1",
-      "AzureWebJobs.CreateUser.Disabled"                         = "1",
-      "AzureWebJobs.UpdateUser.Disabled"                         = "1",
-      "AzureWebJobs.GetUser.Disabled"                            = "1",
-      "AzureWebJobs.GetUserSubscriptions.Disabled"               = "1"
+      "AzureWebJobs.CheckIoWebXmlCryptoCVESamlResponse.Disabled" = "1"
     }
   )
 
@@ -295,11 +291,7 @@ module "function_admin_staging_slot" {
       "AzureWebJobs.UserDataProcessingTrigger.Disabled"          = "1",
       "AzureWebJobs.SanitizeProfileEmail.Disabled"               = "1",
       "AzureWebJobs.CheckXmlCryptoCVESamlResponse.Disabled"      = "1",
-      "AzureWebJobs.CheckIoWebXmlCryptoCVESamlResponse.Disabled" = "1",
-      "AzureWebJobs.CreateUser.Disabled"                         = "1",
-      "AzureWebJobs.UpdateUser.Disabled"                         = "1",
-      "AzureWebJobs.GetUser.Disabled"                            = "1",
-      "AzureWebJobs.GetUserSubscriptions.Disabled"               = "1"
+      "AzureWebJobs.CheckIoWebXmlCryptoCVESamlResponse.Disabled" = "1"
     }
   )
 
