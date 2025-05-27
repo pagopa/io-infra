@@ -2,18 +2,15 @@
 /**
 * [REDIS V6]
 */
-resource "azurerm_resource_group" "data_rg_itn" {
-  name     = "${local.project_itn}-data-rg-01"
-  location = local.itn_location
-
-  tags = var.tags
+data "azurerm_resource_group" "data_rg_itn" {
+  name = "${local.project_itn}-data-rg-01"
 }
 
 module "redis_common_itn" {
   source                = "git::https://github.com/pagopa/terraform-azurerm-v3.git//redis_cache?ref=v8.44.1"
   name                  = format("%s-redis-std-v6", local.project_itn)
-  resource_group_name   = azurerm_resource_group.data_rg_itn.name
-  location              = azurerm_resource_group.data_rg_itn.location
+  resource_group_name   = data.azurerm_resource_group.data_rg_itn.name
+  location              = data.azurerm_resource_group.data_rg_itn.location
   capacity              = 3
   family                = "C"
   sku_name              = "Standard"

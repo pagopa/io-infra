@@ -134,7 +134,7 @@ module "session_manager_snet" {
 resource "azurerm_private_endpoint" "session_manager_sites" {
   name                = "${local.common_project}-session-manager-app-pep-01"
   location            = var.location
-  resource_group_name = azurerm_resource_group.session_manager_rg_weu.name
+  resource_group_name = data.azurerm_resource_group.session_manager_rg_weu.name
   subnet_id           = data.azurerm_subnet.private_endpoints_subnet.id
 
   private_service_connection {
@@ -155,7 +155,7 @@ resource "azurerm_private_endpoint" "session_manager_sites" {
 resource "azurerm_private_endpoint" "staging_session_manager_sites" {
   name                = "${local.common_project}-session-manager-staging-app-pep-01"
   location            = var.location
-  resource_group_name = azurerm_resource_group.session_manager_rg_weu.name
+  resource_group_name = data.azurerm_resource_group.session_manager_rg_weu.name
   subnet_id           = data.azurerm_subnet.private_endpoints_subnet.id
 
   private_service_connection {
