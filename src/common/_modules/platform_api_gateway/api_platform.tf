@@ -82,7 +82,7 @@ resource "azurerm_api_management_api_operation_policy" "platform_legacy_get_ping
   api_name            = azurerm_api_management_api.platform_legacy.name
   api_management_name = module.platform_api_gateway.name
   resource_group_name = module.platform_api_gateway.resource_group_name
-  operation_id        = "getPing"
+  operation_id        = "getPingHead"
   xml_content         = file("${path.module}/policies/platform/v1/get_ping_head/policy.xml")
 }
 
