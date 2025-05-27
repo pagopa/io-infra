@@ -14,7 +14,7 @@ module "lollipop_assertions_storage" {
   account_tier                  = "Standard"
   access_tier                   = "Hot"
   account_replication_type      = "GZRS"
-  resource_group_name           = azurerm_resource_group.data_rg.name
+  resource_group_name           = data.azurerm_resource_group.data_rg.name
   location                      = var.location
   advanced_threat_protection    = true
   use_legacy_defender_version   = false
@@ -28,7 +28,7 @@ module "lollipop_assertions_storage_customer_managed_key" {
   source               = "git::https://github.com/pagopa/terraform-azurerm-v3//storage_account_customer_managed_key?ref=v8.12.0"
   tenant_id            = data.azurerm_subscription.current.tenant_id
   location             = var.location
-  resource_group_name  = azurerm_resource_group.data_rg.name
+  resource_group_name  = data.azurerm_resource_group.data_rg.name
   key_vault_id         = module.key_vault.id
   key_name             = format("%s-key", module.lollipop_assertions_storage.name)
   storage_id           = module.lollipop_assertions_storage.id
@@ -38,7 +38,7 @@ module "lollipop_assertions_storage_customer_managed_key" {
 resource "azurerm_private_endpoint" "lollipop_assertion_storage_blob" {
   name                = "${module.lollipop_assertions_storage.name}-blob-endpoint"
   location            = var.location
-  resource_group_name = azurerm_resource_group.data_rg.name
+  resource_group_name = data.azurerm_resource_group.data_rg.name
   subnet_id           = data.azurerm_subnet.private_endpoints_subnet.id
 
   private_service_connection {
@@ -59,7 +59,7 @@ resource "azurerm_private_endpoint" "lollipop_assertion_storage_blob" {
 resource "azurerm_private_endpoint" "lollipop_assertion_storage_queue" {
   name                = "${module.lollipop_assertions_storage.name}-queue-endpoint"
   location            = var.location
-  resource_group_name = azurerm_resource_group.data_rg.name
+  resource_group_name = data.azurerm_resource_group.data_rg.name
   subnet_id           = data.azurerm_subnet.private_endpoints_subnet.id
 
   private_service_connection {
@@ -107,7 +107,7 @@ module "immutable_lv_audit_logs_storage" {
   account_tier                  = "Standard"
   access_tier                   = "Hot"
   account_replication_type      = "GZRS"
-  resource_group_name           = azurerm_resource_group.data_rg.name
+  resource_group_name           = data.azurerm_resource_group.data_rg.name
   location                      = var.location
   advanced_threat_protection    = true
   enable_identity               = true
@@ -132,7 +132,7 @@ module "immutable_lv_audit_logs_storage_customer_managed_key" {
   source               = "git::https://github.com/pagopa/terraform-azurerm-v3//storage_account_customer_managed_key?ref=v8.12.0"
   tenant_id            = data.azurerm_subscription.current.tenant_id
   location             = var.location
-  resource_group_name  = azurerm_resource_group.data_rg.name
+  resource_group_name  = data.azurerm_resource_group.data_rg.name
   key_vault_id         = module.key_vault.id
   key_name             = format("%s-key", module.immutable_lv_audit_logs_storage.name)
   storage_id           = module.immutable_lv_audit_logs_storage.id
@@ -144,7 +144,7 @@ resource "azurerm_private_endpoint" "immutable_lv_audit_logs_storage_blob" {
 
   name                = "${module.immutable_lv_audit_logs_storage.name}-blob-endpoint"
   location            = var.location
-  resource_group_name = azurerm_resource_group.data_rg.name
+  resource_group_name = data.azurerm_resource_group.data_rg.name
   subnet_id           = data.azurerm_subnet.private_endpoints_subnet.id
 
   private_service_connection {
@@ -213,7 +213,7 @@ module "io_citizen_auth_storage" {
   account_tier                  = "Standard"
   access_tier                   = "Hot"
   account_replication_type      = "GZRS"
-  resource_group_name           = azurerm_resource_group.data_rg.name
+  resource_group_name           = data.azurerm_resource_group.data_rg.name
   location                      = var.location
   advanced_threat_protection    = true
   enable_identity               = true
@@ -226,7 +226,7 @@ resource "azurerm_private_endpoint" "table" {
   depends_on          = [module.io_citizen_auth_storage]
   name                = format("%s-table-endpoint", module.io_citizen_auth_storage.name)
   location            = var.location
-  resource_group_name = azurerm_resource_group.data_rg.name
+  resource_group_name = data.azurerm_resource_group.data_rg.name
   subnet_id           = data.azurerm_subnet.private_endpoints_subnet.id
 
   private_service_connection {
@@ -248,7 +248,7 @@ resource "azurerm_private_endpoint" "queue" {
   depends_on          = [module.io_citizen_auth_storage]
   name                = format("%s-queue-endpoint", module.io_citizen_auth_storage.name)
   location            = var.location
-  resource_group_name = azurerm_resource_group.data_rg.name
+  resource_group_name = data.azurerm_resource_group.data_rg.name
   subnet_id           = data.azurerm_subnet.private_endpoints_subnet.id
 
   private_service_connection {
@@ -270,7 +270,7 @@ resource "azurerm_private_endpoint" "blob" {
   depends_on          = [module.io_citizen_auth_storage]
   name                = format("%s-blob-endpoint", module.io_citizen_auth_storage.name)
   location            = var.location
-  resource_group_name = azurerm_resource_group.data_rg.name
+  resource_group_name = data.azurerm_resource_group.data_rg.name
   subnet_id           = data.azurerm_subnet.private_endpoints_subnet.id
 
   private_service_connection {
@@ -344,7 +344,7 @@ resource "azurerm_monitor_diagnostic_setting" "io_citizen_auth_storage_diagnosti
 resource "azurerm_monitor_scheduled_query_rules_alert_v2" "expired_user_sessions_failure_alert_rule" {
   enabled             = true
   name                = "[CITIZEN-AUTH | ${module.io_citizen_auth_storage.name}] Failures on ${resource.azurerm_storage_queue.expired_user_sessions_poison.name} queue"
-  resource_group_name = azurerm_resource_group.data_rg.name
+  resource_group_name = data.azurerm_resource_group.data_rg.name
   location            = var.location
 
   scopes                  = [module.io_citizen_auth_storage.id]
