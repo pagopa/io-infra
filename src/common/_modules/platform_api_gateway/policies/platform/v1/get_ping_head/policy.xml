@@ -19,12 +19,12 @@
         <base />
     </backend>
     <outbound>
-        <base />
-        <choose>
-            <when condition="@(context.Response.StatusCode == 204)">
-                <cache-store duration="60" />
-            </when>
-        </choose>
+      <choose>
+          <when condition="@(context.Response.StatusCode == 204)">
+              <cache-store duration="60" />
+          </when>
+      </choose>
+      <base />
     </outbound>
     <on-error>
         <base />
