@@ -35,7 +35,7 @@ resource "azurerm_api_management_api" "platform_legacy" {
   import {
     content_format = "openapi-link"
     # The commit id refers to the last commit of refactor-openapi-specs branch.
-    content_value = "https://raw.githubusercontent.com/pagopa/io-backend/a412560082e748d972107759ad32a54938efe878/openapi/generated/api_platform_legacy.yaml"
+    content_value = "https://raw.githubusercontent.com/pagopa/io-backend/9e5e8ab6ee8ea67c4b8c50e02a1da4862c33ccf2/openapi/generated/api_platform_legacy.yaml"
   }
 }
 
