@@ -10,7 +10,7 @@
     The cache is configured as "internal" type with no downstream caching.
     Response caching helps reduce backend load and improve response times for frequently accessed endpoints.
 
-    A custom cache is used becouse cache-store policy statement does not support 204 status code responses or HEAD requests.
+    A custom cache is used because cache-store policy statement ignores 204 status code responses or HEAD requests.
 -->
 <policies>
     <inbound>
