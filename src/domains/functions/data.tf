@@ -87,6 +87,11 @@ data "azurerm_key_vault_secret" "app_backend_PRE_SHARED_KEY" {
   key_vault_id = data.azurerm_key_vault.key_vault_common.id
 }
 
+data "azurerm_key_vault_secret" "fn_admin_SESSION_MANAGER_INTERNAL_KEY" {
+  name         = "fn-admin-session-manager-internal-key"
+  key_vault_id = data.azurerm_key_vault.key_vault_common.id
+}
+
 data "azurerm_key_vault_secret" "fn_app_KEY_SPIDLOGS_PRIV" {
   name         = "funcapp-KEY-SPIDLOGS-PRIV"
   key_vault_id = data.azurerm_key_vault.common.id
@@ -150,4 +155,9 @@ data "azurerm_subnet" "azdoa_snet" {
 data "azurerm_api_management" "apim_itn_api" {
   name                = local.apim_itn_name
   resource_group_name = local.apim_itn_resource_group_name
+}
+
+data "azurerm_linux_function_app" "session_manager_internal" {
+  name                = "io-p-weu-auth-sm-int-func-01"
+  resource_group_name = "io-p-itn-auth-main-rg-01"
 }
