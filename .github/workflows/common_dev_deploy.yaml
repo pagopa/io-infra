@@ -17,7 +17,7 @@ on:
       - ".github/workflows/common_dev_deploy.yaml"
 jobs:
   dev_itn_common_deploy:
-    uses: pagopa/dx/.github/workflows/infra_apply.yaml@main
+    uses: pagopa/dx/.github/workflows/infra_apply.yaml@check-modules-lock-in-cicd
     name: Dev - Code Deploy
     secrets: inherit
     with:
