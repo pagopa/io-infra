@@ -158,6 +158,6 @@ data "azurerm_api_management" "apim_itn_api" {
 }
 
 data "azurerm_linux_function_app" "session_manager_internal" {
-  name                = "io-p-weu-auth-sm-int-func-01"
-  resource_group_name = "io-p-itn-auth-main-rg-01"
+  name                = format("%s-weu-auth-sm-int-func-01", local.project)
+  resource_group_name = format("%s-auth-main-rg-01", local.common_project_itn)
 }
