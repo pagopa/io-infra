@@ -82,11 +82,6 @@ data "azurerm_key_vault" "key_vault_common" {
 
 
 
-data "azurerm_key_vault_secret" "app_backend_PRE_SHARED_KEY" {
-  name         = "appbackend-PRE-SHARED-KEY"
-  key_vault_id = data.azurerm_key_vault.key_vault_common.id
-}
-
 data "azurerm_key_vault_secret" "fn_admin_SESSION_MANAGER_INTERNAL_KEY" {
   name         = "fn-admin-session-manager-internal-key"
   key_vault_id = data.azurerm_key_vault.key_vault_common.id
@@ -122,11 +117,6 @@ data "azurerm_storage_account" "citizen_auth_common" {
 #
 # Notifications resources
 #
-
-data "azurerm_app_service" "appservice_app_backendli" {
-  name                = format("%s-app-appbackendli", local.project)
-  resource_group_name = format("%s-rg-linux", local.project)
-}
 
 data "azurerm_storage_account" "locked_profiles_storage" {
   name                = replace(format("%s-locked-profiles-st", local.project), "-", "")
