@@ -75,7 +75,7 @@ resource "azurerm_api_management_api_operation_policy" "platform_legacy_get_ping
   api_management_name = module.platform_api_gateway.name
   resource_group_name = module.platform_api_gateway.resource_group_name
   operation_id        = "getPing"
-  xml_content         = file("${path.module}/policies/platform/v1/get_ping/policy.xml")
+  xml_content         = file("${path.module}/policies/platform/v1/get_ping_cache_policy.xml")
 }
 
 resource "azurerm_api_management_api_operation_policy" "platform_legacy_get_ping_head" {
@@ -83,7 +83,7 @@ resource "azurerm_api_management_api_operation_policy" "platform_legacy_get_ping
   api_management_name = module.platform_api_gateway.name
   resource_group_name = module.platform_api_gateway.resource_group_name
   operation_id        = "getPingHead"
-  xml_content         = file("${path.module}/policies/platform/v1/get_ping_head/policy.xml")
+  xml_content         = file("${path.module}/policies/platform/v1/get_ping_cache_policy.xml")
 }
 
 resource "azurerm_api_management_api_operation_policy" "platform_legacy_get_server_info" {
