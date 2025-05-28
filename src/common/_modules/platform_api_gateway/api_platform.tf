@@ -35,7 +35,7 @@ resource "azurerm_api_management_api" "platform_legacy" {
   import {
     content_format = "openapi-link"
     # The commit id refers to the last commit of refactor-openapi-specs branch.
-    content_value = "https://raw.githubusercontent.com/pagopa/io-backend/a412560082e748d972107759ad32a54938efe878/openapi/generated/api_platform_legacy.yaml"
+    content_value = "https://raw.githubusercontent.com/pagopa/io-backend/9e5e8ab6ee8ea67c4b8c50e02a1da4862c33ccf2/openapi/generated/api_platform_legacy.yaml"
   }
 }
 
@@ -62,12 +62,28 @@ resource "azurerm_api_management_api_operation_policy" "platform_legacy_get_serv
   xml_content         = file("${path.module}/policies/platform/v1/get_services_status/policy.xml")
 }
 
+resource "azurerm_api_management_api_operation_policy" "platform_legacy_get_services_status_head" {
+  api_name            = azurerm_api_management_api.platform_legacy.name
+  api_management_name = module.platform_api_gateway.name
+  resource_group_name = module.platform_api_gateway.resource_group_name
+  operation_id        = "getServicesStatusHead"
+  xml_content         = file("${path.module}/policies/platform/v1/get_services_status_head/policy.xml")
+}
+
 resource "azurerm_api_management_api_operation_policy" "platform_legacy_get_ping" {
   api_name            = azurerm_api_management_api.platform_legacy.name
   api_management_name = module.platform_api_gateway.name
   resource_group_name = module.platform_api_gateway.resource_group_name
   operation_id        = "getPing"
-  xml_content         = file("${path.module}/policies/platform/v1/get_ping/policy.xml")
+  xml_content         = file("${path.module}/policies/platform/v1/get_ping_cache_policy.xml")
+}
+
+resource "azurerm_api_management_api_operation_policy" "platform_legacy_get_ping_head" {
+  api_name            = azurerm_api_management_api.platform_legacy.name
+  api_management_name = module.platform_api_gateway.name
+  resource_group_name = module.platform_api_gateway.resource_group_name
+  operation_id        = "getPingHead"
+  xml_content         = file("${path.module}/policies/platform/v1/get_ping_cache_policy.xml")
 }
 
 resource "azurerm_api_management_api_operation_policy" "platform_legacy_get_server_info" {
