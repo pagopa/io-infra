@@ -14,8 +14,8 @@ data "azurerm_storage_account" "logs" {
 }
 
 data "azurerm_storage_account" "push_notifications_storage" {
-  name                = replace(format("%s-com-st-01", local.project), "-", "")
-  resource_group_name = format("%s-com-rg-01", local.project)
+  name                = replace(format("%s-com-st-01", local.common_project_itn), "-", "")
+  resource_group_name = format("%s-com-rg-01", local.common_project_itn)
 }
 
 # Storages used by fn-profile
