@@ -102,6 +102,8 @@ module "platform_api_gateway_apim_itn" {
   azure_adgroup_platform_admins_object_id = data.azuread_group.platform_admins.object_id
   azure_adgroup_bonus_admins_object_id    = data.azuread_group.bonus_admins.object_id
 
+  azure_user_assigned_identity_bonus_infra_cd = data.azurerm_user_assigned_identity.bonus_infra_cd.principal_id
+
   tags = local.tags
 }
 

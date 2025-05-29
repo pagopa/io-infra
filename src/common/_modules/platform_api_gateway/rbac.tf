@@ -32,3 +32,20 @@ module "iam_adgroup_bonus_admins" {
     }
   ]
 }
+
+module "iam_adgroup_bonus_infra_cd" {
+  source  = "pagopa-dx/azure-role-assignments/azurerm"
+  version = "~> 1.0"
+
+  principal_id    = var.azure_user_assigned_identity_bonus_infra_cd
+  subscription_id = data.azurerm_client_config.current.subscription_id
+
+  apim = [
+    {
+      name                = module.platform_api_gateway.name
+      resource_group_name = module.platform_api_gateway.resource_group_name
+      description         = "Bonus team infra CD identity"
+      role                = "writer"
+    }
+  ]
+}

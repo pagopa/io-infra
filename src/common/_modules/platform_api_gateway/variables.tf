@@ -91,3 +91,8 @@ variable "azure_adgroup_bonus_admins_object_id" {
   type        = string
   description = "Object Id of the Entra group for subscription admins"
 }
+
+variable "azure_user_assigned_identity_bonus_infra_cd" {
+  type        = string
+  description = "Principal Id of the User Assigned Identity for Bonus Infra CD"
+}
