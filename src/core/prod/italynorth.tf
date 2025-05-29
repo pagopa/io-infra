@@ -45,10 +45,11 @@ module "vnet_peering_itn" {
   }
 }
 
-module "custom_roles" {
-  source = "../_modules/custom_roles"
-
-  subscription_id = data.azurerm_subscription.current.id
+removed {
+  from = module.custom_roles
+  lifecycle {
+    destroy = false
+  }
 }
 
 module "storage_accounts_itn" {
