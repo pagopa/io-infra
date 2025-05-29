@@ -45,13 +45,6 @@ module "vnet_peering_itn" {
   }
 }
 
-removed {
-  from = module.custom_roles
-  lifecycle {
-    destroy = false
-  }
-}
-
 module "storage_accounts_itn" {
   source = "../_modules/storage_accounts"
 
