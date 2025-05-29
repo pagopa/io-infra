@@ -22,5 +22,6 @@
   "storage_accounts_itn.retirements_itn_01_admins": "07cdce758d809d16a5154b997dcb2b017b7b443c53f5a6de776b9f0de6b19c9e",
   "platform_api_gateway_apim_itn.iam_adgroup_product_admins": "07cdce758d809d16a5154b997dcb2b017b7b443c53f5a6de776b9f0de6b19c9e",
   "platform_api_gateway_apim_itn.platform_api_gateway": "3cb279a9513f855c5f99711bd4a2ee372dd5939d14686a620774c45dc01ba571",
-  "platform_service_bus_namespace_itn.platform_service_bus_namespace": "dfda67c934af2fbd12cdb260a0cf3b754c599b1237b708cae8082aa81d53b583"
+  "platform_service_bus_namespace_itn.platform_service_bus_namespace": "dfda67c934af2fbd12cdb260a0cf3b754c599b1237b708cae8082aa81d53b583",
+  "platform_api_gateway_apim_itn.iam_adgroup_bonus_admins": "07cdce758d809d16a5154b997dcb2b017b7b443c53f5a6de776b9f0de6b19c9e"
 }
