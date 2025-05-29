@@ -1,15 +1,15 @@
 {
-  "storage_accounts_itn.iam_adgroup_admins": "91c32d031eb30c578358853b76e1c658610bb537e47e0209fc4e3fd3cbe74385",
-  "storage_accounts_itn.iam_adgroup_auth_admins": "91c32d031eb30c578358853b76e1c658610bb537e47e0209fc4e3fd3cbe74385",
-  "storage_accounts_itn.iam_adgroup_auth_devs": "91c32d031eb30c578358853b76e1c658610bb537e47e0209fc4e3fd3cbe74385",
-  "storage_accounts_itn.iam_adgroup_bonus_admins": "91c32d031eb30c578358853b76e1c658610bb537e47e0209fc4e3fd3cbe74385",
-  "storage_accounts_itn.iam_adgroup_bonus_devs": "91c32d031eb30c578358853b76e1c658610bb537e47e0209fc4e3fd3cbe74385",
-  "storage_accounts_itn.iam_adgroup_com_admins": "91c32d031eb30c578358853b76e1c658610bb537e47e0209fc4e3fd3cbe74385",
-  "storage_accounts_itn.iam_adgroup_com_devs": "91c32d031eb30c578358853b76e1c658610bb537e47e0209fc4e3fd3cbe74385",
-  "storage_accounts_itn.iam_adgroup_platform_admins": "91c32d031eb30c578358853b76e1c658610bb537e47e0209fc4e3fd3cbe74385",
-  "storage_accounts_itn.iam_adgroup_svc_admins": "91c32d031eb30c578358853b76e1c658610bb537e47e0209fc4e3fd3cbe74385",
-  "storage_accounts_itn.iam_adgroup_svc_devs": "91c32d031eb30c578358853b76e1c658610bb537e47e0209fc4e3fd3cbe74385",
-  "storage_accounts_itn.iam_adgroup_wallet_admins": "91c32d031eb30c578358853b76e1c658610bb537e47e0209fc4e3fd3cbe74385",
-  "storage_accounts_itn.iam_adgroup_wallet_devs": "91c32d031eb30c578358853b76e1c658610bb537e47e0209fc4e3fd3cbe74385",
-  "storage_accounts_itn.iam_messages_sp": "91c32d031eb30c578358853b76e1c658610bb537e47e0209fc4e3fd3cbe74385"
+  "storage_accounts_itn.iam_adgroup_admins": "52ca57b72bdf639846a472014cb2113d519bdc00dc4a642e925b97ad6b99d25c",
+  "storage_accounts_itn.iam_adgroup_auth_admins": "52ca57b72bdf639846a472014cb2113d519bdc00dc4a642e925b97ad6b99d25c",
+  "storage_accounts_itn.iam_adgroup_auth_devs": "52ca57b72bdf639846a472014cb2113d519bdc00dc4a642e925b97ad6b99d25c",
+  "storage_accounts_itn.iam_adgroup_bonus_admins": "52ca57b72bdf639846a472014cb2113d519bdc00dc4a642e925b97ad6b99d25c",
+  "storage_accounts_itn.iam_adgroup_bonus_devs": "52ca57b72bdf639846a472014cb2113d519bdc00dc4a642e925b97ad6b99d25c",
+  "storage_accounts_itn.iam_adgroup_com_admins": "52ca57b72bdf639846a472014cb2113d519bdc00dc4a642e925b97ad6b99d25c",
+  "storage_accounts_itn.iam_adgroup_com_devs": "52ca57b72bdf639846a472014cb2113d519bdc00dc4a642e925b97ad6b99d25c",
+  "storage_accounts_itn.iam_adgroup_platform_admins": "52ca57b72bdf639846a472014cb2113d519bdc00dc4a642e925b97ad6b99d25c",
+  "storage_accounts_itn.iam_adgroup_svc_admins": "52ca57b72bdf639846a472014cb2113d519bdc00dc4a642e925b97ad6b99d25c",
+  "storage_accounts_itn.iam_adgroup_svc_devs": "52ca57b72bdf639846a472014cb2113d519bdc00dc4a642e925b97ad6b99d25c",
+  "storage_accounts_itn.iam_adgroup_wallet_admins": "52ca57b72bdf639846a472014cb2113d519bdc00dc4a642e925b97ad6b99d25c",
+  "storage_accounts_itn.iam_adgroup_wallet_devs": "52ca57b72bdf639846a472014cb2113d519bdc00dc4a642e925b97ad6b99d25c",
+  "storage_accounts_itn.iam_messages_sp": "52ca57b72bdf639846a472014cb2113d519bdc00dc4a642e925b97ad6b99d25c"
 }
