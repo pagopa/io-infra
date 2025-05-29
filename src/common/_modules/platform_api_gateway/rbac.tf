@@ -28,7 +28,7 @@ module "iam_adgroup_bonus_admins" {
       name                = module.platform_api_gateway.name
       resource_group_name = module.platform_api_gateway.resource_group_name
       description         = "Bonus team admin group"
-      role                = "writer"
+      role                = "owner"
     }
   ]
 }
@@ -45,7 +45,7 @@ module "iam_adgroup_bonus_infra_cd" {
       name                = module.platform_api_gateway.name
       resource_group_name = module.platform_api_gateway.resource_group_name
       description         = "Bonus team infra CD identity"
-      role                = "writer"
+      role                = "owner"
     }
   ]
 }
