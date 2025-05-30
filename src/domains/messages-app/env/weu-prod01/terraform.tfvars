@@ -45,7 +45,6 @@ tls_cert_check_enabled = true
 #################################
 # CIDRS
 #################################
-cidr_subnet_push_notif = ["10.0.141.0/26"]
 
 ### Aks
 
@@ -182,16 +181,6 @@ nh_partition_count     = 4
 ###############################
 # Push Notification
 ###############################
-push_notif_enabled = true
-# App Messages
-push_notif_function_always_on = true
-
-push_notif_function_kind              = "Linux"
-push_notif_function_sku_tier          = "PremiumV3"
-push_notif_function_sku_size          = "P1v3"
-push_notif_function_autoscale_minimum = 1
-push_notif_function_autoscale_maximum = 15
-push_notif_function_autoscale_default = 10
 
 ###############################
 # Messages functions
