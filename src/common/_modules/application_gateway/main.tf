@@ -650,7 +650,7 @@ module "app_gw" {
         api-gateway-cdc = {
           paths                 = ["/api/cdc/*"]
           backend               = "platform-api-gateway",
-          rewrite_rule_set_name = "rewrite-rule-set-api-app-rewrite-platform-legacy"
+          rewrite_rule_set_name = "rewrite-rule-set-api-app"
         },
         session-manager = {
           paths                 = ["/session-manager/*"]
