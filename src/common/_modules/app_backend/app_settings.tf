@@ -85,6 +85,12 @@ locals {
     PAGOPA_API_KEY_PROD = data.azurerm_key_vault_secret.app_backend_PAGOPA_API_KEY_PROD.value
     PAGOPA_API_KEY_UAT  = data.azurerm_key_vault_secret.app_backend_PAGOPA_API_KEY_UAT.value
 
+    // PAGOPA ECOMMERCE
+    PAGOPA_ECOMMERCE_BASE_URL     = "https://api.platform.pagopa.it/ecommerce/payment-requests-service/v1"
+    PAGOPA_ECOMMERCE_UAT_BASE_URL = "https://api.uat.platform.pagopa.it/ecommerce/payment-requests-service/v1"
+    PAGOPA_ECOMMERCE_API_KEY      = data.azurerm_key_vault_secret.app_backend_PAGOPA_ECOMMERCE_API_KEY.value
+    PAGOPA_ECOMMERCE_UAT_API_KEY  = data.azurerm_key_vault_secret.app_backend_PAGOPA_ECOMMERCE_UAT_API_KEY.value
+
     // MYPORTAL
     MYPORTAL_BASE_PATH             = "/myportal/api/v1"
     ALLOW_MYPORTAL_IP_SOURCE_RANGE = data.azurerm_key_vault_secret.app_backend_ALLOW_MYPORTAL_IP_SOURCE_RANGE.value
