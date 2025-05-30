@@ -30,6 +30,16 @@ data "azurerm_key_vault_secret" "app_backend_CGN_OPERATOR_SEARCH_API_KEY_UAT" {
   key_vault_id = var.key_vault_common.id
 }
 
+data "azurerm_key_vault_secret" "app_backend_PAGOPA_ECOMMERCE_API_KEY" {
+  name         = "appbackend-PAGOPA-ECOMMERCE-API-KEY"
+  key_vault_id = var.key_vault_common.id
+}
+
+data "azurerm_key_vault_secret" "app_backend_PAGOPA_ECOMMERCE_UAT_API_KEY" {
+  name         = "appbackend-PAGOPA-ECOMMERCE-UAT-API-KEY"
+  key_vault_id = var.key_vault_common.id
+}
+
 data "azurerm_key_vault_secret" "app_backend_PAGOPA_API_KEY_PROD" {
   name         = "appbackend-PAGOPA-API-KEY-PROD-PRIMARY"
   key_vault_id = var.key_vault_common.id
