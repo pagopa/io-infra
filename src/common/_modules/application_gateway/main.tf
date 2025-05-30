@@ -647,7 +647,7 @@ module "app_gw" {
           backend               = "platform-api-gateway",
           rewrite_rule_set_name = "rewrite-rule-set-api-app-rewrite-platform-legacy"
         },
-        api-gateway-platform-cdc = {
+        api-gateway-cdc = {
           paths                 = ["/api/cdc/*"]
           backend               = "platform-api-gateway",
           rewrite_rule_set_name = "rewrite-rule-set-api-app-rewrite-platform-legacy"
