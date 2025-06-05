@@ -38,6 +38,16 @@ module "platform_api_gateway" {
         host_name           = "io-p-itn-platform-api-gateway-apim-01.azure-api.net"
         key_vault_id        = null
       },
+      {
+        # proxy.internal.io.pagopa.it
+        default_ssl_binding = false
+        host_name           = local.proxy_hostname_internal
+        key_vault_id = replace(
+          data.azurerm_key_vault_certificate.proxy_internal_io_pagopa_it.secret_id,
+          "/${data.azurerm_key_vault_certificate.proxy_internal_io_pagopa_it.version}",
+          ""
+        )
+      },
     ]
     developer_portal = null
     management       = null

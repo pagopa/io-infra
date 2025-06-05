@@ -53,3 +53,8 @@ variable "apim_private_ip" {
   type        = string
   description = "Private IP of the API Management"
 }
+
+variable "platform_api_gateway_private_ip" {
+  type        = string
+  description = "Private IP of the Proxy API Gateway"
+}

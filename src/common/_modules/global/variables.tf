@@ -24,7 +24,8 @@ variable "dns" {
       io_selfcare         = string
       firmaconio_selfcare = string
     })
-    app_gateway_public_ip = string
-    apim_private_ip       = string
+    app_gateway_public_ip           = string
+    apim_private_ip                 = string
+    platform_api_gateway_private_ip = string
   })
 }
