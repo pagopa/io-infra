@@ -30,6 +30,19 @@ resource "azurerm_key_vault_access_policy" "adgroup_admin" {
   certificate_permissions = ["Get", "List", "Update", "Create", "Import", "Delete", "Restore", "Recover", ]
 }
 
+## adgroup_auth_admins group policy ##
+resource "azurerm_key_vault_access_policy" "adgroup_auth_admins" {
+  key_vault_id = module.key_vault.id
+
+  tenant_id = data.azurerm_client_config.current.tenant_id
+  object_id = data.azuread_group.adgroup_auth_admins.object_id
+
+  key_permissions         = ["Get", "List", "Update", "Create", "Import", "Delete", "GetRotationPolicy"]
+  secret_permissions      = ["Get", "List", "Set", "Delete", "Restore", "Recover", ]
+  storage_permissions     = []
+  certificate_permissions = ["Get", "List", "Update", "Create", "Import", "Delete", "Restore", "Recover", ]
+}
+
 ## adgroup_developers group policy ##
 resource "azurerm_key_vault_access_policy" "adgroup_developers" {
   key_vault_id = module.key_vault.id
