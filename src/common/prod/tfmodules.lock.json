@@ -1,28 +1,158 @@
 {
-  "apim_itn.iam_adgroup_auth_admins": "52ca57b72bdf639846a472014cb2113d519bdc00dc4a642e925b97ad6b99d25c",
-  "apim_itn.iam_adgroup_bonus_admins": "52ca57b72bdf639846a472014cb2113d519bdc00dc4a642e925b97ad6b99d25c",
-  "apim_itn.iam_adgroup_com_admins": "52ca57b72bdf639846a472014cb2113d519bdc00dc4a642e925b97ad6b99d25c",
-  "apim_itn.iam_adgroup_svc_admins": "52ca57b72bdf639846a472014cb2113d519bdc00dc4a642e925b97ad6b99d25c",
-  "apim_itn.iam_adgroup_wallet_admins": "52ca57b72bdf639846a472014cb2113d519bdc00dc4a642e925b97ad6b99d25c",
-  "apim_itn.iam_cgn_pe_backend_app_01": "52ca57b72bdf639846a472014cb2113d519bdc00dc4a642e925b97ad6b99d25c",
-  "storage_accounts.exportdata_weu_01_com_admins": "07cdce758d809d16a5154b997dcb2b017b7b443c53f5a6de776b9f0de6b19c9e",
-  "storage_accounts.exportdata_weu_01_com_devs": "07cdce758d809d16a5154b997dcb2b017b7b443c53f5a6de776b9f0de6b19c9e",
-  "cosmos_api_weu.cosno_api_auth_admins": "52ca57b72bdf639846a472014cb2113d519bdc00dc4a642e925b97ad6b99d25c",
-  "cosmos_api_weu.cosno_api_auth_devs": "52ca57b72bdf639846a472014cb2113d519bdc00dc4a642e925b97ad6b99d25c",
-  "cosmos_api_weu.cosno_api_com_admins": "52ca57b72bdf639846a472014cb2113d519bdc00dc4a642e925b97ad6b99d25c",
-  "cosmos_api_weu.cosno_api_com_devs": "52ca57b72bdf639846a472014cb2113d519bdc00dc4a642e925b97ad6b99d25c",
-  "cosmos_api_weu.cosno_api_svc_admins": "52ca57b72bdf639846a472014cb2113d519bdc00dc4a642e925b97ad6b99d25c",
-  "cosmos_api_weu.cosno_api_svc_devs": "52ca57b72bdf639846a472014cb2113d519bdc00dc4a642e925b97ad6b99d25c",
-  "assets_cdn_weu.roles_svc_devs": "52ca57b72bdf639846a472014cb2113d519bdc00dc4a642e925b97ad6b99d25c",
-  "github_runner_itn.container_app_github_runner": "df0074e2b91c6153a80a9e208a152e9c060936c85b5f7b1f2ced9a9f5aa901ec",
-  "apim_itn.apim": "3cb279a9513f855c5f99711bd4a2ee372dd5939d14686a620774c45dc01ba571",
-  "storage_accounts.retirements_itn_01_admins": "07cdce758d809d16a5154b997dcb2b017b7b443c53f5a6de776b9f0de6b19c9e",
-  "storage_accounts_itn.exportdata_weu_01_com_admins": "07cdce758d809d16a5154b997dcb2b017b7b443c53f5a6de776b9f0de6b19c9e",
-  "storage_accounts_itn.exportdata_weu_01_com_devs": "07cdce758d809d16a5154b997dcb2b017b7b443c53f5a6de776b9f0de6b19c9e",
-  "storage_accounts_itn.retirements_itn_01_admins": "07cdce758d809d16a5154b997dcb2b017b7b443c53f5a6de776b9f0de6b19c9e",
-  "platform_api_gateway_apim_itn.iam_adgroup_product_admins": "07cdce758d809d16a5154b997dcb2b017b7b443c53f5a6de776b9f0de6b19c9e",
-  "platform_api_gateway_apim_itn.platform_api_gateway": "3cb279a9513f855c5f99711bd4a2ee372dd5939d14686a620774c45dc01ba571",
-  "platform_service_bus_namespace_itn.platform_service_bus_namespace": "dfda67c934af2fbd12cdb260a0cf3b754c599b1237b708cae8082aa81d53b583",
-  "platform_api_gateway_apim_itn.iam_adgroup_bonus_admins": "07cdce758d809d16a5154b997dcb2b017b7b443c53f5a6de776b9f0de6b19c9e",
-  "platform_api_gateway_apim_itn.iam_adgroup_bonus_infra_cd": "07cdce758d809d16a5154b997dcb2b017b7b443c53f5a6de776b9f0de6b19c9e"
+  "apim_itn.iam_adgroup_auth_admins": {
+    "hash": "52ca57b72bdf639846a472014cb2113d519bdc00dc4a642e925b97ad6b99d25c",
+    "version": "0.1.3",
+    "name": "azure_role_assignments",
+    "source": "https://registry.terraform.io/modules/pagopa-dx/azure-role-assignments/azurerm/0.1.3"
+  },
+  "apim_itn.iam_adgroup_bonus_admins": {
+    "hash": "52ca57b72bdf639846a472014cb2113d519bdc00dc4a642e925b97ad6b99d25c",
+    "version": "0.1.3",
+    "name": "azure_role_assignments",
+    "source": "https://registry.terraform.io/modules/pagopa-dx/azure-role-assignments/azurerm/0.1.3"
+  },
+  "apim_itn.iam_adgroup_com_admins": {
+    "hash": "52ca57b72bdf639846a472014cb2113d519bdc00dc4a642e925b97ad6b99d25c",
+    "version": "0.1.3",
+    "name": "azure_role_assignments",
+    "source": "https://registry.terraform.io/modules/pagopa-dx/azure-role-assignments/azurerm/0.1.3"
+  },
+  "apim_itn.iam_adgroup_svc_admins": {
+    "hash": "52ca57b72bdf639846a472014cb2113d519bdc00dc4a642e925b97ad6b99d25c",
+    "version": "0.1.3",
+    "name": "azure_role_assignments",
+    "source": "https://registry.terraform.io/modules/pagopa-dx/azure-role-assignments/azurerm/0.1.3"
+  },
+  "apim_itn.iam_adgroup_wallet_admins": {
+    "hash": "52ca57b72bdf639846a472014cb2113d519bdc00dc4a642e925b97ad6b99d25c",
+    "version": "0.1.3",
+    "name": "azure_role_assignments",
+    "source": "https://registry.terraform.io/modules/pagopa-dx/azure-role-assignments/azurerm/0.1.3"
+  },
+  "apim_itn.iam_cgn_pe_backend_app_01": {
+    "hash": "52ca57b72bdf639846a472014cb2113d519bdc00dc4a642e925b97ad6b99d25c",
+    "version": "0.1.3",
+    "name": "azure_role_assignments",
+    "source": "https://registry.terraform.io/modules/pagopa-dx/azure-role-assignments/azurerm/0.1.3"
+  },
+  "storage_accounts.exportdata_weu_01_com_admins": {
+    "hash": "07cdce758d809d16a5154b997dcb2b017b7b443c53f5a6de776b9f0de6b19c9e",
+    "version": "1.1.0",
+    "name": "azure_role_assignments",
+    "source": "https://registry.terraform.io/modules/pagopa-dx/azure-role-assignments/azurerm/1.1.0"
+  },
+  "storage_accounts.exportdata_weu_01_com_devs": {
+    "hash": "07cdce758d809d16a5154b997dcb2b017b7b443c53f5a6de776b9f0de6b19c9e",
+    "version": "1.1.0",
+    "name": "azure_role_assignments",
+    "source": "https://registry.terraform.io/modules/pagopa-dx/azure-role-assignments/azurerm/1.1.0"
+  },
+  "cosmos_api_weu.cosno_api_auth_admins": {
+    "hash": "52ca57b72bdf639846a472014cb2113d519bdc00dc4a642e925b97ad6b99d25c",
+    "version": "0.1.3",
+    "name": "azure_role_assignments",
+    "source": "https://registry.terraform.io/modules/pagopa-dx/azure-role-assignments/azurerm/0.1.3"
+  },
+  "cosmos_api_weu.cosno_api_auth_devs": {
+    "hash": "52ca57b72bdf639846a472014cb2113d519bdc00dc4a642e925b97ad6b99d25c",
+    "version": "0.1.3",
+    "name": "azure_role_assignments",
+    "source": "https://registry.terraform.io/modules/pagopa-dx/azure-role-assignments/azurerm/0.1.3"
+  },
+  "cosmos_api_weu.cosno_api_com_admins": {
+    "hash": "52ca57b72bdf639846a472014cb2113d519bdc00dc4a642e925b97ad6b99d25c",
+    "version": "0.1.3",
+    "name": "azure_role_assignments",
+    "source": "https://registry.terraform.io/modules/pagopa-dx/azure-role-assignments/azurerm/0.1.3"
+  },
+  "cosmos_api_weu.cosno_api_com_devs": {
+    "hash": "52ca57b72bdf639846a472014cb2113d519bdc00dc4a642e925b97ad6b99d25c",
+    "version": "0.1.3",
+    "name": "azure_role_assignments",
+    "source": "https://registry.terraform.io/modules/pagopa-dx/azure-role-assignments/azurerm/0.1.3"
+  },
+  "cosmos_api_weu.cosno_api_svc_admins": {
+    "hash": "52ca57b72bdf639846a472014cb2113d519bdc00dc4a642e925b97ad6b99d25c",
+    "version": "0.1.3",
+    "name": "azure_role_assignments",
+    "source": "https://registry.terraform.io/modules/pagopa-dx/azure-role-assignments/azurerm/0.1.3"
+  },
+  "cosmos_api_weu.cosno_api_svc_devs": {
+    "hash": "52ca57b72bdf639846a472014cb2113d519bdc00dc4a642e925b97ad6b99d25c",
+    "version": "0.1.3",
+    "name": "azure_role_assignments",
+    "source": "https://registry.terraform.io/modules/pagopa-dx/azure-role-assignments/azurerm/0.1.3"
+  },
+  "assets_cdn_weu.roles_svc_devs": {
+    "hash": "52ca57b72bdf639846a472014cb2113d519bdc00dc4a642e925b97ad6b99d25c",
+    "version": "0.1.3",
+    "name": "azure_role_assignments",
+    "source": "https://registry.terraform.io/modules/pagopa-dx/azure-role-assignments/azurerm/0.1.3"
+  },
+  "github_runner_itn.container_app_github_runner": {
+    "hash": "df0074e2b91c6153a80a9e208a152e9c060936c85b5f7b1f2ced9a9f5aa901ec",
+    "version": "1.0.9",
+    "name": "github_selfhosted_runner_on_container_app_jobs",
+    "source": "https://registry.terraform.io/modules/pagopa-dx/github-selfhosted-runner-on-container-app-jobs/azurerm/1.0.9"
+  },
+  "apim_itn.apim": {
+    "hash": "7c4ede49c7e6ebd45b656abca088b846d0e417d3e8e9b700464c7acaefbe5d04",
+    "version": "1.2.2",
+    "name": "azure_api_management",
+    "source": "https://registry.terraform.io/modules/pagopa-dx/azure-api-management/azurerm/1.2.2"
+  },
+  "storage_accounts.retirements_itn_01_admins": {
+    "hash": "07cdce758d809d16a5154b997dcb2b017b7b443c53f5a6de776b9f0de6b19c9e",
+    "version": "1.1.0",
+    "name": "azure_role_assignments",
+    "source": "https://registry.terraform.io/modules/pagopa-dx/azure-role-assignments/azurerm/1.1.0"
+  },
+  "storage_accounts_itn.exportdata_weu_01_com_admins": {
+    "hash": "07cdce758d809d16a5154b997dcb2b017b7b443c53f5a6de776b9f0de6b19c9e",
+    "version": "1.1.0",
+    "name": "azure_role_assignments",
+    "source": "https://registry.terraform.io/modules/pagopa-dx/azure-role-assignments/azurerm/1.1.0"
+  },
+  "storage_accounts_itn.exportdata_weu_01_com_devs": {
+    "hash": "07cdce758d809d16a5154b997dcb2b017b7b443c53f5a6de776b9f0de6b19c9e",
+    "version": "1.1.0",
+    "name": "azure_role_assignments",
+    "source": "https://registry.terraform.io/modules/pagopa-dx/azure-role-assignments/azurerm/1.1.0"
+  },
+  "storage_accounts_itn.retirements_itn_01_admins": {
+    "hash": "07cdce758d809d16a5154b997dcb2b017b7b443c53f5a6de776b9f0de6b19c9e",
+    "version": "1.1.0",
+    "name": "azure_role_assignments",
+    "source": "https://registry.terraform.io/modules/pagopa-dx/azure-role-assignments/azurerm/1.1.0"
+  },
+  "platform_api_gateway_apim_itn.iam_adgroup_product_admins": {
+    "hash": "07cdce758d809d16a5154b997dcb2b017b7b443c53f5a6de776b9f0de6b19c9e",
+    "version": "1.1.0",
+    "name": "azure_role_assignments",
+    "source": "https://registry.terraform.io/modules/pagopa-dx/azure-role-assignments/azurerm/1.1.0"
+  },
+  "platform_api_gateway_apim_itn.platform_api_gateway": {
+    "hash": "7c4ede49c7e6ebd45b656abca088b846d0e417d3e8e9b700464c7acaefbe5d04",
+    "version": "1.2.2",
+    "name": "azure_api_management",
+    "source": "https://registry.terraform.io/modules/pagopa-dx/azure-api-management/azurerm/1.2.2"
+  },
+  "platform_service_bus_namespace_itn.platform_service_bus_namespace": {
+    "hash": "dfda67c934af2fbd12cdb260a0cf3b754c599b1237b708cae8082aa81d53b583",
+    "version": "0.0.3",
+    "name": "azure_service_bus_namespace",
+    "source": "https://registry.terraform.io/modules/pagopa-dx/azure-service-bus-namespace/azurerm/0.0.3"
+  },
+  "platform_api_gateway_apim_itn.iam_adgroup_bonus_admins": {
+    "hash": "07cdce758d809d16a5154b997dcb2b017b7b443c53f5a6de776b9f0de6b19c9e",
+    "version": "1.1.0",
+    "name": "azure_role_assignments",
+    "source": "https://registry.terraform.io/modules/pagopa-dx/azure-role-assignments/azurerm/1.1.0"
+  },
+  "platform_api_gateway_apim_itn.iam_adgroup_bonus_infra_cd": {
+    "hash": "07cdce758d809d16a5154b997dcb2b017b7b443c53f5a6de776b9f0de6b19c9e",
+    "version": "1.1.0",
+    "name": "azure_role_assignments",
+    "source": "https://registry.terraform.io/modules/pagopa-dx/azure-role-assignments/azurerm/1.1.0"
+  }
 }
