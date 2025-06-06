@@ -376,7 +376,7 @@ module "cosmos_api_weu" {
   resource_group_internal        = local.core.resource_groups.westeurope.internal
   vnet_common                    = local.core.networking.weu.vnet_common
   pep_snet                       = local.core.networking.weu.pep_snet
-  secondary_location             = "westeurope"
+  secondary_location             = "spaincentral"
   secondary_location_pep_snet_id = local.core.networking.itn.pep_snet.id
   documents_dns_zone             = module.global.dns.private_dns_zones.documents
   allowed_subnets_ids            = values(data.azurerm_subnet.cosmos_api_allowed)[*].id
@@ -389,6 +389,11 @@ module "cosmos_api_weu" {
   azure_adgroup_svc_devs_object_id    = data.azuread_group.svc_devs.object_id
   azure_adgroup_auth_admins_object_id = data.azuread_group.auth_admins.object_id
   azure_adgroup_auth_devs_object_id   = data.azuread_group.auth_devs.object_id
+
+  infra_identity_ids = [
+    data.azurerm_user_assigned_identity.auth_n_identity_infra_ci.principal_id,
+    data.azurerm_user_assigned_identity.auth_n_identity_infra_cd.principal_id,
+  ]
 
   tags = local.tags
 }
@@ -429,8 +434,8 @@ module "app_backend_weu" {
   vnet_common                   = local.core.networking.weu.vnet_common
   cidr_subnet                   = each.value.cidr_subnet
   nat_gateways                  = local.core.networking.weu.nat_gateways
-  allowed_subnets               = concat(data.azurerm_subnet.services_snet.*.id, [module.application_gateway_weu.snet.id, module.apim_itn.snet.id])
-  slot_allowed_subnets          = concat([local.azdoa_snet_id["weu"]], data.azurerm_subnet.services_snet.*.id, [module.application_gateway_weu.snet.id, module.apim_itn.snet.id, module.github_runner_itn.subnet.id])
+  allowed_subnets               = concat(data.azurerm_subnet.services_snet.*.id, [module.application_gateway_weu.snet.id, module.apim_itn.snet.id, module.platform_api_gateway_apim_itn.snet.id])
+  slot_allowed_subnets          = concat([local.azdoa_snet_id["weu"]], data.azurerm_subnet.services_snet.*.id, [module.application_gateway_weu.snet.id, module.apim_itn.snet.id, module.platform_api_gateway_apim_itn.snet.id, module.github_runner_itn.subnet.id])
   allowed_ips                   = module.monitoring_weu.appi.reserved_ips
   slot_allowed_ips              = module.monitoring_weu.appi.reserved_ips
   apim_snet_address_prefixes    = module.apim_itn.snet.address_prefixes
@@ -487,9 +492,10 @@ module "app_backend_li_weu" {
       data.azurerm_subnet.admin_snet.id,
       data.azurerm_subnet.itn_auth_lv_func_snet.id,
       data.azurerm_subnet.itn_msgs_sending_func_snet.id,
-      data.azurerm_subnet.itn_auth_prof_async_func_snet.id
+      data.azurerm_subnet.itn_auth_prof_async_func_snet.id,
+      module.platform_api_gateway_apim_itn.snet.id
   ])
-  slot_allowed_subnets = concat([local.azdoa_snet_id["weu"]], data.azurerm_subnet.services_snet.*.id, [data.azurerm_subnet.admin_snet.id, module.github_runner_itn.subnet.id])
+  slot_allowed_subnets = concat([local.azdoa_snet_id["weu"]], data.azurerm_subnet.services_snet.*.id, [data.azurerm_subnet.admin_snet.id, module.github_runner_itn.subnet.id, module.platform_api_gateway_apim_itn.snet.id])
   allowed_ips = concat(module.monitoring_weu.appi.reserved_ips,
     [
       // aks prod01
@@ -533,11 +539,14 @@ module "storage_accounts" {
   source = "../_modules/storage_accounts"
 
   project                   = local.project_weu_legacy
+  subscription_id           = data.azurerm_subscription.current.subscription_id
   location                  = "westeurope"
   resource_group_operations = local.core.resource_groups.westeurope.operations
+  resource_group_common     = local.core.resource_groups.italynorth.common
 
   azure_adgroup_com_admins_object_id = data.azuread_group.com_admins.object_id
   azure_adgroup_com_devs_object_id   = data.azuread_group.com_devs.object_id
+  azure_adgroup_admins_object_id     = data.azuread_group.admins.object_id
 
   tags = local.tags
 }

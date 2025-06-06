@@ -82,8 +82,8 @@ data "azurerm_key_vault" "key_vault_common" {
 
 
 
-data "azurerm_key_vault_secret" "app_backend_PRE_SHARED_KEY" {
-  name         = "appbackend-PRE-SHARED-KEY"
+data "azurerm_key_vault_secret" "fn_admin_SESSION_MANAGER_INTERNAL_KEY" {
+  name         = "fn-admin-session-manager-internal-key"
   key_vault_id = data.azurerm_key_vault.key_vault_common.id
 }
 
@@ -118,11 +118,6 @@ data "azurerm_storage_account" "citizen_auth_common" {
 # Notifications resources
 #
 
-data "azurerm_app_service" "appservice_app_backendli" {
-  name                = format("%s-app-appbackendli", local.project)
-  resource_group_name = format("%s-rg-linux", local.project)
-}
-
 data "azurerm_storage_account" "locked_profiles_storage" {
   name                = replace(format("%s-locked-profiles-st", local.project), "-", "")
   resource_group_name = local.rg_internal_name
@@ -150,4 +145,9 @@ data "azurerm_subnet" "azdoa_snet" {
 data "azurerm_api_management" "apim_itn_api" {
   name                = local.apim_itn_name
   resource_group_name = local.apim_itn_resource_group_name
+}
+
+data "azurerm_linux_function_app" "session_manager_internal" {
+  name                = format("%s-weu-auth-sm-int-func-01", local.project)
+  resource_group_name = format("%s-auth-main-rg-01", local.common_project_itn)
 }

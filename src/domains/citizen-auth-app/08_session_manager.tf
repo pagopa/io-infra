@@ -83,11 +83,8 @@ data "azurerm_linux_function_app" "itn_auth_lv_func" {
 
 ###########
 
-resource "azurerm_resource_group" "session_manager_rg_weu" {
-  name     = format("%s-session-manager-rg-01", local.common_project)
-  location = var.location
-
-  tags = var.tags
+data "azurerm_resource_group" "session_manager_rg_weu" {
+  name = format("%s-session-manager-rg-01", local.common_project)
 }
 
 locals {
@@ -238,7 +235,7 @@ module "session_manager_weu" {
 
   # App service
   name                = "${local.app_name_weu}-03"
-  resource_group_name = azurerm_resource_group.session_manager_rg_weu.name
+  resource_group_name = data.azurerm_resource_group.session_manager_rg_weu.name
   location            = var.location
 
   always_on    = true
@@ -270,7 +267,6 @@ module "session_manager_weu" {
 
   allowed_subnets = [
     data.azurerm_subnet.appgateway_snet.id,
-    data.azurerm_subnet.fims_op_app_snet_01.id,
     data.azurerm_subnet.apim_itn_snet.id,
     // TODO: add proxy subnet
   ]
@@ -291,7 +287,7 @@ module "session_manager_weu_staging" {
   app_service_name = module.session_manager_weu.name
 
   name                = "staging"
-  resource_group_name = azurerm_resource_group.session_manager_rg_weu.name
+  resource_group_name = data.azurerm_resource_group.session_manager_rg_weu.name
   location            = var.location
 
   always_on    = true

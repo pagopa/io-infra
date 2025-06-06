@@ -74,11 +74,6 @@ data "azurerm_subnet" "app_backend_l2_snet" {
   resource_group_name  = local.vnet_common_resource_group_name
 }
 
-data "azurerm_subnet" "fims_op_app_snet_01" {
-  name                 = "io-p-weu-fims-op-app-snet-01"
-  virtual_network_name = local.vnet_common_name
-  resource_group_name  = local.vnet_common_resource_group_name
-}
 
 data "azurerm_subnet" "apim_itn_snet" {
   name                 = "io-p-itn-apim-snet-01"
@@ -139,7 +134,7 @@ module "session_manager_snet" {
 resource "azurerm_private_endpoint" "session_manager_sites" {
   name                = "${local.common_project}-session-manager-app-pep-01"
   location            = var.location
-  resource_group_name = azurerm_resource_group.session_manager_rg_weu.name
+  resource_group_name = data.azurerm_resource_group.session_manager_rg_weu.name
   subnet_id           = data.azurerm_subnet.private_endpoints_subnet.id
 
   private_service_connection {
@@ -160,7 +155,7 @@ resource "azurerm_private_endpoint" "session_manager_sites" {
 resource "azurerm_private_endpoint" "staging_session_manager_sites" {
   name                = "${local.common_project}-session-manager-staging-app-pep-01"
   location            = var.location
-  resource_group_name = azurerm_resource_group.session_manager_rg_weu.name
+  resource_group_name = data.azurerm_resource_group.session_manager_rg_weu.name
   subnet_id           = data.azurerm_subnet.private_endpoints_subnet.id
 
   private_service_connection {

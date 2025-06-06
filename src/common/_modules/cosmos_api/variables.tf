@@ -102,3 +102,8 @@ variable "azure_adgroup_auth_devs_object_id" {
   type        = string
   description = "Object Id of the Entra group for IO AUTH devs"
 }
+
+variable "infra_identity_ids" {
+  type        = list(string)
+  description = "List of Identitiy Ids that should have access to Cosmos Account keys"
+}

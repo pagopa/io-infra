@@ -1,4 +1,8 @@
 {
-  "io_web_profile_itn_fe_st": "6ad2e52e686fe9cf472d707a98c0d12dee0ec21f18bfe9dc7103f87cc7e12f63",
-  "io_web_profile_itn_fe_st.naming_convention": "5b1d21788783dcf33e17a9842f9f7c874c8c5f736c82e70979eb9c8785a74ce4"
+  "io_web_profile_itn_fe_st": {
+    "hash": "c8f3a9453b41bff1302fc625d524b8539d42ce46aac154df5270bc7d33769a6c",
+    "version": "0.1.1",
+    "name": "azure_storage_account",
+    "source": "https://registry.terraform.io/modules/pagopa-dx/azure-storage-account/azurerm/0.1.1"
+  }
 }

@@ -61,7 +61,7 @@ data "azurerm_subnet" "private_endpoints_subnet_itn" {
 resource "azurerm_private_endpoint" "cosmos_db" {
   name                = "${local.project_itn}-account-sql-pep-01"
   location            = "italynorth"
-  resource_group_name = azurerm_resource_group.data_rg.name
+  resource_group_name = data.azurerm_resource_group.data_rg.name
   subnet_id           = data.azurerm_subnet.private_endpoints_subnet_itn.id
 
   private_service_connection {

@@ -1,3 +1,5 @@
+data "azurerm_subscription" "current" {}
+
 data "azurerm_virtual_network" "weu_prod01" {
   name                = "${local.project_weu}-prod01-vnet"
   resource_group_name = "${local.project_weu}-prod01-vnet-rg"
@@ -23,6 +25,10 @@ data "azurerm_linux_web_app" "firmaconio_selfcare_web_app" {
 }
 
 # AD Groups
+data "azuread_group" "platform_admins" {
+  display_name = "${local.prefix}-${local.env_short}-adgroup-platform-admins"
+}
+
 data "azuread_group" "wallet_admins" {
   display_name = "${local.prefix}-${local.env_short}-adgroup-wallet-admins"
 }
@@ -53,6 +59,26 @@ data "azuread_group" "auth_devs" {
 
 data "azuread_group" "bonus_admins" {
   display_name = "${local.prefix}-${local.env_short}-adgroup-bonus-admins"
+}
+
+data "azuread_group" "admins" {
+  display_name = "${local.prefix}-${local.env_short}-adgroup-admin"
+}
+
+# Managed Identity
+data "azurerm_user_assigned_identity" "auth_n_identity_infra_ci" {
+  name                = "${local.prefix}-${local.env_short}-itn-auth-infra-github-ci-id-01"
+  resource_group_name = "${local.prefix}-${local.env_short}-itn-auth-rg-01"
+}
+
+data "azurerm_user_assigned_identity" "auth_n_identity_infra_cd" {
+  name                = "${local.prefix}-${local.env_short}-itn-auth-infra-github-cd-id-01"
+  resource_group_name = "${local.prefix}-${local.env_short}-itn-auth-rg-01"
+}
+
+data "azurerm_user_assigned_identity" "bonus_infra_cd" {
+  name                = "${local.prefix}-${local.env_short}-itn-cdc-infra-github-cd-id-01"
+  resource_group_name = "${local.prefix}-${local.env_short}-itn-cdc-rg-01"
 }
 
 # Cosmos API

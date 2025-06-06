@@ -85,6 +85,12 @@ locals {
     PAGOPA_API_KEY_PROD = data.azurerm_key_vault_secret.app_backend_PAGOPA_API_KEY_PROD.value
     PAGOPA_API_KEY_UAT  = data.azurerm_key_vault_secret.app_backend_PAGOPA_API_KEY_UAT.value
 
+    // PAGOPA ECOMMERCE
+    PAGOPA_ECOMMERCE_BASE_URL     = "https://api.platform.pagopa.it/ecommerce/payment-requests-service/v1"
+    PAGOPA_ECOMMERCE_UAT_BASE_URL = "https://api.uat.platform.pagopa.it/ecommerce/payment-requests-service/v1"
+    PAGOPA_ECOMMERCE_API_KEY      = data.azurerm_key_vault_secret.app_backend_PAGOPA_ECOMMERCE_API_KEY.value
+    PAGOPA_ECOMMERCE_UAT_API_KEY  = data.azurerm_key_vault_secret.app_backend_PAGOPA_ECOMMERCE_UAT_API_KEY.value
+
     // MYPORTAL
     MYPORTAL_BASE_PATH             = "/myportal/api/v1"
     ALLOW_MYPORTAL_IP_SOURCE_RANGE = data.azurerm_key_vault_secret.app_backend_ALLOW_MYPORTAL_IP_SOURCE_RANGE.value
@@ -97,6 +103,10 @@ locals {
 
     PUSH_NOTIFICATIONS_STORAGE_CONNECTION_STRING = data.azurerm_storage_account.push_notifications_storage.primary_connection_string
     PUSH_NOTIFICATIONS_QUEUE_NAME                = "push-notifications"
+
+    IO_COM_QUEUE_STORAGE_CONNECTION_STRING        = data.azurerm_storage_account.itn_com_st.primary_connection_string
+    IO_COM_PUSH_NOTIFICATIONS_QUEUE_NAME          = "push-notifications"
+    IO_COM_PUSH_NOTIFICATIONS_REDIRECT_PERCENTAGE = 1
 
     LOCKED_PROFILES_STORAGE_CONNECTION_STRING = data.azurerm_storage_account.locked_profiles_storage.primary_connection_string
     LOCKED_PROFILES_TABLE_NAME                = "lockedprofiles"
@@ -274,5 +284,10 @@ locals {
     SERVICES_APP_BACKEND_BASE_PATH     = "/api/v2"
     SERVICES_APP_BACKEND_API_URL       = "https://${var.backend_hostnames.services_app_backend}"
     SERVICES_APP_BACKEND_API_BASE_PATH = "/api/v1"
+
+    // IO Proxy authentication middleware feature flags configuration
+    FF_IO_X_USER_TOKEN                        = "NONE" # possible values are: BETA, CANARY, ALL, NONE
+    FF_IO_X_USER_TOKEN_BETA_TESTER_SHA_LIST   = data.azurerm_key_vault_secret.app_backend_X_USER_BETA_FISCAL_CODES.value
+    FF_IO_X_USER_TOKEN_CANARY_SHA_USERS_REGEX = "XYZ" # Disabled, no one user match this regex
   }
 }

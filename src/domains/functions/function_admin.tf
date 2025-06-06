@@ -109,7 +109,7 @@ locals {
       PUBLIC_API_URL           = local.service_api_url
       PUBLIC_DOWNLOAD_BASE_URL = "https://${data.azurerm_storage_account.userdatadownload.primary_blob_host}/user-data-download"
 
-      SESSION_API_URL                 = "https://${data.azurerm_app_service.appservice_app_backendli.default_site_hostname}" # https://io-p-app-appbackendli.azurewebsites.net
+
       UserDataBackupStorageConnection = data.azurerm_storage_account.userbackups.primary_connection_string
       USER_DATA_BACKUP_CONTAINER_NAME = "user-data-backup"
       USER_DATA_DELETE_DELAY_DAYS     = 6
@@ -129,18 +129,14 @@ locals {
 
       AZURE_SUBSCRIPTION_ID = data.azurerm_key_vault_secret.fn_admin_AZURE_SUBSCRIPTION_ID.value
 
-      ADB2C_TENANT_ID            = data.azurerm_key_vault_secret.adb2c_TENANT_NAME.value
-      ADB2C_CLIENT_ID            = data.azurerm_key_vault_secret.devportal_CLIENT_ID.value
-      ADB2C_CLIENT_KEY           = data.azurerm_key_vault_secret.devportal_CLIENT_SECRET.value
-      ADB2C_TOKEN_ATTRIBUTE_NAME = data.azurerm_key_vault_secret.adb2c_TOKEN_ATTRIBUTE_NAME.value
-
       SERVICE_PRINCIPAL_CLIENT_ID = data.azurerm_key_vault_secret.ad_APPCLIENT_APIM_ID.value
       SERVICE_PRINCIPAL_SECRET    = data.azurerm_key_vault_secret.ad_APPCLIENT_APIM_SECRET.value
       SERVICE_PRINCIPAL_TENANT_ID = data.azurerm_key_vault_secret.common_AZURE_TENANT_ID.value
 
       PUBLIC_API_KEY = data.azurerm_key_vault_secret.apim_IO_GDPR_SERVICE_KEY.value
 
-      SESSION_API_KEY = data.azurerm_key_vault_secret.app_backend_PRE_SHARED_KEY.value
+      SESSION_MANAGER_INTERNAL_API_URL = "https://${data.azurerm_linux_function_app.session_manager_internal.default_hostname}"
+      SESSION_MANAGER_INTERNAL_API_KEY = data.azurerm_key_vault_secret.fn_admin_SESSION_MANAGER_INTERNAL_KEY.value
 
       __DISABLED__SENDGRID_API_KEY = data.azurerm_key_vault_secret.common_SENDGRID_APIKEY.value
       MAILUP_USERNAME              = data.azurerm_key_vault_secret.common_MAILUP_USERNAME.value
