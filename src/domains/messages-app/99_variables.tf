@@ -263,43 +263,9 @@ variable "enable_azdoa" {
 # Push Notification
 ###############################
 
-variable "cidr_subnet_push_notif" {
-  type        = list(string)
-  description = "Function push-notif address space."
-}
-
-variable "push_notif_enabled" {
-  type        = bool
-  default     = false
-  description = "Push Notif function enabled?"
-}
-
 variable "push_notif_count" {
   type    = number
   default = 2
-}
-
-variable "push_notif_function_always_on" {
-  type    = bool
-  default = false
-}
-
-variable "push_notif_function_kind" {
-  type        = string
-  description = "App service plan kind"
-  default     = null
-}
-
-variable "push_notif_function_sku_tier" {
-  type        = string
-  description = "App service plan sku tier"
-  default     = null
-}
-
-variable "push_notif_function_sku_size" {
-  type        = string
-  description = "App service plan sku size"
-  default     = null
 }
 
 ###############################
