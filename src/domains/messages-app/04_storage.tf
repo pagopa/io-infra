@@ -81,13 +81,3 @@ resource "azurerm_key_vault_secret" "services_storage_connection_string" {
 data "azurerm_resource_group" "notifications_rg" {
   name = format("%s-notifications-rg", local.common_project)
 }
-
-data "azurerm_storage_account" "push_notifications_storage" {
-  name                = replace(format("%s-notifst", local.common_project), "-", "")
-  resource_group_name = data.azurerm_resource_group.notifications_rg.name
-}
-
-data "azurerm_storage_account" "push_notif_beta_storage" {
-  name                = replace(format("%s-betauserst", local.common_project), "-", "")
-  resource_group_name = data.azurerm_resource_group.notifications_rg.name
-}
