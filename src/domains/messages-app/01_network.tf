@@ -1,8 +1,3 @@
-data "azurerm_virtual_network" "vnet" {
-  name                = local.vnet_name
-  resource_group_name = local.vnet_resource_group_name
-}
-
 data "azurerm_virtual_network" "vnet_common" {
   name                = local.vnet_common_name
   resource_group_name = local.vnet_common_resource_group_name
@@ -23,18 +18,8 @@ data "azurerm_private_dns_zone" "privatelink_queue_core_windows_net" {
   resource_group_name = format("%s-rg-common", local.product)
 }
 
-data "azurerm_private_dns_zone" "privatelink_file_core_windows_net" {
-  name                = "privatelink.file.core.windows.net"
-  resource_group_name = format("%s-rg-common", local.product)
-}
-
 data "azurerm_private_dns_zone" "privatelink_table_core_windows_net" {
   name                = "privatelink.table.core.windows.net"
-  resource_group_name = format("%s-rg-common", local.product)
-}
-
-data "azurerm_private_dns_zone" "privatelink_documents_azure_com" {
-  name                = "privatelink.documents.azure.com"
   resource_group_name = format("%s-rg-common", local.product)
 }
 
@@ -72,12 +57,6 @@ data "azurerm_subnet" "apim_itn_snet" {
 
 data "azurerm_subnet" "azdoa_snet" {
   name                 = "azure-devops"
-  virtual_network_name = local.vnet_common_name
-  resource_group_name  = local.vnet_common_resource_group_name
-}
-
-data "azurerm_subnet" "github_snet" {
-  name                 = "io-p-github-runner-snet"
   virtual_network_name = local.vnet_common_name
   resource_group_name  = local.vnet_common_resource_group_name
 }

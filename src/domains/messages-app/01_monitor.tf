@@ -1,8 +1,3 @@
-data "azurerm_log_analytics_workspace" "log_analytics" {
-  name                = var.log_analytics_workspace_name
-  resource_group_name = var.log_analytics_workspace_resource_group_name
-}
-
 data "azurerm_application_insights" "application_insights" {
   name                = var.application_insights_name
   resource_group_name = var.monitor_resource_group_name
@@ -20,14 +15,4 @@ data "azurerm_monitor_action_group" "error_action_group" {
 data "azurerm_monitor_action_group" "io_com_action_group" {
   name                = "io-p-com-error-ag-01"
   resource_group_name = "io-p-itn-com-rg-01"
-}
-
-data "azurerm_monitor_action_group" "slack" {
-  resource_group_name = var.monitor_resource_group_name
-  name                = local.monitor_action_group_slack_name
-}
-
-data "azurerm_monitor_action_group" "email" {
-  resource_group_name = var.monitor_resource_group_name
-  name                = local.monitor_action_group_email_name
 }

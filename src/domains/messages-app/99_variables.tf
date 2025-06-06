@@ -10,10 +10,6 @@ variable "prefix" {
   }
 }
 
-variable "env" {
-  type = string
-}
-
 variable "env_short" {
   type = string
   validation {
@@ -72,16 +68,6 @@ variable "tags" {
 variable "monitor_resource_group_name" {
   type        = string
   description = "Monitor resource group name"
-}
-
-variable "log_analytics_workspace_name" {
-  type        = string
-  description = "Specifies the name of the Log Analytics Workspace."
-}
-
-variable "log_analytics_workspace_resource_group_name" {
-  type        = string
-  description = "The name of the resource group in which the Log Analytics workspace is located in."
 }
 
 variable "application_insights_name" {
@@ -178,24 +164,6 @@ variable "eventhubs" {
   default = []
 }
 
-variable "ehns_ip_rules" {
-  description = "eventhub network rules"
-  type = list(object({
-    ip_mask = string
-    action  = string
-  }))
-  default = []
-}
-
-variable "ehns_virtual_network_rules" {
-  description = "eventhub virtual network rules"
-  type = list(object({
-    ip_mask = string
-    action  = string
-  }))
-  default = []
-}
-
 variable "ehns_alerts_enabled" {
   type        = bool
   default     = true
@@ -253,55 +221,6 @@ variable "nh_partition_count" {
   default     = 4
 }
 
-variable "enable_azdoa" {
-  type        = bool
-  description = "Specifies Azure Devops Agent enabling"
-  default     = true
-}
-
-###############################
-# Push Notification
-###############################
-
-variable "cidr_subnet_push_notif" {
-  type        = list(string)
-  description = "Function push-notif address space."
-}
-
-variable "push_notif_enabled" {
-  type        = bool
-  default     = false
-  description = "Push Notif function enabled?"
-}
-
-variable "push_notif_count" {
-  type    = number
-  default = 2
-}
-
-variable "push_notif_function_always_on" {
-  type    = bool
-  default = false
-}
-
-variable "push_notif_function_kind" {
-  type        = string
-  description = "App service plan kind"
-  default     = null
-}
-
-variable "push_notif_function_sku_tier" {
-  type        = string
-  description = "App service plan sku tier"
-  default     = null
-}
-
-variable "push_notif_function_sku_size" {
-  type        = string
-  description = "App service plan sku size"
-  default     = null
-}
-
 ###############################
 # Messages functions
 ###############################
@@ -311,12 +230,6 @@ variable "app_messages_count" {
 }
 
 variable "cidr_subnet_appmessages" {
-  type        = list(string)
-  description = "App messages address space."
-  default     = []
-}
-
-variable "cidr_subnet_appmessages_xl" {
   type        = list(string)
   description = "App messages address space."
   default     = []
@@ -389,21 +302,3 @@ variable "cidr_subnet_fnmessagescqrs" {
   type        = list(string)
   description = "Fn cqrs address space."
 }
-
-###############################
-# Service messages functions
-###############################
-variable "cidr_subnet_fnservicemessages" {
-  type        = list(string)
-  description = "Functions service messages address space."
-}
-
-variable "function_service_messages_enabled" {
-  type        = bool
-  default     = false
-  description = "Functions service messages enabled?"
-}
-
-
-
-
