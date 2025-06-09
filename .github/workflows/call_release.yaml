@@ -32,7 +32,7 @@ jobs:
 
   tf_plan:
     name: 'Terraform Plan'
-    runs-on: ${{ inputs.use_private_agent == true && 'self-hosted' || 'ubuntu-20.04' }}
+    runs-on: ${{ inputs.use_private_agent == true && 'self-hosted' || 'ubuntu-22.04' }}
     environment: ${{ inputs.environment }}-ci
     permissions:
       id-token: write
