@@ -10,7 +10,7 @@ locals {
     PORT     = "3000"
 
     # Fallback
-    FALLBACK_URL            = "https://ioapp.it"
+    FALLBACK_URL            = "https://ioapp.it/scarica-io"
     FALLBACK_URL_ON_IOS     = "https://apps.apple.com/it/app/io/id1501681835"
     FALLBACK_URL_ON_ANDROID = "https://play.google.com/store/apps/details?id=it.pagopa.io.app"
 
