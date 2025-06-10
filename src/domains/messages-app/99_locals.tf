@@ -1,7 +1,6 @@
 locals {
-  project        = "${var.prefix}-${var.env_short}-${var.domain}-${var.location_short}-${var.instance}"
-  product        = "${var.prefix}-${var.env_short}"
-  common_project = "${var.prefix}-${var.env_short}-${var.location_short}-${var.domain}"
+  project = "${var.prefix}-${var.env_short}-${var.domain}-${var.location_short}-${var.instance}"
+  product = "${var.prefix}-${var.env_short}"
 
   vnet_common_name                = "${local.product}-vnet-common"
   vnet_common_resource_group_name = "${local.product}-rg-common"

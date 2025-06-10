@@ -73,11 +73,3 @@ resource "azurerm_key_vault_secret" "services_storage_connection_string" {
 
   key_vault_id = data.azurerm_key_vault.kv.id
 }
-
-#################################
-# Push Notifications
-#################################
-
-data "azurerm_resource_group" "notifications_rg" {
-  name = format("%s-notifications-rg", local.common_project)
-}
