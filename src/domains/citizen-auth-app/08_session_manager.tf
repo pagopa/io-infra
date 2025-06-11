@@ -76,6 +76,11 @@ data "azurerm_key_vault_secret" "session_manager_IOLOGIN_TEST_USERS" {
   key_vault_id = data.azurerm_key_vault.kv.id
 }
 
+data "azurerm_key_vault_secret" "session_manager_VALIDATION_COOKIE_TEST_USERS" {
+  name         = "session-manager-VALIDATION-COOKIE-TEST-USERS"
+  key_vault_id = data.azurerm_key_vault.kv.id
+}
+
 data "azurerm_linux_function_app" "itn_auth_lv_func" {
   name                = "${local.short_project_itn}-lv-func-02"
   resource_group_name = "${local.short_project_itn}-lv-rg-01"
@@ -217,6 +222,11 @@ locals {
     # PAGOPA config
     PAGOPA_BASE_PATH             = "/pagopa/api/v1"
     ALLOW_PAGOPA_IP_SOURCE_RANGE = data.azurerm_key_vault_secret.session_manager_ALLOW_PAGOPA_IP_SOURCE_RANGE.value
+
+    # Validation Cookie config
+    VALIDATION_COOKIE_DURATION_MS = 900000
+    FF_VALIDATION_COOKIE          = "BETA"
+    VALIDATION_COOKIE_TEST_USERS  = data.azurerm_key_vault_secret.session_manager_VALIDATION_COOKIE_TEST_USERS.value
   }
 }
 
