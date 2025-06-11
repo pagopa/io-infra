@@ -1,3 +1,14 @@
+resource "azurerm_key_vault_access_policy" "platform_api_gateway_kv_policy" {
+  key_vault_id = var.key_vault.id
+  tenant_id    = var.datasources.azurerm_client_config.tenant_id
+  object_id    = module.platform_api_gateway.principal_id
+
+  key_permissions         = []
+  secret_permissions      = ["Get", "List"]
+  certificate_permissions = ["Get", "List"]
+  storage_permissions     = []
+}
+
 # Typo: this module should be renamed to `iam_adgroup_platform_admins`
 module "iam_adgroup_product_admins" {
   source  = "pagopa-dx/azure-role-assignments/azurerm"
