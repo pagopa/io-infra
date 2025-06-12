@@ -1,6 +1,5 @@
 locals {
   app_settings_common = {
-    IS_APPBACKENDLI = var.is_li ? "true" : "false"
     # No downtime on slots swap
     WEBSITE_ADD_SITENAME_BINDINGS_IN_APPHOST_CONFIG = "1"
     WEBSITE_RUN_FROM_PACKAGE                        = "1"

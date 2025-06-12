@@ -55,12 +55,6 @@ variable "name" {
   default     = null
 }
 
-variable "is_li" {
-  type        = bool
-  description = "Is this backend li type (async)?"
-  default     = false
-}
-
 variable "vnet_common" {
   type = object({
     id                  = string
