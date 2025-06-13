@@ -44,15 +44,6 @@ resource "azurerm_key_vault_secret" "appbackend-USERS-LOGIN-STORAGE" {
 }
 
 #tfsec:ignore:AZU023
-resource "azurerm_key_vault_secret" "appbackend_LOLLIPOP_ASSERTIONS_STORAGE" {
-  count        = var.index == 1 ? 1 : 0 # only for the first non-li backend
-  name         = "appbackend-LOLLIPOP-ASSERTIONS-STORAGE"
-  value        = data.azurerm_storage_account.lollipop_assertions_storage.primary_connection_string
-  key_vault_id = var.key_vault_common.id
-  content_type = "string"
-}
-
-#tfsec:ignore:AZU023
 resource "azurerm_key_vault_secret" "appbackend_THIRD_PARTY_CONFIG_LIST" {
   count        = var.index == 1 ? 1 : 0
   name         = "appbackend-THIRD-PARTY-CONFIG-LIST"

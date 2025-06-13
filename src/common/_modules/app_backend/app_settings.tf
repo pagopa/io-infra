@@ -72,11 +72,7 @@ locals {
     REDIS_PASSWORD = var.redis_common.primary_access_key
 
     // PUSH NOTIFICATIONS
-    PRE_SHARED_KEY               = data.azurerm_key_vault_secret.app_backend_PRE_SHARED_KEY.value
     ALLOW_NOTIFY_IP_SOURCE_RANGE = "127.0.0.0/0"
-
-    // LOCK / UNLOCK SESSION ENDPOINTS
-    ALLOW_SESSION_HANDLER_IP_SOURCE_RANGE = var.apim_snet_address_prefixes[0]
 
     // PAGOPA
     PAGOPA_API_URL_PROD = "https://api.platform.pagopa.it/checkout/auth/payments/v1"
@@ -106,9 +102,6 @@ locals {
     IO_COM_QUEUE_STORAGE_CONNECTION_STRING        = data.azurerm_storage_account.itn_com_st.primary_connection_string
     IO_COM_PUSH_NOTIFICATIONS_QUEUE_NAME          = "push-notifications"
     IO_COM_PUSH_NOTIFICATIONS_REDIRECT_PERCENTAGE = 1
-
-    LOCKED_PROFILES_STORAGE_CONNECTION_STRING = data.azurerm_storage_account.locked_profiles_storage.primary_connection_string
-    LOCKED_PROFILES_TABLE_NAME                = "lockedprofiles"
 
     // Feature flags
     FF_BONUS_ENABLED           = 1
@@ -262,10 +255,6 @@ locals {
         }
       }
     ])
-
-    // LolliPOP
-    LOLLIPOP_REVOKE_STORAGE_CONNECTION_STRING = data.azurerm_storage_account.lollipop_assertions_storage.primary_connection_string
-    LOLLIPOP_REVOKE_QUEUE_NAME                = local.citizen_auth_revoke_queue_name
 
     // UNIQUE EMAIL ENFORCEMENT
     FF_UNIQUE_EMAIL_ENFORCEMENT    = "ALL"
