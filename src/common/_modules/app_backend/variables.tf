@@ -115,10 +115,6 @@ variable "error_action_group_id" {
   description = "Azure Monitor error action group id"
 }
 
-variable "apim_snet_address_prefixes" {
-  type = list(string)
-}
-
 variable "nat_gateways" {
   type = list(object({
     id                  = string

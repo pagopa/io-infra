@@ -438,7 +438,6 @@ module "app_backend_weu" {
   slot_allowed_subnets          = concat([local.azdoa_snet_id["weu"]], data.azurerm_subnet.services_snet.*.id, [module.application_gateway_weu.snet.id, module.apim_itn.snet.id, module.platform_api_gateway_apim_itn.snet.id, module.github_runner_itn.subnet.id])
   allowed_ips                   = module.monitoring_weu.appi.reserved_ips
   slot_allowed_ips              = module.monitoring_weu.appi.reserved_ips
-  apim_snet_address_prefixes    = module.apim_itn.snet.address_prefixes
   enable_premium_plan_autoscale = true
 
   backend_hostnames = local.backend_hostnames
