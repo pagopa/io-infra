@@ -20,7 +20,7 @@ on:
 
 jobs:
   prod_legacy_apim_code_review:
-    uses: pagopa/dx/.github/workflows/infra_plan.yaml@main
+    uses: pagopa/dx/.github/workflows/infra_plan.yaml@check-modules-lock-in-cicd
     name: Prod - Code Review
     secrets: inherit
     with:
