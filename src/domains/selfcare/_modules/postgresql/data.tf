@@ -18,16 +18,6 @@ data "azurerm_key_vault_secret" "subscriptionmigrations_db_server_adm_username" 
   key_vault_id = data.azurerm_key_vault.key_vault_common.id
 }
 
-data "azurerm_key_vault_secret" "devportalservicedata_db_server_adm_password" {
-  name         = "devportal-servicedata-DB-ADM-PASSWORD"
-  key_vault_id = data.azurerm_key_vault.key_vault_common.id
-}
-
-data "azurerm_key_vault_secret" "devportalservicedata_db_server_adm_username" {
-  name         = "devportal-servicedata-DB-ADM-USERNAME"
-  key_vault_id = data.azurerm_key_vault.key_vault_common.id
-}
-
 # Private Endpoint
 data "azurerm_subnet" "pep_snet" {
   name                 = "pendpoints"
