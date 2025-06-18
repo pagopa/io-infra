@@ -30,14 +30,3 @@ output "function_subscriptionmigrations" {
     }
   }
 }
-
-output "function_devportalservicedata" {
-  value = {
-    id           = module.function_devportalservicedata.id
-    principal_id = module.function_devportalservicedata.system_identity_principal
-    slot = {
-      id           = module.function_devportalservicedata_staging_slot.id
-      principal_id = module.function_devportalservicedata_staging_slot.system_identity_principal
-    }
-  }
-}
