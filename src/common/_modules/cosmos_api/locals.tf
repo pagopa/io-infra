@@ -152,13 +152,6 @@ locals {
       throughput         = 400
     },
     {
-      name               = "services-devportalservicedata-leases-001"
-      partition_key_path = "/_partitionKey"
-      autoscale_settings = {
-        max_throughput = 1000
-      }
-    },
-    {
       name                  = "services-preferences"
       partition_key_path    = "/fiscalCode"
       partition_key_version = null
