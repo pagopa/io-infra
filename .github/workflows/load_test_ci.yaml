@@ -16,7 +16,7 @@ on:
 
 jobs:
   code_review_prod:
-    uses: pagopa/dx/.github/workflows/infra_plan.yaml@package-pr-comments-action
+    uses: pagopa/dx/.github/workflows/infra_plan.yaml@check-modules-lock-in-cicd
     name: Core Review Infrastructure Plan
     secrets: inherit
     with:
