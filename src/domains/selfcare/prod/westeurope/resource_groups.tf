@@ -9,7 +9,6 @@ module "resource_groups" {
 
 locals {
   rg_ids = {
-    "fe" = module.resource_groups.resource_group_selfcare_fe.id,
     "be" = module.resource_groups.resource_group_selfcare_be.id
   }
 }
