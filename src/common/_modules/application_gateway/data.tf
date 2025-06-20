@@ -27,11 +27,6 @@ data "azurerm_linux_web_app" "appservice_devportal_be" {
   resource_group_name = "${var.project}-selfcare-be-rg"
 }
 
-data "azurerm_linux_web_app" "appservice_selfcare_be" {
-  name                = "${var.project}-app-selfcare-be"
-  resource_group_name = "${var.project}-selfcare-be-rg"
-}
-
 data "azurerm_linux_web_app" "ipatente_vehicles_app_itn" {
   name                = "${var.project}-itn-ipatente-vehicles-app-01"
   resource_group_name = "${var.project}-itn-ipatente-rg-01"
