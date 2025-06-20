@@ -62,6 +62,14 @@ resource "azurerm_web_application_firewall_policy" "api_app" {
       }
 
       rule_group_override {
+        rule_group_name = "REQUEST-931-APPLICATION-ATTACK-RFI"
+        rule {
+          id      = "931130"
+          enabled = false
+        }
+      }
+
+      rule_group_override {
         rule_group_name = "REQUEST-932-APPLICATION-ATTACK-RCE"
         rule {
           id      = "932150"
