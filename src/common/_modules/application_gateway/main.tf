@@ -97,20 +97,6 @@ module "app_gw" {
       pick_host_name_from_backend = true
     }
 
-    selfcare-backend = {
-      protocol     = "Https"
-      host         = null
-      port         = 443
-      ip_addresses = null # with null value use fqdns
-      fqdns = [
-        data.azurerm_linux_web_app.appservice_selfcare_be.default_hostname,
-      ]
-      probe                       = "/info"
-      probe_name                  = "probe-selfcare-backend"
-      request_timeout             = 180
-      pick_host_name_from_backend = true
-    }
-
     firmaconio-selfcare-backend = {
       protocol                    = "Https"
       host                        = null
