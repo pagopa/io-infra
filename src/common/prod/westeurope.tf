@@ -322,7 +322,6 @@ module "application_gateway_weu" {
     api_io_italia_it                     = "api-io-italia-it"
     app_backend_io_italia_it             = "app-backend-io-italia-it"
     developerportal_backend_io_italia_it = "developerportal-backend-io-italia-it"
-    api_io_selfcare_pagopa_it            = "api-io-selfcare-pagopa-it"
     firmaconio_selfcare_pagopa_it        = "firmaconio-selfcare-pagopa-it"
     continua_io_pagopa_it                = "continua-io-pagopa-it"
     selfcare_io_pagopa_it                = "selfcare-io-pagopa-it"
