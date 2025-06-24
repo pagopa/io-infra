@@ -13,3 +13,5 @@ data "terraform_remote_state" "common" {
     key                  = "io-infra.common.prod.tfstate"
   }
 }
+
+data "azurerm_client_config" "current" {}
