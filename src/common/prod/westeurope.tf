@@ -239,24 +239,6 @@ module "monitoring_weu" {
       ssl_enabled                       = false
     },
     {
-      # https://api.io.selfcare.pagopa.it/info
-      name                              = module.global.dns.public_dns_zones.io_selfcare_pagopa_it.api
-      host                              = module.global.dns.public_dns_zones.io_selfcare_pagopa_it.api
-      path                              = "/info",
-      frequency                         = 900
-      http_status                       = 200,
-      ssl_cert_remaining_lifetime_check = 7,
-    },
-    {
-      # https://io.selfcare.pagopa.it
-      name                              = "io.selfcare.pagopa.it"
-      host                              = "io.selfcare.pagopa.it"
-      path                              = "",
-      frequency                         = 900
-      http_status                       = 200,
-      ssl_cert_remaining_lifetime_check = 7,
-    },
-    {
       # https://firmaconio.selfcare.pagopa.it
       name                              = "firmaconio.selfcare.pagopa.it"
       host                              = "firmaconio.selfcare.pagopa.it"
