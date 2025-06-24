@@ -2,14 +2,14 @@ output "subscription_id" {
   description = <<EOF
   WHAT: The subscription ID of the current Azure subscription.
   EOF
-  value = data.azurerm_client_config.current.subscription_id
+  value       = data.azurerm_client_config.current.subscription_id
 }
 
 output "tenant_id" {
   description = <<EOF
   WHAT: The tenant ID of the current Azure subscription.
   EOF
-  value = data.azurerm_client_config.current.tenant_id
+  value       = data.azurerm_client_config.current.tenant_id
 }
 
 output "resource_groups" {
@@ -44,10 +44,10 @@ output "apim" {
   EOF
   value = {
     itn = {
-      id                      = local.common.apim.itn.id
+      id = local.common.apim.itn.id
     }
     weu = {
-      id                      = null
+      id = null
     }
   }
 }
@@ -58,14 +58,14 @@ output "service_bus_namespace" {
   EOF
   value = {
     itn = {
-      id                      = local.common.platform_service_bus_namespace.id
-      name                    = local.common.platform_service_bus_namespace.name
-      resource_group_name     = local.common.platform_service_bus_namespace.resource_group_name
+      id                  = local.common.platform_service_bus_namespace.id
+      name                = local.common.platform_service_bus_namespace.name
+      resource_group_name = local.common.platform_service_bus_namespace.resource_group_name
     }
     weu = {
-      id                      = null
-      name                    = null
-      resource_group_name     = null
+      id                  = null
+      name                = null
+      resource_group_name = null
     }
   }
 }
@@ -76,14 +76,14 @@ output "log_analytics_workspace" {
   EOF
   value = {
     itn = {
-      id                      = local.common.log_analytics_workspace.id
-      name                    = local.common.log_analytics_workspace.name
-      resource_group_name     = local.common.log_analytics_workspace.resource_group_name
+      id                  = local.common.log_analytics_workspace.id
+      name                = local.common.log_analytics_workspace.name
+      resource_group_name = local.common.log_analytics_workspace.resource_group_name
     }
     weu = {
-      id                      = local.common.log_analytics_workspace.id
-      name                    = local.common.log_analytics_workspace.name
-      resource_group_name     = local.common.log_analytics_workspace.resource_group_name
+      id                  = local.common.log_analytics_workspace.id
+      name                = local.common.log_analytics_workspace.name
+      resource_group_name = local.common.log_analytics_workspace.resource_group_name
     }
   }
 }

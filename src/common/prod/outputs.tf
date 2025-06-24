@@ -49,10 +49,10 @@ output "platform_service_bus_namespace" {
 
 output "log_analytics_workspace" {
   value = {
-      id                      = module.monitoring_weu.log.id
-      name                    = module.monitoring_weu.log.name
-      resource_group_name     = module.monitoring_weu.log.resource_group_name
-    }
+    id                  = module.monitoring_weu.log.id
+    name                = module.monitoring_weu.log.name
+    resource_group_name = module.monitoring_weu.log.resource_group_name
+  }
 }
 
 output "key_vault" {
