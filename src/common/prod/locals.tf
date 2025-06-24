@@ -54,10 +54,6 @@ locals {
     },
   }
 
-  app_backendli = {
-    cidr_subnet = ["10.0.154.0/24"]
-  }
-
   azdoa_snet_id = {
     weu = local.core.azure_devops_agent["weu"].snet.id
     itn = null
