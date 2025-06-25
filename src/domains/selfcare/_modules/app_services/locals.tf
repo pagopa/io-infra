@@ -48,54 +48,6 @@ locals {
     }
   }
 
-  function_devportalservicedata = {
-    app_settings = {
-      FUNCTIONS_WORKER_RUNTIME       = "node"
-      FUNCTIONS_WORKER_PROCESS_COUNT = 4
-      NODE_ENV                       = "production"
-
-      // Keepalive fields are all optionals
-      FETCH_KEEPALIVE_ENABLED             = "true"
-      FETCH_KEEPALIVE_SOCKET_ACTIVE_TTL   = "110000"
-      FETCH_KEEPALIVE_MAX_SOCKETS         = "40"
-      FETCH_KEEPALIVE_MAX_FREE_SOCKETS    = "10"
-      FETCH_KEEPALIVE_FREE_SOCKET_TIMEOUT = "30000"
-      FETCH_KEEPALIVE_TIMEOUT             = "60000"
-
-      // connection to CosmosDB
-      COSMOSDB_CONNECTIONSTRING          = format("AccountEndpoint=%s;AccountKey=%s;", data.azurerm_cosmosdb_account.cosmos_api.endpoint, data.azurerm_cosmosdb_account.cosmos_api.primary_key),
-      COSMOSDB_KEY                       = data.azurerm_cosmosdb_account.cosmos_api.primary_key
-      COSMOSDB_NAME                      = "db",
-      COSMOSDB_SERVICES_COLLECTION       = "services",
-      COSMOSDB_SERVICES_LEASE_COLLECTION = "services-devportalservicedata-leases-001",
-      COSMOSDB_URI                       = data.azurerm_cosmosdb_account.cosmos_api.endpoint
-
-      // connection to APIM
-      APIM_SERVICE_NAME    = "io-p-itn-apim-01"
-      APIM_RESOURCE_GROUP  = "io-p-itn-common-rg-01"
-      APIM_SUBSCRIPTION_ID = data.azurerm_subscription.current.subscription_id
-      APIM_TENANT_ID       = data.azurerm_client_config.current.tenant_id
-
-      // connection to PostgresSQL
-      DB_HOST         = var.dev_portal_db_data.host
-      DB_PORT         = 5432
-      DB_IDLE_TIMEOUT = 30000 // milliseconds
-      DB_NAME         = "db"
-      DB_SCHEMA       = "DeveloperPortalServiceData"
-      DB_TABLE        = "services"
-      DB_USER         = "${var.dev_portal_db_data.username}"
-      DB_PASSWORD     = var.dev_portal_db_data.password
-
-      WEBSITE_DNS_SERVER = "168.63.129.16"
-
-      # Path of blob on which we export the last visible service read model
-      AssetsStorageConnection                = data.azurerm_storage_account.assets_cdn.primary_connection_string
-      VISIBLE_SERVICES_COMPACT_STORAGE_PATH  = "services/services-webview/visible-services-compact.json"
-      VISIBLE_SERVICES_EXTENDED_STORAGE_PATH = "services/services-webview/visible-services-extended.json"
-      SERVICE_QUALITY_EXCLUSION_LIST         = data.azurerm_key_vault_secret.services_exclusion_list.value
-    }
-  }
-
   app-devportal-be = {
     app_settings = {
       WEBSITE_RUN_FROM_PACKAGE = "1"
