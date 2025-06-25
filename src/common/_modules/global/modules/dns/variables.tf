@@ -36,7 +36,6 @@ variable "external_domain" {
 variable "dns_zones" {
   type = object({
     io                  = string
-    io_selfcare         = string
     firmaconio_selfcare = string
     }
   )

@@ -5,11 +5,3 @@ output "resource_group_selfcare_be" {
     location = azurerm_resource_group.resource_group_selfcare_be.location
   }
 }
-
-output "resource_group_selfcare_fe" {
-  value = {
-    id       = azurerm_resource_group.resource_group_selfcare_fe.id
-    name     = azurerm_resource_group.resource_group_selfcare_fe.name
-    location = azurerm_resource_group.resource_group_selfcare_fe.location
-  }
-}
