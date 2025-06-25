@@ -1,6 +1,6 @@
 resource "azurerm_web_application_firewall_policy" "api_app" {
   name                = "${var.project}-waf-agw-api-app-01"
-  resource_group_name = var.resource_group_external
+  resource_group_name = var.resource_group_common
   location            = var.location
 
   policy_settings {

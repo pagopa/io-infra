@@ -34,11 +34,6 @@ variable "tags" {
   description = "Resource tags"
 }
 
-variable "resource_group_external" {
-  type        = string
-  description = "External resource group names"
-}
-
 variable "resource_group_common" {
   type        = string
   description = "Common resource group names"
