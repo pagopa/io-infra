@@ -1,4 +1,4 @@
-# Subnet to host the application gateway
+# Subnet to host the Application Gateway
 resource "azurerm_subnet" "agw" {
   name                              = "${var.project}-agw-snet-01"
   resource_group_name               = var.resource_group_common
@@ -11,7 +11,7 @@ resource "azurerm_subnet" "agw" {
   ]
 }
 
-## Application gateway public ip ##
+# Application gateway Public IP (PIP)
 resource "azurerm_public_ip" "agw" {
   name                = "${var.project}-agw-pip-01"
   resource_group_name = var.resource_group_common
