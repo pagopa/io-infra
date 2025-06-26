@@ -26,6 +26,7 @@ locals {
 
   appgw_resource_group_name = "${local.product}-rg-external"
 
+  storage_account_notifications_queue_userslogin         = "userslogin"
   storage_account_notifications_queue_push_notifications = "push-notifications"
 
 }
