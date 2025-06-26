@@ -27,11 +27,6 @@ data "azurerm_linux_web_app" "appservice_devportal_be" {
   resource_group_name = "${var.project_legacy}-selfcare-be-rg"
 }
 
-# data "azurerm_linux_web_app" "appservice_selfcare_be" {
-#   name                = "${var.project_legacy}-app-selfcare-be"
-#   resource_group_name = "${var.project_legacy}-selfcare-be-rg"
-# }
-
 data "azurerm_linux_web_app" "ipatente_vehicles_app_itn" {
   name                = "${var.project}-ipatente-vehicles-app-01"
   resource_group_name = "${var.project}-ipatente-rg-01"
@@ -99,11 +94,6 @@ data "azurerm_key_vault_certificate" "app_gw_developerportal_backend_io_italia_i
   name         = var.certificates.developerportal_backend_io_italia_it
   key_vault_id = var.key_vault_common.id
 }
-
-# data "azurerm_key_vault_certificate" "app_gw_api_io_selfcare_pagopa_it" {
-#   name         = var.certificates.api_io_selfcare_pagopa_it
-#   key_vault_id = var.key_vault.id
-# }
 
 data "azurerm_key_vault_certificate" "app_gw_firmaconio_selfcare_pagopa_it" {
   name         = var.certificates.firmaconio_selfcare_pagopa_it
