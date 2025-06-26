@@ -10,10 +10,6 @@ variable "prefix" {
   }
 }
 
-variable "env" {
-  type = string
-}
-
 variable "env_short" {
   type = string
   validation {
@@ -72,16 +68,6 @@ variable "tags" {
 variable "monitor_resource_group_name" {
   type        = string
   description = "Monitor resource group name"
-}
-
-variable "log_analytics_workspace_name" {
-  type        = string
-  description = "Specifies the name of the Log Analytics Workspace."
-}
-
-variable "log_analytics_workspace_resource_group_name" {
-  type        = string
-  description = "The name of the resource group in which the Log Analytics workspace is located in."
 }
 
 variable "application_insights_name" {
@@ -178,24 +164,6 @@ variable "eventhubs" {
   default = []
 }
 
-variable "ehns_ip_rules" {
-  description = "eventhub network rules"
-  type = list(object({
-    ip_mask = string
-    action  = string
-  }))
-  default = []
-}
-
-variable "ehns_virtual_network_rules" {
-  description = "eventhub virtual network rules"
-  type = list(object({
-    ip_mask = string
-    action  = string
-  }))
-  default = []
-}
-
 variable "ehns_alerts_enabled" {
   type        = bool
   default     = true
@@ -231,179 +199,3 @@ EOD
     ))
   }))
 }
-
-
-variable "nh_resource_group_name" {
-  type        = string
-  description = "Notification Hub resource group name"
-}
-
-variable "nh_name_prefix" {
-  type        = string
-  description = "Notification Hub name prefix"
-}
-variable "nh_namespace_prefix" {
-  type        = string
-  description = "Notification Hub namespace prefix"
-}
-
-variable "nh_partition_count" {
-  type        = number
-  description = "Notification Hub partition count"
-  default     = 4
-}
-
-variable "enable_azdoa" {
-  type        = bool
-  description = "Specifies Azure Devops Agent enabling"
-  default     = true
-}
-
-###############################
-# Push Notification
-###############################
-
-variable "cidr_subnet_push_notif" {
-  type        = list(string)
-  description = "Function push-notif address space."
-}
-
-variable "push_notif_enabled" {
-  type        = bool
-  default     = false
-  description = "Push Notif function enabled?"
-}
-
-variable "push_notif_count" {
-  type    = number
-  default = 2
-}
-
-variable "push_notif_function_always_on" {
-  type    = bool
-  default = false
-}
-
-variable "push_notif_function_kind" {
-  type        = string
-  description = "App service plan kind"
-  default     = null
-}
-
-variable "push_notif_function_sku_tier" {
-  type        = string
-  description = "App service plan sku tier"
-  default     = null
-}
-
-variable "push_notif_function_sku_size" {
-  type        = string
-  description = "App service plan sku size"
-  default     = null
-}
-
-###############################
-# Messages functions
-###############################
-variable "app_messages_count" {
-  type    = number
-  default = 0
-}
-
-variable "cidr_subnet_appmessages" {
-  type        = list(string)
-  description = "App messages address space."
-  default     = []
-}
-
-variable "cidr_subnet_appmessages_xl" {
-  type        = list(string)
-  description = "App messages address space."
-  default     = []
-}
-
-variable "pn_service_id" {
-  type        = string
-  description = "The Service ID of PN service"
-  default     = "01G40DWQGKY5GRWSNM4303VNRP"
-}
-
-variable "io_sign_service_id" {
-  type        = string
-  description = "The Service ID of io-sign service"
-  default     = "01GQQZ9HF5GAPRVKJM1VDAVFHM"
-}
-
-variable "io_receipt_service_test_id" {
-  type        = string
-  description = "The Service ID of io-receipt service"
-  default     = "01H4ZJ62C1CPGJ0PX8Q1BP7FAB"
-}
-
-variable "io_receipt_service_id" {
-  type        = string
-  description = "The Service ID of io-receipt service"
-  default     = "01HD63674XJ1R6XCNHH24PCRR2"
-}
-
-variable "third_party_mock_service_id" {
-  type        = string
-  description = "The Service ID of the Third Party Mock service"
-  default     = "01GQQDPM127KFGG6T3660D5TXD"
-}
-
-variable "pn_remote_config_id" {
-  type        = string
-  description = "The Remote Content Config ID of PN service"
-  default     = "01HMVMHCZZ8D0VTFWMRHBM5D6F"
-}
-
-variable "io_sign_remote_config_id" {
-  type        = string
-  description = "The Remote Content Config ID of io-sign service"
-  default     = "01HMVMDTHXCESMZ72NA701EKGQ"
-}
-
-variable "io_receipt_remote_config_test_id" {
-  type        = string
-  description = "The Remote Content Config ID of io-receipt service"
-  default     = "01HMVMCDD3JFYTPKT4ZN4WQ73B"
-}
-
-variable "io_receipt_remote_config_id" {
-  type        = string
-  description = "The Remote Content Config ID of io-receipt service"
-  default     = "01HMVM9W74RWH93NT1EYNKKNNR"
-}
-
-variable "third_party_mock_remote_config_id" {
-  type        = string
-  description = "The Remote Content Config ID of the Third Party Mock service"
-  default     = "01HMVM4N4XFJ8VBR1FXYFZ9QFB"
-}
-
-###############################
-# Messages cqrs functions
-###############################
-variable "cidr_subnet_fnmessagescqrs" {
-  type        = list(string)
-  description = "Fn cqrs address space."
-}
-
-###############################
-# Service messages functions
-###############################
-variable "cidr_subnet_fnservicemessages" {
-  type        = list(string)
-  description = "Functions service messages address space."
-}
-
-variable "function_service_messages_enabled" {
-  type        = bool
-  default     = false
-  description = "Functions service messages enabled?"
-}
-
-
-
-
