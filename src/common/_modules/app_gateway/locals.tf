@@ -678,311 +678,311 @@ locals {
     # }
   }
 
-  rewrite_rule_sets = [] # ⚠️ Remove this line and uncomment the configuration below after AGW creation ⚠️
-  # rewrite_rule_sets = [
-  #   {
-  #     name = "rewrite-rule-set-api"
-  #     rewrite_rules = [{
-  #       name          = "http-headers-api"
-  #       rule_sequence = 100
-  #       conditions    = []
-  #       url           = null
-  #       request_header_configurations = [
-  #         {
-  #           header_name  = "X-Forwarded-For"
-  #           header_value = "{var_client_ip}"
-  #         },
-  #         {
-  #           header_name  = "X-Client-Ip"
-  #           header_value = "{var_client_ip}"
-  #         },
-  #         {
-  #           # this header will be checked in apim policy (only for MTLS check)
-  #           header_name  = data.azurerm_key_vault_secret.app_gw_mtls_header_name.value
-  #           header_value = "false"
-  #         },
-  #       ]
-  #       response_header_configurations = []
-  #     }]
-  #   },
-  #   {
-  #     name = "rewrite-rule-set-api-mtls"
-  #     rewrite_rules = [{
-  #       name          = "http-headers-api-mtls"
-  #       rule_sequence = 100
-  #       conditions    = []
-  #       url           = null
-  #       request_header_configurations = [
-  #         {
-  #           header_name  = "X-Forwarded-For"
-  #           header_value = "{var_client_ip}"
-  #         },
-  #         {
-  #           header_name  = "X-Client-Ip"
-  #           header_value = "{var_client_ip}"
-  #         },
-  #         {
-  #           # this header will be checked in apim policy (only for MTLS check)
-  #           header_name  = data.azurerm_key_vault_secret.app_gw_mtls_header_name.value
-  #           header_value = "true"
-  #         },
-  #       ]
-  #       response_header_configurations = []
-  #     }]
-  #   },
-  #   {
-  #     name          = "rewrite-rule-set-api-app"
-  #     rewrite_rules = [local.io_backend_ip_headers_rule]
-  #   },
-  #   {
-  #     name = "rewrite-rule-set-api-app-rewrite-platform-legacy-root"
-  #     rewrite_rules = [
-  #       local.io_backend_ip_headers_rule,
-  #       {
-  #         name          = "rewrite-url-to-platform-legacy"
-  #         rule_sequence = 200
-  #         conditions    = []
-  #         url = {
-  #           path         = "/api/platform-legacy{var_uri_path}"
-  #           query_string = null
-  #           reroute      = false
-  #           components   = "path_only"
-  #         }
-  #         request_header_configurations  = []
-  #         response_header_configurations = []
-  #       }
-  #     ]
-  #   },
-  #   {
-  #     name = "rewrite-rule-set-api-app-rewrite-platform-legacy"
-  #     rewrite_rules = [
-  #       local.io_backend_ip_headers_rule,
-  #       {
-  #         name          = "rewrite-url-to-api-platform-legacy"
-  #         rule_sequence = 100
+  # ⚠️ Uncomment the configuration below after AGW creation ⚠️
+  rewrite_rule_sets = [
+    # {
+    #   name = "rewrite-rule-set-api"
+    #   rewrite_rules = [{
+    #     name          = "http-headers-api"
+    #     rule_sequence = 100
+    #     conditions    = []
+    #     url           = null
+    #     request_header_configurations = [
+    #       {
+    #         header_name  = "X-Forwarded-For"
+    #         header_value = "{var_client_ip}"
+    #       },
+    #       {
+    #         header_name  = "X-Client-Ip"
+    #         header_value = "{var_client_ip}"
+    #       },
+    #       {
+    #         # this header will be checked in apim policy (only for MTLS check)
+    #         header_name  = data.azurerm_key_vault_secret.app_gw_mtls_header_name.value
+    #         header_value = "false"
+    #       },
+    #     ]
+    #     response_header_configurations = []
+    #   }]
+    # },
+    # {
+    #   name = "rewrite-rule-set-api-mtls"
+    #   rewrite_rules = [{
+    #     name          = "http-headers-api-mtls"
+    #     rule_sequence = 100
+    #     conditions    = []
+    #     url           = null
+    #     request_header_configurations = [
+    #       {
+    #         header_name  = "X-Forwarded-For"
+    #         header_value = "{var_client_ip}"
+    #       },
+    #       {
+    #         header_name  = "X-Client-Ip"
+    #         header_value = "{var_client_ip}"
+    #       },
+    #       {
+    #         # this header will be checked in apim policy (only for MTLS check)
+    #         header_name  = data.azurerm_key_vault_secret.app_gw_mtls_header_name.value
+    #         header_value = "true"
+    #       },
+    #     ]
+    #     response_header_configurations = []
+    #   }]
+    # },
+    # {
+    #   name          = "rewrite-rule-set-api-app"
+    #   rewrite_rules = [local.io_backend_ip_headers_rule]
+    # },
+    # {
+    #   name = "rewrite-rule-set-api-app-rewrite-platform-legacy-root"
+    #   rewrite_rules = [
+    #     local.io_backend_ip_headers_rule,
+    #     {
+    #       name          = "rewrite-url-to-platform-legacy"
+    #       rule_sequence = 200
+    #       conditions    = []
+    #       url = {
+    #         path         = "/api/platform-legacy{var_uri_path}"
+    #         query_string = null
+    #         reroute      = false
+    #         components   = "path_only"
+    #       }
+    #       request_header_configurations  = []
+    #       response_header_configurations = []
+    #     }
+    #   ]
+    # },
+    # {
+    #   name = "rewrite-rule-set-api-app-rewrite-platform-legacy"
+    #   rewrite_rules = [
+    #     local.io_backend_ip_headers_rule,
+    #     {
+    #       name          = "rewrite-url-to-api-platform-legacy"
+    #       rule_sequence = 100
 
-  #         # Condition to capture requests directed to any endpoint under /api/v1/
-  #         conditions = [
-  #           {
-  #             variable    = "var_uri_path"
-  #             pattern     = "^/api/v1/(.*)$"
-  #             ignore_case = true
-  #             negate      = false
-  #           }
-  #         ]
+    #       # Condition to capture requests directed to any endpoint under /api/v1/
+    #       conditions = [
+    #         {
+    #           variable    = "var_uri_path"
+    #           pattern     = "^/api/v1/(.*)$"
+    #           ignore_case = true
+    #           negate      = false
+    #         }
+    #       ]
 
-  #         # URL rewriting preserving the specific endpoint
-  #         url = {
-  #           path         = "/api/platform-legacy/v1/{var_uri_path_1}"
-  #           query_string = null
-  #           reroute      = false
-  #           components   = "path_only"
-  #         }
-  #         request_header_configurations  = []
-  #         response_header_configurations = []
-  #       }
-  #     ]
-  #   },
-  #   {
-  #     name = "rewrite-rule-set-api-app-rewrite-to-session-manager"
-  #     rewrite_rules = [
-  #       local.io_backend_ip_headers_rule,
-  #       {
-  #         name          = "rewrite-if-cookie-present"
-  #         rule_sequence = 200
-  #         conditions = [{
-  #           variable    = "http_req_Cookie"
-  #           pattern     = "test-session-manager"
-  #           ignore_case = true
-  #           negate      = false
-  #         }]
-  #         url = {
-  #           path         = "/session-manager{var_uri_path}"
-  #           query_string = null
-  #           reroute      = true
-  #           components   = "path_only"
-  #         }
-  #         request_header_configurations  = []
-  #         response_header_configurations = []
-  #       }
-  #     ]
-  #   },
-  #   {
-  #     name = "rewrite-rule-set-api-app-remove-base-path-session-manager"
-  #     rewrite_rules = [
-  #       local.io_backend_ip_headers_rule,
-  #       {
-  #         name          = "strip_base_session_manager_path"
-  #         rule_sequence = 200
-  #         conditions = [{
-  #           variable    = "var_uri_path"
-  #           pattern     = "/session-manager/(.*)"
-  #           ignore_case = true
-  #           negate      = false
-  #         }]
-  #         url = {
-  #           path         = "/{var_uri_path_1}"
-  #           query_string = null
-  #           reroute      = false
-  #           components   = "path_only"
-  #         }
-  #         request_header_configurations  = []
-  #         response_header_configurations = []
-  #     }]
-  #   },
-  #   {
-  #     name = "rewrite-rule-set-fims-op-app"
-  #     rewrite_rules = [{
-  #       name          = "http-headers-fims-op-app"
-  #       rule_sequence = 100
-  #       conditions    = []
-  #       url           = null
-  #       request_header_configurations = [
-  #         {
-  #           header_name  = "X-Forwarded-For"
-  #           header_value = "{var_client_ip}"
-  #         },
-  #         {
-  #           header_name  = "X-Forwarded-Host"
-  #           header_value = "{var_host}"
-  #         },
-  #         {
-  #           header_name  = "X-Client-Ip"
-  #           header_value = "{var_client_ip}"
-  #         },
-  #       ]
-  #       response_header_configurations = []
-  #     }]
-  #   },
-  #   {
-  #     name = "rewrite-rule-set-api-web"
-  #     rewrite_rules = [{
-  #       name          = "http-headers-api-web"
-  #       rule_sequence = 100
-  #       conditions    = []
-  #       url           = null
-  #       request_header_configurations = [
-  #         {
-  #           header_name  = "X-Forwarded-For"
-  #           header_value = "{var_client_ip}"
-  #         },
-  #         {
-  #           header_name  = "X-Client-Ip"
-  #           header_value = "{var_client_ip}"
-  #         },
-  #       ]
-  #       response_header_configurations = []
-  #     }]
-  #   },
-  #   {
-  #     name = "rewrite-rule-set-developerportal-backend"
-  #     rewrite_rules = [{
-  #       name          = "http-headers-developerportal-backend"
-  #       rule_sequence = 100
-  #       conditions    = []
-  #       url           = null
-  #       request_header_configurations = [
-  #         {
-  #           header_name  = "X-Forwarded-For"
-  #           header_value = "{var_client_ip}"
-  #         },
-  #         {
-  #           header_name  = "X-Client-Ip"
-  #           header_value = "{var_client_ip}"
-  #         },
-  #       ]
-  #       response_header_configurations = []
-  #     }]
-  #   },
-  #   {
-  #     name = "rewrite-rule-set-firmaconio-selfcare-backend"
-  #     rewrite_rules = [{
-  #       name          = "http-headers-firmaconio-selfcare-backend"
-  #       rule_sequence = 100
-  #       conditions    = []
-  #       url           = null
-  #       request_header_configurations = [
-  #         {
-  #           header_name  = "X-Forwarded-For"
-  #           header_value = "{var_client_ip}"
-  #         },
-  #         {
-  #           header_name  = "X-Client-Ip"
-  #           header_value = "{var_client_ip}"
-  #         },
-  #       ]
-  #       response_header_configurations = []
-  #     }]
-  #   },
-  #   {
-  #     name = "rewrite-rule-set-continua"
-  #     rewrite_rules = [{
-  #       name          = "http-headers-continua"
-  #       rule_sequence = 100
-  #       conditions    = []
-  #       url           = null
-  #       request_header_configurations = [
-  #         {
-  #           header_name  = "X-Forwarded-For"
-  #           header_value = "{var_client_ip}"
-  #         },
-  #         {
-  #           header_name  = "X-Forwarded-Host"
-  #           header_value = "{var_host}"
-  #         },
-  #         {
-  #           header_name  = "X-Client-Ip"
-  #           header_value = "{var_client_ip}"
-  #         },
-  #       ]
-  #       response_header_configurations = []
-  #     }]
-  #   },
-  #   {
-  #     name = "rewrite-rule-set-selfcare-io"
-  #     rewrite_rules = [{
-  #       name          = "http-headers-selfcare-io"
-  #       rule_sequence = 100
-  #       conditions    = []
-  #       url           = null
-  #       request_header_configurations = [
-  #         {
-  #           header_name  = "X-Forwarded-For"
-  #           header_value = "{var_client_ip}"
-  #         },
-  #         {
-  #           header_name  = "X-Client-Ip"
-  #           header_value = "{var_client_ip}"
-  #         },
-  #       ]
-  #       response_header_configurations = []
-  #     }]
-  #   },
-  #   {
-  #     name = "rewrite-rule-set-ipatente-io-app"
-  #     rewrite_rules = [{
-  #       name          = "http-headers-fims-op-app"
-  #       rule_sequence = 100
-  #       conditions    = []
-  #       url           = null
-  #       request_header_configurations = [
-  #         {
-  #           header_name  = "X-Forwarded-For"
-  #           header_value = "{var_client_ip}"
-  #         },
-  #         {
-  #           header_name  = "X-Forwarded-Host"
-  #           header_value = "{var_host}"
-  #         },
-  #         {
-  #           header_name  = "X-Client-Ip"
-  #           header_value = "{var_client_ip}"
-  #         },
-  #       ]
-  #       response_header_configurations = []
-  #     }]
-  #   },
-  # ]
+    #       # URL rewriting preserving the specific endpoint
+    #       url = {
+    #         path         = "/api/platform-legacy/v1/{var_uri_path_1}"
+    #         query_string = null
+    #         reroute      = false
+    #         components   = "path_only"
+    #       }
+    #       request_header_configurations  = []
+    #       response_header_configurations = []
+    #     }
+    #   ]
+    # },
+    # {
+    #   name = "rewrite-rule-set-api-app-rewrite-to-session-manager"
+    #   rewrite_rules = [
+    #     local.io_backend_ip_headers_rule,
+    #     {
+    #       name          = "rewrite-if-cookie-present"
+    #       rule_sequence = 200
+    #       conditions = [{
+    #         variable    = "http_req_Cookie"
+    #         pattern     = "test-session-manager"
+    #         ignore_case = true
+    #         negate      = false
+    #       }]
+    #       url = {
+    #         path         = "/session-manager{var_uri_path}"
+    #         query_string = null
+    #         reroute      = true
+    #         components   = "path_only"
+    #       }
+    #       request_header_configurations  = []
+    #       response_header_configurations = []
+    #     }
+    #   ]
+    # },
+    # {
+    #   name = "rewrite-rule-set-api-app-remove-base-path-session-manager"
+    #   rewrite_rules = [
+    #     local.io_backend_ip_headers_rule,
+    #     {
+    #       name          = "strip_base_session_manager_path"
+    #       rule_sequence = 200
+    #       conditions = [{
+    #         variable    = "var_uri_path"
+    #         pattern     = "/session-manager/(.*)"
+    #         ignore_case = true
+    #         negate      = false
+    #       }]
+    #       url = {
+    #         path         = "/{var_uri_path_1}"
+    #         query_string = null
+    #         reroute      = false
+    #         components   = "path_only"
+    #       }
+    #       request_header_configurations  = []
+    #       response_header_configurations = []
+    #   }]
+    # },
+    # {
+    #   name = "rewrite-rule-set-fims-op-app"
+    #   rewrite_rules = [{
+    #     name          = "http-headers-fims-op-app"
+    #     rule_sequence = 100
+    #     conditions    = []
+    #     url           = null
+    #     request_header_configurations = [
+    #       {
+    #         header_name  = "X-Forwarded-For"
+    #         header_value = "{var_client_ip}"
+    #       },
+    #       {
+    #         header_name  = "X-Forwarded-Host"
+    #         header_value = "{var_host}"
+    #       },
+    #       {
+    #         header_name  = "X-Client-Ip"
+    #         header_value = "{var_client_ip}"
+    #       },
+    #     ]
+    #     response_header_configurations = []
+    #   }]
+    # },
+    # {
+    #   name = "rewrite-rule-set-api-web"
+    #   rewrite_rules = [{
+    #     name          = "http-headers-api-web"
+    #     rule_sequence = 100
+    #     conditions    = []
+    #     url           = null
+    #     request_header_configurations = [
+    #       {
+    #         header_name  = "X-Forwarded-For"
+    #         header_value = "{var_client_ip}"
+    #       },
+    #       {
+    #         header_name  = "X-Client-Ip"
+    #         header_value = "{var_client_ip}"
+    #       },
+    #     ]
+    #     response_header_configurations = []
+    #   }]
+    # },
+    # {
+    #   name = "rewrite-rule-set-developerportal-backend"
+    #   rewrite_rules = [{
+    #     name          = "http-headers-developerportal-backend"
+    #     rule_sequence = 100
+    #     conditions    = []
+    #     url           = null
+    #     request_header_configurations = [
+    #       {
+    #         header_name  = "X-Forwarded-For"
+    #         header_value = "{var_client_ip}"
+    #       },
+    #       {
+    #         header_name  = "X-Client-Ip"
+    #         header_value = "{var_client_ip}"
+    #       },
+    #     ]
+    #     response_header_configurations = []
+    #   }]
+    # },
+    # {
+    #   name = "rewrite-rule-set-firmaconio-selfcare-backend"
+    #   rewrite_rules = [{
+    #     name          = "http-headers-firmaconio-selfcare-backend"
+    #     rule_sequence = 100
+    #     conditions    = []
+    #     url           = null
+    #     request_header_configurations = [
+    #       {
+    #         header_name  = "X-Forwarded-For"
+    #         header_value = "{var_client_ip}"
+    #       },
+    #       {
+    #         header_name  = "X-Client-Ip"
+    #         header_value = "{var_client_ip}"
+    #       },
+    #     ]
+    #     response_header_configurations = []
+    #   }]
+    # },
+    {
+      name = "rewrite-rule-set-continua"
+      rewrite_rules = [{
+        name          = "http-headers-continua"
+        rule_sequence = 100
+        conditions    = []
+        url           = null
+        request_header_configurations = [
+          {
+            header_name  = "X-Forwarded-For"
+            header_value = "{var_client_ip}"
+          },
+          {
+            header_name  = "X-Forwarded-Host"
+            header_value = "{var_host}"
+          },
+          {
+            header_name  = "X-Client-Ip"
+            header_value = "{var_client_ip}"
+          },
+        ]
+        response_header_configurations = []
+      }]
+    },
+    # {
+    #   name = "rewrite-rule-set-selfcare-io"
+    #   rewrite_rules = [{
+    #     name          = "http-headers-selfcare-io"
+    #     rule_sequence = 100
+    #     conditions    = []
+    #     url           = null
+    #     request_header_configurations = [
+    #       {
+    #         header_name  = "X-Forwarded-For"
+    #         header_value = "{var_client_ip}"
+    #       },
+    #       {
+    #         header_name  = "X-Client-Ip"
+    #         header_value = "{var_client_ip}"
+    #       },
+    #     ]
+    #     response_header_configurations = []
+    #   }]
+    # },
+    # {
+    #   name = "rewrite-rule-set-ipatente-io-app"
+    #   rewrite_rules = [{
+    #     name          = "http-headers-fims-op-app"
+    #     rule_sequence = 100
+    #     conditions    = []
+    #     url           = null
+    #     request_header_configurations = [
+    #       {
+    #         header_name  = "X-Forwarded-For"
+    #         header_value = "{var_client_ip}"
+    #       },
+    #       {
+    #         header_name  = "X-Forwarded-Host"
+    #         header_value = "{var_host}"
+    #       },
+    #       {
+    #         header_name  = "X-Client-Ip"
+    #         header_value = "{var_client_ip}"
+    #       },
+    #     ]
+    #     response_header_configurations = []
+    #   }]
+    # },
+  ]
 
   # ⚠️ Uncomment the configuration below after AGW creation ⚠️
   # #################################
