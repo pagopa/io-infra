@@ -81,8 +81,8 @@ data "azurerm_key_vault_secret" "session_manager_VALIDATION_COOKIE_TEST_USERS" {
   key_vault_id = data.azurerm_key_vault.kv.id
 }
 
-data "azurerm_key_vault_secret" "session_manager_SERVICE_BUS_EVENTS_USERS" {
-  name         = "session-manager-SERVICE-BUS-EVENTS-USERS"
+data "azurerm_key_vault_secret" "service_bus_events_beta_testers" {
+  name         = "service-bus-events-beta-testers"
   key_vault_id = data.azurerm_key_vault.kv.id
 }
 
@@ -234,7 +234,7 @@ locals {
     AUTH_SESSIONS_TOPIC_NAME = local.auth_sessions_topic_name
 
     FF_SERVICE_BUS_EVENTS    = "BETA"
-    SERVICE_BUS_EVENTS_USERS = data.azurerm_key_vault_secret.session_manager_SERVICE_BUS_EVENTS_USERS.value
+    SERVICE_BUS_EVENTS_USERS = data.azurerm_key_vault_secret.service_bus_events_beta_testers.value
 
   }
 }
