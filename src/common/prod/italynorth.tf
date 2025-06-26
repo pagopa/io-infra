@@ -150,12 +150,12 @@ resource "dx_available_subnet_cidr" "next_cidr_snet_agw" {
 module "application_gateway_itn" {
   source = "../_modules/app_gateway"
 
-  location                = "italynorth"
-  location_short          = local.core.resource_groups.italynorth.location_short
-  project                 = local.project_itn
-  project_legacy          = local.project_weu_legacy
-  prefix                  = local.prefix
-  resource_group_common   = local.core.resource_groups.italynorth.common
+  location              = "italynorth"
+  location_short        = local.core.resource_groups.italynorth.location_short
+  project               = local.project_itn
+  project_legacy        = local.project_weu_legacy
+  prefix                = local.prefix
+  resource_group_common = local.core.resource_groups.italynorth.common
 
   datasources = {
     azurerm_client_config = data.azurerm_client_config.current
