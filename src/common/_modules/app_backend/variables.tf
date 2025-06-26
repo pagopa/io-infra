@@ -55,12 +55,6 @@ variable "name" {
   default     = null
 }
 
-variable "is_li" {
-  type        = bool
-  description = "Is this backend li type (async)?"
-  default     = false
-}
-
 variable "vnet_common" {
   type = object({
     id                  = string
@@ -119,10 +113,6 @@ variable "ai_connection_string" {
 variable "error_action_group_id" {
   type        = string
   description = "Azure Monitor error action group id"
-}
-
-variable "apim_snet_address_prefixes" {
-  type = list(string)
 }
 
 variable "nat_gateways" {

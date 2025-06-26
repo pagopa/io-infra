@@ -239,24 +239,6 @@ module "monitoring_weu" {
       ssl_enabled                       = false
     },
     {
-      # https://api.io.selfcare.pagopa.it/info
-      name                              = module.global.dns.public_dns_zones.io_selfcare_pagopa_it.api
-      host                              = module.global.dns.public_dns_zones.io_selfcare_pagopa_it.api
-      path                              = "/info",
-      frequency                         = 900
-      http_status                       = 200,
-      ssl_cert_remaining_lifetime_check = 7,
-    },
-    {
-      # https://io.selfcare.pagopa.it
-      name                              = "io.selfcare.pagopa.it"
-      host                              = "io.selfcare.pagopa.it"
-      path                              = "",
-      frequency                         = 900
-      http_status                       = 200,
-      ssl_cert_remaining_lifetime_check = 7,
-    },
-    {
       # https://firmaconio.selfcare.pagopa.it
       name                              = "firmaconio.selfcare.pagopa.it"
       host                              = "firmaconio.selfcare.pagopa.it"
@@ -322,7 +304,6 @@ module "application_gateway_weu" {
     api_io_italia_it                     = "api-io-italia-it"
     app_backend_io_italia_it             = "app-backend-io-italia-it"
     developerportal_backend_io_italia_it = "developerportal-backend-io-italia-it"
-    api_io_selfcare_pagopa_it            = "api-io-selfcare-pagopa-it"
     firmaconio_selfcare_pagopa_it        = "firmaconio-selfcare-pagopa-it"
     continua_io_pagopa_it                = "continua-io-pagopa-it"
     selfcare_io_pagopa_it                = "selfcare-io-pagopa-it"
@@ -438,79 +419,9 @@ module "app_backend_weu" {
   slot_allowed_subnets          = concat([local.azdoa_snet_id["weu"]], data.azurerm_subnet.services_snet.*.id, [module.application_gateway_weu.snet.id, module.apim_itn.snet.id, module.platform_api_gateway_apim_itn.snet.id, module.github_runner_itn.subnet.id])
   allowed_ips                   = module.monitoring_weu.appi.reserved_ips
   slot_allowed_ips              = module.monitoring_weu.appi.reserved_ips
-  apim_snet_address_prefixes    = module.apim_itn.snet.address_prefixes
   enable_premium_plan_autoscale = true
 
   backend_hostnames = local.backend_hostnames
-
-  key_vault        = local.core.key_vault.weu.kv
-  key_vault_common = local.core.key_vault.weu.kv_common
-
-  error_action_group_id  = module.monitoring_weu.action_groups.error
-  application_insights   = module.monitoring_weu.appi
-  ai_instrumentation_key = module.monitoring_weu.appi_instrumentation_key
-  ai_connection_string   = module.monitoring_weu.appi_connection_string
-
-  redis_common = {
-    hostname           = module.redis_weu.hostname
-    ssl_port           = module.redis_weu.ssl_port
-    primary_access_key = module.redis_weu.primary_access_key
-  }
-
-  azure_adgroup_wallet_admins_object_id = data.azuread_group.wallet_admins.object_id
-  azure_adgroup_com_admins_object_id    = data.azuread_group.com_admins.object_id
-  azure_adgroup_svc_admins_object_id    = data.azuread_group.svc_admins.object_id
-  azure_adgroup_auth_admins_object_id   = data.azuread_group.auth_admins.object_id
-  azure_adgroup_bonus_admins_object_id  = data.azuread_group.bonus_admins.object_id
-
-  tags = local.tags
-}
-
-module "app_backend_li_weu" {
-  source = "../_modules/app_backend"
-
-  location                = "westeurope"
-  location_short          = local.core.resource_groups.westeurope.location_short
-  project                 = local.project_weu_legacy
-  prefix                  = local.prefix
-  resource_group_linux    = local.core.resource_groups.westeurope.linux
-  resource_group_internal = local.core.resource_groups.westeurope.internal
-  resource_group_common   = local.core.resource_groups.westeurope.common
-
-  datasources = {
-    azurerm_client_config = data.azurerm_client_config.current
-  }
-
-  name  = "li"
-  is_li = true
-
-  vnet_common  = local.core.networking.weu.vnet_common
-  cidr_subnet  = local.app_backendli.cidr_subnet
-  nat_gateways = local.core.networking.weu.nat_gateways
-  allowed_subnets = concat(data.azurerm_subnet.services_snet.*.id,
-    [
-      data.azurerm_subnet.admin_snet.id,
-      data.azurerm_subnet.itn_auth_lv_func_snet.id,
-      data.azurerm_subnet.itn_msgs_sending_func_snet.id,
-      data.azurerm_subnet.itn_auth_prof_async_func_snet.id,
-      module.platform_api_gateway_apim_itn.snet.id
-  ])
-  slot_allowed_subnets = concat([local.azdoa_snet_id["weu"]], data.azurerm_subnet.services_snet.*.id, [data.azurerm_subnet.admin_snet.id, module.github_runner_itn.subnet.id, module.platform_api_gateway_apim_itn.snet.id])
-  allowed_ips = concat(module.monitoring_weu.appi.reserved_ips,
-    [
-      // aks prod01
-      "51.105.109.140/32"
-  ])
-  slot_allowed_ips           = []
-  apim_snet_address_prefixes = module.apim_itn.snet.address_prefixes
-
-  backend_hostnames = local.backend_hostnames
-
-  autoscale = {
-    default = 10
-    minimum = 2
-    maximum = 30
-  }
 
   key_vault        = local.core.key_vault.weu.kv
   key_vault_common = local.core.key_vault.weu.kv_common
