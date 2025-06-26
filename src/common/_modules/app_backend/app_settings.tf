@@ -96,7 +96,7 @@ locals {
     NOTIFICATIONS_QUEUE_NAME                = "push-notifications"
     NOTIFICATIONS_STORAGE_CONNECTION_STRING = data.azurerm_storage_account.notifications.primary_connection_string
 
-    PUSH_NOTIFICATIONS_STORAGE_CONNECTION_STRING = data.azurerm_storage_account.push_notifications_storage.primary_connection_string
+    PUSH_NOTIFICATIONS_STORAGE_CONNECTION_STRING = data.azurerm_storage_account.itn_com_st.primary_connection_string
     PUSH_NOTIFICATIONS_QUEUE_NAME                = "push-notifications"
 
     IO_COM_QUEUE_STORAGE_CONNECTION_STRING        = data.azurerm_storage_account.itn_com_st.primary_connection_string
