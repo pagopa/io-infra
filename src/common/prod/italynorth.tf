@@ -155,7 +155,6 @@ module "application_gateway_itn" {
   project                 = local.project_itn
   project_legacy          = local.project_weu_legacy
   prefix                  = local.prefix
-  resource_group_security = local.core.resource_groups.westeurope.sec # -- DOES NOT EXIST IN ITN --
   resource_group_common   = local.core.resource_groups.italynorth.common
 
   datasources = {

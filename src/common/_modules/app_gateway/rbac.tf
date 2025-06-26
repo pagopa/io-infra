@@ -1,5 +1,5 @@
 resource "azurerm_user_assigned_identity" "appgateway" {
-  resource_group_name = var.resource_group_security # CHOOSE IF CREATE HERE OR IN COMMON RG ITN
+  resource_group_name = var.resource_group_common
   location            = var.location
   name                = "${var.project}-agw-id-01"
 

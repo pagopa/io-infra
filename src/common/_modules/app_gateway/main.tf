@@ -77,7 +77,7 @@ resource "azurerm_application_gateway" "this" {
     for_each = distinct([for listener in values(local.listeners) : listener.port])
 
     content {
-      name = "${local.name}-${frontend_port.value}-port" # EVALUATE IF USE NEW AGW NAME OR OLD ONE
+      name = "${local.name}-${frontend_port.value}-port"
       port = frontend_port.value
     }
   }
@@ -124,8 +124,8 @@ resource "azurerm_application_gateway" "this" {
 
     content {
       name                           = "${listener.key}-listener"
-      frontend_ip_configuration_name = try(listener.value.type, "Public") == "Private" ? "${local.name}-private-ip-conf" : "${local.name}-ip-conf" # EVALUATE IF USE NEW AGW NAME OR OLD ONE
-      frontend_port_name             = "${local.name}-${listener.value.port}-port"                                                                 # EVALUATE IF USE NEW AGW NAME OR OLD ONE
+      frontend_ip_configuration_name = try(listener.value.type, "Public") == "Private" ? "${local.name}-private-ip-conf" : "${local.name}-ip-conf"
+      frontend_port_name             = "${local.name}-${listener.value.port}-port"
       protocol                       = "Https"
       ssl_certificate_name           = listener.value.certificate.name
       require_sni                    = true

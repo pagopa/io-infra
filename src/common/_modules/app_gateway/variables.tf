@@ -39,11 +39,6 @@ variable "resource_group_common" {
   description = "Common resource group names"
 }
 
-variable "resource_group_security" {
-  type        = string
-  description = "Sec resource group names"
-}
-
 variable "datasources" {
   type        = map(any)
   description = "Common datasources"
