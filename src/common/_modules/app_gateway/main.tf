@@ -1,12 +1,10 @@
-data "azurerm_key_vault_secret" "client_cert" {
-  for_each     = { for t in local.trusted_client_certificates : t.secret_name => t }
-  name         = each.value.secret_name
-  key_vault_id = each.value.key_vault_id
-}
+#################################
+###    Application Gateway    ###
+#################################
 
 resource "azurerm_application_gateway" "this" {
   name                = local.name
-  resource_group_name = var.resource_group_external
+  resource_group_name = var.resource_group_common
   location            = var.location
   zones               = [1, 2, 3]
 
@@ -18,12 +16,12 @@ resource "azurerm_application_gateway" "this" {
 
   gateway_ip_configuration {
     name      = "${local.name}-snet-conf"
-    subnet_id = azurerm_subnet.agw_snet.id
+    subnet_id = azurerm_subnet.agw.id
   }
 
   frontend_ip_configuration {
     name                 = "${local.name}-ip-conf"
-    public_ip_address_id = azurerm_public_ip.appgateway_public_ip.id
+    public_ip_address_id = azurerm_public_ip.agw.id
   }
 
   dynamic "backend_address_pool" {

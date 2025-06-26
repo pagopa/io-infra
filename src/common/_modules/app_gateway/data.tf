@@ -149,3 +149,9 @@ data "azurerm_key_vault_secret" "app_gw_mtls_header_name" {
   name         = "mtls-header-name"
   key_vault_id = var.key_vault.id
 }
+
+data "azurerm_key_vault_secret" "client_cert" {
+  for_each     = { for t in local.trusted_client_certificates : t.secret_name => t }
+  name         = each.value.secret_name
+  key_vault_id = each.value.key_vault_id
+}
