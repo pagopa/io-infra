@@ -150,23 +150,22 @@ resource "dx_available_subnet_cidr" "next_cidr_snet_agw" {
 module "application_gateway_itn" {
   source = "../_modules/app_gateway"
 
-  location                = "italynorth"
-  location_short          = local.core.resource_groups.italynorth.location_short
-  project                 = local.project_itn
-  project_legacy          = local.project_weu_legacy
-  prefix                  = local.prefix
-  resource_group_security = local.core.resource_groups.westeurope.sec # ?? DOES NOT EXIST IN ITN
-  resource_group_common   = local.core.resource_groups.italynorth.common
+  location              = "italynorth"
+  location_short        = local.core.resource_groups.italynorth.location_short
+  project               = local.project_itn
+  project_legacy        = local.project_weu_legacy
+  prefix                = local.prefix
+  resource_group_common = local.core.resource_groups.italynorth.common
 
   datasources = {
     azurerm_client_config = data.azurerm_client_config.current
   }
 
   vnet_common = local.core.networking.itn.vnet_common
-  # VALUATE IF CREATE A NEW KEY VAULT OR NOT
+  # -- VALUATE IF CREATE A NEW KEY VAULT OR NOT -- #
   key_vault        = local.core.key_vault.weu.kv
   key_vault_common = local.core.key_vault.weu.kv_common
-  #
+  # ---------------------------------------------- #
   external_domain  = module.global.dns.external_domain
   public_dns_zones = module.global.dns.public_dns_zones
 
@@ -182,20 +181,19 @@ module "application_gateway_itn" {
     api_io_italia_it                     = "api-io-italia-it"
     app_backend_io_italia_it             = "app-backend-io-italia-it"
     developerportal_backend_io_italia_it = "developerportal-backend-io-italia-it"
-    # api_io_selfcare_pagopa_it            = "api-io-selfcare-pagopa-it"
-    firmaconio_selfcare_pagopa_it   = "firmaconio-selfcare-pagopa-it"
-    continua_io_pagopa_it           = "continua-io-pagopa-it"
-    selfcare_io_pagopa_it           = "selfcare-io-pagopa-it"
-    oauth_io_pagopa_it              = "oauth-io-pagopa-it"
-    vehicles_ipatente_io_pagopa_it  = "vehicles-ipatente-io-pagopa-it"
-    licences_ipatente_io_pagopa_it  = "licences-ipatente-io-pagopa-it"
-    payments_ipatente_io_pagopa_it  = "payments-ipatente-io-pagopa-it"
-    practices_ipatente_io_pagopa_it = "practices-ipatente-io-pagopa-it"
+    firmaconio_selfcare_pagopa_it        = "firmaconio-selfcare-pagopa-it"
+    continua_io_pagopa_it                = "continua-io-pagopa-it"
+    selfcare_io_pagopa_it                = "selfcare-io-pagopa-it"
+    oauth_io_pagopa_it                   = "oauth-io-pagopa-it"
+    vehicles_ipatente_io_pagopa_it       = "vehicles-ipatente-io-pagopa-it"
+    licences_ipatente_io_pagopa_it       = "licences-ipatente-io-pagopa-it"
+    payments_ipatente_io_pagopa_it       = "payments-ipatente-io-pagopa-it"
+    practices_ipatente_io_pagopa_it      = "practices-ipatente-io-pagopa-it"
   }
 
   cidr_subnet           = [dx_available_subnet_cidr.next_cidr_snet_agw.cidr_block]
-  min_capacity          = 1
-  max_capacity          = 1
+  min_capacity          = 1 # 7
+  max_capacity          = 2 # 80
   alerts_enabled        = true
   deny_paths            = ["\\/admin\\/(.*)"]
   error_action_group_id = module.monitoring_weu.action_groups.error
