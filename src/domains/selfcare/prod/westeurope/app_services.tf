@@ -42,12 +42,6 @@ resource "azurerm_role_assignment" "devportal_be_apim_itn" {
   principal_id         = module.app_services.app_service_common.devportal_be.principal_id
 }
 
-resource "azurerm_role_assignment" "selfcare_be_apim_itn" {
-  role_definition_name = "PagoPA API Management Operator App"
-  scope                = data.azurerm_api_management.apim_itn_api.id
-  principal_id         = module.app_services.app_service_common.selfcare_be.principal_id
-}
-
 # Functions
 
 resource "azurerm_role_assignment" "function_subscriptionmigrations_itn" {
