@@ -42,3 +42,26 @@ output "pep_subnets" {
     }
   }
 }
+
+output "platform_service_bus_namespace" {
+  value = module.platform_service_bus_namespace_itn
+}
+
+output "log_analytics_workspace" {
+  value = {
+    id                  = module.monitoring_weu.log.id
+    name                = module.monitoring_weu.log.name
+    resource_group_name = module.monitoring_weu.log.resource_group_name
+  }
+}
+
+output "key_vault" {
+  value = {
+    itn = local.core.key_vault.itn
+    weu = local.core.key_vault.weu
+  }
+  description = <<EOF
+  WHAT: The Key Vaults into itn and weu regions
+  FORMAT: https://github.com/pagopa/io-infra/blob/main/src/core/_modules/key_vaults/outputs.tf
+  EOF
+}

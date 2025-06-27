@@ -91,7 +91,10 @@ No inputs.
 | Name | Description |
 |------|-------------|
 | <a name="output_apim"></a> [apim](#output\_apim) | n/a |
+| <a name="output_key_vault"></a> [key\_vault](#output\_key\_vault) | WHAT: The Key Vaults into itn and weu regions<br/>  FORMAT: https://github.com/pagopa/io-infra/blob/main/src/core/_modules/key_vaults/outputs.tf |
+| <a name="output_log_analytics_workspace"></a> [log\_analytics\_workspace](#output\_log\_analytics\_workspace) | n/a |
 | <a name="output_pep_subnets"></a> [pep\_subnets](#output\_pep\_subnets) | n/a |
+| <a name="output_platform_service_bus_namespace"></a> [platform\_service\_bus\_namespace](#output\_platform\_service\_bus\_namespace) | n/a |
 | <a name="output_private_endpoints"></a> [private\_endpoints](#output\_private\_endpoints) | n/a |
 | <a name="output_virtual_networks"></a> [virtual\_networks](#output\_virtual\_networks) | n/a |
 <!-- END_TF_DOCS -->
