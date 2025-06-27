@@ -278,6 +278,7 @@ module "session_manager_weu" {
   allowed_subnets = [
     data.azurerm_subnet.appgateway_snet.id,
     data.azurerm_subnet.apim_itn_snet.id,
+    data.azurerm_subnet.agw_itn_snet.id,
     // TODO: add proxy subnet
   ]
   allowed_ips = []
@@ -329,6 +330,7 @@ module "session_manager_weu_staging" {
     data.azurerm_subnet.self_hosted_runner_snet.id,
     data.azurerm_subnet.appgateway_snet.id,
     data.azurerm_subnet.apim_itn_snet.id,
+    data.azurerm_subnet.agw_itn_snet.id,
     // TODO: add proxy subnet
   ]
   allowed_ips = []

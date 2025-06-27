@@ -94,6 +94,12 @@ data "azurerm_subnet" "appgateway_snet" {
   resource_group_name  = local.vnet_common_resource_group_name
 }
 
+data "azurerm_subnet" "agw_itn_snet" {
+  name                 = "io-p-itn-agw-snet-01"
+  virtual_network_name = local.vnet_common_name_itn
+  resource_group_name  = local.vnet_common_resource_group_name_itn
+}
+
 data "azurerm_subnet" "self_hosted_runner_snet" {
   name                 = "io-p-github-runner-snet"
   virtual_network_name = local.vnet_common_name
