@@ -50,10 +50,6 @@ output "dns_zones" {
       name                = "io.pagopa.it"
       resource_group_name = "${local.project_weu_legacy}-rg-external"
     }
-    io_selfcare = {
-      name                = "io.selfcare.pagopa.it"
-      resource_group_name = "${local.project_weu_legacy}-rg-external"
-    }
     firmaconio_selfcare = {
       name                = "firmaconio.selfcare.pagopa.it"
       resource_group_name = "${local.project_weu_legacy}-rg-external"

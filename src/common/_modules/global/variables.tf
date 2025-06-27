@@ -21,7 +21,6 @@ variable "dns" {
     external_domain     = optional(string, "pagopa.it")
     dns_zones = object({
       io                  = string
-      io_selfcare         = string
       firmaconio_selfcare = string
     })
     app_gateway_public_ip           = string

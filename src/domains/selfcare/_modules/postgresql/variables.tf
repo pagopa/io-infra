@@ -18,7 +18,3 @@ variable "resource_group_name" {
   description = "Resource group name for the App Services"
 }
 
-variable "dev_portal_subnet_id" {
-  type        = string
-  description = "Subnet Id for devportal database"
-}

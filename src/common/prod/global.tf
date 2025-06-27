@@ -34,7 +34,6 @@ module "global" {
 
     dns_zones = {
       io                  = "io"
-      io_selfcare         = "io.selfcare"
       firmaconio_selfcare = "firmaconio.selfcare"
     }
 

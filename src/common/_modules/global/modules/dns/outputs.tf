@@ -20,11 +20,6 @@ output "public_dns_zones" {
       app_backend              = trimsuffix(azurerm_dns_a_record.app_backend_io_italia_it.fqdn, ".")
     }
 
-    io_selfcare_pagopa_it = {
-      name = azurerm_dns_zone.io_selfcare_pagopa_it.name
-      api  = trimsuffix(azurerm_dns_a_record.api_io_selfcare_pagopa_it.fqdn, ".")
-    }
-
     ioweb_it = {
       name = azurerm_dns_zone.ioweb_it.name
     }
