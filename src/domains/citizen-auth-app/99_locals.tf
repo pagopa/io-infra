@@ -26,8 +26,8 @@ locals {
 
   appgw_resource_group_name = "${local.product}-rg-external"
 
-  storage_account_notifications_queue_userslogin         = "userslogin"
   storage_account_notifications_queue_push_notifications = "push-notifications"
+
 }
 
 # Region ITN
@@ -43,4 +43,6 @@ locals {
 
   vnet_common_name_itn                = "${local.common_project_itn}-common-vnet-01"
   vnet_common_resource_group_name_itn = "${local.common_project_itn}-common-rg-01"
+
+  auth_sessions_topic_name = "${var.prefix}-${local.short_domain}-sessions-topic"
 }

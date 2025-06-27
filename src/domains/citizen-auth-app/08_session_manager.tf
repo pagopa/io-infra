@@ -81,6 +81,11 @@ data "azurerm_key_vault_secret" "session_manager_VALIDATION_COOKIE_TEST_USERS" {
   key_vault_id = data.azurerm_key_vault.kv.id
 }
 
+data "azurerm_key_vault_secret" "service_bus_events_beta_testers" {
+  name         = "service-bus-events-beta-testers"
+  key_vault_id = data.azurerm_key_vault.kv.id
+}
+
 data "azurerm_linux_function_app" "itn_auth_lv_func" {
   name                = "${local.short_project_itn}-lv-func-02"
   resource_group_name = "${local.short_project_itn}-lv-rg-01"
@@ -201,10 +206,6 @@ locals {
     ALLOWED_CIE_TEST_FISCAL_CODES = data.azurerm_key_vault_secret.app_backend_ALLOWED_CIE_TEST_FISCAL_CODES.value
     CIE_TEST_METADATA_URL         = "https://collaudo.idserver.servizicie.interno.gov.it/idp/shibboleth"
 
-    // USERSLOGIN
-    USERS_LOGIN_QUEUE_NAME                = local.storage_account_notifications_queue_userslogin
-    USERS_LOGIN_STORAGE_CONNECTION_STRING = data.azurerm_storage_account.logs.primary_connection_string
-
     PUSH_NOTIFICATIONS_STORAGE_CONNECTION_STRING = data.azurerm_storage_account.push_notifications_storage.primary_connection_string
     PUSH_NOTIFICATIONS_QUEUE_NAME                = local.storage_account_notifications_queue_push_notifications
 
@@ -227,6 +228,14 @@ locals {
     VALIDATION_COOKIE_DURATION_MS = 900000
     FF_VALIDATION_COOKIE          = "BETA"
     VALIDATION_COOKIE_TEST_USERS  = data.azurerm_key_vault_secret.session_manager_VALIDATION_COOKIE_TEST_USERS.value
+
+    # ServiceBus Auth Event Config
+    SERVICE_BUS_NAMESPACE    = "${data.azurerm_servicebus_namespace.platform_service_bus_namespace.name}.servicebus.windows.net"
+    AUTH_SESSIONS_TOPIC_NAME = local.auth_sessions_topic_name
+
+    FF_SERVICE_BUS_EVENTS    = "BETA"
+    SERVICE_BUS_EVENTS_USERS = data.azurerm_key_vault_secret.service_bus_events_beta_testers.value
+
   }
 }
 
