@@ -73,7 +73,6 @@ module "appservice_continua_slot_staging" {
   subnet_id        = var.subnet_id
   allowed_subnets = [
     data.azurerm_subnet.snet_appgw.id,
-    data.azurerm_subnet.agw_itn_snet.id,
   ]
 
   tags = var.tags
