@@ -984,137 +984,136 @@ locals {
     # },
   ]
 
-  # ⚠️ Uncomment the configuration below after AGW creation ⚠️
   # #################################
   # ##   Monitoring and Alerting   ##
   # #################################
 
-  # metric_namespace = "Microsoft.Network/applicationgateways"
-  # action = [
-  #   {
-  #     action_group_id    = var.error_action_group_id
-  #     webhook_properties = null
-  #   }
-  # ]
-  # monitor_metric_alert_criteria = var.alerts_enabled ? {
-  #   compute_units_usage = {
-  #     description   = "Abnormal compute units usage, probably an high traffic peak"
-  #     frequency     = "PT5M"
-  #     window_size   = "PT5M"
-  #     severity      = 2
-  #     auto_mitigate = true
+  metric_namespace = "Microsoft.Network/applicationgateways"
+  action = [
+    {
+      action_group_id    = var.error_action_group_id
+      webhook_properties = null
+    }
+  ]
+  monitor_metric_alert_criteria = var.alerts_enabled ? {
+    compute_units_usage = {
+      description   = "Abnormal compute units usage, probably an high traffic peak"
+      frequency     = "PT5M"
+      window_size   = "PT5M"
+      severity      = 2
+      auto_mitigate = true
 
-  #     criteria = []
-  #     dynamic_criteria = [
-  #       {
-  #         aggregation              = "Average"
-  #         metric_name              = "ComputeUnits"
-  #         operator                 = "GreaterOrLessThan"
-  #         alert_sensitivity        = "Low" # todo after api app migration change to High
-  #         evaluation_total_count   = 3
-  #         evaluation_failure_count = 3
-  #         dimension                = []
-  #       }
-  #     ]
-  #   }
+      criteria = []
+      dynamic_criteria = [
+        {
+          aggregation              = "Average"
+          metric_name              = "ComputeUnits"
+          operator                 = "GreaterOrLessThan"
+          alert_sensitivity        = "Low" # TODO: after api app migration change to High
+          evaluation_total_count   = 3
+          evaluation_failure_count = 3
+          dimension                = []
+        }
+      ]
+    }
 
-  #   backend_pools_status = {
-  #     description   = "One or more backend pools are down, see Dimension value or check Backend Health on Azure portal. Runbook https://pagopa.atlassian.net/wiki/spaces/IC/pages/914161665/Application+Gateway+-+Backend+Status"
-  #     frequency     = "PT5M"
-  #     window_size   = "PT5M"
-  #     severity      = 0
-  #     auto_mitigate = true
+    backend_pools_status = {
+      description   = "One or more backend pools are down, see Dimension value or check Backend Health on Azure portal. Runbook https://pagopa.atlassian.net/wiki/spaces/IC/pages/914161665/Application+Gateway+-+Backend+Status"
+      frequency     = "PT5M"
+      window_size   = "PT5M"
+      severity      = 0
+      auto_mitigate = true
 
-  #     criteria = [
-  #       {
-  #         aggregation = "Average"
-  #         metric_name = "UnhealthyHostCount"
-  #         operator    = "GreaterThan"
-  #         threshold   = 0
-  #         dimension = [
-  #           {
-  #             name     = "BackendSettingsPool"
-  #             operator = "Include"
-  #             values   = ["*"]
-  #           }
-  #         ]
-  #       }
-  #     ]
-  #     dynamic_criteria = []
-  #   }
+      criteria = [
+        {
+          aggregation = "Average"
+          metric_name = "UnhealthyHostCount"
+          operator    = "GreaterThan"
+          threshold   = 0
+          dimension = [
+            {
+              name     = "BackendSettingsPool"
+              operator = "Include"
+              values   = ["*"]
+            }
+          ]
+        }
+      ]
+      dynamic_criteria = []
+    }
 
-  #   response_time = {
-  #     description   = "Backends response time is too high. See Dimension value to check the Listener unhealty."
-  #     frequency     = "PT5M"
-  #     window_size   = "PT15M"
-  #     severity      = 2
-  #     auto_mitigate = true
+    response_time = {
+      description   = "Backends response time is too high. See Dimension value to check the Listener unhealty."
+      frequency     = "PT5M"
+      window_size   = "PT15M"
+      severity      = 2
+      auto_mitigate = true
 
-  #     criteria = []
-  #     dynamic_criteria = [
-  #       {
-  #         aggregation              = "Average"
-  #         metric_name              = "BackendLastByteResponseTime"
-  #         operator                 = "GreaterThan"
-  #         alert_sensitivity        = "Medium"
-  #         evaluation_total_count   = 2
-  #         evaluation_failure_count = 2
-  #         dimension = [
-  #           {
-  #             name     = "Listener"
-  #             operator = "Include"
-  #             values   = ["*"]
-  #         }]
-  #       }
-  #     ]
-  #   }
+      criteria = []
+      dynamic_criteria = [
+        {
+          aggregation              = "Average"
+          metric_name              = "BackendLastByteResponseTime"
+          operator                 = "GreaterThan"
+          alert_sensitivity        = "Medium"
+          evaluation_total_count   = 2
+          evaluation_failure_count = 2
+          dimension = [
+            {
+              name     = "Listener"
+              operator = "Include"
+              values   = ["*"]
+          }]
+        }
+      ]
+    }
 
-  #   total_requests = {
-  #     description   = "Traffic is raising"
-  #     frequency     = "PT5M"
-  #     window_size   = "PT15M"
-  #     severity      = 3
-  #     auto_mitigate = true
+    total_requests = {
+      description   = "Traffic is raising"
+      frequency     = "PT5M"
+      window_size   = "PT15M"
+      severity      = 3
+      auto_mitigate = true
 
-  #     criteria = []
-  #     dynamic_criteria = [
-  #       {
-  #         aggregation              = "Total"
-  #         metric_name              = "TotalRequests"
-  #         operator                 = "GreaterThan"
-  #         alert_sensitivity        = "Medium"
-  #         evaluation_total_count   = 1
-  #         evaluation_failure_count = 1
-  #         dimension                = []
-  #       }
-  #     ]
-  #   }
+      criteria = []
+      dynamic_criteria = [
+        {
+          aggregation              = "Total"
+          metric_name              = "TotalRequests"
+          operator                 = "GreaterThan"
+          alert_sensitivity        = "Medium"
+          evaluation_total_count   = 1
+          evaluation_failure_count = 1
+          dimension                = []
+        }
+      ]
+    }
 
-  #   failed_requests = {
-  #     description   = "Abnormal failed requests. See Dimension value to check the Backend Pool unhealty"
-  #     frequency     = "PT5M"
-  #     window_size   = "PT5M"
-  #     severity      = 1
-  #     auto_mitigate = true
+    failed_requests = {
+      description   = "Abnormal failed requests. See Dimension value to check the Backend Pool unhealty"
+      frequency     = "PT5M"
+      window_size   = "PT5M"
+      severity      = 1
+      auto_mitigate = true
 
-  #     criteria = []
-  #     dynamic_criteria = [
-  #       {
-  #         aggregation              = "Total"
-  #         metric_name              = "FailedRequests"
-  #         operator                 = "GreaterThan"
-  #         alert_sensitivity        = "High"
-  #         evaluation_total_count   = 4
-  #         evaluation_failure_count = 4
-  #         dimension = [
-  #           {
-  #             name     = "BackendSettingsPool"
-  #             operator = "Include"
-  #             values   = ["*"]
-  #           }
-  #         ]
-  #       }
-  #     ]
-  #   }
-  # } : {}
+      criteria = []
+      dynamic_criteria = [
+        {
+          aggregation              = "Total"
+          metric_name              = "FailedRequests"
+          operator                 = "GreaterThan"
+          alert_sensitivity        = "High"
+          evaluation_total_count   = 4
+          evaluation_failure_count = 4
+          dimension = [
+            {
+              name     = "BackendSettingsPool"
+              operator = "Include"
+              values   = ["*"]
+            }
+          ]
+        }
+      ]
+    }
+  } : {}
 }
