@@ -154,5 +154,17 @@
     "version": "1.1.1",
     "name": "azure_role_assignments",
     "source": "https://registry.terraform.io/modules/pagopa-dx/azure-role-assignments/azurerm/1.1.1"
+  },
+  "platform_api_gateway_apim_itn.iam_adgroup_auth_admins": {
+    "hash": "b2cac5b9d354adabbef1e0404691e8cbda83fde6e16fd9a2ececd03d9278b119",
+    "version": "1.1.1",
+    "name": "azure_role_assignments",
+    "source": "https://registry.terraform.io/modules/pagopa-dx/azure-role-assignments/azurerm/1.1.1"
+  },
+  "platform_api_gateway_apim_itn.iam_adgroup_auth_infra_cd": {
+    "hash": "b2cac5b9d354adabbef1e0404691e8cbda83fde6e16fd9a2ececd03d9278b119",
+    "version": "1.1.1",
+    "name": "azure_role_assignments",
+    "source": "https://registry.terraform.io/modules/pagopa-dx/azure-role-assignments/azurerm/1.1.1"
   }
 }
