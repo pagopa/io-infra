@@ -191,6 +191,7 @@ variable "backend_hostnames" {
     iofims               = string
     cgnonboarding        = string
     iowallet             = string
+    iowalletuat          = string
   })
 }
 

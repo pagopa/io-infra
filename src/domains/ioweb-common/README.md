@@ -123,8 +123,8 @@
 | <a name="input_prefix"></a> [prefix](#input\_prefix) | n/a | `string` | n/a | yes |
 | <a name="input_spid_login_plan_sku_size"></a> [spid\_login\_plan\_sku\_size](#input\_spid\_login\_plan\_sku\_size) | App backend app plan sku size | `string` | `"P1v3"` | no |
 | <a name="input_spid_login_plan_sku_tier"></a> [spid\_login\_plan\_sku\_tier](#input\_spid\_login\_plan\_sku\_tier) | App backend app plan sku tier | `string` | `"PremiumV3"` | no |
-| <a name="input_subnets_cidrs"></a> [subnets\_cidrs](#input\_subnets\_cidrs) | The CIDR address prefixes of the subnets | <pre>map(<br/>    list(string)<br/>  )</pre> | n/a | yes |
-| <a name="input_tags"></a> [tags](#input\_tags) | n/a | `map(any)` | <pre>{<br/>  "CreatedBy": "Terraform"<br/>}</pre> | no |
+| <a name="input_subnets_cidrs"></a> [subnets\_cidrs](#input\_subnets\_cidrs) | The CIDR address prefixes of the subnets | <pre>map(<br>    list(string)<br>  )</pre> | n/a | yes |
+| <a name="input_tags"></a> [tags](#input\_tags) | n/a | `map(any)` | <pre>{<br>  "CreatedBy": "Terraform"<br>}</pre> | no |
 
 ## Outputs
 
