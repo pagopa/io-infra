@@ -1,5 +1,5 @@
 locals {
-  name     = "${var.project}-agw-01"
+  name = "${var.project}-agw-01"
 
   io_backend_ip_headers_rule = {
     name          = "http-headers-api-app"
