@@ -62,37 +62,3 @@ resource "azurerm_monitor_metric_alert" "this" {
   }
   tags = var.tags
 }
-
-# ⚠️ If added automatically delete the configuration below ⚠️
-
-# #############################
-# ##   Diagnostic Settings   ##
-# #############################
-
-# resource "azurerm_monitor_diagnostic_setting" "agw_sec_log_analytics" {
-#   name                       = "AuditLogs_LogAnalytics"
-#   target_resource_id         = azurerm_application_gateway.this.id
-#   log_analytics_workspace_id = "/subscriptions/0da48c97-355f-4050-a520-f11a18b8be90/resourceGroups/sec-p-sentinel/providers/Microsoft.OperationalInsights/workspaces/sec-p-law"
-
-#   enabled_log {
-#     category = "ApplicationGatewayFirewallLog"
-#   }
-
-#   enabled_log {
-#     category = "ApplicationGatewayAccessLog"
-#   }
-# }
-
-# resource "azurerm_monitor_diagnostic_setting" "agw_sec_storage" {
-#   name               = "AuditLogs_StorageAccount"
-#   target_resource_id = azurerm_application_gateway.this.id
-#   storage_account_id = "/subscriptions/0da48c97-355f-4050-a520-f11a18b8be90/resourceGroups/sec-p-sentinel/providers/Microsoft.Storage/storageAccounts/ppseclogs"
-
-#   enabled_log {
-#     category = "ApplicationGatewayFirewallLog"
-#   }
-
-#   enabled_log {
-#     category = "ApplicationGatewayAccessLog"
-#   }
-# }
