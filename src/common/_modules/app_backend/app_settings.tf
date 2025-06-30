@@ -53,7 +53,7 @@ locals {
     TRIAL_SYSTEM_APIM_KEY       = data.azurerm_key_vault_secret.app_backend_TRIAL_SYSTEM_APIM_KEY.value
     IO_WALLET_API_URL           = "https://${var.backend_hostnames.iowallet}"
     IO_WALLET_API_KEY           = data.azurerm_key_vault_secret.app_backend_IO_WALLET_API_KEY.value
-    IO_WALLET_UAT_API_URL       = "https://${var.backend_hostnames.iowalletuat}/api/v1/wallet"
+    IO_WALLET_UAT_API_URL       = "https://${var.backend_hostnames.iowalletuat}"
     IO_WALLET_UAT_API_KEY       = data.azurerm_key_vault_secret.app_backend_IO_WALLET_UAT_API_KEY.value
 
     // EXPOSED API
