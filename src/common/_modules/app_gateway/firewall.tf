@@ -1,3 +1,28 @@
+resource "azurerm_web_application_firewall_policy" "agw" {
+  name                = "${var.project}-agw-waf-01"
+  resource_group_name = var.resource_group_common
+  location            = var.location
+
+  policy_settings {
+    enabled                     = true
+    mode                        = "Detection"
+    request_body_check          = true
+    file_upload_limit_in_mb     = 100
+    max_request_body_size_in_kb = 128
+  }
+
+  managed_rules {
+
+    managed_rule_set {
+      type    = "OWASP"
+      version = "3.1"
+    }
+  }
+
+  tags = var.tags
+}
+
+
 resource "azurerm_web_application_firewall_policy" "app" {
   name                = "${var.project}-agw-api-app-waf-01"
   resource_group_name = var.resource_group_common
