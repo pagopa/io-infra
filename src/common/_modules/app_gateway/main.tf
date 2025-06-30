@@ -262,15 +262,7 @@ resource "azurerm_application_gateway" "this" {
     min_protocol_version = "TLSv1_2"
   }
 
-  waf_configuration {
-    enabled                  = true
-    firewall_mode            = "Detection"
-    rule_set_type            = "OWASP"
-    rule_set_version         = "3.1"
-    request_body_check       = true
-    file_upload_limit_mb     = 100
-    max_request_body_size_kb = 128
-  }
+  firewall_policy_id = azurerm_web_application_firewall_policy.agw.id
 
   autoscale_configuration {
     min_capacity = var.min_capacity
