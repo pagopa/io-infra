@@ -146,7 +146,7 @@ data "azurerm_linux_function_app" "wallet_user" {
 
 data "azurerm_linux_function_app" "wallet_user_uat" {
   resource_group_name = "${local.project_itn}-wallet-rg-01"
-  name                = "${local.prefix}-u-${local.location_short.italynorth}-wallet-user-func-02"
+  name                = "${local.prefix}-u-${local.location_short.italynorth}-wallet-user-func-01"
 }
 
 data "azurerm_subnet" "admin_snet" {
