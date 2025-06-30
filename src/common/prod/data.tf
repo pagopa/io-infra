@@ -144,6 +144,11 @@ data "azurerm_linux_function_app" "wallet_user" {
   name                = "${local.project_itn}-wallet-user-func-02"
 }
 
+data "azurerm_linux_function_app" "wallet_user_uat" {
+  resource_group_name = "${local.project_itn}-wallet-rg-01"
+  name                = "${local.prefix}-u-${local.location_short.italynorth}-wallet-user-func-01"
+}
+
 data "azurerm_subnet" "admin_snet" {
   name                 = "${local.project_weu_legacy}-admin-snet"
   resource_group_name  = local.core.networking.weu.vnet_common.resource_group_name
