@@ -192,7 +192,7 @@ module "application_gateway_itn" {
   }
 
   cidr_subnet           = [dx_available_subnet_cidr.next_cidr_snet_agw.cidr_block]
-  min_capacity          = 7
+  min_capacity          = 30 #7
   max_capacity          = 80
   alerts_enabled        = true
   deny_paths            = ["\\/admin\\/(.*)"]
