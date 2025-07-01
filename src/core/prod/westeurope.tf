@@ -32,30 +32,7 @@ module "vnet_peering_weu" {
       resource_group_name = module.networking_itn.vnet_common.resource_group_name
       use_remote_gateways = false
     }
-
-    prod01 = {
-      name                = data.azurerm_virtual_network.weu_prod01.name
-      id                  = data.azurerm_virtual_network.weu_prod01.id
-      resource_group_name = data.azurerm_virtual_network.weu_prod01.resource_group_name
-      use_remote_gateways = false
-      symmetrical = {
-        enabled               = true
-        use_remote_gateways   = true
-        allow_gateway_transit = false
-      }
-    }
   }
-}
-
-module "container_registry" {
-  source = "../_modules/container_registry"
-
-  location            = azurerm_resource_group.common_weu.location
-  location_short      = local.location_short[azurerm_resource_group.common_weu.location]
-  project             = local.project_weu_legacy
-  resource_group_name = azurerm_resource_group.acr_weu.name
-
-  tags = local.tags
 }
 
 module "key_vault_weu" {

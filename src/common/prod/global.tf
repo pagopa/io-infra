@@ -21,11 +21,6 @@ module "global" {
         id   = local.core.networking.itn.vnet_common.id
         name = local.core.networking.itn.vnet_common.name
       }
-
-      prod01 = {
-        id   = data.azurerm_virtual_network.weu_prod01.id
-        name = data.azurerm_virtual_network.weu_prod01.name
-      }
     }
 
     dns_default_ttl_sec = 3600
