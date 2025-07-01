@@ -43,9 +43,14 @@ variable "dns_zones" {
 }
 
 # TODO: remove when app gateway module is implemented
+# variable "app_gateway_public_ip" {
+#   type        = string
+#   description = "Public IP of the app gateway"
+# }
+
 variable "app_gateway_public_ip" {
-  type        = string
-  description = "Public IP of the app gateway"
+  type        = list(string)
+  description = "Public IPs of the app gateway"
 }
 
 variable "apim_private_ip" {

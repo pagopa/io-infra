@@ -38,8 +38,8 @@ resource "azurerm_dns_a_record" "api_io_pagopa_it" {
   name                = "api"
   zone_name           = azurerm_dns_zone.io_pagopa_it.name
   resource_group_name = var.resource_groups.external
-  ttl                 = var.dns_default_ttl_sec
-  records             = [var.app_gateway_public_ip]
+  ttl                 = local.agw_switch_ttl #var.dns_default_ttl_sec
+  records             = var.app_gateway_public_ip
 
   tags = var.tags
 }
@@ -49,8 +49,8 @@ resource "azurerm_dns_a_record" "api_app_io_pagopa_it" {
   name                = "api-app"
   zone_name           = azurerm_dns_zone.io_pagopa_it.name
   resource_group_name = var.resource_groups.external
-  ttl                 = var.dns_default_ttl_sec
-  records             = [var.app_gateway_public_ip]
+  ttl                 = local.agw_switch_ttl #var.dns_default_ttl_sec
+  records             = var.app_gateway_public_ip
 
   tags = var.tags
 }
@@ -60,8 +60,8 @@ resource "azurerm_dns_a_record" "api_web_io_pagopa_it" {
   name                = "api-web"
   zone_name           = azurerm_dns_zone.io_pagopa_it.name
   resource_group_name = var.resource_groups.external
-  ttl                 = var.dns_default_ttl_sec
-  records             = [var.app_gateway_public_ip]
+  ttl                 = local.agw_switch_ttl #var.dns_default_ttl_sec
+  records             = var.app_gateway_public_ip
 
   tags = var.tags
 }
@@ -71,8 +71,8 @@ resource "azurerm_dns_a_record" "api_mtls_io_pagopa_it" {
   name                = "api-mtls"
   zone_name           = azurerm_dns_zone.io_pagopa_it.name
   resource_group_name = var.resource_groups.external
-  ttl                 = var.dns_default_ttl_sec
-  records             = [var.app_gateway_public_ip]
+  ttl                 = local.agw_switch_ttl #var.dns_default_ttl_sec
+  records             = var.app_gateway_public_ip
 
   tags = var.tags
 }
@@ -82,8 +82,8 @@ resource "azurerm_dns_a_record" "continua_io_pagopa_it" {
   name                = "continua"
   zone_name           = azurerm_dns_zone.io_pagopa_it.name
   resource_group_name = var.resource_groups.external
-  ttl                 = var.dns_default_ttl_sec
-  records             = [var.app_gateway_public_ip]
+  ttl                 = local.agw_switch_ttl #var.dns_default_ttl_sec
+  records             = var.app_gateway_public_ip
 
   tags = var.tags
 }
@@ -93,8 +93,8 @@ resource "azurerm_dns_a_record" "oauth_io_pagopa_it" {
   name                = "oauth"
   zone_name           = azurerm_dns_zone.io_pagopa_it.name
   resource_group_name = var.resource_groups.external
-  ttl                 = var.dns_default_ttl_sec
-  records             = [var.app_gateway_public_ip]
+  ttl                 = local.agw_switch_ttl #var.dns_default_ttl_sec
+  records             = var.app_gateway_public_ip
 
   tags = var.tags
 }
@@ -104,8 +104,8 @@ resource "azurerm_dns_a_record" "selfcare_io_pagopa_it" {
   name                = "selfcare"
   zone_name           = azurerm_dns_zone.io_pagopa_it.name
   resource_group_name = var.resource_groups.external
-  ttl                 = var.dns_default_ttl_sec
-  records             = [var.app_gateway_public_ip]
+  ttl                 = local.agw_switch_ttl #var.dns_default_ttl_sec
+  records             = var.app_gateway_public_ip
 
   tags = var.tags
 }
@@ -130,8 +130,8 @@ resource "azurerm_dns_a_record" "openid_provider_io_pagopa_it" {
   name                = "openid-provider"
   zone_name           = azurerm_dns_zone.io_pagopa_it.name
   resource_group_name = var.resource_groups.external
-  ttl                 = var.dns_default_ttl_sec
-  records             = [var.app_gateway_public_ip]
+  ttl                 = local.agw_switch_ttl #var.dns_default_ttl_sec
+  records             = var.app_gateway_public_ip
 
   tags = var.tags
 }
