@@ -1,3 +1,3 @@
 locals {
-  agw_switch_ttl = 100
+  agw_switch_ttl = 30
 }
