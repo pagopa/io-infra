@@ -24,11 +24,6 @@ output "virtual_networks" {
       name                = local.core.networking.itn.vnet_common.name
       resource_group_name = local.core.networking.itn.vnet_common.resource_group_name
     }
-    prod01 = {
-      id                  = data.azurerm_virtual_network.weu_prod01.id
-      name                = data.azurerm_virtual_network.weu_prod01.name
-      resource_group_name = data.azurerm_virtual_network.weu_prod01.resource_group_name
-    }
   }
 }
 
