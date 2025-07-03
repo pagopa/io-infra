@@ -315,8 +315,8 @@ module "application_gateway_weu" {
   }
 
   cidr_subnet           = ["10.0.13.0/24"]
-  min_capacity          = 7 # 4 capacity=baseline, 10 capacity=high volume event, 15 capacity=very high volume event
-  max_capacity          = 80
+  min_capacity          = 3 # 4 capacity=baseline, 10 capacity=high volume event, 15 capacity=very high volume event
+  max_capacity          = 20
   alerts_enabled        = true
   deny_paths            = ["\\/admin\\/(.*)"]
   error_action_group_id = module.monitoring_weu.action_groups.error

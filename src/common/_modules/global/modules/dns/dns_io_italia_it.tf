@@ -62,7 +62,7 @@ resource "azurerm_dns_a_record" "developerportal_backend_io_italia_it" {
   name                = "developerportal-backend"
   zone_name           = azurerm_dns_zone.io_italia_it.name
   resource_group_name = var.resource_groups.external
-  ttl                 = 30 #var.dns_default_ttl_sec
+  ttl                 = var.dns_default_ttl_sec
   records             = [var.app_gateway_public_ip]
 
   tags = var.tags
@@ -73,7 +73,7 @@ resource "azurerm_dns_a_record" "api_io_italia_it" {
   name                = "api"
   zone_name           = azurerm_dns_zone.io_italia_it.name
   resource_group_name = var.resource_groups.external
-  ttl                 = 30 #var.dns_default_ttl_sec
+  ttl                 = var.dns_default_ttl_sec
   records             = [var.app_gateway_public_ip]
 
   tags = var.tags
@@ -84,7 +84,7 @@ resource "azurerm_dns_a_record" "app_backend_io_italia_it" {
   name                = "app-backend"
   zone_name           = azurerm_dns_zone.io_italia_it.name
   resource_group_name = var.resource_groups.external
-  ttl                 = 30 #var.dns_default_ttl_sec
+  ttl                 = var.dns_default_ttl_sec
   records             = [var.app_gateway_public_ip]
 
   tags = var.tags
