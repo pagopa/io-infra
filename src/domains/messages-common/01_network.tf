@@ -46,17 +46,3 @@ data "azurerm_subnet" "azdoa_snet" {
   virtual_network_name = local.vnet_common_name
   resource_group_name  = local.vnet_common_resource_group_name
 }
-
-resource "azurerm_private_endpoint" "cosno_reminder_itn" {
-  name                = "${local.project_itn}-msgs-reminder-cosno-pep-01"
-  location            = "italynorth"
-  resource_group_name = azurerm_resource_group.data_rg.name
-  subnet_id           = data.azurerm_subnet.pep_subnet_itn.id
-
-  private_service_connection {
-    name                           = "${local.project_itn}-msgs-reminder-cosno-pep-01"
-    private_connection_resource_id = module.cosmosdb_account_mongodb_reminder.id
-    is_manual_connection           = false
-    subresource_names              = ["MongoDB"]
-  }
-}
