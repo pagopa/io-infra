@@ -24,7 +24,7 @@ locals {
 
   lollipop_jwt_host = "api.io.pagopa.it"
 
-  appgw_resource_group_name = "${local.product}-rg-external"
+  appgw_resource_group_name = "${local.common_project_itn}-common-rg-01"
 
   storage_account_notifications_queue_push_notifications = "push-notifications"
 
