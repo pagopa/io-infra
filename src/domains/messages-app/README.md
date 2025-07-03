@@ -35,9 +35,6 @@
 | <a name="module_function_messages_cqrs_snet"></a> [function\_messages\_cqrs\_snet](#module\_function\_messages\_cqrs\_snet) | github.com/pagopa/terraform-azurerm-v3//subnet | v8.27.0 |
 | <a name="module_function_messages_cqrs_staging_slot"></a> [function\_messages\_cqrs\_staging\_slot](#module\_function\_messages\_cqrs\_staging\_slot) | github.com/pagopa/terraform-azurerm-v3//function_app_slot | v8.27.0 |
 | <a name="module_pod_identity"></a> [pod\_identity](#module\_pod\_identity) | github.com/pagopa/terraform-azurerm-v3//kubernetes_pod_identity | v8.27.0 |
-| <a name="module_push_notif_function"></a> [push\_notif\_function](#module\_push\_notif\_function) | github.com/pagopa/terraform-azurerm-v3//function_app | v8.27.0 |
-| <a name="module_push_notif_function_staging_slot"></a> [push\_notif\_function\_staging\_slot](#module\_push\_notif\_function\_staging\_slot) | github.com/pagopa/terraform-azurerm-v3//function_app_slot | v8.27.0 |
-| <a name="module_push_notif_snet"></a> [push\_notif\_snet](#module\_push\_notif\_snet) | github.com/pagopa/terraform-azurerm-v3//subnet | v8.27.0 |
 | <a name="module_services_storage"></a> [services\_storage](#module\_services\_storage) | github.com/pagopa/terraform-azurerm-v3//storage_account | v8.27.0 |
 
 ## Resources
@@ -53,7 +50,6 @@
 | [azurerm_monitor_autoscale_setting.app_messages_function](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/monitor_autoscale_setting) | resource |
 | [azurerm_monitor_autoscale_setting.app_messages_function_xl](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/monitor_autoscale_setting) | resource |
 | [azurerm_monitor_autoscale_setting.function_messages_cqrs](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/monitor_autoscale_setting) | resource |
-| [azurerm_monitor_autoscale_setting.push_notif_function](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/monitor_autoscale_setting) | resource |
 | [azurerm_monitor_metric_alert.tls_cert_check](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/monitor_metric_alert) | resource |
 | [azurerm_private_dns_a_record.ingress](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/private_dns_a_record) | resource |
 | [azurerm_private_endpoint.services_storage_blob](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/private_endpoint) | resource |
@@ -62,7 +58,6 @@
 | [azurerm_resource_group.backend_messages_rg](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/resource_group) | resource |
 | [azurerm_resource_group.data_process_rg](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/resource_group) | resource |
 | [azurerm_resource_group.event_rg](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/resource_group) | resource |
-| [azurerm_resource_group.push_notif_rg](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/resource_group) | resource |
 | [azurerm_storage_container.services_storage_messages](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/storage_container) | resource |
 | [azurerm_storage_management_policy.services_storage](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/storage_management_policy) | resource |
 | [azurerm_subnet_nat_gateway_association.net_gateway_association_subnet_citizen_func_xl](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/subnet_nat_gateway_association) | resource |
@@ -139,7 +134,6 @@
 | <a name="input_cidr_subnet_appmessages_xl"></a> [cidr\_subnet\_appmessages\_xl](#input\_cidr\_subnet\_appmessages\_xl) | App messages address space. | `list(string)` | `[]` | no |
 | <a name="input_cidr_subnet_fnmessagescqrs"></a> [cidr\_subnet\_fnmessagescqrs](#input\_cidr\_subnet\_fnmessagescqrs) | Fn cqrs address space. | `list(string)` | n/a | yes |
 | <a name="input_cidr_subnet_fnservicemessages"></a> [cidr\_subnet\_fnservicemessages](#input\_cidr\_subnet\_fnservicemessages) | Functions service messages address space. | `list(string)` | n/a | yes |
-| <a name="input_cidr_subnet_push_notif"></a> [cidr\_subnet\_push\_notif](#input\_cidr\_subnet\_push\_notif) | Function push-notif address space. | `list(string)` | n/a | yes |
 | <a name="input_domain"></a> [domain](#input\_domain) | n/a | `string` | n/a | yes |
 | <a name="input_ehns_alerts_enabled"></a> [ehns\_alerts\_enabled](#input\_ehns\_alerts\_enabled) | Event hub alerts enabled? | `bool` | `true` | no |
 | <a name="input_ehns_auto_inflate_enabled"></a> [ehns\_auto\_inflate\_enabled](#input\_ehns\_auto\_inflate\_enabled) | Is Auto Inflate enabled for the EventHub Namespace? | `bool` | `false` | no |
@@ -179,11 +173,6 @@
 | <a name="input_pn_service_id"></a> [pn\_service\_id](#input\_pn\_service\_id) | The Service ID of PN service | `string` | `"01G40DWQGKY5GRWSNM4303VNRP"` | no |
 | <a name="input_prefix"></a> [prefix](#input\_prefix) | n/a | `string` | n/a | yes |
 | <a name="input_push_notif_count"></a> [push\_notif\_count](#input\_push\_notif\_count) | n/a | `number` | `2` | no |
-| <a name="input_push_notif_enabled"></a> [push\_notif\_enabled](#input\_push\_notif\_enabled) | Push Notif function enabled? | `bool` | `false` | no |
-| <a name="input_push_notif_function_always_on"></a> [push\_notif\_function\_always\_on](#input\_push\_notif\_function\_always\_on) | n/a | `bool` | `false` | no |
-| <a name="input_push_notif_function_kind"></a> [push\_notif\_function\_kind](#input\_push\_notif\_function\_kind) | App service plan kind | `string` | `null` | no |
-| <a name="input_push_notif_function_sku_size"></a> [push\_notif\_function\_sku\_size](#input\_push\_notif\_function\_sku\_size) | App service plan sku size | `string` | `null` | no |
-| <a name="input_push_notif_function_sku_tier"></a> [push\_notif\_function\_sku\_tier](#input\_push\_notif\_function\_sku\_tier) | App service plan sku tier | `string` | `null` | no |
 | <a name="input_reloader_helm"></a> [reloader\_helm](#input\_reloader\_helm) | reloader helm chart configuration | <pre>object({<br/>    chart_version = string,<br/>    image_name    = string,<br/>    image_tag     = string<br/>  })</pre> | n/a | yes |
 | <a name="input_tags"></a> [tags](#input\_tags) | n/a | `map(any)` | <pre>{<br/>  "CreatedBy": "Terraform"<br/>}</pre> | no |
 | <a name="input_third_party_mock_remote_config_id"></a> [third\_party\_mock\_remote\_config\_id](#input\_third\_party\_mock\_remote\_config\_id) | The Remote Content Config ID of the Third Party Mock service | `string` | `"01HMVM4N4XFJ8VBR1FXYFZ9QFB"` | no |
