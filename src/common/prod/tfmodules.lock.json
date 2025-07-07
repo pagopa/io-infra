@@ -90,46 +90,46 @@
     "source": "https://registry.terraform.io/modules/pagopa-dx/github-selfhosted-runner-on-container-app-jobs/azurerm/1.0.10"
   },
   "storage_accounts.exportdata_weu_01_com_admins": {
-    "hash": "b2cac5b9d354adabbef1e0404691e8cbda83fde6e16fd9a2ececd03d9278b119",
-    "version": "1.1.1",
+    "hash": "433fe44b2863b8af8d4f4206ee2590599b0cb67d78b372e65d68317d3199aaa1",
+    "version": "1.1.2",
     "name": "azure_role_assignments",
-    "source": "https://registry.terraform.io/modules/pagopa-dx/azure-role-assignments/azurerm/1.1.1"
+    "source": "https://registry.terraform.io/modules/pagopa-dx/azure-role-assignments/azurerm/1.1.2"
   },
   "storage_accounts.exportdata_weu_01_com_devs": {
-    "hash": "b2cac5b9d354adabbef1e0404691e8cbda83fde6e16fd9a2ececd03d9278b119",
-    "version": "1.1.1",
+    "hash": "433fe44b2863b8af8d4f4206ee2590599b0cb67d78b372e65d68317d3199aaa1",
+    "version": "1.1.2",
     "name": "azure_role_assignments",
-    "source": "https://registry.terraform.io/modules/pagopa-dx/azure-role-assignments/azurerm/1.1.1"
+    "source": "https://registry.terraform.io/modules/pagopa-dx/azure-role-assignments/azurerm/1.1.2"
   },
   "storage_accounts.retirements_itn_01_admins": {
-    "hash": "b2cac5b9d354adabbef1e0404691e8cbda83fde6e16fd9a2ececd03d9278b119",
-    "version": "1.1.1",
+    "hash": "433fe44b2863b8af8d4f4206ee2590599b0cb67d78b372e65d68317d3199aaa1",
+    "version": "1.1.2",
     "name": "azure_role_assignments",
-    "source": "https://registry.terraform.io/modules/pagopa-dx/azure-role-assignments/azurerm/1.1.1"
+    "source": "https://registry.terraform.io/modules/pagopa-dx/azure-role-assignments/azurerm/1.1.2"
   },
   "storage_accounts_itn.exportdata_weu_01_com_admins": {
-    "hash": "b2cac5b9d354adabbef1e0404691e8cbda83fde6e16fd9a2ececd03d9278b119",
-    "version": "1.1.1",
+    "hash": "433fe44b2863b8af8d4f4206ee2590599b0cb67d78b372e65d68317d3199aaa1",
+    "version": "1.1.2",
     "name": "azure_role_assignments",
-    "source": "https://registry.terraform.io/modules/pagopa-dx/azure-role-assignments/azurerm/1.1.1"
+    "source": "https://registry.terraform.io/modules/pagopa-dx/azure-role-assignments/azurerm/1.1.2"
   },
   "storage_accounts_itn.exportdata_weu_01_com_devs": {
-    "hash": "b2cac5b9d354adabbef1e0404691e8cbda83fde6e16fd9a2ececd03d9278b119",
-    "version": "1.1.1",
+    "hash": "433fe44b2863b8af8d4f4206ee2590599b0cb67d78b372e65d68317d3199aaa1",
+    "version": "1.1.2",
     "name": "azure_role_assignments",
-    "source": "https://registry.terraform.io/modules/pagopa-dx/azure-role-assignments/azurerm/1.1.1"
+    "source": "https://registry.terraform.io/modules/pagopa-dx/azure-role-assignments/azurerm/1.1.2"
   },
   "storage_accounts_itn.retirements_itn_01_admins": {
-    "hash": "b2cac5b9d354adabbef1e0404691e8cbda83fde6e16fd9a2ececd03d9278b119",
-    "version": "1.1.1",
+    "hash": "433fe44b2863b8af8d4f4206ee2590599b0cb67d78b372e65d68317d3199aaa1",
+    "version": "1.1.2",
     "name": "azure_role_assignments",
-    "source": "https://registry.terraform.io/modules/pagopa-dx/azure-role-assignments/azurerm/1.1.1"
+    "source": "https://registry.terraform.io/modules/pagopa-dx/azure-role-assignments/azurerm/1.1.2"
   },
   "platform_api_gateway_apim_itn.iam_adgroup_product_admins": {
-    "hash": "b2cac5b9d354adabbef1e0404691e8cbda83fde6e16fd9a2ececd03d9278b119",
-    "version": "1.1.1",
+    "hash": "433fe44b2863b8af8d4f4206ee2590599b0cb67d78b372e65d68317d3199aaa1",
+    "version": "1.1.2",
     "name": "azure_role_assignments",
-    "source": "https://registry.terraform.io/modules/pagopa-dx/azure-role-assignments/azurerm/1.1.1"
+    "source": "https://registry.terraform.io/modules/pagopa-dx/azure-role-assignments/azurerm/1.1.2"
   },
   "platform_api_gateway_apim_itn.platform_api_gateway": {
     "hash": "7c4ede49c7e6ebd45b656abca088b846d0e417d3e8e9b700464c7acaefbe5d04",
@@ -144,27 +144,27 @@
     "source": "https://registry.terraform.io/modules/pagopa-dx/azure-service-bus-namespace/azurerm/0.0.3"
   },
   "platform_api_gateway_apim_itn.iam_adgroup_bonus_admins": {
-    "hash": "b2cac5b9d354adabbef1e0404691e8cbda83fde6e16fd9a2ececd03d9278b119",
-    "version": "1.1.1",
+    "hash": "433fe44b2863b8af8d4f4206ee2590599b0cb67d78b372e65d68317d3199aaa1",
+    "version": "1.1.2",
     "name": "azure_role_assignments",
-    "source": "https://registry.terraform.io/modules/pagopa-dx/azure-role-assignments/azurerm/1.1.1"
+    "source": "https://registry.terraform.io/modules/pagopa-dx/azure-role-assignments/azurerm/1.1.2"
   },
   "platform_api_gateway_apim_itn.iam_adgroup_bonus_infra_cd": {
-    "hash": "b2cac5b9d354adabbef1e0404691e8cbda83fde6e16fd9a2ececd03d9278b119",
-    "version": "1.1.1",
+    "hash": "433fe44b2863b8af8d4f4206ee2590599b0cb67d78b372e65d68317d3199aaa1",
+    "version": "1.1.2",
     "name": "azure_role_assignments",
-    "source": "https://registry.terraform.io/modules/pagopa-dx/azure-role-assignments/azurerm/1.1.1"
+    "source": "https://registry.terraform.io/modules/pagopa-dx/azure-role-assignments/azurerm/1.1.2"
   },
   "platform_api_gateway_apim_itn.iam_adgroup_auth_admins": {
-    "hash": "b2cac5b9d354adabbef1e0404691e8cbda83fde6e16fd9a2ececd03d9278b119",
-    "version": "1.1.1",
+    "hash": "433fe44b2863b8af8d4f4206ee2590599b0cb67d78b372e65d68317d3199aaa1",
+    "version": "1.1.2",
     "name": "azure_role_assignments",
-    "source": "https://registry.terraform.io/modules/pagopa-dx/azure-role-assignments/azurerm/1.1.1"
+    "source": "https://registry.terraform.io/modules/pagopa-dx/azure-role-assignments/azurerm/1.1.2"
   },
   "platform_api_gateway_apim_itn.iam_adgroup_auth_infra_cd": {
-    "hash": "b2cac5b9d354adabbef1e0404691e8cbda83fde6e16fd9a2ececd03d9278b119",
-    "version": "1.1.1",
+    "hash": "433fe44b2863b8af8d4f4206ee2590599b0cb67d78b372e65d68317d3199aaa1",
+    "version": "1.1.2",
     "name": "azure_role_assignments",
-    "source": "https://registry.terraform.io/modules/pagopa-dx/azure-role-assignments/azurerm/1.1.1"
+    "source": "https://registry.terraform.io/modules/pagopa-dx/azure-role-assignments/azurerm/1.1.2"
   }
 }
