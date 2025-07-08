@@ -27,36 +27,40 @@ module "iam_adgroup_product_admins" {
   ]
 }
 
-module "iam_adgroup_auth_admins" {
-  source  = "pagopa-dx/azure-role-assignments/azurerm"
-  version = "~> 1.0"
-
-  principal_id    = var.azure_adgroup_auth_admins_object_id
-  subscription_id = data.azurerm_client_config.current.subscription_id
-
-  apim = [
+locals {
+  apim_adgroup_rbac = [
     {
-      name                = module.platform_api_gateway.name
-      resource_group_name = module.platform_api_gateway.resource_group_name
-      description         = "Auth & Identity team admin group"
-      role                = "owner"
+      principal_id = var.azure_adgroup_auth_admins_object_id
+      description  = "Auth & Identity team admin group"
+      role         = "owner"
+    },
+    {
+      principal_id = var.azure_user_assigned_identity_auth_infra_cd
+      description  = "Auth & Identity team infra CD identity"
+      role         = "owner"
     }
   ]
+
+  apim_adgroup_rbac_map = {
+    for assignment in local.apim_adgroup_rbac :
+    assignment.principal_id => assignment
+  }
 }
 
-module "iam_adgroup_auth_infra_cd" {
-  source  = "pagopa-dx/azure-role-assignments/azurerm"
-  version = "~> 1.0"
+module "iam_adgroup" {
+  for_each = local.apim_adgroup_rbac_map
+  source   = "pagopa-dx/azure-role-assignments/azurerm"
+  version  = "~> 1.0"
 
-  principal_id    = var.azure_user_assigned_identity_auth_infra_cd
+  principal_id    = each.value.principal_id
   subscription_id = data.azurerm_client_config.current.subscription_id
 
   apim = [
     {
       name                = module.platform_api_gateway.name
       resource_group_name = module.platform_api_gateway.resource_group_name
-      description         = "Auth & Identity team infra CD identity"
-      role                = "owner"
+      description         = each.value.description
+      role                = each.value.role
     }
   ]
 }
