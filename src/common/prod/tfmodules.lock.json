@@ -125,12 +125,6 @@
     "name": "azure_role_assignments",
     "source": "https://registry.terraform.io/modules/pagopa-dx/azure-role-assignments/azurerm/1.1.2"
   },
-  "platform_api_gateway_apim_itn.iam_adgroup_product_admins": {
-    "hash": "433fe44b2863b8af8d4f4206ee2590599b0cb67d78b372e65d68317d3199aaa1",
-    "version": "1.1.2",
-    "name": "azure_role_assignments",
-    "source": "https://registry.terraform.io/modules/pagopa-dx/azure-role-assignments/azurerm/1.1.2"
-  },
   "platform_api_gateway_apim_itn.platform_api_gateway": {
     "hash": "7c4ede49c7e6ebd45b656abca088b846d0e417d3e8e9b700464c7acaefbe5d04",
     "version": "1.2.2",
@@ -138,22 +132,10 @@
     "source": "https://registry.terraform.io/modules/pagopa-dx/azure-api-management/azurerm/1.2.2"
   },
   "platform_service_bus_namespace_itn.platform_service_bus_namespace": {
-    "hash": "dfda67c934af2fbd12cdb260a0cf3b754c599b1237b708cae8082aa81d53b583",
-    "version": "0.0.3",
+    "hash": "0089b5c107289e4498ee85ff45ce6504528a8de857ad7ba6372c4bec25ccd7d4",
+    "version": "0.0.4",
     "name": "azure_service_bus_namespace",
-    "source": "https://registry.terraform.io/modules/pagopa-dx/azure-service-bus-namespace/azurerm/0.0.3"
-  },
-  "platform_api_gateway_apim_itn.iam_adgroup_bonus_admins": {
-    "hash": "433fe44b2863b8af8d4f4206ee2590599b0cb67d78b372e65d68317d3199aaa1",
-    "version": "1.1.2",
-    "name": "azure_role_assignments",
-    "source": "https://registry.terraform.io/modules/pagopa-dx/azure-role-assignments/azurerm/1.1.2"
-  },
-  "platform_api_gateway_apim_itn.iam_adgroup_bonus_infra_cd": {
-    "hash": "433fe44b2863b8af8d4f4206ee2590599b0cb67d78b372e65d68317d3199aaa1",
-    "version": "1.1.2",
-    "name": "azure_role_assignments",
-    "source": "https://registry.terraform.io/modules/pagopa-dx/azure-role-assignments/azurerm/1.1.2"
+    "source": "https://registry.terraform.io/modules/pagopa-dx/azure-service-bus-namespace/azurerm/0.0.4"
   },
   "platform_api_gateway_apim_itn.iam_adgroup": {
     "hash": "433fe44b2863b8af8d4f4206ee2590599b0cb67d78b372e65d68317d3199aaa1",
