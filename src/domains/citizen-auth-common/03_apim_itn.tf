@@ -127,6 +127,12 @@ resource "azurerm_key_vault_secret" "fast_login_subscription_key_itn" {
   key_vault_id = module.key_vault.id
 }
 
+resource "azurerm_key_vault_secret" "fast_login_lc_subscription_key" {
+  name         = "fast-login-lc-subscription-key"
+  value        = azurerm_api_management_subscription.pagopa_fastlogin_itn.primary_key
+  key_vault_id = azurerm_key_vault.auth_kv_01.id
+}
+
 ###################################################################################
 # Fast-Login Operation's API
 ###################################################################################
