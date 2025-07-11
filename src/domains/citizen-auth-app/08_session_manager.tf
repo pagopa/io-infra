@@ -1,9 +1,9 @@
 ###########
 # SECRETS #
 ###########
-data "azurerm_key_vault_secret" "functions_app_api_key" {
-  name         = "session-manager-functions-app-api-key"
-  key_vault_id = data.azurerm_key_vault.kv.id
+data "azurerm_key_vault_secret" "session_manager_profile_functions_app_key" {
+  name         = "session-manager-profile-functions-app-key"
+  key_vault_id = data.azurerm_key_vault.auth.id
 }
 
 data "azurerm_key_vault_secret" "functions_fast_login_api_key" {
@@ -43,42 +43,42 @@ data "azurerm_key_vault_secret" "session_manager_TEST_LOGIN_PASSWORD" {
 
 data "azurerm_key_vault_secret" "session_manager_JWT_ZENDESK_SUPPORT_TOKEN_SECRET" {
   name         = "session-manager-JWT-ZENDESK-SUPPORT-TOKEN-SECRET"
-  key_vault_id = data.azurerm_key_vault.kv.id
+  key_vault_id = data.azurerm_key_vault.auth.id
 }
 
 data "azurerm_key_vault_secret" "session_manager_ALLOW_ZENDESK_IP_SOURCE_RANGE" {
   name         = "session-manager-ALLOW-ZENDESK-IP-SOURCE-RANGE"
-  key_vault_id = data.azurerm_key_vault.kv.id
+  key_vault_id = data.azurerm_key_vault.auth.id
 }
 
 data "azurerm_key_vault_secret" "session_manager_ALLOW_BPD_IP_SOURCE_RANGE" {
   name         = "session-manager-ALLOW-BPD-IP-SOURCE-RANGE"
-  key_vault_id = data.azurerm_key_vault.kv.id
+  key_vault_id = data.azurerm_key_vault.auth.id
 }
 
 data "azurerm_key_vault_secret" "session_manager_ALLOW_PAGOPA_IP_SOURCE_RANGE" {
   name         = "session-manager-ALLOW-PAGOPA-IP-SOURCE-RANGE"
-  key_vault_id = data.azurerm_key_vault.kv.id
+  key_vault_id = data.azurerm_key_vault.auth.id
 }
 
 data "azurerm_key_vault_secret" "session_manager_ALLOW_FIMS_IP_SOURCE_RANGE" {
   name         = "session-manager-ALLOW-FIMS-IP-SOURCE-RANGE"
-  key_vault_id = data.azurerm_key_vault.kv.id
+  key_vault_id = data.azurerm_key_vault.auth.id
 }
 
 data "azurerm_key_vault_secret" "session_manager_UNIQUE_EMAIL_ENFORCEMENT_USER" {
   name         = "session-manager-UNIQUE-EMAIL-ENFORCEMENT-USER"
-  key_vault_id = data.azurerm_key_vault.kv.id
+  key_vault_id = data.azurerm_key_vault.auth.id
 }
 
 data "azurerm_key_vault_secret" "session_manager_IOLOGIN_TEST_USERS" {
   name         = "session-manager-IOLOGIN-TEST-USERS"
-  key_vault_id = data.azurerm_key_vault.kv.id
+  key_vault_id = data.azurerm_key_vault.auth.id
 }
 
 data "azurerm_key_vault_secret" "session_manager_VALIDATION_COOKIE_TEST_USERS" {
   name         = "session-manager-VALIDATION-COOKIE-TEST-USERS"
-  key_vault_id = data.azurerm_key_vault.kv.id
+  key_vault_id = data.azurerm_key_vault.auth.id
 }
 
 data "azurerm_key_vault_secret" "service_bus_events_beta_testers" {
@@ -144,7 +144,7 @@ locals {
     REDIS_PASSWORD = data.azurerm_redis_cache.core_domain_redis_common.primary_access_key
 
     # Functions App config
-    API_KEY = data.azurerm_key_vault_secret.functions_app_api_key.value
+    API_KEY = data.azurerm_key_vault_secret.session_manager_profile_functions_app_key.value
     API_URL = "https://io-p-itn-auth-profile-func-02.azurewebsites.net"
 
     # Functions Fast Login config
