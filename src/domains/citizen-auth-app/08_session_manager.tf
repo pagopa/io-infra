@@ -348,23 +348,3 @@ module "session_manager_weu_staging" {
 
   tags = var.tags
 }
-
-module "function_profile_kv_role" {
-  source  = "pagopa-dx/azure-role-assignments/azurerm"
-  version = "~>1.1"
-
-  principal_id    = module.session_manager_weu.principal_id
-  subscription_id = data.azurerm_subscription.current.subscription_id
-
-  key_vault = [
-    {
-      name                = data.azurerm_key_vault.auth.name
-      resource_group_name = data.azurerm_key_vault.auth.resource_group_name
-      has_rbac_support    = true
-      description         = "Allow Session Manager to read Key Vault secrets"
-      roles = {
-        secrets = "reader"
-      }
-    }
-  ]
-}
