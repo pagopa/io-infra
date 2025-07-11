@@ -12,8 +12,8 @@ data "azurerm_key_vault_secret" "functions_fast_login_api_key" {
 }
 
 data "azurerm_key_vault_secret" "functions_lollipop_api_key" {
-  name         = "session-manager-functions-lollipop-api-key"
-  key_vault_id = data.azurerm_key_vault.kv.id
+  name         = "session-manager-lollipop-functions-app-key"
+  key_vault_id = data.azurerm_key_vault.auth.id
 }
 
 data "azurerm_key_vault_secret" "app_backend_LV_TEST_USERS" {
