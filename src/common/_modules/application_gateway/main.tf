@@ -796,6 +796,31 @@ module "app_gw" {
       name = "rewrite-rule-set-api-app-rewrite-to-session-manager"
       rewrite_rules = [
         local.io_backend_ip_headers_rule,
+        # if endpoint has /api/v1 prefix(e.g. /api/v1/session)
+        # then it should be stripped away before proceding
+        {
+          name          = "strip-base-path-if-cookie-present"
+          rule_sequence = 150
+          conditions = [{
+            variable    = "http_req_Cookie"
+            pattern     = "test-sm-apim"
+            ignore_case = true
+            negate      = false
+            },
+            {
+              variable    = "var_uri_path"
+              pattern     = "/api/v1/(.*)"
+              ignore_case = true
+              negate      = false
+            }
+          ]
+          url = {
+            path         = "/{var_uri_path_1}"
+            query_string = null
+            reroute      = false
+            components   = "path_only"
+          }
+        },
         {
           name          = "rewrite-if-cookie-present"
           rule_sequence = 200
