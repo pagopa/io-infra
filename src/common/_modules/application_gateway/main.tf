@@ -820,6 +820,8 @@ module "app_gw" {
             reroute      = false
             components   = "path_only"
           }
+          request_header_configurations  = []
+          response_header_configurations = []
         },
         {
           name          = "rewrite-if-cookie-present"
