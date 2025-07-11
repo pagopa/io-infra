@@ -1,19 +1,19 @@
 ###########
 # SECRETS #
 ###########
-data "azurerm_key_vault_secret" "session_manager_profile_functions_app_key" {
-  name         = "session-manager-profile-functions-app-key"
+data "azurerm_key_vault_secret" "session_manager_functions_profile_api_key" {
+  name         = "session-manager-functions-profile-api-key"
   key_vault_id = data.azurerm_key_vault.auth.id
 }
 
 data "azurerm_key_vault_secret" "functions_fast_login_api_key" {
   name         = "session-manager-functions-fast-login-api-key"
-  key_vault_id = data.azurerm_key_vault.kv.id
+  key_vault_id = data.azurerm_key_vault.auth.id
 }
 
 data "azurerm_key_vault_secret" "functions_lollipop_api_key" {
-  name         = "session-manager-functions-lollipop-api-key"
-  key_vault_id = data.azurerm_key_vault.kv.id
+  name         = "session-manager-lollipop-functions-api-key"
+  key_vault_id = data.azurerm_key_vault.auth.id
 }
 
 data "azurerm_key_vault_secret" "app_backend_LV_TEST_USERS" {
@@ -38,7 +38,7 @@ data "azurerm_key_vault_secret" "app_backend_ALLOWED_CIE_TEST_FISCAL_CODES" {
 
 data "azurerm_key_vault_secret" "session_manager_TEST_LOGIN_PASSWORD" {
   name         = "session-manager-TEST-LOGIN-PASSWORD"
-  key_vault_id = data.azurerm_key_vault.kv.id
+  key_vault_id = data.azurerm_key_vault.auth.id
 }
 
 data "azurerm_key_vault_secret" "session_manager_JWT_ZENDESK_SUPPORT_TOKEN_SECRET" {
@@ -83,7 +83,7 @@ data "azurerm_key_vault_secret" "session_manager_VALIDATION_COOKIE_TEST_USERS" {
 
 data "azurerm_key_vault_secret" "service_bus_events_beta_testers" {
   name         = "service-bus-events-beta-testers"
-  key_vault_id = data.azurerm_key_vault.kv.id
+  key_vault_id = data.azurerm_key_vault.auth.id
 }
 
 data "azurerm_linux_function_app" "itn_auth_lv_func" {
@@ -144,7 +144,7 @@ locals {
     REDIS_PASSWORD = data.azurerm_redis_cache.core_domain_redis_common.primary_access_key
 
     # Functions App config
-    API_KEY = data.azurerm_key_vault_secret.session_manager_profile_functions_app_key.value
+    API_KEY = data.azurerm_key_vault_secret.session_manager_functions_profile_api_key.value
     API_URL = "https://io-p-itn-auth-profile-func-02.azurewebsites.net"
 
     # Functions Fast Login config
