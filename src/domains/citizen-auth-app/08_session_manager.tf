@@ -233,7 +233,7 @@ locals {
     SERVICE_BUS_NAMESPACE    = "${data.azurerm_servicebus_namespace.platform_service_bus_namespace.name}.servicebus.windows.net"
     AUTH_SESSIONS_TOPIC_NAME = local.auth_sessions_topic_name
 
-    FF_SERVICE_BUS_EVENTS    = "BETA"
+    FF_SERVICE_BUS_EVENTS    = "ALL"
     SERVICE_BUS_EVENTS_USERS = data.azurerm_key_vault_secret.service_bus_events_beta_testers.value
 
   }
