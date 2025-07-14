@@ -24,6 +24,20 @@ module "lollipop_assertions_storage" {
   tags = var.tags
 }
 
+resource "azurerm_role_assignment" "kv_auth_01_lollipop_assertions_keys" {
+  scope                = data.azurerm_key_vault.auth_kv_01.id
+  role_definition_name = "Key Vault Crypto Service Encryption User"
+  principal_id         = module.lollipop_assertions_storage.identity
+  description          = "Allow Storage Account to manage keys in domain Key Vault to encrypt data at rest using a custom key"
+}
+
+resource "azurerm_role_assignment" "kv_auth_01_lollipop_assertions_secrets" {
+  scope                = data.azurerm_key_vault.auth_kv_01.id
+  role_definition_name = "Key Vault Secrets User"
+  principal_id         = module.lollipop_assertions_storage.identity
+  description          = "Allow Storage Account to read secrets in domain Key Vault to get key-related secret to encrypt data at rest using a custom key"
+}
+
 module "lollipop_assertions_storage_customer_managed_key" {
   source               = "git::https://github.com/pagopa/terraform-azurerm-v3//storage_account_customer_managed_key?ref=v8.12.0"
   tenant_id            = data.azurerm_subscription.current.tenant_id
@@ -126,6 +140,20 @@ module "immutable_lv_audit_logs_storage" {
   }
 
   tags = var.tags
+}
+
+resource "azurerm_role_assignment" "kv_auth_01_lv_logs_keys" {
+  scope                = data.azurerm_key_vault.auth_kv_01.id
+  role_definition_name = "Key Vault Crypto Service Encryption User"
+  principal_id         = module.immutable_lv_audit_logs_storage.identity
+  description          = "Allow Storage Account to manage keys in domain Key Vault to encrypt data at rest using a custom key"
+}
+
+resource "azurerm_role_assignment" "kv_auth_01_lv_logs_secrets" {
+  scope                = data.azurerm_key_vault.auth_kv_01.id
+  role_definition_name = "Key Vault Secrets User"
+  principal_id         = module.immutable_lv_audit_logs_storage.identity
+  description          = "Allow Storage Account to read secrets in domain Key Vault to get key-related secret to encrypt data at rest using a custom key"
 }
 
 module "immutable_lv_audit_logs_storage_customer_managed_key" {
