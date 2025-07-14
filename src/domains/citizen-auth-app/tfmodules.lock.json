@@ -1,1 +1,8 @@
-{}
+{
+  "pub_session_manager_staging": {
+    "hash": "433fe44b2863b8af8d4f4206ee2590599b0cb67d78b372e65d68317d3199aaa1",
+    "version": "1.1.2",
+    "name": "azure_role_assignments",
+    "source": "https://registry.terraform.io/modules/pagopa-dx/azure-role-assignments/azurerm/1.1.2"
+  }
+}
