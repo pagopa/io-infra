@@ -27,14 +27,14 @@ module "lollipop_assertions_storage" {
 resource "azurerm_role_assignment" "kv_auth_01_lollipop_assertions_keys" {
   scope                = data.azurerm_key_vault.auth_kv_01.id
   role_definition_name = "Key Vault Crypto Service Encryption User"
-  principal_id         = module.lollipop_assertions_storage.identity
+  principal_id         = module.lollipop_assertions_storage.identity.0.principal_id
   description          = "Allow Storage Account to manage keys in domain Key Vault to encrypt data at rest using a custom key"
 }
 
 resource "azurerm_role_assignment" "kv_auth_01_lollipop_assertions_secrets" {
   scope                = data.azurerm_key_vault.auth_kv_01.id
   role_definition_name = "Key Vault Secrets User"
-  principal_id         = module.lollipop_assertions_storage.identity
+  principal_id         = module.lollipop_assertions_storage.identity.0.principal_id
   description          = "Allow Storage Account to read secrets in domain Key Vault to get key-related secret to encrypt data at rest using a custom key"
 }
 
@@ -145,14 +145,14 @@ module "immutable_lv_audit_logs_storage" {
 resource "azurerm_role_assignment" "kv_auth_01_lv_logs_keys" {
   scope                = data.azurerm_key_vault.auth_kv_01.id
   role_definition_name = "Key Vault Crypto Service Encryption User"
-  principal_id         = module.immutable_lv_audit_logs_storage.identity
+  principal_id         = module.immutable_lv_audit_logs_storage.identity.0.principal_id
   description          = "Allow Storage Account to manage keys in domain Key Vault to encrypt data at rest using a custom key"
 }
 
 resource "azurerm_role_assignment" "kv_auth_01_lv_logs_secrets" {
   scope                = data.azurerm_key_vault.auth_kv_01.id
   role_definition_name = "Key Vault Secrets User"
-  principal_id         = module.immutable_lv_audit_logs_storage.identity
+  principal_id         = module.immutable_lv_audit_logs_storage.identity.0.principal_id
   description          = "Allow Storage Account to read secrets in domain Key Vault to get key-related secret to encrypt data at rest using a custom key"
 }
 
