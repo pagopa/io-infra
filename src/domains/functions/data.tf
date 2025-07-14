@@ -3,6 +3,11 @@ data "azurerm_key_vault" "common" {
   resource_group_name = local.rg_common_name
 }
 
+data "azurerm_key_vault" "io_com" {
+  name                = "io-p-itn-com-kv-01"
+  resource_group_name = "io-p-itn-com-rg-01"
+}
+
 data "azurerm_subnet" "gh_runner" {
   name                 = format("%s-itn-github-runner-snet-01", local.project)
   virtual_network_name = format("%s-itn-common-vnet-01", local.project)
