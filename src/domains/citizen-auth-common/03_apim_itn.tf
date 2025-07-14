@@ -113,7 +113,7 @@ resource "azurerm_api_management_subscription" "pagopa_fastlogin_itn" {
 resource "azurerm_key_vault_secret" "first_lollipop_consumer_subscription_key_itn" {
   name         = "first-lollipop-consumer-pagopa-subscription-key-itn"
   value        = azurerm_api_management_subscription.pagopa_itn.primary_key
-  key_vault_id = module.key_vault.id
+  key_vault_id = data.azurerm_key_vault.auth_kv_01.id
 }
 
 ###################################################################################
@@ -124,7 +124,7 @@ resource "azurerm_key_vault_secret" "first_lollipop_consumer_subscription_key_it
 resource "azurerm_key_vault_secret" "fast_login_subscription_key_itn" {
   name         = "fast-login-subscription-key-itn"
   value        = azurerm_api_management_subscription.pagopa_fastlogin_itn.primary_key
-  key_vault_id = module.key_vault.id
+  key_vault_id = data.azurerm_key_vault.auth_kv_01.id
 }
 
 resource "azurerm_key_vault_secret" "fast_login_lc_subscription_key" {
