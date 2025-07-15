@@ -133,7 +133,8 @@ locals {
       PAGOPA_ECOMMERCE_API_KEY               = data.azurerm_key_vault_secret.fn_services_pagopa_ecommerce_api_key.value
       BETA_USERS                             = data.azurerm_key_vault_secret.fn_services_beta_users.value
       SENDING_FUNC_API_KEY                   = data.azurerm_key_vault_secret.rc_func_key.value
-      SENDING_FUNC_API_URL                   = "https://io-p-itn-com-rc-func-01.azurewebsites.net"
+      SENDING_FUNC_API_URL                   = data.azurerm_linux_function_app.rf_func.default_hostname
+
     }
     app_settings_1 = {
     }
