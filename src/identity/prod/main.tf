@@ -58,6 +58,8 @@ module "federated_identities" {
         "Key Vault Reader",
         "DocumentDB Account Contributor",
         "API Management Service Contributor",
+        "Key Vault Secrets User",
+        "Key Vault Certificate User",
       ]
       resource_groups = {
         terraform-state-rg = [
@@ -82,6 +84,8 @@ module "federated_identities" {
         "Storage Table Data Contributor",
         "Key Vault Contributor",
         "Role Based Access Control Administrator",
+        "Key Vault Secrets Officer",
+        "Key Vault Certificates Officer",
       ]
       resource_groups = {
         io-p-itn-github-runner-rg-01 = [
