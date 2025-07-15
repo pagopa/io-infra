@@ -70,8 +70,8 @@ data "azurerm_key_vault_certificate" "app_gw_api_app" {
 # Key Vault where the certificate for api-web domain is located
 ###
 data "azurerm_key_vault" "ioweb_kv" {
-  name                = format("%s-ioweb-kv", var.project_legacy)
-  resource_group_name = format("%s-ioweb-sec-rg", var.project_legacy)
+  name                = format("%s-ioweb-kv-01", var.project)
+  resource_group_name = format("%s-auth-main-rg-01", var.project)
 }
 
 data "azurerm_key_vault_certificate" "app_gw_api_web" {
