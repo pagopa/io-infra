@@ -632,68 +632,57 @@ module "app_gw" {
         test-login = {
           paths                 = ["/test-login"]
           backend               = "session-manager-app",
-          rewrite_rule_set_name = "rewrite-rule-set-api-app"
-          # rewrite_rule_set_name = "rewrite-rule-set-api-app-rewrite-to-session-manager"
+          rewrite_rule_set_name = "rewrite-rule-set-api-app-rewrite-to-session-manager"
         },
         login = {
           paths                 = ["/login"]
           backend               = "session-manager-app",
-          rewrite_rule_set_name = "rewrite-rule-set-api-app"
-          # rewrite_rule_set_name = "rewrite-rule-set-api-app-rewrite-to-session-manager"
+          rewrite_rule_set_name = "rewrite-rule-set-api-app-rewrite-to-session-manager"
         },
         metadata = {
           paths                 = ["/metadata"]
           backend               = "session-manager-app",
-          rewrite_rule_set_name = "rewrite-rule-set-api-app"
-          # rewrite_rule_set_name = "rewrite-rule-set-api-app-rewrite-to-session-manager"
+          rewrite_rule_set_name = "rewrite-rule-set-api-app-rewrite-to-session-manager"
         },
         acs = {
           paths                 = ["/assertionConsumerService"]
           backend               = "session-manager-app",
-          rewrite_rule_set_name = "rewrite-rule-set-api-app"
-          # rewrite_rule_set_name = "rewrite-rule-set-api-app-rewrite-to-session-manager"
+          rewrite_rule_set_name = "rewrite-rule-set-api-app-rewrite-to-session-manager"
         },
         fast-login = {
           paths                 = ["/api/v1/fast-login"]
           backend               = "session-manager-app",
-          rewrite_rule_set_name = "rewrite-rule-set-api-app"
-          # rewrite_rule_set_name = "rewrite-rule-set-api-app-rewrite-to-session-manager"
+          rewrite_rule_set_name = "rewrite-rule-set-api-app-rewrite-to-session-manager"
         },
         nonce-fast-login = {
           paths                 = ["/api/v1/fast-login/nonce/generate"]
           backend               = "session-manager-app",
-          rewrite_rule_set_name = "rewrite-rule-set-api-app"
-          # rewrite_rule_set_name = "rewrite-rule-set-api-app-rewrite-to-session-manager"
+          rewrite_rule_set_name = "rewrite-rule-set-api-app-rewrite-to-session-manager"
         },
         logout = {
           paths                 = ["/logout"]
           backend               = "session-manager-app",
-          rewrite_rule_set_name = "rewrite-rule-set-api-app"
-          # rewrite_rule_set_name = "rewrite-rule-set-api-app-rewrite-to-session-manager"
+          rewrite_rule_set_name = "rewrite-rule-set-api-app-rewrite-to-session-manager"
         },
         session = {
           paths                 = ["/api/v1/session"]
           backend               = "session-manager-app",
-          rewrite_rule_set_name = "rewrite-rule-set-api-app"
-          # rewrite_rule_set_name = "rewrite-rule-set-api-app-rewrite-to-session-manager"
+          rewrite_rule_set_name = "rewrite-rule-set-api-app-rewrite-to-session-manager"
         },
         bpd-user = {
           paths                 = ["/bpd/api/v1/user"]
           backend               = "session-manager-app",
-          rewrite_rule_set_name = "rewrite-rule-set-api-app"
-          # rewrite_rule_set_name = "rewrite-rule-set-api-app-rewrite-to-session-manager"
+          rewrite_rule_set_name = "rewrite-rule-set-api-app-rewrite-to-bpd-session-manager"
         },
         zendesk-user = {
           paths                 = ["/api/backend/zendesk/v1/jwt"]
           backend               = "session-manager-app",
-          rewrite_rule_set_name = "rewrite-rule-set-api-app"
-          # rewrite_rule_set_name = "rewrite-rule-set-api-app-rewrite-to-session-manager"
+          rewrite_rule_set_name = "rewrite-rule-set-api-app-rewrite-to-zendesk-session-manager"
         },
         pagopa-user = {
           paths                 = ["/pagopa/api/v1/user"]
           backend               = "session-manager-app",
-          rewrite_rule_set_name = "rewrite-rule-set-api-app"
-          # rewrite_rule_set_name = "rewrite-rule-set-api-app-rewrite-to-session-manager"
+          rewrite_rule_set_name = "rewrite-rule-set-api-app-rewrite-to-pagopa-session-manager"
         },
       }
     }
