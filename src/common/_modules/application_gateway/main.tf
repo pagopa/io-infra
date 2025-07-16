@@ -809,31 +809,31 @@ module "app_gw" {
         local.io_backend_ip_headers_rule,
         # if endpoint has /api/v1 prefix(e.g. /api/v1/session)
         # then it should be stripped away before proceding
-        # {
-        #   name          = "strip-base-path-if-cookie-present"
-        #   rule_sequence = 150
-        #   conditions = [{
-        #     variable    = "http_req_Cookie"
-        #     pattern     = "test-sm-apim"
-        #     ignore_case = true
-        #     negate      = false
-        #     },
-        #     {
-        #       variable    = "var_uri_path"
-        #       pattern     = "/api/v1/(.*)"
-        #       ignore_case = true
-        #       negate      = false
-        #     }
-        #   ]
-        #   url = {
-        #     path         = "/{var_uri_path_1}"
-        #     query_string = null
-        #     reroute      = false
-        #     components   = "path_only"
-        #   }
-        #   request_header_configurations  = []
-        #   response_header_configurations = []
-        # },
+        {
+          name          = "strip-base-path-if-cookie-present"
+          rule_sequence = 150
+          conditions = [{
+            variable    = "http_req_Cookie"
+            pattern     = "test-sm-apim"
+            ignore_case = true
+            negate      = false
+            },
+            {
+              variable    = "var_uri_path"
+              pattern     = "/api/v1/(.*)"
+              ignore_case = true
+              negate      = false
+            }
+          ]
+          url = {
+            path         = "/{var_uri_path_1}"
+            query_string = null
+            reroute      = false
+            components   = "path_only"
+          }
+          request_header_configurations  = []
+          response_header_configurations = []
+        },
         {
           name          = "rewrite-if-cookie-present"
           rule_sequence = 200
@@ -854,81 +854,81 @@ module "app_gw" {
         }
       ]
     },
-    # {
-    #   name = "rewrite-rule-set-api-app-rewrite-to-bpd-session-manager"
-    #   rewrite_rules = [
-    #     local.io_backend_ip_headers_rule,
-    #     {
-    #       name          = "rewrite-if-cookie-present"
-    #       rule_sequence = 200
-    #       conditions = [{
-    #         variable    = "http_req_Cookie"
-    #         pattern     = "test-sm-apim"
-    #         ignore_case = true
-    #         negate      = false
-    #       }]
-    #       url = {
-    #         # only 1 operation present for this API
-    #         path         = "/api/sso/bpd/v1/user"
-    #         query_string = null
-    #         reroute      = true
-    #         components   = "path_only"
-    #       }
-    #       request_header_configurations  = []
-    #       response_header_configurations = []
-    #     }
-    #   ]
-    # },
-    # {
-    #   name = "rewrite-rule-set-api-app-rewrite-to-pagopa-session-manager"
-    #   rewrite_rules = [
-    #     local.io_backend_ip_headers_rule,
-    #     {
-    #       name          = "rewrite-if-cookie-present"
-    #       rule_sequence = 200
-    #       conditions = [{
-    #         variable    = "http_req_Cookie"
-    #         pattern     = "test-sm-apim"
-    #         ignore_case = true
-    #         negate      = false
-    #       }]
-    #       url = {
-    #         # only 1 operation present for this API
-    #         path         = "/api/sso/pagopa/v1/user"
-    #         query_string = null
-    #         reroute      = true
-    #         components   = "path_only"
-    #       }
-    #       request_header_configurations  = []
-    #       response_header_configurations = []
-    #     }
-    #   ]
-    # },
-    # {
-    #   name = "rewrite-rule-set-api-app-rewrite-to-zendesk-session-manager"
-    #   rewrite_rules = [
-    #     local.io_backend_ip_headers_rule,
-    #     {
-    #       name          = "rewrite-if-cookie-present"
-    #       rule_sequence = 200
-    #       conditions = [{
-    #         variable    = "http_req_Cookie"
-    #         pattern     = "test-sm-apim"
-    #         ignore_case = true
-    #         negate      = false
-    #       }]
-    #       url = {
-    #         # only 1 operation present for this API
-    #         path         = "/api/sso/zendesk/v1/jwt"
-    #         query_string = null
-    #         reroute      = true
-    #         components   = "path_only"
-    #       }
-    #       request_header_configurations  = []
-    #       response_header_configurations = []
-    #     }
-    #   ]
-    # },
+    {
+      name = "rewrite-rule-set-api-app-rewrite-to-bpd-session-manager"
+      rewrite_rules = [
+        local.io_backend_ip_headers_rule,
+        {
+          name          = "rewrite-if-cookie-present"
+          rule_sequence = 200
+          conditions = [{
+            variable    = "http_req_Cookie"
+            pattern     = "test-sm-apim"
+            ignore_case = true
+            negate      = false
+          }]
+          url = {
+            # only 1 operation present for this API
+            path         = "/api/sso/bpd/v1/user"
+            query_string = null
+            reroute      = true
+            components   = "path_only"
+          }
+          request_header_configurations  = []
+          response_header_configurations = []
+        }
+      ]
+    },
+    {
+      name = "rewrite-rule-set-api-app-rewrite-to-pagopa-session-manager"
+      rewrite_rules = [
+        local.io_backend_ip_headers_rule,
+        {
+          name          = "rewrite-if-cookie-present"
+          rule_sequence = 200
+          conditions = [{
+            variable    = "http_req_Cookie"
+            pattern     = "test-sm-apim"
+            ignore_case = true
+            negate      = false
+          }]
+          url = {
+            # only 1 operation present for this API
+            path         = "/api/sso/pagopa/v1/user"
+            query_string = null
+            reroute      = true
+            components   = "path_only"
+          }
+          request_header_configurations  = []
+          response_header_configurations = []
+        }
+      ]
+    },
+    {
+      name = "rewrite-rule-set-api-app-rewrite-to-zendesk-session-manager"
+      rewrite_rules = [
+        local.io_backend_ip_headers_rule,
+        {
+          name          = "rewrite-if-cookie-present"
+          rule_sequence = 200
+          conditions = [{
+            variable    = "http_req_Cookie"
+            pattern     = "test-sm-apim"
+            ignore_case = true
+            negate      = false
+          }]
+          url = {
+            # only 1 operation present for this API
+            path         = "/api/sso/zendesk/v1/jwt"
+            query_string = null
+            reroute      = true
+            components   = "path_only"
+          }
+          request_header_configurations  = []
+          response_header_configurations = []
+        }
+      ]
+    },
     {
       name = "rewrite-rule-set-fims-op-app"
       rewrite_rules = [{
