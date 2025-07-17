@@ -226,7 +226,7 @@ locals {
 
     # Validation Cookie config
     VALIDATION_COOKIE_DURATION_MS = 900000
-    FF_VALIDATION_COOKIE          = "BETA"
+    FF_VALIDATION_COOKIE          = "ALL"
     VALIDATION_COOKIE_TEST_USERS  = data.azurerm_key_vault_secret.session_manager_VALIDATION_COOKIE_TEST_USERS.value
 
     # ServiceBus Auth Event Config
