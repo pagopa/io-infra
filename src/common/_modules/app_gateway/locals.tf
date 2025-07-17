@@ -785,7 +785,7 @@ locals {
         # if endpoint has /api/v1 prefix(e.g. /api/v1/session)
         # then it should be stripped away before proceding
         {
-          name          = "strip-base-path-if-cookie-present"
+          name          = "strip-base-path"
           rule_sequence = 150
           conditions = [
             {
@@ -805,7 +805,7 @@ locals {
           response_header_configurations = []
         },
         {
-          name          = "rewrite-if-cookie-present"
+          name          = "rewrite-path"
           rule_sequence = 200
           conditions    = []
           url = {
