@@ -850,7 +850,7 @@ module "app_gw" {
         {
           name          = "rewrite-if-cookie-present"
           rule_sequence = 200
-          conditions = []
+          conditions    = []
           url = {
             # only 1 operation present for this API
             path         = "/api/sso/bpd/v1/user"
@@ -870,7 +870,7 @@ module "app_gw" {
         {
           name          = "rewrite-if-cookie-present"
           rule_sequence = 200
-          conditions = []
+          conditions    = []
           url = {
             # only 1 operation present for this API
             path         = "/api/sso/pagopa/v1/user"
@@ -890,7 +890,7 @@ module "app_gw" {
         {
           name          = "rewrite-if-cookie-present"
           rule_sequence = 200
-          conditions = []
+          conditions    = []
           url = {
             # only 1 operation present for this API
             path         = "/api/sso/zendesk/v1/jwt"
