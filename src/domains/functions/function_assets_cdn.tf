@@ -1,7 +1,3 @@
-data "azurerm_resource_group" "backend_messages_rg" {
-  name = "${local.project}-backend-messages-rg"
-}
-
 locals {
   function_assets_cdn = {
     app_settings = {

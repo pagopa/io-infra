@@ -3,6 +3,12 @@ data "azurerm_key_vault" "common" {
   resource_group_name = local.rg_common_name
 }
 
+
+data "azurerm_key_vault" "io_com" {
+  name                = format("%s-itn-com-kv-01", local.project)
+  resource_group_name = format("%s-itn-com-rg-01", local.project)
+}
+
 data "azurerm_subnet" "gh_runner" {
   name                 = format("%s-itn-github-runner-snet-01", local.project)
   virtual_network_name = format("%s-itn-common-vnet-01", local.project)
@@ -150,4 +156,9 @@ data "azurerm_api_management" "apim_itn_api" {
 data "azurerm_linux_function_app" "session_manager_internal" {
   name                = format("%s-weu-auth-sm-int-func-01", local.project)
   resource_group_name = format("%s-auth-main-rg-01", local.common_project_itn)
+}
+
+data "azurerm_linux_function_app" "rf_func" {
+  name                = format("%s-itn-com-rc-func-01", local.project)
+  resource_group_name = format("%s-com-rg-01", local.common_project_itn)
 }
