@@ -39,13 +39,12 @@ locals {
       pick_host_name_from_backend = false
     }
 
-    # TODO: change the backend to the new FQDN when api.internal.io.pagopa.it will be available
     platform-api-gateway = {
       protocol                    = "Https"
-      host                        = "io-p-itn-platform-api-gateway-apim-01.azure-api.net"
+      host                        = format("proxy.internal.%s", var.public_dns_zones.io.name)
       port                        = 443
       ip_addresses                = null # with null value use fqdns
-      fqdns                       = ["io-p-itn-platform-api-gateway-apim-01.azure-api.net"]
+      fqdns                       = [format("proxy.internal.%s", var.public_dns_zones.io.name)]
       probe                       = "/status-0123456789abcdef"
       probe_name                  = "probe-platform-api-gateway"
       request_timeout             = 10
