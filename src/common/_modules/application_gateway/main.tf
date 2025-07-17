@@ -801,12 +801,7 @@ module "app_gw" {
         {
           name          = "strip-base-path-if-cookie-present"
           rule_sequence = 150
-          conditions = [{
-            variable    = "http_req_Cookie"
-            pattern     = "test-sm-apim"
-            ignore_case = true
-            negate      = false
-            },
+          conditions = [
             {
               variable    = "var_uri_path"
               pattern     = "/api/v1/(.*)"
@@ -826,12 +821,7 @@ module "app_gw" {
         {
           name          = "rewrite-if-cookie-present"
           rule_sequence = 200
-          conditions = [{
-            variable    = "http_req_Cookie"
-            pattern     = "test-sm-apim"
-            ignore_case = true
-            negate      = false
-          }]
+          conditions    = []
           url = {
             path         = "/api/auth/v1{var_uri_path}"
             query_string = null
