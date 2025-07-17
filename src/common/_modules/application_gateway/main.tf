@@ -848,7 +848,7 @@ module "app_gw" {
       rewrite_rules = [
         local.io_backend_ip_headers_rule,
         {
-          name          = "rewrite-if-cookie-present"
+          name          = "rewrite-path"
           rule_sequence = 200
           conditions    = []
           url = {
@@ -868,7 +868,7 @@ module "app_gw" {
       rewrite_rules = [
         local.io_backend_ip_headers_rule,
         {
-          name          = "rewrite-if-cookie-present"
+          name          = "rewrite-path"
           rule_sequence = 200
           conditions    = []
           url = {
@@ -888,7 +888,7 @@ module "app_gw" {
       rewrite_rules = [
         local.io_backend_ip_headers_rule,
         {
-          name          = "rewrite-if-cookie-present"
+          name          = "rewrite-path"
           rule_sequence = 200
           conditions    = []
           url = {
