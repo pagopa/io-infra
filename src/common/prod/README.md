@@ -4,7 +4,7 @@
 
 | Name | Version |
 |------|---------|
-| <a name="requirement_azurerm"></a> [azurerm](#requirement\_azurerm) | ~> 4.1 |
+| <a name="requirement_azurerm"></a> [azurerm](#requirement\_azurerm) | <= 4.36.0 |
 | <a name="requirement_dx"></a> [dx](#requirement\_dx) | ~> 0.4 |
 
 ## Providers
@@ -12,7 +12,7 @@
 | Name | Version |
 |------|---------|
 | <a name="provider_azuread"></a> [azuread](#provider\_azuread) | 3.4.0 |
-| <a name="provider_azurerm"></a> [azurerm](#provider\_azurerm) | 4.34.0 |
+| <a name="provider_azurerm"></a> [azurerm](#provider\_azurerm) | 4.36.0 |
 | <a name="provider_dx"></a> [dx](#provider\_dx) | ~> 0.4 |
 | <a name="provider_terraform"></a> [terraform](#provider\_terraform) | n/a |
 
