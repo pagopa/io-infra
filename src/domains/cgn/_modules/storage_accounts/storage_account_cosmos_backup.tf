@@ -51,7 +51,7 @@ resource "azurerm_private_endpoint" "storage_account_cosmos_backup_queue_pep" {
     name                           = "${module.storage_account_cosmos_backup.name}-queue-endpoint"
     private_connection_resource_id = module.storage_account_cosmos_backup.id
     is_manual_connection           = false
-    subresource_names              = ["Queue"]
+    subresource_names              = ["queue"]
   }
 
   private_dns_zone_group {
