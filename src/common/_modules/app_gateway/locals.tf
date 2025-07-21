@@ -544,6 +544,7 @@ locals {
           backend               = "session-manager-app",
           rewrite_rule_set_name = "rewrite-rule-set-api-app-rewrite-to-session-manager"
         },
+        # NOTE: Do NOT remove rewrite rule from metadata endpoint, as it cannot be switched to new basepath
         metadata = {
           paths                 = ["/metadata"]
           backend               = "session-manager-app",
