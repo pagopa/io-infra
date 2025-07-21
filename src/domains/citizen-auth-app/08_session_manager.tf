@@ -226,14 +226,14 @@ locals {
 
     # Validation Cookie config
     VALIDATION_COOKIE_DURATION_MS = 900000
-    FF_VALIDATION_COOKIE          = "BETA"
+    FF_VALIDATION_COOKIE          = "ALL"
     VALIDATION_COOKIE_TEST_USERS  = data.azurerm_key_vault_secret.session_manager_VALIDATION_COOKIE_TEST_USERS.value
 
     # ServiceBus Auth Event Config
     SERVICE_BUS_NAMESPACE    = "${data.azurerm_servicebus_namespace.platform_service_bus_namespace.name}.servicebus.windows.net"
     AUTH_SESSIONS_TOPIC_NAME = local.auth_sessions_topic_name
 
-    FF_SERVICE_BUS_EVENTS    = "BETA"
+    FF_SERVICE_BUS_EVENTS    = "ALL"
     SERVICE_BUS_EVENTS_USERS = data.azurerm_key_vault_secret.service_bus_events_beta_testers.value
 
   }
