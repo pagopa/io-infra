@@ -16,7 +16,7 @@ resource "azurerm_storage_account" "bonus_backup_itn_01" {
   }
 
   allowed_copy_scope              = "AAD"
-  shared_access_key_enabled       = false # not supported for tables, plan throws an error
+  shared_access_key_enabled       = true # not supported for tables, plan throws an error
   default_to_oauth_authentication = true
   allow_nested_items_to_be_public = false
 
@@ -55,7 +55,7 @@ resource "azurerm_storage_account" "bonus_backup_gwc_01" {
   }
 
   allowed_copy_scope              = "AAD"
-  shared_access_key_enabled       = false # not supported for tables, plan throws an error
+  shared_access_key_enabled       = true # not supported for tables, plan throws an error
   default_to_oauth_authentication = true
   allow_nested_items_to_be_public = false
 
