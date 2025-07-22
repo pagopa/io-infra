@@ -226,7 +226,7 @@ locals {
 
     # Validation Cookie config
     VALIDATION_COOKIE_DURATION_MS = 900000
-    FF_VALIDATION_COOKIE          = "BETA"
+    FF_VALIDATION_COOKIE          = "ALL"
     VALIDATION_COOKIE_TEST_USERS  = data.azurerm_key_vault_secret.session_manager_VALIDATION_COOKIE_TEST_USERS.value
 
     # ServiceBus Auth Event Config
@@ -243,6 +243,9 @@ locals {
 ## Session Manager App service ##
 #################################
 
+// NOTE: If duplicating this service, ensure that write permissions on the session topic
+// are granted before enabling production traffic.
+// see reference https://github.com/pagopa/io-auth-n-identity-domain/blob/303a5659791ce95b529c557f4aa4400e7e51e9a7/infra/resources/prod/servicebus_topic.tf#L61
 module "session_manager_weu" {
   source = "github.com/pagopa/terraform-azurerm-v3//app_service?ref=v8.28.1"
 
@@ -347,4 +350,23 @@ module "session_manager_weu_staging" {
   public_network_access_enabled = false
 
   tags = var.tags
+}
+
+// Staging permissions over SB session topic
+module "pub_session_manager_staging" {
+  source  = "pagopa-dx/azure-role-assignments/azurerm"
+  version = "~>1.0"
+
+  principal_id    = module.session_manager_weu_staging.principal_id
+  subscription_id = data.azurerm_subscription.current.subscription_id
+
+  service_bus = [
+    {
+      namespace_name      = data.azurerm_servicebus_namespace.platform_service_bus_namespace.name
+      resource_group_name = data.azurerm_servicebus_namespace.platform_service_bus_namespace.resource_group_name
+      role                = "writer"
+      description         = "This role allows managing the given topic"
+      topic_names         = [local.auth_sessions_topic_name]
+    }
+  ]
 }

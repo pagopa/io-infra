@@ -19,3 +19,45 @@ module "storage_account_cosmos_backup" {
 
   tags = var.tags
 }
+
+resource "azurerm_private_endpoint" "storage_account_cosmos_backup_blob_pep" {
+  name                = "${module.storage_account_cosmos_backup.name}-blob-endpoint"
+  location            = var.location
+  resource_group_name = var.resource_group_name
+  subnet_id           = var.subnet_pendpoints_id
+
+  private_service_connection {
+    name                           = "${module.storage_account_cosmos_backup.name}-blob-endpoint"
+    private_connection_resource_id = module.storage_account_cosmos_backup.id
+    is_manual_connection           = false
+    subresource_names              = ["blob"]
+  }
+
+  private_dns_zone_group {
+    name                 = "private-dns-zone-group"
+    private_dns_zone_ids = [data.azurerm_private_dns_zone.privatelink_blob_core.id]
+  }
+
+  tags = var.tags
+}
+
+resource "azurerm_private_endpoint" "storage_account_cosmos_backup_queue_pep" {
+  name                = "${module.storage_account_cosmos_backup.name}-queue-endpoint"
+  location            = var.location
+  resource_group_name = var.resource_group_name
+  subnet_id           = var.subnet_pendpoints_id
+
+  private_service_connection {
+    name                           = "${module.storage_account_cosmos_backup.name}-queue-endpoint"
+    private_connection_resource_id = module.storage_account_cosmos_backup.id
+    is_manual_connection           = false
+    subresource_names              = ["queue"]
+  }
+
+  private_dns_zone_group {
+    name                 = "private-dns-zone-group"
+    private_dns_zone_ids = [data.azurerm_private_dns_zone.privatelink_queue_core.id]
+  }
+
+  tags = var.tags
+}
