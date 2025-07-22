@@ -5,6 +5,11 @@ resource "azurerm_resource_group" "sec_rg" {
   tags = var.tags
 }
 
+data "azurerm_key_vault" "ioweb" {
+  name                = "io-p-itn-ioweb-kv-01"
+  resource_group_name = "io-p-itn-ioweb-rg-01"
+}
+
 module "key_vault" {
   source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//key_vault?ref=v8.56.0"
 

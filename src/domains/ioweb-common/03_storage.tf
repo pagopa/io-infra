@@ -36,6 +36,12 @@ module "immutable_spid_logs_storage" {
   tags = var.tags
 }
 
+resource "azurerm_key_vault_secret" "spid_logs_connection_string" {
+  name         = "spid-logs-st-connection-string"
+  value        = module.immutable_spid_logs_storage.primary_connection_string
+  key_vault_id = data.azurerm_key_vault.ioweb.id
+}
+
 module "immutable_spid_logs_storage_customer_managed_key" {
   source               = "git::https://github.com/pagopa/terraform-azurerm-v3//storage_account_customer_managed_key?ref=v8.56.0"
   tenant_id            = data.azurerm_subscription.current.tenant_id
