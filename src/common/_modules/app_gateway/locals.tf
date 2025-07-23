@@ -833,14 +833,9 @@ locals {
       rewrite_rules = [
         local.io_backend_ip_headers_rule,
         {
-          name          = "rewrite-if-cookie-present"
+          name          = "rewrite-path"
           rule_sequence = 200
-          conditions = [{
-            variable    = "http_req_Cookie"
-            pattern     = "test-sm-apim"
-            ignore_case = true
-            negate      = false
-          }]
+          conditions    = []
           url = {
             # only 1 operation present for this API
             path         = "/api/sso/bpd/v1/user"
@@ -858,14 +853,9 @@ locals {
       rewrite_rules = [
         local.io_backend_ip_headers_rule,
         {
-          name          = "rewrite-if-cookie-present"
+          name          = "rewrite-path"
           rule_sequence = 200
-          conditions = [{
-            variable    = "http_req_Cookie"
-            pattern     = "test-sm-apim"
-            ignore_case = true
-            negate      = false
-          }]
+          conditions    = []
           url = {
             # only 1 operation present for this API
             path         = "/api/sso/pagopa/v1/user"
@@ -883,14 +873,9 @@ locals {
       rewrite_rules = [
         local.io_backend_ip_headers_rule,
         {
-          name          = "rewrite-if-cookie-present"
+          name          = "rewrite-path"
           rule_sequence = 200
-          conditions = [{
-            variable    = "http_req_Cookie"
-            pattern     = "test-sm-apim"
-            ignore_case = true
-            negate      = false
-          }]
+          conditions    = []
           url = {
             # only 1 operation present for this API
             path         = "/api/sso/zendesk/v1/jwt"
