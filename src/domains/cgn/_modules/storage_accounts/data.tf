@@ -17,3 +17,8 @@ data "azurerm_private_dns_zone" "privatelink_queue_core" {
   name                = "privatelink.queue.core.windows.net"
   resource_group_name = local.resource_group_name_common
 }
+
+data "azurerm_private_dns_zone" "privatelink_table_core" {
+  name                = "privatelink.table.core.windows.net"
+  resource_group_name = local.resource_group_name_common
+}
