@@ -1,4 +1,6 @@
 resource "azurerm_storage_account" "logs" {
+  count = var.location == "westeurope" ? 1 : 0
+
   name                = "iopstlogs"
   resource_group_name = "io-p-rg-operations"
 
@@ -6,10 +8,9 @@ resource "azurerm_storage_account" "logs" {
   account_tier             = "Standard"
   account_replication_type = "GZRS"
 
-  allow_nested_items_to_be_public = false
-
   blob_properties {
-    versioning_enabled = true
+    versioning_enabled  = true
+    change_feed_enabled = true
   }
 
   tags = var.tags

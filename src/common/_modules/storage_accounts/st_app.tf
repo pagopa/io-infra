@@ -1,4 +1,6 @@
 resource "azurerm_storage_account" "app" {
+  count = var.location == "westeurope" ? 1 : 0
+
   name                = "iopstapp"
   resource_group_name = "io-p-rg-internal"
 
