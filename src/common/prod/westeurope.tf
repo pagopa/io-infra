@@ -461,3 +461,13 @@ module "storage_accounts" {
 
   tags = local.tags
 }
+
+import {
+  id = "/subscriptions/ec285037-c673-4f58-b594-d7c480da4e8b/resourceGroups/io-p-rg-internal/providers/Microsoft.Storage/storageAccounts/iopstapp"
+  to = module.storage_accounts.azurerm_storage_account.app[0]
+}
+
+import {
+  id = "/subscriptions/ec285037-c673-4f58-b594-d7c480da4e8b/resourceGroups/io-p-rg-operations/providers/Microsoft.Storage/storageAccounts/iopstlogs"
+  to = module.storage_accounts.azurerm_storage_account.logs[0]
+}
