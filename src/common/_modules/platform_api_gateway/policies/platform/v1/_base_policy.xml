@@ -18,7 +18,7 @@
         <!-- https://docs.microsoft.com/en-us/dotnet/api/system.random.next?view=net-6.0#system-random-next(system-int32-system-int32) -->
         <set-variable name="urlId" value="@{
             Random rnd = new Random();
-            int urlId = rnd.Next(1, 3);
+            int urlId = rnd.Next(1, 4);
             return urlId.ToString();
         }" />
         <choose>
@@ -27,6 +27,9 @@
             </when>
             <when condition="@(context.Variables.GetValueOrDefault<string>("urlId").Equals("2"))">
                 <set-backend-service base-url="https://io-p-app-appbackendl2.azurewebsites.net" />
+            </when>
+            <when condition="@(context.Variables.GetValueOrDefault<string>("urlId").Equals("3"))">
+                <set-backend-service base-url="https://io-p-app-appbackendl3.azurewebsites.net" />
             </when>
             <otherwise>
                 <return-response>
