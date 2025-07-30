@@ -543,11 +543,13 @@ locals {
           backend               = "session-manager-app",
           rewrite_rule_set_name = "rewrite-rule-set-api-app-rewrite-to-session-manager"
         },
+        # NOTE: Do NOT remove rewrite rule from metadata endpoint, as it cannot be switched to new basepath
         metadata = {
           paths                 = ["/metadata"]
           backend               = "session-manager-app",
           rewrite_rule_set_name = "rewrite-rule-set-api-app-rewrite-to-session-manager"
         },
+        # NOTE: Do NOT remove rewrite rule from acs endpoint, as it cannot be switched to new basepath
         acs = {
           paths                 = ["/assertionConsumerService"]
           backend               = "session-manager-app",
@@ -784,14 +786,9 @@ locals {
         # if endpoint has /api/v1 prefix(e.g. /api/v1/session)
         # then it should be stripped away before proceding
         {
-          name          = "strip-base-path-if-cookie-present"
+          name          = "strip-base-path"
           rule_sequence = 150
-          conditions = [{
-            variable    = "http_req_Cookie"
-            pattern     = "test-sm-apim"
-            ignore_case = true
-            negate      = false
-            },
+          conditions = [
             {
               variable    = "var_uri_path"
               pattern     = "/api/v1/(.*)"
@@ -809,14 +806,9 @@ locals {
           response_header_configurations = []
         },
         {
-          name          = "rewrite-if-cookie-present"
+          name          = "rewrite-path"
           rule_sequence = 200
-          conditions = [{
-            variable    = "http_req_Cookie"
-            pattern     = "test-sm-apim"
-            ignore_case = true
-            negate      = false
-          }]
+          conditions    = []
           url = {
             path         = "/api/auth/v1{var_uri_path}"
             query_string = null

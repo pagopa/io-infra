@@ -61,3 +61,24 @@ resource "azurerm_private_endpoint" "storage_account_cosmos_backup_queue_pep" {
 
   tags = var.tags
 }
+
+resource "azurerm_private_endpoint" "storage_account_cosmos_backup_table_pep" {
+  name                = "${module.storage_account_cosmos_backup.name}-table-endpoint"
+  location            = var.location
+  resource_group_name = var.resource_group_name
+  subnet_id           = var.subnet_pendpoints_id
+
+  private_service_connection {
+    name                           = "${module.storage_account_cosmos_backup.name}-table-endpoint"
+    private_connection_resource_id = module.storage_account_cosmos_backup.id
+    is_manual_connection           = false
+    subresource_names              = ["table"]
+  }
+
+  private_dns_zone_group {
+    name                 = "private-dns-zone-group"
+    private_dns_zone_ids = [data.azurerm_private_dns_zone.privatelink_table_core.id]
+  }
+
+  tags = var.tags
+}
