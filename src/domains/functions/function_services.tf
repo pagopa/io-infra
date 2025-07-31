@@ -135,6 +135,13 @@ locals {
       SENDING_FUNC_API_KEY                   = data.azurerm_key_vault_secret.rc_func_key.value
       SENDING_FUNC_API_URL                   = "https://${data.azurerm_linux_function_app.rf_func.default_hostname}"
 
+      "AzureWebJobs.GetMessage.Disabled"             = "1"
+      "AzureWebJobs.CreateMessage.Disabled"          = "1"
+      "AzureWebJobs.CreateNotification.Disabled"     = "1"
+      "AzureWebJobs.EmailNotification.Disabled"      = "1"
+      "AzureWebJobs.OnFailedProcessMessage.Disabled" = "1"
+      "AzureWebJobs.ProcessMessage.Disabled"         = "1"
+      "AzureWebJobs.WebhookNotification.Disabled"    = "1"
     }
     app_settings_1 = {
     }
@@ -206,16 +213,7 @@ module "function_services" {
   app_settings = merge(
     local.function_services.app_settings_common,
     count.index == 0 ? local.function_services.app_settings_1 : {},
-    count.index == 1 ? local.function_services.app_settings_2 : {},
-    {
-      # Disabled functions on slot - trigger, queue and timer
-      # mark this configurations as slot settings
-      "AzureWebJobs.CreateNotification.Disabled"     = "0"
-      "AzureWebJobs.EmailNotification.Disabled"      = "0"
-      "AzureWebJobs.OnFailedProcessMessage.Disabled" = "0"
-      "AzureWebJobs.ProcessMessage.Disabled"         = "0"
-      "AzureWebJobs.WebhookNotification.Disabled"    = "0"
-    }
+    count.index == 1 ? local.function_services.app_settings_2 : {}
   )
 
   internal_storage = {
@@ -261,14 +259,6 @@ module "function_services" {
     }
   ]
 
-  sticky_app_setting_names = [
-    "AzureWebJobs.CreateNotification.Disabled",
-    "AzureWebJobs.EmailNotification.Disabled",
-    "AzureWebJobs.OnFailedProcessMessage.Disabled",
-    "AzureWebJobs.ProcessMessage.Disabled",
-    "AzureWebJobs.WebhookNotification.Disabled",
-  ]
-
   tags = var.tags
 }
 
@@ -292,17 +282,7 @@ module "function_services_staging_slot" {
   runtime_version                          = "~4"
   application_insights_instrumentation_key = data.azurerm_application_insights.application_insights.instrumentation_key
 
-  app_settings = merge(
-    local.function_services.app_settings_common, {
-      # Disabled functions on slot - trigger, queue and timer
-      # mark this configurations as slot settings
-      "AzureWebJobs.CreateNotification.Disabled"     = "1"
-      "AzureWebJobs.EmailNotification.Disabled"      = "1"
-      "AzureWebJobs.OnFailedProcessMessage.Disabled" = "1"
-      "AzureWebJobs.ProcessMessage.Disabled"         = "1"
-      "AzureWebJobs.WebhookNotification.Disabled"    = "1"
-    }
-  )
+  app_settings = local.function_services.app_settings_common
 
   subnet_id = module.services_snet[count.index].id
 
