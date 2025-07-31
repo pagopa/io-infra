@@ -328,18 +328,6 @@ resource "azurerm_storage_queue" "profiles_to_sanitize" {
   storage_account_name = module.io_citizen_auth_storage.name
 }
 
-resource "azurerm_storage_queue" "expired_user_sessions" {
-  depends_on           = [module.io_citizen_auth_storage, azurerm_private_endpoint.queue]
-  name                 = "expired-user-sessions"
-  storage_account_name = module.io_citizen_auth_storage.name
-}
-
-resource "azurerm_storage_queue" "expired_user_sessions_poison" {
-  depends_on           = [module.io_citizen_auth_storage, azurerm_private_endpoint.queue]
-  name                 = "expired-user-sessions-poison"
-  storage_account_name = module.io_citizen_auth_storage.name
-}
-
 resource "azurerm_storage_queue" "session_notifications_init_recovery" {
   depends_on           = [module.io_citizen_auth_storage, azurerm_private_endpoint.queue]
   name                 = "session-notifications-init-recovery"
