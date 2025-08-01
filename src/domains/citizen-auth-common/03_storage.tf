@@ -362,25 +362,6 @@ resource "azurerm_storage_container" "data_factory_exports" {
 
 # Diagnostic settings
 
-resource "azurerm_monitor_diagnostic_setting" "io_citizen_auth_storage_diagnostic_setting" {
-  name                       = "${module.io_citizen_auth_storage.name}-ds-01"
-  target_resource_id         = "${module.io_citizen_auth_storage.id}/queueServices/default"
-  log_analytics_workspace_id = data.azurerm_application_insights.application_insights.workspace_id
-
-  enabled_log {
-    category = "StorageWrite"
-  }
-
-  metric {
-    category = "Capacity"
-    enabled  = false
-  }
-  metric {
-    category = "Transaction"
-    enabled  = false
-  }
-}
-
 resource "azurerm_monitor_scheduled_query_rules_alert_v2" "expired_user_sessions_failure_alert_rule" {
   enabled             = true
   name                = "[CITIZEN-AUTH | ${module.io_citizen_auth_storage.name}] Failures on ${resource.azurerm_storage_queue.expired_user_sessions_poison.name} queue"
