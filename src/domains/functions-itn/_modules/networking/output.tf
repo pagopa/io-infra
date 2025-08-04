@@ -1,6 +1,8 @@
-output "services_snet" { #TODO this probably does not work should be an array maybe?
-  value = {
-    id   = module.services_snet.id
-    name = module.services_snet.name
-  }
+output "services_snet" {
+  value = [
+    for snet in module.services_snet : {
+      id   = snet.id
+      name = snet.name
+    }
+  ]
 }
