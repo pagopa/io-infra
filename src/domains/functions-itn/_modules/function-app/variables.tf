@@ -50,10 +50,10 @@ variable "tags" {
   }
 }
 
-variable "cidr_subnet_services" {
-  type        = list(string)
-  description = "Function services address space."
-}
+# variable "cidr_subnet_services" {
+#   type        = list(string)
+#   description = "Function services address space."
+# }
 
 variable "function_services_count" {
   type    = number
@@ -142,10 +142,10 @@ variable "service_api_url" {
   default     = "https://api-app.internal.io.pagopa.it/"
 }
 
-variable "service_subnet" {
-  type = object({
+variable "services_snet" {
+  type = list(object({
     id   = string
     name = string
-  })
-  description = "Subnet"
+  }))
+  description = "Lista di subnet"
 }

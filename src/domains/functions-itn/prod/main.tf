@@ -1,8 +1,8 @@
 module "function-app" {
-  source                              = "../_modules/function-app"
-  prefix                              = local.prefix
-  env_short                           = local.env_short
-  cidr_subnet_services                = local.cidr_subnet_services
+  source    = "../_modules/function-app"
+  prefix    = local.prefix
+  env_short = local.env_short
+  # cidr_subnet_services              = local.cidr_subnet_services
   function_services_kind              = local.function_services_kind
   function_services_sku_tier          = local.function_services_sku_tier
   function_services_sku_size          = local.function_services_sku_size
@@ -12,11 +12,8 @@ module "function-app" {
   vnet_common_name_itn                = local.vnet_common_name_itn
   common_resource_group_name_itn      = local.common_resource_group_name_itn
   project_itn                         = local.project_itn
-  service_subnet = {
-    id   = module.networking.services_snet.id # TODO check if correct i think it needs an array
-    name = module.networking.services_snet.name
-  }
-  tags = local.tags
+  services_snet                       = module.networking.services_snet
+  tags                                = local.tags
 }
 
 module "networking" {
