@@ -123,6 +123,10 @@ data "azurerm_subnet" "private_endpoints_subnet_itn" {
 #   resource_group_name = local.rg_common_name
 # }
 
+data "azurerm_resource_group" "weu-common" {
+  name = "${var.prefix}-${var.env_short}-rg-common"
+}
+
 ########################
 # MONITORING
 ########################
