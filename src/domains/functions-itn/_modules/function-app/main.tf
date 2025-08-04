@@ -16,7 +16,6 @@ module "function_services_dx" {
     env_short       = var.env_short
     location        = var.location_itn
     app_name        = "services"
-    domain          = "IO-COMMONS"
     instance_number = count.index + 1
   }
 
