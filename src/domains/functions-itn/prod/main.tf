@@ -16,6 +16,7 @@ module "function-app" {
     id   = module.networking.services_snet.id # TODO check if correct i think it needs an array
     name = module.networking.services_snet.name
   }
+  tags = local.tags
 }
 
 module "networking" {

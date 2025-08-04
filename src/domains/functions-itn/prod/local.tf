@@ -11,6 +11,14 @@ locals {
   rg_internal_name   = format("%s-rg-internal", local.project)
   rg_assets_cdn_name = format("%s-assets-cdn-rg", local.project)
 
+  tags = {
+    BusinessUnit = "App IO"
+    CreatedBy    = "Terraform"
+    Environment  = "Prod"
+    Source       = "https://github.com/pagopa/io-infra/blob/main/src/domains/functions"
+    CostCenter   = "TS000 - Tecnologia e Servizi"
+  }
+
   # Switch limit date for email opt out mode. This value should be used by functions that need to discriminate
   # how to check isInboxEnabled property on IO profiles, since we have to disable email notifications for default
   # for all profiles that have been updated before this date. This date should coincide with new IO App's release date
