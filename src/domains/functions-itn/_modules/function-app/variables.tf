@@ -50,11 +50,6 @@ variable "tags" {
   }
 }
 
-# variable "cidr_subnet_services" {
-#   type        = list(string)
-#   description = "Function services address space."
-# }
-
 variable "function_services_count" {
   type    = number
   default = 2

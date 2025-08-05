@@ -1,8 +1,7 @@
 module "function-app" {
-  source    = "../_modules/function-app"
-  prefix    = local.prefix
-  env_short = local.env_short
-  # cidr_subnet_services              = local.cidr_subnet_services
+  source                              = "../_modules/function-app"
+  prefix                              = local.prefix
+  env_short                           = local.env_short
   function_services_kind              = local.function_services_kind
   function_services_sku_tier          = local.function_services_sku_tier
   function_services_sku_size          = local.function_services_sku_size

@@ -84,44 +84,17 @@ data "azurerm_subnet" "azdoa_snet" {
   virtual_network_name = local.vnet_common_name
 }
 
-# data "azurerm_subnet" "function_eucovidcert_snet" {
-#   name                 = format("%s-eucovidcert-snet", local.project)
-#   resource_group_name  = local.rg_common_name
-#   virtual_network_name = local.vnet_common_name
-# }
-
 data "azurerm_subnet" "apim_itn_snet" {
   name                 = "io-p-itn-apim-snet-01"
   resource_group_name  = var.common_resource_group_name_itn
   virtual_network_name = var.vnet_common_name_itn
 }
 
-# data "azurerm_subnet" "private_endpoints_subnet" {
-#   name                 = "pendpoints"
-#   virtual_network_name = local.vnet_common_name
-#   resource_group_name  = local.rg_common_name
-# }
-
 data "azurerm_subnet" "private_endpoints_subnet_itn" {
   name                 = "io-p-itn-pep-snet-01"
   virtual_network_name = var.vnet_common_name_itn
   resource_group_name  = var.common_resource_group_name_itn
 }
-
-# data "azurerm_private_dns_zone" "privatelink_blob_core" {
-#   name                = "privatelink.blob.core.windows.net"
-#   resource_group_name = local.rg_common_name
-# }
-
-# data "azurerm_private_dns_zone" "privatelink_queue_core" {
-#   name                = "privatelink.queue.core.windows.net"
-#   resource_group_name = local.rg_common_name
-# }
-
-# data "azurerm_private_dns_zone" "privatelink_table_core" {
-#   name                = "privatelink.table.core.windows.net"
-#   resource_group_name = local.rg_common_name
-# }
 
 data "azurerm_resource_group" "weu-common" {
   name = "${var.prefix}-${var.env_short}-rg-common"

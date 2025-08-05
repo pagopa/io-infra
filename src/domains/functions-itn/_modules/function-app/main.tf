@@ -1,6 +1,6 @@
 resource "azurerm_resource_group" "services_rg" {
   count    = var.function_services_count
-  name     = format("%s-services-rg-%d", var.project_itn, count.index + 1) #TODO is itn convention correct ?
+  name     = format("%s-services-rg-%d", var.project_itn, count.index + 1)
   location = var.location_itn
 
   tags = var.tags
@@ -26,7 +26,6 @@ module "function_services_dx" {
     resource_group_name = var.common_resource_group_name_itn
   }
 
-  # subnet_cidr                        = var.cidr_subnet_services[count.index]
   subnet_id                            = var.services_snet[count.index].id
   health_check_path                    = "/api/info"
   subnet_pep_id                        = data.azurerm_subnet.private_endpoints_subnet_itn.id
@@ -71,25 +70,3 @@ module "function_services_dx" {
 
   tags = var.tags
 }
-
-# resource "azurerm_private_endpoint" "function_services" {
-#   count               = var.function_services_count
-#   name                = format("%s-services-pep-%d", var.project_itn, count.index + 1)
-#   location            = var.location_itn
-#   resource_group_name = azurerm_resource_group.services_rg[count.index].name
-#   subnet_id           = data.azurerm_subnet.private_endpoints_subnet_itn.id
-
-#   private_service_connection {
-#     name                           = format("%s-services-pep-%d", var.project_itn, count.index + 1)
-#     private_connection_resource_id = module.function_services_dx[count.index].id
-#     is_manual_connection           = false
-#     subresource_names              = ["sites"]
-#   }
-
-#   private_dns_zone_group {
-#     name                 = "private-dns-zone-group"
-#     private_dns_zone_ids = [] #TODO ?
-#   }
-
-#   tags = var.tags
-# }
