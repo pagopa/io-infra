@@ -11,3 +11,8 @@ module "db_subscription_cidrs_container" {
     max_throughput = var.function_services_subscription_cidrs_max_thoughput
   }
 }
+
+import {
+  to = module.containers.module.db_subscription_cidrs_container.azurerm_cosmosdb_sql_container.this
+  id = "/subscriptions/ec285037-c673-4f58-b594-d7c480da4e8b/resourceGroups/io-p-rg-internal/providers/Microsoft.DocumentDB/databaseAccounts/io-p-cosmos-api/sqlDatabases/db/containers/subscription-cidrs"
+}
