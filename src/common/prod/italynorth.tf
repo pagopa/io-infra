@@ -217,16 +217,8 @@ module "function_app_services" {
   vnet_common_name_itn                = local.function_services.vnet_common_name_itn
   common_resource_group_name_itn      = local.function_services.common_resource_group_name_itn
   project_itn                         = local.project_itn
-  services_snet                       = module.networking_services.services_snet
+  services_snet_cidr                  = local.function_services.cidr_subnet_services
   tags                                = local.tags
-}
-
-module "networking_services" {
-  source                         = "../_modules/function_services/networking"
-  vnet_common_name_itn           = local.function_services.vnet_common_name_itn
-  common_resource_group_name_itn = local.function_services.common_resource_group_name_itn
-  project_itn                    = local.project_itn
-  cidr_subnet_services           = local.function_services.cidr_subnet_services
 }
 
 module "containers_services" {

@@ -32,7 +32,6 @@
 | <a name="module_github_runner_itn"></a> [github\_runner\_itn](#module\_github\_runner\_itn) | ../_modules/github_runner | n/a |
 | <a name="module_global"></a> [global](#module\_global) | ../_modules/global | n/a |
 | <a name="module_monitoring_weu"></a> [monitoring\_weu](#module\_monitoring\_weu) | ../_modules/monitoring | n/a |
-| <a name="module_networking_services"></a> [networking\_services](#module\_networking\_services) | ../_modules/function_services/networking | n/a |
 | <a name="module_platform_api_gateway_apim_itn"></a> [platform\_api\_gateway\_apim\_itn](#module\_platform\_api\_gateway\_apim\_itn) | ../_modules/platform_api_gateway | n/a |
 | <a name="module_platform_service_bus_namespace_itn"></a> [platform\_service\_bus\_namespace\_itn](#module\_platform\_service\_bus\_namespace\_itn) | ../_modules/platform_service_bus | n/a |
 | <a name="module_private_endpoints"></a> [private\_endpoints](#module\_private\_endpoints) | ../_modules/private_endpoint | n/a |

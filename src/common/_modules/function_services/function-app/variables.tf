@@ -132,10 +132,7 @@ variable "service_api_url" {
   default     = "https://api-app.internal.io.pagopa.it/"
 }
 
-variable "services_snet" {
-  type = object({
-    id   = string
-    name = string
-  })
-  description = "Subnet"
+variable "services_snet_cidr" {
+  type        = string
+  description = "Services Subnet CIDR"
 }

@@ -17,7 +17,7 @@ module "function_services_dx" {
     resource_group_name = var.common_resource_group_name_itn
   }
 
-  subnet_id                            = var.services_snet.id
+  subnet_cidr                          = var.services_snet_cidr
   health_check_path                    = "/api/info"
   subnet_pep_id                        = data.azurerm_subnet.private_endpoints_subnet_itn.id
   private_dns_zone_resource_group_name = data.azurerm_resource_group.weu-common.name
