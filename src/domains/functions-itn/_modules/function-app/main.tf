@@ -14,7 +14,7 @@ module "function_services_dx" {
     env_short       = var.env_short
     location        = var.location_itn
     app_name        = "services"
-    instance_number = count.index + 1
+    instance_number = "01"
   }
 
   resource_group_name = azurerm_resource_group.services_rg.name
