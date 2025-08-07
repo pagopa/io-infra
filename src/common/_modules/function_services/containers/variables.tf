@@ -2,7 +2,11 @@ variable "cosmos_db_name" {
   type = string
 }
 
-variable "project" {
+variable "resource_group_name" {
+  type = string
+}
+
+variable "legacy_project" {
   type = string
 }
 

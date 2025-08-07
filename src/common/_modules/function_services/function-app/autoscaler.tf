@@ -1,6 +1,6 @@
 resource "azurerm_monitor_autoscale_setting" "function_services_autoscale" {
   name                = format("%s-autoscale", module.function_services_dx.function_app.function_app.name)
-  resource_group_name = azurerm_resource_group.services_rg.name
+  resource_group_name = data.azurerm_resource_group.services_itn_rg.name
   location            = var.location_itn
   target_resource_id  = module.function_services_dx.function_app.plan.id
 

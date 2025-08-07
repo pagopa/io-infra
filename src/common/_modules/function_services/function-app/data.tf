@@ -9,6 +9,10 @@ data "azurerm_key_vault" "io_com" {
   resource_group_name = format("%s-com-rg-01", var.project_itn)
 }
 
+data "azurerm_resource_group" "services_itn_rg" {
+  name = "${var.project_itn}-funcsvc-rg-01"
+}
+
 ########################
 # SECRETS
 ########################
@@ -78,11 +82,6 @@ data "azurerm_storage_account" "storage_api" {
 ########################
 # NETWORKING
 ########################
-data "azurerm_subnet" "azdoa_snet" {
-  name                 = "azure-devops"
-  resource_group_name  = local.rg_common_name
-  virtual_network_name = local.vnet_common_name
-}
 
 data "azurerm_subnet" "apim_itn_snet" {
   name                 = "io-p-itn-apim-snet-01"

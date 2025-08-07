@@ -1,8 +1,0 @@
-{
-  "function-app.function_services_dx": {
-    "hash": "d535a795c9fdb5c48f547ad104a0920f3d56312a8f96515f449b97d58021bb14",
-    "version": "2.0.1",
-    "name": "azure_function_app",
-    "source": "https://registry.terraform.io/modules/pagopa-dx/azure-function-app/azurerm/2.0.1"
-  }
-}
