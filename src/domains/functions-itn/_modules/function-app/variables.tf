@@ -50,11 +50,6 @@ variable "tags" {
   }
 }
 
-variable "function_services_count" {
-  type    = number
-  default = 2
-}
-
 variable "function_services_kind" {
   type        = string
   description = "App service plan kind"
@@ -138,9 +133,9 @@ variable "service_api_url" {
 }
 
 variable "services_snet" {
-  type = list(object({
+  type = object({
     id   = string
     name = string
-  }))
-  description = "Lista di subnet"
+  })
+  description = "Subnet"
 }

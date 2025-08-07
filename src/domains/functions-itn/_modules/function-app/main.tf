@@ -1,13 +1,11 @@
 resource "azurerm_resource_group" "services_rg" {
-  count    = var.function_services_count
-  name     = format("%s-services-rg-%d", var.project_itn, count.index + 1)
+  name     = format("%s-services-rg-%s", var.project_itn, "01")
   location = var.location_itn
 
   tags = var.tags
 }
 
 module "function_services_dx" {
-  count   = var.function_services_count
   source  = "pagopa-dx/azure-function-app/azurerm"
   version = "~> 2.0"
 
@@ -19,22 +17,20 @@ module "function_services_dx" {
     instance_number = count.index + 1
   }
 
-  resource_group_name = azurerm_resource_group.services_rg[count.index].name
+  resource_group_name = azurerm_resource_group.services_rg.name
 
   virtual_network = {
     name                = var.vnet_common_name_itn
     resource_group_name = var.common_resource_group_name_itn
   }
 
-  subnet_id                            = var.services_snet[count.index].id
+  subnet_id                            = var.services_snet.id
   health_check_path                    = "/api/info"
   subnet_pep_id                        = data.azurerm_subnet.private_endpoints_subnet_itn.id
   private_dns_zone_resource_group_name = data.azurerm_resource_group.weu-common.name
 
   app_settings = merge(
     local.function_services.app_settings_common,
-    count.index == 0 ? local.function_services.app_settings_1 : {},
-    count.index == 1 ? local.function_services.app_settings_2 : {},
     {
       # Disabled functions on slot - trigger, queue and timer
       # mark this configurations as slot settings

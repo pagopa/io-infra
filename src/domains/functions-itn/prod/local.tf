@@ -35,7 +35,7 @@ locals {
 
   service_api_url = "https://api-app.internal.io.pagopa.it/"
 
-  cidr_subnet_services                = ["10.20.33.0/26", "10.20.33.64/26"]
+  cidr_subnet_services                = ["10.20.33.0/26"]
   function_services_kind              = "Linux"
   function_services_sku_tier          = "PremiumV3"
   function_services_sku_size          = "P1v3"

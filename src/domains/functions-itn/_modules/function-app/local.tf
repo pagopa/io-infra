@@ -89,9 +89,5 @@ locals {
       SENDING_FUNC_API_URL                   = "https://${data.azurerm_linux_function_app.rf_func.default_hostname}"
 
     }
-    app_settings_1 = {
-    }
-    app_settings_2 = {
-    }
   }
 }
