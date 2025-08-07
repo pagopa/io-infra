@@ -6,7 +6,7 @@ module "function_services_dx" {
     prefix          = var.prefix
     env_short       = var.env_short
     location        = var.location_itn
-    app_name        = "services"
+    app_name        = "funcsvc"
     instance_number = "01"
   }
 
