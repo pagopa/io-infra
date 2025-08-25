@@ -12,8 +12,6 @@ locals {
   function_services = {
     app_settings_common = {
       FUNCTIONS_WORKER_RUNTIME       = "node"
-      WEBSITE_RUN_FROM_PACKAGE       = "1"
-      WEBSITE_DNS_SERVER             = "168.63.129.16"
       NODE_ENV                       = "production"
 
       // Keepalive fields are all optionals
