@@ -14,7 +14,6 @@ locals {
       FUNCTIONS_WORKER_RUNTIME       = "node"
       WEBSITE_RUN_FROM_PACKAGE       = "1"
       WEBSITE_DNS_SERVER             = "168.63.129.16"
-      FUNCTIONS_WORKER_PROCESS_COUNT = 4
       NODE_ENV                       = "production"
 
       // Keepalive fields are all optionals
