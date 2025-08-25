@@ -11,8 +11,8 @@ locals {
 locals {
   function_services = {
     app_settings_common = {
-      FUNCTIONS_WORKER_RUNTIME       = "node"
-      NODE_ENV                       = "production"
+      FUNCTIONS_WORKER_RUNTIME = "node"
+      NODE_ENV                 = "production"
 
       // Keepalive fields are all optionals
       FETCH_KEEPALIVE_ENABLED             = "true"
