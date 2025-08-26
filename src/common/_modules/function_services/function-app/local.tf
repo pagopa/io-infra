@@ -11,8 +11,7 @@ locals {
 locals {
   function_services = {
     app_settings_common = {
-      FUNCTIONS_WORKER_RUNTIME = "node"
-      NODE_ENV                 = "production"
+      NODE_ENV = "production"
 
       // Keepalive fields are all optionals
       FETCH_KEEPALIVE_ENABLED             = "true"
@@ -29,6 +28,8 @@ locals {
       NOTIFICATION_CREATED_WEBHOOK_QUEUE_NAME = "notification-created-webhook"
       MESSAGE_CONTAINER_NAME                  = "message-content"
       SUBSCRIPTIONS_FEED_TABLE                = "SubscriptionsFeedByDay"
+
+      INTERNAL_STORAGE_CONNECTION_STRING = module.services_storage_account.primary_connection_string
 
       COSMOSDB_NAME = "db"
       COSMOSDB_URI  = data.azurerm_cosmosdb_account.cosmos_api.endpoint
