@@ -30,6 +30,7 @@ locals {
       SUBSCRIPTIONS_FEED_TABLE                = "SubscriptionsFeedByDay"
 
       INTERNAL_STORAGE_CONNECTION_STRING = module.services_storage_account.primary_connection_string
+      APPINSIGHTS_INSTRUMENTATIONKEY     = data.azurerm_application_insights.application_insights.instrumentation_key
 
       COSMOSDB_NAME = "db"
       COSMOSDB_URI  = data.azurerm_cosmosdb_account.cosmos_api.endpoint
