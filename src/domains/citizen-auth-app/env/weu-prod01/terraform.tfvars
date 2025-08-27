@@ -47,7 +47,7 @@ function_public_autoscale_default = 10
 
 # Session manager
 cidr_subnet_session_manager     = ["10.0.149.0/26"]
-cidr_subnet_session_manager_bis = ["10.0.149.64/26"]
+cidr_subnet_session_manager_bis = ["10.0.150.0/26"]
 
 # DNS
 external_domain = "pagopa.it"
