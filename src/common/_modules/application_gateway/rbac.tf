@@ -51,7 +51,7 @@ module "app_gw_ioweb_kv" {
       name                = var.ioweb_kv.name
       resource_group_name = var.ioweb_kv.resource_group_name
       has_rbac_support    = true
-      description         = "Allow certificate read access to the Application Gateway identity on the IOWeb Key Vault"
+      description         = "Allow Application Gateway identity to read certificates from IO Web Key Vault"
       roles = {
         certificates = "reader"
       }
