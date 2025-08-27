@@ -144,10 +144,10 @@
     "source": "https://registry.terraform.io/modules/pagopa-dx/azure-role-assignments/azurerm/1.2.1"
   },
   "function_app_services.function_services_dx": {
-    "hash": "d535a795c9fdb5c48f547ad104a0920f3d56312a8f96515f449b97d58021bb14",
-    "version": "2.0.1",
+    "hash": "df3f3bc0271d19115b3430a732b96d5818173aa0a5be97986b0d614cbf6f74cc",
+    "version": "2.0.2",
     "name": "azure_function_app",
-    "source": "https://registry.terraform.io/modules/pagopa-dx/azure-function-app/azurerm/2.0.1"
+    "source": "https://registry.terraform.io/modules/pagopa-dx/azure-function-app/azurerm/2.0.2"
   },
   "function_app_services.services_storage_account": {
     "hash": "74bcea37fe35b2d95a2eb2b1e29c0f6ca3ffa8a5475c3e70bd42ef17fc17bd7e",
