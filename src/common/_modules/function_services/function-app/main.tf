@@ -32,7 +32,7 @@ module "function_services_dx" {
       "AzureWebJobs.OnFailedProcessMessage.Disabled" = "0"
       "AzureWebJobs.ProcessMessage.Disabled"         = "0"
       "AzureWebJobs.WebhookNotification.Disabled"    = "0"
-      "APPINSIGHTS_CLOUD_ROLE_NAME"                  = "${environment.prefix}-${environment.env_short}-${environment.location}-${environment.app_name}-func-${environment.instance_number}",
+      "APPINSIGHTS_CLOUD_ROLE_NAME"                  = "io-p-itn-funcsvc-func-01",
     }
   )
 
@@ -55,7 +55,7 @@ module "function_services_dx" {
       "AzureWebJobs.OnFailedProcessMessage.Disabled" = "1"
       "AzureWebJobs.ProcessMessage.Disabled"         = "1"
       "AzureWebJobs.WebhookNotification.Disabled"    = "1"
-      "APPINSIGHTS_CLOUD_ROLE_NAME"                  = "${environment.prefix}-${environment.env_short}-${environment.location}-${environment.app_name}-func-${environment.instance_number}-staging",
+      "APPINSIGHTS_CLOUD_ROLE_NAME"                  = "io-p-itn-funcsvc-func-01-staging",
     }
   )
 
