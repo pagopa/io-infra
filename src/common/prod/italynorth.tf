@@ -110,7 +110,6 @@ module "platform_api_gateway_apim_itn" {
   tags = local.tags
 }
 
-
 module "platform_service_bus_namespace_itn" {
   // private DNS zone dependency
   depends_on = [module.global]
@@ -160,6 +159,8 @@ module "application_gateway_itn" {
   prefix                = local.prefix
   resource_group_common = local.core.resource_groups.italynorth.common
 
+  subscription_id = data.azurerm_subscription.current.subscription_id
+
   datasources = {
     azurerm_client_config = data.azurerm_client_config.current
   }
@@ -200,6 +201,11 @@ module "application_gateway_itn" {
   alerts_enabled        = true
   deny_paths            = ["\\/admin\\/(.*)"]
   error_action_group_id = module.monitoring_weu.action_groups.error
+
+  ioweb_kv = {
+    name                = data.azurerm_key_vault.ioweb_kv.name
+    resource_group_name = data.azurerm_key_vault.ioweb_kv.resource_group_name
+  }
 
   tags = local.tags
 }
