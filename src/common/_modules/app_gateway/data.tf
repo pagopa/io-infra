@@ -78,7 +78,6 @@ data "azurerm_key_vault_certificate" "app_gw_api_web" {
   name         = var.certificates.api_web
   key_vault_id = data.azurerm_key_vault.ioweb_kv.id
 }
-###
 
 data "azurerm_key_vault_certificate" "app_gw_api_io_italia_it" {
   name         = var.certificates.api_io_italia_it

@@ -161,3 +161,9 @@ data "azurerm_subnet" "itn_auth_prof_async_func_snet" {
   resource_group_name  = local.core.networking.itn.vnet_common.resource_group_name
   virtual_network_name = local.core.networking.itn.vnet_common.name
 }
+
+# Key Vaults
+data "azurerm_key_vault" "ioweb_kv" {
+  name                = "${local.project_itn}-ioweb-kv-01"
+  resource_group_name = "${local.project_itn}-ioweb-rg-01"
+}
