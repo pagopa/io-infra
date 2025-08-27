@@ -165,5 +165,5 @@ data "azurerm_subnet" "itn_auth_prof_async_func_snet" {
 # Key Vaults
 data "azurerm_key_vault" "ioweb_kv" {
   name                = "${local.project_itn}-ioweb-kv-01"
-  resource_group_name = "${local.project_itn}-auth-main-rg-01"
+  resource_group_name = "${local.project_itn}-ioweb-rg-01"
 }
