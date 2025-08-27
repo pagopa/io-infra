@@ -32,10 +32,12 @@ module "function_services_dx" {
       "AzureWebJobs.OnFailedProcessMessage.Disabled" = "0"
       "AzureWebJobs.ProcessMessage.Disabled"         = "0"
       "AzureWebJobs.WebhookNotification.Disabled"    = "0"
+      "APPINSIGHTS_CLOUD_ROLE_NAME"                  = "${environment.prefix}-${environment.env_short}-${environment.location}-${environment.app_name}-func-${environment.instance_number}",
     }
   )
 
   sticky_app_setting_names = [
+    "APPINSIGHTS_CLOUD_ROLE_NAME",
     "AzureWebJobs.CreateNotification.Disabled",
     "AzureWebJobs.EmailNotification.Disabled",
     "AzureWebJobs.OnFailedProcessMessage.Disabled",
@@ -44,7 +46,8 @@ module "function_services_dx" {
   ]
 
   slot_app_settings = merge(
-    local.function_services.app_settings_common, {
+    local.function_services.app_settings_common,
+    {
       # Disabled functions on slot - trigger, queue and timer
       # mark this configurations as slot settings
       "AzureWebJobs.CreateNotification.Disabled"     = "1"
@@ -52,6 +55,7 @@ module "function_services_dx" {
       "AzureWebJobs.OnFailedProcessMessage.Disabled" = "1"
       "AzureWebJobs.ProcessMessage.Disabled"         = "1"
       "AzureWebJobs.WebhookNotification.Disabled"    = "1"
+      "APPINSIGHTS_CLOUD_ROLE_NAME"                  = "${environment.prefix}-${environment.env_short}-${environment.location}-${environment.app_name}-func-${environment.instance_number}-staging",
     }
   )
 
