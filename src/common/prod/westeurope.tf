@@ -324,6 +324,7 @@ module "application_gateway_weu" {
   error_action_group_id = module.monitoring_weu.action_groups.error
 
   ioweb_kv = {
+    id                  = data.azurerm_key_vault.ioweb_kv.id
     name                = data.azurerm_key_vault.ioweb_kv.name
     resource_group_name = data.azurerm_key_vault.ioweb_kv.resource_group_name
   }

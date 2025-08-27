@@ -138,6 +138,7 @@ variable "ioweb_kv" {
   type = object({
     name                = string
     resource_group_name = string
+    id                  = string
   })
   description = "IO-Web Key Vault used to store certificates"
 }
