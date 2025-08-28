@@ -8,14 +8,6 @@
                 </return-response>
             </when>
         </choose>
-        <choose>
-            <when condition="@(context.Request.Headers.GetValueOrDefault("environment", "false").Equals("services-fn-1"))">
-                <set-backend-service base-url="https://io-p-itn-funcsvc-func-01.azurewebsites.net/api/v1" />
-            </when>
-            <when condition="@(context.Request.Headers.GetValueOrDefault("environment", "false").Equals("services-fn-2"))">
-                <set-backend-service base-url="https://io-p-itn-funcsvc-func-01.azurewebsites.net/api/v1" />
-            </when>
-        </choose>
         <set-header name="x-functions-key" exists-action="override">
             <value>{{io-fn3-services-key}}</value>
         </set-header>
