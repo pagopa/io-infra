@@ -59,3 +59,29 @@ module "storage_accounts_itn" {
 
   tags = local.tags
 }
+
+module "key_vault_itn" {
+  source = "../_modules/key_vault"
+
+  project             = local.project_itn
+  location            = "italynorth"
+  resource_group_name = azurerm_resource_group.common_itn.name
+
+  tenant_id       = data.azurerm_client_config.current.tenant_id
+  subscription_id = data.azurerm_client_config.current.subscription_id
+
+  admins = [
+    data.azuread_group.platform_admins.object_id,
+    data.azuread_group.wallet_admins.object_id,
+    data.azuread_group.com_admins.object_id,
+    data.azuread_group.svc_admins.object_id,
+  ]
+
+  devs = [
+    data.azuread_group.wallet_devs.object_id,
+    data.azuread_group.com_devs.object_id,
+    data.azuread_group.svc_devs.object_id,
+  ]
+
+  tags = local.tags
+}

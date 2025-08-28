@@ -49,7 +49,7 @@ resource "azurerm_key_vault_access_policy" "kv_common_io_infra_cd" {
   object_id = var.io_infra_cd_managed_identity_principal_id
 
   key_permissions         = ["Get", "List"]
-  secret_permissions      = ["Get", "List", "Delete"]
+  secret_permissions      = ["Get", "List", "Delete", "Set"]
   certificate_permissions = ["Get", "List"]
 }
 
