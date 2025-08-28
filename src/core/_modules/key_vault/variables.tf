@@ -37,3 +37,8 @@ variable "subscription_id" {
   type        = string
   description = "Azure subscription ID"
 }
+
+variable "subnet_pep_id" {
+  type        = string
+  description = "Subnet ID for Private Endpoint"
+}

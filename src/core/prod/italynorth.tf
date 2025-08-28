@@ -70,6 +70,8 @@ module "key_vault_itn" {
   tenant_id       = data.azurerm_client_config.current.tenant_id
   subscription_id = data.azurerm_client_config.current.subscription_id
 
+  subnet_pep_id = module.networking_itn.pep_snet.id
+
   admins = [
     data.azuread_group.platform_admins.object_id,
     data.azuread_group.wallet_admins.object_id,
