@@ -7,6 +7,23 @@ name: IO Platform SSL certificate renewal
 on: 
   workflow_dispatch:
     inputs:
+      csr_common_name:
+        description: "CSR common name"
+        type: string
+        required: true
+      key_vault_name:
+        description: "Name of the Key Vault used to store the certificate"
+        type: string
+        required: true
+      key_vault_cert_name:
+        description: "Name to give to the stored certificated into the Key Vault"
+        type: string
+        required: true
+      certificate_expiration_time:
+        description: "Certificate expiration time in seconds"
+        type: string
+        required: true
+        default: "2592000"
       force_renew_cert:
         description: "Force the certificate renewal"
         type: boolean
@@ -18,12 +35,14 @@ on:
         required: true
         default: "3.12.8"
 
-
 jobs:
 
   renewalDecision:
 
     runs-on: ubuntu-24.04
+    defaults:
+      run:
+        shell: bash
     
     steps:
 
@@ -36,24 +55,24 @@ jobs:
 
       - name: Fetch and check certificate
         run: |
-                if [ ${{ inputs.force_renew_cert }} == "True" ]
+            if [ ${{ inputs.force_renew_cert }} == "True" ]
+              then
+                echo "${{ inputs.force_renew_cert }}"
+                echo "🔄 Parameter force_renew_cert is set to true"
+                exit 0
+              fi
+            if ! az keyvault certificate download --vault-name '${{ inputs.key_vault_name }}' -n '${{ inputs.key_vault_cert_name }}' -f certificate.pem >/dev/null
+              then
+                echo "require_new_certificate=true" >> $GITHUB_ENV"
+                echo "❌ The certificate was not found in the selected keyvault"
+                exit 1
+            else
+              if ! openssl x509 -inform pem -checkend '${{ inputs.certificate_expiration_time }}' -noout -in certificate.pem
                 then
-                  echo "${{ inputs.force_renew_cert }}"
-                  echo "🔄 Parameter force_renew_cert is set to true"
-                  exit 0
-                fi
-                if ! az keyvault certificate download --vault-name '$(KEY_VAULT_NAME)' -n '$(KEY_VAULT_CERT_NAME)' -f certificate.pem >/dev/null
-                then
+                  # certificate is expiring or is already expired
                   echo "require_new_certificate=true" >> $GITHUB_ENV"
-                  echo "❌ The certificate was not found in the selected keyvault"
-                  exit 0
-                else
-                  if ! openssl x509 -inform pem -checkend '$(CERT_NAME_EXPIRE_SECONDS)' -noout -in certificate.pem
-                  then
-                    # certificate is expiring or is already expired
-                    echo "require_new_certificate=true" >> $GITHUB_ENV"
-                  fi
                 fi
+              fi
 
       - name: Cleanup
         if: github.env.require_new_certificate == true
@@ -64,16 +83,26 @@ jobs:
     runs-on: ubuntu-24.04
     needs: renewalDecision
     if: github.env.require_new_certificate == true
+    defaults:
+      run:
+        shell: bash
 
     steps:
+
+      - name: Azure Login
+        uses: azure/login@6b2456866fc08b011acb422a92a4aa20e2c4de32 # v2.1.0
+        with:
+          client-id: ${{ secrets.ARM_CLIENT_ID }}
+          tenant-id: ${{ secrets.ARM_TENANT_ID }}
+          subscription-id: ${{ secrets.ARM_SUBSCRIPTION_ID }}
+
       - name: Setup Python
         uses: actions/setup-python@v5
         with:
           python-version: inputs.python_version
       
       - name: Setup Python requirements
-        run: |
-            pip3 install --require-hashes --requirement requirements-output.txt
+        run: pip3 install --require-hashes --requirement requirements-output.txt
       
      # - name: Run CSR Python script
             #inputs:
@@ -81,12 +110,13 @@ jobs:
               #scriptPath: generate_csr.py
               #arguments: --common-name $(csr_common_name) --out csr.der --rsa-key-size 2048
 
-      - name: LE authentication keys to file 
+      - name: LE authentication keys to file
+        env:
+          LE_PRIVATE_KEY_JSON: ${{ secrets.LE_PRIVATE_KEY_JSON }}
+          LE_REGR_JSON: ${{ secrets.LE_REGR_JSON }}
         run: |
-              targetType: "inline"
-              script: |
-                printf "%s\n" '$(LE_PRIVATE_KEY_JSON)' > private_key.json
-                printf "%s\n" '$(LE_REGR_JSON)' > regr.json
+            printf "%s\n" '$(LE_PRIVATE_KEY_JSON)' > private_key.json
+            printf "%s\n" '$(LE_REGR_JSON)' > regr.json
 
       - name: Request new certificate from LE
         #with:
@@ -103,19 +133,19 @@ jobs:
               #scriptType: bash
               #scriptLocation: inlineScript
         run: |
-                # by default the certificate_chain.pem.0 must be the selected certificate in case of no CN matches
-                mv certificate_chain.pem.0 certificate_chain.pem
-                # if we are not searching for a specific chain, exit early
-                if [[ -z "$(alternate_chain_cn)" ]]; then
-                  exit 0
-                fi
-                echo "🔍 Looking for $(alternate_chain_cn) root issuer..."
-                for file in certificate_chain.pem.*; do
-                  # assuming ordered PEMs in file
-                  root_issuer=$(while openssl x509 -inform pem -noout -issuer 2>/dev/null; do :; done < "$file" | tail -n 1)
-                  echo "🔍 The root issuer for $file is $root_issuer"
-                  # check if the grep result is positive or not
-                  if echo "$root_issuer" | sed 's/ *= */=/g' | grep '$(alternate_chain_cn)' 1>/dev/null
+            # by default the certificate_chain.pem.0 must be the selected certificate in case of no CN matches
+            mv certificate_chain.pem.0 certificate_chain.pem
+            # if we are not searching for a specific chain, exit early
+            if [[ -z "$(alternate_chain_cn)" ]]; then
+              exit 0
+            fi
+            echo "🔍 Looking for $(alternate_chain_cn) root issuer..."
+              for file in certificate_chain.pem.*; do
+                # assuming ordered PEMs in file
+                root_issuer=$(while openssl x509 -inform pem -noout -issuer 2>/dev/null; do :; done < "$file" | tail -n 1)
+                echo "🔍 The root issuer for $file is $root_issuer"
+                # check if the grep result is positive or not
+                if echo "$root_issuer" | sed 's/ *= */=/g' | grep '$(alternate_chain_cn)' 1>/dev/null
                   then
                     echo "✅ Found $(alternate_chain_cn) in $file!"
                     # print some debug info
@@ -125,8 +155,8 @@ jobs:
                     break
                   else
                     echo "⏭️ Skipping $file"
-                  fi
-                done
+                fi
+              done
                 
       - name: SelectCertificateDefault
             #condition: and(succeeded(), eq(variables.require_new_certificate, True), eq(variables['alternate_chain_cn'], ''))
@@ -135,8 +165,8 @@ jobs:
               #scriptType: bash
               #scriptLocation: inlineScript
         run: |
-                # by default the certificate_chain.pem.0 must be the selected certificate in case of no CN matches
-                mv certificate_chain.pem.0 certificate_chain.pem
+            # by default the certificate_chain.pem.0 must be the selected certificate in case of no CN matches
+            mv certificate_chain.pem.0 certificate_chain.pem
 
       - name: SaveCertificateInKeyVault
             #condition: and(succeeded(), eq(variables.require_new_certificate, True))
@@ -145,20 +175,20 @@ jobs:
               #scriptType: bash
               #scriptLocation: inlineScript
         run: |
-                echo "🚀 Creating pfx"
-                openssl pkcs12 -inkey csr.key -in certificate_chain.pem -export -passout pass: -nodes -out certificate_chain.pfx
-                echo "💾 Saving pfx in $(KEY_VAULT_NAME) with $(KEY_VAULT_CERT_NAME)"
-                az keyvault certificate import --vault-name '$(KEY_VAULT_NAME)' -n '$(KEY_VAULT_CERT_NAME)' --disabled false -f certificate_chain.pfx --password "" --tags Force=${{ parameters.force_renew_cert }} >/dev/null
+            echo "🚀 Creating pfx"
+            openssl pkcs12 -inkey csr.key -in certificate_chain.pem -export -passout pass: -nodes -out certificate_chain.pfx
+            echo "💾 Saving pfx in ${{ inputs.key_vault_name }} with ${{ inputs.key_vault_cert_name }}"
+            az keyvault certificate import --vault-name '${{ inputs.key_vault_name }}' -n '${{ inputs.key_vault_cert_name }}' --disabled false -f certificate_chain.pfx --password "" --tags Force=${{ inputs.force_renew_cert }} >/dev/null
 
       - name: CleanupEverything
             #condition: always()
             #inputs:
              # targetType: "inline"
         run: |
-                rm -f private_key.json
-                rm -f regr.json
-                rm -f csr.der
-                rm -f csr.key
-                rm -f certificate_chain.pem.*
-                rm -f certificate_chain.pem
-                rm -f certificate_chain.pfx
+            rm -f private_key.json
+            rm -f regr.json
+            rm -f csr.der
+            rm -f csr.key
+            rm -f certificate_chain.pem.*
+            rm -f certificate_chain.pem
+            rm -f certificate_chain.pfx
