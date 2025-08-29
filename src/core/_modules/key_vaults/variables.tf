@@ -18,6 +18,11 @@ variable "resource_group_name" {
   description = "Resource group where create resources"
 }
 
+variable "resource_group_itn" {
+  type        = string
+  description = "Resource group where create common resources in Italy North"
+}
+
 variable "tags" {
   type        = map(any)
   description = "Resource tags"
@@ -34,79 +39,39 @@ variable "tenant_id" {
   description = "Azure tenant id"
 }
 
-variable "azure_adgroup_platform_admins_object_id" {
-  type        = string
-  description = "Object Id of the Entra group for subscription admins"
+variable "admins" {
+  type        = set(string)
+  description = "List of Azure AD group object IDs for Key Vault admins"
 }
 
-variable "azure_adgroup_wallet_admins_object_id" {
-  type        = string
-  description = "Object Id of the Entra group for subscription admins"
+variable "devs" {
+  type        = set(string)
+  description = "List of Azure AD group object IDs for Key Vault developers"
 }
 
-variable "azure_adgroup_wallet_devs_object_id" {
-  type        = string
-  description = "Object Id of the Entra group for subscription admins"
+variable "ci" {
+  type        = set(string)
+  description = "List of Managed Identity principal IDs for CI"
 }
 
-variable "azure_adgroup_com_admins_object_id" {
-  type        = string
-  description = "Object Id of the Entra group for subscription admins"
+variable "cd" {
+  type        = set(string)
+  description = "List of Managed Identity principal IDs for CD"
 }
 
-variable "azure_adgroup_com_devs_object_id" {
+variable "subscription_id" {
   type        = string
-  description = "Object Id of the Entra group for subscription admins"
+  description = "Azure subscription ID"
 }
 
-variable "azure_adgroup_svc_admins_object_id" {
+variable "subnet_pep_id" {
   type        = string
-  description = "Object Id of the Entra group for subscription admins"
+  description = "Subnet ID for Private Endpoint"
 }
 
-variable "azure_adgroup_svc_devs_object_id" {
+variable "private_dns_zone_id" {
   type        = string
-  description = "Object Id of the Entra group for subscription admins"
-}
-
-variable "azure_adgroup_auth_admins_object_id" {
-  type        = string
-  description = "Object Id of the Entra group for subscription admins"
-}
-
-variable "azure_adgroup_auth_devs_object_id" {
-  type        = string
-  description = "Object Id of the Entra group for subscription admins"
-}
-
-variable "azure_adgroup_bonus_admins_object_id" {
-  type        = string
-  description = "Object Id of the Entra group for subscription admins"
-}
-
-variable "azure_adgroup_bonus_devs_object_id" {
-  type        = string
-  description = "Object Id of the Entra group for subscription admins"
-}
-
-variable "azure_adgroup_admin_object_id" {
-  type        = string
-  description = "Object Id of the Entra group for subscription admins"
-}
-
-variable "azure_adgroup_developers_object_id" {
-  type        = string
-  description = "Object Id of the Entra group for subscription developers"
-}
-
-variable "io_infra_ci_managed_identity_principal_id" {
-  type        = string
-  description = ""
-}
-
-variable "io_infra_cd_managed_identity_principal_id" {
-  type        = string
-  description = ""
+  description = "ID of the Private DNS Zone for Key Vault"
 }
 
 variable "platform_iac_sp_object_id" {
