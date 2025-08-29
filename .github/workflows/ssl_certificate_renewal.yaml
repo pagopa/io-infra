@@ -5,7 +5,6 @@ name: IO Platform SSL certificate renewal
 #    - cron: 0 0 * * *
 
 on:
-  pull_request: # To be removed 
   workflow_dispatch:
     inputs:
       csr_common_name:
