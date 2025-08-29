@@ -57,17 +57,26 @@ locals {
     IO_WALLET_UAT_API_KEY       = data.azurerm_key_vault_secret.app_backend_IO_WALLET_UAT_API_KEY.value
 
     // EXPOSED API
-    API_BASE_PATH                     = "/api/v1"
-    CGN_API_BASE_PATH                 = "/api/v1/cgn"
-    CGN_OPERATOR_SEARCH_API_BASE_PATH = "/api/v1/cgn/operator-search"
-    EUCOVIDCERT_API_BASE_PATH         = "/api/v1/eucovidcert"
-    IO_SIGN_API_BASE_PATH             = "/api/v1/sign"
-    IO_FIMS_API_BASE_PATH             = "/api/v1/fims"
-    LOLLIPOP_API_BASE_PATH            = "/api/v1"
-    TRIAL_SYSTEM_API_BASE_PATH        = "/api/v1"
-    TRIAL_SYSTEM_APIM_BASE_PATH       = "/manage/api/v1"
-    IO_WALLET_API_BASE_PATH           = "/api/v1/wallet"
-    IO_WALLET_UAT_API_BASE_PATH       = "/api/v1/wallet/uat"
+    API_BASE_PATH                           = "/api/v1"
+    API_BASE_PATH_PROXY                     = "/api/platform/v1"
+    CGN_API_BASE_PATH                       = "/api/v1/cgn"
+    CGN_API_BASE_PATH_PROXY                 = "/api/cgn/v1/cgn"
+    CGN_OPERATOR_SEARCH_API_BASE_PATH       = "/api/v1/cgn/operator-search"
+    CGN_OPERATOR_SEARCH_API_BASE_PATH_PROXY = "/api/cgn/v1/cgn/operator-search"
+    IO_SIGN_API_BASE_PATH                   = "/api/v1/sign"
+    IO_SIGN_API_BASE_PATH_PROXY             = "/api/sign/v1/sign"
+    IO_FIMS_API_BASE_PATH                   = "/api/v1/fims"
+    IO_FIMS_API_BASE_PATH_PROXY             = "/api/fims/v1/fims"
+    LOLLIPOP_API_BASE_PATH                  = "/first-lollipop"
+    LOLLIPOP_API_BASE_PATH_PROXY            = "/api/first-lollipop/v1"
+    TRIAL_SYSTEM_API_BASE_PATH              = "/api/v1"
+    TRIAL_SYSTEM_API_BASE_PATH_PROXY        = "/api/trial-system/v1"
+    TRIAL_SYSTEM_APIM_BASE_PATH             = "/manage/api/v1"
+    TRIAL_SYSTEM_APIM_BASE_PATH_PROXY       = "/manage/api/v1"
+    IO_WALLET_API_BASE_PATH                 = "/api/v1/wallet"
+    IO_WALLET_API_BASE_PATH_PROXY           = "/api/wallet/v1/wallet"
+    IO_WALLET_UAT_API_BASE_PATH             = "/api/v1/wallet/uat"
+    IO_WALLET_UAT_API_BASE_PATH_PROXY       = "/api/wallet/v1/wallet/uat"
 
     // REDIS
     REDIS_URL      = var.redis_common.hostname
