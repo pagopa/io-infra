@@ -56,7 +56,7 @@ jobs:
   renewalDecision:
 
     runs-on: self-hosted
-    environment: prod-ci
+    environment: dev-ci
     permissions:
        id-token: write
     defaults:
