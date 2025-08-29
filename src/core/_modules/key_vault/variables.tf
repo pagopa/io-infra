@@ -42,3 +42,8 @@ variable "subnet_pep_id" {
   type        = string
   description = "Subnet ID for Private Endpoint"
 }
+
+variable "private_dns_zone_id" {
+  type        = string
+  description = "ID of the Private DNS Zone for Key Vault"
+}
