@@ -6,10 +6,6 @@ data "azuread_group" "admin" {
   display_name = "${local.prefix}-${local.env_short}-adgroup-admin"
 }
 
-data "azuread_group" "developers" {
-  display_name = "${local.prefix}-${local.env_short}-adgroup-developers"
-}
-
 data "azuread_group" "platform_admins" {
   display_name = "${local.prefix}-${local.env_short}-adgroup-platform-admins"
 }
