@@ -4,7 +4,8 @@ name: IO Platform SSL certificate renewal
 #  schedule:
 #    - cron: 0 0 * * *
 
-on: 
+on:
+  pull_request: # To be removed 
   workflow_dispatch:
     inputs:
       csr_common_name:
@@ -162,7 +163,7 @@ jobs:
               #azureSubscription: $(KEY_VAULT_SERVICE_CONNECTION)
               #scriptType: bash
               #scriptLocation: inlineScript
-              
+
         run: |
             # by default the certificate_chain.pem.0 must be the selected certificate in case of no CN matches
             mv certificate_chain.pem.0 certificate_chain.pem
