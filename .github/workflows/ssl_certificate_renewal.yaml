@@ -55,7 +55,7 @@ jobs:
 
   renewalDecision:
 
-    runs-on: self-hosted
+    runs-on: ubuntu-24.04
     environment: dev-cd
     permissions:
        id-token: write
@@ -99,7 +99,7 @@ jobs:
 #
 #  getCertificateFromLE:#
 #
-#    runs-on: self-hosted
+#    runs-on: ubuntu-24.04
 #    environment: dev-ci
 #    needs: renewalDecision
 #    if: github.env.require_new_certificate == true
