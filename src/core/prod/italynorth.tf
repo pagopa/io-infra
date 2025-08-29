@@ -71,7 +71,7 @@ module "key_vault_itn" {
   subscription_id = data.azurerm_client_config.current.subscription_id
 
   subnet_pep_id       = module.networking_itn.pep_snet.id
-  private_dns_zone_id = module.dns.key_vault_private_dns_zone.id
+  private_dns_zone_id = data.azurerm_private_dns_zone.key_vault.id
 
   admins = [
     data.azuread_group.platform_admins.object_id,

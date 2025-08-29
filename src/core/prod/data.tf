@@ -67,3 +67,11 @@ data "azurerm_user_assigned_identity" "managed_identity_io_infra_cd" {
   name                = "${local.prefix}-${local.env_short}-infra-github-cd-identity"
   resource_group_name = "${local.prefix}-${local.env_short}-identity-rg"
 }
+
+# TODO: important - this should be removed as it creates a dependency to the common module
+# to fix this, we need to move all private dns zones from common to core module
+
+data "azurerm_private_dns_zone" "key_vault" {
+  name                = "privatelink.vaultcore.azure.net"
+  resource_group_name = "${local.prefix}-${local.env_short}-rg-common"
+}
