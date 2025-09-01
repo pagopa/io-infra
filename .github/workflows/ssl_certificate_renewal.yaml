@@ -77,7 +77,7 @@ jobs:
             fi
             if ! az keyvault certificate download --vault-name '${{ inputs.key_vault_name }}' -n '${{ inputs.key_vault_cert_name }}' -f certificate.pem >/dev/null
               then
-                echo "❌ The certificate was not found in the selected Key Vault"
+                echo "❌ The certificate was not found in the selected Key Vault, proceeding to request it from LE"
                 echo "require_new_certificate=true" >> $GITHUB_OUTPUT
             else
               if ! openssl x509 -inform pem -checkend '${{ env.certificate_expiration_time }}' -noout -in certificate.pem
