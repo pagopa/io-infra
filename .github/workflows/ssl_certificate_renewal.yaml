@@ -72,7 +72,7 @@ jobs:
         #  LE_PRIVATE_KEY_JSON: ${{ secrets.LE_PRIVATE_KEY_JSON }}
         #  LE_REGR_JSON: ${{ secrets.LE_REGR_JSON }}
         run: |
-            az keyvault secret list --vault-name '${{ inputs.key_vault_name }}'
+            #az keyvault secret list --vault-name '${{ inputs.key_vault_name }}'
             az keyvault secret download --vault-name '${{ inputs.key_vault_name }}' --name LE_PRIVATE_KEY_JSON --file private_key.json
             az keyvault secret download --vault-name '${{ inputs.key_vault_name }}' --name LE_REGR_JSON --file regr.json
             #printf "%s\n" '$(LE_PRIVATE_KEY_JSON)' > private_key.json
