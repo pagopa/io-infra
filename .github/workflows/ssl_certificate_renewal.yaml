@@ -80,12 +80,13 @@ jobs:
               if ! openssl x509 -inform pem -checkend '${{ env.certificate_expiration_time }}' -noout -in certificate.pem
                 then
                   # certificate is expiring or is already expired
+                  echo "do_cleanup=true" >> $GITHUB_ENV
                   echo "require_new_certificate=true" >> $GITHUB_ENV
               fi
             fi
 
       - name: Cleanup
-        if: env.require_new_certificate == 'true'
+        if: env.do_cleanup == 'true'
         run: rm -f certificate.pem
 
   getCertificateFromLE:
