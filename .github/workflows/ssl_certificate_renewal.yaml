@@ -68,7 +68,7 @@ jobs:
           subscription-id: ${{ secrets.ARM_SUBSCRIPTION_ID }}
 
       - name: Fetch and check certificate
-        id: fetch_and_check
+        id: fetch_and_check # id is mandatory to enable variable output to another job
         run: |
             if [ ${{ inputs.force_renew_cert }} == "true" ]
               then
@@ -187,7 +187,7 @@ jobs:
         run: |
             echo "🚀 Creating pfx"
             openssl pkcs12 -inkey csr.key -in certificate_chain.pem -export -passout pass: -nodes -out certificate_chain.pfx
-            echo "💾 Saving pfx in ${{ inputs.key_vault_name }} with ${{ inputs.key_vault_cert_name }}"
+            echo "💾 Saving pfx in ${{ inputs.key_vault_name }} with name ${{ inputs.key_vault_cert_name }}"
             az keyvault certificate import --vault-name '${{ inputs.key_vault_name }}' -n '${{ inputs.key_vault_cert_name }}' --disabled false -f certificate_chain.pfx --password "" --tags Force=${{ inputs.force_renew_cert }} >/dev/null
 
       - name: Cleanup every file generated in the workspace
