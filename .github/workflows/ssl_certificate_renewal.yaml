@@ -71,13 +71,11 @@ jobs:
               then
                 echo "${{ inputs.force_renew_cert }}"
                 echo "🔄 Parameter force_renew_cert is set to True"
-                exit 0
             fi
             if ! az keyvault certificate download --vault-name '${{ inputs.key_vault_name }}' -n '${{ inputs.key_vault_cert_name }}' -f certificate.pem >/dev/null
               then
                 echo "require_new_certificate=true" >> $GITHUB_ENV"
                 echo "❌ The certificate was not found in the selected keyvault"
-                exit 1
             else
               if ! openssl x509 -inform pem -checkend '${{ env.certificate_expiration_time }}' -noout -in certificate.pem
                 then
