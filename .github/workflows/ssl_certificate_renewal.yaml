@@ -107,6 +107,7 @@ jobs:
         working-directory: .github
     env:
       python_version: "3.12.8" # Python version to use to run all the scripts
+      le_azure_identity_type: MANAGED_IDENTITY # Type of azure identity to be used from the Python ACME script
 
     steps:
 
@@ -120,7 +121,7 @@ jobs:
             tenant-id: ${{ secrets.ARM_TENANT_ID }}
             subscription-id: ${{ secrets.ARM_SUBSCRIPTION_ID }}
 
-      - name: Setup Python
+      - name: Setup Python version
         uses: actions/setup-python@v5
         with:
           python-version: ${{ env.python_version }}
@@ -152,7 +153,7 @@ jobs:
           AZURE_SUBSCRIPTION_ID: "${{ inputs.azure_subscription_id }}"
           AZURE_DNS_ZONE_RESOURCE_GROUP: "${{ inputs.azure_dns_zone_resource_group }}"
           AZURE_DNS_ZONE: "${{ inputs.azure_dns_zone }}"
-          LE_AZURE_IDENTITY_TYPE: MANAGED_IDENTITY
+          AZURE_IDENTITY_TYPE: "${{ env.le_azure_identity_type }}"
 
         #with:
         #   AZURE_SUBSCRIPTION_ID: $(LE_AZURE_SUBSCRIPTION_ID)
