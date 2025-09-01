@@ -72,8 +72,8 @@ jobs:
         run: |
             if [ ${{ inputs.force_renew_cert }} == "true" ]
               then
-                echo "${{ inputs.force_renew_cert }}"
                 echo "🔄 Parameter force_renew_cert is set to True"
+                echo "require_new_certificate=true" >> $GITHUB_OUTPUT
             fi
             if ! az keyvault certificate download --vault-name '${{ inputs.key_vault_name }}' -n '${{ inputs.key_vault_cert_name }}' -f certificate.pem >/dev/null
               then
@@ -86,6 +86,11 @@ jobs:
                   echo "do_cleanup=true" >> $GITHUB_ENV
                   echo "require_new_certificate=true" >> $GITHUB_OUTPUT
                 else
+                  if [ ${{ inputs.force_renew_cert }} == "true" ]
+                    then
+                      echo "❗ The certificate is not expiring, but we are going to renew it anyway since force_renew_cert is set to true"
+                      echo "do_cleanup=true" >> $GITHUB_ENV
+                  fi
                   echo "✅ The certificate is not expiring, cleaning up and exiting"
                   echo "do_cleanup=true" >> $GITHUB_ENV
               fi
