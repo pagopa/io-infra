@@ -145,7 +145,7 @@ jobs:
             printf "%s\n" '$(LE_PRIVATE_KEY_JSON)' > private_key.json
             printf "%s\n" '$(LE_REGR_JSON)' > regr.json
 
-      - name: Request new certificate from LE
+      - name: Run the python script to request the new certificate from LE
         env:
           AZURE_SUBSCRIPTION_ID: "${{ inputs.azure_subscription_id }}"
           AZURE_DNS_ZONE_RESOURCE_GROUP: "${{ inputs.azure_dns_zone_resource_group }}"
@@ -157,7 +157,7 @@ jobs:
           # inputs:
             #  azureSubscription: "$(LE_SERVICE_CONNECTION)"
 
-        run: "python3 acme_tiny.py --private-key private_key.json --regr regr.json --csr csr.der --out certificate_chain.pem"
+        run: "python3 workflows_additional_files/ssl_certificate_renewal_acme_tiny.py --private-key private_key.json --regr regr.json --csr csr.der --out certificate_chain.pem"
 
       - name: Select Certificate
 
