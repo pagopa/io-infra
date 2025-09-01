@@ -67,6 +67,17 @@ jobs:
           tenant-id: ${{ secrets.ARM_TENANT_ID }}
           subscription-id: ${{ secrets.ARM_SUBSCRIPTION_ID }}
 
+      - name: Fetch LE authentication keys from Key Vault
+        #env:
+        #  LE_PRIVATE_KEY_JSON: ${{ secrets.LE_PRIVATE_KEY_JSON }}
+        #  LE_REGR_JSON: ${{ secrets.LE_REGR_JSON }}
+        run: |
+            az keyvault secret list
+            az keyvault secret download --name LE_PRIVATE_KEY_JSON --file private_key.json
+            az keyvault secret download --name LE_REGR_JSON --file regr.json
+            #printf "%s\n" '$(LE_PRIVATE_KEY_JSON)' > private_key.json
+            #printf "%s\n" '$(LE_REGR_JSON)' > regr.json
+
       - name: Fetch and check certificate
         id: fetch_and_check
         run: |
@@ -137,13 +148,16 @@ jobs:
       - name: Run the python script to generate the CSR
         run: python3 workflows_additional_files/ssl_certificate_renewal_generate_csr.py --common-name ${{ inputs.csr_common_name }} --out csr.der --rsa-key-size 2048
 
-      - name: LE authentication keys to file
-        env:
-          LE_PRIVATE_KEY_JSON: ${{ secrets.LE_PRIVATE_KEY_JSON }}
-          LE_REGR_JSON: ${{ secrets.LE_REGR_JSON }}
+      - name: Fetch LE authentication keys from Key Vault
+        #env:
+        #  LE_PRIVATE_KEY_JSON: ${{ secrets.LE_PRIVATE_KEY_JSON }}
+        #  LE_REGR_JSON: ${{ secrets.LE_REGR_JSON }}
         run: |
-            printf "%s\n" '$(LE_PRIVATE_KEY_JSON)' > private_key.json
-            printf "%s\n" '$(LE_REGR_JSON)' > regr.json
+            az keyvault secret list
+            az keyvault secret download --name LE_PRIVATE_KEY_JSON --file private_key.json
+            az keyvault secret download --name LE_REGR_JSON --file regr.json
+            #printf "%s\n" '$(LE_PRIVATE_KEY_JSON)' > private_key.json
+            #printf "%s\n" '$(LE_REGR_JSON)' > regr.json
 
       - name: Run the python script to request the new certificate from LE
         env:
