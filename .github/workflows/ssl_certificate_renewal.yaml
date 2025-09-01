@@ -99,7 +99,7 @@ jobs:
     environment: dev-ci
     permissions:
        id-token: write
-    needs: renewalDecision
+    #needs: renewalDecision
     #if: needs.renewalDecision.outputs.require_new_certificate == 'true'
     defaults:
       run:
