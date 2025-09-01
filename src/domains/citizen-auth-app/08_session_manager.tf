@@ -290,7 +290,6 @@ module "session_manager_weu" {
   allowed_subnets = [
     data.azurerm_subnet.appgateway_snet.id,
     data.azurerm_subnet.apim_itn_snet.id,
-    // TODO: add proxy subnet
   ]
   allowed_ips = []
 
@@ -341,11 +340,114 @@ module "session_manager_weu_staging" {
     data.azurerm_subnet.self_hosted_runner_snet.id,
     data.azurerm_subnet.appgateway_snet.id,
     data.azurerm_subnet.apim_itn_snet.id,
-    // TODO: add proxy subnet
   ]
   allowed_ips = []
 
   subnet_id                     = module.session_manager_snet.id
+  vnet_integration              = true
+  public_network_access_enabled = false
+
+  tags = var.tags
+}
+
+module "session_manager_weu_bis" {
+  source = "github.com/pagopa/terraform-azurerm-v3//app_service?ref=v8.28.1"
+
+  # App service plan
+  plan_type              = "internal"
+  plan_name              = format("%s-session-manager-asp-04", local.common_project)
+  zone_balancing_enabled = true
+  sku_name               = var.session_manager_plan_sku_name
+
+  # App service
+  name                = "${local.app_name_weu}-04"
+  resource_group_name = data.azurerm_resource_group.session_manager_rg_weu.name
+  location            = var.location
+
+  always_on    = true
+  node_version = "20-lts"
+  # NOTE:
+  # 1. index.js file is generated from the deploy pipeline
+  # 2. the linux container for app services already has pm2 installed
+  #    (refer to https://learn.microsoft.com/en-us/azure/app-service/configure-language-nodejs?pivots=platform-linux#run-with-pm2)
+  app_command_line             = "pm2 start index.js -i max --no-daemon"
+  health_check_path            = "/healthcheck"
+  health_check_maxpingfailures = 2
+
+  auto_heal_enabled = true
+  auto_heal_settings = {
+    startup_time           = "00:05:00"
+    slow_requests_count    = 50
+    slow_requests_interval = "00:01:00"
+    slow_requests_time     = "00:00:10"
+  }
+
+  app_settings = merge(
+    local.app_settings_common,
+    {
+      APPINSIGHTS_CLOUD_ROLE_NAME = "${local.app_name_weu}-04"
+    }
+  )
+  sticky_settings = concat(["APPINSIGHTS_CLOUD_ROLE_NAME"])
+
+
+  allowed_subnets = [
+    data.azurerm_subnet.appgateway_snet.id,
+    data.azurerm_subnet.apim_itn_snet.id,
+  ]
+  allowed_ips = []
+
+  subnet_id                     = module.session_manager_bis_snet.id
+  vnet_integration              = true
+  public_network_access_enabled = false
+
+  tags = var.tags
+}
+
+## staging slot
+module "session_manager_weu_bis_staging" {
+  source = "github.com/pagopa/terraform-azurerm-v3//app_service_slot?ref=v8.28.1"
+
+  app_service_id   = module.session_manager_weu_bis.id
+  app_service_name = module.session_manager_weu_bis.name
+
+  name                = "staging"
+  resource_group_name = data.azurerm_resource_group.session_manager_rg_weu.name
+  location            = var.location
+
+  always_on    = true
+  node_version = "20-lts"
+  # NOTE:
+  # 1. index.js file is generated from the deploy pipeline
+  # 2. the linux container for app services already has pm2 installed
+  #    (refer to https://learn.microsoft.com/en-us/azure/app-service/configure-language-nodejs?pivots=platform-linux#run-with-pm2)
+  app_command_line  = "pm2 start index.js -i max --no-daemon"
+  health_check_path = "/healthcheck"
+
+  auto_heal_enabled = true
+  auto_heal_settings = {
+    startup_time           = "00:05:00"
+    slow_requests_count    = 50
+    slow_requests_interval = "00:01:00"
+    slow_requests_time     = "00:00:10"
+  }
+
+  app_settings = merge(
+    local.app_settings_common,
+    {
+      APPINSIGHTS_CLOUD_ROLE_NAME = "${module.session_manager_weu_bis.name}-staging"
+    }
+  )
+
+  allowed_subnets = [
+    # self hosted runners subnet
+    data.azurerm_subnet.self_hosted_runner_snet.id,
+    data.azurerm_subnet.appgateway_snet.id,
+    data.azurerm_subnet.apim_itn_snet.id,
+  ]
+  allowed_ips = []
+
+  subnet_id                     = module.session_manager_bis_snet.id
   vnet_integration              = true
   public_network_access_enabled = false
 
@@ -358,6 +460,25 @@ module "pub_session_manager_staging" {
   version = "~>1.0"
 
   principal_id    = module.session_manager_weu_staging.principal_id
+  subscription_id = data.azurerm_subscription.current.subscription_id
+
+  service_bus = [
+    {
+      namespace_name      = data.azurerm_servicebus_namespace.platform_service_bus_namespace.name
+      resource_group_name = data.azurerm_servicebus_namespace.platform_service_bus_namespace.resource_group_name
+      role                = "writer"
+      description         = "This role allows managing the given topic"
+      topic_names         = [local.auth_sessions_topic_name]
+    }
+  ]
+}
+
+// Staging permissions over SB session topic
+module "pub_session_manager_bis_staging" {
+  source  = "pagopa-dx/azure-role-assignments/azurerm"
+  version = "~>1.0"
+
+  principal_id    = module.session_manager_weu_bis_staging.principal_id
   subscription_id = data.azurerm_subscription.current.subscription_id
 
   service_bus = [
