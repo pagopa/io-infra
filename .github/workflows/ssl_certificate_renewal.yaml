@@ -43,54 +43,54 @@ on:
 
 jobs:
 
-  # renewalDecision:
+  renewalDecision:
 
-  #   name: Certificate renewal decision
-  #   runs-on: ubuntu-24.04
-  #   environment: dev-ci
-  #   permissions:
-  #      id-token: write
-  #   defaults:
-  #     run:
-  #       shell: bash
-  #   env:
-  #     certificate_expiration_time: "2592000" # Certificate expiration time in seconds, default to 30 days
-  #   outputs:
-  #     require_new_certificate: ${{ steps.fetch_and_check.outputs.require_new_certificate }}
+    name: Certificate renewal decision
+    runs-on: ubuntu-24.04
+    environment: dev-ci
+    permissions:
+       id-token: write
+    defaults:
+      run:
+        shell: bash
+    env:
+      certificate_expiration_time: "2592000" # Certificate expiration time in seconds, default to 30 days
+    outputs:
+      require_new_certificate: ${{ steps.fetch_and_check.outputs.require_new_certificate }}
 
-  #   steps:
+    steps:
 
-  #     - name: Azure Login
-  #       uses: azure/login@6b2456866fc08b011acb422a92a4aa20e2c4de32 # v2.1.0
-  #       with:
-  #         client-id: ${{ secrets.ARM_CLIENT_ID }}
-  #         tenant-id: ${{ secrets.ARM_TENANT_ID }}
-  #         subscription-id: ${{ secrets.ARM_SUBSCRIPTION_ID }}
+      - name: Azure Login
+        uses: azure/login@6b2456866fc08b011acb422a92a4aa20e2c4de32 # v2.1.0
+        with:
+          client-id: ${{ secrets.ARM_CLIENT_ID }}
+          tenant-id: ${{ secrets.ARM_TENANT_ID }}
+          subscription-id: ${{ secrets.ARM_SUBSCRIPTION_ID }}
 
-  #     - name: Fetch and check certificate
-  #       id: fetch_and_check
-  #       run: |
-  #           if [ ${{ inputs.force_renew_cert }} == "true" ]
-  #             then
-  #               echo "${{ inputs.force_renew_cert }}"
-  #               echo "🔄 Parameter force_renew_cert is set to True"
-  #           fi
-  #           if ! az keyvault certificate download --vault-name '${{ inputs.key_vault_name }}' -n '${{ inputs.key_vault_cert_name }}' -f certificate.pem >/dev/null
-  #             then
-  #               echo "require_new_certificate=true" >> $GITHUB_OUTPUT
-  #               echo "❌ The certificate was not found in the selected Key Vault"
-  #           else
-  #             if ! openssl x509 -inform pem -checkend '${{ env.certificate_expiration_time }}' -noout -in certificate.pem
-  #               then
-  #                 # certificate is expiring or is already expired
-  #                 echo "do_cleanup=true" >> $GITHUB_ENV
-  #                 echo "require_new_certificate=true" >> $GITHUB_OUTPUT
-  #             fi
-  #           fi
+      - name: Fetch and check certificate
+        id: fetch_and_check
+        run: |
+            if [ ${{ inputs.force_renew_cert }} == "true" ]
+              then
+                echo "${{ inputs.force_renew_cert }}"
+                echo "🔄 Parameter force_renew_cert is set to True"
+            fi
+            if ! az keyvault certificate download --vault-name '${{ inputs.key_vault_name }}' -n '${{ inputs.key_vault_cert_name }}' -f certificate.pem >/dev/null
+              then
+                echo "require_new_certificate=true" >> $GITHUB_OUTPUT
+                echo "❌ The certificate was not found in the selected Key Vault"
+            else
+              if ! openssl x509 -inform pem -checkend '${{ env.certificate_expiration_time }}' -noout -in certificate.pem
+                then
+                  # certificate is expiring or is already expired
+                  echo "do_cleanup=true" >> $GITHUB_ENV
+                  echo "require_new_certificate=true" >> $GITHUB_OUTPUT
+              fi
+            fi
 
-  #     - name: Cleanup
-  #       if: env.do_cleanup == 'true'
-  #       run: rm -f certificate.pem
+      - name: Cleanup
+        if: env.do_cleanup == 'true'
+        run: rm -f certificate.pem
 
   obtainCertificateFromLE:
 
@@ -99,8 +99,8 @@ jobs:
     environment: dev-ci
     permissions:
        id-token: write
-    #needs: renewalDecision
-    #if: needs.renewalDecision.outputs.require_new_certificate == 'true'
+    needs: renewalDecision
+    if: needs.renewalDecision.outputs.require_new_certificate == 'true'
     defaults:
       run:
         shell: bash
