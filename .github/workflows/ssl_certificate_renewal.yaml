@@ -176,7 +176,7 @@ jobs:
             mv certificate_chain.pem.0 certificate_chain.pem
             # if we are not searching for a specific chain, exit early
             if [[ -z "${{ inputs.alternate_chain_cn }}" ]]; then
-              echo "alternate_chain_cn input not containing any value"
+              echo "❌ alternate_chain_cn input not containing any value, selecting the default certificate chain"
               exit 0
             fi
             echo "🔍 Looking for ${{ inputs.alternate_chain_cn }} root issuer..."
@@ -197,18 +197,6 @@ jobs:
                     echo "⏭️ Skipping $file"
                 fi
               done
-                
-      # - name: Select the default Certificate
-
-      #       #condition: and(succeeded(), eq(variables.require_new_certificate, True), eq(variables['alternate_chain_cn'], ''))
-      #       #inputs:
-      #       # azureSubscription: $(KEY_VAULT_SERVICE_CONNECTION)
-      #         #scriptType: bash
-      #         #scriptLocation: inlineScript
-
-      #   run: |
-      #       # by default the certificate_chain.pem.0 must be the selected certificate in case of no CN matches
-      #       mv certificate_chain.pem.0 certificate_chain.pem
 
       # - name: SaveCertificateInKeyVault
 
