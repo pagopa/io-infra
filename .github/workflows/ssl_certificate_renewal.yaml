@@ -85,7 +85,7 @@ jobs:
             fi
 
       - name: Cleanup
-        if: env.require_new_certificate == true
+        if: env.require_new_certificate == 'true'
         run: rm -f certificate.pem
 
   getCertificateFromLE:
@@ -95,7 +95,7 @@ jobs:
     permissions:
        id-token: write
     needs: renewalDecision
-    if: needs.renewalDecision.outputs.require_new_certificate == true
+    if: needs.renewalDecision.outputs.require_new_certificate == 'true'
     defaults:
       run:
         shell: bash
