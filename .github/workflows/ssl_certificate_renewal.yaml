@@ -163,7 +163,7 @@ jobs:
 
         run: "python3 workflows_additional_files/ssl_certificate_renewal_acme_tiny.py --private-key private_key.json --regr regr.json --csr csr.der --out certificate_chain.pem"
 
-      - name: Select Certificate
+      - name: Select the certificate chain
 
             #condition: and(succeeded(), eq(variables.require_new_certificate, True), ne(variables['alternate_chain_cn'], ''))
             #inputs:
@@ -176,6 +176,7 @@ jobs:
             mv certificate_chain.pem.0 certificate_chain.pem
             # if we are not searching for a specific chain, exit early
             if [[ -z "${{ inputs.alternate_chain_cn }}" ]]; then
+              echo "alternate_chain_cn input not containing any value"
               exit 0
             fi
             echo "🔍 Looking for ${{ inputs.alternate_chain_cn }} root issuer..."
