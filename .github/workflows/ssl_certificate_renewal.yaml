@@ -77,8 +77,8 @@ jobs:
             fi
             if ! az keyvault certificate download --vault-name '${{ inputs.key_vault_name }}' -n '${{ inputs.key_vault_cert_name }}' -f certificate.pem >/dev/null
               then
-                echo "require_new_certificate=true" >> $GITHUB_OUTPUT
                 echo "❌ The certificate was not found in the selected Key Vault"
+                echo "require_new_certificate=true" >> $GITHUB_OUTPUT
             else
               if ! openssl x509 -inform pem -checkend '${{ env.certificate_expiration_time }}' -noout -in certificate.pem
                 then
@@ -90,6 +90,7 @@ jobs:
                     then
                       echo "❗ The certificate is not expiring, but we are going to renew it anyway since force_renew_cert is set to true"
                       echo "do_cleanup=true" >> $GITHUB_ENV
+                      exit 0
                   fi
                   echo "✅ The certificate is not expiring, cleaning up and exiting"
                   echo "do_cleanup=true" >> $GITHUB_ENV
