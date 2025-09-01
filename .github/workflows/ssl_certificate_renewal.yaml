@@ -81,6 +81,7 @@ jobs:
                 then
                   # certificate is expiring or is already expired
                   echo "require_new_certificate=true" >> $GITHUB_ENV
+              fi
             fi
 
       - name: Cleanup
