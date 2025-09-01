@@ -67,7 +67,7 @@ jobs:
 
       - name: Fetch and check certificate
         run: |
-            if [ ${{ inputs.force_renew_cert }} == "True" ]
+            if [ ${{ inputs.force_renew_cert }} == "true" ]
               then
                 echo "${{ inputs.force_renew_cert }}"
                 echo "🔄 Parameter force_renew_cert is set to True"
