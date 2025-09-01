@@ -67,16 +67,6 @@ jobs:
           tenant-id: ${{ secrets.ARM_TENANT_ID }}
           subscription-id: ${{ secrets.ARM_SUBSCRIPTION_ID }}
 
-      - name: Fetch LE authentication keys from Key Vault
-        #env:
-        #  LE_PRIVATE_KEY_JSON: ${{ secrets.LE_PRIVATE_KEY_JSON }}
-        #  LE_REGR_JSON: ${{ secrets.LE_REGR_JSON }}
-        run: |
-            az keyvault secret download --vault-name '${{ inputs.key_vault_name }}' --name le-private-key-json --file private_key.json
-            az keyvault secret download --vault-name '${{ inputs.key_vault_name }}' --name le-regr-json --file regr.json
-            #printf "%s\n" '$(LE_PRIVATE_KEY_JSON)' > private_key.json
-            #printf "%s\n" '$(LE_REGR_JSON)' > regr.json
-
       - name: Fetch and check certificate
         id: fetch_and_check
         run: |
@@ -162,6 +152,7 @@ jobs:
           AZURE_SUBSCRIPTION_ID: "${{ inputs.azure_subscription_id }}"
           AZURE_DNS_ZONE_RESOURCE_GROUP: "${{ inputs.azure_dns_zone_resource_group }}"
           AZURE_DNS_ZONE: "${{ inputs.azure_dns_zone }}"
+          LE_AZURE_IDENTITY_TYPE: MANAGED_IDENTITY
 
         #with:
         #   AZURE_SUBSCRIPTION_ID: $(LE_AZURE_SUBSCRIPTION_ID)
