@@ -45,6 +45,7 @@ jobs:
 
   renewalDecision:
 
+    name: Certificate renewal decision
     runs-on: ubuntu-24.04
     environment: dev-ci
     permissions:
@@ -91,8 +92,9 @@ jobs:
         if: env.do_cleanup == 'true'
         run: rm -f certificate.pem
 
-  getCertificateFromLE:
+  obtainCertificateFromLE:
 
+    name: Obtain the new certificate from Lets Encrypt
     runs-on: ubuntu-24.04
     environment: dev-ci
     permissions:
@@ -102,7 +104,7 @@ jobs:
     defaults:
       run:
         shell: bash
-        working-directory: .github/workflows
+        working-directory: .github
     env:
       python_version: "3.12.8" # Python version to use to run all the scripts
 
@@ -124,7 +126,7 @@ jobs:
           python-version: ${{ env.python_version }}
       
       - name: Setup Python requirements
-        run: pip3 install --require-hashes --requirement requirements-output.txt
+        run: pip3 install --require-hashes --requirement workflows_additional_files/ssl_certificate_renewal_python_requirements.txt
 
     # - name: Run CSR Python script
             #inputs:
@@ -133,7 +135,7 @@ jobs:
               #arguments: --common-name $(csr_common_name) --out csr.der --rsa-key-size 2048
 
       - name: Run the python script to generate the CSR
-        run: python3 ssl_certificate_renewal_generate_csr.py --common-name $(csr_common_name) --out csr.der --rsa-key-size 2048
+        run: python3 workflows_additional_files/ssl_certificate_renewal_generate_csr.py --common-name $(csr_common_name) --out csr.der --rsa-key-size 2048
 
       - name: LE authentication keys to file
         env:
@@ -191,38 +193,33 @@ jobs:
                 fi
               done
                 
-      - name: SelectCertificateDefault
+      # - name: Select the default Certificate
 
-            #condition: and(succeeded(), eq(variables.require_new_certificate, True), eq(variables['alternate_chain_cn'], ''))
-            #inputs:
-            # azureSubscription: $(KEY_VAULT_SERVICE_CONNECTION)
-              #scriptType: bash
-              #scriptLocation: inlineScript
+      #       #condition: and(succeeded(), eq(variables.require_new_certificate, True), eq(variables['alternate_chain_cn'], ''))
+      #       #inputs:
+      #       # azureSubscription: $(KEY_VAULT_SERVICE_CONNECTION)
+      #         #scriptType: bash
+      #         #scriptLocation: inlineScript
 
-        run: |
-            # by default the certificate_chain.pem.0 must be the selected certificate in case of no CN matches
-            mv certificate_chain.pem.0 certificate_chain.pem
+      #   run: |
+      #       # by default the certificate_chain.pem.0 must be the selected certificate in case of no CN matches
+      #       mv certificate_chain.pem.0 certificate_chain.pem
 
-      - name: SaveCertificateInKeyVault
+      # - name: SaveCertificateInKeyVault
 
-            #condition: and(succeeded(), eq(variables.require_new_certificate, True))
-            #inputs:
-            # azureSubscription: $(KEY_VAULT_SERVICE_CONNECTION)
-              #scriptType: bash
-              #scriptLocation: inlineScript
+      #       #condition: and(succeeded(), eq(variables.require_new_certificate, True))
+      #       #inputs:
+      #       # azureSubscription: $(KEY_VAULT_SERVICE_CONNECTION)
+      #         #scriptType: bash
+      #         #scriptLocation: inlineScript
 
-        run: |
-            echo "🚀 Creating pfx"
-            openssl pkcs12 -inkey csr.key -in certificate_chain.pem -export -passout pass: -nodes -out certificate_chain.pfx
-            echo "💾 Saving pfx in ${{ inputs.key_vault_name }} with ${{ inputs.key_vault_cert_name }}"
-            az keyvault certificate import --vault-name '${{ inputs.key_vault_name }}' -n '${{ inputs.key_vault_cert_name }}' --disabled false -f certificate_chain.pfx --password "" --tags Force=${{ inputs.force_renew_cert }} >/dev/null
+      #   run: |
+      #       echo "🚀 Creating pfx"
+      #       openssl pkcs12 -inkey csr.key -in certificate_chain.pem -export -passout pass: -nodes -out certificate_chain.pfx
+      #       echo "💾 Saving pfx in ${{ inputs.key_vault_name }} with ${{ inputs.key_vault_cert_name }}"
+      #       az keyvault certificate import --vault-name '${{ inputs.key_vault_name }}' -n '${{ inputs.key_vault_cert_name }}' --disabled false -f certificate_chain.pfx --password "" --tags Force=${{ inputs.force_renew_cert }} >/dev/null
 
-      - name: CleanupEverything
-
-            #condition: always()
-            #inputs:
-            # targetType: "inline"
-
+      - name: Cleanup every file generated
         run: |
             rm -f private_key.json
             rm -f regr.json
