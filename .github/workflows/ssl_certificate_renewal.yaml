@@ -86,7 +86,7 @@ jobs:
                   echo "do_cleanup=true" >> $GITHUB_ENV
                   echo "require_new_certificate=true" >> $GITHUB_OUTPUT
                 else
-                  echo "✅ The certificate is not expiring, exiting"
+                  echo "✅ The certificate is not expiring, cleaning up and exiting"
                   echo "do_cleanup=true" >> $GITHUB_ENV
               fi
             fi
@@ -132,24 +132,13 @@ jobs:
       - name: Setup Python requirements
         run: pip3 install --require-hashes --requirement workflows_additional_files/ssl_certificate_renewal_python_requirements.txt
 
-    # - name: Run CSR Python script
-            #inputs:
-            # scriptSource: filePath
-              #scriptPath: generate_csr.py
-              #arguments: --common-name $(csr_common_name) --out csr.der --rsa-key-size 2048
-
       - name: Run the python script to generate the CSR
         run: python3 workflows_additional_files/ssl_certificate_renewal_generate_csr.py --common-name ${{ inputs.csr_common_name }} --out csr.der --rsa-key-size 2048
 
       - name: Fetch LE authentication keys from Key Vault
-        #env:
-        #  LE_PRIVATE_KEY_JSON: ${{ secrets.LE_PRIVATE_KEY_JSON }}
-        #  LE_REGR_JSON: ${{ secrets.LE_REGR_JSON }}
         run: |
             az keyvault secret download --vault-name '${{ inputs.key_vault_name }}' --name le-private-key-json --file private_key.json
             az keyvault secret download --vault-name '${{ inputs.key_vault_name }}' --name le-regr-json --file regr.json
-            #printf "%s\n" '$(LE_PRIVATE_KEY_JSON)' > private_key.json
-            #printf "%s\n" '$(LE_REGR_JSON)' > regr.json
 
       - name: Run the python script to request the new certificate from LE
         env:
@@ -158,22 +147,9 @@ jobs:
           AZURE_DNS_ZONE: "${{ inputs.azure_dns_zone }}"
           AZURE_IDENTITY_TYPE: "${{ env.le_azure_identity_type }}"
 
-        #with:
-        #   AZURE_SUBSCRIPTION_ID: $(LE_AZURE_SUBSCRIPTION_ID)
-          #  AZURE_IDENTITY_TYPE: $(LE_AZURE_IDENTITY_TYPE)
-          # inputs:
-            #  azureSubscription: "$(LE_SERVICE_CONNECTION)"
-
         run: "python3 workflows_additional_files/ssl_certificate_renewal_acme_tiny.py --private-key private_key.json --regr regr.json --csr csr.der --out certificate_chain.pem"
 
       - name: Select the certificate chain
-
-            #condition: and(succeeded(), eq(variables.require_new_certificate, True), ne(variables['alternate_chain_cn'], ''))
-            #inputs:
-              #azureSubscription: $(KEY_VAULT_SERVICE_CONNECTION)
-              #scriptType: bash
-              #scriptLocation: inlineScript
-
         run: |
             # by default the certificate_chain.pem.0 must be the selected certificate in case of no CN matches
             mv certificate_chain.pem.0 certificate_chain.pem
@@ -202,13 +178,6 @@ jobs:
               done
 
       - name: Save the certificate in Key Vault
-
-            #condition: and(succeeded(), eq(variables.require_new_certificate, True))
-            #inputs:
-            # azureSubscription: $(KEY_VAULT_SERVICE_CONNECTION)
-              #scriptType: bash
-              #scriptLocation: inlineScript
-
         run: |
             echo "🚀 Creating pfx"
             openssl pkcs12 -inkey csr.key -in certificate_chain.pem -export -passout pass: -nodes -out certificate_chain.pfx
