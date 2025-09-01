@@ -135,7 +135,7 @@ jobs:
               #arguments: --common-name $(csr_common_name) --out csr.der --rsa-key-size 2048
 
       - name: Run the python script to generate the CSR
-        run: python3 workflows_additional_files/ssl_certificate_renewal_generate_csr.py --common-name $(csr_common_name) --out csr.der --rsa-key-size 2048
+        run: python3 workflows_additional_files/ssl_certificate_renewal_generate_csr.py --common-name ${{ inputs.csr_common_name }} --out csr.der --rsa-key-size 2048
 
       - name: LE authentication keys to file
         env:
