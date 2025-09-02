@@ -1,45 +1,19 @@
-name: SSL certificate renewal
-
-#on:
-#  schedule:
-#    - cron: 0 0 * * *
+name: SSL certificate renewal template
 
 on:
-  workflow_dispatch:
-    inputs:
-      csr_common_name:
-        description: "CSR common name"
-        type: string
-        required: true
-      azure_subscription_id:
-        description: "Azure Subscription id for all the platform resources"
-        type: string
-        required: true
-      azure_dns_zone_resource_group:
-        description: "Azure Resource Group that contains the target DNS zone"
-        type: string
-        required: true
-      azure_dns_zone:
-        description: "DNS zone for which we are renewing the certificate"
-        type: string
-        required: true
-      key_vault_name:
-        description: "Name of the Key Vault used to store the certificate"
-        type: string
-        required: true
-      key_vault_cert_name:
-        description: "Name to give to the stored certificated into the Key Vault"
-        type: string
-        required: true
-      force_renew_cert:
-        description: "Force the certificate renewal"
-        type: boolean
-        required: true
-        default: false
-      alternate_chain_cn:
-        description: "Alternate CN for the certificate chain"
-        type: string
-        required: false
+  schedule:
+    #- cron: '30 6 * * 1,3,5' # Default to 6.30 AM on monday, wednesday and friday
+    - cron: '30 6 * * 1,3,5' # Default to 6.30 AM on monday, wednesday and friday
+
+env:
+  csr_common_name: '' # CSR common name - expecting a string
+  azure_subscription_id: '' #Azure Subscription id for all the platform resources - expecting a string
+  azure_dns_zone_resource_group: '' #Azure Resource Group that contains the target DNS zone - expecting a string
+  azure_dns_zone: '' #DNS zone for which we are renewing the certificate - expecting a string
+  key_vault_name: '' #Name of the Key Vault used to store the certificate - expecting a string
+  key_vault_cert_name: '' #Name to give to the stored certificated into the Key Vault - expecting a string
+  force_renew_cert: false #Force the certificate renewal - expecting a boolean 
+  alternate_chain_cn: '' #Alternate CN for the certificate chain - expecting a string
 
 jobs:
 
@@ -70,12 +44,12 @@ jobs:
       - name: Fetch and check certificate
         id: fetch_and_check # id is mandatory to enable variable output to another job
         run: |
-            if [ ${{ inputs.force_renew_cert }} == "true" ]
+            if [ ${{ env.force_renew_cert }} == "true" ]
               then
                 echo "🔄 Parameter force_renew_cert is set to True"
                 echo "require_new_certificate=true" >> $GITHUB_OUTPUT
             fi
-            if ! az keyvault certificate download --vault-name '${{ inputs.key_vault_name }}' -n '${{ inputs.key_vault_cert_name }}' -f certificate.pem >/dev/null
+            if ! az keyvault certificate download --vault-name '${{ env.key_vault_name }}' -n '${{ env.key_vault_cert_name }}' -f certificate.pem >/dev/null
               then
                 echo "❌ The certificate was not found in the selected Key Vault, proceeding to request it from LE"
                 echo "require_new_certificate=true" >> $GITHUB_OUTPUT
@@ -86,7 +60,7 @@ jobs:
                   echo "do_cleanup=true" >> $GITHUB_ENV
                   echo "require_new_certificate=true" >> $GITHUB_OUTPUT
                 else
-                  if [ ${{ inputs.force_renew_cert }} == "true" ]
+                  if [ ${{ env.force_renew_cert }} == "true" ]
                     then
                       echo "❗ The certificate is not expiring, but we are going to renew it anyway since force_renew_cert is set to true"
                       echo "do_cleanup=true" >> $GITHUB_ENV
@@ -139,18 +113,18 @@ jobs:
         run: pip3 install --require-hashes --requirement workflows_additional_files/ssl_certificate_renewal_python_requirements.txt
 
       - name: Run the python script to generate the CSR
-        run: python3 workflows_additional_files/ssl_certificate_renewal_generate_csr.py --common-name ${{ inputs.csr_common_name }} --out csr.der --rsa-key-size 2048
+        run: python3 workflows_additional_files/ssl_certificate_renewal_generate_csr.py --common-name ${{ env.csr_common_name }} --out csr.der --rsa-key-size 2048
 
       - name: Fetch LE authentication keys from Key Vault
         run: |
-            az keyvault secret download --vault-name '${{ inputs.key_vault_name }}' --name le-private-key-json --file private_key.json
-            az keyvault secret download --vault-name '${{ inputs.key_vault_name }}' --name le-regr-json --file regr.json
+            az keyvault secret download --vault-name '${{ env.key_vault_name }}' --name le-private-key-json --file private_key.json
+            az keyvault secret download --vault-name '${{ env.key_vault_name }}' --name le-regr-json --file regr.json
 
       - name: Run the python script to request the new certificate from LE
         env:
-          AZURE_SUBSCRIPTION_ID: "${{ inputs.azure_subscription_id }}"
-          AZURE_DNS_ZONE_RESOURCE_GROUP: "${{ inputs.azure_dns_zone_resource_group }}"
-          AZURE_DNS_ZONE: "${{ inputs.azure_dns_zone }}"
+          AZURE_SUBSCRIPTION_ID: "${{ env.azure_subscription_id }}"
+          AZURE_DNS_ZONE_RESOURCE_GROUP: "${{ env.azure_dns_zone_resource_group }}"
+          AZURE_DNS_ZONE: "${{ env.azure_dns_zone }}"
           AZURE_IDENTITY_TYPE: "${{ env.le_azure_identity_type }}"
 
         run: "python3 workflows_additional_files/ssl_certificate_renewal_acme_tiny.py --private-key private_key.json --regr regr.json --csr csr.der --out certificate_chain.pem"
@@ -160,19 +134,19 @@ jobs:
             # by default the certificate_chain.pem.0 must be the selected certificate in case of no CN matches
             mv certificate_chain.pem.0 certificate_chain.pem
             # if we are not searching for a specific chain, exit early
-            if [[ -z "${{ inputs.alternate_chain_cn }}" ]]; then
+            if [[ -z "${{ env.alternate_chain_cn }}" ]]; then
               echo "❌ alternate_chain_cn input not containing any value, selecting the default certificate chain"
               exit 0
             fi
-            echo "🔍 Looking for ${{ inputs.alternate_chain_cn }} root issuer..."
+            echo "🔍 Looking for ${{ env.alternate_chain_cn }} root issuer..."
               for file in certificate_chain.pem.*; do
                 # assuming ordered PEMs in file
                 root_issuer=$(while openssl x509 -inform pem -noout -issuer 2>/dev/null; do :; done < "$file" | tail -n 1)
                 echo "🔍 The root issuer for $file is $root_issuer"
                 # check if the grep result is positive or not
-                if echo "$root_issuer" | sed 's/ *= */=/g' | grep '${{ inputs.alternate_chain_cn }}' 1>/dev/null
+                if echo "$root_issuer" | sed 's/ *= */=/g' | grep '${{ env.alternate_chain_cn }}' 1>/dev/null
                   then
-                    echo "✅ Found ${{ inputs.alternate_chain_cn }} in $file!"
+                    echo "✅ Found ${{ env.alternate_chain_cn }} in $file!"
                     # print some debug info
                     while openssl x509 -inform pem -noout -issuer 2>/dev/null; do :; done < "$file"
                     # select this file
@@ -187,8 +161,8 @@ jobs:
         run: |
             echo "🚀 Creating pfx"
             openssl pkcs12 -inkey csr.key -in certificate_chain.pem -export -passout pass: -nodes -out certificate_chain.pfx
-            echo "💾 Saving pfx in ${{ inputs.key_vault_name }} with name ${{ inputs.key_vault_cert_name }}"
-            az keyvault certificate import --vault-name '${{ inputs.key_vault_name }}' -n '${{ inputs.key_vault_cert_name }}' --disabled false -f certificate_chain.pfx --password "" --tags Force=${{ inputs.force_renew_cert }} >/dev/null
+            echo "💾 Saving pfx in ${{ env.key_vault_name }} with name ${{ env.key_vault_cert_name }}"
+            az keyvault certificate import --vault-name '${{ env.key_vault_name }}' -n '${{ env.key_vault_cert_name }}' --disabled false -f certificate_chain.pfx --password "" --tags Force=${{ env.force_renew_cert }} >/dev/null
 
       - name: Cleanup every file generated in the workspace
         run: |
