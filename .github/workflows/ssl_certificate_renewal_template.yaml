@@ -12,7 +12,7 @@ env:
   azure_dns_zone_resource_group: 'dev-matteoa' #Azure Resource Group that contains the target DNS zone - expecting a string
   azure_dns_zone: 'io-poc.pagopa.it' #DNS zone for which we are renewing the certificate - expecting a string
   key_vault_name: 'io-d-itn-tlscert-kv-01' #Name of the Key Vault used to store the certificate - expecting a string
-  key_vault_cert_name: 'testrun2-io-poc-pagopa-it' #Name to give to the stored certificated into the Key Vault - expecting a string
+  key_vault_cert_name: 'testrun3-io-poc-pagopa-it' #Name to give to the stored certificated into the Key Vault - expecting a string
   force_renew_cert: false #Force the certificate renewal - expecting a boolean 
   alternate_chain_cn: '' #Alternate CN for the certificate chain - expecting a string
 
