@@ -1,4 +1,4 @@
-name: SSL certificate renewal manual action
+name: SSL Certificate Renewal manual action
 
 on:
   workflow_dispatch:

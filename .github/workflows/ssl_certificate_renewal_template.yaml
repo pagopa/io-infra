@@ -1,4 +1,4 @@
-name: SSL certificate renewal template
+name: SSL Certificate Renewal template
 
 on: # To run the template on a schedule, uncomment the schedule property and set the desired execution timeframe in crontab syntax
   workflow_dispatch:
