@@ -156,7 +156,6 @@ jobs:
             # if we are not searching for a specific chain, exit early
             if [[ -z "${{ inputs.alternate_chain_cn }}" ]]; then
               echo "❌ alternate_chain_cn input not containing any value, selecting the default certificate chain"
-              # by default the certificate_chain.pem.0 must be the selected certificate in case of no CN matches
               mv certificate_chain.pem.0 certificate_chain.pem
               exit 0
             fi
@@ -169,6 +168,7 @@ jobs:
                 if echo "$root_issuer" | sed 's/ *= */=/g' | grep '${{ inputs.alternate_chain_cn }}' 1>/dev/null
                   then
                     echo "✅ Found ${{ inputs.alternate_chain_cn }} in $file!"
+                    export chain_found="true"
                     # print some debug info
                     while openssl x509 -inform pem -noout -issuer 2>/dev/null; do :; done < "$file"
                     # select this file
@@ -178,6 +178,11 @@ jobs:
                     echo "⏭️ Skipping $file"
                 fi
               done
+              if [ chain_found != "true" ]; then
+                # by default the certificate_chain.pem.0 must be the selected certificate in case of no CN matches
+                echo "❌ alternate_chain_cn not found in any file, selecting the default certificate chain"
+                mv certificate_chain.pem.0 certificate_chain.pem
+              fi
 
       - name: Save the certificate in Key Vault
         run: |
