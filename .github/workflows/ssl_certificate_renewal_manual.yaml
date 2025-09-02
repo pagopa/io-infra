@@ -153,11 +153,11 @@ jobs:
 
       - name: Select the certificate chain
         run: |
-            # by default the certificate_chain.pem.0 must be the selected certificate in case of no CN matches
-            mv certificate_chain.pem.0 certificate_chain.pem
             # if we are not searching for a specific chain, exit early
             if [[ -z "${{ inputs.alternate_chain_cn }}" ]]; then
               echo "❌ alternate_chain_cn input not containing any value, selecting the default certificate chain"
+              # by default the certificate_chain.pem.0 must be the selected certificate in case of no CN matches
+              mv certificate_chain.pem.0 certificate_chain.pem
               exit 0
             fi
             echo "🔍 Looking for ${{ inputs.alternate_chain_cn }} root issuer..."
