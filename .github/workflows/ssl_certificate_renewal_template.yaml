@@ -1,20 +1,19 @@
 name: SSL certificate renewal template
 
-on:
-  push:
-  schedule:
-    #- cron: '30 6 * * 1,3,5' # Default to 6.30 AM on monday, wednesday and friday
-    - cron: '30 6 * * 1,3,5' # Default to 6.30 AM on monday, wednesday and friday
+on: # To run the template on a schedule, uncomment the schedule property and set the desired execution timeframe in crontab syntax
+  workflow_dispatch:
+  #schedule:
+  #- cron: '30 6 * * 1,3,5' # Default to 6.30 AM on monday, wednesday and friday
 
 env:
-  csr_common_name: 'testrun3.io-poc.pagopa.it' # CSR common name - expecting a string
-  azure_subscription_id: 'a4e96bcd-59dc-4d66-b2f7-5547ad157c12' #Azure Subscription id for all the platform resources - expecting a string
-  azure_dns_zone_resource_group: 'dev-matteoa' #Azure Resource Group that contains the target DNS zone - expecting a string
-  azure_dns_zone: 'io-poc.pagopa.it' #DNS zone for which we are renewing the certificate - expecting a string
-  key_vault_name: 'io-d-itn-tlscert-kv-01' #Name of the Key Vault used to store the certificate - expecting a string
-  key_vault_cert_name: 'testrun3-io-poc-pagopa-it' #Name to give to the stored certificated into the Key Vault - expecting a string
+  csr_common_name: '' # CSR common name - expecting a string - example: test.io-poc.pagopa.it
+  azure_subscription_id: '' #Azure Subscription id for all the platform resources - expecting a string - example: 'aaaaaaaa-bbbb-cccc-dddd-fffffffffff'
+  azure_dns_zone_resource_group: '' #Azure Resource Group that contains the target DNS zone - expecting a string - example: 'dev-xxxx'
+  azure_dns_zone: '' #DNS zone for which we are renewing the certificate - expecting a string - example: 'io-poc.pagopa.it'
+  key_vault_name: '' #Name of the Key Vault used to store the certificate - expecting a string - example: 'io-d-itn-tlscert-kv-01'
+  key_vault_cert_name: '' #Name to give to the stored certificated into the Key Vault - expecting a string - example: 'test-io-poc-pagopa-it'
   force_renew_cert: false #Force the certificate renewal - expecting a boolean 
-  alternate_chain_cn: '' #Alternate CN for the certificate chain - expecting a string
+  alternate_chain_cn: '' #Alternate CN for the certificate chain - expecting a string - example: 'CN=DST Root CA X3'
 
 jobs:
 
