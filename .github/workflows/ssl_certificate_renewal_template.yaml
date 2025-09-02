@@ -7,13 +7,13 @@ on: # To run the template on a schedule, uncomment the schedule property and set
 
 env:
   csr_common_name: '' # CSR common name - expecting a string - example: test.io-poc.pagopa.it
-  azure_subscription_id: '' #Azure Subscription id for all the platform resources - expecting a string - example: 'aaaaaaaa-bbbb-cccc-dddd-fffffffffff'
-  azure_dns_zone_resource_group: '' #Azure Resource Group that contains the target DNS zone - expecting a string - example: 'dev-xxxx'
-  azure_dns_zone: '' #DNS zone for which we are renewing the certificate - expecting a string - example: 'io-poc.pagopa.it'
-  key_vault_name: '' #Name of the Key Vault used to store the certificate - expecting a string - example: 'io-d-itn-tlscert-kv-01'
-  key_vault_cert_name: '' #Name to give to the stored certificated into the Key Vault - expecting a string - example: 'test-io-poc-pagopa-it'
-  force_renew_cert: false #Force the certificate renewal - expecting a boolean 
-  alternate_chain_cn: '' #Alternate CN for the certificate chain - expecting a string - example: 'CN=DST Root CA X3'
+  azure_subscription_id: '' # Azure Subscription id for all the platform resources - expecting a string - example: 'aaaaaaaa-bbbb-cccc-dddd-fffffffffff'
+  azure_dns_zone_resource_group: '' # Azure Resource Group that contains the target DNS zone - expecting a string - example: 'dev-xxxx'
+  azure_dns_zone: '' # DNS zone for which we are renewing the certificate - expecting a string - example: 'io-poc.pagopa.it'
+  key_vault_name: '' # Name of the Key Vault used to store the certificate - expecting a string - example: 'io-d-itn-tlscert-kv-01'
+  key_vault_cert_name: '' # Name to give to the stored certificated into the Key Vault - expecting a string - example: 'test-io-poc-pagopa-it'
+  force_renew_cert: false # Force the certificate renewal - expecting a boolean 
+  alternate_chain_cn: '' # Alternate CN for the certificate chain - expecting a string - example: 'CN=DST Root CA X3'
 
 jobs:
 
@@ -133,7 +133,7 @@ jobs:
         run: |
             # if we are not searching for a specific chain, exit early
             if [[ -z "${{ env.alternate_chain_cn }}" ]]; then
-              echo "❌ alternate_chain_cn input not containing any value, selecting the default certificate chain"
+              echo "❌ alternate_chain_cn variable not containing any value, selecting the default certificate chain"
               mv certificate_chain.pem.0 certificate_chain.pem
               exit 0
             fi

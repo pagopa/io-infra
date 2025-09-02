@@ -4,26 +4,26 @@ on:
   workflow_dispatch:
     inputs:
       csr_common_name:
-        description: "CSR common name"
+        description: "CSR common name" # example: test.io-poc.pagopa.it
         type: string
         required: true
-      azure_subscription_id:
+      azure_subscription_id: # example: 'aaaaaaaa-bbbb-cccc-dddd-fffffffffff'
         description: "Azure Subscription id for all the platform resources"
         type: string
         required: true
-      azure_dns_zone_resource_group:
+      azure_dns_zone_resource_group: # example: 'dev-xxxx'
         description: "Azure Resource Group that contains the target DNS zone"
         type: string
         required: true
-      azure_dns_zone:
+      azure_dns_zone: # example: 'io-poc.pagopa.it'
         description: "DNS zone for which we are renewing the certificate"
         type: string
         required: true
-      key_vault_name:
+      key_vault_name: # example: 'io-d-itn-tlscert-kv-01'
         description: "Name of the Key Vault used to store the certificate"
         type: string
         required: true
-      key_vault_cert_name:
+      key_vault_cert_name: #  example: 'test-io-poc-pagopa-it'
         description: "Name to give to the stored certificated into the Key Vault"
         type: string
         required: true
@@ -32,7 +32,7 @@ on:
         type: boolean
         required: true
         default: false
-      alternate_chain_cn:
+      alternate_chain_cn: # example: 'CN=DST Root CA X3'
         description: "Alternate CN for the certificate chain"
         type: string
         required: false
