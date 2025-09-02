@@ -178,7 +178,7 @@ jobs:
                     echo "⏭️ Skipping $file"
                 fi
               done
-              if [ -z $chain_found ]; then
+              if [ -z "$chain_found" ]; then
                 # by default the certificate_chain.pem.0 must be the selected certificate in case of no CN matches
                 echo "❌ alternate_chain_cn not found in any file, selecting the default certificate chain"
                 mv certificate_chain.pem.0 certificate_chain.pem
