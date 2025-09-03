@@ -13,13 +13,14 @@ env:
   key_vault_name: '' # Name of the Key Vault used to store the certificate - expecting a string - example: 'io-d-itn-tlscert-kv-01'
   force_renew_cert: false # Force the certificate renewal - expecting a boolean 
   alternate_chain_cn: '' # Alternate CN for the certificate chain - expecting a string - example: 'CN=DST Root CA X3'
+  use_selfhosted_agent: true # Specify to use a self hosted or a github hosted agent - expecting a boolean - default to true
 
 jobs:
 
   renewalDecision:
 
     name: Certificate renewal decision
-    runs-on: ubuntu-24.04 # Remember to set the correct environment and runners
+    runs-on: ${{ env.use_selfhosted_agent && 'self-hosted' || 'ubuntu-24.04' }}
     environment: dev-ci # Remember to set the correct environment and runners
     permissions:
        id-token: write
@@ -81,7 +82,7 @@ jobs:
   obtainCertificateFromLE:
 
     name: Obtain the new certificate from Lets Encrypt
-    runs-on: ubuntu-24.04 # Remember to set the correct environment and runners
+    runs-on: ${{ env.use_selfhosted_agent && 'self-hosted' || 'ubuntu-24.04' }}
     environment: dev-ci # Remember to set the correct environment and runners
     permissions:
        id-token: write
