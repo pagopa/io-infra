@@ -20,8 +20,8 @@ jobs:
   renewalDecision:
 
     name: Certificate renewal decision
-    runs-on: ubuntu-24.04
-    environment: dev-ci
+    runs-on: ubuntu-24.04 # Remember to set the correct environment and runners
+    environment: dev-ci # Remember to set the correct environment and runners
     permissions:
        id-token: write
     defaults:
@@ -78,8 +78,8 @@ jobs:
   obtainCertificateFromLE:
 
     name: Obtain the new certificate from Lets Encrypt
-    runs-on: ubuntu-24.04
-    environment: dev-ci
+    runs-on: ubuntu-24.04 # Remember to set the correct environment and runners
+    environment: dev-ci # Remember to set the correct environment and runners
     permissions:
        id-token: write
     needs: renewalDecision
