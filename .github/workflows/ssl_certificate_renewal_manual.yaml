@@ -64,7 +64,7 @@ jobs:
         run: |
             # cert_name=${{ inputs.csr_common_name }}
             # key_vault_cert_name=$(echo "${cert_name//./-}")
-            key_vault_cert_name=$(echo "${{ inputs.csr_common_name//./- }}")
+            key_vault_cert_name=$(echo "${{{ inputs.csr_common_name }}//./-}")
 
             if [ ${{ inputs.force_renew_cert }} == "true" ]
               then
@@ -188,7 +188,7 @@ jobs:
         run: |
             # cert_name=${{ inputs.csr_common_name }}
             # key_vault_cert_name=$(echo "${cert_name//./-}")
-            key_vault_cert_name=$(echo "${{ inputs.csr_common_name//./- }}")
+            key_vault_cert_name=$(echo "${{{ inputs.csr_common_name }}//./-}")
             echo "🚀 Creating pfx"
             openssl pkcs12 -inkey csr.key -in certificate_chain.pem -export -passout pass: -nodes -out certificate_chain.pfx
             echo "💾 Saving pfx in ${{ inputs.key_vault_name }} with name $key_vault_cert_name"
