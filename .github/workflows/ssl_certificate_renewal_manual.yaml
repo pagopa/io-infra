@@ -111,7 +111,7 @@ jobs:
     permissions:
        id-token: write
     needs: renewalDecision
-    if: needs.renewalDecision.outputs.require_new_certificate == 'true' || needs.renewalDecision.outputs.is_forced_renew == 'true'
+    if: ${{ needs.renewalDecision.outputs.require_new_certificate == 'true' || needs.renewalDecision.outputs.is_forced_renew == 'true' }}
     defaults:
       run:
         shell: bash
