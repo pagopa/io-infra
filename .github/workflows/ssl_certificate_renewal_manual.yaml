@@ -42,7 +42,6 @@ jobs:
     environment: dev-ci
     permissions:
        id-token: write
-    if: inputs.force_renew_cert == false
     defaults:
       run:
         shell: bash
@@ -53,8 +52,17 @@ jobs:
 
     steps:
 
+      - name: Evaluate force renew
+        run: |
+            if [ ${{ inputs.force_renew_cert }} == "true" ]
+              then
+                echo "🔄 Parameter force_renew_cert is set to True , skipping the remaining steps and launching the next job"
+                echo "require_new_certificate=true" >> $GITHUB_OUTPUT
+            fi
+
       - name: Azure Login
         uses: azure/login@6b2456866fc08b011acb422a92a4aa20e2c4de32 # v2.1.0
+        if: inputs.force_renew_cert == false
         with:
           client-id: ${{ secrets.ARM_CLIENT_ID }}
           tenant-id: ${{ secrets.ARM_TENANT_ID }}
@@ -62,6 +70,7 @@ jobs:
 
       - name: Fetch and check certificate
         id: fetch_and_check # id is mandatory to enable variable output to another job
+        if: inputs.force_renew_cert == false
         run: |
             string_manipulation_cert_name=${{ inputs.csr_common_name }}
             key_vault_cert_name=$(echo "${string_manipulation_cert_name//./-}")
@@ -100,7 +109,7 @@ jobs:
     permissions:
        id-token: write
     needs: renewalDecision
-    if: ${{ needs.renewalDecision.outputs.require_new_certificate == 'true' || inputs.force_renew_cert == 'true' }}
+    if: needs.renewalDecision.outputs.require_new_certificate == 'true'
     defaults:
       run:
         shell: bash
