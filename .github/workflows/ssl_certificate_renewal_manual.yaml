@@ -48,16 +48,18 @@ jobs:
     env:
       certificate_expiration_time: "2592000" # Certificate expiration time in seconds, default to 30 days
     outputs:
+      is_forced_renew: ${{ steps.fetch_and_check.outputs.evaluate_force_renew }}
       require_new_certificate: ${{ steps.fetch_and_check.outputs.require_new_certificate }}
 
     steps:
 
       - name: Evaluate force renew
+        id: evaluate_force_renew # id is mandatory to enable variable output to another job
         run: |
             if [ ${{ inputs.force_renew_cert }} == "true" ]
               then
                 echo "🔄 Parameter force_renew_cert is set to True , skipping the remaining steps and launching the next job"
-                echo "require_new_certificate=true" >> $GITHUB_OUTPUT
+                echo "evaluate_force_renew=true" >> $GITHUB_OUTPUT
             fi
 
       - name: Azure Login
@@ -109,7 +111,7 @@ jobs:
     permissions:
        id-token: write
     needs: renewalDecision
-    if: needs.renewalDecision.outputs.require_new_certificate == 'true'
+    if: needs.renewalDecision.outputs.require_new_certificate == 'true' || needs.renewalDecision.outputs.is_forced_renew == 'true'
     defaults:
       run:
         shell: bash
