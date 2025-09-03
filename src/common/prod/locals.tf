@@ -52,6 +52,9 @@ locals {
     2 = {
       cidr_subnet = ["10.0.153.0/24"]
     },
+    3 = {
+      cidr_subnet = ["10.0.154.0/24"]
+    },
   }
 
   azdoa_snet_id = {

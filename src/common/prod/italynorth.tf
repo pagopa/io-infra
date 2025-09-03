@@ -175,7 +175,8 @@ module "application_gateway_itn" {
 
   backend_hostnames = {
     firmaconio_selfcare_web_app = [data.azurerm_linux_web_app.firmaconio_selfcare_web_app.default_hostname]
-    app_backends                = [for appbe in module.app_backend_weu : appbe.default_hostname]
+    # app_backends                = [for appbe in module.app_backend_weu : appbe.default_hostname]
+    app_backends = [module.app_backend_weu["1"].default_hostname, module.app_backend_weu["2"].default_hostname]
   }
   certificates = {
     api                                  = "api-io-pagopa-it"
