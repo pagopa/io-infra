@@ -11,7 +11,6 @@ env:
   azure_dns_zone_resource_group: '' # Azure Resource Group that contains the target DNS zone - expecting a string - example: 'dev-xxxx'
   azure_dns_zone: '' # DNS zone for which we are renewing the certificate - expecting a string - example: 'io-poc.pagopa.it'
   key_vault_name: '' # Name of the Key Vault used to store the certificate - expecting a string - example: 'io-d-itn-tlscert-kv-01'
-  key_vault_cert_name: '' # Name to give to the stored certificated into the Key Vault - expecting a string - example: 'test-io-poc-pagopa-it'
   force_renew_cert: false # Force the certificate renewal - expecting a boolean 
   alternate_chain_cn: '' # Alternate CN for the certificate chain - expecting a string - example: 'CN=DST Root CA X3'
 
@@ -44,12 +43,15 @@ jobs:
       - name: Fetch and check certificate
         id: fetch_and_check # id is mandatory to enable variable output to another job
         run: |
+            string_manipulation_cert_name=${{ env.csr_common_name }}
+            key_vault_cert_name=$(echo "${string_manipulation_cert_name//./-}")
+
             if [ ${{ env.force_renew_cert }} == "true" ]
               then
                 echo "🔄 Parameter force_renew_cert is set to True"
                 echo "require_new_certificate=true" >> $GITHUB_OUTPUT
             fi
-            if ! az keyvault certificate download --vault-name '${{ env.key_vault_name }}' -n '${{ env.key_vault_cert_name }}' -f certificate.pem >/dev/null
+            if ! az keyvault certificate download --vault-name '${{ env.key_vault_name }}' -n "$key_vault_cert_name" -f certificate.pem >/dev/null
               then
                 echo "❌ The certificate was not found in the selected Key Vault, proceeding to request it from LE"
                 echo "require_new_certificate=true" >> $GITHUB_OUTPUT
@@ -164,10 +166,12 @@ jobs:
 
       - name: Save the certificate in Key Vault
         run: |
+            string_manipulation_cert_name=${{ env.csr_common_name }}
+            key_vault_cert_name=$(echo "${string_manipulation_cert_name//./-}")
             echo "🚀 Creating pfx"
             openssl pkcs12 -inkey csr.key -in certificate_chain.pem -export -passout pass: -nodes -out certificate_chain.pfx
-            echo "💾 Saving pfx in ${{ env.key_vault_name }} with name ${{ env.key_vault_cert_name }}"
-            az keyvault certificate import --vault-name '${{ env.key_vault_name }}' -n '${{ env.key_vault_cert_name }}' --disabled false -f certificate_chain.pfx --password "" --tags Force=${{ env.force_renew_cert }} >/dev/null
+            echo "💾 Saving pfx in ${{ env.key_vault_name }} with name $key_vault_cert_name"
+            az keyvault certificate import --vault-name '${{ env.key_vault_name }}' -n "$key_vault_cert_name" --disabled false -f certificate_chain.pfx --password "" --tags Force=${{ env.force_renew_cert }} >/dev/null
 
       - name: Cleanup every file generated in the workspace
         run: |
