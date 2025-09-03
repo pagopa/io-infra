@@ -156,8 +156,8 @@ locals {
     LOLLIPOP_API_URL       = "https://${data.azurerm_linux_function_app.function_lollipop_itn_v2.default_hostname}"
     LOLLIPOP_API_KEY       = data.azurerm_key_vault_secret.functions_lollipop_api_key.value
 
-    LOLLIPOP_REVOKE_STORAGE_CONNECTION_STRING = data.azurerm_storage_account.lollipop_assertion_storage.primary_connection_string
-    LOLLIPOP_REVOKE_QUEUE_NAME                = "pubkeys-revoke-v2"
+    LOLLIPOP_REVOKE_STORAGE_CONNECTION_STRING = data.azurerm_storage_account.auth_session_storage.primary_connection_string
+    LOLLIPOP_REVOKE_QUEUE_NAME                = "pubkeys-revoke-01"
 
     # Fast Login config
     FF_FAST_LOGIN = "ALL"
