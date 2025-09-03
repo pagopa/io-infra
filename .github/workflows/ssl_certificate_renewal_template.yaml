@@ -89,7 +89,7 @@ jobs:
         shell: bash
         working-directory: .github
     env:
-      python_version: "3.12.8" # Python version to use to run all the scripts
+      python_version: "3.12.8" # Python version used to run all the scripts
       le_azure_identity_type: MANAGED_IDENTITY # Type of azure identity to be used from the Python ACME script
 
     steps:
