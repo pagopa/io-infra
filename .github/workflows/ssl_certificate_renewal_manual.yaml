@@ -62,9 +62,8 @@ jobs:
       - name: Fetch and check certificate
         id: fetch_and_check # id is mandatory to enable variable output to another job
         run: |
-            # cert_name=${{ inputs.csr_common_name }}
-            # key_vault_cert_name=$(echo "${cert_name//./-}")
-            key_vault_cert_name=$(echo "${{{ inputs.csr_common_name }}//./-}")
+            string_manipulation_cert_name=${{ inputs.csr_common_name }}
+            key_vault_cert_name=$(echo "${string_manipulation_cert_name//./-}")
 
             if [ ${{ inputs.force_renew_cert }} == "true" ]
               then
@@ -186,9 +185,8 @@ jobs:
 
       - name: Save the certificate in Key Vault
         run: |
-            # cert_name=${{ inputs.csr_common_name }}
-            # key_vault_cert_name=$(echo "${cert_name//./-}")
-            key_vault_cert_name=$(echo "${{{ inputs.csr_common_name }}//./-}")
+            string_manipulation_cert_name=${{ inputs.csr_common_name }}
+            key_vault_cert_name=$(echo "${string_manipulation_cert_name//./-}")
             echo "🚀 Creating pfx"
             openssl pkcs12 -inkey csr.key -in certificate_chain.pem -export -passout pass: -nodes -out certificate_chain.pfx
             echo "💾 Saving pfx in ${{ inputs.key_vault_name }} with name $key_vault_cert_name"
