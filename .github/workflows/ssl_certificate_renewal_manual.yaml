@@ -48,7 +48,7 @@ jobs:
     env:
       certificate_expiration_time: "2592000" # Certificate expiration time in seconds, default to 30 days
     outputs:
-      is_forced_renew: ${{ steps.fetch_and_check.outputs.evaluate_force_renew }}
+      is_forced_renew: ${{ steps.evaluate_force_renew.outputs.evaluate_force_renew }}
       require_new_certificate: ${{ steps.fetch_and_check.outputs.require_new_certificate }}
 
     steps:
@@ -71,7 +71,7 @@ jobs:
           subscription-id: ${{ secrets.ARM_SUBSCRIPTION_ID }}
 
       - name: Fetch and check certificate
-        id: fetch_and_check # id is mandatory to enable variable output to another job
+        id: fetch_and_check
         if: inputs.force_renew_cert == false
         run: |
             string_manipulation_cert_name=${{ inputs.csr_common_name }}
@@ -111,7 +111,7 @@ jobs:
     permissions:
        id-token: write
     needs: renewalDecision
-    if: ${{ needs.renewalDecision.outputs.require_new_certificate == 'true' || needs.renewalDecision.outputs.is_forced_renew == 'true' }}
+    if: needs.renewalDecision.outputs.require_new_certificate == 'true' || needs.renewalDecision.outputs.is_forced_renew == 'true'
     defaults:
       run:
         shell: bash
