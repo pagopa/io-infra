@@ -16,7 +16,7 @@ module "platform_service_bus_namespace" {
   private_dns_zone_resource_group_name = var.resource_group_event
 
   // Premium SKU
-  tier = "l"
+  use_case = "production"
 
   tags = var.tags
 }
