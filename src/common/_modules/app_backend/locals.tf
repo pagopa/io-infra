@@ -27,6 +27,8 @@ locals {
     io_receipt      = "https://api.platform.pagopa.it/receipts/service/v1"
   }
 
+  citizen_auth_revoke_queue_name = "pubkeys-revoke-v2"
+
   function_app_count = length(var.backend_hostnames.app)
 
   nonstandard = {
