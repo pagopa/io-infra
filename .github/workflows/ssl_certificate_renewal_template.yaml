@@ -29,28 +29,35 @@ jobs:
     env:
       certificate_expiration_time: "2592000" # Certificate expiration time in seconds, default to 30 days
     outputs:
+      is_forced_renew: ${{ steps.evaluate_force_renew.outputs.evaluate_force_renew }}
       require_new_certificate: ${{ steps.fetch_and_check.outputs.require_new_certificate }}
 
     steps:
 
+      - name: Evaluate force renew
+        id: evaluate_force_renew # id is mandatory to enable variable output to another job
+        run: |
+            if [ ${{ env.force_renew_cert }} == "true" ]
+              then
+                echo "🔄 Variable force_renew_cert is set to True , skipping the remaining steps and launching the next job"
+                echo "evaluate_force_renew=true" >> $GITHUB_OUTPUT
+            fi
+
       - name: Azure Login
         uses: azure/login@6b2456866fc08b011acb422a92a4aa20e2c4de32 # v2.1.0
+        if: env.force_renew_cert == false
         with:
           client-id: ${{ secrets.ARM_CLIENT_ID }}
           tenant-id: ${{ secrets.ARM_TENANT_ID }}
           subscription-id: ${{ secrets.ARM_SUBSCRIPTION_ID }}
 
       - name: Fetch and check certificate
-        id: fetch_and_check # id is mandatory to enable variable output to another job
+        id: fetch_and_check
+        if: env.force_renew_cert == false
         run: |
             string_manipulation_cert_name=${{ env.csr_common_name }}
             key_vault_cert_name=$(echo "${string_manipulation_cert_name//./-}")
 
-            if [ ${{ env.force_renew_cert }} == "true" ]
-              then
-                echo "🔄 Parameter force_renew_cert is set to True"
-                echo "require_new_certificate=true" >> $GITHUB_OUTPUT
-            fi
             if ! az keyvault certificate download --vault-name '${{ env.key_vault_name }}' -n "$key_vault_cert_name" -f certificate.pem >/dev/null
               then
                 echo "❌ The certificate was not found in the selected Key Vault, proceeding to request it from LE"
@@ -62,12 +69,6 @@ jobs:
                   echo "do_cleanup=true" >> $GITHUB_ENV
                   echo "require_new_certificate=true" >> $GITHUB_OUTPUT
                 else
-                  if [ ${{ env.force_renew_cert }} == "true" ]
-                    then
-                      echo "❗ The certificate is not expiring, but we are going to renew it anyway since force_renew_cert is set to true"
-                      echo "do_cleanup=true" >> $GITHUB_ENV
-                      exit 0
-                  fi
                   echo "✅ The certificate is not expiring, cleaning up and exiting"
                   echo "do_cleanup=true" >> $GITHUB_ENV
               fi
@@ -85,7 +86,7 @@ jobs:
     permissions:
        id-token: write
     needs: renewalDecision
-    if: needs.renewalDecision.outputs.require_new_certificate == 'true'
+    if: needs.renewalDecision.outputs.require_new_certificate == 'true' || needs.renewalDecision.outputs.is_forced_renew == 'true'
     defaults:
       run:
         shell: bash
