@@ -42,6 +42,7 @@ jobs:
     environment: dev-ci
     permissions:
        id-token: write
+    if: inputs.force_renew_cert == false
     defaults:
       run:
         shell: bash
@@ -65,11 +66,6 @@ jobs:
             string_manipulation_cert_name=${{ inputs.csr_common_name }}
             key_vault_cert_name=$(echo "${string_manipulation_cert_name//./-}")
 
-            if [ ${{ inputs.force_renew_cert }} == "true" ]
-              then
-                echo "🔄 Parameter force_renew_cert is set to True"
-                echo "require_new_certificate=true" >> $GITHUB_OUTPUT
-            fi
             if ! az keyvault certificate download --vault-name '${{ inputs.key_vault_name }}' -n "$key_vault_cert_name" -f certificate.pem >/dev/null
               then
                 echo "❌ The certificate was not found in the selected Key Vault, proceeding to request it from LE"
@@ -104,7 +100,7 @@ jobs:
     permissions:
        id-token: write
     needs: renewalDecision
-    if: needs.renewalDecision.outputs.require_new_certificate == 'true'
+    if: needs.renewalDecision.outputs.require_new_certificate == 'true' || inputs.force_renew_cert == true
     defaults:
       run:
         shell: bash
