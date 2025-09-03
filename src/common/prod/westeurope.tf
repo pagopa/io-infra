@@ -282,6 +282,8 @@ module "application_gateway_weu" {
   resource_group_security = local.core.resource_groups.westeurope.sec
   resource_group_common   = local.core.resource_groups.westeurope.common
 
+  subscription_id = data.azurerm_subscription.current.subscription_id
+
   datasources = {
     azurerm_client_config = data.azurerm_client_config.current
   }
@@ -321,6 +323,12 @@ module "application_gateway_weu" {
   alerts_enabled        = true
   deny_paths            = ["\\/admin\\/(.*)"]
   error_action_group_id = module.monitoring_weu.action_groups.error
+
+  ioweb_kv = {
+    id                  = data.azurerm_key_vault.ioweb_kv.id
+    name                = data.azurerm_key_vault.ioweb_kv.name
+    resource_group_name = data.azurerm_key_vault.ioweb_kv.resource_group_name
+  }
 
   tags = local.tags
 }
@@ -461,4 +469,14 @@ module "storage_accounts" {
   azure_adgroup_admins_object_id     = data.azuread_group.admins.object_id
 
   tags = local.tags
+}
+
+import {
+  id = "/subscriptions/ec285037-c673-4f58-b594-d7c480da4e8b/resourceGroups/io-p-rg-internal/providers/Microsoft.Storage/storageAccounts/iopstapp"
+  to = module.storage_accounts.azurerm_storage_account.app[0]
+}
+
+import {
+  id = "/subscriptions/ec285037-c673-4f58-b594-d7c480da4e8b/resourceGroups/io-p-rg-operations/providers/Microsoft.Storage/storageAccounts/iopstlogs"
+  to = module.storage_accounts.azurerm_storage_account.logs[0]
 }
