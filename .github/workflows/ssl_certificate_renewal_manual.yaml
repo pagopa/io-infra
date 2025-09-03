@@ -42,7 +42,7 @@ jobs:
     environment: dev-ci
     permissions:
        id-token: write
-    if: inputs.force_renew_cert == 'false'
+    if: inputs.force_renew_cert == false
     defaults:
       run:
         shell: bash
@@ -100,7 +100,7 @@ jobs:
     permissions:
        id-token: write
     needs: renewalDecision
-    if: needs.renewalDecision.outputs.require_new_certificate == 'true' || inputs.force_renew_cert == 'true'
+    if: ${{ needs.renewalDecision.outputs.require_new_certificate == 'true' || inputs.force_renew_cert == true }}
     defaults:
       run:
         shell: bash
