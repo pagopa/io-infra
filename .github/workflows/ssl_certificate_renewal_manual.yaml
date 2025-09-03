@@ -88,12 +88,6 @@ jobs:
                   echo "do_cleanup=true" >> $GITHUB_ENV
                   echo "require_new_certificate=true" >> $GITHUB_OUTPUT
                 else
-                  if [ ${{ inputs.force_renew_cert }} == "true" ]
-                    then
-                      echo "❗ The certificate is not expiring, but we are going to renew it anyway since force_renew_cert is set to true"
-                      echo "do_cleanup=true" >> $GITHUB_ENV
-                      exit 0
-                  fi
                   echo "✅ The certificate is not expiring, cleaning up and exiting"
                   echo "do_cleanup=true" >> $GITHUB_ENV
               fi
