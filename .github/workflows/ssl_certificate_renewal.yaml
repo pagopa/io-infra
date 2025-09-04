@@ -1,7 +1,7 @@
-name: SSL Certificate Renewal manual action
+name: SSL Certificate Renewal
 
 on:
-  workflow_dispatch:
+  workflow_call:
     inputs:
       csr_common_name:
         description: "CSR common name" # example: test.io-poc.pagopa.it

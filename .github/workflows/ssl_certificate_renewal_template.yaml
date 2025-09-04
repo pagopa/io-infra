@@ -1,186 +1,69 @@
-name: SSL Certificate Renewal template
+name: SSL Certificate Renewal Template  # Change the name with the following naming convention: *DNS Zone* SSL Certificate Renewal
 
-on: # To run the template on a schedule, uncomment the schedule property and set the desired execution timeframe in crontab syntax
+on: # To run the template on a schedule, uncomment the schedule property and set the desired execution timeframe in crontab syntax. Remember to comment out or to delete the workflow_dispatch property.
   workflow_dispatch:
   #schedule:
   #- cron: '30 6 * * 1,3,5' # Default to 6.30 AM on monday, wednesday and friday
 
-env:
-  csr_common_name: '' # CSR common name - expecting a string - example: test.io-poc.pagopa.it
-  azure_subscription_id: '' # Azure Subscription id for all the platform resources - expecting a string - example: 'aaaaaaaa-bbbb-cccc-dddd-fffffffffff'
-  azure_dns_zone_resource_group: '' # Azure Resource Group that contains the target DNS zone - expecting a string - example: 'dev-xxxx'
-  azure_dns_zone: '' # DNS zone for which we are renewing the certificate - expecting a string - example: 'io-poc.pagopa.it'
-  key_vault_name: '' # Name of the Key Vault used to store the certificate - expecting a string - example: 'io-d-itn-tlscert-kv-01'
-  force_renew_cert: false # Force the certificate renewal - expecting a boolean 
-  alternate_chain_cn: '' # Alternate CN for the certificate chain - expecting a string - example: 'CN=DST Root CA X3'
-  use_selfhosted_agent: true # Specify to use a self hosted or a github hosted agent - expecting a boolean - default to true
+    inputs: # INPUTS BLOCK TO BE REMOVED
+      csr_common_name:
+        description: "CSR common name" # example: test.io-poc.pagopa.it
+        type: string
+        required: true
+      azure_subscription_id: # example: 'aaaaaaaa-bbbb-cccc-dddd-fffffffffff'
+        description: "Azure Subscription id for all the platform resources"
+        type: string
+        required: true
+      azure_dns_zone_resource_group: # example: 'dev-xxxx'
+        description: "Azure Resource Group that contains the target DNS zone"
+        type: string
+        required: true
+      azure_dns_zone: # example: 'io-poc.pagopa.it'
+        description: "DNS zone for which we are renewing the certificate"
+        type: string
+        required: true
+      key_vault_name: # example: 'io-d-itn-tlscert-kv-01'
+        description: "Name of the Key Vault used to store the certificate"
+        type: string
+        required: true
+      force_renew_cert:
+        description: "Force the certificate renewal"
+        type: boolean
+        required: true
+        default: false
+      alternate_chain_cn: # example: 'CN=DST Root CA X3'
+        description: "Alternate CN for the certificate chain"
+        type: string
+        required: false
+      use_selfhosted_agent:
+        description: Use a self hosted agent to run the workflow.
+        type: boolean
+        required: false
+        default: false
 
 jobs:
 
-  renewalDecision:
+  executeSslCertificateRenewalWorkflow:
 
-    name: Certificate renewal decision
-    runs-on: ${{ env.use_selfhosted_agent && 'self-hosted' || 'ubuntu-24.04' }}
-    environment: dev-ci # Remember to set the correct environment and runners
-    permissions:
-       id-token: write
-    defaults:
-      run:
-        shell: bash
-    env:
-      certificate_expiration_time: "2592000" # Certificate expiration time in seconds, default to 30 days
-    outputs:
-      is_forced_renew: ${{ steps.evaluate_force_renew.outputs.evaluate_force_renew }}
-      require_new_certificate: ${{ steps.fetch_and_check.outputs.require_new_certificate }}
+    name: Execute SSL Certificate Renewal workflow
+    uses: pagopa/io-infra/.github/workflows/ssl_certificate_renewal.yaml@IOPLT-1309-ssl-cert-renewal-template # To be set to main
+    with:
+      # csr_common_name: '' # CSR common name - expecting a string - example: test.io-poc.pagopa.it
+      # azure_subscription_id: '' # Azure Subscription id for all the platform resources - expecting a string - example: 'aaaaaaaa-bbbb-cccc-dddd-fffffffffff'
+      # azure_dns_zone_resource_group: '' # Azure Resource Group that contains the target DNS zone - expecting a string - example: 'dev-xxxx'
+      # azure_dns_zone: '' # DNS zone for which we are renewing the certificate - expecting a string - example: 'io-poc.pagopa.it'
+      # key_vault_name: '' # Name of the Key Vault used to store the certificate - expecting a string - example: 'io-d-itn-tlscert-kv-01'
+      # force_renew_cert: false # Force the certificate renewal - expecting a boolean 
+      # alternate_chain_cn: '' # Alternate CN for the certificate chain - expecting a string - example: 'CN=DST Root CA X3'
+      # use_selfhosted_agent: false # Specify to use a self hosted or a github hosted agent - expecting a boolean - default to true
 
-    steps:
 
-      - name: Evaluate force renew
-        id: evaluate_force_renew # id is mandatory to enable variable output to another job
-        run: |
-            if [ ${{ env.force_renew_cert }} == "true" ]
-              then
-                echo "🔄 Variable force_renew_cert is set to True , skipping the remaining steps and launching the next job"
-                echo "evaluate_force_renew=true" >> $GITHUB_OUTPUT
-            fi
-
-      - name: Azure Login
-        uses: azure/login@6b2456866fc08b011acb422a92a4aa20e2c4de32 # v2.1.0
-        if: env.force_renew_cert == false
-        with:
-          client-id: ${{ secrets.ARM_CLIENT_ID }}
-          tenant-id: ${{ secrets.ARM_TENANT_ID }}
-          subscription-id: ${{ secrets.ARM_SUBSCRIPTION_ID }}
-
-      - name: Fetch and check certificate
-        id: fetch_and_check
-        if: env.force_renew_cert == false
-        run: |
-            string_manipulation_cert_name=${{ env.csr_common_name }}
-            key_vault_cert_name=$(echo "${string_manipulation_cert_name//./-}")
-
-            if ! az keyvault certificate download --vault-name '${{ env.key_vault_name }}' -n "$key_vault_cert_name" -f certificate.pem >/dev/null
-              then
-                echo "❌ The certificate was not found in the selected Key Vault, proceeding to request it from LE"
-                echo "require_new_certificate=true" >> $GITHUB_OUTPUT
-            else
-              if ! openssl x509 -inform pem -checkend '${{ env.certificate_expiration_time }}' -noout -in certificate.pem
-                then
-                  # certificate is expiring or is already expired
-                  echo "do_cleanup=true" >> $GITHUB_ENV
-                  echo "require_new_certificate=true" >> $GITHUB_OUTPUT
-                else
-                  echo "✅ The certificate is not expiring, cleaning up and exiting"
-                  echo "do_cleanup=true" >> $GITHUB_ENV
-              fi
-            fi
-
-      - name: Cleanup
-        if: env.do_cleanup == 'true'
-        run: rm -f certificate.pem
-
-  obtainCertificateFromLE:
-
-    name: Obtain the new certificate from Lets Encrypt
-    runs-on: ${{ env.use_selfhosted_agent && 'self-hosted' || 'ubuntu-24.04' }}
-    environment: dev-ci # Remember to set the correct environment and runners
-    permissions:
-       id-token: write
-    needs: renewalDecision
-    if: needs.renewalDecision.outputs.require_new_certificate == 'true' || needs.renewalDecision.outputs.is_forced_renew == 'true'
-    defaults:
-      run:
-        shell: bash
-        working-directory: .github
-    env:
-      python_version: "3.12.8" # Python version used to run all the scripts
-      le_azure_identity_type: MANAGED_IDENTITY # Type of azure identity to be used from the Python ACME script
-
-    steps:
-
-      - name: Check out the repository to run local scripts
-        uses: actions/checkout@v4
-
-      - name: Azure Login
-        uses: azure/login@6b2456866fc08b011acb422a92a4aa20e2c4de32 # v2.1.0
-        with:
-            client-id: ${{ secrets.ARM_CLIENT_ID }}
-            tenant-id: ${{ secrets.ARM_TENANT_ID }}
-            subscription-id: ${{ secrets.ARM_SUBSCRIPTION_ID }}
-
-      - name: Setup Python version
-        uses: actions/setup-python@v5
-        with:
-          python-version: ${{ env.python_version }}
-      
-      - name: Setup Python requirements
-        run: pip3 install --require-hashes --requirement workflows_additional_files/ssl_certificate_renewal_python_requirements.txt
-
-      - name: Run the python script to generate the CSR
-        run: python3 workflows_additional_files/ssl_certificate_renewal_generate_csr.py --common-name ${{ env.csr_common_name }} --out csr.der --rsa-key-size 2048
-
-      - name: Fetch LE authentication keys from Key Vault
-        run: |
-            az keyvault secret download --vault-name '${{ env.key_vault_name }}' --name le-private-key-json --file private_key.json
-            az keyvault secret download --vault-name '${{ env.key_vault_name }}' --name le-regr-json --file regr.json
-
-      - name: Run the python script to request the new certificate from LE
-        env:
-          AZURE_SUBSCRIPTION_ID: "${{ env.azure_subscription_id }}"
-          AZURE_DNS_ZONE_RESOURCE_GROUP: "${{ env.azure_dns_zone_resource_group }}"
-          AZURE_DNS_ZONE: "${{ env.azure_dns_zone }}"
-          AZURE_IDENTITY_TYPE: "${{ env.le_azure_identity_type }}"
-
-        run: "python3 workflows_additional_files/ssl_certificate_renewal_acme_tiny.py --private-key private_key.json --regr regr.json --csr csr.der --out certificate_chain.pem"
-
-      - name: Select the certificate chain
-        run: |
-            # if we are not searching for a specific chain, exit early
-            if [[ -z "${{ env.alternate_chain_cn }}" ]]; then
-              echo "❌ alternate_chain_cn variable not containing any value, selecting the default certificate chain"
-              mv certificate_chain.pem.0 certificate_chain.pem
-              exit 0
-            fi
-            echo "🔍 Looking for ${{ env.alternate_chain_cn }} root issuer..."
-              for file in certificate_chain.pem.*; do
-                # assuming ordered PEMs in file
-                root_issuer=$(while openssl x509 -inform pem -noout -issuer 2>/dev/null; do :; done < "$file" | tail -n 1)
-                echo "🔍 The root issuer for $file is $root_issuer"
-                # check if the grep result is positive or not
-                if echo "$root_issuer" | sed 's/ *= */=/g' | grep '${{ env.alternate_chain_cn }}' 1>/dev/null
-                  then
-                    echo "✅ Found ${{ env.alternate_chain_cn }} in $file!"
-                    export chain_found="true"
-                    # print some debug info
-                    while openssl x509 -inform pem -noout -issuer 2>/dev/null; do :; done < "$file"
-                    # select this file
-                    mv "$file" certificate_chain.pem
-                    break
-                  else
-                    echo "⏭️ Skipping $file"
-                fi
-              done
-              if [ -z "$chain_found" ]; then
-                # by default the certificate_chain.pem.0 must be the selected certificate in case of no CN matches
-                echo "❌ alternate_chain_cn not found in any file, selecting the default certificate chain"
-                mv certificate_chain.pem.0 certificate_chain.pem
-              fi
-
-      - name: Save the certificate in Key Vault
-        run: |
-            string_manipulation_cert_name=${{ env.csr_common_name }}
-            key_vault_cert_name=$(echo "${string_manipulation_cert_name//./-}")
-            echo "🚀 Creating pfx"
-            openssl pkcs12 -inkey csr.key -in certificate_chain.pem -export -passout pass: -nodes -out certificate_chain.pfx
-            echo "💾 Saving pfx in ${{ env.key_vault_name }} with name $key_vault_cert_name"
-            az keyvault certificate import --vault-name '${{ env.key_vault_name }}' -n "$key_vault_cert_name" --disabled false -f certificate_chain.pfx --password "" --tags Force=${{ env.force_renew_cert }} >/dev/null
-
-      - name: Cleanup every file generated in the workspace
-        run: |
-            rm -f private_key.json
-            rm -f regr.json
-            rm -f csr.der
-            rm -f csr.key
-            rm -f certificate_chain.pem.*
-            rm -f certificate_chain.pem
-            rm -f certificate_chain.pfx
+      # BLOCK TO BE REMOVED
+      csr_common_name: '{{ inputs.csr_common_name }}' # CSR common name - expecting a string - example: test.io-poc.pagopa.it
+      azure_subscription_id: '{{ inputs.azure_subscription_id }}' # Azure Subscription id for all the platform resources - expecting a string - example: 'aaaaaaaa-bbbb-cccc-dddd-fffffffffff'
+      azure_dns_zone_resource_group: '{{ inputs.azure_dns_zone_resource_group }}' # Azure Resource Group that contains the target DNS zone - expecting a string - example: 'dev-xxxx'
+      azure_dns_zone: '{{ inputs.azure_dns_zone }}' # DNS zone for which we are renewing the certificate - expecting a string - example: 'io-poc.pagopa.it'
+      key_vault_name: '{{ inputs.key_vault_name }}' # Name of the Key Vault used to store the certificate - expecting a string - example: 'io-d-itn-tlscert-kv-01'
+      force_renew_cert: '{{ inputs.force_renew_cert }}' # Force the certificate renewal - expecting a boolean 
+      alternate_chain_cn: '{{ inputs.alternate_chain_cn }}' # Alternate CN for the certificate chain - expecting a string - example: 'CN=DST Root CA X3'
+      use_selfhosted_agent: '{{ inputs.use_selfhosted_agent }}' # Specify to use a self hosted or a github hosted agent - expecting a boolean - default to true
