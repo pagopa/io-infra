@@ -14,10 +14,6 @@ on:
         description: "CSR common name" # example: test.io-poc.pagopa.it
         type: string
         required: true
-      azure_subscription_id: # example: 'aaaaaaaa-bbbb-cccc-dddd-fffffffffff'
-        description: "Azure Subscription id for all the platform resources"
-        type: string
-        required: true
       azure_dns_zone_resource_group: # example: 'dev-xxxx'
         description: "Azure Resource Group that contains the target DNS zone"
         type: string
@@ -164,7 +160,7 @@ jobs:
 
       - name: Run the python script to request the new certificate from LE
         env:
-          AZURE_SUBSCRIPTION_ID: "${{ inputs.azure_subscription_id }}"
+          AZURE_SUBSCRIPTION_ID: "${{ secrets.arm-subscription-id }}"
           AZURE_DNS_ZONE_RESOURCE_GROUP: "${{ inputs.azure_dns_zone_resource_group }}"
           AZURE_DNS_ZONE: "${{ inputs.azure_dns_zone }}"
           AZURE_IDENTITY_TYPE: "${{ env.le_azure_identity_type }}"
