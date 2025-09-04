@@ -97,17 +97,6 @@ resource "azurerm_storage_container" "lollipop_assertions_storage_assertions" {
   container_access_type = "private"
 }
 
-resource "azurerm_storage_queue" "lollipop_assertions_storage_revoke_queue" {
-  name                 = "pubkeys-revoke" # This value is used in src/core/99_variables.tf#citizen_auth_revoke_queue_name
-  storage_account_name = module.lollipop_assertions_storage.name
-}
-
-resource "azurerm_storage_queue" "lollipop_assertions_storage_revoke_queue_v2" {
-  name                 = "pubkeys-revoke-v2"
-  storage_account_name = module.lollipop_assertions_storage.name
-}
-
-
 
 ###
 # Immutable LV Audit Log Storage
