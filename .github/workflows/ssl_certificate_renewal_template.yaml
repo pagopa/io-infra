@@ -47,6 +47,7 @@ jobs:
 
     name: Execute SSL Certificate Renewal workflow
     uses: pagopa/io-infra/.github/workflows/ssl_certificate_renewal.yaml@IOPLT-1309-ssl-cert-renewal-template # To be set to main
+    secrets: inherit
     with:
       # csr_common_name: '' # CSR common name - expecting a string - example: test.io-poc.pagopa.it
       # azure_subscription_id: '' # Azure Subscription id for all the platform resources - expecting a string - example: 'aaaaaaaa-bbbb-cccc-dddd-fffffffffff'
