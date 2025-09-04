@@ -311,12 +311,6 @@ resource "azurerm_storage_table" "profile_emails" {
   storage_account_name = module.io_citizen_auth_storage.name
 }
 
-resource "azurerm_storage_queue" "profiles_to_sanitize" {
-  depends_on           = [module.io_citizen_auth_storage, azurerm_private_endpoint.queue]
-  name                 = "profiles-to-sanitize"
-  storage_account_name = module.io_citizen_auth_storage.name
-}
-
 resource "azurerm_storage_queue" "session_notifications_init_recovery" {
   depends_on           = [module.io_citizen_auth_storage, azurerm_private_endpoint.queue]
   name                 = "session-notifications-init-recovery"
