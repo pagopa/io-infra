@@ -67,8 +67,10 @@ jobs:
 
       - name: Evaluate force renew
         id: evaluate_force_renew # id is mandatory to enable variable output to another job
+        env: 
+          force_renew_cert: ${{ inputs.force_renew_cert }}
         run: |
-            if [ ${{ inputs.force_renew_cert }} == "true" ]
+            if [ "$force_renew_cert" == "true" ]
               then
                 echo "🔄 Parameter force_renew_cert is set to True , skipping the remaining steps and launching the next job"
                 echo "evaluate_force_renew=true" >> $GITHUB_OUTPUT
