@@ -115,7 +115,7 @@ data "azurerm_key_vault_secret" "common_MAILUP_SECRET" {
 # UNIQUE EMAIL ENFORCEMENT
 #
 # TODO: Remove when switch to new itn storage account is done
-# This is used only in fn-admin for profile-to-sanitize queue
+
 data "azurerm_storage_account" "citizen_auth_common" {
   name                = "iopweucitizenauthst"
   resource_group_name = "io-p-citizen-auth-data-rg"
