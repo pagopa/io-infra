@@ -60,11 +60,11 @@ jobs:
 
 
       # BLOCK TO BE REMOVED
-      csr_common_name: '{{ inputs.csr_common_name }}' # CSR common name - expecting a string - example: test.io-poc.pagopa.it
-      azure_subscription_id: '{{ inputs.azure_subscription_id }}' # Azure Subscription id for all the platform resources - expecting a string - example: 'aaaaaaaa-bbbb-cccc-dddd-fffffffffff'
-      azure_dns_zone_resource_group: '{{ inputs.azure_dns_zone_resource_group }}' # Azure Resource Group that contains the target DNS zone - expecting a string - example: 'dev-xxxx'
-      azure_dns_zone: '{{ inputs.azure_dns_zone }}' # DNS zone for which we are renewing the certificate - expecting a string - example: 'io-poc.pagopa.it'
-      key_vault_name: '{{ inputs.key_vault_name }}' # Name of the Key Vault used to store the certificate - expecting a string - example: 'io-d-itn-tlscert-kv-01'
-      force_renew_cert: '{{ inputs.force_renew_cert }}' # Force the certificate renewal - expecting a boolean 
-      alternate_chain_cn: '{{ inputs.alternate_chain_cn }}' # Alternate CN for the certificate chain - expecting a string - example: 'CN=DST Root CA X3'
-      use_selfhosted_agent: '{{ inputs.use_selfhosted_agent }}' # Specify to use a self hosted or a github hosted agent - expecting a boolean - default to true
+      csr_common_name: ${{ inputs.csr_common_name }} # CSR common name - expecting a string - example: test.io-poc.pagopa.it
+      azure_subscription_id: ${{ inputs.azure_subscription_id }} # Azure Subscription id for all the platform resources - expecting a string - example: 'aaaaaaaa-bbbb-cccc-dddd-fffffffffff'
+      azure_dns_zone_resource_group: ${{ inputs.azure_dns_zone_resource_group }} # Azure Resource Group that contains the target DNS zone - expecting a string - example: 'dev-xxxx'
+      azure_dns_zone: ${{ inputs.azure_dns_zone }} # DNS zone for which we are renewing the certificate - expecting a string - example: 'io-poc.pagopa.it'
+      key_vault_name: ${{ inputs.key_vault_name }} # Name of the Key Vault used to store the certificate - expecting a string - example: 'io-d-itn-tlscert-kv-01'
+      force_renew_cert: ${{ inputs.force_renew_cert }} # Force the certificate renewal - expecting a boolean 
+      alternate_chain_cn: ${{ inputs.alternate_chain_cn }} # Alternate CN for the certificate chain - expecting a string - example: 'CN=DST Root CA X3'
+      use_selfhosted_agent: ${{ inputs.use_selfhosted_agent }} # Specify to use a self hosted or a github hosted agent - expecting a boolean - default to true
