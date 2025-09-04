@@ -10,10 +10,6 @@ on: # To run the template on a schedule, uncomment the schedule property and set
         description: "CSR common name" # example: test.io-poc.pagopa.it
         type: string
         required: true
-      azure_subscription_id: # example: 'aaaaaaaa-bbbb-cccc-dddd-fffffffffff'
-        description: "Azure Subscription id for all the platform resources"
-        type: string
-        required: true
       azure_dns_zone_resource_group: # example: 'dev-xxxx'
         description: "Azure Resource Group that contains the target DNS zone"
         type: string
