@@ -1,4 +1,6 @@
 name: SSL Certificate Renewal Template  # Change the name with the following naming convention: *DNS Zone* SSL Certificate Renewal
+permissions:
+  contents: read
 
 on: # To run the template on a schedule, uncomment the schedule property and set the desired execution timeframe in crontab syntax. Remember to comment out or to delete the workflow_dispatch property.
   workflow_dispatch:
