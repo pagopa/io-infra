@@ -98,7 +98,7 @@ jobs:
                 echo "❌ The certificate was not found in the selected Key Vault, proceeding to request it from LE"
                 echo "require_new_certificate=true" >> $GITHUB_OUTPUT
             else
-              if ! openssl x509 -inform pem -checkend '${{ env.certificate_expiration_time }}' -noout -in certificate.pem
+              if ! openssl x509 -inform pem -checkend "$certificate_expiration_time" -noout -in certificate.pem
                 then
                   # certificate is expiring or is already expired
                   echo "do_cleanup=true" >> $GITHUB_ENV
@@ -151,7 +151,9 @@ jobs:
         run: pip3 install --require-hashes --requirement workflows_additional_files/ssl_certificate_renewal_python_requirements.txt
 
       - name: Run the python script to generate the CSR
-        run: python3 workflows_additional_files/ssl_certificate_renewal_generate_csr.py --common-name ${{ inputs.csr_common_name }} --out csr.der --rsa-key-size 2048
+        env:
+          csr_common_name: ${{ inputs.csr_common_name }}
+        run: python3 workflows_additional_files/ssl_certificate_renewal_generate_csr.py --common-name "$csr_common_name" --out csr.der --rsa-key-size 2048
 
       - name: Fetch LE authentication keys from Key Vault
         env:
