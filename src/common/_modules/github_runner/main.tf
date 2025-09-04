@@ -43,8 +43,8 @@ module "container_app_github_runner" {
     location                    = azurerm_container_app_environment.github_runner.location
     replica_timeout_in_seconds  = 10800
     polling_interval_in_seconds = 20
-    cpu                         = 1
-    memory                      = "2Gi"
+    cpu                         = 2
+    memory                      = "4Gi"
   }
 
   key_vault = {
