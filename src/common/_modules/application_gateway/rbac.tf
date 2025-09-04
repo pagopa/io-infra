@@ -36,3 +36,25 @@ resource "azurerm_key_vault_access_policy" "app_gateway_policy_ioweb" {
   certificate_permissions = ["Get", "List"]
   storage_permissions     = []
 }
+
+//TODO: add permissions (RBAC) to new IOWEB KV
+
+module "app_gw_ioweb_kv" {
+  source  = "pagopa-dx/azure-role-assignments/azurerm"
+  version = "~> 1.1"
+
+  subscription_id = var.subscription_id
+  principal_id    = azurerm_user_assigned_identity.appgateway.principal_id
+
+  key_vault = [
+    {
+      name                = var.ioweb_kv.name
+      resource_group_name = var.ioweb_kv.resource_group_name
+      has_rbac_support    = true
+      description         = "Allow Application Gateway identity to read certificates from IO Web Key Vault"
+      roles = {
+        certificates = "reader"
+      }
+    }
+  ]
+}
