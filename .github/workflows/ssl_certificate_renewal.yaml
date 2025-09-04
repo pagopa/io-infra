@@ -172,22 +172,24 @@ jobs:
         run: "python3 workflows_additional_files/ssl_certificate_renewal_acme_tiny.py --private-key private_key.json --regr regr.json --csr csr.der --out certificate_chain.pem"
 
       - name: Select the certificate chain
+        env:
+          alternate_chain_cn: ${{ inputs.alternate_chain_cn }}
         run: |
             # if we are not searching for a specific chain, exit early
-            if [[ -z "${{ inputs.alternate_chain_cn }}" ]]; then
+            if [[ -z "$alternate_chain_cn" ]]; then
               echo "❌ alternate_chain_cn input not containing any value, selecting the default certificate chain"
               mv certificate_chain.pem.0 certificate_chain.pem
               exit 0
             fi
-            echo "🔍 Looking for ${{ inputs.alternate_chain_cn }} root issuer..."
+            echo "🔍 Looking for $alternate_chain_cn root issuer..."
               for file in certificate_chain.pem.*; do
                 # assuming ordered PEMs in file
                 root_issuer=$(while openssl x509 -inform pem -noout -issuer 2>/dev/null; do :; done < "$file" | tail -n 1)
                 echo "🔍 The root issuer for $file is $root_issuer"
                 # check if the grep result is positive or not
-                if echo "$root_issuer" | sed 's/ *= */=/g' | grep '${{ inputs.alternate_chain_cn }}' 1>/dev/null
+                if echo "$root_issuer" | sed 's/ *= */=/g' | grep "$alternate_chain_cn" 1>/dev/null
                   then
-                    echo "✅ Found ${{ inputs.alternate_chain_cn }} in $file!"
+                    echo "✅ Found $alternate_chain_cn in $file!"
                     export chain_found="true"
                     # print some debug info
                     while openssl x509 -inform pem -noout -issuer 2>/dev/null; do :; done < "$file"
