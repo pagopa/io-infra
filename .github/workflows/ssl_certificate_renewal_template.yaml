@@ -1,6 +1,4 @@
 name: SSL Certificate Renewal Template  # Change the name with the following naming convention: *DNS Zone* SSL Certificate Renewal
-permissions:
-  contents: read
 
 on: # To run the template on a schedule, uncomment the schedule property and set the desired execution timeframe in crontab syntax. Remember to comment out or to delete the workflow_dispatch property.
   workflow_dispatch:
@@ -50,6 +48,8 @@ jobs:
     name: Execute SSL Certificate Renewal workflow
     uses: pagopa/io-infra/.github/workflows/ssl_certificate_renewal.yaml@IOPLT-1309-ssl-cert-renewal-template # To be set to main
     secrets: inherit
+    permissions:
+      id-token: write
     with:
       # csr_common_name: '' # CSR common name - expecting a string - example: test.io-poc.pagopa.it
       # azure_subscription_id: '' # Azure Subscription id for all the platform resources - expecting a string - example: 'aaaaaaaa-bbbb-cccc-dddd-fffffffffff'
