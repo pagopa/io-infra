@@ -116,12 +116,17 @@ resource "azurerm_cdn_frontdoor_rule" "portal_cdn_rule_global" {
     response_header_action {
       header_name   = "Content-Security-Policy"
       header_action = "Append"
-      value         = "script-src 'self' 'unsafe-inline'; worker-src 'none'; font-src data: 'self'; object-src 'none';"
+      value         = "script-src 'self' 'unsafe-inline'; worker-src 'none'; font-src data: 'self'; object-src 'none'; frame-ancestors 'none';"
     }
     response_header_action {
       header_name   = "Cache-Control"
       header_action = "Overwrite"
       value         = "no-cache"
+    }
+    response_header_action {
+      header_name   = "X-Frame-Options"
+      header_action = "Overwrite"
+      value         = "DENY"
     }
   }
 }

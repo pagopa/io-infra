@@ -145,6 +145,11 @@ variable "cidr_subnet_session_manager" {
   description = "Session manager app service address space."
 }
 
+variable "cidr_subnet_session_manager_bis" {
+  type        = list(string)
+  description = "Session manager second instance app service address space."
+}
+
 variable "session_manager_plan_sku_name" {
   description = "App service plan sku name"
   type        = string
