@@ -208,12 +208,13 @@ jobs:
         env:
           string_manipulation_cert_name: ${{ inputs.csr_common_name }}
           key_vault_name: ${{ inputs.key_vault_name }}
+          force_renew_cert: ${{ inputs.force_renew_cert }}
         run: |
             key_vault_cert_name=$(echo "${string_manipulation_cert_name//./-}")
             echo "🚀 Creating pfx"
             openssl pkcs12 -inkey csr.key -in certificate_chain.pem -export -passout pass: -nodes -out certificate_chain.pfx
             echo "💾 Saving pfx in $key_vault_name with name $key_vault_cert_name"
-            az keyvault certificate import --vault-name "$key_vault_name" -n "$key_vault_cert_name" --disabled false -f certificate_chain.pfx --password "" --tags Force=${{ inputs.force_renew_cert }} >/dev/null
+            az keyvault certificate import --vault-name "$key_vault_name" -n "$key_vault_cert_name" --disabled false -f certificate_chain.pfx --password "" --tags Force="$force_renew_cert" >/dev/null
 
       - name: Cleanup every file generated in the workspace
         run: |
