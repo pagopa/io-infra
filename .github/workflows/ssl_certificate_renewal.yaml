@@ -145,8 +145,8 @@ jobs:
       
       - name: Setup Python requirements
         run: |
-            sudo apt-get update
-            sudo apt-get install -y libffi-dev
+            apt-get update
+            apt-get install -y libffi-dev
             pip3 install --require-hashes --requirement workflows_additional_files/ssl_certificate_renewal_python_requirements.txt
 
       - name: Run the python script to generate the CSR
