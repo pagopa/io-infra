@@ -17,6 +17,7 @@ import azure.identity
 import azure.mgmt.dns
 import cryptography
 import jwcrypto.jwk
+from jwcrypto.jwk import JWK
 
 DEFAULT_DIRECTORY_URL = "https://acme-v02.api.letsencrypt.org/directory"
 DEFAULT_DNS_TTL_SEC = 30
@@ -219,9 +220,9 @@ def get_crt(private_key, regr, csr, directory_url, out):
     )
     log.info("Private key loaded")
 
-    if jwk.key_type == "RSA":
+    if jwk.key_type == JWK.KEY_TYPES.RSA:
         alg = "RS256"
-    elif jwk.key_type == "EC":
+    elif jwk.key_type == JWK.KEY_TYPES.EC:
         alg = "ES256"
     else:
         raise ValueError("Unknown JWK key_type: {}".format(jwk.key_type))
