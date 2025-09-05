@@ -144,7 +144,10 @@ jobs:
           python-version: ${{ env.python_version }}
       
       - name: Setup Python requirements
-        run: pip3 install --require-hashes --requirement workflows_additional_files/ssl_certificate_renewal_python_requirements.txt
+        run: |
+            sudo apt-get update
+            sudo apt-get install -y libffi-dev
+            pip3 install --require-hashes --requirement workflows_additional_files/ssl_certificate_renewal_python_requirements.txt
 
       - name: Run the python script to generate the CSR
         env:
