@@ -61,10 +61,10 @@ jobs:
 
     steps:
 
-      - name: Install system dependencies
-        run: |
-          #sudo apt-get update
-          apt-get install -y libffi-dev
+#      - name: Install system dependencies
+#        run: |
+#          #sudo apt-get update
+#          apt-get install -y libffi-dev
 
       - name: Evaluate force renew
         id: evaluate_force_renew # id is mandatory to enable variable output to another job
@@ -150,6 +150,7 @@ jobs:
       
       - name: Setup Python requirements
         run: |
+            pip3 install cffi
             pip3 install --require-hashes --requirement workflows_additional_files/ssl_certificate_renewal_python_requirements.txt
 
       - name: Run the python script to generate the CSR
