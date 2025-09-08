@@ -35,6 +35,10 @@ on:
         description: "Alternate CN for the certificate chain"
         type: string
         required: false
+      environment: # example: 'dev-ci'
+        description: Environment used to run the Github workflow
+        type: string
+        required: true
       use_selfhosted_agent:
         description: Use a self hosted agent to run the workflow.
         type: boolean
@@ -47,7 +51,7 @@ jobs:
 
     name: Certificate renewal decision
     runs-on: ${{ inputs.use_selfhosted_agent && 'self-hosted' || 'ubuntu-24.04' }}
-    environment: dev-ci
+    environment: ${{ inputs.environment }}
     permissions:
        id-token: write
     defaults:
@@ -113,7 +117,7 @@ jobs:
 
     name: Obtain the new certificate from Lets Encrypt
     runs-on: ${{ inputs.use_selfhosted_agent && 'self-hosted' || 'ubuntu-24.04' }}
-    environment: dev-ci
+    environment: ${{ inputs.environment }}
     permissions:
        id-token: write
     needs: renewalDecision
