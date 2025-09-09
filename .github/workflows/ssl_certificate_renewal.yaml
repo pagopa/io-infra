@@ -128,12 +128,9 @@ jobs:
         working-directory: .github
     env:
       python_version: "3.12.8" # Python version used to run all the scripts
-      le_azure_identity_type: MANAGED_IDENTITY # Type of azure identity to be used from the Python ACME script
+      le_azure_identity_type: MANAGED_IDENTITY # Type of azure identity used by the Python ACME script
 
     steps:
-
-      - name: Check out the repository to run local scripts
-        uses: actions/checkout@v4
 
       - name: Azure Login
         uses: azure/login@6b2456866fc08b011acb422a92a4aa20e2c4de32 # v2.1.0
@@ -142,19 +139,6 @@ jobs:
           tenant-id: ${{ secrets.arm-tenant-id }}
           subscription-id: ${{ secrets.arm-subscription-id }}
 
-      - name: Setup Python version
-        uses: actions/setup-python@v5
-        with:
-          python-version: ${{ env.python_version }}
-      
-      - name: Setup Python requirements
-        run: pip3 install --require-hashes --requirement workflows_additional_files/ssl_certificate_renewal_python_requirements.txt
-
-      - name: Run the python script to generate the CSR
-        env:
-          csr_common_name: ${{ inputs.csr_common_name }}
-        run: python3 workflows_additional_files/ssl_certificate_renewal_generate_csr.py --common-name "$csr_common_name" --out csr.der --rsa-key-size 2048
-
       - name: Fetch LE authentication keys from Key Vault
         env:
           key_vault_name: ${{ inputs.key_vault_name }}
@@ -162,14 +146,15 @@ jobs:
             az keyvault secret download --vault-name "$key_vault_name" --name le-private-key-json --file private_key.json
             az keyvault secret download --vault-name "$key_vault_name" --name le-regr-json --file regr.json
 
-      - name: Run the python script to request the new certificate from LE
-        env:
-          AZURE_SUBSCRIPTION_ID: "${{ secrets.arm-subscription-id }}"
-          AZURE_DNS_ZONE_RESOURCE_GROUP: "${{ inputs.azure_dns_zone_resource_group }}"
-          AZURE_DNS_ZONE: "${{ inputs.azure_dns_zone }}"
-          AZURE_IDENTITY_TYPE: "${{ env.le_azure_identity_type }}"
-
-        run: "python3 workflows_additional_files/ssl_certificate_renewal_acme_tiny.py --private-key private_key.json --regr regr.json --csr csr.der --out certificate_chain.pem"
+      - name: Run LE renew SSL Certificate python action
+        uses: pagopa/io-infra/.github/actions/le-renew-ssl-certificate-python@IOPLT-1309-ssl-cert-renewal-template
+        with:
+          csr_common_name: ${{ inputs.csr_common_name }}
+          python_version: ${{ env.python_version }}
+          arm_subscription_id: ${{ secrets.arm-subscription-id }}
+          azure_dns_zone_resource_group: ${{ inputs.azure_dns_zone_resource_group }}
+          azure_dns_zone: ${{ inputs.azure_dns_zone }}
+          le_azure_identity_type: ${{ env.le_azure_identity_type }}
 
       - name: Select the certificate chain
         env:
