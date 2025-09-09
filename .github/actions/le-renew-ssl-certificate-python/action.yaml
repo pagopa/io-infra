@@ -33,10 +33,6 @@ runs:
         sparse-checkout: .github/actions/le-renew-ssl-certificate-python
         sparse-checkout-cone-mode: false
         path: le-renew-ssl-certificate-python
-    
-    - name: LS for DEBUG
-      shell: bash
-      run: ls -lah le-renew-ssl-certificate-python/.github/actions/le-renew-ssl-certificate-python
 
     - name: Setup Python version
       uses: actions/setup-python@v5
@@ -46,14 +42,14 @@ runs:
     - name: Setup Python requirements
       shell: bash
 
-      run: pip3 install --require-hashes --requirement le-renew-ssl-certificate-python/le_renew_ssl_certificate_python_requirements.txt
+      run: pip3 install --require-hashes --requirement le-renew-ssl-certificate-python/.github/actions/le-renew-ssl-certificate-python/le_renew_ssl_certificate_python_requirements.txt
 
     - name: Run the python script to generate the CSR
       shell: bash
       env:
         csr_common_name: ${{ inputs.csr_common_name }}
 
-      run: python3 le-renew-ssl-certificate-python/le_renew_ssl_certificate_generate_csr.py --common-name "$csr_common_name" --out csr.der --rsa-key-size 2048
+      run: python3 le-renew-ssl-certificate-python/.github/actions/le-renew-ssl-certificate-python/le_renew_ssl_certificate_generate_csr.py --common-name "$csr_common_name" --out csr.der --rsa-key-size 2048
 
     - name: Run the python script to request the new certificate from LE
       shell: bash
@@ -63,4 +59,4 @@ runs:
         AZURE_DNS_ZONE: ${{ inputs.azure_dns_zone }}
         AZURE_IDENTITY_TYPE: ${{ inputs.le_azure_identity_type }}
 
-      run: "python3 le-renew-ssl-certificate-python/le_renew_ssl_certificate_acme_tiny.py --private-key private_key.json --regr regr.json --csr csr.der --out certificate_chain.pem"
+      run: "python3 le-renew-ssl-certificate-python/.github/actions/le-renew-ssl-certificate-python/le_renew_ssl_certificate_acme_tiny.py --private-key private_key.json --regr regr.json --csr csr.der --out certificate_chain.pem"
