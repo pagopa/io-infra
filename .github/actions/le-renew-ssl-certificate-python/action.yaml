@@ -27,9 +27,9 @@ runs:
 
     - uses: actions/checkout@v5
       with:
-        repository: pagopa/io-infra/.github/actions/le-renew-ssl-certificate-python
+        repository: pagopa/io-infra
         ref: IOPLT-1309-ssl-cert-renewal-template # to be changed to main
-        path: le-renew-ssl-certificate-python
+        path: .github/actions/le-renew-ssl-certificate-python
 
     - name: Setup Python version
       uses: actions/setup-python@v5
