@@ -1,5 +1,5 @@
 name: 'Lets Encrypt renew SSL certificate'
-description: 'Renew Lets Encrypt SSL certificate using python scripts'
+description: 'Renew Lets Encrypt SSL certificates using python scripts'
 
 inputs:
   csr_common_name:
@@ -27,7 +27,7 @@ runs:
 
     - uses: actions/checkout@v5
       with:
-        repository: pagopa/io-infra
+        repository: pagopa/io-infra # to be changed to dx
         ref: IOPLT-1309-ssl-cert-renewal-template # to be changed to main
         fetch-depth: 0
         sparse-checkout: .github/actions/le-renew-ssl-certificate-python
