@@ -34,7 +34,7 @@ runs:
     
     - name: LS for DEBUG
       shell: bash
-      run: ls -lah
+      run: ls -lah le-renew-ssl-certificate-python
 
     - name: Setup Python version
       uses: actions/setup-python@v5
