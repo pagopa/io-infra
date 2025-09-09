@@ -31,6 +31,10 @@ runs:
         ref: IOPLT-1309-ssl-cert-renewal-template # to be changed to main
         sparse-checkout: .github/actions/le-renew-ssl-certificate-python
         path: le-renew-ssl-certificate-python
+    
+    - name: LS for DEBUG
+      shell: bash
+      run: ls -lah
 
     - name: Setup Python version
       uses: actions/setup-python@v5
