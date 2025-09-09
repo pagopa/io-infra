@@ -146,7 +146,7 @@ jobs:
             az keyvault secret download --vault-name "$key_vault_name" --name le-regr-json --file regr.json
 
       - name: Run LE renew SSL Certificate python action
-        uses: pagopa/io-infra/.github/actions/le-renew-ssl-certificate-python@IOPLT-1309-ssl-cert-renewal-template
+        uses: pagopa/io-infra/.github/actions/le-renew-ssl-certificate-python@IOPLT-1309-ssl-cert-renewal-template # to be changed to dx
         with:
           csr_common_name: ${{ inputs.csr_common_name }}
           python_version: ${{ env.python_version }}
