@@ -176,6 +176,8 @@ locals {
     # E2BIG errors on linux spawn syscall when using PM2
     TEST_LOGIN_FISCAL_CODES = module.tests.users.light
     TEST_LOGIN_PASSWORD     = data.azurerm_key_vault_secret.session_manager_TEST_LOGIN_PASSWORD.value
+    // base64 encode of the compressed string (using gzip algorithm)
+    TEST_LOGIN_FISCAL_CODES_COMPRESSED = base64gzip(module.tests.users.all)
 
 
     BACKEND_HOST = "https://${trimsuffix(data.azurerm_dns_a_record.api_app_io_pagopa_it.fqdn, ".")}"
@@ -237,6 +239,13 @@ locals {
     SERVICE_BUS_EVENTS_USERS = data.azurerm_key_vault_secret.service_bus_events_beta_testers.value
 
   }
+}
+
+locals {
+  PM2_E2BIG_THRESHOLD = 32000
+  # This check prevents changes that would crash the app service that
+  # uses PM2 under the hood
+  VALIDATION_CHECK_E2BIG = length(local.app_settings_common.TEST_LOGIN_FISCAL_CODES) < local.PM2_E2BIG_THRESHOLD && length(local.app_settings_common.TEST_LOGIN_FISCAL_CODES_COMPRESSED) < local.PM2_E2BIG_THRESHOLD ? "" : file("[ERROR] Validation check failed for test users length.")
 }
 
 #################################
