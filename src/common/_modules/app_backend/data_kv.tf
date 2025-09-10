@@ -10,6 +10,11 @@ data "azurerm_key_vault_secret" "app_backend_CGN_API_KEY" {
   key_vault_id = var.key_vault_common.id
 }
 
+data "azurerm_key_vault_secret" "app_backend_CDC_SUPPORT_API_KEY" {
+  name         = "funccdcsupport-KEY-APPBACKEND"
+  key_vault_id = var.key_vault_common.id
+}
+
 data "azurerm_key_vault_secret" "app_backend_IO_SIGN_API_KEY" {
   name         = "funciosign-KEY-APPBACKEND"
   key_vault_id = var.key_vault_common.id
