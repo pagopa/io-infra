@@ -172,10 +172,7 @@ locals {
     IOLOGIN_CANARY_USERS_REGEX = "^([(0-9)|(a-f)|(A-F)]{63}0)$"
 
     # Test Login config
-    # TODO: change this variable to a list of regex to reduce characters and fix
-    # E2BIG errors on linux spawn syscall when using PM2
-    TEST_LOGIN_FISCAL_CODES = module.tests.users.light
-    TEST_LOGIN_PASSWORD     = data.azurerm_key_vault_secret.session_manager_TEST_LOGIN_PASSWORD.value
+    TEST_LOGIN_PASSWORD = data.azurerm_key_vault_secret.session_manager_TEST_LOGIN_PASSWORD.value
     // base64 encode of the compressed string (using gzip algorithm)
     TEST_LOGIN_FISCAL_CODES_COMPRESSED = base64gzip(module.tests.users.all)
 
