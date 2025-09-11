@@ -162,7 +162,7 @@ jobs:
           --account-secret le-regr-json \
           --key-vault-uri "https://$key_vault_name.vault.azure.net/" \
           --certificate "$key_vault_cert_name" \
-          --server https://acme-v02.api.letsencrypt.org/directory \
+          --server "https://acme-v02.api.letsencrypt.org/directory" \
           --subject "$csr_common_name" \
           --azure-dns-zone "/subscriptions/$subscription_id/resourceGroups/$dns_zone_resource_group/providers/Microsoft.Network/dnszones/$dns_zone" \
           --force-order \
