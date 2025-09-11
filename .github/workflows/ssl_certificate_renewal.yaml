@@ -157,16 +157,18 @@ jobs:
         run: |
           key_vault_cert_name=$(echo "${csr_common_name//./-}")
 
-          ./az_acme_cli/az-acme order \
-          --dns-provider Azure \
-          --account-secret le-private-key-json \
-          --key-vault-uri "https://$key_vault_name.vault.azure.net/" \
-          --certificate "$key_vault_cert_name" \
-          --server https://acme-v02.api.letsencrypt.org/directory \
-          --subject "$csr_common_name" \
-          --azure-dns-zone "/subscriptions/$subscription_id/resourceGroups/$dns_zone_resource_group/providers/Microsoft.Network/dnszones/$dns_zone" \
-          --force-order \
-          --verbose
+          # ./az_acme_cli/az-acme order \
+          # --dns-provider Azure \
+          # --account-secret le-regr-json \
+          # --key-vault-uri "https://$key_vault_name.vault.azure.net/" \
+          # --certificate "$key_vault_cert_name" \
+          # --server https://acme-v02.api.letsencrypt.org/directory \
+          # --subject "$csr_common_name" \
+          # --azure-dns-zone "/subscriptions/$subscription_id/resourceGroups/$dns_zone_resource_group/providers/Microsoft.Network/dnszones/$dns_zone" \
+          # --force-order \
+          # --verbose
+
+          ./az_acme_cli/az-acme help order
 
       # - name: Cleanup every file generated in the workspace
       #   run: |
