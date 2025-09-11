@@ -40,8 +40,6 @@ on: # To run the template on a schedule, uncomment the schedule property and set
         type: boolean
         required: false
         default: false
-    
-  push:
 
 jobs:
 
