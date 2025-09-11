@@ -1,4 +1,4 @@
-name: SSL Certificate Renewal
+name: SSL Certificate Renewal AZ ACME
 
 on:
   workflow_call:
