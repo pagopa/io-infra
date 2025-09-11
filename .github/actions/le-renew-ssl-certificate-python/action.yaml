@@ -52,5 +52,6 @@ runs:
         AZURE_DNS_ZONE_RESOURCE_GROUP: ${{ inputs.azure_dns_zone_resource_group }}
         AZURE_DNS_ZONE: ${{ inputs.azure_dns_zone }}
         AZURE_IDENTITY_TYPE: ${{ inputs.le_azure_identity_type }}
+        github_action_path: ${{ github.action_path }}
 
       run: python3 "$github_action_path/le_renew_ssl_certificate_acme_tiny.py" --private-key private_key.json --regr regr.json --csr csr.der --out certificate_chain.pem
