@@ -156,7 +156,7 @@ jobs:
           dns_zone: ${{ inputs.azure_dns_zone }}
 
         run: |
-          key_vault_cert_name=$(echo "${string_manipulation_cert_name//./-}")
+          key_vault_cert_name=$(echo "${csr_common_name//./-}")
 
           ./az_acme_cli/az-acme order \
           --dns-provider Azure \
