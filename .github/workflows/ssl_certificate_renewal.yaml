@@ -1,0 +1,178 @@
+name: SSL Certificate Renewal
+
+on:
+  workflow_call:
+    secrets:
+      arm-client-id:
+        required: true
+      arm-tenant-id:
+        required: true
+      arm-subscription-id:
+        required: true
+    inputs:
+      csr_common_name:
+        description: "CSR common name ( example: 'test.io-poc.pagopa.it' )"
+        type: string
+        required: true
+      azure_dns_zone_resource_group:
+        description: "Azure Resource Group that contains the target DNS zone ( example: 'io-p-xxxx' )"
+        type: string
+        required: true
+      azure_dns_zone:
+        description: "DNS zone for which we are renewing the certificate ( example: 'io.pagopa.it' )"
+        type: string
+        required: true
+      key_vault_name:
+        description: "Name of the Key Vault used to store the certificate ( example: 'io-p-itn-tlscert-kv-01' )"
+        type: string
+        required: true
+      force_renew_cert:
+        description: "Force the certificate renewal"
+        type: boolean
+        required: true
+        default: false
+      environment:
+        description: "Environment used to run the Github workflow ( example: 'prod-ci' )"
+        type: string
+        required: true
+      use_selfhosted_agent:
+        description: "Use a self hosted agent to run the workflow."
+        type: boolean
+        required: false
+        default: false
+
+jobs:
+
+  renewalDecision:
+
+    name: Certificate renewal decision
+    runs-on: ${{ inputs.use_selfhosted_agent && 'self-hosted' || 'ubuntu-24.04' }}
+    environment: ${{ inputs.environment }}
+    permissions:
+       id-token: write
+    defaults:
+      run:
+        shell: bash
+    env:
+      certificate_expiration_time: "2592000" # Certificate expiration time in seconds, default to 30 days
+    outputs:
+      is_forced_renew: ${{ steps.evaluate_force_renew.outputs.evaluate_force_renew }}
+      require_new_certificate: ${{ steps.fetch_and_check.outputs.require_new_certificate }}
+
+    steps:
+
+      - name: Evaluate force renew
+        id: evaluate_force_renew # id is mandatory to enable variable output to another job
+        env: 
+          force_renew_cert: ${{ inputs.force_renew_cert }}
+        run: |
+            if [ "$force_renew_cert" == "true" ]
+              then
+                echo "🔄 Parameter force_renew_cert is set to True , skipping the remaining steps and launching the next job"
+                echo "evaluate_force_renew=true" >> $GITHUB_OUTPUT
+            fi
+      - name: Azure Login
+        uses: azure/login@6b2456866fc08b011acb422a92a4aa20e2c4de32 # v2.1.0
+        if: inputs.force_renew_cert == false
+        with:
+          client-id: ${{ secrets.arm-client-id }}
+          tenant-id: ${{ secrets.arm-tenant-id }}
+          subscription-id: ${{ secrets.arm-subscription-id }}
+
+      - name: Fetch and check certificate
+        id: fetch_and_check
+        if: inputs.force_renew_cert == false
+        env:
+          string_manipulation_cert_name: ${{ inputs.csr_common_name }}
+          key_vault_name: ${{ inputs.key_vault_name }}
+        run: |
+            key_vault_cert_name=$(echo "${string_manipulation_cert_name//./-}")
+            if ! az keyvault certificate download --vault-name "$key_vault_name" -n "$key_vault_cert_name" -f certificate.pem >/dev/null
+              then
+                echo "❌ The certificate was not found in the selected Key Vault, proceeding to request it from LE"
+                echo "require_new_certificate=true" >> $GITHUB_OUTPUT
+            else
+              if ! openssl x509 -inform pem -checkend "$certificate_expiration_time" -noout -in certificate.pem
+                then
+                  # certificate is expiring or is already expired
+                  echo "do_cleanup=true" >> $GITHUB_ENV
+                  echo "require_new_certificate=true" >> $GITHUB_OUTPUT
+                else
+                  echo "✅ The certificate is not expiring, cleaning up and exiting"
+                  echo "do_cleanup=true" >> $GITHUB_ENV
+              fi
+            fi
+      - name: Cleanup
+        if: env.do_cleanup == 'true'
+        run: rm -f certificate.pem
+
+  obtainCertificateFromLE:
+
+    name: Obtain the new certificate from Lets Encrypt
+    runs-on: ${{ inputs.use_selfhosted_agent && 'self-hosted' || 'ubuntu-24.04' }}
+    environment: ${{ inputs.environment }}
+    permissions:
+       id-token: write
+    needs: renewalDecision
+    if: needs.renewalDecision.outputs.require_new_certificate == 'true' || needs.renewalDecision.outputs.is_forced_renew == 'true'
+    defaults:
+      run:
+        shell: bash
+    # env:
+    #   python_version: "3.12.8" # Python version used to run all the scripts
+    #   le_azure_identity_type: MANAGED_IDENTITY # Type of azure identity used by the Python ACME script
+
+    steps:
+
+      - name: Azure Login
+        uses: azure/login@6b2456866fc08b011acb422a92a4aa20e2c4de32 # v2.1.0
+        with:
+          client-id: ${{ secrets.arm-client-id }}
+          tenant-id: ${{ secrets.arm-tenant-id }}
+          subscription-id: ${{ secrets.arm-subscription-id }}
+
+      # - name: Fetch LE authentication keys from Key Vault
+      #   env:
+      #     key_vault_name: ${{ inputs.key_vault_name }}
+      #   run: |
+      #       az keyvault secret download --vault-name "$key_vault_name" --name le-private-key-json --file private_key.json
+      #       az keyvault secret download --vault-name "$key_vault_name" --name le-regr-json --file regr.json
+
+      - name: Download and unzip AZ ACME CLI
+        env:
+          cli_version: "v0.5"
+        run: |
+            wget https://github.com/az-acme/az-acme-cli/releases/download/$cli_version/cli-$cli_version-linux-x64.tar.gz
+            tar xzpf cli-$cli_version-linux-x64.tar.gz
+            mv cli-$cli_version-linux-x64 az_acme_cli
+
+      - name: Request and save the new certificate
+        env:
+          csr_common_name: ${{ inputs.csr_common_name }}
+          key_vault_name: ${{ inputs.key_vault_name }}
+          force_renew_cert: ${{ inputs.force_renew_cert }}
+          subscription_id: ${{ secrets.arm-subscription-id }}
+          resource_group: ${{ inputs.azure_dns_zone_resource_group }}
+          dns_zone: ${{ inputs.azure_dns_zone }}
+
+        run: |
+          key_vault_cert_name=$(echo "${string_manipulation_cert_name//./-}")
+
+          ./az_acme_cli/az-acme order \
+          --key-vault-uri "https://$key_vault_name.vault.azure.net/" \
+          --certificate "$key_vault_cert_name" \
+          --server https://acme-v02.api.letsencrypt.org/directory \
+          --subject "$csr_common_name" \
+          --account-secret le-regr-json \
+          --azure-dns-zone "/subscriptions/$subscription_id/resourceGroups/$resource_group/providers/Microsoft.Network/dnszones/$dns_zone" \
+          --verbose
+
+      # - name: Cleanup every file generated in the workspace
+      #   run: |
+      #       rm -f private_key.json
+      #       rm -f regr.json
+      #       rm -f csr.der
+      #       rm -f csr.key
+      #       rm -f certificate_chain.pem.*
+      #       rm -f certificate_chain.pem
+      #       rm -f certificate_chain.pfx
