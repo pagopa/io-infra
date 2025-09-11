@@ -71,6 +71,7 @@ jobs:
                 echo "🔄 Parameter force_renew_cert is set to True , skipping the remaining steps and launching the next job"
                 echo "evaluate_force_renew=true" >> $GITHUB_OUTPUT
             fi
+
       - name: Azure Login
         uses: azure/login@6b2456866fc08b011acb422a92a4aa20e2c4de32 # v2.1.0
         if: inputs.force_renew_cert == false
@@ -102,6 +103,7 @@ jobs:
                   echo "do_cleanup=true" >> $GITHUB_ENV
               fi
             fi
+
       - name: Cleanup
         if: env.do_cleanup == 'true'
         run: rm -f certificate.pem
@@ -118,9 +120,6 @@ jobs:
     defaults:
       run:
         shell: bash
-    # env:
-    #   python_version: "3.12.8" # Python version used to run all the scripts
-    #   le_azure_identity_type: MANAGED_IDENTITY # Type of azure identity used by the Python ACME script
 
     steps:
 
@@ -152,7 +151,7 @@ jobs:
           key_vault_name: ${{ inputs.key_vault_name }}
           force_renew_cert: ${{ inputs.force_renew_cert }}
           subscription_id: ${{ secrets.arm-subscription-id }}
-          resource_group: ${{ inputs.azure_dns_zone_resource_group }}
+          dns_zone_resource_group: ${{ inputs.azure_dns_zone_resource_group }}
           dns_zone: ${{ inputs.azure_dns_zone }}
 
         run: |
@@ -165,7 +164,8 @@ jobs:
           --certificate "$key_vault_cert_name" \
           --server https://acme-v02.api.letsencrypt.org/directory \
           --subject "$csr_common_name" \
-          --azure-dns-zone "/subscriptions/$subscription_id/resourceGroups/$resource_group/providers/Microsoft.Network/dnszones/$dns_zone" \
+          --azure-dns-zone "/subscriptions/$subscription_id/resourceGroups/$dns_zone_resource_group/providers/Microsoft.Network/dnszones/$dns_zone" \
+          --force-order \
           --verbose
 
       # - name: Cleanup every file generated in the workspace
