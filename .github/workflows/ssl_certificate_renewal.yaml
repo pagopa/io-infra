@@ -159,11 +159,12 @@ jobs:
           key_vault_cert_name=$(echo "${string_manipulation_cert_name//./-}")
 
           ./az_acme_cli/az-acme order \
+          --dns-provider Azure \
+          --account-secret le-regr-json \
           --key-vault-uri "https://$key_vault_name.vault.azure.net/" \
           --certificate "$key_vault_cert_name" \
           --server https://acme-v02.api.letsencrypt.org/directory \
           --subject "$csr_common_name" \
-          --account-secret le-regr-json \
           --azure-dns-zone "/subscriptions/$subscription_id/resourceGroups/$resource_group/providers/Microsoft.Network/dnszones/$dns_zone" \
           --verbose
 
