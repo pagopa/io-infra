@@ -42,7 +42,7 @@ runs:
     - name: Setup Python requirements
       shell: bash
 
-      run: pip3 install --require-hashes --requirement le-renew-ssl-certificate-python/.github/actions/le-renew-ssl-certificate-python/le_renew_ssl_certificate_python_requirements.txt
+      run: pip3 install --require-hashes --requirement ${{ github.action_path }}/le_renew_ssl_certificate_python_requirements.txt
 
     - name: Run the python script to generate the CSR
       shell: bash
