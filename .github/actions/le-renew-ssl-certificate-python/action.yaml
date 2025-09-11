@@ -50,4 +50,4 @@ runs:
         AZURE_DNS_ZONE: ${{ inputs.azure_dns_zone }}
         AZURE_IDENTITY_TYPE: ${{ inputs.le_azure_identity_type }}
 
-      run: "python3 ${{ github.action_path }}/le_renew_ssl_certificate_acme_tiny.py --private-key private_key.json --regr regr.json --csr csr.der --out certificate_chain.pem"
+      run: python3 ${{ github.action_path }}/le_renew_ssl_certificate_acme_tiny.py --private-key private_key.json --regr regr.json --csr csr.der --out certificate_chain.pem
