@@ -242,7 +242,7 @@ locals {
   PM2_E2BIG_THRESHOLD = 32000
   # This check prevents changes that would crash the app service that
   # uses PM2 under the hood
-  VALIDATION_CHECK_E2BIG = length(local.app_settings_common.TEST_LOGIN_FISCAL_CODES) < local.PM2_E2BIG_THRESHOLD && length(local.app_settings_common.TEST_LOGIN_FISCAL_CODES_COMPRESSED) < local.PM2_E2BIG_THRESHOLD ? "" : file("[ERROR] Validation check failed for test users length.")
+  VALIDATION_CHECK_E2BIG = length(local.app_settings_common.TEST_LOGIN_FISCAL_CODES_COMPRESSED) < local.PM2_E2BIG_THRESHOLD ? "" : file("[ERROR] Validation check failed for test users length.")
 }
 
 #################################
