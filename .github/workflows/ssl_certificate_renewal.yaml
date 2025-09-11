@@ -159,7 +159,7 @@ jobs:
 
           ./az_acme_cli/az-acme order \
           --dns-provider Azure \
-          --account-secret le-regr-json \
+          --account-secret le-private-key-json \
           --key-vault-uri "https://$key_vault_name.vault.azure.net/" \
           --certificate "$key_vault_cert_name" \
           --server https://acme-v02.api.letsencrypt.org/directory \
