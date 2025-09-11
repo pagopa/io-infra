@@ -49,7 +49,7 @@ runs:
       env:
         csr_common_name: ${{ inputs.csr_common_name }}
 
-      run: python3 le-renew-ssl-certificate-python/.github/actions/le-renew-ssl-certificate-python/le_renew_ssl_certificate_generate_csr.py --common-name "$csr_common_name" --out csr.der --rsa-key-size 2048
+      run: python3 ${{ github.action_path }}/le_renew_ssl_certificate_generate_csr.py --common-name "$csr_common_name" --out csr.der --rsa-key-size 2048
 
     - name: Run the python script to request the new certificate from LE
       shell: bash
