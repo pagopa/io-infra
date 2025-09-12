@@ -71,6 +71,7 @@ locals {
     IO_WALLET_API_BASE_PATH           = "/api/v1/wallet"
     IO_WALLET_UAT_API_BASE_PATH       = "/api/v1/wallet/uat"
     CDC_SUPPORT_API_BASE_PATH         = "/api/v1"
+    CDC_SUPPORT_IO_API_BASE_PATH      = "/api/v1/cdc"
 
     // REDIS
     REDIS_URL      = var.redis_common.hostname
@@ -108,6 +109,7 @@ locals {
     // Feature flags
     FF_BONUS_ENABLED           = 1
     FF_CGN_ENABLED             = 1
+    FF_CDC_ENABLED             = 1
     FF_EUCOVIDCERT_ENABLED     = 1
     FF_IO_SIGN_ENABLED         = 1
     FF_IO_FIMS_ENABLED         = 1
