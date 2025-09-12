@@ -130,18 +130,11 @@ jobs:
           tenant-id: ${{ secrets.arm-tenant-id }}
           subscription-id: ${{ secrets.arm-subscription-id }}
 
-      # - name: Fetch LE authentication keys from Key Vault
-      #   env:
-      #     key_vault_name: ${{ inputs.key_vault_name }}
-      #   run: |
-      #       az keyvault secret download --vault-name "$key_vault_name" --name le-private-key-json --file private_key.json
-      #       az keyvault secret download --vault-name "$key_vault_name" --name le-regr-json --file regr.json
-
       - name: Download and unzip AZ ACME CLI
         env:
           cli_version: "v0.5"
         run: |
-            wget https://github.com/az-acme/az-acme-cli/releases/download/$cli_version/cli-$cli_version-linux-x64.tar.gz
+            wget --no-verbose https://github.com/az-acme/az-acme-cli/releases/download/$cli_version/cli-$cli_version-linux-x64.tar.gz
             tar xzpf cli-$cli_version-linux-x64.tar.gz
             mv cli-$cli_version-linux-x64 az_acme_cli
 
@@ -153,27 +146,19 @@ jobs:
           subscription_id: ${{ secrets.arm-subscription-id }}
           dns_zone_resource_group: ${{ inputs.azure_dns_zone_resource_group }}
           dns_zone: ${{ inputs.azure_dns_zone }}
+          le_account_secret: le-private-key-pem 
+          le_server_url: https://acme-v02.api.letsencrypt.org/directory
 
         run: |
           key_vault_cert_name=$(echo "${csr_common_name//./-}")
 
           ./az_acme_cli/az-acme order \
           --dns-provider Azure \
-          --account-secret le-private-key-pem \
+          --account-secret $le_account_secret \
           --key-vault-uri "https://$key_vault_name.vault.azure.net/" \
           --certificate "$key_vault_cert_name" \
-          --server "https://acme-v02.api.letsencrypt.org/directory" \
+          --server "$le_server_url" \
           --subject "$csr_common_name" \
           --azure-dns-zone "/subscriptions/$subscription_id/resourceGroups/$dns_zone_resource_group/providers/Microsoft.Network/dnszones/$dns_zone" \
           --force-order \
           --verbose
-
-      # - name: Cleanup every file generated in the workspace
-      #   run: |
-      #       rm -f private_key.json
-      #       rm -f regr.json
-      #       rm -f csr.der
-      #       rm -f csr.key
-      #       rm -f certificate_chain.pem.*
-      #       rm -f certificate_chain.pem
-      #       rm -f certificate_chain.pfx
