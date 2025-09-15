@@ -114,11 +114,18 @@ data "azurerm_key_vault_secret" "common_MAILUP_SECRET" {
 #
 # UNIQUE EMAIL ENFORCEMENT
 #
+# TODO: Remove when switch to new itn storage account is done
 
 data "azurerm_storage_account" "citizen_auth_common" {
   name                = "iopweucitizenauthst"
   resource_group_name = "io-p-citizen-auth-data-rg"
 }
+
+data "azurerm_storage_account" "auth_maintenance_storage" {
+  name                = replace(format("%s-itn-auth-mnt-st-01", local.project), "-", "")
+  resource_group_name = format("%s-itn-auth-main-rg-01", local.project)
+}
+
 
 #
 # Notifications resources

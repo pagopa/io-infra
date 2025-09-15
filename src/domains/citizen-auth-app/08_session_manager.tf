@@ -156,8 +156,8 @@ locals {
     LOLLIPOP_API_URL       = "https://${data.azurerm_linux_function_app.function_lollipop_itn_v2.default_hostname}"
     LOLLIPOP_API_KEY       = data.azurerm_key_vault_secret.functions_lollipop_api_key.value
 
-    LOLLIPOP_REVOKE_STORAGE_CONNECTION_STRING = data.azurerm_storage_account.lollipop_assertion_storage.primary_connection_string
-    LOLLIPOP_REVOKE_QUEUE_NAME                = "pubkeys-revoke-v2"
+    LOLLIPOP_REVOKE_STORAGE_CONNECTION_STRING = data.azurerm_storage_account.auth_session_storage.primary_connection_string
+    LOLLIPOP_REVOKE_QUEUE_NAME                = "pubkeys-revoke-01"
 
     # Fast Login config
     FF_FAST_LOGIN = "ALL"
@@ -172,10 +172,9 @@ locals {
     IOLOGIN_CANARY_USERS_REGEX = "^([(0-9)|(a-f)|(A-F)]{63}0)$"
 
     # Test Login config
-    # TODO: change this variable to a list of regex to reduce characters and fix
-    # E2BIG errors on linux spawn syscall when using PM2
-    TEST_LOGIN_FISCAL_CODES = module.tests.users.light
-    TEST_LOGIN_PASSWORD     = data.azurerm_key_vault_secret.session_manager_TEST_LOGIN_PASSWORD.value
+    TEST_LOGIN_PASSWORD = data.azurerm_key_vault_secret.session_manager_TEST_LOGIN_PASSWORD.value
+    // base64 encode of the compressed string (using gzip algorithm)
+    TEST_LOGIN_FISCAL_CODES_COMPRESSED = base64gzip(module.tests.users.all)
 
 
     BACKEND_HOST = "https://${trimsuffix(data.azurerm_dns_a_record.api_app_io_pagopa_it.fqdn, ".")}"
@@ -237,6 +236,13 @@ locals {
     SERVICE_BUS_EVENTS_USERS = data.azurerm_key_vault_secret.service_bus_events_beta_testers.value
 
   }
+}
+
+locals {
+  PM2_E2BIG_THRESHOLD = 32000
+  # This check prevents changes that would crash the app service that
+  # uses PM2 under the hood
+  VALIDATION_CHECK_E2BIG = length(local.app_settings_common.TEST_LOGIN_FISCAL_CODES_COMPRESSED) < local.PM2_E2BIG_THRESHOLD ? "" : file("[ERROR] Validation check failed for test users length.")
 }
 
 #################################

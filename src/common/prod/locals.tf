@@ -52,6 +52,9 @@ locals {
     2 = {
       cidr_subnet = ["10.0.153.0/24"]
     },
+    3 = {
+      cidr_subnet = ["10.0.154.0/24"]
+    },
   }
 
   azdoa_snet_id = {
@@ -72,6 +75,7 @@ locals {
     cgnonboarding        = "io-p-itn-cgn-search-func-02.azurewebsites.net"
     iowallet             = data.azurerm_linux_function_app.wallet_user.default_hostname
     iowalletuat          = data.azurerm_linux_function_app.wallet_user_uat.default_hostname
+    cdc_support          = "io-p-itn-cdc-support-func-01.azurewebsites.net"
   }
 
   eventhubs = [

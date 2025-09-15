@@ -12,7 +12,9 @@ resource "azurerm_key_vault" "tlscert_itn_01" {
   soft_delete_retention_days  = 30
   purge_protection_enabled    = true
 
-  public_network_access_enabled = false
+  # TODO: when TLS cert workflow will be moved to GitHub, this
+  # property shall be reverted to false
+  public_network_access_enabled = true
 
   network_acls {
     bypass         = "AzureServices"
