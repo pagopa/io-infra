@@ -15,6 +15,9 @@
             <when condition="@(context.Request.Headers.GetValueOrDefault("environment", "false").Equals("services-fn-2"))">
                 <set-backend-service base-url="https://io-p-services-fn-2.azurewebsites.net/api/v1" />
             </when>
+            <when condition="@(context.Request.Headers.GetValueOrDefault("environment", "false").Equals("services-itn"))">
+                <set-backend-service base-url="https://io-p-itn-funcsvc-func-01.azurewebsites.net/api/v1" />
+            </when>
             <otherwise>
                 <!-- https://docs.microsoft.com/en-us/dotnet/api/system.random.next?view=net-6.0#system-random-next(system-int32-system-int32) -->
                 <!-- The following policy fragment allows to split inbound traffic based on a fixed window. A Random value picked from this window can determine
