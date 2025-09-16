@@ -33,10 +33,13 @@
                         });}" />
                 <choose>
                     <when condition="@(context.Variables.GetValueOrDefault<JObject>("weights").GetValue("urlWeight").ToObject<int>() <= 1000)">
-                        <!-- The following policy fragment allows to split traffic up to 50% for each backend pool instance -->
+                        <!-- The following policy fragment allows to split traffic up to 50% for each backend pool instance and 5% to the new itn instance-->
                         <choose>
                             <when condition="@(context.Variables.GetValueOrDefault<JObject>("weights").GetValue("fnWeight").ToObject<int>() <= 50)">
                                 <set-backend-service base-url="https://io-p-services-fn-1.azurewebsites.net/api/v1" />
+                            </when>
+                            <when condition="@(context.Variables.GetValueOrDefault<JObject>("weights").GetValue("fnWeight").ToObject<int>() >= 95)">
+                                <set-backend-service base-url="https://io-p-itn-funcsvc-func-01.azurewebsites.net/api/v1" />
                             </when>
                             <otherwise>
                                 <set-backend-service base-url="https://io-p-services-fn-2.azurewebsites.net/api/v1" />
