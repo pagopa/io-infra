@@ -35,7 +35,7 @@
                     <when condition="@(context.Variables.GetValueOrDefault<JObject>("weights").GetValue("urlWeight").ToObject<int>() <= 1000)">
                         <!-- The following policy fragment allows to split traffic up to 47% for each backend pool instance and 6% to the new ITN instance-->
                         <choose>
-                            <when condition="@(context.Variables.GetValueOrDefault<JObject>("weights").GetValue("fnWeight").ToObject<int>() <= 50)">
+                            <when condition="@(context.Variables.GetValueOrDefault<JObject>("weights").GetValue("fnWeight").ToObject<int>() <= 47)">
                                 <set-backend-service base-url="https://io-p-services-fn-1.azurewebsites.net/api/v1" />
                             </when>
                             <when condition="@(context.Variables.GetValueOrDefault<JObject>("weights").GetValue("fnWeight").ToObject<int>() >= 95)">
