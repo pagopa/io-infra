@@ -38,7 +38,7 @@
                             <when condition="@(context.Variables.GetValueOrDefault<JObject>("weights").GetValue("fnWeight").ToObject<int>() <= 47)">
                                 <set-backend-service base-url="https://io-p-services-fn-1.azurewebsites.net/api/v1" />
                             </when>
-                            <when condition="@(context.Variables.GetValueOrDefault<JObject>("weights").GetValue("fnWeight").ToObject<int>() >= 95)">
+                            <when condition="@(context.Variables.GetValueOrDefault<JObject>("weights").GetValue("fnWeight").ToObject<int>() >= 94)">
                                 <set-backend-service base-url="https://io-p-itn-funcsvc-func-01.azurewebsites.net/api/v1" />
                             </when>
                             <otherwise>
