@@ -1,3 +1,3 @@
 module "tests" {
-  source = "../../../src/_modules/test_users"
+  source = "../../_modules/test_users"
 }

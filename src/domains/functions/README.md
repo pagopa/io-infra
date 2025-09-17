@@ -31,7 +31,7 @@
 | <a name="module_function_services"></a> [function\_services](#module\_function\_services) | git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app | v8.52.0 |
 | <a name="module_function_services_staging_slot"></a> [function\_services\_staging\_slot](#module\_function\_services\_staging\_slot) | git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app_slot | v8.52.0 |
 | <a name="module_services_snet"></a> [services\_snet](#module\_services\_snet) | git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet | v8.52.0 |
-| <a name="module_tests"></a> [tests](#module\_tests) | ../../../src/_modules/test_users | n/a |
+| <a name="module_tests"></a> [tests](#module\_tests) | ../../_modules/test_users | n/a |
 
 ## Resources
 
