@@ -303,4 +303,19 @@ locals {
 
     apim_itn_name = "${local.project_itn}-apim-01"
   }
+
+  function_admin = {
+    cidr_subnet_admin                = ""
+    function_admin_kind              = "Linux"
+    function_admin_sku_tier          = "PremiumV3"
+    function_admin_sku_size          = "P2v3"
+    function_admin_autoscale_minimum = 3
+    function_admin_autoscale_maximum = 30
+    function_admin_autoscale_default = 3
+
+    vnet_common_name_itn           = "${local.project_itn}-common-vnet-01"
+    common_resource_group_name_itn = "${local.project_itn}-common-rg-01"
+
+    apim_itn_name = "${local.project_itn}-apim-01"
+  }
 }
