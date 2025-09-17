@@ -4,8 +4,8 @@ data "azurerm_resource_group" "admin_itn_rg" {
 
 # APIM in ITN
 data "azurerm_api_management" "apim_itn_api" {
-  name                = local.apim_itn_name
-  resource_group_name = local.common_resource_group_name_itn
+  name                = "${var.project_itn}-apim-01"
+  resource_group_name = var.common_resource_group_name_itn
 }
 
 data "azurerm_resource_group" "weu-common" {
