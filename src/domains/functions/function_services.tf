@@ -22,3 +22,11 @@ module "services_snet" {
     }
   }
 }
+
+removed {
+  from = module.db_subscription_cidrs_container
+
+  lifecycle {
+    destroy = false
+  }
+}
