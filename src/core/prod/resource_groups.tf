@@ -104,13 +104,6 @@ resource "azurerm_resource_group" "dashboards_weu" {
   tags = local.tags
 }
 
-resource "azurerm_resource_group" "function_admin_itn" {
-  name     = "${local.project_itn}-funcadm-rg-01"
-  location = "italynorth"
-
-  tags = local.tags
-}
-
 import {
   id = "/subscriptions/ec285037-c673-4f58-b594-d7c480da4e8b/resourceGroups/dashboards"
   to = azurerm_resource_group.dashboards_weu
