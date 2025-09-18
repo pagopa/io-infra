@@ -9,7 +9,7 @@ module "subscriptionmigrations_db_flex_server" {
   administrator_password = data.azurerm_key_vault_secret.subscriptionmigrations_db_server_adm_password.value
 
   sku_name                     = "GP_Standard_D2ds_v5"
-  db_version                   = 11
+  db_version                   = 16
   geo_redundant_backup_enabled = true
   zone                         = 3
 
