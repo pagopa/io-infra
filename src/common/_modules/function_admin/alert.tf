@@ -2,7 +2,7 @@
 resource "azurerm_monitor_scheduled_query_rules_alert_v2" "alert_failed_delete_procedure" {
   enabled             = true
   name                = "[IO-AUTH | ${module.function_admin_dx.function_app.function_app.name}] Found one or more failed DELETE procedures"
-  resource_group_name = data.azurerm_resource_group.admin_itn_rg.name
+  resource_group_name = azurerm_resource_group.function_admin_itn_rg.name
   scopes              = [data.azurerm_application_insights.application_insights.id]
   description         = <<EOT
     Found one or more failed DELETE procedures.
@@ -45,7 +45,7 @@ exceptions
 resource "azurerm_monitor_scheduled_query_rules_alert_v2" "alert_failed_download_procedure" {
   enabled             = true
   name                = "[IO-AUTH | ${module.function_admin_dx.function_app.function_app.name}] Found one or more failed DOWNLOAD procedures"
-  resource_group_name = data.azurerm_resource_group.admin_itn_rg.name
+  resource_group_name = azurerm_resource_group.function_admin_itn_rg.name
   scopes              = [data.azurerm_application_insights.application_insights.id]
   description         = <<EOT
     Found one or more failed DOWNLOAD procedures.

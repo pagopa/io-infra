@@ -1,6 +1,6 @@
-data "azurerm_resource_group" "admin_itn_rg" {
-  name = "${var.project_itn}-funcadm-rg-01"
-}
+# data "azurerm_resource_group" "admin_itn_rg" {
+#   name = "${var.project_itn}-funcadm-rg-01"
+# }
 
 # APIM in ITN
 data "azurerm_api_management" "apim_itn_api" {

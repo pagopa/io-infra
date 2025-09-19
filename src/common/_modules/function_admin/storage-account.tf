@@ -9,7 +9,7 @@ module "services_storage_account" {
     app_name        = "funcadm"
     instance_number = "01"
   }
-  resource_group_name = data.azurerm_resource_group.admin_itn_rg.name
+  resource_group_name = azurerm_resource_group.function_admin_itn_rg.name
   tier                = "l"
   subnet_pep_id       = data.azurerm_subnet.private_endpoints_subnet_itn.id
 

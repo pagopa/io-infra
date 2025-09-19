@@ -1,3 +1,10 @@
+resource "azurerm_resource_group" "function_admin_itn_rg" {
+  name     = "${var.project_itn}-funcadm-rg-01"
+  location = var.location_itn
+
+  tags = var.tags
+}
+
 module "function_admin_dx" {
   source  = "pagopa-dx/azure-function-app/azurerm"
   version = "~> 2.0"
@@ -10,7 +17,7 @@ module "function_admin_dx" {
     instance_number = "01"
   }
 
-  resource_group_name = data.azurerm_resource_group.admin_itn_rg.name
+  resource_group_name = azurerm_resource_group.function_admin_itn_rg.name
 
   virtual_network = {
     name                = var.vnet_common_name_itn
