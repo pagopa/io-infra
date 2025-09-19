@@ -305,7 +305,7 @@ locals {
   }
 
   function_admin = {
-    cidr_subnet_admin                = ""
+    cidr_subnet_admin                = "10.20.34.64/26"
     function_admin_kind              = "Linux"
     function_admin_sku_tier          = "PremiumV3"
     function_admin_sku_size          = "P2v3"
