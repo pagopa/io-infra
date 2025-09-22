@@ -81,11 +81,6 @@ data "azurerm_key_vault_secret" "session_manager_VALIDATION_COOKIE_TEST_USERS" {
   key_vault_id = data.azurerm_key_vault.auth.id
 }
 
-data "azurerm_key_vault_secret" "service_bus_events_beta_testers" {
-  name         = "service-bus-events-beta-testers"
-  key_vault_id = data.azurerm_key_vault.auth.id
-}
-
 data "azurerm_linux_function_app" "itn_auth_lv_func" {
   name                = "${local.short_project_itn}-lv-func-02"
   resource_group_name = "${local.short_project_itn}-lv-rg-01"
@@ -231,9 +226,6 @@ locals {
     # ServiceBus Auth Event Config
     SERVICE_BUS_NAMESPACE    = "${data.azurerm_servicebus_namespace.platform_service_bus_namespace.name}.servicebus.windows.net"
     AUTH_SESSIONS_TOPIC_NAME = local.auth_sessions_topic_name
-
-    FF_SERVICE_BUS_EVENTS    = "ALL"
-    SERVICE_BUS_EVENTS_USERS = data.azurerm_key_vault_secret.service_bus_events_beta_testers.value
 
   }
 }
