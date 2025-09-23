@@ -27,6 +27,24 @@ module "services_storage_account" {
   tags = var.tags
 }
 
+resource "azurerm_storage_management_policy" "processing_messages_container_rule" {
+  storage_account_id = module.services_storage_account.id
+
+  rule {
+    name    = "deleteafterdays"
+    enabled = true
+    filters {
+      prefix_match = ["processing-messages"]
+      blob_types   = ["blockBlob"]
+    }
+    actions {
+      base_blob {
+        delete_after_days_since_modification_greater_than = 1
+      }
+    }
+  }
+}
+
 
 
 ################################
