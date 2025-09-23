@@ -192,6 +192,7 @@ variable "backend_hostnames" {
     cgnonboarding        = string
     iowallet             = string
     iowalletuat          = string
+    cdc_support          = string
   })
 }
 

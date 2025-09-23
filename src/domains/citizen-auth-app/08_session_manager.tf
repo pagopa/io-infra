@@ -81,11 +81,6 @@ data "azurerm_key_vault_secret" "session_manager_VALIDATION_COOKIE_TEST_USERS" {
   key_vault_id = data.azurerm_key_vault.auth.id
 }
 
-data "azurerm_key_vault_secret" "service_bus_events_beta_testers" {
-  name         = "service-bus-events-beta-testers"
-  key_vault_id = data.azurerm_key_vault.auth.id
-}
-
 data "azurerm_linux_function_app" "itn_auth_lv_func" {
   name                = "${local.short_project_itn}-lv-func-02"
   resource_group_name = "${local.short_project_itn}-lv-rg-01"
@@ -172,10 +167,9 @@ locals {
     IOLOGIN_CANARY_USERS_REGEX = "^([(0-9)|(a-f)|(A-F)]{63}0)$"
 
     # Test Login config
-    # TODO: change this variable to a list of regex to reduce characters and fix
-    # E2BIG errors on linux spawn syscall when using PM2
-    TEST_LOGIN_FISCAL_CODES = module.tests.users.light
-    TEST_LOGIN_PASSWORD     = data.azurerm_key_vault_secret.session_manager_TEST_LOGIN_PASSWORD.value
+    TEST_LOGIN_PASSWORD = data.azurerm_key_vault_secret.session_manager_TEST_LOGIN_PASSWORD.value
+    // base64 encode of the compressed string (using gzip algorithm)
+    TEST_LOGIN_FISCAL_CODES_COMPRESSED = base64gzip(module.tests.users.all)
 
 
     BACKEND_HOST = "https://${trimsuffix(data.azurerm_dns_a_record.api_app_io_pagopa_it.fqdn, ".")}"
@@ -233,10 +227,14 @@ locals {
     SERVICE_BUS_NAMESPACE    = "${data.azurerm_servicebus_namespace.platform_service_bus_namespace.name}.servicebus.windows.net"
     AUTH_SESSIONS_TOPIC_NAME = local.auth_sessions_topic_name
 
-    FF_SERVICE_BUS_EVENTS    = "ALL"
-    SERVICE_BUS_EVENTS_USERS = data.azurerm_key_vault_secret.service_bus_events_beta_testers.value
-
   }
+}
+
+locals {
+  PM2_E2BIG_THRESHOLD = 32000
+  # This check prevents changes that would crash the app service that
+  # uses PM2 under the hood
+  VALIDATION_CHECK_E2BIG = length(local.app_settings_common.TEST_LOGIN_FISCAL_CODES_COMPRESSED) < local.PM2_E2BIG_THRESHOLD ? "" : file("[ERROR] Validation check failed for test users length.")
 }
 
 #################################
