@@ -69,8 +69,8 @@ module "user_data_download_storage_account" {
     prefix          = var.prefix
     env_short       = var.env_short
     location        = var.location_itn
-    app_name        = "userdatadownload"
-    instance_number = "01"
+    app_name        = "usrdatadownload"
+    instance_number = "1"
   }
   resource_group_name = azurerm_resource_group.function_admin_itn_rg.name
   tier                = "l"
