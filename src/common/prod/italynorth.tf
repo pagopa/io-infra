@@ -255,13 +255,3 @@ module "function_app_admin" {
   admin_snet_cidr                  = local.function_admin.cidr_subnet_admin
   tags                             = local.tags
 }
-
-import {
-  to = module.function_app_admin.module.user_data_backups_storage_account.azurerm_storage_account.this
-  id = "/subscriptions/ec285037-c673-4f58-b594-d7c480da4e8b/resourceGroups/io-p-rg-internal/providers/Microsoft.Storage/storageAccounts/iopstuserbackups"
-}
-
-import {
-  to = module.function_app_admin.module.user_data_download_storage_account.azurerm_storage_account.this
-  id = "/subscriptions/ec285037-c673-4f58-b594-d7c480da4e8b/resourceGroups/io-p-rg-internal/providers/Microsoft.Storage/storageAccounts/iopstuserdatadownload"
-}
