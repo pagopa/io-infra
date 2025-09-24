@@ -35,16 +35,15 @@ locals {
       AZURE_APIM_HOST           = var.apim_hostname_api_internal
       AZURE_APIM_RESOURCE_GROUP = "io-p-itn-common-rg-01"
 
-      MESSAGE_CONTAINER_NAME = var.message_content_container_name
-
-      UserDataArchiveStorageConnection = data.azurerm_storage_account.userdatadownload.primary_connection_string
+      MESSAGE_CONTAINER_NAME           = var.message_content_container_name
+      UserDataArchiveStorageConnection = module.user_data_download_storage_account.primary_connection_string
       USER_DATA_CONTAINER_NAME         = "user-data-download"
 
       PUBLIC_API_URL           = var.service_api_url
-      PUBLIC_DOWNLOAD_BASE_URL = "https://${data.azurerm_storage_account.userdatadownload.primary_blob_host}/user-data-download"
+      PUBLIC_DOWNLOAD_BASE_URL = "https://${data.azurerm_storage_account.itnuserdatadownload.primary_blob_host}/user-data-download"
 
 
-      UserDataBackupStorageConnection = data.azurerm_storage_account.userbackups.primary_connection_string
+      UserDataBackupStorageConnection = module.user_data_backups_storage_account.primary_connection_string
       USER_DATA_BACKUP_CONTAINER_NAME = "user-data-backup"
       USER_DATA_DELETE_DELAY_DAYS     = 6
       FF_ENABLE_USER_DATA_DELETE      = 1

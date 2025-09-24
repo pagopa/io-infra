@@ -102,6 +102,16 @@ data "azurerm_key_vault_secret" "fn_app_KEY_SPIDLOGS_PRIV" {
 # Storage 
 #
 
+data "azurerm_storage_account" "itnuserdatadownload" {
+  name                = module.user_data_download_storage_account.name
+  resource_group_name = azurerm_resource_group.function_admin_itn_rg.name
+}
+
+data "azurerm_storage_account" "itnuserbackups" {
+  name                = module.user_data_backups_storage_account.name
+  resource_group_name = azurerm_resource_group.function_admin_itn_rg.name
+}
+
 data "azurerm_storage_account" "userdatadownload" {
   name                = "iopstuserdatadownload"
   resource_group_name = local.rg_internal_name
