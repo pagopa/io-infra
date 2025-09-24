@@ -13,6 +13,7 @@ on:
     paths:
       - "src/domains/citizen-auth**"
       - ".github/workflows/prod**citizen-auth.yml"
+      - "src/_modules/test_users/**"
 
 permissions:
   id-token: write
