@@ -55,7 +55,7 @@ resource "azurerm_role_assignment" "io_p_itn_platform_kv_01_cdn_secret" {
 
 resource "azurerm_role_assignment" "io_p_itn_platform_kv_01_cdn_cert" {
   scope                = azurerm_key_vault.io_p_itn_platform_kv_01.id
-  role_definition_name = "Key Vault Certificates User"
+  role_definition_name = "Key Vault Certificate User"
   principal_id         = "f3b3f72f-4770-47a5-8c1e-aa298003be12"
 }
 
@@ -95,7 +95,7 @@ resource "azurerm_role_assignment" "io_p_itn_platform_kv_01_ci_secret" {
 resource "azurerm_role_assignment" "io_p_itn_platform_kv_01_ci_cert" {
   for_each             = var.ci
   scope                = azurerm_key_vault.io_p_itn_platform_kv_01.id
-  role_definition_name = "Key Vault Certificates User"
+  role_definition_name = "Key Vault Certificate User"
   principal_id         = each.value
 }
 
