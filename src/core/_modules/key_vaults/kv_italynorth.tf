@@ -1,6 +1,6 @@
 resource "azurerm_key_vault" "io_p_itn_platform_kv_01" {
 
-  name = "io-p-itn-platform-kv-01"
+  name = "${var.project}-itn-platform-kv-01"
 
   location            = "italynorth"
   resource_group_name = var.resource_group_itn
@@ -24,14 +24,14 @@ resource "azurerm_key_vault" "io_p_itn_platform_kv_01" {
 }
 
 resource "azurerm_private_endpoint" "io_p_itn_platform_kv_01" {
-  name                = "io-p-itn-platform-kv-pep-01"
+  name                = "${var.project}-itn-platform-kv-pep-01"
   location            = azurerm_key_vault.io_p_itn_platform_kv_01.location
   resource_group_name = azurerm_key_vault.io_p_itn_platform_kv_01.resource_group_name
 
   subnet_id = var.subnet_pep_id
 
   private_service_connection {
-    name                           = "io-p-itn-platform-kv-pep-01"
+    name                           = "${var.project}-itn-platform-kv-pep-01"
     private_connection_resource_id = azurerm_key_vault.io_p_itn_platform_kv_01.id
     is_manual_connection           = false
     subresource_names              = ["vault"]
