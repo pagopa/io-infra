@@ -12,10 +12,6 @@ locals {
 locals {
   function_admin = {
     app_settings_common = {
-      FUNCTIONS_WORKER_RUNTIME       = "node"
-      WEBSITE_RUN_FROM_PACKAGE       = "1"
-      NODE_ENV                       = "production"
-      FUNCTIONS_WORKER_PROCESS_COUNT = 4
 
       # DNS configuration to use private endpoint
       WEBSITE_DNS_SERVER = "168.63.129.16"

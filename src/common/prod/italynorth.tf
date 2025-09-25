@@ -240,18 +240,12 @@ import {
 }
 
 module "function_app_admin" {
-  source                           = "../_modules/function_admin"
-  prefix                           = local.prefix
-  env_short                        = local.env_short
-  function_admin_kind              = local.function_admin.function_admin_kind
-  function_admin_sku_tier          = local.function_admin.function_admin_sku_tier
-  function_admin_sku_size          = local.function_admin.function_admin_sku_size
-  function_admin_autoscale_minimum = local.function_admin.function_admin_autoscale_minimum
-  function_admin_autoscale_maximum = local.function_admin.function_admin_autoscale_maximum
-  function_admin_autoscale_default = local.function_admin.function_admin_autoscale_default
-  vnet_common_name_itn             = local.function_admin.vnet_common_name_itn
-  common_resource_group_name_itn   = local.function_admin.common_resource_group_name_itn
-  project_itn                      = local.project_itn
-  admin_snet_cidr                  = local.function_admin.cidr_subnet_admin
-  tags                             = local.tags
+  source                         = "../_modules/function_admin"
+  prefix                         = local.prefix
+  env_short                      = local.env_short
+  vnet_common_name_itn           = local.function_admin.vnet_common_name_itn
+  common_resource_group_name_itn = local.function_admin.common_resource_group_name_itn
+  project_itn                    = local.project_itn
+  admin_snet_cidr                = local.function_admin.cidr_subnet_admin
+  tags                           = local.tags
 }

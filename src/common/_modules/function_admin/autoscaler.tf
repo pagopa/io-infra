@@ -1,8 +1,8 @@
 resource "azurerm_monitor_autoscale_setting" "function_admin" {
-  name                = format("%s-autoscale", module.function_admin_dx.function_app.function_app.name)
+  name                = format("%s-autoscale", module.function_admin_itn.function_app.function_app.name)
   resource_group_name = azurerm_resource_group.function_admin_itn_rg.name
   location            = var.location_itn
-  target_resource_id  = module.function_admin_dx.function_app.plan.id
+  target_resource_id  = module.function_admin_itn.function_app.plan.id
 
   profile {
     name = "default"
@@ -16,7 +16,7 @@ resource "azurerm_monitor_autoscale_setting" "function_admin" {
     rule {
       metric_trigger {
         metric_name              = "Requests"
-        metric_resource_id       = module.function_admin_dx.function_app.function_app.id
+        metric_resource_id       = module.function_admin_itn.function_app.function_app.id
         metric_namespace         = "microsoft.web/sites"
         time_grain               = "PT1M"
         statistic                = "Average"
@@ -38,7 +38,7 @@ resource "azurerm_monitor_autoscale_setting" "function_admin" {
     rule {
       metric_trigger {
         metric_name              = "CpuPercentage"
-        metric_resource_id       = module.function_admin_dx.function_app.plan.id
+        metric_resource_id       = module.function_admin_itn.function_app.plan.id
         metric_namespace         = "microsoft.web/serverfarms"
         time_grain               = "PT1M"
         statistic                = "Average"
@@ -60,7 +60,7 @@ resource "azurerm_monitor_autoscale_setting" "function_admin" {
     rule {
       metric_trigger {
         metric_name              = "Requests"
-        metric_resource_id       = module.function_admin_dx.function_app.function_app.id
+        metric_resource_id       = module.function_admin_itn.function_app.function_app.id
         metric_namespace         = "microsoft.web/sites"
         time_grain               = "PT1M"
         statistic                = "Average"
@@ -82,7 +82,7 @@ resource "azurerm_monitor_autoscale_setting" "function_admin" {
     rule {
       metric_trigger {
         metric_name              = "CpuPercentage"
-        metric_resource_id       = module.function_admin_dx.function_app.plan.id
+        metric_resource_id       = module.function_admin_itn.function_app.plan.id
         metric_namespace         = "microsoft.web/serverfarms"
         time_grain               = "PT1M"
         statistic                = "Average"

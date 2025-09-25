@@ -5,7 +5,7 @@ resource "azurerm_resource_group" "function_admin_itn_rg" {
   tags = var.tags
 }
 
-module "function_admin_dx" {
+module "function_admin_itn" {
   source  = "pagopa-dx/azure-function-app/azurerm"
   version = "~> 2.0"
 
@@ -13,7 +13,7 @@ module "function_admin_dx" {
     prefix          = var.prefix
     env_short       = var.env_short
     location        = var.location_itn
-    app_name        = "funcadm"
+    app_name        = "admin"
     instance_number = "01"
   }
 
@@ -34,7 +34,7 @@ module "function_admin_dx" {
     {
       "AzureWebJobs.CheckXmlCryptoCVESamlResponse.Disabled"      = "1",
       "AzureWebJobs.CheckIoWebXmlCryptoCVESamlResponse.Disabled" = "1"
-      "APPINSIGHTS_CLOUD_ROLE_NAME"                              = "io-p-itn-funcadm-func-01",
+      "APPINSIGHTS_CLOUD_ROLE_NAME"                              = "io-p-itn-admin-func-01",
     }
   )
 
@@ -55,7 +55,7 @@ module "function_admin_dx" {
       "AzureWebJobs.SanitizeProfileEmail.Disabled"               = "1",
       "AzureWebJobs.CheckXmlCryptoCVESamlResponse.Disabled"      = "1",
       "AzureWebJobs.CheckIoWebXmlCryptoCVESamlResponse.Disabled" = "1"
-      "APPINSIGHTS_CLOUD_ROLE_NAME"                              = "io-p-itn-funcadm-func-01-staging",
+      "APPINSIGHTS_CLOUD_ROLE_NAME"                              = "io-p-itn-admin-func-01-staging",
     }
   )
 
