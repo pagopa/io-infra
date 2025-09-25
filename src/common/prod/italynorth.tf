@@ -247,8 +247,8 @@ module "monitoring_itn" {
   project               = local.project_itn
   resource_group_common = local.core.resource_groups.italynorth.common
 
-  kv_id        = local.core.key_vault.italynorth.kv.id
-  kv_common_id = local.core.key_vault.italynorth.kv.id # We are going to have only one platform KV containing every secret
+  kv_id        = local.core.key_vault.italynorth.io_p_itn_platform_kv_01.id
+  kv_common_id = local.core.key_vault.italynorth.io_p_itn_platform_kv_01.id # We are going to have only one platform KV containing every secret
 
   test_urls = [
     {
