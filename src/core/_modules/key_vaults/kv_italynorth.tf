@@ -1,6 +1,6 @@
-resource "azurerm_key_vault" "io_p_itn_kv_01" {
+resource "azurerm_key_vault" "io_p_itn_platform_kv_01" {
 
-  name = "${var.project}-itn-kv-01"
+  name = "io-p-itn-platform-kv-01"
 
   location            = "italynorth"
   resource_group_name = var.resource_group_itn
@@ -23,16 +23,16 @@ resource "azurerm_key_vault" "io_p_itn_kv_01" {
   tags = var.tags
 }
 
-resource "azurerm_private_endpoint" "io_p_itn_kv_01" {
-  name                = "${var.project}-itn-kv-pep-01"
-  location            = azurerm_key_vault.io_p_itn_kv_01.location
-  resource_group_name = azurerm_key_vault.io_p_itn_kv_01.resource_group_name
+resource "azurerm_private_endpoint" "io_p_itn_platform_kv_01" {
+  name                = "io-p-itn-platform-kv-pep-01"
+  location            = azurerm_key_vault.io_p_itn_platform_kv_01.location
+  resource_group_name = azurerm_key_vault.io_p_itn_platform_kv_01.resource_group_name
 
   subnet_id = var.subnet_pep_id
 
   private_service_connection {
-    name                           = "${var.project}-itn-kv-pep-01"
-    private_connection_resource_id = azurerm_key_vault.io_p_itn_kv_01.id
+    name                           = "io-p-itn-platform-kv-pep-01"
+    private_connection_resource_id = azurerm_key_vault.io_p_itn_platform_kv_01.id
     is_manual_connection           = false
     subresource_names              = ["vault"]
   }
@@ -47,68 +47,68 @@ resource "azurerm_private_endpoint" "io_p_itn_kv_01" {
 
 # RBAC Roles
 
-resource "azurerm_role_assignment" "io_p_itn_kv_01_cdn_secret" {
-  scope                = azurerm_key_vault.io_p_itn_kv_01.id
+resource "azurerm_role_assignment" "io_p_itn_platform_kv_01_cdn_secret" {
+  scope                = azurerm_key_vault.io_p_itn_platform_kv_01.id
   role_definition_name = "Key Vault Secrets User"
   principal_id         = "f3b3f72f-4770-47a5-8c1e-aa298003be12"
 }
 
-resource "azurerm_role_assignment" "io_p_itn_kv_01_cdn_cert" {
-  scope                = azurerm_key_vault.io_p_itn_kv_01.id
+resource "azurerm_role_assignment" "io_p_itn_platform_kv_01_cdn_cert" {
+  scope                = azurerm_key_vault.io_p_itn_platform_kv_01.id
   role_definition_name = "Key Vault Certificates User"
   principal_id         = "f3b3f72f-4770-47a5-8c1e-aa298003be12"
 }
 
-resource "azurerm_role_assignment" "io_p_itn_kv_01_azdevops_platform_iac_secret" {
-  scope                = azurerm_key_vault.io_p_itn_kv_01.id
+resource "azurerm_role_assignment" "io_p_itn_platform_kv_01_azdevops_platform_iac_secret" {
+  scope                = azurerm_key_vault.io_p_itn_platform_kv_01.id
   role_definition_name = "Key Vault Secrets Officer"
   principal_id         = var.platform_iac_sp_object_id
 }
 
-resource "azurerm_role_assignment" "io_p_itn_kv_01_azdevops_platform_iac_cert" {
-  scope                = azurerm_key_vault.io_p_itn_kv_01.id
+resource "azurerm_role_assignment" "io_p_itn_platform_kv_01_azdevops_platform_iac_cert" {
+  scope                = azurerm_key_vault.io_p_itn_platform_kv_01.id
   role_definition_name = "Key Vault Certificates Officer"
   principal_id         = var.platform_iac_sp_object_id
 }
 
-resource "azurerm_role_assignment" "io_p_itn_kv_01_adgroup_admins" {
+resource "azurerm_role_assignment" "io_p_itn_platform_kv_01_adgroup_admins" {
   for_each             = var.admins
-  scope                = azurerm_key_vault.io_p_itn_kv_01.id
+  scope                = azurerm_key_vault.io_p_itn_platform_kv_01.id
   role_definition_name = "Key Vault Administrator"
   principal_id         = each.value
 }
 
-resource "azurerm_role_assignment" "io_p_itn_kv_01_adgroup_devs" {
+resource "azurerm_role_assignment" "io_p_itn_platform_kv_01_adgroup_devs" {
   for_each             = var.devs
-  scope                = azurerm_key_vault.io_p_itn_kv_01.id
+  scope                = azurerm_key_vault.io_p_itn_platform_kv_01.id
   role_definition_name = "Key Vault Secrets Officer"
   principal_id         = each.value
 }
 
-resource "azurerm_role_assignment" "io_p_itn_kv_01_ci_secret" {
+resource "azurerm_role_assignment" "io_p_itn_platform_kv_01_ci_secret" {
   for_each             = var.ci
-  scope                = azurerm_key_vault.io_p_itn_kv_01.id
+  scope                = azurerm_key_vault.io_p_itn_platform_kv_01.id
   role_definition_name = "Key Vault Secrets User"
   principal_id         = each.value
 }
 
-resource "azurerm_role_assignment" "io_p_itn_kv_01_ci_cert" {
+resource "azurerm_role_assignment" "io_p_itn_platform_kv_01_ci_cert" {
   for_each             = var.ci
-  scope                = azurerm_key_vault.io_p_itn_kv_01.id
+  scope                = azurerm_key_vault.io_p_itn_platform_kv_01.id
   role_definition_name = "Key Vault Certificates User"
   principal_id         = each.value
 }
 
-resource "azurerm_role_assignment" "io_p_itn_kv_01_cd_secret" {
+resource "azurerm_role_assignment" "io_p_itn_platform_kv_01_cd_secret" {
   for_each             = var.cd
-  scope                = azurerm_key_vault.io_p_itn_kv_01.id
+  scope                = azurerm_key_vault.io_p_itn_platform_kv_01.id
   role_definition_name = "Key Vault Secrets Officer"
   principal_id         = each.value
 }
 
-resource "azurerm_role_assignment" "io_p_itn_kv_01_cd_cert" {
+resource "azurerm_role_assignment" "io_p_itn_platform_kv_01_cd_cert" {
   for_each             = var.cd
-  scope                = azurerm_key_vault.io_p_itn_kv_01.id
+  scope                = azurerm_key_vault.io_p_itn_platform_kv_01.id
   role_definition_name = "Key Vault Certificates Officer"
   principal_id         = each.value
 }
