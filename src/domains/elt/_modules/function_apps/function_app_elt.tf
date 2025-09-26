@@ -121,7 +121,10 @@ locals {
       PDV_TOKENIZER_BASE_PATH = "/tokenizer/v1",
       #
 
+      # TODO: remove after compressed variant has been rolled out
       INTERNAL_TEST_FISCAL_CODES = module.tests.users.all
+
+      INTERNAL_TEST_FISCAL_CODES_COMPRESSED = base64gzip(module.tests.users.all)
 
       # REDIS CACHE CONFIG FOR PDV IDs
       REDIS_URL      = data.azurerm_redis_cache.ioauth_redis_common_itn.hostname
