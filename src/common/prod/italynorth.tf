@@ -247,8 +247,8 @@ module "monitoring_itn" {
   project               = local.project_itn
   resource_group_common = local.core.resource_groups.italynorth.common
 
-  kv_id        = local.core.key_vault.itn.io_p_itn_platform_kv_01.id
-  kv_common_id = local.core.key_vault.itn.io_p_itn_platform_kv_01.id # We are going to have only one platform KV containing every secret
+  kv_id        = local.core.key_vault.weu.io_p_itn_platform_kv_01.id # Location into the KV module output should be updated to itn (at the moment is weu) after the migration to ITN is completed 
+  kv_common_id = local.core.key_vault.weu.io_p_itn_platform_kv_01.id # We are going to have only one platform KV containing every secret
 
   test_urls = [
     {
