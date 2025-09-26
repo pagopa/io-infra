@@ -34,9 +34,8 @@ data "azurerm_subnet" "snet_backendl2" {
 }
 
 data "azurerm_linux_function_app" "function_services" {
-  count               = 2
-  name                = "${var.project}-services-fn-${count.index + 1}"
-  resource_group_name = "${var.project}-services-rg-${count.index + 1}"
+  name                = "${var.project}-itn-funcsvc-func-01"
+  resource_group_name = "${var.project}-itn-funcsvc-rg-01"
 }
 
 data "azurerm_key_vault" "key_vault_common" {
