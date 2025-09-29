@@ -61,6 +61,30 @@ module "user_data_backups_storage_account" {
   tags = var.tags
 }
 
+resource "azurerm_storage_management_policy" "user_data_backups_container_rule" {
+  storage_account_id = module.user_data_backups_storage_account.id
+
+  rule {
+    name    = "deleteafter3yrs"
+    enabled = true
+    filters {
+      prefix_match = ["user-data-backup"]
+      blob_types   = ["blockBlob"]
+    }
+    actions {
+      base_blob {
+        delete_after_days_since_creation_greater_than = 1095
+      }
+      snapshot {
+        delete_after_days_since_creation_greater_than = 1095
+      }
+      version {
+        delete_after_days_since_creation = 1095
+      }
+    }
+  }
+}
+
 module "user_data_download_storage_account" {
   source  = "pagopa-dx/azure-storage-account/azurerm"
   version = "~> 2.0"
@@ -95,3 +119,26 @@ module "user_data_download_storage_account" {
   tags = var.tags
 }
 
+resource "azurerm_storage_management_policy" "user_data_download_container_rule" {
+  storage_account_id = module.user_data_download_storage_account.id
+
+  rule {
+    name    = "deleteafter14days"
+    enabled = true
+    filters {
+      prefix_match = ["user-data-download"]
+      blob_types   = ["blockBlob"]
+    }
+    actions {
+      base_blob {
+        delete_after_days_since_creation_greater_than = 14
+      }
+      snapshot {
+        delete_after_days_since_creation_greater_than = 14
+      }
+      version {
+        delete_after_days_since_creation = 14
+      }
+    }
+  }
+}
