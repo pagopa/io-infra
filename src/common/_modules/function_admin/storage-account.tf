@@ -47,9 +47,10 @@ module "user_data_backups_storage_account" {
     queue = true
   }
 
-  containers = {
-    name = "user-data-backup"
-  }
+  containers = [{
+    name        = "user-data-backup"
+    access_type = "private"
+  }]
 
   blob_features = {
     versioning = true
@@ -80,9 +81,10 @@ module "user_data_download_storage_account" {
     queue = true
   }
 
-  containers = {
-    name = "user-data-download"
-  }
+  containers = [{
+    name        = "user-data-download"
+    access_type = "private"
+  }]
 
   blob_features = {
     versioning = true
