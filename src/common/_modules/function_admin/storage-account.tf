@@ -1,6 +1,6 @@
 module "function_admin_storage_account" {
   source  = "pagopa-dx/azure-storage-account/azurerm"
-  version = "~> 1.0"
+  version = "~> 2.0"
 
   environment = {
     prefix          = var.prefix
@@ -10,7 +10,7 @@ module "function_admin_storage_account" {
     instance_number = "01"
   }
   resource_group_name = azurerm_resource_group.function_admin_itn_rg.name
-  tier                = "l"
+  use_case            = "default"
   subnet_pep_id       = data.azurerm_subnet.private_endpoints_subnet_itn.id
 
   subservices_enabled = {
@@ -29,7 +29,7 @@ module "function_admin_storage_account" {
 
 module "user_data_backups_storage_account" {
   source  = "pagopa-dx/azure-storage-account/azurerm"
-  version = "~> 1.0"
+  version = "~> 2.0"
 
   environment = {
     prefix          = var.prefix
@@ -39,12 +39,16 @@ module "user_data_backups_storage_account" {
     instance_number = "01"
   }
   resource_group_name = azurerm_resource_group.function_admin_itn_rg.name
-  tier                = "l"
+  use_case            = "default"
   subnet_pep_id       = data.azurerm_subnet.private_endpoints_subnet_itn.id
 
   subservices_enabled = {
     blob  = true
     queue = true
+  }
+
+  containers = {
+    name = "user-data-backup"
   }
 
   blob_features = {
@@ -56,14 +60,9 @@ module "user_data_backups_storage_account" {
   tags = var.tags
 }
 
-resource "azurerm_storage_container" "user-data-backup" {
-  name               = "user-data-backup"
-  storage_account_id = module.user_data_backups_storage_account.id
-}
-
 module "user_data_download_storage_account" {
   source  = "pagopa-dx/azure-storage-account/azurerm"
-  version = "~> 1.0"
+  version = "~> 2.0"
 
   environment = {
     prefix          = var.prefix
@@ -73,12 +72,16 @@ module "user_data_download_storage_account" {
     instance_number = "01"
   }
   resource_group_name = azurerm_resource_group.function_admin_itn_rg.name
-  tier                = "l"
+  use_case            = "default"
   subnet_pep_id       = data.azurerm_subnet.private_endpoints_subnet_itn.id
 
   subservices_enabled = {
     blob  = true
     queue = true
+  }
+
+  containers = {
+    name = "user-data-download"
   }
 
   blob_features = {
@@ -90,7 +93,3 @@ module "user_data_download_storage_account" {
   tags = var.tags
 }
 
-resource "azurerm_storage_container" "user-data-download" {
-  name               = "user-data-download"
-  storage_account_id = module.user_data_download_storage_account.id
-}

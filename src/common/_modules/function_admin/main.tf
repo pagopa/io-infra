@@ -7,7 +7,7 @@ resource "azurerm_resource_group" "function_admin_itn_rg" {
 
 module "function_admin_itn" {
   source  = "pagopa-dx/azure-function-app/azurerm"
-  version = "~> 2.0"
+  version = "~> 3.0"
 
   environment = {
     prefix          = var.prefix
@@ -59,7 +59,7 @@ module "function_admin_itn" {
     }
   )
 
-  action_group_id = data.azurerm_monitor_action_group.error_action_group.id
+  action_group_ids = [data.azurerm_monitor_action_group.error_action_group.id]
 
   tags = var.tags
 }
