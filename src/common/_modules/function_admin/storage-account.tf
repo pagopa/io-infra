@@ -39,7 +39,7 @@ module "user_data_backups_storage_account" {
     instance_number = "01"
   }
   resource_group_name = azurerm_resource_group.function_admin_itn_rg.name
-  use_case            = "default"
+  use_case            = "audit"
   subnet_pep_id       = data.azurerm_subnet.private_endpoints_subnet_itn.id
 
   subservices_enabled = {
@@ -59,30 +59,6 @@ module "user_data_backups_storage_account" {
   action_group_id = data.azurerm_monitor_action_group.error_action_group.id
 
   tags = var.tags
-}
-
-resource "azurerm_storage_management_policy" "user_data_backups_container_rule" {
-  storage_account_id = module.user_data_backups_storage_account.id
-
-  rule {
-    name    = "deleteafter3yrs"
-    enabled = true
-    filters {
-      prefix_match = ["user-data-backup"]
-      blob_types   = ["blockBlob"]
-    }
-    actions {
-      base_blob {
-        delete_after_days_since_creation_greater_than = 1095
-      }
-      snapshot {
-        delete_after_days_since_creation_greater_than = 1095
-      }
-      version {
-        delete_after_days_since_creation = 1095
-      }
-    }
-  }
 }
 
 module "user_data_download_storage_account" {
