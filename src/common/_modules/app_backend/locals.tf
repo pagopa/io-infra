@@ -3,7 +3,7 @@
 locals {
   name = var.name
 
-  app_command_line = "npm run start"
+  app_command_line = "pm2 start dist/src/server.js -i max --no-daemon"
 
   webtest = {
     path        = "/info",
