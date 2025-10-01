@@ -52,6 +52,10 @@ module "user_data_backups_storage_account" {
     access_type = "private"
   }]
 
+  customer_managed_key = {
+    "enabled" : false
+  }
+
   blob_features = {
     versioning = true
   }
