@@ -59,7 +59,7 @@ module "function_admin_itn" {
     }
   )
 
-  application_insights_connection_string = data.azurerm_application_insights.application_insights.connection_string
+  application_insights_key = data.azurerm_application_insights.application_insights.instrumentation_key
 
   action_group_ids = [data.azurerm_monitor_action_group.error_action_group.id]
 
