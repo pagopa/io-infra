@@ -58,6 +58,8 @@ module "user_data_backups_storage_account" {
     key_vault_id = data.azurerm_key_vault.common.id
   }
 
+  secondary_location = "spaincentral"
+
   blob_features = {
     versioning = true
   }
