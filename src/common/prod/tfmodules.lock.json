@@ -166,5 +166,11 @@
     "version": "1.0.1",
     "name": "azure_storage_account",
     "source": "https://registry.terraform.io/modules/pagopa-dx/azure-storage-account/azurerm/1.0.1"
+  },
+  "continua_app_service.appservice_continua_itn": {
+    "hash": "b62072527f0a19c5c5313120cff6897c2046cf8853475518b420dee619b65728",
+    "version": "0.1.10",
+    "name": "azure_app_service",
+    "source": "https://registry.terraform.io/modules/pagopa-dx/azure-app-service/azurerm/0.1.10"
   }
 }

@@ -303,4 +303,9 @@ locals {
 
     apim_itn_name = "${local.project_itn}-apim-01"
   }
+
+  continua = {
+    cidr_subnet_continua = "10.20.35.0/26"
+    vnet_common_name_itn = "${local.project_itn}-common-vnet-01"
+  }
 }
