@@ -28,6 +28,7 @@
 | <a name="module_containers_services"></a> [containers\_services](#module\_containers\_services) | ../_modules/function_services/containers | n/a |
 | <a name="module_cosmos_api_weu"></a> [cosmos\_api\_weu](#module\_cosmos\_api\_weu) | ../_modules/cosmos_api | n/a |
 | <a name="module_event_hubs_weu"></a> [event\_hubs\_weu](#module\_event\_hubs\_weu) | ../_modules/event_hubs | n/a |
+| <a name="module_function_app_admin"></a> [function\_app\_admin](#module\_function\_app\_admin) | ../_modules/function_admin | n/a |
 | <a name="module_function_app_services"></a> [function\_app\_services](#module\_function\_app\_services) | ../_modules/function_services/function-app | n/a |
 | <a name="module_github_runner_itn"></a> [github\_runner\_itn](#module\_github\_runner\_itn) | ../_modules/github_runner | n/a |
 | <a name="module_global"></a> [global](#module\_global) | ../_modules/global | n/a |
