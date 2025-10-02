@@ -26,6 +26,7 @@
 | <a name="module_application_gateway_weu"></a> [application\_gateway\_weu](#module\_application\_gateway\_weu) | ../_modules/application_gateway | n/a |
 | <a name="module_assets_cdn_weu"></a> [assets\_cdn\_weu](#module\_assets\_cdn\_weu) | ../_modules/assets_cdn | n/a |
 | <a name="module_containers_services"></a> [containers\_services](#module\_containers\_services) | ../_modules/function_services/containers | n/a |
+| <a name="module_continua_app_service"></a> [continua\_app\_service](#module\_continua\_app\_service) | ../_modules/app_continua | n/a |
 | <a name="module_cosmos_api_weu"></a> [cosmos\_api\_weu](#module\_cosmos\_api\_weu) | ../_modules/cosmos_api | n/a |
 | <a name="module_event_hubs_weu"></a> [event\_hubs\_weu](#module\_event\_hubs\_weu) | ../_modules/event_hubs | n/a |
 | <a name="module_function_app_services"></a> [function\_app\_services](#module\_function\_app\_services) | ../_modules/function_services/function-app | n/a |
