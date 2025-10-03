@@ -2,13 +2,6 @@ name: SSL Certificate Renewal
 
 on:
   workflow_call:
-    secrets:
-      arm-client-id:
-        required: true
-      arm-tenant-id:
-        required: true
-      arm-subscription-id:
-        required: true
     inputs:
       csr_common_name:
         description: "CSR common name ( example: 'test.io-poc.pagopa.it' )"
