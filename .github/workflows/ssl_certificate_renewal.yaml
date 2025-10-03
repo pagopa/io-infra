@@ -29,7 +29,7 @@ on:
         type: string
         required: false
       environment:
-        description: "Environment used to run the Github workflow ( example: 'prod-ci' )"
+        description: "Environment used to run the Github workflow ( example: 'dev', 'prod' )"
         type: string
         required: true
       use_selfhosted_agent:
