@@ -106,6 +106,7 @@ jobs:
     environment: ${{ inputs.environment }}-cd
     permissions:
        id-token: write
+    needs: autoApproveDeployment
     defaults:
       run:
         shell: bash
