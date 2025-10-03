@@ -47,10 +47,6 @@ jobs:
 
     name: Execute SSL Certificate Renewal workflow
     uses: pagopa/io-infra/.github/workflows/ssl_certificate_renewal.yaml@IOPLT-1309-ssl-cert-renewal-template # To be set to main
-    secrets:
-      arm-client-id: ${{ secrets.ARM_CLIENT_ID }}
-      arm-tenant-id: ${{ secrets.ARM_TENANT_ID }}
-      arm-subscription-id: ${{ secrets.ARM_SUBSCRIPTION_ID }}
     permissions:
       id-token: write
     with:
