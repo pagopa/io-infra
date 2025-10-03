@@ -48,7 +48,7 @@ jobs:
 
     name: Certificate renewal decision
     runs-on: ${{ inputs.use_selfhosted_agent && 'self-hosted' || 'ubuntu-24.04' }}
-    environment: ${{ inputs.environment }}
+    environment: ${{ inputs.environment }}-cd
     permissions:
        id-token: write
     defaults:
