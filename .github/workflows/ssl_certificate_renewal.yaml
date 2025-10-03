@@ -149,7 +149,7 @@ jobs:
         with:
           csr_common_name: ${{ inputs.csr_common_name }}
           python_version: ${{ env.python_version }}
-          arm_subscription_id: ${{ secrets.arm-subscription-id }}
+          arm_subscription_id: ${{ env.ARM_SUBSCRIPTION_ID }}
           azure_dns_zone_resource_group: ${{ inputs.azure_dns_zone_resource_group }}
           azure_dns_zone: ${{ inputs.azure_dns_zone }}
           le_azure_identity_type: ${{ env.le_azure_identity_type }}
