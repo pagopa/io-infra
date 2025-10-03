@@ -45,15 +45,20 @@ env:
 
 jobs:
 
-  auto_approve_staging_deploy:
+  autoApproveDeployment:
 
-    name: Auto Approve Certificate Renewal
-    runs-on: ubuntu-latest
+    name: Auto Approve Deployment
+    runs-on: ${{ inputs.use_selfhosted_agent && 'self-hosted' || 'ubuntu-24.04' }}
+    permissions:
+       id-token: write
+    defaults:
+      run:
+        shell: bash
     # If auto approve fails, the approval can be retried manually
     continue-on-error: true
 
     steps:
-      - name: Auto approve certificate renewal
+      - name: Auto approve deployment
         env:
           GH_TOKEN: ${{ secrets.GH_TOKEN_DEPLOYMENT_APPROVAL }}
           REQUIRED_ENVIRONMENT: ${{ inputs.environment }}-cd
