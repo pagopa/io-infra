@@ -56,6 +56,7 @@ jobs:
         shell: bash
     env:
       certificate_expiration_time: "2592000" # Certificate expiration time in seconds, default to 30 days
+      ARM_CLIENT_ID: ${{ secrets.ARM_CLIENT_ID }}
     outputs:
       is_forced_renew: ${{ steps.evaluate_force_renew.outputs.evaluate_force_renew }}
       require_new_certificate: ${{ steps.fetch_and_check.outputs.require_new_certificate }}
