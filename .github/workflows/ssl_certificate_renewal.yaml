@@ -45,27 +45,16 @@ env:
 
 jobs:
 
-  renewalDecision:
+  auto_approve_staging_deploy:
 
-    name: Certificate renewal decision
-    runs-on: ${{ inputs.use_selfhosted_agent && 'self-hosted' || 'ubuntu-24.04' }}
-    environment: ${{ inputs.environment }}-cd
-    permissions:
-       id-token: write
-    defaults:
-      run:
-        shell: bash
-    env:
-      certificate_expiration_time: "2592000" # Certificate expiration time in seconds, default to 30 days
-      ARM_CLIENT_ID: ${{ secrets.ARM_CLIENT_ID }}
-      ARM_SUBSCRIPTION_ID: ${{ secrets.ARM_SUBSCRIPTION_ID }}
-    outputs:
-      is_forced_renew: ${{ steps.evaluate_force_renew.outputs.evaluate_force_renew }}
-      require_new_certificate: ${{ steps.fetch_and_check.outputs.require_new_certificate }}
+    name: Auto Approve Certificate Renewal
+    runs-on: ubuntu-latest
+    needs: [validate]
+    # If auto approve fails, the approval can be retried manually
+    continue-on-error: true
 
     steps:
-
-      - name: Approve Deployment
+      - name: Auto approve certificate renewal
         env:
           GH_TOKEN: ${{ secrets.GH_TOKEN_DEPLOYMENT_APPROVAL }}
           REQUIRED_ENVIRONMENT: ${{ inputs.environment }}-cd
@@ -105,6 +94,26 @@ jobs:
             -F "environment_ids[]=$env_id" \
             -f "state=approved" \
             -f "comment=Approved automatically by the workflow."
+
+  renewalDecision:
+
+    name: Certificate renewal decision
+    runs-on: ${{ inputs.use_selfhosted_agent && 'self-hosted' || 'ubuntu-24.04' }}
+    environment: ${{ inputs.environment }}-cd
+    permissions:
+       id-token: write
+    defaults:
+      run:
+        shell: bash
+    env:
+      certificate_expiration_time: "2592000" # Certificate expiration time in seconds, default to 30 days
+      ARM_CLIENT_ID: ${{ secrets.ARM_CLIENT_ID }}
+      ARM_SUBSCRIPTION_ID: ${{ secrets.ARM_SUBSCRIPTION_ID }}
+    outputs:
+      is_forced_renew: ${{ steps.evaluate_force_renew.outputs.evaluate_force_renew }}
+      require_new_certificate: ${{ steps.fetch_and_check.outputs.require_new_certificate }}
+
+    steps:
 
       - name: Evaluate force renew
         id: evaluate_force_renew # id is mandatory to enable variable output to another job
@@ -173,47 +182,6 @@ jobs:
       ARM_SUBSCRIPTION_ID: ${{ secrets.ARM_SUBSCRIPTION_ID }}
 
     steps:
-
-      - name: Approve Deployment
-        env:
-          GH_TOKEN: ${{ secrets.GH_TOKEN_DEPLOYMENT_APPROVAL }}
-          REQUIRED_ENVIRONMENT: ${{ inputs.environment }}-cd
-        run: |
-          if [ -z "$GH_TOKEN" ]; then
-            echo "::error::GH_TOKEN_DEPLOYMENT_APPROVAL secret is not set."
-            exit 1
-          fi
-
-          deployments=$(gh api \
-            -H "Accept: application/vnd.github+json" \
-            /repos/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID/pending_deployments)
-
-          environment=$(echo "$deployments" | jq -r '.[].environment.name')
-
-          if [ "$environment" != "$REQUIRED_ENVIRONMENT" ]; then
-            echo "::error::Environment $REQUIRED_ENVIRONMENT not found."
-            echo "::warning::Check if the deployment was already approved by one of the reviewers."
-            exit 1
-          fi
-
-          current_user_can_approve=$(echo "$deployments" | jq -r '.[].current_user_can_approve')
-
-          if [ "$current_user_can_approve" != true ]; then
-            GITHUB_USER=$(gh api user | jq -r '.login')
-            echo "::error::$GITHUB_USER is not a reviewer"
-            echo "::warning::Auto Approval not available, the user is not a reviewer of the environment $REQUIRED_ENVIRONMENT."
-            exit 1
-          fi
-
-          env_id=$(echo "$deployments" | jq -r '.[].environment.id')
-
-          gh api \
-            --method POST \
-            -H "Accept: application/vnd.github+json" \
-            /repos/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID/pending_deployments \
-            -F "environment_ids[]=$env_id" \
-            -f "state=approved" \
-            -f "comment=Approved automatically by the workflow."
 
       - name: Azure Login
         uses: azure/login@6b2456866fc08b011acb422a92a4aa20e2c4de32 # v2.1.0
