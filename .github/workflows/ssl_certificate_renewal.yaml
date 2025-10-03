@@ -49,7 +49,6 @@ jobs:
 
     name: Auto Approve Certificate Renewal
     runs-on: ubuntu-latest
-    needs: [validate]
     # If auto approve fails, the approval can be retried manually
     continue-on-error: true
 
