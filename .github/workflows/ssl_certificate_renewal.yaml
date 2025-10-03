@@ -60,11 +60,11 @@ jobs:
     steps:
       - name: Auto approve deployment
         env:
-          GH_TOKEN: ${{ secrets.BOT_TOKEN }}
+          GH_TOKEN: ${{ secrets.GH_TOKEN_DEPLOYMENT_APPROVAL }}
           REQUIRED_ENVIRONMENT: ${{ inputs.environment }}-cd
         run: |
           if [ -z "$GH_TOKEN" ]; then
-            echo "::error::GH_TOKEN secret is not set."
+            echo "::error::GH_TOKEN_DEPLOYMENT_APPROVAL secret is not set."
             exit 1
           fi
 
