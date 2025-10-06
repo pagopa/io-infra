@@ -92,10 +92,18 @@ jobs:
       - name: Set renew_certificate
         id: should_renew
         run: |
-          if [[ "$REQUIRE_NEW_CERT" == "true" || "$FORCE_RENEW_CERT" == "true" ]]; then
+          if [[ "$FORCE_RENEW_CERT" == "true" ]]; then
             echo "renew_certificate=true" >> $GITHUB_OUTPUT
+            echo "## ⚠️ Renewal Status: FORCED" >> $GITHUB_STEP_SUMMARY
+            echo "**Renewal explicitly requested.** The renewal action will proceed. 🛠️" >> $GITHUB_STEP_SUMMARY
+          elif [[ "$REQUIRE_NEW_CERT" == "true" ]]; then
+            echo "renew_certificate=true" >> $GITHUB_OUTPUT
+            echo "## 🔑 Renewal Status: REQUIRED" >> $GITHUB_STEP_SUMMARY
+            echo "**Verification successful.** The certificate will be renewed in the next step. ✅" >> $GITHUB_STEP_SUMMARY
           else
             echo "renew_certificate=false" >> $GITHUB_OUTPUT
+            echo "## ✅ Renewal Status: NOT NEEDED" >> $GITHUB_STEP_SUMMARY
+            echo "No certificate renewal is required at this time. 🟢" >> $GITHUB_STEP_SUMMARY
           fi
         env:
           FORCE_RENEW_CERT: ${{ inputs.force_renew_cert }}
