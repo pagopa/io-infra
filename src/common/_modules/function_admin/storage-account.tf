@@ -6,7 +6,7 @@ module "function_admin_storage_account" {
     prefix          = var.prefix
     env_short       = var.env_short
     location        = var.location_itn
-    app_name        = "funcadm"
+    app_name        = "admin"
     instance_number = "01"
   }
   resource_group_name = azurerm_resource_group.function_admin_itn_rg.name
