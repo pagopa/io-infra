@@ -67,7 +67,7 @@ jobs:
 
       - name: Fetch and check certificate
         id: fetch_and_check
-        if: !inputs.force_renew_cert
+        if: inputs.force_renew_cert == false
         env:
           string_manipulation_cert_name: ${{ inputs.csr_common_name }}
           key_vault_name: ${{ inputs.key_vault_name }}
