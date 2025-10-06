@@ -44,13 +44,78 @@ env:
   ARM_USE_AZUREAD: true
 
 jobs:
+  renewalDecision:
+    name: Certificate renewal decision
+    runs-on: ${{ inputs.use_selfhosted_agent && 'self-hosted' || 'ubuntu-24.04' }}
+    environment: ${{ inputs.environment }}-cd
+    permissions:
+      id-token: write
+    needs: autoApproveDeployment
+    defaults:
+      run:
+        shell: bash
+    env:
+      certificate_expiration_time: "2592000" # Certificate expiration time in seconds, default to 30 days
+      ARM_CLIENT_ID: ${{ secrets.ARM_CLIENT_ID }}
+      ARM_SUBSCRIPTION_ID: ${{ secrets.ARM_SUBSCRIPTION_ID }}
+    outputs:
+      is_forced_renew: ${{ steps.evaluate_force_renew.outputs.evaluate_force_renew }}
+      require_new_certificate: ${{ steps.fetch_and_check.outputs.require_new_certificate }}
+
+    steps:
+      - name: Evaluate force renew
+        id: evaluate_force_renew # id is mandatory to enable variable output to another job
+        env:
+          force_renew_cert: ${{ inputs.force_renew_cert }}
+        run: |
+            if [ "$force_renew_cert" == "true" ]
+              then
+                echo "🔄 Parameter force_renew_cert is set to True , skipping the remaining steps and launching the next job"
+                echo "evaluate_force_renew=true" >> $GITHUB_OUTPUT
+            fi
+
+      - name: Azure Login
+        uses: azure/login@6b2456866fc08b011acb422a92a4aa20e2c4de32 # v2.1.0
+        if: inputs.force_renew_cert == false
+        with:
+          client-id: ${{ env.ARM_CLIENT_ID }}
+          tenant-id: ${{ env.ARM_TENANT_ID }}
+          subscription-id: ${{ env.ARM_SUBSCRIPTION_ID }}
+
+      - name: Fetch and check certificate
+        id: fetch_and_check
+        if: inputs.force_renew_cert == false
+        env:
+          string_manipulation_cert_name: ${{ inputs.csr_common_name }}
+          key_vault_name: ${{ inputs.key_vault_name }}
+        run: |
+            key_vault_cert_name=$(echo "${string_manipulation_cert_name//./-}")
+
+            if ! az keyvault certificate download --vault-name "$key_vault_name" -n "$key_vault_cert_name" -f certificate.pem >/dev/null
+              then
+                echo "❌ The certificate was not found in the selected Key Vault, proceeding to request it from LE"
+                echo "require_new_certificate=true" >> $GITHUB_OUTPUT
+            else
+              if ! openssl x509 -inform pem -checkend "$certificate_expiration_time" -noout -in certificate.pem
+                then
+                  # certificate is expiring or is already expired
+                  echo "do_cleanup=true" >> $GITHUB_OUTPUT
+                  echo "require_new_certificate=true" >> $GITHUB_OUTPUT
+                else
+                  echo "✅ The certificate is not expiring, cleaning up and exiting"
+                  echo "do_cleanup=true" >> $GITHUB_OUTPUT
+              fi
+            fi
+
+      - name: Cleanup
+        if: steps.fetch_and_check.outputs.do_cleanup == 'true'
+        run: rm -f certificate.pem
 
   autoApproveDeployment:
-
     name: Auto Approve Deployment
     runs-on: ${{ inputs.use_selfhosted_agent && 'self-hosted' || 'ubuntu-24.04' }}
     permissions:
-       id-token: write
+      id-token: write
     defaults:
       run:
         shell: bash
@@ -99,82 +164,13 @@ jobs:
             -f "state=approved" \
             -f "comment=Approved automatically by the workflow."
 
-  renewalDecision:
-
-    name: Certificate renewal decision
-    runs-on: ${{ inputs.use_selfhosted_agent && 'self-hosted' || 'ubuntu-24.04' }}
-    environment: ${{ inputs.environment }}-cd
-    permissions:
-       id-token: write
-    needs: autoApproveDeployment
-    defaults:
-      run:
-        shell: bash
-    env:
-      certificate_expiration_time: "2592000" # Certificate expiration time in seconds, default to 30 days
-      ARM_CLIENT_ID: ${{ secrets.ARM_CLIENT_ID }}
-      ARM_SUBSCRIPTION_ID: ${{ secrets.ARM_SUBSCRIPTION_ID }}
-    outputs:
-      is_forced_renew: ${{ steps.evaluate_force_renew.outputs.evaluate_force_renew }}
-      require_new_certificate: ${{ steps.fetch_and_check.outputs.require_new_certificate }}
-
-    steps:
-
-      - name: Evaluate force renew
-        id: evaluate_force_renew # id is mandatory to enable variable output to another job
-        env: 
-          force_renew_cert: ${{ inputs.force_renew_cert }}
-        run: |
-            if [ "$force_renew_cert" == "true" ]
-              then
-                echo "🔄 Parameter force_renew_cert is set to True , skipping the remaining steps and launching the next job"
-                echo "evaluate_force_renew=true" >> $GITHUB_OUTPUT
-            fi
-
-      - name: Azure Login
-        uses: azure/login@6b2456866fc08b011acb422a92a4aa20e2c4de32 # v2.1.0
-        if: inputs.force_renew_cert == false
-        with:
-          client-id: ${{ env.ARM_CLIENT_ID }}
-          tenant-id: ${{ env.ARM_TENANT_ID }}
-          subscription-id: ${{ env.ARM_SUBSCRIPTION_ID }}
-
-      - name: Fetch and check certificate
-        id: fetch_and_check
-        if: inputs.force_renew_cert == false
-        env:
-          string_manipulation_cert_name: ${{ inputs.csr_common_name }}
-          key_vault_name: ${{ inputs.key_vault_name }}
-        run: |
-            key_vault_cert_name=$(echo "${string_manipulation_cert_name//./-}")
-
-            if ! az keyvault certificate download --vault-name "$key_vault_name" -n "$key_vault_cert_name" -f certificate.pem >/dev/null
-              then
-                echo "❌ The certificate was not found in the selected Key Vault, proceeding to request it from LE"
-                echo "require_new_certificate=true" >> $GITHUB_OUTPUT
-            else
-              if ! openssl x509 -inform pem -checkend "$certificate_expiration_time" -noout -in certificate.pem
-                then
-                  # certificate is expiring or is already expired
-                  echo "do_cleanup=true" >> $GITHUB_ENV
-                  echo "require_new_certificate=true" >> $GITHUB_OUTPUT
-                else
-                  echo "✅ The certificate is not expiring, cleaning up and exiting"
-                  echo "do_cleanup=true" >> $GITHUB_ENV
-              fi
-            fi
-
-      - name: Cleanup
-        if: env.do_cleanup == 'true'
-        run: rm -f certificate.pem
 
   obtainCertificateFromLE:
-
     name: Obtain the new certificate from Lets Encrypt
     runs-on: ${{ inputs.use_selfhosted_agent && 'self-hosted' || 'ubuntu-24.04' }}
     environment: ${{ inputs.environment }}-cd
     permissions:
-       id-token: write
+      id-token: write
     needs: renewalDecision
     if: needs.renewalDecision.outputs.require_new_certificate == 'true' || needs.renewalDecision.outputs.is_forced_renew == 'true'
     defaults:
@@ -187,7 +183,6 @@ jobs:
       ARM_SUBSCRIPTION_ID: ${{ secrets.ARM_SUBSCRIPTION_ID }}
 
     steps:
-
       - name: Azure Login
         uses: azure/login@6b2456866fc08b011acb422a92a4aa20e2c4de32 # v2.1.0
         with:
