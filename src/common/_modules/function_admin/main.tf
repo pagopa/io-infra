@@ -1,5 +1,5 @@
 resource "azurerm_resource_group" "function_admin_itn_rg" {
-  name     = "${var.project_itn}-funcadm-rg-01"
+  name     = "${var.project_itn}-platform-admin-rg-01"
   location = var.location_itn
 
   tags = var.tags
