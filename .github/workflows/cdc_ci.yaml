@@ -1,4 +1,4 @@
-name: Continuous Integration on elt
+name: Continuous Integration on cdc
 
 on:
   merge_group:
@@ -11,16 +11,15 @@ on:
       - reopened
       - ready_for_review
     paths:
-      - "src/domains/elt/**"
-      - ".github/workflows/elt_**"
-      - "src/_modules/test_users/**"
+      - "src/domains/cdc/**"
+      - ".github/workflows/cdc**"
 
 jobs:
   code_review_prod:
-    uses: pagopa/dx/.github/workflows/infra_plan.yaml@main
+    uses: ./.github/workflows/call_code_review.yaml
     name: Terraform Plan
     secrets: inherit
     with:
       environment: prod
-      base_path: "src/domains/elt"
+      dir: "src/domains/cdc/prod"
       use_private_agent: true

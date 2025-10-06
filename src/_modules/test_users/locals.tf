@@ -35,7 +35,10 @@ locals {
     for i in range(0, 1000) : format("LVTEST00A00A%03dX", i)
     ], [
     for i in range(0, 1000) : format("LVTEST00A00B%03dX", i)
-  ])
+    ], [
+    for i in range(0, 900) : format("LVTEST00A00C%03dX", i)
+    ]
+  )
 
   # A list of fiscal code to be used to test for Unique Email Enforcement initiative on IO
   test_users_unique_email_test = [

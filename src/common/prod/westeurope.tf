@@ -429,6 +429,8 @@ module "app_backend_weu" {
   slot_allowed_ips              = module.monitoring_weu.appi.reserved_ips
   enable_premium_plan_autoscale = true
 
+  plan_sku = "P2v3"
+
   backend_hostnames = local.backend_hostnames
 
   key_vault        = local.core.key_vault.weu.kv
