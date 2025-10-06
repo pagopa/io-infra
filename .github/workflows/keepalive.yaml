@@ -29,4 +29,4 @@ jobs:
         if: env.days_since_commit >= '55'
         uses: pagopa/dx/.github/actions/keep-alive@main
         with:
-          bot_token: ${{ secrets.GITHUB_BOT_TOKEN }}
+          bot_token: ${{ secrets.BOT_TOKEN }}
