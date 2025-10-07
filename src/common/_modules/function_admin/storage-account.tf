@@ -55,7 +55,7 @@ module "user_data_backups_storage_account" {
   customer_managed_key = {
     enabled      = true
     type         = "kv"
-    key_vault_id = data.azurerm_key_vault.common.id
+    key_vault_id = data.azurerm_key_vault.itn_key_vault.id
   }
 
   secondary_location = "spaincentral"
