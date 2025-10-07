@@ -119,7 +119,7 @@ jobs:
 
       - name: Run LE renew SSL Certificate python action
         if: steps.should_renew.outputs.renew_certificate == 'true'
-        uses: pagopa/io-infra/.github/actions/le-renew-ssl-certificate-python@IOPLT-1309-ssl-cert-renewal-template
+        uses: pagopa/io-infra/.github/actions/le-renew-ssl-certificate-python@main
         with:
           csr_common_name: ${{ inputs.csr_common_name }}
           python_version: ${{ env.python_version }}
