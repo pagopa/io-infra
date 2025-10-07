@@ -79,8 +79,11 @@ jobs:
             -TenantId "${{ env.ARM_TENANT_ID }}" `
             -EnableRegularResetOfRejectedState `
             -AlwaysOnlyMarkForDeletion `
+            -GitHubEnvironment "${{ env.ENVIRONMENT }}" `
             -DontDeleteEmptyResourceGroups `
             -MinimumResourceAgeInDaysForChecking 7 `
             -DeleteSuspectedResourcesAndGroupsAfterDays 30 `
             -ResetOfRejectedStatePeriodInDays 180 `
             -SubscriptionIdsToProcess @("${{ env.ARM_SUBSCRIPTION_ID }}")
+        env:
+          ENVIRONMENT: ${{ inputs.environment == 'prod' && 'p' || 'd' }}

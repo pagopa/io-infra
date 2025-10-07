@@ -137,6 +137,9 @@ Use these service principal credentials for authentication.
 .PARAMETER EnforceStdout
 Redirect all displayed text (Write-HostOrOutput) to standard output.
 
+.PARAMETER GitHubEnvironment
+Optional, for testing purposes only (values d or p).
+
 .INPUTS
 Azure resources/groups across all (or specified) subscriptions.
 
@@ -237,6 +240,10 @@ param (
 
     # Use these service principal credentials for authentication.
     [PSCredential]$ServicePrincipalCredential = $null,
+
+    # TESTING
+    [string]$GitHubEnvironment = "d",
+    # TESTING
 
     # Redirect all displayed text (Write-HostOrOutput) to standard output.
     [switch]$EnforceStdout
