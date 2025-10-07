@@ -225,5 +225,14 @@ variable "enable_premium_plan_autoscale" {
   type        = bool
   description = "Enable autoscale for premium plan"
   default     = false
+}
 
+variable "subnet_pep_id" {
+  type        = string
+  description = "Subnet ID for the private endpoint"
+}
+
+variable "private_dns_zone_id" {
+  type        = string
+  description = "Private DNS Zone ID for the private endpoint"
 }

@@ -19,6 +19,11 @@ data "azurerm_subnet" "private_endpoints_subnet_itn" {
 # SECRETS
 #
 
+data "azurerm_key_vault" "itn_key_vault" {
+  name                = "${var.project_itn}-platform-kv-01"
+  resource_group_name = var.common_resource_group_name_itn
+}
+
 data "azurerm_key_vault" "common" {
   name                = format("%s-kv-common", local.project)
   resource_group_name = local.rg_common_name
