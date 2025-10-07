@@ -308,4 +308,13 @@ locals {
     cidr_subnet_continua = "10.20.35.0/26"
     vnet_common_name_itn = "${local.project_itn}-common-vnet-01"
   }
+  
+  function_admin = {
+    cidr_subnet_admin = "10.20.34.64/26"
+
+    vnet_common_name_itn           = "${local.project_itn}-common-vnet-01"
+    common_resource_group_name_itn = "${local.project_itn}-common-rg-01"
+
+    apim_itn_name = "${local.project_itn}-apim-01"
+  }
 }
