@@ -1,0 +1,86 @@
+name: PoC Azure Save Money - Dry Run mode
+
+on:
+  push:
+    branches:
+      - dryrun-azsavemoney-dx-poc # for testing purposes
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: 'Environment to run the workflow in'
+        required: false
+        default: 'dev'
+        type: string
+
+env:
+  ARM_TENANT_ID: ${{ secrets.ARM_TENANT_ID }}
+  ARM_USE_OIDC: true
+  ARM_USE_AZUREAD: true
+
+jobs:
+  delete-resources:
+    name: Test Mark and Delete Resources (WhatIf Mode)
+    runs-on: ubuntu-latest
+    environment: ${{ inputs.environment }}-ci
+    permissions:
+      contents: read
+      actions: read
+      id-token: write
+    env:
+      ARM_CLIENT_ID: ${{ secrets.ARM_CLIENT_ID }}
+      ARM_SUBSCRIPTION_ID: ${{ secrets.ARM_SUBSCRIPTION_ID }}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332
+
+      - name: Install Az PowerShell modules (preparatory step)
+        shell: pwsh
+        run: |
+          # Install all required Az modules in a single step
+          Write-Host "Installing required Az modules..."
+
+          # Install modules with AllowClobber to ensure we get the latest versions
+          Install-Module -Name Az.Accounts -Force -AllowClobber -Scope CurrentUser
+          Install-Module -Name Az.Resources -Force -AllowClobber -Scope CurrentUser
+          Install-Module -Name Az.Batch -Force -AllowClobber -Scope CurrentUser
+          Install-Module -Name Az.DataProtection -Force -AllowClobber -Scope CurrentUser
+          Install-Module -Name Az.Monitor -Force -AllowClobber -Scope CurrentUser
+          Install-Module -Name Az.ResourceGraph -Force -AllowClobber -Scope CurrentUser
+          Install-Module -Name Az.ServiceBus -Force -AllowClobber -Scope CurrentUser
+          Install-Module -Name PowerShellGet -Force -AllowClobber -Scope CurrentUser
+          Install-Module -Name Az.ManagedServiceIdentity -Force -AllowClobber -Scope CurrentUser
+
+          # Import all modules
+          Write-Host "Importing Az modules..."
+          Import-Module Az.Accounts -Force
+          Import-Module Az.Resources -Force
+          Import-Module Az.Batch -Force
+          Import-Module Az.DataProtection -Force
+          Import-Module Az.Monitor -Force
+          Import-Module Az.ResourceGraph -Force
+          Import-Module Az.ServiceBus -Force
+          Import-Module Az.ManagedServiceIdentity -Force
+
+          Write-Host "All Az modules installed and imported successfully"
+
+      - name: Azure Login
+        uses: azure/login@a65d910e8af852a8061c627c456678983e180302
+        with:
+          client-id: ${{ env.ARM_CLIENT_ID }}
+          tenant-id: ${{ env.ARM_TENANT_ID }}
+          subscription-id: ${{ env.ARM_SUBSCRIPTION_ID }}
+          enable-AzPSSession: true
+
+      - name: Run script to mark resources (WhatIf mode)
+        shell: pwsh
+        run: |
+          ./azSaveMoneyPoC/MarkAndDeleteUnusedResources.ps1 -WhatIf `
+            -TenantId "${{ env.ARM_TENANT_ID }}" `
+            -EnableRegularResetOfRejectedState `
+            -AlwaysOnlyMarkForDeletion `
+            -DontDeleteEmptyResourceGroups `
+            -MinimumResourceAgeInDaysForChecking 7 `
+            -DeleteSuspectedResourcesAndGroupsAfterDays 30 `
+            -ResetOfRejectedStatePeriodInDays 180 `
+            -SubscriptionIdsToProcess @("${{ env.ARM_SUBSCRIPTION_ID }}")
