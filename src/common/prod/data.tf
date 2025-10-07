@@ -85,14 +85,6 @@ data "azurerm_subnet" "cosmos_api_allowed" {
   resource_group_name  = local.core.networking.weu.vnet_common.resource_group_name
 }
 
-# App Backend
-data "azurerm_subnet" "services_snet" {
-  count                = 2
-  name                 = format("%s-services-snet-%d", local.project_weu_legacy, count.index + 1)
-  virtual_network_name = local.core.networking.weu.vnet_common.name
-  resource_group_name  = local.core.networking.weu.vnet_common.resource_group_name
-}
-
 # Functions
 data "azurerm_linux_function_app" "function_assets_cdn" {
   name                = "${local.project_weu_legacy}-assets-cdn-fn"
