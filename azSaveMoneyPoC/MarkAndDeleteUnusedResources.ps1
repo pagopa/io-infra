@@ -1975,7 +1975,7 @@ foreach ($sub in $allSubscriptions) {
     Select-AzSubscription -SubscriptionName $sub.Name -TenantId $TenantId -WhatIf:$false | Out-Null
 
     # TESTING
-    $signedInIdentity = Get-AzUserAssignedIdentity -SubscriptionId $sub.Id -ResourceGroupName "io-d-identity-rg" -Name "io-d-infra-github-ci-identity"
+    $signedInIdentity = Get-AzUserAssignedIdentity -SubscriptionId $sub.Id -ResourceGroupName "io-$($GitHubEnvironment)-identity-rg" -Name "io-$($GitHubEnvironment)-infra-github-ci-identity"
     # TESTING
 
     $tempRoleAssignment = $null
