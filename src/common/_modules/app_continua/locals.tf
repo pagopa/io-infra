@@ -15,8 +15,7 @@ locals {
 
     APPINSIGHTS_INSTRUMENTATIONKEY = data.azurerm_application_insights.application_insights.instrumentation_key
 
-    NODE_ENV = "production"
-    PORT     = "3000"
+    PORT = "3000"
 
     # Fallback
     FALLBACK_URL            = "https://ioapp.it/scarica-io"
