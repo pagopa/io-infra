@@ -1,15 +1,15 @@
 name: PoC Azure Save Money - Dry Run mode
 
 on:
-  push:
-    branches:
-      - dryrun-azsavemoney-dx-poc # for testing purposes
+  # push:
+  #   branches:
+  #     - dryrun-azsavemoney-dx-poc # for testing purposes
   workflow_dispatch:
     inputs:
       environment:
         description: 'Environment to run the workflow in'
         required: false
-        default: 'dev'
+        default: dev
         type: string
 
 env:
@@ -18,8 +18,8 @@ env:
   ARM_USE_AZUREAD: true
 
 jobs:
-  delete-resources:
-    name: Test Mark and Delete Resources (WhatIf Mode)
+  mark-delete-resources:
+    name: Mark and Delete Resources (WhatIf Mode)
     runs-on: ubuntu-latest
     environment: ${{ inputs.environment }}-ci
     permissions:
