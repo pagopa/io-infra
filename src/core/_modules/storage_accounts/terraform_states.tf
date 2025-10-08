@@ -27,6 +27,20 @@ resource "azurerm_storage_account" "tfinfprodio" {
   allow_nested_items_to_be_public  = false
   cross_tenant_replication_enabled = false
 
+  blob_properties {
+    versioning_enabled  = true
+    change_feed_enabled = true
+
+    delete_retention_policy {
+      days = 30
+    }
+
+    container_delete_retention_policy {
+      days = 30
+    }
+
+  }
+
   tags = var.tags
 }
 
@@ -42,6 +56,20 @@ resource "azurerm_storage_account" "tfappprodio" {
 
   allow_nested_items_to_be_public  = false
   cross_tenant_replication_enabled = false
+
+  blob_properties {
+    versioning_enabled  = true
+    change_feed_enabled = true
+
+    delete_retention_policy {
+      days = 30
+    }
+
+    container_delete_retention_policy {
+      days = 30
+    }
+
+  }
 
   tags = var.tags
 }
