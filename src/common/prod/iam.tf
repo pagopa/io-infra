@@ -52,8 +52,32 @@ resource "azurerm_role_assignment" "io_p_itn_platform_kv_01_ci_key" {
   principal_id         = data.azurerm_user_assigned_identity.managed_identity_io_infra_ci.principal_id
 }
 
+resource "azurerm_role_assignment" "io_p_itn_platform_kv_01_ci_cert" {
+  scope                = data.azurerm_key_vault.itn_key_vault.id
+  role_definition_name = "Key Vault Certificates Officer"
+  principal_id         = data.azurerm_user_assigned_identity.managed_identity_io_infra_ci.principal_id
+}
+
+resource "azurerm_role_assignment" "io_p_itn_platform_kv_01_ci_secret" {
+  scope                = data.azurerm_key_vault.itn_key_vault.id
+  role_definition_name = "Key Vault Secrets Officer"
+  principal_id         = data.azurerm_user_assigned_identity.managed_identity_io_infra_ci.principal_id
+}
+
 resource "azurerm_role_assignment" "io_p_itn_platform_kv_01_cd_key" {
   scope                = data.azurerm_key_vault.itn_key_vault.id
   role_definition_name = "Key Vault Crypto User"
+  principal_id         = data.azurerm_user_assigned_identity.managed_identity_io_infra_cd.principal_id
+}
+
+resource "azurerm_role_assignment" "io_p_itn_platform_kv_01_cd_cert" {
+  scope                = data.azurerm_key_vault.itn_key_vault.id
+  role_definition_name = "Key Vault Certificates Officer"
+  principal_id         = data.azurerm_user_assigned_identity.managed_identity_io_infra_cd.principal_id
+}
+
+resource "azurerm_role_assignment" "io_p_itn_platform_kv_01_cd_secret" {
+  scope                = data.azurerm_key_vault.itn_key_vault.id
+  role_definition_name = "Key Vault Secrets Officer"
   principal_id         = data.azurerm_user_assigned_identity.managed_identity_io_infra_cd.principal_id
 }
