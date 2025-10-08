@@ -238,3 +238,14 @@ import {
   to = module.containers_services.module.db_subscription_cidrs_container.azurerm_cosmosdb_sql_container.this
   id = "/subscriptions/ec285037-c673-4f58-b594-d7c480da4e8b/resourceGroups/io-p-rg-internal/providers/Microsoft.DocumentDB/databaseAccounts/io-p-cosmos-api/sqlDatabases/db/containers/subscription-cidrs"
 }
+
+module "function_app_admin" {
+  source                         = "../_modules/function_admin"
+  prefix                         = local.prefix
+  env_short                      = local.env_short
+  vnet_common_name_itn           = local.function_admin.vnet_common_name_itn
+  common_resource_group_name_itn = local.function_admin.common_resource_group_name_itn
+  project_itn                    = local.project_itn
+  admin_snet_cidr                = local.function_admin.cidr_subnet_admin
+  tags                           = local.tags
+}

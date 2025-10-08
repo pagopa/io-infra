@@ -85,6 +85,13 @@ resource "azurerm_role_assignment" "io_p_itn_platform_kv_01_adgroup_devs" {
   principal_id         = each.value
 }
 
+resource "azurerm_role_assignment" "io_p_itn_platform_kv_01_ci_key" {
+  for_each             = var.ci
+  scope                = azurerm_key_vault.io_p_itn_platform_kv_01.id
+  role_definition_name = "Key Vault Crypto User"
+  principal_id         = each.value
+}
+
 resource "azurerm_role_assignment" "io_p_itn_platform_kv_01_ci_secret" {
   for_each             = var.ci
   scope                = azurerm_key_vault.io_p_itn_platform_kv_01.id
@@ -96,6 +103,13 @@ resource "azurerm_role_assignment" "io_p_itn_platform_kv_01_ci_cert" {
   for_each             = var.ci
   scope                = azurerm_key_vault.io_p_itn_platform_kv_01.id
   role_definition_name = "Key Vault Certificate User"
+  principal_id         = each.value
+}
+
+resource "azurerm_role_assignment" "io_p_itn_platform_kv_01_cd_key" {
+  for_each             = var.cd
+  scope                = azurerm_key_vault.io_p_itn_platform_kv_01.id
+  role_definition_name = "Key Vault Crypto User"
   principal_id         = each.value
 }
 

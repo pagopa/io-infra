@@ -76,19 +76,21 @@ data "azurerm_user_assigned_identity" "bonus_infra_cd" {
   resource_group_name = "${local.prefix}-${local.env_short}-itn-cdc-rg-01"
 }
 
+data "azurerm_user_assigned_identity" "managed_identity_io_infra_ci" {
+  name                = "${local.prefix}-${local.env_short}-infra-github-ci-identity"
+  resource_group_name = "${local.prefix}-${local.env_short}-identity-rg"
+}
+
+data "azurerm_user_assigned_identity" "managed_identity_io_infra_cd" {
+  name                = "${local.prefix}-${local.env_short}-infra-github-cd-identity"
+  resource_group_name = "${local.prefix}-${local.env_short}-identity-rg"
+}
+
 # Cosmos API
 data "azurerm_subnet" "cosmos_api_allowed" {
   for_each = toset(local.cosmos_api.allowed_subnets)
 
   name                 = each.value
-  virtual_network_name = local.core.networking.weu.vnet_common.name
-  resource_group_name  = local.core.networking.weu.vnet_common.resource_group_name
-}
-
-# App Backend
-data "azurerm_subnet" "services_snet" {
-  count                = 2
-  name                 = format("%s-services-snet-%d", local.project_weu_legacy, count.index + 1)
   virtual_network_name = local.core.networking.weu.vnet_common.name
   resource_group_name  = local.core.networking.weu.vnet_common.resource_group_name
 }
@@ -166,4 +168,9 @@ data "azurerm_subnet" "itn_auth_prof_async_func_snet" {
 data "azurerm_key_vault" "ioweb_kv" {
   name                = "${local.project_itn}-ioweb-kv-01"
   resource_group_name = "${local.project_itn}-ioweb-rg-01"
+}
+
+data "azurerm_key_vault" "itn_key_vault" {
+  name                = "${local.project_itn}-platform-kv-01"
+  resource_group_name = "${local.project_itn}-common-rg-01"
 }
