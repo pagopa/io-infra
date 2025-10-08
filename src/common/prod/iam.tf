@@ -47,13 +47,13 @@ resource "azurerm_role_assignment" "svc_devs_itn" {
 }
 
 resource "azurerm_role_assignment" "io_p_itn_platform_kv_01_ci_key" {
-  scope                = azurerm_key_vault.io_p_itn_platform_kv_01.id
+  scope                = data.azurerm_key_vault.itn_key_vault.id
   role_definition_name = "Key Vault Crypto User"
   principal_id         = data.azurerm_user_assigned_identity.managed_identity_io_infra_ci.principal_id
 }
 
 resource "azurerm_role_assignment" "io_p_itn_platform_kv_01_cd_key" {
-  scope                = azurerm_key_vault.io_p_itn_platform_kv_01.id
+  scope                = data.azurerm_key_vault.itn_key_vault.id
   role_definition_name = "Key Vault Crypto User"
   principal_id         = data.azurerm_user_assigned_identity.managed_identity_io_infra_cd.principal_id
 }
