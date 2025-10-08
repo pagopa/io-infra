@@ -15,9 +15,9 @@ resource "azurerm_storage_account" "terraform" {
 }
 
 resource "azurerm_storage_account" "tfinfprodio" {
-  name                     = replace("${var.project}tfinfprodio", "-", "")
-  resource_group_name      = var.resource_group_name
-  location                 = var.location
+  name                = replace("${var.project}tfinfprodio", "-", "")
+  resource_group_name = var.resource_group_name
+  location            = var.location
 
   account_tier             = "Standard"
   access_tier              = "Hot"
@@ -31,9 +31,9 @@ resource "azurerm_storage_account" "tfinfprodio" {
 }
 
 resource "azurerm_storage_account" "tfappprodio" {
-  name                     = replace("${var.project}tfappprodio", "-", "")
-  resource_group_name      = var.resource_group_name
-  location                 = var.location
+  name                = replace("${var.project}tfappprodio", "-", "")
+  resource_group_name = var.resource_group_name
+  location            = var.location
 
   account_tier             = "Standard"
   access_tier              = "Hot"
