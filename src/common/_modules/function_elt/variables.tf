@@ -89,24 +89,6 @@ variable "storage_account_itn_primary_connection_string" {
   sensitive = true
 }
 
-variable "storage_account_tables" {
-  type = object({
-    fnelterrors                     = string
-    fnelterrors_messages            = string
-    fnelterrors_message_status      = string
-    fnelterrors_notification_status = string
-    fneltcommands                   = string
-    fneltexports                    = string
-  })
-}
-
-variable "storage_account_containers" {
-  type = object({
-    container_messages_report_step1      = string
-    container_messages_report_step_final = string
-  })
-}
-
 variable "elt_snet_cidr" {
   type        = string
   description = "ELT Services Subnet CIDR"

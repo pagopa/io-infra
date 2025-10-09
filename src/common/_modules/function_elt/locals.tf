@@ -66,16 +66,16 @@ locals {
       DELETES_LEASES_PREFIX           = "profile-deletion-002"
 
 
-      ERROR_STORAGE_ACCOUNT                   = var.storage_account_name
-      ERROR_STORAGE_KEY                       = var.storage_account_primary_access_key
-      ERROR_STORAGE_TABLE                     = var.storage_account_tables.fnelterrors
-      ERROR_STORAGE_TABLE_MESSAGES            = var.storage_account_tables.fnelterrors_messages
-      ERROR_STORAGE_TABLE_MESSAGE_STATUS      = var.storage_account_tables.fnelterrors_message_status
-      ERROR_STORAGE_TABLE_NOTIFICATION_STATUS = var.storage_account_tables.fnelterrors_notification_status
+      ERROR_STORAGE_ACCOUNT                   = module.storage_account_itn_elt.name
+      ERROR_STORAGE_KEY                       = module.storage_account_itn_elt.primary_connection_string
+      ERROR_STORAGE_TABLE                     = data.azurerm_storage_table.fnelterrors.name
+      ERROR_STORAGE_TABLE_MESSAGES            = data.azurerm_storage_table.fnelterrors_messages.name
+      ERROR_STORAGE_TABLE_MESSAGE_STATUS      = data.azurerm_storage_table.fnelterrors_message_status.name
+      ERROR_STORAGE_TABLE_NOTIFICATION_STATUS = data.azurerm_storage_table.fnelterrors_notification_status.name
 
-      COMMAND_STORAGE                = var.storage_account_primary_connection_string
-      BLOB_COMMAND_STORAGE           = var.storage_account_itn_primary_connection_string
-      COMMAND_STORAGE_TABLE          = var.storage_account_tables.fneltcommands
+      COMMAND_STORAGE                = module.storage_account_itn_elt.primary_connection_string
+      BLOB_COMMAND_STORAGE           = module.storage_account_itn_elt.primary_connection_string
+      COMMAND_STORAGE_TABLE          = data.azurerm_storage_table.fneltcommands.name
       IMPORT_TOPIC_NAME              = "import-command"
       IMPORT_TOPIC_CONNECTION_STRING = data.azurerm_eventhub_authorization_rule.evh_ns_import_command_fn.primary_connection_string
 
@@ -87,9 +87,9 @@ locals {
       COSMOSDB_REPLICA_KEY      = data.azurerm_cosmosdb_account.cosmos_api.primary_key
       COSMOSDB_REPLICA_LOCATION = var.secondary_location_display_name
 
-      MESSAGE_EXPORTS_COMMAND_TABLE       = var.storage_account_tables.fneltexports
-      MESSAGE_EXPORT_STEP_1_CONTAINER     = var.storage_account_containers.container_messages_report_step1
-      MESSAGE_EXPORT_STEP_FINAL_CONTAINER = var.storage_account_containers.container_messages_report_step_final
+      MESSAGE_EXPORTS_COMMAND_TABLE       = data.azurerm_storage_table.fneltexports.name
+      MESSAGE_EXPORT_STEP_1_CONTAINER     = data.azurerm_storage_container.container_messages_report_step1.name
+      MESSAGE_EXPORT_STEP_FINAL_CONTAINER = data.azurerm_storage_container.container_messages_report_step_final.name
 
       COSMOS_CHUNK_SIZE            = "1000"
       COSMOS_DEGREE_OF_PARALLELISM = "2"
