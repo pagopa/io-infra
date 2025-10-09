@@ -28,11 +28,13 @@ resource "azurerm_storage_account" "tfinfprodio" {
   cross_tenant_replication_enabled = false
 
   blob_properties {
-    versioning_enabled  = true
-    change_feed_enabled = true
+    versioning_enabled            = true
+    change_feed_enabled           = true
+    change_feed_retention_in_days = 30
 
     delete_retention_policy {
-      days = 30
+      days                     = 30
+      permanent_delete_enabled = false
     }
 
     container_delete_retention_policy {
@@ -58,11 +60,13 @@ resource "azurerm_storage_account" "tfappprodio" {
   cross_tenant_replication_enabled = false
 
   blob_properties {
-    versioning_enabled  = true
-    change_feed_enabled = true
+    versioning_enabled            = true
+    change_feed_enabled           = true
+    change_feed_retention_in_days = 30
 
     delete_retention_policy {
-      days = 30
+      days                     = 30
+      permanent_delete_enabled = false
     }
 
     container_delete_retention_policy {
