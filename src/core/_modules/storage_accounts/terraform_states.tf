@@ -26,6 +26,7 @@ resource "azurerm_storage_account" "tfinfprodio" {
 
   allow_nested_items_to_be_public  = false
   cross_tenant_replication_enabled = false
+  large_file_share_enabled         = false
 
   blob_properties {
     versioning_enabled            = true
@@ -58,6 +59,7 @@ resource "azurerm_storage_account" "tfappprodio" {
 
   allow_nested_items_to_be_public  = false
   cross_tenant_replication_enabled = false
+  large_file_share_enabled         = false
 
   blob_properties {
     versioning_enabled            = true
