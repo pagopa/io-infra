@@ -249,26 +249,3 @@ module "function_app_admin" {
   admin_snet_cidr                = local.function_admin.cidr_subnet_admin
   tags                           = local.tags
 }
-
-module "assets_cdn_itn" {
-  source = "../_modules/assets_cdn"
-
-  location                  = "italynorth"
-  location_short            = local.location_short.italynorth
-  project                   = local.project_itn
-  resource_group_common     = local.core.resource_groups.italynorth.common
-  resource_group_assets_cdn = local.core.resource_groups.italynorth.assets_cdn
-  resource_group_external   = local.core.resource_groups.italynorth.external
-
-  key_vault_common    = data.azurerm_key_vault.itn_key_vault
-  external_domain     = module.global.dns.external_domain
-  public_dns_zones    = module.global.dns.public_dns_zones
-  dns_default_ttl_sec = module.global.dns.dns_default_ttl_sec
-  assets_cdn_fn = {
-    name     = data.azurerm_linux_function_app.function_assets_cdn.name
-    hostname = data.azurerm_linux_function_app.function_assets_cdn.default_hostname
-  }
-  azure_adgroup_svc_devs_object_id = data.azuread_group.svc_devs.object_id
-
-  tags = local.tags
-}
