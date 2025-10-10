@@ -254,7 +254,7 @@ module "assets_cdn_itn" {
   source = "../_modules/assets_cdn"
 
   location                  = "italynorth"
-  location_short            = local.core.resource_groups.italynorth.location_short
+  location_short            = local.location_short.italynorth
   project                   = local.project_itn
   resource_group_common     = local.core.resource_groups.italynorth.common
   resource_group_assets_cdn = local.core.resource_groups.italynorth.assets_cdn
