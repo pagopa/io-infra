@@ -10,7 +10,7 @@ resource "azurerm_storage_account" "iopitniowebportalsa" {
   shared_access_key_enabled        = true
   allow_nested_items_to_be_public  = true
   cross_tenant_replication_enabled = false
-  large_file_share_enabled = true
+  large_file_share_enabled         = true
 
   blob_properties {
     versioning_enabled = true
