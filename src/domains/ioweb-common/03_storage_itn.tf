@@ -2,7 +2,7 @@ resource "azurerm_storage_account" "iopitniowebportalsa" {
 
   name                     = replace("${local.project_itn}iowebportalsa", "-", "")
   resource_group_name      = data.azurerm_resource_group.storage_rg.name
-  location                 = locals.itn_location
+  location                 = local.itn_location
   account_tier             = "Standard"
   account_replication_type = "ZRS" # GZRS not available at the moment in ITN
 
