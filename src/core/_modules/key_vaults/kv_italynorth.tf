@@ -109,7 +109,7 @@ resource "azurerm_role_assignment" "io_p_itn_platform_kv_01_ci_cert" {
 resource "azurerm_role_assignment" "io_p_itn_platform_kv_01_cd_key" {
   for_each             = var.cd
   scope                = azurerm_key_vault.io_p_itn_platform_kv_01.id
-  role_definition_name = "Key Vault Crypto User"
+  role_definition_name = "Key Vault Crypto Officer"
   principal_id         = each.value
 }
 
