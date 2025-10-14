@@ -18,18 +18,6 @@ data "azurerm_monitor_action_group" "io_com_action_group" {
   resource_group_name = "io-p-itn-com-rg-01"
 }
 
-data "azurerm_subnet" "snet_azdoa" {
-  name                 = "azure-devops"
-  virtual_network_name = var.vnet_name
-  resource_group_name  = local.resource_group_name_common
-}
-
-data "azurerm_subnet" "private_endpoints_subnet" {
-  name                 = "pendpoints"
-  virtual_network_name = var.vnet_name
-  resource_group_name  = local.resource_group_name_common
-}
-
 data "azurerm_private_dns_zone" "privatelink_blob_core" {
   name                = "privatelink.blob.core.windows.net"
   resource_group_name = local.resource_group_name_common
@@ -182,11 +170,6 @@ data "azurerm_storage_account" "storage_api_replica" {
 data "azurerm_storage_account" "storage_assets_cdn" {
   name                = replace(format("%s-stcdnassets", var.project), "-", "")
   resource_group_name = local.resource_group_name_common
-}
-
-data "azurerm_storage_account" "function_elt_internal_storage" {
-  name                = module.function_elt.storage_account_internal_function_name
-  resource_group_name = var.resource_group_name
 }
 
 # Citizen-auth domain Redis Common

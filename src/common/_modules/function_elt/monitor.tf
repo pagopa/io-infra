@@ -1,6 +1,6 @@
 resource "azurerm_monitor_diagnostic_setting" "queue_diagnostic_setting" {
   name                       = "${var.project}-fnelt-internal-st-queue-ds-01"
-  target_resource_id         = "${data.azurerm_storage_account.function_elt_internal_storage.id}/queueServices/default"
+  target_resource_id         = "${module.function_elt_itn.storage_account.id}/queueServices/default"
   log_analytics_workspace_id = data.azurerm_application_insights.application_insights.workspace_id
 
   enabled_log {
@@ -22,9 +22,9 @@ resource "azurerm_monitor_scheduled_query_rules_alert_v2" "service_preferences_f
   enabled             = true
   name                = "[CITIZEN-AUTH | iopfneltsdt] Failures on pdnd-io-cosmosdb-service-preferences-failure-poison"
   resource_group_name = var.resource_group_name
-  location            = var.location
+  location            = var.location_itn
 
-  scopes                  = [data.azurerm_storage_account.function_elt_internal_storage.id]
+  scopes                  = [module.function_elt_itn.storage_account.id]
   description             = <<-EOT
     Permanent failures processing Service Preferences export to PDND. REQUIRED MANUAL ACTION.
     For more info see runbook
@@ -60,9 +60,9 @@ resource "azurerm_monitor_scheduled_query_rules_alert_v2" "profiles_failure_aler
   enabled             = true
   name                = "[CITIZEN-AUTH | iopfneltsdt] Failures on pdnd-io-cosmosdb-profiles-failure-poison"
   resource_group_name = var.resource_group_name
-  location            = var.location
+  location            = var.location_itn
 
-  scopes                  = [data.azurerm_storage_account.function_elt_internal_storage.id]
+  scopes                  = [module.function_elt_itn.storage_account.id]
   description             = <<-EOT
     Permanent failures processing Profiles export to PDND. REQUIRED MANUAL ACTION.
     For more info see runbook
@@ -98,9 +98,9 @@ resource "azurerm_monitor_scheduled_query_rules_alert_v2" "profile_deletion_fail
   enabled             = true
   name                = "[CITIZEN-AUTH | iopfneltsdt] Failures on ${local.profile_deletion_failure_queue_name}-poison"
   resource_group_name = var.resource_group_name
-  location            = var.location
+  location            = var.location_itn
 
-  scopes                  = [data.azurerm_storage_account.function_elt_internal_storage.id]
+  scopes                  = [module.function_elt_itn.storage_account.id]
   description             = <<-EOT
     Permanent failures processing Profiles deletions export to PDND. REQUIRED MANUAL ACTION.
     For more info see runbook

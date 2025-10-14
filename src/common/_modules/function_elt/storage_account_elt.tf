@@ -10,7 +10,7 @@ module "storage_account_itn_elt" {
     instance_number = "01"
   }
   resource_group_name = var.resource_group_name
-  use_case            = "standard"
+  use_case            = "default"
   subnet_pep_id       = data.azurerm_subnet.private_endpoints_subnet_itn.id
 
   subservices_enabled = {
