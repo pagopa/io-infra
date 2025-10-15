@@ -172,10 +172,11 @@ data "azurerm_storage_account" "storage_assets_cdn" {
   resource_group_name = local.resource_group_name_common
 }
 
-data "azurerm_storage_account" "internal_fn" {
-  name                = module.function_elt_itn.storage_account.name
-  resource_group_name = var.resource_group_name
-}
+# commented for now because it doesn't exist yet
+# data "azurerm_storage_account" "internal_fn" {
+#   name                = module.function_elt_itn.storage_account.name
+#   resource_group_name = var.resource_group_name
+# }
 
 # Citizen-auth domain Redis Common
 data "azurerm_redis_cache" "ioauth_redis_common_itn" {
