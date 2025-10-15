@@ -523,11 +523,6 @@ locals {
           backend               = "platform-api-gateway",
           rewrite_rule_set_name = "rewrite-rule-set-api-app"
         },
-        api-gateway-com = {
-          paths                 = ["/api/com/*"]
-          backend               = "platform-api-gateway",
-          rewrite_rule_set_name = "rewrite-rule-set-api-app"
-        },
         session-manager = {
           paths                 = ["/api/auth/v1/*", "/api/sso/bpd/v1/user", "/api/sso/pagopa/v1/user", "/api/sso/zendesk/v1/jwt"]
           backend               = "platform-api-gateway"
@@ -595,6 +590,11 @@ locals {
           backend               = "session-manager-app",
           rewrite_rule_set_name = "rewrite-rule-set-api-app-rewrite-to-pagopa-session-manager"
         },
+        api-gateway-com = {
+          paths                 = ["/api/com/*"]
+          backend               = "platform-api-gateway",
+          rewrite_rule_set_name = "rewrite-rule-set-api-app"
+        }
       }
     }
   }
