@@ -7,7 +7,7 @@ resource "azurerm_resource_group" "continua_itn_rg" {
 
 module "appservice_continua_itn" {
   source  = "pagopa-dx/azure-app-service/azurerm"
-  version = "~> 0.1.5"
+  version = "~> 2.0.0"
 
   environment = {
     prefix          = var.prefix
@@ -33,7 +33,7 @@ module "appservice_continua_itn" {
 
   slot_app_settings = merge(local.continua_appsvc_settings)
 
-  tier = "m"
+  use_case = "default"
 
   tags = var.tags
 }

@@ -30,7 +30,7 @@ resource "azurerm_monitor_autoscale_setting" "appservice_continua" {
       scale_action {
         direction = "Increase"
         type      = "ChangeCount"
-        value     = "5"
+        value     = "2"
         cooldown  = "PT5M"
       }
     }
@@ -52,7 +52,7 @@ resource "azurerm_monitor_autoscale_setting" "appservice_continua" {
       scale_action {
         direction = "Decrease"
         type      = "ChangeCount"
-        value     = "5"
+        value     = "1"
         cooldown  = "PT5M"
       }
     }
