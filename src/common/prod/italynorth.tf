@@ -254,7 +254,7 @@ module "function_app_elt" {
   source                          = "../_modules/function_elt"
   prefix                          = local.prefix
   env_short                       = local.env_short
-  project                         = local.project_weu_legacy
+  project_weu_legacy              = local.project_weu_legacy
   secondary_location_display_name = local.function_elt.secondary_location_display_name
   location_itn                    = local.function_elt.location_itn
   resource_group_name             = local.function_elt.resource_group_name

@@ -19,7 +19,7 @@ variable "env_short" {
   }
 }
 
-variable "project" {
+variable "project_weu_legacy" {
   type        = string
   description = "IO prefix and short environment"
 }

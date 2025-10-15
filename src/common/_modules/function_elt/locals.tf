@@ -133,8 +133,8 @@ locals {
 
 locals {
 
-  resource_group_name_common   = "${var.project}-rg-common"
-  resource_group_name_internal = "${var.project}-rg-internal"
+  resource_group_name_common   = "${var.project_weu_legacy}-rg-common"
+  resource_group_name_internal = "${var.project_weu_legacy}-rg-internal"
 
   app_insights_ips_west_europe = [
     "51.144.56.96/28",
@@ -145,8 +145,8 @@ locals {
     "51.144.56.176/28",
   ]
 
-  event_hub_connection      = "${format("%s-evh-ns", var.project)}.servicebus.windows.net:9093"
-  auth_event_hub_connection = "${format("%s-itn-auth-elt-evhns-01", var.project)}.servicebus.windows.net:9093"
+  event_hub_connection      = "${format("%s-evh-ns", var.project_weu_legacy)}.servicebus.windows.net:9093"
+  auth_event_hub_connection = "${format("%s-itn-auth-elt-evhns-01", var.project_weu_legacy)}.servicebus.windows.net:9093"
 
   pn_service_id = "01G40DWQGKY5GRWSNM4303VNRP"
 

@@ -1,5 +1,5 @@
 resource "azurerm_monitor_diagnostic_setting" "queue_diagnostic_setting" {
-  name                       = "${var.project}-fnelt-internal-st-queue-ds-01"
+  name                       = "${var.project_weu_legacy}-fnelt-internal-st-queue-ds-01"
   target_resource_id         = "${module.function_elt_itn.storage_account.id}/queueServices/default"
   log_analytics_workspace_id = data.azurerm_application_insights.application_insights.workspace_id
 
