@@ -20,7 +20,7 @@ tags = {
 
 citizen_auth_database = {
   lollipop_pubkeys = {
-    max_throughput = 9000
+    max_throughput = 18000
     ttl            = -1
   }
   session_notifications = {
