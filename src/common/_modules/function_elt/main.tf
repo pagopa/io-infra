@@ -23,9 +23,9 @@ module "function_elt_itn" {
   subnet_pep_id                        = data.azurerm_subnet.private_endpoints_subnet_itn.id
   private_dns_zone_resource_group_name = data.azurerm_resource_group.weu-common.name
 
-  # TODO: change module to use connection string instead
   application_insights_key = data.azurerm_application_insights.application_insights.instrumentation_key
 
+  # FIXME : do we need this ?
   # app_service_plan_info = {
   #   kind                         = "elastic"
   #   sku_tier                     = "ElasticPremium"
