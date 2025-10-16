@@ -107,7 +107,7 @@ data "azurerm_linux_function_app" "function_profile" {
 }
 
 data "azurerm_linux_function_app" "com_citizen_func" {
-  name                = "${local.project_itn}-com-citizen-func-01"
+  name                = "${local.project_itn}-com-citizen-func-02"
   resource_group_name = "${local.project_itn}-com-rg-01"
 }
 
