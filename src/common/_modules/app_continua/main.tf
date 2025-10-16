@@ -34,7 +34,6 @@ module "appservice_continua_itn" {
   slot_app_settings = merge(local.continua_appsvc_settings)
 
   use_case = "default"
-  size     = "P0v3"
 
   tags = var.tags
 }
