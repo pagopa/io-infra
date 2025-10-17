@@ -30,6 +30,7 @@
 | <a name="module_cosmos_api_weu"></a> [cosmos\_api\_weu](#module\_cosmos\_api\_weu) | ../_modules/cosmos_api | n/a |
 | <a name="module_event_hubs_weu"></a> [event\_hubs\_weu](#module\_event\_hubs\_weu) | ../_modules/event_hubs | n/a |
 | <a name="module_function_app_admin"></a> [function\_app\_admin](#module\_function\_app\_admin) | ../_modules/function_admin | n/a |
+| <a name="module_function_app_elt"></a> [function\_app\_elt](#module\_function\_app\_elt) | ../_modules/function_elt | n/a |
 | <a name="module_function_app_services"></a> [function\_app\_services](#module\_function\_app\_services) | ../_modules/function_services/function-app | n/a |
 | <a name="module_github_runner_itn"></a> [github\_runner\_itn](#module\_github\_runner\_itn) | ../_modules/github_runner | n/a |
 | <a name="module_global"></a> [global](#module\_global) | ../_modules/global | n/a |
@@ -80,6 +81,8 @@
 | [azurerm_linux_function_app.wallet_user](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/linux_function_app) | data source |
 | [azurerm_linux_function_app.wallet_user_uat](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/linux_function_app) | data source |
 | [azurerm_linux_web_app.firmaconio_selfcare_web_app](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/linux_web_app) | data source |
+| [azurerm_resource_group.elt_itn_rg](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/resource_group) | data source |
+| [azurerm_resource_group.elt_rg](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/resource_group) | data source |
 | [azurerm_subnet.admin_snet](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/subnet) | data source |
 | [azurerm_subnet.cosmos_api_allowed](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/subnet) | data source |
 | [azurerm_subnet.itn_auth_lv_func_snet](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/subnet) | data source |
