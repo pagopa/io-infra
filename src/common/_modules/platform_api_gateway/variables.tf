@@ -89,7 +89,7 @@ variable "azure_adgroup_platform_admins_object_id" {
 
 variable "azure_adgroup_com_admins_object_id" {
   type        = string
-  description = "Object Id of the Entra group for subscription admins"
+  description = "Object Id of the Entra group for Communications admins"
 }
 variable "azure_user_assigned_identity_com_infra_cd" {
   type        = string
