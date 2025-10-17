@@ -1,8 +1,8 @@
-resource "azurerm_storage_account" "iopitnstexportdata" {
+resource "azurerm_storage_account" "iopitndataexportst01" {
 
   count = var.location == "italynorth" ? 1 : 0
 
-  name                     = replace("${var.project}stexportdata", "-", "")
+  name                     = replace("${var.project}dataexportst01", "-", "")
   resource_group_name      = var.resource_group_operations
   location                 = var.location
   account_tier             = "Standard"
@@ -16,11 +16,11 @@ resource "azurerm_storage_account" "iopitnstexportdata" {
   tags = var.tags
 }
 
-resource "azurerm_storage_account" "iopitnstlogs" {
+resource "azurerm_storage_account" "iopitnlogst01" {
 
   count = var.location == "italynorth" ? 1 : 0
 
-  name                     = replace("${var.project}stlogs", "-", "")
+  name                     = replace("${var.project}logst01", "-", "")
   resource_group_name      = var.resource_group_operations
   location                 = var.location
   account_tier             = "Standard"
@@ -39,11 +39,11 @@ resource "azurerm_storage_account" "iopitnstlogs" {
   tags = var.tags
 }
 
-resource "azurerm_storage_account" "iopitnstcdnassets" {
+resource "azurerm_storage_account" "iopitncdnassetsst01" {
 
   count = var.location == "italynorth" ? 1 : 0
 
-  name                     = replace("${var.project}stcdnassets", "-", "")
+  name                     = replace("${var.project}cdnassetsst01", "-", "")
   resource_group_name      = var.resource_group_operations
   location                 = var.location
   account_tier             = "Standard"
