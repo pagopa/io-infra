@@ -1,9 +1,9 @@
 {
   "apim_itn.apim": {
-    "hash": "7c4ede49c7e6ebd45b656abca088b846d0e417d3e8e9b700464c7acaefbe5d04",
-    "version": "1.2.2",
+    "hash": "4016464c1e68d1f905a03fed9056f7741b07efb3107d94b57475cb757afb2f06",
+    "version": "2.0.2",
     "name": "azure_api_management",
-    "source": "https://registry.terraform.io/modules/pagopa-dx/azure-api-management/azurerm/1.2.2"
+    "source": "https://registry.terraform.io/modules/pagopa-dx/azure-api-management/azurerm/2.0.2"
   },
   "apim_itn.iam_adgroup_auth_admins": {
     "hash": "52ca57b72bdf639846a472014cb2113d519bdc00dc4a642e925b97ad6b99d25c",
@@ -126,10 +126,10 @@
     "source": "https://registry.terraform.io/modules/pagopa-dx/azure-role-assignments/azurerm/1.2.1"
   },
   "platform_api_gateway_apim_itn.platform_api_gateway": {
-    "hash": "7c4ede49c7e6ebd45b656abca088b846d0e417d3e8e9b700464c7acaefbe5d04",
-    "version": "1.2.2",
+    "hash": "4016464c1e68d1f905a03fed9056f7741b07efb3107d94b57475cb757afb2f06",
+    "version": "2.0.2",
     "name": "azure_api_management",
-    "source": "https://registry.terraform.io/modules/pagopa-dx/azure-api-management/azurerm/1.2.2"
+    "source": "https://registry.terraform.io/modules/pagopa-dx/azure-api-management/azurerm/2.0.2"
   },
   "platform_service_bus_namespace_itn.platform_service_bus_namespace": {
     "hash": "fabe009cb0255609713df77dd543cd68025017f35bc69e9ef1c93a3664958d90",
@@ -166,6 +166,12 @@
     "version": "1.0.1",
     "name": "azure_storage_account",
     "source": "https://registry.terraform.io/modules/pagopa-dx/azure-storage-account/azurerm/1.0.1"
+  },
+  "continua_app_service.appservice_continua_itn": {
+    "hash": "1d96ee0130208abb4c439ef92628ff7b16dc68989696784449eba097d33422ca",
+    "version": "2.0.0",
+    "name": "azure_app_service",
+    "source": "https://registry.terraform.io/modules/pagopa-dx/azure-app-service/azurerm/2.0.0"
   },
   "function_app_admin.function_admin_storage_account": {
     "hash": "0e4bd3881f59056e0d49ac38c09b9ebfb885c60527bfdc33ac290d50c707753c",
