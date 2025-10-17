@@ -1,6 +1,6 @@
 resource "azurerm_storage_account" "iopitniowebportalst01" {
 
-  name                     = replace("${local.project_itn}iowebportalst01", "-", "")
+  name                     = replace("${local.project_itn}portalst01", "-", "")
   resource_group_name      = data.azurerm_resource_group.storage_rg.name
   location                 = local.itn_location
   account_tier             = "Standard"
