@@ -590,6 +590,11 @@ locals {
           backend               = "session-manager-app",
           rewrite_rule_set_name = "rewrite-rule-set-api-app-rewrite-to-pagopa-session-manager"
         },
+        api-gateway-com = {
+          paths                 = ["/api/com/*"]
+          backend               = "platform-api-gateway",
+          rewrite_rule_set_name = "rewrite-rule-set-api-app"
+        }
       }
     }
   }
