@@ -11,7 +11,7 @@
 
 | Name | Version |
 |------|---------|
-| <a name="provider_azuread"></a> [azuread](#provider\_azuread) | 3.4.0 |
+| <a name="provider_azuread"></a> [azuread](#provider\_azuread) | 3.6.0 |
 | <a name="provider_azurerm"></a> [azurerm](#provider\_azurerm) | 4.36.0 |
 | <a name="provider_dx"></a> [dx](#provider\_dx) | ~> 0.4 |
 | <a name="provider_terraform"></a> [terraform](#provider\_terraform) | n/a |
