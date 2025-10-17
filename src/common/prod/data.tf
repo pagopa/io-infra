@@ -71,6 +71,11 @@ data "azurerm_user_assigned_identity" "auth_n_identity_infra_cd" {
   resource_group_name = "${local.prefix}-${local.env_short}-itn-auth-rg-01"
 }
 
+data "azurerm_user_assigned_identity" "com_infra_cd" {
+  name                = "${local.prefix}-${local.env_short}-itn-msgs-infra-github-cd-id-01"
+  resource_group_name = "${local.prefix}-${local.env_short}-itn-msgs-rg-01"
+}
+
 data "azurerm_user_assigned_identity" "bonus_infra_cd" {
   name                = "${local.prefix}-${local.env_short}-itn-cdc-infra-github-cd-id-01"
   resource_group_name = "${local.prefix}-${local.env_short}-itn-cdc-rg-01"
