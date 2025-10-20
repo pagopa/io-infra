@@ -39,6 +39,28 @@ resource "azurerm_storage_account" "iopitnlogst01" {
   tags = var.tags
 }
 
+resource "azurerm_storage_management_policy" "iopitnlogst01" {
+  depends_on         = azurerm_storage_account.iopitnlogst01
+  storage_account_id = azurerm_storage_account.iopitnlogst01.id
+  rule {
+    name    = "insightlogs1year"
+    enabled = true
+    filters {
+      prefix_match = ["insights-activity-logs",
+        "insights-logs-applicationgatewayaccesslog",
+        "insights-logs-auditlogs",
+        "insights-logs-noninteractiveusersigninlogs",
+      "insights-logs-serviceprincipalsigninlogs"]
+      blob_types = ["appendBlob"]
+    }
+    actions {
+      base_blob {
+        delete_after_days_since_modification_greater_than = 365
+      }
+    }
+  }
+}
+
 resource "azurerm_storage_account" "iopitncdnassetsst01" {
 
   count = var.location == "italynorth" ? 1 : 0
