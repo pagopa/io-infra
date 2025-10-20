@@ -26,6 +26,16 @@ locals {
       principal_id = var.azure_user_assigned_identity_bonus_infra_cd
       description  = "Bonus team infra CD identity"
       role         = "owner"
+    },
+    {
+      principal_id = var.azure_adgroup_com_admins_object_id
+      description  = "Communication team admin group"
+      role         = "owner"
+    },
+    {
+      principal_id = var.azure_user_assigned_identity_com_infra_cd
+      description  = "Communication team infra CD identity"
+      role         = "owner"
     }
   ]
 }

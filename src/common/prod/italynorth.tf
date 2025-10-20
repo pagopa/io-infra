@@ -102,10 +102,11 @@ module "platform_api_gateway_apim_itn" {
   azure_adgroup_platform_admins_object_id = data.azuread_group.platform_admins.object_id
   azure_adgroup_bonus_admins_object_id    = data.azuread_group.bonus_admins.object_id
   azure_adgroup_auth_admins_object_id     = data.azuread_group.auth_admins.object_id
-
+  azure_adgroup_com_admins_object_id      = data.azuread_group.com_admins.object_id
 
   azure_user_assigned_identity_auth_infra_cd  = data.azurerm_user_assigned_identity.auth_n_identity_infra_cd.principal_id
   azure_user_assigned_identity_bonus_infra_cd = data.azurerm_user_assigned_identity.bonus_infra_cd.principal_id
+  azure_user_assigned_identity_com_infra_cd   = data.azurerm_user_assigned_identity.com_infra_cd.principal_id
 
   tags = local.tags
 }
@@ -237,6 +238,20 @@ module "containers_services" {
 import {
   to = module.containers_services.module.db_subscription_cidrs_container.azurerm_cosmosdb_sql_container.this
   id = "/subscriptions/ec285037-c673-4f58-b594-d7c480da4e8b/resourceGroups/io-p-rg-internal/providers/Microsoft.DocumentDB/databaseAccounts/io-p-cosmos-api/sqlDatabases/db/containers/subscription-cidrs"
+}
+
+module "continua_app_service" {
+  source = "../_modules/app_continua"
+
+  prefix                         = local.prefix
+  env_short                      = local.env_short
+  location_itn                   = "italynorth"
+  project_itn                    = local.project_itn
+  project                        = local.project_weu_legacy
+  tags                           = local.tags
+  vnet_common_name_itn           = local.continua.vnet_common_name_itn
+  common_resource_group_name_itn = local.resource_groups.itn.common
+  continua_snet_cidr             = local.continua.cidr_subnet_continua
 }
 
 module "function_app_admin" {
