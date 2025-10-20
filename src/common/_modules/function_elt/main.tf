@@ -52,7 +52,7 @@ module "function_elt_itn" {
     }
   )
 
-  slot_app_setting = merge(
+  slot_app_settings = merge(
     local.function_elt.app_settings, {
       "AzureWebJobs.CosmosApiServicesChangeFeed.Disabled"                                  = "1"
       "AzureWebJobs.CosmosApiMessageStatusChangeFeed.Disabled"                             = "1"
