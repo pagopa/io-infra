@@ -26,10 +26,11 @@ resource "azurerm_storage_account" "iopitnlogst01" {
   account_tier             = "Standard"
   account_replication_type = "ZRS" # GZRS not available at the moment in ITN
 
-  public_network_access_enabled    = true
-  allow_nested_items_to_be_public  = true
-  large_file_share_enabled         = true
-  cross_tenant_replication_enabled = true
+  public_network_access_enabled     = true
+  allow_nested_items_to_be_public   = true
+  large_file_share_enabled          = true
+  cross_tenant_replication_enabled  = true
+  infrastructure_encryption_enabled = true
 
   blob_properties {
     versioning_enabled  = true
@@ -40,6 +41,9 @@ resource "azurerm_storage_account" "iopitnlogst01" {
 }
 
 resource "azurerm_storage_management_policy" "iopitnlogst01" {
+
+  count = var.location == "italynorth" ? 1 : 0
+
   depends_on         = azurerm_storage_account.iopitnlogst01
   storage_account_id = azurerm_storage_account.iopitnlogst01.id
   rule {
@@ -59,6 +63,16 @@ resource "azurerm_storage_management_policy" "iopitnlogst01" {
       }
     }
   }
+}
+
+resource "azurerm_storage_encryption_scope" "iopitnlogst01" {
+
+  count = var.location == "italynorth" ? 1 : 0
+
+  depends_on         = azurerm_storage_account.iopitnlogst01
+  name               = "logsencryption"
+  storage_account_id = azurerm_storage_account.iopitnlogst01.id
+  source             = "Microsoft.Storage"
 }
 
 resource "azurerm_storage_account" "iopitncdnassetsst01" {
