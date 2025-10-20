@@ -52,6 +52,23 @@ module "function_elt_itn" {
     }
   )
 
+  slot_app_setting = merge(
+    local.function_elt.app_settings, {
+      "AzureWebJobs.CosmosApiServicesChangeFeed.Disabled"                                  = "1"
+      "AzureWebJobs.CosmosApiMessageStatusChangeFeed.Disabled"                             = "1"
+      "AzureWebJobs.CosmosApiMessagesChangeFeed.Disabled"                                  = "1"
+      "AzureWebJobs.AnalyticsMessagesChangeFeedInboundProcessorAdapter.Disabled"           = "1"
+      "AzureWebJobs.AnalyticsMessagesStorageQueueInboundProcessorAdapter.Disabled"         = "1"
+      "AzureWebJobs.AnalyticsMessageStatusChangeFeedInboundProcessorAdapter.Disabled"      = "1"
+      "AzureWebJobs.AnalyticsMessageStatusStorageQueueInbloundAdapter.Disabled"            = "1"
+      "AzureWebJobs.AnalyticsServiceChangeFeedInboundProcessorAdapter.Disabled"            = "1"
+      "AzureWebJobs.AnalyticsServiceStorageQueueInboundProcessorAdapter.Disabled"          = "1"
+      "AzureWebJobs.AnalyticsServicePreferencesChangeFeedInboundProcessorAdapter.Disabled" = "1"
+      "AzureWebJobs.AnalyticsProfilesChangeFeedInboundProcessorAdapter.Disabled"           = "1"
+      "AzureWebJobs.AnalyticsUserDataProcessingChangeFeedInboundProcessorAdapter.Disabled" = "1"
+    }
+  )
+
   # Action groups for alerts
   action_group_ids = [data.azurerm_monitor_action_group.error_action_group.id, data.azurerm_monitor_action_group.io_com_action_group.id]
 
