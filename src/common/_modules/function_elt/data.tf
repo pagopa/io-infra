@@ -180,7 +180,7 @@ data "azurerm_storage_account" "storage_assets_cdn" {
 
 # Citizen-auth domain Redis Common
 data "azurerm_redis_cache" "ioauth_redis_common_itn" {
-  name                = format("%s-itn-citizen-auth-redis-std-v6", var.project_weu_legacy)
+  name                = format("%s-itn-auth-redis-01", var.project_weu_legacy)
   resource_group_name = format("%s-itn-citizen-auth-data-rg-01", var.project_weu_legacy)
 }
 
