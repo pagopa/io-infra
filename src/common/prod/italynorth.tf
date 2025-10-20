@@ -314,15 +314,6 @@ module "monitoring_itn" {
       ssl_cert_remaining_lifetime_check = 7,
     },
     {
-      # https://assets.cdn.io.italia.it/status/backend.json
-      name                              = "assets.cdn.io.italia.it",
-      host                              = "assets.cdn.io.italia.it",
-      path                              = "/status/backend.json",
-      frequency                         = 900
-      http_status                       = 200,
-      ssl_cert_remaining_lifetime_check = 7,
-    },
-    {
       # https://assets.cdn.io.pagopa.it/status/backend.json
       name                              = "assets.cdn.io.pagopa.it",
       host                              = "assets.cdn.io.pagopa.it",
