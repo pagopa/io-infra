@@ -18,7 +18,7 @@ locals {
 
     itn = {
 
-      log  = "${var.project}-common-law-01"
+      log  = "${var.project}-common-log-01"
       appi = "${var.project}-common-appi-01"
 
       ag_error = "${local.ag_formatted_project}error"
