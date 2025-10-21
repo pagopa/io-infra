@@ -44,7 +44,7 @@ resource "azurerm_storage_management_policy" "iopitnlogst01" {
 
   count = var.location == "italynorth" ? 1 : 0
 
-  depends_on         = azurerm_storage_account.iopitnlogst01
+  depends_on         = [azurerm_storage_account.iopitnlogst01]
   storage_account_id = azurerm_storage_account.iopitnlogst01.id
   rule {
     name    = "insightlogs1year"
@@ -69,7 +69,7 @@ resource "azurerm_storage_encryption_scope" "iopitnlogst01" {
 
   count = var.location == "italynorth" ? 1 : 0
 
-  depends_on         = azurerm_storage_account.iopitnlogst01
+  depends_on         = [azurerm_storage_account.iopitnlogst01]
   name               = "logsencryption"
   storage_account_id = azurerm_storage_account.iopitnlogst01.id
   source             = "Microsoft.Storage"
