@@ -285,6 +285,7 @@ module "monitoring_itn" {
       frequency                         = 900
       http_status                       = 200,
       ssl_cert_remaining_lifetime_check = 7,
+      enabled                           = false
     },
     {
       # https://api.io.italia.it
@@ -294,6 +295,7 @@ module "monitoring_itn" {
       frequency                         = 900
       http_status                       = 404,
       ssl_cert_remaining_lifetime_check = 7,
+      enabled                           = false
     },
     {
       # https://app-backend.io.italia.it/info
@@ -303,6 +305,7 @@ module "monitoring_itn" {
       frequency                         = 900
       http_status                       = 200,
       ssl_cert_remaining_lifetime_check = 7,
+      enabled                           = false
     },
     {
       # https://io.italia.it
@@ -312,6 +315,7 @@ module "monitoring_itn" {
       frequency                         = 900
       http_status                       = 200,
       ssl_cert_remaining_lifetime_check = 7,
+      enabled                           = false
     },
     {
       # https://assets.cdn.io.pagopa.it/status/backend.json
@@ -321,6 +325,7 @@ module "monitoring_itn" {
       frequency                         = 900
       http_status                       = 200,
       ssl_cert_remaining_lifetime_check = 7,
+      enabled                           = false
     },
     {
       # CIE https://app-backend.io.italia.it/login?authLevel=SpidL2&entityID=xx_servizicie
@@ -330,6 +335,7 @@ module "monitoring_itn" {
       frequency                         = 900
       http_status                       = 200,
       ssl_cert_remaining_lifetime_check = 1,
+      enabled                           = false
     },
     {
       # CIE https://app-backend.io.italia.it/login?authLevel=SpidL3&entityID=xx_servizicie
@@ -339,6 +345,7 @@ module "monitoring_itn" {
       frequency                         = 900
       http_status                       = 200,
       ssl_cert_remaining_lifetime_check = 1,
+      enabled                           = false
     },
     {
       name                              = "Spid-registry",
@@ -357,6 +364,7 @@ module "monitoring_itn" {
       frequency                         = 900
       http_status                       = 200,
       ssl_cert_remaining_lifetime_check = 1,
+      enabled                           = false
     },
     {
       # SpidL2-infocertid https://app-backend.io.italia.it/login?authLevel=SpidL2&entityID=infocertid
@@ -366,6 +374,7 @@ module "monitoring_itn" {
       frequency                         = 900
       http_status                       = 200,
       ssl_cert_remaining_lifetime_check = 1,
+      enabled                           = false
     },
     {
       # SpidL2-lepidaid https://app-backend.io.italia.it/login?authLevel=SpidL2&entityID=lepidaid
@@ -375,6 +384,7 @@ module "monitoring_itn" {
       frequency                         = 900
       http_status                       = 200,
       ssl_cert_remaining_lifetime_check = 1,
+      enabled                           = false
     },
     {
       # SpidL2-namirialid https://app-backend.io.italia.it/login?authLevel=SpidL2&entityID=namirialid
@@ -384,6 +394,7 @@ module "monitoring_itn" {
       frequency                         = 900
       http_status                       = 200,
       ssl_cert_remaining_lifetime_check = 1,
+      enabled                           = false
     },
     {
       # SpidL2-posteid https://app-backend.io.italia.it/login?authLevel=SpidL2&entityID=posteid
@@ -413,6 +424,7 @@ module "monitoring_itn" {
       frequency                         = 900
       http_status                       = 200,
       ssl_cert_remaining_lifetime_check = 1,
+      enabled                           = false
     },
     {
       # SpidL2-infocamere https://app-backend.io.italia.it/login?authLevel=SpidL2&entityID=infocamereid
@@ -432,6 +444,7 @@ module "monitoring_itn" {
       frequency                         = 900
       http_status                       = 404,
       ssl_cert_remaining_lifetime_check = 7,
+      enabled                           = false
     },
     {
       # https://api-app.io.pagopa.it/info
@@ -441,6 +454,7 @@ module "monitoring_itn" {
       frequency                         = 900
       http_status                       = 200,
       ssl_cert_remaining_lifetime_check = 7,
+      enabled                           = false
     },
     {
       # https://api-web.io.pagopa.it
@@ -450,6 +464,7 @@ module "monitoring_itn" {
       frequency                         = 900
       http_status                       = 404,
       ssl_cert_remaining_lifetime_check = 7,
+      enabled                           = false
     },
     {
       # https://api-mtls.io.pagopa.it
@@ -469,6 +484,7 @@ module "monitoring_itn" {
       frequency                         = 900
       http_status                       = 200,
       ssl_cert_remaining_lifetime_check = 7,
+      enabled                           = false
     },
     {
       # https://raw.githubusercontent.com/pagopa/io-services-metadata/master/status/backend.json
@@ -488,6 +504,7 @@ module "monitoring_itn" {
       frequency                         = 900
       http_status                       = 200,
       ssl_cert_remaining_lifetime_check = 7,
+      enabled                           = false
     },
   ]
 
