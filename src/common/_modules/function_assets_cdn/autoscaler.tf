@@ -3,7 +3,7 @@ module "function_assets_cdn_autoscale" {
   version             = "~> 0.0"
   resource_group_name = azurerm_resource_group.function_assets_cdn_itn_rg.name
   target_service = {
-    function_app_name = module.function_assets_cdn_itn.function_app.name
+    function_app_name = module.function_assets_cdn_itn.function_app.function_app.name
   }
   scheduler = {
     normal_load = {

@@ -1,8 +1,8 @@
 resource "azurerm_monitor_metric_alert" "function_assets_health_check" {
-  name                = "${module.function_assets_cdn_itn.function_app.name}-health-check-failed"
+  name                = "${module.function_assets_cdn_itn.function_app.function_app.name}-health-check-failed"
   resource_group_name = azurerm_resource_group.function_assets_cdn_itn_rg.name
-  scopes              = [module.function_assets_cdn_itn.function_app.id]
-  description         = "${module.function_assets_cdn_itn.function_app.name} health check failed"
+  scopes              = [module.function_assets_cdn_itn.function_app.plan.id]
+  description         = "${module.function_assets_cdn_itn.function_app.function_app.name} health check failed"
   severity            = 1
   frequency           = "PT5M"
   auto_mitigate       = false
@@ -21,10 +21,10 @@ resource "azurerm_monitor_metric_alert" "function_assets_health_check" {
 }
 
 resource "azurerm_monitor_metric_alert" "function_assets_http_server_errors" {
-  name                = "${module.function_assets_cdn_itn.function_app.name}-http-server-errors"
+  name                = "${module.function_assets_cdn_itn.function_app.function_app.name}-http-server-errors"
   resource_group_name = azurerm_resource_group.function_assets_cdn_itn_rg.name
-  scopes              = [module.function_assets_cdn_itn.function_app.id]
-  description         = "${module.function_assets_cdn_itn.function_app.name} http server errors"
+  scopes              = [module.function_assets_cdn_itn.function_app.plan.id]
+  description         = "${module.function_assets_cdn_itn.function_app.function_app.name} http server errors"
   severity            = 1
   frequency           = "PT5M"
   auto_mitigate       = false
@@ -43,10 +43,10 @@ resource "azurerm_monitor_metric_alert" "function_assets_http_server_errors" {
 }
 
 resource "azurerm_monitor_metric_alert" "function_assets_response_time" {
-  name                = "${module.function_assets_cdn_itn.function_app.name}-response-time"
+  name                = "${module.function_assets_cdn_itn.function_app.function_app.name}-response-time"
   resource_group_name = azurerm_resource_group.function_assets_cdn_itn_rg.name
-  scopes              = [module.function_assets_cdn_itn.function_app.id]
-  description         = "${module.function_assets_cdn_itn.function_app.name} response time is greater than 0.5s"
+  scopes              = [module.function_assets_cdn_itn.function_app.plan.id]
+  description         = "${module.function_assets_cdn_itn.function_app.function_app.name} response time is greater than 0.5s"
   severity            = 1
   frequency           = "PT5M"
   auto_mitigate       = false
