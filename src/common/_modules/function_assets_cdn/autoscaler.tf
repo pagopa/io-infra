@@ -6,7 +6,7 @@ module "function_assets_cdn_autoscale" {
   app_service_plan_id = module.function_assets_cdn_itn.function_app.plan.id
   target_service = {
     function_apps = [
-      { name = module.function_assets_cdn_itn.function_app.function_app.name }
+      { id = module.function_assets_cdn_itn.function_app.function_app.id }
     ]
   }
   scheduler = {
