@@ -25,16 +25,6 @@ module "function_elt_itn" {
 
   application_insights_key = data.azurerm_application_insights.application_insights.instrumentation_key
 
-  # FIXME : do we need this ?
-  # app_service_plan_info = {
-  #   kind                         = "elastic"
-  #   sku_tier                     = "ElasticPremium"
-  #   sku_size                     = "EP2"
-  #   maximum_elastic_worker_count = 5
-  #   worker_count                 = null
-  #   zone_balancing_enabled       = null
-  # }
-
   app_settings = merge(
     local.function_elt.app_settings, {
       "AzureWebJobs.CosmosApiServicesChangeFeed.Disabled"                                  = "1"
@@ -73,4 +63,64 @@ module "function_elt_itn" {
   action_group_ids = [data.azurerm_monitor_action_group.error_action_group.id, data.azurerm_monitor_action_group.io_com_action_group.id]
 
   tags = var.tags
+}
+
+resource "azurerm_storage_queue" "pdnd-io-cosmosdb-messages-failure" {
+  name                 = "pdnd-io-cosmosdb-messages-failure"
+  storage_account_name = module.function_elt_itn.storage_account.storage_account.name
+}
+
+resource "azurerm_storage_queue" "pdnd-io-cosmosdb-messages-failure-poison" {
+  name                 = "pdnd-io-cosmosdb-messages-failure-poison"
+  storage_account_name = module.function_elt_itn.storage_account.storage_account.name
+}
+
+resource "azurerm_storage_queue" "pdnd-io-cosmosdb-messagestatus-failure" {
+  name                 = "pdnd-io-cosmosdb-messagestatus-failure"
+  storage_account_name = module.function_elt_itn.storage_account.storage_account.name
+}
+
+resource "azurerm_storage_queue" "pdnd-io-cosmosdb-messagestatus-failure-poison" {
+  name                 = "pdnd-io-cosmosdb-messagestatus-failure-poison"
+  storage_account_name = module.function_elt_itn.storage_account.storage_account.name
+}
+
+resource "azurerm_storage_queue" "pdnd-io-cosmosdb-notificationstatus-failure" {
+  name                 = "pdnd-io-cosmosdb-notificationstatus-failure"
+  storage_account_name = module.function_elt_itn.storage_account.storage_account.name
+}
+
+resource "azurerm_storage_queue" "pdnd-io-cosmosdb-notificationstatus-failure-poison" {
+  name                 = "pdnd-io-cosmosdb-notificationstatus-failure-poison"
+  storage_account_name = module.function_elt_itn.storage_account.storage_account.name
+}
+
+resource "azurerm_storage_queue" "pdnd-io-cosmosdb-service-preferences-failure" {
+  name                 = "pdnd-io-cosmosdb-service-preferences-failure"
+  storage_account_name = module.function_elt_itn.storage_account.storage_account.name
+}
+
+resource "azurerm_storage_queue" "pdnd-io-cosmosdb-service-preferences-failure-poison" {
+  name                 = "pdnd-io-cosmosdb-service-preferences-failure-poison"
+  storage_account_name = module.function_elt_itn.storage_account.storage_account.name
+}
+
+resource "azurerm_storage_queue" "pdnd-io-cosmosdb-profiles-failure" {
+  name                 = "pdnd-io-cosmosdb-profiles-failure"
+  storage_account_name = module.function_elt_itn.storage_account.storage_account.name
+}
+
+resource "azurerm_storage_queue" "pdnd-io-cosmosdb-profiles-failure-poison" {
+  name                 = "pdnd-io-cosmosdb-profiles-failure-poison"
+  storage_account_name = module.function_elt_itn.storage_account.storage_account.name
+}
+
+resource "azurerm_storage_queue" "pdnd-io-cosmosdb-profile-deletion-failure" {
+  name                 = "pdnd-io-cosmosdb-profile-deletion-failure"
+  storage_account_name = module.function_elt_itn.storage_account.storage_account.name
+}
+
+resource "azurerm_storage_queue" "pdnd-io-cosmosdb-profile-deletion-poison" {
+  name                 = "pdnd-io-cosmosdb-profile-deletion-poison"
+  storage_account_name = module.function_elt_itn.storage_account.storage_account.name
 }

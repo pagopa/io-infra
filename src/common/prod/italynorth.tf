@@ -281,11 +281,6 @@ module "function_app_elt" {
 
 import {
   to = module.function_app_elt.module.storage_account_itn_elt.azurerm_storage_account.this
-  id = "/subscriptions/ec285037-c673-4f58-b594-d7c480da4e8b/resourceGroups/io-p-itn-elt-rg-01/providers/Microsoft.Storage/storageAccounts/iopitneltst01"
-}
-
-import {
-  to = module.function_app_elt.module.storage_account_itn_elt_02.azurerm_storage_account.this
   id = "/subscriptions/ec285037-c673-4f58-b594-d7c480da4e8b/resourceGroups/io-p-itn-elt-rg-01/providers/Microsoft.Storage/storageAccounts/iopitneltst02"
 }
 
