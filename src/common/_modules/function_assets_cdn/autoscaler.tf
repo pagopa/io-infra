@@ -1,7 +1,7 @@
 module "function_assets_cdn_autoscale" {
   source              = "pagopa-dx/azure-app-service-plan-autoscaler/azurerm"
   version             = "~> 2.0"
-  resource_group_name = azurerm_resource_group.function_assets_cdn_itn_rg.name
+  resource_group_name = module.function_assets_cdn_itn.function_app.resource_group_name
   location            = var.location_itn
   app_service_plan_id = module.function_assets_cdn_itn.function_app.plan.id
   target_service = {
