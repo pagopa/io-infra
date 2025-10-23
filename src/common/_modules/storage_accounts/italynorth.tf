@@ -11,6 +11,7 @@ resource "azurerm_storage_account" "iopitndataexportst01" {
   public_network_access_enabled    = true
   shared_access_key_enabled        = true
   allow_nested_items_to_be_public  = false
+  large_file_share_enabled          = false
   cross_tenant_replication_enabled = true
 
   tags = var.tags
@@ -28,7 +29,7 @@ resource "azurerm_storage_account" "iopitnlogst01" {
 
   public_network_access_enabled     = true
   allow_nested_items_to_be_public   = true
-  large_file_share_enabled          = true
+  large_file_share_enabled          = false
   cross_tenant_replication_enabled  = true
   infrastructure_encryption_enabled = true
 
@@ -87,7 +88,7 @@ resource "azurerm_storage_account" "iopitncdnassetsst01" {
 
   public_network_access_enabled    = true
   allow_nested_items_to_be_public  = true
-  large_file_share_enabled         = true
+  large_file_share_enabled         = false
   cross_tenant_replication_enabled = true
 
   blob_properties {
