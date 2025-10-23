@@ -123,6 +123,13 @@ locals {
       }
     },
     {
+      name               = "profile-emails-uniqueness-leases-itn"
+      partition_key_path = "/_partitionKey"
+      autoscale_settings = {
+        max_throughput = 1000
+      }
+    },
+    {
       name                  = "profiles"
       partition_key_path    = "/fiscalCode"
       partition_key_version = null
