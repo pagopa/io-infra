@@ -510,3 +510,15 @@ module "monitoring_itn" {
 
   tags = local.tags
 }
+
+module "function_assets_cdn_itn" {
+  source                         = "../_modules/function_assets_cdn"
+  prefix                         = local.prefix
+  env_short                      = local.env_short
+  project_weu_legacy             = local.project_weu_legacy
+  project_itn                    = local.project_itn
+  vnet_common_name_itn           = local.function_assets_cdn.vnet_common_name_itn
+  common_resource_group_name_itn = local.function_assets_cdn.common_resource_group_name_itn
+  assets_cdn_snet_cidr           = local.function_assets_cdn.assets_cdn_snet_cidr
+  tags                           = local.tags
+}
