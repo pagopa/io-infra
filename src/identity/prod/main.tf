@@ -87,7 +87,7 @@ module "federated_identities" {
         "Role Based Access Control Administrator",
         "Key Vault Secrets Officer",
         "Key Vault Certificates Officer",
-        "Container Apps Operator",
+        "Container Apps Contributor",
       ]
       resource_groups = {
         io-p-itn-github-runner-rg-01 = [
