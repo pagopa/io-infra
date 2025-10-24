@@ -1,10 +1,9 @@
 locals {
   function_assets_cdn = {
     app_settings = {
-      WEBSITE_RUN_FROM_PACKAGE       = "1"
-      WEBSITE_DNS_SERVER             = "168.63.129.16"
-      FUNCTIONS_WORKER_PROCESS_COUNT = 4
-      NODE_ENV                       = "production"
+      WEBSITE_RUN_FROM_PACKAGE = "1"
+      WEBSITE_DNS_SERVER       = "168.63.129.16"
+      NODE_ENV                 = "production"
 
       // Keepalive fields are all optionals
       FETCH_KEEPALIVE_ENABLED             = "true"
