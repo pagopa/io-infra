@@ -19,14 +19,6 @@ data "azurerm_linux_web_app" "firmaconio_selfcare_web_app" {
   resource_group_name = "${local.project_weu_legacy}-sign-backend-rg"
 }
 
-data "azurerm_resource_group" "elt_itn_rg" {
-  name = format("%s-elt-rg-01", local.project_itn)
-}
-
-data "azurerm_resource_group" "elt_rg" {
-  name = format("%s-elt-rg", local.project_weu_legacy)
-}
-
 # AD Groups
 data "azuread_group" "platform_admins" {
   display_name = "${local.prefix}-${local.env_short}-adgroup-platform-admins"
