@@ -1,3 +1,8 @@
+import {
+  to = azurerm_cosmosdb_sql_container.these["profile-emails-uniqueness-leases-itn-002"]
+  id = "/subscriptions/ec285037-c673-4f58-b594-d7c480da4e8b/resourceGroups/io-p-rg-internal/providers/Microsoft.DocumentDB/databaseAccounts/io-p-cosmos-api/sqlDatabases/db/containers/profile-emails-uniqueness-leases-itn-002"
+}
+
 resource "azurerm_cosmosdb_sql_container" "these" {
   for_each = { for c in local.cosmosdb_containers : c.name => c }
 
