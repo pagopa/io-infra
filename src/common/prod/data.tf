@@ -129,6 +129,11 @@ data "azurerm_linux_function_app" "services_app_backend_function_app" {
   name                = "${local.project_itn}-svc-app-be-func-01"
 }
 
+data "azurerm_container_app" "services_app_backend_function_app" {
+  resource_group_name = "${local.project_itn}-svc-rg-01"
+  name                = "${local.project_itn}-svc-app-be-func-02"
+}
+
 data "azurerm_linux_function_app" "lollipop_function" {
   name                = "${local.project_itn}-auth-lollipop-func-02"
   resource_group_name = "${local.project_itn}-auth-lollipop-rg-02"

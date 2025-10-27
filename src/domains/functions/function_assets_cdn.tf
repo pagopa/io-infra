@@ -118,10 +118,10 @@ module "function_assets_cdn_autoscale" {
   }
   scheduler = {
     normal_load = {
-      minimum = 2
-      default = 2
+      minimum = 6
+      default = 6
     },
-    maximum = 10
+    maximum = 30
   }
   scale_metrics = {
     requests = {
@@ -136,7 +136,7 @@ module "function_assets_cdn_autoscale" {
       time_aggregation_decrease = "Average"
       lower_threshold           = 200
       decrease_by               = 1
-      cooldown_decrease         = 2
+      cooldown_decrease         = 5
     }
     cpu = {
       upper_threshold           = 50
@@ -144,7 +144,7 @@ module "function_assets_cdn_autoscale" {
       increase_by               = 3
       decrease_by               = 1
       cooldown_increase         = 1
-      cooldown_decrease         = 2
+      cooldown_decrease         = 5
       statistic_increase        = "Max"
       statistic_decrease        = "Average"
       time_aggregation_increase = "Maximum"

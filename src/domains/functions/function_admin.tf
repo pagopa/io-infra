@@ -225,7 +225,8 @@ module "function_admin" {
   app_settings = merge(
     local.function_admin.app_settings_common, {
       "AzureWebJobs.CheckXmlCryptoCVESamlResponse.Disabled"      = "1",
-      "AzureWebJobs.CheckIoWebXmlCryptoCVESamlResponse.Disabled" = "1"
+      "AzureWebJobs.CheckIoWebXmlCryptoCVESamlResponse.Disabled" = "1",
+      "AzureWebJobs.UserDataDeleteOrchestratorV2.Disabled"       = "0"
     }
   )
 
@@ -261,7 +262,8 @@ module "function_admin" {
     "AzureWebJobs.UserDataProcessingTrigger.Disabled",
     "AzureWebJobs.SanitizeProfileEmail.Disabled",
     "AzureWebJobs.CheckXmlCryptoCVESamlResponse.Disabled",
-    "AzureWebJobs.CheckIoWebXmlCryptoCVESamlResponse.Disabled"
+    "AzureWebJobs.CheckIoWebXmlCryptoCVESamlResponse.Disabled",
+    "AzureWebJobs.UserDataDeleteOrchestratorV2.Disabled"
   ]
 
   tags = var.tags
@@ -292,7 +294,8 @@ module "function_admin_staging_slot" {
       "AzureWebJobs.UserDataProcessingTrigger.Disabled"          = "1",
       "AzureWebJobs.SanitizeProfileEmail.Disabled"               = "1",
       "AzureWebJobs.CheckXmlCryptoCVESamlResponse.Disabled"      = "1",
-      "AzureWebJobs.CheckIoWebXmlCryptoCVESamlResponse.Disabled" = "1"
+      "AzureWebJobs.CheckIoWebXmlCryptoCVESamlResponse.Disabled" = "1",
+      "AzureWebJobs.UserDataDeleteOrchestratorV2.Disabled"       = "1"
     }
   )
 
