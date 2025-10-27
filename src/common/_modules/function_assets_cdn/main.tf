@@ -1,5 +1,5 @@
 resource "azurerm_resource_group" "function_assets_cdn_itn_rg" {
-  name     = "${var.project_itn}-assets-cdn-rg-01"
+  name     = "${var.project_itn}-assetscdn-rg-01"
   location = var.location_itn
 
   tags = var.tags
@@ -13,7 +13,7 @@ module "function_assets_cdn_itn" {
     prefix          = var.prefix
     env_short       = var.env_short
     location        = var.location_itn
-    app_name        = "assets-cdn"
+    app_name        = "assetscdn"
     instance_number = "01"
   }
 
