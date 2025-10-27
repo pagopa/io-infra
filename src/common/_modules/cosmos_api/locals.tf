@@ -6,7 +6,7 @@ locals {
       partition_key_path    = "/fiscalCode"
       partition_key_version = null
       autoscale_settings = {
-        max_throughput = 7000
+        max_throughput = 20000
       }
     },
     {
