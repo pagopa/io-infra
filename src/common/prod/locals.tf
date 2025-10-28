@@ -329,7 +329,7 @@ locals {
 
     location_itn        = "italynorth"
     resource_group_name = "io-p-itn-elt-rg-01"
-    elt_snet_cidr       = "10.20.35.64/26"
+    elt_snet_cidr       = "10.20.40.0/26"
 
     tags = {
       CostCenter     = "TS000 - Tecnologia e Servizi"
