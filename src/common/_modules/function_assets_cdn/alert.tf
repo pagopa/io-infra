@@ -8,7 +8,7 @@ resource "azurerm_monitor_metric_alert" "function_assets_health_check" {
   auto_mitigate       = false
 
   criteria {
-    metric_namespace = "Microsoft.Web/sites"
+    metric_namespace = "Microsoft.Web/serverFarms"
     metric_name      = "HealthCheckStatus"
     aggregation      = "Average"
     operator         = "LessThan"
@@ -30,7 +30,7 @@ resource "azurerm_monitor_metric_alert" "function_assets_http_server_errors" {
   auto_mitigate       = false
 
   criteria {
-    metric_namespace = "Microsoft.Web/sites"
+    metric_namespace = "Microsoft.Web/serverFarms"
     metric_name      = "Http5xx"
     aggregation      = "Total"
     operator         = "GreaterThan"
@@ -52,7 +52,7 @@ resource "azurerm_monitor_metric_alert" "function_assets_response_time" {
   auto_mitigate       = false
 
   criteria {
-    metric_namespace = "Microsoft.Web/sites"
+    metric_namespace = "Microsoft.Web/serverFarms"
     metric_name      = "HttpResponseTime"
     aggregation      = "Average"
     operator         = "GreaterThan"
