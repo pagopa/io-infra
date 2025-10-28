@@ -340,4 +340,10 @@ locals {
       ManagementTeam = "IO Platform"
     }
   }
+  function_assets_cdn = {
+    assets_cdn_snet_cidr = "10.20.35.64/26"
+
+    vnet_common_name_itn           = "${local.project_itn}-common-vnet-01"
+    common_resource_group_name_itn = "${local.project_itn}-common-rg-01"
+  }
 }

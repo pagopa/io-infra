@@ -33,6 +33,7 @@
 | <a name="module_function_app_admin"></a> [function\_app\_admin](#module\_function\_app\_admin) | ../_modules/function_admin | n/a |
 | <a name="module_function_app_elt"></a> [function\_app\_elt](#module\_function\_app\_elt) | ../_modules/function_elt | n/a |
 | <a name="module_function_app_services"></a> [function\_app\_services](#module\_function\_app\_services) | ../_modules/function_services/function-app | n/a |
+| <a name="module_function_assets_cdn_itn"></a> [function\_assets\_cdn\_itn](#module\_function\_assets\_cdn\_itn) | ../_modules/function_assets_cdn | n/a |
 | <a name="module_github_runner_itn"></a> [github\_runner\_itn](#module\_github\_runner\_itn) | ../_modules/github_runner | n/a |
 | <a name="module_global"></a> [global](#module\_global) | ../_modules/global | n/a |
 | <a name="module_monitoring_itn"></a> [monitoring\_itn](#module\_monitoring\_itn) | ../_modules/monitoring | n/a |
