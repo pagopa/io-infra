@@ -130,6 +130,15 @@ locals {
       }
     },
     {
+      name                  = "profile-emails-uniqueness-leases-itn-002",
+      partition_key_path    = "/id",
+      partition_key_version = null
+      default_ttl           = -1
+      autoscale_settings = {
+        max_throughput = 2000
+      }
+    },
+    {
       name                  = "profiles"
       partition_key_path    = "/fiscalCode"
       partition_key_version = null

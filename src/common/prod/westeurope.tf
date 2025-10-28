@@ -483,3 +483,8 @@ import {
   id = "/subscriptions/ec285037-c673-4f58-b594-d7c480da4e8b/resourceGroups/io-p-rg-operations/providers/Microsoft.Storage/storageAccounts/iopstlogs"
   to = module.storage_accounts.azurerm_storage_account.logs[0]
 }
+
+import {
+  to = module.cosmos_api_weu.azurerm_cosmosdb_sql_container.these["profile-emails-uniqueness-leases-itn-002"]
+  id = "/subscriptions/ec285037-c673-4f58-b594-d7c480da4e8b/resourceGroups/io-p-rg-internal/providers/Microsoft.DocumentDB/databaseAccounts/io-p-cosmos-api/sqlDatabases/db/containers/profile-emails-uniqueness-leases-itn-002"
+}
