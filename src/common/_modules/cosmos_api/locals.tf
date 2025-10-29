@@ -126,7 +126,7 @@ locals {
       name               = "profile-emails-uniqueness-leases-itn"
       partition_key_path = "/_partitionKey"
       autoscale_settings = {
-        max_throughput = 100
+        max_throughput = 1000
       }
     },
     {
