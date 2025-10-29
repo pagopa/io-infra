@@ -33,7 +33,6 @@ module "storage_account_itn_elt" {
 
 resource "azurerm_storage_container" "messages_step_final_itn" {
   name                  = "messages-report-step-final"
-  storage_account_name  = module.storage_account_itn_elt.name
   storage_account_id    = module.storage_account_itn_elt.id
   container_access_type = "private"
 }
@@ -42,7 +41,6 @@ resource "azurerm_storage_container" "messages_step_final_itn" {
 
 resource "azurerm_storage_container" "messages_report_step1_itn" {
   name                  = "messages-report-step1"
-  storage_account_name  = module.storage_account_itn_elt.name
   storage_account_id    = module.storage_account_itn_elt.id
   container_access_type = "private"
 }
