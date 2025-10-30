@@ -770,10 +770,10 @@ locals {
           # Condition to capture requests directed to any endpoint under /api/v1/
           conditions = [
             {
-            variable    = "http_req_Cookie"
-            pattern     = "test-pn-apim"
-            ignore_case = true
-            negate      = false
+              variable    = "http_req_Cookie"
+              pattern     = "test-pn-apim"
+              ignore_case = true
+              negate      = false
             }
           ]
 
