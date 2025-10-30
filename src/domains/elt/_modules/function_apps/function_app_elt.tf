@@ -211,7 +211,7 @@ module "function_elt" {
   }
 
   allowed_subnets = [
-    data.azurerm_subnet.snet_azdoa.id,
+    data.azurerm_subnet.gh_runner.id
   ]
 
   allowed_ips = local.app_insights_ips_west_europe

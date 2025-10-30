@@ -1,6 +1,6 @@
 module "platform_api_gateway" {
   source  = "pagopa-dx/azure-api-management/azurerm"
-  version = "~> 1.1"
+  version = "~> 2.0"
 
   environment = {
     prefix          = var.prefix
@@ -11,7 +11,7 @@ module "platform_api_gateway" {
   }
 
   resource_group_name = var.resource_group_internal
-  tier                = "l"
+  use_case            = "high_load"
 
   publisher_email           = data.azurerm_key_vault_secret.apim_publisher_email.value
   publisher_name            = "IO"
@@ -78,8 +78,8 @@ module "platform_api_gateway" {
 
   autoscale = {
     enabled                       = true
-    default_instances             = 3
-    minimum_instances             = 1
+    default_instances             = 4
+    minimum_instances             = 4
     maximum_instances             = 10
     scale_out_capacity_percentage = 50
     scale_out_time_window         = "PT3M"
@@ -87,7 +87,7 @@ module "platform_api_gateway" {
     scale_out_cooldown            = "PT5M"
     scale_in_capacity_percentage  = 20
     scale_in_time_window          = "PT5M"
-    scale_in_value                = "1"
+    scale_in_value                = "2"
     scale_in_cooldown             = "PT5M"
   }
 

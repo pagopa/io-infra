@@ -63,10 +63,11 @@ locals {
   }
 
   backend_hostnames = {
-    app                  = [data.azurerm_linux_function_app.function_profile.default_hostname]
-    com_citizen_func     = data.azurerm_linux_function_app.com_citizen_func.default_hostname
-    assets_cdn           = data.azurerm_linux_function_app.function_assets_cdn.default_hostname
-    services_app_backend = data.azurerm_linux_function_app.services_app_backend_function_app.default_hostname
+    app              = [data.azurerm_linux_function_app.function_profile.default_hostname]
+    com_citizen_func = data.azurerm_linux_function_app.com_citizen_func.default_hostname
+    assets_cdn       = data.azurerm_linux_function_app.function_assets_cdn.default_hostname
+    # services_app_backend = data.azurerm_linux_function_app.services_app_backend_function_app.default_hostname
+    services_app_backend = data.azurerm_container_app.services_app_backend_function_app.ingress[0].fqdn
     lollipop             = data.azurerm_linux_function_app.lollipop_function.default_hostname
     eucovidcert          = data.azurerm_linux_function_app.eucovidcert.default_hostname
     cgn                  = "io-p-itn-cgn-card-func-02.azurewebsites.net"
@@ -302,5 +303,47 @@ locals {
     common_resource_group_name_itn = "${local.project_itn}-common-rg-01"
 
     apim_itn_name = "${local.project_itn}-apim-01"
+  }
+
+  continua = {
+    cidr_subnet_continua = "10.20.35.0/26"
+    vnet_common_name_itn = "${local.project_itn}-common-vnet-01"
+  }
+
+  function_admin = {
+    cidr_subnet_admin = "10.20.34.64/26"
+
+    vnet_common_name_itn           = "${local.project_itn}-common-vnet-01"
+    common_resource_group_name_itn = "${local.project_itn}-common-rg-01"
+
+    apim_itn_name = "${local.project_itn}-apim-01"
+  }
+
+  function_elt = {
+
+    location                        = "westeurope"
+    secondary_location_display_name = "North Europe"
+
+    vnet_common_name_itn           = "${local.project_itn}-common-vnet-01"
+    common_resource_group_name_itn = "${local.project_itn}-common-rg-01"
+
+    location_itn        = "italynorth"
+    resource_group_name = "io-p-itn-elt-rg-01"
+    elt_snet_cidr       = "10.20.40.0/26"
+
+    tags = {
+      CostCenter     = "TS000 - Tecnologia e Servizi"
+      CreatedBy      = "Terraform"
+      Environment    = "Prod"
+      BusinessUnit   = "App IO"
+      Source         = "https://github.com/pagopa/io-infra/blob/main/src/domains/elt/prod"
+      ManagementTeam = "IO Platform"
+    }
+  }
+  function_assets_cdn = {
+    assets_cdn_snet_cidr = "10.20.35.64/26"
+
+    vnet_common_name_itn           = "${local.project_itn}-common-vnet-01"
+    common_resource_group_name_itn = "${local.project_itn}-common-rg-01"
   }
 }

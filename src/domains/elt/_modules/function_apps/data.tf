@@ -18,10 +18,10 @@ data "azurerm_monitor_action_group" "io_com_action_group" {
   resource_group_name = "io-p-itn-com-rg-01"
 }
 
-data "azurerm_subnet" "snet_azdoa" {
-  name                 = "azure-devops"
-  virtual_network_name = var.vnet_name
-  resource_group_name  = local.resource_group_name_common
+data "azurerm_subnet" "gh_runner" {
+  name                 = format("%s-itn-github-runner-snet-01", var.project)
+  virtual_network_name = format("%s-itn-common-vnet-01", var.project)
+  resource_group_name  = format("%s-itn-common-rg-01", var.project)
 }
 
 data "azurerm_subnet" "private_endpoints_subnet" {
@@ -181,6 +181,6 @@ data "azurerm_storage_account" "function_elt_internal_storage" {
 
 # Citizen-auth domain Redis Common
 data "azurerm_redis_cache" "ioauth_redis_common_itn" {
-  name                = format("%s-itn-citizen-auth-redis-std-v6", var.project)
+  name                = format("%s-itn-auth-redis-01", var.project)
   resource_group_name = format("%s-itn-citizen-auth-data-rg-01", var.project)
 }
