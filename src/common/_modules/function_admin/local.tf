@@ -80,7 +80,7 @@ locals {
       PROFILE_EMAILS_TABLE_NAME                = "profileEmails"
 
       # Instant delete
-      INSTANT_DELETE_ENABLED_USERS = join(",", [data.azurerm_key_vault_secret.fn_admin_INSTANT_DELETE_ENABLED_USERS.value, module.tests.users.all])
+      INSTANT_DELETE_ENABLED_USERS = join(",", [data.azurerm_key_vault_secret.fn_admin_INSTANT_DELETE_ENABLED_USERS.value, module.tests.users.light])
 
       # Temporany
       IOPSTLOGS_STORAGE_CONNECTION_STRING = data.azurerm_storage_account.logs02.primary_connection_string,
