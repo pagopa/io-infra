@@ -122,6 +122,7 @@ locals {
         max_throughput = 1000
       }
     },
+    // The container 'profile-emails-uniqueness-leases-itn' is not used
     {
       name               = "profile-emails-uniqueness-leases-itn"
       partition_key_path = "/_partitionKey"
