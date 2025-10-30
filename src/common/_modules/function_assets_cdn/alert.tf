@@ -6,6 +6,7 @@ resource "azurerm_monitor_metric_alert" "function_assets_health_check" {
   severity            = 1
   frequency           = "PT5M"
   auto_mitigate       = false
+  enabled             = false
 
   criteria {
     metric_namespace = "Microsoft.Web/sites"
@@ -28,6 +29,7 @@ resource "azurerm_monitor_metric_alert" "function_assets_http_server_errors" {
   severity            = 1
   frequency           = "PT5M"
   auto_mitigate       = false
+  enabled             = false
 
   criteria {
     metric_namespace = "Microsoft.Web/sites"
@@ -50,6 +52,7 @@ resource "azurerm_monitor_metric_alert" "function_assets_response_time" {
   severity            = 1
   frequency           = "PT5M"
   auto_mitigate       = false
+  enabled             = false
 
   criteria {
     metric_namespace = "Microsoft.Web/sites"

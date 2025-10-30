@@ -66,14 +66,14 @@ locals {
       DELETES_LEASES_PREFIX           = "profile-deletion-002"
 
 
-      ERROR_STORAGE_ACCOUNT = module.function_elt_itn.storage_account.name
-      #ERROR_STORAGE_KEY                       = data.azurerm_storage_account.internal_fn.primary_connection_string
+      ERROR_STORAGE_ACCOUNT                   = module.function_elt_itn.storage_account.name
+      ERROR_STORAGE_KEY                       = data.azurerm_storage_account.internal_fn.primary_connection_string
       ERROR_STORAGE_TABLE                     = data.azurerm_storage_table.fnelterrors.name
       ERROR_STORAGE_TABLE_MESSAGES            = data.azurerm_storage_table.fnelterrors_messages.name
       ERROR_STORAGE_TABLE_MESSAGE_STATUS      = data.azurerm_storage_table.fnelterrors_message_status.name
       ERROR_STORAGE_TABLE_NOTIFICATION_STATUS = data.azurerm_storage_table.fnelterrors_notification_status.name
 
-      #COMMAND_STORAGE                = data.azurerm_storage_account.internal_fn.primary_connection_string
+      COMMAND_STORAGE                = data.azurerm_storage_account.internal_fn.primary_connection_string
       BLOB_COMMAND_STORAGE           = module.storage_account_itn_elt.primary_connection_string
       COMMAND_STORAGE_TABLE          = data.azurerm_storage_table.fneltcommands.name
       IMPORT_TOPIC_NAME              = "import-command"
@@ -117,9 +117,6 @@ locals {
       PDV_TOKENIZER_BASE_URL  = "https://api.tokenizer.pdv.pagopa.it",
       PDV_TOKENIZER_BASE_PATH = "/tokenizer/v1",
       #
-
-      # TODO: remove after compressed variant has been rolled out
-      INTERNAL_TEST_FISCAL_CODES = module.tests.users.all
 
       INTERNAL_TEST_FISCAL_CODES_COMPRESSED = base64gzip(module.tests.users.all)
 
