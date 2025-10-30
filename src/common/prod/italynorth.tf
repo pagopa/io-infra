@@ -284,6 +284,47 @@ import {
   id = "/subscriptions/ec285037-c673-4f58-b594-d7c480da4e8b/resourceGroups/io-p-itn-elt-rg-01/providers/Microsoft.Storage/storageAccounts/iopitneltst02"
 }
 
+import {
+  to = module.function_app_elt.azurerm_storage_container.messages_step_final_itn
+  id = "/subscriptions/ec285037-c673-4f58-b594-d7c480da4e8b/resourceGroups/io-p-itn-elt-rg-01/providers/Microsoft.Storage/storageAccounts/iopitneltst02/blobServices/default/containers/messages-report-step-final"
+}
+
+import {
+  to = module.function_app_elt.azurerm_storage_container.messages_report_step1_itn
+  id = "/subscriptions/ec285037-c673-4f58-b594-d7c480da4e8b/resourceGroups/io-p-itn-elt-rg-01/providers/Microsoft.Storage/storageAccounts/iopitneltst02/blobServices/default/containers/messages-report-step1"
+}
+
+import {
+  to = module.function_app_elt.azurerm_storage_table.fnelterrors_itn
+  id = "https://iopitneltst02.table.core.windows.net/Tables('fnelterrors')"
+}
+
+import {
+  to = module.function_app_elt.azurerm_storage_table.fnelterrors_messages_itn
+  id = "https://iopitneltst02.table.core.windows.net/Tables('fnelterrorsMessages')"
+}
+
+import {
+  to = module.function_app_elt.azurerm_storage_table.fnelterrors_message_status_itn
+  id = "https://iopitneltst02.table.core.windows.net/Tables('fnelterrorsMessageStatus')"
+}
+
+import {
+  to = module.function_app_elt.azurerm_storage_table.fnelterrors_notification_status_itn
+  id = "https://iopitneltst02.table.core.windows.net/Tables('fnelterrorsNotificationStatus')"
+}
+
+import {
+  to = module.function_app_elt.azurerm_storage_table.fneltcommands_itn
+  id = "https://iopitneltst02.table.core.windows.net/Tables('fneltcommands')"
+}
+
+import {
+  to = module.function_app_elt.azurerm_storage_table.fneltexports_itn
+  id = "https://iopitneltst02.table.core.windows.net/Tables('fneltexports')"
+}
+
+
 module "monitoring_itn" {
   source = "../_modules/monitoring"
 

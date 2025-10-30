@@ -19,24 +19,6 @@ module "storage_account_itn_elt" {
     table = true
   }
 
-  containers = [{
-    name        = "messages-report-step-final"
-    access_type = "private"
-    },
-    {
-      name        = "messages-report-step1"
-      access_type = "private"
-  }]
-
-  tables = [
-    "fnelterrors",
-    "fnelterrorsMessages",
-    "fnelterrorsMessageStatus",
-    "fnelterrorsNotificationStatus",
-    "fneltcommands",
-    "fneltexports",
-  ]
-
   blob_features = {
     versioning = true
     change_feed = {
@@ -48,3 +30,60 @@ module "storage_account_itn_elt" {
 
   tags = var.tags
 }
+
+resource "azurerm_storage_container" "messages_step_final_itn" {
+  name                  = "messages-report-step-final"
+  storage_account_id    = module.storage_account_itn_elt.id
+  container_access_type = "private"
+}
+
+
+
+resource "azurerm_storage_container" "messages_report_step1_itn" {
+  name                  = "messages-report-step1"
+  storage_account_id    = module.storage_account_itn_elt.id
+  container_access_type = "private"
+}
+
+
+
+resource "azurerm_storage_table" "fnelterrors_itn" {
+  name                 = "fnelterrors"
+  storage_account_name = module.storage_account_itn_elt.name
+}
+
+
+
+resource "azurerm_storage_table" "fnelterrors_messages_itn" {
+  name                 = "fnelterrorsMessages"
+  storage_account_name = module.storage_account_itn_elt.name
+}
+
+
+
+resource "azurerm_storage_table" "fnelterrors_message_status_itn" {
+  name                 = "fnelterrorsMessageStatus"
+  storage_account_name = module.storage_account_itn_elt.name
+}
+
+
+
+resource "azurerm_storage_table" "fnelterrors_notification_status_itn" {
+  name                 = "fnelterrorsNotificationStatus"
+  storage_account_name = module.storage_account_itn_elt.name
+}
+
+
+
+resource "azurerm_storage_table" "fneltcommands_itn" {
+  name                 = "fneltcommands"
+  storage_account_name = module.storage_account_itn_elt.name
+}
+
+
+
+resource "azurerm_storage_table" "fneltexports_itn" {
+  name                 = "fneltexports"
+  storage_account_name = module.storage_account_itn_elt.name
+}
+
