@@ -594,6 +594,11 @@ locals {
           paths                 = ["/api/com/*"]
           backend               = "platform-api-gateway",
           rewrite_rule_set_name = "rewrite-rule-set-api-app"
+        },
+        pn-activation = {
+          paths                 = ["/api/v1/pn/activation"]
+          backend               = "platform-api-gateway",
+          rewrite_rule_set_name = "rewrite-rule-set-api-app-pn"
         }
       }
     }
@@ -745,6 +750,36 @@ locals {
           conditions    = []
           url = {
             path         = "/api/platform-legacy{var_uri_path}"
+            query_string = null
+            reroute      = false
+            components   = "path_only"
+          }
+          request_header_configurations  = []
+          response_header_configurations = []
+        }
+      ]
+    },
+    {
+      name = "rewrite-rule-set-api-app-pn"
+      rewrite_rules = [
+        local.io_backend_ip_headers_rule,
+        {
+          name          = "rewrite-url-to-api-pn"
+          rule_sequence = 100
+
+          # Condition to capture requests directed to any endpoint under /api/v1/
+          conditions = [
+            {
+            variable    = "http_req_Cookie"
+            pattern     = "test-pn-apim"
+            ignore_case = true
+            negate      = false
+            }
+          ]
+
+          # URL rewriting preserving the specific endpoint
+          url = {
+            path         = "/api/com/v1/pn/activation"
             query_string = null
             reroute      = false
             components   = "path_only"
