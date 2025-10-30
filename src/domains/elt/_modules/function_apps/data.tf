@@ -18,10 +18,10 @@ data "azurerm_monitor_action_group" "io_com_action_group" {
   resource_group_name = "io-p-itn-com-rg-01"
 }
 
-data "azurerm_subnet" "snet_azdoa" {
-  name                 = "azure-devops"
-  virtual_network_name = var.vnet_name
-  resource_group_name  = local.resource_group_name_common
+data "azurerm_subnet" "gh_runner" {
+  name                 = format("%s-itn-github-runner-snet-01", var.project)
+  virtual_network_name = format("%s-itn-common-vnet-01", var.project)
+  resource_group_name  = format("%s-itn-common-rg-01", var.project)
 }
 
 data "azurerm_subnet" "private_endpoints_subnet" {
