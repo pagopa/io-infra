@@ -767,16 +767,6 @@ locals {
           name          = "rewrite-url-to-api-pn"
           rule_sequence = 100
 
-          # Condition to capture requests directed to any endpoint under /api/v1/
-          conditions = [
-            {
-              variable    = "http_req_Cookie"
-              pattern     = "test-pn-apim"
-              ignore_case = true
-              negate      = false
-            }
-          ]
-
           # URL rewriting preserving the specific endpoint
           url = {
             path         = "/api/com/v1/pn/activation"
