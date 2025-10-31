@@ -113,9 +113,7 @@ module "function_services_autoscale" {
   app_service_plan_id = module.function_services.function_app.plan.id
   target_service = {
     function_apps = [
-      {
-        name = module.function_services.function_app.function_app.name
-      }
+      { id = module.function_services.function_app.function_app.id }
     ]
   }
 
