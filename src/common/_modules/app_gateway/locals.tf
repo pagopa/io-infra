@@ -767,7 +767,7 @@ locals {
           name          = "rewrite-url-to-api-pn"
           rule_sequence = 100
           conditions    = []
-          
+
           # URL rewriting preserving the specific endpoint
           url = {
             path         = "/api/com/v1/pn/activation"
