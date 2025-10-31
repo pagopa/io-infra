@@ -43,6 +43,12 @@ locals {
     for i in range(0, 1000) : format("LVTEST00A00E%03dX", i)
     ], [
     for i in range(0, 1000) : format("LVTEST00A00F%03dX", i)
+    ], [
+    for i in range(0, 1000) : format("LVTEST00A00G%03dX", i)
+    ], [
+    for i in range(0, 1000) : format("LVTEST00A00H%03dX", i)
+    ], [
+    for i in range(0, 1000) : format("LVTEST00A00I%03dX", i)
     ]
   )
 
