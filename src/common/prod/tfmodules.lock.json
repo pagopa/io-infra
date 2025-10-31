@@ -220,5 +220,17 @@
     "version": "3.0.0",
     "name": "azure_function_app",
     "source": "https://registry.terraform.io/modules/pagopa-dx/azure-function-app/azurerm/3.0.0"
+  },
+  "function_app_services.function_services": {
+    "hash": "03d3adf4ce714fb9752f12e9adde9d067f966df2010735f832e4a7633bd5177b",
+    "version": "4.0.0",
+    "name": "azure_function_app",
+    "source": "https://registry.terraform.io/modules/pagopa-dx/azure-function-app/azurerm/4.0.0"
+  },
+  "function_app_services.function_services_autoscale": {
+    "hash": "42ca301a262ca7cb78e9dfb2072922e778328460b91e9859d1bf2af974f9518a",
+    "version": "2.0.0",
+    "name": "azure_app_service_plan_autoscaler",
+    "source": "https://registry.terraform.io/modules/pagopa-dx/azure-app-service-plan-autoscaler/azurerm/2.0.0"
   }
 }
