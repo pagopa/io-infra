@@ -64,6 +64,12 @@ module "function_services_dx" {
   tags = var.tags
 }
 
+resource "azurerm_resource_group" "function_services_rg" {
+  name     = "${var.project_itn}-platform-services-rg-01"
+  location = var.location_itn
+  tags     = var.tags
+}
+
 module "function_services" {
   source  = "pagopa-dx/azure-function-app/azurerm"
   version = "~> 4.0"
@@ -78,7 +84,7 @@ module "function_services" {
 
   size = "P2mv3"
 
-  resource_group_name = "${var.project_itn}-services-rg-01"
+  resource_group_name = azurerm_resource_group.function_services_rg.name
 
   virtual_network = {
     name                = var.vnet_common_name_itn
