@@ -197,7 +197,7 @@ module "application_gateway_itn" {
   }
 
   cidr_subnet           = [dx_available_subnet_cidr.next_cidr_snet_agw.cidr_block]
-  min_capacity          = 15 # 7 capacity=default, 10 capacity=high volume event, 15 capacity=very high volume event
+  min_capacity          = 124 # 7 capacity=default, 10 capacity=high volume event, 15 capacity=very high volume event, more for click day events
   max_capacity          = 125
   alerts_enabled        = true
   deny_paths            = ["\\/admin\\/(.*)"]
