@@ -50,24 +50,6 @@ variable "tags" {
   }
 }
 
-variable "function_services_kind" {
-  type        = string
-  description = "App service plan kind"
-  default     = null
-}
-
-variable "function_services_sku_tier" {
-  type        = string
-  description = "App service plan sku tier"
-  default     = null
-}
-
-variable "function_services_sku_size" {
-  type        = string
-  description = "App service plan sku size"
-  default     = null
-}
-
 variable "function_services_autoscale_minimum" {
   type        = number
   description = "The minimum number of instances for this resource."
@@ -130,6 +112,11 @@ variable "service_api_url" {
   type        = string
   description = "url service api"
   default     = "https://api-app.internal.io.pagopa.it/"
+}
+
+variable "services_snet_cidr_old" {
+  type        = string
+  description = "Services Subnet CIDR"
 }
 
 variable "services_snet_cidr" {
