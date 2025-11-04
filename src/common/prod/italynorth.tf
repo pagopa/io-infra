@@ -196,9 +196,14 @@ module "application_gateway_itn" {
     practices_ipatente_io_pagopa_it      = "practices-ipatente-io-pagopa-it"
   }
 
-  cidr_subnet           = [dx_available_subnet_cidr.next_cidr_snet_agw.cidr_block]
-  min_capacity          = 15 # 7 capacity=default, 10 capacity=high volume event, 15 capacity=very high volume event
-  max_capacity          = 125
+  cidr_subnet = [dx_available_subnet_cidr.next_cidr_snet_agw.cidr_block]
+
+  # Use "autoscale" mode to enable autoscaling with min_capacity with 7 for low load events, 10 for medium load events, 15 for high load events or use fixed with the desired capacity click day events
+  capacity_settings = {
+    mode     = "fixed",
+    capacity = 125
+  }
+
   alerts_enabled        = true
   deny_paths            = ["\\/admin\\/(.*)"]
   error_action_group_id = module.monitoring_weu.action_groups.error
