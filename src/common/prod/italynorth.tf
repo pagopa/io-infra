@@ -220,15 +220,13 @@ module "function_app_services" {
   source                              = "../_modules/function_services/function-app"
   prefix                              = local.prefix
   env_short                           = local.env_short
-  function_services_kind              = local.function_services.function_services_kind
-  function_services_sku_tier          = local.function_services.function_services_sku_tier
-  function_services_sku_size          = local.function_services.function_services_sku_size
   function_services_autoscale_minimum = local.function_services.function_services_autoscale_minimum
   function_services_autoscale_maximum = local.function_services.function_services_autoscale_maximum
   function_services_autoscale_default = local.function_services.function_services_autoscale_default
   vnet_common_name_itn                = local.function_services.vnet_common_name_itn
   common_resource_group_name_itn      = local.function_services.common_resource_group_name_itn
   project_itn                         = local.project_itn
+  services_snet_cidr_old              = local.function_services.cidr_subnet_services_old
   services_snet_cidr                  = local.function_services.cidr_subnet_services
   tags                                = local.tags
 }
