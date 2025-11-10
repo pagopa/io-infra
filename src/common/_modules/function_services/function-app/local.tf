@@ -29,7 +29,7 @@ locals {
       MESSAGE_CONTAINER_NAME                  = "message-content"
       SUBSCRIPTIONS_FEED_TABLE                = "SubscriptionsFeedByDay"
 
-      INTERNAL_STORAGE_CONNECTION_STRING = module.services_storage_account-01.primary_connection_string
+      INTERNAL_STORAGE_CONNECTION_STRING = module.services_storage_account_01.primary_connection_string
       APPINSIGHTS_INSTRUMENTATIONKEY     = data.azurerm_application_insights.application_insights.instrumentation_key
 
       COSMOSDB_NAME = "db"
