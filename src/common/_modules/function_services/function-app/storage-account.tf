@@ -27,7 +27,7 @@ module "services_storage_account" {
   tags = var.tags
 }
 
-resource "azurerm_storage_management_policy" "processing_messages_container_rule-old" {
+resource "azurerm_storage_management_policy" "processing_messages_container_rule" {
   storage_account_id = module.services_storage_account.id
 
   rule {
