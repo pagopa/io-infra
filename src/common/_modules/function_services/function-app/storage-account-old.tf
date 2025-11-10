@@ -57,37 +57,37 @@ resource "azurerm_storage_management_policy" "processing_messages_container_rule
 # Queue
 ################################
 
-resource "azurerm_storage_queue" "message-created" {
+resource "azurerm_storage_queue" "message-created-old" {
   name                 = "message-created"
   storage_account_name = module.old_services_storage_account.name
 }
 
-resource "azurerm_storage_queue" "message-created-poison" {
+resource "azurerm_storage_queue" "message-created-poison-old" {
   name                 = "message-created-poison"
   storage_account_name = module.old_services_storage_account.name
 }
 
-resource "azurerm_storage_queue" "message-processed" {
+resource "azurerm_storage_queue" "message-processed-old" {
   name                 = "message-processed"
   storage_account_name = module.old_services_storage_account.name
 }
 
-resource "azurerm_storage_queue" "message-processed-poison" {
+resource "azurerm_storage_queue" "message-processed-poison-old" {
   name                 = "message-processed-poison"
   storage_account_name = module.old_services_storage_account.name
 }
 
-resource "azurerm_storage_queue" "notification-created-email" {
+resource "azurerm_storage_queue" "notification-created-email-old" {
   name                 = "notification-created-email"
   storage_account_name = module.old_services_storage_account.name
 }
 
-resource "azurerm_storage_queue" "notification-created-email-poison" {
+resource "azurerm_storage_queue" "notification-created-email-poison-old" {
   name                 = "notification-created-email-poison"
   storage_account_name = module.old_services_storage_account.name
 }
 
-resource "azurerm_storage_queue" "notification-created-webhook-poison" {
+resource "azurerm_storage_queue" "notification-created-webhook-poison-old" {
   name                 = "notification-created-webhook-poison"
   storage_account_name = module.old_services_storage_account.name
 }
@@ -95,7 +95,7 @@ resource "azurerm_storage_queue" "notification-created-webhook-poison" {
 ################################
 # Container
 ################################
-resource "azurerm_storage_container" "processing-messages" {
+resource "azurerm_storage_container" "processing-messages-old" {
   name               = "processing-messages"
   storage_account_id = module.old_services_storage_account.id
 }
