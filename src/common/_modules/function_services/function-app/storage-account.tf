@@ -6,10 +6,10 @@ module "services_storage_account" {
     prefix          = var.prefix
     env_short       = var.env_short
     location        = var.location_itn
-    app_name        = "services"
+    app_name        = "funcsvc"
     instance_number = "01"
   }
-  resource_group_name = azurerm_resource_group.function_services_rg.name
+  resource_group_name = data.azurerm_resource_group.services_itn_rg.name
   tier                = "l"
   subnet_pep_id       = data.azurerm_subnet.private_endpoints_subnet_itn.id
 
@@ -27,7 +27,7 @@ module "services_storage_account" {
   tags = var.tags
 }
 
-resource "azurerm_storage_management_policy" "processing_messages_container_rule" {
+resource "azurerm_storage_management_policy" "processing_messages_container_rule-old" {
   storage_account_id = module.services_storage_account.id
 
   rule {
