@@ -23,7 +23,7 @@ module "function_services_dx" {
   private_dns_zone_resource_group_name = data.azurerm_resource_group.weu-common.name
 
   app_settings = merge(
-    local.function_services.app_settings_common,
+    local.old_function_services.app_settings_common,
     {
       # Disabled functions on slot - trigger, queue and timer
       # mark this configurations as slot settings
@@ -46,7 +46,7 @@ module "function_services_dx" {
   ]
 
   slot_app_settings = merge(
-    local.function_services.app_settings_common,
+    local.old_function_services.app_settings_common,
     {
       # Disabled functions on slot - trigger, queue and timer
       # mark this configurations as slot settings

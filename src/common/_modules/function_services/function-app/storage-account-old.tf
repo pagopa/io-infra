@@ -1,4 +1,4 @@
-module "services_storage_account" {
+module "old_services_storage_account" {
   source  = "pagopa-dx/azure-storage-account/azurerm"
   version = "~> 1.0"
 
@@ -6,10 +6,10 @@ module "services_storage_account" {
     prefix          = var.prefix
     env_short       = var.env_short
     location        = var.location_itn
-    app_name        = "services"
+    app_name        = "funcsvc"
     instance_number = "01"
   }
-  resource_group_name = azurerm_resource_group.function_services_rg.name
+  resource_group_name = data.azurerm_resource_group.services_itn_rg.name
   tier                = "l"
   subnet_pep_id       = data.azurerm_subnet.private_endpoints_subnet_itn.id
 
@@ -28,7 +28,7 @@ module "services_storage_account" {
 }
 
 resource "azurerm_storage_management_policy" "processing_messages_container_rule" {
-  storage_account_id = module.services_storage_account.id
+  storage_account_id = module.old_services_storage_account.id
 
   rule {
     name    = "deleteafterdays"
@@ -59,37 +59,37 @@ resource "azurerm_storage_management_policy" "processing_messages_container_rule
 
 resource "azurerm_storage_queue" "message-created" {
   name                 = "message-created"
-  storage_account_name = module.services_storage_account.name
+  storage_account_name = module.old_services_storage_account.name
 }
 
 resource "azurerm_storage_queue" "message-created-poison" {
   name                 = "message-created-poison"
-  storage_account_name = module.services_storage_account.name
+  storage_account_name = module.old_services_storage_account.name
 }
 
 resource "azurerm_storage_queue" "message-processed" {
   name                 = "message-processed"
-  storage_account_name = module.services_storage_account.name
+  storage_account_name = module.old_services_storage_account.name
 }
 
 resource "azurerm_storage_queue" "message-processed-poison" {
   name                 = "message-processed-poison"
-  storage_account_name = module.services_storage_account.name
+  storage_account_name = module.old_services_storage_account.name
 }
 
 resource "azurerm_storage_queue" "notification-created-email" {
   name                 = "notification-created-email"
-  storage_account_name = module.services_storage_account.name
+  storage_account_name = module.old_services_storage_account.name
 }
 
 resource "azurerm_storage_queue" "notification-created-email-poison" {
   name                 = "notification-created-email-poison"
-  storage_account_name = module.services_storage_account.name
+  storage_account_name = module.old_services_storage_account.name
 }
 
 resource "azurerm_storage_queue" "notification-created-webhook-poison" {
   name                 = "notification-created-webhook-poison"
-  storage_account_name = module.services_storage_account.name
+  storage_account_name = module.old_services_storage_account.name
 }
 
 ################################
@@ -97,5 +97,5 @@ resource "azurerm_storage_queue" "notification-created-webhook-poison" {
 ################################
 resource "azurerm_storage_container" "processing-messages" {
   name               = "processing-messages"
-  storage_account_id = module.services_storage_account.id
+  storage_account_id = module.old_services_storage_account.id
 }
