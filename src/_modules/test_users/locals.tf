@@ -29,6 +29,11 @@ locals {
     "JJJJJP25A01H501X",
     "GGGGGP25A01H501Z",
   ]
+  # A list of fiscal codes to be used to test CdC (Carta della Cultura) initiative on IO
+  test_users_cdc = [
+    "SREGPP56A14G224Y",
+    "MCCNGL90R20G943C",
+  ]
 
   # A list of fiscal code to be uset to execute load test for Fast Login initiative on IO
   test_users_fast_login_load_test = concat([
