@@ -9,7 +9,7 @@ locals {
 }
 
 locals {
-  function_services_01 = {
+  function_services = {
     app_settings_common = {
       NODE_ENV = "production"
 
