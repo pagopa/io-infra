@@ -232,5 +232,11 @@
     "version": "2.0.0",
     "name": "azure_app_service_plan_autoscaler",
     "source": "https://registry.terraform.io/modules/pagopa-dx/azure-app-service-plan-autoscaler/azurerm/2.0.0"
+  },
+  "function_app_services.old_services_storage_account": {
+    "hash": "a2a257b25753f91b36acef29e080efc4d62dea59e803f56e33e813e7a343e66b",
+    "version": "1.0.1",
+    "name": "azure_storage_account",
+    "source": "https://registry.terraform.io/modules/pagopa-dx/azure-storage-account/azurerm/1.0.1"
   }
 }
