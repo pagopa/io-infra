@@ -8,8 +8,8 @@ resource "azurerm_monitor_autoscale_setting" "appservice_continua" {
     name = "default"
 
     capacity {
-      default = 1
-      minimum = 1
+      default = 2
+      minimum = 2
       maximum = 10
     }
 
