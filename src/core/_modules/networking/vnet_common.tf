@@ -4,10 +4,10 @@ resource "azurerm_virtual_network" "common" {
   location            = var.location
   address_space       = [var.vnet_cidr_block]
 
-  ddos_protection_plan {
-    id     = local.ddos_protection_plan.id
-    enable = local.ddos_protection_plan.enable
-  }
+  # ddos_protection_plan {
+  #   id     = local.ddos_protection_plan.id
+  #   enable = local.ddos_protection_plan.enable
+  # }
 
   tags = var.tags
 }
