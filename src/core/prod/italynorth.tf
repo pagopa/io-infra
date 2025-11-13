@@ -12,6 +12,8 @@ module "networking_itn" {
   ng_number     = 3
   ng_ips_number = 0
 
+  ddos_protection_plan_enabled = false
+
   tags = local.tags
 }
 
