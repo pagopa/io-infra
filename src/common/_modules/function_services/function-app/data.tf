@@ -10,7 +10,7 @@ data "azurerm_key_vault" "io_com" {
 }
 
 data "azurerm_resource_group" "services_itn_rg" {
-  name = "${var.project_itn}-funcsvc-rg-01"
+  name = "${var.project_itn}-platform-services-rg-01"
 }
 
 ########################
