@@ -1124,7 +1124,7 @@ locals {
     }
 
     response_time = {
-      description   = "Backends response time is too high. See Dimension value to check the Listener unhealty."
+      description   = "Backends response time is too high. See Dimension value to check the Listener unhealthy."
       frequency     = "PT5M"
       window_size   = "PT15M"
       severity      = 2
@@ -1171,7 +1171,7 @@ locals {
     }
 
     failed_requests = {
-      description   = "Abnormal failed requests. See Dimension value to check the Backend Pool unhealty"
+      description   = "Abnormal failed requests. See Dimension value to check the Backend Pool unhealthy"
       frequency     = "PT5M"
       window_size   = "PT5M"
       severity      = 1
