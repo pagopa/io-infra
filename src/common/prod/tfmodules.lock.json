@@ -155,18 +155,6 @@
     "name": "azure_role_assignments",
     "source": "https://registry.terraform.io/modules/pagopa-dx/azure-role-assignments/azurerm/1.2.1"
   },
-  "function_app_services.function_services_dx": {
-    "hash": "df3f3bc0271d19115b3430a732b96d5818173aa0a5be97986b0d614cbf6f74cc",
-    "version": "2.0.2",
-    "name": "azure_function_app",
-    "source": "https://registry.terraform.io/modules/pagopa-dx/azure-function-app/azurerm/2.0.2"
-  },
-  "function_app_services.services_storage_account": {
-    "hash": "a2a257b25753f91b36acef29e080efc4d62dea59e803f56e33e813e7a343e66b",
-    "version": "1.0.1",
-    "name": "azure_storage_account",
-    "source": "https://registry.terraform.io/modules/pagopa-dx/azure-storage-account/azurerm/1.0.1"
-  },
   "continua_app_service.appservice_continua_itn": {
     "hash": "574eefa5a3e46ae05349a2a08c1035017b22abe9be747491f1b6fbbfc6d5d332",
     "version": "2.0.1",
