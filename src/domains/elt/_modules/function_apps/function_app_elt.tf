@@ -121,7 +121,7 @@ locals {
       PDV_TOKENIZER_BASE_PATH = "/tokenizer/v1",
       #
 
-      INTERNAL_TEST_FISCAL_CODES = module.tests.users.all
+      INTERNAL_TEST_FISCAL_CODES_COMPRESSED = base64gzip(module.tests.users.all)
 
       # REDIS CACHE CONFIG FOR PDV IDs
       REDIS_URL      = data.azurerm_redis_cache.ioauth_redis_common_itn.hostname
@@ -211,7 +211,7 @@ module "function_elt" {
   }
 
   allowed_subnets = [
-    data.azurerm_subnet.snet_azdoa.id,
+    data.azurerm_subnet.gh_runner.id
   ]
 
   allowed_ips = local.app_insights_ips_west_europe

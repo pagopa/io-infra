@@ -590,6 +590,16 @@ locals {
           backend               = "session-manager-app",
           rewrite_rule_set_name = "rewrite-rule-set-api-app-rewrite-to-pagopa-session-manager"
         },
+        api-gateway-com = {
+          paths                 = ["/api/com/*"]
+          backend               = "platform-api-gateway",
+          rewrite_rule_set_name = "rewrite-rule-set-api-app"
+        },
+        pn-activation = {
+          paths                 = ["/api/v1/pn/activation"]
+          backend               = "platform-api-gateway",
+          rewrite_rule_set_name = "rewrite-rule-set-api-app-pn"
+        }
       }
     }
   }
@@ -740,6 +750,27 @@ locals {
           conditions    = []
           url = {
             path         = "/api/platform-legacy{var_uri_path}"
+            query_string = null
+            reroute      = false
+            components   = "path_only"
+          }
+          request_header_configurations  = []
+          response_header_configurations = []
+        }
+      ]
+    },
+    {
+      name = "rewrite-rule-set-api-app-pn"
+      rewrite_rules = [
+        local.io_backend_ip_headers_rule,
+        {
+          name          = "rewrite-url-to-api-pn"
+          rule_sequence = 100
+          conditions    = []
+
+          # URL rewriting preserving the specific endpoint
+          url = {
+            path         = "/api/com/v1/pn/activation"
             query_string = null
             reroute      = false
             components   = "path_only"

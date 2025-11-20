@@ -17,6 +17,10 @@ terraform {
       source  = "pagopa-dx/azure"
       version = "~> 0.4"
     }
+    azapi = {
+      source  = "azure/azapi"
+      version = "~> 2.7"
+    }
   }
 }
 
@@ -26,3 +30,5 @@ provider "azurerm" {
 }
 
 provider "dx" {}
+
+provider "azapi" {}

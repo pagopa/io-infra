@@ -62,6 +62,11 @@ data "azurerm_key_vault_secret" "common_SENDGRID_APIKEY" {
   key_vault_id = data.azurerm_key_vault.common.id
 }
 
+data "azurerm_key_vault_secret" "common_SESSION_ST_CONNECTION_STRING" {
+  name         = "common-kv-session-st-connection-string"
+  key_vault_id = data.azurerm_key_vault.common.id
+}
+
 #
 # STORAGE
 #
@@ -150,8 +155,8 @@ locals {
       LOCKED_PROFILES_STORAGE_CONNECTION_STRING = data.azurerm_storage_account.locked_profiles_storage.primary_connection_string
       LOCKED_PROFILES_TABLE_NAME                = var.function_admin_locked_profiles_table_name
 
-      PROFILE_EMAILS_STORAGE_CONNECTION_STRING = data.azurerm_storage_account.citizen_auth_common.primary_connection_string
-      PROFILE_EMAILS_TABLE_NAME                = "profileEmails"
+      PROFILE_EMAILS_STORAGE_CONNECTION_STRING = data.azurerm_key_vault_secret.common_SESSION_ST_CONNECTION_STRING.value
+      PROFILE_EMAILS_TABLE_NAME                = "profileemails01"
 
       # Instant delete
       INSTANT_DELETE_ENABLED_USERS = join(",", [data.azurerm_key_vault_secret.fn_admin_INSTANT_DELETE_ENABLED_USERS.value, module.tests.users.all])
@@ -225,7 +230,8 @@ module "function_admin" {
   app_settings = merge(
     local.function_admin.app_settings_common, {
       "AzureWebJobs.CheckXmlCryptoCVESamlResponse.Disabled"      = "1",
-      "AzureWebJobs.CheckIoWebXmlCryptoCVESamlResponse.Disabled" = "1"
+      "AzureWebJobs.CheckIoWebXmlCryptoCVESamlResponse.Disabled" = "1",
+      "AzureWebJobs.UserDataDeleteOrchestratorV2.Disabled"       = "0"
     }
   )
 
@@ -261,7 +267,8 @@ module "function_admin" {
     "AzureWebJobs.UserDataProcessingTrigger.Disabled",
     "AzureWebJobs.SanitizeProfileEmail.Disabled",
     "AzureWebJobs.CheckXmlCryptoCVESamlResponse.Disabled",
-    "AzureWebJobs.CheckIoWebXmlCryptoCVESamlResponse.Disabled"
+    "AzureWebJobs.CheckIoWebXmlCryptoCVESamlResponse.Disabled",
+    "AzureWebJobs.UserDataDeleteOrchestratorV2.Disabled"
   ]
 
   tags = var.tags
@@ -292,7 +299,8 @@ module "function_admin_staging_slot" {
       "AzureWebJobs.UserDataProcessingTrigger.Disabled"          = "1",
       "AzureWebJobs.SanitizeProfileEmail.Disabled"               = "1",
       "AzureWebJobs.CheckXmlCryptoCVESamlResponse.Disabled"      = "1",
-      "AzureWebJobs.CheckIoWebXmlCryptoCVESamlResponse.Disabled" = "1"
+      "AzureWebJobs.CheckIoWebXmlCryptoCVESamlResponse.Disabled" = "1",
+      "AzureWebJobs.UserDataDeleteOrchestratorV2.Disabled"       = "1"
     }
   )
 

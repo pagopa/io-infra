@@ -1,0 +1,57 @@
+name: 'Lets Encrypt renew SSL certificate'
+description: 'Renew Lets Encrypt SSL certificates using python scripts'
+
+inputs:
+  csr_common_name:
+    description: "CSR common name ( example: 'test.io-poc.pagopa.it' )"
+    required: true
+  python_version:
+    description: "Python version used to run all the scripts"
+    required: true
+  arm_subscription_id:
+    description: "Subscription ID for the Azure Resources"
+    required: true
+  azure_dns_zone_resource_group:
+    description: "Azure Resource Group that contains the target DNS zone ( example: 'io-p-xxxx' )"
+    required: true
+  azure_dns_zone:
+    description: "DNS zone for which we are renewing the certificate ( example: 'io.pagopa.it' )"
+    required: true
+  le_azure_identity_type:
+    description: "Type of azure identity used by the Python ACME script"
+    required: true
+
+runs:
+  using: composite
+  steps:
+
+    - name: Setup Python version
+      uses: actions/setup-python@e797f83bcb11b83ae66e0230d6156d7c80228e7c # v6
+      with:
+        python-version: ${{ inputs.python_version }}
+      
+    - name: Setup Python requirements
+      shell: bash
+      env:
+        github_action_path: ${{ github.action_path }}
+
+      run: pip3 install --require-hashes --requirement "$github_action_path/le_renew_ssl_certificate_python_requirements.txt"
+
+    - name: Run the python script to generate the CSR
+      shell: bash
+      env:
+        csr_common_name: ${{ inputs.csr_common_name }}
+        github_action_path: ${{ github.action_path }}
+
+      run: python3 "$github_action_path/le_renew_ssl_certificate_generate_csr.py" --common-name "$csr_common_name" --out csr.der --rsa-key-size 2048
+
+    - name: Run the python script to request the new certificate from LE
+      shell: bash
+      env:
+        AZURE_SUBSCRIPTION_ID: ${{ inputs.arm_subscription_id }}
+        AZURE_DNS_ZONE_RESOURCE_GROUP: ${{ inputs.azure_dns_zone_resource_group }}
+        AZURE_DNS_ZONE: ${{ inputs.azure_dns_zone }}
+        AZURE_IDENTITY_TYPE: ${{ inputs.le_azure_identity_type }}
+        github_action_path: ${{ github.action_path }}
+
+      run: python3 "$github_action_path/le_renew_ssl_certificate_acme_tiny.py" --private-key private_key.json --regr regr.json --csr csr.der --out certificate_chain.pem

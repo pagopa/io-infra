@@ -101,14 +101,62 @@ variable "backend_hostnames" {
   description = "Information of the backend hostnames"
 }
 
-variable "min_capacity" {
-  type    = number
-  default = 0
-}
+variable "capacity_settings" {
+  type = object({
+    mode         = string # "fixed" or "autoscale"
+    capacity     = optional(number, 0)
+    min_capacity = optional(number, 0)
+    max_capacity = optional(number, 2)
+  })
+  description = "Application Gateway capacity configuration. Use mode='fixed' with capacity, or mode='autoscale' with min_capacity and max_capacity"
 
-variable "max_capacity" {
-  type    = number
-  default = 2
+  validation {
+    condition     = contains(["fixed", "autoscale"], var.capacity_settings.mode)
+    error_message = "Mode must be either 'fixed' or 'autoscale'."
+  }
+
+  validation {
+    condition = (
+      var.capacity_settings.mode == "fixed"
+      ? var.capacity_settings.capacity >= 0 && var.capacity_settings.capacity <= 125
+      : true
+    )
+    error_message = "When mode is 'fixed', capacity must be between 0 and 125."
+  }
+
+  validation {
+    condition = (
+      var.capacity_settings.mode == "autoscale"
+      ? var.capacity_settings.min_capacity >= 0 && var.capacity_settings.min_capacity <= 100
+      : true
+    )
+    error_message = "When mode is 'autoscale', min_capacity must be between 0 and 100."
+  }
+
+  validation {
+    condition = (
+      var.capacity_settings.mode == "autoscale"
+      ? var.capacity_settings.max_capacity >= 2 && var.capacity_settings.max_capacity <= 125
+      : true
+    )
+    error_message = "When mode is 'autoscale', max_capacity must be between 2 and 125."
+  }
+
+  validation {
+    condition = (
+      var.capacity_settings.mode == "autoscale"
+      ? var.capacity_settings.min_capacity < var.capacity_settings.max_capacity
+      : true
+    )
+    error_message = "When mode is 'autoscale', min_capacity must be less than max_capacity."
+  }
+
+  default = {
+    mode         = "autoscale"
+    capacity     = 0
+    min_capacity = 0
+    max_capacity = 2
+  }
 }
 
 variable "alerts_enabled" {

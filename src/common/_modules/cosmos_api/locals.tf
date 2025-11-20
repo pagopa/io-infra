@@ -6,7 +6,7 @@ locals {
       partition_key_path    = "/fiscalCode"
       partition_key_version = null
       autoscale_settings = {
-        max_throughput = 5000
+        max_throughput = 20000
       }
     },
     {
@@ -89,7 +89,7 @@ locals {
       partition_key_version = null
 
       autoscale_settings = {
-        max_throughput = 13000
+        max_throughput = 14000
       }
     },
     {
@@ -123,11 +123,27 @@ locals {
       }
     },
     {
+      name               = "profile-emails-uniqueness-leases-itn"
+      partition_key_path = "/_partitionKey"
+      autoscale_settings = {
+        max_throughput = 2000
+      }
+    },
+    {
+      name                  = "profile-emails-uniqueness-leases-itn-002",
+      partition_key_path    = "/id",
+      partition_key_version = null
+      default_ttl           = -1
+      autoscale_settings = {
+        max_throughput = 2000
+      }
+    },
+    {
       name                  = "profiles"
       partition_key_path    = "/fiscalCode"
       partition_key_version = null
       autoscale_settings = {
-        max_throughput = 80000
+        max_throughput = 160000
       }
     },
     {
@@ -156,7 +172,7 @@ locals {
       partition_key_path    = "/fiscalCode"
       partition_key_version = null
       autoscale_settings = {
-        max_throughput = 2000
+        max_throughput = 8000
       }
     },
     {

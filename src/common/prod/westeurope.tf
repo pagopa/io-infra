@@ -421,13 +421,17 @@ module "app_backend_weu" {
   index = each.key
 
   vnet_common                   = local.core.networking.weu.vnet_common
+  subnet_pep_id                 = local.core.networking.weu.pep_snet.id
+  private_dns_zone_id           = module.global.dns.private_dns_zones.appservice.id
   cidr_subnet                   = each.value.cidr_subnet
   nat_gateways                  = local.core.networking.weu.nat_gateways
-  allowed_subnets               = concat(data.azurerm_subnet.services_snet.*.id, [module.application_gateway_weu.snet.id, module.apim_itn.snet.id, module.platform_api_gateway_apim_itn.snet.id, module.application_gateway_itn.snet.id])
-  slot_allowed_subnets          = concat([local.azdoa_snet_id["weu"]], data.azurerm_subnet.services_snet.*.id, [module.application_gateway_weu.snet.id, module.apim_itn.snet.id, module.platform_api_gateway_apim_itn.snet.id, module.github_runner_itn.subnet.id, module.application_gateway_itn.snet.id])
+  allowed_subnets               = []
+  slot_allowed_subnets          = [module.github_runner_itn.subnet.id]
   allowed_ips                   = module.monitoring_weu.appi.reserved_ips
   slot_allowed_ips              = module.monitoring_weu.appi.reserved_ips
   enable_premium_plan_autoscale = true
+
+  plan_sku = "P2v3"
 
   backend_hostnames = local.backend_hostnames
 
@@ -478,4 +482,9 @@ import {
 import {
   id = "/subscriptions/ec285037-c673-4f58-b594-d7c480da4e8b/resourceGroups/io-p-rg-operations/providers/Microsoft.Storage/storageAccounts/iopstlogs"
   to = module.storage_accounts.azurerm_storage_account.logs[0]
+}
+
+import {
+  to = module.cosmos_api_weu.azurerm_cosmosdb_sql_container.these["profile-emails-uniqueness-leases-itn-002"]
+  id = "/subscriptions/ec285037-c673-4f58-b594-d7c480da4e8b/resourceGroups/io-p-rg-internal/providers/Microsoft.DocumentDB/databaseAccounts/io-p-cosmos-api/sqlDatabases/db/containers/profile-emails-uniqueness-leases-itn-002"
 }

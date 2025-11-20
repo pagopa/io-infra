@@ -102,10 +102,11 @@ module "platform_api_gateway_apim_itn" {
   azure_adgroup_platform_admins_object_id = data.azuread_group.platform_admins.object_id
   azure_adgroup_bonus_admins_object_id    = data.azuread_group.bonus_admins.object_id
   azure_adgroup_auth_admins_object_id     = data.azuread_group.auth_admins.object_id
-
+  azure_adgroup_com_admins_object_id      = data.azuread_group.com_admins.object_id
 
   azure_user_assigned_identity_auth_infra_cd  = data.azurerm_user_assigned_identity.auth_n_identity_infra_cd.principal_id
   azure_user_assigned_identity_bonus_infra_cd = data.azurerm_user_assigned_identity.bonus_infra_cd.principal_id
+  azure_user_assigned_identity_com_infra_cd   = data.azurerm_user_assigned_identity.com_infra_cd.principal_id
 
   tags = local.tags
 }
@@ -195,9 +196,14 @@ module "application_gateway_itn" {
     practices_ipatente_io_pagopa_it      = "practices-ipatente-io-pagopa-it"
   }
 
-  cidr_subnet           = [dx_available_subnet_cidr.next_cidr_snet_agw.cidr_block]
-  min_capacity          = 15 # 7 capacity=default, 10 capacity=high volume event, 15 capacity=very high volume event
-  max_capacity          = 100
+  cidr_subnet = [dx_available_subnet_cidr.next_cidr_snet_agw.cidr_block]
+
+  # Use "autoscale" mode to enable autoscaling with min_capacity with 7 for low load events, 10 for medium load events, 15 for high load events or use fixed with the desired capacity click day events
+  capacity_settings = {
+    mode     = "fixed",
+    capacity = 125
+  }
+
   alerts_enabled        = true
   deny_paths            = ["\\/admin\\/(.*)"]
   error_action_group_id = module.monitoring_weu.action_groups.error
@@ -214,15 +220,13 @@ module "function_app_services" {
   source                              = "../_modules/function_services/function-app"
   prefix                              = local.prefix
   env_short                           = local.env_short
-  function_services_kind              = local.function_services.function_services_kind
-  function_services_sku_tier          = local.function_services.function_services_sku_tier
-  function_services_sku_size          = local.function_services.function_services_sku_size
   function_services_autoscale_minimum = local.function_services.function_services_autoscale_minimum
   function_services_autoscale_maximum = local.function_services.function_services_autoscale_maximum
   function_services_autoscale_default = local.function_services.function_services_autoscale_default
   vnet_common_name_itn                = local.function_services.vnet_common_name_itn
   common_resource_group_name_itn      = local.function_services.common_resource_group_name_itn
   project_itn                         = local.project_itn
+  services_snet_cidr_old              = local.function_services.cidr_subnet_services_old
   services_snet_cidr                  = local.function_services.cidr_subnet_services
   tags                                = local.tags
 }
@@ -237,4 +241,347 @@ module "containers_services" {
 import {
   to = module.containers_services.module.db_subscription_cidrs_container.azurerm_cosmosdb_sql_container.this
   id = "/subscriptions/ec285037-c673-4f58-b594-d7c480da4e8b/resourceGroups/io-p-rg-internal/providers/Microsoft.DocumentDB/databaseAccounts/io-p-cosmos-api/sqlDatabases/db/containers/subscription-cidrs"
+}
+
+module "continua_app_service" {
+  source = "../_modules/app_continua"
+
+  prefix                         = local.prefix
+  env_short                      = local.env_short
+  location_itn                   = "italynorth"
+  project_itn                    = local.project_itn
+  project                        = local.project_weu_legacy
+  tags                           = local.tags
+  vnet_common_name_itn           = local.continua.vnet_common_name_itn
+  common_resource_group_name_itn = local.resource_groups.itn.common
+  continua_snet_cidr             = local.continua.cidr_subnet_continua
+}
+
+module "function_app_admin" {
+  source                         = "../_modules/function_admin"
+  prefix                         = local.prefix
+  env_short                      = local.env_short
+  vnet_common_name_itn           = local.function_admin.vnet_common_name_itn
+  common_resource_group_name_itn = local.function_admin.common_resource_group_name_itn
+  project_itn                    = local.project_itn
+  admin_snet_cidr                = local.function_admin.cidr_subnet_admin
+  tags                           = local.tags
+}
+
+module "function_app_elt" {
+  source                          = "../_modules/function_elt"
+  prefix                          = local.prefix
+  env_short                       = local.env_short
+  project_weu_legacy              = local.project_weu_legacy
+  secondary_location_display_name = local.function_elt.secondary_location_display_name
+  location_itn                    = local.function_elt.location_itn
+  resource_group_name             = local.function_elt.resource_group_name
+  vnet_common_name_itn            = local.function_elt.vnet_common_name_itn
+  common_resource_group_name_itn  = local.function_elt.common_resource_group_name_itn
+  elt_snet_cidr                   = local.function_elt.elt_snet_cidr
+  tags                            = local.function_elt.tags
+}
+
+import {
+  to = module.function_app_elt.module.storage_account_itn_elt.azurerm_storage_account.this
+  id = "/subscriptions/ec285037-c673-4f58-b594-d7c480da4e8b/resourceGroups/io-p-itn-elt-rg-01/providers/Microsoft.Storage/storageAccounts/iopitneltst02"
+}
+
+import {
+  to = module.function_app_elt.azurerm_storage_container.messages_step_final_itn
+  id = "/subscriptions/ec285037-c673-4f58-b594-d7c480da4e8b/resourceGroups/io-p-itn-elt-rg-01/providers/Microsoft.Storage/storageAccounts/iopitneltst02/blobServices/default/containers/messages-report-step-final"
+}
+
+import {
+  to = module.function_app_elt.azurerm_storage_container.messages_report_step1_itn
+  id = "/subscriptions/ec285037-c673-4f58-b594-d7c480da4e8b/resourceGroups/io-p-itn-elt-rg-01/providers/Microsoft.Storage/storageAccounts/iopitneltst02/blobServices/default/containers/messages-report-step1"
+}
+
+import {
+  to = module.function_app_elt.azurerm_storage_table.fnelterrors_itn
+  id = "https://iopitneltst02.table.core.windows.net/Tables('fnelterrors')"
+}
+
+import {
+  to = module.function_app_elt.azurerm_storage_table.fnelterrors_messages_itn
+  id = "https://iopitneltst02.table.core.windows.net/Tables('fnelterrorsMessages')"
+}
+
+import {
+  to = module.function_app_elt.azurerm_storage_table.fnelterrors_message_status_itn
+  id = "https://iopitneltst02.table.core.windows.net/Tables('fnelterrorsMessageStatus')"
+}
+
+import {
+  to = module.function_app_elt.azurerm_storage_table.fnelterrors_notification_status_itn
+  id = "https://iopitneltst02.table.core.windows.net/Tables('fnelterrorsNotificationStatus')"
+}
+
+import {
+  to = module.function_app_elt.azurerm_storage_table.fneltcommands_itn
+  id = "https://iopitneltst02.table.core.windows.net/Tables('fneltcommands')"
+}
+
+import {
+  to = module.function_app_elt.azurerm_storage_table.fneltexports_itn
+  id = "https://iopitneltst02.table.core.windows.net/Tables('fneltexports')"
+}
+
+
+module "monitoring_itn" {
+  source = "../_modules/monitoring"
+
+  location              = "italynorth"
+  location_short        = local.location_short.italynorth
+  project               = local.project_itn
+  resource_group_common = local.resource_groups.itn.common
+
+  kv_id        = local.core.key_vault.weu.io_p_itn_platform_kv_01.id # Location into the KV module output should be updated to itn (at the moment is weu) after the migration to ITN is completed 
+  kv_common_id = local.core.key_vault.weu.io_p_itn_platform_kv_01.id # We are going to have only one platform KV containing every secret
+
+  test_urls = [
+    {
+      # https://developerportal-backend.io.italia.it/info
+      name                              = module.global.dns.public_dns_zones.io_italia_it.developer_portal_backend
+      host                              = module.global.dns.public_dns_zones.io_italia_it.developer_portal_backend
+      path                              = "/info",
+      frequency                         = 900
+      http_status                       = 200,
+      ssl_cert_remaining_lifetime_check = 7,
+      enabled                           = false
+    },
+    {
+      # https://api.io.italia.it
+      name                              = module.global.dns.public_dns_zones.io_italia_it.api
+      host                              = module.global.dns.public_dns_zones.io_italia_it.api
+      path                              = "",
+      frequency                         = 900
+      http_status                       = 404,
+      ssl_cert_remaining_lifetime_check = 7,
+      enabled                           = false
+    },
+    {
+      # https://app-backend.io.italia.it/info
+      name                              = module.global.dns.public_dns_zones.io_italia_it.app_backend
+      host                              = module.global.dns.public_dns_zones.io_italia_it.app_backend
+      path                              = "/info",
+      frequency                         = 900
+      http_status                       = 200,
+      ssl_cert_remaining_lifetime_check = 7,
+      enabled                           = false
+    },
+    {
+      # https://io.italia.it
+      name                              = module.global.dns.public_dns_zones.io_italia_it.name
+      host                              = module.global.dns.public_dns_zones.io_italia_it.name
+      path                              = "",
+      frequency                         = 900
+      http_status                       = 200,
+      ssl_cert_remaining_lifetime_check = 7,
+      enabled                           = false
+    },
+    {
+      # https://assets.cdn.io.pagopa.it/status/backend.json
+      name                              = "assets.cdn.io.pagopa.it",
+      host                              = "assets.cdn.io.pagopa.it",
+      path                              = "/status/backend.json",
+      frequency                         = 900
+      http_status                       = 200,
+      ssl_cert_remaining_lifetime_check = 7,
+      enabled                           = false
+    },
+    {
+      # CIE https://app-backend.io.italia.it/login?authLevel=SpidL2&entityID=xx_servizicie
+      name                              = "CIE L2",
+      host                              = module.global.dns.public_dns_zones.io_italia_it.app_backend
+      path                              = "/login?authLevel=SpidL2&entityID=xx_servizicie",
+      frequency                         = 900
+      http_status                       = 200,
+      ssl_cert_remaining_lifetime_check = 1,
+      enabled                           = false
+    },
+    {
+      # CIE https://app-backend.io.italia.it/login?authLevel=SpidL3&entityID=xx_servizicie
+      name                              = "CIE L3",
+      host                              = module.global.dns.public_dns_zones.io_italia_it.app_backend
+      path                              = "/login?authLevel=SpidL3&entityID=xx_servizicie",
+      frequency                         = 900
+      http_status                       = 200,
+      ssl_cert_remaining_lifetime_check = 1,
+      enabled                           = false
+    },
+    {
+      name                              = "Spid-registry",
+      host                              = "registry.spid.gov.it",
+      path                              = "/metadata/idp/spid-entities-idps.xml",
+      frequency                         = 900
+      http_status                       = 200,
+      ssl_cert_remaining_lifetime_check = 1,
+      enabled                           = false
+    },
+    {
+      # SpidL2-arubaid https://app-backend.io.italia.it/login?authLevel=SpidL2&entityID=arubaid
+      name                              = "SpidL2-arubaid",
+      host                              = module.global.dns.public_dns_zones.io_italia_it.app_backend
+      path                              = "/login?authLevel=SpidL2&entityID=arubaid",
+      frequency                         = 900
+      http_status                       = 200,
+      ssl_cert_remaining_lifetime_check = 1,
+      enabled                           = false
+    },
+    {
+      # SpidL2-infocertid https://app-backend.io.italia.it/login?authLevel=SpidL2&entityID=infocertid
+      name                              = "SpidL2-infocertid",
+      host                              = module.global.dns.public_dns_zones.io_italia_it.app_backend
+      path                              = "/login?authLevel=SpidL2&entityID=infocertid",
+      frequency                         = 900
+      http_status                       = 200,
+      ssl_cert_remaining_lifetime_check = 1,
+      enabled                           = false
+    },
+    {
+      # SpidL2-lepidaid https://app-backend.io.italia.it/login?authLevel=SpidL2&entityID=lepidaid
+      name                              = "SpidL2-lepidaid",
+      host                              = module.global.dns.public_dns_zones.io_italia_it.app_backend
+      path                              = "/login?authLevel=SpidL2&entityID=lepidaid",
+      frequency                         = 900
+      http_status                       = 200,
+      ssl_cert_remaining_lifetime_check = 1,
+      enabled                           = false
+    },
+    {
+      # SpidL2-namirialid https://app-backend.io.italia.it/login?authLevel=SpidL2&entityID=namirialid
+      name                              = "SpidL2-namirialid",
+      host                              = module.global.dns.public_dns_zones.io_italia_it.app_backend
+      path                              = "/login?authLevel=SpidL2&entityID=namirialid",
+      frequency                         = 900
+      http_status                       = 200,
+      ssl_cert_remaining_lifetime_check = 1,
+      enabled                           = false
+    },
+    {
+      # SpidL2-posteid https://app-backend.io.italia.it/login?authLevel=SpidL2&entityID=posteid
+      name                              = "SpidL2-posteid",
+      host                              = module.global.dns.public_dns_zones.io_italia_it.app_backend
+      path                              = "/login?authLevel=SpidL2&entityID=posteid",
+      frequency                         = 900
+      http_status                       = 200,
+      ssl_cert_remaining_lifetime_check = 1,
+      enabled                           = false
+    },
+    {
+      # SpidL2-sielteid https://app-backend.io.italia.it/login?authLevel=SpidL2&entityID=sielteid
+      name                              = "SpidL2-sielteid",
+      host                              = module.global.dns.public_dns_zones.io_italia_it.app_backend
+      path                              = "/login?authLevel=SpidL2&entityID=sielteid",
+      frequency                         = 900
+      http_status                       = 200,
+      ssl_cert_remaining_lifetime_check = 1,
+      enabled                           = false
+    },
+    {
+      # SpidL2-spiditalia https://app-backend.io.italia.it/login?authLevel=SpidL2&entityID=spiditalia
+      name                              = "SpidL2-spiditalia",
+      host                              = module.global.dns.public_dns_zones.io_italia_it.app_backend
+      path                              = "/login?authLevel=SpidL2&entityID=spiditalia",
+      frequency                         = 900
+      http_status                       = 200,
+      ssl_cert_remaining_lifetime_check = 1,
+      enabled                           = false
+    },
+    {
+      # SpidL2-infocamere https://app-backend.io.italia.it/login?authLevel=SpidL2&entityID=infocamereid
+      name                              = "SpidL2-infocamere",
+      host                              = module.global.dns.public_dns_zones.io_italia_it.app_backend
+      path                              = "/login?authLevel=SpidL2&entityID=infocamereid",
+      frequency                         = 900
+      http_status                       = 200,
+      ssl_cert_remaining_lifetime_check = 1,
+      enabled                           = false
+    },
+    {
+      # https://api.io.pagopa.it
+      name                              = module.global.dns.public_dns_zones.io.api
+      host                              = module.global.dns.public_dns_zones.io.api
+      path                              = "",
+      frequency                         = 900
+      http_status                       = 404,
+      ssl_cert_remaining_lifetime_check = 7,
+      enabled                           = false
+    },
+    {
+      # https://api-app.io.pagopa.it/info
+      name                              = module.global.dns.public_dns_zones.io.api_app
+      host                              = module.global.dns.public_dns_zones.io.api_app
+      path                              = "/info",
+      frequency                         = 900
+      http_status                       = 200,
+      ssl_cert_remaining_lifetime_check = 7,
+      enabled                           = false
+    },
+    {
+      # https://api-web.io.pagopa.it
+      name                              = module.global.dns.public_dns_zones.io.api_web
+      host                              = module.global.dns.public_dns_zones.io.api_web
+      path                              = "",
+      frequency                         = 900
+      http_status                       = 404,
+      ssl_cert_remaining_lifetime_check = 7,
+      enabled                           = false
+    },
+    {
+      # https://api-mtls.io.pagopa.it
+      name                              = module.global.dns.public_dns_zones.io.api_mtls
+      host                              = module.global.dns.public_dns_zones.io.api_mtls
+      path                              = "",
+      frequency                         = 900
+      http_status                       = 400,
+      ssl_cert_remaining_lifetime_check = 0,
+      ssl_enabled                       = false
+    },
+    {
+      # https://firmaconio.selfcare.pagopa.it
+      name                              = "firmaconio.selfcare.pagopa.it"
+      host                              = "firmaconio.selfcare.pagopa.it"
+      path                              = "/health",
+      frequency                         = 900
+      http_status                       = 200,
+      ssl_cert_remaining_lifetime_check = 7,
+      enabled                           = false
+    },
+    {
+      # https://raw.githubusercontent.com/pagopa/io-services-metadata/master/status/backend.json
+      name                              = "github-raw-status-backend",
+      host                              = "raw.githubusercontent.com",
+      path                              = "/pagopa/io-services-metadata/master/status/backend.json",
+      frequency                         = 900
+      http_status                       = 200,
+      ssl_cert_remaining_lifetime_check = 7,
+      enabled                           = false
+    },
+    {
+      # https://continua.io.pagopa.it
+      name                              = module.global.dns.public_dns_zones.io.continua
+      host                              = module.global.dns.public_dns_zones.io.continua
+      path                              = "",
+      frequency                         = 900
+      http_status                       = 200,
+      ssl_cert_remaining_lifetime_check = 7,
+      enabled                           = false
+    },
+  ]
+
+  tags = local.tags
+}
+
+module "function_assets_cdn_itn" {
+  source                         = "../_modules/function_assets_cdn"
+  prefix                         = local.prefix
+  env_short                      = local.env_short
+  project_weu_legacy             = local.project_weu_legacy
+  project_itn                    = local.project_itn
+  vnet_common_name_itn           = local.function_assets_cdn.vnet_common_name_itn
+  common_resource_group_name_itn = local.function_assets_cdn.common_resource_group_name_itn
+  assets_cdn_snet_cidr           = local.function_assets_cdn.assets_cdn_snet_cidr
+  tags                           = local.tags
 }

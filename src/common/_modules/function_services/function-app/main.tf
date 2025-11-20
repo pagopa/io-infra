@@ -1,16 +1,24 @@
-module "function_services_dx" {
+resource "azurerm_resource_group" "function_services_rg" {
+  name     = "${var.project_itn}-platform-services-rg-01"
+  location = var.location_itn
+  tags     = var.tags
+}
+
+module "function_services" {
   source  = "pagopa-dx/azure-function-app/azurerm"
-  version = "~> 2.0"
+  version = "~> 4.0"
 
   environment = {
     prefix          = var.prefix
     env_short       = var.env_short
     location        = var.location_itn
-    app_name        = "funcsvc"
+    app_name        = "services"
     instance_number = "01"
   }
 
-  resource_group_name = data.azurerm_resource_group.services_itn_rg.name
+  size = "P2mv3"
+
+  resource_group_name = azurerm_resource_group.function_services_rg.name
 
   virtual_network = {
     name                = var.vnet_common_name_itn
@@ -32,7 +40,7 @@ module "function_services_dx" {
       "AzureWebJobs.OnFailedProcessMessage.Disabled" = "0"
       "AzureWebJobs.ProcessMessage.Disabled"         = "0"
       "AzureWebJobs.WebhookNotification.Disabled"    = "0"
-      "APPINSIGHTS_CLOUD_ROLE_NAME"                  = "io-p-itn-funcsvc-func-01",
+      "APPINSIGHTS_CLOUD_ROLE_NAME"                  = "io-p-itn-services-func-01",
     }
   )
 
@@ -55,11 +63,11 @@ module "function_services_dx" {
       "AzureWebJobs.OnFailedProcessMessage.Disabled" = "1"
       "AzureWebJobs.ProcessMessage.Disabled"         = "1"
       "AzureWebJobs.WebhookNotification.Disabled"    = "1"
-      "APPINSIGHTS_CLOUD_ROLE_NAME"                  = "io-p-itn-funcsvc-func-01-staging",
+      "APPINSIGHTS_CLOUD_ROLE_NAME"                  = "io-p-itn-services-func-01-staging",
     }
   )
 
-  action_group_id = data.azurerm_monitor_action_group.error_action_group.id
+  action_group_ids = [data.azurerm_monitor_action_group.error_action_group.id]
 
   tags = var.tags
 }

@@ -71,9 +71,24 @@ data "azurerm_user_assigned_identity" "auth_n_identity_infra_cd" {
   resource_group_name = "${local.prefix}-${local.env_short}-itn-auth-rg-01"
 }
 
+data "azurerm_user_assigned_identity" "com_infra_cd" {
+  name                = "${local.prefix}-${local.env_short}-itn-msgs-infra-github-cd-id-01"
+  resource_group_name = "${local.prefix}-${local.env_short}-itn-msgs-rg-01"
+}
+
 data "azurerm_user_assigned_identity" "bonus_infra_cd" {
   name                = "${local.prefix}-${local.env_short}-itn-cdc-infra-github-cd-id-01"
   resource_group_name = "${local.prefix}-${local.env_short}-itn-cdc-rg-01"
+}
+
+data "azurerm_user_assigned_identity" "managed_identity_io_infra_ci" {
+  name                = "${local.prefix}-${local.env_short}-infra-github-ci-identity"
+  resource_group_name = "${local.prefix}-${local.env_short}-identity-rg"
+}
+
+data "azurerm_user_assigned_identity" "managed_identity_io_infra_cd" {
+  name                = "${local.prefix}-${local.env_short}-infra-github-cd-identity"
+  resource_group_name = "${local.prefix}-${local.env_short}-identity-rg"
 }
 
 # Cosmos API
@@ -81,14 +96,6 @@ data "azurerm_subnet" "cosmos_api_allowed" {
   for_each = toset(local.cosmos_api.allowed_subnets)
 
   name                 = each.value
-  virtual_network_name = local.core.networking.weu.vnet_common.name
-  resource_group_name  = local.core.networking.weu.vnet_common.resource_group_name
-}
-
-# App Backend
-data "azurerm_subnet" "services_snet" {
-  count                = 2
-  name                 = format("%s-services-snet-%d", local.project_weu_legacy, count.index + 1)
   virtual_network_name = local.core.networking.weu.vnet_common.name
   resource_group_name  = local.core.networking.weu.vnet_common.resource_group_name
 }
@@ -105,13 +112,18 @@ data "azurerm_linux_function_app" "function_profile" {
 }
 
 data "azurerm_linux_function_app" "com_citizen_func" {
-  name                = "${local.project_itn}-com-citizen-func-01"
+  name                = "${local.project_itn}-com-citizen-func-02"
   resource_group_name = "${local.project_itn}-com-rg-01"
 }
 
 data "azurerm_linux_function_app" "services_app_backend_function_app" {
   resource_group_name = "${local.project_itn}-svc-rg-01"
   name                = "${local.project_itn}-svc-app-be-func-01"
+}
+
+data "azurerm_container_app" "services_app_backend_function_app" {
+  resource_group_name = "${local.project_itn}-svc-rg-01"
+  name                = "${local.project_itn}-svc-app-be-func-02"
 }
 
 data "azurerm_linux_function_app" "lollipop_function" {
@@ -166,4 +178,9 @@ data "azurerm_subnet" "itn_auth_prof_async_func_snet" {
 data "azurerm_key_vault" "ioweb_kv" {
   name                = "${local.project_itn}-ioweb-kv-01"
   resource_group_name = "${local.project_itn}-ioweb-rg-01"
+}
+
+data "azurerm_key_vault" "itn_key_vault" {
+  name                = "${local.project_itn}-platform-kv-01"
+  resource_group_name = "${local.project_itn}-common-rg-01"
 }
