@@ -585,3 +585,21 @@ module "function_assets_cdn_itn" {
   assets_cdn_snet_cidr           = local.function_assets_cdn.assets_cdn_snet_cidr
   tags                           = local.tags
 }
+
+module "assets_locales_cdn" {
+  source = "../_modules/assets_locales_cdn"
+
+  location                  = "italynorth"
+  location_short            = local.core.resource_groups.italynorth.location_short
+  project                   = local.project_itn
+  resource_group_common     = local.core.resource_groups.italynorth.common
+  resource_group_assets_cdn = local.core.resource_groups.italynorth.assets_cdn
+  resource_group_external   = local.core.resource_groups.italynorth.external
+
+  external_domain                  = module.global.dns.external_domain
+  public_dns_zones                 = module.global.dns.public_dns_zones
+  dns_default_ttl_sec              = module.global.dns.dns_default_ttl_sec
+  azure_adgroup_svc_devs_object_id = data.azuread_group.svc_devs.object_id
+
+  tags = local.tags
+}
