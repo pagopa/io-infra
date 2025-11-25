@@ -1,13 +1,13 @@
 resource "azurerm_cdn_frontdoor_endpoint" "cdn_endpoint" {
   name                     = try(local.nonstandard[var.location_short].cdne, "${var.project}-assets-cdne-01")
-  cdn_frontdoor_profile_id = azurerm_cdn_profile.cdn_profile.id
+  cdn_frontdoor_profile_id = azurerm_cdn_frontdoor_profile.cdn_profile.id
 
   tags = var.tags
 }
 
 resource "azurerm_cdn_frontdoor_origin_group" "primary_origin_group" {
   name                     = "primary-origin-group"
-  cdn_frontdoor_profile_id = azurerm_cdn_profile.cdn_profile.id
+  cdn_frontdoor_profile_id = azurerm_cdn_frontdoor_profile.cdn_profile.id
 
   restore_traffic_time_to_healed_or_new_endpoint_in_minutes = 10 # set to default
 
