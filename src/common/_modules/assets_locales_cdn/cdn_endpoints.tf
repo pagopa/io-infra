@@ -34,24 +34,3 @@ resource "azurerm_cdn_frontdoor_origin" "primary_origin" {
   priority           = 1
   weight             = 1
 }
-
-resource "azurerm_cdn_frontdoor_route" "primary_route" {
-  name                          = "primary-route"
-  cdn_frontdoor_endpoint_id     = azurerm_cdn_frontdoor_endpoint.azurerm_cdn_frontdoor_endpoint.id
-  cdn_frontdoor_origin_group_id = azurerm_cdn_frontdoor_origin_group.primary_origin_group.id
-  cdn_frontdoor_origin_ids      = [azurerm_cdn_frontdoor_origin.primary_origin.id]
-  cdn_frontdoor_rule_set_ids    = [azurerm_cdn_frontdoor_rule_set.primary_ruleset.id]
-  enabled                       = true
-
-  forwarding_protocol    = "HttpsOnly"
-  https_redirect_enabled = true
-  patterns_to_match      = ["/*"]
-  supported_protocols    = ["Http", "Https"]
-
-  cdn_frontdoor_custom_domain_ids = [azurerm_cdn_frontdoor_custom_domain.assets_cdn.id, azurerm_cdn_frontdoor_custom_domain.assets_cdn_io_italia_it.id]
-  link_to_default_domain          = false
-
-  cache {
-    query_string_caching_behavior = "IgnoreQueryString"
-  }
-}
