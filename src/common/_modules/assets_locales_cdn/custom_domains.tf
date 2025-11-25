@@ -8,7 +8,6 @@ resource "azurerm_cdn_frontdoor_custom_domain" "assets_cdn" {
   host_name                = "${azurerm_dns_cname_record.assets_cdn_io_pagopa_it.name}.${var.public_dns_zones.io.name}"
   tls {
     certificate_type    = "ManagedCertificate"
-    minimum_tls_version = "TLS12"
   }
 }
 
@@ -22,6 +21,5 @@ resource "azurerm_cdn_frontdoor_custom_domain" "assets_cdn_io_italia_it" {
   host_name                = "${azurerm_dns_cname_record.assets_cdn_io_pagopa_it.name}.${var.public_dns_zones.io_italia_it.name}"
   tls {
     certificate_type    = "ManagedCertificate"
-    minimum_tls_version = "TLS12"
   }
 }
