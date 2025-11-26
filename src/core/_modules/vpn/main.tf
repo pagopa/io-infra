@@ -51,7 +51,7 @@ module "dns_forwarder_snet" {
 }
 
 module "dns_forwarder" {
-  source              = "github.com/pagopa/terraform-azurerm-v4//dns_forwarder?ref=v7.52.0"
+  source              = "github.com/pagopa/terraform-azurerm-v4//dns_forwarder_deprecated?ref=v7.52.0"
   name                = try(local.nonstandard[var.location_short].dns_forwarder, "${var.project}-dns-forwarder-ci-01")
   location            = var.location
   resource_group_name = var.resource_group_name
