@@ -8,11 +8,11 @@ resource "azurerm_resource_group" "azdoa_rg" {
 module "azdoa_snet" {
   source = "github.com/pagopa/terraform-azurerm-v4//subnet?ref=v7.52.0"
 
-  name                                      = try(local.nonstandard[var.location_short].snet, "${var.project}-azdoa-snet-01")
-  address_prefixes                          = var.cidr_subnet
-  resource_group_name                       = var.resource_groups.common
-  virtual_network_name                      = var.vnet_common.name
-  private_endpoint_network_policies_enabled = "Disabled"
+  name                              = try(local.nonstandard[var.location_short].snet, "${var.project}-azdoa-snet-01")
+  address_prefixes                  = var.cidr_subnet
+  resource_group_name               = var.resource_groups.common
+  virtual_network_name              = var.vnet_common.name
+  private_endpoint_network_policies = "Disabled"
 
   service_endpoints = [
     "Microsoft.Web",
