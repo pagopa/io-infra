@@ -12,7 +12,7 @@ module "azdoa_snet" {
   address_prefixes                          = var.cidr_subnet
   resource_group_name                       = var.resource_groups.common
   virtual_network_name                      = var.vnet_common.name
-  private_endpoint_network_policies_enabled = false
+  private_link_service_network_policies_enabled = false
 
   service_endpoints = [
     "Microsoft.Web",
