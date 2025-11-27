@@ -17,8 +17,6 @@ resource "azurerm_public_ip_prefix" "ng" {
   name                = format("%s-ippre-%02d", try(local.nonstandard[var.location_short].ng, "${var.project}-ng"), count.index + 1)
   location            = var.location
   resource_group_name = var.resource_group_name
-  sku                 = "Standard"
-  sku_tier            = "Regional"
 
   prefix_length = 31
   zones         = [count.index + 1]
