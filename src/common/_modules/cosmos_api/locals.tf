@@ -159,7 +159,7 @@ locals {
       partition_key_path    = "/serviceId"
       partition_key_version = null
       autoscale_settings = {
-        max_throughput = 30000
+        max_throughput = 15000
       }
     },
     {
