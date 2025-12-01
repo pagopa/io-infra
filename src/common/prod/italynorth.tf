@@ -200,8 +200,9 @@ module "application_gateway_itn" {
 
   # Use "autoscale" mode to enable autoscaling with min_capacity with 7 for low load events, 10 for medium load events, 15 for high load events or use fixed with the desired capacity click day events
   capacity_settings = {
-    mode     = "fixed",
-    capacity = 125
+    mode         = "autoscale"
+    min_capacity = 20
+    max_capacity = 100
   }
 
   alerts_enabled        = true
