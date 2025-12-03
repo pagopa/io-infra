@@ -6,7 +6,7 @@ resource "azurerm_subnet" "vpn" {
 }
 
 module "vpn" {
-  source = "github.com/pagopa/terraform-azurerm-v3//vpn_gateway?ref=v8.33.0"
+  source = "github.com/pagopa/terraform-azurerm-v4//vpn_gateway?ref=v7.52.0"
 
   name                = try(local.nonstandard[var.location_short].vpn, "${var.project}-vgw-01")
   location            = var.location
@@ -34,12 +34,12 @@ module "vpn" {
 
 ## DNS FORWARDER
 module "dns_forwarder_snet" {
-  source                                    = "github.com/pagopa/terraform-azurerm-v3//subnet?ref=v8.33.1"
-  name                                      = try(local.nonstandard[var.location_short].dns_forwarder_snet, "${var.project}-dns-forwarder-snet-01")
-  address_prefixes                          = var.dnsforwarder_cidr_subnet
-  resource_group_name                       = var.resource_group_name
-  virtual_network_name                      = var.vnet_common.name
-  private_endpoint_network_policies_enabled = false
+  source                            = "github.com/pagopa/terraform-azurerm-v4//subnet?ref=v7.52.0"
+  name                              = try(local.nonstandard[var.location_short].dns_forwarder_snet, "${var.project}-dns-forwarder-snet-01")
+  address_prefixes                  = var.dnsforwarder_cidr_subnet
+  resource_group_name               = var.resource_group_name
+  virtual_network_name              = var.vnet_common.name
+  private_endpoint_network_policies = "Disabled"
 
   delegation = {
     name = "delegation"
@@ -51,7 +51,7 @@ module "dns_forwarder_snet" {
 }
 
 module "dns_forwarder" {
-  source              = "github.com/pagopa/terraform-azurerm-v3//dns_forwarder?ref=v8.33.1"
+  source              = "github.com/pagopa/terraform-azurerm-v4//dns_forwarder_deprecated?ref=v7.52.0"
   name                = try(local.nonstandard[var.location_short].dns_forwarder, "${var.project}-dns-forwarder-ci-01")
   location            = var.location
   resource_group_name = var.resource_group_name

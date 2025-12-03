@@ -6,13 +6,13 @@ resource "azurerm_resource_group" "azdoa_rg" {
 }
 
 module "azdoa_snet" {
-  source = "github.com/pagopa/terraform-azurerm-v3//subnet?ref=v8.27.0"
+  source = "github.com/pagopa/terraform-azurerm-v4//subnet?ref=v7.52.0"
 
-  name                                      = try(local.nonstandard[var.location_short].snet, "${var.project}-azdoa-snet-01")
-  address_prefixes                          = var.cidr_subnet
-  resource_group_name                       = var.resource_groups.common
-  virtual_network_name                      = var.vnet_common.name
-  private_endpoint_network_policies_enabled = false
+  name                              = try(local.nonstandard[var.location_short].snet, "${var.project}-azdoa-snet-01")
+  address_prefixes                  = var.cidr_subnet
+  resource_group_name               = var.resource_groups.common
+  virtual_network_name              = var.vnet_common.name
+  private_endpoint_network_policies = "Disabled"
 
   service_endpoints = [
     "Microsoft.Web",
@@ -20,7 +20,7 @@ module "azdoa_snet" {
 }
 
 module "azdoa_li_infra" {
-  source              = "github.com/pagopa/terraform-azurerm-v3//azure_devops_agent?ref=v8.27.0"
+  source              = "github.com/pagopa/terraform-azurerm-v4//azure_devops_agent?ref=v7.52.0"
   name                = try(local.nonstandard[var.location_short].li_infra, "${var.project}-azdoa-infra-vmss-01")
   resource_group_name = azurerm_resource_group.azdoa_rg.name
   subnet_id           = module.azdoa_snet.id
@@ -33,7 +33,7 @@ module "azdoa_li_infra" {
 }
 
 module "azdoa_loadtest_li" {
-  source              = "github.com/pagopa/terraform-azurerm-v3//azure_devops_agent?ref=v8.27.0"
+  source              = "github.com/pagopa/terraform-azurerm-v4//azure_devops_agent?ref=v7.52.0"
   name                = try(local.nonstandard[var.location_short].li_loadtest, "${var.project}-azdoa-loadtest-vmss-01")
   resource_group_name = azurerm_resource_group.azdoa_rg.name
   subnet_id           = module.azdoa_snet.id
