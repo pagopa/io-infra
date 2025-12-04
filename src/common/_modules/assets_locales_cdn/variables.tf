@@ -13,6 +13,11 @@ variable "location_short" {
   description = "Azure region short name"
 }
 
+variable "subscription_id" {
+  type        = string
+  description = "Azure subscription id"
+}
+
 variable "tags" {
   type        = map(any)
   description = "Resource tags"

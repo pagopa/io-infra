@@ -592,6 +592,7 @@ module "assets_locales_cdn" {
   location                  = "italynorth"
   location_short            = local.core.resource_groups.italynorth.location_short
   project                   = local.project_itn
+  subscription_id           = data.azurerm_subscription.current.subscription_id
   resource_group_common     = local.core.resource_groups.italynorth.common
   resource_group_assets_cdn = local.core.resource_groups.italynorth.assets_cdn
   resource_group_external   = local.core.resource_groups.italynorth.external
