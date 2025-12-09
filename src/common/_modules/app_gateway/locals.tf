@@ -15,6 +15,10 @@ locals {
         header_name  = "X-Client-Ip"
         header_value = "{var_client_ip}"
       },
+      {
+        header_name  = "X-User"
+        header_value = ""
+      },
     ]
     response_header_configurations = []
   }
