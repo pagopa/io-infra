@@ -265,7 +265,7 @@ module "session_manager_weu" {
   # 2. the linux container for app services already has pm2 installed
   #    (refer to https://learn.microsoft.com/en-us/azure/app-service/configure-language-nodejs?pivots=platform-linux#run-with-pm2)
   app_command_line             = "pm2 start index.js -i max --no-daemon --filter-env \"APPSETTING_\""
-  health_check_path            = "/healthcheck"
+  health_check_path            = "/api/auth/v1/healthcheck"
   health_check_maxpingfailures = 2
 
   auto_heal_enabled = true
@@ -316,7 +316,7 @@ module "session_manager_weu_staging" {
   # 2. the linux container for app services already has pm2 installed
   #    (refer to https://learn.microsoft.com/en-us/azure/app-service/configure-language-nodejs?pivots=platform-linux#run-with-pm2)
   app_command_line  = "pm2 start index.js -i max --no-daemon --filter-env \"APPSETTING_\""
-  health_check_path = "/healthcheck"
+  health_check_path = "/api/auth/v1/healthcheck"
 
   auto_heal_enabled = true
   auto_heal_settings = {
@@ -369,7 +369,7 @@ module "session_manager_weu_bis" {
   # 2. the linux container for app services already has pm2 installed
   #    (refer to https://learn.microsoft.com/en-us/azure/app-service/configure-language-nodejs?pivots=platform-linux#run-with-pm2)
   app_command_line             = "pm2 start index.js -i max --no-daemon --filter-env \"APPSETTING_\""
-  health_check_path            = "/healthcheck"
+  health_check_path            = "/api/auth/v1/healthcheck"
   health_check_maxpingfailures = 2
 
   auto_heal_enabled = true
@@ -420,7 +420,7 @@ module "session_manager_weu_bis_staging" {
   # 2. the linux container for app services already has pm2 installed
   #    (refer to https://learn.microsoft.com/en-us/azure/app-service/configure-language-nodejs?pivots=platform-linux#run-with-pm2)
   app_command_line  = "pm2 start index.js -i max --no-daemon --filter-env \"APPSETTING_\""
-  health_check_path = "/healthcheck"
+  health_check_path = "/api/auth/v1/healthcheck"
 
   auto_heal_enabled = true
   auto_heal_settings = {
@@ -455,7 +455,7 @@ module "session_manager_weu_bis_staging" {
 // Staging permissions over SB session topic
 module "pub_session_manager_staging" {
   source  = "pagopa-dx/azure-role-assignments/azurerm"
-  version = "~>1.0"
+  version = "~>1.2.1"
 
   principal_id    = module.session_manager_weu_staging.principal_id
   subscription_id = data.azurerm_subscription.current.subscription_id
@@ -474,7 +474,7 @@ module "pub_session_manager_staging" {
 // Staging permissions over SB session topic
 module "pub_session_manager_bis_staging" {
   source  = "pagopa-dx/azure-role-assignments/azurerm"
-  version = "~>1.0"
+  version = "~>1.2.1"
 
   principal_id    = module.session_manager_weu_bis_staging.principal_id
   subscription_id = data.azurerm_subscription.current.subscription_id
