@@ -61,13 +61,13 @@ variable "vnet_common" {
 
 variable "vpn_sku" {
   type        = string
-  default     = "VpnGw1"
+  default     = "VpnGw1AZ"
   description = "VPN Gateway SKU"
 }
 
 variable "vpn_pip_sku" {
   type        = string
-  default     = "Basic"
+  default     = "Standard"
   description = "VPN GW PIP SKU"
 }
 
