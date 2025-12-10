@@ -19,6 +19,11 @@ data "azurerm_linux_web_app" "firmaconio_selfcare_web_app" {
   resource_group_name = "${local.project_weu_legacy}-sign-backend-rg"
 }
 
+data "azurerm_private_endpoint_connection" "psn_appgw" {
+  name                = "${local.project_itn}-psn-agw-pep-01"
+  resource_group_name = local.core.networking.itn.vnet_common.resource_group_name
+}
+
 # AD Groups
 data "azuread_group" "platform_admins" {
   display_name = "${local.prefix}-${local.env_short}-adgroup-platform-admins"
