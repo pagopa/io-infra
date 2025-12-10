@@ -127,10 +127,7 @@ locals {
     APPINSIGHTS_SAMPLING_PERCENTAGE = 30
     APPINSIGHTS_REDIS_TRACE_ENABLED = "true"
 
-    API_BASE_PATH = "/api/v1"
-
     # Fims config
-    FIMS_BASE_PATH             = "/fims/api/v1"
     ALLOW_FIMS_IP_SOURCE_RANGE = data.azurerm_key_vault_secret.session_manager_ALLOW_FIMS_IP_SOURCE_RANGE.value
 
     # REDIS AUTHENTICATION
@@ -204,18 +201,15 @@ locals {
     PUSH_NOTIFICATIONS_QUEUE_NAME                = local.storage_account_notifications_queue_push_notifications
 
     # ZENDESK config
-    ZENDESK_BASE_PATH                    = "/api/backend/zendesk/v1"
     JWT_ZENDESK_SUPPORT_TOKEN_ISSUER     = "app-backend.io.italia.it"
     JWT_ZENDESK_SUPPORT_TOKEN_EXPIRATION = 1200
     JWT_ZENDESK_SUPPORT_TOKEN_SECRET     = data.azurerm_key_vault_secret.session_manager_JWT_ZENDESK_SUPPORT_TOKEN_SECRET.value
     ALLOW_ZENDESK_IP_SOURCE_RANGE        = data.azurerm_key_vault_secret.session_manager_ALLOW_ZENDESK_IP_SOURCE_RANGE.value
 
     # BPD config
-    BPD_BASE_PATH             = "/bpd/api/v1"
     ALLOW_BPD_IP_SOURCE_RANGE = data.azurerm_key_vault_secret.session_manager_ALLOW_BPD_IP_SOURCE_RANGE.value
 
     # PAGOPA config
-    PAGOPA_BASE_PATH             = "/pagopa/api/v1"
     ALLOW_PAGOPA_IP_SOURCE_RANGE = data.azurerm_key_vault_secret.session_manager_ALLOW_PAGOPA_IP_SOURCE_RANGE.value
 
     # Validation Cookie config
