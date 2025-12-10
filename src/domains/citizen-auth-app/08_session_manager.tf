@@ -104,7 +104,7 @@ locals {
     WEBSITE_RUN_FROM_PACKAGE     = "1"
 
     // HEALTHCHECK VARIABLES
-    WEBSITE_SWAP_WARMUP_PING_PATH     = "/healthcheck"
+    WEBSITE_SWAP_WARMUP_PING_PATH     = "/api/auth/v1/healthcheck"
     WEBSITE_SWAP_WARMUP_PING_STATUSES = "200"
 
     // ENVIRONMENT
