@@ -180,6 +180,11 @@ locals {
     SPID_LOG_STORAGE_CONNECTION_STRING = data.azurerm_storage_account.logs.primary_connection_string
 
     # Spid config
+    # NOTE: Session manager now exposes SPID endpoints such as assertionConsumerService and metadata
+    # only under api/auth/v1 basepath. But due to issues with SPID metadata changes an internal remapping
+    # is done via application gateway so that those APIs are remapped with api/auth/v1 basepath.
+    # Therefore variables for the SAML Request like SAML_CALLBACK_URL are still specified without basepath
+    # to prevent Identity provider rejection
     SAML_CALLBACK_URL                      = "https://app-backend.io.italia.it/assertionConsumerService"
     SAML_CERT                              = trimspace(data.azurerm_key_vault_secret.app_backend_SAML_CERT.value)
     SAML_KEY                               = trimspace(data.azurerm_key_vault_secret.app_backend_SAML_KEY.value)
