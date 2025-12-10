@@ -29,8 +29,8 @@ resource "azurerm_cdn_frontdoor_origin" "primary_origin" {
 
   http_port          = 80
   https_port         = 443
-  host_name          = module.cdn_storage.primary_blob_host
-  origin_host_header = module.cdn_storage.primary_blob_host
+  host_name          = module.cdn_storage.primary_web_host
+  origin_host_header = module.cdn_storage.primary_web_host
   priority           = 1
   weight             = 1
 }
