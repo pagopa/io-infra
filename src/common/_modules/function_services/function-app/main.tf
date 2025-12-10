@@ -6,7 +6,7 @@ resource "azurerm_resource_group" "function_services_rg" {
 
 module "function_services" {
   source  = "pagopa-dx/azure-function-app/azurerm"
-  version = "~> 4.0"
+  version = "4.1.0"
 
   environment = {
     prefix          = var.prefix

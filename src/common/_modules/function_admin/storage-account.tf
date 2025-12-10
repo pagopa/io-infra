@@ -1,6 +1,6 @@
 module "function_admin_storage_account" {
   source  = "pagopa-dx/azure-storage-account/azurerm"
-  version = "~> 2.0"
+  version = " ~> 2.0.0"
 
   environment = {
     prefix          = var.prefix
@@ -29,7 +29,7 @@ module "function_admin_storage_account" {
 
 module "user_data_backups_storage_account" {
   source  = "pagopa-dx/azure-storage-account/azurerm"
-  version = "~> 2.0"
+  version = " ~> 2.0.0"
 
   environment = {
     prefix          = var.prefix
@@ -71,7 +71,7 @@ module "user_data_backups_storage_account" {
 
 module "user_data_download_storage_account" {
   source  = "pagopa-dx/azure-storage-account/azurerm"
-  version = "~> 2.0"
+  version = " ~> 2.0.0"
 
   environment = {
     prefix          = var.prefix

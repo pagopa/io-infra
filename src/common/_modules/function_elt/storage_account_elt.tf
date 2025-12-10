@@ -1,6 +1,6 @@
 module "storage_account_itn_elt" {
   source  = "pagopa-dx/azure-storage-account/azurerm"
-  version = "~> 2.0"
+  version = "~> 2.0.0"
 
   environment = {
     prefix          = var.prefix
