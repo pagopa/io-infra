@@ -455,7 +455,7 @@ module "session_manager_weu_bis_staging" {
 // Staging permissions over SB session topic
 module "pub_session_manager_staging" {
   source  = "pagopa-dx/azure-role-assignments/azurerm"
-  version = "~>1.0"
+  version = "~>1.2.1"
 
   principal_id    = module.session_manager_weu_staging.principal_id
   subscription_id = data.azurerm_subscription.current.subscription_id
@@ -474,7 +474,7 @@ module "pub_session_manager_staging" {
 // Staging permissions over SB session topic
 module "pub_session_manager_bis_staging" {
   source  = "pagopa-dx/azure-role-assignments/azurerm"
-  version = "~>1.0"
+  version = "~>1.2.1"
 
   principal_id    = module.session_manager_weu_bis_staging.principal_id
   subscription_id = data.azurerm_subscription.current.subscription_id
