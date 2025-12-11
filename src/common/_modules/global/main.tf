@@ -12,8 +12,9 @@ module "dns" {
   # TODO: remove data when app gateway module is implemented
   app_gateway_public_ip = var.dns.app_gateway_public_ip
 
-  apim_private_ip                 = var.dns.apim_private_ip
-  platform_api_gateway_private_ip = var.dns.platform_api_gateway_private_ip
+  apim_private_ip                             = var.dns.apim_private_ip
+  platform_api_gateway_private_ip             = var.dns.platform_api_gateway_private_ip
+  psn_application_gateway_private_endpoint_ip = var.dns.psn_application_gateway_private_endpoint_ip
 
   tags = var.tags
 }
