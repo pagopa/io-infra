@@ -104,7 +104,7 @@ locals {
     WEBSITE_RUN_FROM_PACKAGE     = "1"
 
     // HEALTHCHECK VARIABLES
-    WEBSITE_SWAP_WARMUP_PING_PATH     = "/healthcheck"
+    WEBSITE_SWAP_WARMUP_PING_PATH     = "/api/auth/v1/healthcheck"
     WEBSITE_SWAP_WARMUP_PING_STATUSES = "200"
 
     // ENVIRONMENT
@@ -127,10 +127,7 @@ locals {
     APPINSIGHTS_SAMPLING_PERCENTAGE = 30
     APPINSIGHTS_REDIS_TRACE_ENABLED = "true"
 
-    API_BASE_PATH = "/api/v1"
-
     # Fims config
-    FIMS_BASE_PATH             = "/fims/api/v1"
     ALLOW_FIMS_IP_SOURCE_RANGE = data.azurerm_key_vault_secret.session_manager_ALLOW_FIMS_IP_SOURCE_RANGE.value
 
     # REDIS AUTHENTICATION
@@ -183,6 +180,11 @@ locals {
     SPID_LOG_STORAGE_CONNECTION_STRING = data.azurerm_storage_account.logs.primary_connection_string
 
     # Spid config
+    # NOTE: Session manager now exposes SPID endpoints such as assertionConsumerService and metadata
+    # only under api/auth/v1 basepath. But due to issues with SPID metadata changes an internal remapping
+    # is done via application gateway so that those APIs are remapped with api/auth/v1 basepath.
+    # Therefore variables for the SAML Request like SAML_CALLBACK_URL are still specified without basepath
+    # to prevent Identity provider rejection
     SAML_CALLBACK_URL                      = "https://app-backend.io.italia.it/assertionConsumerService"
     SAML_CERT                              = trimspace(data.azurerm_key_vault_secret.app_backend_SAML_CERT.value)
     SAML_KEY                               = trimspace(data.azurerm_key_vault_secret.app_backend_SAML_KEY.value)
@@ -204,18 +206,15 @@ locals {
     PUSH_NOTIFICATIONS_QUEUE_NAME                = local.storage_account_notifications_queue_push_notifications
 
     # ZENDESK config
-    ZENDESK_BASE_PATH                    = "/api/backend/zendesk/v1"
     JWT_ZENDESK_SUPPORT_TOKEN_ISSUER     = "app-backend.io.italia.it"
     JWT_ZENDESK_SUPPORT_TOKEN_EXPIRATION = 1200
     JWT_ZENDESK_SUPPORT_TOKEN_SECRET     = data.azurerm_key_vault_secret.session_manager_JWT_ZENDESK_SUPPORT_TOKEN_SECRET.value
     ALLOW_ZENDESK_IP_SOURCE_RANGE        = data.azurerm_key_vault_secret.session_manager_ALLOW_ZENDESK_IP_SOURCE_RANGE.value
 
     # BPD config
-    BPD_BASE_PATH             = "/bpd/api/v1"
     ALLOW_BPD_IP_SOURCE_RANGE = data.azurerm_key_vault_secret.session_manager_ALLOW_BPD_IP_SOURCE_RANGE.value
 
     # PAGOPA config
-    PAGOPA_BASE_PATH             = "/pagopa/api/v1"
     ALLOW_PAGOPA_IP_SOURCE_RANGE = data.azurerm_key_vault_secret.session_manager_ALLOW_PAGOPA_IP_SOURCE_RANGE.value
 
     # Validation Cookie config
@@ -265,7 +264,7 @@ module "session_manager_weu" {
   # 2. the linux container for app services already has pm2 installed
   #    (refer to https://learn.microsoft.com/en-us/azure/app-service/configure-language-nodejs?pivots=platform-linux#run-with-pm2)
   app_command_line             = "pm2 start index.js -i max --no-daemon --filter-env \"APPSETTING_\""
-  health_check_path            = "/healthcheck"
+  health_check_path            = "/api/auth/v1/healthcheck"
   health_check_maxpingfailures = 2
 
   auto_heal_enabled = true
@@ -316,7 +315,7 @@ module "session_manager_weu_staging" {
   # 2. the linux container for app services already has pm2 installed
   #    (refer to https://learn.microsoft.com/en-us/azure/app-service/configure-language-nodejs?pivots=platform-linux#run-with-pm2)
   app_command_line  = "pm2 start index.js -i max --no-daemon --filter-env \"APPSETTING_\""
-  health_check_path = "/healthcheck"
+  health_check_path = "/api/auth/v1/healthcheck"
 
   auto_heal_enabled = true
   auto_heal_settings = {
@@ -369,7 +368,7 @@ module "session_manager_weu_bis" {
   # 2. the linux container for app services already has pm2 installed
   #    (refer to https://learn.microsoft.com/en-us/azure/app-service/configure-language-nodejs?pivots=platform-linux#run-with-pm2)
   app_command_line             = "pm2 start index.js -i max --no-daemon --filter-env \"APPSETTING_\""
-  health_check_path            = "/healthcheck"
+  health_check_path            = "/api/auth/v1/healthcheck"
   health_check_maxpingfailures = 2
 
   auto_heal_enabled = true
@@ -420,7 +419,7 @@ module "session_manager_weu_bis_staging" {
   # 2. the linux container for app services already has pm2 installed
   #    (refer to https://learn.microsoft.com/en-us/azure/app-service/configure-language-nodejs?pivots=platform-linux#run-with-pm2)
   app_command_line  = "pm2 start index.js -i max --no-daemon --filter-env \"APPSETTING_\""
-  health_check_path = "/healthcheck"
+  health_check_path = "/api/auth/v1/healthcheck"
 
   auto_heal_enabled = true
   auto_heal_settings = {
@@ -455,7 +454,7 @@ module "session_manager_weu_bis_staging" {
 // Staging permissions over SB session topic
 module "pub_session_manager_staging" {
   source  = "pagopa-dx/azure-role-assignments/azurerm"
-  version = "~>1.0"
+  version = "~>1.2.1"
 
   principal_id    = module.session_manager_weu_staging.principal_id
   subscription_id = data.azurerm_subscription.current.subscription_id
@@ -474,7 +473,7 @@ module "pub_session_manager_staging" {
 // Staging permissions over SB session topic
 module "pub_session_manager_bis_staging" {
   source  = "pagopa-dx/azure-role-assignments/azurerm"
-  version = "~>1.0"
+  version = "~>1.2.1"
 
   principal_id    = module.session_manager_weu_bis_staging.principal_id
   subscription_id = data.azurerm_subscription.current.subscription_id

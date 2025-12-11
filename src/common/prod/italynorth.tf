@@ -200,8 +200,9 @@ module "application_gateway_itn" {
 
   # Use "autoscale" mode to enable autoscaling with min_capacity with 7 for low load events, 10 for medium load events, 15 for high load events or use fixed with the desired capacity click day events
   capacity_settings = {
-    mode     = "fixed",
-    capacity = 125
+    mode         = "autoscale"
+    min_capacity = 20
+    max_capacity = 100
   }
 
   alerts_enabled        = true
@@ -236,11 +237,6 @@ module "containers_services" {
   cosmos_db_name      = module.function_app_services.db_name
   resource_group_name = local.resource_groups.weu.internal
   legacy_project      = local.project_weu_legacy
-}
-
-import {
-  to = module.containers_services.module.db_subscription_cidrs_container.azurerm_cosmosdb_sql_container.this
-  id = "/subscriptions/ec285037-c673-4f58-b594-d7c480da4e8b/resourceGroups/io-p-rg-internal/providers/Microsoft.DocumentDB/databaseAccounts/io-p-cosmos-api/sqlDatabases/db/containers/subscription-cidrs"
 }
 
 module "continua_app_service" {
@@ -282,52 +278,6 @@ module "function_app_elt" {
   tags                            = local.function_elt.tags
 }
 
-import {
-  to = module.function_app_elt.module.storage_account_itn_elt.azurerm_storage_account.this
-  id = "/subscriptions/ec285037-c673-4f58-b594-d7c480da4e8b/resourceGroups/io-p-itn-elt-rg-01/providers/Microsoft.Storage/storageAccounts/iopitneltst02"
-}
-
-import {
-  to = module.function_app_elt.azurerm_storage_container.messages_step_final_itn
-  id = "/subscriptions/ec285037-c673-4f58-b594-d7c480da4e8b/resourceGroups/io-p-itn-elt-rg-01/providers/Microsoft.Storage/storageAccounts/iopitneltst02/blobServices/default/containers/messages-report-step-final"
-}
-
-import {
-  to = module.function_app_elt.azurerm_storage_container.messages_report_step1_itn
-  id = "/subscriptions/ec285037-c673-4f58-b594-d7c480da4e8b/resourceGroups/io-p-itn-elt-rg-01/providers/Microsoft.Storage/storageAccounts/iopitneltst02/blobServices/default/containers/messages-report-step1"
-}
-
-import {
-  to = module.function_app_elt.azurerm_storage_table.fnelterrors_itn
-  id = "https://iopitneltst02.table.core.windows.net/Tables('fnelterrors')"
-}
-
-import {
-  to = module.function_app_elt.azurerm_storage_table.fnelterrors_messages_itn
-  id = "https://iopitneltst02.table.core.windows.net/Tables('fnelterrorsMessages')"
-}
-
-import {
-  to = module.function_app_elt.azurerm_storage_table.fnelterrors_message_status_itn
-  id = "https://iopitneltst02.table.core.windows.net/Tables('fnelterrorsMessageStatus')"
-}
-
-import {
-  to = module.function_app_elt.azurerm_storage_table.fnelterrors_notification_status_itn
-  id = "https://iopitneltst02.table.core.windows.net/Tables('fnelterrorsNotificationStatus')"
-}
-
-import {
-  to = module.function_app_elt.azurerm_storage_table.fneltcommands_itn
-  id = "https://iopitneltst02.table.core.windows.net/Tables('fneltcommands')"
-}
-
-import {
-  to = module.function_app_elt.azurerm_storage_table.fneltexports_itn
-  id = "https://iopitneltst02.table.core.windows.net/Tables('fneltexports')"
-}
-
-
 module "monitoring_itn" {
   source = "../_modules/monitoring"
 
@@ -336,7 +286,7 @@ module "monitoring_itn" {
   project               = local.project_itn
   resource_group_common = local.resource_groups.itn.common
 
-  kv_id        = local.core.key_vault.weu.io_p_itn_platform_kv_01.id # Location into the KV module output should be updated to itn (at the moment is weu) after the migration to ITN is completed 
+  kv_id        = local.core.key_vault.weu.io_p_itn_platform_kv_01.id # Location into the KV module output should be updated to itn (at the moment is weu) after the migration to ITN is completed
   kv_common_id = local.core.key_vault.weu.io_p_itn_platform_kv_01.id # We are going to have only one platform KV containing every secret
 
   test_urls = [
