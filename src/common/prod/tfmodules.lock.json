@@ -162,10 +162,10 @@
     "source": "https://registry.terraform.io/modules/pagopa-dx/azure-app-service/azurerm/2.0.1"
   },
   "function_app_admin.function_admin_storage_account": {
-    "hash": "badfd9123ca761df925e77e83f08acdca80a672c8e23a475243f1055607044d2",
-    "version": "2.1.0",
+    "hash": "a71f3a0aea9d09922e510b12e7338038d38a145f0f73227657237e43e08ac38c",
+    "version": "2.1.1",
     "name": "azure_storage_account",
-    "source": "https://registry.terraform.io/modules/pagopa-dx/azure-storage-account/azurerm/2.1.0"
+    "source": "https://registry.terraform.io/modules/pagopa-dx/azure-storage-account/azurerm/2.1.1"
   },
   "function_app_admin.user_data_backups_storage_account": {
     "hash": "0e4bd3881f59056e0d49ac38c09b9ebfb885c60527bfdc33ac290d50c707753c",
@@ -174,10 +174,10 @@
     "source": "https://registry.terraform.io/modules/pagopa-dx/azure-storage-account/azurerm/2.0.0"
   },
   "function_app_admin.user_data_download_storage_account": {
-    "hash": "badfd9123ca761df925e77e83f08acdca80a672c8e23a475243f1055607044d2",
-    "version": "2.1.0",
+    "hash": "a71f3a0aea9d09922e510b12e7338038d38a145f0f73227657237e43e08ac38c",
+    "version": "2.1.1",
     "name": "azure_storage_account",
-    "source": "https://registry.terraform.io/modules/pagopa-dx/azure-storage-account/azurerm/2.1.0"
+    "source": "https://registry.terraform.io/modules/pagopa-dx/azure-storage-account/azurerm/2.1.1"
   },
   "function_app_admin.function_admin_itn": {
     "hash": "a38c42efbd1577c3971123cc4f335a6827e0ead44695b9d014789e0598c2672d",
@@ -192,10 +192,10 @@
     "source": "https://registry.terraform.io/modules/pagopa-dx/azure-function-app/azurerm/3.0.0"
   },
   "function_app_elt.storage_account_itn_elt": {
-    "hash": "badfd9123ca761df925e77e83f08acdca80a672c8e23a475243f1055607044d2",
-    "version": "2.1.0",
+    "hash": "a71f3a0aea9d09922e510b12e7338038d38a145f0f73227657237e43e08ac38c",
+    "version": "2.1.1",
     "name": "azure_storage_account",
-    "source": "https://registry.terraform.io/modules/pagopa-dx/azure-storage-account/azurerm/2.1.0"
+    "source": "https://registry.terraform.io/modules/pagopa-dx/azure-storage-account/azurerm/2.1.1"
   },
   "function_assets_cdn_itn.function_assets_cdn_autoscale": {
     "hash": "42ca301a262ca7cb78e9dfb2072922e778328460b91e9859d1bf2af974f9518a",
