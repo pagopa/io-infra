@@ -40,6 +40,7 @@ module "user_data_backups_storage_account" {
   }
   resource_group_name                = azurerm_resource_group.function_admin_itn_rg.name
   use_case                           = "audit"
+  audit_retention_days               = 1095
   override_infrastructure_encryption = true
   subnet_pep_id                      = data.azurerm_subnet.private_endpoints_subnet_itn.id
 
