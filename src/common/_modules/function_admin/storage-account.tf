@@ -29,7 +29,7 @@ module "function_admin_storage_account" {
 
 module "user_data_backups_storage_account" {
   source  = "pagopa-dx/azure-storage-account/azurerm"
-  version = "~> 2.0.0"
+  version = "~> 2.1"
 
   environment = {
     prefix          = var.prefix
@@ -38,13 +38,20 @@ module "user_data_backups_storage_account" {
     app_name        = "userbackups"
     instance_number = "01"
   }
-  resource_group_name = azurerm_resource_group.function_admin_itn_rg.name
-  use_case            = "audit"
-  subnet_pep_id       = data.azurerm_subnet.private_endpoints_subnet_itn.id
+  resource_group_name                = azurerm_resource_group.function_admin_itn_rg.name
+  use_case                           = "audit"
+  audit_retention_days               = 1095
+  override_infrastructure_encryption = true
+  subnet_pep_id                      = data.azurerm_subnet.private_endpoints_subnet_itn.id
 
   subservices_enabled = {
     blob  = true
     queue = true
+  }
+
+  diagnostic_settings = {
+    enabled                    = true
+    log_analytics_workspace_id = data.azurerm_log_analytics_workspace.log.id
   }
 
   containers = [{
