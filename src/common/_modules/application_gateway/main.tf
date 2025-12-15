@@ -635,16 +635,6 @@ module "app_gw" {
           backend               = "session-manager-app",
           rewrite_rule_set_name = "rewrite-rule-set-api-app-rewrite-to-session-manager"
         },
-        api-gateway-com = {
-          paths                 = ["/api/com/*"]
-          backend               = "platform-api-gateway",
-          rewrite_rule_set_name = "rewrite-rule-set-api-app"
-        },
-        pn-activation = {
-          paths                 = ["/api/v1/pn/activation"]
-          backend               = "platform-api-gateway",
-          rewrite_rule_set_name = "rewrite-rule-set-api-app-pn"
-        }
       }
     }
   }
