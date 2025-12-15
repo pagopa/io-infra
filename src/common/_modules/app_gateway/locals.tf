@@ -780,66 +780,6 @@ locals {
       ]
     },
     {
-      name = "rewrite-rule-set-api-app-rewrite-to-bpd-session-manager"
-      rewrite_rules = [
-        local.io_backend_ip_headers_rule,
-        {
-          name          = "rewrite-path"
-          rule_sequence = 200
-          conditions    = []
-          url = {
-            # only 1 operation present for this API
-            path         = "/api/sso/bpd/v1/user"
-            query_string = null
-            reroute      = true
-            components   = "path_only"
-          }
-          request_header_configurations  = []
-          response_header_configurations = []
-        }
-      ]
-    },
-    {
-      name = "rewrite-rule-set-api-app-rewrite-to-pagopa-session-manager"
-      rewrite_rules = [
-        local.io_backend_ip_headers_rule,
-        {
-          name          = "rewrite-path"
-          rule_sequence = 200
-          conditions    = []
-          url = {
-            # only 1 operation present for this API
-            path         = "/api/sso/pagopa/v1/user"
-            query_string = null
-            reroute      = true
-            components   = "path_only"
-          }
-          request_header_configurations  = []
-          response_header_configurations = []
-        }
-      ]
-    },
-    {
-      name = "rewrite-rule-set-api-app-rewrite-to-zendesk-session-manager"
-      rewrite_rules = [
-        local.io_backend_ip_headers_rule,
-        {
-          name          = "rewrite-path"
-          rule_sequence = 200
-          conditions    = []
-          url = {
-            # only 1 operation present for this API
-            path         = "/api/sso/zendesk/v1/jwt"
-            query_string = null
-            reroute      = true
-            components   = "path_only"
-          }
-          request_header_configurations  = []
-          response_header_configurations = []
-        }
-      ]
-    },
-    {
       name = "rewrite-rule-set-fims-op-app"
       rewrite_rules = [{
         name          = "http-headers-fims-op-app"
