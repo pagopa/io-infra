@@ -89,7 +89,7 @@ locals {
       partition_key_version = null
 
       autoscale_settings = {
-        max_throughput = 14000
+        max_throughput = 15000
       }
     },
     {
