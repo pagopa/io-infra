@@ -168,10 +168,10 @@
     "source": "https://registry.terraform.io/modules/pagopa-dx/azure-storage-account/azurerm/2.1.1"
   },
   "function_app_admin.user_data_backups_storage_account": {
-    "hash": "0e4bd3881f59056e0d49ac38c09b9ebfb885c60527bfdc33ac290d50c707753c",
-    "version": "2.0.0",
+    "hash": "a71f3a0aea9d09922e510b12e7338038d38a145f0f73227657237e43e08ac38c",
+    "version": "2.1.1",
     "name": "azure_storage_account",
-    "source": "https://registry.terraform.io/modules/pagopa-dx/azure-storage-account/azurerm/2.0.0"
+    "source": "https://registry.terraform.io/modules/pagopa-dx/azure-storage-account/azurerm/2.1.1"
   },
   "function_app_admin.user_data_download_storage_account": {
     "hash": "a71f3a0aea9d09922e510b12e7338038d38a145f0f73227657237e43e08ac38c",
