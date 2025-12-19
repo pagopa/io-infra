@@ -114,12 +114,19 @@ variable "service_api_url" {
   default     = "https://api-app.internal.io.pagopa.it/"
 }
 
-variable "services_snet_cidr_old" {
+variable "services_snet_cidr" {
   type        = string
   description = "Services Subnet CIDR"
 }
 
-variable "services_snet_cidr" {
+variable "instance_number" {
   type        = string
-  description = "Services Subnet CIDR"
+  description = "Instance number of the function app"
+  default     = "01"
+}
+
+variable "sku_size" {
+  type        = string
+  description = "Function App SKU Size"
+  default     = "P1v3"
 }
