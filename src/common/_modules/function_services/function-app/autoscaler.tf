@@ -13,10 +13,10 @@ module "function_services_autoscale" {
 
   scheduler = {
     normal_load = {
-      minimum = 4
-      default = 10
+      minimum = var.function_services_autoscale_minimum
+      default = var.function_services_autoscale_default
     },
-    maximum = 30
+    maximum = var.function_services_autoscale_maximum
   }
 
   scale_metrics = {
