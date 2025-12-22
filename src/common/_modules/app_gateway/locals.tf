@@ -494,6 +494,12 @@ locals {
       url_map_name = "io-backend-path-based-rule"
       priority     = 70
     }
+
+    api-web-io-pagopa-it = {
+      listener     = "api-web-io-pagopa-it"
+      url_map_name = "api-web-path-based-rule"
+      priority     = 100
+    }
   }
 
   url_path_map = {
@@ -607,6 +613,17 @@ locals {
           paths                 = ["/api/v1/pn/activation"]
           backend               = "platform-api-gateway",
           rewrite_rule_set_name = "rewrite-rule-set-api-app-pn"
+        }
+      }
+    }
+    api-web-path-based-rule = {
+      default_backend               = "apim"
+      default_rewrite_rule_set_name = "rewrite-rule-set-api-web"
+      path_rule = {
+        web-wallet = {
+          paths                 = ["/api/wallet/v1/*", "/api/v1/wallet/*"]
+          backend               = "platform-api-gateway",
+          rewrite_rule_set_name = "rewrite-rule-set-api-web"
         }
       }
     }
