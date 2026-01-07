@@ -1,33 +1,47 @@
 <fragment>
-  <!-- Extract the token from the Authorization Header -->
-  <set-variable name="token" value="@(context.Request.Headers.GetValueOrDefault("Authorization","").Substring(7))" />
+  <set-variable name="authHeader" value="@(context.Request.Headers.GetValueOrDefault("Authorization", ""))" />
+  <choose>
+    <when condition="@(!context.Variables.GetValueOrDefault<string>("authHeader").StartsWith("Bearer "))">
+      <return-response>
+        <set-status code="401" reason="Unauthorized" />
+        <set-header name="Content-Type" exists-action="override">
+          <value>application/json</value>
+        </set-header>
+        <set-body>{"title": "Unauthorized", "status": 401, "detail": "Missing or invalid Authorization header"}</set-body>
+      </return-response>
+    </when>
+  </choose>
+
   <send-request mode="new" response-variable-name="introspectionResponse" timeout="10" ignore-error="false">
     <set-url>https://{{session-manager-baseurl}}{{introspection-endpoint}}</set-url>
     <set-method>GET</set-method>
     <set-header name="Content-Type" exists-action="override">
       <value>application/json</value>
     </set-header>
+    <set-header name="Authorization" exists-action="override">
+      <value>@(context.Variables.GetValueOrDefault<string>("authHeader"))</value>
+    </set-header>
   </send-request>
   <choose>
-    <when condition="@(context.Variables["introspectionResponse"].StatusCode == 200)">
+    <when condition="@(((IResponse)context.Variables["introspectionResponse"]).StatusCode == 200)">
       <!-- Parse the introspectionResponse -->
-      <set-variable name="userData" value="@context.Variables["introspectionResponse"].Body.As<JObject>()" />
+      <set-variable name="userData" value="@(((IResponse)context.Variables["introspectionResponse"]).Body.As<JObject>())" />
       <!-- Remove the Authorization Header -->
-      <set-headert name="Authorization" exists-action="delete"/>
+      <set-header name="Authorization" exists-action="delete"/>
       <!-- Set the x-user header with the user data -->
       <set-header name="x-user" exists-action="override">
-        <value>@(Convert.ToBase64String(System.Text.Encoding.UTF8.GetBytes(context.Variables["userData"].ToString())))</value>
+        <value>@(Convert.ToBase64String(System.Text.Encoding.UTF8.GetBytes(((JObject)context.Variables["userData"]).ToString())))</value>
       </set-header>
     </when>
-    <when condition="@(context.Variables["introspectionResponse"].StatusCode == 401)">
-     <return-response response-variable-name="introspectionErrorResponse">
+    <when condition="@(((IResponse)context.Variables["introspectionResponse"]).StatusCode == 401)">
+     <return-response>
        <set-status code="401" reason="Unauthorized" />
      </return-response>
     </when>
     <otherwise>
-     <return-response response-variable-name="introspectionErrorResponse">
+     <return-response>
       <set-status code="500" reason="Internal Server Error" />
-      <set-body>{"title": "Proxy Error", "status": 500, "detail": "The the token introspection-endpoint returns an error"}</set-body>
+      <set-body>{"title": "Proxy Error", "status": 500, "detail": "The token introspection-endpoint returns an error"}</set-body>
       <set-header name="Content-Type" exists-action="override">
         <value>application/json</value>
       </set-header>
