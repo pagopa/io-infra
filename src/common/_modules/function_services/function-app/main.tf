@@ -13,10 +13,10 @@ module "function_services" {
     env_short       = var.env_short
     location        = var.location_itn
     app_name        = "services"
-    instance_number = "01"
+    instance_number = var.instance_number
   }
 
-  size = "P2mv3"
+  size = var.sku_size
 
   resource_group_name = azurerm_resource_group.function_services_rg.name
 

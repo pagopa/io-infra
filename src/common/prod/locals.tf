@@ -291,7 +291,7 @@ locals {
 
     service_api_url = "https://api-app.internal.io.pagopa.it/"
 
-    cidr_subnet_services_old            = "10.20.34.0/26"
+    cidr_subnet_services_02             = "10.20.34.0/26"
     cidr_subnet_services                = "10.20.41.0/26"
     function_services_autoscale_minimum = 3
     function_services_autoscale_maximum = 30
