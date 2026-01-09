@@ -211,5 +211,5 @@ variable "function_admin_autoscale_default" {
 variable "function_admin_locked_profiles_table_name" {
   type        = string
   description = "Locked profiles table name"
-  default     = "lockedprofiles"
+  default     = "lockedprofile01"
 }
