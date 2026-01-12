@@ -231,7 +231,9 @@ module "function_admin" {
     local.function_admin.app_settings_common, {
       "AzureWebJobs.CheckXmlCryptoCVESamlResponse.Disabled"      = "1",
       "AzureWebJobs.CheckIoWebXmlCryptoCVESamlResponse.Disabled" = "1",
-      "AzureWebJobs.UserDataDeleteOrchestratorV2.Disabled"       = "0"
+      "AzureWebJobs.UserDataDeleteOrchestratorV2.Disabled"       = "0",
+      "AzureWebJobs.UserDataProcessingTrigger.Disabled"          = "1",
+      "AzureWebJobs.SanitizeProfileEmail.Disabled"               = "1",
     }
   )
 
