@@ -12,6 +12,7 @@ locals {
 locals {
   function_admin = {
     app_settings_common = {
+      NODE_ENV = "production"
 
       COSMOSDB_NAME              = "db"
       COSMOSDB_URI               = data.azurerm_cosmosdb_account.cosmos_api.endpoint
