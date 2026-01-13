@@ -544,7 +544,7 @@ locals {
         api-gateway-platform-wallet-legacy-uat = {
           paths                 = ["/api/v1/wallet/uat/*"]
           backend               = "platform-api-gateway",
-          rewrite_rule_set_name = "rewrite-rule-set-wallet-app"
+          rewrite_rule_set_name = "rewrite-rule-set-wallet-app-uat"
         },
         api-gateway-cdc = {
           paths                 = ["/api/cdc/*"]
