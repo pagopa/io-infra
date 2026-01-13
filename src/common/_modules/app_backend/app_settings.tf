@@ -26,6 +26,10 @@ locals {
     // see https://learn.microsoft.com/en-us/azure/app-service/monitor-instances-health-check?tabs=dotnet#configuration
     WEBSITE_HEALTHCHECK_MAXUNHEALTHYWORKERPERCENT = "95"
 
+    // API KEY
+    // optionally you can specify APP_BACKEND_SECONDARY_KEY
+    // for rotation purposes
+    APP_BACKEND_PRIMARY_KEY = data.azurerm_key_vault_secret.app_backend_APP_BACKEND_PRIMARY_KEY.value
 
     // AUTHENTICATION
     AUTHENTICATION_BASE_PATH = ""
