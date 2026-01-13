@@ -216,3 +216,8 @@ data "azurerm_log_analytics_workspace" "log" {
   name                = format("%s-itn-common-log-01", local.project)
   resource_group_name = local.common_resource_group_name_itn
 }
+
+data "azurerm_key_vault_secret" "common_SESSION_ST_CONNECTION_STRING" {
+  name         = "common-kv-session-st-connection-string"
+  key_vault_id = data.azurerm_key_vault.common.id
+}
