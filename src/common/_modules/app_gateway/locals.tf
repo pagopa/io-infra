@@ -845,7 +845,7 @@ locals {
         local.io_backend_ip_headers_rule,
         {
           name          = "rewrite-url-to-api-platform"
-          rule_sequence = 110
+          rule_sequence = 111
           conditions = [
             {
               variable    = "var_uri_path"
@@ -872,7 +872,7 @@ locals {
         local.io_backend_ip_headers_rule,
         {
           name          = "rewrite-wallet-uat-url-to-api-platform"
-          rule_sequence = 108
+          rule_sequence = 110
           conditions = [
             {
               variable    = "var_uri_path"
