@@ -115,3 +115,8 @@ variable "azure_user_assigned_identity_bonus_infra_cd" {
   type        = string
   description = "Principal Id of the User Assigned Identity for Bonus Infra CD"
 }
+
+variable "app_backend_urls" {
+  type        = list(string)
+  description = "List of App Backend URLs"
+}
