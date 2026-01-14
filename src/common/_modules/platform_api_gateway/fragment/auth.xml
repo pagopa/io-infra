@@ -12,7 +12,7 @@
   </choose>
 
   <send-request mode="new" response-variable-name="introspectionResponse" timeout="10" ignore-error="false">
-    <set-url>https://127.0.0.1/{{session-manager-introspection-url}}</set-url>
+    <set-url>https://127.0.0.1{{session-manager-introspection-url}}</set-url>
     <set-method>GET</set-method>
     <set-header name="Content-Type" exists-action="override">
       <value>application/json</value>
