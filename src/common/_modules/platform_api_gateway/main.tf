@@ -6,7 +6,7 @@ module "platform_api_gateway" {
     prefix          = var.prefix
     env_short       = "p"
     location        = var.location
-    app_name        = local.apim_appname 
+    app_name        = local.apim_appname
     instance_number = "01"
   }
 
