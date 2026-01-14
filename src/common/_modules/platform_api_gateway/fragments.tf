@@ -3,5 +3,5 @@ resource "azurerm_api_management_policy_fragment" "auth" {
   depends_on        = [azurerm_api_management_named_value.session_manager_introspection_url]
   name              = "ioapp-authenticated"
   format            = "xml"
-  value             = file("../_modules/platform_api_gateway/fragment/auth.xml")
+  value             = file("../_modules/platform_api_gateway/fragments/auth.xml")
 }
