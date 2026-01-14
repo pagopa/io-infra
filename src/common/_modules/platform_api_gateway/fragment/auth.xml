@@ -1,6 +1,5 @@
 <fragment>
-  <set-variable name="authHeader" value="@(context.Request.Headers.GetValueOrDefault("Authorization", ""))" />
-  <choose>
+  <set-variable name="authHeader" value="@(context.Request.Headers.GetValueOrDefault("Authorization", ""))" />  <choose>
     <when condition="@(!context.Variables.GetValueOrDefault<string>("authHeader").StartsWith("Bearer "))">
       <return-response>
         <set-status code="401" reason="Unauthorized" />
@@ -13,13 +12,16 @@
   </choose>
 
   <send-request mode="new" response-variable-name="introspectionResponse" timeout="10" ignore-error="false">
-    <set-url>https://{{session-manager-baseurl}}{{introspection-endpoint}}</set-url>
+    <set-url>https://127.0.0.1/{{session-manager-introspection-url}}</set-url>
     <set-method>GET</set-method>
     <set-header name="Content-Type" exists-action="override">
       <value>application/json</value>
     </set-header>
     <set-header name="Authorization" exists-action="override">
       <value>@(context.Variables.GetValueOrDefault<string>("authHeader"))</value>
+    </set-header>
+    <set-header name="Host">
+        <value>{{platform-api-gateway-hostname-internal}}</value>
     </set-header>
   </send-request>
   <choose>
