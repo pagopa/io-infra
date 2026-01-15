@@ -175,6 +175,9 @@ locals {
     LOCKED_PROFILES_STORAGE_CONNECTION_STRING = data.azurerm_storage_account.auth_session_storage.primary_connection_string
     LOCKED_PROFILES_TABLE_NAME                = "lockedprofile01"
 
+    LOCKED_PROFILES_STORAGE_CONNECTION_STRING_ITN = data.azurerm_storage_account.auth_session_storage.primary_connection_string
+    LOCKED_PROFILES_TABLE_NAME_ITN                = "lockedprofile01"
+
     # Spid logs config
     SPID_LOG_QUEUE_NAME                = "spidmsgitems"
     SPID_LOG_STORAGE_CONNECTION_STRING = data.azurerm_storage_account.logs.primary_connection_string
