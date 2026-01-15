@@ -41,4 +41,6 @@ locals {
   vnet_common_resource_group_name_itn = "${local.common_project_itn}-common-rg-01"
 
   auth_sessions_topic_name = "${var.prefix}-${local.short_domain}-sessions-topic"
+
+  locked_profiles_table_name = "lockedprofile01"
 }
