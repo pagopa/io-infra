@@ -36,6 +36,7 @@ module "function_admin_itn" {
       "AzureWebJobs.CheckXmlCryptoCVESamlResponse.Disabled"      = "1",
       "AzureWebJobs.CheckIoWebXmlCryptoCVESamlResponse.Disabled" = "1"
       "APPINSIGHTS_CLOUD_ROLE_NAME"                              = "io-p-itn-admin-func-01",
+      "AzureWebJobs.UserDataDeleteOrchestratorV2.Disabled"       = "1",
     }
   )
 
@@ -44,7 +45,8 @@ module "function_admin_itn" {
     "AzureWebJobs.UserDataProcessingTrigger.Disabled",
     "AzureWebJobs.SanitizeProfileEmail.Disabled",
     "AzureWebJobs.CheckXmlCryptoCVESamlResponse.Disabled",
-    "AzureWebJobs.CheckIoWebXmlCryptoCVESamlResponse.Disabled"
+    "AzureWebJobs.CheckIoWebXmlCryptoCVESamlResponse.Disabled",
+    "AzureWebJobs.UserDataDeleteOrchestratorV2.Disabled",
   ]
 
   slot_app_settings = merge(
