@@ -1,5 +1,7 @@
 locals {
   proxy_hostname_internal = "proxy.internal.io.pagopa.it"
+  apim_appname            = "platform-api-gateway"
+
 
   apim_adgroup_rbac = [
     {
