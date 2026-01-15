@@ -173,7 +173,10 @@ locals {
 
     # Locked profile storage
     LOCKED_PROFILES_STORAGE_CONNECTION_STRING = data.azurerm_storage_account.auth_session_storage.primary_connection_string
-    LOCKED_PROFILES_TABLE_NAME                = azurerm_storage_table.locked_profiles.name
+    LOCKED_PROFILES_TABLE_NAME                = local.locked_profiles_table_name
+
+    LOCKED_PROFILES_STORAGE_CONNECTION_STRING_ITN = data.azurerm_storage_account.auth_session_storage.primary_connection_string
+    LOCKED_PROFILES_TABLE_NAME_ITN                = local.locked_profiles_table_name
 
     # Spid logs config
     SPID_LOG_QUEUE_NAME                = "spidmsgitems"
