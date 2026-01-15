@@ -28,6 +28,7 @@ module "function_admin_itn" {
   health_check_path                    = "/info"
   subnet_pep_id                        = data.azurerm_subnet.private_endpoints_subnet_itn.id
   private_dns_zone_resource_group_name = data.azurerm_resource_group.weu-common.name
+  has_durable_functions                = true
 
   app_settings = merge(
     local.function_admin.app_settings_common,
@@ -35,6 +36,8 @@ module "function_admin_itn" {
       "AzureWebJobs.CheckXmlCryptoCVESamlResponse.Disabled"      = "1",
       "AzureWebJobs.CheckIoWebXmlCryptoCVESamlResponse.Disabled" = "1"
       "APPINSIGHTS_CLOUD_ROLE_NAME"                              = "io-p-itn-admin-func-01",
+      "AzureWebJobs.UserDataDeleteOrchestratorV2.Disabled"       = "1",
+      "AzureWebJobs.UserDataProcessingTrigger.Disabled"          = "1",
     }
   )
 
@@ -43,7 +46,9 @@ module "function_admin_itn" {
     "AzureWebJobs.UserDataProcessingTrigger.Disabled",
     "AzureWebJobs.SanitizeProfileEmail.Disabled",
     "AzureWebJobs.CheckXmlCryptoCVESamlResponse.Disabled",
-    "AzureWebJobs.CheckIoWebXmlCryptoCVESamlResponse.Disabled"
+    "AzureWebJobs.CheckIoWebXmlCryptoCVESamlResponse.Disabled",
+    "AzureWebJobs.UserDataDeleteOrchestratorV2.Disabled",
+    "AzureWebJobs.UserDataProcessingTrigger.Disabled",
   ]
 
   slot_app_settings = merge(
