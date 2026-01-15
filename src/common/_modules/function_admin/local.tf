@@ -75,7 +75,7 @@ locals {
 
       # Locked Profile Storage
       LOCKED_PROFILES_STORAGE_CONNECTION_STRING = data.azurerm_key_vault_secret.common_SESSION_ST_CONNECTION_STRING.value
-      LOCKED_PROFILES_TABLE_NAME                = "lockedprofile01"
+      LOCKED_PROFILES_TABLE_NAME                = var.function_admin_locked_profiles_table_name
 
       PROFILE_EMAILS_STORAGE_CONNECTION_STRING = data.azurerm_key_vault_secret.common_SESSION_ST_CONNECTION_STRING.value
       PROFILE_EMAILS_TABLE_NAME                = "profileemails01"
