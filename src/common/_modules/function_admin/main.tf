@@ -34,10 +34,10 @@ module "function_admin_itn" {
     local.function_admin.app_settings_common,
     {
       "AzureWebJobs.CheckXmlCryptoCVESamlResponse.Disabled"      = "1",
-      "AzureWebJobs.CheckIoWebXmlCryptoCVESamlResponse.Disabled" = "1"
+      "AzureWebJobs.CheckIoWebXmlCryptoCVESamlResponse.Disabled" = "1",
       "APPINSIGHTS_CLOUD_ROLE_NAME"                              = "io-p-itn-admin-func-01",
-      "AzureWebJobs.UserDataDeleteOrchestratorV2.Disabled"       = "1",
-      "AzureWebJobs.UserDataProcessingTrigger.Disabled"          = "1",
+      "AzureWebJobs.UserDataDeleteOrchestratorV2.Disabled"       = "0",
+      "AzureWebJobs.UserDataProcessingTrigger.Disabled"          = "0",
     }
   )
 
@@ -59,7 +59,7 @@ module "function_admin_itn" {
       "AzureWebJobs.UserDataProcessingTrigger.Disabled"          = "1",
       "AzureWebJobs.SanitizeProfileEmail.Disabled"               = "1",
       "AzureWebJobs.CheckXmlCryptoCVESamlResponse.Disabled"      = "1",
-      "AzureWebJobs.CheckIoWebXmlCryptoCVESamlResponse.Disabled" = "1"
+      "AzureWebJobs.CheckIoWebXmlCryptoCVESamlResponse.Disabled" = "1",
       "APPINSIGHTS_CLOUD_ROLE_NAME"                              = "io-p-itn-admin-func-01-staging",
     }
   )
