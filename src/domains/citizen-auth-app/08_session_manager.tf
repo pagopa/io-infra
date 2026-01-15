@@ -172,11 +172,11 @@ locals {
     BACKEND_HOST = "https://${trimsuffix(data.azurerm_dns_a_record.api_app_io_pagopa_it.fqdn, ".")}"
 
     # Locked profile storage
-    LOCKED_PROFILES_STORAGE_CONNECTION_STRING = module.locked_profiles_storage.primary_connection_string
+    LOCKED_PROFILES_STORAGE_CONNECTION_STRING = data.azurerm_storage_account.auth_session_storage.primary_connection_string
     LOCKED_PROFILES_TABLE_NAME                = azurerm_storage_table.locked_profiles.name
 
     LOCKED_PROFILES_STORAGE_CONNECTION_STRING_ITN = data.azurerm_storage_account.auth_session_storage.primary_connection_string
-    LOCKED_PROFILES_TABLE_NAME_ITN                = "lockedprofile01"
+    LOCKED_PROFILES_TABLE_NAME_ITN                = azurerm_storage_table.locked_profiles.name
 
 
     # Spid logs config
