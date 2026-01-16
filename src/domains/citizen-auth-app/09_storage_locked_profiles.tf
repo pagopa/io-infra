@@ -41,10 +41,3 @@ resource "azurerm_private_endpoint" "locked_profiles_storage_table" {
 
   tags = var.tags
 }
-
-# Tables
-resource "azurerm_storage_table" "locked_profiles" {
-  depends_on           = [azurerm_private_endpoint.locked_profiles_storage_table]
-  name                 = "lockedprofiles"
-  storage_account_name = module.locked_profiles_storage.name
-}
