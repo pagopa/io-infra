@@ -23,4 +23,5 @@ log_analytics_workspace_name                = "io-p-law-common"
 log_analytics_workspace_resource_group_name = "io-p-rg-common"
 application_insights_name                   = "io-p-ai-common"
 
-enable_azdoa = true
+enable_azdoa             = true
+ingress_load_balancer_ip = "10.11.0.254"
