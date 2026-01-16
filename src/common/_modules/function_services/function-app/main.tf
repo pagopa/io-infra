@@ -1,5 +1,5 @@
 resource "azurerm_resource_group" "function_services_rg" {
-  name     = "${var.project_itn}-platform-services-rg-01"
+  name     = "${var.project_itn}-platform-services-rg-${var.instance_number}"
   location = var.location_itn
   tags     = var.tags
 }
@@ -40,7 +40,7 @@ module "function_services" {
       "AzureWebJobs.OnFailedProcessMessage.Disabled" = "0"
       "AzureWebJobs.ProcessMessage.Disabled"         = "0"
       "AzureWebJobs.WebhookNotification.Disabled"    = "0"
-      "APPINSIGHTS_CLOUD_ROLE_NAME"                  = "io-p-itn-services-func-01",
+      "APPINSIGHTS_CLOUD_ROLE_NAME"                  = "io-p-itn-services-func-${var.instance_number}",
     }
   )
 
@@ -63,7 +63,7 @@ module "function_services" {
       "AzureWebJobs.OnFailedProcessMessage.Disabled" = "1"
       "AzureWebJobs.ProcessMessage.Disabled"         = "1"
       "AzureWebJobs.WebhookNotification.Disabled"    = "1"
-      "APPINSIGHTS_CLOUD_ROLE_NAME"                  = "io-p-itn-services-func-01-staging",
+      "APPINSIGHTS_CLOUD_ROLE_NAME"                  = "io-p-itn-services-func-${var.instance_number}-staging",
     }
   )
 
