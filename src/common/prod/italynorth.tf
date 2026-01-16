@@ -237,7 +237,7 @@ module "function_app_services_02" {
 
 module "containers_services" {
   source              = "../_modules/function_services/containers"
-  cosmos_db_name      = module.function_app_services.db_name
+  cosmos_db_name      = module.function_app_services_02.db_name
   resource_group_name = local.resource_groups.weu.internal
   legacy_project      = local.project_weu_legacy
 }
