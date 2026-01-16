@@ -209,24 +209,6 @@
     "name": "azure_function_app",
     "source": "https://registry.terraform.io/modules/pagopa-dx/azure-function-app/azurerm/3.0.0"
   },
-  "function_app_services.function_services": {
-    "hash": "7f7683c1baaa380df0ef3eb5b3329d4c587cd716e57f268d81ac8b6a7519e641",
-    "version": "4.1.1",
-    "name": "azure_function_app",
-    "source": "https://registry.terraform.io/modules/pagopa-dx/azure-function-app/azurerm/4.1.1"
-  },
-  "function_app_services.function_services_autoscale": {
-    "hash": "42ca301a262ca7cb78e9dfb2072922e778328460b91e9859d1bf2af974f9518a",
-    "version": "2.0.0",
-    "name": "azure_app_service_plan_autoscaler",
-    "source": "https://registry.terraform.io/modules/pagopa-dx/azure-app-service-plan-autoscaler/azurerm/2.0.0"
-  },
-  "function_app_services.services_storage_account_01": {
-    "hash": "a2a257b25753f91b36acef29e080efc4d62dea59e803f56e33e813e7a343e66b",
-    "version": "1.0.1",
-    "name": "azure_storage_account",
-    "source": "https://registry.terraform.io/modules/pagopa-dx/azure-storage-account/azurerm/1.0.1"
-  },
   "function_app_services_02.function_services": {
     "hash": "7f7683c1baaa380df0ef3eb5b3329d4c587cd716e57f268d81ac8b6a7519e641",
     "version": "4.1.1",
