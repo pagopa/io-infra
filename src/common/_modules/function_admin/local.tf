@@ -12,6 +12,7 @@ locals {
 locals {
   function_admin = {
     app_settings_common = {
+      NODE_ENV = "production"
 
       COSMOSDB_NAME              = "db"
       COSMOSDB_URI               = data.azurerm_cosmosdb_account.cosmos_api.endpoint
@@ -73,11 +74,11 @@ locals {
       SanitizeUserProfileQueueName = "profiles-to-sanitize-01"
 
       # Locked Profile Storage
-      LOCKED_PROFILES_STORAGE_CONNECTION_STRING = data.azurerm_storage_account.locked_profiles_storage.primary_connection_string
+      LOCKED_PROFILES_STORAGE_CONNECTION_STRING = data.azurerm_key_vault_secret.common_SESSION_ST_CONNECTION_STRING.value
       LOCKED_PROFILES_TABLE_NAME                = var.function_admin_locked_profiles_table_name
 
-      PROFILE_EMAILS_STORAGE_CONNECTION_STRING = data.azurerm_storage_account.citizen_auth_common.primary_connection_string
-      PROFILE_EMAILS_TABLE_NAME                = "profileEmails"
+      PROFILE_EMAILS_STORAGE_CONNECTION_STRING = data.azurerm_key_vault_secret.common_SESSION_ST_CONNECTION_STRING.value
+      PROFILE_EMAILS_TABLE_NAME                = "profileemails01"
 
       # Instant delete
       INSTANT_DELETE_ENABLED_USERS = join(",", [data.azurerm_key_vault_secret.fn_admin_INSTANT_DELETE_ENABLED_USERS.value, module.tests.users.light])

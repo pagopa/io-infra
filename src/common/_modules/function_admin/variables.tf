@@ -57,7 +57,7 @@ variable "common_resource_group_name_itn" {
 variable "function_admin_locked_profiles_table_name" {
   type        = string
   description = "Locked profiles table name"
-  default     = "lockedprofiles"
+  default     = "lockedprofile01"
 }
 
 variable "apim_hostname_api_internal" {
