@@ -8,7 +8,7 @@ module "cdn_storage" {
     prefix          = var.prefix
     env_short       = var.env_short
     location        = var.location
-    app_name        = replace("${var.project}-assets-st", "-", "")
+    app_name        = "assets"
     instance_number = "01"
   }
 
