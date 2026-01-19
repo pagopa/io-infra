@@ -8,8 +8,8 @@ data "azurerm_linux_web_app" "cms_backoffice_app_itn" {
 }
 
 data "azurerm_linux_web_app" "appservice_continua" {
-  name                = "${var.project_legacy}-app-continua"
-  resource_group_name = "${var.project_legacy}-continua-rg"
+  name                = "${var.project}-continua-app-01"
+  resource_group_name = "${var.project}-continua-rg-01"
 }
 
 data "azurerm_linux_web_app" "session_manager_03" {
