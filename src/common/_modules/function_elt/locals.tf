@@ -119,6 +119,7 @@ locals {
       #
 
       INTERNAL_TEST_FISCAL_CODES_COMPRESSED = base64gzip(module.tests.users.all)
+      INTERNAL_STORAGE_CONNECTION_STRING    = data.azurerm_storage_account.internal_fn.primary_connection_string
 
       # REDIS CACHE CONFIG FOR PDV IDs
       REDIS_URL      = data.azurerm_redis_cache.ioauth_redis_common_itn.hostname
