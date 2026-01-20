@@ -25,7 +25,7 @@ resource "azurerm_cdn_frontdoor_origin" "primary_origin" {
   cdn_frontdoor_origin_group_id = azurerm_cdn_frontdoor_origin_group.primary_origin_group.id
   enabled                       = true
 
-  certificate_name_check_enabled = false
+  certificate_name_check_enabled = true
 
   http_port          = 80
   https_port         = 443
