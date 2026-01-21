@@ -79,3 +79,8 @@ variable "azure_adgroup_svc_devs_object_id" {
   type        = string
   description = "Object Id of the Entra group for enti & servizi"
 }
+
+variable "log_analytics_workspace_id" {
+  type        = string
+  description = "Log analytics workspace id for metrics"
+}

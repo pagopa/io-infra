@@ -19,8 +19,8 @@ module "cdn_storage" {
   }
 
   static_website = {
-    enabled = true
-    index_document = "index.html"
+    enabled            = true
+    index_document     = "index.html"
     error_404_document = "index.html"
   }
 

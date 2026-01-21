@@ -554,6 +554,7 @@ module "assets_locales_cdn" {
   public_dns_zones                 = module.global.dns.public_dns_zones
   dns_default_ttl_sec              = module.global.dns.dns_default_ttl_sec
   azure_adgroup_svc_devs_object_id = data.azuread_group.svc_devs.object_id
+  log_analytics_workspace_id       = module.monitoring_itn.log.id
 
   tags = local.tags
 }
