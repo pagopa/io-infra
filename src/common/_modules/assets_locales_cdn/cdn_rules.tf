@@ -1,11 +1,6 @@
-resource "azurerm_cdn_frontdoor_rule_set" "primary_ruleset" {
-  name                     = "primaryruleset"
-  cdn_frontdoor_profile_id = azurerm_cdn_frontdoor_profile.cdn_profile.id
-}
-
 resource "azurerm_cdn_frontdoor_rule" "assistancetoolszendesk" {
   name                      = "assistancetoolszendesk"
-  cdn_frontdoor_rule_set_id = azurerm_cdn_frontdoor_rule_set.primary_ruleset.id
+  cdn_frontdoor_rule_set_id = module.azure_cdn.rule_set_id
   order                     = 5
 
   conditions {
@@ -25,7 +20,7 @@ resource "azurerm_cdn_frontdoor_rule" "assistancetoolszendesk" {
 
 resource "azurerm_cdn_frontdoor_rule" "bonus" {
   name                      = "bonus"
-  cdn_frontdoor_rule_set_id = azurerm_cdn_frontdoor_rule_set.primary_ruleset.id
+  cdn_frontdoor_rule_set_id = module.azure_cdn.rule_set_id
   order                     = 3
 
   conditions {
@@ -45,7 +40,7 @@ resource "azurerm_cdn_frontdoor_rule" "bonus" {
 
 resource "azurerm_cdn_frontdoor_rule" "global_cache" {
   name                      = "globalcache"
-  cdn_frontdoor_rule_set_id = azurerm_cdn_frontdoor_rule_set.primary_ruleset.id
+  cdn_frontdoor_rule_set_id = module.azure_cdn.rule_set_id
   order                     = 1
 
   actions {
@@ -58,7 +53,7 @@ resource "azurerm_cdn_frontdoor_rule" "global_cache" {
 
 resource "azurerm_cdn_frontdoor_rule" "servicesdata" {
   name                      = "servicesdata"
-  cdn_frontdoor_rule_set_id = azurerm_cdn_frontdoor_rule_set.primary_ruleset.id
+  cdn_frontdoor_rule_set_id = module.azure_cdn.rule_set_id
   order                     = 2
 
   conditions {
@@ -78,7 +73,7 @@ resource "azurerm_cdn_frontdoor_rule" "servicesdata" {
 
 resource "azurerm_cdn_frontdoor_rule" "sign" {
   name                      = "sign"
-  cdn_frontdoor_rule_set_id = azurerm_cdn_frontdoor_rule_set.primary_ruleset.id
+  cdn_frontdoor_rule_set_id = module.azure_cdn.rule_set_id
   order                     = 6
 
   conditions {
@@ -100,7 +95,7 @@ resource "azurerm_cdn_frontdoor_rule" "sign" {
 
 resource "azurerm_cdn_frontdoor_rule" "status" {
   name                      = "status"
-  cdn_frontdoor_rule_set_id = azurerm_cdn_frontdoor_rule_set.primary_ruleset.id
+  cdn_frontdoor_rule_set_id = module.azure_cdn.rule_set_id
   order                     = 4
 
   conditions {

@@ -30,11 +30,6 @@ variable "location" {
   description = "Azure region"
 }
 
-variable "location_short" {
-  type        = string
-  description = "Azure region short name"
-}
-
 variable "subscription_id" {
   type        = string
   description = "Azure subscription id"
@@ -45,9 +40,9 @@ variable "tags" {
   description = "Resource tags"
 }
 
-variable "resource_group_assets_cdn" {
+variable "resource_group_cdn" {
   type        = string
-  description = "Assets CDN resource group name"
+  description = "CDN resource group name"
 }
 
 variable "resource_group_external" {
@@ -60,19 +55,9 @@ variable "resource_group_common" {
   description = "Common resource group name"
 }
 
-variable "dns_default_ttl_sec" {
-  type        = number
-  description = "Default TTL of DNS records"
-}
-
 variable "public_dns_zones" {
   type        = map(any)
   description = "Public dns zones information"
-}
-
-variable "external_domain" {
-  type        = string
-  description = "Domain for delegation"
 }
 
 variable "azure_adgroup_svc_devs_object_id" {
@@ -83,4 +68,9 @@ variable "azure_adgroup_svc_devs_object_id" {
 variable "log_analytics_workspace_id" {
   type        = string
   description = "Log analytics workspace id for metrics"
+}
+
+variable "diagnostic_settings_storage_account_id" {
+  type        = string
+  description = "Storage account id for diagnostic settings logs"
 }

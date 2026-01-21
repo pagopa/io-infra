@@ -2,19 +2,19 @@ resource "azurerm_cdn_frontdoor_route" "static_routes" {
   for_each = local.routes
 
   name                          = each.value.name
-  cdn_frontdoor_endpoint_id     = azurerm_cdn_frontdoor_endpoint.cdn_endpoint.id
-  cdn_frontdoor_origin_group_id = azurerm_cdn_frontdoor_origin_group.primary_origin_group.id
+  cdn_frontdoor_endpoint_id     = module.azure_cdn.endpoint_id
+  cdn_frontdoor_origin_group_id = module.azure_cdn.origin_group_id
 
   cdn_frontdoor_origin_ids = [
-    azurerm_cdn_frontdoor_origin.primary_origin.id
+    module.azure_cdn.origin_id # Not exported at the moment
   ]
 
   cdn_frontdoor_rule_set_ids = [
-    azurerm_cdn_frontdoor_rule_set.primary_ruleset.id
+    module.azure_cdn.rule_set_id
   ]
 
   cdn_frontdoor_custom_domain_ids = [
-    azurerm_cdn_frontdoor_custom_domain.assets.id
+    module.azure_cdn.custom_domain_ids # Not exported at the moment
   ]
 
   patterns_to_match         = [each.value.pattern]
