@@ -13,6 +13,10 @@ resource "azurerm_cdn_frontdoor_route" "static_routes" {
     azurerm_cdn_frontdoor_rule_set.primary_ruleset.id
   ]
 
+  cdn_frontdoor_custom_domain_ids = [
+    azurerm_cdn_frontdoor_custom_domain.assets.id
+  ]
+
   patterns_to_match         = [each.value.pattern]
   supported_protocols       = ["Http", "Https"]
   https_redirect_enabled    = true
