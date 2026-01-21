@@ -48,14 +48,6 @@ resource "azurerm_cdn_frontdoor_rule" "global_cache" {
   cdn_frontdoor_rule_set_id = azurerm_cdn_frontdoor_rule_set.primary_ruleset.id
   order                     = 1
 
-  # Matches all requests
-  conditions {
-    request_uri_condition {
-      operator     = "Any"
-      match_values = ["*"]
-    }
-  }
-
   actions {
     route_configuration_override_action {
       cache_behavior = "OverrideAlways"
