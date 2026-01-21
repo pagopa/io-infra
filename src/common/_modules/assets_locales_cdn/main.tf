@@ -18,6 +18,12 @@ module "cdn_storage" {
     versioning = true
   }
 
+  static_website = {
+    enabled = true
+    index_document = "index.html"
+    error_404_document = "index.html"
+  }
+
   force_public_network_access_enabled = true
 
   tags = var.tags
