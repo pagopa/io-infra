@@ -1,12 +1,4 @@
 locals {
-  nonstandard = {
-    weu = {
-      cdne = "${var.project}-assets-cdn-endpoint"
-    }
-    itn = {
-      cdne = "${var.project}-assets-cdn-endpoint"
-    }
-  }
   rewrite_rules = {
     organization_logos = {
       name            = "organizationlogosRewrite"
