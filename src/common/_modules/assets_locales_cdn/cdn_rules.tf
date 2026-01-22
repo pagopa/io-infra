@@ -1,45 +1,7 @@
-resource "azurerm_cdn_frontdoor_rule" "assistancetoolszendesk" {
-  name                      = "assistancetoolszendesk"
-  cdn_frontdoor_rule_set_id = module.azure_cdn.rule_set_id
-  order                     = 5
-
-  conditions {
-    request_uri_condition {
-      operator     = "BeginsWith"
-      match_values = ["/assistanceTools/zendesk.json"]
-    }
-  }
-
-  actions {
-    route_configuration_override_action {
-      cache_behavior = "OverrideAlways"
-      cache_duration = "00:05:00"
-    }
-  }
-}
-
-resource "azurerm_cdn_frontdoor_rule" "bonus" {
-  name                      = "bonus"
-  cdn_frontdoor_rule_set_id = module.azure_cdn.rule_set_id
-  order                     = 3
-
-  conditions {
-    request_uri_condition {
-      operator     = "BeginsWith"
-      match_values = ["/bonus"]
-    }
-  }
-
-  actions {
-    route_configuration_override_action {
-      cache_behavior = "OverrideAlways"
-      cache_duration = "00:15:00"
-    }
-  }
-}
+## Caching Rules
 
 resource "azurerm_cdn_frontdoor_rule" "global_cache" {
-  name                      = "globalcache"
+  name                      = "global-cache"
   cdn_frontdoor_rule_set_id = module.azure_cdn.rule_set_id
   order                     = 1
 
@@ -51,25 +13,53 @@ resource "azurerm_cdn_frontdoor_rule" "global_cache" {
   }
 }
 
-resource "azurerm_cdn_frontdoor_rule" "servicesdata" {
-  name                      = "servicesdata"
+resource "azurerm_cdn_frontdoor_rule" "caching_rules" {
+
+  for_each = local.caching_rules
+
+  name                      = each.value.name
   cdn_frontdoor_rule_set_id = module.azure_cdn.rule_set_id
-  order                     = 2
+  order                     = each.value.order
 
   conditions {
     request_uri_condition {
       operator     = "BeginsWith"
-      match_values = ["/services-data"]
+      match_values = [each.value.source_pattern]
     }
   }
 
   actions {
     route_configuration_override_action {
-      cache_behavior = "OverrideAlways"
-      cache_duration = "00:15:00"
+      cache_behavior = each.value.cache_behavior
+      cache_duration = each.value.cache_duration
     }
   }
 }
+
+## Rewrite rules
+
+resource "azurerm_cdn_frontdoor_rule" "rewrite_rules" {
+  for_each = local.rewrite_rules
+
+  name                      = each.value.name
+  cdn_frontdoor_rule_set_id = module.azure_cdn.rule_set_id
+  order                     = each.value.order
+
+  conditions {
+    request_uri_condition {
+      operator     = "BeginsWith"
+      match_values = [each.value.source_pattern]
+    }
+  }
+  actions {
+    url_rewrite_action {
+      source_pattern = each.value.source_pattern
+      destination    = each.value.rewrite_pattern
+    }
+  }
+}
+
+## Origin rules
 
 resource "azurerm_cdn_frontdoor_rule" "sign" {
   name                      = "sign"
@@ -89,26 +79,6 @@ resource "azurerm_cdn_frontdoor_rule" "sign" {
       header_action = "Append"
       header_name   = "Access-Control-Allow-Origin"
       value         = "*"
-    }
-  }
-}
-
-resource "azurerm_cdn_frontdoor_rule" "status" {
-  name                      = "status"
-  cdn_frontdoor_rule_set_id = module.azure_cdn.rule_set_id
-  order                     = 4
-
-  conditions {
-    request_uri_condition {
-      operator     = "BeginsWith"
-      match_values = ["/status"]
-    }
-  }
-
-  actions {
-    route_configuration_override_action {
-      cache_behavior = "OverrideAlways"
-      cache_duration = "00:05:00"
     }
   }
 }
