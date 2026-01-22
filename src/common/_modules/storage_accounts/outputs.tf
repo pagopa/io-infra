@@ -24,7 +24,7 @@ output "logs_primary_connection_string" {
 
 output "logs_itn" {
   value = {
-    id   = try(azurerm_storage_account.logs[1].id, null)
-    name = try(azurerm_storage_account.logs[1].name, null)
+    id   = try(azurerm_storage_account.iopitnlogst01[0].id, null)
+    name = try(azurerm_storage_account.iopitnlogst01[0].name, null)
   }
 }
