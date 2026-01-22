@@ -4,7 +4,7 @@ module "azure_cdn" {
   resource_group_name = var.resource_group_cdn
 
   origins = {
-    storage_account_origin = {
+    storage-account = {
 
       host_name = module.cdn_storage.primary_web_host
       priority  = 1
