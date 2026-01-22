@@ -49,7 +49,7 @@ locals {
       cache_duration = "00:15:00"
       order          = 8
     }
-    bonus = {
+    status = {
       name           = "statusCache"
       source_pattern = "/status"
       cache_behavior = "OverrideAlways"
