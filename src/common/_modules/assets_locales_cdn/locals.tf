@@ -7,86 +7,54 @@ locals {
       cdne = "${var.project}-assets-cdn-endpoint"
     }
   }
-  routes = {
-    abi_logos = {
-      name        = "abi-logos-route"
-      pattern     = "/logos/abi/*"
-      origin_path = "/logos/abi"
-    }
-    app_logos = {
-      name        = "app-logos-route"
-      pattern     = "/logos/apps/*"
-      origin_path = "/logos/apps"
-    }
-    assistance_tools = {
-      name        = "assistance-tools-route"
-      pattern     = "/assistanceTools/*"
-      origin_path = "/assistanceTools"
-    }
-    bonus = {
-      name        = "bonus-route"
-      pattern     = "/bonus/*"
-      origin_path = "/bonus"
-    }
-    contextualhelp = {
-      name        = "contextualhelp-route"
-      pattern     = "/contextualhelp/*"
-      origin_path = "/contextualhelp"
-    }
-    email_assets = {
-      name        = "email-assets-route"
-      pattern     = "/email-assets/*"
-      origin_path = "/email-assets"
-    }
-    eucovidcert_logos = {
-      name        = "eucovidcert-logos-route"
-      pattern     = "/logos/eucovidcert/*"
-      origin_path = "/logos/eucovidcert"
-    }
-    html = {
-      name        = "html-route"
-      pattern     = "/html/*"
-      origin_path = "/html"
-    }
-    locales = {
-      name        = "locales-route"
-      pattern     = "/locales/*"
-      origin_path = "/locales"
-    }
-    municipalities = {
-      name        = "municipalities-route"
-      pattern     = "/municipalities/*"
-      origin_path = "/municipalities"
-    }
+  rewrite_rules = {
     organization_logos = {
-      name        = "organization-logos-route"
-      pattern     = "/logos/organizations/*"
-      origin_path = "/services"
-    }
-    privative_logos = {
-      name        = "privative-logos-route"
-      pattern     = "/logos/privative/*"
-      origin_path = "/logos/privative"
+      name            = "organizationlogosRewrite"
+      source_pattern  = "/logos/organizations"
+      rewrite_pattern = "/services"
+      order           = 3
     }
     service_logos = {
-      name        = "service-logos-route"
-      pattern     = "/logos/services/*"
-      origin_path = "/services"
+      name            = "serviceslogosRewrite"
+      source_pattern  = "/logos/services"
+      rewrite_pattern = "/services"
+      order           = 4
     }
     services_webview = {
-      name        = "services-webview-route"
-      pattern     = "/services-webview/*"
-      origin_path = "/services/services-webview"
+      name            = "serviceswebviewRewrite"
+      source_pattern  = "/services-webview"
+      rewrite_pattern = "/services/services-webview"
+      order           = 5
     }
-    sign = {
-      name        = "sign-route"
-      pattern     = "/sign/*"
-      origin_path = "/sign"
+  }
+  caching_rules = {
+    assistance_tools_zendesk = {
+      name           = "assistancetoolszendeskCache"
+      source_pattern = "/assistanceTools/zendesk.json"
+      cache_behavior = "OverrideAlways"
+      cache_duration = "00:05:00"
+      order          = 6
     }
-    spid_idps = {
-      name        = "spid-idps-route"
-      pattern     = "/spid/idps/*"
-      origin_path = "/spid/idps"
+    bonus = {
+      name           = "bonusCache"
+      source_pattern = "/bonus"
+      cache_behavior = "OverrideAlways"
+      cache_duration = "00:15:00"
+      order          = 7
+    }
+    servicesdata = {
+      name           = "servicesdataCache"
+      source_pattern = "/services-data"
+      cache_behavior = "OverrideAlways"
+      cache_duration = "00:15:00"
+      order          = 8
+    }
+    bonus = {
+      name           = "statusCache"
+      source_pattern = "/status"
+      cache_behavior = "OverrideAlways"
+      cache_duration = "00:05:00"
+      order          = 9
     }
   }
 }

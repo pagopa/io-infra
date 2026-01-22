@@ -542,19 +542,17 @@ module "function_assets_cdn_itn" {
 module "assets_locales_cdn" {
   source = "../_modules/assets_locales_cdn"
 
-  location                  = "italynorth"
-  location_short            = local.core.resource_groups.italynorth.location_short
-  project                   = local.project_itn
-  subscription_id           = data.azurerm_subscription.current.subscription_id
-  resource_group_common     = local.core.resource_groups.italynorth.common
-  resource_group_assets_cdn = local.core.resource_groups.italynorth.assets_cdn
-  resource_group_external   = local.core.resource_groups.italynorth.external
+  location                = "italynorth"
+  project                 = local.project_itn
+  subscription_id         = data.azurerm_subscription.current.subscription_id
+  resource_group_common   = local.core.resource_groups.italynorth.common
+  resource_group_cdn      = local.core.resource_groups.italynorth.assets_cdn
+  resource_group_external = local.core.resource_groups.italynorth.external
 
-  external_domain                  = module.global.dns.external_domain
-  public_dns_zones                 = module.global.dns.public_dns_zones
-  dns_default_ttl_sec              = module.global.dns.dns_default_ttl_sec
-  azure_adgroup_svc_devs_object_id = data.azuread_group.svc_devs.object_id
-  log_analytics_workspace_id       = module.monitoring_itn.log.id
+  public_dns_zones                       = module.global.dns.public_dns_zones
+  azure_adgroup_svc_devs_object_id       = data.azuread_group.svc_devs.object_id
+  log_analytics_workspace_id             = module.monitoring_itn.log.id
+  diagnostic_settings_storage_account_id = module.storage_accounts_itn.logs_itn.id
 
   tags = local.tags
 }
