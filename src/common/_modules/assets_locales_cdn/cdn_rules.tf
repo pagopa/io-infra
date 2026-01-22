@@ -1,7 +1,7 @@
 ## Caching Rules
 
 resource "azurerm_cdn_frontdoor_rule" "global_cache" {
-  name                      = "global-cache"
+  name                      = "globalCache"
   cdn_frontdoor_rule_set_id = module.azure_cdn.rule_set_id
   order                     = 1
 
