@@ -19,9 +19,6 @@ locals {
   acr_name                = replace("${local.product}commonacr", "-", "")
   acr_resource_group_name = "${local.product}-container-registry-rg"
 
-  aks_name                = "${local.product}-${var.location_short}-${var.instance}-aks"
-  aks_resource_group_name = "${local.product}-${var.location_short}-${var.instance}-aks-rg"
-
   apim_v2_name                 = "${local.product}-apim-v2-api"
   apim_resource_group_name     = "${local.product}-rg-internal"
   apim_itn_name                = "${local.product}-itn-apim-01"
