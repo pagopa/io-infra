@@ -550,9 +550,15 @@ module "assets_locales_cdn" {
   resource_group_external = local.core.resource_groups.italynorth.external
 
   public_dns_zones                       = module.global.dns.public_dns_zones
-  azure_adgroup_svc_devs_object_id       = data.azuread_group.svc_devs.object_id
   log_analytics_workspace_id             = module.monitoring_itn.log.id
   diagnostic_settings_storage_account_id = module.storage_accounts_itn.logs_itn.id
+
+  azure_adgroups_roles = {
+    svc_devs = {
+      azureadgroup_id = data.azuread_group.svc_devs.object_id
+      role            = "writer"
+    }
+  }
 
   tags = local.tags
 }

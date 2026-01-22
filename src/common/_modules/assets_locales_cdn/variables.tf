@@ -60,9 +60,12 @@ variable "public_dns_zones" {
   description = "Public dns zones information"
 }
 
-variable "azure_adgroup_svc_devs_object_id" {
-  type        = string
-  description = "Object Id of the Entra group for enti & servizi"
+variable "azure_adgroups_roles" {
+  type = map(object({
+    azureadgroup_id = string
+    role            = string
+  }))
+  description = "Ids and roles of the EntraId groups for storage account access"
 }
 
 variable "log_analytics_workspace_id" {

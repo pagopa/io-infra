@@ -227,12 +227,6 @@
     "name": "azure_storage_account",
     "source": "https://registry.terraform.io/modules/pagopa-dx/azure-storage-account/azurerm/1.0.1"
   },
-  "assets_locales_cdn.roles_svc_devs": {
-    "hash": "a9a9a967e4d17992cf757c66d248bab4413bde68057322486cb0c210b1776326",
-    "version": "1.3.0",
-    "name": "azure_role_assignments",
-    "source": "https://registry.terraform.io/modules/pagopa-dx/azure-role-assignments/azurerm/1.3.0"
-  },
   "assets_locales_cdn.cdn_storage": {
     "hash": "0e4bd3881f59056e0d49ac38c09b9ebfb885c60527bfdc33ac290d50c707753c",
     "version": "2.0.0",
@@ -244,5 +238,11 @@
     "version": "0.3.3",
     "name": "azure_cdn",
     "source": "https://registry.terraform.io/modules/pagopa-dx/azure-cdn/azurerm/0.3.3"
+  },
+  "assets_locales_cdn.storage_account_permissions": {
+    "hash": "a9a9a967e4d17992cf757c66d248bab4413bde68057322486cb0c210b1776326",
+    "version": "1.3.0",
+    "name": "azure_role_assignments",
+    "source": "https://registry.terraform.io/modules/pagopa-dx/azure-role-assignments/azurerm/1.3.0"
   }
 }
