@@ -552,7 +552,7 @@ module "assets_locales_cdn" {
   public_dns_zones                       = module.global.dns.public_dns_zones
   azure_adgroup_svc_devs_object_id       = data.azuread_group.svc_devs.object_id
   log_analytics_workspace_id             = module.monitoring_itn.log.id
-  diagnostic_settings_storage_account_id = module.storage_accounts_itn.logs.id
+  diagnostic_settings_storage_account_id = module.storage_accounts_itn.logs_itn.id
 
   tags = local.tags
 }
