@@ -11,7 +11,7 @@ module "storage_account_permissions" {
     {
       storage_account_name = module.cdn_storage.name
       resource_group_name  = module.cdn_storage.resource_group_name
-      description          = format("%s role for the group %s", each.value.role, each.value.azureadgroup_id)
+      description          = format("%s role for the group %s", each.value.role, each.key)
       role                 = each.value.role
     }
   ]
