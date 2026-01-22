@@ -12,19 +12,19 @@ locals {
       name            = "organizationlogosRewrite"
       source_pattern  = "/logos/organizations"
       rewrite_pattern = "/services"
-      order           = 2
+      order           = 3
     }
     service_logos = {
       name            = "serviceslogosRewrite"
       source_pattern  = "/logos/services"
       rewrite_pattern = "/services"
-      order           = 3
+      order           = 4
     }
     services_webview = {
       name            = "serviceswebviewRewrite"
       source_pattern  = "/services-webview"
       rewrite_pattern = "/services/services-webview"
-      order           = 4
+      order           = 5
     }
   }
   caching_rules = {
@@ -33,28 +33,28 @@ locals {
       source_pattern = "/assistanceTools/zendesk.json"
       cache_behavior = "OverrideAlways"
       cache_duration = "00:05:00"
-      order          = 5
+      order          = 6
     }
     bonus = {
       name           = "bonusCache"
       source_pattern = "/bonus"
       cache_behavior = "OverrideAlways"
       cache_duration = "00:15:00"
-      order          = 6
+      order          = 7
     }
     servicesdata = {
       name           = "servicesdataCache"
       source_pattern = "/services-data"
       cache_behavior = "OverrideAlways"
       cache_duration = "00:15:00"
-      order          = 7
+      order          = 8
     }
     bonus = {
       name           = "statusCache"
       source_pattern = "/status"
       cache_behavior = "OverrideAlways"
       cache_duration = "00:05:00"
-      order          = 8
+      order          = 9
     }
   }
 }

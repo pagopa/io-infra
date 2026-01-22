@@ -1,4 +1,4 @@
-## Caching Rules
+## Global cache
 
 resource "azurerm_cdn_frontdoor_rule" "global_cache" {
   name                      = "globalCache"
@@ -12,6 +12,32 @@ resource "azurerm_cdn_frontdoor_rule" "global_cache" {
     }
   }
 }
+
+## Origin rules
+
+resource "azurerm_cdn_frontdoor_rule" "sign_origin" {
+  name                      = "signOrigin"
+  cdn_frontdoor_rule_set_id = module.azure_cdn.rule_set_id
+  order                     = 2
+
+  conditions {
+    request_uri_condition {
+      operator     = "BeginsWith"
+      match_values = ["/sign"]
+      transforms   = ["Lowercase"]
+    }
+  }
+
+  actions {
+    response_header_action {
+      header_action = "Append"
+      header_name   = "Access-Control-Allow-Origin"
+      value         = "*"
+    }
+  }
+}
+
+## Caching rules
 
 resource "azurerm_cdn_frontdoor_rule" "caching_rules" {
 
@@ -55,30 +81,6 @@ resource "azurerm_cdn_frontdoor_rule" "rewrite_rules" {
     url_rewrite_action {
       source_pattern = each.value.source_pattern
       destination    = each.value.rewrite_pattern
-    }
-  }
-}
-
-## Origin rules
-
-resource "azurerm_cdn_frontdoor_rule" "sign" {
-  name                      = "sign"
-  cdn_frontdoor_rule_set_id = module.azure_cdn.rule_set_id
-  order                     = 6
-
-  conditions {
-    request_uri_condition {
-      operator     = "BeginsWith"
-      match_values = ["/sign"]
-      transforms   = ["Lowercase"]
-    }
-  }
-
-  actions {
-    response_header_action {
-      header_action = "Append"
-      header_name   = "Access-Control-Allow-Origin"
-      value         = "*"
     }
   }
 }
