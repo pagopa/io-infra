@@ -56,8 +56,9 @@ resource "azurerm_cdn_frontdoor_rule" "caching_rules" {
 
   actions {
     route_configuration_override_action {
-      cache_behavior = each.value.cache_behavior
-      cache_duration = each.value.cache_duration
+      cache_behavior                = each.value.cache_behavior
+      cache_duration                = each.value.cache_duration
+      query_string_caching_behavior = "IgnoreQueryString"
     }
   }
 }
