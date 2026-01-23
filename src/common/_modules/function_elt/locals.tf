@@ -12,7 +12,9 @@ locals {
 
       NODE_ENV = "production"
 
-      APPLICATIONINSIGHTS_CONNECTION_STRING = data.azurerm_application_insights.application_insights.connection_string
+      INTERNAL_STORAGE_ACCOUNT                  = module.function_elt_itn.storage_account.name
+      INTERNAL_STORAGE_ACCOUNT__queueServiceUri = "https://${module.function_elt_itn.storage_account.name}.queue.core.windows.net"
+      APPLICATIONINSIGHTS_CONNECTION_STRING     = data.azurerm_application_insights.application_insights.connection_string
 
       COSMOSDB_NAME                = "db"
       COSMOSDB_URI                 = data.azurerm_cosmosdb_account.cosmos_api.endpoint
@@ -69,7 +71,6 @@ locals {
 
 
       ERROR_STORAGE_ACCOUNT                   = module.function_elt_itn.storage_account.name
-      ERROR_STORAGE_KEY                       = data.azurerm_storage_account.internal_fn.primary_connection_string
       ERROR_STORAGE_TABLE                     = data.azurerm_storage_table.fnelterrors.name
       ERROR_STORAGE_TABLE_MESSAGES            = data.azurerm_storage_table.fnelterrors_messages.name
       ERROR_STORAGE_TABLE_MESSAGE_STATUS      = data.azurerm_storage_table.fnelterrors_message_status.name
@@ -121,7 +122,6 @@ locals {
       #
 
       INTERNAL_TEST_FISCAL_CODES_COMPRESSED = base64gzip(module.tests.users.all)
-      INTERNAL_STORAGE_CONNECTION_STRING    = data.azurerm_storage_account.internal_fn.primary_connection_string
 
       # REDIS CACHE CONFIG FOR PDV IDs
       REDIS_URL      = data.azurerm_redis_cache.ioauth_redis_common_itn.hostname
