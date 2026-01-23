@@ -163,15 +163,6 @@ data "azurerm_storage_account" "auth_maintenance_storage" {
   resource_group_name = format("%s-itn-auth-main-rg-01", local.project)
 }
 
-#
-# Notifications resources
-#
-
-data "azurerm_storage_account" "locked_profiles_storage" {
-  name                = replace(format("%s-locked-profiles-st", local.project), "-", "")
-  resource_group_name = local.rg_internal_name
-}
-
 ########################
 # MONITORING
 ########################
