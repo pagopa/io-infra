@@ -127,15 +127,6 @@ data "azurerm_storage_account" "auth_maintenance_storage" {
 }
 
 
-#
-# Notifications resources
-#
-
-data "azurerm_storage_account" "locked_profiles_storage" {
-  name                = replace(format("%s-locked-profiles-st", local.project), "-", "")
-  resource_group_name = local.rg_internal_name
-}
-
 data "azurerm_subnet" "function_eucovidcert_snet" {
   name                 = format("%s-eucovidcert-snet", local.project)
   resource_group_name  = local.rg_common_name
