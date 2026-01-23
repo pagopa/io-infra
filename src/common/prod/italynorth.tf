@@ -547,7 +547,7 @@ module "assets_locales_cdn" {
   subscription_id         = data.azurerm_subscription.current.subscription_id
   resource_group_common   = local.core.resource_groups.italynorth.common
   resource_group_cdn      = local.core.resource_groups.italynorth.assets_cdn
-  resource_group_external = local.core.resource_groups.italynorth.external
+  resource_group_external = "io-p-rg-external"
 
   public_dns_zones                       = module.global.dns.public_dns_zones
   log_analytics_workspace_id             = module.monitoring_itn.log.id
