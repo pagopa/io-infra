@@ -42,10 +42,6 @@ locals {
       MESSAGE_STATUS_TOPIC_CONNECTION_STRING = data.azurerm_eventhub_authorization_rule.evh_ns_pdnd_io_cosmos_message_status_fn.primary_connection_string
       MESSAGE_STATUS_LEASES_PREFIX           = "message-status-001"
 
-      NOTIFICATION_STATUS_TOPIC_NAME              = "pdnd-io-cosmosdb-notification-status"
-      NOTIFICATION_STATUS_TOPIC_CONNECTION_STRING = data.azurerm_eventhub_authorization_rule.evh_ns_pdnd_io_cosmos_notification_status_fn.primary_connection_string
-      NOTIFICATION_STATUS_LEASES_PREFIX           = "notification-status-001"
-
       // A&I Event Hub
       TARGETKAFKAAUTH_clientId            = "IO_FUNCTIONS_ELT"
       TARGETKAFKAAUTH_brokers             = local.auth_event_hub_connection
