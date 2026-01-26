@@ -34,6 +34,7 @@ module "function_elt_itn" {
       "AzureWebJobs.AnalyticsMessagesStorageQueueInboundProcessorAdapter.Disabled"    = "1"
       "AzureWebJobs.AnalyticsMessageStatusChangeFeedInboundProcessorAdapter.Disabled" = "1"
       "AzureWebJobs.AnalyticsMessageStatusStorageQueueInbloundAdapter.Disabled"       = "1"
+      "AzureWebJobs.EnrichMessagesReportBlobTrigger.Disabled"                         = "1"
     }
   )
 
