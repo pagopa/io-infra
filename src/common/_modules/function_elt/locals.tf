@@ -12,9 +12,7 @@ locals {
 
       NODE_ENV = "production"
 
-      INTERNAL_STORAGE_ACCOUNT                  = module.function_elt_itn.storage_account.name
-      INTERNAL_STORAGE_ACCOUNT__queueServiceUri = "https://${module.function_elt_itn.storage_account.name}.queue.core.windows.net"
-      APPLICATIONINSIGHTS_CONNECTION_STRING     = data.azurerm_application_insights.application_insights.connection_string
+      APPLICATIONINSIGHTS_CONNECTION_STRING = data.azurerm_application_insights.application_insights.connection_string
 
       COSMOSDB_NAME                = "db"
       COSMOSDB_URI                 = data.azurerm_cosmosdb_account.cosmos_api.endpoint
@@ -70,13 +68,11 @@ locals {
       DELETES_LEASES_PREFIX           = "profile-deletion-002"
 
 
-      ERROR_STORAGE_ACCOUNT                   = module.function_elt_itn.storage_account.name
       ERROR_STORAGE_TABLE                     = data.azurerm_storage_table.fnelterrors.name
       ERROR_STORAGE_TABLE_MESSAGES            = data.azurerm_storage_table.fnelterrors_messages.name
       ERROR_STORAGE_TABLE_MESSAGE_STATUS      = data.azurerm_storage_table.fnelterrors_message_status.name
       ERROR_STORAGE_TABLE_NOTIFICATION_STATUS = data.azurerm_storage_table.fnelterrors_notification_status.name
 
-      COMMAND_STORAGE                = data.azurerm_storage_account.internal_fn.primary_connection_string
       BLOB_COMMAND_STORAGE           = module.storage_account_itn_elt.primary_connection_string
       COMMAND_STORAGE_TABLE          = data.azurerm_storage_table.fneltcommands.name
       IMPORT_TOPIC_NAME              = "import-command"
