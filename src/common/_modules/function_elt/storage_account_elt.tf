@@ -135,7 +135,7 @@ resource "azurerm_storage_queue" "pdnd-io-cosmosdb-profile-deletion-failure" {
   storage_account_name = module.storage_account_itn_elt.name
 }
 
-resource "azurerm_storage_queue" "pdnd-io-cosmosdb-profile-deletion-poison" {
-  name                 = "pdnd-io-cosmosdb-profile-deletion-poison"
+resource "azurerm_storage_queue" "pdnd-io-cosmosdb-profile-deletion-failure-poison" {
+  name                 = "pdnd-io-cosmosdb-profile-deletion-failure-poison"
   storage_account_name = module.storage_account_itn_elt.name
 }
