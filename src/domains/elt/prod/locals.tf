@@ -4,7 +4,7 @@ locals {
   project     = "${local.prefix}-${local.env_short}"
   project_itn = "${local.prefix}-${local.env_short}-itn"
 
-  location                        = "westeurope"
+  location     = "westeurope"
   location_itn = "italynorth"
 
   tags = {
