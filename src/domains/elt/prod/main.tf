@@ -19,6 +19,8 @@ provider "azurerm" {
   features {}
 }
 
+
+// TODO: Import this resource group into the common domain inside fn-elt module
 resource "azurerm_resource_group" "itn_elt" {
   name     = format("%s-elt-rg-01", local.project_itn)
   location = local.location_itn
@@ -26,6 +28,7 @@ resource "azurerm_resource_group" "itn_elt" {
   tags = local.tags
 }
 
+// TODO: After apply the remove of the resources inside this module remove this module too
 module "storage_accounts" {
   source = "../_modules/storage_accounts"
 
