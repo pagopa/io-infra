@@ -68,10 +68,9 @@ locals {
       DELETES_LEASES_PREFIX           = "profile-deletion-002"
 
 
-      ERROR_STORAGE_TABLE                     = data.azurerm_storage_table.fnelterrors.name
-      ERROR_STORAGE_TABLE_MESSAGES            = data.azurerm_storage_table.fnelterrors_messages.name
-      ERROR_STORAGE_TABLE_MESSAGE_STATUS      = data.azurerm_storage_table.fnelterrors_message_status.name
-      ERROR_STORAGE_TABLE_NOTIFICATION_STATUS = data.azurerm_storage_table.fnelterrors_notification_status.name
+      ERROR_STORAGE_TABLE                = data.azurerm_storage_table.fnelterrors.name
+      ERROR_STORAGE_TABLE_MESSAGES       = data.azurerm_storage_table.fnelterrors_messages.name
+      ERROR_STORAGE_TABLE_MESSAGE_STATUS = data.azurerm_storage_table.fnelterrors_message_status.name
 
       BLOB_COMMAND_STORAGE           = module.storage_account_itn_elt.primary_connection_string
       COMMAND_STORAGE_TABLE          = data.azurerm_storage_table.fneltcommands.name
