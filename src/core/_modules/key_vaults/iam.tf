@@ -2,7 +2,7 @@ module "iam_tlscert_kv_admins" {
   for_each = var.admins
 
   source  = "pagopa-dx/azure-role-assignments/azurerm"
-  version = "~> 1.2"
+  version = "~>1.3"
 
   subscription_id = var.subscription_id
   principal_id    = each.value
@@ -24,7 +24,7 @@ module "iam_tlscert_kv_devs" {
   for_each = var.devs
 
   source  = "pagopa-dx/azure-role-assignments/azurerm"
-  version = "~> 1.2"
+  version = "~>1.3"
 
   subscription_id = var.subscription_id
   principal_id    = each.value

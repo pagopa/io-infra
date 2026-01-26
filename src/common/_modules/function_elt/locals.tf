@@ -42,10 +42,6 @@ locals {
       MESSAGE_STATUS_TOPIC_CONNECTION_STRING = data.azurerm_eventhub_authorization_rule.evh_ns_pdnd_io_cosmos_message_status_fn.primary_connection_string
       MESSAGE_STATUS_LEASES_PREFIX           = "message-status-001"
 
-      NOTIFICATION_STATUS_TOPIC_NAME              = "pdnd-io-cosmosdb-notification-status"
-      NOTIFICATION_STATUS_TOPIC_CONNECTION_STRING = data.azurerm_eventhub_authorization_rule.evh_ns_pdnd_io_cosmos_notification_status_fn.primary_connection_string
-      NOTIFICATION_STATUS_LEASES_PREFIX           = "notification-status-001"
-
       // A&I Event Hub
       TARGETKAFKAAUTH_clientId            = "IO_FUNCTIONS_ELT"
       TARGETKAFKAAUTH_brokers             = local.auth_event_hub_connection
@@ -68,14 +64,10 @@ locals {
       DELETES_LEASES_PREFIX           = "profile-deletion-002"
 
 
-      ERROR_STORAGE_ACCOUNT                   = module.function_elt_itn.storage_account.name
-      ERROR_STORAGE_KEY                       = data.azurerm_storage_account.internal_fn.primary_connection_string
-      ERROR_STORAGE_TABLE                     = data.azurerm_storage_table.fnelterrors.name
-      ERROR_STORAGE_TABLE_MESSAGES            = data.azurerm_storage_table.fnelterrors_messages.name
-      ERROR_STORAGE_TABLE_MESSAGE_STATUS      = data.azurerm_storage_table.fnelterrors_message_status.name
-      ERROR_STORAGE_TABLE_NOTIFICATION_STATUS = data.azurerm_storage_table.fnelterrors_notification_status.name
+      ERROR_STORAGE_TABLE                = data.azurerm_storage_table.fnelterrors.name
+      ERROR_STORAGE_TABLE_MESSAGES       = data.azurerm_storage_table.fnelterrors_messages.name
+      ERROR_STORAGE_TABLE_MESSAGE_STATUS = data.azurerm_storage_table.fnelterrors_message_status.name
 
-      COMMAND_STORAGE                = data.azurerm_storage_account.internal_fn.primary_connection_string
       BLOB_COMMAND_STORAGE           = module.storage_account_itn_elt.primary_connection_string
       COMMAND_STORAGE_TABLE          = data.azurerm_storage_table.fneltcommands.name
       IMPORT_TOPIC_NAME              = "import-command"
@@ -121,7 +113,6 @@ locals {
       #
 
       INTERNAL_TEST_FISCAL_CODES_COMPRESSED = base64gzip(module.tests.users.all)
-      INTERNAL_STORAGE_CONNECTION_STRING    = data.azurerm_storage_account.internal_fn.primary_connection_string
 
       # REDIS CACHE CONFIG FOR PDV IDs
       REDIS_URL      = data.azurerm_redis_cache.ioauth_redis_common_itn.hostname

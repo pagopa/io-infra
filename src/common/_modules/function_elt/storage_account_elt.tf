@@ -68,13 +68,6 @@ resource "azurerm_storage_table" "fnelterrors_message_status_itn" {
 
 
 
-resource "azurerm_storage_table" "fnelterrors_notification_status_itn" {
-  name                 = "fnelterrorsNotificationStatus"
-  storage_account_name = module.storage_account_itn_elt.name
-}
-
-
-
 resource "azurerm_storage_table" "fneltcommands_itn" {
   name                 = "fneltcommands"
   storage_account_name = module.storage_account_itn_elt.name
@@ -87,3 +80,62 @@ resource "azurerm_storage_table" "fneltexports_itn" {
   storage_account_name = module.storage_account_itn_elt.name
 }
 
+resource "azurerm_storage_queue" "pdnd-io-cosmosdb-messages-failure" {
+  name                 = "pdnd-io-cosmosdb-messages-failure"
+  storage_account_name = module.storage_account_itn_elt.name
+}
+
+resource "azurerm_storage_queue" "pdnd-io-cosmosdb-messages-failure-poison" {
+  name                 = "pdnd-io-cosmosdb-messages-failure-poison"
+  storage_account_name = module.storage_account_itn_elt.name
+}
+
+resource "azurerm_storage_queue" "pdnd-io-cosmosdb-messagestatus-failure" {
+  name                 = "pdnd-io-cosmosdb-messagestatus-failure"
+  storage_account_name = module.storage_account_itn_elt.name
+}
+
+resource "azurerm_storage_queue" "pdnd-io-cosmosdb-messagestatus-failure-poison" {
+  name                 = "pdnd-io-cosmosdb-messagestatus-failure-poison"
+  storage_account_name = module.storage_account_itn_elt.name
+}
+
+resource "azurerm_storage_queue" "pdnd-io-cosmosdb-services-failure" {
+  name                 = "pdnd-io-cosmosdb-services-failure"
+  storage_account_name = module.storage_account_itn_elt.name
+}
+
+resource "azurerm_storage_queue" "pdnd-io-cosmosdb-services-failure-poison" {
+  name                 = "pdnd-io-cosmosdb-services-failure-poison"
+  storage_account_name = module.storage_account_itn_elt.name
+}
+
+resource "azurerm_storage_queue" "pdnd-io-cosmosdb-service-preferences-failure" {
+  name                 = "pdnd-io-cosmosdb-service-preferences-failure"
+  storage_account_name = module.storage_account_itn_elt.name
+}
+
+resource "azurerm_storage_queue" "pdnd-io-cosmosdb-service-preferences-failure-poison" {
+  name                 = "pdnd-io-cosmosdb-service-preferences-failure-poison"
+  storage_account_name = module.storage_account_itn_elt.name
+}
+
+resource "azurerm_storage_queue" "pdnd-io-cosmosdb-profiles-failure" {
+  name                 = "pdnd-io-cosmosdb-profiles-failure"
+  storage_account_name = module.storage_account_itn_elt.name
+}
+
+resource "azurerm_storage_queue" "pdnd-io-cosmosdb-profiles-failure-poison" {
+  name                 = "pdnd-io-cosmosdb-profiles-failure-poison"
+  storage_account_name = module.storage_account_itn_elt.name
+}
+
+resource "azurerm_storage_queue" "pdnd-io-cosmosdb-profile-deletion-failure" {
+  name                 = "pdnd-io-cosmosdb-profile-deletion-failure"
+  storage_account_name = module.storage_account_itn_elt.name
+}
+
+resource "azurerm_storage_queue" "pdnd-io-cosmosdb-profile-deletion-failure-poison" {
+  name                 = "pdnd-io-cosmosdb-profile-deletion-failure-poison"
+  storage_account_name = module.storage_account_itn_elt.name
+}
