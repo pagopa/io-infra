@@ -68,13 +68,6 @@ resource "azurerm_storage_table" "fnelterrors_message_status_itn" {
 
 
 
-resource "azurerm_storage_table" "fnelterrors_notification_status_itn" {
-  name                 = "fnelterrorsNotificationStatus"
-  storage_account_name = module.storage_account_itn_elt.name
-}
-
-
-
 resource "azurerm_storage_table" "fneltcommands_itn" {
   name                 = "fneltcommands"
   storage_account_name = module.storage_account_itn_elt.name
@@ -107,13 +100,13 @@ resource "azurerm_storage_queue" "pdnd-io-cosmosdb-messagestatus-failure-poison"
   storage_account_name = module.storage_account_itn_elt.name
 }
 
-resource "azurerm_storage_queue" "pdnd-io-cosmosdb-notificationstatus-failure" {
-  name                 = "pdnd-io-cosmosdb-notificationstatus-failure"
+resource "azurerm_storage_queue" "pdnd-io-cosmosdb-services-failure" {
+  name                 = "pdnd-io-cosmosdb-services-failure"
   storage_account_name = module.storage_account_itn_elt.name
 }
 
-resource "azurerm_storage_queue" "pdnd-io-cosmosdb-notificationstatus-failure-poison" {
-  name                 = "pdnd-io-cosmosdb-notificationstatus-failure-poison"
+resource "azurerm_storage_queue" "pdnd-io-cosmosdb-services-failure-poison" {
+  name                 = "pdnd-io-cosmosdb-services-failure-poison"
   storage_account_name = module.storage_account_itn_elt.name
 }
 
@@ -142,7 +135,7 @@ resource "azurerm_storage_queue" "pdnd-io-cosmosdb-profile-deletion-failure" {
   storage_account_name = module.storage_account_itn_elt.name
 }
 
-resource "azurerm_storage_queue" "pdnd-io-cosmosdb-profile-deletion-poison" {
-  name                 = "pdnd-io-cosmosdb-profile-deletion-poison"
+resource "azurerm_storage_queue" "pdnd-io-cosmosdb-profile-deletion-failure-poison" {
+  name                 = "pdnd-io-cosmosdb-profile-deletion-failure-poison"
   storage_account_name = module.storage_account_itn_elt.name
 }

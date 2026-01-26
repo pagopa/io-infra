@@ -52,13 +52,6 @@ data "azurerm_eventhub_authorization_rule" "evh_ns_pnpg_cosmos_fn" {
   resource_group_name = "${var.project_weu_legacy}-evt-rg"
 }
 
-data "azurerm_eventhub_authorization_rule" "evh_ns_pdnd_io_cosmos_notification_status_fn" {
-  name                = "io-fn-elt"
-  namespace_name      = "${var.project_weu_legacy}-evh-ns"
-  eventhub_name       = "pdnd-io-cosmosdb-notification-status"
-  resource_group_name = "${var.project_weu_legacy}-evt-rg"
-}
-
 data "azurerm_eventhub_authorization_rule" "evh_ns_pdnd_io_cosmos_message_status_fn" {
   name                = "io-fn-elt"
   namespace_name      = "${var.project_weu_legacy}-evh-ns"
@@ -197,11 +190,6 @@ data "azurerm_storage_table" "fnelterrors_messages" {
 
 data "azurerm_storage_table" "fnelterrors_message_status" {
   name                 = "fnelterrorsMessageStatus"
-  storage_account_name = module.storage_account_itn_elt.name
-}
-
-data "azurerm_storage_table" "fnelterrors_notification_status" {
-  name                 = "fnelterrorsNotificationStatus"
   storage_account_name = module.storage_account_itn_elt.name
 }
 
