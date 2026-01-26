@@ -5,8 +5,6 @@ locals {
   project_itn = "${local.prefix}-${local.env_short}-itn"
 
   location                        = "westeurope"
-  secondary_location_display_name = "North Europe"
-
   location_itn = "italynorth"
 
   tags = {
