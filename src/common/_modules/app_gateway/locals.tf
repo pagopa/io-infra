@@ -849,7 +849,7 @@ locals {
           conditions = [
             {
               variable    = "var_uri_path"
-              pattern     = "^/api/v1/(.*)$"
+              pattern     = "^/api/v1/wallet/(.*)$"
               ignore_case = true
               negate      = false
             }
