@@ -527,12 +527,12 @@ locals {
           rewrite_rule_set_name = "rewrite-rule-set-api-app"
         },
         api-gateway-platform-wallet = {
-          paths                 = ["/api/echo/*"]
+          paths                 = ["/api/wallet/*"]
           backend               = "platform-api-gateway",
           rewrite_rule_set_name = "rewrite-rule-set-api-app"
         },
         api-gateway-platform-wallet-legacy = {
-          paths                 = ["/api/v1/echo/*"]
+          paths                 = ["/api/v1/wallet/*"]
           backend               = "platform-api-gateway",
           rewrite_rule_set_name = "rewrite-rule-set-wallet-app"
         },
@@ -849,14 +849,14 @@ locals {
           conditions = [
             {
               variable    = "var_uri_path"
-              pattern     = "^/api/v1/(.*)$"
+              pattern     = "^/api/v1/wallet/(.*)$"
               ignore_case = true
               negate      = false
             }
           ]
 
           url = {
-            path         = "/api/echo/v1/{var_uri_path_1}"
+            path         = "/api/wallet/v1/{var_uri_path_1}"
             query_string = null
             reroute      = false
             components   = "path_only"
