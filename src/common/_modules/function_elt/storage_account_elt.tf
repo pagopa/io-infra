@@ -52,15 +52,6 @@ resource "azurerm_storage_table" "fnelterrors_messages_itn" {
   storage_account_name = module.storage_account_itn_elt.name
 }
 
-
-
-resource "azurerm_storage_table" "fnelterrors_message_status_itn" {
-  name                 = "fnelterrorsMessageStatus"
-  storage_account_name = module.storage_account_itn_elt.name
-}
-
-
-
 resource "azurerm_storage_table" "fneltcommands_itn" {
   name                 = "fneltcommands"
   storage_account_name = module.storage_account_itn_elt.name
