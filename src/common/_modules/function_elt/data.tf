@@ -13,11 +13,6 @@ data "azurerm_monitor_action_group" "quarantine_error_action_group" {
   resource_group_name = local.resource_group_name_common
 }
 
-data "azurerm_monitor_action_group" "io_com_action_group" {
-  name                = "io-p-com-error-ag-01"
-  resource_group_name = "io-p-itn-com-rg-01"
-}
-
 data "azurerm_private_dns_zone" "privatelink_blob_core" {
   name                = "privatelink.blob.core.windows.net"
   resource_group_name = local.resource_group_name_common
