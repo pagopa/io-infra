@@ -34,14 +34,6 @@ locals {
       SERVICES_TOPIC_CONNECTION_STRING = data.azurerm_eventhub_authorization_rule.evh_ns_io_cosmos_fn.primary_connection_string
       SERVICES_LEASES_PREFIX           = "services-001"
 
-      MESSAGES_TOPIC_NAME              = "pdnd-io-cosmosdb-messages"
-      MESSAGES_TOPIC_CONNECTION_STRING = data.azurerm_eventhub_authorization_rule.evh_ns_pdnd_io_cosmos_fn.primary_connection_string
-      MESSAGES_LEASES_PREFIX           = "messages-001"
-
-      MESSAGE_STATUS_TOPIC_NAME              = "pdnd-io-cosmosdb-message-status"
-      MESSAGE_STATUS_TOPIC_CONNECTION_STRING = data.azurerm_eventhub_authorization_rule.evh_ns_pdnd_io_cosmos_message_status_fn.primary_connection_string
-      MESSAGE_STATUS_LEASES_PREFIX           = "message-status-001"
-
       // A&I Event Hub
       TARGETKAFKAAUTH_clientId            = "IO_FUNCTIONS_ELT"
       TARGETKAFKAAUTH_brokers             = local.auth_event_hub_connection
@@ -64,9 +56,7 @@ locals {
       DELETES_LEASES_PREFIX           = "profile-deletion-002"
 
 
-      ERROR_STORAGE_TABLE                = data.azurerm_storage_table.fnelterrors.name
       ERROR_STORAGE_TABLE_MESSAGES       = data.azurerm_storage_table.fnelterrors_messages.name
-      ERROR_STORAGE_TABLE_MESSAGE_STATUS = data.azurerm_storage_table.fnelterrors_message_status.name
 
       BLOB_COMMAND_STORAGE           = module.storage_account_itn_elt.primary_connection_string
       COMMAND_STORAGE_TABLE          = data.azurerm_storage_table.fneltcommands.name
@@ -81,26 +71,14 @@ locals {
       COSMOSDB_REPLICA_KEY      = data.azurerm_cosmosdb_account.cosmos_api.primary_key
       COSMOSDB_REPLICA_LOCATION = var.secondary_location_display_name
 
-      MESSAGE_EXPORTS_COMMAND_TABLE       = data.azurerm_storage_table.fneltexports.name
-      MESSAGE_EXPORT_STEP_1_CONTAINER     = data.azurerm_storage_container.container_messages_report_step1.name
-      MESSAGE_EXPORT_STEP_FINAL_CONTAINER = data.azurerm_storage_container.container_messages_report_step_final.name
-
       COSMOS_CHUNK_SIZE            = "1000"
       COSMOS_DEGREE_OF_PARALLELISM = "2"
-      MESSAGE_CONTENT_CHUNK_SIZE   = "200"
 
       SERVICEID_EXCLUSION_LIST = data.azurerm_key_vault_secret.services_exclusion_list.value
 
-      PN_SERVICE_ID = local.pn_service_id
-
-      #iopstapi connection string
-      MessageContentPrimaryStorageConnection = data.azurerm_storage_account.storage_api.primary_connection_string
       #iopstapireplica connection string
-      MessageContentStorageConnection  = data.azurerm_storage_account.storage_api_replica.primary_connection_string
       ServiceInfoBlobStorageConnection = data.azurerm_storage_account.storage_assets_cdn.primary_connection_string
 
-      MESSAGES_FAILURE_QUEUE_NAME            = "pdnd-io-cosmosdb-messages-failure"
-      MESSAGE_STATUS_FAILURE_QUEUE_NAME      = "pdnd-io-cosmosdb-message-status-failure"
       SERVICES_FAILURE_QUEUE_NAME            = "pdnd-io-cosmosdb-services-failure"
       SERVICE_PREFERENCES_FAILURE_QUEUE_NAME = local.service_preferences_failure_queue_name
       PROFILES_FAILURE_QUEUE_NAME            = local.profiles_failure_queue_name
@@ -140,8 +118,6 @@ locals {
 
   event_hub_connection      = "${format("%s-evh-ns", var.project_weu_legacy)}.servicebus.windows.net:9093"
   auth_event_hub_connection = "${format("%s-itn-auth-elt-evhns-01", var.project_weu_legacy)}.servicebus.windows.net:9093"
-
-  pn_service_id = "01G40DWQGKY5GRWSNM4303VNRP"
 
   service_preferences_failure_queue_name = "pdnd-io-cosmosdb-service-preferences-failure"
   profiles_failure_queue_name            = "pdnd-io-cosmosdb-profiles-failure"
