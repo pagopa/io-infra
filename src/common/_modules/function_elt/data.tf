@@ -167,7 +167,7 @@ data "azurerm_storage_account" "storage_assets_cdn" {
 
 data "azurerm_storage_account" "internal_fn" {
   name                = module.function_elt_itn.storage_account.name
-  resource_group_name = var.resource_group_name
+  resource_group_name = azurerm_resource_group.itn_elt.name
 }
 
 # Citizen-auth domain Redis Common

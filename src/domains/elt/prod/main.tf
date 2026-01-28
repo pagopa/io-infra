@@ -20,23 +20,12 @@ provider "azurerm" {
 }
 
 
-// TODO: Import this resource group into the common domain inside fn-elt module
-resource "azurerm_resource_group" "itn_elt" {
-  name     = format("%s-elt-rg-01", local.project_itn)
-  location = local.location_itn
+// Resource group removed from state without destroying it in Azure
+// It will be managed by the common domain inside fn-elt module
+removed {
+  from = azurerm_resource_group.itn_elt
 
-  tags = local.tags
-}
-
-// TODO: After apply the remove of the resources inside this module remove this module too
-module "storage_accounts" {
-  source = "../_modules/storage_accounts"
-
-  project                 = local.project
-  project_itn             = local.project_itn
-  location                = local.location
-  location_itn            = local.location_itn
-  resource_group_name_itn = azurerm_resource_group.itn_elt.name
-
-  tags = local.tags
+  lifecycle {
+    destroy = false
+  }
 }

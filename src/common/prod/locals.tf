@@ -325,7 +325,6 @@ locals {
     common_resource_group_name_itn = "${local.project_itn}-common-rg-01"
 
     location_itn        = "italynorth"
-    resource_group_name = "io-p-itn-elt-rg-01"
     elt_snet_cidr       = "10.20.40.0/26"
 
     tags = {

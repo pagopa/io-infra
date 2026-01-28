@@ -124,6 +124,8 @@ locals {
 
 locals {
 
+  project_itn = "${var.prefix}-${var.env_short}-itn"
+
   resource_group_name_common   = "${var.project_weu_legacy}-rg-common"
   resource_group_name_internal = "${var.project_weu_legacy}-rg-internal"
 
