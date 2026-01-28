@@ -42,13 +42,6 @@ resource "azurerm_storage_table" "fneltcommands_itn" {
   storage_account_name = module.storage_account_itn_elt.name
 }
 
-
-
-resource "azurerm_storage_table" "fneltexports_itn" {
-  name                 = "fneltexports"
-  storage_account_name = module.storage_account_itn_elt.name
-}
-
 resource "azurerm_storage_queue" "pdnd-io-cosmosdb-messages-failure" {
   name                 = "pdnd-io-cosmosdb-messages-failure"
   storage_account_name = module.storage_account_itn_elt.name
