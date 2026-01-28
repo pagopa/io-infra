@@ -158,10 +158,6 @@ data "azurerm_storage_table" "fnelterrors_messages" {
   storage_account_name = module.storage_account_itn_elt.name
 }
 
-data "azurerm_storage_table" "fnelterrors_message_status" {
-  name                 = "fnelterrorsMessageStatus"
-  storage_account_name = module.storage_account_itn_elt.name
-}
 
 data "azurerm_storage_table" "fneltcommands" {
   name                 = "fneltcommands"
