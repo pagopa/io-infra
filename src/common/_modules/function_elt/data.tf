@@ -168,10 +168,3 @@ data "azurerm_storage_table" "fneltexports" {
   name                 = "fneltexports"
   storage_account_name = module.storage_account_itn_elt.name
 }
-
-# Storage Containers
-
-data "azurerm_storage_container" "container_messages_report_step_final" {
-  name                 = "messages-report-step-final"
-  storage_account_name = module.storage_account_itn_elt.name
-}
