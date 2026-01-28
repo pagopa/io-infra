@@ -41,6 +41,7 @@ module "event_hub" {
   network_rulesets = [
     {
       default_action                 = "Deny",
+      virtual_network_rule           = []
       ip_rule                        = var.ip_rules
       trusted_service_access_enabled = false
     }
