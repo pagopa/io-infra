@@ -9,7 +9,7 @@ module "storage_account_itn_elt" {
     app_name        = "elt"
     instance_number = "02"
   }
-  resource_group_name = var.resource_group_name
+  resource_group_name = azurerm_resource_group.itn_elt.name
   use_case            = "default"
   subnet_pep_id       = data.azurerm_subnet.private_endpoints_subnet_itn.id
 
