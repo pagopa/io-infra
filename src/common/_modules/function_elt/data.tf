@@ -163,3 +163,8 @@ data "azurerm_storage_table" "fneltcommands" {
   name                 = "fneltcommands"
   storage_account_name = module.storage_account_itn_elt.name
 }
+
+data "azurerm_storage_table" "fneltexports" {
+  name                 = "fneltexports"
+  storage_account_name = module.storage_account_itn_elt.name
+}
