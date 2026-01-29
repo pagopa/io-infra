@@ -185,7 +185,6 @@ variable "backend_hostnames" {
     assets_cdn           = string
     services_app_backend = string
     lollipop             = string
-    eucovidcert          = string
     cgn                  = string
     iosign               = string
     iofims               = string
