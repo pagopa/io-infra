@@ -526,25 +526,25 @@ locals {
           backend               = "platform-api-gateway",
           rewrite_rule_set_name = "rewrite-rule-set-api-app"
         },
-        api-gateway-platform-wallet = {
-          paths                 = ["/api/wallet/*"]
-          backend               = "platform-api-gateway",
-          rewrite_rule_set_name = "rewrite-rule-set-api-app"
-        },
-        api-gateway-platform-wallet-legacy = {
-          paths                 = ["/api/v1/wallet/*"]
-          backend               = "platform-api-gateway",
-          rewrite_rule_set_name = "rewrite-rule-set-wallet-app"
-        },
-        api-gateway-platform-wallet-uat = {
+        api-gateway-platform-wallet-01-uat = {
           paths                 = ["/api/wallet/uat/*"]
           backend               = "platform-api-gateway",
           rewrite_rule_set_name = "rewrite-rule-set-api-app"
         },
-        api-gateway-platform-wallet-legacy-uat = {
+        api-gateway-platform-wallet-02 = {
+          paths                 = ["/api/wallet/*"]
+          backend               = "platform-api-gateway",
+          rewrite_rule_set_name = "rewrite-rule-set-api-app"
+        },
+        api-gateway-platform-wallet-legacy-01-uat = {
           paths                 = ["/api/v1/wallet/uat/*"]
           backend               = "platform-api-gateway",
           rewrite_rule_set_name = "rewrite-rule-set-wallet-app-uat"
+        },
+        api-gateway-platform-wallet-legacy-02 = {
+          paths                 = ["/api/v1/wallet/*"]
+          backend               = "platform-api-gateway",
+          rewrite_rule_set_name = "rewrite-rule-set-wallet-app"
         },
         api-gateway-cdc = {
           paths                 = ["/api/cdc/*"]
