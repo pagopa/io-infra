@@ -40,5 +40,5 @@ module "api_v2_cgn_merchant" {
     }
   )
 
-  xml_content = file("${path.module}/apis/cgn/_base_policy.xml")
+  xml_content = file("${path.module}/apis/cgn_merchant/_base_policy.xml")
 }
