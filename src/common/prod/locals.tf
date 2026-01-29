@@ -158,6 +158,46 @@ locals {
       ]
     },
     {
+      name              = "pdnd-io-cosmosdb-messages"
+      partitions        = 30
+      message_retention = 7
+      consumers         = []
+      keys = [
+        {
+          name   = "io-fn-elt"
+          listen = false
+          send   = true
+          manage = false
+        },
+        {
+          name   = "pdnd"
+          listen = true
+          send   = false
+          manage = false
+        }
+      ]
+    },
+    {
+      name              = "pdnd-io-cosmosdb-message-status"
+      partitions        = 30
+      message_retention = 7
+      consumers         = []
+      keys = [
+        {
+          name   = "io-fn-elt"
+          listen = false
+          send   = true
+          manage = false
+        },
+        {
+          name   = "pdnd"
+          listen = true
+          send   = false
+          manage = false
+        }
+      ]
+    },
+    {
       name              = "pdnd-io-cosmosdb-service-preferences"
       partitions        = 30
       message_retention = 7
