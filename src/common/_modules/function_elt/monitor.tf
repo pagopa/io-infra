@@ -21,7 +21,7 @@ resource "azurerm_monitor_diagnostic_setting" "queue_diagnostic_setting" {
 resource "azurerm_monitor_scheduled_query_rules_alert_v2" "service_preferences_failure_alert_rule" {
   enabled             = true
   name                = "[CITIZEN-AUTH | iopfneltsdt] Failures on pdnd-io-cosmosdb-service-preferences-failure-poison"
-  resource_group_name = var.resource_group_name
+  resource_group_name = azurerm_resource_group.itn_elt.name
   location            = var.location_itn
 
   scopes                  = [module.function_elt_itn.storage_account.id]
@@ -59,7 +59,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert_v2" "service_preferences_f
 resource "azurerm_monitor_scheduled_query_rules_alert_v2" "profiles_failure_alert_rule" {
   enabled             = true
   name                = "[CITIZEN-AUTH | iopfneltsdt] Failures on pdnd-io-cosmosdb-profiles-failure-poison"
-  resource_group_name = var.resource_group_name
+  resource_group_name = azurerm_resource_group.itn_elt.name
   location            = var.location_itn
 
   scopes                  = [module.function_elt_itn.storage_account.id]
@@ -97,7 +97,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert_v2" "profiles_failure_aler
 resource "azurerm_monitor_scheduled_query_rules_alert_v2" "profile_deletion_failure_alert_rule" {
   enabled             = true
   name                = "[CITIZEN-AUTH | iopfneltsdt] Failures on ${local.profile_deletion_failure_queue_name}-poison"
-  resource_group_name = var.resource_group_name
+  resource_group_name = azurerm_resource_group.itn_elt.name
   location            = var.location_itn
 
   scopes                  = [module.function_elt_itn.storage_account.id]

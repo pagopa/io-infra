@@ -11,7 +11,7 @@ module "function_elt_itn" {
     instance_number = "01"
   }
 
-  resource_group_name = var.resource_group_name
+  resource_group_name = azurerm_resource_group.itn_elt.name
 
   virtual_network = {
     name                = var.vnet_common_name_itn
