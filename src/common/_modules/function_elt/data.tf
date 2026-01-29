@@ -129,6 +129,11 @@ data "azurerm_storage_account" "storage_api" {
   resource_group_name = local.resource_group_name_internal
 }
 
+data "azurerm_storage_account" "storage_api_replica" {
+  name                = replace("${var.project_weu_legacy}stapireplica", "-", "")
+  resource_group_name = local.resource_group_name_internal
+}
+
 data "azurerm_storage_account" "storage_assets_cdn" {
   name                = replace(format("%s-stcdnassets", var.project_weu_legacy), "-", "")
   resource_group_name = local.resource_group_name_common
