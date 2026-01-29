@@ -12,7 +12,7 @@ module "apim_v2_product_merchant" {
   subscription_required = true
   approval_required     = false
 
-  policy_xml = file("${path.module}/apis/cgn/_product_base_policy.xml")
+  policy_xml = file("${path.module}/apis/cgn_merchant/_product_base_policy.xml")
 }
 
 module "api_v2_cgn_merchant" {
@@ -34,7 +34,7 @@ module "api_v2_cgn_merchant" {
   subscription_required = true
 
   content_format = "swagger-json"
-  content_value = templatefile("${path.module}/apis/cgn/_swagger.json.tpl",
+  content_value = templatefile("${path.module}/apis/cgn_merchant/_swagger.json.tpl",
     {
       host = "api.io.italia.it"
     }
