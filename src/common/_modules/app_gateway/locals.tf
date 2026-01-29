@@ -500,6 +500,10 @@ locals {
     io-backend-path-based-rule = {
       default_backend               = "appbackend-app"
       default_rewrite_rule_set_name = "rewrite-rule-set-api-app"
+
+      # NOTE: the order matters! the most generic ones should be set at the end
+      # https://learn.microsoft.com/en-us/azure/application-gateway/url-route-overview#pathpattern
+      # However, this code sorts alphabetically the path rules by their key names, as this object is a map
       path_rule = {
         api-gateway-platform-info = {
           paths                 = ["/info"]
