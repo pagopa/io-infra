@@ -291,8 +291,7 @@ locals {
 
     service_api_url = "https://api-app.internal.io.pagopa.it/"
 
-    cidr_subnet_services_old            = "10.20.34.0/26"
-    cidr_subnet_services                = "10.20.41.0/26"
+    cidr_subnet_services_02             = "10.20.34.0/26"
     function_services_autoscale_minimum = 3
     function_services_autoscale_maximum = 30
     function_services_autoscale_default = 10
@@ -325,9 +324,8 @@ locals {
     vnet_common_name_itn           = "${local.project_itn}-common-vnet-01"
     common_resource_group_name_itn = "${local.project_itn}-common-rg-01"
 
-    location_itn        = "italynorth"
-    resource_group_name = "io-p-itn-elt-rg-01"
-    elt_snet_cidr       = "10.20.40.0/26"
+    location_itn  = "italynorth"
+    elt_snet_cidr = "10.20.40.0/26"
 
     tags = {
       CostCenter     = "TS000 - Tecnologia e Servizi"

@@ -9,10 +9,6 @@ data "azurerm_key_vault" "io_com" {
   resource_group_name = format("%s-com-rg-01", var.project_itn)
 }
 
-data "azurerm_resource_group" "services_itn_rg" {
-  name = "${var.project_itn}-platform-services-rg-01"
-}
-
 ########################
 # SECRETS
 ########################

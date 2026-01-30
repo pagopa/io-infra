@@ -40,13 +40,8 @@ module "event_hub" {
   public_network_access_enabled = true
   network_rulesets = [
     {
-      default_action = "Deny",
-      virtual_network_rule = [
-        {
-          subnet_id                                       = data.azurerm_subnet.function_elt_snet.id
-          ignore_missing_virtual_network_service_endpoint = false
-        }
-      ],
+      default_action                 = "Deny",
+      virtual_network_rule           = []
       ip_rule                        = var.ip_rules
       trusted_service_access_enabled = false
     }

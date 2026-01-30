@@ -15,6 +15,14 @@ locals {
         header_name  = "X-Client-Ip"
         header_value = "{var_client_ip}"
       },
+      {
+        header_name  = "X-User"
+        header_value = ""
+      },
+      {
+        header_name  = "X-App-Backend-Api-Key"
+        header_value = ""
+      },
     ]
     response_header_configurations = []
   }
@@ -518,6 +526,26 @@ locals {
           backend               = "platform-api-gateway",
           rewrite_rule_set_name = "rewrite-rule-set-api-app"
         },
+        api-gateway-platform-wallet = {
+          paths                 = ["/api/wallet/*"]
+          backend               = "platform-api-gateway",
+          rewrite_rule_set_name = "rewrite-rule-set-api-app"
+        },
+        api-gateway-platform-wallet-legacy = {
+          paths                 = ["/api/v1/wallet/*"]
+          backend               = "platform-api-gateway",
+          rewrite_rule_set_name = "rewrite-rule-set-wallet-app"
+        },
+        api-gateway-platform-wallet-uat = {
+          paths                 = ["/api/wallet/uat/*"]
+          backend               = "platform-api-gateway",
+          rewrite_rule_set_name = "rewrite-rule-set-api-app"
+        },
+        api-gateway-platform-wallet-legacy-uat = {
+          paths                 = ["/api/v1/wallet/uat/*"]
+          backend               = "platform-api-gateway",
+          rewrite_rule_set_name = "rewrite-rule-set-wallet-app-uat"
+        },
         api-gateway-cdc = {
           paths                 = ["/api/cdc/*"]
           backend               = "platform-api-gateway",
@@ -801,6 +829,61 @@ locals {
           # URL rewriting preserving the specific endpoint
           url = {
             path         = "/api/platform-legacy/v1/{var_uri_path_1}"
+            query_string = null
+            reroute      = false
+            components   = "path_only"
+          }
+          request_header_configurations  = []
+          response_header_configurations = []
+        }
+      ]
+    },
+
+    {
+      name = "rewrite-rule-set-wallet-app"
+      rewrite_rules = [
+        local.io_backend_ip_headers_rule,
+        {
+          name          = "rewrite-url-to-api-platform"
+          rule_sequence = 111
+          conditions = [
+            {
+              variable    = "var_uri_path"
+              pattern     = "^/api/v1/wallet/(.*)$"
+              ignore_case = true
+              negate      = false
+            }
+          ]
+
+          url = {
+            path         = "/api/wallet/v1/{var_uri_path_1}"
+            query_string = null
+            reroute      = false
+            components   = "path_only"
+          }
+          request_header_configurations  = []
+          response_header_configurations = []
+        }
+      ]
+    },
+    {
+      name = "rewrite-rule-set-wallet-app-uat"
+      rewrite_rules = [
+        local.io_backend_ip_headers_rule,
+        {
+          name          = "rewrite-wallet-uat-url-to-api-platform"
+          rule_sequence = 110
+          conditions = [
+            {
+              variable    = "var_uri_path"
+              pattern     = "^/api/v1/wallet/uat/(.*)$"
+              ignore_case = true
+              negate      = false
+            }
+          ]
+
+          url = {
+            path         = "/api/wallet/uat/v1/{var_uri_path_1}"
             query_string = null
             reroute      = false
             components   = "path_only"
