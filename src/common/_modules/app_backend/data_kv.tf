@@ -159,3 +159,14 @@ data "azurerm_key_vault_secret" "app_backend_APP_BACKEND_PRIMARY_KEY" {
   name         = "appbackend-APP-BACKEND-PRIMARY-KEY"
   key_vault_id = var.key_vault_common.id
 }
+
+# Services App Backend Key Vault and Secrets
+data "azurerm_key_vault" "svc_kv" {
+  name                = "${var.project}-itn-svc-kv"
+  resource_group_name = "${var.project}-itn-svc-rg-01"
+}
+
+data "azurerm_key_vault_secret" "appbackend_SERVICES_APP_BACKEND_API_KEY" {
+  name         = "appbe-host-key-for-app-backend"
+  key_vault_id = data.azurerm_key_vault.svc_kv.id
+}
