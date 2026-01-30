@@ -266,6 +266,7 @@ locals {
     BONUS_API_KEY       = "to-remove"
 
     // Services App Backend
+    SERVICES_APP_BACKEND_API_KEY       = data.azurerm_key_vault_secret.appbackend_SERVICES_APP_BACKEND_API_KEY.value
     SERVICES_APP_BACKEND_BASE_PATH     = "/api/v2"
     SERVICES_APP_BACKEND_API_URL       = "https://${var.backend_hostnames.services_app_backend}"
     SERVICES_APP_BACKEND_API_BASE_PATH = "/api/v1"
