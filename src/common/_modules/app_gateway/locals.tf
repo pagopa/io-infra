@@ -530,7 +530,12 @@ locals {
           backend               = "platform-api-gateway",
           rewrite_rule_set_name = "rewrite-rule-set-api-app"
         },
-        api-gateway-platform-wallet = {
+        api-gateway-platform-wallet-01-uat = {
+          paths                 = ["/api/wallet/uat/*"]
+          backend               = "platform-api-gateway",
+          rewrite_rule_set_name = "rewrite-rule-set-api-app"
+        },
+        api-gateway-platform-wallet-02 = {
           paths                 = ["/api/wallet/*"]
           backend               = "platform-api-gateway",
           rewrite_rule_set_name = "rewrite-rule-set-api-app"
