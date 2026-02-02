@@ -150,16 +150,6 @@ data "azurerm_key_vault_secret" "fn_eucovidcert_API_KEY_PUBLICIOEVENTDISPATCHER"
   key_vault_id = var.key_vault.id
 }
 
-data "azurerm_key_vault_secret" "app_backend_IO_WALLET_API_KEY" {
-  name         = "funciowallet-KEY-APPBACKEND"
-  key_vault_id = var.key_vault_common.id
-}
-
-data "azurerm_key_vault_secret" "app_backend_IO_WALLET_UAT_API_KEY" {
-  name         = "funciowalletuat-KEY-APPBACKEND"
-  key_vault_id = var.key_vault_common.id
-}
-
 data "azurerm_key_vault_secret" "app_backend_TRIAL_SYSTEM_APIM_KEY" {
   name         = "appbackend-TRIAL-SYSTEM-APIM-KEY"
   key_vault_id = var.key_vault_common.id
