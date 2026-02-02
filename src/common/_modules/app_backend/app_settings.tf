@@ -55,10 +55,6 @@ locals {
     TRIAL_SYSTEM_APIM_URL       = "https://ts-p-itn-apim-01.azure-api.net"         # not working anymore
     TRIAL_SYSTEM_API_KEY        = data.azurerm_key_vault_secret.app_backend_TRIAL_SYSTEM_API_KEY.value
     TRIAL_SYSTEM_APIM_KEY       = data.azurerm_key_vault_secret.app_backend_TRIAL_SYSTEM_APIM_KEY.value
-    IO_WALLET_API_URL           = "https://${var.backend_hostnames.iowallet}"
-    IO_WALLET_API_KEY           = data.azurerm_key_vault_secret.app_backend_IO_WALLET_API_KEY.value
-    IO_WALLET_UAT_API_URL       = "https://${var.backend_hostnames.iowalletuat}/api/v1/wallet"
-    IO_WALLET_UAT_API_KEY       = data.azurerm_key_vault_secret.app_backend_IO_WALLET_UAT_API_KEY.value
     CDC_SUPPORT_API_URL         = "https://${var.backend_hostnames.cdc_support}"
     CDC_SUPPORT_API_KEY         = data.azurerm_key_vault_secret.app_backend_CDC_SUPPORT_API_KEY.value
 
@@ -72,8 +68,6 @@ locals {
     LOLLIPOP_API_BASE_PATH            = "/api/v1"
     TRIAL_SYSTEM_API_BASE_PATH        = "/api/v1"
     TRIAL_SYSTEM_APIM_BASE_PATH       = "/manage/api/v1"
-    IO_WALLET_API_BASE_PATH           = "/api/v1/wallet"
-    IO_WALLET_UAT_API_BASE_PATH       = "/api/v1/wallet/uat"
     CDC_SUPPORT_API_BASE_PATH         = "/api/v1"
     CDC_SUPPORT_IO_API_BASE_PATH      = "/api/v1/cdc"
 
@@ -117,8 +111,6 @@ locals {
     FF_EUCOVIDCERT_ENABLED     = 1
     FF_IO_SIGN_ENABLED         = 1
     FF_IO_FIMS_ENABLED         = 1
-    FF_IO_WALLET_ENABLED       = 1
-    FF_IO_WALLET_TRIAL_ENABLED = 0
 
     FF_ROUTING_PUSH_NOTIF                      = "ALL" # possible values are: BETA, CANARY, ALL, NONE
     FF_ROUTING_PUSH_NOTIF_BETA_TESTER_SHA_LIST = data.azurerm_key_vault_secret.app_backend_APP_MESSAGES_BETA_FISCAL_CODES.value
@@ -159,9 +151,6 @@ locals {
 
     // Service ID IO-SIGN
     IO_SIGN_SERVICE_ID = local.service_ids.io_sign
-
-    // IO Wallet TRIAL ID
-    IO_WALLET_TRIAL_ID = local.service_ids.io_wallet_trial
 
     // PN Service Activation
     PN_ACTIVATION_BASE_PATH = "/api/v1/pn"
