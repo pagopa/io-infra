@@ -144,8 +144,8 @@ data "azurerm_redis_cache" "ioauth_redis_common_itn" {
 # Storage Tables
 
 
-data "azurerm_storage_table" "fnelterrors_messages" {
-  name                 = "fnelterrorsMessages"
+data "azurerm_storage_table" "fnelterrors" {
+  name                 = "fnelterrors"
   storage_account_name = module.storage_account_itn_elt.name
 }
 
