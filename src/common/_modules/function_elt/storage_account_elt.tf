@@ -31,75 +31,16 @@ module "storage_account_itn_elt" {
   tags = var.tags
 }
 
-resource "azurerm_storage_container" "messages_step_final_itn" {
-  name                  = "messages-report-step-final"
-  storage_account_id    = module.storage_account_itn_elt.id
-  container_access_type = "private"
-}
-
-
-
-resource "azurerm_storage_container" "messages_report_step1_itn" {
-  name                  = "messages-report-step1"
-  storage_account_id    = module.storage_account_itn_elt.id
-  container_access_type = "private"
-}
-
-
 
 resource "azurerm_storage_table" "fnelterrors_itn" {
   name                 = "fnelterrors"
   storage_account_name = module.storage_account_itn_elt.name
 }
 
-
-
-resource "azurerm_storage_table" "fnelterrors_messages_itn" {
-  name                 = "fnelterrorsMessages"
-  storage_account_name = module.storage_account_itn_elt.name
-}
-
-
-
-resource "azurerm_storage_table" "fnelterrors_message_status_itn" {
-  name                 = "fnelterrorsMessageStatus"
-  storage_account_name = module.storage_account_itn_elt.name
-}
-
-
-
 resource "azurerm_storage_table" "fneltcommands_itn" {
   name                 = "fneltcommands"
   storage_account_name = module.storage_account_itn_elt.name
 }
-
-
-
-resource "azurerm_storage_table" "fneltexports_itn" {
-  name                 = "fneltexports"
-  storage_account_name = module.storage_account_itn_elt.name
-}
-
-resource "azurerm_storage_queue" "pdnd-io-cosmosdb-messages-failure" {
-  name                 = "pdnd-io-cosmosdb-messages-failure"
-  storage_account_name = module.storage_account_itn_elt.name
-}
-
-resource "azurerm_storage_queue" "pdnd-io-cosmosdb-messages-failure-poison" {
-  name                 = "pdnd-io-cosmosdb-messages-failure-poison"
-  storage_account_name = module.storage_account_itn_elt.name
-}
-
-resource "azurerm_storage_queue" "pdnd-io-cosmosdb-messagestatus-failure" {
-  name                 = "pdnd-io-cosmosdb-messagestatus-failure"
-  storage_account_name = module.storage_account_itn_elt.name
-}
-
-resource "azurerm_storage_queue" "pdnd-io-cosmosdb-messagestatus-failure-poison" {
-  name                 = "pdnd-io-cosmosdb-messagestatus-failure-poison"
-  storage_account_name = module.storage_account_itn_elt.name
-}
-
 resource "azurerm_storage_queue" "pdnd-io-cosmosdb-services-failure" {
   name                 = "pdnd-io-cosmosdb-services-failure"
   storage_account_name = module.storage_account_itn_elt.name
