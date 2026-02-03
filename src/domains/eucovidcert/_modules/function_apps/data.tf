@@ -48,11 +48,6 @@ data "azurerm_key_vault" "key_vault" {
   resource_group_name = local.resource_group_name_sec
 }
 
-data "azurerm_key_vault_secret" "fn_eucovidcert_API_KEY_APPBACKEND" {
-  name         = "funceucovidcert-KEY-APPBACKEND"
-  key_vault_id = data.azurerm_key_vault.key_vault_common.id
-}
-
 data "azurerm_key_vault_secret" "fn_eucovidcert_API_KEY_PUBLICIOEVENTDISPATCHER" {
   name         = "funceucovidcert-KEY-PUBLICIOEVENTDISPATCHER"
   key_vault_id = data.azurerm_key_vault.key_vault.id

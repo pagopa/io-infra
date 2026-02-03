@@ -45,8 +45,6 @@ locals {
     IO_FIMS_API_KEY             = data.azurerm_key_vault_secret.app_backend_IO_FIMS_API_KEY.value
     CGN_OPERATOR_SEARCH_API_URL = "https://${var.backend_hostnames.cgnonboarding}" # prod subscription
     CGN_OPERATOR_SEARCH_API_KEY = data.azurerm_key_vault_secret.app_backend_CGN_OPERATOR_SEARCH_API_KEY_PROD.value
-    EUCOVIDCERT_API_URL         = "https://${var.backend_hostnames.eucovidcert}/api/v1"
-    EUCOVIDCERT_API_KEY         = data.azurerm_key_vault_secret.fn_eucovidcert_API_KEY_APPBACKEND.value
     APP_MESSAGES_API_URL        = "https://${var.backend_hostnames.com_citizen_func}/api/v1"
     APP_MESSAGES_API_KEY        = data.azurerm_key_vault_secret.app_backend_COM_CITIZEN_FUNC_API_KEY.value
     LOLLIPOP_API_URL            = "https://${var.backend_hostnames.lollipop}"
@@ -62,7 +60,6 @@ locals {
     API_BASE_PATH                     = "/api/v1"
     CGN_API_BASE_PATH                 = "/api/v1/cgn"
     CGN_OPERATOR_SEARCH_API_BASE_PATH = "/api/v1/cgn/operator-search"
-    EUCOVIDCERT_API_BASE_PATH         = "/api/v1/eucovidcert"
     IO_SIGN_API_BASE_PATH             = "/api/v1/sign"
     IO_FIMS_API_BASE_PATH             = "/api/v1/fims"
     LOLLIPOP_API_BASE_PATH            = "/api/v1"
@@ -105,12 +102,11 @@ locals {
     PUSH_NOTIFICATIONS_QUEUE_NAME                = "push-notifications"
 
     // Feature flags
-    FF_BONUS_ENABLED       = 1
-    FF_CGN_ENABLED         = 1
-    FF_CDC_ENABLED         = 1
-    FF_EUCOVIDCERT_ENABLED = 1
-    FF_IO_SIGN_ENABLED     = 1
-    FF_IO_FIMS_ENABLED     = 1
+    FF_BONUS_ENABLED   = 1
+    FF_CGN_ENABLED     = 1
+    FF_CDC_ENABLED     = 1
+    FF_IO_SIGN_ENABLED = 1
+    FF_IO_FIMS_ENABLED = 1
 
     FF_ROUTING_PUSH_NOTIF                      = "ALL" # possible values are: BETA, CANARY, ALL, NONE
     FF_ROUTING_PUSH_NOTIF_BETA_TESTER_SHA_LIST = data.azurerm_key_vault_secret.app_backend_APP_MESSAGES_BETA_FISCAL_CODES.value

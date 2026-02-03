@@ -140,11 +140,6 @@ data "azurerm_key_vault_secret" "app_backend_RECEIPT_SERVICE_API_KEY" {
   key_vault_id = var.key_vault_common.id
 }
 
-data "azurerm_key_vault_secret" "fn_eucovidcert_API_KEY_APPBACKEND" {
-  name         = "funceucovidcert-KEY-APPBACKEND"
-  key_vault_id = var.key_vault_common.id
-}
-
 data "azurerm_key_vault_secret" "fn_eucovidcert_API_KEY_PUBLICIOEVENTDISPATCHER" {
   name         = "funceucovidcert-KEY-PUBLICIOEVENTDISPATCHER"
   key_vault_id = var.key_vault.id

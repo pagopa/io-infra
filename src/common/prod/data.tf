@@ -136,11 +136,6 @@ data "azurerm_linux_function_app" "lollipop_function" {
   resource_group_name = "${local.project_itn}-auth-lollipop-rg-02"
 }
 
-data "azurerm_linux_function_app" "eucovidcert" {
-  resource_group_name = "${local.project_weu_legacy}-rg-eucovidcert"
-  name                = "${local.project_weu_legacy}-eucovidcert-fn"
-}
-
 data "azurerm_linux_function_app" "io_sign_user" {
   resource_group_name = "${local.project_weu_legacy}-sign-backend-rg"
   name                = "${local.project_weu_legacy}-sign-user-func"
