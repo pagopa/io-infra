@@ -28,25 +28,12 @@ module "function_elt_itn" {
   app_settings = merge(
     local.function_elt.app_settings, {
       "AzureWebJobs.CosmosApiServicesChangeFeed.Disabled"                             = "1"
-      "AzureWebJobs.CosmosApiMessageStatusChangeFeed.Disabled"                        = "1"
-      "AzureWebJobs.CosmosApiMessagesChangeFeed.Disabled"                             = "1"
-      "AzureWebJobs.AnalyticsMessagesChangeFeedInboundProcessorAdapter.Disabled"      = "1"
-      "AzureWebJobs.AnalyticsMessagesStorageQueueInboundProcessorAdapter.Disabled"    = "1"
-      "AzureWebJobs.AnalyticsMessageStatusChangeFeedInboundProcessorAdapter.Disabled" = "1"
-      "AzureWebJobs.AnalyticsMessageStatusStorageQueueInbloundAdapter.Disabled"       = "1"
-      "AzureWebJobs.EnrichMessagesReportBlobTrigger.Disabled"                         = "1"
     }
   )
 
   slot_app_settings = merge(
     local.function_elt.app_settings, {
       "AzureWebJobs.CosmosApiServicesChangeFeed.Disabled"                                    = "1"
-      "AzureWebJobs.CosmosApiMessageStatusChangeFeed.Disabled"                               = "1"
-      "AzureWebJobs.CosmosApiMessagesChangeFeed.Disabled"                                    = "1"
-      "AzureWebJobs.AnalyticsMessagesChangeFeedInboundProcessorAdapter.Disabled"             = "1"
-      "AzureWebJobs.AnalyticsMessagesStorageQueueInboundProcessorAdapter.Disabled"           = "1"
-      "AzureWebJobs.AnalyticsMessageStatusChangeFeedInboundProcessorAdapter.Disabled"        = "1"
-      "AzureWebJobs.AnalyticsMessageStatusStorageQueueInbloundAdapter.Disabled"              = "1"
       "AzureWebJobs.AnalyticsServiceChangeFeedInboundProcessorAdapter.Disabled"              = "1"
       "AzureWebJobs.AnalyticsServiceStorageQueueInboundProcessorAdapter.Disabled"            = "1"
       "AzureWebJobs.AnalyticsServicePreferencesChangeFeedInboundProcessorAdapter.Disabled"   = "1"
@@ -56,19 +43,11 @@ module "function_elt_itn" {
       "AzureWebJobs.AnalyticsServicePreferencesStorageQueueInboundProcessorAdapter.Disabled" = "1"
       "AzureWebJobs.AnalyticsUserDataProcessingStorageQueueInboundProcessorAdapter.Disabled" = "1"
       "AzureWebJobs.CosmosApiServicesImportEvent.Disabled"                                   = "1"
-      "AzureWebJobs.CreateMessageReportTimeTrigger.Disabled"                                 = "1"
-      "AzureWebJobs.EnrichMessagesReportBlobTrigger.Disabled"                                = "1"
     }
   )
 
   sticky_app_setting_names = [
     "AzureWebJobs.CosmosApiServicesChangeFeed.Disabled",
-    "AzureWebJobs.CosmosApiMessageStatusChangeFeed.Disabled",
-    "AzureWebJobs.CosmosApiMessagesChangeFeed.Disabled",
-    "AzureWebJobs.AnalyticsMessagesChangeFeedInboundProcessorAdapter.Disabled",
-    "AzureWebJobs.AnalyticsMessagesStorageQueueInboundProcessorAdapter.Disabled",
-    "AzureWebJobs.AnalyticsMessageStatusChangeFeedInboundProcessorAdapter.Disabled",
-    "AzureWebJobs.AnalyticsMessageStatusStorageQueueInbloundAdapter.Disabled",
     "AzureWebJobs.AnalyticsServiceChangeFeedInboundProcessorAdapter.Disabled",
     "AzureWebJobs.AnalyticsServiceStorageQueueInboundProcessorAdapter.Disabled",
     "AzureWebJobs.AnalyticsServicePreferencesChangeFeedInboundProcessorAdapter.Disabled",
@@ -78,8 +57,6 @@ module "function_elt_itn" {
     "AzureWebJobs.AnalyticsServicePreferencesStorageQueueInboundProcessorAdapter.Disabled",
     "AzureWebJobs.AnalyticsUserDataProcessingStorageQueueInboundProcessorAdapter.Disabled",
     "AzureWebJobs.CosmosApiServicesImportEvent.Disabled",
-    "AzureWebJobs.CreateMessageReportTimeTrigger.Disabled",
-    "AzureWebJobs.EnrichMessagesReportBlobTrigger.Disabled",
   ]
 
   # Action groups for alerts
