@@ -32,8 +32,8 @@ module "storage_account_itn_elt" {
 }
 
 
-resource "azurerm_storage_table" "fnelterrors_messages_itn" {
-  name                 = "fnelterrorsMessages"
+resource "azurerm_storage_table" "fnelterrors_itn" {
+  name                 = "fnelterrors"
   storage_account_name = module.storage_account_itn_elt.name
 }
 
