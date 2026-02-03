@@ -51,17 +51,6 @@ resource "azurerm_storage_queue" "pdnd-io-cosmosdb-messages-failure-poison" {
   name                 = "pdnd-io-cosmosdb-messages-failure-poison"
   storage_account_name = module.storage_account_itn_elt.name
 }
-
-resource "azurerm_storage_queue" "pdnd-io-cosmosdb-messagestatus-failure" {
-  name                 = "pdnd-io-cosmosdb-messagestatus-failure"
-  storage_account_name = module.storage_account_itn_elt.name
-}
-
-resource "azurerm_storage_queue" "pdnd-io-cosmosdb-messagestatus-failure-poison" {
-  name                 = "pdnd-io-cosmosdb-messagestatus-failure-poison"
-  storage_account_name = module.storage_account_itn_elt.name
-}
-
 resource "azurerm_storage_queue" "pdnd-io-cosmosdb-services-failure" {
   name                 = "pdnd-io-cosmosdb-services-failure"
   storage_account_name = module.storage_account_itn_elt.name
