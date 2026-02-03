@@ -86,13 +86,6 @@ data "azurerm_key_vault" "key_vault_common" {
   resource_group_name = local.rg_common_name
 }
 
-
-
-data "azurerm_key_vault_secret" "fn_admin_SESSION_MANAGER_INTERNAL_KEY" {
-  name         = "fn-admin-session-manager-internal-key"
-  key_vault_id = data.azurerm_key_vault.key_vault_common.id
-}
-
 data "azurerm_key_vault_secret" "fn_app_KEY_SPIDLOGS_PRIV" {
   name         = "funcapp-KEY-SPIDLOGS-PRIV"
   key_vault_id = data.azurerm_key_vault.common.id
