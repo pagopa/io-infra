@@ -31,9 +31,6 @@ locals {
     // for rotation purposes
     APP_BACKEND_PRIMARY_KEY = data.azurerm_key_vault_secret.app_backend_APP_BACKEND_PRIMARY_KEY.value
 
-    // AUTHENTICATION
-    AUTHENTICATION_BASE_PATH = ""
-
     // FUNCTIONS
     API_URL                     = "https://${var.backend_hostnames.app[0]}/api/v1"
     API_KEY                     = data.azurerm_key_vault_secret.app_backend_API_KEY.value
@@ -49,10 +46,6 @@ locals {
     APP_MESSAGES_API_KEY        = data.azurerm_key_vault_secret.app_backend_COM_CITIZEN_FUNC_API_KEY.value
     LOLLIPOP_API_URL            = "https://${var.backend_hostnames.lollipop}"
     LOLLIPOP_API_KEY            = data.azurerm_key_vault_secret.app_backend_LOLLIPOP_ITN_API_KEY.value
-    TRIAL_SYSTEM_API_URL        = "https://ts-p-itn-api-func-01.azurewebsites.net" # not working anymore
-    TRIAL_SYSTEM_APIM_URL       = "https://ts-p-itn-apim-01.azure-api.net"         # not working anymore
-    TRIAL_SYSTEM_API_KEY        = data.azurerm_key_vault_secret.app_backend_TRIAL_SYSTEM_API_KEY.value
-    TRIAL_SYSTEM_APIM_KEY       = data.azurerm_key_vault_secret.app_backend_TRIAL_SYSTEM_APIM_KEY.value
     CDC_SUPPORT_API_URL         = "https://${var.backend_hostnames.cdc_support}"
     CDC_SUPPORT_API_KEY         = data.azurerm_key_vault_secret.app_backend_CDC_SUPPORT_API_KEY.value
 
@@ -63,8 +56,6 @@ locals {
     IO_SIGN_API_BASE_PATH             = "/api/v1/sign"
     IO_FIMS_API_BASE_PATH             = "/api/v1/fims"
     LOLLIPOP_API_BASE_PATH            = "/api/v1"
-    TRIAL_SYSTEM_API_BASE_PATH        = "/api/v1"
-    TRIAL_SYSTEM_APIM_BASE_PATH       = "/manage/api/v1"
     CDC_SUPPORT_API_BASE_PATH         = "/api/v1"
     CDC_SUPPORT_IO_API_BASE_PATH      = "/api/v1/cdc"
 
@@ -73,14 +64,6 @@ locals {
     REDIS_PORT     = var.redis_common.ssl_port
     REDIS_PASSWORD = var.redis_common.primary_access_key
 
-    // PUSH NOTIFICATIONS
-    ALLOW_NOTIFY_IP_SOURCE_RANGE = "127.0.0.0/0"
-
-    // PAGOPA
-    PAGOPA_API_URL_PROD = "https://api.platform.pagopa.it/checkout/auth/payments/v1"
-    PAGOPA_API_URL_TEST = "https://api.uat.platform.pagopa.it/checkout/auth/payments/v1"
-    PAGOPA_API_KEY_PROD = data.azurerm_key_vault_secret.app_backend_PAGOPA_API_KEY_PROD.value
-    PAGOPA_API_KEY_UAT  = data.azurerm_key_vault_secret.app_backend_PAGOPA_API_KEY_UAT.value
 
     // PAGOPA ECOMMERCE
     PAGOPA_ECOMMERCE_BASE_URL     = "https://api.platform.pagopa.it/ecommerce/payment-requests-service/v1"
@@ -102,7 +85,6 @@ locals {
     PUSH_NOTIFICATIONS_QUEUE_NAME                = "push-notifications"
 
     // Feature flags
-    FF_BONUS_ENABLED   = 1
     FF_CGN_ENABLED     = 1
     FF_CDC_ENABLED     = 1
     FF_IO_SIGN_ENABLED = 1
@@ -114,7 +96,6 @@ locals {
     FF_ROUTING_PUSH_NOTIF_CANARY_SHA_USERS_REGEX = "^([(0-9)|(a-f)|(A-F)]{63}[(0-4)]{1})$"
 
     FF_PN_ACTIVATION_ENABLED = "1"
-    FF_TRIAL_SYSTEM_ENABLED  = "1"
 
     // SUPPORT_TOKEN
     JWT_SUPPORT_TOKEN_ISSUER     = "app-backend.io.italia.it"
@@ -252,14 +233,6 @@ locals {
     // UNIQUE EMAIL ENFORCEMENT
     FF_UNIQUE_EMAIL_ENFORCEMENT    = "ALL"
     UNIQUE_EMAIL_ENFORCEMENT_USERS = join(",", [data.azurerm_key_vault_secret.app_backend_UNIQUE_EMAIL_ENFORCEMENT_USER.value, module.tests.users.unique_email_test[0]])
-
-    // DEPRECATED APP SETTINGS
-    // The following variables must be removed after a update
-    // of the io-backend configuration, because they are required to start
-    // the application.
-    BONUS_API_BASE_PATH = "/api/v1"
-    BONUS_API_URL       = "to-remove"
-    BONUS_API_KEY       = "to-remove"
 
     // Services App Backend
     SERVICES_APP_BACKEND_API_KEY       = data.azurerm_key_vault_secret.appbackend_SERVICES_APP_BACKEND_API_KEY.value
