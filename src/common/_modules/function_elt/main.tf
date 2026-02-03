@@ -27,7 +27,7 @@ module "function_elt_itn" {
 
   app_settings = merge(
     local.function_elt.app_settings, {
-      "AzureWebJobs.CosmosApiServicesChangeFeed.Disabled"                             = "1"
+      "AzureWebJobs.CosmosApiServicesChangeFeed.Disabled" = "1"
     }
   )
 
