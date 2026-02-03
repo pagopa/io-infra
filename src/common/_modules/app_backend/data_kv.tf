@@ -134,3 +134,8 @@ data "azurerm_key_vault_secret" "app_backend_APP_BACKEND_PRIMARY_KEY" {
   name         = "appbackend-APP-BACKEND-PRIMARY-KEY"
   key_vault_id = var.key_vault_common.id
 }
+
+data "azurerm_key_vault_secret" "appbackend_SERVICES_APP_BACKEND_API_KEY" {
+  name         = "appbe-host-key-for-app-backend"
+  key_vault_id = var.key_vault_common.id
+}
