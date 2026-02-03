@@ -69,7 +69,6 @@ locals {
     services_app_backend = data.azurerm_linux_function_app.services_app_backend_function_app.default_hostname
     # services_app_backend = data.azurerm_container_app.services_app_backend_function_app.ingress[0].fqdn
     lollipop      = data.azurerm_linux_function_app.lollipop_function.default_hostname
-    eucovidcert   = data.azurerm_linux_function_app.eucovidcert.default_hostname
     cgn           = "io-p-itn-cgn-card-func-02.azurewebsites.net"
     iosign        = data.azurerm_linux_function_app.io_sign_user.default_hostname
     iofims        = data.azurerm_linux_function_app.io_fims_user.default_hostname
