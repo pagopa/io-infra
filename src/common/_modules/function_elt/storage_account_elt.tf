@@ -31,12 +31,6 @@ module "storage_account_itn_elt" {
   tags = var.tags
 }
 
-resource "azurerm_storage_container" "messages_step_final_itn" {
-  name                  = "messages-report-step-final"
-  storage_account_id    = module.storage_account_itn_elt.id
-  container_access_type = "private"
-}
-
 
 resource "azurerm_storage_table" "fnelterrors_messages_itn" {
   name                 = "fnelterrorsMessages"
