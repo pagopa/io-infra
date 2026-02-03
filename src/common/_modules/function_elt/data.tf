@@ -40,27 +40,6 @@ data "azurerm_eventhub_authorization_rule" "evh_ns_io_cosmos_fn" {
   resource_group_name = "${var.project_weu_legacy}-evt-rg"
 }
 
-data "azurerm_eventhub_authorization_rule" "evh_ns_pnpg_cosmos_fn" {
-  name                = "io-fn-elt"
-  namespace_name      = "${var.project_weu_legacy}-evh-ns"
-  eventhub_name       = "pdnd-io-cosmosdb-messages"
-  resource_group_name = "${var.project_weu_legacy}-evt-rg"
-}
-
-data "azurerm_eventhub_authorization_rule" "evh_ns_pdnd_io_cosmos_message_status_fn" {
-  name                = "io-fn-elt"
-  namespace_name      = "${var.project_weu_legacy}-evh-ns"
-  eventhub_name       = "pdnd-io-cosmosdb-message-status"
-  resource_group_name = "${var.project_weu_legacy}-evt-rg"
-}
-
-data "azurerm_eventhub_authorization_rule" "evh_ns_pdnd_io_cosmos_fn" {
-  name                = "io-fn-elt"
-  namespace_name      = "${var.project_weu_legacy}-evh-ns"
-  eventhub_name       = "pdnd-io-cosmosdb-messages"
-  resource_group_name = "${var.project_weu_legacy}-evt-rg"
-}
-
 data "azurerm_eventhub_authorization_rule" "evh_ns_pdnd_io_cosmos_service_preferences_fn" {
   name                = "io-fn-elt"
   namespace_name      = "${var.project_weu_legacy}-evh-ns"
