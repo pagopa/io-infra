@@ -124,10 +124,6 @@ data "azurerm_key_vault_secret" "pdv_tokenizer_api_key" {
   key_vault_id = data.azurerm_key_vault.kv_common.id
 }
 
-data "azurerm_storage_account" "storage_api" {
-  name                = replace("${var.project_weu_legacy}stapi", "-", "")
-  resource_group_name = local.resource_group_name_internal
-}
 
 data "azurerm_storage_account" "storage_assets_cdn" {
   name                = replace(format("%s-stcdnassets", var.project_weu_legacy), "-", "")
