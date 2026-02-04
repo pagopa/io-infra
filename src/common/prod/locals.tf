@@ -178,26 +178,6 @@ locals {
       ]
     },
     {
-      name              = "pdnd-io-cosmosdb-notification-status"
-      partitions        = 30
-      message_retention = 7
-      consumers         = []
-      keys = [
-        {
-          name   = "io-fn-elt"
-          listen = false
-          send   = true
-          manage = false
-        },
-        {
-          name   = "pdnd"
-          listen = true
-          send   = false
-          manage = false
-        }
-      ]
-    },
-    {
       name              = "io-cosmosdb-message-status-for-view"
       partitions        = 32
       message_retention = 7
