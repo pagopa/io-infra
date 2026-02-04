@@ -76,6 +76,7 @@ module "user_data_backups_storage_account" {
   tags = var.tags
 }
 
+#trivy:ignore:AVD-AZU-0007 - Public access is required for user data download functionality
 module "user_data_download_storage_account" {
   source  = "pagopa-dx/azure-storage-account/azurerm"
   version = "~> 2.0"
@@ -87,9 +88,10 @@ module "user_data_download_storage_account" {
     app_name        = "usrdatadwnld"
     instance_number = "01"
   }
-  resource_group_name = azurerm_resource_group.function_admin_itn_rg.name
-  use_case            = "default"
-  subnet_pep_id       = data.azurerm_subnet.private_endpoints_subnet_itn.id
+  resource_group_name                 = azurerm_resource_group.function_admin_itn_rg.name
+  use_case                            = "default"
+  force_public_network_access_enabled = true
+  subnet_pep_id                       = data.azurerm_subnet.private_endpoints_subnet_itn.id
 
   subservices_enabled = {
     blob  = true
@@ -98,7 +100,7 @@ module "user_data_download_storage_account" {
 
   containers = [{
     name        = "user-data-download"
-    access_type = "private"
+    access_type = "blob"
   }]
 
   blob_features = {

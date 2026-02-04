@@ -13,11 +13,6 @@ data "azurerm_monitor_action_group" "quarantine_error_action_group" {
   resource_group_name = local.resource_group_name_common
 }
 
-data "azurerm_monitor_action_group" "io_com_action_group" {
-  name                = "io-p-com-error-ag-01"
-  resource_group_name = "io-p-itn-com-rg-01"
-}
-
 data "azurerm_private_dns_zone" "privatelink_blob_core" {
   name                = "privatelink.blob.core.windows.net"
   resource_group_name = local.resource_group_name_common
@@ -42,27 +37,6 @@ data "azurerm_eventhub_authorization_rule" "evh_ns_io_cosmos_fn" {
   name                = "io-fn-elt"
   namespace_name      = "${var.project_weu_legacy}-evh-ns"
   eventhub_name       = "io-cosmosdb-services"
-  resource_group_name = "${var.project_weu_legacy}-evt-rg"
-}
-
-data "azurerm_eventhub_authorization_rule" "evh_ns_pnpg_cosmos_fn" {
-  name                = "io-fn-elt"
-  namespace_name      = "${var.project_weu_legacy}-evh-ns"
-  eventhub_name       = "pdnd-io-cosmosdb-messages"
-  resource_group_name = "${var.project_weu_legacy}-evt-rg"
-}
-
-data "azurerm_eventhub_authorization_rule" "evh_ns_pdnd_io_cosmos_message_status_fn" {
-  name                = "io-fn-elt"
-  namespace_name      = "${var.project_weu_legacy}-evh-ns"
-  eventhub_name       = "pdnd-io-cosmosdb-message-status"
-  resource_group_name = "${var.project_weu_legacy}-evt-rg"
-}
-
-data "azurerm_eventhub_authorization_rule" "evh_ns_pdnd_io_cosmos_fn" {
-  name                = "io-fn-elt"
-  namespace_name      = "${var.project_weu_legacy}-evh-ns"
-  eventhub_name       = "pdnd-io-cosmosdb-messages"
   resource_group_name = "${var.project_weu_legacy}-evt-rg"
 }
 
@@ -150,15 +124,6 @@ data "azurerm_key_vault_secret" "pdv_tokenizer_api_key" {
   key_vault_id = data.azurerm_key_vault.kv_common.id
 }
 
-data "azurerm_storage_account" "storage_api" {
-  name                = replace("${var.project_weu_legacy}stapi", "-", "")
-  resource_group_name = local.resource_group_name_internal
-}
-
-data "azurerm_storage_account" "storage_api_replica" {
-  name                = replace("${var.project_weu_legacy}stapireplica", "-", "")
-  resource_group_name = local.resource_group_name_internal
-}
 
 data "azurerm_storage_account" "storage_assets_cdn" {
   name                = replace(format("%s-stcdnassets", var.project_weu_legacy), "-", "")
@@ -178,39 +143,14 @@ data "azurerm_redis_cache" "ioauth_redis_common_itn" {
 
 # Storage Tables
 
+
 data "azurerm_storage_table" "fnelterrors" {
   name                 = "fnelterrors"
   storage_account_name = module.storage_account_itn_elt.name
 }
 
-data "azurerm_storage_table" "fnelterrors_messages" {
-  name                 = "fnelterrorsMessages"
-  storage_account_name = module.storage_account_itn_elt.name
-}
-
-data "azurerm_storage_table" "fnelterrors_message_status" {
-  name                 = "fnelterrorsMessageStatus"
-  storage_account_name = module.storage_account_itn_elt.name
-}
 
 data "azurerm_storage_table" "fneltcommands" {
   name                 = "fneltcommands"
-  storage_account_name = module.storage_account_itn_elt.name
-}
-
-data "azurerm_storage_table" "fneltexports" {
-  name                 = "fneltexports"
-  storage_account_name = module.storage_account_itn_elt.name
-}
-
-# Storage Containers
-
-data "azurerm_storage_container" "container_messages_report_step1" {
-  name                 = "messages-report-step1"
-  storage_account_name = module.storage_account_itn_elt.name
-}
-
-data "azurerm_storage_container" "container_messages_report_step_final" {
-  name                 = "messages-report-step-final"
   storage_account_name = module.storage_account_itn_elt.name
 }
