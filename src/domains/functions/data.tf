@@ -119,13 +119,6 @@ data "azurerm_storage_account" "auth_maintenance_storage" {
   resource_group_name = format("%s-itn-auth-main-rg-01", local.project)
 }
 
-
-data "azurerm_subnet" "function_eucovidcert_snet" {
-  name                 = format("%s-eucovidcert-snet", local.project)
-  resource_group_name  = local.rg_common_name
-  virtual_network_name = local.vnet_common_name
-}
-
 data "azurerm_subnet" "apim_itn_snet" {
   name                 = "io-p-itn-apim-snet-01"
   resource_group_name  = local.vnet_common_resource_group_name_itn
