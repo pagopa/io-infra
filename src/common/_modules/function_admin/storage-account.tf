@@ -76,6 +76,7 @@ module "user_data_backups_storage_account" {
   tags = var.tags
 }
 
+#trivy:ignore:AVD-AZU-0007 - Public access is required for user data download functionality
 module "user_data_download_storage_account" {
   source  = "pagopa-dx/azure-storage-account/azurerm"
   version = "~> 2.0"
