@@ -1,0 +1,68 @@
+openapi: 3.0.1
+info:
+  version: 0.0.1
+  title: IO Platform Sessions API
+  x-logo:
+    url: https://io.italia.it/assets/img/io-logo-blue.svg
+  description: |
+    IO Platform PROXY - Sessions API
+servers:
+  - url: https://${host}/${basePath}
+security:
+  - ApiKeyAuth: []
+paths:
+  /sessions:
+    delete:
+      summary: Delete user session from cache
+      operationId: deleteSession
+      tags:
+        - Sessions
+      parameters:
+        - name: X-Session-Token
+          in: header
+          required: true
+          description: The session token to be deleted
+          schema:
+            type: string
+            minLength: 1
+      responses:
+        '204':
+          description: Session deleted successfully
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+        '401':
+          description: Unauthorized
+        '429':
+          description: Too many requests
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+components:
+  securitySchemes:
+    ApiKeyAuth:
+      type: apiKey
+      in: header
+      name: Ocp-Apim-Subscription-Key
+  schemas:
+    ProblemJson:
+      type: object
+      properties:
+        type:
+          type: string
+          format: uri
+        title:
+          type: string
+        status:
+          type: integer
+        detail:
+          type: string
+        instance:
+          type: string
+          format: uri
