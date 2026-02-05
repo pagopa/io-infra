@@ -52,3 +52,8 @@ resource "azurerm_redis_cache" "common" {
 
   tags = var.tags
 }
+
+
+module "common_values" {
+  source = "github.com/pagopa/io-infra//src/_modules/common_values?ref=main"
+}
