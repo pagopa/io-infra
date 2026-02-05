@@ -86,13 +86,6 @@ data "azurerm_key_vault" "key_vault_common" {
   resource_group_name = local.rg_common_name
 }
 
-
-
-data "azurerm_key_vault_secret" "fn_admin_SESSION_MANAGER_INTERNAL_KEY" {
-  name         = "fn-admin-session-manager-internal-key"
-  key_vault_id = data.azurerm_key_vault.key_vault_common.id
-}
-
 data "azurerm_key_vault_secret" "fn_app_KEY_SPIDLOGS_PRIV" {
   name         = "funcapp-KEY-SPIDLOGS-PRIV"
   key_vault_id = data.azurerm_key_vault.common.id
@@ -124,13 +117,6 @@ data "azurerm_storage_account" "citizen_auth_common" {
 data "azurerm_storage_account" "auth_maintenance_storage" {
   name                = replace(format("%s-itn-auth-mnt-st-01", local.project), "-", "")
   resource_group_name = format("%s-itn-auth-main-rg-01", local.project)
-}
-
-
-data "azurerm_subnet" "function_eucovidcert_snet" {
-  name                 = format("%s-eucovidcert-snet", local.project)
-  resource_group_name  = local.rg_common_name
-  virtual_network_name = local.vnet_common_name
 }
 
 data "azurerm_subnet" "apim_itn_snet" {

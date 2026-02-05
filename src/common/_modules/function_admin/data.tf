@@ -113,11 +113,6 @@ data "azurerm_storage_account" "itnuserbackups" {
   resource_group_name = azurerm_resource_group.function_admin_itn_rg.name
 }
 
-data "azurerm_storage_account" "userdatadownload" {
-  name                = "iopstuserdatadownload"
-  resource_group_name = local.rg_internal_name
-}
-
 data "azurerm_storage_account" "userbackups" {
   name                = "iopstuserbackups"
   resource_group_name = local.rg_internal_name
