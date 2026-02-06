@@ -1,11 +1,11 @@
 openapi: 3.0.1
 info:
   version: 0.0.1
-  title: IO Platform Sessions API
+  title: IO Platform Internal API
   x-logo:
     url: https://io.italia.it/assets/img/io-logo-blue.svg
   description: |
-    IO Platform PROXY - Sessions API
+    IO Platform PROXY - Internal API
 servers:
   - url: https://${host}/${basePath}
 security:
@@ -24,7 +24,8 @@ paths:
           description: The session token to be deleted
           schema:
             type: string
-            minLength: 1
+            minLength: 48
+            maxLength: 48
       responses:
         '204':
           description: Session deleted successfully
