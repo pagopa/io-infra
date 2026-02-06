@@ -1,0 +1,107 @@
+<!--
+    API Management Policy: Delete Session Token from Cache
+
+    This policy implements session token invalidation with the following behavior:
+    - Inbound: 
+        1. Validates X-Session-Token header presence and format (48 chars)
+        2. Removes the session token from APIM internal cache
+        3. Returns 204 No Content (no backend call needed)
+    - Error: Returns ProblemJson responses as per OpenAPI spec
+
+    Expected responses:
+    - 204: Session deleted successfully
+    - 400: Bad request (missing or invalid token)
+    - 401: Unauthorized (request from non-internal host)
+    - 500: Internal server error
+-->
+<policies>
+    <inbound>
+        <base />
+        
+        <!-- Verify request comes from internal host only -->
+        <choose>
+            <when condition="@(!context.Request.OriginalUrl.Host.Equals("{{platform-api-gateway-hostname-internal}}", StringComparison.OrdinalIgnoreCase))">
+                <return-response>
+                    <set-status code="401" reason="Unauthorized" />
+                </return-response>
+            </when>
+        </choose>
+        
+        <!-- Extract session token from header -->
+        <set-variable name="sessionToken" value="@(context.Request.Headers.GetValueOrDefault("X-Session-Token", ""))" />
+        
+        <!-- Validate token presence -->
+        <choose>
+            <when condition="@(string.IsNullOrEmpty(context.Variables.GetValueOrDefault<string>("sessionToken")))">
+                <return-response>
+                    <set-status code="400" reason="Bad Request" />
+                    <set-header name="Content-Type" exists-action="override">
+                        <value>application/json</value>
+                    </set-header>
+                    <set-body>@{
+                        return new JObject(
+                            new JProperty("type", "https://developer.pagopa.it/io/problems/bad-request"),
+                            new JProperty("title", "Bad Request"),
+                            new JProperty("status", 400),
+                            new JProperty("detail", "Missing required header: X-Session-Token"),
+                            new JProperty("instance", context.Request.Url.Path)
+                        ).ToString();
+                    }</set-body>
+                </return-response>
+            </when>
+        </choose>
+        
+        <!-- Validate token length (must be exactly 48 characters) -->
+        <choose>
+            <when condition="@(context.Variables.GetValueOrDefault<string>("sessionToken").Length != 48)">
+                <return-response>
+                    <set-status code="400" reason="Bad Request" />
+                    <set-header name="Content-Type" exists-action="override">
+                        <value>application/json</value>
+                    </set-header>
+                    <set-body>@{
+                        return new JObject(
+                            new JProperty("type", "https://developer.pagopa.it/io/problems/bad-request"),
+                            new JProperty("title", "Bad Request"),
+                            new JProperty("status", 400),
+                            new JProperty("detail", "Invalid X-Session-Token: must be exactly 48 characters"),
+                            new JProperty("instance", context.Request.Url.Path)
+                        ).ToString();
+                    }</set-body>
+                </return-response>
+            </when>
+        </choose>
+        
+        <!-- Remove session token from APIM internal cache -->
+        <cache-remove-value key="@("session-" + context.Variables.GetValueOrDefault<string>("sessionToken"))" caching-type="internal" />
+        
+        <!-- Return 204 No Content - no backend call needed -->
+        <return-response>
+            <set-status code="204" reason="No Content" />
+        </return-response>
+    </inbound>
+    <backend>
+        <base />
+    </backend>
+    <outbound>
+        <base />
+    </outbound>
+    <on-error>
+        <base />
+        <return-response>
+            <set-status code="500" reason="Internal Server Error" />
+            <set-header name="Content-Type" exists-action="override">
+                <value>application/json</value>
+            </set-header>
+            <set-body>@{
+                return new JObject(
+                    new JProperty("type", "https://developer.pagopa.it/io/problems/internal-error"),
+                    new JProperty("title", "Internal Server Error"),
+                    new JProperty("status", 500),
+                    new JProperty("detail", "An unexpected error occurred while processing the request"),
+                    new JProperty("instance", context.Request.Url.Path)
+                ).ToString();
+            }</set-body>
+        </return-response>
+    </on-error>
+</policies>

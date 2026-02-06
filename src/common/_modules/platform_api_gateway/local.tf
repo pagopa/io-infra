@@ -40,4 +40,8 @@ locals {
       role         = "owner"
     }
   ]
+
+  api_group_prefixes = {
+    session = "platform-internal"
+  }
 }
