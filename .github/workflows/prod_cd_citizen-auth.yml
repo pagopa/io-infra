@@ -68,6 +68,19 @@ jobs:
         run: |
           bash ./terraform.sh plan ${{ env.AZURE_ENVIRONMENT }} -lock-timeout=3000s -out=tfplan-${{ env.AZURE_ENVIRONMENT }}-${{ github.sha }} -input=false
 
+      - name: Encrypt Terraform Plan common
+        working-directory: ${{ env.DIR }}-common
+        env:
+          AZURE_ENVIRONMENT: prod
+          ENCRYPTION_PASSPHRASE: ${{ secrets.ARTIFACT_ENC_KEY }}
+        run: |
+          set -euo pipefail
+          openssl enc -aes-256-cbc -salt -pbkdf2 \
+            -in "tfplan-${{ env.AZURE_ENVIRONMENT }}-${{ github.sha }}" \
+            -out "tfplan-${{ env.AZURE_ENVIRONMENT }}-${{ github.sha }}.enc" \
+            -pass env:ENCRYPTION_PASSPHRASE
+          rm -f "tfplan-${{ env.AZURE_ENVIRONMENT }}-${{ github.sha }}"
+
       - name: Terraform plan weu-prod01
         shell: bash
         working-directory: ${{ env.DIR }}-app
@@ -76,6 +89,19 @@ jobs:
         run: |
           bash ./terraform.sh plan ${{ env.AZURE_ENVIRONMENT }} -lock-timeout=3000s -out=tfplan-${{ env.AZURE_ENVIRONMENT }}-${{ github.sha }} -input=false
 
+      - name: Encrypt Terraform Plan weu-prod01
+        working-directory: ${{ env.DIR }}-app
+        env:
+          AZURE_ENVIRONMENT: weu-prod01
+          ENCRYPTION_PASSPHRASE: ${{ secrets.ARTIFACT_ENC_KEY }}
+        run: |
+          set -euo pipefail
+          openssl enc -aes-256-cbc -salt -pbkdf2 \
+            -in "tfplan-${{ env.AZURE_ENVIRONMENT }}-${{ github.sha }}" \
+            -out "tfplan-${{ env.AZURE_ENVIRONMENT }}-${{ github.sha }}.enc" \
+            -pass env:ENCRYPTION_PASSPHRASE
+          rm -f "tfplan-${{ env.AZURE_ENVIRONMENT }}-${{ github.sha }}"
+
       - uses: actions/upload-artifact@c7d193f32edcb7bfad88892161225aeda64e9392
         id: artifact_upload
         name: Upload plans as artifacts
@@ -83,8 +109,8 @@ jobs:
           name: tfplan-output
           if-no-files-found: error
           path: |
-            **/tfplan-prod-*
-            **/tfplan-weu-prod01-*
+            **/tfplan-prod-*.enc
+            **/tfplan-weu-prod01-*.enc
 
     outputs:
       terraform_version: ${{ steps.env_tf_version.outputs.terraform_version}}
@@ -113,6 +139,32 @@ jobs:
         name: Download plans as artifact
         with:
           name: tfplan-output
+
+      - name: Decrypt Terraform Plan common
+        working-directory: ${{ env.DIR }}-common
+        env:
+          AZURE_ENVIRONMENT: prod
+          ENCRYPTION_PASSPHRASE: ${{ secrets.ARTIFACT_ENC_KEY }}
+        run: |
+          set -euo pipefail
+          openssl enc -aes-256-cbc -d -pbkdf2 \
+            -in "tfplan-${{ env.AZURE_ENVIRONMENT }}-${{ github.sha }}.enc" \
+            -out "tfplan-${{ env.AZURE_ENVIRONMENT }}-${{ github.sha }}" \
+            -pass env:ENCRYPTION_PASSPHRASE
+          rm -f "tfplan-${{ env.AZURE_ENVIRONMENT }}-${{ github.sha }}.enc"
+
+      - name: Decrypt Terraform Plan weu-prod01
+        working-directory: ${{ env.DIR }}-app
+        env:
+          AZURE_ENVIRONMENT: weu-prod01
+          ENCRYPTION_PASSPHRASE: ${{ secrets.ARTIFACT_ENC_KEY }}
+        run: |
+          set -euo pipefail
+          openssl enc -aes-256-cbc -d -pbkdf2 \
+            -in "tfplan-${{ env.AZURE_ENVIRONMENT }}-${{ github.sha }}.enc" \
+            -out "tfplan-${{ env.AZURE_ENVIRONMENT }}-${{ github.sha }}" \
+            -pass env:ENCRYPTION_PASSPHRASE
+          rm -f "tfplan-${{ env.AZURE_ENVIRONMENT }}-${{ github.sha }}.enc"
 
       - name: Azure Login
         id: az_login
