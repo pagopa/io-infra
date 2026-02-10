@@ -24,8 +24,7 @@ paths:
           description: The session token to be deleted
           schema:
             type: string
-            minLength: 48
-            maxLength: 48
+            minLength: 64
       responses:
         '204':
           description: Session deleted successfully
