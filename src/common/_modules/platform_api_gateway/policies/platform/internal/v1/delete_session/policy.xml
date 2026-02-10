@@ -73,7 +73,7 @@
         </choose>
         
         <!-- Remove session token from APIM internal cache -->
-        <cache-remove-value key="@("session-" + context.Variables.GetValueOrDefault<string>("sessionToken"))" caching-type="internal" />
+        <cache-remove-value key="@("{{session-token-cache-prefix}}" + context.Variables.GetValueOrDefault<string>("sessionToken"))" caching-type="internal" />
         
         <!-- Return 204 No Content - no backend call needed -->
         <return-response>

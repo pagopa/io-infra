@@ -114,13 +114,23 @@ resource "local_file" "platform_internal_api" {
   filename = "${path.module}/api/platform-internal/v1/api.yaml"
 }
 
+resource "azurerm_api_management_api_version_set" "platform_internal" {
+  name                = format("%s-p-platform-internal-apis", var.prefix)
+  api_management_name = module.platform_api_gateway.name
+  resource_group_name = module.platform_api_gateway.resource_group_name
+  display_name        = "IO Platform Internal API"
+  versioning_scheme   = "Segment"
+}
+
 resource "azurerm_api_management_api" "platform_internal" {
   name                  = format("%s-p-platform-internal-api", var.prefix)
   api_management_name   = module.platform_api_gateway.name
   resource_group_name   = module.platform_api_gateway.resource_group_name
-  subscription_required = true
+  subscription_required = false
 
-  revision = 1
+  version_set_id = azurerm_api_management_api_version_set.platform_internal.id
+  version        = "v1"
+  revision       = 1
 
   description  = "IO Platform PROXY - Internal API"
   display_name = "IO Platform Internal API"
