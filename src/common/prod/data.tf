@@ -146,12 +146,6 @@ data "azurerm_linux_function_app" "io_fims_user" {
   name                = "${local.project_itn}-fims-user-func-01"
 }
 
-data "azurerm_subnet" "admin_snet" {
-  name                 = "${local.project_weu_legacy}-admin-snet"
-  resource_group_name  = local.core.networking.weu.vnet_common.resource_group_name
-  virtual_network_name = local.core.networking.weu.vnet_common.name
-}
-
 data "azurerm_subnet" "itn_auth_lv_func_snet" {
   name                 = "${local.project_itn}-auth-lv-func-snet-02"
   resource_group_name  = local.core.networking.itn.vnet_common.resource_group_name
