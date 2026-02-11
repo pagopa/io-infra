@@ -119,7 +119,7 @@ provider "registry.terraform.io/hashicorp/null" {
 
 provider "registry.terraform.io/pagopa-dx/azure" {
   version     = "0.8.3"
-  constraints = ">= 0.0.6, ~> 0.3, ~> 0.4, >= 0.6.0, >= 0.6.5, < 1.0.0"
+  constraints = ">= 0.0.6, ~> 0.3, ~> 0.4, >= 0.6.0, >= 0.8.3, < 1.0.0"
   hashes = [
     "h1:JgGVXhrfQawQ7PjfbUWLlnhNq3LUiQtqcxejeHq4s5M=",
     "h1:X57qRxvgH709qXf7wHuWRdLdJnmiy3YgYfDtCSYrMMY=",
