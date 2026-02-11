@@ -15,6 +15,14 @@ locals {
         header_name  = "X-Client-Ip"
         header_value = "{var_client_ip}"
       },
+      {
+        header_name  = "X-User"
+        header_value = ""
+      },
+      {
+        header_name  = "X-App-Backend-Api-Key"
+        header_value = ""
+      },
     ]
     response_header_configurations = []
   }
@@ -71,7 +79,7 @@ locals {
       fqdns = [
         data.azurerm_linux_web_app.session_manager_03.default_hostname,
       ]
-      probe                       = "/healthcheck"
+      probe                       = "/api/auth/v1/healthcheck"
       probe_name                  = "probe-session-manager-app"
       request_timeout             = 10
       pick_host_name_from_backend = true
@@ -492,6 +500,10 @@ locals {
     io-backend-path-based-rule = {
       default_backend               = "appbackend-app"
       default_rewrite_rule_set_name = "rewrite-rule-set-api-app"
+
+      # NOTE: the order matters! the most generic ones should be set at the end
+      # https://learn.microsoft.com/en-us/azure/application-gateway/url-route-overview#pathpattern
+      # However, this code sorts alphabetically the path rules by their key names, as this object is a map
       path_rule = {
         api-gateway-platform-info = {
           paths                 = ["/info"]
@@ -517,6 +529,26 @@ locals {
           paths                 = ["/api/identity/*"]
           backend               = "platform-api-gateway",
           rewrite_rule_set_name = "rewrite-rule-set-api-app"
+        },
+        api-gateway-platform-wallet-01-uat = {
+          paths                 = ["/api/wallet/uat/*"]
+          backend               = "platform-api-gateway",
+          rewrite_rule_set_name = "rewrite-rule-set-api-app"
+        },
+        api-gateway-platform-wallet-02 = {
+          paths                 = ["/api/wallet/*"]
+          backend               = "platform-api-gateway",
+          rewrite_rule_set_name = "rewrite-rule-set-api-app"
+        },
+        api-gateway-platform-wallet-legacy-01-uat = {
+          paths                 = ["/api/v1/wallet/uat/*"]
+          backend               = "platform-api-gateway",
+          rewrite_rule_set_name = "rewrite-rule-set-wallet-app-uat"
+        },
+        api-gateway-platform-wallet-legacy-02 = {
+          paths                 = ["/api/v1/wallet/*"]
+          backend               = "platform-api-gateway",
+          rewrite_rule_set_name = "rewrite-rule-set-wallet-app"
         },
         api-gateway-cdc = {
           paths                 = ["/api/cdc/*"]
@@ -590,6 +622,16 @@ locals {
           backend               = "session-manager-app",
           rewrite_rule_set_name = "rewrite-rule-set-api-app-rewrite-to-pagopa-session-manager"
         },
+        api-gateway-com = {
+          paths                 = ["/api/com/*"]
+          backend               = "platform-api-gateway",
+          rewrite_rule_set_name = "rewrite-rule-set-api-app"
+        },
+        pn-activation = {
+          paths                 = ["/api/v1/pn/activation"]
+          backend               = "platform-api-gateway",
+          rewrite_rule_set_name = "rewrite-rule-set-api-app-pn"
+        }
       }
     }
   }
@@ -750,6 +792,27 @@ locals {
       ]
     },
     {
+      name = "rewrite-rule-set-api-app-pn"
+      rewrite_rules = [
+        local.io_backend_ip_headers_rule,
+        {
+          name          = "rewrite-url-to-api-pn"
+          rule_sequence = 100
+          conditions    = []
+
+          # URL rewriting preserving the specific endpoint
+          url = {
+            path         = "/api/com/v1/pn/activation"
+            query_string = null
+            reroute      = false
+            components   = "path_only"
+          }
+          request_header_configurations  = []
+          response_header_configurations = []
+        }
+      ]
+    },
+    {
       name = "rewrite-rule-set-api-app-rewrite-platform-legacy"
       rewrite_rules = [
         local.io_backend_ip_headers_rule,
@@ -770,6 +833,61 @@ locals {
           # URL rewriting preserving the specific endpoint
           url = {
             path         = "/api/platform-legacy/v1/{var_uri_path_1}"
+            query_string = null
+            reroute      = false
+            components   = "path_only"
+          }
+          request_header_configurations  = []
+          response_header_configurations = []
+        }
+      ]
+    },
+
+    {
+      name = "rewrite-rule-set-wallet-app"
+      rewrite_rules = [
+        local.io_backend_ip_headers_rule,
+        {
+          name          = "rewrite-url-to-api-platform"
+          rule_sequence = 111
+          conditions = [
+            {
+              variable    = "var_uri_path"
+              pattern     = "^/api/v1/wallet/(.*)$"
+              ignore_case = true
+              negate      = false
+            }
+          ]
+
+          url = {
+            path         = "/api/wallet/v1/{var_uri_path_1}"
+            query_string = null
+            reroute      = false
+            components   = "path_only"
+          }
+          request_header_configurations  = []
+          response_header_configurations = []
+        }
+      ]
+    },
+    {
+      name = "rewrite-rule-set-wallet-app-uat"
+      rewrite_rules = [
+        local.io_backend_ip_headers_rule,
+        {
+          name          = "rewrite-wallet-uat-url-to-api-platform"
+          rule_sequence = 110
+          conditions = [
+            {
+              variable    = "var_uri_path"
+              pattern     = "^/api/v1/wallet/uat/(.*)$"
+              ignore_case = true
+              negate      = false
+            }
+          ]
+
+          url = {
+            path         = "/api/wallet/uat/v1/{var_uri_path_1}"
             query_string = null
             reroute      = false
             components   = "path_only"
@@ -1093,7 +1211,7 @@ locals {
     }
 
     response_time = {
-      description   = "Backends response time is too high. See Dimension value to check the Listener unhealty."
+      description   = "Backends response time is too high. See Dimension value to check the Listener unhealthy."
       frequency     = "PT5M"
       window_size   = "PT15M"
       severity      = 2
@@ -1140,7 +1258,7 @@ locals {
     }
 
     failed_requests = {
-      description   = "Abnormal failed requests. See Dimension value to check the Backend Pool unhealty"
+      description   = "Abnormal failed requests. See Dimension value to check the Backend Pool unhealthy"
       frequency     = "PT5M"
       window_size   = "PT5M"
       severity      = 1

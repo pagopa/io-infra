@@ -19,6 +19,11 @@ data "azurerm_linux_web_app" "firmaconio_selfcare_web_app" {
   resource_group_name = "${local.project_weu_legacy}-sign-backend-rg"
 }
 
+data "azurerm_private_endpoint_connection" "psn_appgw" {
+  name                = "${local.project_itn}-psn-agw-pep-01"
+  resource_group_name = local.core.networking.itn.vnet_common.resource_group_name
+}
+
 # AD Groups
 data "azuread_group" "platform_admins" {
   display_name = "${local.prefix}-${local.env_short}-adgroup-platform-admins"
@@ -71,9 +76,24 @@ data "azurerm_user_assigned_identity" "auth_n_identity_infra_cd" {
   resource_group_name = "${local.prefix}-${local.env_short}-itn-auth-rg-01"
 }
 
+data "azurerm_user_assigned_identity" "com_infra_cd" {
+  name                = "${local.prefix}-${local.env_short}-itn-msgs-infra-github-cd-id-01"
+  resource_group_name = "${local.prefix}-${local.env_short}-itn-msgs-rg-01"
+}
+
 data "azurerm_user_assigned_identity" "bonus_infra_cd" {
   name                = "${local.prefix}-${local.env_short}-itn-cdc-infra-github-cd-id-01"
   resource_group_name = "${local.prefix}-${local.env_short}-itn-cdc-rg-01"
+}
+
+data "azurerm_user_assigned_identity" "managed_identity_io_infra_ci" {
+  name                = "${local.prefix}-${local.env_short}-infra-github-ci-identity"
+  resource_group_name = "${local.prefix}-${local.env_short}-identity-rg"
+}
+
+data "azurerm_user_assigned_identity" "managed_identity_io_infra_cd" {
+  name                = "${local.prefix}-${local.env_short}-infra-github-cd-identity"
+  resource_group_name = "${local.prefix}-${local.env_short}-identity-rg"
 }
 
 # Cosmos API
@@ -81,14 +101,6 @@ data "azurerm_subnet" "cosmos_api_allowed" {
   for_each = toset(local.cosmos_api.allowed_subnets)
 
   name                 = each.value
-  virtual_network_name = local.core.networking.weu.vnet_common.name
-  resource_group_name  = local.core.networking.weu.vnet_common.resource_group_name
-}
-
-# App Backend
-data "azurerm_subnet" "services_snet" {
-  count                = 2
-  name                 = format("%s-services-snet-%d", local.project_weu_legacy, count.index + 1)
   virtual_network_name = local.core.networking.weu.vnet_common.name
   resource_group_name  = local.core.networking.weu.vnet_common.resource_group_name
 }
@@ -105,7 +117,7 @@ data "azurerm_linux_function_app" "function_profile" {
 }
 
 data "azurerm_linux_function_app" "com_citizen_func" {
-  name                = "${local.project_itn}-com-citizen-func-01"
+  name                = "${local.project_itn}-com-citizen-func-02"
   resource_group_name = "${local.project_itn}-com-rg-01"
 }
 
@@ -114,14 +126,14 @@ data "azurerm_linux_function_app" "services_app_backend_function_app" {
   name                = "${local.project_itn}-svc-app-be-func-01"
 }
 
+data "azurerm_container_app" "services_app_backend_function_app" {
+  resource_group_name = "${local.project_itn}-svc-rg-01"
+  name                = "${local.project_itn}-svc-app-be-func-02"
+}
+
 data "azurerm_linux_function_app" "lollipop_function" {
   name                = "${local.project_itn}-auth-lollipop-func-02"
   resource_group_name = "${local.project_itn}-auth-lollipop-rg-02"
-}
-
-data "azurerm_linux_function_app" "eucovidcert" {
-  resource_group_name = "${local.project_weu_legacy}-rg-eucovidcert"
-  name                = "${local.project_weu_legacy}-eucovidcert-fn"
 }
 
 data "azurerm_linux_function_app" "io_sign_user" {
@@ -134,22 +146,6 @@ data "azurerm_linux_function_app" "io_fims_user" {
   name                = "${local.project_itn}-fims-user-func-01"
 }
 
-data "azurerm_linux_function_app" "wallet_user" {
-  resource_group_name = "${local.project_itn}-wallet-rg-01"
-  name                = "${local.project_itn}-wallet-user-func-02"
-}
-
-data "azurerm_linux_function_app" "wallet_user_uat" {
-  resource_group_name = "${local.project_itn}-wallet-rg-01"
-  name                = "${local.prefix}-u-${local.location_short.italynorth}-wallet-user-func-01"
-}
-
-data "azurerm_subnet" "admin_snet" {
-  name                 = "${local.project_weu_legacy}-admin-snet"
-  resource_group_name  = local.core.networking.weu.vnet_common.resource_group_name
-  virtual_network_name = local.core.networking.weu.vnet_common.name
-}
-
 data "azurerm_subnet" "itn_auth_lv_func_snet" {
   name                 = "${local.project_itn}-auth-lv-func-snet-02"
   resource_group_name  = local.core.networking.itn.vnet_common.resource_group_name
@@ -160,4 +156,15 @@ data "azurerm_subnet" "itn_auth_prof_async_func_snet" {
   name                 = "${local.project_itn}-auth-profas-func-snet-02"
   resource_group_name  = local.core.networking.itn.vnet_common.resource_group_name
   virtual_network_name = local.core.networking.itn.vnet_common.name
+}
+
+# Key Vaults
+data "azurerm_key_vault" "ioweb_kv" {
+  name                = "${local.project_itn}-ioweb-kv-01"
+  resource_group_name = "${local.project_itn}-ioweb-rg-01"
+}
+
+data "azurerm_key_vault" "itn_key_vault" {
+  name                = "${local.project_itn}-platform-kv-01"
+  resource_group_name = "${local.project_itn}-common-rg-01"
 }

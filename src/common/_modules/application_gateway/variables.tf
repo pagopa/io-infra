@@ -128,3 +128,17 @@ variable "error_action_group_id" {
   type        = string
   description = "Azure Monitor error action group id"
 }
+
+variable "subscription_id" {
+  type        = string
+  description = "Id of the current subscription"
+}
+
+variable "ioweb_kv" {
+  type = object({
+    name                = string
+    resource_group_name = string
+    id                  = string
+  })
+  description = "IO-Web Key Vault used to store certificates"
+}

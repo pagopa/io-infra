@@ -10,6 +10,11 @@ data "azurerm_key_vault_secret" "app_backend_CGN_API_KEY" {
   key_vault_id = var.key_vault_common.id
 }
 
+data "azurerm_key_vault_secret" "app_backend_CDC_SUPPORT_API_KEY" {
+  name         = "funccdcsupport-KEY-APPBACKEND"
+  key_vault_id = var.key_vault_common.id
+}
+
 data "azurerm_key_vault_secret" "app_backend_IO_SIGN_API_KEY" {
   name         = "funciosign-KEY-APPBACKEND"
   key_vault_id = var.key_vault_common.id
@@ -37,16 +42,6 @@ data "azurerm_key_vault_secret" "app_backend_PAGOPA_ECOMMERCE_API_KEY" {
 
 data "azurerm_key_vault_secret" "app_backend_PAGOPA_ECOMMERCE_UAT_API_KEY" {
   name         = "appbackend-PAGOPA-ECOMMERCE-UAT-API-KEY"
-  key_vault_id = var.key_vault_common.id
-}
-
-data "azurerm_key_vault_secret" "app_backend_PAGOPA_API_KEY_PROD" {
-  name         = "appbackend-PAGOPA-API-KEY-PROD-PRIMARY"
-  key_vault_id = var.key_vault_common.id
-}
-
-data "azurerm_key_vault_secret" "app_backend_PAGOPA_API_KEY_UAT" {
-  name         = "appbackend-PAGOPA-API-KEY-UAT-PRIMARY"
   key_vault_id = var.key_vault_common.id
 }
 
@@ -115,11 +110,6 @@ data "azurerm_key_vault_secret" "app_backend_LOLLIPOP_ITN_API_KEY" {
   key_vault_id = var.key_vault_common.id
 }
 
-data "azurerm_key_vault_secret" "app_backend_TRIAL_SYSTEM_API_KEY" {
-  name         = "appbackend-TRIAL-SYSTEM-API-KEY"
-  key_vault_id = var.key_vault_common.id
-}
-
 data "azurerm_key_vault_secret" "app_backend_UNIQUE_EMAIL_ENFORCEMENT_USER" {
   name         = "appbackend-UNIQUE-EMAIL-ENFORCEMENT-USER"
   key_vault_id = var.key_vault_common.id
@@ -135,27 +125,17 @@ data "azurerm_key_vault_secret" "app_backend_RECEIPT_SERVICE_API_KEY" {
   key_vault_id = var.key_vault_common.id
 }
 
-data "azurerm_key_vault_secret" "fn_eucovidcert_API_KEY_APPBACKEND" {
-  name         = "funceucovidcert-KEY-APPBACKEND"
-  key_vault_id = var.key_vault_common.id
-}
-
 data "azurerm_key_vault_secret" "fn_eucovidcert_API_KEY_PUBLICIOEVENTDISPATCHER" {
   name         = "funceucovidcert-KEY-PUBLICIOEVENTDISPATCHER"
   key_vault_id = var.key_vault.id
 }
 
-data "azurerm_key_vault_secret" "app_backend_IO_WALLET_API_KEY" {
-  name         = "funciowallet-KEY-APPBACKEND"
+data "azurerm_key_vault_secret" "app_backend_APP_BACKEND_PRIMARY_KEY" {
+  name         = "appbackend-APP-BACKEND-PRIMARY-KEY"
   key_vault_id = var.key_vault_common.id
 }
 
-data "azurerm_key_vault_secret" "app_backend_IO_WALLET_UAT_API_KEY" {
-  name         = "funciowalletuat-KEY-APPBACKEND"
-  key_vault_id = var.key_vault_common.id
-}
-
-data "azurerm_key_vault_secret" "app_backend_TRIAL_SYSTEM_APIM_KEY" {
-  name         = "appbackend-TRIAL-SYSTEM-APIM-KEY"
+data "azurerm_key_vault_secret" "appbackend_SERVICES_APP_BACKEND_API_KEY" {
+  name         = "appbe-host-key-for-app-backend"
   key_vault_id = var.key_vault_common.id
 }

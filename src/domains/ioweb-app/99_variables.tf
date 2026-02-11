@@ -95,33 +95,8 @@ variable "application_insights_name" {
   description = "Specifies the name of the Application Insights."
 }
 
-### Aks
-
-variable "k8s_kube_config_path_prefix" {
-  type    = string
-  default = "~/.kube"
-}
-
 variable "ingress_load_balancer_ip" {
   type = string
-}
-
-variable "reloader_helm" {
-  type = object({
-    chart_version = string,
-    image_name    = string,
-    image_tag     = string
-  })
-  description = "reloader helm chart configuration"
-}
-
-variable "tls_cert_check_helm" {
-  type = object({
-    chart_version = string,
-    image_name    = string,
-    image_tag     = string
-  })
-  description = "tls cert helm chart configuration"
 }
 
 variable "enable_azdoa" {

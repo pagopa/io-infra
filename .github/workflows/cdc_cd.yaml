@@ -1,0 +1,19 @@
+name: Continuous Delivery on cdc
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+    paths:
+      - "src/domains/cdc/**"
+
+jobs:
+  release_prod:
+    uses: pagopa/dx/.github/workflows/infra_apply.yaml@main
+    name: Terraform Apply
+    secrets: inherit
+    with:
+      environment: prod
+      base_path: "src/domains/cdc"
+      use_private_agent: true

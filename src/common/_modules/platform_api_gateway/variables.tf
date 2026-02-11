@@ -87,6 +87,15 @@ variable "azure_adgroup_platform_admins_object_id" {
   description = "Object Id of the Entra group for subscription admins"
 }
 
+variable "azure_adgroup_com_admins_object_id" {
+  type        = string
+  description = "Object Id of the Entra group for Communications admins"
+}
+variable "azure_user_assigned_identity_com_infra_cd" {
+  type        = string
+  description = "Principal Id of the User Assigned Identity for com Infra CD"
+}
+
 variable "azure_adgroup_auth_admins_object_id" {
   type        = string
   description = "Object Id of the Entra group for Auth & Identity admins"
@@ -105,4 +114,9 @@ variable "azure_adgroup_bonus_admins_object_id" {
 variable "azure_user_assigned_identity_bonus_infra_cd" {
   type        = string
   description = "Principal Id of the User Assigned Identity for Bonus Infra CD"
+}
+
+variable "app_backend_urls" {
+  type        = list(string)
+  description = "List of App Backend URLs"
 }

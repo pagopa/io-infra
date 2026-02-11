@@ -26,9 +26,10 @@ locals {
     // see https://learn.microsoft.com/en-us/azure/app-service/monitor-instances-health-check?tabs=dotnet#configuration
     WEBSITE_HEALTHCHECK_MAXUNHEALTHYWORKERPERCENT = "95"
 
-
-    // AUTHENTICATION
-    AUTHENTICATION_BASE_PATH = ""
+    // API KEY
+    // optionally you can specify APP_BACKEND_SECONDARY_KEY
+    // for rotation purposes
+    APP_BACKEND_PRIMARY_KEY = data.azurerm_key_vault_secret.app_backend_APP_BACKEND_PRIMARY_KEY.value
 
     // FUNCTIONS
     API_URL                     = "https://${var.backend_hostnames.app[0]}/api/v1"
@@ -41,47 +42,28 @@ locals {
     IO_FIMS_API_KEY             = data.azurerm_key_vault_secret.app_backend_IO_FIMS_API_KEY.value
     CGN_OPERATOR_SEARCH_API_URL = "https://${var.backend_hostnames.cgnonboarding}" # prod subscription
     CGN_OPERATOR_SEARCH_API_KEY = data.azurerm_key_vault_secret.app_backend_CGN_OPERATOR_SEARCH_API_KEY_PROD.value
-    EUCOVIDCERT_API_URL         = "https://${var.backend_hostnames.eucovidcert}/api/v1"
-    EUCOVIDCERT_API_KEY         = data.azurerm_key_vault_secret.fn_eucovidcert_API_KEY_APPBACKEND.value
     APP_MESSAGES_API_URL        = "https://${var.backend_hostnames.com_citizen_func}/api/v1"
     APP_MESSAGES_API_KEY        = data.azurerm_key_vault_secret.app_backend_COM_CITIZEN_FUNC_API_KEY.value
     LOLLIPOP_API_URL            = "https://${var.backend_hostnames.lollipop}"
     LOLLIPOP_API_KEY            = data.azurerm_key_vault_secret.app_backend_LOLLIPOP_ITN_API_KEY.value
-    TRIAL_SYSTEM_API_URL        = "https://ts-p-itn-api-func-01.azurewebsites.net" # not working anymore
-    TRIAL_SYSTEM_APIM_URL       = "https://ts-p-itn-apim-01.azure-api.net"         # not working anymore
-    TRIAL_SYSTEM_API_KEY        = data.azurerm_key_vault_secret.app_backend_TRIAL_SYSTEM_API_KEY.value
-    TRIAL_SYSTEM_APIM_KEY       = data.azurerm_key_vault_secret.app_backend_TRIAL_SYSTEM_APIM_KEY.value
-    IO_WALLET_API_URL           = "https://${var.backend_hostnames.iowallet}"
-    IO_WALLET_API_KEY           = data.azurerm_key_vault_secret.app_backend_IO_WALLET_API_KEY.value
-    IO_WALLET_UAT_API_URL       = "https://${var.backend_hostnames.iowalletuat}/api/v1/wallet"
-    IO_WALLET_UAT_API_KEY       = data.azurerm_key_vault_secret.app_backend_IO_WALLET_UAT_API_KEY.value
+    CDC_SUPPORT_API_URL         = "https://${var.backend_hostnames.cdc_support}"
+    CDC_SUPPORT_API_KEY         = data.azurerm_key_vault_secret.app_backend_CDC_SUPPORT_API_KEY.value
 
     // EXPOSED API
     API_BASE_PATH                     = "/api/v1"
     CGN_API_BASE_PATH                 = "/api/v1/cgn"
     CGN_OPERATOR_SEARCH_API_BASE_PATH = "/api/v1/cgn/operator-search"
-    EUCOVIDCERT_API_BASE_PATH         = "/api/v1/eucovidcert"
     IO_SIGN_API_BASE_PATH             = "/api/v1/sign"
     IO_FIMS_API_BASE_PATH             = "/api/v1/fims"
     LOLLIPOP_API_BASE_PATH            = "/api/v1"
-    TRIAL_SYSTEM_API_BASE_PATH        = "/api/v1"
-    TRIAL_SYSTEM_APIM_BASE_PATH       = "/manage/api/v1"
-    IO_WALLET_API_BASE_PATH           = "/api/v1/wallet"
-    IO_WALLET_UAT_API_BASE_PATH       = "/api/v1/wallet/uat"
+    CDC_SUPPORT_API_BASE_PATH         = "/api/v1"
+    CDC_SUPPORT_IO_API_BASE_PATH      = "/api/v1/cdc"
 
     // REDIS
     REDIS_URL      = var.redis_common.hostname
     REDIS_PORT     = var.redis_common.ssl_port
     REDIS_PASSWORD = var.redis_common.primary_access_key
 
-    // PUSH NOTIFICATIONS
-    ALLOW_NOTIFY_IP_SOURCE_RANGE = "127.0.0.0/0"
-
-    // PAGOPA
-    PAGOPA_API_URL_PROD = "https://api.platform.pagopa.it/checkout/auth/payments/v1"
-    PAGOPA_API_URL_TEST = "https://api.uat.platform.pagopa.it/checkout/auth/payments/v1"
-    PAGOPA_API_KEY_PROD = data.azurerm_key_vault_secret.app_backend_PAGOPA_API_KEY_PROD.value
-    PAGOPA_API_KEY_UAT  = data.azurerm_key_vault_secret.app_backend_PAGOPA_API_KEY_UAT.value
 
     // PAGOPA ECOMMERCE
     PAGOPA_ECOMMERCE_BASE_URL     = "https://api.platform.pagopa.it/ecommerce/payment-requests-service/v1"
@@ -103,13 +85,10 @@ locals {
     PUSH_NOTIFICATIONS_QUEUE_NAME                = "push-notifications"
 
     // Feature flags
-    FF_BONUS_ENABLED           = 1
-    FF_CGN_ENABLED             = 1
-    FF_EUCOVIDCERT_ENABLED     = 1
-    FF_IO_SIGN_ENABLED         = 1
-    FF_IO_FIMS_ENABLED         = 1
-    FF_IO_WALLET_ENABLED       = 1
-    FF_IO_WALLET_TRIAL_ENABLED = 0
+    FF_CGN_ENABLED     = 1
+    FF_CDC_ENABLED     = 1
+    FF_IO_SIGN_ENABLED = 1
+    FF_IO_FIMS_ENABLED = 1
 
     FF_ROUTING_PUSH_NOTIF                      = "ALL" # possible values are: BETA, CANARY, ALL, NONE
     FF_ROUTING_PUSH_NOTIF_BETA_TESTER_SHA_LIST = data.azurerm_key_vault_secret.app_backend_APP_MESSAGES_BETA_FISCAL_CODES.value
@@ -117,7 +96,6 @@ locals {
     FF_ROUTING_PUSH_NOTIF_CANARY_SHA_USERS_REGEX = "^([(0-9)|(a-f)|(A-F)]{63}[(0-4)]{1})$"
 
     FF_PN_ACTIVATION_ENABLED = "1"
-    FF_TRIAL_SYSTEM_ENABLED  = "1"
 
     // SUPPORT_TOKEN
     JWT_SUPPORT_TOKEN_ISSUER     = "app-backend.io.italia.it"
@@ -150,9 +128,6 @@ locals {
 
     // Service ID IO-SIGN
     IO_SIGN_SERVICE_ID = local.service_ids.io_sign
-
-    // IO Wallet TRIAL ID
-    IO_WALLET_TRIAL_ID = local.service_ids.io_wallet_trial
 
     // PN Service Activation
     PN_ACTIVATION_BASE_PATH = "/api/v1/pn"
@@ -259,15 +234,8 @@ locals {
     FF_UNIQUE_EMAIL_ENFORCEMENT    = "ALL"
     UNIQUE_EMAIL_ENFORCEMENT_USERS = join(",", [data.azurerm_key_vault_secret.app_backend_UNIQUE_EMAIL_ENFORCEMENT_USER.value, module.tests.users.unique_email_test[0]])
 
-    // DEPRECATED APP SETTINGS
-    // The following variables must be removed after a update
-    // of the io-backend configuration, because they are required to start
-    // the application.
-    BONUS_API_BASE_PATH = "/api/v1"
-    BONUS_API_URL       = "to-remove"
-    BONUS_API_KEY       = "to-remove"
-
     // Services App Backend
+    SERVICES_APP_BACKEND_API_KEY       = data.azurerm_key_vault_secret.appbackend_SERVICES_APP_BACKEND_API_KEY.value
     SERVICES_APP_BACKEND_BASE_PATH     = "/api/v2"
     SERVICES_APP_BACKEND_API_URL       = "https://${var.backend_hostnames.services_app_backend}"
     SERVICES_APP_BACKEND_API_BASE_PATH = "/api/v1"

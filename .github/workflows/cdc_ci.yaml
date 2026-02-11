@@ -1,0 +1,25 @@
+name: Continuous Integration on cdc
+
+on:
+  merge_group:
+  workflow_dispatch:
+  pull_request:
+    types:
+      - opened
+      - edited
+      - synchronize
+      - reopened
+      - ready_for_review
+    paths:
+      - "src/domains/cdc/**"
+      - ".github/workflows/cdc**"
+
+jobs:
+  code_review_prod:
+    uses: pagopa/dx/.github/workflows/infra_plan.yaml@main
+    name: Terraform Plan
+    secrets: inherit
+    with:
+      environment: prod
+      base_path: "src/domains/cdc"
+      use_private_agent: true

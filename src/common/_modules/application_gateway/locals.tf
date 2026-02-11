@@ -13,6 +13,14 @@ locals {
         header_name  = "X-Client-Ip"
         header_value = "{var_client_ip}"
       },
+      {
+        header_name  = "X-User"
+        header_value = ""
+      },
+      {
+        header_name  = "X-App-Backend-Api-Key"
+        header_value = ""
+      },
     ]
     response_header_configurations = []
   }

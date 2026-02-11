@@ -28,6 +28,11 @@ data "azurerm_key_vault_secret" "io_fn_cgn_support_key" {
   key_vault_id = data.azurerm_key_vault.key_vault_common.id
 }
 
+data "azurerm_key_vault_secret" "io_fn_cgn_card_key" {
+  name         = "io-fn-cgn-card-KEY-APIM"
+  key_vault_id = data.azurerm_key_vault.key_vault_common.id
+}
+
 data "azurerm_key_vault_secret" "cgn_onboarding_backend_identity_v2" {
   name         = "cgn-onboarding-backend-PRINCIPALID"
   key_vault_id = data.azurerm_key_vault.key_vault_common.id
