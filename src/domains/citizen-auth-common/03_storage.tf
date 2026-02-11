@@ -339,3 +339,89 @@ resource "azurerm_monitor_diagnostic_setting" "io_citizen_auth_storage_diagnosti
     enabled  = false
   }
 }
+
+
+module "io_citizen_auth_storage_itn" {
+  source = "github.com/pagopa/dx//infra/modules/azure_storage_account?ref=main"
+
+  environment                          = local.itn_environment
+  resource_group_name                  = azurerm_resource_group.data_rg_itn.name
+  tier                                 = "l"
+  subnet_pep_id                        = module.common_values.pep_subnets.itn.id
+  private_dns_zone_resource_group_name = module.common_values.resource_groups.weu.common
+
+  subservices_enabled = {
+    blob  = true
+    file  = false
+    queue = false
+    table = true
+  }
+
+  force_public_network_access_enabled = false
+
+  ###TO CHECK
+  # customer_managed_key = {
+  #   enabled                   = true
+  #   type                      = "kv"
+  #   user_assigned_identity_id = azurerm_user_assigned_identity.example.id
+  #   key_vault_key_id          = "your-key-vault-key-id"
+  # }
+
+  tags = var.tags
+}
+
+resource "azurerm_private_endpoint" "table_itn" {
+  depends_on          = [module.io_citizen_auth_storage_itn]
+  name                = format("%s-table-endpoint", module.io_citizen_auth_storage_itn.name)
+  location            = var.location
+  resource_group_name = azurerm_resource_group.data_rg.name
+  subnet_id           = data.azurerm_subnet.private_endpoints_subnet.id
+
+  private_service_connection {
+    name                           = format("%s-table", module.io_citizen_auth_storage_itn.name)
+    private_connection_resource_id = module.io_citizen_auth_storage_itn.id
+    is_manual_connection           = false
+    subresource_names              = ["table"]
+  }
+
+  private_dns_zone_group {
+    name                 = "private-dns-zone-group"
+    private_dns_zone_ids = [data.azurerm_private_dns_zone.privatelink_table_core.id]
+  }
+
+  tags = var.tags
+}
+
+resource "azurerm_private_endpoint" "queue_itn" {
+  depends_on          = [module.io_citizen_auth_storage_itn]
+  name                = format("%s-queue-endpoint", module.io_citizen_auth_storage_itn.name)
+  location            = var.location
+  resource_group_name = azurerm_resource_group.data_rg.name
+  subnet_id           = data.azurerm_subnet.private_endpoints_subnet.id
+
+  private_service_connection {
+    name                           = format("%s-queue", module.io_citizen_auth_storage_itn.name)
+    private_connection_resource_id = module.io_citizen_auth_storage_itn.id
+    is_manual_connection           = false
+    subresource_names              = ["queue"]
+  }
+
+  private_dns_zone_group {
+    name                 = "private-dns-zone-group"
+    private_dns_zone_ids = [data.azurerm_private_dns_zone.privatelink_queue_core_windows_net.id]
+  }
+
+  tags = var.tags
+}
+
+resource "azurerm_storage_table" "profile_emails_itn" {
+  depends_on           = [module.io_citizen_auth_storage_itn, azurerm_private_endpoint.table]
+  name                 = "profileEmails"
+  storage_account_name = module.io_citizen_auth_storage_itn.name
+}
+
+resource "azurerm_storage_queue" "profiles_to_sanitize_itn" {
+  depends_on           = [module.io_citizen_auth_storage_itn, azurerm_private_endpoint.queue]
+  name                 = "profiles-to-sanitize"
+  storage_account_name = module.io_citizen_auth_storage_itn.name
+}
