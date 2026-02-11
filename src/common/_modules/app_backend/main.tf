@@ -1,24 +1,25 @@
 module "appservice_app_backend" {
-  source = "github.com/pagopa/terraform-azurerm-v3//app_service?ref=v8.31.0"
+  source = "github.com/pagopa/terraform-azurerm-v4//app_service?ref=v1.23.3"
 
   # App service plan
-  plan_type = "internal"
-  plan_name = try(local.nonstandard[var.location_short].asp, "${var.project}-appbe-${var.name}-asp-01")
-  sku_name  = var.plan_sku
+  plan_type                       = "internal"
+  plan_name                       = try(local.nonstandard[var.location_short].asp, "${var.project}-appbe-${var.name}-asp-01")
+  sku_name                        = var.plan_sku
+  premium_plan_auto_scale_enabled = var.enable_premium_plan_autoscale
 
   # App service
   name                = try(local.nonstandard[var.location_short].app, "${var.project}-appbe-${var.name}-app-01")
   resource_group_name = var.resource_group_linux
   location            = var.location
 
-  node_version                 = "18-lts"
+  node_version                 = "20-lts"
   always_on                    = true
   app_command_line             = local.app_command_line
   health_check_path            = "/ping"
   health_check_maxpingfailures = 2
 
-  auto_heal_enabled = var.is_li ? false : true # for li is disabled
-  auto_heal_settings = var.is_li ? null : {
+  auto_heal_enabled = true
+  auto_heal_settings = {
     startup_time           = "00:05:00"
     slow_requests_count    = 50
     slow_requests_interval = "00:01:00"
@@ -29,6 +30,8 @@ module "appservice_app_backend" {
     local.app_settings_common,
     var.app_settings_override
   )
+
+  sticky_settings = concat(["APPINSIGHTS_CLOUD_ROLE_NAME", "APPINSIGHTS_SAMPLING_PERCENTAGE"])
 
   ip_restriction_default_action = "Deny"
 
@@ -43,7 +46,7 @@ module "appservice_app_backend" {
 }
 
 module "appservice_app_backend_slot_staging" {
-  source = "github.com/pagopa/terraform-azurerm-v3//app_service_slot?ref=v8.31.0"
+  source = "github.com/pagopa/terraform-azurerm-v4//app_service_slot?ref=v1.23.3"
 
   # App service plan
   app_service_id   = module.appservice_app_backend.id
@@ -54,13 +57,14 @@ module "appservice_app_backend_slot_staging" {
   resource_group_name = var.resource_group_linux
   location            = var.location
 
-  always_on         = true
-  node_version      = "18-lts"
-  app_command_line  = local.app_command_line
-  health_check_path = "/ping"
+  always_on                    = true
+  node_version                 = "20-lts"
+  app_command_line             = local.app_command_line
+  health_check_path            = "/ping"
+  health_check_maxpingfailures = 2
 
-  auto_heal_enabled = var.is_li ? false : true # for li is disabled
-  auto_heal_settings = var.is_li ? null : {
+  auto_heal_enabled = true
+  auto_heal_settings = {
     startup_time           = "00:05:00"
     slow_requests_count    = 50
     slow_requests_interval = "00:01:00"
@@ -69,7 +73,11 @@ module "appservice_app_backend_slot_staging" {
 
   app_settings = merge(
     local.app_settings_common,
-    var.app_settings_override
+    var.app_settings_override,
+    {
+      "APPINSIGHTS_SAMPLING_PERCENTAGE" : 100,
+      "APPINSIGHTS_CLOUD_ROLE_NAME" : "${local.nonstandard.weu.app}-staging"
+    }
   )
 
   ip_restriction_default_action = "Deny"

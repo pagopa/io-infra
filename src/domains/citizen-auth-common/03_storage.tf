@@ -14,7 +14,7 @@ module "lollipop_assertions_storage" {
   account_tier                  = "Standard"
   access_tier                   = "Hot"
   account_replication_type      = "GZRS"
-  resource_group_name           = azurerm_resource_group.data_rg.name
+  resource_group_name           = data.azurerm_resource_group.data_rg.name
   location                      = var.location
   advanced_threat_protection    = true
   use_legacy_defender_version   = false
@@ -24,11 +24,25 @@ module "lollipop_assertions_storage" {
   tags = var.tags
 }
 
+resource "azurerm_role_assignment" "kv_auth_01_lollipop_assertions_keys" {
+  scope                = data.azurerm_key_vault.auth_kv_01.id
+  role_definition_name = "Key Vault Crypto Service Encryption User"
+  principal_id         = module.lollipop_assertions_storage.identity.0.principal_id
+  description          = "Allow Storage Account to manage keys in domain Key Vault to encrypt data at rest using a custom key"
+}
+
+resource "azurerm_role_assignment" "kv_auth_01_lollipop_assertions_secrets" {
+  scope                = data.azurerm_key_vault.auth_kv_01.id
+  role_definition_name = "Key Vault Secrets User"
+  principal_id         = module.lollipop_assertions_storage.identity.0.principal_id
+  description          = "Allow Storage Account to read secrets in domain Key Vault to get key-related secret to encrypt data at rest using a custom key"
+}
+
 module "lollipop_assertions_storage_customer_managed_key" {
   source               = "git::https://github.com/pagopa/terraform-azurerm-v3//storage_account_customer_managed_key?ref=v8.12.0"
   tenant_id            = data.azurerm_subscription.current.tenant_id
   location             = var.location
-  resource_group_name  = azurerm_resource_group.data_rg.name
+  resource_group_name  = data.azurerm_resource_group.data_rg.name
   key_vault_id         = module.key_vault.id
   key_name             = format("%s-key", module.lollipop_assertions_storage.name)
   storage_id           = module.lollipop_assertions_storage.id
@@ -38,7 +52,7 @@ module "lollipop_assertions_storage_customer_managed_key" {
 resource "azurerm_private_endpoint" "lollipop_assertion_storage_blob" {
   name                = "${module.lollipop_assertions_storage.name}-blob-endpoint"
   location            = var.location
-  resource_group_name = azurerm_resource_group.data_rg.name
+  resource_group_name = data.azurerm_resource_group.data_rg.name
   subnet_id           = data.azurerm_subnet.private_endpoints_subnet.id
 
   private_service_connection {
@@ -59,7 +73,7 @@ resource "azurerm_private_endpoint" "lollipop_assertion_storage_blob" {
 resource "azurerm_private_endpoint" "lollipop_assertion_storage_queue" {
   name                = "${module.lollipop_assertions_storage.name}-queue-endpoint"
   location            = var.location
-  resource_group_name = azurerm_resource_group.data_rg.name
+  resource_group_name = data.azurerm_resource_group.data_rg.name
   subnet_id           = data.azurerm_subnet.private_endpoints_subnet.id
 
   private_service_connection {
@@ -83,17 +97,6 @@ resource "azurerm_storage_container" "lollipop_assertions_storage_assertions" {
   container_access_type = "private"
 }
 
-resource "azurerm_storage_queue" "lollipop_assertions_storage_revoke_queue" {
-  name                 = "pubkeys-revoke" # This value is used in src/core/99_variables.tf#citizen_auth_revoke_queue_name
-  storage_account_name = module.lollipop_assertions_storage.name
-}
-
-resource "azurerm_storage_queue" "lollipop_assertions_storage_revoke_queue_v2" {
-  name                 = "pubkeys-revoke-v2"
-  storage_account_name = module.lollipop_assertions_storage.name
-}
-
-
 
 ###
 # Immutable LV Audit Log Storage
@@ -107,7 +110,7 @@ module "immutable_lv_audit_logs_storage" {
   account_tier                  = "Standard"
   access_tier                   = "Hot"
   account_replication_type      = "GZRS"
-  resource_group_name           = azurerm_resource_group.data_rg.name
+  resource_group_name           = data.azurerm_resource_group.data_rg.name
   location                      = var.location
   advanced_threat_protection    = true
   enable_identity               = true
@@ -128,11 +131,25 @@ module "immutable_lv_audit_logs_storage" {
   tags = var.tags
 }
 
+resource "azurerm_role_assignment" "kv_auth_01_lv_logs_keys" {
+  scope                = data.azurerm_key_vault.auth_kv_01.id
+  role_definition_name = "Key Vault Crypto Service Encryption User"
+  principal_id         = module.immutable_lv_audit_logs_storage.identity.0.principal_id
+  description          = "Allow Storage Account to manage keys in domain Key Vault to encrypt data at rest using a custom key"
+}
+
+resource "azurerm_role_assignment" "kv_auth_01_lv_logs_secrets" {
+  scope                = data.azurerm_key_vault.auth_kv_01.id
+  role_definition_name = "Key Vault Secrets User"
+  principal_id         = module.immutable_lv_audit_logs_storage.identity.0.principal_id
+  description          = "Allow Storage Account to read secrets in domain Key Vault to get key-related secret to encrypt data at rest using a custom key"
+}
+
 module "immutable_lv_audit_logs_storage_customer_managed_key" {
   source               = "git::https://github.com/pagopa/terraform-azurerm-v3//storage_account_customer_managed_key?ref=v8.12.0"
   tenant_id            = data.azurerm_subscription.current.tenant_id
   location             = var.location
-  resource_group_name  = azurerm_resource_group.data_rg.name
+  resource_group_name  = data.azurerm_resource_group.data_rg.name
   key_vault_id         = module.key_vault.id
   key_name             = format("%s-key", module.immutable_lv_audit_logs_storage.name)
   storage_id           = module.immutable_lv_audit_logs_storage.id
@@ -144,7 +161,7 @@ resource "azurerm_private_endpoint" "immutable_lv_audit_logs_storage_blob" {
 
   name                = "${module.immutable_lv_audit_logs_storage.name}-blob-endpoint"
   location            = var.location
-  resource_group_name = azurerm_resource_group.data_rg.name
+  resource_group_name = data.azurerm_resource_group.data_rg.name
   subnet_id           = data.azurerm_subnet.private_endpoints_subnet.id
 
   private_service_connection {
@@ -213,7 +230,7 @@ module "io_citizen_auth_storage" {
   account_tier                  = "Standard"
   access_tier                   = "Hot"
   account_replication_type      = "GZRS"
-  resource_group_name           = azurerm_resource_group.data_rg.name
+  resource_group_name           = data.azurerm_resource_group.data_rg.name
   location                      = var.location
   advanced_threat_protection    = true
   enable_identity               = true
@@ -226,7 +243,7 @@ resource "azurerm_private_endpoint" "table" {
   depends_on          = [module.io_citizen_auth_storage]
   name                = format("%s-table-endpoint", module.io_citizen_auth_storage.name)
   location            = var.location
-  resource_group_name = azurerm_resource_group.data_rg.name
+  resource_group_name = data.azurerm_resource_group.data_rg.name
   subnet_id           = data.azurerm_subnet.private_endpoints_subnet.id
 
   private_service_connection {
@@ -248,7 +265,7 @@ resource "azurerm_private_endpoint" "queue" {
   depends_on          = [module.io_citizen_auth_storage]
   name                = format("%s-queue-endpoint", module.io_citizen_auth_storage.name)
   location            = var.location
-  resource_group_name = azurerm_resource_group.data_rg.name
+  resource_group_name = data.azurerm_resource_group.data_rg.name
   subnet_id           = data.azurerm_subnet.private_endpoints_subnet.id
 
   private_service_connection {
@@ -266,14 +283,59 @@ resource "azurerm_private_endpoint" "queue" {
   tags = var.tags
 }
 
+resource "azurerm_private_endpoint" "blob" {
+  depends_on          = [module.io_citizen_auth_storage]
+  name                = format("%s-blob-endpoint", module.io_citizen_auth_storage.name)
+  location            = var.location
+  resource_group_name = data.azurerm_resource_group.data_rg.name
+  subnet_id           = data.azurerm_subnet.private_endpoints_subnet.id
+
+  private_service_connection {
+    name                           = format("%s-blob", module.io_citizen_auth_storage.name)
+    private_connection_resource_id = module.io_citizen_auth_storage.id
+    is_manual_connection           = false
+    subresource_names              = ["blob"]
+  }
+
+  private_dns_zone_group {
+    name                 = "private-dns-zone-group"
+    private_dns_zone_ids = [data.azurerm_private_dns_zone.privatelink_blob_core_windows_net.id]
+  }
+
+  tags = var.tags
+}
+
 resource "azurerm_storage_table" "profile_emails" {
   depends_on           = [module.io_citizen_auth_storage, azurerm_private_endpoint.table]
   name                 = "profileEmails"
   storage_account_name = module.io_citizen_auth_storage.name
 }
 
-resource "azurerm_storage_queue" "profiles_to_sanitize" {
-  depends_on           = [module.io_citizen_auth_storage, azurerm_private_endpoint.queue]
-  name                 = "profiles-to-sanitize"
-  storage_account_name = module.io_citizen_auth_storage.name
+resource "azurerm_storage_container" "data_factory_exports" {
+  depends_on            = [module.io_citizen_auth_storage, azurerm_private_endpoint.blob]
+  name                  = "data-factory-exports"
+  storage_account_name  = module.io_citizen_auth_storage.name
+  container_access_type = "private"
+}
+
+
+# Diagnostic settings
+
+resource "azurerm_monitor_diagnostic_setting" "io_citizen_auth_storage_diagnostic_setting" {
+  name                       = "${module.io_citizen_auth_storage.name}-ds-01"
+  target_resource_id         = "${module.io_citizen_auth_storage.id}/queueServices/default"
+  log_analytics_workspace_id = data.azurerm_application_insights.application_insights.workspace_id
+
+  enabled_log {
+    category = "StorageWrite"
+  }
+
+  metric {
+    category = "Capacity"
+    enabled  = false
+  }
+  metric {
+    category = "Transaction"
+    enabled  = false
+  }
 }

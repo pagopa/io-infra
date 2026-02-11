@@ -5,6 +5,13 @@ resource "azurerm_resource_group" "common_itn" {
   tags = local.tags
 }
 
+resource "azurerm_resource_group" "agw_itn" {
+  name     = "${local.project_itn}-agw-rg-01"
+  location = "italynorth"
+
+  tags = local.tags
+}
+
 resource "azurerm_resource_group" "dashboards_itn" {
   name     = "${local.project_itn}-common-dashboards-rg-01"
   location = "italynorth"
@@ -27,8 +34,36 @@ resource "azurerm_resource_group" "github_managed_identity_itn" {
   tags = local.tags
 }
 
+resource "azurerm_resource_group" "assets_cdn_itn" {
+  name     = "${local.project_itn}-assets-cdn-rg-01"
+  location = "italynorth"
+
+  tags = local.tags
+}
+
+resource "azurerm_resource_group" "external_itn" {
+  name     = "${local.project_itn}-external-rg-01"
+  location = "italynorth"
+
+  tags = local.tags
+}
+
+resource "azurerm_resource_group" "terraform_weu" {
+  name     = "terraform-state-rg"
+  location = "westeurope"
+
+  tags = local.tags
+}
+
 resource "azurerm_resource_group" "internal_weu" {
   name     = format("%s-rg-internal", local.project_weu_legacy)
+  location = "westeurope"
+
+  tags = local.tags
+}
+
+resource "azurerm_resource_group" "operations_weu" {
+  name     = format("%s-rg-operations", local.project_weu_legacy)
   location = "westeurope"
 
   tags = local.tags
@@ -71,6 +106,13 @@ resource "azurerm_resource_group" "assets_cdn_weu" {
 
 resource "azurerm_resource_group" "linux_weu" {
   name     = "${local.project_weu_legacy}-rg-linux"
+  location = "westeurope"
+
+  tags = local.tags
+}
+
+resource "azurerm_resource_group" "dashboards_weu" {
+  name     = "dashboards"
   location = "westeurope"
 
   tags = local.tags

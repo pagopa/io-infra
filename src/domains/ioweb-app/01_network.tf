@@ -7,11 +7,6 @@ data "azurerm_application_gateway" "app_gateway" {
 }
 ##########################
 
-data "azurerm_virtual_network" "vnet" {
-  name                = local.vnet_name
-  resource_group_name = local.vnet_resource_group_name
-}
-
 data "azurerm_virtual_network" "vnet_common" {
   name                = local.vnet_common_name
   resource_group_name = local.vnet_common_resource_group_name
@@ -47,24 +42,16 @@ data "azurerm_private_dns_zone" "privatelink_documents_azure_com" {
   resource_group_name = format("%s-rg-common", local.product)
 }
 
-resource "azurerm_private_dns_a_record" "ingress" {
-  name                = local.ingress_hostname
-  zone_name           = data.azurerm_private_dns_zone.internal.name
-  resource_group_name = local.internal_dns_zone_resource_group_name
-  ttl                 = 3600
-  records             = [var.ingress_load_balancer_ip]
-}
-
 data "azurerm_subnet" "private_endpoints_subnet" {
   name                 = "pendpoints"
   virtual_network_name = local.vnet_common_name
   resource_group_name  = local.vnet_common_resource_group_name
 }
 
-data "azurerm_subnet" "apim_v2_snet" {
-  name                 = "apimv2api"
-  virtual_network_name = local.vnet_common_name
-  resource_group_name  = local.vnet_common_resource_group_name
+data "azurerm_subnet" "apim_itn_snet" {
+  name                 = "io-p-itn-apim-snet-01"
+  virtual_network_name = local.vnet_common_name_itn
+  resource_group_name  = local.vnet_common_resource_group_name_itn
 }
 
 data "azurerm_subnet" "azdoa_snet" {
@@ -72,4 +59,12 @@ data "azurerm_subnet" "azdoa_snet" {
   name                 = "azure-devops"
   virtual_network_name = local.vnet_common_name
   resource_group_name  = local.vnet_common_resource_group_name
+}
+
+resource "azurerm_private_dns_a_record" "ingress" {
+  name                = local.ingress_hostname
+  zone_name           = data.azurerm_private_dns_zone.internal.name
+  resource_group_name = local.internal_dns_zone_resource_group_name
+  ttl                 = 3600
+  records             = [var.ingress_load_balancer_ip]
 }

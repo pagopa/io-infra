@@ -1,0 +1,8 @@
+{
+  "function_assets_cdn_autoscale": {
+    "hash": "b1b16764fc57ccf0d91a2375a11719e3dac5fd2a7bf77e12cbc290866deac044",
+    "version": "0.0.2",
+    "name": "azure_app_service_plan_autoscaler",
+    "source": "https://registry.terraform.io/modules/pagopa-dx/azure-app-service-plan-autoscaler/azurerm/0.0.2"
+  }
+}

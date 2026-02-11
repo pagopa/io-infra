@@ -75,7 +75,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert_v2" "mailup" {
     }
   }
 
-  window_duration      = "PT30M"
+  window_duration      = "PT5M"
   evaluation_frequency = "PT5M"
   severity             = 1
 

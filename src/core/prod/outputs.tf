@@ -19,6 +19,8 @@ output "resource_groups" {
       common         = azurerm_resource_group.common_itn.name
       dashboards     = azurerm_resource_group.dashboards_itn.name
       github_id      = azurerm_resource_group.github_managed_identity_itn.name
+      external       = azurerm_resource_group.external_itn.name
+      assets_cdn     = azurerm_resource_group.assets_cdn_itn.name
     }
     westeurope = {
       location_short = "weu"
@@ -29,6 +31,7 @@ output "resource_groups" {
       acr            = azurerm_resource_group.acr_weu.name
       assets_cdn     = azurerm_resource_group.assets_cdn_weu.name
       linux          = azurerm_resource_group.linux_weu.name
+      operations     = azurerm_resource_group.operations_weu.name
     }
   }
 }

@@ -18,6 +18,7 @@ module "appservice_devportal_be" {
 
   allowed_subnets = [
     data.azurerm_subnet.snet_app_gw.id,
+    data.azurerm_subnet.agw_itn_snet.id,
   ]
 
   tags = var.tags

@@ -16,5 +16,9 @@ output "public_ip" {
 }
 
 output "private_ips" {
-  value = module.apim_v2.private_ip_addresses
+  value = module.apim.private_ip_addresses
+}
+
+output "id" {
+  value = module.apim.id
 }

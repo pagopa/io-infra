@@ -38,21 +38,6 @@ resource "azurerm_monitor_action_group" "quarantine_error" {
   tags = var.tags
 }
 
-# the action group that publish to the channel of the trial-system project
-resource "azurerm_monitor_action_group" "trial_system_error" {
-  resource_group_name = var.resource_group_common
-  name                = try(local.nonstandard[var.location_short].ag_ts_error, "${var.project}-ts-error-ag-01")
-  short_name          = try(local.nonstandard[var.location_short].ag_ts_error_short, "${var.project}-ts-error-ag-01")
-
-  email_receiver {
-    name                    = "slack"
-    email_address           = data.azurerm_key_vault_secret.alert_error_trial_slack.value
-    use_common_alert_schema = true
-  }
-
-  tags = var.tags
-}
-
 resource "azurerm_monitor_action_group" "email" {
   name                = try(local.nonstandard[var.location_short].email_pagopa, "${var.project}-email-ag-01")
   resource_group_name = var.resource_group_common

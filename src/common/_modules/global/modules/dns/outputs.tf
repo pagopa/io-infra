@@ -20,13 +20,12 @@ output "public_dns_zones" {
       app_backend              = trimsuffix(azurerm_dns_a_record.app_backend_io_italia_it.fqdn, ".")
     }
 
-    io_selfcare_pagopa_it = {
-      name = azurerm_dns_zone.io_selfcare_pagopa_it.name
-      api  = trimsuffix(azurerm_dns_a_record.api_io_selfcare_pagopa_it.fqdn, ".")
-    }
-
     ioweb_it = {
       name = azurerm_dns_zone.ioweb_it.name
+    }
+
+    ipatente_io_pagopa_it = {
+      name = azurerm_dns_zone.ipatente_io_pagopa_it.name
     }
   }
 }
@@ -36,6 +35,7 @@ output "private_dns_zones" {
     servicebus = azurerm_private_dns_zone.privatelink_servicebus
     documents  = azurerm_private_dns_zone.privatelink_documents
     postgres   = azurerm_private_dns_zone.privatelink_postgres_database_azure_com
+    appservice = azurerm_private_dns_zone.privatelink_azurewebsites
   }
 }
 

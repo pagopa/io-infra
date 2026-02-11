@@ -12,8 +12,19 @@ locals {
       ag_quarantine_error       = "${local.ag_formatted_project}quarantineerror"
       ag_quarantine_error_short = "${local.ag_formatted_project}qerr"
 
-      ag_ts_error       = "${local.ag_formatted_project}trialsystemerror"
-      ag_ts_error_short = "${replace(var.project, "-", "")}tserr"
+      email_pagopa = "EmailPagoPA"
+      slack_pagopa = "SlackPagoPA"
+    }
+
+    itn = {
+
+      log  = "${var.project}-common-log-01"
+      appi = "${var.project}-common-appi-01"
+
+      ag_error = "${local.ag_formatted_project}error"
+
+      ag_quarantine_error       = "${local.ag_formatted_project}quarantineerror"
+      ag_quarantine_error_short = "${local.ag_formatted_project}qerr"
 
       email_pagopa = "EmailPagoPA"
       slack_pagopa = "SlackPagoPA"

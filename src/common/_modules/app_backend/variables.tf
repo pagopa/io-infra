@@ -55,12 +55,6 @@ variable "name" {
   default     = null
 }
 
-variable "is_li" {
-  type        = bool
-  description = "Is this backend li type (async)?"
-  default     = false
-}
-
 variable "vnet_common" {
   type = object({
     id                  = string
@@ -112,13 +106,13 @@ variable "ai_instrumentation_key" {
   type = string
 }
 
+variable "ai_connection_string" {
+  type = string
+}
+
 variable "error_action_group_id" {
   type        = string
   description = "Azure Monitor error action group id"
-}
-
-variable "apim_snet_address_prefixes" {
-  type = list(string)
 }
 
 variable "nat_gateways" {
@@ -187,16 +181,55 @@ variable "app_settings_override" {
 variable "backend_hostnames" {
   type = object({
     app                  = list(string)
-    app_messages         = list(string)
+    com_citizen_func     = string
     assets_cdn           = string
     services_app_backend = string
     lollipop             = string
-    eucovidcert          = string
     cgn                  = string
     iosign               = string
+    iofims               = string
     cgnonboarding        = string
-    trial_system_api     = string
-    trial_system_apim    = string
-    iowallet             = string
+    cdc_support          = string
   })
+}
+
+variable "azure_adgroup_wallet_admins_object_id" {
+  type        = string
+  description = "Object Id of the Entra group for subscription admins"
+}
+
+variable "azure_adgroup_com_admins_object_id" {
+  type        = string
+  description = "Object Id of the Entra group for subscription admins"
+}
+
+variable "azure_adgroup_svc_admins_object_id" {
+  type        = string
+  description = "Object Id of the Entra group for subscription admins"
+}
+
+variable "azure_adgroup_auth_admins_object_id" {
+  type        = string
+  description = "Object Id of the Entra group for subscription admins"
+}
+
+variable "azure_adgroup_bonus_admins_object_id" {
+  type        = string
+  description = "Object Id of the Entra group for subscription admins"
+}
+
+variable "enable_premium_plan_autoscale" {
+  type        = bool
+  description = "Enable autoscale for premium plan"
+  default     = false
+}
+
+variable "subnet_pep_id" {
+  type        = string
+  description = "Subnet ID for the private endpoint"
+}
+
+variable "private_dns_zone_id" {
+  type        = string
+  description = "Private DNS Zone ID for the private endpoint"
 }

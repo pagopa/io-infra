@@ -1,6 +1,6 @@
 ## Application gateway ##
 module "app_gw" {
-  source = "github.com/pagopa/terraform-azurerm-v3//app_gateway?ref=v8.31.0"
+  source = "github.com/pagopa/terraform-azurerm-v4//app_gateway?ref=v1.23.3"
 
   resource_group_name = var.resource_group_external
   location            = var.location
@@ -30,6 +30,18 @@ module "app_gw" {
       pick_host_name_from_backend = false
     }
 
+    platform-api-gateway = {
+      protocol                    = "Https"
+      host                        = format("proxy.internal.%s", var.public_dns_zones.io.name)
+      port                        = 443
+      ip_addresses                = null # with null value use fqdns
+      fqdns                       = [format("proxy.internal.%s", var.public_dns_zones.io.name)]
+      probe                       = "/status-0123456789abcdef"
+      probe_name                  = "probe-platform-api-gateway"
+      request_timeout             = 10
+      pick_host_name_from_backend = false
+    }
+
     appbackend-app = {
       protocol                    = "Https"
       host                        = null
@@ -49,9 +61,8 @@ module "app_gw" {
       ip_addresses = null # with null value use fqdns
       fqdns = [
         data.azurerm_linux_web_app.session_manager_03.default_hostname,
-        data.azurerm_linux_web_app.session_manager_04.default_hostname
       ]
-      probe                       = "/healthcheck"
+      probe                       = "/api/auth/v1/healthcheck"
       probe_name                  = "probe-session-manager-app"
       request_timeout             = 10
       pick_host_name_from_backend = true
@@ -81,20 +92,6 @@ module "app_gw" {
       ]
       probe                       = "/info"
       probe_name                  = "probe-developerportal-backend"
-      request_timeout             = 180
-      pick_host_name_from_backend = true
-    }
-
-    selfcare-backend = {
-      protocol     = "Https"
-      host         = null
-      port         = 443
-      ip_addresses = null # with null value use fqdns
-      fqdns = [
-        data.azurerm_linux_web_app.appservice_selfcare_be.default_hostname,
-      ]
-      probe                       = "/info"
-      probe_name                  = "probe-selfcare-backend"
       request_timeout             = 180
       pick_host_name_from_backend = true
     }
@@ -135,6 +132,62 @@ module "app_gw" {
       ]
       probe                       = "/api/info"
       probe_name                  = "probe-selfcare-io-app"
+      request_timeout             = 10
+      pick_host_name_from_backend = true
+    }
+
+    vehicles-ipatente-io-app = {
+      protocol     = "Https"
+      host         = null
+      port         = 443
+      ip_addresses = null # with null value use fqdns
+      fqdns = [
+        data.azurerm_linux_web_app.ipatente_vehicles_app_itn.default_hostname,
+      ]
+      probe                       = "/api/info"
+      probe_name                  = "probe-vehicles-ipatente-io-app"
+      request_timeout             = 10
+      pick_host_name_from_backend = true
+    }
+
+    licences-ipatente-io-app = {
+      protocol     = "Https"
+      host         = null
+      port         = 443
+      ip_addresses = null # with null value use fqdns
+      fqdns = [
+        data.azurerm_linux_web_app.ipatente_licences_app_itn.default_hostname,
+      ]
+      probe                       = "/api/info"
+      probe_name                  = "probe-licences-ipatente-io-app"
+      request_timeout             = 10
+      pick_host_name_from_backend = true
+    }
+
+    payments-ipatente-io-app = {
+      protocol     = "Https"
+      host         = null
+      port         = 443
+      ip_addresses = null # with null value use fqdns
+      fqdns = [
+        data.azurerm_linux_web_app.ipatente_payments_app_itn.default_hostname,
+      ]
+      probe                       = "/api/info"
+      probe_name                  = "probe-payments-ipatente-io-app"
+      request_timeout             = 10
+      pick_host_name_from_backend = true
+    }
+
+    practices-ipatente-io-app = {
+      protocol     = "Https"
+      host         = null
+      port         = 443
+      ip_addresses = null # with null value use fqdns
+      fqdns = [
+        data.azurerm_linux_web_app.ipatente_practices_app_itn.default_hostname,
+      ]
+      probe                       = "/api/info"
+      probe_name                  = "probe-practices-ipatente-io-app"
       request_timeout             = 10
       pick_host_name_from_backend = true
     }
@@ -226,23 +279,6 @@ module "app_gw" {
         id = replace(
           data.azurerm_key_vault_certificate.app_gw_api.secret_id,
           "/${data.azurerm_key_vault_certificate.app_gw_api.version}",
-          ""
-        )
-      }
-    }
-
-    api-io-selfcare-pagopa-it = {
-      protocol           = "Https"
-      host               = "api.${var.public_dns_zones.io_selfcare_pagopa_it.name}"
-      port               = 443
-      ssl_profile_name   = null
-      firewall_policy_id = null
-
-      certificate = {
-        name = var.certificates.api_io_selfcare_pagopa_it
-        id = replace(
-          data.azurerm_key_vault_certificate.app_gw_api_io_selfcare_pagopa_it.secret_id,
-          "/${data.azurerm_key_vault_certificate.app_gw_api_io_selfcare_pagopa_it.version}",
           ""
         )
       }
@@ -383,6 +419,58 @@ module "app_gw" {
         )
       }
     }
+
+    vehicles-ipatente-io-pagopa-it = {
+      protocol           = "Https"
+      host               = format("vehicles.%s", var.public_dns_zones.ipatente_io_pagopa_it.name)
+      port               = 443
+      ssl_profile_name   = format("%s-ssl-profile", var.project)
+      firewall_policy_id = null
+
+      certificate = {
+        name = var.certificates.vehicles_ipatente_io_pagopa_it
+        id   = data.azurerm_key_vault_certificate.app_gw_vehicles_ipatente_io.versionless_secret_id
+      }
+    }
+
+    licences-ipatente-io-pagopa-it = {
+      protocol           = "Https"
+      host               = format("licences.%s", var.public_dns_zones.ipatente_io_pagopa_it.name)
+      port               = 443
+      ssl_profile_name   = format("%s-ssl-profile", var.project)
+      firewall_policy_id = null
+
+      certificate = {
+        name = var.certificates.licences_ipatente_io_pagopa_it
+        id   = data.azurerm_key_vault_certificate.app_gw_licences_ipatente_io.versionless_secret_id
+      }
+    }
+
+    payments-ipatente-io-pagopa-it = {
+      protocol           = "Https"
+      host               = format("payments.%s", var.public_dns_zones.ipatente_io_pagopa_it.name)
+      port               = 443
+      ssl_profile_name   = format("%s-ssl-profile", var.project)
+      firewall_policy_id = null
+
+      certificate = {
+        name = var.certificates.payments_ipatente_io_pagopa_it
+        id   = data.azurerm_key_vault_certificate.app_gw_payments_ipatente_io.versionless_secret_id
+      }
+    }
+
+    practices-ipatente-io-pagopa-it = {
+      protocol           = "Https"
+      host               = format("practices.%s", var.public_dns_zones.ipatente_io_pagopa_it.name)
+      port               = 443
+      ssl_profile_name   = format("%s-ssl-profile", var.project)
+      firewall_policy_id = null
+
+      certificate = {
+        name = var.certificates.practices_ipatente_io_pagopa_it
+        id   = data.azurerm_key_vault_certificate.app_gw_practices_ipatente_io.versionless_secret_id
+      }
+    }
   }
 
   # maps listener to backend
@@ -424,13 +512,6 @@ module "app_gw" {
       priority              = 20
     }
 
-    api-io-selfcare-pagopa-it = {
-      listener              = "api-io-selfcare-pagopa-it"
-      backend               = "selfcare-backend"
-      rewrite_rule_set_name = "rewrite-rule-set-selfcare-backend"
-      priority              = 60
-    }
-
     firmaconio-selfcare-pagopa-it = {
       listener              = "firmaconio-selfcare-pagopa-it"
       backend               = "firmaconio-selfcare-backend"
@@ -458,6 +539,34 @@ module "app_gw" {
       rewrite_rule_set_name = "rewrite-rule-set-fims-op-app"
       priority              = 120
     }
+
+    vehicles-ipatente-io-pagopa-it = {
+      listener              = "vehicles-ipatente-io-pagopa-it"
+      backend               = "vehicles-ipatente-io-app"
+      rewrite_rule_set_name = "rewrite-rule-set-ipatente-io-app"
+      priority              = 130
+    }
+
+    licences-ipatente-io-pagopa-it = {
+      listener              = "licences-ipatente-io-pagopa-it"
+      backend               = "licences-ipatente-io-app"
+      rewrite_rule_set_name = "rewrite-rule-set-ipatente-io-app"
+      priority              = 131
+    }
+
+    payments-ipatente-io-pagopa-it = {
+      listener              = "payments-ipatente-io-pagopa-it"
+      backend               = "payments-ipatente-io-app"
+      rewrite_rule_set_name = "rewrite-rule-set-ipatente-io-app"
+      priority              = 132
+    }
+
+    practices-ipatente-io-pagopa-it = {
+      listener              = "practices-ipatente-io-pagopa-it"
+      backend               = "practices-ipatente-io-app"
+      rewrite_rule_set_name = "rewrite-rule-set-ipatente-io-app"
+      priority              = 133
+    }
   }
 
   routes_path_based = {
@@ -479,10 +588,40 @@ module "app_gw" {
       default_backend               = "appbackend-app"
       default_rewrite_rule_set_name = "rewrite-rule-set-api-app"
       path_rule = {
+        api-gateway-platform-info = {
+          paths                 = ["/info"]
+          backend               = "platform-api-gateway",
+          rewrite_rule_set_name = "rewrite-rule-set-api-app-rewrite-platform-legacy-root"
+        },
+        api-gateway-platform-ping = {
+          paths                 = ["/api/v1/ping"]
+          backend               = "platform-api-gateway",
+          rewrite_rule_set_name = "rewrite-rule-set-api-app-rewrite-platform-legacy"
+        },
+        api-gateway-platform-status = {
+          paths                 = ["/api/v1/status"]
+          backend               = "platform-api-gateway",
+          rewrite_rule_set_name = "rewrite-rule-set-api-app-rewrite-platform-legacy"
+        },
+        api-gateway-platform-trials = {
+          paths                 = ["/api/v1/trials/*"]
+          backend               = "platform-api-gateway",
+          rewrite_rule_set_name = "rewrite-rule-set-api-app-rewrite-platform-legacy"
+        },
+        api-gateway-platform-identity = {
+          paths                 = ["/api/identity/*"]
+          backend               = "platform-api-gateway",
+          rewrite_rule_set_name = "rewrite-rule-set-api-app"
+        },
+        api-gateway-cdc = {
+          paths                 = ["/api/cdc/*"]
+          backend               = "platform-api-gateway",
+          rewrite_rule_set_name = "rewrite-rule-set-api-app"
+        },
         session-manager = {
-          paths                 = ["/session-manager/*"]
-          backend               = "session-manager-app",
-          rewrite_rule_set_name = "rewrite-rule-set-api-app-remove-base-path-session-manager"
+          paths                 = ["/api/auth/v1/*", "/api/sso/bpd/v1/user", "/api/sso/pagopa/v1/user", "/api/sso/zendesk/v1/jwt"]
+          backend               = "platform-api-gateway"
+          rewrite_rule_set_name = "rewrite-rule-set-api-app"
         },
         healthcheck = {
           paths                 = ["/healthcheck"]
@@ -492,57 +631,59 @@ module "app_gw" {
         test-login = {
           paths                 = ["/test-login"]
           backend               = "session-manager-app",
-          rewrite_rule_set_name = "rewrite-rule-set-api-app"
+          rewrite_rule_set_name = "rewrite-rule-set-api-app-rewrite-to-session-manager"
         },
         login = {
           paths                 = ["/login"]
           backend               = "session-manager-app",
-          rewrite_rule_set_name = "rewrite-rule-set-api-app"
+          rewrite_rule_set_name = "rewrite-rule-set-api-app-rewrite-to-session-manager"
         },
+        # NOTE: Do NOT remove rewrite rule from metadata endpoint, as it cannot be switched to new basepath
         metadata = {
           paths                 = ["/metadata"]
           backend               = "session-manager-app",
-          rewrite_rule_set_name = "rewrite-rule-set-api-app"
+          rewrite_rule_set_name = "rewrite-rule-set-api-app-rewrite-to-session-manager"
         },
+        # NOTE: Do NOT remove rewrite rule from acs endpoint, as it cannot be switched to new basepath
         acs = {
           paths                 = ["/assertionConsumerService"]
           backend               = "session-manager-app",
-          rewrite_rule_set_name = "rewrite-rule-set-api-app"
+          rewrite_rule_set_name = "rewrite-rule-set-api-app-rewrite-to-session-manager"
         },
         fast-login = {
           paths                 = ["/api/v1/fast-login"]
           backend               = "session-manager-app",
-          rewrite_rule_set_name = "rewrite-rule-set-api-app"
+          rewrite_rule_set_name = "rewrite-rule-set-api-app-rewrite-to-session-manager"
         },
         nonce-fast-login = {
           paths                 = ["/api/v1/fast-login/nonce/generate"]
           backend               = "session-manager-app",
-          rewrite_rule_set_name = "rewrite-rule-set-api-app"
+          rewrite_rule_set_name = "rewrite-rule-set-api-app-rewrite-to-session-manager"
         },
         logout = {
           paths                 = ["/logout"]
           backend               = "session-manager-app",
-          rewrite_rule_set_name = "rewrite-rule-set-api-app"
+          rewrite_rule_set_name = "rewrite-rule-set-api-app-rewrite-to-session-manager"
         },
         session = {
           paths                 = ["/api/v1/session"]
           backend               = "session-manager-app",
-          rewrite_rule_set_name = "rewrite-rule-set-api-app"
+          rewrite_rule_set_name = "rewrite-rule-set-api-app-rewrite-to-session-manager"
         },
         bpd-user = {
           paths                 = ["/bpd/api/v1/user"]
           backend               = "session-manager-app",
-          rewrite_rule_set_name = "rewrite-rule-set-api-app"
+          rewrite_rule_set_name = "rewrite-rule-set-api-app-rewrite-to-bpd-session-manager"
         },
         zendesk-user = {
           paths                 = ["/api/backend/zendesk/v1/jwt"]
           backend               = "session-manager-app",
-          rewrite_rule_set_name = "rewrite-rule-set-api-app"
+          rewrite_rule_set_name = "rewrite-rule-set-api-app-rewrite-to-zendesk-session-manager"
         },
         pagopa-user = {
           paths                 = ["/pagopa/api/v1/user"]
           backend               = "session-manager-app",
-          rewrite_rule_set_name = "rewrite-rule-set-api-app"
+          rewrite_rule_set_name = "rewrite-rule-set-api-app-rewrite-to-pagopa-session-manager"
         },
       }
     }
@@ -604,20 +745,86 @@ module "app_gw" {
       rewrite_rules = [local.io_backend_ip_headers_rule]
     },
     {
-      name = "rewrite-rule-set-api-app-rewrite-to-session-manager"
+      name = "rewrite-rule-set-api-app-rewrite-platform-legacy-root"
       rewrite_rules = [
         local.io_backend_ip_headers_rule,
         {
-          name          = "rewrite-if-cookie-present"
+          name          = "rewrite-url-to-platform-legacy"
           rule_sequence = 200
-          conditions = [{
-            variable    = "http_req_Cookie"
-            pattern     = "test-session-manager"
-            ignore_case = true
-            negate      = false
-          }]
+          conditions    = []
           url = {
-            path         = "/session-manager{var_uri_path}"
+            path         = "/api/platform-legacy{var_uri_path}"
+            query_string = null
+            reroute      = false
+            components   = "path_only"
+          }
+          request_header_configurations  = []
+          response_header_configurations = []
+        }
+      ]
+    },
+    {
+      name = "rewrite-rule-set-api-app-rewrite-platform-legacy"
+      rewrite_rules = [
+        local.io_backend_ip_headers_rule,
+        {
+          name          = "rewrite-url-to-api-platform-legacy"
+          rule_sequence = 100
+
+          # Condition to capture requests directed to any endpoint under /api/v1/
+          conditions = [
+            {
+              variable    = "var_uri_path"
+              pattern     = "^/api/v1/(.*)$"
+              ignore_case = true
+              negate      = false
+            }
+          ]
+
+          # URL rewriting preserving the specific endpoint
+          url = {
+            path         = "/api/platform-legacy/v1/{var_uri_path_1}"
+            query_string = null
+            reroute      = false
+            components   = "path_only"
+          }
+          request_header_configurations  = []
+          response_header_configurations = []
+        }
+      ]
+    },
+    {
+      name = "rewrite-rule-set-api-app-rewrite-to-session-manager"
+      rewrite_rules = [
+        local.io_backend_ip_headers_rule,
+        # if endpoint has /api/v1 prefix(e.g. /api/v1/session)
+        # then it should be stripped away before proceding
+        {
+          name          = "strip-base-path"
+          rule_sequence = 150
+          conditions = [
+            {
+              variable    = "var_uri_path"
+              pattern     = "/api/v1/(.*)"
+              ignore_case = true
+              negate      = false
+            }
+          ]
+          url = {
+            path         = "/{var_uri_path_1}"
+            query_string = null
+            reroute      = false
+            components   = "path_only"
+          }
+          request_header_configurations  = []
+          response_header_configurations = []
+        },
+        {
+          name          = "rewrite-path"
+          rule_sequence = 200
+          conditions    = []
+          url = {
+            path         = "/api/auth/v1{var_uri_path}"
             query_string = null
             reroute      = true
             components   = "path_only"
@@ -628,27 +835,64 @@ module "app_gw" {
       ]
     },
     {
-      name = "rewrite-rule-set-api-app-remove-base-path-session-manager"
+      name = "rewrite-rule-set-api-app-rewrite-to-bpd-session-manager"
       rewrite_rules = [
         local.io_backend_ip_headers_rule,
         {
-          name          = "strip_base_session_manager_path"
+          name          = "rewrite-path"
           rule_sequence = 200
-          conditions = [{
-            variable    = "var_uri_path"
-            pattern     = "/session-manager/(.*)"
-            ignore_case = true
-            negate      = false
-          }]
+          conditions    = []
           url = {
-            path         = "/{var_uri_path_1}"
+            # only 1 operation present for this API
+            path         = "/api/sso/bpd/v1/user"
             query_string = null
-            reroute      = false
+            reroute      = true
             components   = "path_only"
           }
           request_header_configurations  = []
           response_header_configurations = []
-      }]
+        }
+      ]
+    },
+    {
+      name = "rewrite-rule-set-api-app-rewrite-to-pagopa-session-manager"
+      rewrite_rules = [
+        local.io_backend_ip_headers_rule,
+        {
+          name          = "rewrite-path"
+          rule_sequence = 200
+          conditions    = []
+          url = {
+            # only 1 operation present for this API
+            path         = "/api/sso/pagopa/v1/user"
+            query_string = null
+            reroute      = true
+            components   = "path_only"
+          }
+          request_header_configurations  = []
+          response_header_configurations = []
+        }
+      ]
+    },
+    {
+      name = "rewrite-rule-set-api-app-rewrite-to-zendesk-session-manager"
+      rewrite_rules = [
+        local.io_backend_ip_headers_rule,
+        {
+          name          = "rewrite-path"
+          rule_sequence = 200
+          conditions    = []
+          url = {
+            # only 1 operation present for this API
+            path         = "/api/sso/zendesk/v1/jwt"
+            query_string = null
+            reroute      = true
+            components   = "path_only"
+          }
+          request_header_configurations  = []
+          response_header_configurations = []
+        }
+      ]
     },
     {
       name = "rewrite-rule-set-fims-op-app"
@@ -698,26 +942,6 @@ module "app_gw" {
       name = "rewrite-rule-set-developerportal-backend"
       rewrite_rules = [{
         name          = "http-headers-developerportal-backend"
-        rule_sequence = 100
-        conditions    = []
-        url           = null
-        request_header_configurations = [
-          {
-            header_name  = "X-Forwarded-For"
-            header_value = "{var_client_ip}"
-          },
-          {
-            header_name  = "X-Client-Ip"
-            header_value = "{var_client_ip}"
-          },
-        ]
-        response_header_configurations = []
-      }]
-    },
-    {
-      name = "rewrite-rule-set-selfcare-backend"
-      rewrite_rules = [{
-        name          = "http-headers-selfcare-backend"
         rule_sequence = 100
         conditions    = []
         url           = null
@@ -797,7 +1021,31 @@ module "app_gw" {
         ]
         response_header_configurations = []
       }]
-    }
+    },
+    {
+      name = "rewrite-rule-set-ipatente-io-app"
+      rewrite_rules = [{
+        name          = "http-headers-fims-op-app"
+        rule_sequence = 100
+        conditions    = []
+        url           = null
+        request_header_configurations = [
+          {
+            header_name  = "X-Forwarded-For"
+            header_value = "{var_client_ip}"
+          },
+          {
+            header_name  = "X-Forwarded-Host"
+            header_value = "{var_host}"
+          },
+          {
+            header_name  = "X-Client-Ip"
+            header_value = "{var_client_ip}"
+          },
+        ]
+        response_header_configurations = []
+      }]
+    },
   ]
 
   # TLS
@@ -867,7 +1115,7 @@ module "app_gw" {
     }
 
     response_time = {
-      description   = "Backends response time is too high. See Dimension value to check the Listener unhealty."
+      description   = "Backends response time is too high. See Dimension value to check the Listener unhealthy."
       frequency     = "PT5M"
       window_size   = "PT15M"
       severity      = 2
@@ -914,7 +1162,7 @@ module "app_gw" {
     }
 
     failed_requests = {
-      description   = "Abnormal failed requests. See Dimension value to check the Backend Pool unhealty"
+      description   = "Abnormal failed requests. See Dimension value to check the Backend Pool unhealthy"
       frequency     = "PT5M"
       window_size   = "PT5M"
       severity      = 1

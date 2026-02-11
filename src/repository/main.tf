@@ -25,6 +25,12 @@ provider "azurerm" {
   }
 }
 
+provider "azurerm" {
+  subscription_id = "a4e96bcd-59dc-4d66-b2f7-5547ad157c12"
+  alias           = "dev-io"
+  features {}
+}
+
 provider "github" {
   owner = "pagopa"
 }
@@ -32,3 +38,7 @@ provider "github" {
 data "azurerm_client_config" "current" {}
 
 data "azurerm_subscription" "current" {}
+
+data "azurerm_subscription" "dev_io" {
+  provider = azurerm.dev-io
+}

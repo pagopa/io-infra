@@ -1,0 +1,65 @@
+<!--
+    API Management Policy Description
+
+    This policy implements caching for the API with the following behavior:
+    - Inbound: Checks the presence of a cache entry and returns a 204 No Content response if found
+    - Backend: Standard processing, no modifications
+    - Outbound: Stores a flag into the cache for 60 seconds ONLY for status codes 204
+    - Error: Standard error handling
+
+    The cache is configured as "internal" type with no downstream caching.
+    Response caching helps reduce backend load and improve response times for frequently accessed endpoints.
+
+    A custom cache is used because cache-store policy statement ignores 204 status code responses or HEAD requests.
+-->
+<policies>
+    <inbound>
+        <base />
+        <set-variable name="cacheKey" value="@("nocontent-" + context.Request.Method + "-" + context.Request.OriginalUrl.Path.ToLower())" />
+        <!-- attempt to lookup in the key/value cache -->
+        <cache-lookup-value key="@((string)context.Variables["cacheKey"])" variable-name="hasValue" caching-type="internal"/>
+        <choose>
+            <!-- if there is a cache it returns a 204 response to the client -->
+            <when condition="@(context.Variables.ContainsKey("hasValue"))">
+                <return-response>
+                    <set-status code="204" reason="No Content" />
+                    <set-header name="date" exists-action="override">
+                        <value>@((DateTime.UtcNow).ToString("R"))</value>
+                    </set-header>
+                    <set-header name="strict-transport-security" exists-action="override">
+                        <value>max-age=15552000; includeSubDomains</value>
+                    </set-header>
+                    <set-header name="x-content-type-options" exists-action="override">
+                        <value>nosniff</value>
+                    </set-header>
+                    <set-header name="x-dns-prefetch-control" exists-action="override">
+                        <value>off</value>
+                    </set-header>
+                    <set-header name="x-download-options" exists-action="override">
+                        <value>noopen</value>
+                    </set-header>
+                    <set-header name="x-frame-options" exists-action="override">
+                        <value>SAMEORIGIN</value>
+                    </set-header>
+                    <set-header name="x-xss-protection" exists-action="override">
+                        <value>1; mode=block</value>
+                    </set-header>
+                </return-response>
+            </when>
+        </choose>
+    </inbound>
+    <backend>
+        <base />
+    </backend>
+    <outbound>
+        <choose>
+            <when condition="@(context.Response.StatusCode == 204)">
+                <cache-store-value key="@((string)context.Variables["cacheKey"])" value="1" duration="60" caching-type="internal"/>
+            </when>
+        </choose>
+        <base />
+    </outbound>
+    <on-error>
+        <base />
+    </on-error>
+</policies>

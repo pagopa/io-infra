@@ -32,7 +32,7 @@ jobs:
 
   tf_plan:
     name: 'Terraform Plan'
-    runs-on: ${{ inputs.use_private_agent == true && 'self-hosted' || 'ubuntu-20.04' }}
+    runs-on: ${{ inputs.use_private_agent == true && 'self-hosted' || 'ubuntu-22.04' }}
     environment: ${{ inputs.environment }}-ci
     permissions:
       id-token: write
@@ -96,7 +96,7 @@ jobs:
 
   tf_apply:
     name: 'Terraform Apply'
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-22.04
     needs: [tf_plan]
     environment: ${{ inputs.environment }}-cd
     permissions:
@@ -125,7 +125,7 @@ jobs:
           path: ${{ inputs.dir }}
 
       - name: Retrieve Terraform Modules from Cache
-        uses: actions/cache@ab5e6d0c87105b4c9c2047343972218f562e4319 # v4.0.1
+        uses: actions/cache@1bd1e32a3bdc45362d1e726936510720a7c30a57 #v4.2.0
         with:
           path: ${{ inputs.dir }}/.terraform
           key: terraform-${{ inputs.dir }}-${{ github.sha }}

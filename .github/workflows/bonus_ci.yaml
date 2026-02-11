@@ -1,0 +1,25 @@
+name: Continuous Integration on bonus
+
+on:
+  merge_group:
+  workflow_dispatch:
+  pull_request:
+    types:
+      - opened
+      - edited
+      - synchronize
+      - reopened
+      - ready_for_review
+    paths:
+      - "src/domains/bonus/**"
+      - ".github/workflows/bonus_**"
+
+jobs:
+  code_review_prod:
+    uses: pagopa/dx/.github/workflows/infra_plan.yaml@main
+    name: Terraform Plan
+    secrets: inherit
+    with:
+      environment: prod
+      base_path: "src/domains/bonus"
+      use_private_agent: true

@@ -57,7 +57,7 @@ variable "location_string" {
 
 variable "instance" {
   type        = string
-  description = "One of beta, prod01, prod02"
+  description = "One of prod01"
 }
 
 variable "lock_enable" {
@@ -95,52 +95,8 @@ variable "application_insights_name" {
   description = "Specifies the name of the Application Insights."
 }
 
-### Aks
-
-variable "k8s_kube_config_path_prefix" {
-  type    = string
-  default = "~/.kube"
-}
-
 variable "ingress_load_balancer_ip" {
   type = string
-}
-
-variable "reloader_helm" {
-  type = object({
-    chart_version = string,
-    image_name    = string,
-    image_tag     = string
-  })
-  description = "reloader helm chart configuration"
-}
-
-variable "tls_cert_check_helm" {
-  type = object({
-    chart_version = string,
-    image_name    = string,
-    image_tag     = string
-  })
-  description = "tls cert helm chart configuration"
-}
-
-###################
-# ioweb-profile-fn
-###################
-variable "cidr_subnet_fniowebprofile" {
-  type        = list(string)
-  description = "Functions ioweb profile address space"
-  default     = null
-}
-
-variable "function_ioweb_profile" {
-  type = object({
-    autoscale_minimum = number
-    autoscale_maximum = number
-    autoscale_default = number
-    sku_size          = string
-    kind              = string
-  })
 }
 
 variable "enable_azdoa" {
