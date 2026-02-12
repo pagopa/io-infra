@@ -107,6 +107,7 @@ module "platform_api_gateway_apim_itn" {
   azure_user_assigned_identity_auth_infra_cd  = data.azurerm_user_assigned_identity.auth_n_identity_infra_cd.principal_id
   azure_user_assigned_identity_bonus_infra_cd = data.azurerm_user_assigned_identity.bonus_infra_cd.principal_id
   azure_user_assigned_identity_com_infra_cd   = data.azurerm_user_assigned_identity.com_infra_cd.principal_id
+  azure_user_assigned_identity_fims_infra_cd  = data.azurerm_user_assigned_identity.fims_infra_cd.principal_id
 
   app_backend_urls = [for host in module.app_backend_weu : "https://${host.default_hostname}"]
 
