@@ -102,18 +102,6 @@ resource "azurerm_api_management_api_operation_policy" "platform_legacy_redirect
   xml_content         = file("${path.module}/policies/platform/legacy/v1/redirect/policy.xml")
 }
 
-locals {
-  platform_internal_api_content = templatefile("${path.module}/api/platform-internal/v1/api.yaml.tpl", {
-    host     = local.proxy_hostname_internal,
-    basePath = "api/${local.api_group_prefixes.session}/v1"
-  })
-}
-
-resource "local_file" "platform_internal_api" {
-  content  = local.platform_internal_api_content
-  filename = "${path.module}/api/platform-internal/v1/api.yaml"
-}
-
 resource "azurerm_api_management_api_version_set" "platform_internal" {
   name                = format("%s-p-platform-internal-apis", var.prefix)
   api_management_name = module.platform_api_gateway.name
@@ -129,8 +117,9 @@ resource "azurerm_api_management_api" "platform_internal" {
   subscription_required = false
 
   version_set_id = azurerm_api_management_api_version_set.platform_internal.id
-  version        = "v1"
-  revision       = 1
+  // When the version is updated, refresh the API spec in /api/platform-internal/v1/definition.yaml to trigger an update of the API in APIM, otherwise the new version won't be applied until the next manual update of the API spec.
+  version  = "v1"
+  revision = 1
 
   description  = "IO Platform PROXY - Internal API"
   display_name = "IO Platform Internal API"
@@ -139,7 +128,7 @@ resource "azurerm_api_management_api" "platform_internal" {
 
   import {
     content_format = "openapi"
-    content_value  = local.platform_internal_api_content
+    content_value  = file("${path.module}/api/platform-internal/v1/api.yaml")
   }
 }
 
