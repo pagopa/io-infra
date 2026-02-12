@@ -1,0 +1,84 @@
+<fragment>
+  <!-- 1. Extract and validate Authorization header -->
+  <set-variable name="authHeader" value="@(context.Request.Headers.GetValueOrDefault("Authorization", ""))" />
+  <choose>
+    <when condition="@(!context.Variables.GetValueOrDefault<string>("authHeader").StartsWith("Bearer "))">
+      <return-response>
+        <set-status code="401" reason="Unauthorized" />
+        <set-header name="Content-Type" exists-action="override">
+          <value>application/json</value>
+        </set-header>
+        <set-body>{"title": "Unauthorized", "status": 401, "detail": "Missing or invalid Authorization header"}</set-body>
+      </return-response>
+    </when>
+  </choose>
+
+  <!-- 2. Extract the Bearer token to use as cache key -->
+  <set-variable name="bearerToken" value="@(context.Variables.GetValueOrDefault<string>("authHeader").Substring("Bearer ".Length))" />
+
+  <!-- 3. Lookup user data in APIM internal cache -->
+  <cache-lookup-value key="@("{{session-token-cache-prefix}}" + context.Variables.GetValueOrDefault<string>("bearerToken"))" variable-name="cachedUserData" caching-type="internal" />
+
+  <!-- 4. If cache HIT, use cached value; otherwise call introspection -->
+  <choose>
+    <when condition="@(context.Variables.ContainsKey("cachedUserData"))">
+      <!-- Cache HIT: use the cached base64-encoded user data -->
+      <set-header name="Authorization" exists-action="delete" />
+      <set-header name="x-user" exists-action="override">
+        <value>@((string)context.Variables["cachedUserData"])</value>
+      </set-header>
+    </when>
+    <otherwise>
+      <!-- Cache MISS: call introspection endpoint -->
+      <send-request mode="new" response-variable-name="introspectionResponse" timeout="10" ignore-error="false">
+        <set-url>https://127.0.0.1{{session-manager-introspection-url}}</set-url>
+        <set-method>GET</set-method>
+        <set-header name="Content-Type" exists-action="override">
+          <value>application/json</value>
+        </set-header>
+        <set-header name="Authorization" exists-action="override">
+          <value>@(context.Variables.GetValueOrDefault<string>("authHeader"))</value>
+        </set-header>
+        <set-header name="Host">
+          <value>{{platform-api-gateway-hostname-internal}}</value>
+        </set-header>
+      </send-request>
+      <choose>
+        <when condition="@(((IResponse)context.Variables["introspectionResponse"]).StatusCode == 200)">
+          <!-- Parse the introspection response -->
+          <set-variable name="userData" value="@{
+            var body = ((IResponse)context.Variables["introspectionResponse"]).Body.As<JObject>();
+            context.Variables["tokenTtl"] = body.Value<int>("token_remaining_ttl");
+            return Convert.ToBase64String(System.Text.Encoding.UTF8.GetBytes(body.ToString()));
+          }" />
+          <!-- Store the base64-encoded user data in APIM internal cache with TTL from introspection (only if TTL > 0) -->
+          <choose>
+            <when condition="@((int)context.Variables["tokenTtl"] > 0)">
+              <cache-store-value key="@("{{session-token-cache-prefix}}" + context.Variables.GetValueOrDefault<string>("bearerToken"))" value="@((string)context.Variables["userData"])" duration="@((int)context.Variables["tokenTtl"])" caching-type="internal" />
+            </when>
+          </choose>
+          <!-- Remove the Authorization header -->
+          <set-header name="Authorization" exists-action="delete" />
+          <!-- Set the x-user header with the base64-encoded user data -->
+          <set-header name="x-user" exists-action="override">
+            <value>@((string)context.Variables["userData"])</value>
+          </set-header>
+        </when>
+        <when condition="@(((IResponse)context.Variables["introspectionResponse"]).StatusCode == 401)">
+          <return-response>
+            <set-status code="401" reason="Unauthorized" />
+          </return-response>
+        </when>
+        <otherwise>
+          <return-response>
+            <set-status code="500" reason="Internal Server Error" />
+            <set-header name="Content-Type" exists-action="override">
+              <value>application/json</value>
+            </set-header>
+            <set-body>{"title": "Proxy Error", "status": 500, "detail": "The token introspection-endpoint returns an error"}</set-body>
+          </return-response>
+        </otherwise>
+      </choose>
+    </otherwise>
+  </choose>
+</fragment>
