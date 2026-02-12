@@ -38,6 +38,11 @@ locals {
       principal_id = var.azure_user_assigned_identity_com_infra_cd
       description  = "Communication team infra CD identity"
       role         = "owner"
+    },
+    {
+      principal_id = var.azure_user_assigned_identity_fims_infra_cd
+      description  = "FIMS infra CD identity"
+      role         = "owner"
     }
   ]
 
