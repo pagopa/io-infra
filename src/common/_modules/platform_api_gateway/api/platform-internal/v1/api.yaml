@@ -8,8 +8,6 @@ info:
     IO Platform PROXY - Internal API
 servers:
   - url: https://proxy.internal.io.pagopa.it/api/platform-internal/v1
-security:
-  - ApiKeyAuth: []
 paths:
   /sessions:
     delete:
@@ -45,11 +43,6 @@ paths:
               schema:
                 $ref: '#/components/schemas/ProblemJson'
 components:
-  securitySchemes:
-    ApiKeyAuth:
-      type: apiKey
-      in: header
-      name: Ocp-Apim-Subscription-Key
   schemas:
     ProblemJson:
       type: object
