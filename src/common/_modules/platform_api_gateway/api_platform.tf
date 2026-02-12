@@ -51,7 +51,7 @@ resource "azurerm_api_management_api_policy" "platform_legacy" {
   api_management_name = module.platform_api_gateway.name
   resource_group_name = module.platform_api_gateway.resource_group_name
 
-  xml_content = file("${path.module}/policies/platform/v1/_base_policy.xml")
+  xml_content = file("${path.module}/policies/platform/legacy/v1/_base_policy.xml")
 }
 
 resource "azurerm_api_management_api_operation_policy" "platform_legacy_get_services_status" {
@@ -59,7 +59,7 @@ resource "azurerm_api_management_api_operation_policy" "platform_legacy_get_serv
   api_management_name = module.platform_api_gateway.name
   resource_group_name = module.platform_api_gateway.resource_group_name
   operation_id        = "getServicesStatus"
-  xml_content         = file("${path.module}/policies/platform/v1/get_services_status/policy.xml")
+  xml_content         = file("${path.module}/policies/platform/legacy/v1/get_services_status/policy.xml")
 }
 
 resource "azurerm_api_management_api_operation_policy" "platform_legacy_get_services_status_head" {
@@ -67,7 +67,7 @@ resource "azurerm_api_management_api_operation_policy" "platform_legacy_get_serv
   api_management_name = module.platform_api_gateway.name
   resource_group_name = module.platform_api_gateway.resource_group_name
   operation_id        = "getServicesStatusHead"
-  xml_content         = file("${path.module}/policies/platform/v1/get_services_status_head/policy.xml")
+  xml_content         = file("${path.module}/policies/platform/legacy/v1/get_services_status_head/policy.xml")
 }
 
 resource "azurerm_api_management_api_operation_policy" "platform_legacy_get_ping" {
@@ -75,7 +75,7 @@ resource "azurerm_api_management_api_operation_policy" "platform_legacy_get_ping
   api_management_name = module.platform_api_gateway.name
   resource_group_name = module.platform_api_gateway.resource_group_name
   operation_id        = "getPing"
-  xml_content         = file("${path.module}/policies/platform/v1/get_ping_cache_policy.xml")
+  xml_content         = file("${path.module}/policies/platform/legacy/v1/get_ping_cache_policy.xml")
 }
 
 resource "azurerm_api_management_api_operation_policy" "platform_legacy_get_ping_head" {
@@ -83,7 +83,7 @@ resource "azurerm_api_management_api_operation_policy" "platform_legacy_get_ping
   api_management_name = module.platform_api_gateway.name
   resource_group_name = module.platform_api_gateway.resource_group_name
   operation_id        = "getPingHead"
-  xml_content         = file("${path.module}/policies/platform/v1/get_ping_cache_policy.xml")
+  xml_content         = file("${path.module}/policies/platform/legacy/v1/get_ping_cache_policy.xml")
 }
 
 resource "azurerm_api_management_api_operation_policy" "platform_legacy_get_server_info" {
@@ -91,7 +91,7 @@ resource "azurerm_api_management_api_operation_policy" "platform_legacy_get_serv
   api_management_name = module.platform_api_gateway.name
   resource_group_name = module.platform_api_gateway.resource_group_name
   operation_id        = "getServerInfo"
-  xml_content         = file("${path.module}/policies/platform/v1/get_server_info/policy.xml")
+  xml_content         = file("${path.module}/policies/platform/legacy/v1/get_server_info/policy.xml")
 }
 
 resource "azurerm_api_management_api_operation_policy" "platform_legacy_redirect" {
@@ -99,5 +99,58 @@ resource "azurerm_api_management_api_operation_policy" "platform_legacy_redirect
   api_management_name = module.platform_api_gateway.name
   resource_group_name = module.platform_api_gateway.resource_group_name
   operation_id        = "Redirect"
-  xml_content         = file("${path.module}/policies/platform/v1/redirect/policy.xml")
+  xml_content         = file("${path.module}/policies/platform/legacy/v1/redirect/policy.xml")
+}
+
+resource "azurerm_api_management_api_version_set" "platform_internal" {
+  name                = format("%s-p-platform-internal-apis", var.prefix)
+  api_management_name = module.platform_api_gateway.name
+  resource_group_name = module.platform_api_gateway.resource_group_name
+  display_name        = "IO Platform Internal API"
+  versioning_scheme   = "Segment"
+}
+
+resource "azurerm_api_management_api" "platform_internal" {
+  name                  = format("%s-p-platform-internal-api", var.prefix)
+  api_management_name   = module.platform_api_gateway.name
+  resource_group_name   = module.platform_api_gateway.resource_group_name
+  subscription_required = false
+
+  version_set_id = azurerm_api_management_api_version_set.platform_internal.id
+  // When the version is updated, refresh the API spec in /api/platform-internal/v1/definition.yaml to trigger an update of the API in APIM, otherwise the new version won't be applied until the next manual update of the API spec.
+  version  = "v1"
+  revision = 1
+
+  description  = "IO Platform PROXY - Internal API"
+  display_name = "IO Platform Internal API"
+  path         = "api/${local.api_group_prefixes.session}"
+  protocols    = ["https"]
+
+  import {
+    content_format = "openapi"
+    content_value  = file("${path.module}/api/platform-internal/v1/api.yaml")
+  }
+}
+
+resource "azurerm_api_management_product_api" "platform_platform_internal" {
+  api_name            = azurerm_api_management_api.platform_internal.name
+  product_id          = azurerm_api_management_product.platform.product_id
+  api_management_name = module.platform_api_gateway.name
+  resource_group_name = module.platform_api_gateway.resource_group_name
+}
+
+resource "azurerm_api_management_api_policy" "platform_internal" {
+  api_name            = azurerm_api_management_api.platform_internal.name
+  api_management_name = module.platform_api_gateway.name
+  resource_group_name = module.platform_api_gateway.resource_group_name
+
+  xml_content = file("${path.module}/policies/platform/internal/v1/_base_policy.xml")
+}
+
+resource "azurerm_api_management_api_operation_policy" "platform_internal_delete_session" {
+  api_name            = azurerm_api_management_api.platform_internal.name
+  api_management_name = module.platform_api_gateway.name
+  resource_group_name = module.platform_api_gateway.resource_group_name
+  operation_id        = "deleteSession"
+  xml_content         = file("${path.module}/policies/platform/internal/v1/delete_session/policy.xml")
 }
