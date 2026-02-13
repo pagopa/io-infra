@@ -95,6 +95,10 @@ variable "azure_user_assigned_identity_com_infra_cd" {
   type        = string
   description = "Principal Id of the User Assigned Identity for com Infra CD"
 }
+variable "azure_user_assigned_identity_fims_infra_cd" {
+  type        = string
+  description = "Principal Id of the User Assigned Identity for FIMS Infra CD"
+}
 
 variable "azure_adgroup_auth_admins_object_id" {
   type        = string
