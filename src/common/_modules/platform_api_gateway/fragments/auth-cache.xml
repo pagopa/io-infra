@@ -14,7 +14,19 @@
   </choose>
 
   <!-- 2. Extract the Bearer token to use as cache key -->
-  <set-variable name="bearerToken" value="@(context.Variables.GetValueOrDefault<string>("authHeader").Substring("Bearer ".Length))" />
+  <set-variable name="bearerToken" value="@(context.Variables.GetValueOrDefault<string>("authHeader").Substring("Bearer ".Length).Trim())" />
+  <!-- 2b. Validate that the Bearer token is non-empty -->
+  <choose>
+    <when condition="@context.Variables.GetValueOrDefault<string>("bearerToken").Length < 64">
+      <return-response>
+        <set-status code="401" reason="Unauthorized" />
+        <set-header name="Content-Type" exists-action="override">
+          <value>application/json</value>
+        </set-header>
+        <set-body>{"title": "Unauthorized", "status": 401, "detail": "Missing or invalid Bearer token"}</set-body>
+      </return-response>
+    </when>
+  </choose>
 
   <!-- 3. Lookup user data in APIM internal cache -->
   <cache-lookup-value key="@("{{session-token-cache-prefix}}" + context.Variables.GetValueOrDefault<string>("bearerToken"))" variable-name="cachedUserData" caching-type="internal" />
