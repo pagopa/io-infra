@@ -60,7 +60,8 @@
           <!-- Parse the introspection response -->
           <set-variable name="userData" value="@{
             var body = ((IResponse)context.Variables["introspectionResponse"]).Body.As<JObject>();
-            context.Variables["tokenTtl"] = body.Value<int>("token_remaining_ttl");
+            var ttl = body.Value<int>("token_remaining_ttl");
+            context.Variables["tokenTtl"] = Math.Min(ttl, 300);
             return Convert.ToBase64String(System.Text.Encoding.UTF8.GetBytes(body.ToString()));
           }" />
           <!-- Store the base64-encoded user data in APIM internal cache with TTL from introspection (only if TTL > 0) -->
