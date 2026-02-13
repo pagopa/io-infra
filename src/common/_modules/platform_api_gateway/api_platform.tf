@@ -154,3 +154,11 @@ resource "azurerm_api_management_api_operation_policy" "platform_internal_delete
   operation_id        = "deleteSession"
   xml_content         = file("${path.module}/policies/platform/internal/v1/delete_session/policy.xml")
 }
+
+resource "azurerm_api_management_api_operation_policy" "platform_internal_get_cached_session" {
+  api_name            = azurerm_api_management_api.platform_internal.name
+  api_management_name = module.platform_api_gateway.name
+  resource_group_name = module.platform_api_gateway.resource_group_name
+  operation_id        = "getCachedSession"
+  xml_content         = file("${path.module}/policies/platform/internal/v1/get_cached_session/policy.xml")
+}
