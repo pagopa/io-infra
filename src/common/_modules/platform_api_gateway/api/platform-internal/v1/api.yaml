@@ -10,6 +10,43 @@ servers:
   - url: https://proxy.internal.io.pagopa.it/api/platform-internal/v1
 paths:
   /sessions:
+    get:
+      summary: Get cached user session
+      operationId: getCachedSession
+      tags:
+        - Sessions
+      parameters:
+        - name: X-Session-Token
+          in: header
+          required: true
+          description: The session token to be retrieved
+          schema:
+            type: string
+            minLength: 64
+      responses:
+        '200':
+          description: Session user data retrieved successfully
+          content:
+            text/plain:
+              schema:
+                type: string
+                description: Base64-encoded JSON string containing user data from token introspection
+        '204':
+          description: Session token not found in cache
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+        '429':
+          description: Too many requests
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
     delete:
       summary: Delete user session from cache
       operationId: deleteSession
