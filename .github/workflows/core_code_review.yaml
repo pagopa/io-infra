@@ -27,3 +27,4 @@ jobs:
     with:
       environment: prod
       base_path: src/core
+      use_private_agent: true

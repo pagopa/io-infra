@@ -59,17 +59,6 @@ variable "app_insights_key" {
   sensitive   = true
 }
 
-variable "dev_portal_db_data" {
-  type = object({
-    host     = string
-    username = string
-    password = string
-  })
-
-  sensitive   = true
-  description = "DevPortal database credentials to save in app configs"
-}
-
 variable "subsmigrations_db_data" {
   type = object({
     host     = string

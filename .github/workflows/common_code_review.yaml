@@ -18,6 +18,7 @@ on:
       - "src/common/prod/**"
       - "src/common/_modules/**"
       - ".github/workflows/common_code_review.yaml"
+      - "src/_modules/test_users/**"
 
 jobs:
   prod_itn_common_code_review:
@@ -27,3 +28,4 @@ jobs:
     with:
       environment: prod
       base_path: src/common
+      use_private_agent: true

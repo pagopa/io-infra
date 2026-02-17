@@ -21,3 +21,16 @@ locals {
 
   service_api_url = "https://api-app.internal.io.pagopa.it/"
 }
+
+# Region ITN
+locals {
+  itn_location       = "italynorth"
+  itn_location_short = "itn"
+  common_project_itn = "${local.project}-${local.itn_location_short}"
+
+  vnet_common_name_itn                = "${local.common_project_itn}-common-vnet-01"
+  vnet_common_resource_group_name_itn = "${local.common_project_itn}-common-rg-01"
+
+  apim_itn_name                = "${local.project}-${local.itn_location_short}-apim-01"
+  apim_itn_resource_group_name = "${local.project}-${local.itn_location_short}-common-rg-01"
+}

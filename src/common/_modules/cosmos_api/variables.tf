@@ -48,6 +48,11 @@ variable "secondary_location" {
   default = null
 }
 
+variable "secondary_location_pep_snet_id" {
+  type        = string
+  description = "Id of the subnet holding private endpoints in the secondary location"
+}
+
 variable "documents_dns_zone" {
   type = object({
     id                  = string
@@ -65,4 +70,40 @@ variable "allowed_subnets_ids" {
 variable "error_action_group_id" {
   type        = string
   description = "Azure Monitor error action group id"
+}
+
+variable "azure_adgroup_com_admins_object_id" {
+  type        = string
+  description = "Object Id of the Entra group for IO COM admins"
+}
+
+
+variable "azure_adgroup_com_devs_object_id" {
+  type        = string
+  description = "Object Id of the Entra group for IO COM devs"
+}
+
+variable "azure_adgroup_svc_admins_object_id" {
+  type        = string
+  description = "Object Id of the Entra group for IO SVC admins"
+}
+
+variable "azure_adgroup_svc_devs_object_id" {
+  type        = string
+  description = "Object Id of the Entra group for IO SVC devs"
+}
+
+variable "azure_adgroup_auth_admins_object_id" {
+  type        = string
+  description = "Object Id of the Entra group for IO AUTH admins"
+}
+
+variable "azure_adgroup_auth_devs_object_id" {
+  type        = string
+  description = "Object Id of the Entra group for IO AUTH devs"
+}
+
+variable "infra_identity_ids" {
+  type        = list(string)
+  description = "List of Identitiy Ids that should have access to Cosmos Account keys"
 }

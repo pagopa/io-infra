@@ -18,7 +18,3 @@ variable "cidr_subnet_selfcare_be" {
   description = "CIDR for Selfcare BE subnet"
 }
 
-variable "cidr_subnet_developer_portal" {
-  type        = string
-  description = "CIDR for DeveloperPortal subnet"
-}
