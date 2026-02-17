@@ -48,6 +48,11 @@ variable "external_domain" {
   description = "Domain for delegation"
 }
 
+variable "azure_adgroup_svc_devs_object_id" {
+  type        = string
+  description = "Object Id of the Entra group for enti & servizi"
+}
+
 variable "assets_cdn_fn" {
   type = object({
     name     = string

@@ -1,0 +1,20 @@
+<policies>
+    <inbound>
+        <base />
+        <choose>
+            <when condition="@(!context.User.Groups.Select(g => g.Name).Contains("{{cdc-support-read-group-name}}"))">
+                <return-response>
+                    <set-status code="403"
+                        reason="Unauthorized, the subscription used doesn't have the required permission" />
+                </return-response>
+            </when>
+        </choose>
+        <set-backend-service base-url="{{io-cdc-support-func-url}}/api/v1" />
+        <set-header name="x-functions-key" exists-action="override">
+            <value>{{io-fn-cdcsupportfunc-key}}</value>
+        </set-header>
+    </inbound>
+    <outbound>
+        <base />
+    </outbound>
+</policies>

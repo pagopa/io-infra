@@ -1,12 +1,13 @@
 locals {
   app_settings_common = {
-    IS_APPBACKENDLI = var.is_li ? "true" : "false"
     # No downtime on slots swap
     WEBSITE_ADD_SITENAME_BINDINGS_IN_APPHOST_CONFIG = "1"
     WEBSITE_RUN_FROM_PACKAGE                        = "1"
     WEBSITE_DNS_SERVER                              = "168.63.129.16"
 
     APPINSIGHTS_INSTRUMENTATIONKEY = var.ai_instrumentation_key
+    APPINSIGHTS_CONNECTION_STRING  = var.ai_connection_string
+    APPINSIGHTS_CLOUD_ROLE_NAME    = local.nonstandard.weu.app
 
     // ENVIRONMENT
     NODE_ENV = "production"
@@ -25,60 +26,50 @@ locals {
     // see https://learn.microsoft.com/en-us/azure/app-service/monitor-instances-health-check?tabs=dotnet#configuration
     WEBSITE_HEALTHCHECK_MAXUNHEALTHYWORKERPERCENT = "95"
 
-
-    // AUTHENTICATION
-    AUTHENTICATION_BASE_PATH = ""
+    // API KEY
+    // optionally you can specify APP_BACKEND_SECONDARY_KEY
+    // for rotation purposes
+    APP_BACKEND_PRIMARY_KEY = data.azurerm_key_vault_secret.app_backend_APP_BACKEND_PRIMARY_KEY.value
 
     // FUNCTIONS
-    API_URL                     = "https://${var.backend_hostnames.app[1]}/api/v1"
+    API_URL                     = "https://${var.backend_hostnames.app[0]}/api/v1"
     API_KEY                     = data.azurerm_key_vault_secret.app_backend_API_KEY.value
     CGN_API_URL                 = "https://${var.backend_hostnames.cgn}"
     CGN_API_KEY                 = data.azurerm_key_vault_secret.app_backend_CGN_API_KEY.value
     IO_SIGN_API_URL             = "https://${var.backend_hostnames.iosign}"
     IO_SIGN_API_KEY             = data.azurerm_key_vault_secret.app_backend_IO_SIGN_API_KEY.value
+    IO_FIMS_API_URL             = "https://${var.backend_hostnames.iofims}"
+    IO_FIMS_API_KEY             = data.azurerm_key_vault_secret.app_backend_IO_FIMS_API_KEY.value
     CGN_OPERATOR_SEARCH_API_URL = "https://${var.backend_hostnames.cgnonboarding}" # prod subscription
     CGN_OPERATOR_SEARCH_API_KEY = data.azurerm_key_vault_secret.app_backend_CGN_OPERATOR_SEARCH_API_KEY_PROD.value
-    EUCOVIDCERT_API_URL         = "https://${var.backend_hostnames.eucovidcert}/api/v1"
-    EUCOVIDCERT_API_KEY         = data.azurerm_key_vault_secret.fn_eucovidcert_API_KEY_APPBACKEND.value
-    APP_MESSAGES_API_URL        = "https://${var.backend_hostnames.app_messages[(var.index - 1) % local.app_messages_count]}/api/v1"
-    APP_MESSAGES_API_KEY        = data.azurerm_key_vault_secret.app_backend_APP_MESSAGES_API_KEY[(var.index - 1) % local.app_messages_count].value
+    APP_MESSAGES_API_URL        = "https://${var.backend_hostnames.com_citizen_func}/api/v1"
+    APP_MESSAGES_API_KEY        = data.azurerm_key_vault_secret.app_backend_COM_CITIZEN_FUNC_API_KEY.value
     LOLLIPOP_API_URL            = "https://${var.backend_hostnames.lollipop}"
     LOLLIPOP_API_KEY            = data.azurerm_key_vault_secret.app_backend_LOLLIPOP_ITN_API_KEY.value
-    TRIAL_SYSTEM_API_URL        = "https://${var.backend_hostnames.trial_system_api}" # PROD-TRIAL subscription
-    TRIAL_SYSTEM_APIM_URL       = var.backend_hostnames.trial_system_apim             # Add this variable to avoid downtime
-    TRIAL_SYSTEM_API_KEY        = data.azurerm_key_vault_secret.app_backend_TRIAL_SYSTEM_API_KEY.value
-    TRIAL_SYSTEM_APIM_KEY       = data.azurerm_key_vault_secret.app_backend_TRIAL_SYSTEM_APIM_KEY.value
-    IO_WALLET_API_URL           = "https://${var.backend_hostnames.iowallet}"
-    IO_WALLET_API_KEY           = data.azurerm_key_vault_secret.app_backend_IO_WALLET_API_KEY.value
+    CDC_SUPPORT_API_URL         = "https://${var.backend_hostnames.cdc_support}"
+    CDC_SUPPORT_API_KEY         = data.azurerm_key_vault_secret.app_backend_CDC_SUPPORT_API_KEY.value
 
     // EXPOSED API
     API_BASE_PATH                     = "/api/v1"
     CGN_API_BASE_PATH                 = "/api/v1/cgn"
     CGN_OPERATOR_SEARCH_API_BASE_PATH = "/api/v1/cgn/operator-search"
-    EUCOVIDCERT_API_BASE_PATH         = "/api/v1/eucovidcert"
     IO_SIGN_API_BASE_PATH             = "/api/v1/sign"
+    IO_FIMS_API_BASE_PATH             = "/api/v1/fims"
     LOLLIPOP_API_BASE_PATH            = "/api/v1"
-    TRIAL_SYSTEM_API_BASE_PATH        = "/api/v1"
-    TRIAL_SYSTEM_APIM_BASE_PATH       = "/manage/api/v1"
-    IO_WALLET_API_BASE_PATH           = "/api/v1/wallet"
+    CDC_SUPPORT_API_BASE_PATH         = "/api/v1"
+    CDC_SUPPORT_IO_API_BASE_PATH      = "/api/v1/cdc"
 
     // REDIS
     REDIS_URL      = var.redis_common.hostname
     REDIS_PORT     = var.redis_common.ssl_port
     REDIS_PASSWORD = var.redis_common.primary_access_key
 
-    // PUSH NOTIFICATIONS
-    PRE_SHARED_KEY               = data.azurerm_key_vault_secret.app_backend_PRE_SHARED_KEY.value
-    ALLOW_NOTIFY_IP_SOURCE_RANGE = "127.0.0.0/0"
 
-    // LOCK / UNLOCK SESSION ENDPOINTS
-    ALLOW_SESSION_HANDLER_IP_SOURCE_RANGE = var.apim_snet_address_prefixes[0]
-
-    // PAGOPA
-    PAGOPA_API_URL_PROD = "https://api.platform.pagopa.it/checkout/auth/payments/v1"
-    PAGOPA_API_URL_TEST = "https://api.uat.platform.pagopa.it/checkout/auth/payments/v1"
-    PAGOPA_API_KEY_PROD = data.azurerm_key_vault_secret.app_backend_PAGOPA_API_KEY_PROD.value
-    PAGOPA_API_KEY_UAT  = data.azurerm_key_vault_secret.app_backend_PAGOPA_API_KEY_UAT.value
+    // PAGOPA ECOMMERCE
+    PAGOPA_ECOMMERCE_BASE_URL     = "https://api.platform.pagopa.it/ecommerce/payment-requests-service/v1"
+    PAGOPA_ECOMMERCE_UAT_BASE_URL = "https://api.uat.platform.pagopa.it/ecommerce/payment-requests-service/v1"
+    PAGOPA_ECOMMERCE_API_KEY      = data.azurerm_key_vault_secret.app_backend_PAGOPA_ECOMMERCE_API_KEY.value
+    PAGOPA_ECOMMERCE_UAT_API_KEY  = data.azurerm_key_vault_secret.app_backend_PAGOPA_ECOMMERCE_UAT_API_KEY.value
 
     // MYPORTAL
     MYPORTAL_BASE_PATH             = "/myportal/api/v1"
@@ -90,19 +81,14 @@ locals {
     NOTIFICATIONS_QUEUE_NAME                = "push-notifications"
     NOTIFICATIONS_STORAGE_CONNECTION_STRING = data.azurerm_storage_account.notifications.primary_connection_string
 
-    PUSH_NOTIFICATIONS_STORAGE_CONNECTION_STRING = data.azurerm_storage_account.push_notifications_storage.primary_connection_string
+    PUSH_NOTIFICATIONS_STORAGE_CONNECTION_STRING = data.azurerm_storage_account.itn_com_st.primary_connection_string
     PUSH_NOTIFICATIONS_QUEUE_NAME                = "push-notifications"
 
-    LOCKED_PROFILES_STORAGE_CONNECTION_STRING = data.azurerm_storage_account.locked_profiles_storage.primary_connection_string
-    LOCKED_PROFILES_TABLE_NAME                = "lockedprofiles"
-
     // Feature flags
-    FF_BONUS_ENABLED           = 1
-    FF_CGN_ENABLED             = 1
-    FF_EUCOVIDCERT_ENABLED     = 1
-    FF_IO_SIGN_ENABLED         = 1
-    FF_IO_WALLET_ENABLED       = 1
-    FF_IO_WALLET_TRIAL_ENABLED = 1
+    FF_CGN_ENABLED     = 1
+    FF_CDC_ENABLED     = 1
+    FF_IO_SIGN_ENABLED = 1
+    FF_IO_FIMS_ENABLED = 1
 
     FF_ROUTING_PUSH_NOTIF                      = "ALL" # possible values are: BETA, CANARY, ALL, NONE
     FF_ROUTING_PUSH_NOTIF_BETA_TESTER_SHA_LIST = data.azurerm_key_vault_secret.app_backend_APP_MESSAGES_BETA_FISCAL_CODES.value
@@ -110,7 +96,6 @@ locals {
     FF_ROUTING_PUSH_NOTIF_CANARY_SHA_USERS_REGEX = "^([(0-9)|(a-f)|(A-F)]{63}[(0-4)]{1})$"
 
     FF_PN_ACTIVATION_ENABLED = "1"
-    FF_TRIAL_SYSTEM_ENABLED  = "1"
 
     // SUPPORT_TOKEN
     JWT_SUPPORT_TOKEN_ISSUER     = "app-backend.io.italia.it"
@@ -143,9 +128,6 @@ locals {
 
     // Service ID IO-SIGN
     IO_SIGN_SERVICE_ID = local.service_ids.io_sign
-
-    // IO Wallet TRIAL ID
-    IO_WALLET_TRIAL_ID = local.service_ids.io_wallet_trial
 
     // PN Service Activation
     PN_ACTIVATION_BASE_PATH = "/api/v1/pn"
@@ -248,25 +230,19 @@ locals {
       }
     ])
 
-    // LolliPOP
-    LOLLIPOP_REVOKE_STORAGE_CONNECTION_STRING = data.azurerm_storage_account.lollipop_assertions_storage.primary_connection_string
-    LOLLIPOP_REVOKE_QUEUE_NAME                = local.citizen_auth_revoke_queue_name
-
     // UNIQUE EMAIL ENFORCEMENT
     FF_UNIQUE_EMAIL_ENFORCEMENT    = "ALL"
     UNIQUE_EMAIL_ENFORCEMENT_USERS = join(",", [data.azurerm_key_vault_secret.app_backend_UNIQUE_EMAIL_ENFORCEMENT_USER.value, module.tests.users.unique_email_test[0]])
 
-    // DEPRECATED APP SETTINGS
-    // The following variables must be removed after a update
-    // of the io-backend configuration, because they are required to start
-    // the application.
-    BONUS_API_BASE_PATH = "/api/v1"
-    BONUS_API_URL       = "to-remove"
-    BONUS_API_KEY       = "to-remove"
-
     // Services App Backend
+    SERVICES_APP_BACKEND_API_KEY       = data.azurerm_key_vault_secret.appbackend_SERVICES_APP_BACKEND_API_KEY.value
     SERVICES_APP_BACKEND_BASE_PATH     = "/api/v2"
     SERVICES_APP_BACKEND_API_URL       = "https://${var.backend_hostnames.services_app_backend}"
     SERVICES_APP_BACKEND_API_BASE_PATH = "/api/v1"
+
+    // IO Proxy authentication middleware feature flags configuration
+    FF_IO_X_USER_TOKEN                        = "NONE" # possible values are: BETA, CANARY, ALL, NONE
+    FF_IO_X_USER_TOKEN_BETA_TESTER_SHA_LIST   = data.azurerm_key_vault_secret.app_backend_X_USER_BETA_FISCAL_CODES.value
+    FF_IO_X_USER_TOKEN_CANARY_SHA_USERS_REGEX = "XYZ" # Disabled, no one user match this regex
   }
 }

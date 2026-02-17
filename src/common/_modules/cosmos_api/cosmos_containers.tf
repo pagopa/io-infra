@@ -7,7 +7,7 @@ resource "azurerm_cosmosdb_sql_container" "these" {
   account_name  = azurerm_cosmosdb_account.this.name
   database_name = azurerm_cosmosdb_sql_database.db.name
 
-  partition_key_path    = each.value.partition_key_path
+  partition_key_paths   = [each.value.partition_key_path]
   partition_key_version = lookup(each.value, "partition_key_version", 2)
   throughput            = lookup(each.value, "throughput", null)
   default_ttl           = lookup(each.value, "default_ttl", null)

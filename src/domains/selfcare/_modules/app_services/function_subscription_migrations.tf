@@ -1,10 +1,11 @@
 module "function_subscriptionmigrations" {
   source = "github.com/pagopa/terraform-azurerm-v3//function_app?ref=v7.69.1"
 
-  name                = "${var.project}-subsmigrations-fn"
-  location            = var.location
-  resource_group_name = var.resource_group_name
-  app_service_plan_id = azurerm_service_plan.selfcare_be_common.id
+  name                    = "${var.project}-subsmigrations-fn"
+  location                = var.location
+  resource_group_name     = var.resource_group_name
+  app_service_plan_id     = azurerm_service_plan.selfcare_be_common.id
+  system_identity_enabled = true
 
   application_insights_instrumentation_key = var.app_insights_key
 
@@ -68,11 +69,12 @@ module "function_subscriptionmigrations" {
 module "function_subscriptionmigrations_staging_slot" {
   source = "github.com/pagopa/terraform-azurerm-v3//function_app_slot?ref=v7.69.1"
 
-  name                = "staging"
-  location            = var.location
-  resource_group_name = module.function_subscriptionmigrations.resource_group_name
-  function_app_id     = module.function_subscriptionmigrations.id
-  app_service_plan_id = azurerm_service_plan.selfcare_be_common.id
+  name                    = "staging"
+  location                = var.location
+  resource_group_name     = module.function_subscriptionmigrations.resource_group_name
+  function_app_id         = module.function_subscriptionmigrations.id
+  app_service_plan_id     = azurerm_service_plan.selfcare_be_common.id
+  system_identity_enabled = true
 
   application_insights_instrumentation_key = var.app_insights_key
 

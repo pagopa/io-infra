@@ -1,12 +1,12 @@
 locals {
-  ip_range_filter = ["52.174.88.118", "40.91.208.65", "13.69.64.208/28", "13.69.71.192/27", "13.93.36.78", "20.86.93.32/27", "20.86.93.64/28", "20.126.243.151", "20.126.241.238", "20.103.132.139", "20.103.131.1"]
+  ip_range_filter = toset(["52.174.88.118", "40.91.208.65", "13.69.64.208/28", "13.69.71.192/27", "13.93.36.78", "20.86.93.32/27", "20.86.93.64/28", "20.126.243.151", "20.126.241.238", "20.103.132.139", "20.103.131.1"])
   cosmosdb_containers = [
     {
       name                  = "activations"
       partition_key_path    = "/fiscalCode"
       partition_key_version = null
       autoscale_settings = {
-        max_throughput = 1000
+        max_throughput = 5000
       }
     },
     {
@@ -55,7 +55,7 @@ locals {
       partition_key_version = null
       default_ttl           = -1
       autoscale_settings = {
-        max_throughput = 67000
+        max_throughput = 180000
       }
     },
     {
@@ -72,7 +72,7 @@ locals {
       partition_key_version = null
       default_ttl           = -1
       autoscale_settings = {
-        max_throughput = 46000
+        max_throughput = 80000
       }
     },
     {
@@ -87,7 +87,10 @@ locals {
       name                  = "notifications"
       partition_key_path    = "/messageId"
       partition_key_version = null
-      throughput            = 3800
+
+      autoscale_settings = {
+        max_throughput = 15000
+      }
     },
     {
       name               = "operations-leases-services"
@@ -120,11 +123,27 @@ locals {
       }
     },
     {
+      name               = "profile-emails-uniqueness-leases-itn"
+      partition_key_path = "/_partitionKey"
+      autoscale_settings = {
+        max_throughput = 2000
+      }
+    },
+    {
+      name                  = "profile-emails-uniqueness-leases-itn-002",
+      partition_key_path    = "/id",
+      partition_key_version = null
+      default_ttl           = -1
+      autoscale_settings = {
+        max_throughput = 2000
+      }
+    },
+    {
       name                  = "profiles"
       partition_key_path    = "/fiscalCode"
       partition_key_version = null
       autoscale_settings = {
-        max_throughput = 48000
+        max_throughput = 80000
       }
     },
     {
@@ -149,18 +168,11 @@ locals {
       throughput         = 400
     },
     {
-      name               = "services-devportalservicedata-leases-001"
-      partition_key_path = "/_partitionKey"
-      autoscale_settings = {
-        max_throughput = 1000
-      }
-    },
-    {
       name                  = "services-preferences"
       partition_key_path    = "/fiscalCode"
       partition_key_version = null
       autoscale_settings = {
-        max_throughput = 2000
+        max_throughput = 8000
       }
     },
     {
