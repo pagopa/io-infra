@@ -19,14 +19,10 @@ locals {
   acr_name                = replace("${local.product}commonacr", "-", "")
   acr_resource_group_name = "${local.product}-container-registry-rg"
 
-  aks_name                = "${local.product}-${var.location_short}-${var.instance}-aks"
-  aks_resource_group_name = "${local.product}-${var.location_short}-${var.instance}-aks-rg"
-
   lollipop_jwt_host = "api.io.pagopa.it"
 
-  appgw_resource_group_name = "${local.product}-rg-external"
+  appgw_resource_group_name = "${local.common_project_itn}-common-rg-01"
 
-  storage_account_notifications_queue_userslogin         = "userslogin"
   storage_account_notifications_queue_push_notifications = "push-notifications"
 }
 
@@ -43,4 +39,8 @@ locals {
 
   vnet_common_name_itn                = "${local.common_project_itn}-common-vnet-01"
   vnet_common_resource_group_name_itn = "${local.common_project_itn}-common-rg-01"
+
+  auth_sessions_topic_name = "${var.prefix}-${local.short_domain}-sessions-topic"
+
+  locked_profiles_table_name = "lockedprofile01"
 }

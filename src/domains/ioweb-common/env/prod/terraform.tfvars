@@ -7,11 +7,12 @@ location_short = "weu"
 instance       = "common"
 
 tags = {
-  CreatedBy   = "Terraform"
-  Environment = "Prod"
-  Owner       = "IO"
-  Source      = "https://github.com/pagopa/io-infra/tree/main/src/domains/ioweb-common"
-  CostCenter  = "TS310 - PAGAMENTI & SERVIZI"
+  CreatedBy      = "Terraform"
+  Environment    = "Prod"
+  BusinessUnit   = "App IO"
+  Source         = "https://github.com/pagopa/io-infra/tree/main/src/domains/ioweb-common"
+  ManagementTeam = "IO Autenticazione"
+  CostCenter     = "TS000 - Tecnologia e Servizi"
 }
 
 ### External resources
