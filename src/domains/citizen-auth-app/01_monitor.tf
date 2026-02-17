@@ -2,7 +2,7 @@
 # APP GATEWAY DATA SOURCE
 ##########################
 data "azurerm_application_gateway" "app_gateway" {
-  name                = format("%s-appgateway", local.product)
+  name                = format("%s-agw-01", local.common_project_itn)
   resource_group_name = local.appgw_resource_group_name
 }
 ##########################
