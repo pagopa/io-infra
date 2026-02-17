@@ -57,7 +57,7 @@ variable "location_full" {
 
 variable "instance" {
   type        = string
-  description = "One of beta, prod01, prod02"
+  description = "One of prod01, prod02"
 }
 
 variable "tags" {
@@ -106,8 +106,3 @@ variable "enable_azdoa" {
   default     = true
 }
 
-# Redis Common
-variable "cidr_subnet_redis_common_itn" {
-  type        = list(string)
-  description = "Redis Common address space."
-}

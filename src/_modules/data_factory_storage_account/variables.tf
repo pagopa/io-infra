@@ -21,6 +21,11 @@ variable "data_factory_principal_id" {
   type        = string
 }
 
+variable "data_factory_integration_runtime_name" {
+  description = "Data Factory integration runtime name."
+  type        = string
+}
+
 variable "storage_accounts" {
   type = object({
     source = object({
