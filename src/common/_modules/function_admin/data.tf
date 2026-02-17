@@ -103,6 +103,10 @@ data "azurerm_key_vault_secret" "fn_app_KEY_SPIDLOGS_PRIV" {
 # Storage 
 #
 
+#
+# TODO: after february 2029, the old iopstuserdatadownload storage account in westeurope will be eligible for deletion.
+#
+
 data "azurerm_storage_account" "itnuserdatadownload" {
   name                = module.user_data_download_storage_account.name
   resource_group_name = azurerm_resource_group.function_admin_itn_rg.name
