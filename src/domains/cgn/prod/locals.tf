@@ -6,20 +6,16 @@ locals {
   location           = "westeurope"
   secondary_location = "italynorth"
 
-  itn_environment = {
-    prefix          = local.prefix
-    env_short       = local.env_short
-    location        = local.secondary_location
-    domain          = "cgn"
-    instance_number = "01"
-  }
+  # ITN
+  apim_itn_name                = "${local.project}-itn-apim-01"
+  apim_itn_resource_group_name = "${local.project}-itn-common-rg-01"
 
   tags = {
-    CostCenter     = "TS310 - PAGAMENTI & SERVIZI"
+    CostCenter     = "TS000 - Tecnologia e Servizi"
     CreatedBy      = "Terraform"
     Environment    = "Prod"
-    Owner          = "IO"
-    ManagementTeam = "IO Enti & Servizi"
+    BusinessUnit   = "App IO"
+    ManagementTeam = "IO CGN"
     Source         = "https://github.com/pagopa/io-infra/blob/main/src/domains/cgn/prod"
   }
 }

@@ -135,3 +135,25 @@ resource "azurerm_dns_a_record" "openid_provider_io_pagopa_it" {
 
   tags = var.tags
 }
+
+# ipatente.io.pagopa.it
+resource "azurerm_dns_ns_record" "ipatente_io_pagopa_it_ns" {
+  name                = "ipatente"
+  zone_name           = azurerm_dns_zone.io_pagopa_it.name
+  resource_group_name = var.resource_groups.external
+  records             = azurerm_dns_zone.ipatente_io_pagopa_it.name_servers
+  ttl                 = var.dns_default_ttl_sec
+  tags                = var.tags
+}
+
+# TXT for cie.app.io.pagopa.it Maven namespace verification
+resource "azurerm_dns_txt_record" "cie_app_io_pagopa_it" {
+  name                = "cie.app"
+  zone_name           = azurerm_dns_zone.io_pagopa_it.name
+  resource_group_name = var.resource_groups.external
+  ttl                 = 3600
+  record {
+    value = "up2m9zskaf"
+  }
+  tags = var.tags
+}
