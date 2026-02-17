@@ -106,8 +106,3 @@ variable "enable_azdoa" {
   default     = true
 }
 
-# Redis Common
-variable "cidr_subnet_redis_common_itn" {
-  type        = list(string)
-  description = "Redis Common address space."
-}

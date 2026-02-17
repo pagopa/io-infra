@@ -116,6 +116,12 @@ resource "azurerm_key_vault_secret" "first_lollipop_consumer_subscription_key_it
   key_vault_id = module.key_vault.id
 }
 
+resource "azurerm_key_vault_secret" "first_lollipop_consumer_subscription_key" {
+  name         = "first-lollipop-consumer-pagopa-subscription-key"
+  value        = azurerm_api_management_subscription.pagopa_itn.primary_key
+  key_vault_id = data.azurerm_key_vault.auth_kv_01.id
+}
+
 ###################################################################################
 # PagoPA Functions-fast-login Secrets
 ###################################################################################
@@ -125,6 +131,12 @@ resource "azurerm_key_vault_secret" "fast_login_subscription_key_itn" {
   name         = "fast-login-subscription-key-itn"
   value        = azurerm_api_management_subscription.pagopa_fastlogin_itn.primary_key
   key_vault_id = module.key_vault.id
+}
+
+resource "azurerm_key_vault_secret" "lv_apim_subscription_key" {
+  name         = "fast-login-subscription-key"
+  value        = azurerm_api_management_subscription.pagopa_fastlogin_itn.primary_key
+  key_vault_id = data.azurerm_key_vault.auth_kv_01.id
 }
 
 resource "azurerm_key_vault_secret" "fast_login_lc_subscription_key" {

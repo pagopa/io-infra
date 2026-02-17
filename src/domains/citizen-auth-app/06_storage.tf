@@ -12,3 +12,8 @@ data "azurerm_storage_account" "push_notifications_storage" {
   name                = replace(format("%s-com-st-01", local.common_project_itn), "-", "")
   resource_group_name = format("%s-com-rg-01", local.common_project_itn)
 }
+
+data "azurerm_storage_account" "auth_session_storage" {
+  name                = replace(format("%s-session-st-01", local.short_project_itn), "-", "")
+  resource_group_name = format("%s-main-rg-01", local.short_project_itn)
+}

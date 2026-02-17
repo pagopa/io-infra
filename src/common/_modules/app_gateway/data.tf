@@ -8,8 +8,8 @@ data "azurerm_linux_web_app" "cms_backoffice_app_itn" {
 }
 
 data "azurerm_linux_web_app" "appservice_continua" {
-  name                = "${var.project_legacy}-app-continua"
-  resource_group_name = "${var.project_legacy}-continua-rg"
+  name                = "${var.project}-continua-app-01"
+  resource_group_name = "${var.project}-continua-rg-01"
 }
 
 data "azurerm_linux_web_app" "session_manager_03" {
@@ -78,7 +78,6 @@ data "azurerm_key_vault_certificate" "app_gw_api_web" {
   name         = var.certificates.api_web
   key_vault_id = data.azurerm_key_vault.ioweb_kv.id
 }
-###
 
 data "azurerm_key_vault_certificate" "app_gw_api_io_italia_it" {
   name         = var.certificates.api_io_italia_it

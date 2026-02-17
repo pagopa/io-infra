@@ -24,6 +24,20 @@ module "lollipop_assertions_storage" {
   tags = var.tags
 }
 
+resource "azurerm_role_assignment" "kv_auth_01_lollipop_assertions_keys" {
+  scope                = data.azurerm_key_vault.auth_kv_01.id
+  role_definition_name = "Key Vault Crypto Service Encryption User"
+  principal_id         = module.lollipop_assertions_storage.identity.0.principal_id
+  description          = "Allow Storage Account to manage keys in domain Key Vault to encrypt data at rest using a custom key"
+}
+
+resource "azurerm_role_assignment" "kv_auth_01_lollipop_assertions_secrets" {
+  scope                = data.azurerm_key_vault.auth_kv_01.id
+  role_definition_name = "Key Vault Secrets User"
+  principal_id         = module.lollipop_assertions_storage.identity.0.principal_id
+  description          = "Allow Storage Account to read secrets in domain Key Vault to get key-related secret to encrypt data at rest using a custom key"
+}
+
 module "lollipop_assertions_storage_customer_managed_key" {
   source               = "git::https://github.com/pagopa/terraform-azurerm-v3//storage_account_customer_managed_key?ref=v8.12.0"
   tenant_id            = data.azurerm_subscription.current.tenant_id
@@ -83,17 +97,6 @@ resource "azurerm_storage_container" "lollipop_assertions_storage_assertions" {
   container_access_type = "private"
 }
 
-resource "azurerm_storage_queue" "lollipop_assertions_storage_revoke_queue" {
-  name                 = "pubkeys-revoke" # This value is used in src/core/99_variables.tf#citizen_auth_revoke_queue_name
-  storage_account_name = module.lollipop_assertions_storage.name
-}
-
-resource "azurerm_storage_queue" "lollipop_assertions_storage_revoke_queue_v2" {
-  name                 = "pubkeys-revoke-v2"
-  storage_account_name = module.lollipop_assertions_storage.name
-}
-
-
 
 ###
 # Immutable LV Audit Log Storage
@@ -126,6 +129,20 @@ module "immutable_lv_audit_logs_storage" {
   }
 
   tags = var.tags
+}
+
+resource "azurerm_role_assignment" "kv_auth_01_lv_logs_keys" {
+  scope                = data.azurerm_key_vault.auth_kv_01.id
+  role_definition_name = "Key Vault Crypto Service Encryption User"
+  principal_id         = module.immutable_lv_audit_logs_storage.identity.0.principal_id
+  description          = "Allow Storage Account to manage keys in domain Key Vault to encrypt data at rest using a custom key"
+}
+
+resource "azurerm_role_assignment" "kv_auth_01_lv_logs_secrets" {
+  scope                = data.azurerm_key_vault.auth_kv_01.id
+  role_definition_name = "Key Vault Secrets User"
+  principal_id         = module.immutable_lv_audit_logs_storage.identity.0.principal_id
+  description          = "Allow Storage Account to read secrets in domain Key Vault to get key-related secret to encrypt data at rest using a custom key"
 }
 
 module "immutable_lv_audit_logs_storage_customer_managed_key" {
@@ -294,36 +311,6 @@ resource "azurerm_storage_table" "profile_emails" {
   storage_account_name = module.io_citizen_auth_storage.name
 }
 
-resource "azurerm_storage_queue" "profiles_to_sanitize" {
-  depends_on           = [module.io_citizen_auth_storage, azurerm_private_endpoint.queue]
-  name                 = "profiles-to-sanitize"
-  storage_account_name = module.io_citizen_auth_storage.name
-}
-
-resource "azurerm_storage_queue" "expired_user_sessions" {
-  depends_on           = [module.io_citizen_auth_storage, azurerm_private_endpoint.queue]
-  name                 = "expired-user-sessions"
-  storage_account_name = module.io_citizen_auth_storage.name
-}
-
-resource "azurerm_storage_queue" "expired_user_sessions_poison" {
-  depends_on           = [module.io_citizen_auth_storage, azurerm_private_endpoint.queue]
-  name                 = "expired-user-sessions-poison"
-  storage_account_name = module.io_citizen_auth_storage.name
-}
-
-resource "azurerm_storage_queue" "session_notifications_init_recovery" {
-  depends_on           = [module.io_citizen_auth_storage, azurerm_private_endpoint.queue]
-  name                 = "session-notifications-init-recovery"
-  storage_account_name = module.io_citizen_auth_storage.name
-}
-
-resource "azurerm_storage_queue" "session_notifications_init_recovery_poison" {
-  depends_on           = [module.io_citizen_auth_storage, azurerm_private_endpoint.queue]
-  name                 = "session-notifications-init-recovery-poison"
-  storage_account_name = module.io_citizen_auth_storage.name
-}
-
 resource "azurerm_storage_container" "data_factory_exports" {
   depends_on            = [module.io_citizen_auth_storage, azurerm_private_endpoint.blob]
   name                  = "data-factory-exports"
@@ -351,78 +338,4 @@ resource "azurerm_monitor_diagnostic_setting" "io_citizen_auth_storage_diagnosti
     category = "Transaction"
     enabled  = false
   }
-}
-
-resource "azurerm_monitor_scheduled_query_rules_alert_v2" "expired_user_sessions_failure_alert_rule" {
-  enabled             = true
-  name                = "[CITIZEN-AUTH | ${module.io_citizen_auth_storage.name}] Failures on ${resource.azurerm_storage_queue.expired_user_sessions_poison.name} queue"
-  resource_group_name = data.azurerm_resource_group.data_rg.name
-  location            = var.location
-
-  scopes                  = [module.io_citizen_auth_storage.id]
-  description             = <<-EOT
-    Permanent failures processing ${resource.azurerm_storage_queue.expired_user_sessions.name} queue. REQUIRED MANUAL ACTION.
-  EOT
-  severity                = 1
-  auto_mitigation_enabled = false
-
-  // daily check
-  window_duration      = "P1D" # Select the interval that's used to group the data points by using the aggregation type function. Choose an Aggregation granularity (period) that's greater than the Frequency of evaluation to reduce the likelihood of missing the first evaluation period of an added time series.
-  evaluation_frequency = "P1D" # Select how often the alert rule is to be run. Select a frequency that's smaller than the aggregation granularity to generate a sliding window for the evaluation.
-
-  criteria {
-    query                   = <<-QUERY
-      StorageQueueLogs
-        | where OperationName contains "PutMessage"
-        | where Uri contains "${resource.azurerm_storage_queue.expired_user_sessions_poison.name}"
-      QUERY
-    operator                = "GreaterThan"
-    threshold               = 0
-    time_aggregation_method = "Count"
-  }
-
-  action {
-    action_groups = [
-      data.azurerm_monitor_action_group.auth_n_identity_error_action_group.id,
-    ]
-  }
-
-  tags = var.tags
-}
-
-resource "azurerm_monitor_scheduled_query_rules_alert_v2" "session_notifications_init_recovery_failure_alert_rule" {
-  enabled             = true
-  name                = "[CITIZEN-AUTH | ${module.io_citizen_auth_storage.name}] Failures on ${resource.azurerm_storage_queue.session_notifications_init_recovery_poison.name} queue"
-  resource_group_name = data.azurerm_resource_group.data_rg.name
-  location            = var.location
-
-  scopes                  = [module.io_citizen_auth_storage.id]
-  description             = <<-EOT
-    Permanent failures processing ${resource.azurerm_storage_queue.session_notifications_init_recovery.name} queue. REQUIRED MANUAL ACTION.
-  EOT
-  severity                = 1
-  auto_mitigation_enabled = false
-
-  // daily check
-  window_duration      = "P1D" # Select the interval that's used to group the data points by using the aggregation type function. Choose an Aggregation granularity (period) that's greater than the Frequency of evaluation to reduce the likelihood of missing the first evaluation period of an added time series.
-  evaluation_frequency = "P1D" # Select how often the alert rule is to be run. Select a frequency that's smaller than the aggregation granularity to generate a sliding window for the evaluation.
-
-  criteria {
-    query                   = <<-QUERY
-      StorageQueueLogs
-        | where OperationName contains "PutMessage"
-        | where Uri contains "${resource.azurerm_storage_queue.session_notifications_init_recovery_poison.name}"
-      QUERY
-    operator                = "GreaterThan"
-    threshold               = 0
-    time_aggregation_method = "Count"
-  }
-
-  action {
-    action_groups = [
-      data.azurerm_monitor_action_group.auth_n_identity_error_action_group.id,
-    ]
-  }
-
-  tags = var.tags
 }

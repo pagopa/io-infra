@@ -57,3 +57,8 @@ variable "platform_api_gateway_private_ip" {
   type        = string
   description = "Private IP of the Proxy API Gateway"
 }
+
+variable "psn_application_gateway_private_endpoint_ip" {
+  type        = string
+  description = "Private IP of the Private Endpoint associated with PSN Application Gateway"
+}

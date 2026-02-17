@@ -11,7 +11,7 @@ resource "azurerm_application_gateway" "this" {
   sku {
     name     = "WAF_v2"
     tier     = "WAF_v2"
-    capacity = null
+    capacity = var.capacity_settings.mode == "fixed" ? var.capacity_settings.capacity : null
   }
 
   gateway_ip_configuration {
@@ -264,9 +264,12 @@ resource "azurerm_application_gateway" "this" {
 
   firewall_policy_id = azurerm_web_application_firewall_policy.agw.id
 
-  autoscale_configuration {
-    min_capacity = var.min_capacity
-    max_capacity = var.max_capacity
+  dynamic "autoscale_configuration" {
+    for_each = var.capacity_settings.mode == "autoscale" ? [1] : []
+    content {
+      min_capacity = var.capacity_settings.min_capacity
+      max_capacity = var.capacity_settings.max_capacity
+    }
   }
 
   tags = var.tags

@@ -185,13 +185,11 @@ variable "backend_hostnames" {
     assets_cdn           = string
     services_app_backend = string
     lollipop             = string
-    eucovidcert          = string
     cgn                  = string
     iosign               = string
     iofims               = string
     cgnonboarding        = string
-    iowallet             = string
-    iowalletuat          = string
+    cdc_support          = string
   })
 }
 
@@ -224,5 +222,14 @@ variable "enable_premium_plan_autoscale" {
   type        = bool
   description = "Enable autoscale for premium plan"
   default     = false
+}
 
+variable "subnet_pep_id" {
+  type        = string
+  description = "Subnet ID for the private endpoint"
+}
+
+variable "private_dns_zone_id" {
+  type        = string
+  description = "Private DNS Zone ID for the private endpoint"
 }

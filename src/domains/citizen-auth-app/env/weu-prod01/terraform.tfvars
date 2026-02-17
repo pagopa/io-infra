@@ -46,7 +46,9 @@ function_public_autoscale_maximum = 30
 function_public_autoscale_default = 10
 
 # Session manager
-cidr_subnet_session_manager = ["10.0.149.0/26"]
+session_manager_plan_sku_name   = "P2v3"
+cidr_subnet_session_manager     = ["10.0.149.0/26"]
+cidr_subnet_session_manager_bis = ["10.0.150.0/26"]
 
 # DNS
 external_domain = "pagopa.it"

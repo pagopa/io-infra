@@ -15,6 +15,14 @@ locals {
         header_name  = "X-Client-Ip"
         header_value = "{var_client_ip}"
       },
+      {
+        header_name  = "X-User"
+        header_value = ""
+      },
+      {
+        header_name  = "X-App-Backend-Api-Key"
+        header_value = ""
+      },
     ]
     response_header_configurations = []
   }
@@ -39,13 +47,12 @@ locals {
       pick_host_name_from_backend = false
     }
 
-    # TODO: change the backend to the new FQDN when api.internal.io.pagopa.it will be available
     platform-api-gateway = {
       protocol                    = "Https"
-      host                        = "io-p-itn-platform-api-gateway-apim-01.azure-api.net"
+      host                        = format("proxy.internal.%s", var.public_dns_zones.io.name)
       port                        = 443
       ip_addresses                = null # with null value use fqdns
-      fqdns                       = ["io-p-itn-platform-api-gateway-apim-01.azure-api.net"]
+      fqdns                       = [format("proxy.internal.%s", var.public_dns_zones.io.name)]
       probe                       = "/status-0123456789abcdef"
       probe_name                  = "probe-platform-api-gateway"
       request_timeout             = 10
@@ -72,7 +79,7 @@ locals {
       fqdns = [
         data.azurerm_linux_web_app.session_manager_03.default_hostname,
       ]
-      probe                       = "/healthcheck"
+      probe                       = "/api/auth/v1/healthcheck"
       probe_name                  = "probe-session-manager-app"
       request_timeout             = 10
       pick_host_name_from_backend = true
@@ -493,6 +500,10 @@ locals {
     io-backend-path-based-rule = {
       default_backend               = "appbackend-app"
       default_rewrite_rule_set_name = "rewrite-rule-set-api-app"
+
+      # NOTE: the order matters! the most generic ones should be set at the end
+      # https://learn.microsoft.com/en-us/azure/application-gateway/url-route-overview#pathpattern
+      # However, this code sorts alphabetically the path rules by their key names, as this object is a map
       path_rule = {
         api-gateway-platform-info = {
           paths                 = ["/info"]
@@ -519,15 +530,35 @@ locals {
           backend               = "platform-api-gateway",
           rewrite_rule_set_name = "rewrite-rule-set-api-app"
         },
+        api-gateway-platform-wallet-01-uat = {
+          paths                 = ["/api/wallet/uat/*"]
+          backend               = "platform-api-gateway",
+          rewrite_rule_set_name = "rewrite-rule-set-api-app"
+        },
+        api-gateway-platform-wallet-02 = {
+          paths                 = ["/api/wallet/*"]
+          backend               = "platform-api-gateway",
+          rewrite_rule_set_name = "rewrite-rule-set-api-app"
+        },
+        api-gateway-platform-wallet-legacy-01-uat = {
+          paths                 = ["/api/v1/wallet/uat/*"]
+          backend               = "platform-api-gateway",
+          rewrite_rule_set_name = "rewrite-rule-set-wallet-app-uat"
+        },
+        api-gateway-platform-wallet-legacy-02 = {
+          paths                 = ["/api/v1/wallet/*"]
+          backend               = "platform-api-gateway",
+          rewrite_rule_set_name = "rewrite-rule-set-wallet-app"
+        },
         api-gateway-cdc = {
           paths                 = ["/api/cdc/*"]
           backend               = "platform-api-gateway",
           rewrite_rule_set_name = "rewrite-rule-set-api-app"
         },
         session-manager = {
-          paths                 = ["/session-manager/*"]
-          backend               = "session-manager-app",
-          rewrite_rule_set_name = "rewrite-rule-set-api-app-remove-base-path-session-manager"
+          paths                 = ["/api/auth/v1/*", "/api/sso/bpd/v1/user", "/api/sso/pagopa/v1/user", "/api/sso/zendesk/v1/jwt"]
+          backend               = "platform-api-gateway"
+          rewrite_rule_set_name = "rewrite-rule-set-api-app"
         },
         healthcheck = {
           paths                 = ["/healthcheck"]
@@ -537,58 +568,70 @@ locals {
         test-login = {
           paths                 = ["/test-login"]
           backend               = "session-manager-app",
-          rewrite_rule_set_name = "rewrite-rule-set-api-app"
+          rewrite_rule_set_name = "rewrite-rule-set-api-app-rewrite-to-session-manager"
         },
         login = {
           paths                 = ["/login"]
           backend               = "session-manager-app",
-          rewrite_rule_set_name = "rewrite-rule-set-api-app"
+          rewrite_rule_set_name = "rewrite-rule-set-api-app-rewrite-to-session-manager"
         },
+        # NOTE: Do NOT remove rewrite rule from metadata endpoint, as it cannot be switched to new basepath
         metadata = {
           paths                 = ["/metadata"]
           backend               = "session-manager-app",
-          rewrite_rule_set_name = "rewrite-rule-set-api-app"
+          rewrite_rule_set_name = "rewrite-rule-set-api-app-rewrite-to-session-manager"
         },
+        # NOTE: Do NOT remove rewrite rule from acs endpoint, as it cannot be switched to new basepath
         acs = {
           paths                 = ["/assertionConsumerService"]
           backend               = "session-manager-app",
-          rewrite_rule_set_name = "rewrite-rule-set-api-app"
+          rewrite_rule_set_name = "rewrite-rule-set-api-app-rewrite-to-session-manager"
         },
         fast-login = {
           paths                 = ["/api/v1/fast-login"]
           backend               = "session-manager-app",
-          rewrite_rule_set_name = "rewrite-rule-set-api-app"
+          rewrite_rule_set_name = "rewrite-rule-set-api-app-rewrite-to-session-manager"
         },
         nonce-fast-login = {
           paths                 = ["/api/v1/fast-login/nonce/generate"]
           backend               = "session-manager-app",
-          rewrite_rule_set_name = "rewrite-rule-set-api-app"
+          rewrite_rule_set_name = "rewrite-rule-set-api-app-rewrite-to-session-manager"
         },
         logout = {
           paths                 = ["/logout"]
           backend               = "session-manager-app",
-          rewrite_rule_set_name = "rewrite-rule-set-api-app"
+          rewrite_rule_set_name = "rewrite-rule-set-api-app-rewrite-to-session-manager"
         },
         session = {
           paths                 = ["/api/v1/session"]
           backend               = "session-manager-app",
-          rewrite_rule_set_name = "rewrite-rule-set-api-app"
+          rewrite_rule_set_name = "rewrite-rule-set-api-app-rewrite-to-session-manager"
         },
         bpd-user = {
           paths                 = ["/bpd/api/v1/user"]
           backend               = "session-manager-app",
-          rewrite_rule_set_name = "rewrite-rule-set-api-app"
+          rewrite_rule_set_name = "rewrite-rule-set-api-app-rewrite-to-bpd-session-manager"
         },
         zendesk-user = {
           paths                 = ["/api/backend/zendesk/v1/jwt"]
           backend               = "session-manager-app",
-          rewrite_rule_set_name = "rewrite-rule-set-api-app"
+          rewrite_rule_set_name = "rewrite-rule-set-api-app-rewrite-to-zendesk-session-manager"
         },
         pagopa-user = {
           paths                 = ["/pagopa/api/v1/user"]
           backend               = "session-manager-app",
+          rewrite_rule_set_name = "rewrite-rule-set-api-app-rewrite-to-pagopa-session-manager"
+        },
+        api-gateway-com = {
+          paths                 = ["/api/com/*"]
+          backend               = "platform-api-gateway",
           rewrite_rule_set_name = "rewrite-rule-set-api-app"
         },
+        pn-activation = {
+          paths                 = ["/api/v1/pn/activation"]
+          backend               = "platform-api-gateway",
+          rewrite_rule_set_name = "rewrite-rule-set-api-app-pn"
+        }
       }
     }
   }
@@ -749,6 +792,27 @@ locals {
       ]
     },
     {
+      name = "rewrite-rule-set-api-app-pn"
+      rewrite_rules = [
+        local.io_backend_ip_headers_rule,
+        {
+          name          = "rewrite-url-to-api-pn"
+          rule_sequence = 100
+          conditions    = []
+
+          # URL rewriting preserving the specific endpoint
+          url = {
+            path         = "/api/com/v1/pn/activation"
+            query_string = null
+            reroute      = false
+            components   = "path_only"
+          }
+          request_header_configurations  = []
+          response_header_configurations = []
+        }
+      ]
+    },
+    {
       name = "rewrite-rule-set-api-app-rewrite-platform-legacy"
       rewrite_rules = [
         local.io_backend_ip_headers_rule,
@@ -778,21 +842,93 @@ locals {
         }
       ]
     },
+
+    {
+      name = "rewrite-rule-set-wallet-app"
+      rewrite_rules = [
+        local.io_backend_ip_headers_rule,
+        {
+          name          = "rewrite-url-to-api-platform"
+          rule_sequence = 111
+          conditions = [
+            {
+              variable    = "var_uri_path"
+              pattern     = "^/api/v1/wallet/(.*)$"
+              ignore_case = true
+              negate      = false
+            }
+          ]
+
+          url = {
+            path         = "/api/wallet/v1/{var_uri_path_1}"
+            query_string = null
+            reroute      = false
+            components   = "path_only"
+          }
+          request_header_configurations  = []
+          response_header_configurations = []
+        }
+      ]
+    },
+    {
+      name = "rewrite-rule-set-wallet-app-uat"
+      rewrite_rules = [
+        local.io_backend_ip_headers_rule,
+        {
+          name          = "rewrite-wallet-uat-url-to-api-platform"
+          rule_sequence = 110
+          conditions = [
+            {
+              variable    = "var_uri_path"
+              pattern     = "^/api/v1/wallet/uat/(.*)$"
+              ignore_case = true
+              negate      = false
+            }
+          ]
+
+          url = {
+            path         = "/api/wallet/uat/v1/{var_uri_path_1}"
+            query_string = null
+            reroute      = false
+            components   = "path_only"
+          }
+          request_header_configurations  = []
+          response_header_configurations = []
+        }
+      ]
+    },
     {
       name = "rewrite-rule-set-api-app-rewrite-to-session-manager"
       rewrite_rules = [
         local.io_backend_ip_headers_rule,
+        # if endpoint has /api/v1 prefix(e.g. /api/v1/session)
+        # then it should be stripped away before proceding
         {
-          name          = "rewrite-if-cookie-present"
-          rule_sequence = 200
-          conditions = [{
-            variable    = "http_req_Cookie"
-            pattern     = "test-session-manager"
-            ignore_case = true
-            negate      = false
-          }]
+          name          = "strip-base-path"
+          rule_sequence = 150
+          conditions = [
+            {
+              variable    = "var_uri_path"
+              pattern     = "/api/v1/(.*)"
+              ignore_case = true
+              negate      = false
+            }
+          ]
           url = {
-            path         = "/session-manager{var_uri_path}"
+            path         = "/{var_uri_path_1}"
+            query_string = null
+            reroute      = false
+            components   = "path_only"
+          }
+          request_header_configurations  = []
+          response_header_configurations = []
+        },
+        {
+          name          = "rewrite-path"
+          rule_sequence = 200
+          conditions    = []
+          url = {
+            path         = "/api/auth/v1{var_uri_path}"
             query_string = null
             reroute      = true
             components   = "path_only"
@@ -803,27 +939,64 @@ locals {
       ]
     },
     {
-      name = "rewrite-rule-set-api-app-remove-base-path-session-manager"
+      name = "rewrite-rule-set-api-app-rewrite-to-bpd-session-manager"
       rewrite_rules = [
         local.io_backend_ip_headers_rule,
         {
-          name          = "strip_base_session_manager_path"
+          name          = "rewrite-path"
           rule_sequence = 200
-          conditions = [{
-            variable    = "var_uri_path"
-            pattern     = "/session-manager/(.*)"
-            ignore_case = true
-            negate      = false
-          }]
+          conditions    = []
           url = {
-            path         = "/{var_uri_path_1}"
+            # only 1 operation present for this API
+            path         = "/api/sso/bpd/v1/user"
             query_string = null
-            reroute      = false
+            reroute      = true
             components   = "path_only"
           }
           request_header_configurations  = []
           response_header_configurations = []
-      }]
+        }
+      ]
+    },
+    {
+      name = "rewrite-rule-set-api-app-rewrite-to-pagopa-session-manager"
+      rewrite_rules = [
+        local.io_backend_ip_headers_rule,
+        {
+          name          = "rewrite-path"
+          rule_sequence = 200
+          conditions    = []
+          url = {
+            # only 1 operation present for this API
+            path         = "/api/sso/pagopa/v1/user"
+            query_string = null
+            reroute      = true
+            components   = "path_only"
+          }
+          request_header_configurations  = []
+          response_header_configurations = []
+        }
+      ]
+    },
+    {
+      name = "rewrite-rule-set-api-app-rewrite-to-zendesk-session-manager"
+      rewrite_rules = [
+        local.io_backend_ip_headers_rule,
+        {
+          name          = "rewrite-path"
+          rule_sequence = 200
+          conditions    = []
+          url = {
+            # only 1 operation present for this API
+            path         = "/api/sso/zendesk/v1/jwt"
+            query_string = null
+            reroute      = true
+            components   = "path_only"
+          }
+          request_header_configurations  = []
+          response_header_configurations = []
+        }
+      ]
     },
     {
       name = "rewrite-rule-set-fims-op-app"
@@ -1038,7 +1211,7 @@ locals {
     }
 
     response_time = {
-      description   = "Backends response time is too high. See Dimension value to check the Listener unhealty."
+      description   = "Backends response time is too high. See Dimension value to check the Listener unhealthy."
       frequency     = "PT5M"
       window_size   = "PT15M"
       severity      = 2
@@ -1085,7 +1258,7 @@ locals {
     }
 
     failed_requests = {
-      description   = "Abnormal failed requests. See Dimension value to check the Backend Pool unhealty"
+      description   = "Abnormal failed requests. See Dimension value to check the Backend Pool unhealthy"
       frequency     = "PT5M"
       window_size   = "PT5M"
       severity      = 1
