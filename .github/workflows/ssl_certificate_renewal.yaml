@@ -1,0 +1,236 @@
+name: SSL Certificate Renewal
+
+on:
+  workflow_call:
+    inputs:
+      csr_common_name:
+        description: "CSR common name ( example: 'test.io-poc.pagopa.it' )"
+        type: string
+        required: true
+      azure_dns_zone_resource_group:
+        description: "Azure Resource Group that contains the target DNS zone ( example: 'io-p-xxxx' )"
+        type: string
+        required: true
+      azure_dns_zone:
+        description: "DNS zone for which we are renewing the certificate ( example: 'io.pagopa.it' )"
+        type: string
+        required: true
+      key_vault_name:
+        description: "Name of the Key Vault used to store the certificate ( example: 'io-p-itn-tlscert-kv-01' )"
+        type: string
+        required: true
+      force_renew_cert:
+        description: "Force the certificate renewal"
+        type: boolean
+        required: false
+        default: false
+      alternate_chain_cn:
+        description: "Alternate CN for the certificate chain ( example: 'CN=DST Root CA X3' )"
+        type: string
+        required: false
+      environment:
+        description: "Environment used to run the Github workflow ( example: 'dev', 'prod' )"
+        type: string
+        required: true
+      use_selfhosted_agent:
+        description: "Use a self hosted agent to run the workflow."
+        type: boolean
+        required: false
+        default: false
+
+env:
+  ARM_TENANT_ID: ${{ secrets.ARM_TENANT_ID }}
+  ARM_USE_OIDC: true
+  ARM_USE_AZUREAD: true
+
+jobs:
+  obtain-certificate:
+    name: Obtain the new certificate from Lets Encrypt
+    runs-on: ${{ inputs.use_selfhosted_agent && 'self-hosted' || 'ubuntu-24.04' }}
+    environment: ${{ inputs.environment }}-cd
+    permissions:
+      id-token: write
+    env:
+      certificate_expiration_time: "2592000" # Certificate expiration time in seconds, default to 30 days
+      ARM_CLIENT_ID: ${{ secrets.ARM_CLIENT_ID }}
+      ARM_SUBSCRIPTION_ID: ${{ secrets.ARM_SUBSCRIPTION_ID }}
+      python_version: "3.12.8" # Python version used to run all the scripts
+      le_azure_identity_type: MANAGED_IDENTITY # Type of azure identity used by the Python ACME script
+
+    steps:
+      - name: Azure Login
+        uses: azure/login@6b2456866fc08b011acb422a92a4aa20e2c4de32 # v2.1.0
+        with:
+          client-id: ${{ env.ARM_CLIENT_ID }}
+          tenant-id: ${{ env.ARM_TENANT_ID }}
+          subscription-id: ${{ env.ARM_SUBSCRIPTION_ID }}
+
+      - name: Fetch and check certificate
+        id: fetch_and_check
+        if: inputs.force_renew_cert == false
+        env:
+          string_manipulation_cert_name: ${{ inputs.csr_common_name }}
+          key_vault_name: ${{ inputs.key_vault_name }}
+        run: |
+            key_vault_cert_name=$(echo "${string_manipulation_cert_name//./-}")
+
+            if ! az keyvault certificate download --vault-name "$key_vault_name" -n "$key_vault_cert_name" -f certificate.pem >/dev/null
+              then
+                echo "❌ The certificate was not found in the selected Key Vault, proceeding to request it from LE"
+                echo "require_new_certificate=true" >> $GITHUB_OUTPUT
+            else
+              if ! openssl x509 -inform pem -checkend "$certificate_expiration_time" -noout -in certificate.pem
+                then
+                  # certificate is expiring or is already expired
+                  echo "require_new_certificate=true" >> $GITHUB_OUTPUT
+                else
+                  echo "✅ The certificate is not expiring, cleaning up and exiting"
+              fi
+              rm -f certificate.pem
+            fi
+
+      - name: Set renew_certificate
+        id: should_renew
+        run: |
+          if [[ "$FORCE_RENEW_CERT" == "true" ]]; then
+            echo "renew_certificate=true" >> $GITHUB_OUTPUT
+            echo "## ⚠️ Renewal Status: FORCED" >> $GITHUB_STEP_SUMMARY
+            echo "**Renewal explicitly requested.** The renewal action will proceed. 🛠️" >> $GITHUB_STEP_SUMMARY
+          elif [[ "$REQUIRE_NEW_CERT" == "true" ]]; then
+            echo "renew_certificate=true" >> $GITHUB_OUTPUT
+            echo "## 🔑 Renewal Status: REQUIRED" >> $GITHUB_STEP_SUMMARY
+            echo "**Verification successful.** The certificate will be renewed in the next step. ✅" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "renew_certificate=false" >> $GITHUB_OUTPUT
+            echo "## ✅ Renewal Status: NOT NEEDED" >> $GITHUB_STEP_SUMMARY
+            echo "No certificate renewal is required at this time. 🟢" >> $GITHUB_STEP_SUMMARY
+          fi
+        env:
+          FORCE_RENEW_CERT: ${{ inputs.force_renew_cert }}
+          REQUIRE_NEW_CERT: ${{ steps.fetch_and_check.outputs.require_new_certificate }}
+
+      - name: Fetch LE authentication keys from Key Vault
+        if: steps.should_renew.outputs.renew_certificate == 'true'
+        env:
+          key_vault_name: ${{ inputs.key_vault_name }}
+        run: |
+            az keyvault secret download --vault-name "$key_vault_name" --name le-private-key-json --file private_key.json
+            az keyvault secret download --vault-name "$key_vault_name" --name le-regr-json --file regr.json
+
+      - name: Run LE renew SSL Certificate python action
+        if: steps.should_renew.outputs.renew_certificate == 'true'
+        uses: pagopa/io-infra/.github/actions/le-renew-ssl-certificate-python@main
+        with:
+          csr_common_name: ${{ inputs.csr_common_name }}
+          python_version: ${{ env.python_version }}
+          arm_subscription_id: ${{ env.ARM_SUBSCRIPTION_ID }}
+          azure_dns_zone_resource_group: ${{ inputs.azure_dns_zone_resource_group }}
+          azure_dns_zone: ${{ inputs.azure_dns_zone }}
+          le_azure_identity_type: ${{ env.le_azure_identity_type }}
+
+      - name: Select the certificate chain
+        if: steps.should_renew.outputs.renew_certificate == 'true'
+        env:
+          alternate_chain_cn: ${{ inputs.alternate_chain_cn }}
+        run: |
+            # if we are not searching for a specific chain, exit early
+            if [[ -z "$alternate_chain_cn" ]]; then
+              echo "❌ alternate_chain_cn input not containing any value, selecting the default certificate chain"
+              mv certificate_chain.pem.0 certificate_chain.pem
+              exit 0
+            fi
+            echo "🔍 Looking for $alternate_chain_cn root issuer..."
+              for file in certificate_chain.pem.*; do
+                # assuming ordered PEMs in file
+                root_issuer=$(while openssl x509 -inform pem -noout -issuer 2>/dev/null; do :; done < "$file" | tail -n 1)
+                echo "🔍 The root issuer for $file is $root_issuer"
+                # check if the grep result is positive or not
+                if echo "$root_issuer" | sed 's/ *= */=/g' | grep "$alternate_chain_cn" 1>/dev/null
+                  then
+                    echo "✅ Found $alternate_chain_cn in $file!"
+                    export chain_found="true"
+                    # print some debug info
+                    while openssl x509 -inform pem -noout -issuer 2>/dev/null; do :; done < "$file"
+                    # select this file
+                    mv "$file" certificate_chain.pem
+                    break
+                  else
+                    echo "⏭️ Skipping $file"
+                fi
+              done
+              if [ -z "$chain_found" ]; then
+                # by default the certificate_chain.pem.0 must be the selected certificate in case of no CN matches
+                echo "❌ alternate_chain_cn not found in any file, selecting the default certificate chain"
+                mv certificate_chain.pem.0 certificate_chain.pem
+              fi
+
+      - name: Save the certificate in Key Vault
+        if: steps.should_renew.outputs.renew_certificate == 'true'
+        env:
+          string_manipulation_cert_name: ${{ inputs.csr_common_name }}
+          key_vault_name: ${{ inputs.key_vault_name }}
+          force_renew_cert: ${{ inputs.force_renew_cert }}
+        run: |
+            key_vault_cert_name=$(echo "${string_manipulation_cert_name//./-}")
+            echo "🚀 Creating pfx"
+            openssl pkcs12 -inkey csr.key -in certificate_chain.pem -export -passout pass: -nodes -out certificate_chain.pfx
+            echo "💾 Saving pfx in $key_vault_name with name $key_vault_cert_name"
+            az keyvault certificate import --vault-name "$key_vault_name" -n "$key_vault_cert_name" --disabled false -f certificate_chain.pfx --password "" --tags Force="$force_renew_cert" >/dev/null
+
+      - name: Cleanup every file generated in the workspace
+        if: steps.should_renew.outputs.renew_certificate == 'true'
+        run: |
+          rm -f *.pem* *.json *.der *.key *.pfx
+
+  auto-approve-deployment:
+    name: Auto Approve Deployment
+    runs-on: ubuntu-latest
+    permissions:
+      id-token: write
+    defaults:
+      run:
+        shell: bash
+    # NOTE: If auto approve fails, the approval can be retried manually
+    continue-on-error: true
+
+    steps:
+      - name: Auto approve deployment
+        env:
+          GH_TOKEN: ${{ secrets.GH_TOKEN_DEPLOYMENT_APPROVAL }}
+          REQUIRED_ENVIRONMENT: ${{ inputs.environment }}-cd
+        run: |
+          if [ -z "$GH_TOKEN" ]; then
+            echo "::error::GH_TOKEN_DEPLOYMENT_APPROVAL secret is not set."
+            exit 1
+          fi
+
+          deployments=$(gh api \
+            -H "Accept: application/vnd.github+json" \
+            /repos/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID/pending_deployments)
+
+          environment=$(echo "$deployments" | jq -r '.[].environment.name')
+
+          if [ "$environment" != "$REQUIRED_ENVIRONMENT" ]; then
+            echo "::error::Environment $REQUIRED_ENVIRONMENT not found."
+            echo "::warning::Check if the deployment was already approved by one of the reviewers."
+            exit 1
+          fi
+
+          current_user_can_approve=$(echo "$deployments" | jq -r '.[].current_user_can_approve')
+
+          if [ "$current_user_can_approve" != true ]; then
+            GITHUB_USER=$(gh api user | jq -r '.login')
+            echo "::error::$GITHUB_USER is not a reviewer"
+            echo "::warning::Auto Approval not available, the user is not a reviewer of the environment $REQUIRED_ENVIRONMENT."
+            exit 1
+          fi
+
+          env_id=$(echo "$deployments" | jq -r '.[].environment.id')
+
+          gh api \
+            --method POST \
+            -H "Accept: application/vnd.github+json" \
+            /repos/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID/pending_deployments \
+            -F "environment_ids[]=$env_id" \
+            -f "state=approved" \
+            -f "comment=Approved automatically by the workflow."

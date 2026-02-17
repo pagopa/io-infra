@@ -18,6 +18,11 @@ variable "resource_group_name" {
   description = "Resource group where create resources"
 }
 
+variable "resource_group_itn" {
+  type        = string
+  description = "Resource group where create common resources in Italy North"
+}
+
 variable "tags" {
   type        = map(any)
   description = "Resource tags"
@@ -34,24 +39,39 @@ variable "tenant_id" {
   description = "Azure tenant id"
 }
 
-variable "azure_ad_group_admin_object_id" {
-  type        = string
-  description = "Object Id of the Entra group for subscription admins"
+variable "admins" {
+  type        = set(string)
+  description = "List of Azure AD group object IDs for Key Vault admins"
 }
 
-variable "azure_ad_group_developers_object_id" {
-  type        = string
-  description = "Object Id of the Entra group for subscription developers"
+variable "devs" {
+  type        = set(string)
+  description = "List of Azure AD group object IDs for Key Vault developers"
 }
 
-variable "io_infra_ci_managed_identity_principal_id" {
-  type        = string
-  description = ""
+variable "ci" {
+  type        = set(string)
+  description = "List of Managed Identity principal IDs for CI"
 }
 
-variable "io_infra_cd_managed_identity_principal_id" {
+variable "cd" {
+  type        = set(string)
+  description = "List of Managed Identity principal IDs for CD"
+}
+
+variable "subscription_id" {
   type        = string
-  description = ""
+  description = "Azure subscription ID"
+}
+
+variable "subnet_pep_id" {
+  type        = string
+  description = "Subnet ID for Private Endpoint"
+}
+
+variable "private_dns_zone_id" {
+  type        = string
+  description = "ID of the Private DNS Zone for Key Vault"
 }
 
 variable "platform_iac_sp_object_id" {
