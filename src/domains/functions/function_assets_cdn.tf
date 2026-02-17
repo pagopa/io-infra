@@ -118,8 +118,8 @@ module "function_assets_cdn_autoscale" {
   }
   scheduler = {
     normal_load = {
-      minimum = 6
-      default = 6
+      minimum = 2
+      default = 2
     },
     maximum = 30
   }
