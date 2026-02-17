@@ -12,7 +12,18 @@ resource "azurerm_private_dns_a_record" "api_app_internal_io" {
   zone_name           = azurerm_private_dns_zone.internal_io_pagopa_it.name
   resource_group_name = var.resource_groups.internal
   ttl                 = var.dns_default_ttl_sec
-  records             = [var.apim_v2_private_ip]
+  records             = [var.apim_private_ip]
+
+  tags = var.tags
+}
+
+# proxy.internal.io.pagopa.it
+resource "azurerm_private_dns_a_record" "proxy_internal_io" {
+  name                = "proxy"
+  zone_name           = azurerm_private_dns_zone.internal_io_pagopa_it.name
+  resource_group_name = var.resource_groups.internal
+  ttl                 = var.dns_default_ttl_sec
+  records             = [var.platform_api_gateway_private_ip]
 
   tags = var.tags
 }
@@ -104,6 +115,15 @@ resource "azurerm_private_dns_zone" "privatelink_azurewebsites" {
 resource "azurerm_private_dns_zone" "privatelink_srch" {
   name                = "privatelink.search.windows.net"
   resource_group_name = var.resource_groups.common
+
+  tags = var.tags
+}
+
+resource "azurerm_private_dns_zone" "privatelink_vault" {
+  name                = "privatelink.vaultcore.azure.net"
+  resource_group_name = var.resource_groups.common
+
+  tags = var.tags
 }
 
 resource "azurerm_private_dns_zone" "azure_api_net" {
@@ -122,6 +142,13 @@ resource "azurerm_private_dns_zone" "management_azure_api_net" {
 
 resource "azurerm_private_dns_zone" "scm_azure_api_net" {
   name                = "scm.azure-api.net"
+  resource_group_name = var.resource_groups.common
+
+  tags = var.tags
+}
+
+resource "azurerm_private_dns_zone" "privatelink_itn_containerapps" {
+  name                = "privatelink.italynorth.azurecontainerapps.io"
   resource_group_name = var.resource_groups.common
 
   tags = var.tags

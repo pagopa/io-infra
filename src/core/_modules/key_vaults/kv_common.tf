@@ -19,52 +19,6 @@ resource "azurerm_key_vault" "common" {
 
 # Access Policies
 
-resource "azurerm_key_vault_access_policy" "kv_common_adgroup_admin" {
-  key_vault_id = azurerm_key_vault.common.id
-
-  tenant_id = var.tenant_id
-  object_id = var.azure_ad_group_admin_object_id
-
-  key_permissions         = ["Get", "List", "Update", "Create", "Import", "Delete", ]
-  secret_permissions      = ["Get", "List", "Set", "Delete", "Restore", "Recover", ]
-  storage_permissions     = []
-  certificate_permissions = ["Get", "List", "Update", "Create", "Import", "Delete", "Restore", "Recover", ]
-}
-
-resource "azurerm_key_vault_access_policy" "kv_common_io_infra_ci" {
-  key_vault_id = azurerm_key_vault.common.id
-
-  tenant_id = var.tenant_id
-  object_id = var.io_infra_ci_managed_identity_principal_id
-
-  key_permissions         = ["Get", "List"]
-  secret_permissions      = ["Get", "List"]
-  certificate_permissions = ["Get", "List"]
-}
-
-resource "azurerm_key_vault_access_policy" "kv_common_io_infra_cd" {
-  key_vault_id = azurerm_key_vault.common.id
-
-  tenant_id = var.tenant_id
-  object_id = var.io_infra_cd_managed_identity_principal_id
-
-  key_permissions         = ["Get", "List"]
-  secret_permissions      = ["Get", "List"]
-  certificate_permissions = ["Get", "List"]
-}
-
-resource "azurerm_key_vault_access_policy" "kv_common_adgroup_developers" {
-  key_vault_id = azurerm_key_vault.common.id
-
-  tenant_id = var.tenant_id
-  object_id = var.azure_ad_group_developers_object_id
-
-  key_permissions         = ["Get", "List", "Update", "Create", "Import", "Delete", ]
-  secret_permissions      = ["Get", "List", "Set", "Delete", "Restore", "Recover", ]
-  storage_permissions     = []
-  certificate_permissions = ["Get", "List", "Update", "Create", "Import", "Delete", "Restore", "Recover", ]
-}
-
 # Microsoft Azure WebSites
 # TODO: To remove, the old app service (api-gad) has been removed so app services not needs to access to key vaults
 resource "azurerm_key_vault_access_policy" "app_service" {
@@ -99,4 +53,54 @@ resource "azurerm_key_vault_access_policy" "kv_common_azdevops_platform_iac" {
   secret_permissions      = ["Get", "List", "Set", ]
   storage_permissions     = []
   certificate_permissions = ["SetIssuers", "DeleteIssuers", "Purge", "List", "Get", "ManageContacts", ]
+}
+
+resource "azurerm_key_vault_access_policy" "kv_common_adgroup_admins" {
+  for_each = var.admins
+
+  key_vault_id = azurerm_key_vault.common.id
+  tenant_id    = var.tenant_id
+  object_id    = each.value
+
+  key_permissions         = ["Get", "List", "Update", "Create", "Import", "Delete"]
+  secret_permissions      = ["Get", "List", "Set", "Delete", "Restore", "Recover"]
+  storage_permissions     = []
+  certificate_permissions = ["Get", "List", "Update", "Create", "Import", "Delete", "Restore", "Recover"]
+}
+
+resource "azurerm_key_vault_access_policy" "kv_common_adgroup_devs" {
+  for_each = var.devs
+
+  key_vault_id = azurerm_key_vault.common.id
+  tenant_id    = var.tenant_id
+  object_id    = each.value
+
+  key_permissions         = []
+  secret_permissions      = ["Get", "List", "Set", "Delete"]
+  storage_permissions     = []
+  certificate_permissions = []
+}
+
+resource "azurerm_key_vault_access_policy" "kv_common_ci" {
+  for_each = var.ci
+
+  key_vault_id = azurerm_key_vault.common.id
+  tenant_id    = var.tenant_id
+  object_id    = each.value
+
+  key_permissions         = ["Get", "List"]
+  secret_permissions      = ["Get", "List"]
+  certificate_permissions = ["Get", "List"]
+}
+
+resource "azurerm_key_vault_access_policy" "kv_common_cd" {
+  for_each = var.cd
+
+  key_vault_id = azurerm_key_vault.common.id
+  tenant_id    = var.tenant_id
+  object_id    = each.value
+
+  key_permissions         = ["Get", "List"]
+  secret_permissions      = ["Get", "List", "Delete", "Set"]
+  certificate_permissions = ["Get", "List"]
 }
