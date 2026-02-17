@@ -5,7 +5,7 @@ resource "azurerm_cosmosdb_account" "this" {
 
   offer_type          = "Standard"
   free_tier_enabled   = false
-  minimal_tls_version = "Tls"
+  minimal_tls_version = "Tls12"
 
   automatic_failover_enabled = true
   ip_range_filter            = local.ip_range_filter

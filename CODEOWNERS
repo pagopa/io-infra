@@ -1,10 +1,10 @@
 # see https://help.github.com/en/articles/about-code-owners#example-of-a-codeowners-file
 
-* @pagopa/engineering-team-cloud-eng @pagopa/io-platform-contributors
+* @pagopa/engineering-team-devex @pagopa/io-platform-contributors
 
-/src/common @pagopa/engineering-team-cloud-eng @pagopa/io-backend-admin
+/src/common @pagopa/engineering-team-devex @pagopa/io-backend-admin
 
-/src/domains @pagopa/engineering-team-cloud-eng @pagopa/io-backend-admin @pagopa/io-backend-contributors
-/src/domains/sign @pagopa/engineering-team-cloud-eng @pagopa/io-backend-admin @pagopa/io-backend-contributors @pagopa/io-sign-maintainers
+/src/domains @pagopa/engineering-team-devex @pagopa/io-backend-admin @pagopa/io-backend-contributors
+/src/domains/sign @pagopa/engineering-team-devex @pagopa/io-backend-admin @pagopa/io-backend-contributors @pagopa/io-sign-maintainers
 
-/src/repository @pagopa/engineering-team-cloud-eng @pagopa/io-backend-admin
+/src/repository @pagopa/engineering-team-devex @pagopa/io-backend-admin

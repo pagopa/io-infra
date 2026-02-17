@@ -95,42 +95,6 @@ variable "application_insights_name" {
   description = "Specifies the name of the Application Insights."
 }
 
-### Aks
-
-variable "k8s_kube_config_path_prefix" {
-  type    = string
-  default = "~/.kube"
-}
-
-variable "ingress_load_balancer_ip" {
-  type = string
-}
-
-variable "reloader_helm" {
-  type = object({
-    chart_version = string,
-    image_name    = string,
-    image_tag     = string
-  })
-  description = "reloader helm chart configuration"
-}
-
-variable "tls_cert_check_helm" {
-  type = object({
-    chart_version = string,
-    image_name    = string,
-    image_tag     = string
-  })
-  description = "tls cert helm chart configuration"
-}
-
-variable "enable_azdoa" {
-  type        = bool
-  description = "Specifies Azure Devops Agent enabling"
-  default     = true
-}
-
-
 # Function LolliPOP
 
 variable "cidr_subnet_fnlollipop" {
@@ -179,6 +143,11 @@ variable "function_lollipop_autoscale_default" {
 variable "cidr_subnet_session_manager" {
   type        = list(string)
   description = "Session manager app service address space."
+}
+
+variable "cidr_subnet_session_manager_bis" {
+  type        = list(string)
+  description = "Session manager second instance app service address space."
 }
 
 variable "session_manager_plan_sku_name" {

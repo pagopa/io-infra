@@ -37,20 +37,16 @@ data "azurerm_monitor_action_group" "auth_n_identity_error_action_group" {
   name                = "io-p-itn-auth-error-ag-01"
 }
 
-#tfsec:ignore:AZU023
-resource "azurerm_key_vault_secret" "appinsights_instrumentation_key" {
-  name         = "appinsights-instrumentation-key"
-  value        = data.azurerm_application_insights.application_insights.instrumentation_key
-  content_type = "only instrumentation key"
-
-  key_vault_id = module.key_vault.id
+removed {
+  from = azurerm_key_vault_secret.appinsights_instrumentation_key
+  lifecycle {
+    destroy = false
+  }
 }
 
-#tfsec:ignore:AZU023
-resource "azurerm_key_vault_secret" "appinsights_connection_string" {
-  name         = "appinsights-connection-string"
-  value        = data.azurerm_application_insights.application_insights.connection_string
-  content_type = "full connection string, example InstrumentationKey=XXXXX"
-
-  key_vault_id = module.key_vault.id
+removed {
+  from = azurerm_key_vault_secret.appinsights_connection_string
+  lifecycle {
+    destroy = false
+  }
 }

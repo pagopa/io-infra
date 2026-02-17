@@ -34,6 +34,20 @@ resource "azurerm_resource_group" "github_managed_identity_itn" {
   tags = local.tags
 }
 
+resource "azurerm_resource_group" "assets_cdn_itn" {
+  name     = "${local.project_itn}-assets-cdn-rg-01"
+  location = "italynorth"
+
+  tags = local.tags
+}
+
+resource "azurerm_resource_group" "external_itn" {
+  name     = "${local.project_itn}-external-rg-01"
+  location = "italynorth"
+
+  tags = local.tags
+}
+
 resource "azurerm_resource_group" "terraform_weu" {
   name     = "terraform-state-rg"
   location = "westeurope"
@@ -102,9 +116,4 @@ resource "azurerm_resource_group" "dashboards_weu" {
   location = "westeurope"
 
   tags = local.tags
-}
-
-import {
-  id = "/subscriptions/ec285037-c673-4f58-b594-d7c480da4e8b/resourceGroups/dashboards"
-  to = azurerm_resource_group.dashboards_weu
 }

@@ -17,15 +17,6 @@ resource "azurerm_key_vault_secret" "appbackend-SPID-LOG-STORAGE" {
 }
 
 #tfsec:ignore:AZU023
-resource "azurerm_key_vault_secret" "appbackend-PUSH-NOTIFICATIONS-STORAGE" {
-  count        = var.index == 1 ? 1 : 0
-  name         = "appbackend-PUSH-NOTIFICATIONS-STORAGE"
-  value        = data.azurerm_storage_account.push_notifications_storage.primary_connection_string
-  key_vault_id = var.key_vault_common.id
-  content_type = "string"
-}
-
-#tfsec:ignore:AZU023
 resource "azurerm_key_vault_secret" "appbackend-NORIFICATIONS-STORAGE" {
   count        = var.index == 1 ? 1 : 0
   name         = "appbackend-NORIFICATIONS-STORAGE"

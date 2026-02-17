@@ -22,4 +22,4 @@ jobs:
     with:
       environment: prod
       base_path: "src/domains/bonus"
-      use_private_agent: false
+      use_private_agent: true

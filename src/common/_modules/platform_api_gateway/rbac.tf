@@ -9,54 +9,38 @@ resource "azurerm_key_vault_access_policy" "platform_api_gateway_kv_policy" {
   storage_permissions     = []
 }
 
-# Typo: this module should be renamed to `iam_adgroup_platform_admins`
-module "iam_adgroup_product_admins" {
+module "iam_adgroup" {
+  for_each = {
+    for assignment in local.apim_adgroup_rbac :
+    assignment.principal_id => assignment
+  }
   source  = "pagopa-dx/azure-role-assignments/azurerm"
   version = "~> 1.0"
 
-  principal_id    = var.azure_adgroup_platform_admins_object_id
+  principal_id    = each.value.principal_id
   subscription_id = data.azurerm_client_config.current.subscription_id
 
   apim = [
     {
       name                = module.platform_api_gateway.name
       resource_group_name = module.platform_api_gateway.resource_group_name
-      description         = "Platform team admin group"
-      role                = "owner"
+      description         = each.value.description
+      role                = each.value.role
     }
   ]
 }
 
-module "iam_adgroup_bonus_admins" {
-  source  = "pagopa-dx/azure-role-assignments/azurerm"
-  version = "~> 1.0"
-
-  principal_id    = var.azure_adgroup_bonus_admins_object_id
-  subscription_id = data.azurerm_client_config.current.subscription_id
-
-  apim = [
-    {
-      name                = module.platform_api_gateway.name
-      resource_group_name = module.platform_api_gateway.resource_group_name
-      description         = "Bonus team admin group"
-      role                = "owner"
-    }
-  ]
+moved {
+  from = module.iam_adgroup_product_admins
+  to   = module.iam_adgroup["a0ed72be-f9f9-407e-bf25-91761f8d3de7"]
 }
 
-module "iam_adgroup_bonus_infra_cd" {
-  source  = "pagopa-dx/azure-role-assignments/azurerm"
-  version = "~> 1.0"
+moved {
+  from = module.iam_adgroup_bonus_admins
+  to   = module.iam_adgroup["831e5214-2f68-4a13-b25f-7bec962c7e1b"]
+}
 
-  principal_id    = var.azure_user_assigned_identity_bonus_infra_cd
-  subscription_id = data.azurerm_client_config.current.subscription_id
-
-  apim = [
-    {
-      name                = module.platform_api_gateway.name
-      resource_group_name = module.platform_api_gateway.resource_group_name
-      description         = "Bonus team infra CD identity"
-      role                = "owner"
-    }
-  ]
+moved {
+  from = module.iam_adgroup_bonus_infra_cd
+  to   = module.iam_adgroup["ef6b556d-4d33-4467-ad9d-6b5540cbde6b"]
 }

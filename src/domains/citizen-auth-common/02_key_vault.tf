@@ -2,6 +2,11 @@ data "azurerm_resource_group" "sec_rg" {
   name = "${local.product}-${var.domain}-sec-rg"
 }
 
+data "azurerm_key_vault" "auth_kv_01" {
+  name                = "io-p-itn-auth-kv-01"
+  resource_group_name = "io-p-itn-auth-main-rg-01"
+}
+
 module "key_vault" {
   source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//key_vault?ref=v8.44.1"
 

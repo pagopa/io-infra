@@ -14,3 +14,11 @@ output "snet" {
     address_prefixes = azurerm_subnet.agw.address_prefixes
   }
 }
+
+output "name" {
+  value = azurerm_application_gateway.this.name
+}
+
+output "id" {
+  value = azurerm_application_gateway.this.id
+}
