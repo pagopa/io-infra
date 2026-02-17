@@ -1,6 +1,6 @@
 
 locals {
-  fe_domain = "https://ioapp.it"
+  fe_domain = "https://account.ioapp.it"
 }
 
 ############################
@@ -16,12 +16,12 @@ module "spid_login" {
 
   # App service
   name                = format("%s-spid-login", local.project)
-  resource_group_name = azurerm_resource_group.common_rg.name
-  location            = azurerm_resource_group.common_rg.location
+  resource_group_name = data.azurerm_resource_group.common_rg.name
+  location            = data.azurerm_resource_group.common_rg.location
 
 
   always_on         = true
-  node_version      = "18-lts"
+  node_version      = "20-lts"
   app_command_line  = "npm run start"
   health_check_path = "/healthcheck"
 
@@ -114,7 +114,6 @@ module "spid_login" {
 
   allowed_subnets = [
     data.azurerm_subnet.azdoa_snet.id,
-    data.azurerm_subnet.apim_v2_snet.id,
     data.azurerm_subnet.ioweb_profile_itn_snet.id,
     data.azurerm_subnet.apim_itn_snet.id,
   ]

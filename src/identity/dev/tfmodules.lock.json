@@ -1,0 +1,8 @@
+{
+  "federated_identities": {
+    "hash": "c2d6aa312aaf14da5a711a402c1c964430d21c907143e044e19b566820d5bb61",
+    "version": "0.0.4",
+    "name": "azure_federated_identity_with_github",
+    "source": "https://registry.terraform.io/modules/pagopa-dx/azure-federated-identity-with-github/azurerm/0.0.4"
+  }
+}

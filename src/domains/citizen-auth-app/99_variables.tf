@@ -95,42 +95,6 @@ variable "application_insights_name" {
   description = "Specifies the name of the Application Insights."
 }
 
-### Aks
-
-variable "k8s_kube_config_path_prefix" {
-  type    = string
-  default = "~/.kube"
-}
-
-variable "ingress_load_balancer_ip" {
-  type = string
-}
-
-variable "reloader_helm" {
-  type = object({
-    chart_version = string,
-    image_name    = string,
-    image_tag     = string
-  })
-  description = "reloader helm chart configuration"
-}
-
-variable "tls_cert_check_helm" {
-  type = object({
-    chart_version = string,
-    image_name    = string,
-    image_tag     = string
-  })
-  description = "tls cert helm chart configuration"
-}
-
-variable "enable_azdoa" {
-  type        = bool
-  description = "Specifies Azure Devops Agent enabling"
-  default     = true
-}
-
-
 # Function LolliPOP
 
 variable "cidr_subnet_fnlollipop" {
@@ -181,9 +145,9 @@ variable "cidr_subnet_session_manager" {
   description = "Session manager app service address space."
 }
 
-variable "cidr_subnet_session_manager_04" {
+variable "cidr_subnet_session_manager_bis" {
   type        = list(string)
-  description = "Session manager app service instance 4 address space."
+  description = "Session manager second instance app service address space."
 }
 
 variable "session_manager_plan_sku_name" {
@@ -192,13 +156,6 @@ variable "session_manager_plan_sku_name" {
   default     = "P1v3"
 }
 
-variable "session_manager_autoscale_settings" {
-  type = object({
-    autoscale_minimum = number
-    autoscale_maximum = number
-    autoscale_default = number
-  })
-}
 ####################
 
 # DNS
@@ -214,67 +171,6 @@ variable "dns_zone_io" {
   description = "The dns subdomain."
 }
 
-################################
-# Function Profile
-################################
-variable "function_profile_count" {
-  type    = number
-  default = 2
-}
-
-variable "cidr_subnet_profile_itn" {
-  type        = list(string)
-  description = "Function app address space."
-}
-
-variable "function_profile_kind" {
-  type        = string
-  description = "App service plan kind"
-  default     = null
-}
-
-variable "function_profile_sku_size" {
-  type        = string
-  description = "App service plan sku size"
-  default     = null
-}
-#############################
-# Function Profile Async
-#############################
-variable "cidr_subnet_profile_async_itn" {
-  type        = list(string)
-  description = "Function app address space."
-}
-
-variable "function_profile_async_kind" {
-  type        = string
-  description = "App service plan kind"
-  default     = null
-}
-
-variable "function_profile_async_sku_size" {
-  type        = string
-  description = "App service plan sku size"
-  default     = null
-}
-
-variable "function_profile_async_autoscale_minimum" {
-  type        = number
-  description = "The minimum number of instances for this resource."
-  default     = 1
-}
-
-variable "function_profile_async_autoscale_maximum" {
-  type        = number
-  description = "The maximum number of instances for this resource."
-  default     = 30
-}
-
-variable "function_profile_async_autoscale_default" {
-  type        = number
-  description = "The number of instances that are available for scaling if metrics are not available for evaluation."
-  default     = 1
-}
 ################################
 # Shared plan
 ################################

@@ -11,8 +11,8 @@ resource "azurerm_resource_group" "io_web_profile_itn_fe_rg" {
 }
 
 module "io_web_profile_itn_fe_st" {
-  source = "github.com/pagopa/dx//infra/modules/azure_storage_account?ref=main"
-
+  source  = "pagopa-dx/azure-storage-account/azurerm"
+  version = "~> 0.0"
   // s tier -> Standard LRS
   // l tier -> Standard ZRS
   tier = "l"
@@ -116,12 +116,17 @@ resource "azurerm_cdn_frontdoor_rule" "portal_cdn_rule_global" {
     response_header_action {
       header_name   = "Content-Security-Policy"
       header_action = "Append"
-      value         = "script-src 'self' 'unsafe-inline'; worker-src 'none'; font-src data: 'self'; object-src 'none';"
+      value         = "script-src 'self' 'unsafe-inline'; worker-src 'none'; font-src data: 'self'; object-src 'none'; frame-ancestors 'none';"
     }
     response_header_action {
       header_name   = "Cache-Control"
       header_action = "Overwrite"
       value         = "no-cache"
+    }
+    response_header_action {
+      header_name   = "X-Frame-Options"
+      header_action = "Overwrite"
+      value         = "DENY"
     }
   }
 }
@@ -224,3 +229,21 @@ resource "azurerm_dns_txt_record" "dns_txt" {
   })
 }
 ####################
+
+#####################
+# CDN LOGS
+#####################
+
+resource "azurerm_monitor_diagnostic_setting" "diagnostic_settings_cdn_frontdoor" {
+  name                       = "${azurerm_cdn_frontdoor_profile.portal_profile.name}-cdn-profile-diagnostic-settings"
+  target_resource_id         = azurerm_cdn_frontdoor_profile.portal_profile.id
+  log_analytics_workspace_id = data.azurerm_log_analytics_workspace.log_analytics.id
+
+  enabled_log {
+    category_group = "allLogs"
+  }
+
+  metric {
+    category = "AllMetrics"
+  }
+}

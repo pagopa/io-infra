@@ -22,6 +22,11 @@ output "appi_instrumentation_key" {
   sensitive = true
 }
 
+output "appi_connection_string" {
+  value     = azurerm_application_insights.appi.connection_string
+  sensitive = true
+}
+
 output "log" {
   value = {
     id                  = azurerm_log_analytics_workspace.log.id
