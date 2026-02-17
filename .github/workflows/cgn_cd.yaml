@@ -10,10 +10,10 @@ on:
 
 jobs:
   release_prod:
-    uses: ./.github/workflows/call_release.yaml
+    uses: pagopa/dx/.github/workflows/infra_apply.yaml@main
     name: Terraform Apply
     secrets: inherit
     with:
       environment: prod
-      dir: "src/domains/cgn/prod"
+      base_path: "src/domains/cgn"
       use_private_agent: true

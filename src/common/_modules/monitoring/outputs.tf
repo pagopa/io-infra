@@ -1,10 +1,9 @@
 output "action_groups" {
   value = {
-    error              = azurerm_monitor_action_group.error.id
-    quarantine_error   = azurerm_monitor_action_group.quarantine_error.id
-    trial_system_error = azurerm_monitor_action_group.trial_system_error.id
-    email              = azurerm_monitor_action_group.email.id
-    slack              = azurerm_monitor_action_group.slack.id
+    error            = azurerm_monitor_action_group.error.id
+    quarantine_error = azurerm_monitor_action_group.quarantine_error.id
+    email            = azurerm_monitor_action_group.email.id
+    slack            = azurerm_monitor_action_group.slack.id
   }
 }
 
@@ -20,6 +19,11 @@ output "appi" {
 
 output "appi_instrumentation_key" {
   value     = azurerm_application_insights.appi.instrumentation_key
+  sensitive = true
+}
+
+output "appi_connection_string" {
+  value     = azurerm_application_insights.appi.connection_string
   sensitive = true
 }
 

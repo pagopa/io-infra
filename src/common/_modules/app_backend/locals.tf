@@ -3,7 +3,7 @@
 locals {
   name = var.name
 
-  app_command_line = "npm run start"
+  app_command_line = "pm2 start dist/src/server.js -i max --no-daemon"
 
   webtest = {
     path        = "/info",
@@ -17,7 +17,6 @@ locals {
     io_receipt       = "01HD63674XJ1R6XCNHH24PCRR2"
     third_party_mock = "01GQQDPM127KFGG6T3660D5TXD"
     pn_remote_config = "01HMVMHCZZ8D0VTFWMRHBM5D6F"
-    io_wallet_trial  = "01J2GN4TA8FB6DPTAX3T3YD6M1"
   }
 
   endpoints = {
@@ -27,10 +26,7 @@ locals {
     io_receipt      = "https://api.platform.pagopa.it/receipts/service/v1"
   }
 
-  citizen_auth_revoke_queue_name = "pubkeys-revoke-v2"
-
   function_app_count = length(var.backend_hostnames.app)
-  app_messages_count = length(var.backend_hostnames.app_messages)
 
   nonstandard = {
     weu = {
