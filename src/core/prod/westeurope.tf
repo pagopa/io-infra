@@ -32,30 +32,7 @@ module "vnet_peering_weu" {
       resource_group_name = module.networking_itn.vnet_common.resource_group_name
       use_remote_gateways = false
     }
-
-    prod01 = {
-      name                = data.azurerm_virtual_network.weu_prod01.name
-      id                  = data.azurerm_virtual_network.weu_prod01.id
-      resource_group_name = data.azurerm_virtual_network.weu_prod01.resource_group_name
-      use_remote_gateways = false
-      symmetrical = {
-        enabled               = true
-        use_remote_gateways   = true
-        allow_gateway_transit = false
-      }
-    }
   }
-}
-
-module "container_registry" {
-  source = "../_modules/container_registry"
-
-  location            = azurerm_resource_group.common_weu.location
-  location_short      = local.location_short[azurerm_resource_group.common_weu.location]
-  project             = local.project_weu_legacy
-  resource_group_name = azurerm_resource_group.acr_weu.name
-
-  tags = local.tags
 }
 
 module "key_vault_weu" {
@@ -66,24 +43,41 @@ module "key_vault_weu" {
   project               = local.project_weu_legacy
   resource_group_name   = azurerm_resource_group.sec_weu.name
   resource_group_common = azurerm_resource_group.common_weu.name
-  tenant_id             = data.azurerm_client_config.current.tenant_id
+  resource_group_itn    = azurerm_resource_group.common_itn.name
 
-  azure_adgroup_admin_object_id             = data.azuread_group.admin.object_id
-  azure_adgroup_developers_object_id        = data.azuread_group.developers.object_id
-  azure_adgroup_platform_admins_object_id   = data.azuread_group.platform_admins.object_id
-  azure_adgroup_wallet_admins_object_id     = data.azuread_group.wallet_admins.object_id
-  azure_adgroup_wallet_devs_object_id       = data.azuread_group.wallet_devs.object_id
-  azure_adgroup_com_admins_object_id        = data.azuread_group.com_admins.object_id
-  azure_adgroup_com_devs_object_id          = data.azuread_group.com_devs.object_id
-  azure_adgroup_svc_admins_object_id        = data.azuread_group.svc_admins.object_id
-  azure_adgroup_svc_devs_object_id          = data.azuread_group.svc_devs.object_id
-  azure_adgroup_auth_admins_object_id       = data.azuread_group.auth_admins.object_id
-  azure_adgroup_auth_devs_object_id         = data.azuread_group.auth_devs.object_id
-  azure_adgroup_bonus_admins_object_id      = data.azuread_group.bonus_admins.object_id
-  azure_adgroup_bonus_devs_object_id        = data.azuread_group.bonus_devs.object_id
-  io_infra_ci_managed_identity_principal_id = data.azurerm_user_assigned_identity.managed_identity_io_infra_ci.principal_id
-  io_infra_cd_managed_identity_principal_id = data.azurerm_user_assigned_identity.managed_identity_io_infra_cd.principal_id
-  platform_iac_sp_object_id                 = data.azuread_service_principal.platform_iac_sp.object_id
+  tenant_id       = data.azurerm_client_config.current.tenant_id
+  subscription_id = data.azurerm_client_config.current.subscription_id
+
+  subnet_pep_id       = module.networking_itn.pep_snet.id
+  private_dns_zone_id = data.azurerm_private_dns_zone.key_vault.id
+
+  admins = [
+    data.azuread_group.admin.object_id,
+    data.azuread_group.platform_admins.object_id,
+    data.azuread_group.wallet_admins.object_id,
+    data.azuread_group.com_admins.object_id,
+    data.azuread_group.svc_admins.object_id,
+    data.azuread_group.auth_admins.object_id,
+    data.azuread_group.bonus_admins.object_id
+  ]
+
+  devs = [
+    data.azuread_group.wallet_devs.object_id,
+    data.azuread_group.com_devs.object_id,
+    data.azuread_group.svc_devs.object_id,
+    data.azuread_group.auth_devs.object_id,
+    data.azuread_group.bonus_devs.object_id
+  ]
+
+  ci = [
+    data.azurerm_user_assigned_identity.managed_identity_io_infra_ci.principal_id
+  ]
+
+  cd = [
+    data.azurerm_user_assigned_identity.managed_identity_io_infra_cd.principal_id
+  ]
+
+  platform_iac_sp_object_id = data.azuread_service_principal.platform_iac_sp.object_id
 
   tags = local.tags
 }

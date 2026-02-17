@@ -14,12 +14,6 @@ module "app_services" {
   devportal_frontend_hostname    = local.devportal_frontend_hostname
   apim_hostname_api_app_internal = local.apim_hostname_api_app_internal
 
-  dev_portal_db_data = {
-    host     = module.postgresql.dev_portal_db_credentials.host
-    username = module.postgresql.dev_portal_db_credentials.username
-    password = module.postgresql.dev_portal_db_credentials.password
-  }
-
   subsmigrations_db_data = {
     host     = module.postgresql.subsmigrations_db_credentials.host
     username = module.postgresql.subsmigrations_db_credentials.username
@@ -48,12 +42,6 @@ resource "azurerm_role_assignment" "devportal_be_apim_itn" {
   principal_id         = module.app_services.app_service_common.devportal_be.principal_id
 }
 
-resource "azurerm_role_assignment" "selfcare_be_apim_itn" {
-  role_definition_name = "PagoPA API Management Operator App"
-  scope                = data.azurerm_api_management.apim_itn_api.id
-  principal_id         = module.app_services.app_service_common.selfcare_be.principal_id
-}
-
 # Functions
 
 resource "azurerm_role_assignment" "function_subscriptionmigrations_itn" {
@@ -62,22 +50,10 @@ resource "azurerm_role_assignment" "function_subscriptionmigrations_itn" {
   principal_id         = module.app_services.function_subscriptionmigrations.principal_id
 }
 
-resource "azurerm_role_assignment" "function_devportalservicedata_itn" {
-  role_definition_name = "PagoPA API Management Operator App"
-  scope                = data.azurerm_api_management.apim_itn_api.id
-  principal_id         = module.app_services.function_devportalservicedata.principal_id
-}
-
 # Functions Slots
 
 resource "azurerm_role_assignment" "function_subscriptionmigrations_staging_slot_itn" {
   role_definition_name = "PagoPA API Management Operator App"
   scope                = data.azurerm_api_management.apim_itn_api.id
   principal_id         = module.app_services.function_subscriptionmigrations.slot.principal_id
-}
-
-resource "azurerm_role_assignment" "function_devportalservicedata_staging_slot_itn" {
-  role_definition_name = "PagoPA API Management Operator App"
-  scope                = data.azurerm_api_management.apim_itn_api.id
-  principal_id         = module.app_services.function_devportalservicedata.slot.principal_id
 }

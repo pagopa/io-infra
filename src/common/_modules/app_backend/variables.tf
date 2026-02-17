@@ -55,12 +55,6 @@ variable "name" {
   default     = null
 }
 
-variable "is_li" {
-  type        = bool
-  description = "Is this backend li type (async)?"
-  default     = false
-}
-
 variable "vnet_common" {
   type = object({
     id                  = string
@@ -119,10 +113,6 @@ variable "ai_connection_string" {
 variable "error_action_group_id" {
   type        = string
   description = "Azure Monitor error action group id"
-}
-
-variable "apim_snet_address_prefixes" {
-  type = list(string)
 }
 
 variable "nat_gateways" {
@@ -195,12 +185,11 @@ variable "backend_hostnames" {
     assets_cdn           = string
     services_app_backend = string
     lollipop             = string
-    eucovidcert          = string
     cgn                  = string
     iosign               = string
     iofims               = string
     cgnonboarding        = string
-    iowallet             = string
+    cdc_support          = string
   })
 }
 
@@ -233,5 +222,14 @@ variable "enable_premium_plan_autoscale" {
   type        = bool
   description = "Enable autoscale for premium plan"
   default     = false
+}
 
+variable "subnet_pep_id" {
+  type        = string
+  description = "Subnet ID for the private endpoint"
+}
+
+variable "private_dns_zone_id" {
+  type        = string
+  description = "Private DNS Zone ID for the private endpoint"
 }

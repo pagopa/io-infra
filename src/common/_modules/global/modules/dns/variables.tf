@@ -36,7 +36,6 @@ variable "external_domain" {
 variable "dns_zones" {
   type = object({
     io                  = string
-    io_selfcare         = string
     firmaconio_selfcare = string
     }
   )
@@ -52,4 +51,14 @@ variable "app_gateway_public_ip" {
 variable "apim_private_ip" {
   type        = string
   description = "Private IP of the API Management"
+}
+
+variable "platform_api_gateway_private_ip" {
+  type        = string
+  description = "Private IP of the Proxy API Gateway"
+}
+
+variable "psn_application_gateway_private_endpoint_ip" {
+  type        = string
+  description = "Private IP of the Private Endpoint associated with PSN Application Gateway"
 }

@@ -1,17 +1,17 @@
 module "platform_api_gateway" {
   source  = "pagopa-dx/azure-api-management/azurerm"
-  version = "~> 1.1"
+  version = "~> 2.0"
 
   environment = {
     prefix          = var.prefix
     env_short       = "p"
     location        = var.location
-    app_name        = "platform-api-gateway"
+    app_name        = local.apim_appname
     instance_number = "01"
   }
 
   resource_group_name = var.resource_group_internal
-  tier                = "l"
+  use_case            = "high_load"
 
   publisher_email           = data.azurerm_key_vault_secret.apim_publisher_email.value
   publisher_name            = "IO"
@@ -37,6 +37,16 @@ module "platform_api_gateway" {
         default_ssl_binding = false
         host_name           = "io-p-itn-platform-api-gateway-apim-01.azure-api.net"
         key_vault_id        = null
+      },
+      {
+        # proxy.internal.io.pagopa.it
+        default_ssl_binding = false
+        host_name           = local.proxy_hostname_internal
+        key_vault_id = replace(
+          data.azurerm_key_vault_certificate.proxy_internal_io_pagopa_it.secret_id,
+          "/${data.azurerm_key_vault_certificate.proxy_internal_io_pagopa_it.version}",
+          ""
+        )
       },
     ]
     developer_portal = null
@@ -68,8 +78,8 @@ module "platform_api_gateway" {
 
   autoscale = {
     enabled                       = true
-    default_instances             = 3
-    minimum_instances             = 1
+    default_instances             = 4
+    minimum_instances             = 4
     maximum_instances             = 10
     scale_out_capacity_percentage = 50
     scale_out_time_window         = "PT3M"
@@ -77,7 +87,7 @@ module "platform_api_gateway" {
     scale_out_cooldown            = "PT5M"
     scale_in_capacity_percentage  = 20
     scale_in_time_window          = "PT5M"
-    scale_in_value                = "1"
+    scale_in_value                = "2"
     scale_in_cooldown             = "PT5M"
   }
 

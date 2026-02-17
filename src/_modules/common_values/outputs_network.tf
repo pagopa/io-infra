@@ -14,12 +14,6 @@ output "virtual_networks" {
       name                = local.common.virtual_networks.weu.name
       resource_group_name = local.common.virtual_networks.weu.resource_group_name
     }
-
-    prod01 = {
-      id                  = local.common.virtual_networks.prod01.id
-      name                = local.common.virtual_networks.prod01.name
-      resource_group_name = local.common.virtual_networks.prod01.resource_group_name
-    }
   }
 }
 
@@ -48,10 +42,6 @@ output "dns_zones" {
     }
     io_papopa = {
       name                = "io.pagopa.it"
-      resource_group_name = "${local.project_weu_legacy}-rg-external"
-    }
-    io_selfcare = {
-      name                = "io.selfcare.pagopa.it"
       resource_group_name = "${local.project_weu_legacy}-rg-external"
     }
     firmaconio_selfcare = {

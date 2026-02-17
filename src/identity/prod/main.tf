@@ -8,7 +8,7 @@ terraform {
 
   backend "azurerm" {
     resource_group_name  = "terraform-state-rg"
-    storage_account_name = "tfappprodio"
+    storage_account_name = "iopitntfst001"
     container_name       = "terraform-state"
     key                  = "io-infra.identity.tfstate"
   }
@@ -58,6 +58,9 @@ module "federated_identities" {
         "Key Vault Reader",
         "DocumentDB Account Contributor",
         "API Management Service Contributor",
+        "Key Vault Secrets User",
+        "Key Vault Certificate User",
+        "Container Apps Operator",
       ]
       resource_groups = {
         terraform-state-rg = [
@@ -82,6 +85,9 @@ module "federated_identities" {
         "Storage Table Data Contributor",
         "Key Vault Contributor",
         "Role Based Access Control Administrator",
+        "Key Vault Secrets Officer",
+        "Key Vault Certificates Officer",
+        "Container Apps Contributor",
       ]
       resource_groups = {
         io-p-itn-github-runner-rg-01 = [
