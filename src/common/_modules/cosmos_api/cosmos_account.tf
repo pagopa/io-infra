@@ -1,16 +1,17 @@
 resource "azurerm_cosmosdb_account" "this" {
   name                = "${var.project}-cosmos-api"
   resource_group_name = var.resource_group_internal
-  location            = var.location
+  location            = "westeurope"
 
-  offer_type        = "Standard"
-  free_tier_enabled = false
+  offer_type          = "Standard"
+  free_tier_enabled   = false
+  minimal_tls_version = "Tls12"
 
   automatic_failover_enabled = true
-  ip_range_filter            = join(",", local.ip_range_filter)
+  ip_range_filter            = local.ip_range_filter
 
   geo_location {
-    location          = var.location
+    location          = "italynorth"
     failover_priority = 0
     zone_redundant    = true
   }

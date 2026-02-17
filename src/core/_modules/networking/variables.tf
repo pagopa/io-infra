@@ -51,3 +51,9 @@ variable "ng_ippres_number" {
   description = "Number of Public IP Prefix assigned to the nat gateway"
   default     = 3
 }
+
+variable "ddos_protection_plan_enabled" {
+  type        = bool
+  description = "Enable DDoS Protection Plan on the VNet"
+  default     = true
+}

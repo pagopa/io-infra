@@ -1,19 +1,10 @@
 # see https://help.github.com/en/articles/about-code-owners#example-of-a-codeowners-file
 
-* @pagopa/io-backend-admin @pagopa/io-backend-contributors @pagopa/engineering-team-cloud-eng
+* @pagopa/engineering-team-devex @pagopa/io-platform-contributors
 
-/src/domains/sign @pagopa/io-backend-admin @pagopa/io-backend-contributors @pagopa/io-sign-maintainers
+/src/common @pagopa/engineering-team-devex @pagopa/io-backend-admin
 
-# engineering-team-cloud-eng
+/src/domains @pagopa/engineering-team-devex @pagopa/io-backend-admin @pagopa/io-backend-contributors
+/src/domains/sign @pagopa/engineering-team-devex @pagopa/io-backend-admin @pagopa/io-backend-contributors @pagopa/io-sign-maintainers
 
-/.github @pagopa/engineering-team-cloud-eng
-/.identity @pagopa/engineering-team-cloud-eng
-/src/core @pagopa/engineering-team-cloud-eng
-/src/common @pagopa/engineering-team-cloud-eng
-/src/domains @pagopa/engineering-team-cloud-eng
-/src/domains/functions @pagopa/engineering-team-cloud-eng
-/src/domains/citizen-auth-app @pagopa/engineering-team-cloud-eng @pagopa/io-backend-admin @pagopa/io-backend-contributors
-/src/domains/citizen-auth-common @pagopa/engineering-team-cloud-eng @pagopa/io-backend-admin @pagopa/io-backend-contributors
-/src/domains/ioweb-app @pagopa/engineering-team-cloud-eng @pagopa/io-backend-admin @pagopa/io-backend-contributors
-/src/domains/ioweb-common @pagopa/engineering-team-cloud-eng @pagopa/io-backend-admin @pagopa/io-backend-contributors
-/src/github-runner @pagopa/engineering-team-cloud-eng
+/src/repository @pagopa/engineering-team-devex @pagopa/io-backend-admin

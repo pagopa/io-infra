@@ -1,3 +1,13 @@
+variable "prefix" {
+  type        = string
+  description = "Project prefix"
+}
+
+variable "env_short" {
+  type        = string
+  description = "Short environment"
+}
+
 variable "project" {
   type        = string
   description = "IO prefix, short environment and short location"
@@ -35,4 +45,11 @@ variable "vnet_common" {
 variable "log_analytics_workspace_id" {
   type        = string
   description = "Id of the Log Analytics Workspace to use as log database"
+}
+
+variable "key_vault_pat_token" {
+  type = object({
+    name                = string
+    resource_group_name = string
+  })
 }
