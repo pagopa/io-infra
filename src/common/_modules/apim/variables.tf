@@ -58,10 +58,9 @@ variable "action_group_id" {
   type = string
 }
 
-variable "ai_instrumentation_key" {
+variable "ai_connection_string" {
   type = string
 }
-
 variable "key_vault" {
   type = object({
     id                  = string
@@ -83,4 +82,29 @@ variable "key_vault_common" {
 variable "datasources" {
   type        = map(any)
   description = "Common datasources"
+}
+
+variable "azure_adgroup_wallet_admins_object_id" {
+  type        = string
+  description = "Object Id of the Entra group for subscription admins"
+}
+
+variable "azure_adgroup_com_admins_object_id" {
+  type        = string
+  description = "Object Id of the Entra group for subscription admins"
+}
+
+variable "azure_adgroup_svc_admins_object_id" {
+  type        = string
+  description = "Object Id of the Entra group for subscription admins"
+}
+
+variable "azure_adgroup_auth_admins_object_id" {
+  type        = string
+  description = "Object Id of the Entra group for subscription admins"
+}
+
+variable "azure_adgroup_bonus_admins_object_id" {
+  type        = string
+  description = "Object Id of the Entra group for subscription admins"
 }

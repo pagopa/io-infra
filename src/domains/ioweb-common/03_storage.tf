@@ -7,7 +7,7 @@ locals {
 # Immutable SPID LOGS Storage
 ######################
 module "immutable_spid_logs_storage" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3//storage_account?ref=v7.32.1"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3//storage_account?ref=v8.56.0"
 
   name                          = replace(format("%s-spid-logs-im-st", local.project), "-", "")
   domain                        = upper(var.domain)
@@ -15,7 +15,7 @@ module "immutable_spid_logs_storage" {
   account_tier                  = "Standard"
   access_tier                   = "Hot"
   account_replication_type      = "GZRS"
-  resource_group_name           = azurerm_resource_group.storage_rg.name
+  resource_group_name           = data.azurerm_resource_group.storage_rg.name
   location                      = var.location
   advanced_threat_protection    = true
   enable_identity               = true
@@ -36,11 +36,17 @@ module "immutable_spid_logs_storage" {
   tags = var.tags
 }
 
+resource "azurerm_key_vault_secret" "spid_logs_connection_string" {
+  name         = "spid-logs-st-connection-string"
+  value        = module.immutable_spid_logs_storage.primary_connection_string
+  key_vault_id = data.azurerm_key_vault.ioweb.id
+}
+
 module "immutable_spid_logs_storage_customer_managed_key" {
-  source               = "git::https://github.com/pagopa/terraform-azurerm-v3//storage_account_customer_managed_key?ref=v7.32.1"
+  source               = "git::https://github.com/pagopa/terraform-azurerm-v3//storage_account_customer_managed_key?ref=v8.56.0"
   tenant_id            = data.azurerm_subscription.current.tenant_id
   location             = var.location
-  resource_group_name  = azurerm_resource_group.storage_rg.name
+  resource_group_name  = data.azurerm_resource_group.storage_rg.name
   key_vault_id         = module.key_vault.id
   key_name             = format("%s-key", module.immutable_spid_logs_storage.name)
   storage_id           = module.immutable_spid_logs_storage.id
@@ -52,7 +58,7 @@ resource "azurerm_private_endpoint" "immutable_spid_logs_storage_blob" {
 
   name                = "${module.immutable_spid_logs_storage.name}-blob-endpoint"
   location            = var.location
-  resource_group_name = azurerm_resource_group.storage_rg.name
+  resource_group_name = data.azurerm_resource_group.storage_rg.name
   subnet_id           = data.azurerm_subnet.private_endpoints_subnet.id
 
   private_service_connection {
