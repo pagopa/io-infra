@@ -7,14 +7,14 @@ locals {
       name               = "user-cgns"
       partition_key_path = "/fiscalCode"
       autoscale_settings = {
-        max_throughput = 2000
+        max_throughput = 12000
       },
     },
     {
       name               = "user-eyca-cards"
       partition_key_path = "/fiscalCode"
       autoscale_settings = {
-        max_throughput = 2000
+        max_throughput = 4000
       },
     },
   ]

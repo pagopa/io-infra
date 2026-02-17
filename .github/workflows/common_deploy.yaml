@@ -15,6 +15,7 @@ on:
       - "src/common/prod/**"
       - "src/common/_modules/**"
       - ".github/workflows/common_deploy.yaml"
+      - "src/_modules/test_users/**"
 jobs:
   prod_itn_common_deploy:
     uses: pagopa/dx/.github/workflows/infra_apply.yaml@main
@@ -23,3 +24,4 @@ jobs:
     with:
       environment: prod
       base_path: src/common
+      use_private_agent: true
