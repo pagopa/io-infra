@@ -29,13 +29,33 @@ locals {
     "JJJJJP25A01H501X",
     "GGGGGP25A01H501Z",
   ]
+  # A list of fiscal codes to be used to test CdC (Carta della Cultura) initiative on IO
+  test_users_cdc = [
+    "SREGPP56A14G224Y",
+    "MCCNGL90R20G943C",
+  ]
 
   # A list of fiscal code to be uset to execute load test for Fast Login initiative on IO
   test_users_fast_login_load_test = concat([
     for i in range(0, 1000) : format("LVTEST00A00A%03dX", i)
     ], [
     for i in range(0, 1000) : format("LVTEST00A00B%03dX", i)
-  ])
+    ], [
+    for i in range(0, 1000) : format("LVTEST00A00C%03dX", i)
+    ], [
+    for i in range(0, 1000) : format("LVTEST00A00D%03dX", i)
+    ], [
+    for i in range(0, 1000) : format("LVTEST00A00E%03dX", i)
+    ], [
+    for i in range(0, 1000) : format("LVTEST00A00F%03dX", i)
+    ], [
+    for i in range(0, 1000) : format("LVTEST00A00G%03dX", i)
+    ], [
+    for i in range(0, 1000) : format("LVTEST00A00H%03dX", i)
+    ], [
+    for i in range(0, 1000) : format("LVTEST00A00I%03dX", i)
+    ]
+  )
 
   # A list of fiscal code to be used to test for Unique Email Enforcement initiative on IO
   test_users_unique_email_test = [

@@ -8,8 +8,8 @@ data "azurerm_linux_web_app" "cms_backoffice_app_itn" {
 }
 
 data "azurerm_linux_web_app" "appservice_continua" {
-  name                = "${var.project}-app-continua"
-  resource_group_name = "${var.project}-continua-rg"
+  name                = "${var.project}-itn-continua-app-01"
+  resource_group_name = "${var.project}-itn-continua-rg-01"
 }
 
 data "azurerm_linux_web_app" "session_manager_03" {
@@ -17,14 +17,9 @@ data "azurerm_linux_web_app" "session_manager_03" {
   resource_group_name = "io-p-weu-session-manager-rg-01"
 }
 
-data "azurerm_linux_web_app" "session_manager_04" {
-  name                = "io-p-weu-session-manager-app-04"
-  resource_group_name = "io-p-weu-session-manager-rg-01"
-}
-
 data "azurerm_linux_web_app" "fims_op_app" {
-  name                = "io-p-weu-fims-op-app-01"
-  resource_group_name = "io-p-weu-fims-rg-01"
+  name                = "io-p-itn-fims-op-app-01"
+  resource_group_name = "io-p-itn-fims-rg-01"
 }
 
 data "azurerm_linux_web_app" "appservice_devportal_be" {
@@ -32,9 +27,24 @@ data "azurerm_linux_web_app" "appservice_devportal_be" {
   resource_group_name = "${var.project}-selfcare-be-rg"
 }
 
-data "azurerm_linux_web_app" "appservice_selfcare_be" {
-  name                = "${var.project}-app-selfcare-be"
-  resource_group_name = "${var.project}-selfcare-be-rg"
+data "azurerm_linux_web_app" "ipatente_vehicles_app_itn" {
+  name                = "${var.project}-itn-ipatente-vehicles-app-01"
+  resource_group_name = "${var.project}-itn-ipatente-rg-01"
+}
+
+data "azurerm_linux_web_app" "ipatente_licences_app_itn" {
+  name                = "${var.project}-itn-ipatente-licences-app-01"
+  resource_group_name = "${var.project}-itn-ipatente-rg-01"
+}
+
+data "azurerm_linux_web_app" "ipatente_payments_app_itn" {
+  name                = "${var.project}-itn-ipatente-payments-app-01"
+  resource_group_name = "${var.project}-itn-ipatente-rg-01"
+}
+
+data "azurerm_linux_web_app" "ipatente_practices_app_itn" {
+  name                = "${var.project}-itn-ipatente-practices-app-01"
+  resource_group_name = "${var.project}-itn-ipatente-rg-01"
 }
 
 #######################
@@ -66,9 +76,8 @@ data "azurerm_key_vault" "ioweb_kv" {
 
 data "azurerm_key_vault_certificate" "app_gw_api_web" {
   name         = var.certificates.api_web
-  key_vault_id = data.azurerm_key_vault.ioweb_kv.id
+  key_vault_id = var.ioweb_kv.id
 }
-###
 
 data "azurerm_key_vault_certificate" "app_gw_api_io_italia_it" {
   name         = var.certificates.api_io_italia_it
@@ -83,11 +92,6 @@ data "azurerm_key_vault_certificate" "app_gw_app_backend_io_italia_it" {
 data "azurerm_key_vault_certificate" "app_gw_developerportal_backend_io_italia_it" {
   name         = var.certificates.developerportal_backend_io_italia_it
   key_vault_id = var.key_vault_common.id
-}
-
-data "azurerm_key_vault_certificate" "app_gw_api_io_selfcare_pagopa_it" {
-  name         = var.certificates.api_io_selfcare_pagopa_it
-  key_vault_id = var.key_vault.id
 }
 
 data "azurerm_key_vault_certificate" "app_gw_firmaconio_selfcare_pagopa_it" {
@@ -110,11 +114,27 @@ data "azurerm_key_vault_certificate" "app_gw_selfcare_io" {
   key_vault_id = var.key_vault.id
 }
 
-data "azurerm_key_vault_secret" "app_gw_mtls_header_name" {
-  name         = "mtls-header-name"
+data "azurerm_key_vault_certificate" "app_gw_vehicles_ipatente_io" {
+  name         = var.certificates.vehicles_ipatente_io_pagopa_it
   key_vault_id = var.key_vault.id
 }
 
-data "azuread_service_principal" "app_gw_uai_kvreader" {
-  display_name = format("%s-uai-kvreader", var.project)
+data "azurerm_key_vault_certificate" "app_gw_licences_ipatente_io" {
+  name         = var.certificates.licences_ipatente_io_pagopa_it
+  key_vault_id = var.key_vault.id
+}
+
+data "azurerm_key_vault_certificate" "app_gw_payments_ipatente_io" {
+  name         = var.certificates.payments_ipatente_io_pagopa_it
+  key_vault_id = var.key_vault.id
+}
+
+data "azurerm_key_vault_certificate" "app_gw_practices_ipatente_io" {
+  name         = var.certificates.practices_ipatente_io_pagopa_it
+  key_vault_id = var.key_vault.id
+}
+
+data "azurerm_key_vault_secret" "app_gw_mtls_header_name" {
+  name         = "mtls-header-name"
+  key_vault_id = var.key_vault.id
 }
