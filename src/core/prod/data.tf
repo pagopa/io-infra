@@ -11,7 +11,7 @@ data "azuread_group" "platform_admins" {
 }
 
 data "azuread_group" "platform_externals" {
-  display_name = "${local.prefix}-${local.env_short}-adgroup-externals-admins"
+  display_name = "${local.prefix}-${local.env_short}-adgroup-platform-externals"
 }
 
 data "azuread_group" "wallet_admins" {
