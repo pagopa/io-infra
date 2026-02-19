@@ -35,9 +35,9 @@ module "dns" {
     # app_gateway_public_ip = module.application_gateway_itn.public_ip.address
     # apim_private_ip                             = module.apim_itn.private_ips[0]
     # platform_api_gateway_private_ip             = module.platform_api_gateway_apim_itn.private_ips[0]
-    app_gateway_public_ip = "72.146.64.117"
-    apim_private_ip = "10.20.100.4"
-    platform_api_gateway_private_ip = "0.0.0.0"
+    app_gateway_public_ip = "72.146.64.117" # To be removed
+    apim_private_ip = "10.20.100.4" # To be removed
+    platform_api_gateway_private_ip = "10.20.101.4" # To be removed
 
     psn_application_gateway_private_endpoint_ip = data.azurerm_private_endpoint_connection.psn_appgw.private_service_connection[0].private_ip_address
   }

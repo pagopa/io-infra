@@ -9,7 +9,7 @@ locals {
     CreatedBy      = "Terraform"
     Environment    = "Prod"
     BusinessUnit   = "App IO"
-    Source = "https://github.com/pagopa/io-infra/blob/main/src/common/prod"
+    Source = "https://github.com/pagopa/io-infra/blob/main/src/common/prod" # To be changed
     #Source         = "https://github.com/pagopa/io-infra/blob/main/src/platform/global/prod"
     ManagementTeam = "IO Platform"
   }
