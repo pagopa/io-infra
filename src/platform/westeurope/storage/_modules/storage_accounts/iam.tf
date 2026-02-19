@@ -1,4 +1,4 @@
-module "exportdata_weu_01_com_admins" {
+module "exportdata_com_admins" {
 
   source  = "pagopa-dx/azure-role-assignments/azurerm"
   version = "~> 1.0"
@@ -8,7 +8,7 @@ module "exportdata_weu_01_com_admins" {
 
   storage_blob = [
     {
-      storage_account_name = azurerm_storage_account.exportdata_weu_01.name
+      storage_account_name = azurerm_storage_account.exportdata.name
       resource_group_name  = var.resource_group_operations
       role                 = "writer"
       description          = "Allow IO Comunicazione Admins to manage blob files"
@@ -17,7 +17,7 @@ module "exportdata_weu_01_com_admins" {
 
   storage_queue = [
     {
-      storage_account_name = azurerm_storage_account.exportdata_weu_01.name
+      storage_account_name = azurerm_storage_account.exportdata.name
       resource_group_name  = var.resource_group_operations
       role                 = "owner"
       description          = "Allow IO Comunicazione Admins to read and send messages"
@@ -26,7 +26,7 @@ module "exportdata_weu_01_com_admins" {
 
   storage_table = [
     {
-      storage_account_name = azurerm_storage_account.exportdata_weu_01.name
+      storage_account_name = azurerm_storage_account.exportdata.name
       resource_group_name  = var.resource_group_operations
       role                 = "writer"
       description          = "Allow IO Comunicazione Admins to manage tables"
@@ -34,7 +34,7 @@ module "exportdata_weu_01_com_admins" {
   ]
 }
 
-module "exportdata_weu_01_com_devs" {
+module "exportdata_com_devs" {
 
   source  = "pagopa-dx/azure-role-assignments/azurerm"
   version = "~> 1.0"
@@ -44,7 +44,7 @@ module "exportdata_weu_01_com_devs" {
 
   storage_blob = [
     {
-      storage_account_name = azurerm_storage_account.exportdata_weu_01.name
+      storage_account_name = azurerm_storage_account.exportdata.name
       resource_group_name  = var.resource_group_operations
       role                 = "writer"
       description          = "Allow IO Comunicazione Devs to manage blob files"
@@ -53,7 +53,7 @@ module "exportdata_weu_01_com_devs" {
 
   storage_queue = [
     {
-      storage_account_name = azurerm_storage_account.exportdata_weu_01.name
+      storage_account_name = azurerm_storage_account.exportdata.name
       resource_group_name  = var.resource_group_operations
       role                 = "owner"
       description          = "Allow IO Comunicazione Devs to read and send messages"
@@ -62,7 +62,7 @@ module "exportdata_weu_01_com_devs" {
 
   storage_table = [
     {
-      storage_account_name = azurerm_storage_account.exportdata_weu_01.name
+      storage_account_name = azurerm_storage_account.exportdata.name
       resource_group_name  = var.resource_group_operations
       role                 = "writer"
       description          = "Allow IO Comunicazione Devs to manage tables"

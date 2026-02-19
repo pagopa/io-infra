@@ -16,7 +16,7 @@ resource "azurerm_storage_account" "app" {
   tags = var.tags
 }
 
-resource "azurerm_storage_account" "exportdata_weu_01" {
+resource "azurerm_storage_account" "exportdata" {
 
   name                     = replace("${var.project}stexportdata", "-", "")
   resource_group_name      = var.resource_group_operations
