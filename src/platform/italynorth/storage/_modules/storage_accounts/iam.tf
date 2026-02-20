@@ -11,7 +11,6 @@ module "retirements_admins" {
       storage_account_name = azurerm_storage_account.retirements.name
       resource_group_name  = azurerm_storage_account.retirements.resource_group_name
       role                 = "owner"
-      description          = "Allow IO Admin to manage blob files"
       description          = "Allow IO Admins to manage blob files"
     }
   ]

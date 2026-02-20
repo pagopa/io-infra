@@ -12,8 +12,6 @@ data "terraform_remote_state" "core" {
   }
 }
 
-data "azurerm_client_config" "current" {}
-
 data "azuread_group" "com_devs" {
   display_name = "${local.prefix}-${local.env_short}-adgroup-com-developers"
 }
