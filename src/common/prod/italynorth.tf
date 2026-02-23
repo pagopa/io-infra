@@ -496,7 +496,7 @@ module "monitoring_itn" {
       # https://firmaconio.selfcare.pagopa.it
       name                              = "firmaconio.selfcare.pagopa.it"
       host                              = "firmaconio.selfcare.pagopa.it"
-      path                              = "/health",
+      path                              = "/info",
       frequency                         = 900
       http_status                       = 200,
       ssl_cert_remaining_lifetime_check = 7,
