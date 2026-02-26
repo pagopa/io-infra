@@ -7,7 +7,7 @@ module "services_storage_account_01" {
     env_short       = var.env_short
     location        = var.location_itn
     app_name        = "services"
-    instance_number = "01"
+    instance_number = var.instance_number
   }
   resource_group_name = azurerm_resource_group.function_services_rg.name
   tier                = "l"

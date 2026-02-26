@@ -6,7 +6,7 @@ module "platform_api_gateway" {
     prefix          = var.prefix
     env_short       = "p"
     location        = var.location
-    app_name        = "platform-api-gateway"
+    app_name        = local.apim_appname
     instance_number = "01"
   }
 
@@ -78,8 +78,8 @@ module "platform_api_gateway" {
 
   autoscale = {
     enabled                       = true
-    default_instances             = 2
-    minimum_instances             = 2
+    default_instances             = 4
+    minimum_instances             = 4
     maximum_instances             = 10
     scale_out_capacity_percentage = 50
     scale_out_time_window         = "PT3M"

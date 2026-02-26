@@ -69,13 +69,10 @@ locals {
     services_app_backend = data.azurerm_linux_function_app.services_app_backend_function_app.default_hostname
     # services_app_backend = data.azurerm_container_app.services_app_backend_function_app.ingress[0].fqdn
     lollipop      = data.azurerm_linux_function_app.lollipop_function.default_hostname
-    eucovidcert   = data.azurerm_linux_function_app.eucovidcert.default_hostname
     cgn           = "io-p-itn-cgn-card-func-02.azurewebsites.net"
     iosign        = data.azurerm_linux_function_app.io_sign_user.default_hostname
     iofims        = data.azurerm_linux_function_app.io_fims_user.default_hostname
     cgnonboarding = "io-p-itn-cgn-search-func-02.azurewebsites.net"
-    iowallet      = data.azurerm_linux_function_app.wallet_user.default_hostname
-    iowalletuat   = data.azurerm_linux_function_app.wallet_user_uat.default_hostname
     cdc_support   = "io-p-itn-cdc-support-func-01.azurewebsites.net"
   }
 
@@ -161,67 +158,7 @@ locals {
       ]
     },
     {
-      name              = "pdnd-io-cosmosdb-messages"
-      partitions        = 30
-      message_retention = 7
-      consumers         = []
-      keys = [
-        {
-          name   = "io-fn-elt"
-          listen = false
-          send   = true
-          manage = false
-        },
-        {
-          name   = "pdnd"
-          listen = true
-          send   = false
-          manage = false
-        }
-      ]
-    },
-    {
-      name              = "pdnd-io-cosmosdb-message-status"
-      partitions        = 30
-      message_retention = 7
-      consumers         = []
-      keys = [
-        {
-          name   = "io-fn-elt"
-          listen = false
-          send   = true
-          manage = false
-        },
-        {
-          name   = "pdnd"
-          listen = true
-          send   = false
-          manage = false
-        }
-      ]
-    },
-    {
       name              = "pdnd-io-cosmosdb-service-preferences"
-      partitions        = 30
-      message_retention = 7
-      consumers         = []
-      keys = [
-        {
-          name   = "io-fn-elt"
-          listen = false
-          send   = true
-          manage = false
-        },
-        {
-          name   = "pdnd"
-          listen = true
-          send   = false
-          manage = false
-        }
-      ]
-    },
-    {
-      name              = "pdnd-io-cosmosdb-notification-status"
       partitions        = 30
       message_retention = 7
       consumers         = []
@@ -291,8 +228,7 @@ locals {
 
     service_api_url = "https://api-app.internal.io.pagopa.it/"
 
-    cidr_subnet_services_old            = "10.20.34.0/26"
-    cidr_subnet_services                = "10.20.41.0/26"
+    cidr_subnet_services_02             = "10.20.34.0/26"
     function_services_autoscale_minimum = 3
     function_services_autoscale_maximum = 30
     function_services_autoscale_default = 10
@@ -325,9 +261,8 @@ locals {
     vnet_common_name_itn           = "${local.project_itn}-common-vnet-01"
     common_resource_group_name_itn = "${local.project_itn}-common-rg-01"
 
-    location_itn        = "italynorth"
-    resource_group_name = "io-p-itn-elt-rg-01"
-    elt_snet_cidr       = "10.20.40.0/26"
+    location_itn  = "italynorth"
+    elt_snet_cidr = "10.20.40.0/26"
 
     tags = {
       CostCenter     = "TS000 - Tecnologia e Servizi"

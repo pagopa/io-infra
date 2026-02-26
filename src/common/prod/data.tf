@@ -81,6 +81,11 @@ data "azurerm_user_assigned_identity" "com_infra_cd" {
   resource_group_name = "${local.prefix}-${local.env_short}-itn-msgs-rg-01"
 }
 
+data "azurerm_user_assigned_identity" "fims_infra_cd" {
+  name                = "${local.prefix}-${local.env_short}-itn-fims-infra-github-cd-id-01"
+  resource_group_name = "${local.prefix}-${local.env_short}-itn-fims-rg-01"
+}
+
 data "azurerm_user_assigned_identity" "bonus_infra_cd" {
   name                = "${local.prefix}-${local.env_short}-itn-cdc-infra-github-cd-id-01"
   resource_group_name = "${local.prefix}-${local.env_short}-itn-cdc-rg-01"
@@ -136,11 +141,6 @@ data "azurerm_linux_function_app" "lollipop_function" {
   resource_group_name = "${local.project_itn}-auth-lollipop-rg-02"
 }
 
-data "azurerm_linux_function_app" "eucovidcert" {
-  resource_group_name = "${local.project_weu_legacy}-rg-eucovidcert"
-  name                = "${local.project_weu_legacy}-eucovidcert-fn"
-}
-
 data "azurerm_linux_function_app" "io_sign_user" {
   resource_group_name = "${local.project_weu_legacy}-sign-backend-rg"
   name                = "${local.project_weu_legacy}-sign-user-func"
@@ -149,22 +149,6 @@ data "azurerm_linux_function_app" "io_sign_user" {
 data "azurerm_linux_function_app" "io_fims_user" {
   resource_group_name = "${local.project_itn}-fims-rg-01"
   name                = "${local.project_itn}-fims-user-func-01"
-}
-
-data "azurerm_linux_function_app" "wallet_user" {
-  resource_group_name = "${local.project_itn}-wallet-rg-01"
-  name                = "${local.project_itn}-wallet-user-func-02"
-}
-
-data "azurerm_linux_function_app" "wallet_user_uat" {
-  resource_group_name = "${local.project_itn}-wallet-rg-01"
-  name                = "${local.prefix}-u-${local.location_short.italynorth}-wallet-user-func-01"
-}
-
-data "azurerm_subnet" "admin_snet" {
-  name                 = "${local.project_weu_legacy}-admin-snet"
-  resource_group_name  = local.core.networking.weu.vnet_common.resource_group_name
-  virtual_network_name = local.core.networking.weu.vnet_common.name
 }
 
 data "azurerm_subnet" "itn_auth_lv_func_snet" {

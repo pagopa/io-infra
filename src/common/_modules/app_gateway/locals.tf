@@ -500,6 +500,10 @@ locals {
     io-backend-path-based-rule = {
       default_backend               = "appbackend-app"
       default_rewrite_rule_set_name = "rewrite-rule-set-api-app"
+
+      # NOTE: the order matters! the most generic ones should be set at the end
+      # https://learn.microsoft.com/en-us/azure/application-gateway/url-route-overview#pathpattern
+      # However, this code sorts alphabetically the path rules by their key names, as this object is a map
       path_rule = {
         api-gateway-platform-info = {
           paths                 = ["/info"]
@@ -526,25 +530,25 @@ locals {
           backend               = "platform-api-gateway",
           rewrite_rule_set_name = "rewrite-rule-set-api-app"
         },
-        api-gateway-platform-wallet = {
-          paths                 = ["/api/echo/*"]
-          backend               = "platform-api-gateway",
-          rewrite_rule_set_name = "rewrite-rule-set-api-app"
-        },
-        api-gateway-platform-wallet-legacy = {
-          paths                 = ["/api/v1/echo/*"]
-          backend               = "platform-api-gateway",
-          rewrite_rule_set_name = "rewrite-rule-set-wallet-app"
-        },
-        api-gateway-platform-wallet-uat = {
+        api-gateway-platform-wallet-01-uat = {
           paths                 = ["/api/wallet/uat/*"]
           backend               = "platform-api-gateway",
           rewrite_rule_set_name = "rewrite-rule-set-api-app"
         },
-        api-gateway-platform-wallet-legacy-uat = {
+        api-gateway-platform-wallet-02 = {
+          paths                 = ["/api/wallet/*"]
+          backend               = "platform-api-gateway",
+          rewrite_rule_set_name = "rewrite-rule-set-api-app"
+        },
+        api-gateway-platform-wallet-legacy-01-uat = {
           paths                 = ["/api/v1/wallet/uat/*"]
           backend               = "platform-api-gateway",
           rewrite_rule_set_name = "rewrite-rule-set-wallet-app-uat"
+        },
+        api-gateway-platform-wallet-legacy-02 = {
+          paths                 = ["/api/v1/wallet/*"]
+          backend               = "platform-api-gateway",
+          rewrite_rule_set_name = "rewrite-rule-set-wallet-app"
         },
         api-gateway-cdc = {
           paths                 = ["/api/cdc/*"]
@@ -799,14 +803,14 @@ locals {
           conditions = [
             {
               variable    = "var_uri_path"
-              pattern     = "^/api/v1/(.*)$"
+              pattern     = "^/api/v1/wallet/(.*)$"
               ignore_case = true
               negate      = false
             }
           ]
 
           url = {
-            path         = "/api/echo/v1/{var_uri_path_1}"
+            path         = "/api/wallet/v1/{var_uri_path_1}"
             query_string = null
             reroute      = false
             components   = "path_only"
@@ -1075,7 +1079,7 @@ locals {
     }
 
     response_time = {
-      description   = "Backends response time is too high. See Dimension value to check the Listener unhealty."
+      description   = "Backends response time is too high. See Dimension value to check the Listener unhealthy."
       frequency     = "PT5M"
       window_size   = "PT15M"
       severity      = 2
@@ -1122,7 +1126,7 @@ locals {
     }
 
     failed_requests = {
-      description   = "Abnormal failed requests. See Dimension value to check the Backend Pool unhealty"
+      description   = "Abnormal failed requests. See Dimension value to check the Backend Pool unhealthy"
       frequency     = "PT5M"
       window_size   = "PT5M"
       severity      = 1
