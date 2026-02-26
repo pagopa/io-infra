@@ -3,6 +3,11 @@ variable "resource_group_operations" {
   description = "Name of operations resource group"
 }
 
+variable "resource_group_internal" {
+  type        = string
+  description = "Name of internal resource group"
+}
+
 variable "project" {
   type        = string
   description = "IO prefix, short environment and short location"

@@ -1,9 +1,8 @@
 resource "azurerm_storage_account" "app" {
 
-  name                = "iopstapp"
-  resource_group_name = "io-p-rg-internal"
-
-  location                 = "westeurope"
+  name                     = "iopstapp"
+  resource_group_name      = var.resource_group_internal
+  location                 = var.location
   account_tier             = "Standard"
   account_replication_type = "GZRS"
 
@@ -34,10 +33,9 @@ resource "azurerm_storage_account" "exportdata" {
 
 resource "azurerm_storage_account" "logs" {
 
-  name                = "iopstlogs"
-  resource_group_name = "io-p-rg-operations"
-
-  location                 = "westeurope"
+  name                     = "iopstlogs"
+  resource_group_name      = var.resource_group_operations
+  location                 = var.location
   account_tier             = "Standard"
   account_replication_type = "GZRS"
 
