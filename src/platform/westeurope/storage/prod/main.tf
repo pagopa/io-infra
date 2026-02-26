@@ -15,7 +15,7 @@ terraform {
     }
     dx = {
       source  = "pagopa-dx/azure"
-      version = "~> 0.4"
+      version = "~> 0.8"
     }
     azapi = {
       source  = "azure/azapi"

@@ -6,7 +6,7 @@
 |------|---------|
 | <a name="requirement_azapi"></a> [azapi](#requirement\_azapi) | ~> 2.7 |
 | <a name="requirement_azurerm"></a> [azurerm](#requirement\_azurerm) | <= 4.36.0 |
-| <a name="requirement_dx"></a> [dx](#requirement\_dx) | ~> 0.4 |
+| <a name="requirement_dx"></a> [dx](#requirement\_dx) | ~> 0.8 |
 
 ## Providers
 

@@ -1,5 +1,5 @@
 module "dns" {
-  source = "./dns_zones"
+  source = "./zones"
 
   project = var.project
 

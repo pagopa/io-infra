@@ -9,8 +9,8 @@ locals {
     CreatedBy    = "Terraform"
     Environment  = "Prod"
     BusinessUnit = "App IO"
-    Source       = "https://github.com/pagopa/io-infra/blob/main/src/common/prod" # To be changed
-    #Source         = "https://github.com/pagopa/io-infra/blob/main/src/platform/global/prod"
+    Source       = "https://github.com/pagopa/io-infra/blob/main/src/common/prod" # TODO: change tag to reflect the current path
+    # Source         = "https://github.com/pagopa/io-infra/blob/main/src/platform/global/prod"
     ManagementTeam = "IO Platform"
   }
 
