@@ -1260,7 +1260,7 @@ locals {
     failed_requests = {
       description   = "Abnormal failed requests. See Dimension value to check the Backend Pool unhealthy"
       frequency     = "PT5M"
-      window_size   = "PT5M"
+      window_size   = "PT15M"
       severity      = 1
       auto_mitigate = true
 
@@ -1270,7 +1270,7 @@ locals {
           aggregation              = "Total"
           metric_name              = "FailedRequests"
           operator                 = "GreaterThan"
-          alert_sensitivity        = "High"
+          alert_sensitivity        = "Low"
           evaluation_total_count   = 4
           evaluation_failure_count = 4
           dimension = [
