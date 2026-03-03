@@ -90,7 +90,8 @@ locals {
       partition_key_version = null
 
       autoscale_settings = {
-        max_throughput = 12000
+        # Unused, 14000 is the minimum value for the current collection configuration
+        max_throughput = 14000
       }
     },
     {
