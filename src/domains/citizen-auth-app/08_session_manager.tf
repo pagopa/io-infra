@@ -260,8 +260,7 @@ module "session_manager_weu" {
   always_on    = true
   node_version = "20-lts"
   # NOTE:
-  # 1. index.js file is generated from the deploy pipeline
-  # 2. the linux container for app services already has pm2 installed
+  # 1. the linux container for app services already has pm2 installed
   #    (refer to https://learn.microsoft.com/en-us/azure/app-service/configure-language-nodejs?pivots=platform-linux#run-with-pm2)
   app_command_line             = "pm2 start dist/server.js -i max --no-daemon --filter-env \"APPSETTING_\""
   health_check_path            = "/api/auth/v1/healthcheck"
@@ -311,8 +310,7 @@ module "session_manager_weu_staging" {
   always_on    = true
   node_version = "20-lts"
   # NOTE:
-  # 1. index.js file is generated from the deploy pipeline
-  # 2. the linux container for app services already has pm2 installed
+  # 1. the linux container for app services already has pm2 installed
   #    (refer to https://learn.microsoft.com/en-us/azure/app-service/configure-language-nodejs?pivots=platform-linux#run-with-pm2)
   app_command_line  = "pm2 start dist/server.js -i max --no-daemon --filter-env \"APPSETTING_\""
   health_check_path = "/api/auth/v1/healthcheck"
@@ -364,8 +362,7 @@ module "session_manager_weu_bis" {
   always_on    = true
   node_version = "20-lts"
   # NOTE:
-  # 1. index.js file is generated from the deploy pipeline
-  # 2. the linux container for app services already has pm2 installed
+  # 1. the linux container for app services already has pm2 installed
   #    (refer to https://learn.microsoft.com/en-us/azure/app-service/configure-language-nodejs?pivots=platform-linux#run-with-pm2)
   app_command_line             = "pm2 start dist/server.js -i max --no-daemon --filter-env \"APPSETTING_\""
   health_check_path            = "/api/auth/v1/healthcheck"
@@ -415,8 +412,7 @@ module "session_manager_weu_bis_staging" {
   always_on    = true
   node_version = "20-lts"
   # NOTE:
-  # 1. index.js file is generated from the deploy pipeline
-  # 2. the linux container for app services already has pm2 installed
+  # 1. the linux container for app services already has pm2 installed
   #    (refer to https://learn.microsoft.com/en-us/azure/app-service/configure-language-nodejs?pivots=platform-linux#run-with-pm2)
   app_command_line  = "pm2 start dist/server.js -i max --no-daemon --filter-env \"APPSETTING_\""
   health_check_path = "/api/auth/v1/healthcheck"
