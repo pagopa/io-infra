@@ -100,19 +100,19 @@ module "monitoring_weu" {
       ssl_cert_remaining_lifetime_check = 7,
     },
     {
-      # CIE https://app-backend.io.italia.it/login?authLevel=SpidL2&entityID=xx_servizicie
+      # CIE https://app-backend.io.italia.it/api/auth/v1/login?authLevel=SpidL2&entityID=xx_servizicie
       name                              = "CIE L2",
       host                              = module.global.dns.public_dns_zones.io_italia_it.app_backend
-      path                              = "/login?authLevel=SpidL2&entityID=xx_servizicie",
+      path                              = "/api/auth/v1/login?authLevel=SpidL2&entityID=xx_servizicie",
       frequency                         = 900
       http_status                       = 200,
       ssl_cert_remaining_lifetime_check = 1,
     },
     {
-      # CIE https://app-backend.io.italia.it/login?authLevel=SpidL3&entityID=xx_servizicie
+      # CIE https://app-backend.io.italia.it/api/auth/v1/login?authLevel=SpidL3&entityID=xx_servizicie
       name                              = "CIE L3",
       host                              = module.global.dns.public_dns_zones.io_italia_it.app_backend
-      path                              = "/login?authLevel=SpidL3&entityID=xx_servizicie",
+      path                              = "/api/auth/v1/login?authLevel=SpidL3&entityID=xx_servizicie",
       frequency                         = 900
       http_status                       = 200,
       ssl_cert_remaining_lifetime_check = 1,
@@ -127,75 +127,75 @@ module "monitoring_weu" {
       enabled                           = false
     },
     {
-      # SpidL2-arubaid https://app-backend.io.italia.it/login?authLevel=SpidL2&entityID=arubaid
+      # SpidL2-arubaid https://app-backend.io.italia.it/api/auth/v1/login?authLevel=SpidL2&entityID=arubaid
       name                              = "SpidL2-arubaid",
       host                              = module.global.dns.public_dns_zones.io_italia_it.app_backend
-      path                              = "/login?authLevel=SpidL2&entityID=arubaid",
+      path                              = "/api/auth/v1/login?authLevel=SpidL2&entityID=arubaid",
       frequency                         = 900
       http_status                       = 200,
       ssl_cert_remaining_lifetime_check = 1,
     },
     {
-      # SpidL2-infocertid https://app-backend.io.italia.it/login?authLevel=SpidL2&entityID=infocertid
+      # SpidL2-infocertid https://app-backend.io.italia.it/api/auth/v1/login?authLevel=SpidL2&entityID=infocertid
       name                              = "SpidL2-infocertid",
       host                              = module.global.dns.public_dns_zones.io_italia_it.app_backend
-      path                              = "/login?authLevel=SpidL2&entityID=infocertid",
+      path                              = "/api/auth/v1/login?authLevel=SpidL2&entityID=infocertid",
       frequency                         = 900
       http_status                       = 200,
       ssl_cert_remaining_lifetime_check = 1,
     },
     {
-      # SpidL2-lepidaid https://app-backend.io.italia.it/login?authLevel=SpidL2&entityID=lepidaid
+      # SpidL2-lepidaid https://app-backend.io.italia.it/api/auth/v1/login?authLevel=SpidL2&entityID=lepidaid
       name                              = "SpidL2-lepidaid",
       host                              = module.global.dns.public_dns_zones.io_italia_it.app_backend
-      path                              = "/login?authLevel=SpidL2&entityID=lepidaid",
+      path                              = "/api/auth/v1/login?authLevel=SpidL2&entityID=lepidaid",
       frequency                         = 900
       http_status                       = 200,
       ssl_cert_remaining_lifetime_check = 1,
     },
     {
-      # SpidL2-namirialid https://app-backend.io.italia.it/login?authLevel=SpidL2&entityID=namirialid
+      # SpidL2-namirialid https://app-backend.io.italia.it/api/auth/v1/login?authLevel=SpidL2&entityID=namirialid
       name                              = "SpidL2-namirialid",
       host                              = module.global.dns.public_dns_zones.io_italia_it.app_backend
-      path                              = "/login?authLevel=SpidL2&entityID=namirialid",
+      path                              = "/api/auth/v1/login?authLevel=SpidL2&entityID=namirialid",
       frequency                         = 900
       http_status                       = 200,
       ssl_cert_remaining_lifetime_check = 1,
     },
     {
-      # SpidL2-posteid https://app-backend.io.italia.it/login?authLevel=SpidL2&entityID=posteid
+      # SpidL2-posteid https://app-backend.io.italia.it/api/auth/v1/login?authLevel=SpidL2&entityID=posteid
       name                              = "SpidL2-posteid",
       host                              = module.global.dns.public_dns_zones.io_italia_it.app_backend
-      path                              = "/login?authLevel=SpidL2&entityID=posteid",
+      path                              = "/api/auth/v1/login?authLevel=SpidL2&entityID=posteid",
       frequency                         = 900
       http_status                       = 200,
       ssl_cert_remaining_lifetime_check = 1,
       enabled                           = false
     },
     {
-      # SpidL2-sielteid https://app-backend.io.italia.it/login?authLevel=SpidL2&entityID=sielteid
+      # SpidL2-sielteid https://app-backend.io.italia.it/api/auth/v1/login?authLevel=SpidL2&entityID=sielteid
       name                              = "SpidL2-sielteid",
       host                              = module.global.dns.public_dns_zones.io_italia_it.app_backend
-      path                              = "/login?authLevel=SpidL2&entityID=sielteid",
+      path                              = "/api/auth/v1/login?authLevel=SpidL2&entityID=sielteid",
       frequency                         = 900
       http_status                       = 200,
       ssl_cert_remaining_lifetime_check = 1,
       enabled                           = false
     },
     {
-      # SpidL2-spiditalia https://app-backend.io.italia.it/login?authLevel=SpidL2&entityID=spiditalia
+      # SpidL2-spiditalia https://app-backend.io.italia.it/api/auth/v1/login?authLevel=SpidL2&entityID=spiditalia
       name                              = "SpidL2-spiditalia",
       host                              = module.global.dns.public_dns_zones.io_italia_it.app_backend
-      path                              = "/login?authLevel=SpidL2&entityID=spiditalia",
+      path                              = "/api/auth/v1/login?authLevel=SpidL2&entityID=spiditalia",
       frequency                         = 900
       http_status                       = 200,
       ssl_cert_remaining_lifetime_check = 1,
     },
     {
-      # SpidL2-infocamere https://app-backend.io.italia.it/login?authLevel=SpidL2&entityID=infocamereid
+      # SpidL2-infocamere https://app-backend.io.italia.it/api/auth/v1/login?authLevel=SpidL2&entityID=infocamereid
       name                              = "SpidL2-infocamere",
       host                              = module.global.dns.public_dns_zones.io_italia_it.app_backend
-      path                              = "/login?authLevel=SpidL2&entityID=infocamereid",
+      path                              = "/api/auth/v1/login?authLevel=SpidL2&entityID=infocamereid",
       frequency                         = 900
       http_status                       = 200,
       ssl_cert_remaining_lifetime_check = 1,
