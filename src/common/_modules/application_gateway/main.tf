@@ -626,13 +626,13 @@ module "app_gw" {
         # NOTE: Do NOT remove rewrite rule from metadata endpoint, as it cannot be switched to new basepath
         metadata = {
           paths                 = ["/metadata"]
-          backend               = "session-manager-app",
+          backend               = "platform-api-gateway",
           rewrite_rule_set_name = "rewrite-rule-set-api-app-rewrite-to-session-manager"
         },
         # NOTE: Do NOT remove rewrite rule from acs endpoint, as it cannot be switched to new basepath
         acs = {
           paths                 = ["/assertionConsumerService"]
-          backend               = "session-manager-app",
+          backend               = "platform-api-gateway",
           rewrite_rule_set_name = "rewrite-rule-set-api-app-rewrite-to-session-manager"
         },
       }
