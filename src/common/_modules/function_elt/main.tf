@@ -11,6 +11,8 @@ module "function_elt_itn" {
     instance_number = "01"
   }
 
+  node_version = "22"
+
   resource_group_name = azurerm_resource_group.itn_elt.name
 
   virtual_network = {
