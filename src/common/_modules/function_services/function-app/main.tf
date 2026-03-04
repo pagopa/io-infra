@@ -30,6 +30,8 @@ module "function_services" {
   subnet_pep_id                        = data.azurerm_subnet.private_endpoints_subnet_itn.id
   private_dns_zone_resource_group_name = data.azurerm_resource_group.weu-common.name
 
+  node_version = 22
+
   app_settings = merge(
     local.function_services.app_settings_common,
     {
