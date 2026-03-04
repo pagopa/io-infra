@@ -55,7 +55,7 @@ locals {
       partition_key_version = null
       default_ttl           = -1
       autoscale_settings = {
-        max_throughput = 180000
+        max_throughput = 67000
       }
     },
     {
@@ -63,7 +63,8 @@ locals {
       partition_key_path    = "/fiscalCode"
       partition_key_version = null
       autoscale_settings = {
-        max_throughput = 30000
+        # Almost unused, 16000 is the minimum value for the current collection configuration
+        max_throughput = 16000
       }
     },
     {
@@ -72,7 +73,7 @@ locals {
       partition_key_version = null
       default_ttl           = -1
       autoscale_settings = {
-        max_throughput = 80000
+        max_throughput = 60000
       }
     },
     {
@@ -80,7 +81,7 @@ locals {
       partition_key_path    = "/notificationId"
       partition_key_version = null
       autoscale_settings = {
-        max_throughput = 15000
+        max_throughput = 6000
       }
     },
     {
@@ -89,7 +90,8 @@ locals {
       partition_key_version = null
 
       autoscale_settings = {
-        max_throughput = 15000
+        # Unused, 14000 is the minimum value for the current collection configuration
+        max_throughput = 14000
       }
     },
     {
@@ -143,7 +145,7 @@ locals {
       partition_key_path    = "/fiscalCode"
       partition_key_version = null
       autoscale_settings = {
-        max_throughput = 80000
+        max_throughput = 48000
       }
     },
     {
@@ -172,7 +174,7 @@ locals {
       partition_key_path    = "/fiscalCode"
       partition_key_version = null
       autoscale_settings = {
-        max_throughput = 8000
+        max_throughput = 4000
       }
     },
     {
