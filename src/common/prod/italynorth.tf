@@ -562,8 +562,3 @@ module "assets_locales_cdn" {
 
   tags = local.tags
 }
-
-import {
-  to = module.function_app_elt.azurerm_resource_group.itn_elt
-  id = "/subscriptions/${data.azurerm_subscription.current.subscription_id}/resourceGroups/${local.project_itn}-elt-rg-01"
-}
