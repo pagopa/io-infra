@@ -80,6 +80,7 @@ module "monitoring_weu" {
       frequency                         = 900
       http_status                       = 200,
       ssl_cert_remaining_lifetime_check = 7,
+      follow_redirects_enabled          = true
     },
     {
       # https://assets.cdn.io.italia.it/status/backend.json
@@ -107,6 +108,7 @@ module "monitoring_weu" {
       frequency                         = 900
       http_status                       = 200,
       ssl_cert_remaining_lifetime_check = 1,
+      follow_redirects_enabled          = true
     },
     {
       # CIE https://app-backend.io.italia.it/api/auth/v1/login?authLevel=SpidL3&entityID=xx_servizicie
@@ -116,6 +118,7 @@ module "monitoring_weu" {
       frequency                         = 900
       http_status                       = 200,
       ssl_cert_remaining_lifetime_check = 1,
+      follow_redirects_enabled          = true
     },
     {
       name                              = "Spid-registry",
@@ -124,7 +127,8 @@ module "monitoring_weu" {
       frequency                         = 900
       http_status                       = 200,
       ssl_cert_remaining_lifetime_check = 1,
-      enabled                           = false
+      # NOTE: Disabled for false positives trigger
+      enabled = false
     },
     {
       # SpidL2-arubaid https://app-backend.io.italia.it/api/auth/v1/login?authLevel=SpidL2&entityID=arubaid
@@ -134,6 +138,7 @@ module "monitoring_weu" {
       frequency                         = 900
       http_status                       = 200,
       ssl_cert_remaining_lifetime_check = 1,
+      follow_redirects_enabled          = true
     },
     {
       # SpidL2-infocertid https://app-backend.io.italia.it/api/auth/v1/login?authLevel=SpidL2&entityID=infocertid
@@ -143,6 +148,7 @@ module "monitoring_weu" {
       frequency                         = 900
       http_status                       = 200,
       ssl_cert_remaining_lifetime_check = 1,
+      follow_redirects_enabled          = true
     },
     {
       # SpidL2-lepidaid https://app-backend.io.italia.it/api/auth/v1/login?authLevel=SpidL2&entityID=lepidaid
@@ -152,6 +158,7 @@ module "monitoring_weu" {
       frequency                         = 900
       http_status                       = 200,
       ssl_cert_remaining_lifetime_check = 1,
+      follow_redirects_enabled          = true
     },
     {
       # SpidL2-namirialid https://app-backend.io.italia.it/api/auth/v1/login?authLevel=SpidL2&entityID=namirialid
@@ -161,6 +168,7 @@ module "monitoring_weu" {
       frequency                         = 900
       http_status                       = 200,
       ssl_cert_remaining_lifetime_check = 1,
+      follow_redirects_enabled          = true
     },
     {
       # SpidL2-posteid https://app-backend.io.italia.it/api/auth/v1/login?authLevel=SpidL2&entityID=posteid
@@ -170,7 +178,9 @@ module "monitoring_weu" {
       frequency                         = 900
       http_status                       = 200,
       ssl_cert_remaining_lifetime_check = 1,
-      enabled                           = false
+      # NOTE: Disabled for false positives trigger
+      enabled                  = false
+      follow_redirects_enabled = true
     },
     {
       # SpidL2-sielteid https://app-backend.io.italia.it/api/auth/v1/login?authLevel=SpidL2&entityID=sielteid
@@ -180,7 +190,9 @@ module "monitoring_weu" {
       frequency                         = 900
       http_status                       = 200,
       ssl_cert_remaining_lifetime_check = 1,
-      enabled                           = false
+      # NOTE: Disabled for false positives trigger
+      enabled                  = false
+      follow_redirects_enabled = true
     },
     {
       # SpidL2-spiditalia https://app-backend.io.italia.it/api/auth/v1/login?authLevel=SpidL2&entityID=spiditalia
@@ -190,6 +202,7 @@ module "monitoring_weu" {
       frequency                         = 900
       http_status                       = 200,
       ssl_cert_remaining_lifetime_check = 1,
+      follow_redirects_enabled          = true
     },
     {
       # SpidL2-infocamere https://app-backend.io.italia.it/api/auth/v1/login?authLevel=SpidL2&entityID=infocamereid
@@ -199,7 +212,19 @@ module "monitoring_weu" {
       frequency                         = 900
       http_status                       = 200,
       ssl_cert_remaining_lifetime_check = 1,
-      enabled                           = false
+      # NOTE: Disabled for false positives trigger
+      enabled                  = false
+      follow_redirects_enabled = true
+    },
+    {
+      # SpidL2-timid https://app-backend.io.italia.it/api/auth/v1/login?authLevel=SpidL2&entityID=timid
+      name                              = "SpidL2-timid",
+      host                              = module.global.dns.public_dns_zones.io_italia_it.app_backend
+      path                              = "/api/auth/v1/login?authLevel=SpidL2&entityID=timid",
+      frequency                         = 900
+      http_status                       = 200,
+      ssl_cert_remaining_lifetime_check = 1,
+      follow_redirects_enabled          = true
     },
     {
       # https://api.io.pagopa.it
@@ -265,6 +290,7 @@ module "monitoring_weu" {
       frequency                         = 900
       http_status                       = 200,
       ssl_cert_remaining_lifetime_check = 7,
+      follow_redirects_enabled          = true
     },
   ]
 
