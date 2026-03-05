@@ -213,6 +213,16 @@ module "monitoring_weu" {
       follow_redirects_enabled          = true
     },
     {
+      # SpidL2-timid https://app-backend.io.italia.it/api/auth/v1/login?authLevel=SpidL2&entityID=timid
+      name                              = "SpidL2-timid",
+      host                              = module.global.dns.public_dns_zones.io_italia_it.app_backend
+      path                              = "/api/auth/v1/login?authLevel=SpidL2&entityID=timid",
+      frequency                         = 900
+      http_status                       = 200,
+      ssl_cert_remaining_lifetime_check = 1,
+      follow_redirects_enabled          = true
+    },
+    {
       # https://api.io.pagopa.it
       name                              = module.global.dns.public_dns_zones.io.api
       host                              = module.global.dns.public_dns_zones.io.api
