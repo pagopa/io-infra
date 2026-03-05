@@ -12,7 +12,7 @@ resource "azurerm_application_insights_standard_web_test" "web_tests" {
 
   request {
     url                              = format("https://%s%s", each.value.host, each.value.path)
-    follow_redirects_enabled         = false
+    follow_redirects_enabled         = each.value.follow_redirects_enabled
     parse_dependent_requests_enabled = false
   }
 
