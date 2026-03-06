@@ -58,6 +58,11 @@ data "azuread_service_principal" "platform_iac_sp" {
   display_name = "pagopaspa-io-platform-iac-projects-${data.azurerm_subscription.current.subscription_id}"
 }
 
+data "azurerm_user_assigned_identity" "managed_identity_developer_portal_frontend_cd" {
+  name                = "${local.prefix}-${local.env_short}-devportal-frontend-github-cd-identity"
+  resource_group_name = "${local.prefix}-${local.env_short}-identity-rg"
+}
+
 data "azurerm_user_assigned_identity" "managed_identity_io_infra_ci" {
   name                = "${local.prefix}-${local.env_short}-infra-github-ci-identity"
   resource_group_name = "${local.prefix}-${local.env_short}-identity-rg"
