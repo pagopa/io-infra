@@ -105,11 +105,13 @@ resource "azurerm_key_vault_access_policy" "kv_common_cd" {
   certificate_permissions = ["Get", "List"]
 }
 
+# TLS certificate renewal permissions for classic CDN io-p-cdn-common migration from managed certificate to BYOC
+
 resource "azurerm_key_vault_access_policy" "kv_common_developer_portal_frontend_cd" {
   key_vault_id = azurerm_key_vault.common.id
 
   tenant_id = var.tenant_id
-  object_id = "645a67af-dad2-424e-be49-90e792dcb5ee"
+  object_id = "645a67af-dad2-424e-be49-90e792dcb5ee" # io-p-devportal-frontend-github-cd-identity
 
   secret_permissions      = []
   storage_permissions     = []
