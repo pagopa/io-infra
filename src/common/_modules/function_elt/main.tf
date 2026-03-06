@@ -1,7 +1,7 @@
 
 module "function_elt_itn" {
   source  = "pagopa-dx/azure-function-app/azurerm"
-  version = "~> 3.0"
+  version = "~> 5.0"
 
   environment = {
     prefix          = var.prefix
