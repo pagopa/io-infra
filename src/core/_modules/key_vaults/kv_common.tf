@@ -111,7 +111,7 @@ resource "azurerm_key_vault_access_policy" "kv_common_developer_portal_frontend_
   key_vault_id = azurerm_key_vault.common.id
 
   tenant_id = var.tenant_id
-  object_id = var.developer_portal_frontend_cd_principal_id # io-p-devportal-frontend-github-cd-identity
+  object_id = var.developer_portal_frontend_cd_principal_id
 
   secret_permissions      = []
   storage_permissions     = []
