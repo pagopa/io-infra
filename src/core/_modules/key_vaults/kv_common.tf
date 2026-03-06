@@ -104,3 +104,14 @@ resource "azurerm_key_vault_access_policy" "kv_common_cd" {
   secret_permissions      = ["Get", "List", "Delete", "Set"]
   certificate_permissions = ["Get", "List"]
 }
+
+resource "azurerm_key_vault_access_policy" "kv_common_developer_portal_frontend_cd" {
+  key_vault_id = azurerm_key_vault.common.id
+
+  tenant_id = var.tenant_id
+  object_id = "645a67af-dad2-424e-be49-90e792dcb5ee"
+
+  secret_permissions      = []
+  storage_permissions     = []
+  certificate_permissions = ["Get", "List", "Update", "Create", "Import", "Delete", "Restore", "Recover"]
+}
