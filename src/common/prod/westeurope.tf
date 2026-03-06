@@ -178,9 +178,7 @@ module "monitoring_weu" {
       frequency                         = 900
       http_status                       = 200,
       ssl_cert_remaining_lifetime_check = 1,
-      # NOTE: Disabled for false positives trigger
-      enabled                  = false
-      follow_redirects_enabled = true
+      follow_redirects_enabled          = true
     },
     {
       # SpidL2-sielteid https://app-backend.io.italia.it/api/auth/v1/login?authLevel=SpidL2&entityID=sielteid
@@ -190,9 +188,7 @@ module "monitoring_weu" {
       frequency                         = 900
       http_status                       = 200,
       ssl_cert_remaining_lifetime_check = 1,
-      # NOTE: Disabled for false positives trigger
-      enabled                  = false
-      follow_redirects_enabled = true
+      follow_redirects_enabled          = true
     },
     {
       # SpidL2-spiditalia https://app-backend.io.italia.it/api/auth/v1/login?authLevel=SpidL2&entityID=spiditalia
@@ -212,9 +208,7 @@ module "monitoring_weu" {
       frequency                         = 900
       http_status                       = 200,
       ssl_cert_remaining_lifetime_check = 1,
-      # NOTE: Disabled for false positives trigger
-      enabled                  = false
-      follow_redirects_enabled = true
+      follow_redirects_enabled          = true
     },
     {
       # SpidL2-timid https://app-backend.io.italia.it/api/auth/v1/login?authLevel=SpidL2&entityID=timid
