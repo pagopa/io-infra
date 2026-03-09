@@ -234,10 +234,10 @@
     "source": "https://registry.terraform.io/modules/pagopa-dx/azure-storage-account/azurerm/2.0.0"
   },
   "assets_locales_cdn.azure_cdn": {
-    "hash": "d25e379426103746b65c7cd6d72acbff0564805e162fa91e895229eb8dcddaf7",
-    "version": "0.5.2",
+    "hash": "53321871233d6d620f04ec1e148dc64eeabd7b90481aa9128e1408a1a8af06d7",
+    "version": "0.6.0",
     "name": "azure_cdn",
-    "source": "https://registry.terraform.io/modules/pagopa-dx/azure-cdn/azurerm/0.5.2"
+    "source": "https://registry.terraform.io/modules/pagopa-dx/azure-cdn/azurerm/0.6.0"
   },
   "assets_locales_cdn.storage_account_permissions": {
     "hash": "320e6d020c54d3d5094ea8aaa6440621cde729ec1f61ce1baf1b79f0732430da",
