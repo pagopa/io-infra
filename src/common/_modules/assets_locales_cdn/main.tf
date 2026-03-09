@@ -11,6 +11,12 @@ module "azure_cdn" {
 
     }
   }
+
+  origin_health_probe = {
+    path         = "/probes/healthcheck.txt"
+    request_type = "HEAD"
+  }
+
   custom_domains = [
     {
       host_name = "assets.io.pagopa.it"
