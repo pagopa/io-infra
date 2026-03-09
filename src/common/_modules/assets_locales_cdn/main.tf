@@ -13,7 +13,7 @@ module "azure_cdn" {
   }
 
   origin_health_probe = {
-    path = "/probes/healthcheck.txt"
+    path         = "/probes/healthcheck.txt"
     request_type = "HEAD"
   }
 
