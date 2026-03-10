@@ -77,3 +77,7 @@ variable "private_dns_zone_id" {
 variable "platform_iac_sp_object_id" {
   type = string
 }
+
+variable "developer_portal_frontend_cd_principal_id" {
+  type = string
+}

@@ -71,20 +71,6 @@ locals {
       pick_host_name_from_backend = true
     }
 
-    session-manager-app = {
-      protocol     = "Https"
-      host         = null
-      port         = 443
-      ip_addresses = null # with null value use fqdns
-      fqdns = [
-        data.azurerm_linux_web_app.session_manager_03.default_hostname,
-      ]
-      probe                       = "/api/auth/v1/healthcheck"
-      probe_name                  = "probe-session-manager-app"
-      request_timeout             = 10
-      pick_host_name_from_backend = true
-    }
-
     fims-op-app = {
       protocol     = "Https"
       host         = null
@@ -560,67 +546,17 @@ locals {
           backend               = "platform-api-gateway"
           rewrite_rule_set_name = "rewrite-rule-set-api-app"
         },
-        healthcheck = {
-          paths                 = ["/healthcheck"]
-          backend               = "appbackend-app",
-          rewrite_rule_set_name = "rewrite-rule-set-api-app-rewrite-to-session-manager"
-        },
-        test-login = {
-          paths                 = ["/test-login"]
-          backend               = "session-manager-app",
-          rewrite_rule_set_name = "rewrite-rule-set-api-app-rewrite-to-session-manager"
-        },
-        login = {
-          paths                 = ["/login"]
-          backend               = "session-manager-app",
-          rewrite_rule_set_name = "rewrite-rule-set-api-app-rewrite-to-session-manager"
-        },
         # NOTE: Do NOT remove rewrite rule from metadata endpoint, as it cannot be switched to new basepath
         metadata = {
           paths                 = ["/metadata"]
-          backend               = "session-manager-app",
+          backend               = "platform-api-gateway",
           rewrite_rule_set_name = "rewrite-rule-set-api-app-rewrite-to-session-manager"
         },
         # NOTE: Do NOT remove rewrite rule from acs endpoint, as it cannot be switched to new basepath
         acs = {
           paths                 = ["/assertionConsumerService"]
-          backend               = "session-manager-app",
+          backend               = "platform-api-gateway",
           rewrite_rule_set_name = "rewrite-rule-set-api-app-rewrite-to-session-manager"
-        },
-        fast-login = {
-          paths                 = ["/api/v1/fast-login"]
-          backend               = "session-manager-app",
-          rewrite_rule_set_name = "rewrite-rule-set-api-app-rewrite-to-session-manager"
-        },
-        nonce-fast-login = {
-          paths                 = ["/api/v1/fast-login/nonce/generate"]
-          backend               = "session-manager-app",
-          rewrite_rule_set_name = "rewrite-rule-set-api-app-rewrite-to-session-manager"
-        },
-        logout = {
-          paths                 = ["/logout"]
-          backend               = "session-manager-app",
-          rewrite_rule_set_name = "rewrite-rule-set-api-app-rewrite-to-session-manager"
-        },
-        session = {
-          paths                 = ["/api/v1/session"]
-          backend               = "session-manager-app",
-          rewrite_rule_set_name = "rewrite-rule-set-api-app-rewrite-to-session-manager"
-        },
-        bpd-user = {
-          paths                 = ["/bpd/api/v1/user"]
-          backend               = "session-manager-app",
-          rewrite_rule_set_name = "rewrite-rule-set-api-app-rewrite-to-bpd-session-manager"
-        },
-        zendesk-user = {
-          paths                 = ["/api/backend/zendesk/v1/jwt"]
-          backend               = "session-manager-app",
-          rewrite_rule_set_name = "rewrite-rule-set-api-app-rewrite-to-zendesk-session-manager"
-        },
-        pagopa-user = {
-          paths                 = ["/pagopa/api/v1/user"]
-          backend               = "session-manager-app",
-          rewrite_rule_set_name = "rewrite-rule-set-api-app-rewrite-to-pagopa-session-manager"
         },
         api-gateway-com = {
           paths                 = ["/api/com/*"]
@@ -901,94 +837,12 @@ locals {
       name = "rewrite-rule-set-api-app-rewrite-to-session-manager"
       rewrite_rules = [
         local.io_backend_ip_headers_rule,
-        # if endpoint has /api/v1 prefix(e.g. /api/v1/session)
-        # then it should be stripped away before proceding
-        {
-          name          = "strip-base-path"
-          rule_sequence = 150
-          conditions = [
-            {
-              variable    = "var_uri_path"
-              pattern     = "/api/v1/(.*)"
-              ignore_case = true
-              negate      = false
-            }
-          ]
-          url = {
-            path         = "/{var_uri_path_1}"
-            query_string = null
-            reroute      = false
-            components   = "path_only"
-          }
-          request_header_configurations  = []
-          response_header_configurations = []
-        },
         {
           name          = "rewrite-path"
           rule_sequence = 200
           conditions    = []
           url = {
             path         = "/api/auth/v1{var_uri_path}"
-            query_string = null
-            reroute      = true
-            components   = "path_only"
-          }
-          request_header_configurations  = []
-          response_header_configurations = []
-        }
-      ]
-    },
-    {
-      name = "rewrite-rule-set-api-app-rewrite-to-bpd-session-manager"
-      rewrite_rules = [
-        local.io_backend_ip_headers_rule,
-        {
-          name          = "rewrite-path"
-          rule_sequence = 200
-          conditions    = []
-          url = {
-            # only 1 operation present for this API
-            path         = "/api/sso/bpd/v1/user"
-            query_string = null
-            reroute      = true
-            components   = "path_only"
-          }
-          request_header_configurations  = []
-          response_header_configurations = []
-        }
-      ]
-    },
-    {
-      name = "rewrite-rule-set-api-app-rewrite-to-pagopa-session-manager"
-      rewrite_rules = [
-        local.io_backend_ip_headers_rule,
-        {
-          name          = "rewrite-path"
-          rule_sequence = 200
-          conditions    = []
-          url = {
-            # only 1 operation present for this API
-            path         = "/api/sso/pagopa/v1/user"
-            query_string = null
-            reroute      = true
-            components   = "path_only"
-          }
-          request_header_configurations  = []
-          response_header_configurations = []
-        }
-      ]
-    },
-    {
-      name = "rewrite-rule-set-api-app-rewrite-to-zendesk-session-manager"
-      rewrite_rules = [
-        local.io_backend_ip_headers_rule,
-        {
-          name          = "rewrite-path"
-          rule_sequence = 200
-          conditions    = []
-          url = {
-            # only 1 operation present for this API
-            path         = "/api/sso/zendesk/v1/jwt"
             query_string = null
             reroute      = true
             components   = "path_only"
@@ -1260,7 +1114,7 @@ locals {
     failed_requests = {
       description   = "Abnormal failed requests. See Dimension value to check the Backend Pool unhealthy"
       frequency     = "PT5M"
-      window_size   = "PT5M"
+      window_size   = "PT15M"
       severity      = 1
       auto_mitigate = true
 
@@ -1270,7 +1124,7 @@ locals {
           aggregation              = "Total"
           metric_name              = "FailedRequests"
           operator                 = "GreaterThan"
-          alert_sensitivity        = "High"
+          alert_sensitivity        = "Low"
           evaluation_total_count   = 4
           evaluation_failure_count = 4
           dimension = [

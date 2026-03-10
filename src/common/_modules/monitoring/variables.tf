@@ -44,5 +44,6 @@ variable "test_urls" {
     ssl_cert_remaining_lifetime_check = number
     enabled                           = optional(bool, true)
     ssl_enabled                       = optional(bool, true)
+    follow_redirects_enabled          = optional(bool, false)
   }))
 }
