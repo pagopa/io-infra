@@ -180,10 +180,10 @@
     "source": "https://registry.terraform.io/modules/pagopa-dx/azure-storage-account/azurerm/2.2.0"
   },
   "function_app_admin.function_admin_itn": {
-    "hash": "a38c42efbd1577c3971123cc4f335a6827e0ead44695b9d014789e0598c2672d",
-    "version": "3.0.0",
+    "hash": "0fe4632d5838f277f7eae3006428e70e046bc388e707e0c8f37bcd1814a23497",
+    "version": "5.0.1",
     "name": "azure_function_app",
-    "source": "https://registry.terraform.io/modules/pagopa-dx/azure-function-app/azurerm/3.0.0"
+    "source": "https://registry.terraform.io/modules/pagopa-dx/azure-function-app/azurerm/5.0.1"
   },
   "function_app_elt.function_elt_itn": {
     "hash": "0fe4632d5838f277f7eae3006428e70e046bc388e707e0c8f37bcd1814a23497",
