@@ -77,7 +77,8 @@ module "key_vault_weu" {
     data.azurerm_user_assigned_identity.managed_identity_io_infra_cd.principal_id
   ]
 
-  platform_iac_sp_object_id = data.azuread_service_principal.platform_iac_sp.object_id
+  platform_iac_sp_object_id                 = data.azuread_service_principal.platform_iac_sp.object_id
+  developer_portal_frontend_cd_principal_id = data.azurerm_user_assigned_identity.managed_identity_developer_portal_frontend_cd.principal_id
 
   tags = local.tags
 }

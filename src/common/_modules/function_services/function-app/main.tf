@@ -6,7 +6,7 @@ resource "azurerm_resource_group" "function_services_rg" {
 
 module "function_services" {
   source  = "pagopa-dx/azure-function-app/azurerm"
-  version = "~> 4.0"
+  version = "~> 5.0"
 
   environment = {
     prefix          = var.prefix
@@ -29,6 +29,8 @@ module "function_services" {
   health_check_path                    = "/api/info"
   subnet_pep_id                        = data.azurerm_subnet.private_endpoints_subnet_itn.id
   private_dns_zone_resource_group_name = data.azurerm_resource_group.weu-common.name
+
+  node_version = 22
 
   app_settings = merge(
     local.function_services.app_settings_common,
