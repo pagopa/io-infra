@@ -87,7 +87,7 @@ locals {
       COOKIE_KEY                 = data.azurerm_key_vault_secret.devportal_cookie_key.value
 
       # JIRA integration for Service review workflow
-      JIRA_USERNAME              = "github-bot@pagopa.it"
+      JIRA_USERNAME              = "io-pagopa-github-bot@pagopa.it"
       JIRA_NAMESPACE_URL         = "https://pagopa.atlassian.net"
       JIRA_BOARD                 = "IES"
       JIRA_STATUS_COMPLETE       = "DONE"
