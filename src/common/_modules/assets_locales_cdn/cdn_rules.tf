@@ -64,25 +64,28 @@ resource "azurerm_cdn_frontdoor_rule" "caching_rules" {
   }
 }
 
-## Rewrite rules
+## Redirect rules
 
-resource "azurerm_cdn_frontdoor_rule" "rewrite_rules" {
-  for_each = local.rewrite_rules
+resource "azurerm_cdn_frontdoor_rule" "redirect_rules" {
+  for_each = local.redirect_rules
 
   name                      = each.value.name
   cdn_frontdoor_rule_set_id = module.azure_cdn.rule_set_id
   order                     = each.value.order
 
   conditions {
-    request_uri_condition {
+    url_path_condition {
       operator     = "BeginsWith"
       match_values = [each.value.source_pattern]
     }
   }
+
   actions {
-    url_rewrite_action {
-      source_pattern = each.value.source_pattern
-      destination    = each.value.rewrite_pattern
+    url_redirect_action {
+      redirect_type        = "Moved"
+      redirect_protocol    = "Https"
+      destination_hostname = each.value.destination_host
+      destination_path     = each.value.destination_path
     }
   }
 }

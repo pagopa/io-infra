@@ -1,22 +1,25 @@
 locals {
-  rewrite_rules = {
+  redirect_rules = {
     organization_logos = {
-      name            = "organizationlogosRewrite"
-      source_pattern  = "/logos/organizations"
-      rewrite_pattern = "/services"
-      order           = 3
+      name             = "organizationlogosRewrite"
+      source_pattern   = "/logos/organizations/"
+      destination_host = "iopstcdnassets.blob.core.windows.net"
+      destination_path = "/services/{url_path:seg2}"
+      order            = 3
     }
     service_logos = {
-      name            = "serviceslogosRewrite"
-      source_pattern  = "/logos/services"
-      rewrite_pattern = "/services"
-      order           = 4
+      name             = "serviceslogosRewrite"
+      source_pattern   = "/logos/services/"
+      destination_host = "iopstcdnassets.blob.core.windows.net"
+      destination_path = "/services/{url_path:seg2}"
+      order            = 4
     }
     services_webview = {
-      name            = "serviceswebviewRewrite"
-      source_pattern  = "/services-webview"
-      rewrite_pattern = "/services/services-webview"
-      order           = 5
+      name             = "serviceswebviewRewrite"
+      source_pattern   = "/services-webview/"
+      destination_host = "iopstcdnassets.blob.core.windows.net"
+      destination_path = "/services/{url_path}"
+      order            = 5
     }
   }
   caching_rules = {
