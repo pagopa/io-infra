@@ -15,32 +15,7 @@
         <base />
         <!-- This line rewrites the request URI by removing "/platform-legacy" from the original URL path -->
         <rewrite-uri template="@(context.Request.OriginalUrl.Path.Replace("/platform-legacy", ""))" />
-        <!-- https://docs.microsoft.com/en-us/dotnet/api/system.random.next?view=net-6.0#system-random-next(system-int32-system-int32) -->
-        <set-variable name="urlId" value="@{
-            Random rnd = new Random();
-            int urlId = rnd.Next(1, 4);
-            return urlId.ToString();
-        }" />
-        <choose>
-            <when condition="@(context.Variables.GetValueOrDefault<string>("urlId").Equals("1"))">
-                <set-backend-service base-url="https://io-p-app-appbackendl1.azurewebsites.net" />
-            </when>
-            <when condition="@(context.Variables.GetValueOrDefault<string>("urlId").Equals("2"))">
-                <set-backend-service base-url="https://io-p-app-appbackendl2.azurewebsites.net" />
-            </when>
-            <when condition="@(context.Variables.GetValueOrDefault<string>("urlId").Equals("3"))">
-                <set-backend-service base-url="https://io-p-app-appbackendl3.azurewebsites.net" />
-            </when>
-            <otherwise>
-                <return-response>
-                    <set-status code="500" reason="InternalServerError" />
-                    <set-header name="Microsoft-Azure-Api-Management-Correlation-Id" exists-action="override">
-                        <value>@{return Guid.NewGuid().ToString();}</value>
-                    </set-header>
-                    <set-body>A gateway-related error occurred while processing the request.</set-body>
-                </return-response>
-            </otherwise>
-        </choose>
+        <set-backend-service id="apim-pool-app-backend" backend-id="app-backend-pool" />
     </inbound>
     <outbound>
         <base />
