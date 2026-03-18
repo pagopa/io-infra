@@ -17,7 +17,7 @@ resource "azurerm_cdn_frontdoor_custom_domain" "logos_custom_domain" {
 }
 
 resource "azurerm_dns_txt_record" "logos_custom_domain_validation_txt_record" {
-  name                = join(".", ["_dnsauth", "logos"])
+  name                = join(".", ["_dnsauth", "logos.assets"])
   zone_name           = var.public_dns_zones.io.name
   resource_group_name = var.resource_group_external
   ttl                 = 3600
