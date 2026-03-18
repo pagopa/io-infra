@@ -567,7 +567,42 @@ locals {
           paths                 = ["/api/v1/pn/activation"]
           backend               = "platform-api-gateway",
           rewrite_rule_set_name = "rewrite-rule-set-api-app-pn"
-        }
+        },
+        api-gateway-cdc-support = {
+          paths                 = ["/api/cdc-support/*"]
+          backend               = "platform-api-gateway",
+          rewrite_rule_set_name = "rewrite-rule-set-api-app"
+        },
+        api-gateway-cgn-card = {
+          paths                 = ["/api/cgn-card/*"],
+          backend               = "platform-api-gateway",
+          rewrite_rule_set_name = "rewrite-rule-set-api-app"
+        },
+        api-gateway-cgn-search = {
+          paths                 = ["/api/cgn-search/*"],
+          backend               = "platform-api-gateway",
+          rewrite_rule_set_name = "rewrite-rule-set-api-app"
+        },
+        api-gateway-communication = {
+          paths                 = ["/api/communication/*"],
+          backend               = "platform-api-gateway",
+          rewrite_rule_set_name = "rewrite-rule-set-api-app"
+        },
+        api-gateway-fims = {
+          paths                 = ["/api/fims/*"],
+          backend               = "platform-api-gateway",
+          rewrite_rule_set_name = "rewrite-rule-set-api-app"
+        },
+        api-gateway-catalog = {
+          paths                 = ["/api/catalog/*"],
+          backend               = "platform-api-gateway",
+          rewrite_rule_set_name = "rewrite-rule-set-api-app"
+        },
+        api-gateway-signer = {
+          paths                 = ["/api/sign/*"],
+          backend               = "platform-api-gateway",
+          rewrite_rule_set_name = "rewrite-rule-set-api-app"
+        },
       }
     }
   }
