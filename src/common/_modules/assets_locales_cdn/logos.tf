@@ -75,7 +75,7 @@ resource "azurerm_cdn_frontdoor_route" "logos_route" {
   cdn_frontdoor_origin_group_id   = azurerm_cdn_frontdoor_origin_group.logos_origin_group.id
   cdn_frontdoor_origin_ids        = [azurerm_cdn_frontdoor_origin.logos_origin.id]
   cdn_frontdoor_rule_set_ids      = [azurerm_cdn_frontdoor_rule_set.logos_ruleset.id]
-  cdn_frontdoor_custom_domain_ids = []
+  cdn_frontdoor_custom_domain_ids = [azurerm_cdn_frontdoor_custom_domain.logos_custom_domain.id]
   enabled                         = true
 
   forwarding_protocol    = "HttpsOnly"
