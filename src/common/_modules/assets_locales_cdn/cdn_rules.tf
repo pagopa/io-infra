@@ -22,7 +22,7 @@ resource "azurerm_cdn_frontdoor_rule" "sign_origin" {
   order                     = 2
 
   conditions {
-    request_uri_condition {
+    url_path_condition {
       operator     = "BeginsWith"
       match_values = ["/sign"]
       transforms   = ["Lowercase"]
@@ -49,7 +49,7 @@ resource "azurerm_cdn_frontdoor_rule" "caching_rules" {
   order                     = each.value.order
 
   conditions {
-    request_uri_condition {
+    url_path_condition {
       operator     = "BeginsWith"
       match_values = [each.value.source_pattern]
     }
