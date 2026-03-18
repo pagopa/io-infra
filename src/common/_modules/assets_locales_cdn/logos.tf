@@ -23,6 +23,8 @@ resource "azurerm_cdn_frontdoor_origin_group" "logos_origin_group" {
   health_probe {
     interval_in_seconds = 100
     protocol            = "Https"
+    path                = "/probes/healthcheck.txt"
+    request_type        = "HEAD"
   }
 
   load_balancing {}
