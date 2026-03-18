@@ -32,21 +32,21 @@ locals {
     }
     bonus = {
       name           = "bonusCache"
-      source_pattern = "/bonus"
+      source_pattern = "/bonus/"
       cache_behavior = "OverrideAlways"
       cache_duration = "00:15:00"
       order          = 7
     }
     servicesdata = {
       name           = "servicesdataCache"
-      source_pattern = "/services-data"
+      source_pattern = "/services-data/"
       cache_behavior = "OverrideAlways"
       cache_duration = "00:15:00"
       order          = 8
     }
     status = {
       name           = "statusCache"
-      source_pattern = "/status"
+      source_pattern = "/status/"
       cache_behavior = "OverrideAlways"
       cache_duration = "00:05:00"
       order          = 9
