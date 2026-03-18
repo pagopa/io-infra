@@ -8,7 +8,7 @@ resource "azurerm_cdn_frontdoor_endpoint" "logos_endpoint" {
 resource "azurerm_cdn_frontdoor_custom_domain" "logos_custom_domain" {
   name                     = "io-p-itn-assets-logos-domain"
   cdn_frontdoor_profile_id = module.azure_cdn.id
-  dns_zone_id              = var.public_dns_zones.io.name
+  dns_zone_id              = var.public_dns_zones.io.id
   host_name                = "assets.logos.io.pagopa.it"
 
   tls {
