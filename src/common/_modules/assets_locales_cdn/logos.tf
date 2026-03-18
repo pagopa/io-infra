@@ -6,14 +6,24 @@ resource "azurerm_cdn_frontdoor_endpoint" "logos_endpoint" {
 }
 
 resource "azurerm_cdn_frontdoor_custom_domain" "logos_custom_domain" {
-  name                     = "io-p-itn-assets-logos-domain"
+  name                     = "io-p-itn-logos-assets-domain"
   cdn_frontdoor_profile_id = module.azure_cdn.id
   dns_zone_id              = var.public_dns_zones.io.id
-  host_name                = "assets.logos.io.pagopa.it"
+  host_name                = "logos.assets.io.pagopa.it"
 
   tls {
     certificate_type = "ManagedCertificate"
   }
+}
+
+resource "azurerm_dns_cname_record" "logos_custom_domain_dns_record" {
+  depends_on = [azurerm_cdn_frontdoor_route.logos_route]
+
+  name                = "logos.assets.io.pagopa.it"
+  zone_name           = var.public_dns_zones.io.name
+  resource_group_name = var.resource_group_external
+  ttl                 = 3600
+  record              = azurerm_cdn_frontdoor_endpoint.logos_endpoint.host_name
 }
 
 resource "azurerm_cdn_frontdoor_origin_group" "logos_origin_group" {
