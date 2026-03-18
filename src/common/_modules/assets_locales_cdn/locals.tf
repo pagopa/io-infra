@@ -3,21 +3,21 @@ locals {
     organization_logos = {
       name             = "organizationlogosRewrite"
       source_pattern   = "/logos/organizations/"
-      destination_host = "iopstcdnassets.blob.core.windows.net"
+      destination_host = azurerm_cdn_frontdoor_custom_domain.logos_custom_domain.host_name
       destination_path = "/services/{url_path:seg2}"
       order            = 3
     }
     service_logos = {
       name             = "serviceslogosRewrite"
       source_pattern   = "/logos/services/"
-      destination_host = "iopstcdnassets.blob.core.windows.net"
+      destination_host = azurerm_cdn_frontdoor_custom_domain.logos_custom_domain.host_name
       destination_path = "/services/{url_path:seg2}"
       order            = 4
     }
     services_webview = {
       name             = "serviceswebviewRewrite"
       source_pattern   = "/services-webview/"
-      destination_host = "iopstcdnassets.blob.core.windows.net"
+      destination_host = azurerm_cdn_frontdoor_custom_domain.logos_custom_domain.host_name
       destination_path = "/services/{url_path}"
       order            = 5
     }
