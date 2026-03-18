@@ -17,7 +17,7 @@ resource "azurerm_cdn_frontdoor_custom_domain" "logos_custom_domain" {
 }
 
 resource "azurerm_dns_txt_record" "logos_custom_domain_validation_txt_record" {
-  name                = join(".", ["_dnsauth", "logos"])
+  name                = join(".", ["_dnsauth", "logos.assets"])
   zone_name           = var.public_dns_zones.io.name
   resource_group_name = var.resource_group_external
   ttl                 = 3600
@@ -34,7 +34,7 @@ resource "azurerm_dns_cname_record" "logos_custom_domain_dns_record" {
   zone_name           = var.public_dns_zones.io.name
   resource_group_name = var.resource_group_external
   ttl                 = 3600
-  record              = azurerm_cdn_frontdoor_endpoint.logos_endpoint.host_name
+  target_resource_id  = azurerm_cdn_frontdoor_endpoint.logos_endpoint.id
 }
 
 resource "azurerm_cdn_frontdoor_origin_group" "logos_origin_group" {
@@ -75,7 +75,7 @@ resource "azurerm_cdn_frontdoor_route" "logos_route" {
   cdn_frontdoor_origin_group_id   = azurerm_cdn_frontdoor_origin_group.logos_origin_group.id
   cdn_frontdoor_origin_ids        = [azurerm_cdn_frontdoor_origin.logos_origin.id]
   cdn_frontdoor_rule_set_ids      = [azurerm_cdn_frontdoor_rule_set.logos_ruleset.id]
-  cdn_frontdoor_custom_domain_ids = []
+  cdn_frontdoor_custom_domain_ids = [azurerm_cdn_frontdoor_custom_domain.logos_custom_domain.id]
   enabled                         = true
 
   forwarding_protocol    = "HttpsOnly"
