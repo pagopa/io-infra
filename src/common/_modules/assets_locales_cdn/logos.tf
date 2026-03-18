@@ -34,7 +34,6 @@ resource "azurerm_dns_cname_record" "logos_custom_domain_dns_record" {
   zone_name           = var.public_dns_zones.io.name
   resource_group_name = var.resource_group_external
   ttl                 = 3600
-  record              = azurerm_cdn_frontdoor_endpoint.logos_endpoint.host_name
   target_resource_id  = azurerm_cdn_frontdoor_endpoint.logos_endpoint.id
 }
 
