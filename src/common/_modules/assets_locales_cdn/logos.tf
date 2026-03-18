@@ -12,7 +12,7 @@ resource "azurerm_cdn_frontdoor_custom_domain" "logos_custom_domain" {
   host_name                = "assets.logos.io.pagopa.it"
 
   tls {
-    certificate_type    = "ManagedCertificate"
+    certificate_type = "ManagedCertificate"
   }
 }
 
@@ -29,7 +29,7 @@ resource "azurerm_cdn_frontdoor_origin_group" "logos_origin_group" {
 }
 
 resource "azurerm_cdn_frontdoor_origin" "logos_origin" {
-  name = "iopstcdnassets"
+  name                           = "iopstcdnassets"
   cdn_frontdoor_origin_group_id  = azurerm_cdn_frontdoor_origin_group.logos_origin_group.id
   enabled                        = true
   host_name                      = "iopstcdnassets.blob.core.windows.net"
