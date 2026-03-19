@@ -64,6 +64,28 @@ module "session_manager_snet" {
   }
 }
 
+module "session_manager_snet_05" {
+  source               = "github.com/pagopa/terraform-azurerm-v3//subnet?ref=v8.22.0"
+  name                 = format("%s-session-manager-snet-05", local.common_project)
+  address_prefixes     = ["10.20.13.0/24"]
+  resource_group_name  = data.azurerm_virtual_network.common_vnet.resource_group_name
+  virtual_network_name = data.azurerm_virtual_network.common_vnet.name
+
+  private_endpoint_network_policies_enabled = true
+
+  service_endpoints = [
+    "Microsoft.Web",
+  ]
+
+  delegation = {
+    name = "default"
+    service_delegation = {
+      name    = "Microsoft.Web/serverFarms"
+      actions = ["Microsoft.Network/virtualNetworks/subnets/action"]
+    }
+  }
+}
+
 module "session_manager_bis_snet" {
   source               = "github.com/pagopa/terraform-azurerm-v3//subnet?ref=v8.22.0"
   name                 = format("%s-session-manager-snet-03", local.common_project)
