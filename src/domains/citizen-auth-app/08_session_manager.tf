@@ -592,3 +592,39 @@ module "pub_session_manager_bis_staging" {
     }
   ]
 }
+
+module "pub_session_manager_staging_05" {
+  source  = "pagopa-dx/azure-role-assignments/azurerm"
+  version = "~>1.2.1"
+
+  principal_id    = module.session_manager_weu_staging_05.principal_id
+  subscription_id = data.azurerm_subscription.current.subscription_id
+
+  service_bus = [
+    {
+      namespace_name      = data.azurerm_servicebus_namespace.platform_service_bus_namespace.name
+      resource_group_name = data.azurerm_servicebus_namespace.platform_service_bus_namespace.resource_group_name
+      role                = "writer"
+      description         = "This role allows managing the given topic"
+      topic_names         = [local.auth_sessions_topic_name]
+    }
+  ]
+}
+
+module "pub_session_manager_bis_staging_05" {
+  source  = "pagopa-dx/azure-role-assignments/azurerm"
+  version = "~>1.2.1"
+
+  principal_id    = module.session_manager_weu_bis_staging_05.principal_id
+  subscription_id = data.azurerm_subscription.current.subscription_id
+
+  service_bus = [
+    {
+      namespace_name      = data.azurerm_servicebus_namespace.platform_service_bus_namespace.name
+      resource_group_name = data.azurerm_servicebus_namespace.platform_service_bus_namespace.resource_group_name
+      role                = "writer"
+      description         = "This role allows managing the given topic"
+      topic_names         = [local.auth_sessions_topic_name]
+    }
+  ]
+}

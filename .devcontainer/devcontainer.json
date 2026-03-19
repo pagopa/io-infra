@@ -1,5 +1,5 @@
 {
-  "image": "mcr.microsoft.com/devcontainers/base:debian@sha256:da67c59f82e057e0ccb81ec7d13fb50464c26f477638018e6de1b2623a008a3a",
+  "image": "mcr.microsoft.com/devcontainers/base:debian@sha256:a30da48cdf5f9144ff7f2156622e701e752fc258d77ca7bb00120624f1a95938",
   "features": {
     "ghcr.io/devcontainers-extra/features/pre-commit:2": {},
     "ghcr.io/devcontainers/features/azure-cli:1": {},
@@ -10,7 +10,7 @@
       "installTFsec": true,
       "installTerraformDocs": true
     },
-    "ghcr.io/pagopa/devcontainer-features/trivy:1": {},
+    "ghcr.io/pagopa/devcontainer-features/trivy:1": {}
   },
   "postStartCommand": {
     "set-workspace-as-safe-dir": "git config --global --add safe.directory ${containerWorkspaceFolder}"
