@@ -573,8 +573,3 @@ module "assets_locales_cdn" {
 
   tags = local.tags
 }
-
-import {
-  to = module.assets_locales_cdn.azurerm_dns_cname_record.logos_custom_domain_dns_record
-  id = "/subscriptions/ec285037-c673-4f58-b594-d7c480da4e8b/resourceGroups/io-p-rg-external/providers/Microsoft.Network/dnszones/io.pagopa.it/CNAME/logos.assets"
-}
