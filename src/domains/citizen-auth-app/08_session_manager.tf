@@ -94,6 +94,7 @@ data "azurerm_resource_group" "session_manager_rg_weu" {
 
 resource "azurerm_resource_group" "session_manager_rg_weu_02" {
   name = format("%s-session-manager-rg-02", local.common_project)
+  location = "westeurope"
 }
 
 locals {
