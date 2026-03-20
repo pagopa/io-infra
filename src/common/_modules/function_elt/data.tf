@@ -116,17 +116,6 @@ data "azurerm_key_vault" "kv_common" {
   resource_group_name = local.resource_group_name_common
 }
 
-data "azurerm_key_vault_secret" "services_exclusion_list" {
-  name         = "io-fn-services-SERVICEID-EXCLUSION-LIST"
-  key_vault_id = data.azurerm_key_vault.kv_common.id
-}
-
-data "azurerm_key_vault_secret" "pdv_tokenizer_api_key" {
-  name         = "func-elt-PDV-TOKENIZER-API-KEY"
-  key_vault_id = data.azurerm_key_vault.kv_common.id
-}
-
-
 data "azurerm_storage_account" "storage_assets_cdn" {
   name                = replace(format("%s-stcdnassets", var.project_weu_legacy), "-", "")
   resource_group_name = local.resource_group_name_common
