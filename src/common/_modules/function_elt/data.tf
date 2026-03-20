@@ -1,3 +1,5 @@
+data "azurerm_client_config" "current" {}
+
 data "azurerm_application_insights" "application_insights" {
   name                = format("%s-ai-common", var.project_weu_legacy)
   resource_group_name = local.resource_group_name_common
