@@ -52,22 +52,22 @@ locals {
       FailedUserDataProcessingStorageConnection = data.azurerm_storage_account.storage_api.primary_connection_string
 
       # SECRETS
-      LOGOS_URL = data.azurerm_key_vault_secret.fn_admin_ASSETS_URL.value
+      LOGOS_URL = "@Microsoft.KeyVault(VaultName=${data.azurerm_key_vault.common.name};SecretName=cdn-ASSETS-URL)"
 
-      AZURE_SUBSCRIPTION_ID = data.azurerm_key_vault_secret.fn_admin_AZURE_SUBSCRIPTION_ID.value
+      AZURE_SUBSCRIPTION_ID = "@Microsoft.KeyVault(VaultName=${data.azurerm_key_vault.common.name};SecretName=common-AZURE-SUBSCRIPTION-ID)"
 
-      SERVICE_PRINCIPAL_CLIENT_ID = data.azurerm_key_vault_secret.ad_APPCLIENT_APIM_ID.value
-      SERVICE_PRINCIPAL_SECRET    = data.azurerm_key_vault_secret.ad_APPCLIENT_APIM_SECRET.value
-      SERVICE_PRINCIPAL_TENANT_ID = data.azurerm_key_vault_secret.common_AZURE_TENANT_ID.value
+      SERVICE_PRINCIPAL_CLIENT_ID = "@Microsoft.KeyVault(VaultName=${data.azurerm_key_vault.common.name};SecretName=ad-APPCLIENT-APIM-ID)"
+      SERVICE_PRINCIPAL_SECRET    = "@Microsoft.KeyVault(VaultName=${data.azurerm_key_vault.common.name};SecretName=ad-APPCLIENT-APIM-SECRET)"
+      SERVICE_PRINCIPAL_TENANT_ID = "@Microsoft.KeyVault(VaultName=${data.azurerm_key_vault.common.name};SecretName=common-AZURE-TENANT-ID)"
 
-      PUBLIC_API_KEY = data.azurerm_key_vault_secret.apim_IO_GDPR_SERVICE_KEY.value
+      PUBLIC_API_KEY = "@Microsoft.KeyVault(VaultName=${data.azurerm_key_vault.common.name};SecretName=apim-IO-GDPR-SERVICE-KEY)"
 
       SESSION_MANAGER_INTERNAL_API_URL = "https://${data.azurerm_linux_function_app.session_manager_internal.default_hostname}"
-      SESSION_MANAGER_INTERNAL_API_KEY = data.azurerm_key_vault_secret.fn_admin_SESSION_MANAGER_INTERNAL_KEY.value
+      SESSION_MANAGER_INTERNAL_API_KEY = "@Microsoft.KeyVault(VaultName=${data.azurerm_key_vault.common.name};SecretName=fn-admin-session-manager-internal-key)"
 
-      __DISABLED__SENDGRID_API_KEY = data.azurerm_key_vault_secret.common_SENDGRID_APIKEY.value
-      MAILUP_USERNAME              = data.azurerm_key_vault_secret.common_MAILUP_USERNAME.value
-      MAILUP_SECRET                = data.azurerm_key_vault_secret.common_MAILUP_SECRET.value
+      __DISABLED__SENDGRID_API_KEY = "@Microsoft.KeyVault(VaultName=${data.azurerm_key_vault.common.name};SecretName=common-SENDGRID-APIKEY)"
+      MAILUP_USERNAME              = "@Microsoft.KeyVault(VaultName=${data.azurerm_key_vault.common.name};SecretName=common-MAILUP-AI-USERNAME)"
+      MAILUP_SECRET                = "@Microsoft.KeyVault(VaultName=${data.azurerm_key_vault.common.name};SecretName=common-MAILUP-AI-SECRET)"
 
       # UNIQUE EMAIL ENFORCEMENT
       CitizenAuthStorageConnection = data.azurerm_storage_account.auth_maintenance_storage.primary_connection_string
@@ -85,7 +85,7 @@ locals {
 
       # Temporany
       IOPSTLOGS_STORAGE_CONNECTION_STRING = data.azurerm_storage_account.logs02.primary_connection_string,
-      LOG_RSA_PK                          = trimspace(data.azurerm_key_vault_secret.fn_app_KEY_SPIDLOGS_PRIV.value),
+      LOG_RSA_PK                          = "@Microsoft.KeyVault(VaultName=${data.azurerm_key_vault.common.name};SecretName=funcapp-KEY-SPIDLOGS-PRIV)",
 
       IOWEBLOGS_STORAGE_CONNECTION_STRING = data.azurerm_storage_account.ioweb_spid_logs_storage.primary_connection_string
     }
