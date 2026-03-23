@@ -12,7 +12,7 @@ module "appservice_app_backend" {
   resource_group_name = var.resource_group_linux
   location            = var.location
 
-  node_version                 = "20-lts"
+  node_version                 = "22-lts"
   always_on                    = true
   app_command_line             = local.app_command_line
   health_check_path            = "/ping"
@@ -58,7 +58,7 @@ module "appservice_app_backend_slot_staging" {
   location            = var.location
 
   always_on                    = true
-  node_version                 = "20-lts"
+  node_version                 = "22-lts"
   app_command_line             = local.app_command_line
   health_check_path            = "/ping"
   health_check_maxpingfailures = 2
