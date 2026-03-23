@@ -82,7 +82,7 @@ resource "azurerm_cdn_frontdoor_rule" "redirect_rules" {
 
   actions {
     url_redirect_action {
-      redirect_type        = "Moved"
+      redirect_type        = "TemporaryRedirect"
       redirect_protocol    = "Https"
       destination_hostname = each.value.destination_host
       destination_path     = each.value.destination_path
