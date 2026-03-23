@@ -227,6 +227,9 @@ locals {
     SERVICE_BUS_NAMESPACE    = "${data.azurerm_servicebus_namespace.platform_service_bus_namespace.name}.servicebus.windows.net"
     AUTH_SESSIONS_TOPIC_NAME = local.auth_sessions_topic_name
 
+
+    # PLATFORM INTERNAL API
+    PLATFORM_PROXY_API_URL = "https://proxy.internal.io.pagopa.it"
   }
 }
 
