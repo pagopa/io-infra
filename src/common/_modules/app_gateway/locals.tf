@@ -598,7 +598,7 @@ locals {
           backend               = "platform-api-gateway",
           rewrite_rule_set_name = "rewrite-rule-set-api-app"
         },
-        api-gateway-signer = {
+        api-gateway-sign = {
           paths                 = ["/api/sign/*"],
           backend               = "platform-api-gateway",
           rewrite_rule_set_name = "rewrite-rule-set-api-app"
