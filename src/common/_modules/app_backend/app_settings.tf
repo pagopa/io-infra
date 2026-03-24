@@ -43,7 +43,7 @@ locals {
     CGN_OPERATOR_SEARCH_API_URL = "https://${var.backend_hostnames.cgnonboarding}" # prod subscription
     CGN_OPERATOR_SEARCH_API_KEY = "@Microsoft.KeyVault(VaultName=${var.key_vault_common.name};SecretName=funccgnoperatorsearch-KEY-PROD-APPBACKEND)"
     APP_MESSAGES_API_URL        = "https://${var.backend_hostnames.com_citizen_func}/api/v1"
-    APP_MESSAGES_API_KEY        = "@Microsoft.KeyVault(VaultName=${var.key_vault_common.name};SecretName=app_backend_COM_CITIZEN_FUNC_API_KEY)"
+    APP_MESSAGES_API_KEY        = "@Microsoft.KeyVault(VaultName=${var.key_vault_common.name};SecretName=appbackend-COM-CITIZEN-FUNC-API-KEY)"
     LOLLIPOP_API_URL            = "https://${var.backend_hostnames.lollipop}"
     LOLLIPOP_API_KEY            = "@Microsoft.KeyVault(VaultName=${var.key_vault_common.name};SecretName=appbackend-LOLLIPOP-ITN-API-KEY)"
     CDC_SUPPORT_API_URL         = "https://${var.backend_hostnames.cdc_support}"
