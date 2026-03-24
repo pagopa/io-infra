@@ -18,6 +18,16 @@ variable "resource_group_common" {
   description = "Common resource group name"
 }
 
+variable "vnet_common" {
+  type = object({
+    id                  = string
+    name                = string
+    address_space       = list(string)
+    resource_group_name = string
+  })
+  description = "Informations on the common VNet"
+}
+
 variable "cidr_subnet" {
   type        = list(string)
   description = "Application gateway address space"
