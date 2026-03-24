@@ -1,3 +1,5 @@
+data "azurerm_client_config" "current" {}
+
 data "azurerm_key_vault" "common" {
   name                = format("%s-kv-common", local.project)
   resource_group_name = local.rg_common_name
