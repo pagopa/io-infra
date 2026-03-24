@@ -133,6 +133,52 @@ resource "azurerm_application_gateway" "assets_agw" {
     backend_http_settings_name = local.backend_settings_name
   }
 
+  ##### TEST domain block
+
+  http_listener {
+    name                           = local.test_listener_name
+    frontend_ip_configuration_name = local.frontend_public_ip_configuration_name
+    frontend_port_name             = local.frontend_secure_port_name
+    protocol                       = "Http"
+    host_name                      = "test.cdn.io.pagopa.it" # TODO: fix test domain
+  }
+
+
+  http_listener {
+    name                           = local.test_listener_name
+    frontend_ip_configuration_name = local.frontend_public_ip_configuration_name
+    frontend_port_name             = local.frontend_secure_port_name
+    protocol                       = "Https"
+    host_name                      = "test.cdn.io.pagopa.it" # TODO: fix test domain
+    require_sni                    = true
+    ssl_certificate_name           = local.test_certificate_name
+  }
+
+  request_routing_rule {
+    name                        = local.test_routing_http_rule_name
+    rule_type                   = "Basic"
+    http_listener_name          = local.test_http_listener_name
+    redirect_configuration_name = local.test_https_redirect_configuration_name
+  }
+
+  redirect_configuration {
+    name                 = local.test_https_redirect_name
+    redirect_type        = "Permanent"
+    include_path         = true
+    include_query_string = true
+    target_listener_name = local.test_listener_name
+  }
+
+  request_routing_rule {
+    name                       = local.test_routing_rule_name
+    http_listener_name         = local.test_listener_name
+    rule_type                  = "Basic"
+    backend_address_pool_name  = local.backend_address_pool_name
+    backend_http_settings_name = local.backend_settings_name
+  }
+
+  #################
+
   backend_address_pool {
     name  = local.backend_address_pool_name
     fqdns = [local.backend_address_pool_fqdn]
