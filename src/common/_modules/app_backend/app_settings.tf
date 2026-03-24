@@ -29,25 +29,25 @@ locals {
     // API KEY
     // optionally you can specify APP_BACKEND_SECONDARY_KEY
     // for rotation purposes
-    APP_BACKEND_PRIMARY_KEY = data.azurerm_key_vault_secret.app_backend_APP_BACKEND_PRIMARY_KEY.value
+    APP_BACKEND_PRIMARY_KEY = "@Microsoft.KeyVault(VaultName=${var.key_vault_common.name};SecretName=appbackend-APP-BACKEND-PRIMARY-KEY)"
 
     // FUNCTIONS
     API_URL                     = "https://${var.backend_hostnames.app[0]}/api/v1"
-    API_KEY                     = data.azurerm_key_vault_secret.app_backend_API_KEY.value
+    API_KEY                     = "@Microsoft.KeyVault(VaultName=${var.key_vault_common.name};SecretName=funcapp-KEY-APPBACKEND)"
     CGN_API_URL                 = "https://${var.backend_hostnames.cgn}"
-    CGN_API_KEY                 = data.azurerm_key_vault_secret.app_backend_CGN_API_KEY.value
+    CGN_API_KEY                 = "@Microsoft.KeyVault(VaultName=${var.key_vault_common.name};SecretName=funccgn-KEY-APPBACKEND)"
     IO_SIGN_API_URL             = "https://${var.backend_hostnames.iosign}"
-    IO_SIGN_API_KEY             = data.azurerm_key_vault_secret.app_backend_IO_SIGN_API_KEY.value
+    IO_SIGN_API_KEY             = "@Microsoft.KeyVault(VaultName=${var.key_vault_common.name};SecretName=funciosign-KEY-APPBACKEND)"
     IO_FIMS_API_URL             = "https://${var.backend_hostnames.iofims}"
-    IO_FIMS_API_KEY             = data.azurerm_key_vault_secret.app_backend_IO_FIMS_API_KEY.value
+    IO_FIMS_API_KEY             = "@Microsoft.KeyVault(VaultName=${var.key_vault_common.name};SecretName=funciofims-KEY-APPBACKEND)"
     CGN_OPERATOR_SEARCH_API_URL = "https://${var.backend_hostnames.cgnonboarding}" # prod subscription
-    CGN_OPERATOR_SEARCH_API_KEY = data.azurerm_key_vault_secret.app_backend_CGN_OPERATOR_SEARCH_API_KEY_PROD.value
+    CGN_OPERATOR_SEARCH_API_KEY = "@Microsoft.KeyVault(VaultName=${var.key_vault_common.name};SecretName=funccgnoperatorsearch-KEY-PROD-APPBACKEND)"
     APP_MESSAGES_API_URL        = "https://${var.backend_hostnames.com_citizen_func}/api/v1"
-    APP_MESSAGES_API_KEY        = data.azurerm_key_vault_secret.app_backend_COM_CITIZEN_FUNC_API_KEY.value
+    APP_MESSAGES_API_KEY        = "@Microsoft.KeyVault(VaultName=${var.key_vault_common.name};SecretName=appbackend-COM-CITIZEN-FUNC-API-KEY)"
     LOLLIPOP_API_URL            = "https://${var.backend_hostnames.lollipop}"
-    LOLLIPOP_API_KEY            = data.azurerm_key_vault_secret.app_backend_LOLLIPOP_ITN_API_KEY.value
+    LOLLIPOP_API_KEY            = "@Microsoft.KeyVault(VaultName=${var.key_vault_common.name};SecretName=appbackend-LOLLIPOP-ITN-API-KEY)"
     CDC_SUPPORT_API_URL         = "https://${var.backend_hostnames.cdc_support}"
-    CDC_SUPPORT_API_KEY         = data.azurerm_key_vault_secret.app_backend_CDC_SUPPORT_API_KEY.value
+    CDC_SUPPORT_API_KEY         = "@Microsoft.KeyVault(VaultName=${var.key_vault_common.name};SecretName=funccdcsupport-KEY-APPBACKEND)"
 
     // EXPOSED API
     API_BASE_PATH                     = "/api/v1"
@@ -62,21 +62,21 @@ locals {
     // REDIS
     REDIS_URL      = var.redis_common.hostname
     REDIS_PORT     = var.redis_common.ssl_port
-    REDIS_PASSWORD = var.redis_common.primary_access_key
+    REDIS_PASSWORD = "@Microsoft.KeyVault(VaultName=${var.key_vault_common.name};SecretName=appbackend-REDIS-PASSWORD)"
 
 
     // PAGOPA ECOMMERCE
     PAGOPA_ECOMMERCE_BASE_URL     = "https://api.platform.pagopa.it/ecommerce/payment-requests-service/v1"
     PAGOPA_ECOMMERCE_UAT_BASE_URL = "https://api.uat.platform.pagopa.it/ecommerce/payment-requests-service/v1"
-    PAGOPA_ECOMMERCE_API_KEY      = data.azurerm_key_vault_secret.app_backend_PAGOPA_ECOMMERCE_API_KEY.value
-    PAGOPA_ECOMMERCE_UAT_API_KEY  = data.azurerm_key_vault_secret.app_backend_PAGOPA_ECOMMERCE_UAT_API_KEY.value
+    PAGOPA_ECOMMERCE_API_KEY      = "@Microsoft.KeyVault(VaultName=${var.key_vault_common.name};SecretName=appbackend-PAGOPA-ECOMMERCE-API-KEY)"
+    PAGOPA_ECOMMERCE_UAT_API_KEY  = "@Microsoft.KeyVault(VaultName=${var.key_vault_common.name};SecretName=appbackend-PAGOPA-ECOMMERCE-UAT-API-KEY)"
 
     // MYPORTAL
     MYPORTAL_BASE_PATH             = "/myportal/api/v1"
-    ALLOW_MYPORTAL_IP_SOURCE_RANGE = data.azurerm_key_vault_secret.app_backend_ALLOW_MYPORTAL_IP_SOURCE_RANGE.value
+    ALLOW_MYPORTAL_IP_SOURCE_RANGE = "@Microsoft.KeyVault(VaultName=${var.key_vault_common.name};SecretName=appbackend-ALLOW-MYPORTAL-IP-SOURCE-RANGE)"
 
     // BPD
-    JWT_SUPPORT_TOKEN_PRIVATE_RSA_KEY = data.azurerm_key_vault_secret.app_backend_JWT_SUPPORT_TOKEN_PRIVATE_RSA_KEY.value
+    JWT_SUPPORT_TOKEN_PRIVATE_RSA_KEY = "@Microsoft.KeyVault(VaultName=${var.key_vault_common.name};SecretName=appbackend-JWT-SUPPORT-TOKEN-PRIVATE-RSA-KEY)"
 
     NOTIFICATIONS_QUEUE_NAME                = "push-notifications"
     NOTIFICATIONS_STORAGE_CONNECTION_STRING = data.azurerm_storage_account.notifications.primary_connection_string
@@ -91,7 +91,7 @@ locals {
     FF_IO_FIMS_ENABLED = 1
 
     FF_ROUTING_PUSH_NOTIF                      = "ALL" # possible values are: BETA, CANARY, ALL, NONE
-    FF_ROUTING_PUSH_NOTIF_BETA_TESTER_SHA_LIST = data.azurerm_key_vault_secret.app_backend_APP_MESSAGES_BETA_FISCAL_CODES.value
+    FF_ROUTING_PUSH_NOTIF_BETA_TESTER_SHA_LIST = "@Microsoft.KeyVault(VaultName=${var.key_vault_common.name};SecretName=appbackend-APP-MESSAGES-BETA-FISCAL-CODES)"
     # ~31% of users
     FF_ROUTING_PUSH_NOTIF_CANARY_SHA_USERS_REGEX = "^([(0-9)|(a-f)|(A-F)]{63}[(0-4)]{1})$"
 
@@ -105,20 +105,20 @@ locals {
     PECSERVER_URL          = "https://poc.pagopa.poste.it"
     PECSERVER_BASE_PATH    = ""
     PECSERVER_TOKEN_ISSUER = "app-backend.io.italia.it"
-    PECSERVER_TOKEN_SECRET = data.azurerm_key_vault_secret.app_backend_PECSERVER_TOKEN_SECRET.value
+    PECSERVER_TOKEN_SECRET = "@Microsoft.KeyVault(VaultName=${var.key_vault_common.name};SecretName=appbackend-PECSERVER-TOKEN-SECRET)"
 
     // MVL PECSERVER
     PECSERVERS_poste_url       = "https://poc.pagopa.poste.it"
     PECSERVERS_poste_basePath  = ""
-    PECSERVERS_poste_secret    = data.azurerm_key_vault_secret.app_backend_PECSERVER_TOKEN_SECRET.value
+    PECSERVERS_poste_secret    = "@Microsoft.KeyVault(VaultName=${var.key_vault_common.name};SecretName=appbackend-PECSERVER-TOKEN-SECRET)"
     PECSERVERS_poste_serviceId = "01FQ4945RG5WJGPHKY8ZYRJMQ7"
     PECSERVERS_aruba_url       = "https://pagopa-test.pec.aruba.it"
     PECSERVERS_aruba_basePath  = "/apigateway/api/v2/pagopa/mailbox"
-    PECSERVERS_aruba_secret    = data.azurerm_key_vault_secret.app_backend_PECSERVER_ARUBA_TOKEN_SECRET.value
+    PECSERVERS_aruba_secret    = "@Microsoft.KeyVault(VaultName=${var.key_vault_common.name};SecretName=appbackend-PECSERVER-ARUBA-TOKEN-SECRET)"
     PECSERVERS_aruba_serviceId = "01FRMRD5P7H378MDXBBW3DTYCF"
 
     // CGN
-    TEST_CGN_FISCAL_CODES = "" #data.azurerm_key_vault_secret.app_backend_TEST_CGN_FISCAL_CODES.value
+    TEST_CGN_FISCAL_CODES = ""
 
     // Service ID PN
     PN_SERVICE_ID = local.service_ids.pn
@@ -131,8 +131,8 @@ locals {
 
     // PN Service Activation
     PN_ACTIVATION_BASE_PATH = "/api/v1/pn"
-    PN_API_KEY              = data.azurerm_key_vault_secret.app_backend_PN_API_KEY_PROD.value
-    PN_API_KEY_UAT          = data.azurerm_key_vault_secret.app_backend_PN_API_KEY_UAT_V2.value
+    PN_API_KEY              = "@Microsoft.KeyVault(VaultName=${var.key_vault_common.name};SecretName=appbackend-PN-API-KEY-PROD-ENV)"
+    PN_API_KEY_UAT          = "@Microsoft.KeyVault(VaultName=${var.key_vault_common.name};SecretName=appbackend-PN-API-KEY-UAT-ENV-V2)"
     PN_API_URL              = local.endpoints.pn
     PN_API_URL_UAT          = local.endpoints.pn_test
 
@@ -235,14 +235,14 @@ locals {
     UNIQUE_EMAIL_ENFORCEMENT_USERS = join(",", [data.azurerm_key_vault_secret.app_backend_UNIQUE_EMAIL_ENFORCEMENT_USER.value, module.tests.users.unique_email_test[0]])
 
     // Services App Backend
-    SERVICES_APP_BACKEND_API_KEY       = data.azurerm_key_vault_secret.appbackend_SERVICES_APP_BACKEND_API_KEY.value
+    SERVICES_APP_BACKEND_API_KEY       = "@Microsoft.KeyVault(VaultName=${var.key_vault_common.name};SecretName=appbe-host-key-for-app-backend)"
     SERVICES_APP_BACKEND_BASE_PATH     = "/api/v2"
     SERVICES_APP_BACKEND_API_URL       = "https://${var.backend_hostnames.services_app_backend}"
     SERVICES_APP_BACKEND_API_BASE_PATH = "/api/v1"
 
     // IO Proxy authentication middleware feature flags configuration
     FF_IO_X_USER_TOKEN                        = "NONE" # possible values are: BETA, CANARY, ALL, NONE
-    FF_IO_X_USER_TOKEN_BETA_TESTER_SHA_LIST   = data.azurerm_key_vault_secret.app_backend_X_USER_BETA_FISCAL_CODES.value
+    FF_IO_X_USER_TOKEN_BETA_TESTER_SHA_LIST   = "@Microsoft.KeyVault(VaultName=${var.key_vault_common.name};SecretName=appbackend-X-USER-BETA-FISCAL-CODES)"
     FF_IO_X_USER_TOKEN_CANARY_SHA_USERS_REGEX = "XYZ" # Disabled, no one user match this regex
   }
 }
