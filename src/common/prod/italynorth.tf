@@ -574,7 +574,18 @@ module "assets_locales_cdn" {
   tags = local.tags
 }
 
-import {
-  to = module.assets_locales_cdn.azurerm_dns_cname_record.logos_custom_domain_dns_record
-  id = "/subscriptions/ec285037-c673-4f58-b594-d7c480da4e8b/resourceGroups/io-p-rg-external/providers/Microsoft.Network/dnsZones/io.pagopa.it/CNAME/logos.assets"
+
+module "application_gateway_assets_locales_cdn" {
+  source = "../_modules/application_gateway_assets_locales_cdn"
+
+  location              = "italynorth"
+  subscription_id       = data.azurerm_subscription.current.subscription_id
+  project               = local.project_itn
+  resource_group_common = local.core.resource_groups.italynorth.common
+  cidr_subnet           = ["10.20.40.0/24"]
+
+  custom_domains_certificate_kv_name = local.core.key_vault.weu.tlscert_itn_01.name
+  custom_domains_certificate_kv_rg   = local.core.key_vault.weu.tlscert_itn_01.resource_group_name
+
+  tags = local.tags
 }
