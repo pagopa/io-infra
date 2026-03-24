@@ -32,73 +32,8 @@ data "azurerm_key_vault" "common" {
   resource_group_name = local.rg_common_name
 }
 
-data "azurerm_key_vault_secret" "fn_admin_ASSETS_URL" {
-  name         = "cdn-ASSETS-URL"
-  key_vault_id = data.azurerm_key_vault.common.id
-}
-
-data "azurerm_key_vault_secret" "fn_admin_AZURE_SUBSCRIPTION_ID" {
-  name         = "common-AZURE-SUBSCRIPTION-ID"
-  key_vault_id = data.azurerm_key_vault.common.id
-}
-
 data "azurerm_key_vault_secret" "fn_admin_INSTANT_DELETE_ENABLED_USERS" {
   name         = "fn-admin-INSTANT-DELETE-ENABLED-USERS"
-  key_vault_id = data.azurerm_key_vault.common.id
-}
-
-data "azurerm_key_vault_secret" "adb2c_TENANT_NAME" {
-  name         = "adb2c-TENANT-NAME"
-  key_vault_id = data.azurerm_key_vault.common.id
-}
-
-data "azurerm_key_vault_secret" "devportal_CLIENT_ID" {
-  name         = "devportal-CLIENT-ID"
-  key_vault_id = data.azurerm_key_vault.common.id
-}
-
-data "azurerm_key_vault_secret" "devportal_CLIENT_SECRET" {
-  name         = "devportal-CLIENT-SECRET"
-  key_vault_id = data.azurerm_key_vault.common.id
-}
-
-data "azurerm_key_vault_secret" "adb2c_TOKEN_ATTRIBUTE_NAME" {
-  name         = "adb2c-TOKEN-ATTRIBUTE-NAME"
-  key_vault_id = data.azurerm_key_vault.common.id
-}
-
-data "azurerm_key_vault_secret" "ad_APPCLIENT_APIM_ID" {
-  name         = "ad-APPCLIENT-APIM-ID"
-  key_vault_id = data.azurerm_key_vault.common.id
-}
-
-data "azurerm_key_vault_secret" "ad_APPCLIENT_APIM_SECRET" {
-  name         = "ad-APPCLIENT-APIM-SECRET"
-  key_vault_id = data.azurerm_key_vault.common.id
-}
-
-data "azurerm_key_vault_secret" "common_AZURE_TENANT_ID" {
-  name         = "common-AZURE-TENANT-ID"
-  key_vault_id = data.azurerm_key_vault.common.id
-}
-
-data "azurerm_key_vault_secret" "apim_IO_GDPR_SERVICE_KEY" {
-  name         = "apim-IO-GDPR-SERVICE-KEY"
-  key_vault_id = data.azurerm_key_vault.common.id
-}
-
-data "azurerm_key_vault_secret" "common_SENDGRID_APIKEY" {
-  name         = "common-SENDGRID-APIKEY"
-  key_vault_id = data.azurerm_key_vault.common.id
-}
-
-data "azurerm_key_vault_secret" "fn_admin_SESSION_MANAGER_INTERNAL_KEY" {
-  name         = "fn-admin-session-manager-internal-key"
-  key_vault_id = data.azurerm_key_vault.common.id
-}
-
-data "azurerm_key_vault_secret" "fn_app_KEY_SPIDLOGS_PRIV" {
-  name         = "funcapp-KEY-SPIDLOGS-PRIV"
   key_vault_id = data.azurerm_key_vault.common.id
 }
 
@@ -191,18 +126,6 @@ data "azurerm_linux_function_app" "session_manager_internal" {
 data "azurerm_monitor_action_group" "io_auth_error_action_group" {
   name                = "io-p-itn-auth-error-ag-01"
   resource_group_name = "io-p-itn-auth-common-rg-01"
-}
-
-# MAILUP
-
-data "azurerm_key_vault_secret" "common_MAILUP_USERNAME" {
-  name         = "common-MAILUP-AI-USERNAME"
-  key_vault_id = data.azurerm_key_vault.common.id
-}
-
-data "azurerm_key_vault_secret" "common_MAILUP_SECRET" {
-  name         = "common-MAILUP-AI-SECRET"
-  key_vault_id = data.azurerm_key_vault.common.id
 }
 
 data "azurerm_log_analytics_workspace" "log" {
