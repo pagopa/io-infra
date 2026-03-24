@@ -9,7 +9,7 @@ resource "azurerm_application_gateway" "assets_agw" {
 
   identity {
     type         = "UserAssigned"
-    identity_ids = [azurerm_user_assigned_identity.appgateway.id]
+    identity_ids = [azurerm_user_assigned_identity.agw.id]
   }
 
   sku {
