@@ -131,7 +131,7 @@ locals {
 
     // PN Service Activation
     PN_ACTIVATION_BASE_PATH = "/api/v1/pn"
-    PN_API_KEY              = "@Microsoft.KeyVault(VaultName=${var.key_vault_common.name};SecretName=app_backend_PN_API_KEY_PROD)"
+    PN_API_KEY              = "@Microsoft.KeyVault(VaultName=${var.key_vault_common.name};SecretName=appbackend-PN-API-KEY-PROD-ENV)"
     PN_API_KEY_UAT          = "@Microsoft.KeyVault(VaultName=${var.key_vault_common.name};SecretName=appbackend-PN-API-KEY-UAT-ENV-V2)"
     PN_API_URL              = local.endpoints.pn
     PN_API_URL_UAT          = local.endpoints.pn_test
