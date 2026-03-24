@@ -218,7 +218,7 @@ resource "azurerm_application_gateway" "assets_agw" {
     key_vault_secret_id = local.assets_italia_certificate_kv_secret_id
   }
 
-  firewall_policy_id = data.azurerm_web_application_firewall_policy.agw.id
+  firewall_policy_id = azurerm_web_application_firewall_policy.agw.id
 
   global {
     request_buffering_enabled  = true
