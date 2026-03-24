@@ -1,3 +1,6 @@
+
+data "azurerm_client_config" "current" {}
+
 # APIM in ITN
 data "azurerm_api_management" "apim_itn_api" {
   name                = "${var.project_itn}-apim-01"
@@ -100,7 +103,7 @@ data "azurerm_key_vault_secret" "fn_app_KEY_SPIDLOGS_PRIV" {
 }
 
 #
-# Storage 
+# Storage
 #
 
 #
