@@ -74,19 +74,18 @@ locals {
       #########################
       # Secrets
       #########################
-      MAILUP_USERNAME                        = data.azurerm_key_vault_secret.fn_services_mailup_username.value
-      MAILUP_SECRET                          = data.azurerm_key_vault_secret.fn_services_mailup_secret.value
-      WEBHOOK_CHANNEL_URL                    = data.azurerm_key_vault_secret.fn_services_webhook_channel_url.value
-      SANDBOX_FISCAL_CODE                    = data.azurerm_key_vault_secret.fn_services_sandbox_fiscal_code.value
-      EMAIL_NOTIFICATION_SERVICE_BLACKLIST   = data.azurerm_key_vault_secret.fn_services_email_service_blacklist_id.value
-      WEBHOOK_NOTIFICATION_SERVICE_BLACKLIST = data.azurerm_key_vault_secret.fn_services_notification_service_blacklist_id.value
-      IO_FUNCTIONS_ADMIN_API_TOKEN           = data.azurerm_key_vault_secret.fn_services_io_service_key.value
-      APIM_SUBSCRIPTION_KEY                  = data.azurerm_key_vault_secret.fn_services_io_service_key.value
-      PAGOPA_ECOMMERCE_API_KEY               = data.azurerm_key_vault_secret.fn_services_pagopa_ecommerce_api_key.value
-      BETA_USERS                             = data.azurerm_key_vault_secret.fn_services_beta_users.value
-      SENDING_FUNC_API_KEY                   = data.azurerm_key_vault_secret.rc_func_key.value
+      MAILUP_USERNAME                        = "@Microsoft.KeyVault(VaultName=${data.azurerm_key_vault.common.name};SecretName=iocom-MAILUP-USERNAME)"
+      MAILUP_SECRET                          = "@Microsoft.KeyVault(VaultName=${data.azurerm_key_vault.common.name};SecretName=iocom-MAILUP-SECRET)"
+      WEBHOOK_CHANNEL_URL                    = "@Microsoft.KeyVault(VaultName=${data.azurerm_key_vault.common.name};SecretName=appbackend-WEBHOOK-CHANNEL-URL)"
+      SANDBOX_FISCAL_CODE                    = "@Microsoft.KeyVault(VaultName=${data.azurerm_key_vault.common.name};SecretName=io-SANDBOX-FISCAL-CODE)"
+      EMAIL_NOTIFICATION_SERVICE_BLACKLIST   = "@Microsoft.KeyVault(VaultName=${data.azurerm_key_vault.common.name};SecretName=io-EMAIL-SERVICE-BLACKLIST-ID)"
+      WEBHOOK_NOTIFICATION_SERVICE_BLACKLIST = "@Microsoft.KeyVault(VaultName=${data.azurerm_key_vault.common.name};SecretName=io-NOTIFICATION-SERVICE-BLACKLIST-ID)"
+      IO_FUNCTIONS_ADMIN_API_TOKEN           = "@Microsoft.KeyVault(VaultName=${data.azurerm_key_vault.common.name};SecretName=apim-IO-SERVICE-KEY)"
+      APIM_SUBSCRIPTION_KEY                  = "@Microsoft.KeyVault(VaultName=${data.azurerm_key_vault.common.name};SecretName=apim-IO-SERVICE-KEY)"
+      PAGOPA_ECOMMERCE_API_KEY               = "@Microsoft.KeyVault(VaultName=${data.azurerm_key_vault.common.name};SecretName=fnservices-PAGOPA-ECOMMERCE-API-KEY-PROD)"
+      BETA_USERS                             = "@Microsoft.KeyVault(VaultName=${data.azurerm_key_vault.common.name};SecretName=io-fn-services-BETA-USERS)"
+      SENDING_FUNC_API_KEY                   = "@Microsoft.KeyVault(VaultName=${data.azurerm_key_vault.io_com.name};SecretName=rc-func-key)"
       SENDING_FUNC_API_URL                   = "https://${data.azurerm_linux_function_app.rf_func.default_hostname}"
-
     }
   }
 }
