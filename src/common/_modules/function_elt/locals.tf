@@ -74,7 +74,7 @@ locals {
       COSMOS_CHUNK_SIZE            = "1000"
       COSMOS_DEGREE_OF_PARALLELISM = "2"
 
-      SERVICEID_EXCLUSION_LIST = data.azurerm_key_vault_secret.services_exclusion_list.value
+      SERVICEID_EXCLUSION_LIST = "@Microsoft.KeyVault(VaultName=${data.azurerm_key_vault.kv_common.name};SecretName=io-fn-services-SERVICEID-EXCLUSION-LIST)"
 
       #iopstapireplica connection string
       ServiceInfoBlobStorageConnection = data.azurerm_storage_account.storage_assets_cdn.primary_connection_string
@@ -85,7 +85,7 @@ locals {
       DELETES_FAILURE_QUEUE_NAME             = local.profile_deletion_failure_queue_name
 
       # PDV integration env variables
-      PDV_TOKENIZER_API_KEY   = data.azurerm_key_vault_secret.pdv_tokenizer_api_key.value,
+      PDV_TOKENIZER_API_KEY   = "@Microsoft.KeyVault(VaultName=${data.azurerm_key_vault.kv_common.name};SecretName=func-elt-PDV-TOKENIZER-API-KEY)"
       PDV_TOKENIZER_BASE_URL  = "https://api.tokenizer.pdv.pagopa.it",
       PDV_TOKENIZER_BASE_PATH = "/tokenizer/v1",
       #
