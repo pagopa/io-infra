@@ -18,7 +18,7 @@ on:
       - "src/_modules/test_users/**"
 jobs:
   prod_itn_common_deploy:
-    uses: pagopa/dx/.github/workflows/infra_apply.yaml@main
+    uses: pagopa/dx/.github/workflows/infra_apply.yaml@fix-infra-apply-writing-artifacts-to-storage-account-2 #main
     name: Prod - Code Deploy
     secrets: inherit
     with:
