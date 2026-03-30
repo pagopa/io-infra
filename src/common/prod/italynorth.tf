@@ -583,7 +583,7 @@ module "application_gateway_assets_locales_cdn" {
   project               = local.project_itn
   resource_group_common = local.core.resource_groups.italynorth.common
   vnet_common           = local.core.networking.itn.vnet_common
-  cidr_subnet           = ["10.20.40.0/24"]
+  cidr_subnet           = ["10.20.41.0/24"]
 
   custom_domains_certificate_kv_name = local.core.key_vault.weu.tlscert_itn_01.name
   custom_domains_certificate_kv_rg   = local.core.key_vault.weu.tlscert_itn_01.resource_group_name
