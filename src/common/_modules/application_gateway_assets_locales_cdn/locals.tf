@@ -29,9 +29,9 @@ locals {
   assets_italia_routing_rule_name   = "${local.assets_italia_prefix}-rule"
 
   assets_pagopa_certificate_name         = "" # TODO: add certificate name
-  assets_pagopa_certificate_kv_secret_id = "https://${var.custom_domains_certificate_kv_name}.vault.azure.net:443/secrets/${local.assets_pagopa_certificate_name}/"
+  assets_pagopa_certificate_kv_secret_id = "https://${var.custom_domains_certificate_kv_name}.vault.azure.net/secrets/${local.assets_pagopa_certificate_name}/"
   assets_italia_certificate_name         = "" # TODO: add certificate name
-  assets_italia_certificate_kv_secret_id = "https://${var.custom_domains_certificate_kv_name}.vault.azure.net:443/secrets/${local.assets_italia_certificate_name}/"
+  assets_italia_certificate_kv_secret_id = "https://${var.custom_domains_certificate_kv_name}.vault.azure.net/secrets/${local.assets_italia_certificate_name}/"
 
   backend_settings_name = "${local.assets_cdn_prefix}-backend-pool-settings"
   backend_probe_name    = "${local.assets_cdn_prefix}-probe"
@@ -44,5 +44,5 @@ locals {
   test_listener_name                     = "test-listener"
   test_routing_rule_name                 = "test-rule"
   test_certificate_name                  = "" # TODO: add certificate name
-  test_certificate_kv_secret_id          = "https://${var.custom_domains_certificate_kv_name}.vault.azure.net:443/secrets/${local.test_certificate_name}/"
+  test_certificate_kv_secret_id          = "https://${var.custom_domains_certificate_kv_name}.vault.azure.net/secrets/${local.test_certificate_name}/"
 }
