@@ -140,7 +140,7 @@ resource "azurerm_application_gateway" "assets_agw" {
   ##### TEST domain block
 
   http_listener {
-    name                           = local.test_listener_name
+    name                           = local.test_http_listener_name
     frontend_ip_configuration_name = local.frontend_public_ip_configuration_name
     frontend_port_name             = local.frontend_secure_port_name
     protocol                       = "Http"
@@ -149,7 +149,7 @@ resource "azurerm_application_gateway" "assets_agw" {
 
 
   http_listener {
-    name                           = local.test_listener_name
+    name                           = local.test_https_listener_name
     frontend_ip_configuration_name = local.frontend_public_ip_configuration_name
     frontend_port_name             = local.frontend_secure_port_name
     protocol                       = "Https"
@@ -171,12 +171,12 @@ resource "azurerm_application_gateway" "assets_agw" {
     redirect_type        = "Permanent"
     include_path         = true
     include_query_string = true
-    target_listener_name = local.test_listener_name
+    target_listener_name = local.test_https_listener_name
   }
 
   request_routing_rule {
     name                       = local.test_routing_rule_name
-    http_listener_name         = local.test_listener_name
+    http_listener_name         = local.test_https_listener_name
     rule_type                  = "Basic"
     backend_address_pool_name  = local.backend_address_pool_name
     backend_http_settings_name = local.backend_settings_name
