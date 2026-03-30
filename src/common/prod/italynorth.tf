@@ -576,7 +576,7 @@ module "assets_locales_cdn" {
 
 
 module "application_gateway_assets_locales_cdn" {
-  source = "../_modules/application_gateway_assets_locales_cdn"
+  source = "../_modules/application_gateway_assets_temporary"
 
   location              = "italynorth"
   subscription_id       = data.azurerm_subscription.current.subscription_id
