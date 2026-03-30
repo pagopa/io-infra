@@ -12,23 +12,21 @@ locals {
   frontend_port_name        = "appGatewayFrontendPort"
   frontend_secure_port_name = "appGatewayFrontendSecurePort"
 
-  frontend_public_ip_configuration_name = "appGwPublicFrontendIpIPv4"
+  frontend_public_ip_configuration_name = "${local.name}-ip-conf"
 
   # HTTP
   assets_pagopa_http_listener_name                = "${local.assets_pagopa_prefix}-http-listener"
   assets_italia_http_listener_name                = "${local.assets_italia_prefix}-http-listener"
   assets_pagopa_routing_http_rule_name            = "${local.assets_pagopa_prefix}-http-rule"
   assets_italia_routing_http_rule_name            = "${local.assets_italia_prefix}-http-rule"
-  assets_pagopa_https_redirect_configuration_name = "${local.assets_pagopa_prefix}-https-redirect-conf"
-  assets_italia_https_redirect_configuration_name = "${local.assets_italia_prefix}-https-redirect-conf"
-  assets_pagopa_https_redirect_name               = "${local.assets_pagopa_prefix}-https-redirect"
-  assets_italia_https_redirect_name               = "${local.assets_italia_prefix}-https-redirect"
+  assets_pagopa_https_redirect_configuration_name = "${local.assets_pagopa_prefix}-https-redirect"
+  assets_italia_https_redirect_configuration_name = "${local.assets_italia_prefix}-https-redirect"
 
   # HTTPS
-  assets_pagopa_listener_name     = "${local.assets_pagopa_prefix}-listener"
-  assets_italia_listener_name     = "${local.assets_italia_prefix}-listener"
-  assets_pagopa_routing_rule_name = "${local.assets_pagopa_prefix}-rule"
-  assets_italia_routing_rule_name = "${local.assets_italia_prefix}-rule"
+  assets_pagopa_https_listener_name = "${local.assets_pagopa_prefix}-https-listener"
+  assets_italia_https_listener_name = "${local.assets_italia_prefix}-https-listener"
+  assets_pagopa_routing_rule_name   = "${local.assets_pagopa_prefix}-rule"
+  assets_italia_routing_rule_name   = "${local.assets_italia_prefix}-rule"
 
   assets_pagopa_certificate_name         = "" # TODO: add certificate name
   assets_pagopa_certificate_kv_secret_id = "https://${var.custom_domains_certificate_kv_name}.vault.azure.net:443/secrets/${local.assets_pagopa_certificate_name}/"
@@ -42,8 +40,7 @@ locals {
 
   test_http_listener_name                = "test-http-listener"
   test_routing_http_rule_name            = "test-http-rule"
-  test_https_redirect_configuration_name = "test-https-redirect-conf"
-  test_https_redirect_name               = "test-https-redirect"
+  test_https_redirect_configuration_name = "test-https-redirect"
   test_listener_name                     = "test-listener"
   test_routing_rule_name                 = "test-rule"
   test_certificate_name                  = "" # TODO: add certificate name

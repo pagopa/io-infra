@@ -21,6 +21,7 @@ module "agw_kv_rbac" {
       description         = "Allow Application Gateway identity to read certificates for the custom domains"
       roles = {
         certificates = "reader"
+        secrets      = "reader"
       }
     }
   ]

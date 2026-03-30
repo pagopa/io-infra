@@ -29,7 +29,7 @@ resource "azurerm_application_gateway" "assets_agw" {
   }
 
   frontend_ip_configuration {
-    name                 = "${local.name}-ip-conf"
+    name                 = local.frontend_public_ip_configuration_name
     public_ip_address_id = azurerm_public_ip.agw.id
   }
 
@@ -46,17 +46,17 @@ resource "azurerm_application_gateway" "assets_agw" {
   # HTTP listeners used for redirect
 
   http_listener {
-    name                           = local.assets_pagopa_listener_name
+    name                           = local.assets_pagopa_http_listener_name
     frontend_ip_configuration_name = local.frontend_public_ip_configuration_name
-    frontend_port_name             = local.frontend_secure_port_name
+    frontend_port_name             = local.frontend_port_name
     protocol                       = "Http"
     host_name                      = "assets.cdn.io.pagopa.it"
   }
 
   http_listener {
-    name                           = local.assets_italia_listener_name
+    name                           = local.assets_italia_http_listener_name
     frontend_ip_configuration_name = local.frontend_public_ip_configuration_name
-    frontend_port_name             = local.frontend_secure_port_name
+    frontend_port_name             = local.frontend_port_name
     protocol                       = "Http"
     host_name                      = "assets.cdn.io.italia.it"
   }
@@ -64,7 +64,7 @@ resource "azurerm_application_gateway" "assets_agw" {
   # HTTPS listeners
 
   http_listener {
-    name                           = local.assets_pagopa_listener_name
+    name                           = local.assets_pagopa_https_listener_name
     frontend_ip_configuration_name = local.frontend_public_ip_configuration_name
     frontend_port_name             = local.frontend_secure_port_name
     protocol                       = "Https"
@@ -74,7 +74,7 @@ resource "azurerm_application_gateway" "assets_agw" {
   }
 
   http_listener {
-    name                           = local.assets_italia_listener_name
+    name                           = local.assets_italia_https_listener_name
     frontend_ip_configuration_name = local.frontend_public_ip_configuration_name
     frontend_port_name             = local.frontend_secure_port_name
     protocol                       = "Https"
@@ -90,6 +90,7 @@ resource "azurerm_application_gateway" "assets_agw" {
     rule_type                   = "Basic"
     http_listener_name          = local.assets_pagopa_http_listener_name
     redirect_configuration_name = local.assets_pagopa_https_redirect_configuration_name
+    priority                    = 1
   }
 
   request_routing_rule {
@@ -97,40 +98,43 @@ resource "azurerm_application_gateway" "assets_agw" {
     rule_type                   = "Basic"
     http_listener_name          = local.assets_italia_http_listener_name
     redirect_configuration_name = local.assets_italia_https_redirect_configuration_name
+    priority                    = 2
   }
 
   redirect_configuration {
-    name                 = local.assets_pagopa_https_redirect_name
+    name                 = local.assets_pagopa_https_redirect_configuration_name
     redirect_type        = "Permanent"
     include_path         = true
     include_query_string = true
-    target_listener_name = local.assets_pagopa_listener_name
+    target_listener_name = local.assets_pagopa_https_listener_name
   }
 
   redirect_configuration {
-    name                 = local.assets_italia_https_redirect_name
+    name                 = local.assets_italia_https_redirect_configuration_name
     redirect_type        = "Permanent"
     include_path         = true
     include_query_string = true
-    target_listener_name = local.assets_italia_listener_name
+    target_listener_name = local.assets_italia_https_listener_name
   }
 
   # HTTPS rules
 
   request_routing_rule {
     name                       = local.assets_pagopa_routing_rule_name
-    http_listener_name         = local.assets_pagopa_listener_name
+    http_listener_name         = local.assets_pagopa_https_listener_name
     rule_type                  = "Basic"
     backend_address_pool_name  = local.backend_address_pool_name
     backend_http_settings_name = local.backend_settings_name
+    priority                   = 3
   }
 
   request_routing_rule {
     name                       = local.assets_italia_routing_rule_name
-    http_listener_name         = local.assets_italia_listener_name
+    http_listener_name         = local.assets_italia_https_listener_name
     rule_type                  = "Basic"
     backend_address_pool_name  = local.backend_address_pool_name
     backend_http_settings_name = local.backend_settings_name
+    priority                   = 4
   }
 
   ##### TEST domain block
@@ -159,10 +163,11 @@ resource "azurerm_application_gateway" "assets_agw" {
     rule_type                   = "Basic"
     http_listener_name          = local.test_http_listener_name
     redirect_configuration_name = local.test_https_redirect_configuration_name
+    priority                    = 5
   }
 
   redirect_configuration {
-    name                 = local.test_https_redirect_name
+    name                 = local.test_https_redirect_configuration_name
     redirect_type        = "Permanent"
     include_path         = true
     include_query_string = true
@@ -175,6 +180,7 @@ resource "azurerm_application_gateway" "assets_agw" {
     rule_type                  = "Basic"
     backend_address_pool_name  = local.backend_address_pool_name
     backend_http_settings_name = local.backend_settings_name
+    priority                   = 6
   }
 
   #################
