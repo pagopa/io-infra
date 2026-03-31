@@ -1,0 +1,28 @@
+name: assets.cdn.io.pagopa.it TLS Certificate
+
+on:
+  schedule:
+    - cron: "0 2 * * 3"
+  workflow_dispatch:
+    inputs:
+      force_renewal:
+        description: "Force the certificate renewal to use when cron-triggered execution fails"
+        required: false
+        default: false
+        type: boolean
+
+permissions:
+  id-token: write
+
+jobs:
+  prod:
+    name: "assets.cdn.io.pagopa.it"
+    uses: pagopa/dx/.github/workflows/release-certificate-v1.yaml@main
+    secrets: inherit
+    with:
+      force_renewal: ${{ inputs.force_renewal || false }}
+      key_vault_name: "io-p-itn-tlscert-kv-01"
+      csr_common_name: "assets.cdn.io.pagopa.it"
+      dns_zone: "io.pagopa.it"
+      dns_zone_resource_group: "io-p-rg-external"
+      environment: "prod-tls"
