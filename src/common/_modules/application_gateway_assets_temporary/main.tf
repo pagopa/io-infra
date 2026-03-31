@@ -142,7 +142,7 @@ resource "azurerm_application_gateway" "assets_agw" {
   http_listener {
     name                           = local.test_http_listener_name
     frontend_ip_configuration_name = local.frontend_public_ip_configuration_name
-    frontend_port_name             = local.frontend_secure_port_name
+    frontend_port_name             = local.frontend_port_name
     protocol                       = "Http"
     host_name                      = "test.cdn.io.pagopa.it" # TODO: fix test domain
   }
