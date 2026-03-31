@@ -19,7 +19,7 @@ module "appservice_continua_itn" {
 
   resource_group_name = azurerm_resource_group.continua_itn_rg.name
   health_check_path   = "/health"
-  node_version        = 20
+  node_version        = 22
 
   subnet_cidr                          = var.continua_snet_cidr
   subnet_pep_id                        = data.azurerm_subnet.private_endpoints_subnet_itn.id
