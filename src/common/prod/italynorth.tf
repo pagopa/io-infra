@@ -575,7 +575,7 @@ module "assets_locales_cdn" {
 }
 
 
-module "application_gateway_assets_locales_cdn" {
+module "application_gateway_assets_temporary" {
   source = "../_modules/application_gateway_assets_temporary"
 
   location              = "italynorth"
