@@ -35,6 +35,13 @@ locals {
     "MCCNGL90R20G943C",
   ]
 
+  # A list of fiscal codes to be used to test CGN (Carta Giovani Nazionale)
+  test_users_cgn = [
+    "CGNTST00A01H501C",
+    "CGNTST00A41F839E",
+    "CGNTST00A01F205F",
+  ]
+
   # A list of fiscal code to be uset to execute load test for Fast Login initiative on IO
   test_users_fast_login_load_test = concat([
     for i in range(0, 1000) : format("LVTEST00A00A%03dX", i)
