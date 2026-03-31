@@ -39,6 +39,13 @@ locals {
     reviewers_teams = ["io-backend-contributors", "io-backend-admin", "engineering-team-cloud-eng"]
   }
 
+  prod_tls_cd = {
+    secrets = {
+      "ARM_CLIENT_ID"       = data.azurerm_user_assigned_identity.identity_prod_cd.client_id,
+      "ARM_SUBSCRIPTION_ID" = data.azurerm_subscription.current.subscription_id
+    }
+  }
+
   dev_cd = {
     secrets = {
       "ARM_CLIENT_ID"       = data.azurerm_user_assigned_identity.identity_dev_cd.client_id,
