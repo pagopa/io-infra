@@ -144,7 +144,7 @@ resource "azurerm_application_gateway" "assets_agw" {
     frontend_ip_configuration_name = local.frontend_public_ip_configuration_name
     frontend_port_name             = local.frontend_port_name
     protocol                       = "Http"
-    host_name                      = "test.cdn.io.pagopa.it" # TODO: fix test domain
+    host_name                      = "test.assets.cdn.io.pagopa.it"
   }
 
 
@@ -153,7 +153,7 @@ resource "azurerm_application_gateway" "assets_agw" {
     frontend_ip_configuration_name = local.frontend_public_ip_configuration_name
     frontend_port_name             = local.frontend_secure_port_name
     protocol                       = "Https"
-    host_name                      = "test.cdn.io.pagopa.it" # TODO: fix test domain
+    host_name                      = "test.assets.cdn.io.pagopa.it"
     require_sni                    = true
     ssl_certificate_name           = local.test_certificate_name
   }
@@ -222,6 +222,11 @@ resource "azurerm_application_gateway" "assets_agw" {
   ssl_certificate {
     name                = local.assets_italia_certificate_name
     key_vault_secret_id = local.assets_italia_certificate_kv_secret_id
+  }
+
+  ssl_certificate {
+    name                = local.test_certificate_name
+    key_vault_secret_id = local.test_certificate_kv_secret_id
   }
 
   firewall_policy_id = azurerm_web_application_firewall_policy.agw.id

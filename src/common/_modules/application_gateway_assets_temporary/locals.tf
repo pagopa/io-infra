@@ -28,9 +28,9 @@ locals {
   assets_pagopa_routing_rule_name   = "${local.assets_pagopa_prefix}-rule"
   assets_italia_routing_rule_name   = "${local.assets_italia_prefix}-rule"
 
-  assets_pagopa_certificate_name         = "" # TODO: add certificate name
+  assets_pagopa_certificate_name         = "assets-cdn-io-pagopa-it"
   assets_pagopa_certificate_kv_secret_id = "https://${var.custom_domains_certificate_kv_name}.vault.azure.net/secrets/${local.assets_pagopa_certificate_name}/"
-  assets_italia_certificate_name         = "" # TODO: add certificate name
+  assets_italia_certificate_name         = "assets-cdn-io-italia-it"
   assets_italia_certificate_kv_secret_id = "https://${var.custom_domains_certificate_kv_name}.vault.azure.net/secrets/${local.assets_italia_certificate_name}/"
 
   backend_settings_name = "${local.assets_cdn_prefix}-backend-pool-settings"
@@ -43,6 +43,6 @@ locals {
   test_https_redirect_configuration_name = "test-https-redirect"
   test_https_listener_name               = "test-https-listener"
   test_routing_rule_name                 = "test-rule"
-  test_certificate_name                  = "" # TODO: add certificate name
+  test_certificate_name                  = "test-assets-cdn-io-pagopa-it"
   test_certificate_kv_secret_id          = "https://${var.custom_domains_certificate_kv_name}.vault.azure.net/secrets/${local.test_certificate_name}/"
 }
