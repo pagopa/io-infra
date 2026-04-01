@@ -41,14 +41,6 @@ resource "azurerm_resource_group" "assets_cdn_itn" {
   tags = local.tags
 }
 
-resource "azurerm_resource_group" "application_gateway_assets_temporary_itn" {
-  name     = "${local.project_itn}-agw-assets-temporary-rg-01"
-  location = "italynorth"
-
-  tags = local.tags
-}
-
-
 resource "azurerm_resource_group" "external_itn" {
   name     = "${local.project_itn}-external-rg-01"
   location = "italynorth"
