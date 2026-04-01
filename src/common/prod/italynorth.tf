@@ -584,7 +584,7 @@ module "application_gateway_assets_temporary" {
   resource_group_common = local.core.resource_groups.italynorth.common
   resource_group        = local.core.resource_groups.italynorth.application_gateway_assets_temporary_itn
   vnet_common           = local.core.networking.itn.vnet_common
-  cidr_subnet           = ["10.20.41.0/24"]
+  cidr_subnet           = ["10.20.43.0/24"]
 
   custom_domains_certificate_kv_name = local.core.key_vault.weu.tlscert_itn_01.name
   custom_domains_certificate_kv_rg   = local.core.key_vault.weu.tlscert_itn_01.resource_group_name
