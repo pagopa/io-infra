@@ -1,8 +1,8 @@
-name: assets.cdn.io.pagopa.it TLS Certificate
+name: assets.cdn.io.italia.it TLS Certificate
 
 on:
   schedule:
-    - cron: "0 2 * * 3"
+    - cron: "30 2 * * 3"
   workflow_dispatch:
     inputs:
       force_renewal:
@@ -16,13 +16,13 @@ permissions:
 
 jobs:
   prod:
-    name: "assets.cdn.io.pagopa.it"
+    name: "assets.cdn.io.italia.it"
     uses: pagopa/dx/.github/workflows/release-certificate-v1.yaml@main
     secrets: inherit
     with:
       force_renewal: ${{ inputs.force_renewal || false }}
       key_vault_name: "io-p-itn-tlscert-kv-01"
-      csr_common_name: "assets.cdn.io.pagopa.it"
-      dns_zone: "io.pagopa.it"
+      csr_common_name: "assets.cdn.io.italia.it"
+      dns_zone: "io.italia.it"
       dns_zone_resource_group: "io-p-rg-external"
       environment: "prod-tls"
