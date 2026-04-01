@@ -15,7 +15,12 @@ variable "location" {
 
 variable "resource_group_common" {
   type        = string
-  description = "Common resource group name"
+  description = "Common resource group name for the networking resources"
+}
+
+variable "resource_group" {
+  type        = string
+  description = "Resource group name for the AGW resources"
 }
 
 variable "vnet_common" {

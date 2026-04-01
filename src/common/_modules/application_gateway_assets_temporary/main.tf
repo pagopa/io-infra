@@ -1,7 +1,7 @@
 resource "azurerm_application_gateway" "assets_agw" {
 
   name                = local.name
-  resource_group_name = var.resource_group_common
+  resource_group_name = var.resource_group
   location            = var.location
 
   zones        = ["1", "2", "3"]

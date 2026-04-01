@@ -582,6 +582,7 @@ module "application_gateway_assets_temporary" {
   subscription_id       = data.azurerm_subscription.current.subscription_id
   project               = local.project_itn
   resource_group_common = local.core.resource_groups.italynorth.common
+  resource_group        = local.core.resource_groups.italynorth.application_gateway_assets_temporary_itn
   vnet_common           = local.core.networking.itn.vnet_common
   cidr_subnet           = ["10.20.41.0/24"]
 

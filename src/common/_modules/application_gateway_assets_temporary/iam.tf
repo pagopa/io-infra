@@ -1,5 +1,5 @@
 resource "azurerm_user_assigned_identity" "agw" {
-  resource_group_name = var.resource_group_common
+  resource_group_name = var.resource_group
   location            = var.location
   name                = "${var.project}-assets-agw-id-01"
 

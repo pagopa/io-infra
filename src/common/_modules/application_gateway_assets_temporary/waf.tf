@@ -1,6 +1,6 @@
 resource "azurerm_web_application_firewall_policy" "agw" {
   name                = "${var.project}-assets-agw-waf-01"
-  resource_group_name = var.resource_group_common
+  resource_group_name = var.resource_group
   location            = var.location
 
   managed_rules {
