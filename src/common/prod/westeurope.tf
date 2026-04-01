@@ -365,7 +365,7 @@ module "assets_cdn_weu" {
   key_vault_common    = local.core.key_vault.weu.kv_common
   external_domain     = module.global.dns.external_domain
   public_dns_zones    = module.global.dns.public_dns_zones
-  dns_default_ttl_sec = module.global.dns.dns_default_ttl_sec
+  dns_default_ttl_sec = 300
   assets_cdn_fn = {
     name     = data.azurerm_linux_function_app.function_assets_cdn.name
     hostname = data.azurerm_linux_function_app.function_assets_cdn.default_hostname
