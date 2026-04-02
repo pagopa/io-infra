@@ -60,6 +60,16 @@ variable "autoscale_max_capacity" {
   default     = 100
 }
 
+variable "resource_group_external" {
+  type        = string
+  description = "Public DNS zones external resource group"
+}
+
+variable "public_dns_zones" {
+  type        = map(any)
+  description = "Public DNS zones information"
+}
+
 variable "tags" {
   type        = map(any)
   description = "Resource tags"

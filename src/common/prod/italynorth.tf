@@ -578,13 +578,15 @@ module "assets_locales_cdn" {
 module "application_gateway_assets_temporary" {
   source = "../_modules/application_gateway_assets_temporary"
 
-  location              = "italynorth"
-  subscription_id       = data.azurerm_subscription.current.subscription_id
-  project               = local.project_itn
-  resource_group_common = local.core.resource_groups.italynorth.common
-  resource_group        = local.core.resource_groups.italynorth.application_gateway_assets_temporary_itn
-  vnet_common           = local.core.networking.itn.vnet_common
-  cidr_subnet           = ["10.20.43.0/24"]
+  location                = "italynorth"
+  subscription_id         = data.azurerm_subscription.current.subscription_id
+  project                 = local.project_itn
+  resource_group_common   = local.core.resource_groups.italynorth.common
+  resource_group          = local.core.resource_groups.italynorth.application_gateway_assets_temporary_itn
+  resource_group_external = "io-p-rg-external"
+  public_dns_zones        = module.global.dns.public_dns_zones
+  vnet_common             = local.core.networking.itn.vnet_common
+  cidr_subnet             = ["10.20.43.0/24"]
 
   custom_domains_certificate_kv_name = local.core.key_vault.weu.tlscert_itn_01.name
   custom_domains_certificate_kv_rg   = local.core.key_vault.weu.tlscert_itn_01.resource_group_name
