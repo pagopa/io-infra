@@ -36,13 +36,4 @@ locals {
   backend_settings_name = "${local.assets_cdn_prefix}-backend-pool-settings"
   backend_probe_name    = "${local.assets_cdn_prefix}-probe"
 
-  # TEST DOMAIN
-
-  test_http_listener_name                = "test-http-listener"
-  test_routing_http_rule_name            = "test-http-rule"
-  test_https_redirect_configuration_name = "test-https-redirect"
-  test_https_listener_name               = "test-https-listener"
-  test_routing_rule_name                 = "test-rule"
-  test_certificate_name                  = "test-assets-cdn-io-pagopa-it"
-  test_certificate_kv_secret_id          = "https://${var.custom_domains_certificate_kv_name}.vault.azure.net/secrets/${local.test_certificate_name}/"
 }
