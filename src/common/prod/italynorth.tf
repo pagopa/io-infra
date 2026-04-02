@@ -593,3 +593,8 @@ module "application_gateway_assets_temporary" {
 
   tags = local.tags
 }
+
+import {
+  to = module.application_gateway_assets_temporary.azurerm_dns_a_record.public_ip_a_record
+  id = "/subscriptions/ec285037-c673-4f58-b594-d7c480da4e8b/resourceGroups/io-p-rg-external/providers/Microsoft.Network/dnsZones/io.pagopa.it/A/redirect.assets.cdn"
+}
