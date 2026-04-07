@@ -15,8 +15,8 @@ data "terraform_remote_state" "core" {
 data "azurerm_client_config" "current" {}
 
 data "azurerm_linux_web_app" "firmaconio_selfcare_web_app" {
-  name                = "${local.project_weu_legacy}-sign-backoffice-app"
-  resource_group_name = "${local.project_weu_legacy}-sign-backend-rg"
+  name                = "${local.project_itn}-sign-backoffice-app-01"
+  resource_group_name = "${local.project_itn}-sign-rg-01"
 }
 
 data "azurerm_private_endpoint_connection" "psn_appgw" {
