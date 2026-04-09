@@ -24,14 +24,3 @@ resource "azurerm_dns_a_record" "public_ip_a_record" {
   ttl                 = 60
   target_resource_id  = azurerm_public_ip.agw.id
 }
-
-##### TEST domain block
-resource "azurerm_dns_cname_record" "test_domain_cname" {
-
-  name                = "test.assets.cdn"
-  zone_name           = var.public_dns_zones.io.name
-  resource_group_name = var.resource_group_external
-  ttl                 = 60
-  record              = "redirect.assets.cdn.io.pagopa.it"
-}
-#####
