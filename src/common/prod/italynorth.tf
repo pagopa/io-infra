@@ -595,6 +595,10 @@ module "application_gateway_assets_temporary" {
 }
 
 import {
-  to = module.application_gateway_assets_temporary.azurerm_dns_a_record.public_ip_a_record
-  id = "/subscriptions/ec285037-c673-4f58-b594-d7c480da4e8b/resourceGroups/io-p-rg-external/providers/Microsoft.Network/dnsZones/io.pagopa.it/A/redirect.assets.cdn"
+  to = module.assets_locales_cdn.module.azure_cdn.azurerm_dns_txt_record.validation["assets.cdn.io.italia.it"]
+  id = "/subscriptions/ec285037-c673-4f58-b594-d7c480da4e8b/resourceGroups/io-p-rg-external/providers/Microsoft.Network/dnsZones/io.italia.it/A/assets.cdn"
+}
+moved {
+  from = module.assets_cdn_weu.azurerm_dns_cname_record.assets_cdn_io_italia_it
+  to   = module.assets_locales_cdn.module.azure_cdn.azurerm_dns_cname_record.this["assets.cdn.io.italia.it"]
 }
