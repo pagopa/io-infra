@@ -602,3 +602,11 @@ moved {
   from = module.assets_cdn_weu.azurerm_dns_cname_record.assets_cdn_io_italia_it
   to   = module.assets_locales_cdn.module.azure_cdn.azurerm_dns_cname_record.this["assets.cdn.io.italia.it"]
 }
+import {
+  to = module.assets_locales_cdn.module.azure_cdn.azurerm_dns_txt_record.validation["assets.cdn.io.pagopa.it"]
+  id = "/subscriptions/ec285037-c673-4f58-b594-d7c480da4e8b/resourceGroups/io-p-rg-external/providers/Microsoft.Network/dnsZones/io.pagopa.it/TXT/_dnsauth.assets.cdn"
+}
+moved {
+  from = module.assets_cdn_weu.azurerm_dns_cname_record.assets_cdn_io_pagopa_it
+  to   = module.assets_locales_cdn.module.azure_cdn.azurerm_dns_cname_record.this["assets.cdn.io.pagopa.it"]
+}
