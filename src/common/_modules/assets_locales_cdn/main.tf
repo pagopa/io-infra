@@ -30,6 +30,10 @@ module "azure_cdn" {
     },
     {
       host_name = "assets.cdn.io.italia.it"
+      dns = {
+        zone_name                = var.public_dns_zones.io_italia_it.name
+        zone_resource_group_name = var.resource_group_external
+      }
     }
   ]
 
