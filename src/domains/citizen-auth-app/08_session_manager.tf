@@ -100,7 +100,7 @@ locals {
     WEBSITES_ENABLE_APP_SERVICE_STORAGE = false
     WEBSITES_PORT                       = 8080
 
-    WEBSITE_NODE_DEFAULT_VERSION = "20.12.2"
+    WEBSITE_NODE_DEFAULT_VERSION = "22.22.2"
     WEBSITE_RUN_FROM_PACKAGE     = "1"
 
     // HEALTHCHECK VARIABLES
@@ -262,7 +262,7 @@ module "session_manager_weu" {
   location            = var.location
 
   always_on    = true
-  node_version = "20-lts"
+  node_version = "22-lts"
   # NOTE:
   # 1. the linux container for app services already has pm2 installed
   #    (refer to https://learn.microsoft.com/en-us/azure/app-service/configure-language-nodejs?pivots=platform-linux#run-with-pm2)
@@ -312,7 +312,7 @@ module "session_manager_weu_staging" {
   location            = var.location
 
   always_on    = true
-  node_version = "20-lts"
+  node_version = "22-lts"
   # NOTE:
   # 1. the linux container for app services already has pm2 installed
   #    (refer to https://learn.microsoft.com/en-us/azure/app-service/configure-language-nodejs?pivots=platform-linux#run-with-pm2)
@@ -364,7 +364,7 @@ module "session_manager_weu_bis" {
   location            = var.location
 
   always_on    = true
-  node_version = "20-lts"
+  node_version = "22-lts"
   # NOTE:
   # 1. the linux container for app services already has pm2 installed
   #    (refer to https://learn.microsoft.com/en-us/azure/app-service/configure-language-nodejs?pivots=platform-linux#run-with-pm2)
@@ -414,7 +414,7 @@ module "session_manager_weu_bis_staging" {
   location            = var.location
 
   always_on    = true
-  node_version = "20-lts"
+  node_version = "22-lts"
   # NOTE:
   # 1. the linux container for app services already has pm2 installed
   #    (refer to https://learn.microsoft.com/en-us/azure/app-service/configure-language-nodejs?pivots=platform-linux#run-with-pm2)
