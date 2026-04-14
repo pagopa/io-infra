@@ -15,13 +15,12 @@ output "key_vault" {
 output "resource_groups" {
   value = {
     italynorth = {
-      location_short                           = "itn"
-      common                                   = azurerm_resource_group.common_itn.name
-      dashboards                               = azurerm_resource_group.dashboards_itn.name
-      github_id                                = azurerm_resource_group.github_managed_identity_itn.name
-      external                                 = azurerm_resource_group.external_itn.name
-      assets_cdn                               = azurerm_resource_group.assets_cdn_itn.name
-      application_gateway_assets_temporary_itn = azurerm_resource_group.application_gateway_assets_temporary_itn.name
+      location_short = "itn"
+      common         = azurerm_resource_group.common_itn.name
+      dashboards     = azurerm_resource_group.dashboards_itn.name
+      github_id      = azurerm_resource_group.github_managed_identity_itn.name
+      external       = azurerm_resource_group.external_itn.name
+      assets_cdn     = azurerm_resource_group.assets_cdn_itn.name
     }
     westeurope = {
       location_short = "weu"
