@@ -171,7 +171,7 @@ locals {
         isLollipopEnabled  = "false",
         disableLollipopFor = [],
         prodEnvironment = {
-          baseUrl = "https://io-p-sign-user-func.azurewebsites.net/api/v1/sign",
+          baseUrl = "https://io-p-itn-sign-user-func-01.azurewebsites.net/api/v1/sign",
           detailsAuthentication = {
             type            = "API_KEY",
             header_key_name = "X-Functions-Key",
