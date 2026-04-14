@@ -248,7 +248,7 @@ locals {
 // are granted before enabling production traffic.
 // see reference https://github.com/pagopa/io-auth-n-identity-domain/blob/303a5659791ce95b529c557f4aa4400e7e51e9a7/infra/resources/prod/servicebus_topic.tf#L61
 module "session_manager_weu" {
-  source = "github.com/pagopa/terraform-azurerm-v4//app_service?ref=v1.1.0"
+  source = "github.com/pagopa/terraform-azurerm-v4//app_service?ref=v10.1.0"
 
   # App service plan
   plan_type              = "internal"
@@ -278,6 +278,8 @@ module "session_manager_weu" {
     slow_requests_time     = "00:00:10"
   }
 
+  premium_plan_auto_scale_enabled = true
+
   app_settings = merge(
     local.app_settings_common,
     {
@@ -296,28 +298,27 @@ module "session_manager_weu" {
   subnet_id                     = module.session_manager_snet.id
   vnet_integration              = true
   public_network_access_enabled = false
+  ip_restriction_default_action = "Deny"
 
   tags = var.tags
 }
 
 ## staging slot
 module "session_manager_weu_staging" {
-  source = "github.com/pagopa/terraform-azurerm-v4//app_service_slot?ref=v1.1.0"
+  source = "github.com/pagopa/terraform-azurerm-v4//app_service_slot?ref=v10.1.0"
 
-  app_service_id   = module.session_manager_weu.id
-  app_service_name = module.session_manager_weu.name
+  app_service_id = module.session_manager_weu.id
 
-  name                = "staging"
-  resource_group_name = data.azurerm_resource_group.session_manager_rg_weu.name
-  location            = var.location
+  name = "staging"
 
   always_on    = true
   node_version = "22-lts"
   # NOTE:
   # 1. the linux container for app services already has pm2 installed
   #    (refer to https://learn.microsoft.com/en-us/azure/app-service/configure-language-nodejs?pivots=platform-linux#run-with-pm2)
-  app_command_line  = "pm2 start dist/server.js -i max --no-daemon --filter-env \"APPSETTING_\""
-  health_check_path = "/api/auth/v1/healthcheck"
+  app_command_line             = "pm2 start dist/server.js -i max --no-daemon --filter-env \"APPSETTING_\""
+  health_check_path            = "/api/auth/v1/healthcheck"
+  health_check_maxpingfailures = 2
 
   auto_heal_enabled = true
   auto_heal_settings = {
@@ -350,7 +351,7 @@ module "session_manager_weu_staging" {
 }
 
 module "session_manager_weu_bis" {
-  source = "github.com/pagopa/terraform-azurerm-v4//app_service?ref=v1.1.0"
+  source = "github.com/pagopa/terraform-azurerm-v4//app_service?ref=v10.1.0"
 
   # App service plan
   plan_type              = "internal"
@@ -380,6 +381,8 @@ module "session_manager_weu_bis" {
     slow_requests_time     = "00:00:10"
   }
 
+  premium_plan_auto_scale_enabled = true
+
   app_settings = merge(
     local.app_settings_common,
     {
@@ -398,28 +401,27 @@ module "session_manager_weu_bis" {
   subnet_id                     = module.session_manager_bis_snet.id
   vnet_integration              = true
   public_network_access_enabled = false
+  ip_restriction_default_action = "Deny"
 
   tags = var.tags
 }
 
 ## staging slot
 module "session_manager_weu_bis_staging" {
-  source = "github.com/pagopa/terraform-azurerm-v4//app_service_slot?ref=v1.1.0"
+  source = "github.com/pagopa/terraform-azurerm-v4//app_service_slot?ref=v10.1.0"
 
-  app_service_id   = module.session_manager_weu_bis.id
-  app_service_name = module.session_manager_weu_bis.name
+  app_service_id = module.session_manager_weu_bis.id
 
-  name                = "staging"
-  resource_group_name = data.azurerm_resource_group.session_manager_rg_weu.name
-  location            = var.location
+  name = "staging"
 
   always_on    = true
   node_version = "22-lts"
   # NOTE:
   # 1. the linux container for app services already has pm2 installed
   #    (refer to https://learn.microsoft.com/en-us/azure/app-service/configure-language-nodejs?pivots=platform-linux#run-with-pm2)
-  app_command_line  = "pm2 start dist/server.js -i max --no-daemon --filter-env \"APPSETTING_\""
-  health_check_path = "/api/auth/v1/healthcheck"
+  app_command_line             = "pm2 start dist/server.js -i max --no-daemon --filter-env \"APPSETTING_\""
+  health_check_path            = "/api/auth/v1/healthcheck"
+  health_check_maxpingfailures = 2
 
   auto_heal_enabled = true
   auto_heal_settings = {
