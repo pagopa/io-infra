@@ -248,7 +248,7 @@ locals {
 // are granted before enabling production traffic.
 // see reference https://github.com/pagopa/io-auth-n-identity-domain/blob/303a5659791ce95b529c557f4aa4400e7e51e9a7/infra/resources/prod/servicebus_topic.tf#L61
 module "session_manager_weu" {
-  source = "github.com/pagopa/terraform-azurerm-v3//app_service?ref=v8.28.1"
+  source = "github.com/pagopa/terraform-azurerm-v4//app_service?ref=v1.1.0"
 
   # App service plan
   plan_type              = "internal"
@@ -302,7 +302,7 @@ module "session_manager_weu" {
 
 ## staging slot
 module "session_manager_weu_staging" {
-  source = "github.com/pagopa/terraform-azurerm-v3//app_service_slot?ref=v8.28.1"
+  source = "github.com/pagopa/terraform-azurerm-v4//app_service_slot?ref=v1.1.0"
 
   app_service_id   = module.session_manager_weu.id
   app_service_name = module.session_manager_weu.name
@@ -350,7 +350,7 @@ module "session_manager_weu_staging" {
 }
 
 module "session_manager_weu_bis" {
-  source = "github.com/pagopa/terraform-azurerm-v3//app_service?ref=v8.28.1"
+  source = "github.com/pagopa/terraform-azurerm-v4//app_service?ref=v1.1.0"
 
   # App service plan
   plan_type              = "internal"
@@ -404,7 +404,7 @@ module "session_manager_weu_bis" {
 
 ## staging slot
 module "session_manager_weu_bis_staging" {
-  source = "github.com/pagopa/terraform-azurerm-v3//app_service_slot?ref=v8.28.1"
+  source = "github.com/pagopa/terraform-azurerm-v4//app_service_slot?ref=v1.1.0"
 
   app_service_id   = module.session_manager_weu_bis.id
   app_service_name = module.session_manager_weu_bis.name
