@@ -352,29 +352,6 @@ module "application_gateway_weu" {
   tags = local.tags
 }
 
-module "assets_cdn_weu" {
-  source = "../_modules/assets_cdn"
-
-  location                  = "westeurope"
-  location_short            = local.core.resource_groups.westeurope.location_short
-  project                   = local.project_weu_legacy
-  resource_group_common     = local.core.resource_groups.westeurope.common
-  resource_group_assets_cdn = local.core.resource_groups.westeurope.assets_cdn
-  resource_group_external   = local.core.resource_groups.westeurope.external
-
-  key_vault_common    = local.core.key_vault.weu.kv_common
-  external_domain     = module.global.dns.external_domain
-  public_dns_zones    = module.global.dns.public_dns_zones
-  dns_default_ttl_sec = 60
-  assets_cdn_fn = {
-    name     = data.azurerm_linux_function_app.function_assets_cdn.name
-    hostname = data.azurerm_linux_function_app.function_assets_cdn.default_hostname
-  }
-  azure_adgroup_svc_devs_object_id = data.azuread_group.svc_devs.object_id
-
-  tags = local.tags
-}
-
 module "cosmos_api_weu" {
   source = "../_modules/cosmos_api"
 
@@ -494,17 +471,7 @@ module "storage_accounts" {
   tags = local.tags
 }
 
-import {
-  id = "/subscriptions/ec285037-c673-4f58-b594-d7c480da4e8b/resourceGroups/io-p-rg-internal/providers/Microsoft.Storage/storageAccounts/iopstapp"
-  to = module.storage_accounts.azurerm_storage_account.app[0]
-}
-
-import {
-  id = "/subscriptions/ec285037-c673-4f58-b594-d7c480da4e8b/resourceGroups/io-p-rg-operations/providers/Microsoft.Storage/storageAccounts/iopstlogs"
-  to = module.storage_accounts.azurerm_storage_account.logs[0]
-}
-
-import {
-  to = module.cosmos_api_weu.azurerm_cosmosdb_sql_container.these["profile-emails-uniqueness-leases-itn-002"]
-  id = "/subscriptions/ec285037-c673-4f58-b594-d7c480da4e8b/resourceGroups/io-p-rg-internal/providers/Microsoft.DocumentDB/databaseAccounts/io-p-cosmos-api/sqlDatabases/db/containers/profile-emails-uniqueness-leases-itn-002"
+moved {
+  from = module.assets_cdn_weu.module.assets_cdn
+  to   = module.storage_accounts.module.legacy_assets_cdn_storage_account
 }

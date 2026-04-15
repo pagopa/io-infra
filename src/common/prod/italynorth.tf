@@ -573,17 +573,3 @@ module "assets_locales_cdn" {
 
   tags = local.tags
 }
-
-removed {
-  from = module.application_gateway_assets_temporary.azurerm_dns_a_record.public_ip_a_record
-  lifecycle {
-    destroy = false
-  }
-}
-
-removed {
-  from = module.application_gateway_assets_temporary.azurerm_public_ip.agw
-  lifecycle {
-    destroy = false
-  }
-}
