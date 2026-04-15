@@ -479,5 +479,5 @@ moved {
 
 moved {
   from = module.assets_cdn_weu.module.roles_svc_devs.module.storage_account.azurerm_role_assignment.blob["iopstcdnassets|*|writer"]
-  to   = module.storage_accounts.module.legacy_cdn_svc_devs.module.storage_account.azurerm_role_assignment.blob["iopstcdnassets|*|writer"]
+  to   = module.storage_accounts.module.legacy_cdn_svc_devs[0].module.storage_account.azurerm_role_assignment.blob["iopstcdnassets|*|writer|Storage Blob Data Contributor"]
 }
