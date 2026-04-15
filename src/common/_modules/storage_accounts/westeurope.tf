@@ -57,14 +57,14 @@ module "legacy_assets_cdn_storage_account" {
 
   source = "github.com/pagopa/terraform-azurerm-v4//storage_account?ref=v1.23.3"
 
-  name                            = replace(try(local.nonstandard[var.location_short].st, "${var.project}-assets-st-01"), "-", "")
+  name                            = "iopstcdnassets"
   account_kind                    = "StorageV2"
   account_tier                    = "Standard"
   access_tier                     = "Hot"
   blob_versioning_enabled         = true
   account_replication_type        = "GZRS"
-  resource_group_name             = var.resource_group_common
-  location                        = var.location
+  resource_group_name             = "io-p-rg-common"
+  location                        = "westeurope"
   advanced_threat_protection      = false
   allow_nested_items_to_be_public = true
   public_network_access_enabled   = true
