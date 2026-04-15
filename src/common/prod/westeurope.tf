@@ -467,6 +467,7 @@ module "storage_accounts" {
   azure_adgroup_com_admins_object_id = data.azuread_group.com_admins.object_id
   azure_adgroup_com_devs_object_id   = data.azuread_group.com_devs.object_id
   azure_adgroup_admins_object_id     = data.azuread_group.admins.object_id
+  azure_adgroup_svc_devs_object_id   = data.azuread_group.svc_devs.object_id
 
   tags = local.tags
 }
@@ -474,4 +475,9 @@ module "storage_accounts" {
 moved {
   from = module.assets_cdn_weu.module.assets_cdn.azurerm_storage_account.this
   to   = module.storage_accounts.module.legacy_assets_cdn_storage_account[0].azurerm_storage_account.this
+}
+
+moved {
+  from = module.assets_cdn_weu.module.roles_svc_devs.module.storage_account.azurerm_role_assignment.blob["iopstcdnassets|*|writer"]
+  to   = module.storage_accounts.module.legacy_cdn_svc_devs.module.storage_account.azurerm_role_assignment.blob["iopstcdnassets|*|writer"]
 }

@@ -100,3 +100,21 @@ module "retirements_itn_01_admins" {
     }
   ]
 }
+
+module "legacy_cdn_svc_devs" {
+  count = var.location == "westeurope" ? 1 : 0
+
+  source  = "pagopa-dx/azure-role-assignments/azurerm"
+  version = "~> 1.0"
+
+  principal_id    = var.azure_adgroup_svc_devs_object_id
+  subscription_id = var.subscription_id
+
+  storage_blob = [
+    {
+      storage_account_name = module.legacy_assets_cdn_storage_account.storage_account_name
+      resource_group_name  = "io-p-rg-common"
+      role                 = "writer"
+    }
+  ]
+}
