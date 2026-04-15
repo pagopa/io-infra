@@ -112,8 +112,8 @@ module "legacy_cdn_svc_devs" {
 
   storage_blob = [
     {
-      storage_account_name = module.legacy_assets_cdn_storage_account.name
-      resource_group_name  = "io-p-rg-common"
+      storage_account_name = module.legacy_assets_cdn_storage_account[0].name
+      resource_group_name  = module.legacy_assets_cdn_storage_account[0].resource_group_name
       role                 = "writer"
     }
   ]
