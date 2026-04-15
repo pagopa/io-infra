@@ -105,7 +105,7 @@ locals {
       port                        = 443
       ip_addresses                = null # with null value use fqdns
       fqdns                       = var.backend_hostnames.firmaconio_selfcare_web_app
-      probe                       = "/health"
+      probe                       = "/info"
       probe_name                  = "probe-firmaconio-selfcare-backend"
       request_timeout             = 180
       pick_host_name_from_backend = true
