@@ -472,6 +472,6 @@ module "storage_accounts" {
 }
 
 moved {
-  from = module.assets_cdn_weu.module.assets_cdn
-  to   = module.storage_accounts.module.legacy_assets_cdn_storage_account
+  from = module.assets_cdn_weu.module.assets_cdn.azurerm_storage_account.this
+  to   = module.storage_accounts.module.legacy_assets_cdn_storage_account[0].azurerm_storage_account.this
 }
