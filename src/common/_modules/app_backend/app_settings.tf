@@ -117,9 +117,6 @@ locals {
     PECSERVERS_aruba_secret    = "@Microsoft.KeyVault(VaultName=${var.key_vault_common.name};SecretName=appbackend-PECSERVER-ARUBA-TOKEN-SECRET)"
     PECSERVERS_aruba_serviceId = "01FRMRD5P7H378MDXBBW3DTYCF"
 
-    // CGN
-    TEST_CGN_FISCAL_CODES = ""
-
     // Service ID PN
     PN_SERVICE_ID = local.service_ids.pn
 
