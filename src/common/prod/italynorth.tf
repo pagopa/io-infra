@@ -144,6 +144,7 @@ module "storage_accounts_itn" {
   azure_adgroup_com_admins_object_id = data.azuread_group.com_admins.object_id
   azure_adgroup_com_devs_object_id   = data.azuread_group.com_devs.object_id
   azure_adgroup_admins_object_id     = data.azuread_group.admins.object_id
+  azure_adgroup_svc_devs_object_id   = data.azuread_group.svc_devs.object_id
 
   tags = local.tags
 }
@@ -572,18 +573,4 @@ module "assets_locales_cdn" {
   }
 
   tags = local.tags
-}
-
-removed {
-  from = module.application_gateway_assets_temporary.azurerm_dns_a_record.public_ip_a_record
-  lifecycle {
-    destroy = false
-  }
-}
-
-removed {
-  from = module.application_gateway_assets_temporary.azurerm_public_ip.agw
-  lifecycle {
-    destroy = false
-  }
 }
