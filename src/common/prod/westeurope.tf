@@ -1,10 +1,10 @@
 module "event_hubs_weu" {
   source = "../_modules/event_hubs"
 
-  location                  = "westeurope"
-  location_short            = local.core.resource_groups.westeurope.location_short
-  project                   = local.project_weu_legacy
-  resource_group_common     = local.core.resource_groups.westeurope.common
+  location              = "westeurope"
+  location_short        = local.core.resource_groups.westeurope.location_short
+  project               = local.project_weu_legacy
+  resource_group_common = local.core.resource_groups.westeurope.common
 
   servicebus_dns_zone   = module.global.dns.private_dns_zones.servicebus
   vnet_common           = local.core.networking.weu.vnet_common
