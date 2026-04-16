@@ -97,13 +97,6 @@ resource "azurerm_resource_group" "acr_weu" {
   tags = local.tags
 }
 
-resource "azurerm_resource_group" "assets_cdn_weu" {
-  name     = format("%s-assets-cdn-rg", local.project_weu_legacy)
-  location = "westeurope"
-
-  tags = local.tags
-}
-
 resource "azurerm_resource_group" "linux_weu" {
   name     = "${local.project_weu_legacy}-rg-linux"
   location = "westeurope"
