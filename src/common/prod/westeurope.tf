@@ -5,7 +5,6 @@ module "event_hubs_weu" {
   location_short            = local.core.resource_groups.westeurope.location_short
   project                   = local.project_weu_legacy
   resource_group_common     = local.core.resource_groups.westeurope.common
-  resource_group_assets_cdn = local.core.resource_groups.westeurope.assets_cdn
 
   servicebus_dns_zone   = module.global.dns.private_dns_zones.servicebus
   vnet_common           = local.core.networking.weu.vnet_common
@@ -470,19 +469,4 @@ module "storage_accounts" {
   azure_adgroup_svc_devs_object_id   = data.azuread_group.svc_devs.object_id
 
   tags = local.tags
-}
-
-moved {
-  from = module.assets_cdn_weu.module.assets_cdn.azurerm_storage_account.this
-  to   = module.storage_accounts.module.legacy_assets_cdn_storage_account[0].azurerm_storage_account.this
-}
-
-moved {
-  from = module.assets_cdn_weu.module.roles_svc_devs.module.storage_account.azurerm_role_assignment.blob["iopstcdnassets|*|writer"]
-  to   = module.storage_accounts.module.legacy_cdn_svc_devs[0].module.storage_account.azurerm_role_assignment.blob["iopstcdnassets|*|writer|Storage Blob Data Contributor"]
-}
-
-moved {
-  from = module.assets_cdn_weu.module.assets_cdn.azurerm_monitor_metric_alert.storage_account_low_availability[0]
-  to   = module.storage_accounts.module.legacy_assets_cdn_storage_account[0].azurerm_monitor_metric_alert.storage_account_low_availability[0]
 }
