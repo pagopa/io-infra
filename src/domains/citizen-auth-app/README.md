@@ -5,14 +5,14 @@
 | Name | Version |
 |------|---------|
 | <a name="requirement_azuread"></a> [azuread](#requirement\_azuread) | <= 2.33.0 |
-| <a name="requirement_azurerm"></a> [azurerm](#requirement\_azurerm) | <= 3.116.0 |
+| <a name="requirement_azurerm"></a> [azurerm](#requirement\_azurerm) | ~> 4.0 |
 
 ## Providers
 
 | Name | Version |
 |------|---------|
 | <a name="provider_azuread"></a> [azuread](#provider\_azuread) | 2.33.0 |
-| <a name="provider_azurerm"></a> [azurerm](#provider\_azurerm) | 3.116.0 |
+| <a name="provider_azurerm"></a> [azurerm](#provider\_azurerm) | 4.68.0 |
 
 ## Modules
 
@@ -21,12 +21,12 @@
 | <a name="module_common_values"></a> [common\_values](#module\_common\_values) | ../../_modules/common_values | n/a |
 | <a name="module_pub_session_manager_bis_staging"></a> [pub\_session\_manager\_bis\_staging](#module\_pub\_session\_manager\_bis\_staging) | pagopa-dx/azure-role-assignments/azurerm | ~>1.2.1 |
 | <a name="module_pub_session_manager_staging"></a> [pub\_session\_manager\_staging](#module\_pub\_session\_manager\_staging) | pagopa-dx/azure-role-assignments/azurerm | ~>1.2.1 |
-| <a name="module_session_manager_bis_snet"></a> [session\_manager\_bis\_snet](#module\_session\_manager\_bis\_snet) | github.com/pagopa/terraform-azurerm-v3//subnet | v8.22.0 |
-| <a name="module_session_manager_snet"></a> [session\_manager\_snet](#module\_session\_manager\_snet) | github.com/pagopa/terraform-azurerm-v3//subnet | v8.22.0 |
-| <a name="module_session_manager_weu"></a> [session\_manager\_weu](#module\_session\_manager\_weu) | github.com/pagopa/terraform-azurerm-v3//app_service | v8.28.1 |
-| <a name="module_session_manager_weu_bis"></a> [session\_manager\_weu\_bis](#module\_session\_manager\_weu\_bis) | github.com/pagopa/terraform-azurerm-v3//app_service | v8.28.1 |
-| <a name="module_session_manager_weu_bis_staging"></a> [session\_manager\_weu\_bis\_staging](#module\_session\_manager\_weu\_bis\_staging) | github.com/pagopa/terraform-azurerm-v3//app_service_slot | v8.28.1 |
-| <a name="module_session_manager_weu_staging"></a> [session\_manager\_weu\_staging](#module\_session\_manager\_weu\_staging) | github.com/pagopa/terraform-azurerm-v3//app_service_slot | v8.28.1 |
+| <a name="module_session_manager_bis_snet"></a> [session\_manager\_bis\_snet](#module\_session\_manager\_bis\_snet) | github.com/pagopa/terraform-azurerm-v4//subnet | v10.1.0 |
+| <a name="module_session_manager_snet"></a> [session\_manager\_snet](#module\_session\_manager\_snet) | github.com/pagopa/terraform-azurerm-v4//subnet | v10.1.0 |
+| <a name="module_session_manager_weu"></a> [session\_manager\_weu](#module\_session\_manager\_weu) | github.com/pagopa/terraform-azurerm-v4//app_service | v10.1.0 |
+| <a name="module_session_manager_weu_bis"></a> [session\_manager\_weu\_bis](#module\_session\_manager\_weu\_bis) | github.com/pagopa/terraform-azurerm-v4//app_service | v10.1.0 |
+| <a name="module_session_manager_weu_bis_staging"></a> [session\_manager\_weu\_bis\_staging](#module\_session\_manager\_weu\_bis\_staging) | github.com/pagopa/terraform-azurerm-v4//app_service_slot | v10.1.0 |
+| <a name="module_session_manager_weu_staging"></a> [session\_manager\_weu\_staging](#module\_session\_manager\_weu\_staging) | github.com/pagopa/terraform-azurerm-v4//app_service_slot | v10.1.0 |
 | <a name="module_tests"></a> [tests](#module\_tests) | ../../_modules/test_users | n/a |
 
 ## Resources
