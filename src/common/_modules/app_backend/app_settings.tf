@@ -117,9 +117,6 @@ locals {
     PECSERVERS_aruba_secret    = "@Microsoft.KeyVault(VaultName=${var.key_vault_common.name};SecretName=appbackend-PECSERVER-ARUBA-TOKEN-SECRET)"
     PECSERVERS_aruba_serviceId = "01FRMRD5P7H378MDXBBW3DTYCF"
 
-    // CGN
-    TEST_CGN_FISCAL_CODES = ""
-
     // Service ID PN
     PN_SERVICE_ID = local.service_ids.pn
 
@@ -171,7 +168,7 @@ locals {
         isLollipopEnabled  = "false",
         disableLollipopFor = [],
         prodEnvironment = {
-          baseUrl = "https://io-p-sign-user-func.azurewebsites.net/api/v1/sign",
+          baseUrl = "https://io-p-itn-sign-user-func-01.azurewebsites.net/api/v1/sign",
           detailsAuthentication = {
             type            = "API_KEY",
             header_key_name = "X-Functions-Key",

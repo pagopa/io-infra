@@ -15,8 +15,8 @@ data "terraform_remote_state" "core" {
 data "azurerm_client_config" "current" {}
 
 data "azurerm_linux_web_app" "firmaconio_selfcare_web_app" {
-  name                = "${local.project_weu_legacy}-sign-backoffice-app"
-  resource_group_name = "${local.project_weu_legacy}-sign-backend-rg"
+  name                = "${local.project_itn}-sign-backoffice-app-01"
+  resource_group_name = "${local.project_itn}-sign-rg-01"
 }
 
 data "azurerm_private_endpoint_connection" "psn_appgw" {
@@ -142,8 +142,8 @@ data "azurerm_linux_function_app" "lollipop_function" {
 }
 
 data "azurerm_linux_function_app" "io_sign_user" {
-  resource_group_name = "${local.project_weu_legacy}-sign-backend-rg"
-  name                = "${local.project_weu_legacy}-sign-user-func"
+  resource_group_name = "${local.project_itn}-sign-rg-01"
+  name                = "${local.project_itn}-sign-user-func-01"
 }
 
 data "azurerm_linux_function_app" "io_fims_user" {
