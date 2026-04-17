@@ -300,6 +300,8 @@ module "session_manager_weu" {
   public_network_access_enabled = false
   ip_restriction_default_action = "Deny"
 
+  minimum_tls_version = "1.2"
+
   tags = var.tags
 }
 
@@ -346,6 +348,8 @@ module "session_manager_weu_staging" {
   subnet_id                     = module.session_manager_snet.id
   vnet_integration              = true
   public_network_access_enabled = false
+
+  minimum_tls_version = "1.2"
 
   tags = var.tags
 }
@@ -403,6 +407,8 @@ module "session_manager_weu_bis" {
   public_network_access_enabled = false
   ip_restriction_default_action = "Deny"
 
+  minimum_tls_version = "1.2"
+
   tags = var.tags
 }
 
@@ -449,6 +455,8 @@ module "session_manager_weu_bis_staging" {
   subnet_id                     = module.session_manager_bis_snet.id
   vnet_integration              = true
   public_network_access_enabled = false
+
+  minimum_tls_version = "1.2"
 
   tags = var.tags
 }
