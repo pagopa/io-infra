@@ -36,7 +36,7 @@ locals {
       "ARM_CLIENT_ID"       = data.azurerm_user_assigned_identity.identity_prod_cd.client_id,
       "ARM_SUBSCRIPTION_ID" = data.azurerm_subscription.current.subscription_id
     }
-    reviewers_teams = ["io-backend-contributors", "io-backend-admin", "engineering-team-cloud-eng"]
+    reviewers_teams = ["io-backend-contributors", "io-backend-admin"]
   }
 
   prod_tls_cd = {
@@ -51,6 +51,6 @@ locals {
       "ARM_CLIENT_ID"       = data.azurerm_user_assigned_identity.identity_dev_cd.client_id,
       "ARM_SUBSCRIPTION_ID" = data.azurerm_subscription.dev_io.subscription_id
     }
-    reviewers_teams = ["io-backend-contributors", "io-backend-admin", "engineering-team-cloud-eng"]
+    reviewers_teams = ["io-backend-contributors", "io-backend-admin"]
   }
 }
