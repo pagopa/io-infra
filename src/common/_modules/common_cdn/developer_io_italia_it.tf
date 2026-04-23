@@ -100,4 +100,24 @@ resource "azurerm_cdn_frontdoor_rule_set" "developer_io_italia_it" {
   cdn_frontdoor_profile_id = azurerm_cdn_frontdoor_profile.common_cdn.id
 }
 
-# TODO - Rules
+resource "azurerm_cdn_frontdoor_rule" "developer_io_italia_it_enforce_https" {
+  name                      = "EngorceHTTPS"
+  cdn_frontdoor_rule_set_id = azurerm_cdn_frontdoor_rule_set.developer_io_italia_it.id
+  order                     = 1
+
+  conditions {
+    request_scheme_condition {
+      operator         = "Equal"
+      match_values     = ["HTTPS"]
+      negate_condition = true
+    }
+  }
+
+  actions {
+    url_redirect_action {
+      redirect_type        = "Found"
+      redirect_protocol    = "Https"
+      destination_hostname = ""
+    }
+  }
+}
