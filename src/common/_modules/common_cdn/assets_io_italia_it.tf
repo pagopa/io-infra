@@ -88,4 +88,78 @@ resource "azurerm_cdn_frontdoor_rule_set" "assets_io_italia_it" {
   cdn_frontdoor_profile_id = azurerm_cdn_frontdoor_profile.common_cdn.id
 }
 
-# TODO - Rules
+resource "azurerm_cdn_frontdoor_rule" "assets_io_italia_it_global_cache" {
+  name                      = "Global"
+  cdn_frontdoor_rule_set_id = azurerm_cdn_frontdoor_rule_set.assets_io_italia_it.id
+  order                     = 1
+  actions {
+    route_configuration_override_action {
+      query_string_caching_behavior = "IgnoreQueryString"
+      cache_behavior                = "OverrideAlways"
+      cache_duration                = "08:00:00"
+    }
+  }
+}
+
+resource "azurerm_cdn_frontdoor_rule" "assets_io_italia_it_services_data_cache" {
+  name                      = "servicesdatacache"
+  cdn_frontdoor_rule_set_id = azurerm_cdn_frontdoor_rule_set.assets_io_italia_it.id
+  order                     = 2
+
+  conditions {
+    url_path_condition {
+      operator     = "BeginsWith"
+      match_values = "/services-data"
+    }
+  }
+
+  actions {
+    route_configuration_override_action {
+      query_string_caching_behavior = "IgnoreQueryString"
+      cache_behavior                = "OverrideAlways"
+      cache_duration                = "00:15:00"
+    }
+  }
+}
+
+resource "azurerm_cdn_frontdoor_rule" "assets_io_italia_it_bonus_cache" {
+  name                      = "bonuscache"
+  cdn_frontdoor_rule_set_id = azurerm_cdn_frontdoor_rule_set.assets_io_italia_it.id
+  order                     = 3
+
+  conditions {
+    url_path_condition {
+      operator     = "BeginsWith"
+      match_values = "/bonus"
+    }
+  }
+
+  actions {
+    route_configuration_override_action {
+      query_string_caching_behavior = "IgnoreQueryString"
+      cache_behavior                = "OverrideAlways"
+      cache_duration                = "00:15:00"
+    }
+  }
+}
+
+resource "azurerm_cdn_frontdoor_rule" "assets_io_italia_it_status_cache" {
+  name                      = "statuscache"
+  cdn_frontdoor_rule_set_id = azurerm_cdn_frontdoor_rule_set.assets_io_italia_it.id
+  order                     = 4
+
+  conditions {
+    url_path_condition {
+      operator     = "BeginsWith"
+      match_values = "/status"
+    }
+  }
+
+  actions {
+    route_configuration_override_action {
+      query_string_caching_behavior = "IgnoreQueryString"
+      cache_behavior                = "OverrideAlways"
+      cache_duration                = "00:05:00"
+    }
+  }
+}
