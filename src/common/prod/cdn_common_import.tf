@@ -173,25 +173,24 @@ import {
 
 # Assets
 
-locals {
-  common_cdn_assets_rules_ids = {
-    assets_io_italia_it_global_cache        = "/subscriptions/ec285037-c673-4f58-b594-d7c480da4e8b/resourceGroups/io-p-rg-common/providers/Microsoft.Cdn/profiles/io-p-cdn-common/ruleSets/Migratediopcdnendpointassets/rules/Global"
-    assets_io_italia_it_services_data_cache = "/subscriptions/ec285037-c673-4f58-b594-d7c480da4e8b/resourceGroups/io-p-rg-common/providers/Microsoft.Cdn/profiles/io-p-cdn-common/ruleSets/Migratediopcdnendpointassets/rules/servicesdatacache"
-    assets_io_italia_it_bonus_cache         = "/subscriptions/ec285037-c673-4f58-b594-d7c480da4e8b/resourceGroups/io-p-rg-common/providers/Microsoft.Cdn/profiles/io-p-cdn-common/ruleSets/Migratediopcdnendpointassets/rules/bonuscache"
-    assets_io_italia_it_status_cache        = "/subscriptions/ec285037-c673-4f58-b594-d7c480da4e8b/resourceGroups/io-p-rg-common/providers/Microsoft.Cdn/profiles/io-p-cdn-common/ruleSets/Migratediopcdnendpointassets/rules/statuscache"
-  }
-  common_cdn_assets_rules_resources = {
-    assets_io_italia_it_global_cache        = module.common_cdn.azurerm_cdn_frontdoor_rule.assets_io_italia_it_global_cache
-    assets_io_italia_it_services_data_cache = module.common_cdn.azurerm_cdn_frontdoor_rule.assets_io_italia_it_services_data_cache
-    assets_io_italia_it_bonus_cache         = module.common_cdn.azurerm_cdn_frontdoor_rule.assets_io_italia_it_bonus_cache
-    assets_io_italia_it_status_cache        = module.common_cdn.azurerm_cdn_frontdoor_rule.assets_io_italia_it_status_cache
-  }
+import {
+  id = "/subscriptions/ec285037-c673-4f58-b594-d7c480da4e8b/resourceGroups/io-p-rg-common/providers/Microsoft.Cdn/profiles/io-p-cdn-common/ruleSets/Migratediopcdnendpointassets/rules/Global"
+  to = module.common_cdn.azurerm_cdn_frontdoor_rule.assets_io_italia_it_global_cache
 }
 
 import {
-  for_each = local.common_cdn_assets_rules_ids
-  to       = local.common_cdn_assets_rules_resources[each.key]
-  id       = each.value
+  id = "/subscriptions/ec285037-c673-4f58-b594-d7c480da4e8b/resourceGroups/io-p-rg-common/providers/Microsoft.Cdn/profiles/io-p-cdn-common/ruleSets/Migratediopcdnendpointassets/rules/servicesdatacache"
+  to = module.common_cdn.azurerm_cdn_frontdoor_rule.assets_io_italia_it_services_data_cache
+}
+
+import {
+  id = "/subscriptions/ec285037-c673-4f58-b594-d7c480da4e8b/resourceGroups/io-p-rg-common/providers/Microsoft.Cdn/profiles/io-p-cdn-common/ruleSets/Migratediopcdnendpointassets/rules/bonuscache"
+  to = module.common_cdn.azurerm_cdn_frontdoor_rule.assets_io_italia_it_bonus_cache
+}
+
+import {
+  id = "/subscriptions/ec285037-c673-4f58-b594-d7c480da4e8b/resourceGroups/io-p-rg-common/providers/Microsoft.Cdn/profiles/io-p-cdn-common/ruleSets/Migratediopcdnendpointassets/rules/statuscache"
+  to = module.common_cdn.azurerm_cdn_frontdoor_rule.assets_io_italia_it_status_cache
 }
 
 # Developer Portal
