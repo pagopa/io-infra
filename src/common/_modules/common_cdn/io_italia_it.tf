@@ -21,8 +21,11 @@ resource "azurerm_cdn_frontdoor_secret" "io_italia_it" {
   }
 }
 
+# TODO: uncomment snippet when switching to managed certificates
+
+/*
 resource "azurerm_dns_txt_record" "io_italia_it" {
-  name                = join(".", ["_dnsauth", azurerm_cdn_frontdoor_custom_domain.io_italia_it.host_name])
+  name                = "_dnsauth"
   zone_name           = var.public_dns_zones.io_italia_it.name
   resource_group_name = var.resource_group_external
   ttl                 = 3600
@@ -31,6 +34,7 @@ resource "azurerm_dns_txt_record" "io_italia_it" {
     value = azurerm_cdn_frontdoor_custom_domain.io_italia_it.validation_token
   }
 }
+*/
 
 resource "azurerm_dns_a_record" "io_italia_it" {
   name                = "@"

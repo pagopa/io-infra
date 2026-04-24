@@ -35,13 +35,18 @@ import {
 }
 
 import {
+  to = module.common_cdn.azurerm_dns_cname_record.developer_io_italia_it
+  id = "/subscriptions/ec285037-c673-4f58-b594-d7c480da4e8b/resourceGroups/io-p-rg-external/providers/Microsoft.Network/dnsZones/io.italia.it/CNAME/developer"
+}
+
+import {
   to = module.common_cdn.azurerm_dns_a_record.io_italia_it
   id = "/subscriptions/ec285037-c673-4f58-b594-d7c480da4e8b/resourceGroups/io-p-rg-external/providers/Microsoft.Network/dnsZones/io.italia.it/A/@"
 }
 
 import {
-  to = module.common_cdn.azurerm_dns_txt_record.static_web_io_italia_it
-  id = "/subscriptions/ec285037-c673-4f58-b594-d7c480da4e8b/resourceGroups/io-p-rg-external/providers/Microsoft.Network/dnsZones/io.italia.it/TXT/_dnsauth.static-web"
+  to = module.common_cdn.azurerm_dns_cname_record.static_web_io_italia_it
+  id = "/subscriptions/ec285037-c673-4f58-b594-d7c480da4e8b/resourceGroups/io-p-rg-external/providers/Microsoft.Network/dnsZones/io.italia.it/CNAME/static-web"
 }
 
 # Endpoints
