@@ -41,7 +41,7 @@ resource "azurerm_dns_cname_record" "developer_io_italia_it" {
 }
 
 resource "azurerm_cdn_frontdoor_endpoint" "developer_io_italia_it" {
-  name                     = "${var.prefix}-${var.env_short}-cdn-common-developer-io-italia-it"
+  name                     = "io-p-cdnendpoint-developerportal"
   cdn_frontdoor_profile_id = azurerm_cdn_frontdoor_profile.common_cdn.id
 }
 

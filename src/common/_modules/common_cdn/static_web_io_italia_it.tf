@@ -29,7 +29,7 @@ resource "azurerm_dns_cname_record" "static_web_io_italia_it" {
 }
 
 resource "azurerm_cdn_frontdoor_endpoint" "static_web_io_italia_it" {
-  name                     = "${var.prefix}-${var.env_short}-cdn-common-assets-io-italia-it"
+  name                     = "io-p-cdnendpoint-websiteassets"
   cdn_frontdoor_profile_id = azurerm_cdn_frontdoor_profile.common_cdn.id
 }
 
