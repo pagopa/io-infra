@@ -82,3 +82,8 @@ resource "azurerm_cdn_frontdoor_route" "static_web_io_italia_it" {
   cdn_frontdoor_custom_domain_ids = [azurerm_cdn_frontdoor_custom_domain.static_web_io_italia_it.id]
   link_to_default_domain          = false
 }
+
+resource "azurerm_cdn_frontdoor_custom_domain_association" "static_web_io_italia_it" {
+  cdn_frontdoor_custom_domain_id = azurerm_cdn_frontdoor_custom_domain.static_web_io_italia_it.id
+  cdn_frontdoor_route_ids        = [azurerm_cdn_frontdoor_route.static_web_io_italia_it.id]
+}

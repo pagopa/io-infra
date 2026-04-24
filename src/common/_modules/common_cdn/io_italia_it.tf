@@ -95,6 +95,13 @@ resource "azurerm_cdn_frontdoor_route" "io_italia_it" {
   link_to_default_domain          = false
 }
 
+resource "azurerm_cdn_frontdoor_custom_domain_association" "io_italia_it" {
+  cdn_frontdoor_custom_domain_id = azurerm_cdn_frontdoor_custom_domain.io_italia_it.id
+  cdn_frontdoor_route_ids        = [azurerm_cdn_frontdoor_route.io_italia_it.id]
+}
+
+# Ruleset and rules #
+
 resource "azurerm_cdn_frontdoor_rule_set" "io_italia_it" {
   name                     = "Migratediopcdnendpointiowebsite"
   cdn_frontdoor_profile_id = azurerm_cdn_frontdoor_profile.common_cdn.id
