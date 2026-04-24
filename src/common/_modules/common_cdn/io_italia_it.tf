@@ -67,7 +67,7 @@ resource "azurerm_cdn_frontdoor_origin_group" "io_italia_it" {
 }
 
 resource "azurerm_cdn_frontdoor_origin" "io_italia_it" {
-  name                          = "iopstcdniowebsite"
+  name                          = "primary"
   cdn_frontdoor_origin_group_id = azurerm_cdn_frontdoor_origin_group.io_italia_it.id
   enabled                       = true
 

@@ -55,7 +55,7 @@ resource "azurerm_cdn_frontdoor_origin_group" "assets_io_italia_it" {
 }
 
 resource "azurerm_cdn_frontdoor_origin" "assets_io_italia_it" {
-  name                          = "iopstcdnassets"
+  name                          = "primary"
   cdn_frontdoor_origin_group_id = azurerm_cdn_frontdoor_origin_group.assets_io_italia_it.id
   enabled                       = true
 
