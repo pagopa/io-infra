@@ -202,61 +202,93 @@ import {
 }
 
 # IO Italia
-
-locals {
-  io_italia_it_rules_ids = {
-    io_italia_it_global                      = "/subscriptions/ec285037-c673-4f58-b594-d7c480da4e8b/resourceGroups/io-p-rg-common/providers/Microsoft.Cdn/profiles/io-p-cdn-common/ruleSets/Migratediopcdnendpointiowebsite/rules/Global"
-    io_italia_it_enforce_https               = "/subscriptions/ec285037-c673-4f58-b594-d7c480da4e8b/resourceGroups/io-p-rg-common/providers/Microsoft.Cdn/profiles/io-p-cdn-common/ruleSets/Migratediopcdnendpointiowebsite/rules/EnforceHTTPS"
-    io_italia_it_fix_dots                    = "/subscriptions/ec285037-c673-4f58-b594-d7c480da4e8b/resourceGroups/io-p-rg-common/providers/Microsoft.Cdn/profiles/io-p-cdn-common/ruleSets/Migratediopcdnendpointiowebsite/rules/FixDots"
-    io_italia_it_fix_dots2                   = "/subscriptions/ec285037-c673-4f58-b594-d7c480da4e8b/resourceGroups/io-p-rg-common/providers/Microsoft.Cdn/profiles/io-p-cdn-common/ruleSets/Migratediopcdnendpointiowebsite/rules/FixDots2"
-    io_italia_it_redirect_firma              = "/subscriptions/ec285037-c673-4f58-b594-d7c480da4e8b/resourceGroups/io-p-rg-common/providers/Microsoft.Cdn/profiles/io-p-cdn-common/ruleSets/Migratediopcdnendpointiowebsite/rules/RedirectFirma"
-    io_italia_it_faq                         = "/subscriptions/ec285037-c673-4f58-b594-d7c480da4e8b/resourceGroups/io-p-rg-common/providers/Microsoft.Cdn/profiles/io-p-cdn-common/ruleSets/Migratediopcdnendpointiowebsite/rules/Faq"
-    io_italia_it_documenti_su_io_faq         = "/subscriptions/ec285037-c673-4f58-b594-d7c480da4e8b/resourceGroups/io-p-rg-common/providers/Microsoft.Cdn/profiles/io-p-cdn-common/ruleSets/Migratediopcdnendpointiowebsite/rules/DocumentiSuIoFaq"
-    io_italia_it_carta_giovani_faq           = "/subscriptions/ec285037-c673-4f58-b594-d7c480da4e8b/resourceGroups/io-p-rg-common/providers/Microsoft.Cdn/profiles/io-p-cdn-common/ruleSets/Migratediopcdnendpointiowebsite/rules/CartaGiovaniFaq"
-    io_italia_it_funzionalita_dismess        = "/subscriptions/ec285037-c673-4f58-b594-d7c480da4e8b/resourceGroups/io-p-rg-common/providers/Microsoft.Cdn/profiles/io-p-cdn-common/ruleSets/Migratediopcdnendpointiowebsite/rules/FunzionalitaDismess"
-    io_italia_it_giornalisti                 = "/subscriptions/ec285037-c673-4f58-b594-d7c480da4e8b/resourceGroups/io-p-rg-common/providers/Microsoft.Cdn/profiles/io-p-cdn-common/ruleSets/Migratediopcdnendpointiowebsite/rules/Giornalisti"
-    io_italia_it_pubbliche_amministrazioni   = "/subscriptions/ec285037-c673-4f58-b594-d7c480da4e8b/resourceGroups/io-p-rg-common/providers/Microsoft.Cdn/profiles/io-p-cdn-common/ruleSets/Migratediopcdnendpointiowebsite/rules/PubblicheAmministrazioni"
-    io_italia_it_enti_nazionali              = "/subscriptions/ec285037-c673-4f58-b594-d7c480da4e8b/resourceGroups/io-p-rg-common/providers/Microsoft.Cdn/profiles/io-p-cdn-common/ruleSets/Migratediopcdnendpointiowebsite/rules/EntiNazionali"
-    io_italia_it_cittadini                   = "/subscriptions/ec285037-c673-4f58-b594-d7c480da4e8b/resourceGroups/io-p-rg-common/providers/Microsoft.Cdn/profiles/io-p-cdn-common/ruleSets/Migratediopcdnendpointiowebsite/rules/Cittadini"
-    io_italia_it_cgn_guida_beneficiari       = "/subscriptions/ec285037-c673-4f58-b594-d7c480da4e8b/resourceGroups/io-p-rg-common/providers/Microsoft.Cdn/profiles/io-p-cdn-common/ruleSets/Migratediopcdnendpointiowebsite/rules/CGNGuidaBeneficiari"
-    io_italia_it_cgn_informativa_beneficiari = "/subscriptions/ec285037-c673-4f58-b594-d7c480da4e8b/resourceGroups/io-p-rg-common/providers/Microsoft.Cdn/profiles/io-p-cdn-common/ruleSets/Migratediopcdnendpointiowebsite/rules/CGNInformativaBeneficiari"
-    io_italia_it_cgn_informative_operatori   = "/subscriptions/ec285037-c673-4f58-b594-d7c480da4e8b/resourceGroups/io-p-rg-common/providers/Microsoft.Cdn/profiles/io-p-cdn-common/ruleSets/Migratediopcdnendpointiowebsite/rules/CGNInformativeOperatori"
-    io_italia_it_note_legali                 = "/subscriptions/ec285037-c673-4f58-b594-d7c480da4e8b/resourceGroups/io-p-rg-common/providers/Microsoft.Cdn/profiles/io-p-cdn-common/ruleSets/Migratediopcdnendpointiowebsite/rules/NoteLegali"
-    io_italia_it_privacy_policy              = "/subscriptions/ec285037-c673-4f58-b594-d7c480da4e8b/resourceGroups/io-p-rg-common/providers/Microsoft.Cdn/profiles/io-p-cdn-common/ruleSets/Migratediopcdnendpointiowebsite/rules/PrivacyPolicy"
-    io_italia_it_informativa_newsletter      = "/subscriptions/ec285037-c673-4f58-b594-d7c480da4e8b/resourceGroups/io-p-rg-common/providers/Microsoft.Cdn/profiles/io-p-cdn-common/ruleSets/Migratediopcdnendpointiowebsite/rules/InformativaNewsletter"
-    io_italia_it_same_path                   = "/subscriptions/ec285037-c673-4f58-b594-d7c480da4e8b/resourceGroups/io-p-rg-common/providers/Microsoft.Cdn/profiles/io-p-cdn-common/ruleSets/Migratediopcdnendpointiowebsite/rules/SamePath"
-    io_italia_it_homepage                    = "/subscriptions/ec285037-c673-4f58-b594-d7c480da4e8b/resourceGroups/io-p-rg-common/providers/Microsoft.Cdn/profiles/io-p-cdn-common/ruleSets/Migratediopcdnendpointiowebsite/rules/Homepage"
-    io_italia_it_io_web                      = "/subscriptions/ec285037-c673-4f58-b594-d7c480da4e8b/resourceGroups/io-p-rg-common/providers/Microsoft.Cdn/profiles/io-p-cdn-common/ruleSets/Migratediopcdnendpointiowebsite/rules/IoWeb"
-  }
-
-  io_italia_it_rules_resources = {
-    io_italia_it_global                      = module.common_cdn.azurerm_cdn_frontdoor_rule.io_italia_it_global
-    io_italia_it_enforce_https               = module.common_cdn.azurerm_cdn_frontdoor_rule.io_italia_it_enforce_https
-    io_italia_it_fix_dots                    = module.common_cdn.azurerm_cdn_frontdoor_rule.io_italia_it_fix_dots
-    io_italia_it_fix_dots2                   = module.common_cdn.azurerm_cdn_frontdoor_rule.io_italia_it_fix_dots2
-    io_italia_it_redirect_firma              = module.common_cdn.azurerm_cdn_frontdoor_rule.io_italia_it_redirect_firma
-    io_italia_it_faq                         = module.common_cdn.azurerm_cdn_frontdoor_rule.io_italia_it_faq
-    io_italia_it_documenti_su_io_faq         = module.common_cdn.azurerm_cdn_frontdoor_rule.io_italia_it_documenti_su_io_faq
-    io_italia_it_carta_giovani_faq           = module.common_cdn.azurerm_cdn_frontdoor_rule.io_italia_it_carta_giovani_faq
-    io_italia_it_funzionalita_dismess        = module.common_cdn.azurerm_cdn_frontdoor_rule.io_italia_it_funzionalita_dismess
-    io_italia_it_giornalisti                 = module.common_cdn.azurerm_cdn_frontdoor_rule.io_italia_it_giornalisti
-    io_italia_it_pubbliche_amministrazioni   = module.common_cdn.azurerm_cdn_frontdoor_rule.io_italia_it_pubbliche_amministrazioni
-    io_italia_it_enti_nazionali              = module.common_cdn.azurerm_cdn_frontdoor_rule.io_italia_it_enti_nazionali
-    io_italia_it_cittadini                   = module.common_cdn.azurerm_cdn_frontdoor_rule.io_italia_it_cittadini
-    io_italia_it_cgn_guida_beneficiari       = module.common_cdn.azurerm_cdn_frontdoor_rule.io_italia_it_cgn_guida_beneficiari
-    io_italia_it_cgn_informativa_beneficiari = module.common_cdn.azurerm_cdn_frontdoor_rule.io_italia_it_cgn_informativa_beneficiari
-    io_italia_it_cgn_informative_operatori   = module.common_cdn.azurerm_cdn_frontdoor_rule.io_italia_it_cgn_informative_operatori
-    io_italia_it_note_legali                 = module.common_cdn.azurerm_cdn_frontdoor_rule.io_italia_it_note_legali
-    io_italia_it_privacy_policy              = module.common_cdn.azurerm_cdn_frontdoor_rule.io_italia_it_privacy_policy
-    io_italia_it_informativa_newsletter      = module.common_cdn.azurerm_cdn_frontdoor_rule.io_italia_it_informativa_newsletter
-    io_italia_it_same_path                   = module.common_cdn.azurerm_cdn_frontdoor_rule.io_italia_it_same_path
-    io_italia_it_homepage                    = module.common_cdn.azurerm_cdn_frontdoor_rule.io_italia_it_homepage
-    io_italia_it_io_web                      = module.common_cdn.azurerm_cdn_frontdoor_rule.io_italia_it_io_web
-  }
+import {
+  to = module.common_cdn.azurerm_cdn_frontdoor_rule.io_italia_it_global
+  id = "/subscriptions/ec285037-c673-4f58-b594-d7c480da4e8b/resourceGroups/io-p-rg-common/providers/Microsoft.Cdn/profiles/io-p-cdn-common/ruleSets/Migratediopcdnendpointiowebsite/rules/Global"
 }
 
 import {
-  for_each = local.io_italia_it_rules_ids
-  to       = local.io_italia_it_rules_resources[each.key]
-  id       = each.value
+  to = module.common_cdn.azurerm_cdn_frontdoor_rule.io_italia_it_enforce_https
+  id = "/subscriptions/ec285037-c673-4f58-b594-d7c480da4e8b/resourceGroups/io-p-rg-common/providers/Microsoft.Cdn/profiles/io-p-cdn-common/ruleSets/Migratediopcdnendpointiowebsite/rules/EnforceHTTPS"
+}
+import {
+  to = module.common_cdn.azurerm_cdn_frontdoor_rule.io_italia_it_fix_dots
+  id = "/subscriptions/ec285037-c673-4f58-b594-d7c480da4e8b/resourceGroups/io-p-rg-common/providers/Microsoft.Cdn/profiles/io-p-cdn-common/ruleSets/Migratediopcdnendpointiowebsite/rules/FixDots"
+}
+
+import {
+  to = module.common_cdn.azurerm_cdn_frontdoor_rule.io_italia_it_fix_dots2
+  id = "/subscriptions/ec285037-c673-4f58-b594-d7c480da4e8b/resourceGroups/io-p-rg-common/providers/Microsoft.Cdn/profiles/io-p-cdn-common/ruleSets/Migratediopcdnendpointiowebsite/rules/FixDots2"
+}
+import {
+  to = module.common_cdn.azurerm_cdn_frontdoor_rule.io_italia_it_redirect_firma
+  id = "/subscriptions/ec285037-c673-4f58-b594-d7c480da4e8b/resourceGroups/io-p-rg-common/providers/Microsoft.Cdn/profiles/io-p-cdn-common/ruleSets/Migratediopcdnendpointiowebsite/rules/RedirectFirma"
+}
+import {
+  to = module.common_cdn.azurerm_cdn_frontdoor_rule.io_italia_it_faq
+  id = "/subscriptions/ec285037-c673-4f58-b594-d7c480da4e8b/resourceGroups/io-p-rg-common/providers/Microsoft.Cdn/profiles/io-p-cdn-common/ruleSets/Migratediopcdnendpointiowebsite/rules/Faq"
+}
+import {
+  to = module.common_cdn.azurerm_cdn_frontdoor_rule.io_italia_it_documenti_su_io_faq
+  id = "/subscriptions/ec285037-c673-4f58-b594-d7c480da4e8b/resourceGroups/io-p-rg-common/providers/Microsoft.Cdn/profiles/io-p-cdn-common/ruleSets/Migratediopcdnendpointiowebsite/rules/DocumentiSuIoFaq"
+}
+import {
+  to = module.common_cdn.azurerm_cdn_frontdoor_rule.io_italia_it_carta_giovani_faq
+  id = "/subscriptions/ec285037-c673-4f58-b594-d7c480da4e8b/resourceGroups/io-p-rg-common/providers/Microsoft.Cdn/profiles/io-p-cdn-common/ruleSets/Migratediopcdnendpointiowebsite/rules/CartaGiovaniFaq"
+}
+import {
+  to = module.common_cdn.azurerm_cdn_frontdoor_rule.io_italia_it_funzionalita_dismessa
+  id = "/subscriptions/ec285037-c673-4f58-b594-d7c480da4e8b/resourceGroups/io-p-rg-common/providers/Microsoft.Cdn/profiles/io-p-cdn-common/ruleSets/Migratediopcdnendpointiowebsite/rules/FunzionalitaDismess"
+}
+import {
+  to = module.common_cdn.azurerm_cdn_frontdoor_rule.io_italia_it_giornalisti
+  id = "/subscriptions/ec285037-c673-4f58-b594-d7c480da4e8b/resourceGroups/io-p-rg-common/providers/Microsoft.Cdn/profiles/io-p-cdn-common/ruleSets/Migratediopcdnendpointiowebsite/rules/Giornalisti"
+}
+import {
+  to = module.common_cdn.azurerm_cdn_frontdoor_rule.io_italia_it_pubbliche_amministrazioni
+  id = "/subscriptions/ec285037-c673-4f58-b594-d7c480da4e8b/resourceGroups/io-p-rg-common/providers/Microsoft.Cdn/profiles/io-p-cdn-common/ruleSets/Migratediopcdnendpointiowebsite/rules/PubblicheAmministrazioni"
+}
+import {
+  to = module.common_cdn.azurerm_cdn_frontdoor_rule.io_italia_it_enti_nazionali
+  id = "/subscriptions/ec285037-c673-4f58-b594-d7c480da4e8b/resourceGroups/io-p-rg-common/providers/Microsoft.Cdn/profiles/io-p-cdn-common/ruleSets/Migratediopcdnendpointiowebsite/rules/EntiNazionali"
+}
+import {
+  to = module.common_cdn.azurerm_cdn_frontdoor_rule.io_italia_it_cittadini
+  id = "/subscriptions/ec285037-c673-4f58-b594-d7c480da4e8b/resourceGroups/io-p-rg-common/providers/Microsoft.Cdn/profiles/io-p-cdn-common/ruleSets/Migratediopcdnendpointiowebsite/rules/Cittadini"
+}
+import {
+  to = module.common_cdn.azurerm_cdn_frontdoor_rule.io_italia_it_cgn_guida_beneficiari
+  id = "/subscriptions/ec285037-c673-4f58-b594-d7c480da4e8b/resourceGroups/io-p-rg-common/providers/Microsoft.Cdn/profiles/io-p-cdn-common/ruleSets/Migratediopcdnendpointiowebsite/rules/CGNGuidaBeneficiari"
+}
+import {
+  to = module.common_cdn.azurerm_cdn_frontdoor_rule.io_italia_it_cgn_informativa_beneficiari
+  id = "/subscriptions/ec285037-c673-4f58-b594-d7c480da4e8b/resourceGroups/io-p-rg-common/providers/Microsoft.Cdn/profiles/io-p-cdn-common/ruleSets/Migratediopcdnendpointiowebsite/rules/CGNInformativaBeneficiari"
+}
+import {
+  to = module.common_cdn.azurerm_cdn_frontdoor_rule.io_italia_it_cgn_informative_operatori
+  id = "/subscriptions/ec285037-c673-4f58-b594-d7c480da4e8b/resourceGroups/io-p-rg-common/providers/Microsoft.Cdn/profiles/io-p-cdn-common/ruleSets/Migratediopcdnendpointiowebsite/rules/CGNInformativeOperatori"
+}
+import {
+  to = module.common_cdn.azurerm_cdn_frontdoor_rule.io_italia_it_note_legali
+  id = "/subscriptions/ec285037-c673-4f58-b594-d7c480da4e8b/resourceGroups/io-p-rg-common/providers/Microsoft.Cdn/profiles/io-p-cdn-common/ruleSets/Migratediopcdnendpointiowebsite/rules/NoteLegali"
+}
+import {
+  to = module.common_cdn.azurerm_cdn_frontdoor_rule.io_italia_it_privacy_policy
+  id = "/subscriptions/ec285037-c673-4f58-b594-d7c480da4e8b/resourceGroups/io-p-rg-common/providers/Microsoft.Cdn/profiles/io-p-cdn-common/ruleSets/Migratediopcdnendpointiowebsite/rules/PrivacyPolicy"
+}
+import {
+  to = module.common_cdn.azurerm_cdn_frontdoor_rule.io_italia_it_informativa_newsletter
+  id = "/subscriptions/ec285037-c673-4f58-b594-d7c480da4e8b/resourceGroups/io-p-rg-common/providers/Microsoft.Cdn/profiles/io-p-cdn-common/ruleSets/Migratediopcdnendpointiowebsite/rules/InformativaNewsletter"
+}
+import {
+  to = module.common_cdn.azurerm_cdn_frontdoor_rule.io_italia_it_same_path
+  id = "/subscriptions/ec285037-c673-4f58-b594-d7c480da4e8b/resourceGroups/io-p-rg-common/providers/Microsoft.Cdn/profiles/io-p-cdn-common/ruleSets/Migratediopcdnendpointiowebsite/rules/SamePath"
+}
+import {
+  to = module.common_cdn.azurerm_cdn_frontdoor_rule.io_italia_it_homepage
+  id = "/subscriptions/ec285037-c673-4f58-b594-d7c480da4e8b/resourceGroups/io-p-rg-common/providers/Microsoft.Cdn/profiles/io-p-cdn-common/ruleSets/Migratediopcdnendpointiowebsite/rules/Homepage"
+}
+import {
+  to = module.common_cdn.azurerm_cdn_frontdoor_rule.io_italia_it_io_web
+  id = "/subscriptions/ec285037-c673-4f58-b594-d7c480da4e8b/resourceGroups/io-p-rg-common/providers/Microsoft.Cdn/profiles/io-p-cdn-common/ruleSets/Migratediopcdnendpointiowebsite/rules/IoWeb"
 }

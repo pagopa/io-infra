@@ -284,7 +284,7 @@ resource "azurerm_cdn_frontdoor_rule" "io_italia_it_carta_giovani_faq" {
   }
 }
 
-resource "azurerm_cdn_frontdoor_rule" "io_italia_it_funzionalita_dismess" {
+resource "azurerm_cdn_frontdoor_rule" "io_italia_it_funzionalita_dismessa" {
   name                      = "FunzionalitaDismess"
   order                     = 8
   cdn_frontdoor_rule_set_id = azurerm_cdn_frontdoor_rule_set.io_italia_it.id
