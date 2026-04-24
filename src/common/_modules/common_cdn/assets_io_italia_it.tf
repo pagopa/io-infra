@@ -1,5 +1,5 @@
 resource "azurerm_cdn_frontdoor_custom_domain" "assets_io_italia_it" {
-  name                     = "${var.prefix}-${var.env_short}-cdn-common-assets-io-italia-it"
+  name                     = "assets-io-italia-it"
   cdn_frontdoor_profile_id = azurerm_cdn_frontdoor_profile.common_cdn.id
   dns_zone_id              = var.public_dns_zones.io_italia_it.id
   host_name                = "assets.io.italia.it"
@@ -61,9 +61,10 @@ resource "azurerm_cdn_frontdoor_origin" "assets_io_italia_it" {
 
   certificate_name_check_enabled = false
 
-  host_name = "iopstcdnassets.z6.web.core.windows.net"
-  priority  = 1
-  weight    = 1
+  host_name          = "iopstcdnassets.z6.web.core.windows.net"
+  origin_host_header = "iopstcdnassets.z6.web.core.windows.net"
+  priority           = 1
+  weight             = 1000
 }
 
 resource "azurerm_cdn_frontdoor_route" "assets_io_italia_it" {

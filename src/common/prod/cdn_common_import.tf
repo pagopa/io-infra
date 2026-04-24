@@ -48,22 +48,22 @@ import {
 
 import {
   to = module.common_cdn.azurerm_cdn_frontdoor_endpoint.assets_io_italia_it
-  id = "/subscriptions/ec285037-c673-4f58-b594-d7c480da4e8b/resourceGroups/io-p-rg-common/providers/Microsoft.Cdn/profiles/io-p-cdn-common/afdEndpoints/io-p-cdnendpoint-assets-gsh3hqbybxhphrf3.z01.azurefd.net"
+  id = "/subscriptions/ec285037-c673-4f58-b594-d7c480da4e8b/resourceGroups/io-p-rg-common/providers/Microsoft.Cdn/profiles/io-p-cdn-common/afdEndpoints/io-p-cdnendpoint-assets"
 }
 
 import {
   to = module.common_cdn.azurerm_cdn_frontdoor_endpoint.developer_io_italia_it
-  id = "/subscriptions/ec285037-c673-4f58-b594-d7c480da4e8b/resourceGroups/io-p-rg-common/providers/Microsoft.Cdn/profiles/io-p-cdn-common/afdEndpoints/io-p-cdnendpoint-developerportal-c6e4fmgph6c5c8bs.z01.azurefd.net"
+  id = "/subscriptions/ec285037-c673-4f58-b594-d7c480da4e8b/resourceGroups/io-p-rg-common/providers/Microsoft.Cdn/profiles/io-p-cdn-common/afdEndpoints/io-p-cdnendpoint-developerportal"
 }
 
 import {
   to = module.common_cdn.azurerm_cdn_frontdoor_endpoint.io_italia_it
-  id = "/subscriptions/ec285037-c673-4f58-b594-d7c480da4e8b/resourceGroups/io-p-rg-common/providers/Microsoft.Cdn/profiles/io-p-cdn-common/afdEndpoints/io-p-cdnendpoint-iowebsite-c9fhh2hnehg3dmes.z01.azurefd.net"
+  id = "/subscriptions/ec285037-c673-4f58-b594-d7c480da4e8b/resourceGroups/io-p-rg-common/providers/Microsoft.Cdn/profiles/io-p-cdn-common/afdEndpoints/io-p-cdnendpoint-iowebsite"
 }
 
 import {
   to = module.common_cdn.azurerm_cdn_frontdoor_endpoint.static_web_io_italia_it
-  id = "/subscriptions/ec285037-c673-4f58-b594-d7c480da4e8b/resourceGroups/io-p-rg-common/providers/Microsoft.Cdn/profiles/io-p-cdn-common/afdEndpoints/io-p-cdnendpoint-websiteassets-cee2faeydmc4f5am.z01.azurefd.net"
+  id = "/subscriptions/ec285037-c673-4f58-b594-d7c480da4e8b/resourceGroups/io-p-rg-common/providers/Microsoft.Cdn/profiles/io-p-cdn-common/afdEndpoints/io-p-cdnendpoint-websiteassets"
 }
 
 # Origin groups

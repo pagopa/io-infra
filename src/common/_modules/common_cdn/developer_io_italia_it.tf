@@ -1,5 +1,5 @@
 resource "azurerm_cdn_frontdoor_custom_domain" "developer_io_italia_it" {
-  name                     = "${var.prefix}-${var.env_short}-cdn-common-developer-io-italia-it"
+  name                     = "developer-io-italia-it"
   cdn_frontdoor_profile_id = azurerm_cdn_frontdoor_profile.common_cdn.id
   dns_zone_id              = var.public_dns_zones.io_italia_it.id
   host_name                = "developer.io.italia.it"
