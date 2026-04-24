@@ -36,7 +36,7 @@ resource "azurerm_cdn_frontdoor_endpoint" "assets_io_italia_it" {
 resource "azurerm_cdn_frontdoor_origin_group" "assets_io_italia_it" {
   name                     = "io-p-cdnendpoint-assets-Default"
   cdn_frontdoor_profile_id = azurerm_cdn_frontdoor_profile.common_cdn.id
-  session_affinity_enabled = true
+  session_affinity_enabled = false
 
   restore_traffic_time_to_healed_or_new_endpoint_in_minutes = 10
 
@@ -49,8 +49,8 @@ resource "azurerm_cdn_frontdoor_origin_group" "assets_io_italia_it" {
 
   load_balancing {
     additional_latency_in_milliseconds = 0
-    sample_size                        = 16
-    successful_samples_required        = 3
+    sample_size                        = 4
+    successful_samples_required        = 2
   }
 }
 
@@ -98,7 +98,7 @@ resource "azurerm_cdn_frontdoor_rule_set" "assets_io_italia_it" {
 resource "azurerm_cdn_frontdoor_rule" "assets_io_italia_it_global_cache" {
   name                      = "Global"
   cdn_frontdoor_rule_set_id = azurerm_cdn_frontdoor_rule_set.assets_io_italia_it.id
-  order                     = 1
+  order                     = 0
   actions {
     route_configuration_override_action {
       query_string_caching_behavior = "IgnoreQueryString"
@@ -111,7 +111,7 @@ resource "azurerm_cdn_frontdoor_rule" "assets_io_italia_it_global_cache" {
 resource "azurerm_cdn_frontdoor_rule" "assets_io_italia_it_services_data_cache" {
   name                      = "servicesdatacache"
   cdn_frontdoor_rule_set_id = azurerm_cdn_frontdoor_rule_set.assets_io_italia_it.id
-  order                     = 2
+  order                     = 1
 
   conditions {
     url_path_condition {
@@ -132,7 +132,7 @@ resource "azurerm_cdn_frontdoor_rule" "assets_io_italia_it_services_data_cache" 
 resource "azurerm_cdn_frontdoor_rule" "assets_io_italia_it_bonus_cache" {
   name                      = "bonuscache"
   cdn_frontdoor_rule_set_id = azurerm_cdn_frontdoor_rule_set.assets_io_italia_it.id
-  order                     = 3
+  order                     = 2
 
   conditions {
     url_path_condition {
@@ -153,7 +153,7 @@ resource "azurerm_cdn_frontdoor_rule" "assets_io_italia_it_bonus_cache" {
 resource "azurerm_cdn_frontdoor_rule" "assets_io_italia_it_status_cache" {
   name                      = "statuscache"
   cdn_frontdoor_rule_set_id = azurerm_cdn_frontdoor_rule_set.assets_io_italia_it.id
-  order                     = 4
+  order                     = 3
 
   conditions {
     url_path_condition {
