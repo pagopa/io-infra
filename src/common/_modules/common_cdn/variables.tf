@@ -25,11 +25,6 @@ variable "env_short" {
   }
 }
 
-variable "location" {
-  type        = string
-  description = "Azure region"
-}
-
 variable "subscription_id" {
   type        = string
   description = "Azure subscription id"
@@ -48,11 +43,6 @@ variable "resource_group_cdn" {
 variable "resource_group_external" {
   type        = string
   description = "External resource group name"
-}
-
-variable "resource_group_common" {
-  type        = string
-  description = "Common resource group name"
 }
 
 variable "public_dns_zones" {
