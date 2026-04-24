@@ -10,7 +10,7 @@ resource "azurerm_cdn_frontdoor_custom_domain" "assets_io_italia_it" {
 }
 
 resource "azurerm_dns_txt_record" "assets_io_italia_it" {
-  name                = join(".", ["_dnsauth", azurerm_cdn_frontdoor_custom_domain.assets_io_italia_it.host_name])
+  name                = join(".", ["_dnsauth", "assets"])
   zone_name           = var.public_dns_zones.io_italia_it.name
   resource_group_name = var.resource_group_external
   ttl                 = 3600
@@ -25,12 +25,13 @@ resource "azurerm_dns_cname_record" "assets_io_italia_it" {
   zone_name           = var.public_dns_zones.io_italia_it.name
   resource_group_name = var.resource_group_external
   ttl                 = 3600
-  target_resource_id  = azurerm_cdn_frontdoor_custom_domain.assets_io_italia_it.id
+  target_resource_id  = azurerm_cdn_frontdoor_endpoint.assets_io_italia_it.id
 }
 
 resource "azurerm_cdn_frontdoor_endpoint" "assets_io_italia_it" {
   name                     = "io-p-cdnendpoint-assets"
   cdn_frontdoor_profile_id = azurerm_cdn_frontdoor_profile.common_cdn.id
+  tags                     = var.tags
 }
 
 resource "azurerm_cdn_frontdoor_origin_group" "assets_io_italia_it" {

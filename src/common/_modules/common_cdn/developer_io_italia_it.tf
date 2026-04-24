@@ -41,12 +41,13 @@ resource "azurerm_dns_cname_record" "developer_io_italia_it" {
   zone_name           = var.public_dns_zones.io_italia_it.name
   resource_group_name = var.resource_group_external
   ttl                 = 3600
-  target_resource_id  = azurerm_cdn_frontdoor_custom_domain.developer_io_italia_it.id
+  target_resource_id  = azurerm_cdn_frontdoor_endpoint.developer_io_italia_it.id
 }
 
 resource "azurerm_cdn_frontdoor_endpoint" "developer_io_italia_it" {
   name                     = "io-p-cdnendpoint-developerportal"
   cdn_frontdoor_profile_id = azurerm_cdn_frontdoor_profile.common_cdn.id
+  tags                     = var.tags
 }
 
 resource "azurerm_cdn_frontdoor_origin_group" "developer_io_italia_it" {

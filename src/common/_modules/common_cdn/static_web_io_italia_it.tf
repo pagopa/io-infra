@@ -35,6 +35,7 @@ resource "azurerm_dns_cname_record" "static_web_io_italia_it" {
 resource "azurerm_cdn_frontdoor_endpoint" "static_web_io_italia_it" {
   name                     = "io-p-cdnendpoint-websiteassets"
   cdn_frontdoor_profile_id = azurerm_cdn_frontdoor_profile.common_cdn.id
+  tags                     = var.tags
 }
 
 resource "azurerm_cdn_frontdoor_origin_group" "static_web_io_italia_it" {

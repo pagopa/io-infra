@@ -35,6 +35,11 @@ import {
 }
 
 import {
+  to = module.common_cdn.azurerm_dns_cname_record.assets_io_italia_it
+  id = "/subscriptions/ec285037-c673-4f58-b594-d7c480da4e8b/resourceGroups/io-p-rg-external/providers/Microsoft.Network/dnsZones/io.italia.it/CNAME/assets"
+}
+
+import {
   to = module.common_cdn.azurerm_dns_cname_record.developer_io_italia_it
   id = "/subscriptions/ec285037-c673-4f58-b594-d7c480da4e8b/resourceGroups/io-p-rg-external/providers/Microsoft.Network/dnsZones/io.italia.it/CNAME/developer"
 }
@@ -129,22 +134,22 @@ import {
 
 import {
   to = module.common_cdn.azurerm_cdn_frontdoor_route.assets_io_italia_it
-  id = "/subscriptions/ec285037-c673-4f58-b594-d7c480da4e8b/resourceGroups/io-p-rg-common/providers/Microsoft.Cdn/profiles/io-p-cdn-common/afdEndpoints/io-p-cdnendpoint-assets-gsh3hqbybxhphrf3.z01.azurefd.net/routes/iopcdnendpointassets"
+  id = "/subscriptions/ec285037-c673-4f58-b594-d7c480da4e8b/resourceGroups/io-p-rg-common/providers/Microsoft.Cdn/profiles/io-p-cdn-common/afdEndpoints/io-p-cdnendpoint-assets/routes/iopcdnendpointassets"
 }
 
 import {
   to = module.common_cdn.azurerm_cdn_frontdoor_route.developer_io_italia_it
-  id = "/subscriptions/ec285037-c673-4f58-b594-d7c480da4e8b/resourceGroups/io-p-rg-common/providers/Microsoft.Cdn/profiles/io-p-cdn-common/afdEndpoints/io-p-cdnendpoint-developerportal-c6e4fmgph6c5c8bs.z01.azurefd.net/routes/iopcdnendpointdeveloperportal"
+  id = "/subscriptions/ec285037-c673-4f58-b594-d7c480da4e8b/resourceGroups/io-p-rg-common/providers/Microsoft.Cdn/profiles/io-p-cdn-common/afdEndpoints/io-p-cdnendpoint-developerportal/routes/iopcdnendpointdeveloperportal"
 }
 
 import {
   to = module.common_cdn.azurerm_cdn_frontdoor_route.io_italia_it
-  id = "/subscriptions/ec285037-c673-4f58-b594-d7c480da4e8b/resourceGroups/io-p-rg-common/providers/Microsoft.Cdn/profiles/io-p-cdn-common/afdEndpoints/io-p-cdnendpoint-iowebsite-c9fhh2hnehg3dmes.z01.azurefd.net/routes/iopcdnendpointiowebsite"
+  id = "/subscriptions/ec285037-c673-4f58-b594-d7c480da4e8b/resourceGroups/io-p-rg-common/providers/Microsoft.Cdn/profiles/io-p-cdn-common/afdEndpoints/io-p-cdnendpoint-iowebsite/routes/iopcdnendpointiowebsite"
 }
 
 import {
   to = module.common_cdn.azurerm_cdn_frontdoor_route.static_web_io_italia_it
-  id = "/subscriptions/ec285037-c673-4f58-b594-d7c480da4e8b/resourceGroups/io-p-rg-common/providers/Microsoft.Cdn/profiles/io-p-cdn-common/afdEndpoints/io-p-cdnendpoint-websiteassets-cee2faeydmc4f5am.z01.azurefd.net/routes/iopcdnendpointwebsiteassets"
+  id = "/subscriptions/ec285037-c673-4f58-b594-d7c480da4e8b/resourceGroups/io-p-rg-common/providers/Microsoft.Cdn/profiles/io-p-cdn-common/afdEndpoints/io-p-cdnendpoint-websiteassets/routes/iopcdnendpointwebsiteassets"
 }
 
 # Custom domains associations
