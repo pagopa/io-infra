@@ -16,7 +16,7 @@ resource "azurerm_cdn_frontdoor_secret" "io_italia_it" {
 
   secret {
     customer_certificate {
-      key_vault_certificate_id = "TODO"
+      key_vault_certificate_id = "https://io-p-kv-common.vault.azure.net/secrets/io-italia-it/"
     }
   }
 }
