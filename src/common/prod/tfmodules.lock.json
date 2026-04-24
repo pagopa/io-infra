@@ -126,10 +126,10 @@
     "source": "https://registry.terraform.io/modules/pagopa-dx/azure-api-management/azurerm/2.2.3"
   },
   "platform_service_bus_namespace_itn.platform_service_bus_namespace": {
-    "hash": "4b551c1ee3c135ce50ee2532143e19a08fc5f8567889b819e0719e22d82d7451",
-    "version": "0.1.0",
+    "hash": "60808badb44a3e7e87db7d39fb7130b26d1d1a68433d247ad2e938d33bb8d245",
+    "version": "0.1.1",
     "name": "azure_service_bus_namespace",
-    "source": "https://registry.terraform.io/modules/pagopa-dx/azure-service-bus-namespace/azurerm/0.1.0"
+    "source": "https://registry.terraform.io/modules/pagopa-dx/azure-service-bus-namespace/azurerm/0.1.1"
   },
   "platform_api_gateway_apim_itn.iam_adgroup": {
     "hash": "a8c1a6fa085349f937017deb20236170f0bb9dd78b5ded85ec75d7caeba7a872",

@@ -16,7 +16,7 @@ resource "azurerm_dns_txt_record" "static_web_io_italia_it" {
   ttl                 = 3600
 
   record {
-    value = azurerm_cdn_frontdoor_custom_domain.common_cdn.validation_token
+    value = azurerm_cdn_frontdoor_custom_domain.static_web_io_italia_it.validation_token
   }
 }
 
@@ -71,7 +71,6 @@ resource "azurerm_cdn_frontdoor_route" "static_web_io_italia_it" {
   cdn_frontdoor_endpoint_id     = azurerm_cdn_frontdoor_endpoint.static_web_io_italia_it.id
   cdn_frontdoor_origin_group_id = azurerm_cdn_frontdoor_origin_group.static_web_io_italia_it.id
   cdn_frontdoor_origin_ids      = [azurerm_cdn_frontdoor_origin.static_web_io_italia_it.id]
-  cdn_frontdoor_rule_set_ids    = [azurerm_cdn_frontdoor_rule_set.static_web_io_italia_it.id]
   enabled                       = true
 
   forwarding_protocol    = "HttpsOnly"

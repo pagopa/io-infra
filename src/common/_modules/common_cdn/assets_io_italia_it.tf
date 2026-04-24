@@ -16,7 +16,7 @@ resource "azurerm_dns_txt_record" "assets_io_italia_it" {
   ttl                 = 3600
 
   record {
-    value = azurerm_cdn_frontdoor_custom_domain.common_cdn.validation_token
+    value = azurerm_cdn_frontdoor_custom_domain.assets_io_italia_it.validation_token
   }
 }
 
@@ -116,7 +116,7 @@ resource "azurerm_cdn_frontdoor_rule" "assets_io_italia_it_services_data_cache" 
   conditions {
     url_path_condition {
       operator     = "BeginsWith"
-      match_values = "/services-data"
+      match_values = ["/services-data"]
     }
   }
 
@@ -137,7 +137,7 @@ resource "azurerm_cdn_frontdoor_rule" "assets_io_italia_it_bonus_cache" {
   conditions {
     url_path_condition {
       operator     = "BeginsWith"
-      match_values = "/bonus"
+      match_values = ["/bonus"]
     }
   }
 
@@ -158,7 +158,7 @@ resource "azurerm_cdn_frontdoor_rule" "assets_io_italia_it_status_cache" {
   conditions {
     url_path_condition {
       operator     = "BeginsWith"
-      match_values = "/status"
+      match_values = ["/status"]
     }
   }
 
