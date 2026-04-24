@@ -100,4 +100,551 @@ resource "azurerm_cdn_frontdoor_rule_set" "io_italia_it" {
   cdn_frontdoor_profile_id = azurerm_cdn_frontdoor_profile.common_cdn.id
 }
 
-# TODO - Rules
+resource "azurerm_cdn_frontdoor_rule" "io_italia_it_global" {
+  name                      = "Global"
+  order                     = 0
+  cdn_frontdoor_rule_set_id = azurerm_cdn_frontdoor_rule_set.io_italia_it.id
+
+  actions {
+    response_header_action {
+      header_action = "Overwrite"
+      header_name   = "Strict-Transport-Security"
+      value         = "max-age=31536000"
+    }
+  }
+}
+
+resource "azurerm_cdn_frontdoor_rule" "io_italia_it_enforce_https" {
+  name                      = "EnforceHTTPS"
+  order                     = 1
+  cdn_frontdoor_rule_set_id = azurerm_cdn_frontdoor_rule_set.io_italia_it.id
+
+  actions {
+    url_redirect_action {
+      redirect_type        = "Found"
+      redirect_protocol    = "Https"
+      destination_hostname = ""
+    }
+  }
+
+  conditions {
+    request_scheme_condition {
+      match_values     = ["HTTP"]
+      operator         = "Equal"
+      negate_condition = false
+    }
+  }
+}
+
+resource "azurerm_cdn_frontdoor_rule" "io_italia_it_fix_dots" {
+  name                      = "FixDots"
+  order                     = 2
+  cdn_frontdoor_rule_set_id = azurerm_cdn_frontdoor_rule_set.io_italia_it.id
+
+  actions {
+    response_header_action {
+      header_action = "Append"
+      header_name   = "x-azure-cdn-filename"
+      value         = "dot"
+    }
+  }
+
+  conditions {
+    url_filename_condition {
+      match_values     = ["."]
+      operator         = "EndsWith"
+      negate_condition = false
+    }
+  }
+}
+
+resource "azurerm_cdn_frontdoor_rule" "io_italia_it_fix_dots2" {
+  name                      = "FixDots2"
+  order                     = 3
+  cdn_frontdoor_rule_set_id = azurerm_cdn_frontdoor_rule_set.io_italia_it.id
+
+  actions {
+    response_header_action {
+      header_action = "Append"
+      header_name   = "x-azure-cdn-ext"
+      value         = "empty"
+    }
+  }
+
+  conditions {
+    url_file_extension_condition {
+      match_values     = []
+      operator         = "Any"
+      negate_condition = true
+    }
+  }
+}
+
+resource "azurerm_cdn_frontdoor_rule" "io_italia_it_redirect_firma" {
+  name                      = "RedirectFirma"
+  order                     = 4
+  cdn_frontdoor_rule_set_id = azurerm_cdn_frontdoor_rule_set.io_italia_it.id
+
+  actions {
+    url_redirect_action {
+      redirect_type        = "Moved"
+      redirect_protocol    = "Https"
+      destination_hostname = "ioapp.it"
+      destination_path     = "/firma-in-digitale"
+
+    }
+  }
+
+  conditions {
+    url_path_condition {
+      match_values     = ["/firma"]
+      operator         = "BeginsWith"
+      negate_condition = false
+      transforms       = ["Lowercase"]
+    }
+  }
+}
+
+resource "azurerm_cdn_frontdoor_rule" "io_italia_it_faq" {
+  name                      = "Faq"
+  order                     = 5
+  cdn_frontdoor_rule_set_id = azurerm_cdn_frontdoor_rule_set.io_italia_it.id
+
+  actions {
+    url_redirect_action {
+      redirect_type        = "Moved"
+      redirect_protocol    = "Https"
+      destination_hostname = "ioapp.it"
+      destination_path     = "/domande-frequenti#"
+    }
+  }
+
+  conditions {
+    url_path_condition {
+      match_values     = ["/faq/", "/faq"]
+      operator         = "Equal"
+      negate_condition = false
+      transforms       = ["Lowercase"]
+    }
+  }
+}
+
+resource "azurerm_cdn_frontdoor_rule" "io_italia_it_documenti_su_io_faq" {
+  name                      = "DocumentiSuIoFaq"
+  order                     = 6
+  cdn_frontdoor_rule_set_id = azurerm_cdn_frontdoor_rule_set.io_italia_it.id
+
+  actions {
+    url_redirect_action {
+      redirect_type        = "Moved"
+      redirect_protocol    = "Https"
+      destination_hostname = "ioapp.it"
+      destination_path     = "/domande-frequenti"
+    }
+  }
+
+  conditions {
+    url_path_condition {
+      match_values     = ["/documenti-su-io/faq/", "/documenti-su-io/faq"]
+      operator         = "Equal"
+      negate_condition = false
+      transforms       = ["Lowercase"]
+    }
+  }
+}
+
+resource "azurerm_cdn_frontdoor_rule" "io_italia_it_carta_giovani_faq" {
+  name                      = "CartaGiovaniFaq"
+  order                     = 7
+  cdn_frontdoor_rule_set_id = azurerm_cdn_frontdoor_rule_set.io_italia_it.id
+
+  actions {
+    url_redirect_action {
+      redirect_type        = "Moved"
+      redirect_protocol    = "Https"
+      destination_hostname = "ioapp.it"
+      destination_path     = "/carta-giovani-nazionale#domande-frequenti"
+    }
+  }
+
+  conditions {
+    url_path_condition {
+      match_values     = ["/carta-giovani-nazionale/faq/", "/carta-giovani-nazionale/faq"]
+      operator         = "Equal"
+      negate_condition = false
+      transforms       = ["Lowercase"]
+    }
+  }
+}
+
+resource "azurerm_cdn_frontdoor_rule" "io_italia_it_funzionalita_dismess" {
+  name                      = "FunzionalitaDismess"
+  order                     = 8
+  cdn_frontdoor_rule_set_id = azurerm_cdn_frontdoor_rule_set.io_italia_it.id
+
+  actions {
+    url_redirect_action {
+      redirect_type        = "Moved"
+      redirect_protocol    = "Https"
+      destination_hostname = "ioapp.it"
+      destination_path     = "/funzionalita-dismesse"
+    }
+  }
+
+  conditions {
+    url_path_condition {
+      match_values = [
+        "/bonus-vacanze/",
+        "/bonus-vacanze/faq/",
+        "/certificato-verde-green-pass-covid/faq/",
+        "/cashback/",
+        "/cashback/faq/",
+        "/bonus-vacanze",
+        "/bonus-vacanze/faq",
+        "/certificato-verde-green-pass-covid/faq",
+        "/cashback",
+        "/cashback/faq",
+      ]
+      operator         = "Equal"
+      negate_condition = false
+      transforms       = ["Lowercase"]
+    }
+  }
+}
+
+resource "azurerm_cdn_frontdoor_rule" "io_italia_it_giornalisti" {
+  name                      = "Giornalisti"
+  order                     = 9
+  cdn_frontdoor_rule_set_id = azurerm_cdn_frontdoor_rule_set.io_italia_it.id
+
+  actions {
+    url_redirect_action {
+      redirect_type        = "Moved"
+      redirect_protocol    = "Https"
+      destination_hostname = "ioapp.it"
+      destination_path     = "/area-stampa"
+    }
+  }
+
+  conditions {
+    url_path_condition {
+      match_values     = ["/giornalisti/", "/giornalisti"]
+      operator         = "Equal"
+      negate_condition = false
+      transforms       = ["Lowercase"]
+    }
+  }
+}
+
+resource "azurerm_cdn_frontdoor_rule" "io_italia_it_pubbliche_amministrazioni" {
+  name                      = "PubblicheAmministrazioni"
+  order                     = 10
+  cdn_frontdoor_rule_set_id = azurerm_cdn_frontdoor_rule_set.io_italia_it.id
+
+  actions {
+    url_redirect_action {
+      redirect_type        = "Moved"
+      redirect_protocol    = "Https"
+      destination_hostname = "ioapp.it"
+      destination_path     = "/perche-aderire"
+    }
+  }
+
+  conditions {
+    url_path_condition {
+      match_values     = ["/pubbliche-amministrazioni/", "/pubbliche-amministrazioni"]
+      operator         = "Equal"
+      negate_condition = false
+      transforms       = ["Lowercase"]
+    }
+  }
+}
+
+resource "azurerm_cdn_frontdoor_rule" "io_italia_it_enti_nazionali" {
+  name                      = "EntiNazionali"
+  order                     = 11
+  cdn_frontdoor_rule_set_id = azurerm_cdn_frontdoor_rule_set.io_italia_it.id
+
+  actions {
+    url_redirect_action {
+      redirect_type        = "Moved"
+      redirect_protocol    = "Https"
+      destination_hostname = "ioapp.it"
+      destination_path     = "/enti"
+    }
+  }
+
+  conditions {
+    url_path_condition {
+      match_values     = ["/enti/", "/enti"]
+      operator         = "Equal"
+      negate_condition = false
+      transforms       = ["Lowercase"]
+    }
+  }
+}
+
+resource "azurerm_cdn_frontdoor_rule" "io_italia_it_cittadini" {
+  name                      = "Cittadini"
+  order                     = 12
+  cdn_frontdoor_rule_set_id = azurerm_cdn_frontdoor_rule_set.io_italia_it.id
+
+  actions {
+    url_redirect_action {
+      redirect_type        = "Moved"
+      redirect_protocol    = "Https"
+      destination_hostname = "ioapp.it"
+      destination_path     = "/"
+    }
+  }
+
+  conditions {
+    url_path_condition {
+      match_values     = ["/cittadini/", "/cittadini"]
+      operator         = "Equal"
+      negate_condition = false
+      transforms       = ["Lowercase"]
+    }
+  }
+}
+
+resource "azurerm_cdn_frontdoor_rule" "io_italia_it_cgn_guida_beneficiari" {
+  name                      = "CGNGuidaBeneficiari"
+  order                     = 13
+  cdn_frontdoor_rule_set_id = azurerm_cdn_frontdoor_rule_set.io_italia_it.id
+
+  actions {
+    url_redirect_action {
+      redirect_type        = "Moved"
+      redirect_protocol    = "Https"
+      destination_hostname = "ioapp.it"
+      destination_path     = "/cgn-guida-beneficiari"
+    }
+  }
+
+  conditions {
+    url_path_condition {
+      match_values = [
+        "/carta-giovani-nazionale/guida-beneficiari",
+        "/carta-giovani-nazionale/guida-beneficiari/",
+      ]
+      operator         = "Equal"
+      negate_condition = false
+      transforms       = ["Lowercase"]
+    }
+  }
+}
+
+resource "azurerm_cdn_frontdoor_rule" "io_italia_it_cgn_informativa_beneficiari" {
+  name                      = "CGNInformativaBeneficiari"
+  order                     = 14
+  cdn_frontdoor_rule_set_id = azurerm_cdn_frontdoor_rule_set.io_italia_it.id
+
+  actions {
+    url_redirect_action {
+      redirect_type        = "Moved"
+      redirect_protocol    = "Https"
+      destination_hostname = "ioapp.it"
+      destination_path     = "/cgn-informativa-beneficiari"
+    }
+  }
+
+  conditions {
+    url_path_condition {
+      match_values = [
+        "/carta-giovani-nazionale/informativa-beneficiari",
+        "/carta-giovani-nazionale/informativa-beneficiari/",
+      ]
+      operator         = "Equal"
+      negate_condition = false
+      transforms       = ["Lowercase"]
+    }
+  }
+}
+
+resource "azurerm_cdn_frontdoor_rule" "io_italia_it_cgn_informative_operatori" {
+  name                      = "CGNInformativeOperatori"
+  order                     = 15
+  cdn_frontdoor_rule_set_id = azurerm_cdn_frontdoor_rule_set.io_italia_it.id
+
+  actions {
+    url_redirect_action {
+      redirect_type        = "Moved"
+      redirect_protocol    = "Https"
+      destination_hostname = "ioapp.it"
+      destination_path     = "/cgn-informativa-operatori"
+    }
+  }
+
+  conditions {
+    url_path_condition {
+      match_values = [
+        "/carta-giovani-nazionale/informativa-operatori",
+        "/carta-giovani-nazionale/informativa-operatori/",
+      ]
+      operator         = "Equal"
+      negate_condition = false
+      transforms       = ["Lowercase"]
+    }
+  }
+}
+
+resource "azurerm_cdn_frontdoor_rule" "io_italia_it_note_legali" {
+  name                      = "NoteLegali"
+  order                     = 16
+  cdn_frontdoor_rule_set_id = azurerm_cdn_frontdoor_rule_set.io_italia_it.id
+
+  actions {
+    url_redirect_action {
+      redirect_type        = "Moved"
+      redirect_protocol    = "Https"
+      destination_hostname = "ioapp.it"
+      destination_path     = "/note-legali"
+    }
+  }
+
+  conditions {
+    url_path_condition {
+      match_values     = ["/note-legali/", "/note-legali"]
+      operator         = "Equal"
+      negate_condition = false
+      transforms       = ["Lowercase"]
+    }
+  }
+}
+
+resource "azurerm_cdn_frontdoor_rule" "io_italia_it_privacy_policy" {
+  name                      = "PrivacyPolicy"
+  order                     = 17
+  cdn_frontdoor_rule_set_id = azurerm_cdn_frontdoor_rule_set.io_italia_it.id
+
+  actions {
+    url_redirect_action {
+      redirect_type        = "Moved"
+      redirect_protocol    = "Https"
+      destination_hostname = "ioapp.it"
+      destination_path     = "/informativa-privacy"
+    }
+  }
+
+  conditions {
+    url_path_condition {
+      match_values     = ["/privacy-policy/", "/privacy-policy"]
+      operator         = "Equal"
+      negate_condition = false
+    }
+  }
+}
+
+resource "azurerm_cdn_frontdoor_rule" "io_italia_it_informativa_newsletter" {
+  name                      = "InformativaNewsletter"
+  cdn_frontdoor_rule_set_id = azurerm_cdn_frontdoor_ruleset.example.id
+  order                     = 18
+  behavior_on_match         = "Continue"
+
+  actions {
+    url_redirect_action {
+      redirect_type        = "Moved"
+      redirect_protocol    = "Https"
+      destination_hostname = "ioapp.it"
+
+      destination_path = "/informativa-newsletter"
+    }
+  }
+
+  conditions {
+    url_path_condition {
+      operator         = "Equal"
+      negate_condition = false
+      match_values = [
+        "/informativa-newsletter/",
+        "/informativa-newsletter",
+      ]
+    }
+  }
+}
+
+resource "azurerm_cdn_frontdoor_rule" "io_italia_it_same_path" {
+  name                      = "SamePath"
+  cdn_frontdoor_rule_set_id = azurerm_cdn_frontdoor_ruleset.example.id
+  order                     = 19
+  behavior_on_match         = "Continue"
+
+  actions {
+    url_redirect_action {
+      redirect_type        = "Moved"
+      redirect_protocol    = "Https"
+      destination_hostname = "ioapp.it"
+    }
+  }
+
+  conditions {
+    url_path_condition {
+      operator         = "Equal"
+      negate_condition = false
+      match_values = [
+        "/documenti-su-io",
+        "/documenti-su-io/",
+        "/carta-giovani-nazionale",
+        "/carta-giovani-nazionale/",
+        "/numeri/",
+        "/numeri",
+        "/sviluppatori",
+        "/sviluppatori/",
+      ]
+    }
+  }
+}
+
+resource "azurerm_cdn_frontdoor_rule" "io_italia_it_homepage" {
+  name                      = "Homepage"
+  cdn_frontdoor_rule_set_id = azurerm_cdn_frontdoor_ruleset.example.id
+  order                     = 20
+  behavior_on_match         = "Continue"
+
+  actions {
+    url_redirect_action {
+      redirect_type        = "Moved"
+      redirect_protocol    = "Https"
+      destination_hostname = "ioapp.it"
+    }
+  }
+
+  conditions {
+    url_path_condition {
+      operator         = "Equal"
+      negate_condition = false
+      match_values     = ["/"]
+      transforms       = ["Lowercase"]
+    }
+  }
+}
+
+resource "azurerm_cdn_frontdoor_rule" "io_italia_it_io_web" {
+  name                      = "IoWeb"
+  cdn_frontdoor_rule_set_id = azurerm_cdn_frontdoor_ruleset.example.id
+  order                     = 21
+  behavior_on_match         = "Continue"
+
+  actions {
+    url_redirect_action {
+      redirect_type        = "Moved"
+      redirect_protocol    = "Https"
+      destination_hostname = "ioapp.it"
+
+      destination_path = "/esci-da-io"
+    }
+  }
+
+  conditions {
+    url_path_condition {
+      operator         = "Equal"
+      negate_condition = false
+      match_values = [
+        "/io-web/",
+        "/io-web",
+      ]
+    }
+  }
+}
+
