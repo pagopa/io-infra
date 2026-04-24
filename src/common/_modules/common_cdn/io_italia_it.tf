@@ -538,7 +538,7 @@ resource "azurerm_cdn_frontdoor_rule" "io_italia_it_privacy_policy" {
 
 resource "azurerm_cdn_frontdoor_rule" "io_italia_it_informativa_newsletter" {
   name                      = "InformativaNewsletter"
-  cdn_frontdoor_rule_set_id = azurerm_cdn_frontdoor_ruleset.example.id
+  cdn_frontdoor_rule_set_id = azurerm_cdn_frontdoor_ruleset.io_italia_it.id
   order                     = 18
   behavior_on_match         = "Continue"
 
@@ -566,7 +566,7 @@ resource "azurerm_cdn_frontdoor_rule" "io_italia_it_informativa_newsletter" {
 
 resource "azurerm_cdn_frontdoor_rule" "io_italia_it_same_path" {
   name                      = "SamePath"
-  cdn_frontdoor_rule_set_id = azurerm_cdn_frontdoor_ruleset.example.id
+  cdn_frontdoor_rule_set_id = azurerm_cdn_frontdoor_ruleset.io_italia_it.id
   order                     = 19
   behavior_on_match         = "Continue"
 
@@ -598,7 +598,7 @@ resource "azurerm_cdn_frontdoor_rule" "io_italia_it_same_path" {
 
 resource "azurerm_cdn_frontdoor_rule" "io_italia_it_homepage" {
   name                      = "Homepage"
-  cdn_frontdoor_rule_set_id = azurerm_cdn_frontdoor_ruleset.example.id
+  cdn_frontdoor_rule_set_id = azurerm_cdn_frontdoor_ruleset.io_italia_it.id
   order                     = 20
   behavior_on_match         = "Continue"
 
@@ -622,7 +622,7 @@ resource "azurerm_cdn_frontdoor_rule" "io_italia_it_homepage" {
 
 resource "azurerm_cdn_frontdoor_rule" "io_italia_it_io_web" {
   name                      = "IoWeb"
-  cdn_frontdoor_rule_set_id = azurerm_cdn_frontdoor_ruleset.example.id
+  cdn_frontdoor_rule_set_id = azurerm_cdn_frontdoor_ruleset.io_italia_it.id
   order                     = 21
   behavior_on_match         = "Continue"
 
