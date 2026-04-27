@@ -182,7 +182,6 @@ variable "backend_hostnames" {
   type = object({
     app                  = list(string)
     com_citizen_func     = string
-    assets_cdn           = string
     services_app_backend = string
     lollipop             = string
     cgn                  = string
