@@ -156,22 +156,22 @@ import {
 
 import {
   to = module.common_cdn.azurerm_cdn_frontdoor_custom_domain_association.assets_io_italia_it
-  id = "/subscriptions/ec285037-c673-4f58-b594-d7c480da4e8b/resourceGroups/io-p-rg-common/providers/Microsoft.Cdn/profiles/io-p-cdn-common/customDomains/assets-io-italia-it"
+  id = "/subscriptions/ec285037-c673-4f58-b594-d7c480da4e8b/resourceGroups/io-p-rg-common/providers/Microsoft.Cdn/profiles/io-p-cdn-common/associations/assets-io-italia-it"
 }
 
 import {
   to = module.common_cdn.azurerm_cdn_frontdoor_custom_domain_association.developer_io_italia_it
-  id = "/subscriptions/ec285037-c673-4f58-b594-d7c480da4e8b/resourceGroups/io-p-rg-common/providers/Microsoft.Cdn/profiles/io-p-cdn-common/customDomains/developer-io-italia-it"
+  id = "/subscriptions/ec285037-c673-4f58-b594-d7c480da4e8b/resourceGroups/io-p-rg-common/providers/Microsoft.Cdn/profiles/io-p-cdn-common/associations/developer-io-italia-it"
 }
 
 import {
   to = module.common_cdn.azurerm_cdn_frontdoor_custom_domain_association.io_italia_it
-  id = "/subscriptions/ec285037-c673-4f58-b594-d7c480da4e8b/resourceGroups/io-p-rg-common/providers/Microsoft.Cdn/profiles/io-p-cdn-common/customDomains/io-italia-it"
+  id = "/subscriptions/ec285037-c673-4f58-b594-d7c480da4e8b/resourceGroups/io-p-rg-common/providers/Microsoft.Cdn/profiles/io-p-cdn-common/associations/io-italia-it"
 }
 
 import {
   to = module.common_cdn.azurerm_cdn_frontdoor_custom_domain_association.static_web_io_italia_it
-  id = "/subscriptions/ec285037-c673-4f58-b594-d7c480da4e8b/resourceGroups/io-p-rg-common/providers/Microsoft.Cdn/profiles/io-p-cdn-common/customDomains/static-web-io-italia-it"
+  id = "/subscriptions/ec285037-c673-4f58-b594-d7c480da4e8b/resourceGroups/io-p-rg-common/providers/Microsoft.Cdn/profiles/io-p-cdn-common/associations/static-web-io-italia-it"
 }
 
 # Rulesets
