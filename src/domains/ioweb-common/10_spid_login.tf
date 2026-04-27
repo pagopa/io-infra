@@ -7,7 +7,7 @@ locals {
 ## App service spid login ##
 ############################
 module "spid_login" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//app_service?ref=v8.56.0"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//app_service?ref=v8.103.0"
 
   # App service plan
   plan_type = "internal"
