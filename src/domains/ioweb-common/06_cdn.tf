@@ -1,5 +1,5 @@
 module "landing_cdn" {
-  source = "github.com/pagopa/terraform-azurerm-v3.git//cdn?ref=v8.56.0"
+  source = "github.com/pagopa/terraform-azurerm-v4.git//cdn?ref=v10.5.0"
 
   name                             = "portal"
   prefix                           = local.project
