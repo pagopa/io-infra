@@ -21,7 +21,7 @@ module "spid_login" {
 
 
   always_on         = true
-  node_version      = "20-lts"
+  node_version      = "22-lts"
   app_command_line  = "npm run start"
   health_check_path = "/healthcheck"
 
@@ -31,7 +31,7 @@ module "spid_login" {
     WEBSITES_ENABLE_APP_SERVICE_STORAGE = false
     WEBSITES_PORT                       = 8080
 
-    WEBSITE_NODE_DEFAULT_VERSION = "18.13.0"
+    WEBSITE_NODE_DEFAULT_VERSION = "22.22.0"
     WEBSITE_RUN_FROM_PACKAGE     = "1"
     WEBSITE_DNS_SERVER           = "168.63.129.16"
 
