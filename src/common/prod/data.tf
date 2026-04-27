@@ -111,11 +111,6 @@ data "azurerm_subnet" "cosmos_api_allowed" {
 }
 
 # Functions
-data "azurerm_linux_function_app" "function_assets_cdn" {
-  name                = "${local.project_weu_legacy}-assets-cdn-fn"
-  resource_group_name = "${local.project_weu_legacy}-assets-cdn-rg"
-}
-
 data "azurerm_linux_function_app" "function_profile" {
   name                = "${local.project_itn}-auth-profile-func-02"
   resource_group_name = "${local.project_itn}-auth-main-rg-01"
