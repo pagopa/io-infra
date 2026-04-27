@@ -290,67 +290,6 @@ module "monitoring_weu" {
   tags = local.tags
 }
 
-module "application_gateway_weu" {
-  source = "../_modules/application_gateway"
-
-  location                = "westeurope"
-  location_short          = local.core.resource_groups.westeurope.location_short
-  project                 = local.project_weu_legacy
-  prefix                  = local.prefix
-  resource_group_external = local.core.resource_groups.westeurope.external
-  resource_group_security = local.core.resource_groups.westeurope.sec
-  resource_group_common   = local.core.resource_groups.westeurope.common
-
-  subscription_id = data.azurerm_subscription.current.subscription_id
-
-  datasources = {
-    azurerm_client_config = data.azurerm_client_config.current
-  }
-
-  vnet_common      = local.core.networking.weu.vnet_common
-  key_vault        = local.core.key_vault.weu.kv
-  key_vault_common = local.core.key_vault.weu.kv_common
-  external_domain  = module.global.dns.external_domain
-  public_dns_zones = module.global.dns.public_dns_zones
-
-  backend_hostnames = {
-    firmaconio_selfcare_web_app = [data.azurerm_linux_web_app.firmaconio_selfcare_web_app.default_hostname]
-    app_backends                = [for appbe in module.app_backend_weu : appbe.default_hostname]
-  }
-  certificates = {
-    api                                  = "api-io-pagopa-it"
-    api_mtls                             = "api-mtls-io-pagopa-it"
-    api_app                              = "api-app-io-pagopa-it"
-    api_web                              = "api-web-io-pagopa-it"
-    api_io_italia_it                     = "api-io-italia-it"
-    app_backend_io_italia_it             = "app-backend-io-italia-it"
-    developerportal_backend_io_italia_it = "developerportal-backend-io-italia-it"
-    firmaconio_selfcare_pagopa_it        = "firmaconio-selfcare-pagopa-it"
-    continua_io_pagopa_it                = "continua-io-pagopa-it"
-    selfcare_io_pagopa_it                = "selfcare-io-pagopa-it"
-    oauth_io_pagopa_it                   = "oauth-io-pagopa-it"
-    vehicles_ipatente_io_pagopa_it       = "vehicles-ipatente-io-pagopa-it"
-    licences_ipatente_io_pagopa_it       = "licences-ipatente-io-pagopa-it"
-    payments_ipatente_io_pagopa_it       = "payments-ipatente-io-pagopa-it"
-    practices_ipatente_io_pagopa_it      = "practices-ipatente-io-pagopa-it"
-  }
-
-  cidr_subnet           = ["10.0.13.0/24"]
-  min_capacity          = 1 # 4 capacity=baseline, 10 capacity=high volume event, 15 capacity=very high volume event
-  max_capacity          = 10
-  alerts_enabled        = true
-  deny_paths            = ["\\/admin\\/(.*)"]
-  error_action_group_id = module.monitoring_weu.action_groups.error
-
-  ioweb_kv = {
-    id                  = data.azurerm_key_vault.ioweb_kv.id
-    name                = data.azurerm_key_vault.ioweb_kv.name
-    resource_group_name = data.azurerm_key_vault.ioweb_kv.resource_group_name
-  }
-
-  tags = local.tags
-}
-
 module "cosmos_api_weu" {
   source = "../_modules/cosmos_api"
 
