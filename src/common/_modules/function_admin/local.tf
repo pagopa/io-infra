@@ -1,9 +1,8 @@
 locals {
-  project            = "${var.prefix}-${var.env_short}"
-  vnet_common_name   = format("%s-vnet-common", local.project)
-  rg_common_name     = format("%s-rg-common", local.project)
-  rg_internal_name   = format("%s-rg-internal", local.project)
-  rg_assets_cdn_name = format("%s-assets-cdn-rg", local.project)
+  project          = "${var.prefix}-${var.env_short}"
+  vnet_common_name = format("%s-vnet-common", local.project)
+  rg_common_name   = format("%s-rg-common", local.project)
+  rg_internal_name = format("%s-rg-internal", local.project)
 
   apim_itn_name                  = "${var.project_itn}-apim-01"
   common_resource_group_name_itn = "${var.project_itn}-common-rg-01"
