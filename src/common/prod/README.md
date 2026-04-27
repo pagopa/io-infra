@@ -24,7 +24,6 @@
 | <a name="module_apim_itn"></a> [apim\_itn](#module\_apim\_itn) | ../_modules/apim | n/a |
 | <a name="module_app_backend_weu"></a> [app\_backend\_weu](#module\_app\_backend\_weu) | ../_modules/app_backend | n/a |
 | <a name="module_application_gateway_itn"></a> [application\_gateway\_itn](#module\_application\_gateway\_itn) | ../_modules/app_gateway | n/a |
-| <a name="module_application_gateway_weu"></a> [application\_gateway\_weu](#module\_application\_gateway\_weu) | ../_modules/application_gateway | n/a |
 | <a name="module_assets_locales_cdn"></a> [assets\_locales\_cdn](#module\_assets\_locales\_cdn) | ../_modules/assets_locales_cdn | n/a |
 | <a name="module_common_cdn"></a> [common\_cdn](#module\_common\_cdn) | ../_modules/common_cdn | n/a |
 | <a name="module_containers_services"></a> [containers\_services](#module\_containers\_services) | ../_modules/function_services/containers | n/a |
