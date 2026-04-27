@@ -101,7 +101,7 @@ No inputs.
 ## Outputs
 
 | Name | Description |
-| ---- | ----------- |
+|------|-------------|
 | <a name="output_apim"></a> [apim](#output\_apim) | n/a |
 | <a name="output_pep_subnets"></a> [pep\_subnets](#output\_pep\_subnets) | n/a |
 | <a name="output_private_endpoints"></a> [private\_endpoints](#output\_private\_endpoints) | n/a |
