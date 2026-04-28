@@ -76,15 +76,15 @@ import {
   id = "/subscriptions/ec285037-c673-4f58-b594-d7c480da4e8b/resourceGroups/io-p-rg-common/providers/Microsoft.Cdn/profiles/io-p-cdn-common/afdEndpoints/io-p-cdnendpoint-websiteassets"
 }
 
-# Certificates
+# Secrets
 
 import {
-  to = azurerm_cdn_frontdoor_secret.developer_io_italia_it
+  to = module.common_cdn.azurerm_cdn_frontdoor_secret.developer_io_italia_it
   id = "/subscriptions/ec285037-c673-4f58-b594-d7c480da4e8b/resourceGroups/io-p-rg-common/providers/Microsoft.Cdn/profiles/io-p-cdn-common/secrets/MigratedSecret-developer-io-italia-it"
 }
 
 import {
-  to = azurerm_cdn_frontdoor_secret.io_italia_it
+  to = module.common_cdn.azurerm_cdn_frontdoor_secret.io_italia_it
   id = "/subscriptions/ec285037-c673-4f58-b594-d7c480da4e8b/resourceGroups/io-p-rg-common/providers/Microsoft.Cdn/profiles/io-p-cdn-common/secrets/MigratedSecret-io-italia-it"
 }
 
