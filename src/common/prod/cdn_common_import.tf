@@ -27,6 +27,28 @@ import {
   id = "/subscriptions/ec285037-c673-4f58-b594-d7c480da4e8b/resourceGroups/io-p-rg-common/providers/Microsoft.Cdn/profiles/io-p-cdn-common/customDomains/static-web-io-italia-it"
 }
 
+# Legacy custom domains
+
+import {
+  to = module.common_cdn.azurerm_cdn_frontdoor_custom_domain.assets_io_italia_it_legacy
+  id = "/subscriptions/ec285037-c673-4f58-b594-d7c480da4e8b/resourceGroups/io-p-rg-common/providers/Microsoft.Cdn/profiles/io-p-cdn-common/customDomains/io-p-cdnendpoint-assets-Migrated"
+}
+
+import {
+  to = module.common_cdn.azurerm_cdn_frontdoor_custom_domain.developer_io_italia_it_legacy
+  id = "/subscriptions/ec285037-c673-4f58-b594-d7c480da4e8b/resourceGroups/io-p-rg-common/providers/Microsoft.Cdn/profiles/io-p-cdn-common/customDomains/io-p-cdnendpoint-developerportal-Migrated"
+}
+
+import {
+  to = module.common_cdn.azurerm_cdn_frontdoor_custom_domain.io_italia_it_legacy
+  id = "/subscriptions/ec285037-c673-4f58-b594-d7c480da4e8b/resourceGroups/io-p-rg-common/providers/Microsoft.Cdn/profiles/io-p-cdn-common/customDomains/io-p-cdnendpoint-iowebsite-Migrated"
+}
+
+import {
+  to = module.common_cdn.azurerm_cdn_frontdoor_custom_domain.static_web_io_italia_it_legacy
+  id = "/subscriptions/ec285037-c673-4f58-b594-d7c480da4e8b/resourceGroups/io-p-rg-common/providers/Microsoft.Cdn/profiles/io-p-cdn-common/customDomains/io-p-cdnendpoint-websiteassets-Migrated"
+}
+
 # DNS
 
 import {

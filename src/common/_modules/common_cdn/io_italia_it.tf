@@ -10,6 +10,17 @@ resource "azurerm_cdn_frontdoor_custom_domain" "io_italia_it" {
   }
 }
 
+resource "azurerm_cdn_frontdoor_custom_domain" "io_italia_it_legacy" {
+  name                     = "io-p-cdnendpoint-iowebsite-Migrated"
+  cdn_frontdoor_profile_id = azurerm_cdn_frontdoor_profile.common_cdn.id
+  dns_zone_id              = var.public_dns_zones.io_italia_it.id
+  host_name                = "io-p-cdnendpoint-iowebsite.azureedge.net"
+
+  tls {
+    certificate_type = "ManagedCertificate"
+  }
+}
+
 resource "azurerm_cdn_frontdoor_secret" "io_italia_it" {
   name                     = "MigratedSecret-io-italia-it"
   cdn_frontdoor_profile_id = azurerm_cdn_frontdoor_profile.common_cdn.id
@@ -97,8 +108,11 @@ resource "azurerm_cdn_frontdoor_route" "io_italia_it" {
   patterns_to_match      = ["/*"]
   supported_protocols    = ["Https"]
 
-  cdn_frontdoor_custom_domain_ids = [azurerm_cdn_frontdoor_custom_domain.io_italia_it.id]
-  link_to_default_domain          = true
+  cdn_frontdoor_custom_domain_ids = [
+    azurerm_cdn_frontdoor_custom_domain.io_italia_it.id,
+    azurerm_cdn_frontdoor_custom_domain.io_italia_it_legacy.id
+  ]
+  link_to_default_domain = true
 
   cache {
     compression_enabled           = false
