@@ -40,7 +40,7 @@ resource "azurerm_dns_a_record" "io_italia_it" {
   name                = "@"
   zone_name           = var.public_dns_zones.io_italia_it.name
   resource_group_name = var.resource_group_external
-  ttl                 = 3600
+  ttl                 = 300
   target_resource_id  = azurerm_cdn_frontdoor_endpoint.io_italia_it.id
 }
 
@@ -92,13 +92,18 @@ resource "azurerm_cdn_frontdoor_route" "io_italia_it" {
   cdn_frontdoor_rule_set_ids    = [azurerm_cdn_frontdoor_rule_set.io_italia_it.id]
   enabled                       = true
 
-  forwarding_protocol    = "HttpsOnly"
-  https_redirect_enabled = true
+  forwarding_protocol    = "MatchRequest"
+  https_redirect_enabled = false
   patterns_to_match      = ["/*"]
-  supported_protocols    = ["Http", "Https"]
+  supported_protocols    = ["Https"]
 
   cdn_frontdoor_custom_domain_ids = [azurerm_cdn_frontdoor_custom_domain.io_italia_it.id]
-  link_to_default_domain          = false
+  link_to_default_domain          = true
+
+  cache {
+    compression_enabled           = false
+    query_string_caching_behavior = "IgnoreQueryString"
+  }
 }
 
 resource "azurerm_cdn_frontdoor_custom_domain_association" "io_italia_it" {
