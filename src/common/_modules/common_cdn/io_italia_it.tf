@@ -106,7 +106,7 @@ resource "azurerm_cdn_frontdoor_route" "io_italia_it" {
   forwarding_protocol    = "MatchRequest"
   https_redirect_enabled = false
   patterns_to_match      = ["/*"]
-  supported_protocols    = ["Https"]
+  supported_protocols    = ["Http", "Https"]
 
   cdn_frontdoor_custom_domain_ids = [
     azurerm_cdn_frontdoor_custom_domain.io_italia_it.id,
