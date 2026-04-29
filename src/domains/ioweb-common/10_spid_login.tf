@@ -26,6 +26,8 @@ module "spid_login" {
   health_check_path            = "/healthcheck"
   health_check_maxpingfailures = 2
 
+  minimum_tls_version = "1.2"
+
   ip_restriction_default_action = "Deny"
 
   app_settings = {
