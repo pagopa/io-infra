@@ -1,105 +1,45 @@
-module "landing_cdn" {
-  source = "github.com/pagopa/terraform-azurerm-v4.git//cdn?ref=v10.5.0"
+# TEMPORARY: module.landing_cdn has been removed from IaC management without
+# destroying the underlying Azure resource (see `removed` block below).
+#
+# Root cause: incompatibility with the hashicorp/azurerm provider v4.
+# Azure CDN Standard from Microsoft (classic) was deprecated on October 1, 2025.
+# Starting from that date, the provider enforces the following constraint at
+# plan/apply time:
+#
+#   Error: creation of new CDN resources is no longer permitted following its
+#   deprecation on October 1, 2025. However, modifications to existing CDN
+#   resources remain supported until the API reaches full retirement on
+#   September 30, 2027.
+#
+# Background:
+#   - August 15, 2025: Azure CDN classic stopped supporting new profile/domain
+#     creation and managed certificate provisioning.
+#   - October 1, 2025: azurerm v4 blocks any Terraform operation that would
+#     create new classic CDN resources (including plan-time diffs that would
+#     trigger a replace).
+#   - September 30, 2027: full API retirement — no reads, writes, or management
+#     of classic CDN resources will be possible.
+#
+# Resources removed from Terraform state (but NOT destroyed on Azure):
+#   - module.landing_cdn.azurerm_cdn_profile.this
+#   - module.landing_cdn.azurerm_cdn_endpoint.this
+#   - module.landing_cdn.azurerm_dns_a_record.apex_hostname[0]
+#   - module.landing_cdn.azurerm_dns_cname_record.apex_cdnverify[0]
+#   - module.landing_cdn.azurerm_monitor_diagnostic_setting.diagnostic_settings_cdn_profile
+#   - module.landing_cdn.null_resource.apex_custom_hostname[0]
+#   - module.landing_cdn.module.cdn_storage_account.azurerm_storage_account.this
+#   - module.landing_cdn.module.cdn_storage_account.azurerm_monitor_metric_alert.storage_account_low_availability[0]
+#
+# Next steps:
+#   The resource will be migrated to Azure Front Door Standard/Premium in a
+#   dedicated PR. Microsoft provides a zero-downtime migration tool:
+#   https://learn.microsoft.com/en-us/azure/cdn/tier-migration
 
-  name                             = "portal"
-  prefix                           = local.project
-  resource_group_name              = azurerm_resource_group.fe_rg.name
-  location                         = azurerm_resource_group.fe_rg.location
-  hostname                         = "ioapp.it"
-  https_rewrite_enabled            = true
-  storage_account_replication_type = "GZRS"
 
-  index_document     = "index.html"
-  error_404_document = "it/404/index.html"
+removed {
+  from = module.landing_cdn
 
-  advanced_threat_protection_enabled = false
-
-  dns_zone_name                = data.azurerm_dns_zone.ioapp_it.name
-  dns_zone_resource_group_name = data.azurerm_resource_group.core_ext.name
-
-  keyvault_vault_name          = module.key_vault.name
-  keyvault_resource_group_name = azurerm_resource_group.sec_rg.name
-  keyvault_subscription_id     = data.azurerm_subscription.current.subscription_id
-
-  querystring_caching_behaviour = "BypassCaching"
-
-  global_delivery_rule = {
-    cache_expiration_action       = []
-    cache_key_query_string_action = []
-    modify_request_header_action  = []
-
-    # HSTS
-    modify_response_header_action = [
-      {
-        action = "Overwrite"
-        name   = "Strict-Transport-Security"
-        value  = "max-age=31536000"
-      },
-      # Content-Security-Policy (in Report mode)
-      {
-        action = "Append"
-        name   = "Content-Security-Policy"
-        value  = "script-src 'self' 'unsafe-inline'; worker-src 'none'; font-src data: 'self'; object-src 'none'; "
-      },
-      {
-        action = "Overwrite"
-        name   = "Cache-Control"
-        value  = "no-cache"
-      }
-    ]
+  lifecycle {
+    destroy = false
   }
-
-  delivery_rule = [{
-    name  = "TakeRootFilesFromStorage"
-    order = 2
-    request_uri_conditions = [{
-      match_values = [
-        "?",
-      ]
-      negate_condition = true
-      operator         = "Contains"
-      transforms       = []
-      },
-      {
-        match_values = [
-          "/",
-        ]
-        negate_condition = false
-        operator         = "EndsWith"
-        transforms       = []
-      }
-    ]
-
-    url_redirect_actions = [{
-      protocol      = "Https"
-      query_string  = "refresh=true"
-      redirect_type = "Found",
-      fragment      = null
-      hostname      = null
-      path          = null
-    }]
-
-    cache_expiration_actions       = []
-    cache_key_query_string_actions = []
-    cookies_conditions             = []
-    device_conditions              = []
-    http_version_conditions        = []
-    modify_request_header_actions  = []
-    modify_response_header_actions = []
-    post_arg_conditions            = []
-    query_string_conditions        = []
-    remote_address_conditions      = []
-    request_body_conditions        = []
-    request_header_conditions      = []
-    request_method_conditions      = []
-    request_scheme_conditions      = []
-    url_file_extension_conditions  = []
-    url_file_name_conditions       = []
-    url_path_conditions            = []
-    url_rewrite_actions            = []
-  }]
-
-  log_analytics_workspace_id = data.azurerm_log_analytics_workspace.log_analytics.id
-
-  tags = var.tags
 }
