@@ -413,8 +413,6 @@ module "storage_accounts" {
 module "common_cdn" {
   source = "../_modules/common_cdn"
 
-  project                 = local.project_weu_legacy
-  subscription_id         = data.azurerm_subscription.current.subscription_id
   resource_group_cdn      = local.core.resource_groups.westeurope.common
   resource_group_external = "io-p-rg-external"
 
