@@ -1,8 +1,3 @@
-variable "project" {
-  type        = string
-  description = "IO prefix, short environment and short location"
-}
-
 variable "prefix" {
   type    = string
   default = "io"
