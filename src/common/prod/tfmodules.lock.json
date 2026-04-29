@@ -143,12 +143,6 @@
     "name": "azure_role_assignments",
     "source": "https://registry.terraform.io/modules/pagopa-dx/azure-role-assignments/azurerm/1.3.3"
   },
-  "application_gateway_weu.app_gw_ioweb_kv": {
-    "hash": "a8c1a6fa085349f937017deb20236170f0bb9dd78b5ded85ec75d7caeba7a872",
-    "version": "1.3.3",
-    "name": "azure_role_assignments",
-    "source": "https://registry.terraform.io/modules/pagopa-dx/azure-role-assignments/azurerm/1.3.3"
-  },
   "continua_app_service.appservice_continua_itn": {
     "hash": "574eefa5a3e46ae05349a2a08c1035017b22abe9be747491f1b6fbbfc6d5d332",
     "version": "2.0.1",
