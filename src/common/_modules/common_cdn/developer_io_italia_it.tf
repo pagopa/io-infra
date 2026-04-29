@@ -135,7 +135,7 @@ resource "azurerm_cdn_frontdoor_rule_set" "developer_io_italia_it" {
 }
 
 resource "azurerm_cdn_frontdoor_rule" "developer_io_italia_it_enforce_https" {
-  name                      = "EngorceHTTPS"
+  name                      = "EnforceHTTPS"
   cdn_frontdoor_rule_set_id = azurerm_cdn_frontdoor_rule_set.developer_io_italia_it.id
   order                     = 1
 
