@@ -20,11 +20,6 @@ variable "env_short" {
   }
 }
 
-variable "subscription_id" {
-  type        = string
-  description = "Azure subscription id"
-}
-
 variable "tags" {
   type        = map(any)
   description = "Resource tags"
