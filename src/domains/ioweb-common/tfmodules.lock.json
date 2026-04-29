@@ -1,8 +1,8 @@
 {
   "io_web_profile_itn_fe_st": {
-    "hash": "c8f3a9453b41bff1302fc625d524b8539d42ce46aac154df5270bc7d33769a6c",
-    "version": "0.1.1",
+    "hash": "9edca3c471b6ce7642e445dda55ae347b1c7f6e106bca796d54b2f9bf705648d",
+    "version": "0.0.14",
     "name": "azure_storage_account",
-    "source": "https://registry.terraform.io/modules/pagopa-dx/azure-storage-account/azurerm/0.1.1"
+    "source": "https://registry.terraform.io/modules/pagopa-dx/azure-storage-account/azurerm/0.0.14"
   }
 }
