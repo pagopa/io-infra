@@ -20,9 +20,6 @@ resource "azurerm_cdn_frontdoor_custom_domain" "static_web_io_italia_it_legacy" 
   }
 }
 
-# TODO: uncomment snippet when switching to managed certificates
-
-/*
 resource "azurerm_dns_txt_record" "static_web_io_italia_it" {
   name                = join(".", ["_dnsauth", "static-web"])
   zone_name           = var.public_dns_zones.io_italia_it.name
@@ -33,7 +30,6 @@ resource "azurerm_dns_txt_record" "static_web_io_italia_it" {
     value = azurerm_cdn_frontdoor_custom_domain.static_web_io_italia_it.validation_token
   }
 }
-*/
 
 resource "azurerm_dns_cname_record" "static_web_io_italia_it" {
   name                = "static-web"
