@@ -184,17 +184,16 @@ resource "azurerm_monitor_metric_alert" "ioweb_portal" {
   resource_group_name = azurerm_resource_group.fe_rg.name
   scopes              = [azurerm_storage_account.ioweb_portal.id]
   description         = "The average availability is less than 99.8%. Runbook: not needed."
+  auto_mitigate       = false
+  frequency           = "PT5M"
+  severity            = 0
+  tags                = var.tags
+
   criteria {
     metric_namespace = "Microsoft.Storage/storageAccounts"
-    metric_name      = "Transactions"
-    aggregation      = "Total"
-    operator         = "GreaterThan"
-    threshold        = 50
-
-    dimension {
-      name     = "ApiName"
-      operator = "Include"
-      values   = ["*"]
-    }
+    metric_name      = "Availability"
+    aggregation      = "Average"
+    operator         = "LessThan"
+    threshold        = 99.8
   }
 }
