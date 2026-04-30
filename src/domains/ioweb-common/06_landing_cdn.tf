@@ -79,7 +79,7 @@ module "landing_cdn" {
 
 resource "azurerm_cdn_frontdoor_rule" "landing_cdn_global_transport_security" {
   name                      = "GlobalTransportSecurity"
-  cdn_frontdoor_rule_set_id = azurerm_cdn_frontdoor_rule_set.landing_cdn.rule_set_id
+  cdn_frontdoor_rule_set_id = module.landing_cdn.rule_set_id
   order                     = 0
 
   actions {
@@ -93,7 +93,7 @@ resource "azurerm_cdn_frontdoor_rule" "landing_cdn_global_transport_security" {
 
 resource "azurerm_cdn_frontdoor_rule" "landing_cdn_global_cache" {
   name                      = "GlobalCache"
-  cdn_frontdoor_rule_set_id = azurerm_cdn_frontdoor_rule_set.landing_cdn.id
+  cdn_frontdoor_rule_set_id = module.landing_cdn.rule_set_id
   order                     = 1
 
   actions {
@@ -112,7 +112,7 @@ resource "azurerm_cdn_frontdoor_rule" "landing_cdn_global_cache" {
 
 resource "azurerm_cdn_frontdoor_rule" "landing_cdn_spid_metadata_redirect" {
   name                      = "SpidMetadataRedirect"
-  cdn_frontdoor_rule_set_id = azurerm_cdn_frontdoor_rule_set.landing_cdn.id
+  cdn_frontdoor_rule_set_id = module.landing_cdn.rule_set_id
   order                     = 2
 
   conditions {
@@ -134,7 +134,7 @@ resource "azurerm_cdn_frontdoor_rule" "landing_cdn_spid_metadata_redirect" {
 
 resource "azurerm_cdn_frontdoor_rule" "landing_cdn_cie_metadata_redirect" {
   name                      = "CieMetadataRedirect"
-  cdn_frontdoor_rule_set_id = azurerm_cdn_frontdoor_rule_set.landing_cdn.id
+  cdn_frontdoor_rule_set_id = module.landing_cdn.rule_set_id
   order                     = 3
 
   conditions {
