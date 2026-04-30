@@ -4,5 +4,11 @@
     "version": "0.0.14",
     "name": "azure_storage_account",
     "source": "https://registry.terraform.io/modules/pagopa-dx/azure-storage-account/azurerm/0.0.14"
+  },
+  "landing_cdn": {
+    "hash": "a7a92603848cdbe4c0519b2d7e830371a29ec38b009c19ad616b7486b7ce7a63",
+    "version": "0.6.1",
+    "name": "azure_cdn",
+    "source": "https://registry.terraform.io/modules/pagopa-dx/azure-cdn/azurerm/0.6.1"
   }
 }

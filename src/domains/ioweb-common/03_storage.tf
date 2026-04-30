@@ -144,3 +144,20 @@ resource "azurerm_storage_management_policy" "immutable_spid_logs_storage_manage
     }
   }
 }
+
+# Landing CDN storage, not used as origin at the moment for module.cdn since is all exposed from cloudfront
+
+import {
+  to = azurerm_storage_account.ioweb_portal
+  id = "/subscriptions/ec285037-c673-4f58-b594-d7c480da4e8b/resourceGroups/io-p-weu-ioweb-fe-rg/providers/Microsoft.Storage/storageAccounts/iopweuiowebportalsa"
+}
+
+resource "azurerm_storage_account" "ioweb_portal" {
+  name                     = "iopweuiowebportalsa"
+  access_tier              = "Hot"
+  location                 = local.location
+  account_replication_type = "GZRS"
+  account_tier             = "Standard"
+  resource_group_name      = azurerm_resource_group.fe_rg.name
+  tags                     = var.tags
+}
