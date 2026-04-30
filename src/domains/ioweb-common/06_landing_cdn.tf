@@ -99,7 +99,7 @@ resource "azurerm_cdn_frontdoor_rule" "landing_cdn_global_cache" {
   actions {
     route_configuration_override_action {
       cache_behavior = "OverrideAlways"
-      cache_duration = "0:15:00"
+      cache_duration = "00:15:00"
     }
 
     response_header_action {
