@@ -173,3 +173,15 @@ resource "azurerm_storage_account" "ioweb_portal" {
     index_document     = "index.html"
   }
 }
+
+import {
+  to = azurerm_monitor_metric_alert.ioweb_portal
+  id = "/subscriptions/ec285037-c673-4f58-b594-d7c480da4e8b/resourceGroups/io-p-weu-ioweb-fe-rg/providers/Microsoft.Insights/metricalerts/[iopweuiowebportalsa] Low Availability"
+}
+
+resource "azurerm_monitor_metric_alert" "ioweb_portal" {
+  name                = "[iopweuiowebportalsa] Low Availability"
+  resource_group_name = azurerm_resource_group.fe_rg.name
+  scopes              = [azurerm_storage_account.ioweb_portal.id]
+  description         = "The average availability is less than 99.8%. Runbook: not needed."
+}
