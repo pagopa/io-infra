@@ -160,4 +160,16 @@ resource "azurerm_storage_account" "ioweb_portal" {
   account_tier             = "Standard"
   resource_group_name      = azurerm_resource_group.fe_rg.name
   tags                     = var.tags
+
+  public_network_access_enabled   = true
+  allow_nested_items_to_be_public = true
+
+  blob_properties {
+    versioning_enabled = true
+  }
+
+  static_website {
+    error_404_document = "it/404/index.html"
+    index_document     = "index.html"
+  }
 }
