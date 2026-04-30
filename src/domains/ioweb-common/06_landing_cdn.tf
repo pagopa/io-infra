@@ -76,3 +76,81 @@ module "landing_cdn" {
   }
   tags = var.tags
 }
+
+resource "azurerm_cdn_frontdoor_rule" "landing_cdn_global_transport_security" {
+  name                      = "GlobalTransportSecurity"
+  cdn_frontdoor_rule_set_id = azurerm_cdn_frontdoor_rule_set.landing_cdn.rule_set_id
+  order                     = 0
+
+  actions {
+    response_header_action {
+      header_action = "Overwrite"
+      header_name   = "Strict-Transport-Security"
+      value         = "max-age=31536000"
+    }
+  }
+}
+
+resource "azurerm_cdn_frontdoor_rule" "landing_cdn_global_cache" {
+  name                      = "GlobalCache"
+  cdn_frontdoor_rule_set_id = azurerm_cdn_frontdoor_rule_set.landing_cdn.id
+  order                     = 1
+
+  actions {
+    route_configuration_override_action {
+      cache_behavior = "OverrideAlways"
+      cache_duration = "0:15:00"
+    }
+
+    response_header_action {
+      header_action = "Overwrite"
+      header_name   = "Cache-Control"
+      value         = "no-cache"
+    }
+  }
+}
+
+resource "azurerm_cdn_frontdoor_rule" "landing_cdn_spid_metadata_redirect" {
+  name                      = "SpidMetadataRedirect"
+  cdn_frontdoor_rule_set_id = azurerm_cdn_frontdoor_rule_set.landing_cdn.id
+  order                     = 2
+
+  conditions {
+    url_path_condition {
+      operator         = "Equal"
+      match_values     = ["login/spid-metadata.xml"]
+      negate_condition = false
+    }
+  }
+
+  actions {
+    url_redirect_action {
+      redirect_type        = "Moved"
+      redirect_protocol    = "MatchRequest"
+      destination_hostname = "account.ioapp.it"
+    }
+  }
+}
+
+resource "azurerm_cdn_frontdoor_rule" "landing_cdn_cie_metadata_redirect" {
+  name                      = "CieMetadataRedirect"
+  cdn_frontdoor_rule_set_id = azurerm_cdn_frontdoor_rule_set.landing_cdn.id
+  order                     = 3
+
+  conditions {
+    url_path_condition {
+      operator         = "Equal"
+      match_values     = ["login/cie-metadata.xml"]
+      negate_condition = false
+    }
+  }
+
+  actions {
+    url_redirect_action {
+      redirect_type        = "Moved"
+      redirect_protocol    = "MatchRequest"
+      destination_hostname = "account.ioapp.it"
+    }
+  }
+}
+
