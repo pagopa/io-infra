@@ -3,10 +3,10 @@
 resource "azurerm_storage_account" "ioweb_portal" {
   name                     = "iopweuiowebportalsa"
   access_tier              = "Hot"
-  location                 = local.location
+  location                 = var.storage_account_location
   account_replication_type = "GZRS"
   account_tier             = "Standard"
-  resource_group_name      = azurerm_resource_group.fe_rg.name
+  resource_group_name      = var.storage_account_resource_group
   tags                     = var.tags
 
   public_network_access_enabled   = true
@@ -24,7 +24,7 @@ resource "azurerm_storage_account" "ioweb_portal" {
 
 resource "azurerm_monitor_metric_alert" "ioweb_portal" {
   name                = "[iopweuiowebportalsa] Low Availability"
-  resource_group_name = azurerm_resource_group.fe_rg.name
+  resource_group_name = var.storage_account_resource_group
   scopes              = [azurerm_storage_account.ioweb_portal.id]
   description         = "The average availability is less than 99.8%. Runbook: not needed."
   auto_mitigate       = false

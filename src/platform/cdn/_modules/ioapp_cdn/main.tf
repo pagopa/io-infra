@@ -1,7 +1,7 @@
 module "ioapp_cdn" {
   source              = "pagopa-dx/azure-cdn/azurerm"
   version             = "~> 0.0"
-  resource_group_name = azurerm_resource_group.io_web_profile_itn_fe_rg.name
+  resource_group_name = var.resource_group_cdn
 
   origins = {
     custom-origin = {
@@ -27,14 +27,14 @@ module "ioapp_cdn" {
 
   diagnostic_settings = {
     enabled                    = true
-    log_analytics_workspace_id = data.azurerm_log_analytics_workspace.log_analytics.id
+    log_analytics_workspace_id = var.log_analytics_workspace_id
   }
 
   environment = {
-    prefix          = "io"
-    env_short       = "p"
-    location        = local.itn_location
-    app_name        = "ioweb"
+    prefix          = var.prefix
+    env_short       = var.env_short
+    location        = var.location
+    app_name        = "ioapp"
     instance_number = "01"
   }
   tags = var.tags
