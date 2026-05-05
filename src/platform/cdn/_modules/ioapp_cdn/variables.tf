@@ -46,6 +46,6 @@ variable "storage_account_resource_group" {
 }
 
 variable "log_analytics_workspace_id" {
-  type = string
+  type        = string
   description = "Log analytics workspace ID for the CDN metrics"
 }
