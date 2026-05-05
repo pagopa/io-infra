@@ -1,0 +1,4 @@
+import {
+  to = azurerm_storage_account.ioweb_portal
+  id = "/subscriptions/ec285037-c673-4f58-b594-d7c480da4e8b/resourceGroups/io-p-weu-ioweb-fe-rg/providers/Microsoft.Storage/storageAccounts/iopweuiowebportalsa"
+}
