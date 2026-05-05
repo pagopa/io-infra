@@ -11,9 +11,9 @@ import {
 module "ioapp_cdn" {
   source                         = "../_modules/ioapp_cdn"
   location                       = local.location_short.italynorth
-  storage_account_location       = local.location_short.westeurope
+  storage_account_location       = local.location.westeurope
   resource_group_cdn             = local.core.resource_groups.italynorth.common
-  storage_account_resource_group = "io-p-weu-ioweb-fe-rg"
+  storage_account_resource_group = local.resource_groups.weu.ioweb
   log_analytics_workspace_id     = "a0afb87e-2fd9-4219-8b01-eb95a083285d" # TODO: io-p-itn-common-log-01 - convert to terraform remote state once the monitoring infrastructure has been migrated to the new platform domain
   tags                           = local.tags
 }
