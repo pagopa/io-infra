@@ -26,7 +26,6 @@
 | <a name="module_immutable_spid_logs_storage_customer_managed_key"></a> [immutable\_spid\_logs\_storage\_customer\_managed\_key](#module\_immutable\_spid\_logs\_storage\_customer\_managed\_key) | git::https://github.com/pagopa/terraform-azurerm-v4.git//storage_account_customer_managed_key | v10.5.0 |
 | <a name="module_io_web_profile_itn_fe_st"></a> [io\_web\_profile\_itn\_fe\_st](#module\_io\_web\_profile\_itn\_fe\_st) | pagopa-dx/azure-storage-account/azurerm | ~> 0.0.0 |
 | <a name="module_key_vault"></a> [key\_vault](#module\_key\_vault) | git::https://github.com/pagopa/terraform-azurerm-v4.git//key_vault | v10.5.0 |
-| <a name="module_landing_cdn"></a> [landing\_cdn](#module\_landing\_cdn) | pagopa-dx/azure-cdn/azurerm | ~> 0.0 |
 | <a name="module_redis_spid_login"></a> [redis\_spid\_login](#module\_redis\_spid\_login) | git::https://github.com/pagopa/terraform-azurerm-v4.git//redis_cache | v10.5.0 |
 | <a name="module_redis_spid_login_snet"></a> [redis\_spid\_login\_snet](#module\_redis\_spid\_login\_snet) | git::https://github.com/pagopa/terraform-azurerm-v4.git//subnet | v10.5.0 |
 | <a name="module_spid_login"></a> [spid\_login](#module\_spid\_login) | git::https://github.com/pagopa/terraform-azurerm-v4.git//app_service | v10.5.0 |
@@ -44,10 +43,6 @@
 | [azurerm_cdn_frontdoor_origin_group.portal_cdn_origin_group](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/cdn_frontdoor_origin_group) | resource |
 | [azurerm_cdn_frontdoor_profile.portal_profile](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/cdn_frontdoor_profile) | resource |
 | [azurerm_cdn_frontdoor_route.portal_cdn_route](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/cdn_frontdoor_route) | resource |
-| [azurerm_cdn_frontdoor_rule.landing_cdn_cie_metadata_redirect](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/cdn_frontdoor_rule) | resource |
-| [azurerm_cdn_frontdoor_rule.landing_cdn_global_cache](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/cdn_frontdoor_rule) | resource |
-| [azurerm_cdn_frontdoor_rule.landing_cdn_global_transport_security](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/cdn_frontdoor_rule) | resource |
-| [azurerm_cdn_frontdoor_rule.landing_cdn_spid_metadata_redirect](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/cdn_frontdoor_rule) | resource |
 | [azurerm_cdn_frontdoor_rule.portal_cdn_rule_global](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/cdn_frontdoor_rule) | resource |
 | [azurerm_cdn_frontdoor_rule.portal_cdn_rule_rootfiles](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/cdn_frontdoor_rule) | resource |
 | [azurerm_cdn_frontdoor_rule_set.portal_cdn_rule_set](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/cdn_frontdoor_rule_set) | resource |
@@ -66,12 +61,10 @@
 | [azurerm_key_vault_secret.spid_login_jwt_pub_key](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_secret) | resource |
 | [azurerm_key_vault_secret.spid_logs_connection_string](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_secret) | resource |
 | [azurerm_monitor_diagnostic_setting.diagnostic_settings_cdn_frontdoor](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/monitor_diagnostic_setting) | resource |
-| [azurerm_monitor_metric_alert.ioweb_portal](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/monitor_metric_alert) | resource |
 | [azurerm_private_endpoint.immutable_spid_logs_storage_blob](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/private_endpoint) | resource |
 | [azurerm_resource_group.fe_rg](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/resource_group) | resource |
 | [azurerm_resource_group.io_web_profile_itn_fe_rg](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/resource_group) | resource |
 | [azurerm_resource_group.sec_rg](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/resource_group) | resource |
-| [azurerm_storage_account.ioweb_portal](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/storage_account) | resource |
 | [azurerm_storage_container.immutable_audit_logs](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/storage_container) | resource |
 | [azurerm_storage_container.immutable_spid_logs](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/storage_container) | resource |
 | [azurerm_storage_management_policy.immutable_spid_logs_storage_management_policy](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/storage_management_policy) | resource |
