@@ -18,7 +18,7 @@
 
 | Name | Source | Version |
 |------|--------|---------|
-| <a name="module_ioapp_cdn"></a> [ioapp\_cdn](#module\_ioapp\_cdn) | ../_modules/ioapp_cdn | n/a |
+| <a name="module_ioapp"></a> [ioapp](#module\_ioapp) | ../_modules/ioapp | n/a |
 
 ## Resources
 
