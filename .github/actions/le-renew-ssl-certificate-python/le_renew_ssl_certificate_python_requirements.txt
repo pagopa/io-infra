@@ -234,9 +234,9 @@ portalocker==1.7.1 ; python_full_version >= "3.8.0" and python_full_version < "4
 pycparser==2.20 ; python_full_version >= "3.8.0" and python_full_version < "4.0.0" \
     --hash=sha256:2d475327684562c3a96cc71adf7dc8c4f0565175cf86b6d7a404ff4c771f15f0 \
     --hash=sha256:7582ad22678f0fcd81102833f60ef8d0e57288b6b5fb00323d101be910e35705
-pyjwt[crypto]==2.8.0 ; python_full_version >= "3.8.0" and python_full_version < "4.0.0" \
-    --hash=sha256:57e28d156e3d5c10088e0c68abb90bfac3df82b40a71bd0daa20c65ccd5c23de \
-    --hash=sha256:59127c392cc44c2da5bb3192169a91f429924e17aff6534d70fdc02ab3e04320
+PyJWT[crypto]==2.12.0; python_full_version >= "3.8.0" and python_full_version < "4.0.0" \
+    --hash=sha256:2f62390b667cd8257de560b850bb5a883102a388829274147f1d724453f8fb02 \
+    --hash=sha256:9bb459d1bdd0387967d287f5656bf7ec2b9a26645d1961628cda1764e087fd6e
 pywin32==306 ; python_full_version >= "3.8.0" and python_full_version < "4.0.0" and platform_system == "Windows" \
     --hash=sha256:06d3420a5155ba65f0b72f2699b5bacf3109f36acbe8923765c22938a69dfc8d \
     --hash=sha256:1c73ea9a0d2283d889001998059f5eaaba3b6238f767c9cf2833b13e6a685f65 \
