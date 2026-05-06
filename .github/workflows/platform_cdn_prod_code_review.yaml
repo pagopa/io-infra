@@ -1,0 +1,30 @@
+name: PR - Platform PROD CDN TF Validation
+
+# This pipeline starts automatically when a PR is opened.
+#
+# It is responsible for managing changes related to the "Platform - PROD - CDN" infrastructure.
+
+on:
+  merge_group:
+  workflow_dispatch:
+  pull_request:
+    types:
+      - opened
+      - edited
+      - synchronize
+      - reopened
+      - ready_for_review
+    paths:
+      - "src/platform/cdn/prod/**"
+      - "src/platform/cdn/_modules/**"
+      - ".github/workflows/platform_cdn_prod_code_review.yaml"
+
+jobs:
+  platform_cdn_prod_code_review:
+    uses: pagopa/dx/.github/workflows/infra_plan.yaml@main
+    name: Prod - Code Review
+    secrets: inherit
+    with:
+      environment: prod
+      base_path: src/platform/cdn
+      use_private_agent: true

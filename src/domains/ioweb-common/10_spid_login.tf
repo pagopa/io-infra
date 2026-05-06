@@ -7,7 +7,7 @@ locals {
 ## App service spid login ##
 ############################
 module "spid_login" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//app_service?ref=v8.56.0"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v4.git//app_service?ref=v10.5.0"
 
   # App service plan
   plan_type = "internal"
@@ -20,10 +20,13 @@ module "spid_login" {
   location            = data.azurerm_resource_group.common_rg.location
 
 
-  always_on         = true
-  node_version      = "20-lts"
-  app_command_line  = "npm run start"
-  health_check_path = "/healthcheck"
+  always_on                    = true
+  node_version                 = "22-lts"
+  app_command_line             = "npm run start"
+  health_check_path            = "/healthcheck"
+  health_check_maxpingfailures = 2
+
+  minimum_tls_version = "1.2"
 
   ip_restriction_default_action = "Deny"
 
@@ -31,7 +34,7 @@ module "spid_login" {
     WEBSITES_ENABLE_APP_SERVICE_STORAGE = false
     WEBSITES_PORT                       = 8080
 
-    WEBSITE_NODE_DEFAULT_VERSION = "18.13.0"
+    WEBSITE_NODE_DEFAULT_VERSION = "22.22.0"
     WEBSITE_RUN_FROM_PACKAGE     = "1"
     WEBSITE_DNS_SERVER           = "168.63.129.16"
 
