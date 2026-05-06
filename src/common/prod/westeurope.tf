@@ -409,3 +409,14 @@ module "storage_accounts" {
 
   tags = local.tags
 }
+
+module "common_cdn" {
+  source = "../_modules/common_cdn"
+
+  resource_group_cdn      = local.core.resource_groups.westeurope.common
+  resource_group_external = "io-p-rg-external"
+
+  public_dns_zones = module.global.dns.public_dns_zones
+
+  tags = local.tags
+}
