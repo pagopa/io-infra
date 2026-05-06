@@ -1,4 +1,4 @@
-# CDN storage, not used as origin at the moment for module.ioapp_cdn since is all exposed from cloudfront
+# CDN storage, not used as origin at the moment for module.ioapp since is all exposed from cloudfront
 
 resource "azurerm_storage_account" "ioweb_portal" {
   name                     = "iopweuiowebportalsa"

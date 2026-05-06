@@ -1,4 +1,4 @@
-module "ioapp_cdn" {
+module "ioapp" {
   source              = "pagopa-dx/azure-cdn/azurerm"
   version             = "~> 0.0"
   resource_group_name = var.resource_group_cdn

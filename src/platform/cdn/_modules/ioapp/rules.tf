@@ -1,6 +1,6 @@
-resource "azurerm_cdn_frontdoor_rule" "ioapp_cdn_global_transport_security" {
+resource "azurerm_cdn_frontdoor_rule" "ioapp_global_transport_security" {
   name                      = "GlobalTransportSecurity"
-  cdn_frontdoor_rule_set_id = module.ioapp_cdn.rule_set_id
+  cdn_frontdoor_rule_set_id = module.ioapp.rule_set_id
   order                     = 0
 
   actions {
@@ -12,9 +12,9 @@ resource "azurerm_cdn_frontdoor_rule" "ioapp_cdn_global_transport_security" {
   }
 }
 
-resource "azurerm_cdn_frontdoor_rule" "ioapp_cdn_global_cache" {
+resource "azurerm_cdn_frontdoor_rule" "ioapp_global_cache" {
   name                      = "GlobalCache"
-  cdn_frontdoor_rule_set_id = module.ioapp_cdn.rule_set_id
+  cdn_frontdoor_rule_set_id = module.ioapp.rule_set_id
   order                     = 1
 
   actions {
@@ -31,9 +31,9 @@ resource "azurerm_cdn_frontdoor_rule" "ioapp_cdn_global_cache" {
   }
 }
 
-resource "azurerm_cdn_frontdoor_rule" "ioapp_cdn_spid_metadata_redirect" {
+resource "azurerm_cdn_frontdoor_rule" "ioapp_spid_metadata_redirect" {
   name                      = "SpidMetadataRedirect"
-  cdn_frontdoor_rule_set_id = module.ioapp_cdn.rule_set_id
+  cdn_frontdoor_rule_set_id = module.ioapp.rule_set_id
   order                     = 2
 
   conditions {
@@ -53,9 +53,9 @@ resource "azurerm_cdn_frontdoor_rule" "ioapp_cdn_spid_metadata_redirect" {
   }
 }
 
-resource "azurerm_cdn_frontdoor_rule" "ioapp_cdn_cie_metadata_redirect" {
+resource "azurerm_cdn_frontdoor_rule" "ioapp_cie_metadata_redirect" {
   name                      = "CieMetadataRedirect"
-  cdn_frontdoor_rule_set_id = module.ioapp_cdn.rule_set_id
+  cdn_frontdoor_rule_set_id = module.ioapp.rule_set_id
   order                     = 3
 
   conditions {
