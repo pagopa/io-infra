@@ -29,6 +29,7 @@ resource "azurerm_monitor_metric_alert" "ioweb_portal" {
   description         = "The average availability is less than 99.8%. Runbook: not needed."
   auto_mitigate       = false
   frequency           = "PT5M"
+  window_size         = "PT5M"
   severity            = 0
   tags                = var.tags
 
