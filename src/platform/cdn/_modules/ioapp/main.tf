@@ -12,18 +12,20 @@ module "ioapp" {
     }
   }
 
-  custom_domains = [
-    {
-      host_name = "ioapp.it"
-      # TODO: enable dns block / import txt validation records 
-      /*
+  # TODO: enable custom domain once the traffic is switched to a temporary AGW
+
+  #custom_domains = [
+  #  {
+  #    host_name = "ioapp.it"
+  # TODO: enable dns block / import txt validation records 
+  /*
       dns = {
         zone_name                = data.azurerm_dns_zone.ioapp_it.name
         zone_resource_group_name = data.azurerm_resource_group.core_ext.name
       }
       */
-    }
-  ]
+  #  }
+  # ]
 
   diagnostic_settings = {
     enabled                    = true
