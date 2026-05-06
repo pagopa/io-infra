@@ -3,7 +3,7 @@ variable "prefix" {
   default = "io"
   validation {
     condition = (
-      length(var.prefix) < 6
+      length(var.prefix) <= 6
     )
     error_message = "Max length is 6 chars."
   }
