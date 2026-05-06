@@ -130,6 +130,14 @@ module "monitoring_weu" {
       enabled = false
     },
     {
+      name                              = "CIE Collaudo Metadata",
+      host                              = "collaudo.idserver.servizicie.interno.gov.it",
+      path                              = "/idp/shibboleth",
+      frequency                         = 900
+      http_status                       = 200,
+      ssl_cert_remaining_lifetime_check = 1,
+    },
+    {
       # SpidL2-arubaid https://app-backend.io.italia.it/api/auth/v1/login?authLevel=SpidL2&entityID=arubaid
       name                              = "SpidL2-arubaid",
       host                              = module.global.dns.public_dns_zones.io_italia_it.app_backend
