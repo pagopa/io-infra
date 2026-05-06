@@ -19,8 +19,9 @@ resource "azurerm_cdn_frontdoor_rule" "ioapp_global_cache" {
 
   actions {
     route_configuration_override_action {
-      cache_behavior = "OverrideAlways"
-      cache_duration = "00:15:00"
+      cache_behavior                = "OverrideAlways"
+      cache_duration                = "00:15:00"
+      query_string_caching_behavior = "IgnoreQueryString"
     }
 
     response_header_action {
