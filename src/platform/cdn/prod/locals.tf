@@ -18,6 +18,9 @@ locals {
 
   core = data.terraform_remote_state.core.outputs
 
+  # TODO: migrate local.common references to other platform domains once they are implemented.
+  common = data.terraform_remote_state.common.outputs
+
   resource_groups = {
     weu = {
       ioweb = "${local.project_weu_legacy}-${local.location_short.westeurope}-ioweb-fe-rg"
