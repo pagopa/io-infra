@@ -37,3 +37,15 @@ output "pep_subnets" {
     }
   }
 }
+
+output "public_dns_zones" {
+  value = module.global.dns.public_dns_zones
+}
+
+output "monitoring" {
+  value = {
+    itn = {
+      law_id = module.monitoring_itn.log.id
+    }
+  }
+}
