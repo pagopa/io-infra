@@ -182,6 +182,7 @@ import {
   id = "/subscriptions/ec285037-c673-4f58-b594-d7c480da4e8b/resourceGroups/io-p-rg-common/providers/Microsoft.Cdn/profiles/io-p-cdn-common/afdEndpoints/io-p-cdnendpoint-websiteassets/routes/iopcdnendpointwebsiteassets"
 }
 
+/*
 # Custom domains associations
 
 import {
@@ -203,6 +204,7 @@ import {
   to = module.common.azurerm_cdn_frontdoor_custom_domain_association.static_web_io_italia_it
   id = "/subscriptions/ec285037-c673-4f58-b594-d7c480da4e8b/resourceGroups/io-p-rg-common/providers/Microsoft.Cdn/profiles/io-p-cdn-common/associations/static-web-io-italia-it"
 }
+*/
 
 # Rulesets
 

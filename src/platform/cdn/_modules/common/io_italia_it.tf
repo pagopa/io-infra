@@ -120,10 +120,17 @@ resource "azurerm_cdn_frontdoor_route" "io_italia_it" {
   }
 }
 
+/*
+
+# TODO: the association on the import will be recreated due to missing ids on Azure (stale records after forced migration from Classic to Standard), 
+  decide if it's worth importing the resource or not since the recreation may cause downtime
+
 resource "azurerm_cdn_frontdoor_custom_domain_association" "io_italia_it" {
   cdn_frontdoor_custom_domain_id = azurerm_cdn_frontdoor_custom_domain.io_italia_it.id
   cdn_frontdoor_route_ids        = [azurerm_cdn_frontdoor_route.io_italia_it.id]
 }
+
+*/
 
 # Ruleset and rules #
 
