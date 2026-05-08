@@ -154,7 +154,7 @@ resource "azurerm_cdn_frontdoor_rule" "io_italia_it_global" {
 }
 
 resource "azurerm_cdn_frontdoor_rule" "io_italia_it_enforce_https" {
-  name                      = "EnforceHTTPS"
+  name                      = "EnforceHTTPS" # TODO: switch to default https redirect on route level
   order                     = 1
   cdn_frontdoor_rule_set_id = azurerm_cdn_frontdoor_rule_set.io_italia_it.id
 

@@ -86,7 +86,7 @@ resource "azurerm_cdn_frontdoor_route" "static_web_io_italia_it" {
   enabled                       = true
 
   forwarding_protocol    = "MatchRequest"
-  https_redirect_enabled = false
+  https_redirect_enabled = false # TODO: switch to default https redirect on route level
   patterns_to_match      = ["/*"]
   supported_protocols    = ["Https"]
 
