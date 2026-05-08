@@ -13,7 +13,6 @@ resource "azurerm_cdn_frontdoor_custom_domain" "developer_io_italia_it" {
 resource "azurerm_cdn_frontdoor_custom_domain" "developer_io_italia_it_legacy" {
   name                     = "io-p-cdnendpoint-developerportal-Migrated"
   cdn_frontdoor_profile_id = azurerm_cdn_frontdoor_profile.common.id
-  dns_zone_id              = var.public_dns_zones.io_italia_it.id
   host_name                = "io-p-cdnendpoint-developerportal.azureedge.net"
 
   tls {

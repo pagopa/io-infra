@@ -12,7 +12,6 @@ resource "azurerm_cdn_frontdoor_custom_domain" "static_web_io_italia_it" {
 resource "azurerm_cdn_frontdoor_custom_domain" "static_web_io_italia_it_legacy" {
   name                     = "io-p-cdnendpoint-websiteassets-Migrated"
   cdn_frontdoor_profile_id = azurerm_cdn_frontdoor_profile.common.id
-  dns_zone_id              = var.public_dns_zones.io_italia_it.id
   host_name                = "io-p-cdnendpoint-websiteassets.azureedge.net"
 
   tls {
