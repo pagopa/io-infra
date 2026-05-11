@@ -2,7 +2,7 @@ name: PR - Platform TF Validation
 
 # This pipeline starts automatically when a PR is opened.
 #
-# It is responsible for managing changes related to the "Platform - PROD - CDN" infrastructure.
+# It is responsible for managing changes related to the "Platform" infrastructure.
 
 on:
   merge_group:

@@ -2,7 +2,7 @@ name: Release - Platform TF Apply
 
 # This pipeline starts automatically when a PR is merged into 'main'.
 #
-# It is responsible for managing changes related to the "Platform - PROD - CDN" infrastructure.
+# It is responsible for managing changes related to the "Platform" infrastructure.
 #
 # This pipeline first executes a plan and then an apply, which must be approved by the team.
 
