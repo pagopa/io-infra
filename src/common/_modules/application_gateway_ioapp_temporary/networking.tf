@@ -18,7 +18,7 @@ resource "azurerm_public_ip" "agw" {
 
 resource "azurerm_dns_a_record" "public_ip_a_record" {
 
-  name                = "redirect.ioapp.cdn"
+  name                = "redirect.cdn"
   zone_name           = var.public_dns_zones.ioweb_it.name
   resource_group_name = var.resource_group_external
   ttl                 = 60
