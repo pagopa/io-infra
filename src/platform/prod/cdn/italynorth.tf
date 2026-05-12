@@ -1,5 +1,5 @@
 module "ioapp" {
-  source                         = "../_modules/ioapp"
+  source                         = "./_modules/ioapp"
   location                       = local.location_short.italynorth
   storage_account_location       = local.location.westeurope
   resource_group_cdn             = local.core.resource_groups.italynorth.common

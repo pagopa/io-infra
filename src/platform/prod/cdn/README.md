@@ -18,8 +18,8 @@
 
 | Name | Source | Version |
 |------|--------|---------|
-| <a name="module_common"></a> [common](#module\_common) | ../_modules/common | n/a |
-| <a name="module_ioapp"></a> [ioapp](#module\_ioapp) | ../_modules/ioapp | n/a |
+| <a name="module_common"></a> [common](#module\_common) | ./_modules/common | n/a |
+| <a name="module_ioapp"></a> [ioapp](#module\_ioapp) | ./_modules/ioapp | n/a |
 
 ## Resources
 
