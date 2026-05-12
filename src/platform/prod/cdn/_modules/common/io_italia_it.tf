@@ -53,6 +53,7 @@ resource "azurerm_dns_a_record" "io_italia_it" {
   resource_group_name = var.resource_group_external
   ttl                 = 300
   target_resource_id  = azurerm_cdn_frontdoor_endpoint.io_italia_it.id
+  tags                = var.tags
 }
 
 resource "azurerm_cdn_frontdoor_endpoint" "io_italia_it" {
