@@ -1,8 +1,8 @@
-name: Release - Platform PROD CDN TF Apply
+name: Release - Platform TF Apply
 
 # This pipeline starts automatically when a PR is merged into 'main'.
 #
-# It is responsible for managing changes related to the "Platform - PROD - CDN" infrastructure.
+# It is responsible for managing changes related to the "Platform" infrastructure.
 #
 # This pipeline first executes a plan and then an apply, which must be approved by the team.
 
@@ -12,9 +12,8 @@ on:
     branches:
       - main
     paths:
-      - "src/platform/cdn/prod/**"
-      - "src/platform/cdn/_modules/**"
-      - ".github/workflows/platform_cdn_deploy.yaml"
+      - "src/platform/**"
+      - ".github/workflows/platform_deploy.yaml"
 jobs:
   platform_cdn_prod_deploy:
     uses: pagopa/dx/.github/workflows/infra_apply.yaml@main
@@ -22,5 +21,5 @@ jobs:
     secrets: inherit
     with:
       environment: prod
-      base_path: src/platform/cdn
+      base_path: src/platform
       use_private_agent: true
