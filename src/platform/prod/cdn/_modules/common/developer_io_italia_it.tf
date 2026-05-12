@@ -19,17 +19,6 @@ resource "azurerm_cdn_frontdoor_custom_domain" "developer_io_italia_it_legacy" {
   }
 }
 
-resource "azurerm_cdn_frontdoor_secret" "developer_io_italia_it" {
-  name                     = "MigratedSecret-developer-io-italia-it"
-  cdn_frontdoor_profile_id = azurerm_cdn_frontdoor_profile.common.id
-
-  secret {
-    customer_certificate {
-      key_vault_certificate_id = "https://io-p-kv-common.vault.azure.net/certificates/developer-io-italia-it"
-    }
-  }
-}
-
 resource "azurerm_dns_txt_record" "developer_io_italia_it" {
   name                = join(".", ["_dnsauth", "developer"])
   zone_name           = var.public_dns_zones.io_italia_it.name
