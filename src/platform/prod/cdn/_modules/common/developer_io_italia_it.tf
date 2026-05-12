@@ -5,8 +5,7 @@ resource "azurerm_cdn_frontdoor_custom_domain" "developer_io_italia_it" {
   host_name                = "developer.io.italia.it"
 
   tls {
-    certificate_type        = "CustomerCertificate"
-    cdn_frontdoor_secret_id = azurerm_cdn_frontdoor_secret.developer_io_italia_it.id
+    certificate_type = "ManagedCertificate"
   }
 }
 
