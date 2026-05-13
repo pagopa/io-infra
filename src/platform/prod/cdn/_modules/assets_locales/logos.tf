@@ -16,6 +16,11 @@ resource "azurerm_cdn_frontdoor_custom_domain" "logos_custom_domain" {
   }
 }
 
+resource "azurerm_cdn_frontdoor_custom_domain_association" "logos_custom_domain_association" {
+  cdn_frontdoor_custom_domain_id = azurerm_cdn_frontdoor_custom_domain.logos_custom_domain.id
+  cdn_frontdoor_route_ids        = [azurerm_cdn_frontdoor_route.logos_route.id]
+}
+
 resource "azurerm_dns_txt_record" "logos_custom_domain_validation_txt_record" {
   name                = join(".", ["_dnsauth", "logos.assets"])
   zone_name           = var.public_dns_zones.io.name
