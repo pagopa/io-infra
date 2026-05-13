@@ -20,7 +20,7 @@ module "assets_locales" {
 
   public_dns_zones                       = local.common.public_dns_zones
   log_analytics_workspace_id             = local.common.monitoring.itn.law_id
-  diagnostic_settings_storage_account_id = module.storage_accounts_itn.logs_itn.id
+  diagnostic_settings_storage_account_id = local.common.storage_accounts.logs_itn.id
 
   azure_adgroups_roles = {
     svc_devs = {

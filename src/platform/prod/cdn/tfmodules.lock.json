@@ -4,5 +4,23 @@
     "version": "0.6.2",
     "name": "azure_cdn",
     "source": "https://registry.terraform.io/modules/pagopa-dx/azure-cdn/azurerm/0.6.2"
+  },
+  "assets_locales.azure_cdn": {
+    "hash": "7ac5fd2d3975851c6f4921fa9868174d80edd4f771ecf6f3ec014d89135ef6c2",
+    "version": "0.6.2",
+    "name": "azure_cdn",
+    "source": "https://registry.terraform.io/modules/pagopa-dx/azure-cdn/azurerm/0.6.2"
+  },
+  "assets_locales.cdn_storage": {
+    "hash": "0e4bd3881f59056e0d49ac38c09b9ebfb885c60527bfdc33ac290d50c707753c",
+    "version": "2.0.0",
+    "name": "azure_storage_account",
+    "source": "https://registry.terraform.io/modules/pagopa-dx/azure-storage-account/azurerm/2.0.0"
+  },
+  "assets_locales.storage_account_permissions": {
+    "hash": "a8c1a6fa085349f937017deb20236170f0bb9dd78b5ded85ec75d7caeba7a872",
+    "version": "1.3.3",
+    "name": "azure_role_assignments",
+    "source": "https://registry.terraform.io/modules/pagopa-dx/azure-role-assignments/azurerm/1.3.3"
   }
 }
