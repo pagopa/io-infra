@@ -5,8 +5,7 @@ resource "azurerm_cdn_frontdoor_custom_domain" "developer_io_italia_it" {
   host_name                = "developer.io.italia.it"
 
   tls {
-    certificate_type        = "CustomerCertificate"
-    cdn_frontdoor_secret_id = azurerm_cdn_frontdoor_secret.developer_io_italia_it.id
+    certificate_type = "ManagedCertificate"
   }
 }
 
@@ -20,20 +19,6 @@ resource "azurerm_cdn_frontdoor_custom_domain" "developer_io_italia_it_legacy" {
   }
 }
 
-resource "azurerm_cdn_frontdoor_secret" "developer_io_italia_it" {
-  name                     = "MigratedSecret-developer-io-italia-it"
-  cdn_frontdoor_profile_id = azurerm_cdn_frontdoor_profile.common.id
-
-  secret {
-    customer_certificate {
-      key_vault_certificate_id = "https://io-p-kv-common.vault.azure.net/certificates/developer-io-italia-it"
-    }
-  }
-}
-
-# TODO: uncomment snippet when switching to managed certificates
-
-/*
 resource "azurerm_dns_txt_record" "developer_io_italia_it" {
   name                = join(".", ["_dnsauth", "developer"])
   zone_name           = var.public_dns_zones.io_italia_it.name
@@ -43,8 +28,9 @@ resource "azurerm_dns_txt_record" "developer_io_italia_it" {
   record {
     value = azurerm_cdn_frontdoor_custom_domain.developer_io_italia_it.validation_token
   }
+
+  tags = var.tags
 }
-*/
 
 resource "azurerm_dns_cname_record" "developer_io_italia_it" {
   name                = "developer"
@@ -52,6 +38,7 @@ resource "azurerm_dns_cname_record" "developer_io_italia_it" {
   resource_group_name = var.resource_group_external
   ttl                 = 300
   record              = "io-p-cdnendpoint-developerportal.azureedge.net"
+  tags                = var.tags
   # TODO: switch to resource alias
   # target_resource_id  = azurerm_cdn_frontdoor_endpoint.developer_io_italia_it.id
 }
