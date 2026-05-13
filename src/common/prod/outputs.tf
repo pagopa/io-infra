@@ -49,3 +49,14 @@ output "monitoring" {
     }
   }
 }
+
+output "storage_accounts" {
+  value = {
+    itn = {
+      logs = {
+        id   = module.storage_accounts_itn.logs_itn.id
+        name = module.storage_accounts_itn.logs_itn.name
+      }
+    }
+  }
+}
