@@ -29,6 +29,8 @@ resource "azurerm_dns_txt_record" "io_italia_it" {
   record {
     value = azurerm_cdn_frontdoor_custom_domain.io_italia_it.validation_token
   }
+
+  tags = var.tags
 }
 
 resource "azurerm_dns_a_record" "io_italia_it" {
