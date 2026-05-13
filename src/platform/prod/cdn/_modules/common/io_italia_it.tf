@@ -5,8 +5,7 @@ resource "azurerm_cdn_frontdoor_custom_domain" "io_italia_it" {
   host_name                = "io.italia.it"
 
   tls {
-    certificate_type        = "CustomerCertificate"
-    cdn_frontdoor_secret_id = azurerm_cdn_frontdoor_secret.io_italia_it.id
+    certificate_type = "ManagedCertificate"
   }
 }
 
@@ -21,20 +20,6 @@ resource "azurerm_cdn_frontdoor_custom_domain" "io_italia_it_legacy" {
   }
 }
 
-resource "azurerm_cdn_frontdoor_secret" "io_italia_it" {
-  name                     = "MigratedSecret-io-italia-it"
-  cdn_frontdoor_profile_id = azurerm_cdn_frontdoor_profile.common.id
-
-  secret {
-    customer_certificate {
-      key_vault_certificate_id = "https://io-p-kv-common.vault.azure.net/certificates/io-italia-it"
-    }
-  }
-}
-
-# TODO: uncomment snippet when switching to managed certificates
-
-/*
 resource "azurerm_dns_txt_record" "io_italia_it" {
   name                = "_dnsauth"
   zone_name           = var.public_dns_zones.io_italia_it.name
@@ -45,7 +30,6 @@ resource "azurerm_dns_txt_record" "io_italia_it" {
     value = azurerm_cdn_frontdoor_custom_domain.io_italia_it.validation_token
   }
 }
-*/
 
 resource "azurerm_dns_a_record" "io_italia_it" {
   name                = "@"
