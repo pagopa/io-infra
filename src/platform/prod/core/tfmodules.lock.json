@@ -1,0 +1,62 @@
+{
+  "custom_roles": {
+    "hash": "a11ca74d3a02d9ceda237dc3a639937964558e768248cd8b6f5fced87dadde2b",
+    "version": "4.2.1",
+    "name": "azure_core_infra",
+    "source": "https://registry.terraform.io/modules/pagopa-dx/azure-core-infra/azurerm//modules/custom_roles/4.2.1"
+  },
+  "custom_roles.dx_app_cd_resource_group_deploy": {
+    "hash": "32687e53abb8bcb58f39687703a09dd210da24595996f017fa238c43c3145cb9",
+    "version": "0.1.2",
+    "name": "azure_merge_roles",
+    "source": "https://registry.terraform.io/modules/pagopa-dx/azure-merge-roles/azurerm/0.1.2"
+  },
+  "custom_roles.dx_app_ci_resource_group_reader": {
+    "hash": "32687e53abb8bcb58f39687703a09dd210da24595996f017fa238c43c3145cb9",
+    "version": "0.1.2",
+    "name": "azure_merge_roles",
+    "source": "https://registry.terraform.io/modules/pagopa-dx/azure-merge-roles/azurerm/0.1.2"
+  },
+  "custom_roles.dx_function_durable_storage": {
+    "hash": "32687e53abb8bcb58f39687703a09dd210da24595996f017fa238c43c3145cb9",
+    "version": "0.1.2",
+    "name": "azure_merge_roles",
+    "source": "https://registry.terraform.io/modules/pagopa-dx/azure-merge-roles/azurerm/0.1.2"
+  },
+  "custom_roles.dx_function_host_storage": {
+    "hash": "32687e53abb8bcb58f39687703a09dd210da24595996f017fa238c43c3145cb9",
+    "version": "0.1.2",
+    "name": "azure_merge_roles",
+    "source": "https://registry.terraform.io/modules/pagopa-dx/azure-merge-roles/azurerm/0.1.2"
+  },
+  "custom_roles.dx_infra_cd_private_networking": {
+    "hash": "32687e53abb8bcb58f39687703a09dd210da24595996f017fa238c43c3145cb9",
+    "version": "0.1.2",
+    "name": "azure_merge_roles",
+    "source": "https://registry.terraform.io/modules/pagopa-dx/azure-merge-roles/azurerm/0.1.2"
+  },
+  "custom_roles.dx_infra_cd_resource_group_deploy": {
+    "hash": "32687e53abb8bcb58f39687703a09dd210da24595996f017fa238c43c3145cb9",
+    "version": "0.1.2",
+    "name": "azure_merge_roles",
+    "source": "https://registry.terraform.io/modules/pagopa-dx/azure-merge-roles/azurerm/0.1.2"
+  },
+  "custom_roles.dx_infra_cd_subscription_admin": {
+    "hash": "32687e53abb8bcb58f39687703a09dd210da24595996f017fa238c43c3145cb9",
+    "version": "0.1.2",
+    "name": "azure_merge_roles",
+    "source": "https://registry.terraform.io/modules/pagopa-dx/azure-merge-roles/azurerm/0.1.2"
+  },
+  "custom_roles.dx_infra_ci_resource_group_reader": {
+    "hash": "32687e53abb8bcb58f39687703a09dd210da24595996f017fa238c43c3145cb9",
+    "version": "0.1.2",
+    "name": "azure_merge_roles",
+    "source": "https://registry.terraform.io/modules/pagopa-dx/azure-merge-roles/azurerm/0.1.2"
+  },
+  "custom_roles.dx_infra_ci_subscription_reader": {
+    "hash": "32687e53abb8bcb58f39687703a09dd210da24595996f017fa238c43c3145cb9",
+    "version": "0.1.2",
+    "name": "azure_merge_roles",
+    "source": "https://registry.terraform.io/modules/pagopa-dx/azure-merge-roles/azurerm/0.1.2"
+  }
+}
