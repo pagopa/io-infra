@@ -155,7 +155,7 @@ resource "azurerm_application_gateway" "ioapp_agw" {
   probe {
     name                                      = local.backend_probe_name
     protocol                                  = "Https"
-    path                                      = "/probes/healthcheck.txt"
+    path                                      = "/"
     timeout                                   = 5
     interval                                  = 10
     unhealthy_threshold                       = 3
