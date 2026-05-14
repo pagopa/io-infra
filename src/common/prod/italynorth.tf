@@ -582,7 +582,7 @@ module "application_gateway_ioapp_temporary" {
   subscription_id         = data.azurerm_subscription.current.subscription_id
   project                 = local.project_itn
   resource_group_common   = local.core.resource_groups.italynorth.common
-  resource_group          = local.core.resource_groups.italynorth.application_gateway_ioapp_temporary_itn
+  resource_group          = local.core.resource_groups.italynorth.ioapp_agw
   resource_group_external = "io-p-rg-external"
   public_dns_zones        = module.global.dns.public_dns_zones
   vnet_common             = local.core.networking.itn.vnet_common
