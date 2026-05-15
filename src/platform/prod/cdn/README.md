@@ -11,6 +11,7 @@
 
 | Name | Version |
 |------|---------|
+| <a name="provider_azuread"></a> [azuread](#provider\_azuread) | n/a |
 | <a name="provider_azurerm"></a> [azurerm](#provider\_azurerm) | 4.71.0 |
 | <a name="provider_terraform"></a> [terraform](#provider\_terraform) | n/a |
 
@@ -18,14 +19,15 @@
 
 | Name | Source | Version |
 |------|--------|---------|
-| <a name="module_common"></a> [common](#module\_common) | ./_modules/common | n/a |
 | <a name="module_assets_locales"></a> [assets\_locales](#module\_assets\_locales) | ./_modules/assets_locales | n/a |
+| <a name="module_common"></a> [common](#module\_common) | ./_modules/common | n/a |
 | <a name="module_ioapp"></a> [ioapp](#module\_ioapp) | ./_modules/ioapp | n/a |
 
 ## Resources
 
 | Name | Type |
 |------|------|
+| [azuread_group.svc_devs](https://registry.terraform.io/providers/hashicorp/azuread/latest/docs/data-sources/group) | data source |
 | [azurerm_client_config.current](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/client_config) | data source |
 | [azurerm_subscription.current](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/subscription) | data source |
 | [terraform_remote_state.common](https://registry.terraform.io/providers/hashicorp/terraform/latest/docs/data-sources/remote_state) | data source |
