@@ -16,8 +16,8 @@ module "ioapp" {
     {
       host_name = "ioapp.it"
       dns = {
-        zone_name                = data.azurerm_dns_zone.ioapp_it.name
-        zone_resource_group_name = data.azurerm_resource_group.core_ext.name
+        zone_name                = var.public_dns_zones.ioapp_it.name
+        zone_resource_group_name = var.resource_group_external
       }
     }
   ]
