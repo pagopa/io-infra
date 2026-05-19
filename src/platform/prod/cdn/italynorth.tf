@@ -6,6 +6,6 @@ module "ioapp" {
   storage_account_resource_group = local.resource_groups.weu.ioweb
   log_analytics_workspace_id     = local.common.monitoring.itn.law_id
   resource_group_external        = local.core.resource_groups.westeurope.external
-  public_dns_zones               = local.common.public_dns_zones.ioweb_it.name
+  public_dns_zones               = local.common.public_dns_zones
   tags                           = local.tags
 }
