@@ -7,15 +7,3 @@ module "ioapp" {
   log_analytics_workspace_id     = local.common.monitoring.itn.law_id
   tags                           = local.tags
 }
-
-/*
-import {
-  to = module.ioapp.module.ioapp.azurerm_dns_cname_record.this["www.ioapp.it"]
-  id = "/subscriptions/ec285037-c673-4f58-b594-d7c480da4e8b/resourceGroups/io-p-rg-external/providers/Microsoft.Network/dnsZones/ioapp.it/CNAME/www"
-}
-
-import {
-  to = module.ioapp.module.ioapp.azurerm_dns_txt_record.validation["www.ioapp.it"]
-  id = "/subscriptions/ec285037-c673-4f58-b594-d7c480da4e8b/resourceGroups/io-p-rg-external/providers/Microsoft.Network/dnsZones/ioapp.it/TXT/_dnsauth.www"
-}
-*/
