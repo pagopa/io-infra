@@ -19,6 +19,11 @@ module "ioapp" {
         zone_name                = var.public_dns_zones.ioweb_it.name
         zone_resource_group_name = var.resource_group_external
       }
+      custom_certificate = {
+        key_vault_certificate_versionless_id = var.ioapp_apex_certificate_versionless_id
+        key_vault_name                       = var.ioapp_apex_certificate_kv_name
+        key_vault_resource_group_name        = var.ioapp_apex_certificate_kv_resource_group
+      }
     }
   ]
 

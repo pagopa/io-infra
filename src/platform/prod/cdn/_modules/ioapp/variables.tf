@@ -59,3 +59,18 @@ variable "public_dns_zones" {
   type        = map(any)
   description = "Public dns zones information"
 }
+
+variable "ioapp_apex_certificate_kv_name" {
+  type        = string
+  description = "ioapp.it Apex certificate KV name"
+}
+
+variable "ioapp_apex_certificate_kv_resource_group" {
+  type        = string
+  description = "ioapp.it Apex certificate KV resource group"
+}
+
+variable "ioapp_apex_certificate_versionless_id" {
+  type        = string
+  description = "ioapp.it Apex certificate versionless ID"
+}
