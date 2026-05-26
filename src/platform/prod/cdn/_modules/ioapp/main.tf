@@ -13,13 +13,13 @@ module "ioapp" {
   }
 
   custom_domains = [
-    /* {
+    {
       host_name = "ioapp.it"
       dns = {
         zone_name                = var.public_dns_zones.ioweb_it.name
         zone_resource_group_name = var.resource_group_external
       }
-    },*/
+    },
     {
       host_name = "www.ioapp.it"
       dns = {
