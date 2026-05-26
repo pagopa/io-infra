@@ -85,6 +85,15 @@ resource "azurerm_dns_txt_record" "spf_ioweb_it" {
   tags = var.tags
 }
 
+# CNAME for continua
+resource "azurerm_dns_cname_record" "continua" {
+  name                = "continua"
+  zone_name           = azurerm_dns_zone.ioweb_it.name
+  resource_group_name = var.resource_groups.external
+  ttl                 = var.dns_default_ttl_sec
+  record              = "continua.io.pagopa.it"
+}
+
 # CNAME for zendesk help center
 resource "azurerm_dns_cname_record" "zendesk" {
   name                = "assistenza"

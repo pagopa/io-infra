@@ -104,6 +104,11 @@ data "azurerm_key_vault_certificate" "app_gw_continua" {
   key_vault_id = var.key_vault.id
 }
 
+data "azurerm_key_vault_certificate" "app_gw_continua_ioapp_it" {
+  name         = var.certificates.continua_ioapp_it
+  key_vault_id = var.key_vault.id
+}
+
 data "azurerm_key_vault_certificate" "app_gw_oauth" {
   name         = var.certificates.oauth_io_pagopa_it
   key_vault_id = var.key_vault.id
