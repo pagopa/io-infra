@@ -88,5 +88,5 @@ resource "azurerm_key_vault_access_policy" "kv_cd" {
 
   secret_permissions      = ["Get", "List", "Set"]
   storage_permissions     = []
-  certificate_permissions = ["SetIssuers", "DeleteIssuers", "Purge", "List", "Get", "ManageContacts"]
+  certificate_permissions = ["SetIssuers", "DeleteIssuers", "Purge", "List", "Get", "ManageContacts", "Create", "Update", "Import"]
 }
