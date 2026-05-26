@@ -10,7 +10,6 @@ on:
         required: false
         default: false
         type: boolean
-  pull_request:
 
 permissions:
   id-token: write
