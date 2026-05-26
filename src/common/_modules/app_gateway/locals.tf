@@ -703,6 +703,12 @@ locals {
       rewrite_rule_set_name = "rewrite-rule-set-ipatente-io-app"
       priority              = 133
     }
+    continua-ioapp-it = {
+      listener              = "continua-ioapp-it"
+      backend               = "continua-app"
+      rewrite_rule_set_name = "rewrite-rule-set-continua"
+      priority              = 134
+    }
   }
 
   rewrite_rule_sets = [
