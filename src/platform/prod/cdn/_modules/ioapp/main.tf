@@ -22,6 +22,16 @@ module "ioapp" {
         zone_resource_group_name = data.azurerm_resource_group.core_ext.name
       }
       */
+    },
+    {
+      host_name = "www.ioapp.it"
+      # TODO: enable dns block / import txt validation records 
+      /*
+      dns = {
+        zone_name                = data.azurerm_dns_zone.ioapp_it.name
+        zone_resource_group_name = data.azurerm_resource_group.core_ext.name
+      }
+      */
     }
   ]
 
