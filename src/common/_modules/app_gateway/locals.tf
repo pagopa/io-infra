@@ -265,6 +265,23 @@ locals {
       }
     }
 
+    continua-ioapp-it = {
+      protocol           = "Https"
+      host               = format("continua.%s", var.public_dns_zones.ioweb_it.name)
+      port               = 443
+      ssl_profile_name   = null
+      firewall_policy_id = null
+
+      certificate = {
+        name = var.certificates.continua_ioapp_it
+        id = replace(
+          data.azurerm_key_vault_certificate.app_gw_continua_ioapp_it.secret_id,
+          "/${data.azurerm_key_vault_certificate.app_gw_continua_ioapp_it.version}",
+          ""
+        )
+      }
+    }
+
     developerportal-backend-io-italia-it = {
       protocol           = "Https"
       host               = "developerportal-backend.io.italia.it"
@@ -685,6 +702,12 @@ locals {
       backend               = "practices-ipatente-io-app"
       rewrite_rule_set_name = "rewrite-rule-set-ipatente-io-app"
       priority              = 133
+    }
+    continua-ioapp-it = {
+      listener              = "continua-ioapp-it"
+      backend               = "continua-app"
+      rewrite_rule_set_name = "rewrite-rule-set-continua"
+      priority              = 134
     }
   }
 

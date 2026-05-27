@@ -192,6 +192,7 @@ module "application_gateway_itn" {
     developerportal_backend_io_italia_it = "developerportal-backend-io-italia-it"
     firmaconio_selfcare_pagopa_it        = "firmaconio-selfcare-pagopa-it"
     continua_io_pagopa_it                = "continua-io-pagopa-it"
+    continua_ioapp_it                    = "continua-ioapp-it"
     selfcare_io_pagopa_it                = "selfcare-io-pagopa-it"
     oauth_io_pagopa_it                   = "oauth-io-pagopa-it"
     vehicles_ipatente_io_pagopa_it       = "vehicles-ipatente-io-pagopa-it"
