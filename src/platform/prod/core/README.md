@@ -36,7 +36,7 @@ No inputs.
 
 ## Outputs
 
-+| Name | Description |
-+|------|-------------|
-+| <a name="output_dns"></a> [dns](#output\_dns) | n/a |
+| Name | Description |
+|------|-------------|
+| <a name="output_dns"></a> [dns](#output\_dns) | n/a |
 <!-- END_TF_DOCS -->
