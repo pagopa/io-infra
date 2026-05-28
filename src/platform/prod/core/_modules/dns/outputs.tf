@@ -1,3 +1,3 @@
-output "dns" {
-  value = module.dns
+output "zones" {
+  value = module.zones
 }

@@ -1,4 +1,4 @@
-module "dns" {
+module "zones" {
   source = "./zones"
 
   project = var.project
@@ -6,6 +6,9 @@ module "dns" {
   dns_zones = var.dns.dns_zones
 
   vnets = var.dns.vnets
+
+  dns_default_ttl_sec = 3600
+  external_domain     = "pagopa.it"
 
   resource_groups = var.dns.resource_groups
 

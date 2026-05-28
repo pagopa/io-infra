@@ -43,7 +43,3 @@ resource "azurerm_dns_caa_record" "firmaconio_selfcare_pagopa_it" {
 
   tags = var.tags
 }
-
-output "dns_firmaconio_selfcare_pagopa_it_ns" {
-  value = azurerm_dns_zone.firmaconio_selfcare_pagopa_it.name_servers
-}
