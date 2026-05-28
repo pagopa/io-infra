@@ -105,7 +105,7 @@ locals {
       port                        = 443
       ip_addresses                = null # with null value use fqdns
       fqdns                       = var.backend_hostnames.firmaconio_selfcare_web_app
-      probe                       = "/health"
+      probe                       = "/info"
       probe_name                  = "probe-firmaconio-selfcare-backend"
       request_timeout             = 180
       pick_host_name_from_backend = true
@@ -260,6 +260,23 @@ locals {
         id = replace(
           data.azurerm_key_vault_certificate.app_gw_continua.secret_id,
           "/${data.azurerm_key_vault_certificate.app_gw_continua.version}",
+          ""
+        )
+      }
+    }
+
+    continua-ioapp-it = {
+      protocol           = "Https"
+      host               = format("continua.%s", var.public_dns_zones.ioweb_it.name)
+      port               = 443
+      ssl_profile_name   = null
+      firewall_policy_id = null
+
+      certificate = {
+        name = var.certificates.continua_ioapp_it
+        id = replace(
+          data.azurerm_key_vault_certificate.app_gw_continua_ioapp_it.secret_id,
+          "/${data.azurerm_key_vault_certificate.app_gw_continua_ioapp_it.version}",
           ""
         )
       }
@@ -567,7 +584,42 @@ locals {
           paths                 = ["/api/v1/pn/activation"]
           backend               = "platform-api-gateway",
           rewrite_rule_set_name = "rewrite-rule-set-api-app-pn"
-        }
+        },
+        api-gateway-cdc-support = {
+          paths                 = ["/api/cdc-support/*"]
+          backend               = "platform-api-gateway",
+          rewrite_rule_set_name = "rewrite-rule-set-api-app"
+        },
+        api-gateway-cgn-card = {
+          paths                 = ["/api/cgn-card/*"],
+          backend               = "platform-api-gateway",
+          rewrite_rule_set_name = "rewrite-rule-set-api-app"
+        },
+        api-gateway-cgn-search = {
+          paths                 = ["/api/cgn-search/*"],
+          backend               = "platform-api-gateway",
+          rewrite_rule_set_name = "rewrite-rule-set-api-app"
+        },
+        api-gateway-communication = {
+          paths                 = ["/api/communication/*"],
+          backend               = "platform-api-gateway",
+          rewrite_rule_set_name = "rewrite-rule-set-api-app"
+        },
+        api-gateway-fims = {
+          paths                 = ["/api/fims/*"],
+          backend               = "platform-api-gateway",
+          rewrite_rule_set_name = "rewrite-rule-set-api-app"
+        },
+        api-gateway-catalog = {
+          paths                 = ["/api/catalog/*"],
+          backend               = "platform-api-gateway",
+          rewrite_rule_set_name = "rewrite-rule-set-api-app"
+        },
+        api-gateway-sign = {
+          paths                 = ["/api/sign/*"],
+          backend               = "platform-api-gateway",
+          rewrite_rule_set_name = "rewrite-rule-set-api-app"
+        },
       }
     }
   }
@@ -650,6 +702,12 @@ locals {
       backend               = "practices-ipatente-io-app"
       rewrite_rule_set_name = "rewrite-rule-set-ipatente-io-app"
       priority              = 133
+    }
+    continua-ioapp-it = {
+      listener              = "continua-ioapp-it"
+      backend               = "continua-app"
+      rewrite_rule_set_name = "rewrite-rule-set-continua"
+      priority              = 134
     }
   }
 

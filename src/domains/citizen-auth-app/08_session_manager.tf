@@ -1,92 +1,7 @@
-###########
-# SECRETS #
-###########
-data "azurerm_key_vault_secret" "session_manager_functions_profile_api_key" {
-  name         = "session-manager-functions-profile-api-key"
-  key_vault_id = data.azurerm_key_vault.auth.id
-}
-
-data "azurerm_key_vault_secret" "functions_fast_login_api_key" {
-  name         = "session-manager-functions-fast-login-api-key"
-  key_vault_id = data.azurerm_key_vault.auth.id
-}
-
-data "azurerm_key_vault_secret" "functions_lollipop_api_key" {
-  name         = "session-manager-lollipop-functions-api-key"
-  key_vault_id = data.azurerm_key_vault.auth.id
-}
-
-data "azurerm_key_vault_secret" "app_backend_LV_TEST_USERS" {
-  name         = "appbackend-LV-TEST-USERS"
-  key_vault_id = data.azurerm_key_vault.kv_common.id
-}
-
-data "azurerm_key_vault_secret" "app_backend_SAML_CERT" {
-  name         = "appbackend-SAML-CERT"
-  key_vault_id = data.azurerm_key_vault.kv_common.id
-}
-
-data "azurerm_key_vault_secret" "app_backend_SAML_KEY" {
-  name         = "appbackend-SAML-KEY"
-  key_vault_id = data.azurerm_key_vault.kv_common.id
-}
-
-data "azurerm_key_vault_secret" "app_backend_ALLOWED_CIE_TEST_FISCAL_CODES" {
-  name         = "appbackend-ALLOWED-CIE-TEST-FISCAL-CODES"
-  key_vault_id = data.azurerm_key_vault.kv_common.id
-}
-
-data "azurerm_key_vault_secret" "session_manager_TEST_LOGIN_PASSWORD" {
-  name         = "session-manager-TEST-LOGIN-PASSWORD"
-  key_vault_id = data.azurerm_key_vault.auth.id
-}
-
-data "azurerm_key_vault_secret" "session_manager_JWT_ZENDESK_SUPPORT_TOKEN_SECRET" {
-  name         = "session-manager-JWT-ZENDESK-SUPPORT-TOKEN-SECRET"
-  key_vault_id = data.azurerm_key_vault.auth.id
-}
-
-data "azurerm_key_vault_secret" "session_manager_ALLOW_ZENDESK_IP_SOURCE_RANGE" {
-  name         = "session-manager-ALLOW-ZENDESK-IP-SOURCE-RANGE"
-  key_vault_id = data.azurerm_key_vault.auth.id
-}
-
-data "azurerm_key_vault_secret" "session_manager_ALLOW_BPD_IP_SOURCE_RANGE" {
-  name         = "session-manager-ALLOW-BPD-IP-SOURCE-RANGE"
-  key_vault_id = data.azurerm_key_vault.auth.id
-}
-
-data "azurerm_key_vault_secret" "session_manager_ALLOW_PAGOPA_IP_SOURCE_RANGE" {
-  name         = "session-manager-ALLOW-PAGOPA-IP-SOURCE-RANGE"
-  key_vault_id = data.azurerm_key_vault.auth.id
-}
-
-data "azurerm_key_vault_secret" "session_manager_ALLOW_FIMS_IP_SOURCE_RANGE" {
-  name         = "session-manager-ALLOW-FIMS-IP-SOURCE-RANGE"
-  key_vault_id = data.azurerm_key_vault.auth.id
-}
-
-data "azurerm_key_vault_secret" "session_manager_UNIQUE_EMAIL_ENFORCEMENT_USER" {
-  name         = "session-manager-UNIQUE-EMAIL-ENFORCEMENT-USER"
-  key_vault_id = data.azurerm_key_vault.auth.id
-}
-
-data "azurerm_key_vault_secret" "session_manager_IOLOGIN_TEST_USERS" {
-  name         = "session-manager-IOLOGIN-TEST-USERS"
-  key_vault_id = data.azurerm_key_vault.auth.id
-}
-
-data "azurerm_key_vault_secret" "session_manager_VALIDATION_COOKIE_TEST_USERS" {
-  name         = "session-manager-VALIDATION-COOKIE-TEST-USERS"
-  key_vault_id = data.azurerm_key_vault.auth.id
-}
-
 data "azurerm_linux_function_app" "itn_auth_lv_func" {
   name                = "${local.short_project_itn}-lv-func-02"
   resource_group_name = "${local.short_project_itn}-lv-rg-01"
 }
-
-###########
 
 data "azurerm_resource_group" "session_manager_rg_weu" {
   name = format("%s-session-manager-rg-01", local.common_project)
@@ -100,7 +15,7 @@ locals {
     WEBSITES_ENABLE_APP_SERVICE_STORAGE = false
     WEBSITES_PORT                       = 8080
 
-    WEBSITE_NODE_DEFAULT_VERSION = "20.12.2"
+    WEBSITE_NODE_DEFAULT_VERSION = "22.22.2"
     WEBSITE_RUN_FROM_PACKAGE     = "1"
 
     // HEALTHCHECK VARIABLES
@@ -128,7 +43,7 @@ locals {
     APPINSIGHTS_REDIS_TRACE_ENABLED = "true"
 
     # Fims config
-    ALLOW_FIMS_IP_SOURCE_RANGE = data.azurerm_key_vault_secret.session_manager_ALLOW_FIMS_IP_SOURCE_RANGE.value
+    ALLOW_FIMS_IP_SOURCE_RANGE = "@Microsoft.KeyVault(VaultName=${data.azurerm_key_vault.auth.name};SecretName=session-manager-ALLOW-FIMS-IP-SOURCE-RANGE)"
 
     # REDIS AUTHENTICATION
     REDIS_URL      = data.azurerm_redis_cache.core_domain_redis_common.hostname
@@ -136,17 +51,17 @@ locals {
     REDIS_PASSWORD = data.azurerm_redis_cache.core_domain_redis_common.primary_access_key
 
     # Functions App config
-    API_KEY = data.azurerm_key_vault_secret.session_manager_functions_profile_api_key.value
+    API_KEY = "@Microsoft.KeyVault(VaultName=${data.azurerm_key_vault.auth.name};SecretName=session-manager-functions-profile-api-key)"
     API_URL = "https://io-p-itn-auth-profile-func-02.azurewebsites.net"
 
     # Functions Fast Login config
-    FAST_LOGIN_API_KEY = data.azurerm_key_vault_secret.functions_fast_login_api_key.value
+    FAST_LOGIN_API_KEY = "@Microsoft.KeyVault(VaultName=${data.azurerm_key_vault.auth.name};SecretName=session-manager-functions-fast-login-api-key)"
     FAST_LOGIN_API_URL = "https://${data.azurerm_linux_function_app.itn_auth_lv_func.default_hostname}"
 
     # Functions Lollipop config
     LOLLIPOP_API_BASE_PATH = "/api/v1"
     LOLLIPOP_API_URL       = "https://${data.azurerm_linux_function_app.function_lollipop_itn_v2.default_hostname}"
-    LOLLIPOP_API_KEY       = data.azurerm_key_vault_secret.functions_lollipop_api_key.value
+    LOLLIPOP_API_KEY       = "@Microsoft.KeyVault(VaultName=${data.azurerm_key_vault.auth.name};SecretName=session-manager-lollipop-functions-api-key)"
 
     LOLLIPOP_REVOKE_STORAGE_CONNECTION_STRING = data.azurerm_storage_account.auth_session_storage.primary_connection_string
     LOLLIPOP_REVOKE_QUEUE_NAME                = "pubkeys-revoke-01"
@@ -159,12 +74,12 @@ locals {
 
     # IOLOGIN redirect
     FF_IOLOGIN         = "BETA"
-    IOLOGIN_TEST_USERS = data.azurerm_key_vault_secret.session_manager_IOLOGIN_TEST_USERS.value
+    IOLOGIN_TEST_USERS = "@Microsoft.KeyVault(VaultName=${data.azurerm_key_vault.auth.name};SecretName=session-manager-IOLOGIN-TEST-USERS)"
     # Takes ~6,25% of users
     IOLOGIN_CANARY_USERS_REGEX = "^([(0-9)|(a-f)|(A-F)]{63}0)$"
 
     # Test Login config
-    TEST_LOGIN_PASSWORD = data.azurerm_key_vault_secret.session_manager_TEST_LOGIN_PASSWORD.value
+    TEST_LOGIN_PASSWORD = "@Microsoft.KeyVault(VaultName=${data.azurerm_key_vault.auth.name};SecretName=session-manager-TEST-LOGIN-PASSWORD)"
     // base64 encode of the compressed string (using gzip algorithm)
     TEST_LOGIN_FISCAL_CODES_COMPRESSED = base64gzip(module.tests.users.all)
 
@@ -186,8 +101,8 @@ locals {
     # Therefore variables for the SAML Request like SAML_CALLBACK_URL are still specified without basepath
     # to prevent Identity provider rejection
     SAML_CALLBACK_URL                      = "https://app-backend.io.italia.it/assertionConsumerService"
-    SAML_CERT                              = trimspace(data.azurerm_key_vault_secret.app_backend_SAML_CERT.value)
-    SAML_KEY                               = trimspace(data.azurerm_key_vault_secret.app_backend_SAML_KEY.value)
+    SAML_CERT                              = "@Microsoft.KeyVault(VaultName=${data.azurerm_key_vault.kv_common.name};SecretName=appbackend-SAML-CERT)"
+    SAML_KEY                               = "@Microsoft.KeyVault(VaultName=${data.azurerm_key_vault.kv_common.name};SecretName=appbackend-SAML-KEY)"
     SAML_LOGOUT_CALLBACK_URL               = "https://app-backend.io.italia.it/slo"
     SAML_ISSUER                            = "https://app-backend.io.italia.it"
     SAML_ATTRIBUTE_CONSUMING_SERVICE_INDEX = "0"
@@ -199,8 +114,9 @@ locals {
     # CIE config
     # CIE_METADATA_URL = "https://idserver.servizicie.interno.gov.it:443/idp/shibboleth"
     CIE_METADATA_URL              = "https://api.is.eng.pagopa.it/idp-keys/cie/latest" # PagoPA internal cache
-    ALLOWED_CIE_TEST_FISCAL_CODES = data.azurerm_key_vault_secret.app_backend_ALLOWED_CIE_TEST_FISCAL_CODES.value
-    CIE_TEST_METADATA_URL         = "https://collaudo.idserver.servizicie.interno.gov.it/idp/shibboleth"
+    ALLOWED_CIE_TEST_FISCAL_CODES = "@Microsoft.KeyVault(VaultName=${data.azurerm_key_vault.kv_common.name};SecretName=appbackend-ALLOWED-CIE-TEST-FISCAL-CODES)"
+    # TODO: verify if CIE_TEST_METADATA_URL is still needed, if not remove it
+    # CIE_TEST_METADATA_URL         = "https://collaudo.idserver.servizicie.interno.gov.it/idp/shibboleth"
 
     PUSH_NOTIFICATIONS_STORAGE_CONNECTION_STRING = data.azurerm_storage_account.push_notifications_storage.primary_connection_string
     PUSH_NOTIFICATIONS_QUEUE_NAME                = local.storage_account_notifications_queue_push_notifications
@@ -208,24 +124,27 @@ locals {
     # ZENDESK config
     JWT_ZENDESK_SUPPORT_TOKEN_ISSUER     = "app-backend.io.italia.it"
     JWT_ZENDESK_SUPPORT_TOKEN_EXPIRATION = 1200
-    JWT_ZENDESK_SUPPORT_TOKEN_SECRET     = data.azurerm_key_vault_secret.session_manager_JWT_ZENDESK_SUPPORT_TOKEN_SECRET.value
-    ALLOW_ZENDESK_IP_SOURCE_RANGE        = data.azurerm_key_vault_secret.session_manager_ALLOW_ZENDESK_IP_SOURCE_RANGE.value
+    JWT_ZENDESK_SUPPORT_TOKEN_SECRET     = "@Microsoft.KeyVault(VaultName=${data.azurerm_key_vault.auth.name};SecretName=session-manager-JWT-ZENDESK-SUPPORT-TOKEN-SECRET)"
+    ALLOW_ZENDESK_IP_SOURCE_RANGE        = "@Microsoft.KeyVault(VaultName=${data.azurerm_key_vault.auth.name};SecretName=session-manager-ALLOW-ZENDESK-IP-SOURCE-RANGE)"
 
     # BPD config
-    ALLOW_BPD_IP_SOURCE_RANGE = data.azurerm_key_vault_secret.session_manager_ALLOW_BPD_IP_SOURCE_RANGE.value
+    ALLOW_BPD_IP_SOURCE_RANGE = "@Microsoft.KeyVault(VaultName=${data.azurerm_key_vault.auth.name};SecretName=session-manager-ALLOW-BPD-IP-SOURCE-RANGE)"
 
     # PAGOPA config
-    ALLOW_PAGOPA_IP_SOURCE_RANGE = data.azurerm_key_vault_secret.session_manager_ALLOW_PAGOPA_IP_SOURCE_RANGE.value
+    ALLOW_PAGOPA_IP_SOURCE_RANGE = "@Microsoft.KeyVault(VaultName=${data.azurerm_key_vault.auth.name};SecretName=session-manager-ALLOW-PAGOPA-IP-SOURCE-RANGE)"
 
     # Validation Cookie config
     VALIDATION_COOKIE_DURATION_MS = 900000
     FF_VALIDATION_COOKIE          = "ALL"
-    VALIDATION_COOKIE_TEST_USERS  = data.azurerm_key_vault_secret.session_manager_VALIDATION_COOKIE_TEST_USERS.value
+    VALIDATION_COOKIE_TEST_USERS  = "@Microsoft.KeyVault(VaultName=${data.azurerm_key_vault.auth.name};SecretName=session-manager-VALIDATION-COOKIE-TEST-USERS)"
 
     # ServiceBus Auth Event Config
     SERVICE_BUS_NAMESPACE    = "${data.azurerm_servicebus_namespace.platform_service_bus_namespace.name}.servicebus.windows.net"
     AUTH_SESSIONS_TOPIC_NAME = local.auth_sessions_topic_name
 
+
+    # PLATFORM INTERNAL API
+    PLATFORM_PROXY_API_URL = "https://proxy.internal.io.pagopa.it"
   }
 }
 
@@ -244,7 +163,7 @@ locals {
 // are granted before enabling production traffic.
 // see reference https://github.com/pagopa/io-auth-n-identity-domain/blob/303a5659791ce95b529c557f4aa4400e7e51e9a7/infra/resources/prod/servicebus_topic.tf#L61
 module "session_manager_weu" {
-  source = "github.com/pagopa/terraform-azurerm-v3//app_service?ref=v8.28.1"
+  source = "github.com/pagopa/terraform-azurerm-v4//app_service?ref=v10.1.0"
 
   # App service plan
   plan_type              = "internal"
@@ -258,7 +177,7 @@ module "session_manager_weu" {
   location            = var.location
 
   always_on    = true
-  node_version = "20-lts"
+  node_version = "22-lts"
   # NOTE:
   # 1. the linux container for app services already has pm2 installed
   #    (refer to https://learn.microsoft.com/en-us/azure/app-service/configure-language-nodejs?pivots=platform-linux#run-with-pm2)
@@ -274,6 +193,8 @@ module "session_manager_weu" {
     slow_requests_time     = "00:00:10"
   }
 
+  premium_plan_auto_scale_enabled = true
+
   app_settings = merge(
     local.app_settings_common,
     {
@@ -284,7 +205,6 @@ module "session_manager_weu" {
 
 
   allowed_subnets = [
-    data.azurerm_subnet.appgateway_snet.id,
     data.azurerm_subnet.apim_itn_snet.id,
   ]
   allowed_ips = []
@@ -292,28 +212,29 @@ module "session_manager_weu" {
   subnet_id                     = module.session_manager_snet.id
   vnet_integration              = true
   public_network_access_enabled = false
+  ip_restriction_default_action = "Deny"
+
+  minimum_tls_version = "1.2"
 
   tags = var.tags
 }
 
 ## staging slot
 module "session_manager_weu_staging" {
-  source = "github.com/pagopa/terraform-azurerm-v3//app_service_slot?ref=v8.28.1"
+  source = "github.com/pagopa/terraform-azurerm-v4//app_service_slot?ref=v10.1.0"
 
-  app_service_id   = module.session_manager_weu.id
-  app_service_name = module.session_manager_weu.name
+  app_service_id = module.session_manager_weu.id
 
-  name                = "staging"
-  resource_group_name = data.azurerm_resource_group.session_manager_rg_weu.name
-  location            = var.location
+  name = "staging"
 
   always_on    = true
-  node_version = "20-lts"
+  node_version = "22-lts"
   # NOTE:
   # 1. the linux container for app services already has pm2 installed
   #    (refer to https://learn.microsoft.com/en-us/azure/app-service/configure-language-nodejs?pivots=platform-linux#run-with-pm2)
-  app_command_line  = "pm2 start dist/server.js -i max --no-daemon --filter-env \"APPSETTING_\""
-  health_check_path = "/api/auth/v1/healthcheck"
+  app_command_line             = "pm2 start dist/server.js -i max --no-daemon --filter-env \"APPSETTING_\""
+  health_check_path            = "/api/auth/v1/healthcheck"
+  health_check_maxpingfailures = 2
 
   auto_heal_enabled = true
   auto_heal_settings = {
@@ -333,7 +254,6 @@ module "session_manager_weu_staging" {
   allowed_subnets = [
     # self hosted runners subnet
     data.azurerm_subnet.self_hosted_runner_snet.id,
-    data.azurerm_subnet.appgateway_snet.id,
     data.azurerm_subnet.apim_itn_snet.id,
   ]
   allowed_ips = []
@@ -342,11 +262,13 @@ module "session_manager_weu_staging" {
   vnet_integration              = true
   public_network_access_enabled = false
 
+  minimum_tls_version = "1.2"
+
   tags = var.tags
 }
 
 module "session_manager_weu_bis" {
-  source = "github.com/pagopa/terraform-azurerm-v3//app_service?ref=v8.28.1"
+  source = "github.com/pagopa/terraform-azurerm-v4//app_service?ref=v10.1.0"
 
   # App service plan
   plan_type              = "internal"
@@ -360,7 +282,7 @@ module "session_manager_weu_bis" {
   location            = var.location
 
   always_on    = true
-  node_version = "20-lts"
+  node_version = "22-lts"
   # NOTE:
   # 1. the linux container for app services already has pm2 installed
   #    (refer to https://learn.microsoft.com/en-us/azure/app-service/configure-language-nodejs?pivots=platform-linux#run-with-pm2)
@@ -376,6 +298,8 @@ module "session_manager_weu_bis" {
     slow_requests_time     = "00:00:10"
   }
 
+  premium_plan_auto_scale_enabled = true
+
   app_settings = merge(
     local.app_settings_common,
     {
@@ -386,7 +310,6 @@ module "session_manager_weu_bis" {
 
 
   allowed_subnets = [
-    data.azurerm_subnet.appgateway_snet.id,
     data.azurerm_subnet.apim_itn_snet.id,
   ]
   allowed_ips = []
@@ -394,28 +317,29 @@ module "session_manager_weu_bis" {
   subnet_id                     = module.session_manager_bis_snet.id
   vnet_integration              = true
   public_network_access_enabled = false
+  ip_restriction_default_action = "Deny"
+
+  minimum_tls_version = "1.2"
 
   tags = var.tags
 }
 
 ## staging slot
 module "session_manager_weu_bis_staging" {
-  source = "github.com/pagopa/terraform-azurerm-v3//app_service_slot?ref=v8.28.1"
+  source = "github.com/pagopa/terraform-azurerm-v4//app_service_slot?ref=v10.1.0"
 
-  app_service_id   = module.session_manager_weu_bis.id
-  app_service_name = module.session_manager_weu_bis.name
+  app_service_id = module.session_manager_weu_bis.id
 
-  name                = "staging"
-  resource_group_name = data.azurerm_resource_group.session_manager_rg_weu.name
-  location            = var.location
+  name = "staging"
 
   always_on    = true
-  node_version = "20-lts"
+  node_version = "22-lts"
   # NOTE:
   # 1. the linux container for app services already has pm2 installed
   #    (refer to https://learn.microsoft.com/en-us/azure/app-service/configure-language-nodejs?pivots=platform-linux#run-with-pm2)
-  app_command_line  = "pm2 start dist/server.js -i max --no-daemon --filter-env \"APPSETTING_\""
-  health_check_path = "/api/auth/v1/healthcheck"
+  app_command_line             = "pm2 start dist/server.js -i max --no-daemon --filter-env \"APPSETTING_\""
+  health_check_path            = "/api/auth/v1/healthcheck"
+  health_check_maxpingfailures = 2
 
   auto_heal_enabled = true
   auto_heal_settings = {
@@ -435,7 +359,6 @@ module "session_manager_weu_bis_staging" {
   allowed_subnets = [
     # self hosted runners subnet
     data.azurerm_subnet.self_hosted_runner_snet.id,
-    data.azurerm_subnet.appgateway_snet.id,
     data.azurerm_subnet.apim_itn_snet.id,
   ]
   allowed_ips = []
@@ -443,6 +366,8 @@ module "session_manager_weu_bis_staging" {
   subnet_id                     = module.session_manager_bis_snet.id
   vnet_integration              = true
   public_network_access_enabled = false
+
+  minimum_tls_version = "1.2"
 
   tags = var.tags
 }

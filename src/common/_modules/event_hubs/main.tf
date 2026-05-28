@@ -19,7 +19,6 @@ module "event_hub" {
   name                = try(local.nonstandard[var.location_short].evh-ns, "${var.project}-evhns-01")
   location            = var.location
   resource_group_name = azurerm_resource_group.event_rg.name
-  # resource_group_assets_cdn =
 
   auto_inflate_enabled     = var.auto_inflate_enabled
   sku                      = var.sku_name

@@ -1,65 +1,13 @@
+data "azurerm_client_config" "current" {}
+
 data "azurerm_key_vault" "common" {
   name                = format("%s-kv-common", local.project)
   resource_group_name = local.rg_common_name
 }
 
-
 data "azurerm_key_vault" "io_com" {
   name                = format("%s-com-kv-01", var.project_itn)
   resource_group_name = format("%s-com-rg-01", var.project_itn)
-}
-
-########################
-# SECRETS
-########################
-data "azurerm_key_vault_secret" "fn_services_mailup_username" {
-  name         = "iocom-MAILUP-USERNAME"
-  key_vault_id = data.azurerm_key_vault.common.id
-}
-
-data "azurerm_key_vault_secret" "fn_services_mailup_secret" {
-  name         = "iocom-MAILUP-SECRET"
-  key_vault_id = data.azurerm_key_vault.common.id
-}
-
-data "azurerm_key_vault_secret" "fn_services_webhook_channel_url" {
-  name         = "appbackend-WEBHOOK-CHANNEL-URL"
-  key_vault_id = data.azurerm_key_vault.common.id
-}
-
-data "azurerm_key_vault_secret" "fn_services_sandbox_fiscal_code" {
-  name         = "io-SANDBOX-FISCAL-CODE"
-  key_vault_id = data.azurerm_key_vault.common.id
-}
-
-data "azurerm_key_vault_secret" "fn_services_email_service_blacklist_id" {
-  name         = "io-EMAIL-SERVICE-BLACKLIST-ID"
-  key_vault_id = data.azurerm_key_vault.common.id
-}
-
-data "azurerm_key_vault_secret" "fn_services_notification_service_blacklist_id" {
-  name         = "io-NOTIFICATION-SERVICE-BLACKLIST-ID"
-  key_vault_id = data.azurerm_key_vault.common.id
-}
-
-data "azurerm_key_vault_secret" "fn_services_beta_users" {
-  name         = "io-fn-services-BETA-USERS" # common beta list (array of CF)
-  key_vault_id = data.azurerm_key_vault.common.id
-}
-
-data "azurerm_key_vault_secret" "fn_services_io_service_key" {
-  name         = "apim-IO-SERVICE-KEY"
-  key_vault_id = data.azurerm_key_vault.common.id
-}
-
-data "azurerm_key_vault_secret" "fn_services_pagopa_ecommerce_api_key" {
-  name         = "fnservices-PAGOPA-ECOMMERCE-API-KEY-PROD"
-  key_vault_id = data.azurerm_key_vault.common.id
-}
-
-data "azurerm_key_vault_secret" "rc_func_key" {
-  name         = "rc-func-key"
-  key_vault_id = data.azurerm_key_vault.io_com.id
 }
 
 ########################

@@ -11,7 +11,7 @@ data "azurerm_key_vault" "ioweb" {
 }
 
 module "key_vault" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//key_vault?ref=v8.56.0"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v4.git//key_vault?ref=v10.5.0"
 
   name                       = "${local.product}-${var.domain}-kv"
   location                   = azurerm_resource_group.sec_rg.location
@@ -67,7 +67,7 @@ resource "azurerm_key_vault_access_policy" "access_policy_io_infra_cd" {
   object_id = data.azurerm_user_assigned_identity.managed_identity_io_infra_cd.principal_id
 
   key_permissions         = ["Get", "List", "GetRotationPolicy"]
-  secret_permissions      = ["Get", "List"]
+  secret_permissions      = ["Get", "List", "Set"]
   certificate_permissions = ["Get", "List"]
 }
 

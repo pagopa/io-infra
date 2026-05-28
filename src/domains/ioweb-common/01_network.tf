@@ -40,24 +40,22 @@ data "azurerm_subnet" "ioweb_profile_itn_snet" {
 
 ## redis spid login subnet
 module "redis_spid_login_snet" {
-  source               = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v8.56.0"
+  source               = "git::https://github.com/pagopa/terraform-azurerm-v4.git//subnet?ref=v10.5.0"
   name                 = format("%s-redis-spid-login-snet", local.project)
   address_prefixes     = var.subnets_cidrs.redis_spid_login
   resource_group_name  = local.vnet_common_resource_group_name
   virtual_network_name = local.vnet_common_name
-
-  private_endpoint_network_policies_enabled = false
 }
 
 ## spid_login subnet
 module "spid_login_snet" {
-  source               = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v8.56.0"
+  source               = "git::https://github.com/pagopa/terraform-azurerm-v4.git//subnet?ref=v10.5.0"
   name                 = format("%s-spid-login-snet", local.project)
   address_prefixes     = var.subnets_cidrs.spid_login
   resource_group_name  = local.vnet_common_resource_group_name
   virtual_network_name = local.vnet_common_name
 
-  private_endpoint_network_policies_enabled = true
+  private_endpoint_network_policies = "Enabled"
 
   service_endpoints = [
     "Microsoft.Web",

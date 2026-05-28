@@ -21,6 +21,7 @@ output "resource_groups" {
       github_id      = azurerm_resource_group.github_managed_identity_itn.name
       external       = azurerm_resource_group.external_itn.name
       assets_cdn     = azurerm_resource_group.assets_cdn_itn.name
+      ioapp_agw      = azurerm_resource_group.application_gateway_ioapp_temporary_itn.name
     }
     westeurope = {
       location_short = "weu"
@@ -29,7 +30,6 @@ output "resource_groups" {
       external       = azurerm_resource_group.external_weu.name
       sec            = azurerm_resource_group.sec_weu.name
       acr            = azurerm_resource_group.acr_weu.name
-      assets_cdn     = azurerm_resource_group.assets_cdn_weu.name
       linux          = azurerm_resource_group.linux_weu.name
       operations     = azurerm_resource_group.operations_weu.name
     }

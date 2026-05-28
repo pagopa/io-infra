@@ -51,10 +51,7 @@ locals {
     },
     2 = {
       cidr_subnet = ["10.0.153.0/24"]
-    },
-    3 = {
-      cidr_subnet = ["10.0.154.0/24"]
-    },
+    }
   }
 
   azdoa_snet_id = {
@@ -65,7 +62,6 @@ locals {
   backend_hostnames = {
     app                  = [data.azurerm_linux_function_app.function_profile.default_hostname]
     com_citizen_func     = data.azurerm_linux_function_app.com_citizen_func.default_hostname
-    assets_cdn           = data.azurerm_linux_function_app.function_assets_cdn.default_hostname
     services_app_backend = data.azurerm_linux_function_app.services_app_backend_function_app.default_hostname
     # services_app_backend = data.azurerm_container_app.services_app_backend_function_app.ingress[0].fqdn
     lollipop      = data.azurerm_linux_function_app.lollipop_function.default_hostname
@@ -200,9 +196,8 @@ locals {
   ]
 
   function_services = {
-    rg_common_name     = format("%s-rg-common", local.project_weu_legacy)
-    rg_internal_name   = format("%s-rg-internal", local.project_weu_legacy)
-    rg_assets_cdn_name = format("%s-assets-cdn-rg", local.project_weu_legacy)
+    rg_common_name   = format("%s-rg-common", local.project_weu_legacy)
+    rg_internal_name = format("%s-rg-internal", local.project_weu_legacy)
 
     tags = {
       BusinessUnit = "App IO"
@@ -272,11 +267,5 @@ locals {
       Source         = "https://github.com/pagopa/io-infra/blob/main/src/domains/elt/prod"
       ManagementTeam = "IO Platform"
     }
-  }
-  function_assets_cdn = {
-    assets_cdn_snet_cidr = "10.20.35.64/26"
-
-    vnet_common_name_itn           = "${local.project_itn}-common-vnet-01"
-    common_resource_group_name_itn = "${local.project_itn}-common-rg-01"
   }
 }

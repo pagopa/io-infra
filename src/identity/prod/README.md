@@ -12,6 +12,7 @@
 
 | Name | Version |
 |------|---------|
+| <a name="provider_azurerm"></a> [azurerm](#provider\_azurerm) | 3.116.0 |
 | <a name="provider_azurerm.prod-cgn"></a> [azurerm.prod-cgn](#provider\_azurerm.prod-cgn) | 3.116.0 |
 | <a name="provider_azurerm.prod-selc"></a> [azurerm.prod-selc](#provider\_azurerm.prod-selc) | 3.116.0 |
 
@@ -25,12 +26,14 @@
 
 | Name | Type |
 |------|------|
+| [azurerm_federated_identity_credential.prod_tls_cd](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/federated_identity_credential) | resource |
 | [azurerm_role_assignment.cd_cgn](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/role_assignment) | resource |
 | [azurerm_role_assignment.cd_cgn_iac_reader](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/role_assignment) | resource |
 | [azurerm_role_assignment.cd_selc_evhns](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/role_assignment) | resource |
 | [azurerm_role_assignment.ci_cgn](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/role_assignment) | resource |
 | [azurerm_role_assignment.ci_cgn_iac_reader](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/role_assignment) | resource |
 | [azurerm_subscription.cgn](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/subscription) | data source |
+| [azurerm_user_assigned_identity.identity_prod_cd](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/user_assigned_identity) | data source |
 
 ## Inputs
 

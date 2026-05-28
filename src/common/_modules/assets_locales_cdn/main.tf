@@ -24,6 +24,20 @@ module "azure_cdn" {
         zone_name                = var.public_dns_zones.io.name
         zone_resource_group_name = var.resource_group_external
       }
+    },
+    {
+      host_name = "assets.cdn.io.pagopa.it"
+      dns = {
+        zone_name                = var.public_dns_zones.io.name
+        zone_resource_group_name = var.resource_group_external
+      }
+    },
+    {
+      host_name = "assets.cdn.io.italia.it"
+      dns = {
+        zone_name                = var.public_dns_zones.io_italia_it.name
+        zone_resource_group_name = var.resource_group_external
+      }
     }
   ]
 

@@ -13,7 +13,7 @@
 | Name | Version |
 |------|---------|
 | <a name="provider_azuread"></a> [azuread](#provider\_azuread) | 3.8.0 |
-| <a name="provider_azurerm"></a> [azurerm](#provider\_azurerm) | 4.63.0 |
+| <a name="provider_azurerm"></a> [azurerm](#provider\_azurerm) | 4.64.0 |
 | <a name="provider_dx"></a> [dx](#provider\_dx) | ~> 0.4 |
 | <a name="provider_terraform"></a> [terraform](#provider\_terraform) | n/a |
 
@@ -23,9 +23,8 @@
 |------|--------|---------|
 | <a name="module_apim_itn"></a> [apim\_itn](#module\_apim\_itn) | ../_modules/apim | n/a |
 | <a name="module_app_backend_weu"></a> [app\_backend\_weu](#module\_app\_backend\_weu) | ../_modules/app_backend | n/a |
+| <a name="module_application_gateway_ioapp_temporary"></a> [application\_gateway\_ioapp\_temporary](#module\_application\_gateway\_ioapp\_temporary) | ../_modules/application_gateway_ioapp_temporary | n/a |
 | <a name="module_application_gateway_itn"></a> [application\_gateway\_itn](#module\_application\_gateway\_itn) | ../_modules/app_gateway | n/a |
-| <a name="module_application_gateway_weu"></a> [application\_gateway\_weu](#module\_application\_gateway\_weu) | ../_modules/application_gateway | n/a |
-| <a name="module_assets_cdn_weu"></a> [assets\_cdn\_weu](#module\_assets\_cdn\_weu) | ../_modules/assets_cdn | n/a |
 | <a name="module_assets_locales_cdn"></a> [assets\_locales\_cdn](#module\_assets\_locales\_cdn) | ../_modules/assets_locales_cdn | n/a |
 | <a name="module_containers_services"></a> [containers\_services](#module\_containers\_services) | ../_modules/function_services/containers | n/a |
 | <a name="module_continua_app_service"></a> [continua\_app\_service](#module\_continua\_app\_service) | ../_modules/app_continua | n/a |
@@ -34,7 +33,6 @@
 | <a name="module_function_app_admin"></a> [function\_app\_admin](#module\_function\_app\_admin) | ../_modules/function_admin | n/a |
 | <a name="module_function_app_elt"></a> [function\_app\_elt](#module\_function\_app\_elt) | ../_modules/function_elt | n/a |
 | <a name="module_function_app_services_02"></a> [function\_app\_services\_02](#module\_function\_app\_services\_02) | ../_modules/function_services/function-app | n/a |
-| <a name="module_function_assets_cdn_itn"></a> [function\_assets\_cdn\_itn](#module\_function\_assets\_cdn\_itn) | ../_modules/function_assets_cdn | n/a |
 | <a name="module_github_runner_itn"></a> [github\_runner\_itn](#module\_github\_runner\_itn) | ../_modules/github_runner | n/a |
 | <a name="module_global"></a> [global](#module\_global) | ../_modules/global | n/a |
 | <a name="module_monitoring_itn"></a> [monitoring\_itn](#module\_monitoring\_itn) | ../_modules/monitoring | n/a |
@@ -76,7 +74,6 @@
 | [azurerm_key_vault.ioweb_kv](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/key_vault) | data source |
 | [azurerm_key_vault.itn_key_vault](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/key_vault) | data source |
 | [azurerm_linux_function_app.com_citizen_func](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/linux_function_app) | data source |
-| [azurerm_linux_function_app.function_assets_cdn](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/linux_function_app) | data source |
 | [azurerm_linux_function_app.function_profile](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/linux_function_app) | data source |
 | [azurerm_linux_function_app.io_fims_user](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/linux_function_app) | data source |
 | [azurerm_linux_function_app.io_sign_user](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/linux_function_app) | data source |
@@ -106,7 +103,9 @@ No inputs.
 | Name | Description |
 |------|-------------|
 | <a name="output_apim"></a> [apim](#output\_apim) | n/a |
+| <a name="output_monitoring"></a> [monitoring](#output\_monitoring) | n/a |
 | <a name="output_pep_subnets"></a> [pep\_subnets](#output\_pep\_subnets) | n/a |
 | <a name="output_private_endpoints"></a> [private\_endpoints](#output\_private\_endpoints) | n/a |
+| <a name="output_public_dns_zones"></a> [public\_dns\_zones](#output\_public\_dns\_zones) | n/a |
 | <a name="output_virtual_networks"></a> [virtual\_networks](#output\_virtual\_networks) | n/a |
 <!-- END_TF_DOCS -->

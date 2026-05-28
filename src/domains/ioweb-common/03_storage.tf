@@ -7,7 +7,7 @@ locals {
 # Immutable SPID LOGS Storage
 ######################
 module "immutable_spid_logs_storage" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3//storage_account?ref=v8.56.0"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v4.git//storage_account?ref=v10.5.0"
 
   name                          = replace(format("%s-spid-logs-im-st", local.project), "-", "")
   domain                        = upper(var.domain)
@@ -43,10 +43,9 @@ resource "azurerm_key_vault_secret" "spid_logs_connection_string" {
 }
 
 module "immutable_spid_logs_storage_customer_managed_key" {
-  source               = "git::https://github.com/pagopa/terraform-azurerm-v3//storage_account_customer_managed_key?ref=v8.56.0"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v4.git//storage_account_customer_managed_key?ref=v10.5.0"
+
   tenant_id            = data.azurerm_subscription.current.tenant_id
-  location             = var.location
-  resource_group_name  = data.azurerm_resource_group.storage_rg.name
   key_vault_id         = module.key_vault.id
   key_name             = format("%s-key", module.immutable_spid_logs_storage.name)
   storage_id           = module.immutable_spid_logs_storage.id

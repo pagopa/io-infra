@@ -7,7 +7,7 @@ resource "azurerm_resource_group" "function_admin_itn_rg" {
 
 module "function_admin_itn" {
   source  = "pagopa-dx/azure-function-app/azurerm"
-  version = "~> 3.0"
+  version = "~> 5.0"
 
   environment = {
     prefix          = var.prefix
@@ -18,6 +18,8 @@ module "function_admin_itn" {
   }
 
   resource_group_name = azurerm_resource_group.function_admin_itn_rg.name
+
+  node_version = 22
 
   virtual_network = {
     name                = var.vnet_common_name_itn

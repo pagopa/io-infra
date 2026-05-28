@@ -32,11 +32,6 @@ variable "resource_group_common" {
   description = "Common resource group name"
 }
 
-variable "resource_group_assets_cdn" {
-  type        = string
-  description = "Assets CDN resource group name"
-}
-
 variable "vnet_common" {
   type = object({
     id                  = string

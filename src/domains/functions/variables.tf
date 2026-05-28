@@ -58,51 +58,6 @@ variable "tags" {
 }
 
 ################################
-# Function Assets CDN
-################################
-
-variable "cidr_subnet_fncdnassets" {
-  type        = list(string)
-  description = "Fn assets address space."
-}
-
-variable "function_assets_cdn_kind" {
-  type        = string
-  description = "App service plan kind"
-  default     = null
-}
-
-variable "function_assets_cdn_sku_tier" {
-  type        = string
-  description = "App service plan sku tier"
-  default     = null
-}
-
-variable "function_assets_cdn_sku_size" {
-  type        = string
-  description = "App service plan sku size"
-  default     = null
-}
-
-variable "function_assets_cdn_autoscale_minimum" {
-  type        = number
-  description = "The minimum number of instances for this resource."
-  default     = 1
-}
-
-variable "function_assets_cdn_autoscale_maximum" {
-  type        = number
-  description = "The maximum number of instances for this resource."
-  default     = 3
-}
-
-variable "function_assets_cdn_autoscale_default" {
-  type        = number
-  description = "The number of instances that are available for scaling if metrics are not available for evaluation."
-  default     = 1
-}
-
-################################
 # Function Services
 ################################
 

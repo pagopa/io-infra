@@ -144,6 +144,7 @@ module "storage_accounts_itn" {
   azure_adgroup_com_admins_object_id = data.azuread_group.com_admins.object_id
   azure_adgroup_com_devs_object_id   = data.azuread_group.com_devs.object_id
   azure_adgroup_admins_object_id     = data.azuread_group.admins.object_id
+  azure_adgroup_svc_devs_object_id   = data.azuread_group.svc_devs.object_id
 
   tags = local.tags
 }
@@ -191,6 +192,7 @@ module "application_gateway_itn" {
     developerportal_backend_io_italia_it = "developerportal-backend-io-italia-it"
     firmaconio_selfcare_pagopa_it        = "firmaconio-selfcare-pagopa-it"
     continua_io_pagopa_it                = "continua-io-pagopa-it"
+    continua_ioapp_it                    = "continua-ioapp-it"
     selfcare_io_pagopa_it                = "selfcare-io-pagopa-it"
     oauth_io_pagopa_it                   = "oauth-io-pagopa-it"
     vehicles_ipatente_io_pagopa_it       = "vehicles-ipatente-io-pagopa-it"
@@ -550,18 +552,6 @@ module "monitoring_itn" {
   tags = local.tags
 }
 
-module "function_assets_cdn_itn" {
-  source                         = "../_modules/function_assets_cdn"
-  prefix                         = local.prefix
-  env_short                      = local.env_short
-  project_weu_legacy             = local.project_weu_legacy
-  project_itn                    = local.project_itn
-  vnet_common_name_itn           = local.function_assets_cdn.vnet_common_name_itn
-  common_resource_group_name_itn = local.function_assets_cdn.common_resource_group_name_itn
-  assets_cdn_snet_cidr           = local.function_assets_cdn.assets_cdn_snet_cidr
-  tags                           = local.tags
-}
-
 module "assets_locales_cdn" {
   source = "../_modules/assets_locales_cdn"
 
@@ -582,6 +572,25 @@ module "assets_locales_cdn" {
       role            = "writer"
     }
   }
+
+  tags = local.tags
+}
+
+module "application_gateway_ioapp_temporary" {
+  source = "../_modules/application_gateway_ioapp_temporary"
+
+  location                = "italynorth"
+  subscription_id         = data.azurerm_subscription.current.subscription_id
+  project                 = local.project_itn
+  resource_group_common   = local.core.resource_groups.italynorth.common
+  resource_group          = local.core.resource_groups.italynorth.ioapp_agw
+  resource_group_external = "io-p-rg-external"
+  public_dns_zones        = module.global.dns.public_dns_zones
+  vnet_common             = local.core.networking.itn.vnet_common
+  cidr_subnet             = ["10.20.43.0/24"]
+
+  custom_domains_certificate_kv_name = local.core.key_vault.weu.tlscert_itn_01.name
+  custom_domains_certificate_kv_rg   = local.core.key_vault.weu.tlscert_itn_01.resource_group_name
 
   tags = local.tags
 }
