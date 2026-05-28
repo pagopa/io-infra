@@ -1,5 +1,5 @@
 module "dns" {
-  source = "../_modules/dns"
+  source = "./_modules/dns"
 
   project = local.project_weu_legacy
 
