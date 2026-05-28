@@ -2,6 +2,7 @@ output "public_dns_zones" {
   value = {
     io = {
       name     = azurerm_dns_zone.io_pagopa_it.name
+      id       = azurerm_dns_zone.io_pagopa_it.id
       api      = trimsuffix(azurerm_dns_a_record.api_io_pagopa_it.fqdn, ".")
       api_app  = trimsuffix(azurerm_dns_a_record.api_app_io_pagopa_it.fqdn, ".")
       api_web  = trimsuffix(azurerm_dns_a_record.api_web_io_pagopa_it.fqdn, ".")
@@ -15,6 +16,7 @@ output "public_dns_zones" {
 
     io_italia_it = {
       name                     = azurerm_dns_zone.io_italia_it.name
+      id                       = azurerm_dns_zone.io_italia_it.id
       developer_portal_backend = trimsuffix(azurerm_dns_a_record.developerportal_backend_io_italia_it.fqdn, ".")
       api                      = trimsuffix(azurerm_dns_a_record.api_io_italia_it.fqdn, ".")
       app_backend              = trimsuffix(azurerm_dns_a_record.app_backend_io_italia_it.fqdn, ".")
