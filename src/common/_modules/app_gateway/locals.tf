@@ -805,14 +805,6 @@ locals {
           rule_sequence = 200
           conditions = [
             {
-              # Feature-toggle header: any non-empty value enables the routing
-              # to platform-api-gateway via reroute.
-              variable    = "http_req_x-pagopa-com-test-rewrite"
-              pattern     = ".+"
-              ignore_case = true
-              negate      = false
-            },
-            {
               variable    = "var_uri_path"
               pattern     = "^/api/v1/third-party-messages/(.*)/attachments/(.*)$"
               ignore_case = true
