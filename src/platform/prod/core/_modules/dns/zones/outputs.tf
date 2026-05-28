@@ -22,8 +22,8 @@ output "public_dns_zones" {
       app_backend              = trimsuffix(azurerm_dns_a_record.app_backend_io_italia_it.fqdn, ".")
     }
 
-    ioweb_it = {
-      name = azurerm_dns_zone.ioweb_it.name
+    ioapp_it = {
+      name = azurerm_dns_zone.ioapp_it.name
     }
 
     ipatente_io_pagopa_it = {

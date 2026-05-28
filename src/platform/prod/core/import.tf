@@ -103,7 +103,7 @@ import {
 }
 
 import {
-  to = module.dns.module.dns.azurerm_dns_caa_record.ioweb_it
+  to = module.dns.module.dns.azurerm_dns_caa_record.ioapp_it
   id = "/subscriptions/ec285037-c673-4f58-b594-d7c480da4e8b/resourceGroups/io-p-rg-external/providers/Microsoft.Network/dnsZones/ioapp.it/CAA/@"
 }
 
@@ -153,7 +153,7 @@ import {
 }
 
 import {
-  to = module.dns.module.dns.azurerm_dns_txt_record.dmarc_ioweb_it
+  to = module.dns.module.dns.azurerm_dns_txt_record.dmarc_ioapp_it
   id = "/subscriptions/ec285037-c673-4f58-b594-d7c480da4e8b/resourceGroups/io-p-rg-external/providers/Microsoft.Network/dnsZones/ioapp.it/TXT/_dmarc"
 }
 
@@ -163,7 +163,7 @@ import {
 }
 
 import {
-  to = module.dns.module.dns.azurerm_dns_txt_record.spf_ioweb_it
+  to = module.dns.module.dns.azurerm_dns_txt_record.spf_ioapp_it
   id = "/subscriptions/ec285037-c673-4f58-b594-d7c480da4e8b/resourceGroups/io-p-rg-external/providers/Microsoft.Network/dnsZones/ioapp.it/TXT/@"
 }
 
@@ -188,7 +188,7 @@ import {
 }
 
 import {
-  to = module.dns.module.dns.azurerm_dns_zone.ioweb_it
+  to = module.dns.module.dns.azurerm_dns_zone.ioapp_it
   id = "/subscriptions/ec285037-c673-4f58-b594-d7c480da4e8b/resourceGroups/io-p-rg-external/providers/Microsoft.Network/dnsZones/ioapp.it"
 }
 
