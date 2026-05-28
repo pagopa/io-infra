@@ -13,7 +13,7 @@ locals {
     Environment  = "Prod"
     BusinessUnit = "App IO"
     #Source         = "https://github.com/pagopa/io-infra/blob/main/src/platform/core/prod"
-    Source         = "https://github.com/pagopa/io-infra/blob/main/src/common/prod"
+    Source         = "https://github.com/pagopa/io-infra/blob/main/src/common/prod" # TODO: switch to new source tag after main import
     ManagementTeam = "IO Platform"
   }
 
