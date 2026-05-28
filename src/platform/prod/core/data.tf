@@ -14,7 +14,3 @@ data "azurerm_private_endpoint_connection" "psn_appgw" {
   name                = "${local.project_itn}-psn-agw-pep-01"
   resource_group_name = local.core.networking.itn.vnet_common.resource_group_name
 }
-
-data "azuread_group" "svc_devs" {
-  display_name = "${local.prefix}-${local.env_short}-adgroup-svc-developers"
-}
