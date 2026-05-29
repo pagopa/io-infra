@@ -25,3 +25,15 @@ data "terraform_remote_state" "common" {
     use_azuread_auth     = true
   }
 }
+
+data "terraform_remote_state" "platform_core" {
+  backend = "azurerm"
+
+  config = {
+    resource_group_name  = "terraform-state-rg"
+    storage_account_name = "iopitntfst01"
+    container_name       = "terraform-state"
+    key                  = "io-infra.platform.core.prod.tfstate"
+    use_azuread_auth     = true
+  }
+}

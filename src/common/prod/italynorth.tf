@@ -116,7 +116,7 @@ module "platform_api_gateway_apim_itn" {
 
 module "platform_service_bus_namespace_itn" {
 
-  source     = "../_modules/platform_service_bus"
+  source = "../_modules/platform_service_bus"
 
   location = "italynorth"
   project  = local.project_itn
