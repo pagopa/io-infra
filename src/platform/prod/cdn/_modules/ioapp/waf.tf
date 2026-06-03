@@ -18,7 +18,7 @@ resource "azurerm_cdn_frontdoor_firewall_policy" "ioapp_firewall_policy" {
     rate_limit_threshold           = 1000
 
     match_condition {
-      match_variable     = "RequestUri"
+      match_variable     = "RemoteAddr"
       operator           = "GeoMatch"
       negation_condition = true
 
