@@ -23,7 +23,7 @@ resource "azurerm_cdn_frontdoor_firewall_policy" "ioapp_firewall_policy" {
       negation_condition = true
 
       match_values = [
-        "Italy" # TODO: To be changed to EMEA / list of countries
+        "IT" # TODO: To be changed to EMEA / list of countries
       ]
     }
   }
