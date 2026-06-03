@@ -14,8 +14,8 @@ resource "azurerm_cdn_frontdoor_firewall_policy" "ioapp_firewall_policy" {
     type     = "RateLimitRule"
     action   = "Block"
 
-    rate_limit_duration_in_minutes = 30
-    rate_limit_threshold           = 1000
+    rate_limit_duration_in_minutes = 5
+    rate_limit_threshold           = 200
 
     match_condition {
       match_variable     = "RemoteAddr"
