@@ -3,9 +3,9 @@ resource "azurerm_cdn_frontdoor_firewall_policy" "ioapp_firewall_policy" {
   resource_group_name = var.resource_group_cdn
   sku_name            = "Standard_AzureFrontDoor"
 
-  mode          = "Detection"
-  enabled       = true
-  custom_block_response_body  = ""
+  mode                              = "Detection"
+  enabled                           = true
+  custom_block_response_body        = ""
   custom_block_response_status_code = 403
 
   custom_rule {
@@ -19,8 +19,8 @@ resource "azurerm_cdn_frontdoor_firewall_policy" "ioapp_firewall_policy" {
     rate_limit_threshold           = 1000
 
     match_condition {
-      match_variable = "GeoMatch"
-      operator       = "Any"
+      match_variable     = "GeoMatch"
+      operator           = "Any"
       negation_condition = true
 
       match_values = [
