@@ -8,5 +8,7 @@ module "ioapp" {
   ioapp_apex_certificate_kv_name           = local.core.key_vault.weu.tlscert_itn_01.name
   ioapp_apex_certificate_kv_resource_group = local.core.key_vault.weu.tlscert_itn_01.resource_group_name
   ioapp_apex_certificate_name              = "ioapp-it"
+  resource_group_external                  = local.core.resource_groups.westeurope.external
+  public_dns_zones                         = local.common.public_dns_zones
   tags                                     = local.tags
 }

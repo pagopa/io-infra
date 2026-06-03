@@ -64,3 +64,13 @@ variable "ioapp_apex_certificate_name" {
   type        = string
   description = "ioapp.it Apex certificate name"
 }
+
+variable "resource_group_external" {
+  type        = string
+  description = "External resource group name"
+}
+
+variable "public_dns_zones" {
+  type        = map(any)
+  description = "Public dns zones information"
+}

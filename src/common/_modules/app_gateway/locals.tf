@@ -605,6 +605,16 @@ locals {
           backend               = "platform-api-gateway",
           rewrite_rule_set_name = "rewrite-rule-set-api-app"
         },
+        # NOTE: this path_rule covers the whole /api/v1/third-party-messages/* prefix
+        # because Azure Application Gateway does not support wildcards in the middle
+        # of a path pattern. The discrimination "attachments only" + "gated by custom
+        # header" is delegated to the conditions of the associated rewrite rule set
+        # (see `rewrite-rule-set-api-third-party-attachments-legacy`).
+        api-gateway-communication-third-party = {
+          paths                 = ["/api/v1/third-party-messages/*"],
+          backend               = "appbackend-app",
+          rewrite_rule_set_name = "rewrite-rule-set-api-third-party-attachments-legacy"
+        },
         api-gateway-fims = {
           paths                 = ["/api/fims/*"],
           backend               = "platform-api-gateway",
@@ -778,6 +788,35 @@ locals {
             path         = "/api/platform-legacy{var_uri_path}"
             query_string = null
             reroute      = false
+            components   = "path_only"
+          }
+          request_header_configurations  = []
+          response_header_configurations = []
+        }
+      ]
+    },
+    {
+      # Header-gated rollout of the new communication backend for third-party message attachments.
+      name = "rewrite-rule-set-api-third-party-attachments-legacy"
+      rewrite_rules = [
+        local.io_backend_ip_headers_rule,
+        {
+          name          = "rewrite-url-third-party-attachments-legacy"
+          rule_sequence = 200
+          conditions = [
+            {
+              variable    = "var_uri_path"
+              pattern     = "^/api/v1/third-party-messages/(.*)/attachments/(.*)$"
+              ignore_case = true
+              negate      = false
+            }
+          ]
+
+          # URL rewriting preserving the specific endpoint
+          url = {
+            path         = "/api/communication/v1/third-party-messages/{var_uri_path_1}/attachments/{var_uri_path_2}"
+            query_string = null
+            reroute      = true
             components   = "path_only"
           }
           request_header_configurations  = []
