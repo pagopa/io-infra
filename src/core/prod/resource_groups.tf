@@ -110,10 +110,3 @@ resource "azurerm_resource_group" "dashboards_weu" {
 
   tags = local.tags
 }
-
-resource "azurerm_resource_group" "application_gateway_ioapp_temporary_itn" {
-  name     = "${local.project_itn}-agw-ioapp-temporary-rg-01"
-  location = "italynorth"
-
-  tags = local.tags
-}
