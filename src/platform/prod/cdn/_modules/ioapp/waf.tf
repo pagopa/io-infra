@@ -9,13 +9,13 @@ resource "azurerm_cdn_frontdoor_firewall_policy" "ioapp_firewall_policy" {
   custom_block_response_status_code = 403
 
   custom_rule {
-    name     = "RateLimitOutsideItaly"
+    name     = "RateLimitOutsideEMEA"
     priority = 100
     enabled  = true
     type     = "RateLimitRule"
     action   = "Block"
 
-    rate_limit_duration_in_minutes = 5
+    rate_limit_duration_in_minutes = 30
     rate_limit_threshold           = 1000
 
     match_condition {
@@ -24,7 +24,7 @@ resource "azurerm_cdn_frontdoor_firewall_policy" "ioapp_firewall_policy" {
       negation_condition = true
 
       match_values = [
-        "Italy"
+        "Italy" # TODO: To be changed to EMEA / list of countries
       ]
     }
   }
