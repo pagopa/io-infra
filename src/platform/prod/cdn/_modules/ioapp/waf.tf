@@ -1,11 +1,10 @@
 resource "azurerm_cdn_frontdoor_firewall_policy" "ioapp_firewall_policy" {
-  name                = "io-p-itn-ioapp-afd-01"
+  name                = "ioapp"
   resource_group_name = var.resource_group_cdn
   sku_name            = "Standard_AzureFrontDoor"
 
   mode                              = "Detection"
   enabled                           = false
-  custom_block_response_body        = ""
   custom_block_response_status_code = 403
 
   custom_rule {
@@ -19,8 +18,8 @@ resource "azurerm_cdn_frontdoor_firewall_policy" "ioapp_firewall_policy" {
     rate_limit_threshold           = 1000
 
     match_condition {
-      match_variable     = "GeoMatch"
-      operator           = "Any"
+      match_variable     = "RequestUri"
+      operator           = "GeoMatch"
       negation_condition = true
 
       match_values = [
@@ -31,7 +30,7 @@ resource "azurerm_cdn_frontdoor_firewall_policy" "ioapp_firewall_policy" {
 }
 
 resource "azurerm_cdn_frontdoor_security_policy" "ioapp_frontdoor_security_policy" {
-  name                     = "io-p-itn-ioapp-afd-01"
+  name                     = "ioapp"
   cdn_frontdoor_profile_id = module.ioapp.id
 
   security_policies {
