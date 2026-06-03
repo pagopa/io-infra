@@ -15,13 +15,10 @@ module "ioapp" {
   custom_domains = [
     {
       host_name = "ioapp.it"
-      # TODO: enable dns block / import txt validation records 
-      /*
       dns = {
         zone_name                = var.public_dns_zones.ioweb_it.name
         zone_resource_group_name = var.resource_group_external
       }
-      */
       custom_certificate = {
         key_vault_certificate_versionless_id = data.azurerm_key_vault_certificate.ioapp_it_certificate.versionless_id
         key_vault_name                       = data.azurerm_key_vault.ioapp_it_kv.name
