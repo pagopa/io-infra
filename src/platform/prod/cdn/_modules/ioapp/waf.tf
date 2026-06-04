@@ -24,7 +24,7 @@ resource "azurerm_cdn_frontdoor_firewall_policy" "ioapp_firewall_policy" {
 
       match_values = [
         "PL", "PT", "RO", "SK", "SI", "ES", "SE", "NO", "IS", "LI",
-        "DE", "GR", "HU", "IE", "LV", "LT", "LU", "MT", "NL",
+        "DE", "GR", "HU", "IE", "LV", "LT", "LU", "MT", "NL", "IT",
         "AT", "BE", "BG", "HR", "CY", "CZ", "DK", "EE", "FI", "FR"
       ]
 
