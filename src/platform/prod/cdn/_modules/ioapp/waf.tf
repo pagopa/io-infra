@@ -3,7 +3,7 @@ resource "azurerm_cdn_frontdoor_firewall_policy" "ioapp_firewall_policy" {
   resource_group_name = var.resource_group_cdn
   sku_name            = "Standard_AzureFrontDoor"
 
-  mode                              = "Detection"
+  mode                              = "Prevention"
   enabled                           = true
   custom_block_response_status_code = 403
 
