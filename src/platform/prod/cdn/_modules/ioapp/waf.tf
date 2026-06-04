@@ -3,12 +3,12 @@ resource "azurerm_cdn_frontdoor_firewall_policy" "ioapp_firewall_policy" {
   resource_group_name = var.resource_group_cdn
   sku_name            = "Standard_AzureFrontDoor"
 
-  mode                              = "Detection"
+  mode                              = "Prevention"
   enabled                           = true
   custom_block_response_status_code = 403
 
   custom_rule {
-    name     = "RateLimitOutsideEMEA"
+    name     = "RateLimitOutsideEurope"
     priority = 100
     enabled  = true
     type     = "RateLimitRule"
@@ -18,13 +18,16 @@ resource "azurerm_cdn_frontdoor_firewall_policy" "ioapp_firewall_policy" {
     rate_limit_threshold           = 200
 
     match_condition {
-      match_variable     = "RemoteAddr"
+      match_variable     = "SocketAddr"
       operator           = "GeoMatch"
       negation_condition = true
 
       match_values = [
-        "IT" # TODO: To be changed to EMEA / list of countries
+        "PL", "PT", "RO", "SK", "SI", "ES", "SE", "NO", "IS", "LI",
+        "DE", "GR", "HU", "IE", "LV", "LT", "LU", "MT", "NL", "IT",
+        "AT", "BE", "BG", "HR", "CY", "CZ", "DK", "EE", "FI", "FR"
       ]
+
     }
   }
 }
@@ -40,6 +43,15 @@ resource "azurerm_cdn_frontdoor_security_policy" "ioapp_frontdoor_security_polic
       association {
         domain {
           cdn_frontdoor_domain_id = module.ioapp.endpoint_id
+        }
+
+        # Custom domain IDs not yet exported as output by the DX CDN module
+
+        domain {
+          cdn_frontdoor_domain_id = "/subscriptions/ec285037-c673-4f58-b594-d7c480da4e8b/resourceGroups/io-p-itn-common-rg-01/providers/Microsoft.Cdn/profiles/io-p-itn-ioapp-afd-01/customDomains/www-ioapp-it"
+        }
+        domain {
+          cdn_frontdoor_domain_id = "/subscriptions/ec285037-c673-4f58-b594-d7c480da4e8b/resourceGroups/io-p-itn-common-rg-01/providers/Microsoft.Cdn/profiles/io-p-itn-ioapp-afd-01/customDomains/ioapp-it"
         }
 
         patterns_to_match = ["/*"]
