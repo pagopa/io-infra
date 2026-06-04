@@ -8,7 +8,7 @@ resource "azurerm_cdn_frontdoor_firewall_policy" "ioapp_firewall_policy" {
   custom_block_response_status_code = 403
 
   custom_rule {
-    name     = "RateLimitOutsideEurope1"
+    name     = "RateLimitOutsideEurope"
     priority = 100
     enabled  = true
     type     = "RateLimitRule"
@@ -25,19 +25,7 @@ resource "azurerm_cdn_frontdoor_firewall_policy" "ioapp_firewall_policy" {
       match_values = [
         "PL", "PT", "RO", "SK", "SI", "ES", "SE", "NO", "IS", "LI"
       ]
-
     }
-  }
-
-  custom_rule {
-    name     = "RateLimitOutsideEurope2"
-    priority = 101
-    enabled  = true
-    type     = "RateLimitRule"
-    action   = "Block"
-
-    rate_limit_duration_in_minutes = 5
-    rate_limit_threshold           = 200
 
     match_condition {
       match_variable     = "SocketAddr"
@@ -47,19 +35,7 @@ resource "azurerm_cdn_frontdoor_firewall_policy" "ioapp_firewall_policy" {
       match_values = [
         "DE", "GR", "HU", "IE", "LV", "LT", "LU", "MT", "NL", "IT"
       ]
-
     }
-  }
-
-  custom_rule {
-    name     = "RateLimitOutsideEurope3"
-    priority = 102
-    enabled  = true
-    type     = "RateLimitRule"
-    action   = "Block"
-
-    rate_limit_duration_in_minutes = 5
-    rate_limit_threshold           = 200
 
     match_condition {
       match_variable     = "SocketAddr"
@@ -69,7 +45,6 @@ resource "azurerm_cdn_frontdoor_firewall_policy" "ioapp_firewall_policy" {
       match_values = [
         "AT", "BE", "BG", "HR", "CY", "CZ", "DK", "EE", "FI", "FR"
       ]
-
     }
   }
 }
