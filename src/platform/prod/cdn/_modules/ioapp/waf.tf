@@ -20,7 +20,7 @@ resource "azurerm_cdn_frontdoor_firewall_policy" "ioapp_firewall_policy" {
     match_condition {
       match_variable     = "SocketAddr"
       operator           = "GeoMatch"
-      negation_condition = false
+      negation_condition = true
 
       match_values = [
         "PL", "PT", "RO", "SK", "SI", "ES", "SE", "NO", "IS", "LI",
