@@ -23,11 +23,28 @@ resource "azurerm_cdn_frontdoor_firewall_policy" "ioapp_firewall_policy" {
       negation_condition = true
 
       match_values = [
-        "PL", "PT", "RO", "SK", "SI", "ES", "SE", "NO", "IS", "LI",
-        "DE", "GR", "HU", "IE", "LV", "LT", "LU", "MT", "NL", "IT",
+        "PL", "PT", "RO", "SK", "SI", "ES", "SE", "NO", "IS", "LI"
+      ]
+    }
+
+    match_condition {
+      match_variable     = "SocketAddr"
+      operator           = "GeoMatch"
+      negation_condition = true
+
+      match_values = [
+        "DE", "GR", "HU", "IE", "LV", "LT", "LU", "MT", "NL", "IT"
+      ]
+    }
+
+    match_condition {
+      match_variable     = "SocketAddr"
+      operator           = "GeoMatch"
+      negation_condition = true
+
+      match_values = [
         "AT", "BE", "BG", "HR", "CY", "CZ", "DK", "EE", "FI", "FR"
       ]
-
     }
   }
 }
