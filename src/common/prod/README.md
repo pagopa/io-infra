@@ -106,5 +106,6 @@ No inputs.
 | <a name="output_pep_subnets"></a> [pep\_subnets](#output\_pep\_subnets) | n/a |
 | <a name="output_private_endpoints"></a> [private\_endpoints](#output\_private\_endpoints) | n/a |
 | <a name="output_public_dns_zones"></a> [public\_dns\_zones](#output\_public\_dns\_zones) | n/a |
+| <a name="output_storage_accounts"></a> [storage\_accounts](#output\_storage\_accounts) | n/a |
 | <a name="output_virtual_networks"></a> [virtual\_networks](#output\_virtual\_networks) | n/a |
 <!-- END_TF_DOCS -->
