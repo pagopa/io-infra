@@ -90,7 +90,7 @@ resource "azurerm_cdn_frontdoor_route" "static_web_io_italia_it" {
   forwarding_protocol    = "MatchRequest"
   https_redirect_enabled = true
   patterns_to_match      = ["/*"]
-  supported_protocols    = ["Https"]
+  supported_protocols    = ["Http", "Https"]
 
   cdn_frontdoor_custom_domain_ids = [
     azurerm_cdn_frontdoor_custom_domain.static_web_io_italia_it.id,
