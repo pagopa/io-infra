@@ -37,10 +37,8 @@ resource "azurerm_dns_cname_record" "developer_io_italia_it" {
   zone_name           = var.public_dns_zones.io_italia_it.name
   resource_group_name = var.resource_group_external
   ttl                 = 300
-  record              = "io-p-cdnendpoint-developerportal.azureedge.net"
+  target_resource_id  = azurerm_cdn_frontdoor_endpoint.developer_io_italia_it.id
   tags                = var.tags
-  # TODO: switch to resource alias
-  # target_resource_id  = azurerm_cdn_frontdoor_endpoint.developer_io_italia_it.id
 }
 
 resource "azurerm_cdn_frontdoor_endpoint" "developer_io_italia_it" {
