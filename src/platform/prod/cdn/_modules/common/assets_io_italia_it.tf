@@ -91,9 +91,9 @@ resource "azurerm_cdn_frontdoor_route" "assets_io_italia_it" {
   enabled                       = true
 
   forwarding_protocol    = "MatchRequest"
-  https_redirect_enabled = false # TODO: switch to default https redirect on route level
+  https_redirect_enabled = true
   patterns_to_match      = ["/*"]
-  supported_protocols    = ["Https"]
+  supported_protocols    = ["Http", "Https"]
 
   cdn_frontdoor_custom_domain_ids = [
     azurerm_cdn_frontdoor_custom_domain.assets_io_italia_it.id,

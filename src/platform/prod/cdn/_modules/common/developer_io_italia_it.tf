@@ -90,9 +90,9 @@ resource "azurerm_cdn_frontdoor_route" "developer_io_italia_it" {
   enabled                       = true
 
   forwarding_protocol    = "MatchRequest"
-  https_redirect_enabled = false
+  https_redirect_enabled = true
   patterns_to_match      = ["/*"]
-  supported_protocols    = ["Https"]
+  supported_protocols    = ["Http", "Https"]
 
   cdn_frontdoor_custom_domain_ids = [
     azurerm_cdn_frontdoor_custom_domain.developer_io_italia_it.id,
@@ -123,26 +123,4 @@ resource "azurerm_cdn_frontdoor_custom_domain_association" "developer_io_italia_
 resource "azurerm_cdn_frontdoor_rule_set" "developer_io_italia_it" {
   name                     = "Migratediopcdnendpointdeveloperportal"
   cdn_frontdoor_profile_id = azurerm_cdn_frontdoor_profile.common.id
-}
-
-resource "azurerm_cdn_frontdoor_rule" "developer_io_italia_it_enforce_https" {
-  name                      = "EngorceHTTPS" # TODO: switch to default https redirect on route level
-  cdn_frontdoor_rule_set_id = azurerm_cdn_frontdoor_rule_set.developer_io_italia_it.id
-  order                     = 1
-
-  conditions {
-    request_scheme_condition {
-      operator         = "Equal"
-      match_values     = ["HTTPS"]
-      negate_condition = true
-    }
-  }
-
-  actions {
-    url_redirect_action {
-      redirect_type        = "Found"
-      redirect_protocol    = "Https"
-      destination_hostname = ""
-    }
-  }
 }
