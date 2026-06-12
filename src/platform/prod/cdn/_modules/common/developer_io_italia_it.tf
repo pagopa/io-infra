@@ -9,16 +9,6 @@ resource "azurerm_cdn_frontdoor_custom_domain" "developer_io_italia_it" {
   }
 }
 
-resource "azurerm_cdn_frontdoor_custom_domain" "developer_io_italia_it_legacy" {
-  name                     = "io-p-cdnendpoint-developerportal-Migrated"
-  cdn_frontdoor_profile_id = azurerm_cdn_frontdoor_profile.common.id
-  host_name                = "io-p-cdnendpoint-developerportal.azureedge.net"
-
-  tls {
-    certificate_type = "ManagedCertificate"
-  }
-}
-
 resource "azurerm_dns_txt_record" "developer_io_italia_it" {
   name                = join(".", ["_dnsauth", "developer"])
   zone_name           = var.public_dns_zones.io_italia_it.name
@@ -95,8 +85,7 @@ resource "azurerm_cdn_frontdoor_route" "developer_io_italia_it" {
   supported_protocols    = ["Http", "Https"]
 
   cdn_frontdoor_custom_domain_ids = [
-    azurerm_cdn_frontdoor_custom_domain.developer_io_italia_it.id,
-    azurerm_cdn_frontdoor_custom_domain.developer_io_italia_it_legacy.id
+    azurerm_cdn_frontdoor_custom_domain.developer_io_italia_it.id
   ]
   link_to_default_domain = true
 
