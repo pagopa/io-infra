@@ -50,20 +50,12 @@ locals {
     CDC_SUPPORT_API_KEY         = "@Microsoft.KeyVault(VaultName=${var.key_vault_common.name};SecretName=funccdcsupport-KEY-APPBACKEND)"
 
     // EXPOSED API
-    API_BASE_PATH                     = "/api/v1"
     CGN_API_BASE_PATH                 = "/api/v1/cgn"
     CGN_OPERATOR_SEARCH_API_BASE_PATH = "/api/v1/cgn/operator-search"
     IO_SIGN_API_BASE_PATH             = "/api/v1/sign"
     IO_FIMS_API_BASE_PATH             = "/api/v1/fims"
     LOLLIPOP_API_BASE_PATH            = "/api/v1"
     CDC_SUPPORT_API_BASE_PATH         = "/api/v1"
-    CDC_SUPPORT_IO_API_BASE_PATH      = "/api/v1/cdc"
-
-    // REDIS
-    REDIS_URL      = var.redis_common.hostname
-    REDIS_PORT     = var.redis_common.ssl_port
-    REDIS_PASSWORD = "@Microsoft.KeyVault(VaultName=${var.key_vault_common.name};SecretName=appbackend-REDIS-PASSWORD)"
-
 
     // PAGOPA ECOMMERCE
     PAGOPA_ECOMMERCE_BASE_URL     = "https://api.platform.pagopa.it/ecommerce/payment-requests-service/v1"
@@ -100,22 +92,6 @@ locals {
     // SUPPORT_TOKEN
     JWT_SUPPORT_TOKEN_ISSUER     = "app-backend.io.italia.it"
     JWT_SUPPORT_TOKEN_EXPIRATION = 1209600
-
-    // these old MVL properties must be dismissed after we dismiss staging version
-    PECSERVER_URL          = "https://poc.pagopa.poste.it"
-    PECSERVER_BASE_PATH    = ""
-    PECSERVER_TOKEN_ISSUER = "app-backend.io.italia.it"
-    PECSERVER_TOKEN_SECRET = "@Microsoft.KeyVault(VaultName=${var.key_vault_common.name};SecretName=appbackend-PECSERVER-TOKEN-SECRET)"
-
-    // MVL PECSERVER
-    PECSERVERS_poste_url       = "https://poc.pagopa.poste.it"
-    PECSERVERS_poste_basePath  = ""
-    PECSERVERS_poste_secret    = "@Microsoft.KeyVault(VaultName=${var.key_vault_common.name};SecretName=appbackend-PECSERVER-TOKEN-SECRET)"
-    PECSERVERS_poste_serviceId = "01FQ4945RG5WJGPHKY8ZYRJMQ7"
-    PECSERVERS_aruba_url       = "https://pagopa-test.pec.aruba.it"
-    PECSERVERS_aruba_basePath  = "/apigateway/api/v2/pagopa/mailbox"
-    PECSERVERS_aruba_secret    = "@Microsoft.KeyVault(VaultName=${var.key_vault_common.name};SecretName=appbackend-PECSERVER-ARUBA-TOKEN-SECRET)"
-    PECSERVERS_aruba_serviceId = "01FRMRD5P7H378MDXBBW3DTYCF"
 
     // Service ID PN
     PN_SERVICE_ID = local.service_ids.pn
@@ -226,20 +202,5 @@ locals {
         }
       }
     ])
-
-    // UNIQUE EMAIL ENFORCEMENT
-    FF_UNIQUE_EMAIL_ENFORCEMENT    = "ALL"
-    UNIQUE_EMAIL_ENFORCEMENT_USERS = join(",", [data.azurerm_key_vault_secret.app_backend_UNIQUE_EMAIL_ENFORCEMENT_USER.value, module.tests.users.unique_email_test[0]])
-
-    // Services App Backend
-    SERVICES_APP_BACKEND_API_KEY       = "@Microsoft.KeyVault(VaultName=${var.key_vault_common.name};SecretName=appbe-host-key-for-app-backend)"
-    SERVICES_APP_BACKEND_BASE_PATH     = "/api/v2"
-    SERVICES_APP_BACKEND_API_URL       = "https://${var.backend_hostnames.services_app_backend}"
-    SERVICES_APP_BACKEND_API_BASE_PATH = "/api/v1"
-
-    // IO Proxy authentication middleware feature flags configuration
-    FF_IO_X_USER_TOKEN                        = "NONE" # possible values are: BETA, CANARY, ALL, NONE
-    FF_IO_X_USER_TOKEN_BETA_TESTER_SHA_LIST   = "@Microsoft.KeyVault(VaultName=${var.key_vault_common.name};SecretName=appbackend-X-USER-BETA-FISCAL-CODES)"
-    FF_IO_X_USER_TOKEN_CANARY_SHA_USERS_REGEX = "XYZ" # Disabled, no one user match this regex
   }
 }
