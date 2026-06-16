@@ -17,7 +17,7 @@ data "terraform_remote_state" "platform_core" {
 
   config = {
     resource_group_name  = "terraform-state-rg"
-    storage_account_name = "iopitntfst01"
+    storage_account_name = "iopitntfst001"
     container_name       = "terraform-state"
     key                  = "io-infra.platform.core.prod.tfstate"
     use_azuread_auth     = true
