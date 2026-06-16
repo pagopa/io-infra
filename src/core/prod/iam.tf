@@ -87,3 +87,10 @@ resource "azurerm_key_vault_access_policy" "kv_common_infra_cd" {
   certificate_permissions = ["Get", "List"]
   key_permissions         = ["Get", "List"]
 }
+
+resource "azurerm_role_assignment" "infra_cd_access_control_administrator" {
+  scope                = data.azurerm_subscription.current
+  principal_id         = data.azurerm_user_assigned_identity.managed_identity_io_infra_cd.principal_id
+  role_definition_name = "User Access Administrator"
+  description          = "Allow the io-p-infra-github-cd-identity to manage RBAC permissions"
+}
