@@ -95,10 +95,6 @@ variable "application_insights_name" {
   description = "Specifies the name of the Application Insights."
 }
 
-variable "ingress_load_balancer_ip" {
-  type = string
-}
-
 variable "enable_azdoa" {
   type = bool
 }
