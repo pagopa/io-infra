@@ -16,7 +16,8 @@ locals {
     ManagementTeam = "IO Platform"
   }
 
-  core = data.terraform_remote_state.core.outputs
+  core          = data.terraform_remote_state.core.outputs
+  platform_core = data.terraform_remote_state.platform_core.outputs
 
   # TODO: migrate local.common references to other platform domains once they are implemented.
   common = data.terraform_remote_state.common.outputs

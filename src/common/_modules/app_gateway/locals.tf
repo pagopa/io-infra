@@ -267,7 +267,7 @@ locals {
 
     continua-ioapp-it = {
       protocol           = "Https"
-      host               = format("continua.%s", var.public_dns_zones.ioweb_it.name)
+      host               = format("continua.%s", var.public_dns_zones.ioapp_it.name)
       port               = 443
       ssl_profile_name   = null
       firewall_policy_id = null

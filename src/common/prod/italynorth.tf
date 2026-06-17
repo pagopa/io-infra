@@ -36,7 +36,7 @@ module "private_endpoints" {
   resource_group_name = local.resource_groups.itn.common
 
   pep_snet_id = local.core.networking.itn.pep_snet.id
-  dns_zones   = module.global.dns.private_dns_zones
+  dns_zones   = local.platform_core.dns.zones.private_dns_zones
 
   tags = local.tags
 }
@@ -115,9 +115,8 @@ module "platform_api_gateway_apim_itn" {
 }
 
 module "platform_service_bus_namespace_itn" {
-  // private DNS zone dependency
-  depends_on = [module.global]
-  source     = "../_modules/platform_service_bus"
+
+  source = "../_modules/platform_service_bus"
 
   location = "italynorth"
   project  = local.project_itn
@@ -175,8 +174,8 @@ module "application_gateway_itn" {
   key_vault        = local.core.key_vault.weu.kv
   key_vault_common = local.core.key_vault.weu.kv_common
   # ---------------------------------------------- #
-  external_domain  = module.global.dns.external_domain
-  public_dns_zones = module.global.dns.public_dns_zones
+  external_domain  = local.platform_core.dns.zones.external_domain
+  public_dns_zones = local.platform_core.dns.zones.public_dns_zones
 
   backend_hostnames = {
     firmaconio_selfcare_web_app = [data.azurerm_linux_web_app.firmaconio_selfcare_web_app.default_hostname]
@@ -297,8 +296,8 @@ module "monitoring_itn" {
   test_urls = [
     {
       # https://developerportal-backend.io.italia.it/info
-      name                              = module.global.dns.public_dns_zones.io_italia_it.developer_portal_backend
-      host                              = module.global.dns.public_dns_zones.io_italia_it.developer_portal_backend
+      name                              = local.platform_core.dns.zones.public_dns_zones.io_italia_it.developer_portal_backend
+      host                              = local.platform_core.dns.zones.public_dns_zones.io_italia_it.developer_portal_backend
       path                              = "/info",
       frequency                         = 900
       http_status                       = 200,
@@ -307,8 +306,8 @@ module "monitoring_itn" {
     },
     {
       # https://api.io.italia.it
-      name                              = module.global.dns.public_dns_zones.io_italia_it.api
-      host                              = module.global.dns.public_dns_zones.io_italia_it.api
+      name                              = local.platform_core.dns.zones.public_dns_zones.io_italia_it.api
+      host                              = local.platform_core.dns.zones.public_dns_zones.io_italia_it.api
       path                              = "",
       frequency                         = 900
       http_status                       = 404,
@@ -317,8 +316,8 @@ module "monitoring_itn" {
     },
     {
       # https://app-backend.io.italia.it/info
-      name                              = module.global.dns.public_dns_zones.io_italia_it.app_backend
-      host                              = module.global.dns.public_dns_zones.io_italia_it.app_backend
+      name                              = local.platform_core.dns.zones.public_dns_zones.io_italia_it.app_backend
+      host                              = local.platform_core.dns.zones.public_dns_zones.io_italia_it.app_backend
       path                              = "/info",
       frequency                         = 900
       http_status                       = 200,
@@ -327,8 +326,8 @@ module "monitoring_itn" {
     },
     {
       # https://io.italia.it
-      name                              = module.global.dns.public_dns_zones.io_italia_it.name
-      host                              = module.global.dns.public_dns_zones.io_italia_it.name
+      name                              = local.platform_core.dns.zones.public_dns_zones.io_italia_it.name
+      host                              = local.platform_core.dns.zones.public_dns_zones.io_italia_it.name
       path                              = "",
       frequency                         = 900
       http_status                       = 200,
@@ -349,7 +348,7 @@ module "monitoring_itn" {
     {
       # CIE https://app-backend.io.italia.it/api/auth/v1/login?authLevel=SpidL2&entityID=xx_servizicie
       name                              = "CIE L2",
-      host                              = module.global.dns.public_dns_zones.io_italia_it.app_backend
+      host                              = local.platform_core.dns.zones.public_dns_zones.io_italia_it.app_backend
       path                              = "/api/auth/v1/login?authLevel=SpidL2&entityID=xx_servizicie",
       frequency                         = 900
       http_status                       = 200,
@@ -360,7 +359,7 @@ module "monitoring_itn" {
     {
       # CIE https://app-backend.io.italia.it/api/auth/v1/login?authLevel=SpidL3&entityID=xx_servizicie
       name                              = "CIE L3",
-      host                              = module.global.dns.public_dns_zones.io_italia_it.app_backend
+      host                              = local.platform_core.dns.zones.public_dns_zones.io_italia_it.app_backend
       path                              = "/api/auth/v1/login?authLevel=SpidL3&entityID=xx_servizicie",
       frequency                         = 900
       http_status                       = 200,
@@ -380,7 +379,7 @@ module "monitoring_itn" {
     {
       # SpidL2-arubaid https://app-backend.io.italia.it/api/auth/v1/login?authLevel=SpidL2&entityID=arubaid
       name                              = "SpidL2-arubaid",
-      host                              = module.global.dns.public_dns_zones.io_italia_it.app_backend
+      host                              = local.platform_core.dns.zones.public_dns_zones.io_italia_it.app_backend
       path                              = "/api/auth/v1/login?authLevel=SpidL2&entityID=arubaid",
       frequency                         = 900
       http_status                       = 200,
@@ -391,7 +390,7 @@ module "monitoring_itn" {
     {
       # SpidL2-infocertid https://app-backend.io.italia.it/api/auth/v1/login?authLevel=SpidL2&entityID=infocertid
       name                              = "SpidL2-infocertid",
-      host                              = module.global.dns.public_dns_zones.io_italia_it.app_backend
+      host                              = local.platform_core.dns.zones.public_dns_zones.io_italia_it.app_backend
       path                              = "/api/auth/v1/login?authLevel=SpidL2&entityID=infocertid",
       frequency                         = 900
       http_status                       = 200,
@@ -402,7 +401,7 @@ module "monitoring_itn" {
     {
       # SpidL2-lepidaid https://app-backend.io.italia.it/api/auth/v1/login?authLevel=SpidL2&entityID=lepidaid
       name                              = "SpidL2-lepidaid",
-      host                              = module.global.dns.public_dns_zones.io_italia_it.app_backend
+      host                              = local.platform_core.dns.zones.public_dns_zones.io_italia_it.app_backend
       path                              = "/api/auth/v1/login?authLevel=SpidL2&entityID=lepidaid",
       frequency                         = 900
       http_status                       = 200,
@@ -413,7 +412,7 @@ module "monitoring_itn" {
     {
       # SpidL2-namirialid https://app-backend.io.italia.it/api/auth/v1/login?authLevel=SpidL2&entityID=namirialid
       name                              = "SpidL2-namirialid",
-      host                              = module.global.dns.public_dns_zones.io_italia_it.app_backend
+      host                              = local.platform_core.dns.zones.public_dns_zones.io_italia_it.app_backend
       path                              = "/api/auth/v1/login?authLevel=SpidL2&entityID=namirialid",
       frequency                         = 900
       http_status                       = 200,
@@ -424,7 +423,7 @@ module "monitoring_itn" {
     {
       # SpidL2-posteid https://app-backend.io.italia.it/api/auth/v1/login?authLevel=SpidL2&entityID=posteid
       name                              = "SpidL2-posteid",
-      host                              = module.global.dns.public_dns_zones.io_italia_it.app_backend
+      host                              = local.platform_core.dns.zones.public_dns_zones.io_italia_it.app_backend
       path                              = "/api/auth/v1/login?authLevel=SpidL2&entityID=posteid",
       frequency                         = 900
       http_status                       = 200,
@@ -435,7 +434,7 @@ module "monitoring_itn" {
     {
       # SpidL2-sielteid https://app-backend.io.italia.it/api/auth/v1/login?authLevel=SpidL2&entityID=sielteid
       name                              = "SpidL2-sielteid",
-      host                              = module.global.dns.public_dns_zones.io_italia_it.app_backend
+      host                              = local.platform_core.dns.zones.public_dns_zones.io_italia_it.app_backend
       path                              = "/api/auth/v1/login?authLevel=SpidL2&entityID=sielteid",
       frequency                         = 900
       http_status                       = 200,
@@ -446,7 +445,7 @@ module "monitoring_itn" {
     {
       # SpidL2-spiditalia https://app-backend.io.italia.it/api/auth/v1/login?authLevel=SpidL2&entityID=spiditalia
       name                              = "SpidL2-spiditalia",
-      host                              = module.global.dns.public_dns_zones.io_italia_it.app_backend
+      host                              = local.platform_core.dns.zones.public_dns_zones.io_italia_it.app_backend
       path                              = "/api/auth/v1/login?authLevel=SpidL2&entityID=spiditalia",
       frequency                         = 900
       http_status                       = 200,
@@ -457,7 +456,7 @@ module "monitoring_itn" {
     {
       # SpidL2-infocamere https://app-backend.io.italia.it/api/auth/v1/login?authLevel=SpidL2&entityID=infocamereid
       name                              = "SpidL2-infocamere",
-      host                              = module.global.dns.public_dns_zones.io_italia_it.app_backend
+      host                              = local.platform_core.dns.zones.public_dns_zones.io_italia_it.app_backend
       path                              = "/api/auth/v1/login?authLevel=SpidL2&entityID=infocamereid",
       frequency                         = 900
       http_status                       = 200,
@@ -468,7 +467,7 @@ module "monitoring_itn" {
     {
       # SpidL2-timid https://app-backend.io.italia.it/api/auth/v1/login?authLevel=SpidL2&entityID=timid
       name                              = "SpidL2-timid",
-      host                              = module.global.dns.public_dns_zones.io_italia_it.app_backend
+      host                              = local.platform_core.dns.zones.public_dns_zones.io_italia_it.app_backend
       path                              = "/api/auth/v1/login?authLevel=SpidL2&entityID=timid",
       frequency                         = 900
       http_status                       = 200,
@@ -478,8 +477,8 @@ module "monitoring_itn" {
     },
     {
       # https://api.io.pagopa.it
-      name                              = module.global.dns.public_dns_zones.io.api
-      host                              = module.global.dns.public_dns_zones.io.api
+      name                              = local.platform_core.dns.zones.public_dns_zones.io.api
+      host                              = local.platform_core.dns.zones.public_dns_zones.io.api
       path                              = "",
       frequency                         = 900
       http_status                       = 404,
@@ -488,8 +487,8 @@ module "monitoring_itn" {
     },
     {
       # https://api-app.io.pagopa.it/info
-      name                              = module.global.dns.public_dns_zones.io.api_app
-      host                              = module.global.dns.public_dns_zones.io.api_app
+      name                              = local.platform_core.dns.zones.public_dns_zones.io.api_app
+      host                              = local.platform_core.dns.zones.public_dns_zones.io.api_app
       path                              = "/info",
       frequency                         = 900
       http_status                       = 200,
@@ -498,8 +497,8 @@ module "monitoring_itn" {
     },
     {
       # https://api-web.io.pagopa.it
-      name                              = module.global.dns.public_dns_zones.io.api_web
-      host                              = module.global.dns.public_dns_zones.io.api_web
+      name                              = local.platform_core.dns.zones.public_dns_zones.io.api_web
+      host                              = local.platform_core.dns.zones.public_dns_zones.io.api_web
       path                              = "",
       frequency                         = 900
       http_status                       = 404,
@@ -508,8 +507,8 @@ module "monitoring_itn" {
     },
     {
       # https://api-mtls.io.pagopa.it
-      name                              = module.global.dns.public_dns_zones.io.api_mtls
-      host                              = module.global.dns.public_dns_zones.io.api_mtls
+      name                              = local.platform_core.dns.zones.public_dns_zones.io.api_mtls
+      host                              = local.platform_core.dns.zones.public_dns_zones.io.api_mtls
       path                              = "",
       frequency                         = 900
       http_status                       = 400,
@@ -538,8 +537,8 @@ module "monitoring_itn" {
     },
     {
       # https://continua.io.pagopa.it
-      name                              = module.global.dns.public_dns_zones.io.continua
-      host                              = module.global.dns.public_dns_zones.io.continua
+      name                              = local.platform_core.dns.zones.public_dns_zones.io.continua
+      host                              = local.platform_core.dns.zones.public_dns_zones.io.continua
       path                              = "",
       frequency                         = 900
       http_status                       = 200,
@@ -562,7 +561,7 @@ module "assets_locales_cdn" {
   resource_group_cdn      = local.core.resource_groups.italynorth.assets_cdn
   resource_group_external = "io-p-rg-external"
 
-  public_dns_zones                       = module.global.dns.public_dns_zones
+  public_dns_zones                       = local.platform_core.dns.zones.public_dns_zones
   log_analytics_workspace_id             = module.monitoring_itn.log.id
   diagnostic_settings_storage_account_id = module.storage_accounts_itn.logs_itn.id
 
