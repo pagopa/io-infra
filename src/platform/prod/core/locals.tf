@@ -8,12 +8,11 @@ locals {
   project_weu_legacy = "${local.prefix}-${local.env_short}"
 
   tags = {
-    CostCenter   = "TS000 - Tecnologia e Servizi"
-    CreatedBy    = "Terraform"
-    Environment  = "Prod"
-    BusinessUnit = "App IO"
-    #Source         = "https://github.com/pagopa/io-infra/blob/main/src/platform/core/prod"
-    Source         = "https://github.com/pagopa/io-infra/blob/main/src/common/prod" # TODO: switch to new source tag after main import
+    CostCenter     = "TS000 - Tecnologia e Servizi"
+    CreatedBy      = "Terraform"
+    Environment    = "Prod"
+    BusinessUnit   = "App IO"
+    Source         = "https://github.com/pagopa/io-infra/blob/main/src/platform/prod/core/"
     ManagementTeam = "IO Platform"
   }
 
