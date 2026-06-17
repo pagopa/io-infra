@@ -6,7 +6,7 @@ module "event_hubs_weu" {
   project               = local.project_weu_legacy
   resource_group_common = local.core.resource_groups.westeurope.common
 
-  servicebus_dns_zone   = module.global.dns.private_dns_zones.servicebus
+  servicebus_dns_zone   = local.platform_core.dns.zones.private_dns_zones.servicebus
   vnet_common           = local.core.networking.weu.vnet_common
   key_vault             = local.core.key_vault.weu.kv
   error_action_group_id = module.monitoring_weu.action_groups.error
@@ -46,8 +46,8 @@ module "monitoring_weu" {
   test_urls = [
     {
       # https://developerportal-backend.io.italia.it/info
-      name                              = module.global.dns.public_dns_zones.io_italia_it.developer_portal_backend
-      host                              = module.global.dns.public_dns_zones.io_italia_it.developer_portal_backend
+      name                              = local.platform_core.dns.zones.public_dns_zones.io_italia_it.developer_portal_backend
+      host                              = local.platform_core.dns.zones.public_dns_zones.io_italia_it.developer_portal_backend
       path                              = "/info",
       frequency                         = 900
       http_status                       = 200,
@@ -55,8 +55,8 @@ module "monitoring_weu" {
     },
     {
       # https://api.io.italia.it
-      name                              = module.global.dns.public_dns_zones.io_italia_it.api
-      host                              = module.global.dns.public_dns_zones.io_italia_it.api
+      name                              = local.platform_core.dns.zones.public_dns_zones.io_italia_it.api
+      host                              = local.platform_core.dns.zones.public_dns_zones.io_italia_it.api
       path                              = "",
       frequency                         = 900
       http_status                       = 404,
@@ -64,8 +64,8 @@ module "monitoring_weu" {
     },
     {
       # https://app-backend.io.italia.it/info
-      name                              = module.global.dns.public_dns_zones.io_italia_it.app_backend
-      host                              = module.global.dns.public_dns_zones.io_italia_it.app_backend
+      name                              = local.platform_core.dns.zones.public_dns_zones.io_italia_it.app_backend
+      host                              = local.platform_core.dns.zones.public_dns_zones.io_italia_it.app_backend
       path                              = "/info",
       frequency                         = 900
       http_status                       = 200,
@@ -73,8 +73,8 @@ module "monitoring_weu" {
     },
     {
       # https://io.italia.it
-      name                              = module.global.dns.public_dns_zones.io_italia_it.name
-      host                              = module.global.dns.public_dns_zones.io_italia_it.name
+      name                              = local.platform_core.dns.zones.public_dns_zones.io_italia_it.name
+      host                              = local.platform_core.dns.zones.public_dns_zones.io_italia_it.name
       path                              = "",
       frequency                         = 900
       http_status                       = 200,
@@ -102,7 +102,7 @@ module "monitoring_weu" {
     {
       # CIE https://app-backend.io.italia.it/api/auth/v1/login?authLevel=SpidL2&entityID=xx_servizicie
       name                              = "CIE L2",
-      host                              = module.global.dns.public_dns_zones.io_italia_it.app_backend
+      host                              = local.platform_core.dns.zones.public_dns_zones.io_italia_it.app_backend
       path                              = "/api/auth/v1/login?authLevel=SpidL2&entityID=xx_servizicie",
       frequency                         = 900
       http_status                       = 200,
@@ -112,7 +112,7 @@ module "monitoring_weu" {
     {
       # CIE https://app-backend.io.italia.it/api/auth/v1/login?authLevel=SpidL3&entityID=xx_servizicie
       name                              = "CIE L3",
-      host                              = module.global.dns.public_dns_zones.io_italia_it.app_backend
+      host                              = local.platform_core.dns.zones.public_dns_zones.io_italia_it.app_backend
       path                              = "/api/auth/v1/login?authLevel=SpidL3&entityID=xx_servizicie",
       frequency                         = 900
       http_status                       = 200,
@@ -132,7 +132,7 @@ module "monitoring_weu" {
     {
       # SpidL2-arubaid https://app-backend.io.italia.it/api/auth/v1/login?authLevel=SpidL2&entityID=arubaid
       name                              = "SpidL2-arubaid",
-      host                              = module.global.dns.public_dns_zones.io_italia_it.app_backend
+      host                              = local.platform_core.dns.zones.public_dns_zones.io_italia_it.app_backend
       path                              = "/api/auth/v1/login?authLevel=SpidL2&entityID=arubaid",
       frequency                         = 900
       http_status                       = 200,
@@ -142,7 +142,7 @@ module "monitoring_weu" {
     {
       # SpidL2-infocertid https://app-backend.io.italia.it/api/auth/v1/login?authLevel=SpidL2&entityID=infocertid
       name                              = "SpidL2-infocertid",
-      host                              = module.global.dns.public_dns_zones.io_italia_it.app_backend
+      host                              = local.platform_core.dns.zones.public_dns_zones.io_italia_it.app_backend
       path                              = "/api/auth/v1/login?authLevel=SpidL2&entityID=infocertid",
       frequency                         = 900
       http_status                       = 200,
@@ -152,7 +152,7 @@ module "monitoring_weu" {
     {
       # SpidL2-lepidaid https://app-backend.io.italia.it/api/auth/v1/login?authLevel=SpidL2&entityID=lepidaid
       name                              = "SpidL2-lepidaid",
-      host                              = module.global.dns.public_dns_zones.io_italia_it.app_backend
+      host                              = local.platform_core.dns.zones.public_dns_zones.io_italia_it.app_backend
       path                              = "/api/auth/v1/login?authLevel=SpidL2&entityID=lepidaid",
       frequency                         = 900
       http_status                       = 200,
@@ -162,7 +162,7 @@ module "monitoring_weu" {
     {
       # SpidL2-namirialid https://app-backend.io.italia.it/api/auth/v1/login?authLevel=SpidL2&entityID=namirialid
       name                              = "SpidL2-namirialid",
-      host                              = module.global.dns.public_dns_zones.io_italia_it.app_backend
+      host                              = local.platform_core.dns.zones.public_dns_zones.io_italia_it.app_backend
       path                              = "/api/auth/v1/login?authLevel=SpidL2&entityID=namirialid",
       frequency                         = 900
       http_status                       = 200,
@@ -172,7 +172,7 @@ module "monitoring_weu" {
     {
       # SpidL2-posteid https://app-backend.io.italia.it/api/auth/v1/login?authLevel=SpidL2&entityID=posteid
       name                              = "SpidL2-posteid",
-      host                              = module.global.dns.public_dns_zones.io_italia_it.app_backend
+      host                              = local.platform_core.dns.zones.public_dns_zones.io_italia_it.app_backend
       path                              = "/api/auth/v1/login?authLevel=SpidL2&entityID=posteid",
       frequency                         = 900
       http_status                       = 200,
@@ -182,7 +182,7 @@ module "monitoring_weu" {
     {
       # SpidL2-sielteid https://app-backend.io.italia.it/api/auth/v1/login?authLevel=SpidL2&entityID=sielteid
       name                              = "SpidL2-sielteid",
-      host                              = module.global.dns.public_dns_zones.io_italia_it.app_backend
+      host                              = local.platform_core.dns.zones.public_dns_zones.io_italia_it.app_backend
       path                              = "/api/auth/v1/login?authLevel=SpidL2&entityID=sielteid",
       frequency                         = 900
       http_status                       = 200,
@@ -192,7 +192,7 @@ module "monitoring_weu" {
     {
       # SpidL2-spiditalia https://app-backend.io.italia.it/api/auth/v1/login?authLevel=SpidL2&entityID=spiditalia
       name                              = "SpidL2-spiditalia",
-      host                              = module.global.dns.public_dns_zones.io_italia_it.app_backend
+      host                              = local.platform_core.dns.zones.public_dns_zones.io_italia_it.app_backend
       path                              = "/api/auth/v1/login?authLevel=SpidL2&entityID=spiditalia",
       frequency                         = 900
       http_status                       = 200,
@@ -202,7 +202,7 @@ module "monitoring_weu" {
     {
       # SpidL2-infocamere https://app-backend.io.italia.it/api/auth/v1/login?authLevel=SpidL2&entityID=infocamereid
       name                              = "SpidL2-infocamere",
-      host                              = module.global.dns.public_dns_zones.io_italia_it.app_backend
+      host                              = local.platform_core.dns.zones.public_dns_zones.io_italia_it.app_backend
       path                              = "/api/auth/v1/login?authLevel=SpidL2&entityID=infocamereid",
       frequency                         = 900
       http_status                       = 200,
@@ -212,7 +212,7 @@ module "monitoring_weu" {
     {
       # SpidL2-timid https://app-backend.io.italia.it/api/auth/v1/login?authLevel=SpidL2&entityID=timid
       name                              = "SpidL2-timid",
-      host                              = module.global.dns.public_dns_zones.io_italia_it.app_backend
+      host                              = local.platform_core.dns.zones.public_dns_zones.io_italia_it.app_backend
       path                              = "/api/auth/v1/login?authLevel=SpidL2&entityID=timid",
       frequency                         = 900
       http_status                       = 200,
@@ -221,8 +221,8 @@ module "monitoring_weu" {
     },
     {
       # https://api.io.pagopa.it
-      name                              = module.global.dns.public_dns_zones.io.api
-      host                              = module.global.dns.public_dns_zones.io.api
+      name                              = local.platform_core.dns.zones.public_dns_zones.io.api
+      host                              = local.platform_core.dns.zones.public_dns_zones.io.api
       path                              = "",
       frequency                         = 900
       http_status                       = 404,
@@ -230,8 +230,8 @@ module "monitoring_weu" {
     },
     {
       # https://api-app.io.pagopa.it/info
-      name                              = module.global.dns.public_dns_zones.io.api_app
-      host                              = module.global.dns.public_dns_zones.io.api_app
+      name                              = local.platform_core.dns.zones.public_dns_zones.io.api_app
+      host                              = local.platform_core.dns.zones.public_dns_zones.io.api_app
       path                              = "/info",
       frequency                         = 900
       http_status                       = 200,
@@ -239,8 +239,8 @@ module "monitoring_weu" {
     },
     {
       # https://api-web.io.pagopa.it
-      name                              = module.global.dns.public_dns_zones.io.api_web
-      host                              = module.global.dns.public_dns_zones.io.api_web
+      name                              = local.platform_core.dns.zones.public_dns_zones.io.api_web
+      host                              = local.platform_core.dns.zones.public_dns_zones.io.api_web
       path                              = "",
       frequency                         = 900
       http_status                       = 404,
@@ -248,8 +248,8 @@ module "monitoring_weu" {
     },
     {
       # https://api-mtls.io.pagopa.it
-      name                              = module.global.dns.public_dns_zones.io.api_mtls
-      host                              = module.global.dns.public_dns_zones.io.api_mtls
+      name                              = local.platform_core.dns.zones.public_dns_zones.io.api_mtls
+      host                              = local.platform_core.dns.zones.public_dns_zones.io.api_mtls
       path                              = "",
       frequency                         = 900
       http_status                       = 400,
@@ -277,8 +277,8 @@ module "monitoring_weu" {
     },
     {
       # https://continua.io.pagopa.it
-      name                              = module.global.dns.public_dns_zones.io.continua
-      host                              = module.global.dns.public_dns_zones.io.continua
+      name                              = local.platform_core.dns.zones.public_dns_zones.io.continua
+      host                              = local.platform_core.dns.zones.public_dns_zones.io.continua
       path                              = "",
       frequency                         = 900
       http_status                       = 200,
@@ -302,7 +302,7 @@ module "cosmos_api_weu" {
   pep_snet                       = local.core.networking.weu.pep_snet
   secondary_location             = "spaincentral"
   secondary_location_pep_snet_id = local.core.networking.itn.pep_snet.id
-  documents_dns_zone             = module.global.dns.private_dns_zones.documents
+  documents_dns_zone             = local.platform_core.dns.zones.private_dns_zones.documents
   allowed_subnets_ids            = values(data.azurerm_subnet.cosmos_api_allowed)[*].id
 
   error_action_group_id = module.monitoring_weu.action_groups.error
@@ -357,7 +357,7 @@ module "app_backend_weu" {
 
   vnet_common                   = local.core.networking.weu.vnet_common
   subnet_pep_id                 = local.core.networking.weu.pep_snet.id
-  private_dns_zone_id           = module.global.dns.private_dns_zones.appservice.id
+  private_dns_zone_id           = local.platform_core.dns.zones.private_dns_zones.appservice.id
   cidr_subnet                   = each.value.cidr_subnet
   nat_gateways                  = local.core.networking.weu.nat_gateways
   allowed_subnets               = []
