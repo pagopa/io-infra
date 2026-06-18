@@ -38,10 +38,6 @@ output "pep_subnets" {
   }
 }
 
-output "public_dns_zones" {
-  value = module.global.dns.public_dns_zones
-}
-
 output "monitoring" {
   value = {
     itn = {

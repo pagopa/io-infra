@@ -1,13 +1,13 @@
-resource "azurerm_dns_zone" "ioweb_it" {
+resource "azurerm_dns_zone" "ioapp_it" {
   name                = "ioapp.it"
   resource_group_name = var.resource_groups.external
 
   tags = var.tags
 }
 
-resource "azurerm_dns_caa_record" "ioweb_it" {
+resource "azurerm_dns_caa_record" "ioapp_it" {
   name                = "@"
-  zone_name           = azurerm_dns_zone.ioweb_it.name
+  zone_name           = azurerm_dns_zone.ioapp_it.name
   resource_group_name = var.resource_groups.external
   ttl                 = var.dns_default_ttl_sec
 
@@ -57,9 +57,9 @@ resource "azurerm_dns_caa_record" "ioweb_it" {
 }
 
 # DMARC record for ioapp.it
-resource "azurerm_dns_txt_record" "dmarc_ioweb_it" {
+resource "azurerm_dns_txt_record" "dmarc_ioapp_it" {
   name                = "_dmarc"
-  zone_name           = azurerm_dns_zone.ioweb_it.name
+  zone_name           = azurerm_dns_zone.ioapp_it.name
   resource_group_name = var.resource_groups.external
   ttl                 = var.dns_default_ttl_sec
   record {
@@ -69,9 +69,9 @@ resource "azurerm_dns_txt_record" "dmarc_ioweb_it" {
 }
 
 # set SPF to "empty" for ioapp.it
-resource "azurerm_dns_txt_record" "spf_ioweb_it" {
+resource "azurerm_dns_txt_record" "spf_ioapp_it" {
   name                = "@"
-  zone_name           = azurerm_dns_zone.ioweb_it.name
+  zone_name           = azurerm_dns_zone.ioapp_it.name
   resource_group_name = var.resource_groups.external
   ttl                 = var.dns_default_ttl_sec
   record {
@@ -88,7 +88,7 @@ resource "azurerm_dns_txt_record" "spf_ioweb_it" {
 # CNAME for continua
 resource "azurerm_dns_cname_record" "continua" {
   name                = "continua"
-  zone_name           = azurerm_dns_zone.ioweb_it.name
+  zone_name           = azurerm_dns_zone.ioapp_it.name
   resource_group_name = var.resource_groups.external
   ttl                 = var.dns_default_ttl_sec
   record              = "continua.io.pagopa.it"
@@ -97,7 +97,7 @@ resource "azurerm_dns_cname_record" "continua" {
 # CNAME for zendesk help center
 resource "azurerm_dns_cname_record" "zendesk" {
   name                = "assistenza"
-  zone_name           = azurerm_dns_zone.ioweb_it.name
+  zone_name           = azurerm_dns_zone.ioapp_it.name
   resource_group_name = var.resource_groups.external
   ttl                 = var.dns_default_ttl_sec
   record              = "hc-io.zendesk.com"
@@ -105,7 +105,7 @@ resource "azurerm_dns_cname_record" "zendesk" {
 
 resource "azurerm_dns_cname_record" "aws_cert_validation_ioweb" {
   name                = "_1b96136662809f31f497b4fcd6b32a8d"
-  zone_name           = azurerm_dns_zone.ioweb_it.name
+  zone_name           = azurerm_dns_zone.ioapp_it.name
   resource_group_name = var.resource_groups.external
   ttl                 = var.dns_default_ttl_sec
   record              = "_2de3fc7bfdb25e6a4e58c29dc8b4dba6.zfyfvmchrl.acm-validations.aws."

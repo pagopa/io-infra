@@ -1,5 +1,5 @@
-module "global" {
-  source = "../_modules/global"
+module "dns" {
+  source = "./_modules/dns"
 
   project = local.project_weu_legacy
 
@@ -23,8 +23,6 @@ module "global" {
       }
     }
 
-    dns_default_ttl_sec = 3600
-
     external_domain = "pagopa.it"
 
     dns_zones = {
@@ -32,10 +30,13 @@ module "global" {
       firmaconio_selfcare = "firmaconio.selfcare"
     }
 
-    app_gateway_public_ip = module.application_gateway_itn.public_ip.address
+    # app_gateway_public_ip = module.application_gateway_itn.public_ip.address
+    # apim_private_ip                             = module.apim_itn.private_ips[0]
+    # platform_api_gateway_private_ip             = module.platform_api_gateway_apim_itn.private_ips[0]
+    app_gateway_public_ip           = "72.146.64.117" # TODO: retrieve data from application gateway remote state
+    apim_private_ip                 = "10.20.100.4"   # TODO: retrieve data from APIM remote state
+    platform_api_gateway_private_ip = "10.20.101.4"   # TODO: retrieve data from APIM remote state
 
-    apim_private_ip                             = module.apim_itn.private_ips[0]
-    platform_api_gateway_private_ip             = module.platform_api_gateway_apim_itn.private_ips[0]
     psn_application_gateway_private_endpoint_ip = data.azurerm_private_endpoint_connection.psn_appgw.private_service_connection[0].private_ip_address
   }
 
