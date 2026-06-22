@@ -34,6 +34,12 @@ variable "kv_common_id" {
   description = "Id of the IO Common KeyVault"
 }
 
+variable "local_authentication_enabled" {
+  type        = bool
+  description = "Allow local authentication along with EntraID"
+  default     = false
+}
+
 variable "test_urls" {
   type = list(object({
     name                              = string

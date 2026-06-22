@@ -1,10 +1,11 @@
 module "monitoring_westeurope" {
   source = "./_modules/monitoring"
 
-  location              = "westeurope"
-  location_short        = local.core.resource_groups.westeurope.location_short
-  project               = local.project_weu_legacy
-  resource_group_common = local.core.resource_groups.westeurope.common
+  location                     = "westeurope"
+  location_short               = local.core.resource_groups.westeurope.location_short
+  project                      = local.project_weu_legacy
+  resource_group_common        = local.core.resource_groups.westeurope.common
+  local_authentication_enabled = true
 
   kv_id        = local.core.key_vault.weu.kv.id
   kv_common_id = local.core.key_vault.weu.kv_common.id
