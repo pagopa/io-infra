@@ -15,7 +15,6 @@ lock_enable    = true
 # networking
 # check free subnet on azure portal io-p-vnet-common -> subnets
 cidr_subnet_shared_1 = ["10.0.16.0/26"]
-cidr_subnet_services = ["10.0.139.0/26", "10.0.139.64/26"]
 
 # Functions Services
 function_services_kind              = "Linux"
