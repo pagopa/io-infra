@@ -15,10 +15,10 @@ locals {
   }
 
   tags = {
-    CostCenter     = "TS000 - Tecnologia e Servizi"
-    CreatedBy      = "Terraform"
-    Environment    = "Prod"
-    BusinessUnit   = "App IO"
+    CostCenter   = "TS000 - Tecnologia e Servizi"
+    CreatedBy    = "Terraform"
+    Environment  = "Prod"
+    BusinessUnit = "App IO"
     #Source         = "https://github.com/pagopa/io-infra/blob/main/src/platform/prod/observability/" # TODO: change tags after mass import
     Source         = "https://github.com/pagopa/io-infra/blob/main/src/common/prod"
     ManagementTeam = "IO Platform"
