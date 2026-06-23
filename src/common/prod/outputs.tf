@@ -37,11 +37,3 @@ output "pep_subnets" {
     }
   }
 }
-
-output "monitoring" {
-  value = {
-    itn = {
-      law_id = module.monitoring_itn.log.id
-    }
-  }
-}
