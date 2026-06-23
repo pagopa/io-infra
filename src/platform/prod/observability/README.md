@@ -33,5 +33,8 @@ No inputs.
 
 ## Outputs
 
-No outputs.
+| Name | Description |
+|------|-------------|
+| <a name="output_monitoring_italynorth"></a> [monitoring\_italynorth](#output\_monitoring\_italynorth) | n/a |
+| <a name="output_monitoring_westeurope"></a> [monitoring\_westeurope](#output\_monitoring\_westeurope) | n/a |
 <!-- END_TF_DOCS -->
