@@ -101,7 +101,9 @@ No inputs.
 | Name | Description |
 |------|-------------|
 | <a name="output_apim"></a> [apim](#output\_apim) | n/a |
+| <a name="output_github_runner"></a> [github\_runner](#output\_github\_runner) | n/a |
 | <a name="output_pep_subnets"></a> [pep\_subnets](#output\_pep\_subnets) | n/a |
 | <a name="output_private_endpoints"></a> [private\_endpoints](#output\_private\_endpoints) | n/a |
+| <a name="output_redis"></a> [redis](#output\_redis) | n/a |
 | <a name="output_virtual_networks"></a> [virtual\_networks](#output\_virtual\_networks) | n/a |
 <!-- END_TF_DOCS -->
