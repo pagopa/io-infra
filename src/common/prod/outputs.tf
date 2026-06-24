@@ -47,6 +47,7 @@ output "github_runner" {
 }
 
 output "redis" {
+  sensitive = true
   value = {
     weu = {
       hostname           = module.redis_weu.hostname
