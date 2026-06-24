@@ -37,3 +37,21 @@ output "pep_subnets" {
     }
   }
 }
+
+output "github_runner" {
+  value = {
+    itn = {
+      subnet_id = module.github_runner_itn.subnet.id
+    }
+  }
+}
+
+output "redis" {
+  value = {
+    weu = {
+      hostname = module.redis_weu.hostname
+      ssl_port = module.redis_weu.ssl_port
+      primary_access_key = module.redis_weu.primary_access_key
+    }
+  }
+}
