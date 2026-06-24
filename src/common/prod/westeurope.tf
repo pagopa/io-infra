@@ -117,8 +117,8 @@ module "app_backend_weu" {
 
   error_action_group_id  = local.platform_observability.monitoring_westeurope.action_groups.error
   application_insights   = local.platform_observability.monitoring_westeurope.appi
-  ai_instrumentation_key = local.platform_observability.monitoring_westeurope.appi_instrumentation_key
-  ai_connection_string   = local.platform_observability.monitoring_westeurope.appi_connection_string
+  ai_instrumentation_key = sensitive(local.platform_observability.monitoring_westeurope.appi_instrumentation_key)
+  ai_connection_string   = sensitive(local.platform_observability.monitoring_westeurope.appi_connection_string)
 
   redis_common = {
     hostname           = module.redis_weu.hostname
