@@ -49,8 +49,8 @@ output "github_runner" {
 output "redis" {
   value = {
     weu = {
-      hostname = module.redis_weu.hostname
-      ssl_port = module.redis_weu.ssl_port
+      hostname           = module.redis_weu.hostname
+      ssl_port           = module.redis_weu.ssl_port
       primary_access_key = module.redis_weu.primary_access_key
     }
   }
