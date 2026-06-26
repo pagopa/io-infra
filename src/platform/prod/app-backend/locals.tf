@@ -30,6 +30,7 @@ locals {
   }
 
   core                   = data.terraform_remote_state.core.outputs
+  common                 = data.terraform_remote_state.common.outputs
   platform_core          = data.terraform_remote_state.platform_core.outputs
   platform_observability = data.terraform_remote_state.platform_observability.outputs
 
