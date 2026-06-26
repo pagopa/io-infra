@@ -23,7 +23,7 @@ module "app_backend_weu" {
   cidr_subnet                   = each.value.cidr_subnet
   nat_gateways                  = local.core.networking.weu.nat_gateways
   allowed_subnets               = []
-  slot_allowed_subnets          = [module.github_runner_itn.subnet.id]
+  slot_allowed_subnets          = [local.common.github_runner.itn.subnet_id]
   allowed_ips                   = local.platform_observability.monitoring_westeurope.appi.reserved_ips
   slot_allowed_ips              = local.platform_observability.monitoring_westeurope.appi.reserved_ips
   enable_premium_plan_autoscale = true
@@ -41,9 +41,9 @@ module "app_backend_weu" {
   ai_connection_string   = sensitive(local.platform_observability.monitoring_westeurope.appi_connection_string)
 
   redis_common = {
-    hostname           = module.redis_weu.hostname
-    ssl_port           = module.redis_weu.ssl_port
-    primary_access_key = module.redis_weu.primary_access_key
+    hostname           = local.common.redis.weu.hostname
+    ssl_port           = local.common.redis.weu.ssl_port
+    primary_access_key = local.common.redis.weu.primary_access_key
   }
 
   azure_adgroup_wallet_admins_object_id = data.azuread_group.wallet_admins.object_id
