@@ -12,7 +12,7 @@ locals {
     CreatedBy      = "Terraform"
     Environment    = "Prod"
     BusinessUnit   = "App IO"
-    Source         = "https://github.com/pagopa/io-infra/blob/main/src/platform/cdn/prod"
+    Source         = "https://github.com/pagopa/io-infra/blob/main/src/platform/prod/cdn"
     ManagementTeam = "IO Platform"
   }
 
