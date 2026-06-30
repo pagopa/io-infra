@@ -33,9 +33,6 @@
 | <a name="module_function_app_elt"></a> [function\_app\_elt](#module\_function\_app\_elt) | ../_modules/function_elt | n/a |
 | <a name="module_function_app_services_02"></a> [function\_app\_services\_02](#module\_function\_app\_services\_02) | ../_modules/function_services/function-app | n/a |
 | <a name="module_github_runner_itn"></a> [github\_runner\_itn](#module\_github\_runner\_itn) | ../_modules/github_runner | n/a |
-| <a name="module_global"></a> [global](#module\_global) | ../_modules/global | n/a |
-| <a name="module_monitoring_itn"></a> [monitoring\_itn](#module\_monitoring\_itn) | ../_modules/monitoring | n/a |
-| <a name="module_monitoring_weu"></a> [monitoring\_weu](#module\_monitoring\_weu) | ../_modules/monitoring | n/a |
 | <a name="module_platform_api_gateway_apim_itn"></a> [platform\_api\_gateway\_apim\_itn](#module\_platform\_api\_gateway\_apim\_itn) | ../_modules/platform_api_gateway | n/a |
 | <a name="module_platform_service_bus_namespace_itn"></a> [platform\_service\_bus\_namespace\_itn](#module\_platform\_service\_bus\_namespace\_itn) | ../_modules/platform_service_bus | n/a |
 | <a name="module_private_endpoints"></a> [private\_endpoints](#module\_private\_endpoints) | ../_modules/private_endpoint | n/a |
@@ -92,6 +89,8 @@
 | [azurerm_user_assigned_identity.managed_identity_io_infra_cd](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/user_assigned_identity) | data source |
 | [azurerm_user_assigned_identity.managed_identity_io_infra_ci](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/user_assigned_identity) | data source |
 | [terraform_remote_state.core](https://registry.terraform.io/providers/hashicorp/terraform/latest/docs/data-sources/remote_state) | data source |
+| [terraform_remote_state.platform_core](https://registry.terraform.io/providers/hashicorp/terraform/latest/docs/data-sources/remote_state) | data source |
+| [terraform_remote_state.platform_observability](https://registry.terraform.io/providers/hashicorp/terraform/latest/docs/data-sources/remote_state) | data source |
 
 ## Inputs
 
@@ -102,9 +101,9 @@ No inputs.
 | Name | Description |
 |------|-------------|
 | <a name="output_apim"></a> [apim](#output\_apim) | n/a |
-| <a name="output_monitoring"></a> [monitoring](#output\_monitoring) | n/a |
+| <a name="output_github_runner"></a> [github\_runner](#output\_github\_runner) | n/a |
 | <a name="output_pep_subnets"></a> [pep\_subnets](#output\_pep\_subnets) | n/a |
 | <a name="output_private_endpoints"></a> [private\_endpoints](#output\_private\_endpoints) | n/a |
-| <a name="output_public_dns_zones"></a> [public\_dns\_zones](#output\_public\_dns\_zones) | n/a |
+| <a name="output_redis"></a> [redis](#output\_redis) | n/a |
 | <a name="output_virtual_networks"></a> [virtual\_networks](#output\_virtual\_networks) | n/a |
 <!-- END_TF_DOCS -->
