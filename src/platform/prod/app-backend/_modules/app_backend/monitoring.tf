@@ -50,7 +50,7 @@ resource "azurerm_monitor_metric_alert" "too_many_http_5xx" {
   resource_group_name = var.resource_group_linux
   scopes              = [module.appservice_app_backend.id]
   # TODO: add Runbook for checking errors
-  description   = "Whenever the total http server errors exceeds a dynamic threashold. Runbook: ${"https://pagopa.atlassian.net"}/wiki/spaces/IC/pages/585072814/Appbackendlx+-+Too+many+errors"
+  description   = "Whenever the total HTTP server errors exceed a dynamic threshold. Runbook: https://pagopa.atlassian.net/wiki/spaces/IC/pages/585072814/Appbackendlx+-+Too+many+errors"
   severity      = 0
   window_size   = "PT5M"
   frequency     = "PT5M"
