@@ -5,6 +5,7 @@
 
 | Name | Version |
 |------|---------|
+| <a name="requirement_azuread"></a> [azuread](#requirement\_azuread) | ~> 3.0 |
 | <a name="requirement_azurerm"></a> [azurerm](#requirement\_azurerm) | < 5.0.0 |
 
 ## Providers
