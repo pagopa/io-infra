@@ -19,6 +19,7 @@ locals {
   core                   = data.terraform_remote_state.core.outputs
   platform_core          = data.terraform_remote_state.platform_core.outputs
   platform_observability = data.terraform_remote_state.platform_observability.outputs
+  platform_app_backend   = data.terraform_remote_state.platform_app_backend.outputs
 
   app_messages_count = 2
 
