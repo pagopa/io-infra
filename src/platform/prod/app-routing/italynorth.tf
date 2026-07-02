@@ -1,3 +1,8 @@
+resource "dx_available_subnet_cidr" "next_cidr_snet_agw" {
+  virtual_network_id = local.core.networking.itn.vnet_common.id
+  prefix_length      = 24
+}
+
 module "apim_itn" {
   source = "./_modules/apim"
 
@@ -56,7 +61,7 @@ module "application_gateway_itn" {
 
   backend_hostnames = {
     firmaconio_selfcare_web_app = [data.azurerm_linux_web_app.firmaconio_selfcare_web_app.default_hostname]
-    app_backends                = [for appbe in module.app_backend_weu : appbe.default_hostname]
+    app_backends                = [for appbe in local.platform_app_backend.app_backend.weu : appbe.default_hostname]
   }
   certificates = {
     api                                  = "api-io-pagopa-it"
@@ -134,7 +139,7 @@ module "platform_api_gateway_apim_itn" {
   azure_user_assigned_identity_com_infra_cd   = data.azurerm_user_assigned_identity.com_infra_cd.principal_id
   azure_user_assigned_identity_fims_infra_cd  = data.azurerm_user_assigned_identity.fims_infra_cd.principal_id
 
-  app_backend_urls = [for host in module.app_backend_weu : "https://${host.default_hostname}"]
+  app_backend_urls = [for host in local.platform_app_backend.app_backend.weu : "https://${host.default_hostname}"]
 
   tags = local.tags
 }
