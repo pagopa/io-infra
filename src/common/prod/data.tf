@@ -36,6 +36,18 @@ data "terraform_remote_state" "platform_observability" {
   }
 }
 
+data "terraform_remote_state" "platform_app_backend" {
+  backend = "azurerm"
+
+  config = {
+    resource_group_name  = "terraform-state-rg"
+    storage_account_name = "iopitntfst001"
+    container_name       = "terraform-state"
+    key                  = "io-infra.platform.app-backend.prod.tfstate"
+    use_azuread_auth     = true
+  }
+}
+
 data "azurerm_client_config" "current" {}
 
 data "azurerm_linux_web_app" "firmaconio_selfcare_web_app" {
