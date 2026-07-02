@@ -35,12 +35,11 @@ locals {
   platform_observability = data.terraform_remote_state.platform_observability.outputs
 
   tags = {
-    CostCenter   = "TS000 - Tecnologia e Servizi"
-    CreatedBy    = "Terraform"
-    Environment  = "Prod"
-    BusinessUnit = "App IO"
-    Source       = "https://github.com/pagopa/io-infra/blob/main/src/common/prod" # TODO: change tags after import
-    #Source         = "https://github.com/pagopa/io-infra/blob/main/src/platform/prod/app-backend/"
+    CostCenter     = "TS000 - Tecnologia e Servizi"
+    CreatedBy      = "Terraform"
+    Environment    = "Prod"
+    BusinessUnit   = "App IO"
+    Source         = "https://github.com/pagopa/io-infra/blob/main/src/platform/prod/app-backend/"
     ManagementTeam = "IO Platform"
   }
 }

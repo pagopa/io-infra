@@ -22,7 +22,6 @@
 | Name | Source | Version |
 |------|--------|---------|
 | <a name="module_apim_itn"></a> [apim\_itn](#module\_apim\_itn) | ../_modules/apim | n/a |
-| <a name="module_app_backend_weu"></a> [app\_backend\_weu](#module\_app\_backend\_weu) | ../_modules/app_backend | n/a |
 | <a name="module_application_gateway_itn"></a> [application\_gateway\_itn](#module\_application\_gateway\_itn) | ../_modules/app_gateway | n/a |
 | <a name="module_assets_locales_cdn"></a> [assets\_locales\_cdn](#module\_assets\_locales\_cdn) | ../_modules/assets_locales_cdn | n/a |
 | <a name="module_containers_services"></a> [containers\_services](#module\_containers\_services) | ../_modules/function_services/containers | n/a |
@@ -89,6 +88,7 @@
 | [azurerm_user_assigned_identity.managed_identity_io_infra_cd](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/user_assigned_identity) | data source |
 | [azurerm_user_assigned_identity.managed_identity_io_infra_ci](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/user_assigned_identity) | data source |
 | [terraform_remote_state.core](https://registry.terraform.io/providers/hashicorp/terraform/latest/docs/data-sources/remote_state) | data source |
+| [terraform_remote_state.platform_app_backend](https://registry.terraform.io/providers/hashicorp/terraform/latest/docs/data-sources/remote_state) | data source |
 | [terraform_remote_state.platform_core](https://registry.terraform.io/providers/hashicorp/terraform/latest/docs/data-sources/remote_state) | data source |
 | [terraform_remote_state.platform_observability](https://registry.terraform.io/providers/hashicorp/terraform/latest/docs/data-sources/remote_state) | data source |
 
