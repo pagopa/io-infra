@@ -269,7 +269,7 @@ import {
 }
 
 import {
-  to = module.platform_api_gateway_apim_itn.azurerm_api_management_backend.app_backend_backends["1"]
+  to = module.platform_api_gateway_apim_itn.azurerm_api_management_backend.app_backend_backends[1]
   id = "/subscriptions/ec285037-c673-4f58-b594-d7c480da4e8b/resourceGroups/io-p-itn-common-rg-01/providers/Microsoft.ApiManagement/service/io-p-itn-platform-api-gateway-apim-01/backends/app-backend-2"
 }
 
