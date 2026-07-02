@@ -1,8 +1,8 @@
 {
   "ioapp.ioapp": {
-    "hash": "b5b04d347d5ac257e273f1cf67a05ed5953eb555645d2aee4934663bdc11e069",
-    "version": "0.7.0",
+    "hash": "3e22defd7acd3e01581d9ce2b437dacb3fc94967498561eedbb1dd516c1702ff",
+    "version": "0.7.1",
     "name": "azure_cdn",
-    "source": "https://registry.terraform.io/modules/pagopa-dx/azure-cdn/azurerm/0.7.0"
+    "source": "https://registry.terraform.io/modules/pagopa-dx/azure-cdn/azurerm/0.7.1"
   }
 }
