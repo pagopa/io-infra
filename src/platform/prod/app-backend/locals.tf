@@ -39,8 +39,7 @@ locals {
     CreatedBy    = "Terraform"
     Environment  = "Prod"
     BusinessUnit = "App IO"
-    Source       = "https://github.com/pagopa/io-infra/blob/main/src/common/prod" # TODO: change tags after import
-    #Source         = "https://github.com/pagopa/io-infra/blob/main/src/platform/prod/app-backend/"
+    Source         = "https://github.com/pagopa/io-infra/blob/main/src/platform/prod/app-backend/"
     ManagementTeam = "IO Platform"
   }
 }
