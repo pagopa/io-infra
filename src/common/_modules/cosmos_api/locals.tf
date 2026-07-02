@@ -91,7 +91,7 @@ locals {
 
       autoscale_settings = {
         # Unused, 15000 is the minimum value for the current collection configuration
-        max_throughput = 15000
+        max_throughput = 16000
       }
     },
     {
