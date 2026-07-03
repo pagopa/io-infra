@@ -3,9 +3,9 @@ variable "resource_group_common" {
   description = "Name of common resource group"
 }
 
-variable "resource_group_internal" {
+variable "resource_group" {
   type        = string
-  description = "Name of internal resource group"
+  description = "Name of resource group that will contain all the APIM resources"
 }
 
 variable "project" {

@@ -1,12 +1,18 @@
+resource "azurerm_resource_group" "apim" {
+  name     = "${local.project}-apim-rg-01"
+  location = local.location
+
+  tags = local.tags
+}
+
 module "apim_itn" {
   source = "./_modules/apim"
 
   location                = "italynorth"
-  location_short          = local.core.resource_groups.italynorth.location_short
+  location_short          = local.location_short
   project                 = local.project_itn
   prefix                  = local.prefix
   resource_group_common   = local.resource_groups.itn.common
-  resource_group_internal = local.resource_groups.itn.internal
 
   use_case = "development"
 

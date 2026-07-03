@@ -10,7 +10,7 @@ module "apim" {
     instance_number = "01"
   }
 
-  resource_group_name = var.resource_group_internal
+  resource_group_name = var.resource_group
   use_case            = var.use_case
 
   publisher_email           = data.azurerm_key_vault_secret.apim_publisher_email.value

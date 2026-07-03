@@ -6,6 +6,8 @@ locals {
 
   project_itn = "${local.prefix}-${local.env_short}-${local.location_short.italynorth}"
 
+  location_short = "itn"
+
   tags = {
     CostCenter     = "TS000 - Tecnologia e Servizi"
     CreatedBy      = "Terraform"
