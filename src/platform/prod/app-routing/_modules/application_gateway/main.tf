@@ -39,10 +39,10 @@ resource "azurerm_application_gateway" "this" {
     iterator = backend
 
     content {
-      name                                = "${backend.key}-http-settings"
-      host_name                           = backend.value.host
-      cookie_based_affinity               = "Disabled"
-      affinity_cookie_name                = "ApplicationGatewayAffinity" # to avoid unwanted changes in terraform plan
+      name                  = "${backend.key}-http-settings"
+      host_name             = backend.value.host
+      cookie_based_affinity = "Disabled"
+      affinity_cookie_name  = "ApplicationGatewayAffinity" # to avoid unwanted changes in terraform plan
       #path                                = ""  # Commented out due to an issue with the provider AzureRM V4: https://github.com/hashicorp/terraform-provider-azurerm/issues/32569
       port                                = backend.value.port
       protocol                            = backend.value.protocol
