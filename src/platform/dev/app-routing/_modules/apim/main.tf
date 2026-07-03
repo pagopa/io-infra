@@ -25,8 +25,6 @@ module "apim" {
     resource_group_name = var.vnet_common.resource_group_name
   }
 
-  #private_dns_zone_resource_group_name = "io-p-rg-common"
-
   subnet_id                     = azurerm_subnet.apim.id
   virtual_network_type_internal = true
 
