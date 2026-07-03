@@ -58,6 +58,15 @@ variable "ai_connection_string" {
   type = string
 }
 
+variable "key_vault" {
+  type = object({
+    id                  = string
+    name                = string
+    resource_group_name = string
+  })
+  description = "Information of the Key Vault"
+}
+
 variable "datasources" {
   type        = map(any)
   description = "Common datasources"

@@ -13,9 +13,9 @@ module "apim" {
   resource_group_name = var.resource_group
   use_case            = var.use_case
 
-  publisher_email           = "dummy" # TODO: change value
+  publisher_email           = data.azurerm_key_vault_secret.apim_publisher_email.value
   publisher_name            = "IO"
-  notification_sender_email = "dummy" # TODO: change value
+  notification_sender_email = data.azurerm_key_vault_secret.apim_publisher_email.value
 
   public_ip_address_id         = azurerm_public_ip.apim.id
   enable_public_network_access = true

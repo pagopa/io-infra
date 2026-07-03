@@ -17,8 +17,10 @@ module "apim_itn" {
 
   use_case = "development"
 
-  vnet_common = data.azurerm_virtual_network.itn_common.id
+  vnet_common = data.azurerm_virtual_network.itn_common
   cidr_subnet = "10.1.5.0/24"
+
+  key_vault = data.azurerm_key_vault.itn_common
 
   datasources = {
     azurerm_client_config = data.azurerm_client_config.current
