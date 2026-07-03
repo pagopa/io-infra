@@ -12,7 +12,7 @@ module "apim_itn" {
   location_short        = local.location_short
   project               = local.project_itn
   prefix                = local.prefix
-  resource_group_common = data.azurerm_resource_group.itn_common
+  resource_group_common = data.azurerm_resource_group.itn_common.name
   resource_group        = azurerm_resource_group.apim.name
 
   use_case = "development"
