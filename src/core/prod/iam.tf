@@ -79,7 +79,7 @@ resource "azurerm_key_vault_access_policy" "kv_common_infra_ci" {
 }
 
 resource "azurerm_key_vault_access_policy" "itn_d_common_infra_cd" {
-  key_vault_id = data.itn_d_common.key_vault_id
+  key_vault_id = data.itn_d_common.id
   object_id    = data.azurerm_user_assigned_identity.managed_identity_io_infra_cd.principal_id
   tenant_id    = data.azurerm_client_config.current.tenant_id
 
