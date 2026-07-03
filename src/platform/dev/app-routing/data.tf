@@ -1,5 +1,11 @@
 data "azurerm_client_config" "current" {}
 
+# RG
+
+data "azurerm_resource_group" "itn_common" {
+  name = "io-d-itn-common-rg-01"
+}
+
 # VNET
 
 data "azurerm_virtual_network" "itn_common" {
