@@ -85,5 +85,5 @@ data "azurerm_private_dns_zone" "key_vault" {
 
 data "azurerm_key_vault" "itn_d_common" {
   name                = "io-d-itn-common-kv-01"
-  resource_group_name = "io-d-itn-common-rg-01"
+  resource_group_name = "${local.prefix}-d-${local.location_short.itn}-common-rg-01"
 }
