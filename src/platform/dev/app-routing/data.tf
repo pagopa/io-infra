@@ -13,6 +13,14 @@ data "azurerm_virtual_network" "itn_common" {
   resource_group_name = "io-d-itn-common-rg-01"
 }
 
+# Application Insight
+
+data "azurerm_application_insights" "itn_ai" {
+  name                = "io-d-ai-common"
+  resource_group_name = "io-d-rg-common"
+}
+
+
 # AD Groups
 
 data "azuread_group" "platform_admins" {
