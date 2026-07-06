@@ -8,7 +8,7 @@ resource "azurerm_key_vault_access_policy" "apim_kv_policy" {
   certificate_permissions = ["Get", "List"]
   storage_permissions     = []
 }
-
+/*
 module "iam_adgroup_admins" {
   source  = "pagopa-dx/azure-role-assignments/azurerm"
   version = "~> 0.0"
@@ -53,3 +53,4 @@ module "iam_adgroup_externals" {
     }
   ]
 }
+*/
