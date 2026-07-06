@@ -31,7 +31,7 @@ module "iam_kv_common_infra_cd" {
     name                = data.azurerm_key_vault.itn_common.name
     resource_group_name = "io-d-itn-common-rg-01" # TODO: change RG name after importing it in the DEV environment
     has_rbac_support    = true
-    description         = "Allow the io-d-infra-github-ci-identity to write all values"
+    description         = "Allow the io-d-infra-github-cd-identity to write all values"
     roles = {
       secrets      = "writer"
       certificates = "writer"
