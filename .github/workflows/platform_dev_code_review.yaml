@@ -1,4 +1,4 @@
-name: PR - Platform TF Validation
+name: PR - Platform DEV TF Validation
 
 # This pipeline starts automatically when a PR is opened.
 #
