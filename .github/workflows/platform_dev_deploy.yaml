@@ -1,4 +1,4 @@
-name: Release - Platform TF Apply
+name: Release - Platform DEV TF Apply
 
 # This pipeline starts automatically when a PR is merged into 'main'.
 #
