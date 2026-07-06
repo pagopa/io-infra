@@ -1,19 +1,41 @@
-resource "azurerm_key_vault_access_policy" "kv_common_infra_ci" {
-  key_vault_id = data.azurerm_key_vault.itn_common.id
-  object_id    = data.azurerm_user_assigned_identity.managed_identity_io_infra_ci.principal_id
-  tenant_id    = data.azurerm_client_config.current.tenant_id
+module "iam_kv_common_infra_ci" {
 
-  secret_permissions      = ["Get", "List"]
-  certificate_permissions = ["Get", "List"]
-  key_permissions         = ["Get", "List"]
+  source  = "pagopa-dx/azure-role-assignments/azurerm"
+  version = "~>1.3"
+
+  subscription_id = data.azurerm_subscription.current.subscription_id
+  principal_id    = data.azurerm_user_assigned_identity.managed_identity_io_infra_ci.principal_id
+
+  key_vault = [{
+    name                = data.azurerm_key_vault.itn_common.name
+    resource_group_name = "io-d-itn-common-rg-01" # TODO: change RG name after importing it in the DEV environment
+    has_rbac_support    = true
+    description         = "Allow the io-d-infra-github-ci-identity to read all values"
+    roles = {
+      secrets      = "reader"
+      certificates = "reader"
+      keys         = "reader"
+    }
+  }]
 }
 
-resource "azurerm_key_vault_access_policy" "kv_common_infra_cd" {
-  key_vault_id = data.azurerm_key_vault.itn_common.id
-  object_id    = data.azurerm_user_assigned_identity.managed_identity_io_infra_cd.principal_id
-  tenant_id    = data.azurerm_client_config.current.tenant_id
+module "iam_kv_common_infra_cd" {
 
-  secret_permissions      = ["Get", "List", "Delete", "Set"]
-  certificate_permissions = ["Get", "List"]
-  key_permissions         = ["Get", "List"]
+  source  = "pagopa-dx/azure-role-assignments/azurerm"
+  version = "~>1.3"
+
+  subscription_id = data.azurerm_subscription.current.subscription_id
+  principal_id    = data.azurerm_user_assigned_identity.managed_identity_io_infra_ci.principal_id
+
+  key_vault = [{
+    name                = data.azurerm_key_vault.itn_common.name
+    resource_group_name = "io-d-itn-common-rg-01" # TODO: change RG name after importing it in the DEV environment
+    has_rbac_support    = true
+    description         = "Allow the io-d-infra-github-cd-identity to write all values"
+    roles = {
+      secrets      = "writer"
+      certificates = "writer"
+      keys         = "writer"
+    }
+  }]
 }
