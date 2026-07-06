@@ -17,7 +17,7 @@ resource "azurerm_public_ip" "apim" {
   location            = var.location
   allocation_method   = "Static"
   sku                 = "Standard"
-  domain_name_label   = "apimio"
+  domain_name_label   = "devapimio"
   zones               = ["1", "2", "3"]
 
   tags = var.tags
