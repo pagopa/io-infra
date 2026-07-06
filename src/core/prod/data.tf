@@ -80,10 +80,3 @@ data "azurerm_private_dns_zone" "key_vault" {
   name                = "privatelink.vaultcore.azure.net"
   resource_group_name = "${local.prefix}-${local.env_short}-rg-common"
 }
-
-# DEV ITN KV
-
-data "azurerm_key_vault" "itn_d_common" {
-  name                = "io-d-itn-common-kv-01"
-  resource_group_name = "${local.prefix}-d-${local.location_short.italynorth}-common-rg-01"
-}
