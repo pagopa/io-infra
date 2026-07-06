@@ -26,17 +26,3 @@ data "azurerm_key_vault" "itn_common" {
   name                = "io-d-itn-common-kv-01"
   resource_group_name = data.azurerm_resource_group.itn_common.name
 }
-
-# AD Groups
-
-data "azuread_group" "admins" {
-  display_name = "${local.prefix}-${local.env_short}-adgroup-admins"
-}
-
-data "azuread_group" "developers" {
-  display_name = "${local.prefix}-${local.env_short}-adgroup-developers"
-}
-
-data "azuread_group" "externals" {
-  display_name = "${local.prefix}-${local.env_short}-adgroup-externals"
-}

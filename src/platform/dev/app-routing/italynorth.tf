@@ -28,9 +28,9 @@ module "apim_itn" {
 
   ai_connection_string = data.azurerm_application_insights.itn_ai.connection_string
 
-  azure_adgroup_admins_object_id     = data.azuread_group.admins.object_id
-  azure_adgroup_developers_object_id = data.azuread_group.developers.object_id
-  azure_adgroup_externals_object_id  = data.azuread_group.externals.object_id
+  azure_adgroup_admins_object_id     = "c24cd097-4bff-4ab2-9b53-62b249d722c5" # TODO: change to exported attribute after resource import
+  azure_adgroup_developers_object_id = "e0192f80-ef72-4e33-8000-43785bdba187" # TODO: change to exported attribute after resource import
+  azure_adgroup_externals_object_id  = "899419b0-8bc3-4321-a9b4-9f309b13842e" # TODO: change to exported attribute after resource import
 
   tags = local.tags
 }
