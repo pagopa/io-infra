@@ -72,29 +72,19 @@ variable "datasources" {
   description = "Common datasources"
 }
 
-variable "azure_adgroup_wallet_admins_object_id" {
+variable "azure_adgroup_admins_object_id" {
   type        = string
-  description = "Object Id of the Entra group for subscription admins"
+  description = "Object Id of the Entra ID group for subscription admins"
 }
 
-variable "azure_adgroup_com_admins_object_id" {
+variable "azure_adgroup_developers_object_id" {
   type        = string
-  description = "Object Id of the Entra group for subscription admins"
+  description = "Object Id of the Entra ID group for developers"
 }
 
-variable "azure_adgroup_svc_admins_object_id" {
+variable "azure_adgroup_externals_object_id" {
   type        = string
-  description = "Object Id of the Entra group for subscription admins"
-}
-
-variable "azure_adgroup_auth_admins_object_id" {
-  type        = string
-  description = "Object Id of the Entra group for subscription admins"
-}
-
-variable "azure_adgroup_bonus_admins_object_id" {
-  type        = string
-  description = "Object Id of the Entra group for subscription admins"
+  description = "Object Id of the Entra ID group for external collaborators"
 }
 
 variable "use_case" {
