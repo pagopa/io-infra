@@ -9,7 +9,7 @@ module "iam_apim_itn_infra_ci" {
   principal_id    = data.azurerm_user_assigned_identity.managed_identity_io_infra_ci.principal_id
 
   apim = [{
-    name                = data.azurerm_key_vault.itn_common.name
+    name                = module.apim_itn.name
     resource_group_name = azurerm_resource_group.apim.name
     has_rbac_support    = true
     description         = "Allow the io-d-infra-github-ci-identity to read all values"
@@ -28,7 +28,7 @@ module "iam_apim_itn_infra_cd" {
   principal_id    = data.azurerm_user_assigned_identity.managed_identity_io_infra_ci.principal_id
 
   apim = [{
-    name                = data.azurerm_key_vault.itn_common.name
+    name                = module.apim_itn.name
     resource_group_name = azurerm_resource_group.apim.name
     has_rbac_support    = true
     description         = "Allow the io-d-infra-github-cd-identity to write all values"
