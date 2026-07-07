@@ -5,6 +5,11 @@
 # APPLICATION GATEWAY
 
 import {
+  to = dx_available_subnet_cidr.next_cidr_snet_agw
+  id = "/subscriptions/ec285037-c673-4f58-b594-d7c480da4e8b/resourceGroups/io-p-itn-common-rg-01/providers/Microsoft.Network/virtualNetworks/io-p-itn-common-vnet-01/subnets/io-p-itn-agw-snet-01"
+}
+
+import {
   to = module.application_gateway_itn.azurerm_application_gateway.this
   id = "/subscriptions/ec285037-c673-4f58-b594-d7c480da4e8b/resourceGroups/io-p-itn-common-rg-01/providers/Microsoft.Network/applicationGateways/io-p-itn-agw-01"
 }
