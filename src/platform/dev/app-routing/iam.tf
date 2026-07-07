@@ -25,7 +25,7 @@ module "iam_apim_itn_infra_cd" {
   version = "~> 2.0"
 
   subscription_id = data.azurerm_subscription.current.subscription_id
-  principal_id    = data.azurerm_user_assigned_identity.managed_identity_io_infra_ci.principal_id
+  principal_id    = data.azurerm_user_assigned_identity.managed_identity_io_infra_cd.principal_id
 
   apim = [{
     name                = module.apim_itn.name
