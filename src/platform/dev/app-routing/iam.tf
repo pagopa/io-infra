@@ -12,7 +12,7 @@ module "iam_apim_itn_infra_ci" {
     name                = module.apim_itn.name
     resource_group_name = azurerm_resource_group.apim.name
     has_rbac_support    = true
-    description         = "Allow the io-d-infra-github-ci-identity to read all values"
+    description         = "Allow the io-d-infra-github-ci-identity to write all values"
     role                = "owner" # Write necessary to read all the APIM associated secrets
   }]
 }
