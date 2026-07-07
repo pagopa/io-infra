@@ -4,5 +4,17 @@
     "version": "2.2.3",
     "name": "azure_api_management",
     "source": "https://registry.terraform.io/modules/pagopa-dx/azure-api-management/azurerm/2.2.3"
+  },
+  "iam_apim_itn_infra_cd": {
+    "hash": "4b05c2a48659f272b3c88c4ce846de09870a45e996fbabd1036e36f412112040",
+    "version": "2.1.0",
+    "name": "azure_role_assignments",
+    "source": "https://registry.terraform.io/modules/pagopa-dx/azure-role-assignments/azurerm/2.1.0"
+  },
+  "iam_apim_itn_infra_ci": {
+    "hash": "4b05c2a48659f272b3c88c4ce846de09870a45e996fbabd1036e36f412112040",
+    "version": "2.1.0",
+    "name": "azure_role_assignments",
+    "source": "https://registry.terraform.io/modules/pagopa-dx/azure-role-assignments/azurerm/2.1.0"
   }
 }
