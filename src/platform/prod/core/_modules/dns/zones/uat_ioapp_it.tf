@@ -94,7 +94,7 @@ locals {
 resource "azurerm_dns_cname_record" "dkim_uat_ioapp_it" {
   for_each = local.uat_ioapp_it_dkim_records
 
-  name                = each.key
+  name                = "${each.key}._domainkey"
   zone_name           = azurerm_dns_zone.uat_ioapp_it.name
   resource_group_name = var.resource_groups.external
   ttl                 = var.dns_default_ttl_sec
