@@ -127,4 +127,6 @@ resource "azurerm_dns_txt_record" "bounce_uat_ioapp_it" {
   record {
     value = "v=spf1 include:amazonses.com ~all"
   }
+
+  tags = var.tags
 }
