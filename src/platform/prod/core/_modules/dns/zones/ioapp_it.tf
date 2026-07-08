@@ -139,7 +139,7 @@ resource "azurerm_dns_ns_record" "uat_ioapp_it_delegation" {
   name                = "uat"
   zone_name           = azurerm_dns_zone.ioapp_it.name
   resource_group_name = var.resource_groups.external
-  ttl                 = 3600
+  ttl                 = var.dns_default_ttl_sec
 
   records = azurerm_dns_zone.uat_ioapp_it.name_servers
 }
