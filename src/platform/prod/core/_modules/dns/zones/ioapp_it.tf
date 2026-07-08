@@ -128,6 +128,42 @@ resource "azurerm_dns_caa_record" "uat_ioapp_it" {
 
   record {
     flags = 0
+    tag   = "issue"
+    value = "letsencrypt.org"
+  }
+
+  record {
+    flags = 0
+    tag   = "issue"
+    value = "digicert.com"
+  }
+
+  record {
+    flags = 0
+    tag   = "issue"
+    value = "amazon.com"
+  }
+
+  record {
+    flags = 0
+    tag   = "issue"
+    value = "amazontrust.com"
+  }
+
+  record {
+    flags = 0
+    tag   = "issue"
+    value = "awstrust.com"
+  }
+
+  record {
+    flags = 0
+    tag   = "issue"
+    value = "amazonaws.com"
+  }
+
+  record {
+    flags = 0
     tag   = "iodef"
     value = "mailto:security+caa@pagopa.it"
   }
