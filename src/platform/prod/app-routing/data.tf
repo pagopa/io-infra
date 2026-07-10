@@ -111,3 +111,15 @@ data "azurerm_user_assigned_identity" "fims_infra_cd" {
   name                = "${local.prefix}-${local.env_short}-itn-fims-infra-github-cd-id-01"
   resource_group_name = "${local.prefix}-${local.env_short}-itn-fims-rg-01"
 }
+
+# APIM Client
+
+data "azuread_service_principal" "apim_client_svc" {
+  display_name = "io-p-apim-api-management-client"
+}
+
+# Developer Portal
+
+data "azuread_service_principal" "dev_portal_svc" {
+  display_name = "io-prod-sp-developer-portal"
+}
