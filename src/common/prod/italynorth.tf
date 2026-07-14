@@ -90,7 +90,8 @@ module "platform_api_gateway_apim_itn" {
     azurerm_client_config = data.azurerm_client_config.current
   }
 
-  key_vault = local.core.key_vault.weu.kv
+  key_vault        = local.core.key_vault.weu.kv
+  key_vault_common = local.core.key_vault.weu.kv_common
 
   action_group_id = local.platform_observability.monitoring_westeurope.action_groups.error
   application_insights = {

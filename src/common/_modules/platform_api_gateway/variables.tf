@@ -77,6 +77,15 @@ variable "key_vault" {
   description = "Information of the Key Vault"
 }
 
+variable "key_vault_common" {
+  type = object({
+    id                  = string
+    name                = string
+    resource_group_name = string
+  })
+  description = "Information of the common Key Vault"
+}
+
 variable "datasources" {
   type        = map(any)
   description = "Common datasources"
