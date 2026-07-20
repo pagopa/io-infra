@@ -215,7 +215,7 @@ import {
 }
 
 import {
-  to = module.platform_api_gateway_apim_itn.module.platform_api_gateway.azurerm_api_management_diagnostic.applicationinsights["0"]
+  to = module.platform_api_gateway_apim_itn.module.platform_api_gateway.azurerm_api_management_diagnostic.applicationinsights[0]
   id = "/subscriptions/ec285037-c673-4f58-b594-d7c480da4e8b/resourceGroups/io-p-itn-common-rg-01/providers/Microsoft.ApiManagement/service/io-p-itn-platform-api-gateway-apim-01/diagnostics/applicationinsights"
 }
 
