@@ -1,5 +1,6 @@
 <fragment>
-  <set-variable name="authHeader" value="@(context.Request.Headers.GetValueOrDefault("Authorization", ""))" />  <choose>
+  <set-variable name="authHeader" value="@(context.Request.Headers.GetValueOrDefault("Authorization", ""))" />  
+  <choose>
     <when condition="@(!context.Variables.GetValueOrDefault<string>("authHeader").StartsWith("Bearer "))">
       <return-response>
         <set-status code="401" reason="Unauthorized" />
