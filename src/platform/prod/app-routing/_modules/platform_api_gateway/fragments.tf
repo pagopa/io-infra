@@ -3,7 +3,7 @@ resource "azurerm_api_management_policy_fragment" "auth" {
   depends_on        = [azurerm_api_management_named_value.session_manager_introspection_url]
   name              = "ioapp-authenticated"
   format            = "rawxml"
-  value             = file("./_modules/platform_api_gateway/fragments/auth.xml")
+  value             = file("${path.module}/fragments/auth.xml")
 }
 
 resource "azurerm_api_management_policy_fragment" "auth_cache" {
@@ -15,5 +15,5 @@ resource "azurerm_api_management_policy_fragment" "auth_cache" {
   ]
   name   = "ioapp-authenticated-cache"
   format = "rawxml"
-  value  = file("./_modules/platform_api_gateway/fragments/auth-cache.xml")
+  value  = file("${path.module}/fragments/auth-cache.xml")
 }
