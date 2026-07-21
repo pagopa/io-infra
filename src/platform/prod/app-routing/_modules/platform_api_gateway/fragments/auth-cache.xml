@@ -30,10 +30,7 @@
 	</choose>
 
 	<!-- 3. Lookup user data in APIM internal cache -->
-	<cache-lookup-value
-		key="@(&quot;{{session-token-cache-prefix}}&quot; + context.Variables.GetValueOrDefault&lt;string&gt;(&quot;bearerToken&quot;))"
-		variable-name="cachedUserData"
-		caching-type="internal" />
+	<cache-lookup-value key="@(&quot;{{session-token-cache-prefix}}&quot; + context.Variables.GetValueOrDefault&lt;string&gt;(&quot;bearerToken&quot;))" variable-name="cachedUserData" caching-type="internal" />
 
 	<!-- 4. If cache HIT, use cached value; otherwise call introspection -->
 	<choose>
