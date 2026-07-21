@@ -18,7 +18,7 @@
 			<value>application/json</value>
 		</set-header>
 		<set-header name="Authorization" exists-action="override">
-			<value>@(context.Variables.GetValueOrDefault<string>("authHeader"))</value>
+			<value>@(context.Variables.GetValueOrDefault&lt;string&gt;("authHeader"))</value>
 		</set-header>
 		<set-header name="Host">
 			<value>{{platform-api-gateway-hostname-internal}}</value>
