@@ -56,7 +56,7 @@
 				</set-header>
 
 				<set-header name="Authorization" exists-action="override">
-					<value>@(context.Variables.GetValueOrDefault&lt;string&gt;("authHeader"))</value>
+					<value>@(context.Variables.GetValueOrDefault&lt;string&gt;(&quot;authHeader&quot;))</value>
 				</set-header>
 
 				<set-header name="Host">
