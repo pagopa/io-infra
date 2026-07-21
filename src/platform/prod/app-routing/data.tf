@@ -76,6 +76,10 @@ data "azuread_group" "bonus_admins" {
   display_name = "${local.prefix}-${local.env_short}-adgroup-bonus-admins"
 }
 
+data "azuread_group" "svc_devs" {
+  display_name = "${local.prefix}-${local.env_short}-adgroup-svc-developers"
+}
+
 # Key Vault
 
 data "azurerm_key_vault" "ioweb_kv" {
