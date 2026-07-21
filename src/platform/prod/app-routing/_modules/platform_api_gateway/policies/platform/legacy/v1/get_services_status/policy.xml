@@ -1,0 +1,32 @@
+<!--
+    API Management Policy Description
+
+    This policy implements caching for the API with the following behavior:
+    - Inbound: Checks the internal cache for a matching response before forwarding the request
+    - Backend: Standard processing, no modifications
+    - Outbound: Stores API responses in the cache for 60 seconds ONLY for status codes 200 and 304
+    - Error: Standard error handling
+
+    The cache is configured as "internal" type with no downstream caching.
+    Response caching helps reduce backend load and improve response times for frequently accessed endpoints.
+-->
+<policies>
+    <inbound>
+        <base />
+        <cache-lookup vary-by-developer="false" vary-by-developer-groups="false" downstream-caching-type="none" caching-type="internal"/>
+    </inbound>
+    <backend>
+        <base />
+    </backend>
+    <outbound>
+      <choose>
+          <when condition="@(context.Response.StatusCode == 200 || context.Response.StatusCode == 304)">
+              <cache-store duration="60" cache-response="true"/>
+          </when>
+      </choose>
+      <base />
+    </outbound>
+    <on-error>
+        <base />
+    </on-error>
+</policies>

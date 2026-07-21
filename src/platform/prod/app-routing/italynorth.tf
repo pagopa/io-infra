@@ -35,6 +35,47 @@ module "apim_itn" {
   tags = local.tags
 }
 
+module "platform_api_gateway_apim_itn" {
+  source = "./_modules/platform_api_gateway"
+
+  location                = "italynorth"
+  location_short          = local.core.resource_groups.italynorth.location_short
+  project                 = local.project_itn
+  prefix                  = local.prefix
+  resource_group_common   = local.resource_groups.itn.common
+  resource_group_internal = local.resource_groups.itn.internal
+
+  vnet_common = local.core.networking.itn.vnet_common
+  cidr_subnet = "10.20.101.0/24"
+
+  datasources = {
+    azurerm_client_config = data.azurerm_client_config.current
+  }
+
+  key_vault = local.core.key_vault.weu.kv
+
+  action_group_id = local.platform_observability.monitoring_westeurope.action_groups.error
+  application_insights = {
+    id                         = local.platform_observability.monitoring_westeurope.appi.id
+    connection_string          = local.platform_observability.monitoring_westeurope.appi_connection_string
+    log_analytics_workspace_id = local.platform_observability.monitoring_westeurope.log.id
+  }
+
+  azure_adgroup_platform_admins_object_id = data.azuread_group.platform_admins.object_id
+  azure_adgroup_bonus_admins_object_id    = data.azuread_group.bonus_admins.object_id
+  azure_adgroup_auth_admins_object_id     = data.azuread_group.auth_admins.object_id
+  azure_adgroup_com_admins_object_id      = data.azuread_group.com_admins.object_id
+
+  azure_user_assigned_identity_auth_infra_cd  = data.azurerm_user_assigned_identity.auth_n_identity_infra_cd.principal_id
+  azure_user_assigned_identity_bonus_infra_cd = data.azurerm_user_assigned_identity.bonus_infra_cd.principal_id
+  azure_user_assigned_identity_com_infra_cd   = data.azurerm_user_assigned_identity.com_infra_cd.principal_id
+  azure_user_assigned_identity_fims_infra_cd  = data.azurerm_user_assigned_identity.fims_infra_cd.principal_id
+
+  app_backend_urls = [for host in local.platform_app_backend.app_backend.weu : "https://${host.default_hostname}"]
+
+  tags = local.tags
+}
+
 module "application_gateway_itn" {
   source = "./_modules/application_gateway"
 
