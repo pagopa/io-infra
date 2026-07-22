@@ -44,3 +44,10 @@ moved {
   from = module.iam_adgroup_bonus_infra_cd
   to   = module.iam_adgroup["ef6b556d-4d33-4467-ad9d-6b5540cbde6b"]
 }
+
+resource "azurerm_role_assignment" "apim_key_vault_secrets_reader" {
+  description          = "Allow ${module.platform_api_gateway.name} to read secrets"
+  principal_id         = module.platform_api_gateway.principal_id
+  role_definition_name = "Key Vault Secrets User"
+  scope                = var.key_vault_common.id
+}
