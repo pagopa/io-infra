@@ -1,13 +1,3 @@
-output "apim" {
-  value = {
-    itn = {
-      id                      = module.apim_itn.id
-      resource_group_common   = local.resource_groups.itn.common
-      resource_group_internal = local.resource_groups.itn.internal
-    }
-  }
-}
-
 output "private_endpoints" {
   value = module.private_endpoints.private_endpoints
 }
