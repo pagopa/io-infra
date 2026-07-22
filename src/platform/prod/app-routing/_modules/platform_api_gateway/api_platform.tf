@@ -32,11 +32,13 @@ resource "azurerm_api_management_api" "platform_legacy" {
   path         = "api/platform-legacy"
   protocols    = ["https"]
 
-  import {
-    content_format = "openapi-link"
-    # The commit id refers to the last commit of refactor-openapi-specs branch.
-    content_value = "https://raw.githubusercontent.com/pagopa/io-backend/9e5e8ab6ee8ea67c4b8c50e02a1da4862c33ccf2/openapi/generated/api_platform_legacy.yaml"
-  }
+  # Import block commented out to disable the API definition re-import in terraform after the migration in the platform domain
+
+  # import {
+  #   content_format = "openapi-link"
+  #   # The commit id refers to the last commit of refactor-openapi-specs branch.
+  #   content_value = "https://raw.githubusercontent.com/pagopa/io-backend/9e5e8ab6ee8ea67c4b8c50e02a1da4862c33ccf2/openapi/generated/api_platform_legacy.yaml"
+  # }
 }
 
 resource "azurerm_api_management_product_api" "platform_platform_legacy" {
@@ -126,10 +128,12 @@ resource "azurerm_api_management_api" "platform_internal" {
   path         = "api/${local.api_group_prefixes.session}"
   protocols    = ["https"]
 
-  import {
-    content_format = "openapi"
-    content_value  = file("${path.module}/api/platform-internal/v1/api.yaml")
-  }
+  # Import block commented out to disable the API definition re-import in terraform after the migration in the platform domain
+
+  # import {
+  #   content_format = "openapi"
+  #   content_value  = file("${path.module}/api/platform-internal/v1/api.yaml")
+  # }
 }
 
 resource "azurerm_api_management_product_api" "platform_platform_internal" {
