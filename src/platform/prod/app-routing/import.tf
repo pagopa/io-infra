@@ -33,3 +33,8 @@ import {
   to = azurerm_role_assignment.dev_portal_role["Contributor"]
   id = "/subscriptions/ec285037-c673-4f58-b594-d7c480da4e8b/resourceGroups/io-p-itn-common-rg-01/providers/Microsoft.ApiManagement/service/io-p-itn-apim-01/providers/Microsoft.Authorization/roleAssignments/a7ae30ff-8ad1-9233-bcea-319dfbf9a2fb"
 }
+
+import {
+  to = azurerm_role_assignment.svc_devs_itn
+  id = "/subscriptions/ec285037-c673-4f58-b594-d7c480da4e8b/resourceGroups/io-p-itn-common-rg-01/providers/Microsoft.ApiManagement/service/io-p-itn-apim-01/providers/Microsoft.Authorization/roleAssignments/e35e05d6-2084-b2b9-e925-cc961360629b"
+}
