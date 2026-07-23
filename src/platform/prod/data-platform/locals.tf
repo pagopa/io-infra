@@ -10,8 +10,11 @@ locals {
   resource_groups = {
 
     itn = {
-      common   = "${local.project_itn}-common-rg-01"
       internal = "${local.project_itn}-common-rg-01"
+    }
+    weu = {
+      common = "${local.project_weu_legacy}-rg-common"
+      event  = "${local.project_weu_legacy}-evt-rg"
     }
   }
 
