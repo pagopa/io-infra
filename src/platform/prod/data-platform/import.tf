@@ -442,3 +442,30 @@ import {
   to = module.cosmos_api_weu.module.cosno_api_svc_devs.module.cosmos.azurerm_cosmosdb_sql_role_assignment.this["io-p-cosmos-api|db|*|reader"]
   id = "/subscriptions/ec285037-c673-4f58-b594-d7c480da4e8b/resourceGroups/io-p-rg-internal/providers/Microsoft.DocumentDB/databaseAccounts/io-p-cosmos-api/sqlRoleAssignments/fc7e7cce-25cf-a9e9-ddf3-d49f28ca82cb"
 }
+
+# REDIS
+
+import {
+  to = module.redis_weu.azurerm_redis_cache.common
+  id = "/subscriptions/ec285037-c673-4f58-b594-d7c480da4e8b/resourceGroups/io-p-rg-common/providers/Microsoft.Cache/redis/io-p-redis-common"
+}
+
+import {
+  to = module.redis_weu.azurerm_subnet.redis
+  id = "/subscriptions/ec285037-c673-4f58-b594-d7c480da4e8b/resourceGroups/io-p-rg-common/providers/Microsoft.Network/virtualNetworks/io-p-vnet-common/subnets/rediscommon"
+}
+
+import {
+  to = module.redis_weu.module.redis_common_backup_zrs.azurerm_monitor_metric_alert.storage_account_low_availability["0"]
+  id = "/subscriptions/ec285037-c673-4f58-b594-d7c480da4e8b/resourceGroups/io-p-rg-common/providers/Microsoft.Insights/metricAlerts/[iopstredisbackup] Low Availability"
+}
+
+import {
+  to = module.redis_weu.module.redis_common_backup_zrs.azurerm_security_center_storage_defender.this["0"]
+  id = "/subscriptions/ec285037-c673-4f58-b594-d7c480da4e8b/resourceGroups/io-p-rg-common/providers/Microsoft.Storage/storageAccounts/iopstredisbackup"
+}
+
+import {
+  to = module.redis_weu.module.redis_common_backup_zrs.azurerm_storage_account.this
+  id = "/subscriptions/ec285037-c673-4f58-b594-d7c480da4e8b/resourceGroups/io-p-rg-common/providers/Microsoft.Storage/storageAccounts/iopstredisbackup"
+}
