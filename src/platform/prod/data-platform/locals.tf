@@ -15,10 +15,132 @@ locals {
     }
   }
 
-  #   core                   = data.terraform_remote_state.core.outputs
-  #   platform_core          = data.terraform_remote_state.platform_core.outputs
-  #   platform_observability = data.terraform_remote_state.platform_observability.outputs
-  #   platform_app_backend   = data.terraform_remote_state.platform_app_backend.outputs
+  core                   = data.terraform_remote_state.core.outputs
+  platform_core          = data.terraform_remote_state.platform_core.outputs
+  platform_observability = data.terraform_remote_state.platform_observability.outputs
+
+  eventhubs = [
+    {
+      name              = "io-cosmosdb-services"
+      partitions        = 5
+      message_retention = 7
+      consumers         = []
+      keys = [
+        {
+          name   = "io-fn-elt"
+          listen = false
+          send   = true
+          manage = false
+        },
+        {
+          name   = "pdnd"
+          listen = true
+          send   = false
+          manage = false
+        }
+      ]
+    },
+    {
+      name              = "io-cosmosdb-profiles"
+      partitions        = 5
+      message_retention = 7
+      consumers         = []
+      keys = [
+        {
+          name   = "io-fn-elt"
+          listen = false
+          send   = true
+          manage = false
+        },
+        {
+          name   = "pdnd"
+          listen = true
+          send   = false
+          manage = false
+        }
+      ]
+    },
+    {
+      name              = "import-command"
+      partitions        = 2
+      message_retention = 7
+      consumers         = []
+      keys = [
+        {
+          name   = "ops"
+          listen = false
+          send   = true
+          manage = false
+        },
+        {
+          name   = "io-fn-elt"
+          listen = true
+          send   = false
+          manage = false
+        }
+      ]
+    },
+    {
+      name              = "io-cosmosdb-message-status"
+      partitions        = 32
+      message_retention = 7
+      consumers         = ["io-messages"]
+      keys = [
+        {
+          name   = "io-cdc"
+          listen = false
+          send   = true
+          manage = false
+        },
+        {
+          name   = "io-messages"
+          listen = true
+          send   = false
+          manage = false
+        }
+      ]
+    },
+    {
+      name              = "pdnd-io-cosmosdb-service-preferences"
+      partitions        = 30
+      message_retention = 7
+      consumers         = []
+      keys = [
+        {
+          name   = "io-fn-elt"
+          listen = false
+          send   = true
+          manage = false
+        },
+        {
+          name   = "pdnd"
+          listen = true
+          send   = false
+          manage = false
+        }
+      ]
+    },
+    {
+      name              = "io-cosmosdb-message-status-for-view"
+      partitions        = 32
+      message_retention = 7
+      consumers         = ["io-messages"]
+      keys = [
+        {
+          name   = "io-cdc"
+          listen = false
+          send   = true
+          manage = false
+        },
+        {
+          name   = "io-messages"
+          listen = true
+          send   = false
+          manage = false
+        }
+      ]
+    }
+  ]
 
   tags = {
     CostCenter   = "TS000 - Tecnologia e Servizi"
