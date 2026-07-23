@@ -456,12 +456,12 @@ import {
 }
 
 import {
-  to = module.redis_weu.module.redis_common_backup_zrs.azurerm_monitor_metric_alert.storage_account_low_availability["0"]
+  to = module.redis_weu.module.redis_common_backup_zrs.azurerm_monitor_metric_alert.storage_account_low_availability[0]
   id = "/subscriptions/ec285037-c673-4f58-b594-d7c480da4e8b/resourceGroups/io-p-rg-common/providers/Microsoft.Insights/metricAlerts/[iopstredisbackup] Low Availability"
 }
 
 import {
-  to = module.redis_weu.module.redis_common_backup_zrs.azurerm_security_center_storage_defender.this["0"]
+  to = module.redis_weu.module.redis_common_backup_zrs.azurerm_security_center_storage_defender.this[0]
   id = "/subscriptions/ec285037-c673-4f58-b594-d7c480da4e8b/resourceGroups/io-p-rg-common/providers/Microsoft.Storage/storageAccounts/iopstredisbackup"
 }
 
