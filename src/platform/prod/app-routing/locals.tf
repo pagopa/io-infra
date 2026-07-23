@@ -21,12 +21,11 @@ locals {
   platform_app_backend   = data.terraform_remote_state.platform_app_backend.outputs
 
   tags = {
-    CostCenter   = "TS000 - Tecnologia e Servizi"
-    CreatedBy    = "Terraform"
-    Environment  = "Prod"
-    BusinessUnit = "App IO"
-    Source       = "https://github.com/pagopa/io-infra/blob/main/src/common/prod"
-    #Source         = "https://github.com/pagopa/io-infra/blob/main/src/platform/prod/app-routing/" # TODO: Change tags after mass import
+    CostCenter     = "TS000 - Tecnologia e Servizi"
+    CreatedBy      = "Terraform"
+    Environment    = "Prod"
+    BusinessUnit   = "App IO"
+    Source         = "https://github.com/pagopa/io-infra/blob/main/src/platform/prod/app-routing/"
     ManagementTeam = "IO Platform"
   }
 }
