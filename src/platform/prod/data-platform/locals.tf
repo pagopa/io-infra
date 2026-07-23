@@ -145,6 +145,10 @@ locals {
     }
   ]
 
+  cosmos_api = {
+    allowed_subnets = []
+  }
+
   tags = {
     CostCenter   = "TS000 - Tecnologia e Servizi"
     CreatedBy    = "Terraform"
