@@ -1,319 +1,10 @@
 # This file will contain all the removed without destroy code blocks generated and used during the common domain split into multiple subdomains / platform
 # https://pagopa.atlassian.net/browse/IOPLT-1626
 
-removed {
-  from = dx_available_subnet_cidr.next_cidr_snet_agw
-
-  lifecycle {
-    destroy = false
-  }
-}
-
-# APIM
-
-removed {
-  from = module.apim_itn.azurerm_key_vault_access_policy.apim_kv_policy
-
-  lifecycle {
-    destroy = false
-  }
-}
-
-removed {
-  from = module.apim_itn.azurerm_key_vault_access_policy.common
-
-  lifecycle {
-    destroy = false
-  }
-}
-
-removed {
-  from = module.apim_itn.azurerm_public_ip.apim
-
-  lifecycle {
-    destroy = false
-  }
-}
-
-removed {
-  from = module.apim_itn.azurerm_subnet.apim
-
-  lifecycle {
-    destroy = false
-  }
-}
-
-removed {
-  from = module.apim_itn.module.apim.azurerm_api_management_diagnostic.applicationinsights
-
-  lifecycle {
-    destroy = false
-  }
-}
-
-removed {
-  from = module.apim_itn.module.apim.azurerm_api_management_logger.this
-
-  lifecycle {
-    destroy = false
-  }
-}
-
-removed {
-  from = module.apim_itn.module.apim.azurerm_api_management.this
-
-  lifecycle {
-    destroy = false
-  }
-}
-
-removed {
-  from = module.apim_itn.module.apim.azurerm_monitor_autoscale_setting.this
-
-  lifecycle {
-    destroy = false
-  }
-}
-
-removed {
-  from = module.apim_itn.module.apim.azurerm_monitor_metric_alert.this
-
-  lifecycle {
-    destroy = false
-  }
-}
-
-removed {
-  from = module.apim_itn.module.apim.azurerm_network_security_group.nsg_apim
-
-  lifecycle {
-    destroy = false
-  }
-}
-
-removed {
-  from = module.apim_itn.module.apim.azurerm_private_dns_a_record.apim_azure_api_net
-
-  lifecycle {
-    destroy = false
-  }
-}
-
-removed {
-  from = module.apim_itn.module.apim.azurerm_private_dns_a_record.apim_management_azure_api_net
-
-  lifecycle {
-    destroy = false
-  }
-}
-
-removed {
-  from = module.apim_itn.module.apim.azurerm_private_dns_a_record.apim_scm_azure_api_net
-
-  lifecycle {
-    destroy = false
-  }
-}
-
-removed {
-  from = module.apim_itn.module.apim.azurerm_subnet_network_security_group_association.snet_nsg
-
-  lifecycle {
-    destroy = false
-  }
-}
-
-removed {
-  from = module.apim_itn.module.iam_adgroup_auth_admins.module.apim.azurerm_role_assignment.this
-
-  lifecycle {
-    destroy = false
-  }
-}
-
-removed {
-  from = module.apim_itn.module.iam_adgroup_bonus_admins.module.apim.azurerm_role_assignment.this
-
-  lifecycle {
-    destroy = false
-  }
-}
-
-removed {
-  from = module.apim_itn.module.iam_adgroup_com_admins.module.apim.azurerm_role_assignment.this
-
-  lifecycle {
-    destroy = false
-  }
-}
-
-removed {
-  from = module.apim_itn.module.iam_adgroup_svc_admins.module.apim.azurerm_role_assignment.this
-
-  lifecycle {
-    destroy = false
-  }
-}
-
-removed {
-  from = module.apim_itn.module.iam_adgroup_wallet_admins.module.apim.azurerm_role_assignment.this
-
-  lifecycle {
-    destroy = false
-  }
-}
-
-removed {
-  from = module.apim_itn.module.iam_cgn_pe_backend_app_01.module.apim.azurerm_role_assignment.this
-
-  lifecycle {
-    destroy = false
-  }
-}
+# PLATFORM SERVICE BUS
 
-# APP GATEWAY
-
-removed {
-  from = module.application_gateway_itn.azurerm_application_gateway.this
-
-  lifecycle {
-    destroy = false
-  }
-}
-
-removed {
-  from = module.application_gateway_itn.azurerm_key_vault_access_policy.app_gateway_policy
-
-  lifecycle {
-    destroy = false
-  }
-}
-
-removed {
-  from = module.application_gateway_itn.azurerm_key_vault_access_policy.app_gateway_policy_common
-
-  lifecycle {
-    destroy = false
-  }
-}
-
-removed {
-  from = module.application_gateway_itn.azurerm_key_vault_access_policy.app_gateway_policy_ioweb
-
-  lifecycle {
-    destroy = false
-  }
-}
-
-removed {
-  from = module.application_gateway_itn.azurerm_monitor_metric_alert.this
-
-  lifecycle {
-    destroy = false
-  }
-}
-
-removed {
-  from = module.application_gateway_itn.azurerm_public_ip.agw
-
-  lifecycle {
-    destroy = false
-  }
-}
-
-removed {
-  from = module.application_gateway_itn.azurerm_subnet.agw
-
-  lifecycle {
-    destroy = false
-  }
-}
-
-removed {
-  from = module.application_gateway_itn.azurerm_user_assigned_identity.appgateway
-
-  lifecycle {
-    destroy = false
-  }
-}
-
-removed {
-  from = module.application_gateway_itn.azurerm_web_application_firewall_policy.agw
-
-  lifecycle {
-    destroy = false
-  }
-}
-
-removed {
-  from = module.application_gateway_itn.azurerm_web_application_firewall_policy.app
-
-  lifecycle {
-    destroy = false
-  }
-}
-
-removed {
-  from = module.application_gateway_itn.module.app_gw_ioweb_kv.module.key_vault.azurerm_role_assignment.certificates
-
-  lifecycle {
-    destroy = false
-  }
-}
-
-# PLATFORM API GATEWAY
-
-
-removed {
-  from = module.platform_api_gateway_apim_itn.azapi_resource.app_backend_pool
-
-  lifecycle {
-    destroy = false
-  }
-}
-
-removed {
-  from = module.platform_api_gateway_apim_itn.azurerm_api_management_api_operation_policy.platform_internal_delete_session
-
-  lifecycle {
-    destroy = false
-  }
-}
-
-removed {
-  from = module.platform_api_gateway_apim_itn.azurerm_api_management_api_operation_policy.platform_internal_get_cached_session
-
-  lifecycle {
-    destroy = false
-  }
-}
-
-removed {
-  from = module.platform_api_gateway_apim_itn.azurerm_api_management_api_operation_policy.platform_legacy_get_ping
-
-  lifecycle {
-    destroy = false
-  }
-}
-
-removed {
-  from = module.platform_api_gateway_apim_itn.azurerm_api_management_api_operation_policy.platform_legacy_get_ping_head
-
-  lifecycle {
-    destroy = false
-  }
-}
-
-removed {
-  from = module.platform_api_gateway_apim_itn.azurerm_api_management_api_operation_policy.platform_legacy_get_server_info
-
-  lifecycle {
-    destroy = false
-  }
-}
-
 removed {
-  from = module.platform_api_gateway_apim_itn.azurerm_api_management_api_operation_policy.platform_legacy_get_services_status
+  from = module.platform_service_bus_namespace_itn.module.platform_service_bus_namespace.azurerm_monitor_autoscale_setting.this
 
   lifecycle {
     destroy = false
@@ -321,7 +12,7 @@ removed {
 }
 
 removed {
-  from = module.platform_api_gateway_apim_itn.azurerm_api_management_api_operation_policy.platform_legacy_get_services_status_head
+  from = module.platform_service_bus_namespace_itn.module.platform_service_bus_namespace.azurerm_private_endpoint.service_bus_pep
 
   lifecycle {
     destroy = false
@@ -329,23 +20,17 @@ removed {
 }
 
 removed {
-  from = module.platform_api_gateway_apim_itn.azurerm_api_management_api_operation_policy.platform_legacy_redirect
+  from = module.platform_service_bus_namespace_itn.module.platform_service_bus_namespace.azurerm_servicebus_namespace.this
 
   lifecycle {
     destroy = false
   }
 }
-
-removed {
-  from = module.platform_api_gateway_apim_itn.azurerm_api_management_api_policy.platform_internal
 
-  lifecycle {
-    destroy = false
-  }
-}
+# EVENT HUB
 
 removed {
-  from = module.platform_api_gateway_apim_itn.azurerm_api_management_api_policy.platform_legacy
+  from = module.event_hubs_weu.azurerm_key_vault_secret.event_hub_keys
 
   lifecycle {
     destroy = false
@@ -353,7 +38,7 @@ removed {
 }
 
 removed {
-  from = module.platform_api_gateway_apim_itn.azurerm_api_management_api_version_set.platform_internal
+  from = module.event_hubs_weu.azurerm_resource_group.event_rg
 
   lifecycle {
     destroy = false
@@ -361,7 +46,7 @@ removed {
 }
 
 removed {
-  from = module.platform_api_gateway_apim_itn.azurerm_api_management_api.platform_internal
+  from = module.event_hubs_weu.module.event_hub.azurerm_eventhub_authorization_rule.events
 
   lifecycle {
     destroy = false
@@ -369,7 +54,7 @@ removed {
 }
 
 removed {
-  from = module.platform_api_gateway_apim_itn.azurerm_api_management_api.platform_legacy
+  from = module.event_hubs_weu.module.event_hub.azurerm_eventhub_consumer_group.events
 
   lifecycle {
     destroy = false
@@ -377,7 +62,7 @@ removed {
 }
 
 removed {
-  from = module.platform_api_gateway_apim_itn.azurerm_api_management_backend.app_backend_backends
+  from = module.event_hubs_weu.module.event_hub.azurerm_eventhub_namespace.this
 
   lifecycle {
     destroy = false
@@ -385,7 +70,7 @@ removed {
 }
 
 removed {
-  from = module.platform_api_gateway_apim_itn.azurerm_api_management_named_value.platform_api_gateway_hostname_internal
+  from = module.event_hubs_weu.module.event_hub.azurerm_eventhub.events
 
   lifecycle {
     destroy = false
@@ -393,7 +78,7 @@ removed {
 }
 
 removed {
-  from = module.platform_api_gateway_apim_itn.azurerm_api_management_named_value.session_manager_introspection_url
+  from = module.event_hubs_weu.module.event_hub.azurerm_monitor_metric_alert.this
 
   lifecycle {
     destroy = false
@@ -401,23 +86,17 @@ removed {
 }
 
 removed {
-  from = module.platform_api_gateway_apim_itn.azurerm_api_management_named_value.session_token_cache_prefix
+  from = module.event_hubs_weu.module.eventhub_snet.azurerm_subnet.this
 
   lifecycle {
     destroy = false
   }
 }
 
-removed {
-  from = module.platform_api_gateway_apim_itn.azurerm_api_management_policy_fragment.auth
-
-  lifecycle {
-    destroy = false
-  }
-}
+# REDIS
 
 removed {
-  from = module.platform_api_gateway_apim_itn.azurerm_api_management_policy_fragment.auth_cache
+  from = module.redis_weu.azurerm_redis_cache.common
 
   lifecycle {
     destroy = false
@@ -425,7 +104,7 @@ removed {
 }
 
 removed {
-  from = module.platform_api_gateway_apim_itn.azurerm_api_management_product_api.platform_platform_internal
+  from = module.redis_weu.azurerm_subnet.redis
 
   lifecycle {
     destroy = false
@@ -433,7 +112,7 @@ removed {
 }
 
 removed {
-  from = module.platform_api_gateway_apim_itn.azurerm_api_management_product_api.platform_platform_legacy
+  from = module.redis_weu.module.redis_common_backup_zrs.azurerm_monitor_metric_alert.storage_account_low_availability
 
   lifecycle {
     destroy = false
@@ -441,7 +120,7 @@ removed {
 }
 
 removed {
-  from = module.platform_api_gateway_apim_itn.azurerm_api_management_product_policy.auth
+  from = module.redis_weu.module.redis_common_backup_zrs.azurerm_security_center_storage_defender.this
 
   lifecycle {
     destroy = false
@@ -449,23 +128,17 @@ removed {
 }
 
 removed {
-  from = module.platform_api_gateway_apim_itn.azurerm_api_management_product_policy.institutions
+  from = module.redis_weu.module.redis_common_backup_zrs.azurerm_storage_account.this
 
   lifecycle {
     destroy = false
   }
 }
 
-removed {
-  from = module.platform_api_gateway_apim_itn.azurerm_api_management_product_policy.platform
-
-  lifecycle {
-    destroy = false
-  }
-}
+# COSMOS
 
 removed {
-  from = module.platform_api_gateway_apim_itn.azurerm_api_management_product_policy.sign
+  from = module.cosmos_api_weu.azurerm_cosmosdb_account.this
 
   lifecycle {
     destroy = false
@@ -473,7 +146,7 @@ removed {
 }
 
 removed {
-  from = module.platform_api_gateway_apim_itn.azurerm_api_management_product.auth
+  from = module.cosmos_api_weu.azurerm_cosmosdb_sql_container.these
 
   lifecycle {
     destroy = false
@@ -481,7 +154,7 @@ removed {
 }
 
 removed {
-  from = module.platform_api_gateway_apim_itn.azurerm_api_management_product.institutions
+  from = module.cosmos_api_weu.azurerm_cosmosdb_sql_database.db
 
   lifecycle {
     destroy = false
@@ -489,7 +162,7 @@ removed {
 }
 
 removed {
-  from = module.platform_api_gateway_apim_itn.azurerm_api_management_product.platform
+  from = module.cosmos_api_weu.azurerm_monitor_metric_alert.throttling_alert
 
   lifecycle {
     destroy = false
@@ -497,7 +170,7 @@ removed {
 }
 
 removed {
-  from = module.platform_api_gateway_apim_itn.azurerm_api_management_product.sign
+  from = module.cosmos_api_weu.azurerm_private_endpoint.sql
 
   lifecycle {
     destroy = false
@@ -505,7 +178,7 @@ removed {
 }
 
 removed {
-  from = module.platform_api_gateway_apim_itn.azurerm_key_vault_access_policy.platform_api_gateway_kv_policy
+  from = module.cosmos_api_weu.azurerm_private_endpoint.sql_itn
 
   lifecycle {
     destroy = false
@@ -513,7 +186,7 @@ removed {
 }
 
 removed {
-  from = module.platform_api_gateway_apim_itn.azurerm_subnet.platform_api_gateway
+  from = module.cosmos_api_weu.azurerm_role_assignment.cosno_api_auth_admins
 
   lifecycle {
     destroy = false
@@ -521,7 +194,7 @@ removed {
 }
 
 removed {
-  from = module.platform_api_gateway_apim_itn.module.iam_adgroup.module.apim.azurerm_role_assignment.this
+  from = module.cosmos_api_weu.azurerm_role_assignment.cosno_api_auth_devs
 
   lifecycle {
     destroy = false
@@ -529,7 +202,7 @@ removed {
 }
 
 removed {
-  from = module.platform_api_gateway_apim_itn.module.platform_api_gateway.azurerm_api_management_diagnostic.applicationinsights
+  from = module.cosmos_api_weu.azurerm_role_assignment.cosno_api_com_admins
 
   lifecycle {
     destroy = false
@@ -537,7 +210,7 @@ removed {
 }
 
 removed {
-  from = module.platform_api_gateway_apim_itn.module.platform_api_gateway.azurerm_api_management_logger.this
+  from = module.cosmos_api_weu.azurerm_role_assignment.cosno_api_com_devs
 
   lifecycle {
     destroy = false
@@ -545,7 +218,7 @@ removed {
 }
 
 removed {
-  from = module.platform_api_gateway_apim_itn.module.platform_api_gateway.azurerm_api_management.this
+  from = module.cosmos_api_weu.azurerm_role_assignment.cosno_api_identities
 
   lifecycle {
     destroy = false
@@ -553,7 +226,7 @@ removed {
 }
 
 removed {
-  from = module.platform_api_gateway_apim_itn.module.platform_api_gateway.azurerm_monitor_autoscale_setting.this
+  from = module.cosmos_api_weu.azurerm_role_assignment.cosno_api_svc_admins
 
   lifecycle {
     destroy = false
@@ -561,7 +234,7 @@ removed {
 }
 
 removed {
-  from = module.platform_api_gateway_apim_itn.module.platform_api_gateway.azurerm_monitor_diagnostic_setting.apim
+  from = module.cosmos_api_weu.azurerm_role_assignment.cosno_api_svc_devs
 
   lifecycle {
     destroy = false
@@ -569,7 +242,7 @@ removed {
 }
 
 removed {
-  from = module.platform_api_gateway_apim_itn.module.platform_api_gateway.azurerm_monitor_metric_alert.this
+  from = module.cosmos_api_weu.module.cosno_api_auth_admins.module.cosmos.azurerm_cosmosdb_sql_role_assignment.this
 
   lifecycle {
     destroy = false
@@ -577,7 +250,7 @@ removed {
 }
 
 removed {
-  from = module.platform_api_gateway_apim_itn.module.platform_api_gateway.azurerm_network_security_group.nsg_apim
+  from = module.cosmos_api_weu.module.cosno_api_auth_devs.module.cosmos.azurerm_cosmosdb_sql_role_assignment.this
 
   lifecycle {
     destroy = false
@@ -585,7 +258,7 @@ removed {
 }
 
 removed {
-  from = module.platform_api_gateway_apim_itn.module.platform_api_gateway.azurerm_private_dns_a_record.apim_azure_api_net
+  from = module.cosmos_api_weu.module.cosno_api_com_admins.module.cosmos.azurerm_cosmosdb_sql_role_assignment.this
 
   lifecycle {
     destroy = false
@@ -593,7 +266,7 @@ removed {
 }
 
 removed {
-  from = module.platform_api_gateway_apim_itn.module.platform_api_gateway.azurerm_private_dns_a_record.apim_management_azure_api_net
+  from = module.cosmos_api_weu.module.cosno_api_com_devs.module.cosmos.azurerm_cosmosdb_sql_role_assignment.this
 
   lifecycle {
     destroy = false
@@ -601,7 +274,7 @@ removed {
 }
 
 removed {
-  from = module.platform_api_gateway_apim_itn.module.platform_api_gateway.azurerm_private_dns_a_record.apim_scm_azure_api_net
+  from = module.cosmos_api_weu.module.cosno_api_svc_admins.module.cosmos.azurerm_cosmosdb_sql_role_assignment.this
 
   lifecycle {
     destroy = false
@@ -609,25 +282,17 @@ removed {
 }
 
 removed {
-  from = module.platform_api_gateway_apim_itn.module.platform_api_gateway.azurerm_subnet_network_security_group_association.snet_nsg
+  from = module.cosmos_api_weu.module.cosno_api_svc_devs.module.cosmos.azurerm_cosmosdb_sql_role_assignment.this
 
   lifecycle {
     destroy = false
   }
 }
-
-# APIM IAM
-
-removed {
-  from = azurerm_role_assignment.apim_client_role
 
-  lifecycle {
-    destroy = false
-  }
-}
+# KV SECRETS
 
 removed {
-  from = azurerm_role_assignment.dev_portal_role
+  from = azurerm_key_vault_secret.cosmos_api_connection_string
 
   lifecycle {
     destroy = false
@@ -635,7 +300,7 @@ removed {
 }
 
 removed {
-  from = azurerm_role_assignment.svc_devs_itn
+  from = azurerm_key_vault_secret.cosmos_api_primary_key
 
   lifecycle {
     destroy = false
