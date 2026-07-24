@@ -288,3 +288,21 @@ removed {
     destroy = false
   }
 }
+
+# KV SECRETS
+
+removed {
+  from = azurerm_key_vault_secret.cosmos_api_connection_string
+
+  lifecycle {
+    destroy = false
+  }
+}
+
+removed {
+  from = azurerm_key_vault_secret.cosmos_api_primary_key
+
+  lifecycle {
+    destroy = false
+  }
+}
