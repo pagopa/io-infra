@@ -137,15 +137,6 @@ data "azurerm_user_assigned_identity" "managed_identity_io_infra_cd" {
   resource_group_name = "${local.prefix}-${local.env_short}-identity-rg"
 }
 
-# Cosmos API
-data "azurerm_subnet" "cosmos_api_allowed" {
-  for_each = toset(local.cosmos_api.allowed_subnets)
-
-  name                 = each.value
-  virtual_network_name = local.core.networking.weu.vnet_common.name
-  resource_group_name  = local.core.networking.weu.vnet_common.resource_group_name
-}
-
 # Functions
 data "azurerm_linux_function_app" "function_profile" {
   name                = "${local.project_itn}-auth-profile-func-02"
