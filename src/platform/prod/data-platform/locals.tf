@@ -154,7 +154,7 @@ locals {
     CreatedBy      = "Terraform"
     Environment    = "Prod"
     BusinessUnit   = "App IO"
-    Source         = "https://github.com/pagopa/io-infra/blob/main/src/platform/prod/app-routing/"
+    Source         = "https://github.com/pagopa/io-infra/blob/main/src/platform/prod/data-platform/"
     ManagementTeam = "IO Platform"
   }
 }
