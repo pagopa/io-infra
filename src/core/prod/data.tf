@@ -80,3 +80,15 @@ data "azurerm_private_dns_zone" "key_vault" {
   name                = "privatelink.vaultcore.azure.net"
   resource_group_name = "${local.prefix}-${local.env_short}-rg-common"
 }
+
+data "terraform_remote_state" "platform_observability" {
+  backend = "azurerm"
+
+  config = {
+    resource_group_name  = "terraform-state-rg"
+    storage_account_name = "iopitntfst001"
+    container_name       = "terraform-state"
+    key                  = "io-infra.platform.observability.prod.tfstate"
+    use_azuread_auth     = true
+  }
+}
