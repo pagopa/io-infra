@@ -35,6 +35,29 @@ module "vnet_peering_itn" {
   }
 }
 
+module "github_runner_itn" {
+  source = "../_modules/github_runner"
+
+  prefix              = local.prefix
+  env_short           = local.env_short
+  project             = local.project_itn
+  location            = "italynorth"
+  resource_group_name = azurerm_resource_group.github_runner_itn.name
+
+  vnet_common = module.networking_itn.vnet_common
+
+  cidr_subnet = "10.20.14.0/23"
+
+  log_analytics_workspace_id = local.platform_observability.monitoring_westeurope.log.id
+
+  key_vault_pat_token = {
+    name                = module.key_vault_weu.kv_common.name
+    resource_group_name = module.key_vault_weu.kv_common.resource_group_name
+  }
+
+  tags = local.tags
+}
+
 module "storage_accounts_itn" {
   source = "../_modules/storage_accounts"
 

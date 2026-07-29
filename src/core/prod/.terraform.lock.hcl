@@ -137,3 +137,28 @@ provider "registry.terraform.io/hashicorp/tls" {
     "zh:fb07f708e3316615f6d218cec198504984c0ce7000b9f1eebff7516e384f4b54",
   ]
 }
+
+provider "registry.terraform.io/pagopa-dx/azure" {
+  version     = "0.12.4"
+  constraints = ">= 0.0.6, ~> 0.12, < 1.0.0"
+  hashes = [
+    "h1:+qStseX/gGHQ3VHIu+2dPR44rOngkhPFJL9PUTQEepg=",
+    "h1:8UxUisBdozDZ/CPbcVTMihJGJ6EYpIrJwsLpJbXEj+8=",
+    "h1:LyfbZdJDSew7f6nVbqy2ipjpDSBbrHmXcGGKKxuWd0M=",
+    "h1:xw5zJ6+x1gq0rfvXUdl9jY0gAPr881r7Qsp9aSxjHHo=",
+    "zh:2f4b9a47d37cf2b909b4a091c3a7b66818fb7e74171bc026df008d92021f725e",
+    "zh:3b23ba258af82f90aefdb2f732fd8236afe3035554c8419a05c43bdfbe5890a0",
+    "zh:568f7b486b1a4c280fc8ba1ebaf7d2b8bfd65273ac80ae8ef40028580a0e595e",
+    "zh:58077f8d00db900f1e4d6c5be30d4f6c893fb4ff1516d7362dd104d825943540",
+    "zh:7344adac0b3aa951d423c0271903cf214d9c566853bd6adbadc36294c53327fe",
+    "zh:775bd9cb0411c11bcb40646a60354e8346678c00e297bd0e1305c6dec834815f",
+    "zh:784710323d3fe687e345c77f2ff9c8bb2c9eedb5036276c8eee7fa11de7cbce7",
+    "zh:929572d298998ea368b24d4cef00e62b779c88e1771f3e67881003199b00c820",
+    "zh:9be172d200c68692cc14875201db77e507f36fba90686eee14c7e68ab0bcde86",
+    "zh:a2398849780686106cb136ad82d47f3b2006ca0fc80bc65863f66d0be7a0b5a7",
+    "zh:a5cdf4812687e1fe9975f9bba2b32ee91bfd7602c7e880b020b96fc52d74ab3b",
+    "zh:b2b572f652ec6f9cfe13310b856f69c10344118c1c341f392eecd099c0751c48",
+    "zh:d6e2ff00da5946aecc585abe088ee56c2d22bcea67723530415f6edf07908f43",
+    "zh:dffd2b6790106b83a3f3034bc3ea846238945b9e128c922c95f33e5831b64426",
+  ]
+}
