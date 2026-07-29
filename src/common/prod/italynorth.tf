@@ -1,33 +1,3 @@
-resource "azurerm_resource_group" "github_runner" {
-  name     = "${local.project_itn}-github-runner-rg-01"
-  location = "italynorth"
-
-  tags = local.tags
-}
-
-module "github_runner_itn" {
-  source = "../_modules/github_runner"
-
-  prefix              = local.prefix
-  env_short           = local.env_short
-  project             = local.project_itn
-  location            = "italynorth"
-  resource_group_name = azurerm_resource_group.github_runner.name
-
-  vnet_common = local.core.networking.itn.vnet_common
-
-  cidr_subnet = "10.20.14.0/23"
-
-  log_analytics_workspace_id = local.platform_observability.monitoring_westeurope.log.id
-
-  key_vault_pat_token = {
-    name                = local.core.key_vault.weu.kv_common.name
-    resource_group_name = local.core.key_vault.weu.kv_common.resource_group_name
-  }
-
-  tags = local.tags
-}
-
 module "private_endpoints" {
   source = "../_modules/private_endpoint"
 

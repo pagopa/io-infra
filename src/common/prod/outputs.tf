@@ -27,11 +27,3 @@ output "pep_subnets" {
     }
   }
 }
-
-output "github_runner" {
-  value = {
-    itn = {
-      subnet_id = module.github_runner_itn.subnet.id
-    }
-  }
-}
