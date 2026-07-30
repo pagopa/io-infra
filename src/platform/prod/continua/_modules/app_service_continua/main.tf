@@ -10,7 +10,7 @@ module "appservice_continua_itn" {
     instance_number = "01"
   }
 
-  resource_group_name = continua_resource_group_name
+  resource_group_name = var.continua_resource_group_name
   health_check_path   = "/health"
   node_version        = 22
 

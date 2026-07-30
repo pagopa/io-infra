@@ -1,6 +1,6 @@
 resource "azurerm_monitor_autoscale_setting" "appservice_continua" {
   name                = format("%s-autoscale", module.appservice_continua_itn.app_service.app_service.name)
-  resource_group_name = continua_resource_group_name
+  resource_group_name = var.continua_resource_group_name
   location            = var.location_itn
   target_resource_id  = module.appservice_continua_itn.app_service.plan.id
 
