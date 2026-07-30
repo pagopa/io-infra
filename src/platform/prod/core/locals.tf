@@ -7,12 +7,6 @@ locals {
   project_weu        = "${local.prefix}-${local.env_short}-${local.location_short.westeurope}"
   project_weu_legacy = "${local.prefix}-${local.env_short}"
 
-  resource_groups = {
-    itn = {
-      common = "${local.project_itn}-common-rg-01"
-    }
-  }
-
   tags = {
     CostCenter     = "TS000 - Tecnologia e Servizi"
     CreatedBy      = "Terraform"

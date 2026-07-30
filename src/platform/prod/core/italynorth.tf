@@ -8,7 +8,7 @@ module "private_endpoints_itn" {
 
   project             = local.project_itn
   location            = "italynorth"
-  resource_group_name = local.resource_groups.itn.common
+  resource_group_name = local.core.resource_groups.italynorth.common
 
   pep_snet_id = local.core.networking.itn.pep_snet.id
   dns_zones   = module.dns.zones.private_dns_zones
