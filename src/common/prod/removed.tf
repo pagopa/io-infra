@@ -2,39 +2,7 @@
 # https://pagopa.atlassian.net/browse/IOPLT-1626
 
 removed {
-  from = azurerm_resource_group.github_runner
-
-  lifecycle {
-    destroy = false
-  }
-}
-
-removed {
-  from = module.github_runner_itn.azurerm_container_app_environment.github_runner
-
-  lifecycle {
-    destroy = false
-  }
-}
-
-removed {
-  from = module.github_runner_itn.azurerm_subnet.github_runner
-
-  lifecycle {
-    destroy = false
-  }
-}
-
-removed {
-  from = module.github_runner_itn.module.container_app_github_runner.azurerm_container_app_job.github_runner
-
-  lifecycle {
-    destroy = false
-  }
-}
-
-removed {
-  from = module.github_runner_itn.module.container_app_github_runner.azurerm_key_vault_access_policy.keyvault_containerapp
+  from = module.private_endpoints.azurerm_private_endpoint.this
 
   lifecycle {
     destroy = false
