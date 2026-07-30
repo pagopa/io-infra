@@ -31,7 +31,7 @@ variable "dns_zones" {
   Example:
   {
     postgres = {
-      'id' = 'XXXX'
+      id = "XXXX"
     },
     ...
   }
