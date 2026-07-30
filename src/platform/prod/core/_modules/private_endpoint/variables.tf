@@ -15,7 +15,7 @@ variable "tags" {
 
 variable "resource_group_name" {
   type        = string
-  description = "Resource group namee"
+  description = "Resource group name"
 }
 
 variable "pep_snet_id" {
