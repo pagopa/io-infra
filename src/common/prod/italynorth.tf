@@ -1,16 +1,3 @@
-module "private_endpoints" {
-  source = "../_modules/private_endpoint"
-
-  project             = local.project_itn
-  location            = "italynorth"
-  resource_group_name = local.resource_groups.itn.common
-
-  pep_snet_id = local.core.networking.itn.pep_snet.id
-  dns_zones   = local.platform_core.dns.zones.private_dns_zones
-
-  tags = local.tags
-}
-
 module "storage_accounts_itn" {
   source = "../_modules/storage_accounts"
 
