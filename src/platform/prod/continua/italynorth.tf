@@ -4,7 +4,7 @@ resource "azurerm_resource_group" "continua_itn_rg" {
   tags     = local.tags
 }
 
-module "continua_app_service" {
+module "continua_app_service_itn" {
   source = "./_modules/app_service_continua"
 
   prefix                         = local.prefix
@@ -13,8 +13,8 @@ module "continua_app_service" {
   project_itn                    = local.project_itn
   project                        = local.project_weu_legacy
   tags                           = local.tags
-  vnet_common_name_itn           = local.continua.vnet_common_name_itn
+  vnet_common_name_itn           = local.core.networking.itn.vnet_common.name
   common_resource_group_name_itn = local.core.resource_groups.italynorth.common
-  continua_snet_cidr             = local.continua.cidr_subnet_continua
+  continua_snet_cidr             = local.continua.itn.cidr_subnet
   continua_resource_group_name   = azurerm_resource_group.continua_itn_rg.name
 }

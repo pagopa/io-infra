@@ -9,6 +9,12 @@ locals {
 
   core = data.terraform_remote_state.core.outputs
 
+  continua = {
+    itn = {
+      cidr_subnet = "10.20.35.0/26"
+    }
+  }
+
   tags = {
     CostCenter   = "TS000 - Tecnologia e Servizi"
     CreatedBy    = "Terraform"
