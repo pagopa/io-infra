@@ -1,7 +1,3 @@
-output "private_endpoints" {
-  value = module.private_endpoints.private_endpoints
-}
-
 output "virtual_networks" {
   value = {
     weu = {
