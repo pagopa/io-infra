@@ -38,20 +38,6 @@ module "containers_services" {
   legacy_project      = local.project_weu_legacy
 }
 
-module "continua_app_service" {
-  source = "../_modules/app_continua"
-
-  prefix                         = local.prefix
-  env_short                      = local.env_short
-  location_itn                   = "italynorth"
-  project_itn                    = local.project_itn
-  project                        = local.project_weu_legacy
-  tags                           = local.tags
-  vnet_common_name_itn           = local.continua.vnet_common_name_itn
-  common_resource_group_name_itn = local.resource_groups.itn.common
-  continua_snet_cidr             = local.continua.cidr_subnet_continua
-}
-
 module "function_app_admin" {
   source                         = "../_modules/function_admin"
   prefix                         = local.prefix

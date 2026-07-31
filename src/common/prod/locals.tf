@@ -44,20 +44,6 @@ locals {
     }
   }
 
-  app_backends = {
-    1 = {
-      cidr_subnet = ["10.0.152.0/24"]
-    },
-    2 = {
-      cidr_subnet = ["10.0.153.0/24"]
-    }
-  }
-
-  azdoa_snet_id = {
-    weu = local.core.azure_devops_agent["weu"].snet.id
-    itn = null
-  }
-
   function_services = {
     rg_common_name   = format("%s-rg-common", local.project_weu_legacy)
     rg_internal_name = format("%s-rg-internal", local.project_weu_legacy)
@@ -95,11 +81,6 @@ locals {
     common_resource_group_name_itn = "${local.project_itn}-common-rg-01"
 
     apim_itn_name = "${local.project_itn}-apim-01"
-  }
-
-  continua = {
-    cidr_subnet_continua = "10.20.35.0/26"
-    vnet_common_name_itn = "${local.project_itn}-common-vnet-01"
   }
 
   function_admin = {
