@@ -9,6 +9,17 @@ resource "azurerm_private_dns_zone_virtual_network_link" "internal_io_pagopa_it_
   tags = var.tags
 }
 
+resource "azurerm_private_dns_zone_virtual_network_link" "redis_azure_net_private_vnet" {
+  for_each              = var.vnets
+  name                  = each.key == "weu" ? "${var.project}-redis-common-common" : each.value.name
+  resource_group_name   = var.resource_groups.common
+  private_dns_zone_name = azurerm_private_dns_zone.privatelink_redis_azure_net.name
+  virtual_network_id    = each.value.id
+  registration_enabled  = false
+
+  tags = var.tags
+}
+
 resource "azurerm_private_dns_zone_virtual_network_link" "redis_private_vnet" {
   for_each              = var.vnets
   name                  = each.key == "weu" ? "${var.project}-redis-common-common" : each.value.name
