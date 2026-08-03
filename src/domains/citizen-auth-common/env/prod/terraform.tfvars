@@ -27,6 +27,9 @@ citizen_auth_database = {
     max_throughput = 9000
     ttl            = -1
   }
+}
+
+session_manager_database = {
   session_tokens = {
     max_throughput = 9000
     ttl            = -1

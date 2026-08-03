@@ -125,10 +125,10 @@ resource "azurerm_cosmosdb_sql_container" "session_tokens" {
   partition_key_version = 2
 
   autoscale_settings {
-    max_throughput = var.citizen_auth_database.session_tokens.max_throughput
+    max_throughput = var.session_manager_database.session_tokens.max_throughput
   }
 
-  default_ttl = var.citizen_auth_database.session_tokens.ttl
+  default_ttl = var.session_manager_database.session_tokens.ttl
 }
 
 resource "azurerm_cosmosdb_sql_container" "active_sessions" {
@@ -142,10 +142,10 @@ resource "azurerm_cosmosdb_sql_container" "active_sessions" {
   partition_key_version = 2
 
   autoscale_settings {
-    max_throughput = var.citizen_auth_database.active_sessions.max_throughput
+    max_throughput = var.session_manager_database.active_sessions.max_throughput
   }
 
-  default_ttl = var.citizen_auth_database.active_sessions.ttl
+  default_ttl = var.session_manager_database.active_sessions.ttl
 }
 
 // ----------------------------------------------------
