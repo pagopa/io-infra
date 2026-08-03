@@ -27,6 +27,14 @@ citizen_auth_database = {
     max_throughput = 9000
     ttl            = -1
   }
+  session_tokens = {
+    max_throughput = 9000
+    ttl            = -1
+  }
+  active_sessions = {
+    max_throughput = 9000
+    ttl            = -1
+  }
 }
 
 ### External resources

@@ -49,6 +49,13 @@ module "cosmosdb_sql_database_citizen_auth" {
   account_name        = module.cosmosdb_account.name
 }
 
+module "cosmosdb_sql_database_session_manager" {
+  source              = "git::https://github.com/pagopa/terraform-azurerm-v3//cosmosdb_sql_database?ref=v8.44.1"
+  name                = "io-auth-SM"
+  resource_group_name = data.azurerm_resource_group.data_rg.name
+  account_name        = module.cosmosdb_account.name
+}
+
 #
 # LolliPOP containers
 #
@@ -102,6 +109,43 @@ resource "azurerm_cosmosdb_sql_container" "session-notifications" {
 
   default_ttl = var.citizen_auth_database.session_notifications.ttl
 
+}
+
+#
+# Session manager containers
+#
+resource "azurerm_cosmosdb_sql_container" "session_tokens" {
+
+  name                = "session-tokens"
+  resource_group_name = data.azurerm_resource_group.data_rg.name
+  account_name        = module.cosmosdb_account.name
+  database_name       = module.cosmosdb_sql_database_session_manager.name
+
+  partition_key_path    = "/sessionId"
+  partition_key_version = 2
+
+  autoscale_settings {
+    max_throughput = var.citizen_auth_database.session_tokens.max_throughput
+  }
+
+  default_ttl = var.citizen_auth_database.session_tokens.ttl
+}
+
+resource "azurerm_cosmosdb_sql_container" "active_sessions" {
+
+  name                = "active-sessions"
+  resource_group_name = data.azurerm_resource_group.data_rg.name
+  account_name        = module.cosmosdb_account.name
+  database_name       = module.cosmosdb_sql_database_session_manager.name
+
+  partition_key_path    = "/fiscalCode"
+  partition_key_version = 2
+
+  autoscale_settings {
+    max_throughput = var.citizen_auth_database.active_sessions.max_throughput
+  }
+
+  default_ttl = var.citizen_auth_database.active_sessions.ttl
 }
 
 // ----------------------------------------------------
