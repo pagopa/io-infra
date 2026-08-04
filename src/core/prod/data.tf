@@ -74,13 +74,13 @@ data "azurerm_user_assigned_identity" "managed_identity_io_infra_cd" {
 }
 
 data "azurerm_user_assigned_identity" "managed_identity_io_functions_admin_ci" {
-  name                = "${local.prefix}-${local.env_short}-functions-admin-github-ci-identity"
-  resource_group_name = "${local.prefix}-${local.env_short}-identity-rg"
+  name                = "${local.prefix}-${local.env_short}-plt-infra-github-ci-id-02"
+  resource_group_name = "${local.prefix}-${local.env_short}-rg-02"
 }
 
 data "azurerm_user_assigned_identity" "managed_identity_io_functions_admin_cd" {
-  name                = "${local.prefix}-${local.env_short}-functions-admin-github-cd-identity"
-  resource_group_name = "${local.prefix}-${local.env_short}-identity-rg"
+  name                = "${local.prefix}-${local.env_short}-plt-infra-github-cd-id-02"
+  resource_group_name = "${local.prefix}-${local.env_short}-rg-02"
 }
 
 # TODO: important - this should be removed as it creates a dependency to the common module
