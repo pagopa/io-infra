@@ -74,12 +74,12 @@ data "azurerm_user_assigned_identity" "managed_identity_io_infra_cd" {
 }
 
 data "azurerm_user_assigned_identity" "managed_identity_io_functions_admin_ci" {
-  name                = "${local.prefix}-${local.env_short}-plt-infra-github-ci-id-02"
+  name                = "${local.prefix}-${local.env_short}-${local.location_short.italynorth}-plt-infra-github-ci-id-02"
   resource_group_name = "${local.prefix}-${local.env_short}-rg-02"
 }
 
 data "azurerm_user_assigned_identity" "managed_identity_io_functions_admin_cd" {
-  name                = "${local.prefix}-${local.env_short}-plt-infra-github-cd-id-02"
+  name                = "${local.prefix}-${local.env_short}-${local.location_short.italynorth}-plt-infra-github-cd-id-02"
   resource_group_name = "${local.prefix}-${local.env_short}-rg-02"
 }
 
