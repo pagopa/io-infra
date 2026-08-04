@@ -74,12 +74,12 @@ data "azurerm_user_assigned_identity" "managed_identity_io_infra_cd" {
 }
 
 data "azurerm_user_assigned_identity" "managed_identity_io_functions_admin_ci" {
-  name                = "${local.prefix}-${local.env_short}-functions-admin-ci-identity"
+  name                = "${local.prefix}-${local.env_short}-functions-admin-github-ci-identity"
   resource_group_name = "${local.prefix}-${local.env_short}-identity-rg"
 }
 
 data "azurerm_user_assigned_identity" "managed_identity_io_functions_admin_cd" {
-  name                = "${local.prefix}-${local.env_short}-functions-admin-cd-identity"
+  name                = "${local.prefix}-${local.env_short}-functions-admin-github-cd-identity"
   resource_group_name = "${local.prefix}-${local.env_short}-identity-rg"
 }
 
