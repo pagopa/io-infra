@@ -73,7 +73,7 @@ data "azurerm_user_assigned_identity" "managed_identity_io_infra_cd" {
   resource_group_name = "${local.prefix}-${local.env_short}-identity-rg"
 }
 
-# Function Admin repository managed identities
+# Function Admin repository managed identities
 
 data "azurerm_user_assigned_identity" "managed_identity_io_plt_ci_id_02" {
   name                = "${local.prefix}-${local.env_short}-${local.location_short.italynorth}-plt-infra-github-ci-id-02"
