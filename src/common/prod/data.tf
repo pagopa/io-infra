@@ -158,11 +158,6 @@ data "azurerm_linux_function_app" "lollipop_function" {
   resource_group_name = "${local.project_itn}-auth-lollipop-rg-02"
 }
 
-data "azurerm_linux_function_app" "io_sign_user" {
-  resource_group_name = "${local.project_itn}-sign-rg-01"
-  name                = "${local.project_itn}-sign-user-func-01"
-}
-
 data "azurerm_linux_function_app" "io_fims_user" {
   resource_group_name = "${local.project_itn}-fims-rg-01"
   name                = "${local.project_itn}-fims-user-func-01"
