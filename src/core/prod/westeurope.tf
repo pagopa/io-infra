@@ -70,7 +70,7 @@ module "key_vault_weu" {
   ]
 
   ci = [
-    data.azurerm_user_assigned_identity.managed_identity_io_infra_ci.principal_id
+    data.azurerm_user_assigned_identity.managed_identity_io_infra_ci.principal_id,
     data.azurerm_user_assigned_identity.managed_identity_io_plt_ci_id_02.principal_id
   ]
 
