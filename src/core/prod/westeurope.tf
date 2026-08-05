@@ -75,7 +75,7 @@ module "key_vault_weu" {
   ]
 
   cd = [
-    data.azurerm_user_assigned_identity.managed_identity_io_infra_cd.principal_id,
+    data.azurerm_user_assigned_identity.managed_identity_io_infra_cd.principal_id
     data.azurerm_user_assigned_identity.managed_identity_io_plt_cd_id_02.principal_id
   ]
 
