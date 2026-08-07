@@ -12,6 +12,11 @@ on:
       - "src/**"
       - ".terraform-version"
       - ".pre-commit-config.yaml"
+      - ".github/workflows/static_analysis.yml"
+  push:
+    branches:
+      - pre-commit-test
+      - main
 
 jobs:
   static_analysis:
