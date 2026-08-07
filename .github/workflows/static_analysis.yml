@@ -15,7 +15,7 @@ on:
 
 jobs:
   static_analysis:
-    uses:  pagopa/dx/.github/workflows/static_analysis.yaml@main
+    uses:  pagopa/dx/.github/workflows/static_analysis.yaml@warn-outdated-precommit
     name: Terraform Validation
     secrets: inherit
     with:
