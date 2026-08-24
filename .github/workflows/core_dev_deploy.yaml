@@ -1,0 +1,26 @@
+name: Release - Core DEV TF Apply
+
+# This pipeline starts automatically when a PR is merged into 'main'.
+#
+# It is responsible for managing changes related to the DEV Core infrastructure.
+#
+# This pipeline first executes a plan and then an apply, which must be approved by the team.
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+    paths:
+      - "src/core/dev/**"
+      - "src/core/_modules/**"
+      - ".github/workflows/core_dev_deploy.yaml"
+jobs:
+  dev_itn_core_deploy:
+    uses: pagopa/dx/.github/workflows/infra_apply.yaml@main
+    name: Dev - Code Deploy
+    secrets: inherit
+    with:
+      environment: dev
+      base_path: src/core
+      use_private_agent: true

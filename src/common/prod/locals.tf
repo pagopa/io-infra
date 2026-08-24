@@ -16,7 +16,10 @@ locals {
     ManagementTeam = "IO Platform"
   }
 
-  core = data.terraform_remote_state.core.outputs
+  core                   = data.terraform_remote_state.core.outputs
+  platform_core          = data.terraform_remote_state.platform_core.outputs
+  platform_observability = data.terraform_remote_state.platform_observability.outputs
+  platform_app_backend   = data.terraform_remote_state.platform_app_backend.outputs
 
   app_messages_count = 2
 
@@ -40,160 +43,6 @@ locals {
       linux    = "${local.project_itn}-common-rg-01"
     }
   }
-
-  cosmos_api = {
-    allowed_subnets = []
-  }
-
-  app_backends = {
-    1 = {
-      cidr_subnet = ["10.0.152.0/24"]
-    },
-    2 = {
-      cidr_subnet = ["10.0.153.0/24"]
-    }
-  }
-
-  azdoa_snet_id = {
-    weu = local.core.azure_devops_agent["weu"].snet.id
-    itn = null
-  }
-
-  backend_hostnames = {
-    app                  = [data.azurerm_linux_function_app.function_profile.default_hostname]
-    com_citizen_func     = data.azurerm_linux_function_app.com_citizen_func.default_hostname
-    services_app_backend = data.azurerm_linux_function_app.services_app_backend_function_app.default_hostname
-    # services_app_backend = data.azurerm_container_app.services_app_backend_function_app.ingress[0].fqdn
-    lollipop      = data.azurerm_linux_function_app.lollipop_function.default_hostname
-    cgn           = "io-p-itn-cgn-card-func-02.azurewebsites.net"
-    iosign        = data.azurerm_linux_function_app.io_sign_user.default_hostname
-    iofims        = data.azurerm_linux_function_app.io_fims_user.default_hostname
-    cgnonboarding = "io-p-itn-cgn-search-func-02.azurewebsites.net"
-    cdc_support   = "io-p-itn-cdc-support-func-01.azurewebsites.net"
-  }
-
-  eventhubs = [
-    {
-      name              = "io-cosmosdb-services"
-      partitions        = 5
-      message_retention = 7
-      consumers         = []
-      keys = [
-        {
-          name   = "io-fn-elt"
-          listen = false
-          send   = true
-          manage = false
-        },
-        {
-          name   = "pdnd"
-          listen = true
-          send   = false
-          manage = false
-        }
-      ]
-    },
-    {
-      name              = "io-cosmosdb-profiles"
-      partitions        = 5
-      message_retention = 7
-      consumers         = []
-      keys = [
-        {
-          name   = "io-fn-elt"
-          listen = false
-          send   = true
-          manage = false
-        },
-        {
-          name   = "pdnd"
-          listen = true
-          send   = false
-          manage = false
-        }
-      ]
-    },
-    {
-      name              = "import-command"
-      partitions        = 2
-      message_retention = 7
-      consumers         = []
-      keys = [
-        {
-          name   = "ops"
-          listen = false
-          send   = true
-          manage = false
-        },
-        {
-          name   = "io-fn-elt"
-          listen = true
-          send   = false
-          manage = false
-        }
-      ]
-    },
-    {
-      name              = "io-cosmosdb-message-status"
-      partitions        = 32
-      message_retention = 7
-      consumers         = ["io-messages"]
-      keys = [
-        {
-          name   = "io-cdc"
-          listen = false
-          send   = true
-          manage = false
-        },
-        {
-          name   = "io-messages"
-          listen = true
-          send   = false
-          manage = false
-        }
-      ]
-    },
-    {
-      name              = "pdnd-io-cosmosdb-service-preferences"
-      partitions        = 30
-      message_retention = 7
-      consumers         = []
-      keys = [
-        {
-          name   = "io-fn-elt"
-          listen = false
-          send   = true
-          manage = false
-        },
-        {
-          name   = "pdnd"
-          listen = true
-          send   = false
-          manage = false
-        }
-      ]
-    },
-    {
-      name              = "io-cosmosdb-message-status-for-view"
-      partitions        = 32
-      message_retention = 7
-      consumers         = ["io-messages"]
-      keys = [
-        {
-          name   = "io-cdc"
-          listen = false
-          send   = true
-          manage = false
-        },
-        {
-          name   = "io-messages"
-          listen = true
-          send   = false
-          manage = false
-        }
-      ]
-    }
-  ]
 
   function_services = {
     rg_common_name   = format("%s-rg-common", local.project_weu_legacy)
@@ -232,11 +81,6 @@ locals {
     common_resource_group_name_itn = "${local.project_itn}-common-rg-01"
 
     apim_itn_name = "${local.project_itn}-apim-01"
-  }
-
-  continua = {
-    cidr_subnet_continua = "10.20.35.0/26"
-    vnet_common_name_itn = "${local.project_itn}-common-vnet-01"
   }
 
   function_admin = {

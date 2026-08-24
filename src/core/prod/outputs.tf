@@ -21,7 +21,6 @@ output "resource_groups" {
       github_id      = azurerm_resource_group.github_managed_identity_itn.name
       external       = azurerm_resource_group.external_itn.name
       assets_cdn     = azurerm_resource_group.assets_cdn_itn.name
-      ioapp_agw      = azurerm_resource_group.application_gateway_ioapp_temporary_itn.name
     }
     westeurope = {
       location_short = "weu"
@@ -40,5 +39,13 @@ output "azure_devops_agent" {
   value = {
     weu = module.azdoa_weu
     itn = null
+  }
+}
+
+output "github_runner" {
+  value = {
+    itn = {
+      subnet_id = module.github_runner_itn.subnet.id
+    }
   }
 }

@@ -1,0 +1,30 @@
+name: PR - Core DEV TF Validation
+
+# This pipeline starts automatically when a PR is opened.
+#
+# It is responsible for managing changes related to the DEV Core infrastructure.
+
+on:
+  merge_group:
+  workflow_dispatch:
+  pull_request:
+    types:
+      - opened
+      - edited
+      - synchronize
+      - reopened
+      - ready_for_review
+    paths:
+      - "src/core/dev/**"
+      - "src/core/_modules/**"
+      - ".github/workflows/core_dev_code_review.yaml"
+
+jobs:
+  dev_itn_core_code_review:
+    uses: pagopa/dx/.github/workflows/infra_plan.yaml@main
+    name: Dev - Code Review
+    secrets: inherit
+    with:
+      environment: dev
+      base_path: src/core
+      use_private_agent: true

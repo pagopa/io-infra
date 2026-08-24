@@ -12,17 +12,6 @@ resource "azurerm_cdn_frontdoor_custom_domain" "io_italia_it" {
   }
 }
 
-resource "azurerm_cdn_frontdoor_custom_domain" "io_italia_it_legacy" {
-  name                     = "io-p-cdnendpoint-iowebsite-Migrated"
-  cdn_frontdoor_profile_id = azurerm_cdn_frontdoor_profile.common.id
-  dns_zone_id              = var.public_dns_zones.io_italia_it.id
-  host_name                = "io-p-cdnendpoint-iowebsite.azureedge.net"
-
-  tls {
-    certificate_type = "ManagedCertificate"
-  }
-}
-
 resource "azurerm_cdn_frontdoor_secret" "io_italia_it" {
   name                     = "MigratedSecret-io-italia-it"
   cdn_frontdoor_profile_id = azurerm_cdn_frontdoor_profile.common.id
@@ -92,13 +81,12 @@ resource "azurerm_cdn_frontdoor_route" "io_italia_it" {
   enabled                       = true
 
   forwarding_protocol    = "MatchRequest"
-  https_redirect_enabled = false
+  https_redirect_enabled = true
   patterns_to_match      = ["/*"]
   supported_protocols    = ["Http", "Https"]
 
   cdn_frontdoor_custom_domain_ids = [
-    azurerm_cdn_frontdoor_custom_domain.io_italia_it.id,
-    azurerm_cdn_frontdoor_custom_domain.io_italia_it_legacy.id
+    azurerm_cdn_frontdoor_custom_domain.io_italia_it.id
   ]
   link_to_default_domain = true
 
@@ -141,31 +129,9 @@ resource "azurerm_cdn_frontdoor_rule" "io_italia_it_global" {
   }
 }
 
-resource "azurerm_cdn_frontdoor_rule" "io_italia_it_enforce_https" {
-  name                      = "EnforceHTTPS" # TODO: switch to default https redirect on route level
-  order                     = 1
-  cdn_frontdoor_rule_set_id = azurerm_cdn_frontdoor_rule_set.io_italia_it.id
-
-  actions {
-    url_redirect_action {
-      redirect_type        = "Found"
-      redirect_protocol    = "Https"
-      destination_hostname = ""
-    }
-  }
-
-  conditions {
-    request_scheme_condition {
-      match_values     = ["HTTP"]
-      operator         = "Equal"
-      negate_condition = false
-    }
-  }
-}
-
 resource "azurerm_cdn_frontdoor_rule" "io_italia_it_fix_dots" {
   name                      = "FixDots"
-  order                     = 2
+  order                     = 1
   cdn_frontdoor_rule_set_id = azurerm_cdn_frontdoor_rule_set.io_italia_it.id
 
   actions {
@@ -187,7 +153,7 @@ resource "azurerm_cdn_frontdoor_rule" "io_italia_it_fix_dots" {
 
 resource "azurerm_cdn_frontdoor_rule" "io_italia_it_fix_dots2" {
   name                      = "FixDots2"
-  order                     = 3
+  order                     = 2
   cdn_frontdoor_rule_set_id = azurerm_cdn_frontdoor_rule_set.io_italia_it.id
 
   actions {
@@ -209,7 +175,7 @@ resource "azurerm_cdn_frontdoor_rule" "io_italia_it_fix_dots2" {
 
 resource "azurerm_cdn_frontdoor_rule" "io_italia_it_redirect_firma" {
   name                      = "RedirectFirma"
-  order                     = 4
+  order                     = 3
   cdn_frontdoor_rule_set_id = azurerm_cdn_frontdoor_rule_set.io_italia_it.id
 
   actions {
@@ -234,7 +200,7 @@ resource "azurerm_cdn_frontdoor_rule" "io_italia_it_redirect_firma" {
 
 resource "azurerm_cdn_frontdoor_rule" "io_italia_it_faq" {
   name                      = "Faq"
-  order                     = 5
+  order                     = 4
   cdn_frontdoor_rule_set_id = azurerm_cdn_frontdoor_rule_set.io_italia_it.id
 
   actions {
@@ -258,7 +224,7 @@ resource "azurerm_cdn_frontdoor_rule" "io_italia_it_faq" {
 
 resource "azurerm_cdn_frontdoor_rule" "io_italia_it_documenti_su_io_faq" {
   name                      = "DocumentiSuIoFaq"
-  order                     = 6
+  order                     = 5
   cdn_frontdoor_rule_set_id = azurerm_cdn_frontdoor_rule_set.io_italia_it.id
 
   actions {
@@ -282,7 +248,7 @@ resource "azurerm_cdn_frontdoor_rule" "io_italia_it_documenti_su_io_faq" {
 
 resource "azurerm_cdn_frontdoor_rule" "io_italia_it_carta_giovani_faq" {
   name                      = "CartaGiovaniFaq"
-  order                     = 7
+  order                     = 6
   cdn_frontdoor_rule_set_id = azurerm_cdn_frontdoor_rule_set.io_italia_it.id
 
   actions {
@@ -306,7 +272,7 @@ resource "azurerm_cdn_frontdoor_rule" "io_italia_it_carta_giovani_faq" {
 
 resource "azurerm_cdn_frontdoor_rule" "io_italia_it_funzionalita_dismessa" {
   name                      = "FunzionalitaDismess"
-  order                     = 8
+  order                     = 7
   cdn_frontdoor_rule_set_id = azurerm_cdn_frontdoor_rule_set.io_italia_it.id
 
   actions {
@@ -341,7 +307,7 @@ resource "azurerm_cdn_frontdoor_rule" "io_italia_it_funzionalita_dismessa" {
 
 resource "azurerm_cdn_frontdoor_rule" "io_italia_it_giornalisti" {
   name                      = "Giornalisti"
-  order                     = 9
+  order                     = 8
   cdn_frontdoor_rule_set_id = azurerm_cdn_frontdoor_rule_set.io_italia_it.id
 
   actions {
@@ -365,7 +331,7 @@ resource "azurerm_cdn_frontdoor_rule" "io_italia_it_giornalisti" {
 
 resource "azurerm_cdn_frontdoor_rule" "io_italia_it_pubbliche_amministrazioni" {
   name                      = "PubblicheAmministrazioni"
-  order                     = 10
+  order                     = 9
   cdn_frontdoor_rule_set_id = azurerm_cdn_frontdoor_rule_set.io_italia_it.id
 
   actions {
@@ -389,7 +355,7 @@ resource "azurerm_cdn_frontdoor_rule" "io_italia_it_pubbliche_amministrazioni" {
 
 resource "azurerm_cdn_frontdoor_rule" "io_italia_it_enti_nazionali" {
   name                      = "EntiNazionali"
-  order                     = 11
+  order                     = 10
   cdn_frontdoor_rule_set_id = azurerm_cdn_frontdoor_rule_set.io_italia_it.id
 
   actions {
@@ -413,7 +379,7 @@ resource "azurerm_cdn_frontdoor_rule" "io_italia_it_enti_nazionali" {
 
 resource "azurerm_cdn_frontdoor_rule" "io_italia_it_cittadini" {
   name                      = "Cittadini"
-  order                     = 12
+  order                     = 11
   cdn_frontdoor_rule_set_id = azurerm_cdn_frontdoor_rule_set.io_italia_it.id
 
   actions {
@@ -437,7 +403,7 @@ resource "azurerm_cdn_frontdoor_rule" "io_italia_it_cittadini" {
 
 resource "azurerm_cdn_frontdoor_rule" "io_italia_it_cgn_guida_beneficiari" {
   name                      = "CGNGuidaBeneficiari"
-  order                     = 13
+  order                     = 12
   cdn_frontdoor_rule_set_id = azurerm_cdn_frontdoor_rule_set.io_italia_it.id
 
   actions {
@@ -464,7 +430,7 @@ resource "azurerm_cdn_frontdoor_rule" "io_italia_it_cgn_guida_beneficiari" {
 
 resource "azurerm_cdn_frontdoor_rule" "io_italia_it_cgn_informativa_beneficiari" {
   name                      = "CGNInformativaBeneficiari"
-  order                     = 14
+  order                     = 13
   cdn_frontdoor_rule_set_id = azurerm_cdn_frontdoor_rule_set.io_italia_it.id
 
   actions {
@@ -491,7 +457,7 @@ resource "azurerm_cdn_frontdoor_rule" "io_italia_it_cgn_informativa_beneficiari"
 
 resource "azurerm_cdn_frontdoor_rule" "io_italia_it_cgn_informative_operatori" {
   name                      = "CGNInformativeOperatori"
-  order                     = 15
+  order                     = 14
   cdn_frontdoor_rule_set_id = azurerm_cdn_frontdoor_rule_set.io_italia_it.id
 
   actions {
@@ -518,7 +484,7 @@ resource "azurerm_cdn_frontdoor_rule" "io_italia_it_cgn_informative_operatori" {
 
 resource "azurerm_cdn_frontdoor_rule" "io_italia_it_note_legali" {
   name                      = "NoteLegali"
-  order                     = 16
+  order                     = 15
   cdn_frontdoor_rule_set_id = azurerm_cdn_frontdoor_rule_set.io_italia_it.id
 
   actions {
@@ -542,7 +508,7 @@ resource "azurerm_cdn_frontdoor_rule" "io_italia_it_note_legali" {
 
 resource "azurerm_cdn_frontdoor_rule" "io_italia_it_privacy_policy" {
   name                      = "PrivacyPolicy"
-  order                     = 17
+  order                     = 16
   cdn_frontdoor_rule_set_id = azurerm_cdn_frontdoor_rule_set.io_italia_it.id
 
   actions {
@@ -566,7 +532,7 @@ resource "azurerm_cdn_frontdoor_rule" "io_italia_it_privacy_policy" {
 resource "azurerm_cdn_frontdoor_rule" "io_italia_it_informativa_newsletter" {
   name                      = "InformativaNewsletter"
   cdn_frontdoor_rule_set_id = azurerm_cdn_frontdoor_rule_set.io_italia_it.id
-  order                     = 18
+  order                     = 17
   behavior_on_match         = "Continue"
 
   actions {
@@ -594,7 +560,7 @@ resource "azurerm_cdn_frontdoor_rule" "io_italia_it_informativa_newsletter" {
 resource "azurerm_cdn_frontdoor_rule" "io_italia_it_same_path" {
   name                      = "SamePath"
   cdn_frontdoor_rule_set_id = azurerm_cdn_frontdoor_rule_set.io_italia_it.id
-  order                     = 19
+  order                     = 18
   behavior_on_match         = "Continue"
 
   actions {
@@ -626,7 +592,7 @@ resource "azurerm_cdn_frontdoor_rule" "io_italia_it_same_path" {
 resource "azurerm_cdn_frontdoor_rule" "io_italia_it_homepage" {
   name                      = "Homepage"
   cdn_frontdoor_rule_set_id = azurerm_cdn_frontdoor_rule_set.io_italia_it.id
-  order                     = 20
+  order                     = 19
   behavior_on_match         = "Continue"
 
   actions {
@@ -650,7 +616,7 @@ resource "azurerm_cdn_frontdoor_rule" "io_italia_it_homepage" {
 resource "azurerm_cdn_frontdoor_rule" "io_italia_it_io_web" {
   name                      = "IoWeb"
   cdn_frontdoor_rule_set_id = azurerm_cdn_frontdoor_rule_set.io_italia_it.id
-  order                     = 21
+  order                     = 20
   behavior_on_match         = "Continue"
 
   actions {

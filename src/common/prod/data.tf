@@ -12,6 +12,42 @@ data "terraform_remote_state" "core" {
   }
 }
 
+data "terraform_remote_state" "platform_core" {
+  backend = "azurerm"
+
+  config = {
+    resource_group_name  = "terraform-state-rg"
+    storage_account_name = "iopitntfst001"
+    container_name       = "terraform-state"
+    key                  = "io-infra.platform.core.prod.tfstate"
+    use_azuread_auth     = true
+  }
+}
+
+data "terraform_remote_state" "platform_observability" {
+  backend = "azurerm"
+
+  config = {
+    resource_group_name  = "terraform-state-rg"
+    storage_account_name = "iopitntfst001"
+    container_name       = "terraform-state"
+    key                  = "io-infra.platform.observability.prod.tfstate"
+    use_azuread_auth     = true
+  }
+}
+
+data "terraform_remote_state" "platform_app_backend" {
+  backend = "azurerm"
+
+  config = {
+    resource_group_name  = "terraform-state-rg"
+    storage_account_name = "iopitntfst001"
+    container_name       = "terraform-state"
+    key                  = "io-infra.platform.app-backend.prod.tfstate"
+    use_azuread_auth     = true
+  }
+}
+
 data "azurerm_client_config" "current" {}
 
 data "azurerm_linux_web_app" "firmaconio_selfcare_web_app" {
@@ -101,15 +137,6 @@ data "azurerm_user_assigned_identity" "managed_identity_io_infra_cd" {
   resource_group_name = "${local.prefix}-${local.env_short}-identity-rg"
 }
 
-# Cosmos API
-data "azurerm_subnet" "cosmos_api_allowed" {
-  for_each = toset(local.cosmos_api.allowed_subnets)
-
-  name                 = each.value
-  virtual_network_name = local.core.networking.weu.vnet_common.name
-  resource_group_name  = local.core.networking.weu.vnet_common.resource_group_name
-}
-
 # Functions
 data "azurerm_linux_function_app" "function_profile" {
   name                = "${local.project_itn}-auth-profile-func-02"
@@ -124,11 +151,6 @@ data "azurerm_linux_function_app" "com_citizen_func" {
 data "azurerm_linux_function_app" "services_app_backend_function_app" {
   resource_group_name = "${local.project_itn}-svc-rg-01"
   name                = "${local.project_itn}-svc-app-be-func-01"
-}
-
-data "azurerm_container_app" "services_app_backend_function_app" {
-  resource_group_name = "${local.project_itn}-svc-rg-01"
-  name                = "${local.project_itn}-svc-app-be-func-02"
 }
 
 data "azurerm_linux_function_app" "lollipop_function" {

@@ -49,3 +49,28 @@ variable "log_analytics_workspace_id" {
   type        = string
   description = "Log analytics workspace ID for the CDN metrics"
 }
+
+variable "ioapp_apex_certificate_kv_name" {
+  type        = string
+  description = "ioapp.it Apex certificate KV name"
+}
+
+variable "ioapp_apex_certificate_kv_resource_group" {
+  type        = string
+  description = "ioapp.it Apex certificate KV resource group"
+}
+
+variable "ioapp_apex_certificate_name" {
+  type        = string
+  description = "ioapp.it Apex certificate name"
+}
+
+variable "resource_group_external" {
+  type        = string
+  description = "External resource group name"
+}
+
+variable "public_dns_zones" {
+  type        = map(any)
+  description = "Public dns zones information"
+}

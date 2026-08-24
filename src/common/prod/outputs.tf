@@ -1,17 +1,3 @@
-output "apim" {
-  value = {
-    itn = {
-      id                      = module.apim_itn.id
-      resource_group_common   = local.resource_groups.itn.common
-      resource_group_internal = local.resource_groups.itn.internal
-    }
-  }
-}
-
-output "private_endpoints" {
-  value = module.private_endpoints.private_endpoints
-}
-
 output "virtual_networks" {
   value = {
     weu = {
@@ -34,18 +20,6 @@ output "pep_subnets" {
     },
     weu = {
       id = local.core.networking.weu.pep_snet.id
-    }
-  }
-}
-
-output "public_dns_zones" {
-  value = module.global.dns.public_dns_zones
-}
-
-output "monitoring" {
-  value = {
-    itn = {
-      law_id = module.monitoring_itn.log.id
     }
   }
 }
