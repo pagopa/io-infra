@@ -36,8 +36,6 @@ locals {
     API_KEY                     = "@Microsoft.KeyVault(VaultName=${var.key_vault_common.name};SecretName=funcapp-KEY-APPBACKEND)"
     CGN_API_URL                 = "https://${var.backend_hostnames.cgn}"
     CGN_API_KEY                 = "@Microsoft.KeyVault(VaultName=${var.key_vault_common.name};SecretName=funccgn-KEY-APPBACKEND)"
-    IO_SIGN_API_URL             = "https://${var.backend_hostnames.iosign}"
-    IO_SIGN_API_KEY             = "@Microsoft.KeyVault(VaultName=${var.key_vault_common.name};SecretName=funciosign-KEY-APPBACKEND)"
     IO_FIMS_API_URL             = "https://${var.backend_hostnames.iofims}"
     IO_FIMS_API_KEY             = "@Microsoft.KeyVault(VaultName=${var.key_vault_common.name};SecretName=funciofims-KEY-APPBACKEND)"
     CGN_OPERATOR_SEARCH_API_URL = "https://${var.backend_hostnames.cgnonboarding}" # prod subscription
@@ -52,7 +50,6 @@ locals {
     // EXPOSED API
     CGN_API_BASE_PATH                 = "/api/v1/cgn"
     CGN_OPERATOR_SEARCH_API_BASE_PATH = "/api/v1/cgn/operator-search"
-    IO_SIGN_API_BASE_PATH             = "/api/v1/sign"
     IO_FIMS_API_BASE_PATH             = "/api/v1/fims"
     LOLLIPOP_API_BASE_PATH            = "/api/v1"
     CDC_SUPPORT_API_BASE_PATH         = "/api/v1"
@@ -79,7 +76,6 @@ locals {
     // Feature flags
     FF_CGN_ENABLED     = 1
     FF_CDC_ENABLED     = 1
-    FF_IO_SIGN_ENABLED = 1
     FF_IO_FIMS_ENABLED = 1
 
     FF_ROUTING_PUSH_NOTIF                      = "ALL" # possible values are: BETA, CANARY, ALL, NONE
@@ -98,9 +94,6 @@ locals {
 
     // Remote content configuration id of PN
     PN_CONFIGURATION_ID = local.service_ids.pn_remote_config
-
-    // Service ID IO-SIGN
-    IO_SIGN_SERVICE_ID = local.service_ids.io_sign
 
     // PN Service Activation
     PN_ACTIVATION_BASE_PATH = "/api/v1/pn"
@@ -144,7 +137,7 @@ locals {
         isLollipopEnabled  = "false",
         disableLollipopFor = [],
         prodEnvironment = {
-          baseUrl = "https://io-p-itn-sign-user-func-01.azurewebsites.net/api/v1/sign",
+          baseUrl = "https://io-p-itn-sign-user-func-02.azurewebsites.net/api/v1/sign",
           detailsAuthentication = {
             type            = "API_KEY",
             header_key_name = "X-Functions-Key",
