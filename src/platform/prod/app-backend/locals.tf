@@ -23,13 +23,14 @@ locals {
     # services_app_backend = data.azurerm_container_app.services_app_backend_function_app.ingress[0].fqdn
     lollipop      = data.azurerm_linux_function_app.lollipop_function.default_hostname
     cgn           = "io-p-itn-cgn-card-func-02.azurewebsites.net"
+    iosign        = data.azurerm_linux_function_app.io_sign_user.default_hostname
     iofims        = data.azurerm_linux_function_app.io_fims_user.default_hostname
     cgnonboarding = "io-p-itn-cgn-search-func-02.azurewebsites.net"
     cdc_support   = "io-p-itn-cdc-support-func-01.azurewebsites.net"
   }
 
   core                   = data.terraform_remote_state.core.outputs
-  platform_data_platform = data.terraform_remote_state.platform_data_platform.outputs
+  common                 = data.terraform_remote_state.common.outputs
   platform_core          = data.terraform_remote_state.platform_core.outputs
   platform_observability = data.terraform_remote_state.platform_observability.outputs
 
