@@ -23,8 +23,8 @@ module "assets_locales" {
   resource_group_cdn      = local.core.resource_groups.italynorth.assets_cdn
   resource_group_external = local.core.resource_groups.westeurope.external
 
-  public_dns_zones                       = local.common.public_dns_zones
-  log_analytics_workspace_id             = local.common.monitoring.itn.law_id
+  public_dns_zones                       = local.platform_core.dns.zones.public_dns_zones
+  log_analytics_workspace_id             = local.platform_observability.monitoring_italynorth.log.id
   diagnostic_settings_storage_account_id = local.common.storage_accounts.logs_itn.id
 
   azure_adgroups_roles = {
