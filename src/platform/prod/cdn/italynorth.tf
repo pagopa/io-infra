@@ -13,6 +13,11 @@ module "ioapp" {
   tags                                     = local.tags
 }
 
+data "azurerm_storage_account" "diagnostic_settings_storage_account" {
+  name                = "iopitnlogst01"
+  resource_group_name = "io-p-rg-operations"
+}
+
 module "assets_locales" {
   source = "./_modules/assets_locales"
 
@@ -23,10 +28,10 @@ module "assets_locales" {
   resource_group_cdn      = local.core.resource_groups.italynorth.assets_cdn
   resource_group_external = local.core.resource_groups.westeurope.external
 
-  public_dns_zones                       = local.platform_core.dns.zones.public_dns_zones
-  log_analytics_workspace_id             = local.platform_observability.monitoring_italynorth.log.id
+  public_dns_zones           = local.platform_core.dns.zones.public_dns_zones
+  log_analytics_workspace_id = local.platform_observability.monitoring_italynorth.log.id
   #diagnostic_settings_storage_account_id = local.common.storage_accounts.logs_itn.id
-  diagnostic_settings_storage_account_id = "dummy"
+  diagnostic_settings_storage_account_id = data.azurerm_storage_account.diagnostic_settings_storage_account.id
 
   azure_adgroups_roles = {
     svc_devs = {
