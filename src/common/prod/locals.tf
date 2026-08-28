@@ -19,9 +19,6 @@ locals {
   core                   = data.terraform_remote_state.core.outputs
   platform_core          = data.terraform_remote_state.platform_core.outputs
   platform_observability = data.terraform_remote_state.platform_observability.outputs
-  platform_app_backend   = data.terraform_remote_state.platform_app_backend.outputs
-
-  app_messages_count = 2
 
   # TODO: edit this block when resource groups module is implemented
   resource_groups = {
@@ -90,26 +87,5 @@ locals {
     common_resource_group_name_itn = "${local.project_itn}-common-rg-01"
 
     apim_itn_name = "${local.project_itn}-apim-01"
-  }
-
-  function_elt = {
-
-    location                        = "westeurope"
-    secondary_location_display_name = "North Europe"
-
-    vnet_common_name_itn           = "${local.project_itn}-common-vnet-01"
-    common_resource_group_name_itn = "${local.project_itn}-common-rg-01"
-
-    location_itn  = "italynorth"
-    elt_snet_cidr = "10.20.40.0/26"
-
-    tags = {
-      CostCenter     = "TS000 - Tecnologia e Servizi"
-      CreatedBy      = "Terraform"
-      Environment    = "Prod"
-      BusinessUnit   = "App IO"
-      Source         = "https://github.com/pagopa/io-infra/blob/main/src/domains/elt/prod"
-      ManagementTeam = "IO Platform"
-    }
   }
 }
