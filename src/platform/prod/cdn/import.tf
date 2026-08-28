@@ -124,11 +124,6 @@ import {
 }
 
 import {
-  to = module.assets_locales.azurerm_cdn_frontdoor_custom_domain_association.logos_custom_domain_association
-  id = "/subscriptions/ec285037-c673-4f58-b594-d7c480da4e8b/resourceGroups/io-p-itn-assets-cdn-rg-01/providers/Microsoft.Cdn/profiles/io-p-itn-assets-afd-01/associations/logos-assets-io-pagopa-it"
-}
-
-import {
   to = module.assets_locales.module.azure_cdn.azurerm_cdn_frontdoor_endpoint.this
   id = "/subscriptions/ec285037-c673-4f58-b594-d7c480da4e8b/resourceGroups/io-p-itn-assets-cdn-rg-01/providers/Microsoft.Cdn/profiles/io-p-itn-assets-afd-01/afdEndpoints/io-p-itn-assets-fde-01"
 }
