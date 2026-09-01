@@ -41,3 +41,11 @@ output "azure_devops_agent" {
     itn = null
   }
 }
+
+output "github_runner" {
+  value = {
+    itn = {
+      subnet_id = module.github_runner_itn.subnet.id
+    }
+  }
+}

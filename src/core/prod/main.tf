@@ -13,6 +13,10 @@ terraform {
       source  = "hashicorp/azurerm"
       version = "~> 4.54.0"
     }
+    dx = {
+      source  = "pagopa-dx/azure"
+      version = "~> 0.12"
+    }
   }
 }
 

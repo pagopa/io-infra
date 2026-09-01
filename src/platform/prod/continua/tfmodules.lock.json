@@ -1,0 +1,8 @@
+{
+  "continua_app_service_itn.appservice_continua_itn": {
+    "hash": "574eefa5a3e46ae05349a2a08c1035017b22abe9be747491f1b6fbbfc6d5d332",
+    "version": "2.0.1",
+    "name": "azure_app_service",
+    "source": "https://registry.terraform.io/modules/pagopa-dx/azure-app-service/azurerm/2.0.1"
+  }
+}

@@ -28,6 +28,13 @@ resource "azurerm_private_dns_a_record" "proxy_internal_io" {
   tags = var.tags
 }
 
+resource "azurerm_private_dns_zone" "privatelink_redis_azure_net" {
+  name                = "privatelink.redis.azure.net"
+  resource_group_name = var.resource_groups.common
+
+  tags = var.tags
+}
+
 resource "azurerm_private_dns_zone" "privatelink_redis_cache" {
   name                = "privatelink.redis.cache.windows.net"
   resource_group_name = var.resource_groups.common
