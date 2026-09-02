@@ -34,7 +34,6 @@ module "dns" {
     apim_private_ip                 = local.app_routing.apim.itn.private_ips
     platform_api_gateway_private_ip = local.app_routing.platform_api_gateway.itn.private_ips
 
-    psn_application_gateway_private_endpoint_ip = data.azurerm_private_endpoint_connection.psn_appgw.private_service_connection[0].private_ip_address
   }
 
   tags = local.tags

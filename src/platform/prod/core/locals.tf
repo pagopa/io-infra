@@ -18,5 +18,4 @@ locals {
 
   core        = data.terraform_remote_state.core.outputs
   app_routing = data.terraform_remote_state.platform_app_routing.outputs
-  app_backend = data.terraform_remote_state.platform_app_backend.outputs
 }
