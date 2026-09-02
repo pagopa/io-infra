@@ -1,7 +1,6 @@
 ### Common resources
 
 locals {
-  name = var.name
 
   app_command_line = "pm2 start dist/src/server.js -i max --no-daemon"
 
@@ -19,8 +18,6 @@ locals {
     pn      = "https://api-io.notifichedigitali.it"
     pn_test = "https://api-io.uat.notifichedigitali.it"
   }
-
-  function_app_count = length(var.backend_hostnames.app)
 
   nonstandard = {
     weu = {
