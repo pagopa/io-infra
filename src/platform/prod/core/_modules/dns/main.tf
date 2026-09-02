@@ -12,7 +12,6 @@ module "zones" {
 
   resource_groups = var.dns.resource_groups
 
-  # TODO: remove data when app gateway module is implemented
   app_gateway_public_ip = var.dns.app_gateway_public_ip
 
   apim_private_ip                             = var.dns.apim_private_ip

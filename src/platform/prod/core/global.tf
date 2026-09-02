@@ -30,14 +30,10 @@ module "dns" {
       firmaconio_selfcare = "firmaconio.selfcare"
     }
 
-    # app_gateway_public_ip = module.application_gateway_itn.public_ip.address
-    # apim_private_ip                             = module.apim_itn.private_ips[0]
-    # platform_api_gateway_private_ip             = module.platform_api_gateway_apim_itn.private_ips[0]
-    app_gateway_public_ip           = "72.146.64.117" # TODO: retrieve data from application gateway remote state
-    apim_private_ip                 = "10.20.100.4"   # TODO: retrieve data from APIM remote state
-    platform_api_gateway_private_ip = "10.20.101.4"   # TODO: retrieve data from APIM remote state
+    app_gateway_public_ip           = local.app_routing.application_gateway.itn.public_ip
+    apim_private_ip                 = local.app_routing.apim.itn.private_ips
+    platform_api_gateway_private_ip = local.app_routing.platform_api_gateway.itn.private_ips
 
-    psn_application_gateway_private_endpoint_ip = data.azurerm_private_endpoint_connection.psn_appgw.private_service_connection[0].private_ip_address
   }
 
   tags = local.tags

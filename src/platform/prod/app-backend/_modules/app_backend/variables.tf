@@ -3,17 +3,6 @@ variable "project" {
   description = "IO prefix, short environment and short location"
 }
 
-variable "prefix" {
-  type    = string
-  default = "io"
-  validation {
-    condition = (
-      length(var.prefix) < 6
-    )
-    error_message = "Max length is 6 chars."
-  }
-}
-
 variable "location" {
   type        = string
   description = "Azure region"
@@ -132,15 +121,6 @@ variable "key_vault_common" {
   description = "Information of the Key Vault Common"
 }
 
-variable "key_vault" {
-  type = object({
-    id                  = string
-    name                = string
-    resource_group_name = string
-  })
-  description = "Information of the Key Vault"
-}
-
 variable "datasources" {
   type        = map(any)
   description = "Common datasources"
@@ -154,16 +134,6 @@ variable "redis_common" {
   })
   description = "Connection information to the common redis cluster"
   sensitive   = true
-}
-
-variable "autoscale" {
-  type = object({
-    default = optional(number)
-    minimum = optional(number)
-    maximum = optional(number)
-  })
-  default     = null
-  description = "Autoscale capacity information"
 }
 
 variable "citizen_auth_assertion_storage_name" {
