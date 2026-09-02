@@ -42,7 +42,6 @@ variable "dns_zones" {
   description = "DNS zones to create"
 }
 
-# TODO: remove when app gateway module is implemented
 variable "app_gateway_public_ip" {
   type        = string
   description = "Public IP of the app gateway"
