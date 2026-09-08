@@ -15,29 +15,6 @@ module "storage_accounts_itn" {
   tags = local.tags
 }
 
-module "function_app_services_02" {
-  source                              = "../_modules/function_services/function-app"
-  prefix                              = local.prefix
-  env_short                           = local.env_short
-  function_services_autoscale_minimum = local.function_services.function_services_autoscale_minimum
-  function_services_autoscale_maximum = local.function_services.function_services_autoscale_maximum
-  function_services_autoscale_default = local.function_services.function_services_autoscale_default
-  sku_size                            = "P1v3"
-  vnet_common_name_itn                = local.function_services.vnet_common_name_itn
-  instance_number                     = "02"
-  common_resource_group_name_itn      = local.function_services.common_resource_group_name_itn
-  project_itn                         = local.project_itn
-  services_snet_cidr                  = local.function_services.cidr_subnet_services_02
-  tags                                = local.tags
-}
-
-module "containers_services" {
-  source              = "../_modules/function_services/containers"
-  cosmos_db_name      = module.function_app_services_02.db_name
-  resource_group_name = local.resource_groups.weu.internal
-  legacy_project      = local.project_weu_legacy
-}
-
 module "function_app_admin" {
   source                         = "../_modules/function_admin"
   prefix                         = local.prefix
@@ -47,19 +24,6 @@ module "function_app_admin" {
   project_itn                    = local.project_itn
   admin_snet_cidr                = local.function_admin.cidr_subnet_admin
   tags                           = local.tags
-}
-
-module "function_app_elt" {
-  source                          = "../_modules/function_elt"
-  prefix                          = local.prefix
-  env_short                       = local.env_short
-  project_weu_legacy              = local.project_weu_legacy
-  secondary_location_display_name = local.function_elt.secondary_location_display_name
-  location_itn                    = local.function_elt.location_itn
-  vnet_common_name_itn            = local.function_elt.vnet_common_name_itn
-  common_resource_group_name_itn  = local.function_elt.common_resource_group_name_itn
-  elt_snet_cidr                   = local.function_elt.elt_snet_cidr
-  tags                            = local.function_elt.tags
 }
 
 module "assets_locales_cdn" {

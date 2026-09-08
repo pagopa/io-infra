@@ -19,9 +19,6 @@ locals {
   core                   = data.terraform_remote_state.core.outputs
   platform_core          = data.terraform_remote_state.platform_core.outputs
   platform_observability = data.terraform_remote_state.platform_observability.outputs
-  platform_app_backend   = data.terraform_remote_state.platform_app_backend.outputs
-
-  app_messages_count = 2
 
   # TODO: edit this block when resource groups module is implemented
   resource_groups = {
@@ -44,45 +41,6 @@ locals {
     }
   }
 
-  function_services = {
-    rg_common_name   = format("%s-rg-common", local.project_weu_legacy)
-    rg_internal_name = format("%s-rg-internal", local.project_weu_legacy)
-
-    tags = {
-      BusinessUnit = "App IO"
-      CreatedBy    = "Terraform"
-      Environment  = "Prod"
-      Source       = "https://github.com/pagopa/io-infra/blob/main/src/domains/functions"
-      CostCenter   = "TS000 - Tecnologia e Servizi"
-    }
-
-    # Switch limit date for email opt out mode. This value should be used by functions that need to discriminate
-    # how to check isInboxEnabled property on IO profiles, since we have to disable email notifications for default
-    # for all profiles that have been updated before this date. This date should coincide with new IO App's release date
-    # 1625781600 value refers to 2021-07-09T00:00:00 GMT+02:00
-    opt_out_email_switch_date = 1625781600
-
-    # Feature flag used to enable email opt-in with logic exposed by the previous variable usage
-    ff_opt_in_email_enabled = "true"
-
-    apim_hostname_api_internal = "api-internal.io.italia.it"
-
-    # MESSAGES
-    message_content_container_name = "message-content"
-
-    service_api_url = "https://api-app.internal.io.pagopa.it/"
-
-    cidr_subnet_services_02             = "10.20.34.0/26"
-    function_services_autoscale_minimum = 3
-    function_services_autoscale_maximum = 30
-    function_services_autoscale_default = 10
-
-    vnet_common_name_itn           = "${local.project_itn}-common-vnet-01"
-    common_resource_group_name_itn = "${local.project_itn}-common-rg-01"
-
-    apim_itn_name = "${local.project_itn}-apim-01"
-  }
-
   function_admin = {
     cidr_subnet_admin = "10.20.34.64/26"
 
@@ -90,26 +48,5 @@ locals {
     common_resource_group_name_itn = "${local.project_itn}-common-rg-01"
 
     apim_itn_name = "${local.project_itn}-apim-01"
-  }
-
-  function_elt = {
-
-    location                        = "westeurope"
-    secondary_location_display_name = "North Europe"
-
-    vnet_common_name_itn           = "${local.project_itn}-common-vnet-01"
-    common_resource_group_name_itn = "${local.project_itn}-common-rg-01"
-
-    location_itn  = "italynorth"
-    elt_snet_cidr = "10.20.40.0/26"
-
-    tags = {
-      CostCenter     = "TS000 - Tecnologia e Servizi"
-      CreatedBy      = "Terraform"
-      Environment    = "Prod"
-      BusinessUnit   = "App IO"
-      Source         = "https://github.com/pagopa/io-infra/blob/main/src/domains/elt/prod"
-      ManagementTeam = "IO Platform"
-    }
   }
 }

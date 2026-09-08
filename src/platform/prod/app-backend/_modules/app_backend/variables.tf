@@ -185,7 +185,6 @@ variable "backend_hostnames" {
     services_app_backend = string
     lollipop             = string
     cgn                  = string
-    iosign               = string
     iofims               = string
     cgnonboarding        = string
     cdc_support          = string

@@ -33,12 +33,3 @@ resource "azurerm_key_vault_secret" "appbackend-USERS-LOGIN-STORAGE" {
   key_vault_id = var.key_vault_common.id
   content_type = "string"
 }
-
-#tfsec:ignore:AZU023
-resource "azurerm_key_vault_secret" "appbackend_THIRD_PARTY_CONFIG_LIST" {
-  count        = var.index == 1 ? 1 : 0
-  name         = "appbackend-THIRD-PARTY-CONFIG-LIST"
-  value        = local.app_settings_common.THIRD_PARTY_CONFIG_LIST
-  key_vault_id = var.key_vault_common.id
-  content_type = "string"
-}
