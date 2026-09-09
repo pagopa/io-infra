@@ -54,6 +54,10 @@ data "azuread_group" "bonus_devs" {
   display_name = "${local.prefix}-${local.env_short}-adgroup-bonus-developers"
 }
 
+data "azuread_group" "admins" {
+  display_name = "${local.prefix}-${local.env_short}-adgroup-admin"
+}
+
 data "azuread_service_principal" "platform_iac_sp" {
   display_name = "pagopaspa-io-platform-iac-projects-${data.azurerm_subscription.current.subscription_id}"
 }

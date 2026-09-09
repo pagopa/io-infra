@@ -3,12 +3,12 @@
 # Here is the documentation which explains how to use the import code block: https://developer.hashicorp.com/terraform/language/block/import
 
 import {
-  to = module.storage_accounts_itn.azurerm_storage_account.iopitndataexportst01["0"]
+  to = module.storage_accounts_itn.azurerm_storage_account.iopitndataexportst01[0]
   id = "/subscriptions/ec285037-c673-4f58-b594-d7c480da4e8b/resourceGroups/io-p-rg-operations/providers/Microsoft.Storage/storageAccounts/iopitndataexportst01"
 }
 
 import {
-  to = module.storage_accounts_itn.azurerm_storage_account.retirements_itn_01["0"]
+  to = module.storage_accounts_itn.azurerm_storage_account.retirements_itn_01[0]
   id = "/subscriptions/ec285037-c673-4f58-b594-d7c480da4e8b/resourceGroups/io-p-itn-common-rg-01/providers/Microsoft.Storage/storageAccounts/iopitnretirementsst01"
 }
 
@@ -23,12 +23,12 @@ import {
 }
 
 import {
-  to = module.storage_accounts_weu.azurerm_storage_account.app["0"]
+  to = module.storage_accounts_weu.azurerm_storage_account.app[0]
   id = "/subscriptions/ec285037-c673-4f58-b594-d7c480da4e8b/resourceGroups/io-p-rg-internal/providers/Microsoft.Storage/storageAccounts/iopstapp"
 }
 
 import {
-  to = module.storage_accounts_weu.azurerm_storage_account.exportdata_weu_01["0"]
+  to = module.storage_accounts_weu.azurerm_storage_account.exportdata_weu_01[0]
   id = "/subscriptions/ec285037-c673-4f58-b594-d7c480da4e8b/resourceGroups/io-p-rg-operations/providers/Microsoft.Storage/storageAccounts/iopstexportdata"
 }
 
@@ -70,4 +70,9 @@ import {
 import {
   to = module.storage_accounts_weu.module.exportdata_weu_01_com_devs[0].module.storage_account.azurerm_role_assignment.table["iopstexportdata|*|writer|Storage Table Data Contributor"]
   id = "/subscriptions/ec285037-c673-4f58-b594-d7c480da4e8b/resourceGroups/io-p-rg-operations/providers/Microsoft.Storage/storageAccounts/iopstexportdata/providers/Microsoft.Authorization/roleAssignments/3d1cbb9f-bee1-6dca-5fb9-b50d524f8955"
+}
+
+moved {
+  from = module.storage_accounts_itn.azurerm_storage_account.terraform[0]
+  to   = module.storage_accounts_itn.azurerm_storage_account.terraform_state_itn[0]
 }

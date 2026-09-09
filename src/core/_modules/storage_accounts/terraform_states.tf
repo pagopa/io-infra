@@ -1,4 +1,4 @@
-resource "azurerm_storage_account" "terraform" {
+resource "azurerm_storage_account" "terraform_state_itn" {
 
   count = var.location == "italynorth" ? 1 : 0
 
