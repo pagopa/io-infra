@@ -70,12 +70,12 @@ module "key_vault_weu" {
   ]
 
   ci = [
-    data.azurerm_user_assigned_identity.managed_identity_io_infra_ci.principal_id
+    data.azurerm_user_assigned_identity.managed_identity_io_infra_ci.principal_id,
+    data.azurerm_user_assigned_identity.managed_identity_io_plt_ci_id_02.principal_id
   ]
 
   cd = [
     data.azurerm_user_assigned_identity.managed_identity_io_infra_cd.principal_id,
-    data.azurerm_user_assigned_identity.managed_identity_io_plt_ci_id_02.principal_id, # Needed for Microsoft.KeyVault/vaults/keyrotationpolicies/read' - Ref: https://learn.microsoft.com/en-us/azure/role-based-access-control/built-in-roles/security#key-vault-crypto-officer
     data.azurerm_user_assigned_identity.managed_identity_io_plt_cd_id_02.principal_id
   ]
 
