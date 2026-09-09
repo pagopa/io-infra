@@ -270,7 +270,7 @@ module "monitoring_italynorth" {
 module "storage_accounts_italynorth" {
   source = "./_modules/storage_accounts"
 
-  project                   = local.project_weu_legacy
+  project                   = local.project_itn
   location                  = "italynorth"
   resource_group_operations = local.core.resource_groups.westeurope.operations
   tags                      = local.tags
