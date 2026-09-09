@@ -2,7 +2,7 @@
 # https://pagopa.atlassian.net/browse/IOPLT-1626
 
 removed {
-  from = module.function_app_services_02.azurerm_key_vault_access_policy.function_services_itn_kv_common
+  from = module.storage_accounts_itn.azurerm_storage_account.iopitndataexportst01
 
   lifecycle {
     destroy = false
@@ -10,7 +10,7 @@ removed {
 }
 
 removed {
-  from = module.function_app_services_02.azurerm_key_vault_access_policy.function_services_itn_slot_staging_kv_common
+  from = module.storage_accounts_itn.azurerm_storage_account.iopitnlogst01
 
   lifecycle {
     destroy = false
@@ -18,7 +18,7 @@ removed {
 }
 
 removed {
-  from = module.function_app_services_02.azurerm_resource_group.function_services_rg
+  from = module.storage_accounts_itn.azurerm_storage_account.retirements_itn_01
 
   lifecycle {
     destroy = false
@@ -26,7 +26,7 @@ removed {
 }
 
 removed {
-  from = module.function_app_services_02.azurerm_storage_container.processing-messages-01
+  from = module.storage_accounts_itn.azurerm_storage_encryption_scope.iopitnlogst01
 
   lifecycle {
     destroy = false
@@ -34,7 +34,7 @@ removed {
 }
 
 removed {
-  from = module.function_app_services_02.azurerm_storage_management_policy.processing_messages_container_rule_01
+  from = module.storage_accounts_itn.azurerm_storage_management_policy.iopitnlogst01
 
   lifecycle {
     destroy = false
@@ -42,7 +42,7 @@ removed {
 }
 
 removed {
-  from = module.function_app_services_02.azurerm_storage_queue.message-created-01
+  from = module.storage_accounts_itn.module.retirements_itn_01_admins.module.storage_account.azurerm_role_assignment.blob
 
   lifecycle {
     destroy = false
@@ -50,7 +50,7 @@ removed {
 }
 
 removed {
-  from = module.function_app_services_02.azurerm_storage_queue.message-created-poison-01
+  from = module.storage_accounts_itn.module.retirements_itn_01_admins.module.storage_account.azurerm_role_assignment.table
 
   lifecycle {
     destroy = false
@@ -58,7 +58,7 @@ removed {
 }
 
 removed {
-  from = module.function_app_services_02.azurerm_storage_queue.message-processed-01
+  from = module.storage_accounts_itn.azurerm_storage_account.iopitndataexportst01
 
   lifecycle {
     destroy = false
@@ -66,7 +66,7 @@ removed {
 }
 
 removed {
-  from = module.function_app_services_02.azurerm_storage_queue.message-processed-poison-01
+  from = module.storage_accounts_itn.azurerm_storage_account.iopitnlogst01
 
   lifecycle {
     destroy = false
@@ -74,7 +74,7 @@ removed {
 }
 
 removed {
-  from = module.function_app_services_02.azurerm_storage_queue.notification-created-email-01
+  from = module.storage_accounts_itn.azurerm_storage_account.retirements_itn_01
 
   lifecycle {
     destroy = false
@@ -82,7 +82,7 @@ removed {
 }
 
 removed {
-  from = module.function_app_services_02.azurerm_storage_queue.notification-created-email-poison-01
+  from = module.storage_accounts_itn.azurerm_storage_encryption_scope.iopitnlogst01
 
   lifecycle {
     destroy = false
@@ -90,7 +90,7 @@ removed {
 }
 
 removed {
-  from = module.function_app_services_02.azurerm_storage_queue.notification-created-webhook-poison-01
+  from = module.storage_accounts_itn.azurerm_storage_management_policy.iopitnlogst01
 
   lifecycle {
     destroy = false
@@ -98,7 +98,7 @@ removed {
 }
 
 removed {
-  from = module.function_app_services_02.module.function_services_autoscale.azurerm_monitor_autoscale_setting.this
+  from = module.storage_accounts_itn.module.retirements_itn_01_admins.module.storage_account.azurerm_role_assignment.blob
 
   lifecycle {
     destroy = false
@@ -106,7 +106,7 @@ removed {
 }
 
 removed {
-  from = module.function_app_services_02.module.function_services_role_assignments.module.key_vault.azurerm_role_assignment.secrets
+  from = module.storage_accounts_itn.module.retirements_itn_01_admins.module.storage_account.azurerm_role_assignment.table
 
   lifecycle {
     destroy = false
@@ -114,7 +114,7 @@ removed {
 }
 
 removed {
-  from = module.function_app_services_02.module.function_services_staging_slot_role_assignments.module.key_vault.azurerm_role_assignment.secrets
+  from = module.storage_accounts.azurerm_storage_account.app
 
   lifecycle {
     destroy = false
@@ -122,7 +122,7 @@ removed {
 }
 
 removed {
-  from = module.function_app_services_02.module.function_services.azurerm_linux_function_app_slot.this
+  from = module.storage_accounts.azurerm_storage_account.exportdata_weu_01
 
   lifecycle {
     destroy = false
@@ -130,7 +130,7 @@ removed {
 }
 
 removed {
-  from = module.function_app_services_02.module.function_services.azurerm_linux_function_app.this
+  from = module.storage_accounts.azurerm_storage_account.logs
 
   lifecycle {
     destroy = false
@@ -138,7 +138,7 @@ removed {
 }
 
 removed {
-  from = module.function_app_services_02.module.function_services.azurerm_monitor_metric_alert.function_app_health_check
+  from = module.storage_accounts.module.exportdata_weu_01_com_admins.module.storage_account.azurerm_role_assignment.blob
 
   lifecycle {
     destroy = false
@@ -146,7 +146,7 @@ removed {
 }
 
 removed {
-  from = module.function_app_services_02.module.function_services.azurerm_monitor_metric_alert.storage_account_health_check
+  from = module.storage_accounts.module.exportdata_weu_01_com_admins.module.storage_account.azurerm_role_assignment.queue
 
   lifecycle {
     destroy = false
@@ -154,7 +154,7 @@ removed {
 }
 
 removed {
-  from = module.function_app_services_02.module.function_services.azurerm_private_endpoint.function_sites
+  from = module.storage_accounts.module.exportdata_weu_01_com_admins.module.storage_account.azurerm_role_assignment.table
 
   lifecycle {
     destroy = false
@@ -162,7 +162,7 @@ removed {
 }
 
 removed {
-  from = module.function_app_services_02.module.function_services.azurerm_private_endpoint.st_blob
+  from = module.storage_accounts.module.exportdata_weu_01_com_devs.module.storage_account.azurerm_role_assignment.blob
 
   lifecycle {
     destroy = false
@@ -170,7 +170,7 @@ removed {
 }
 
 removed {
-  from = module.function_app_services_02.module.function_services.azurerm_private_endpoint.st_file
+  from = module.storage_accounts.module.exportdata_weu_01_com_devs.module.storage_account.azurerm_role_assignment.queue
 
   lifecycle {
     destroy = false
@@ -178,7 +178,7 @@ removed {
 }
 
 removed {
-  from = module.function_app_services_02.module.function_services.azurerm_private_endpoint.st_queue
+  from = module.storage_accounts.module.exportdata_weu_01_com_devs.module.storage_account.azurerm_role_assignment.table
 
   lifecycle {
     destroy = false
@@ -186,7 +186,7 @@ removed {
 }
 
 removed {
-  from = module.function_app_services_02.module.function_services.azurerm_private_endpoint.staging_function_sites
+  from = module.storage_accounts.module.legacy_assets_cdn_storage_account.azurerm_monitor_metric_alert.storage_account_low_availability
 
   lifecycle {
     destroy = false
@@ -194,7 +194,7 @@ removed {
 }
 
 removed {
-  from = module.function_app_services_02.module.function_services.azurerm_role_assignment.function_storage_account_contributor
+  from = module.storage_accounts.module.legacy_assets_cdn_storage_account.azurerm_storage_account.this
 
   lifecycle {
     destroy = false
@@ -202,7 +202,7 @@ removed {
 }
 
 removed {
-  from = module.function_app_services_02.module.function_services.azurerm_role_assignment.function_storage_blob_data_owner
+  from = module.storage_accounts.module.legacy_cdn_svc_devs.module.storage_account.azurerm_role_assignment.blob
 
   lifecycle {
     destroy = false
@@ -210,7 +210,7 @@ removed {
 }
 
 removed {
-  from = module.function_app_services_02.module.function_services.azurerm_role_assignment.function_storage_queue_data_contributor
+  from = azurerm_key_vault_secret.st_app_primary_connection_string
 
   lifecycle {
     destroy = false
@@ -218,87 +218,7 @@ removed {
 }
 
 removed {
-  from = module.function_app_services_02.module.function_services.azurerm_role_assignment.staging_function_storage_account_contributor
-
-  lifecycle {
-    destroy = false
-  }
-}
-
-removed {
-  from = module.function_app_services_02.module.function_services.azurerm_role_assignment.staging_function_storage_blob_data_owner
-
-  lifecycle {
-    destroy = false
-  }
-}
-
-removed {
-  from = module.function_app_services_02.module.function_services.azurerm_role_assignment.staging_function_storage_queue_data_contributor
-
-  lifecycle {
-    destroy = false
-  }
-}
-
-removed {
-  from = module.function_app_services_02.module.function_services.azurerm_service_plan.this
-
-  lifecycle {
-    destroy = false
-  }
-}
-
-removed {
-  from = module.function_app_services_02.module.function_services.azurerm_storage_account_network_rules.st_network_rules
-
-  lifecycle {
-    destroy = false
-  }
-}
-
-removed {
-  from = module.function_app_services_02.module.function_services.azurerm_storage_account.this
-
-  lifecycle {
-    destroy = false
-  }
-}
-
-removed {
-  from = module.function_app_services_02.module.function_services.azurerm_subnet.this
-
-  lifecycle {
-    destroy = false
-  }
-}
-
-removed {
-  from = module.function_app_services_02.module.services_storage_account_01.azurerm_monitor_metric_alert.storage_account_health_check
-
-  lifecycle {
-    destroy = false
-  }
-}
-
-removed {
-  from = module.function_app_services_02.module.services_storage_account_01.azurerm_private_endpoint.this
-
-  lifecycle {
-    destroy = false
-  }
-}
-
-removed {
-  from = module.function_app_services_02.module.services_storage_account_01.azurerm_storage_account.this
-
-  lifecycle {
-    destroy = false
-  }
-}
-
-removed {
-  from = module.containers_services.module.db_subscription_cidrs_container.azurerm_cosmosdb_sql_container.this
+  from = azurerm_key_vault_secret.st_logs_primary_connection_string
 
   lifecycle {
     destroy = false
