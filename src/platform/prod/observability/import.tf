@@ -21,3 +21,8 @@ import {
   to = module.storage_accounts_italynorth.azurerm_storage_management_policy.iopitnlogst01[0]
   id = "/subscriptions/ec285037-c673-4f58-b594-d7c480da4e8b/resourceGroups/io-p-rg-operations/providers/Microsoft.Storage/storageAccounts/iopitnlogst01/managementPolicies/default"
 }
+
+import {
+  to = azurerm_key_vault_secret.st_logs_primary_connection_string
+  id = "https://io-p-kv-common.vault.azure.net/secrets/st-logs-primary-connection-string/c9e3fb96fec14647b17f79d4e258fbce"
+}

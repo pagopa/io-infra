@@ -3,7 +3,7 @@
 # Here is the documentation which explains how to use the import code block: https://developer.hashicorp.com/terraform/language/block/import
 
 import {
-  to = module.legacy_assets_cdn_storage_account.azurerm_monitor_metric_alert.storage_account_low_availability["0"]
+  to = module.legacy_assets_cdn_storage_account.azurerm_monitor_metric_alert.storage_account_low_availability[0]
   id = "/subscriptions/ec285037-c673-4f58-b594-d7c480da4e8b/resourceGroups/io-p-rg-common/providers/Microsoft.Insights/metricAlerts/[iopstcdnassets] Low Availability"
 }
 
