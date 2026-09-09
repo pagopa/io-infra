@@ -1,4 +1,7 @@
 resource "azurerm_storage_account" "terraform" {
+
+  count = var.location == "italynorth" ? 1 : 0
+
   name                = replace("${var.project}tfst001", "-", "")
   resource_group_name = var.resource_group_name
   location            = var.location

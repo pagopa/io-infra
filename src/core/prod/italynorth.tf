@@ -61,10 +61,13 @@ module "github_runner_itn" {
 module "storage_accounts_itn" {
   source = "../_modules/storage_accounts"
 
-  project             = local.project_itn
-  location            = "italynorth"
-  resource_group_name = azurerm_resource_group.terraform_weu.name
+  project                   = local.project_itn
+  location                  = "italynorth"
+  resource_group_name       = azurerm_resource_group.terraform_weu.name
+  resource_group_common     = azurerm_resource_group.common_itn.name
+  resource_group_operations = azurerm_resource_group.operations_weu.name
 
+  subscription_id                            = data.azurerm_subscription.current.subscription_id
   azure_adgroup_admin_object_id              = data.azuread_group.admin.object_id
   azure_adgroup_platform_admins_object_id    = data.azuread_group.platform_admins.object_id
   azure_adgroup_platform_externals_object_id = data.azuread_group.platform_externals.object_id
@@ -78,6 +81,7 @@ module "storage_accounts_itn" {
   azure_adgroup_auth_devs_object_id          = data.azuread_group.auth_devs.object_id
   azure_adgroup_bonus_admins_object_id       = data.azuread_group.bonus_admins.object_id
   azure_adgroup_bonus_devs_object_id         = data.azuread_group.bonus_devs.object_id
+  azure_adgroup_admins_object_id             = data.azuread_group.admins.object_id
 
   messages_sp_object_id = data.azuread_service_principal.platform_iac_sp.object_id
 
