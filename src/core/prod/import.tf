@@ -76,8 +76,3 @@ import {
   to = azurerm_key_vault_secret.st_app_primary_connection_string
   id = "https://io-p-kv-common.vault.azure.net/secrets/st-app-primary-connection-string/68beb5b62db146a886c0b320b2e4c4a2"
 }
-
-moved {
-  from = module.storage_accounts_itn.azurerm_storage_account.terraform
-  to   = module.storage_accounts_itn.azurerm_storage_account.terraform_state_itn[0]
-}
