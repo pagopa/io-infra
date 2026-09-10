@@ -1,13 +1,13 @@
 resource "azurerm_cdn_frontdoor_endpoint" "logos_endpoint" {
-  name                     = "io-p-itn-assets-fde-02"
-  cdn_frontdoor_profile_id = module.azure_cdn.id
+  name                     = format("%s-assets-fde-02", var.project)
+  cdn_frontdoor_profile_id = azurerm_cdn_frontdoor_profile.assets_locales_frontdoor_profile.id
 
   tags = var.tags
 }
 
 resource "azurerm_cdn_frontdoor_custom_domain" "logos_custom_domain" {
-  name                     = "io-p-itn-logos-assets-domain"
-  cdn_frontdoor_profile_id = module.azure_cdn.id
+  name                     = format("%s-logos-assets-domain", var.project)
+  cdn_frontdoor_profile_id = azurerm_cdn_frontdoor_profile.assets_locales_frontdoor_profile.id
   dns_zone_id              = var.public_dns_zones.io.id
   host_name                = "logos.assets.io.pagopa.it"
 
@@ -38,8 +38,8 @@ resource "azurerm_dns_cname_record" "logos_custom_domain_dns_record" {
 }
 
 resource "azurerm_cdn_frontdoor_origin_group" "logos_origin_group" {
-  name                     = "io-p-itn-assets-fdog-02"
-  cdn_frontdoor_profile_id = module.azure_cdn.id
+  name                     = format("%s-assets-fdog-02", var.project)
+  cdn_frontdoor_profile_id = azurerm_cdn_frontdoor_profile.assets_locales_frontdoor_profile.id
 
   health_probe {
     interval_in_seconds = 100
@@ -66,11 +66,11 @@ resource "azurerm_cdn_frontdoor_origin" "logos_origin" {
 
 resource "azurerm_cdn_frontdoor_rule_set" "logos_ruleset" {
   name                     = "logosruleset"
-  cdn_frontdoor_profile_id = module.azure_cdn.id
+  cdn_frontdoor_profile_id = azurerm_cdn_frontdoor_profile.assets_locales_frontdoor_profile.id
 }
 
 resource "azurerm_cdn_frontdoor_route" "logos_route" {
-  name                            = "io-p-itn-assets-cdnr-02"
+  name                            = format("%s-assets-cdnr-02", var.project)
   cdn_frontdoor_endpoint_id       = azurerm_cdn_frontdoor_endpoint.logos_endpoint.id
   cdn_frontdoor_origin_group_id   = azurerm_cdn_frontdoor_origin_group.logos_origin_group.id
   cdn_frontdoor_origin_ids        = [azurerm_cdn_frontdoor_origin.logos_origin.id]

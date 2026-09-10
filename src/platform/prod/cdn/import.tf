@@ -94,101 +94,6 @@ import {
 }
 
 import {
-  to = module.assets_locales.module.azure_cdn.azurerm_cdn_frontdoor_custom_domain.this["assets.cdn.io.italia.it"]
-  id = "/subscriptions/ec285037-c673-4f58-b594-d7c480da4e8b/resourceGroups/io-p-itn-assets-cdn-rg-01/providers/Microsoft.Cdn/profiles/io-p-itn-assets-afd-01/customDomains/assets-cdn-io-italia-it"
-}
-
-import {
-  to = module.assets_locales.module.azure_cdn.azurerm_cdn_frontdoor_custom_domain.this["assets.cdn.io.pagopa.it"]
-  id = "/subscriptions/ec285037-c673-4f58-b594-d7c480da4e8b/resourceGroups/io-p-itn-assets-cdn-rg-01/providers/Microsoft.Cdn/profiles/io-p-itn-assets-afd-01/customDomains/assets-cdn-io-pagopa-it"
-}
-
-import {
-  to = module.assets_locales.module.azure_cdn.azurerm_cdn_frontdoor_custom_domain.this["assets.io.pagopa.it"]
-  id = "/subscriptions/ec285037-c673-4f58-b594-d7c480da4e8b/resourceGroups/io-p-itn-assets-cdn-rg-01/providers/Microsoft.Cdn/profiles/io-p-itn-assets-afd-01/customDomains/assets-io-pagopa-it"
-}
-
-import {
-  to = module.assets_locales.module.azure_cdn.azurerm_cdn_frontdoor_custom_domain_association.this["assets.cdn.io.italia.it"]
-  id = "/subscriptions/ec285037-c673-4f58-b594-d7c480da4e8b/resourceGroups/io-p-itn-assets-cdn-rg-01/providers/Microsoft.Cdn/profiles/io-p-itn-assets-afd-01/associations/assets-cdn-io-italia-it"
-}
-
-import {
-  to = module.assets_locales.module.azure_cdn.azurerm_cdn_frontdoor_custom_domain_association.this["assets.cdn.io.pagopa.it"]
-  id = "/subscriptions/ec285037-c673-4f58-b594-d7c480da4e8b/resourceGroups/io-p-itn-assets-cdn-rg-01/providers/Microsoft.Cdn/profiles/io-p-itn-assets-afd-01/associations/assets-cdn-io-pagopa-it"
-}
-
-import {
-  to = module.assets_locales.module.azure_cdn.azurerm_cdn_frontdoor_custom_domain_association.this["assets.io.pagopa.it"]
-  id = "/subscriptions/ec285037-c673-4f58-b594-d7c480da4e8b/resourceGroups/io-p-itn-assets-cdn-rg-01/providers/Microsoft.Cdn/profiles/io-p-itn-assets-afd-01/associations/assets-io-pagopa-it"
-}
-
-import {
-  to = module.assets_locales.module.azure_cdn.azurerm_cdn_frontdoor_endpoint.this
-  id = "/subscriptions/ec285037-c673-4f58-b594-d7c480da4e8b/resourceGroups/io-p-itn-assets-cdn-rg-01/providers/Microsoft.Cdn/profiles/io-p-itn-assets-afd-01/afdEndpoints/io-p-itn-assets-fde-01"
-}
-
-import {
-  to = module.assets_locales.module.azure_cdn.azurerm_cdn_frontdoor_origin.this["storage-account"]
-  id = "/subscriptions/ec285037-c673-4f58-b594-d7c480da4e8b/resourceGroups/io-p-itn-assets-cdn-rg-01/providers/Microsoft.Cdn/profiles/io-p-itn-assets-afd-01/originGroups/io-p-itn-assets-fdog-01/origins/io-p-itn-assets-storage-account-fdo-01"
-}
-
-import {
-  to = module.assets_locales.module.azure_cdn.azurerm_cdn_frontdoor_origin_group.this
-  id = "/subscriptions/ec285037-c673-4f58-b594-d7c480da4e8b/resourceGroups/io-p-itn-assets-cdn-rg-01/providers/Microsoft.Cdn/profiles/io-p-itn-assets-afd-01/originGroups/io-p-itn-assets-fdog-01"
-}
-
-import {
-  to = module.assets_locales.module.azure_cdn.azurerm_cdn_frontdoor_profile.this[0]
-  id = "/subscriptions/ec285037-c673-4f58-b594-d7c480da4e8b/resourceGroups/io-p-itn-assets-cdn-rg-01/providers/Microsoft.Cdn/profiles/io-p-itn-assets-afd-01"
-}
-
-import {
-  to = module.assets_locales.module.azure_cdn.azurerm_cdn_frontdoor_route.this
-  id = "/subscriptions/ec285037-c673-4f58-b594-d7c480da4e8b/resourceGroups/io-p-itn-assets-cdn-rg-01/providers/Microsoft.Cdn/profiles/io-p-itn-assets-afd-01/afdEndpoints/io-p-itn-assets-fde-01/routes/io-p-itn-assets-cdnr-01"
-}
-
-import {
-  to = module.assets_locales.module.azure_cdn.azurerm_cdn_frontdoor_rule_set.this
-  id = "/subscriptions/ec285037-c673-4f58-b594-d7c480da4e8b/resourceGroups/io-p-itn-assets-cdn-rg-01/providers/Microsoft.Cdn/profiles/io-p-itn-assets-afd-01/ruleSets/ruleset"
-}
-
-import {
-  to = module.assets_locales.module.azure_cdn.azurerm_dns_cname_record.this["assets.cdn.io.italia.it"]
-  id = "/subscriptions/ec285037-c673-4f58-b594-d7c480da4e8b/resourceGroups/io-p-rg-external/providers/Microsoft.Network/dnsZones/io.italia.it/CNAME/assets.cdn"
-}
-
-import {
-  to = module.assets_locales.module.azure_cdn.azurerm_dns_cname_record.this["assets.cdn.io.pagopa.it"]
-  id = "/subscriptions/ec285037-c673-4f58-b594-d7c480da4e8b/resourceGroups/io-p-rg-external/providers/Microsoft.Network/dnsZones/io.pagopa.it/CNAME/assets.cdn"
-}
-
-import {
-  to = module.assets_locales.module.azure_cdn.azurerm_dns_cname_record.this["assets.io.pagopa.it"]
-  id = "/subscriptions/ec285037-c673-4f58-b594-d7c480da4e8b/resourceGroups/io-p-rg-external/providers/Microsoft.Network/dnsZones/io.pagopa.it/CNAME/assets"
-}
-
-import {
-  to = module.assets_locales.module.azure_cdn.azurerm_dns_txt_record.validation["assets.cdn.io.italia.it"]
-  id = "/subscriptions/ec285037-c673-4f58-b594-d7c480da4e8b/resourceGroups/io-p-rg-external/providers/Microsoft.Network/dnsZones/io.italia.it/TXT/_dnsauth.assets.cdn"
-}
-
-import {
-  to = module.assets_locales.module.azure_cdn.azurerm_dns_txt_record.validation["assets.cdn.io.pagopa.it"]
-  id = "/subscriptions/ec285037-c673-4f58-b594-d7c480da4e8b/resourceGroups/io-p-rg-external/providers/Microsoft.Network/dnsZones/io.pagopa.it/TXT/_dnsauth.assets.cdn"
-}
-
-import {
-  to = module.assets_locales.module.azure_cdn.azurerm_dns_txt_record.validation["assets.io.pagopa.it"]
-  id = "/subscriptions/ec285037-c673-4f58-b594-d7c480da4e8b/resourceGroups/io-p-rg-external/providers/Microsoft.Network/dnsZones/io.pagopa.it/TXT/_dnsauth.assets"
-}
-
-import {
-  to = module.assets_locales.module.azure_cdn.azurerm_monitor_diagnostic_setting.this[0]
-  id = "/subscriptions/ec285037-c673-4f58-b594-d7c480da4e8b/resourceGroups/io-p-itn-assets-cdn-rg-01/providers/Microsoft.Cdn/profiles/io-p-itn-assets-afd-01|io-p-itn-assets-cdnp-01"
-}
-
-import {
   to = module.assets_locales.module.cdn_storage.azurerm_monitor_metric_alert.storage_account_health_check[0]
   id = "/subscriptions/ec285037-c673-4f58-b594-d7c480da4e8b/resourceGroups/io-p-itn-common-rg-01/providers/Microsoft.Insights/metricAlerts/[iopitnassetsst01]"
 }
@@ -211,4 +116,86 @@ import {
 import {
   to = module.assets_locales.module.storage_account_permissions["svc_devs"].module.storage_account.azurerm_role_assignment.blob["iopitnassetsst01|*|writer|Storage Blob Data Contributor"]
   id = "/subscriptions/ec285037-c673-4f58-b594-d7c480da4e8b/resourceGroups/io-p-itn-common-rg-01/providers/Microsoft.Storage/storageAccounts/iopitnassetsst01/providers/Microsoft.Authorization/roleAssignments/33fe3b7f-efd8-8b3b-d1d9-6a19336181c1"
+}
+
+# Manually recreated resources without module
+
+import {
+  to = resource.azurerm_cdn_frontdoor_custom_domain.assets_cdn_io_italia_it
+  id = "/subscriptions/ec285037-c673-4f58-b594-d7c480da4e8b/resourceGroups/io-p-itn-assets-cdn-rg-01/providers/Microsoft.Cdn/profiles/io-p-itn-assets-afd-01/customDomains/assets-cdn-io-italia-it"
+}
+
+import {
+  to = resource.azurerm_cdn_frontdoor_custom_domain.assets_cdn_io_pagopa_it
+  id = "/subscriptions/ec285037-c673-4f58-b594-d7c480da4e8b/resourceGroups/io-p-itn-assets-cdn-rg-01/providers/Microsoft.Cdn/profiles/io-p-itn-assets-afd-01/customDomains/assets-cdn-io-pagopa-it"
+}
+
+import {
+  to = resource.azurerm_cdn_frontdoor_custom_domain.assets_io_pagopa_it
+  id = "/subscriptions/ec285037-c673-4f58-b594-d7c480da4e8b/resourceGroups/io-p-itn-assets-cdn-rg-01/providers/Microsoft.Cdn/profiles/io-p-itn-assets-afd-01/customDomains/assets-io-pagopa-it"
+}
+
+import {
+  to = resource.azurerm_cdn_frontdoor_endpoint.assets_locales_endpoint
+  id = "/subscriptions/ec285037-c673-4f58-b594-d7c480da4e8b/resourceGroups/io-p-itn-assets-cdn-rg-01/providers/Microsoft.Cdn/profiles/io-p-itn-assets-afd-01/afdEndpoints/io-p-itn-assets-fde-01"
+}
+
+import {
+  to = resource.azurerm_cdn_frontdoor_origin.assets_locales_origin
+  id = "/subscriptions/ec285037-c673-4f58-b594-d7c480da4e8b/resourceGroups/io-p-itn-assets-cdn-rg-01/providers/Microsoft.Cdn/profiles/io-p-itn-assets-afd-01/originGroups/io-p-itn-assets-fdog-01/origins/io-p-itn-assets-storage-account-fdo-01"
+}
+
+import {
+  to = resource.azurerm_cdn_frontdoor_origin_group.assets_locales_origin_group
+  id = "/subscriptions/ec285037-c673-4f58-b594-d7c480da4e8b/resourceGroups/io-p-itn-assets-cdn-rg-01/providers/Microsoft.Cdn/profiles/io-p-itn-assets-afd-01/originGroups/io-p-itn-assets-fdog-01"
+}
+
+import {
+  to = resource.azurerm_cdn_frontdoor_profile.assets_locales_frontdoor_profile
+  id = "/subscriptions/ec285037-c673-4f58-b594-d7c480da4e8b/resourceGroups/io-p-itn-assets-cdn-rg-01/providers/Microsoft.Cdn/profiles/io-p-itn-assets-afd-01"
+}
+
+import {
+  to = resource.azurerm_cdn_frontdoor_route.assets_locales_route
+  id = "/subscriptions/ec285037-c673-4f58-b594-d7c480da4e8b/resourceGroups/io-p-itn-assets-cdn-rg-01/providers/Microsoft.Cdn/profiles/io-p-itn-assets-afd-01/afdEndpoints/io-p-itn-assets-fde-01/routes/io-p-itn-assets-cdnr-01"
+}
+
+import {
+  to = resource.azurerm_cdn_frontdoor_rule_set.assets_locales_ruleset
+  id = "/subscriptions/ec285037-c673-4f58-b594-d7c480da4e8b/resourceGroups/io-p-itn-assets-cdn-rg-01/providers/Microsoft.Cdn/profiles/io-p-itn-assets-afd-01/ruleSets/ruleset"
+}
+
+import {
+  to = resource.azurerm_dns_cname_record.assets_cdn_io_italia_it
+  id = "/subscriptions/ec285037-c673-4f58-b594-d7c480da4e8b/resourceGroups/io-p-rg-external/providers/Microsoft.Network/dnsZones/io.italia.it/CNAME/assets.cdn"
+}
+
+import {
+  to = resource.azurerm_dns_cname_record.assets_cdn_io_pagopa_it
+  id = "/subscriptions/ec285037-c673-4f58-b594-d7c480da4e8b/resourceGroups/io-p-rg-external/providers/Microsoft.Network/dnsZones/io.pagopa.it/CNAME/assets.cdn"
+}
+
+import {
+  to = resource.azurerm_dns_cname_record.assets_io_pagopa_it
+  id = "/subscriptions/ec285037-c673-4f58-b594-d7c480da4e8b/resourceGroups/io-p-rg-external/providers/Microsoft.Network/dnsZones/io.pagopa.it/CNAME/assets"
+}
+
+import {
+  to = resource.azurerm_dns_txt_record.assets_cdn_io_italia_it
+  id = "/subscriptions/ec285037-c673-4f58-b594-d7c480da4e8b/resourceGroups/io-p-rg-external/providers/Microsoft.Network/dnsZones/io.italia.it/TXT/_dnsauth.assets.cdn"
+}
+
+import {
+  to = resource.azurerm_dns_txt_record.assets_cdn_io_pagopa_it
+  id = "/subscriptions/ec285037-c673-4f58-b594-d7c480da4e8b/resourceGroups/io-p-rg-external/providers/Microsoft.Network/dnsZones/io.pagopa.it/TXT/_dnsauth.assets.cdn"
+}
+
+import {
+  to = resource.azurerm_dns_txt_record.assets_io_pagopa_it
+  id = "/subscriptions/ec285037-c673-4f58-b594-d7c480da4e8b/resourceGroups/io-p-rg-external/providers/Microsoft.Network/dnsZones/io.pagopa.it/TXT/_dnsauth.assets"
+}
+
+import {
+  to = resource.azurerm_monitor_diagnostic_setting.assets_locales_diagnostic_setting
+  id = "/subscriptions/ec285037-c673-4f58-b594-d7c480da4e8b/resourceGroups/io-p-itn-assets-cdn-rg-01/providers/Microsoft.Cdn/profiles/io-p-itn-assets-afd-01|io-p-itn-assets-cdnp-01"
 }

@@ -1,8 +1,15 @@
+## Ruleset
+
+resource "azurerm_cdn_frontdoor_rule_set" "assets_locales_ruleset" {
+  name                     = "ruleset"
+  cdn_frontdoor_profile_id = azurerm_cdn_frontdoor_profile.assets_locales_frontdoor_profile.id
+}
+
 ## Global cache
 
 resource "azurerm_cdn_frontdoor_rule" "global_cache" {
   name                      = "globalCache"
-  cdn_frontdoor_rule_set_id = module.azure_cdn.rule_set_id
+  cdn_frontdoor_rule_set_id = azurerm_cdn_frontdoor_rule_set.assets_locales_ruleset.id
   order                     = 1
 
   actions {
@@ -18,7 +25,7 @@ resource "azurerm_cdn_frontdoor_rule" "global_cache" {
 
 resource "azurerm_cdn_frontdoor_rule" "sign_origin" {
   name                      = "signOrigin"
-  cdn_frontdoor_rule_set_id = module.azure_cdn.rule_set_id
+  cdn_frontdoor_rule_set_id = azurerm_cdn_frontdoor_rule_set.assets_locales_ruleset.id
   order                     = 2
 
   conditions {
@@ -45,7 +52,7 @@ resource "azurerm_cdn_frontdoor_rule" "caching_rules" {
   for_each = local.caching_rules
 
   name                      = each.value.name
-  cdn_frontdoor_rule_set_id = module.azure_cdn.rule_set_id
+  cdn_frontdoor_rule_set_id = azurerm_cdn_frontdoor_rule_set.assets_locales_ruleset.id
   order                     = each.value.order
 
   conditions {
@@ -70,7 +77,7 @@ resource "azurerm_cdn_frontdoor_rule" "redirect_rules" {
   for_each = local.redirect_rules
 
   name                      = each.value.name
-  cdn_frontdoor_rule_set_id = module.azure_cdn.rule_set_id
+  cdn_frontdoor_rule_set_id = azurerm_cdn_frontdoor_rule_set.assets_locales_ruleset.id
   order                     = each.value.order
 
   conditions {
