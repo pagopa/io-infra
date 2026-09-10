@@ -15,17 +15,6 @@ module "storage_accounts_itn" {
   tags = local.tags
 }
 
-module "function_app_admin" {
-  source                         = "../_modules/function_admin"
-  prefix                         = local.prefix
-  env_short                      = local.env_short
-  vnet_common_name_itn           = local.function_admin.vnet_common_name_itn
-  common_resource_group_name_itn = local.function_admin.common_resource_group_name_itn
-  project_itn                    = local.project_itn
-  admin_snet_cidr                = local.function_admin.cidr_subnet_admin
-  tags                           = local.tags
-}
-
 module "assets_locales_cdn" {
   source = "../_modules/assets_locales_cdn"
 
