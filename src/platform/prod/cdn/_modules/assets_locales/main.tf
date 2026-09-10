@@ -74,7 +74,7 @@ resource "azurerm_cdn_frontdoor_origin" "assets_locales_origin" {
   origin_host_header             = "iopitnassetsst01.z38.web.core.windows.net"
   priority                       = 1
   weight                         = 1000
-  certificate_name_check_enabled = false
+  certificate_name_check_enabled = true
 }
 
 resource "azurerm_cdn_frontdoor_origin_group" "assets_locales_origin_group" {
@@ -130,7 +130,11 @@ resource "azurerm_monitor_diagnostic_setting" "assets_locales_diagnostic_setting
   storage_account_id         = var.diagnostic_settings_storage_account_id
 
   enabled_log {
-    category = "AuditEvent"
+    category_group = "allLogs"
+    retention_policy {
+      days    = 0
+      enabled = false
+    }
   }
 
   enabled_metric {
