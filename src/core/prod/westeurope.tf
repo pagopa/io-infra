@@ -125,7 +125,7 @@ module "azdoa_weu" {
 module "storage_accounts_weu" {
   source = "../_modules/storage_accounts"
 
-  project                   = local.project_itn
+  project                   = local.project_weu_legacy
   location                  = "westeurope"
   resource_group_name       = azurerm_resource_group.terraform_weu.name
   resource_group_common     = azurerm_resource_group.common_itn.name
