@@ -42,7 +42,6 @@ variable "dns_zones" {
   description = "DNS zones to create"
 }
 
-# TODO: remove when app gateway module is implemented
 variable "app_gateway_public_ip" {
   type        = string
   description = "Public IP of the app gateway"
@@ -56,9 +55,4 @@ variable "apim_private_ip" {
 variable "platform_api_gateway_private_ip" {
   type        = string
   description = "Private IP of the Proxy API Gateway"
-}
-
-variable "psn_application_gateway_private_endpoint_ip" {
-  type        = string
-  description = "Private IP of the Private Endpoint associated with PSN Application Gateway"
 }

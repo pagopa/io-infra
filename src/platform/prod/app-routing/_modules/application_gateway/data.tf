@@ -12,11 +12,6 @@ data "azurerm_linux_web_app" "appservice_continua" {
   resource_group_name = "${var.project}-continua-rg-01"
 }
 
-data "azurerm_linux_web_app" "session_manager_03" {
-  name                = "${var.project_legacy}-weu-session-manager-app-03"
-  resource_group_name = "${var.project_legacy}-weu-session-manager-rg-01"
-}
-
 data "azurerm_linux_web_app" "fims_op_app" {
   name                = "${var.project}-fims-op-app-01"
   resource_group_name = "${var.project}-fims-rg-01"
