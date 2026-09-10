@@ -65,7 +65,7 @@ resource "azurerm_cdn_frontdoor_profile" "assets_locales_frontdoor_profile" {
 }
 
 resource "azurerm_cdn_frontdoor_origin" "assets_locales_origin" {
-  name                           = "storage-account"
+  name                           = format("%s-assets-storage-account-fdo-01", var.project)
   cdn_frontdoor_origin_group_id  = azurerm_cdn_frontdoor_origin_group.assets_locales_origin_group.id
   enabled                        = true
   host_name                      = "iopitnassetsst01.z38.web.core.windows.net"

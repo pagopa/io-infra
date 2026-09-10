@@ -1,5 +1,5 @@
 resource "azurerm_cdn_frontdoor_custom_domain" "assets_cdn_io_italia_it" {
-  name                     = format("%s-assets-cdn-io-italia-it", var.project)
+  name                     = "assets-cdn-io-italia-it"
   cdn_frontdoor_profile_id = azurerm_cdn_frontdoor_profile.assets_locales_frontdoor_profile.id
   dns_zone_id              = var.public_dns_zones.io.id
   host_name                = "assets.cdn.io.italia.it"
@@ -10,7 +10,7 @@ resource "azurerm_cdn_frontdoor_custom_domain" "assets_cdn_io_italia_it" {
 }
 
 resource "azurerm_cdn_frontdoor_custom_domain" "assets_cdn_io_pagopa_it" {
-  name                     = format("%s-assets-cdn-io-pagopa-it", var.project)
+  name                     = "assets-cdn-io-pagopa-it"
   cdn_frontdoor_profile_id = azurerm_cdn_frontdoor_profile.assets_locales_frontdoor_profile.id
   dns_zone_id              = var.public_dns_zones.io.id
   host_name                = "assets.cdn.io.pagopa.it"
@@ -21,7 +21,7 @@ resource "azurerm_cdn_frontdoor_custom_domain" "assets_cdn_io_pagopa_it" {
 }
 
 resource "azurerm_cdn_frontdoor_custom_domain" "assets_io_pagopa_it" {
-  name                     = format("%s-assets-io-pagopa-it", var.project)
+  name                     = "assets-io-pagopa-it"
   cdn_frontdoor_profile_id = azurerm_cdn_frontdoor_profile.assets_locales_frontdoor_profile.id
   dns_zone_id              = var.public_dns_zones.io.id
   host_name                = "assets.io.pagopa.it"
