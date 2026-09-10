@@ -95,7 +95,7 @@ import {
 
 import {
   to = module.assets_locales.module.cdn_storage.azurerm_monitor_metric_alert.storage_account_health_check[0]
-  id = "/subscriptions/ec285037-c673-4f58-b594-d7c480da4e8b/resourceGroups/io-p-itn-common-rg-01/providers/Microsoft.Insights/metricAlerts/[iopitnassetsst01]"
+  id = "/subscriptions/ec285037-c673-4f58-b594-d7c480da4e8b/resourceGroups/io-p-itn-common-rg-01/providers/Microsoft.Insights/metricAlerts/iopitnassetsst01"
 }
 
 import {
