@@ -9,8 +9,8 @@ module "iam_adgroup_admins" {
 
   storage_blob = [
     {
-      storage_account_name = azurerm_storage_account.terraform_state_itn.name
-      resource_group_name  = azurerm_storage_account.terraform_state_itn.resource_group_name
+      storage_account_name = azurerm_storage_account.terraform_state_itn[0].name
+      resource_group_name  = azurerm_storage_account.terraform_state_itn[0].resource_group_name
       role                 = "owner"
     }
   ]
@@ -27,8 +27,8 @@ module "iam_adgroup_platform_admins" {
 
   storage_blob = [
     {
-      storage_account_name = azurerm_storage_account.terraform_state_itn.name
-      resource_group_name  = azurerm_storage_account.terraform_state_itn.resource_group_name
+      storage_account_name = azurerm_storage_account.terraform_state_itn[0].name
+      resource_group_name  = azurerm_storage_account.terraform_state_itn[0].resource_group_name
       role                 = "writer"
     }
   ]
@@ -45,8 +45,8 @@ module "iam_adgroup_platform_externals" {
 
   storage_blob = [
     {
-      storage_account_name = azurerm_storage_account.terraform_state_itn.name
-      resource_group_name  = azurerm_storage_account.terraform_state_itn.resource_group_name
+      storage_account_name = azurerm_storage_account.terraform_state_itn[0].name
+      resource_group_name  = azurerm_storage_account.terraform_state_itn[0].resource_group_name
       role                 = "writer"
     }
   ]
@@ -63,8 +63,8 @@ module "iam_adgroup_wallet_admins" {
 
   storage_blob = [
     {
-      storage_account_name = azurerm_storage_account.terraform_state_itn.name
-      resource_group_name  = azurerm_storage_account.terraform_state_itn.resource_group_name
+      storage_account_name = azurerm_storage_account.terraform_state_itn[0].name
+      resource_group_name  = azurerm_storage_account.terraform_state_itn[0].resource_group_name
       role                 = "writer"
     }
   ]
@@ -81,8 +81,8 @@ module "iam_adgroup_wallet_devs" {
 
   storage_blob = [
     {
-      storage_account_name = azurerm_storage_account.terraform_state_itn.name
-      resource_group_name  = azurerm_storage_account.terraform_state_itn.resource_group_name
+      storage_account_name = azurerm_storage_account.terraform_state_itn[0].name
+      resource_group_name  = azurerm_storage_account.terraform_state_itn[0].resource_group_name
       role                 = "writer"
     }
   ]
@@ -99,8 +99,8 @@ module "iam_adgroup_com_admins" {
 
   storage_blob = [
     {
-      storage_account_name = azurerm_storage_account.terraform_state_itn.name
-      resource_group_name  = azurerm_storage_account.terraform_state_itn.resource_group_name
+      storage_account_name = azurerm_storage_account.terraform_state_itn[0].name
+      resource_group_name  = azurerm_storage_account.terraform_state_itn[0].resource_group_name
       role                 = "writer"
     }
   ]
@@ -117,8 +117,8 @@ module "iam_adgroup_com_devs" {
 
   storage_blob = [
     {
-      storage_account_name = azurerm_storage_account.terraform_state_itn.name
-      resource_group_name  = azurerm_storage_account.terraform_state_itn.resource_group_name
+      storage_account_name = azurerm_storage_account.terraform_state_itn[0].name
+      resource_group_name  = azurerm_storage_account.terraform_state_itn[0].resource_group_name
       role                 = "writer"
     }
   ]
@@ -135,8 +135,8 @@ module "iam_adgroup_svc_admins" {
 
   storage_blob = [
     {
-      storage_account_name = azurerm_storage_account.terraform_state_itn.name
-      resource_group_name  = azurerm_storage_account.terraform_state_itn.resource_group_name
+      storage_account_name = azurerm_storage_account.terraform_state_itn[0].name
+      resource_group_name  = azurerm_storage_account.terraform_state_itn[0].resource_group_name
       role                 = "writer"
     }
   ]
@@ -153,8 +153,8 @@ module "iam_adgroup_svc_devs" {
 
   storage_blob = [
     {
-      storage_account_name = azurerm_storage_account.terraform_state_itn.name
-      resource_group_name  = azurerm_storage_account.terraform_state_itn.resource_group_name
+      storage_account_name = azurerm_storage_account.terraform_state_itn[0].name
+      resource_group_name  = azurerm_storage_account.terraform_state_itn[0].resource_group_name
       role                 = "writer"
     }
   ]
@@ -171,8 +171,8 @@ module "iam_adgroup_auth_admins" {
 
   storage_blob = [
     {
-      storage_account_name = azurerm_storage_account.terraform_state_itn.name
-      resource_group_name  = azurerm_storage_account.terraform_state_itn.resource_group_name
+      storage_account_name = azurerm_storage_account.terraform_state_itn[0].name
+      resource_group_name  = azurerm_storage_account.terraform_state_itn[0].resource_group_name
       role                 = "writer"
     }
   ]
@@ -189,8 +189,8 @@ module "iam_adgroup_auth_devs" {
 
   storage_blob = [
     {
-      storage_account_name = azurerm_storage_account.terraform_state_itn.name
-      resource_group_name  = azurerm_storage_account.terraform_state_itn.resource_group_name
+      storage_account_name = azurerm_storage_account.terraform_state_itn[0].name
+      resource_group_name  = azurerm_storage_account.terraform_state_itn[0].resource_group_name
       role                 = "writer"
     }
   ]
@@ -207,8 +207,8 @@ module "iam_adgroup_bonus_admins" {
 
   storage_blob = [
     {
-      storage_account_name = azurerm_storage_account.terraform_state_itn.name
-      resource_group_name  = azurerm_storage_account.terraform_state_itn.resource_group_name
+      storage_account_name = azurerm_storage_account.terraform_state_itn[0].name
+      resource_group_name  = azurerm_storage_account.terraform_state_itn[0].resource_group_name
       role                 = "writer"
     }
   ]
@@ -225,8 +225,8 @@ module "iam_adgroup_bonus_devs" {
 
   storage_blob = [
     {
-      storage_account_name = azurerm_storage_account.terraform_state_itn.name
-      resource_group_name  = azurerm_storage_account.terraform_state_itn.resource_group_name
+      storage_account_name = azurerm_storage_account.terraform_state_itn[0].name
+      resource_group_name  = azurerm_storage_account.terraform_state_itn[0].resource_group_name
       role                 = "writer"
     }
   ]
@@ -244,8 +244,8 @@ module "iam_messages_sp" {
   # "Allow DevOps messages pipelines to read TF state file"
   storage_blob = [
     {
-      storage_account_name = azurerm_storage_account.terraform_state_itn.name
-      resource_group_name  = azurerm_storage_account.terraform_state_itn.resource_group_name
+      storage_account_name = azurerm_storage_account.terraform_state_itn[0].name
+      resource_group_name  = azurerm_storage_account.terraform_state_itn[0].resource_group_name
       role                 = "writer"
     }
   ]
