@@ -2,16 +2,15 @@ module "iam_adgroup_admins" {
 
   count = var.location == "italynorth" ? 1 : 0
 
-  source          = "pagopa-dx/azure-role-assignments/azurerm"
-  version         = "~> 1.0"
-  subscription_id = var.subscription_id
+  source  = "pagopa-dx/azure-role-assignments/azurerm"
+  version = "~> 0.0"
 
   principal_id = var.azure_adgroup_admin_object_id
 
   storage_blob = [
     {
-      storage_account_name = azurerm_storage_account.terraform_state_itn[0].name
-      resource_group_name  = azurerm_storage_account.terraform_state_itn[0].resource_group_name
+      storage_account_name = azurerm_storage_account.terraform_state_itn.name
+      resource_group_name  = azurerm_storage_account.terraform_state_itn.resource_group_name
       role                 = "owner"
     }
   ]
@@ -21,16 +20,15 @@ module "iam_adgroup_platform_admins" {
 
   count = var.location == "italynorth" ? 1 : 0
 
-  source          = "pagopa-dx/azure-role-assignments/azurerm"
-  version         = "~> 1.0"
-  subscription_id = var.subscription_id
+  source  = "pagopa-dx/azure-role-assignments/azurerm"
+  version = "~> 0.0"
 
   principal_id = var.azure_adgroup_platform_admins_object_id
 
   storage_blob = [
     {
-      storage_account_name = azurerm_storage_account.terraform_state_itn[0].name
-      resource_group_name  = azurerm_storage_account.terraform_state_itn[0].resource_group_name
+      storage_account_name = azurerm_storage_account.terraform_state_itn.name
+      resource_group_name  = azurerm_storage_account.terraform_state_itn.resource_group_name
       role                 = "writer"
     }
   ]
@@ -40,16 +38,15 @@ module "iam_adgroup_platform_externals" {
 
   count = var.location == "italynorth" ? 1 : 0
 
-  source          = "pagopa-dx/azure-role-assignments/azurerm"
-  version         = "~> 1.0"
-  subscription_id = var.subscription_id
+  source  = "pagopa-dx/azure-role-assignments/azurerm"
+  version = "~> 0.0"
 
   principal_id = var.azure_adgroup_platform_externals_object_id
 
   storage_blob = [
     {
-      storage_account_name = azurerm_storage_account.terraform_state_itn[0].name
-      resource_group_name  = azurerm_storage_account.terraform_state_itn[0].resource_group_name
+      storage_account_name = azurerm_storage_account.terraform_state_itn.name
+      resource_group_name  = azurerm_storage_account.terraform_state_itn.resource_group_name
       role                 = "writer"
     }
   ]
@@ -59,16 +56,15 @@ module "iam_adgroup_wallet_admins" {
 
   count = var.location == "italynorth" ? 1 : 0
 
-  source          = "pagopa-dx/azure-role-assignments/azurerm"
-  version         = "~> 1.0"
-  subscription_id = var.subscription_id
+  source  = "pagopa-dx/azure-role-assignments/azurerm"
+  version = "~> 0.0"
 
   principal_id = var.azure_adgroup_wallet_admins_object_id
 
   storage_blob = [
     {
-      storage_account_name = azurerm_storage_account.terraform_state_itn[0].name
-      resource_group_name  = azurerm_storage_account.terraform_state_itn[0].resource_group_name
+      storage_account_name = azurerm_storage_account.terraform_state_itn.name
+      resource_group_name  = azurerm_storage_account.terraform_state_itn.resource_group_name
       role                 = "writer"
     }
   ]
@@ -78,16 +74,15 @@ module "iam_adgroup_wallet_devs" {
 
   count = var.location == "italynorth" ? 1 : 0
 
-  source          = "pagopa-dx/azure-role-assignments/azurerm"
-  version         = "~> 1.0"
-  subscription_id = var.subscription_id
+  source  = "pagopa-dx/azure-role-assignments/azurerm"
+  version = "~> 0.0"
 
   principal_id = var.azure_adgroup_wallet_devs_object_id
 
   storage_blob = [
     {
-      storage_account_name = azurerm_storage_account.terraform_state_itn[0].name
-      resource_group_name  = azurerm_storage_account.terraform_state_itn[0].resource_group_name
+      storage_account_name = azurerm_storage_account.terraform_state_itn.name
+      resource_group_name  = azurerm_storage_account.terraform_state_itn.resource_group_name
       role                 = "writer"
     }
   ]
@@ -97,16 +92,15 @@ module "iam_adgroup_com_admins" {
 
   count = var.location == "italynorth" ? 1 : 0
 
-  source          = "pagopa-dx/azure-role-assignments/azurerm"
-  version         = "~> 1.0"
-  subscription_id = var.subscription_id
+  source  = "pagopa-dx/azure-role-assignments/azurerm"
+  version = "~> 0.0"
 
   principal_id = var.azure_adgroup_com_admins_object_id
 
   storage_blob = [
     {
-      storage_account_name = azurerm_storage_account.terraform_state_itn[0].name
-      resource_group_name  = azurerm_storage_account.terraform_state_itn[0].resource_group_name
+      storage_account_name = azurerm_storage_account.terraform_state_itn.name
+      resource_group_name  = azurerm_storage_account.terraform_state_itn.resource_group_name
       role                 = "writer"
     }
   ]
@@ -116,16 +110,15 @@ module "iam_adgroup_com_devs" {
 
   count = var.location == "italynorth" ? 1 : 0
 
-  source          = "pagopa-dx/azure-role-assignments/azurerm"
-  version         = "~> 1.0"
-  subscription_id = var.subscription_id
+  source  = "pagopa-dx/azure-role-assignments/azurerm"
+  version = "~> 0.0"
 
   principal_id = var.azure_adgroup_com_devs_object_id
 
   storage_blob = [
     {
-      storage_account_name = azurerm_storage_account.terraform_state_itn[0].name
-      resource_group_name  = azurerm_storage_account.terraform_state_itn[0].resource_group_name
+      storage_account_name = azurerm_storage_account.terraform_state_itn.name
+      resource_group_name  = azurerm_storage_account.terraform_state_itn.resource_group_name
       role                 = "writer"
     }
   ]
@@ -135,16 +128,15 @@ module "iam_adgroup_svc_admins" {
 
   count = var.location == "italynorth" ? 1 : 0
 
-  source          = "pagopa-dx/azure-role-assignments/azurerm"
-  version         = "~> 1.0"
-  subscription_id = var.subscription_id
+  source  = "pagopa-dx/azure-role-assignments/azurerm"
+  version = "~> 0.0"
 
   principal_id = var.azure_adgroup_svc_admins_object_id
 
   storage_blob = [
     {
-      storage_account_name = azurerm_storage_account.terraform_state_itn[0].name
-      resource_group_name  = azurerm_storage_account.terraform_state_itn[0].resource_group_name
+      storage_account_name = azurerm_storage_account.terraform_state_itn.name
+      resource_group_name  = azurerm_storage_account.terraform_state_itn.resource_group_name
       role                 = "writer"
     }
   ]
@@ -154,16 +146,15 @@ module "iam_adgroup_svc_devs" {
 
   count = var.location == "italynorth" ? 1 : 0
 
-  source          = "pagopa-dx/azure-role-assignments/azurerm"
-  version         = "~> 1.0"
-  subscription_id = var.subscription_id
+  source  = "pagopa-dx/azure-role-assignments/azurerm"
+  version = "~> 0.0"
 
   principal_id = var.azure_adgroup_svc_devs_object_id
 
   storage_blob = [
     {
-      storage_account_name = azurerm_storage_account.terraform_state_itn[0].name
-      resource_group_name  = azurerm_storage_account.terraform_state_itn[0].resource_group_name
+      storage_account_name = azurerm_storage_account.terraform_state_itn.name
+      resource_group_name  = azurerm_storage_account.terraform_state_itn.resource_group_name
       role                 = "writer"
     }
   ]
@@ -173,16 +164,15 @@ module "iam_adgroup_auth_admins" {
 
   count = var.location == "italynorth" ? 1 : 0
 
-  source          = "pagopa-dx/azure-role-assignments/azurerm"
-  version         = "~> 1.0"
-  subscription_id = var.subscription_id
+  source  = "pagopa-dx/azure-role-assignments/azurerm"
+  version = "~> 0.0"
 
   principal_id = var.azure_adgroup_auth_admins_object_id
 
   storage_blob = [
     {
-      storage_account_name = azurerm_storage_account.terraform_state_itn[0].name
-      resource_group_name  = azurerm_storage_account.terraform_state_itn[0].resource_group_name
+      storage_account_name = azurerm_storage_account.terraform_state_itn.name
+      resource_group_name  = azurerm_storage_account.terraform_state_itn.resource_group_name
       role                 = "writer"
     }
   ]
@@ -192,16 +182,15 @@ module "iam_adgroup_auth_devs" {
 
   count = var.location == "italynorth" ? 1 : 0
 
-  source          = "pagopa-dx/azure-role-assignments/azurerm"
-  version         = "~> 1.0"
-  subscription_id = var.subscription_id
+  source  = "pagopa-dx/azure-role-assignments/azurerm"
+  version = "~> 0.0"
 
   principal_id = var.azure_adgroup_auth_devs_object_id
 
   storage_blob = [
     {
-      storage_account_name = azurerm_storage_account.terraform_state_itn[0].name
-      resource_group_name  = azurerm_storage_account.terraform_state_itn[0].resource_group_name
+      storage_account_name = azurerm_storage_account.terraform_state_itn.name
+      resource_group_name  = azurerm_storage_account.terraform_state_itn.resource_group_name
       role                 = "writer"
     }
   ]
@@ -211,16 +200,15 @@ module "iam_adgroup_bonus_admins" {
 
   count = var.location == "italynorth" ? 1 : 0
 
-  source          = "pagopa-dx/azure-role-assignments/azurerm"
-  version         = "~> 1.0"
-  subscription_id = var.subscription_id
+  source  = "pagopa-dx/azure-role-assignments/azurerm"
+  version = "~> 0.0"
 
   principal_id = var.azure_adgroup_bonus_admins_object_id
 
   storage_blob = [
     {
-      storage_account_name = azurerm_storage_account.terraform_state_itn[0].name
-      resource_group_name  = azurerm_storage_account.terraform_state_itn[0].resource_group_name
+      storage_account_name = azurerm_storage_account.terraform_state_itn.name
+      resource_group_name  = azurerm_storage_account.terraform_state_itn.resource_group_name
       role                 = "writer"
     }
   ]
@@ -230,16 +218,15 @@ module "iam_adgroup_bonus_devs" {
 
   count = var.location == "italynorth" ? 1 : 0
 
-  source          = "pagopa-dx/azure-role-assignments/azurerm"
-  version         = "~> 1.0"
-  subscription_id = var.subscription_id
+  source  = "pagopa-dx/azure-role-assignments/azurerm"
+  version = "~> 0.0"
 
   principal_id = var.azure_adgroup_bonus_devs_object_id
 
   storage_blob = [
     {
-      storage_account_name = azurerm_storage_account.terraform_state_itn[0].name
-      resource_group_name  = azurerm_storage_account.terraform_state_itn[0].resource_group_name
+      storage_account_name = azurerm_storage_account.terraform_state_itn.name
+      resource_group_name  = azurerm_storage_account.terraform_state_itn.resource_group_name
       role                 = "writer"
     }
   ]
@@ -249,17 +236,16 @@ module "iam_messages_sp" {
 
   count = var.location == "italynorth" ? 1 : 0
 
-  source          = "pagopa-dx/azure-role-assignments/azurerm"
-  version         = "~> 1.0"
-  subscription_id = var.subscription_id
+  source  = "pagopa-dx/azure-role-assignments/azurerm"
+  version = "~> 0.0"
 
   principal_id = var.messages_sp_object_id
 
   # "Allow DevOps messages pipelines to read TF state file"
   storage_blob = [
     {
-      storage_account_name = azurerm_storage_account.terraform_state_itn[0].name
-      resource_group_name  = azurerm_storage_account.terraform_state_itn[0].resource_group_name
+      storage_account_name = azurerm_storage_account.terraform_state_itn.name
+      resource_group_name  = azurerm_storage_account.terraform_state_itn.resource_group_name
       role                 = "writer"
     }
   ]
