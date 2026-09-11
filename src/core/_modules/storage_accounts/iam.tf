@@ -1,4 +1,5 @@
 module "iam_adgroup_admins" {
+
   source  = "pagopa-dx/azure-role-assignments/azurerm"
   version = "~> 0.0"
 
@@ -6,14 +7,15 @@ module "iam_adgroup_admins" {
 
   storage_blob = [
     {
-      storage_account_name = azurerm_storage_account.terraform.name
-      resource_group_name  = azurerm_storage_account.terraform.resource_group_name
+      storage_account_name = azurerm_storage_account.terraform_state_itn.name
+      resource_group_name  = azurerm_storage_account.terraform_state_itn.resource_group_name
       role                 = "owner"
     }
   ]
 }
 
 module "iam_adgroup_platform_admins" {
+
   source  = "pagopa-dx/azure-role-assignments/azurerm"
   version = "~> 0.0"
 
@@ -21,14 +23,15 @@ module "iam_adgroup_platform_admins" {
 
   storage_blob = [
     {
-      storage_account_name = azurerm_storage_account.terraform.name
-      resource_group_name  = azurerm_storage_account.terraform.resource_group_name
+      storage_account_name = azurerm_storage_account.terraform_state_itn.name
+      resource_group_name  = azurerm_storage_account.terraform_state_itn.resource_group_name
       role                 = "writer"
     }
   ]
 }
 
 module "iam_adgroup_platform_externals" {
+
   source  = "pagopa-dx/azure-role-assignments/azurerm"
   version = "~> 0.0"
 
@@ -36,14 +39,15 @@ module "iam_adgroup_platform_externals" {
 
   storage_blob = [
     {
-      storage_account_name = azurerm_storage_account.terraform.name
-      resource_group_name  = azurerm_storage_account.terraform.resource_group_name
+      storage_account_name = azurerm_storage_account.terraform_state_itn.name
+      resource_group_name  = azurerm_storage_account.terraform_state_itn.resource_group_name
       role                 = "writer"
     }
   ]
 }
 
 module "iam_adgroup_wallet_admins" {
+
   source  = "pagopa-dx/azure-role-assignments/azurerm"
   version = "~> 0.0"
 
@@ -51,14 +55,15 @@ module "iam_adgroup_wallet_admins" {
 
   storage_blob = [
     {
-      storage_account_name = azurerm_storage_account.terraform.name
-      resource_group_name  = azurerm_storage_account.terraform.resource_group_name
+      storage_account_name = azurerm_storage_account.terraform_state_itn.name
+      resource_group_name  = azurerm_storage_account.terraform_state_itn.resource_group_name
       role                 = "writer"
     }
   ]
 }
 
 module "iam_adgroup_wallet_devs" {
+
   source  = "pagopa-dx/azure-role-assignments/azurerm"
   version = "~> 0.0"
 
@@ -66,14 +71,15 @@ module "iam_adgroup_wallet_devs" {
 
   storage_blob = [
     {
-      storage_account_name = azurerm_storage_account.terraform.name
-      resource_group_name  = azurerm_storage_account.terraform.resource_group_name
+      storage_account_name = azurerm_storage_account.terraform_state_itn.name
+      resource_group_name  = azurerm_storage_account.terraform_state_itn.resource_group_name
       role                 = "writer"
     }
   ]
 }
 
 module "iam_adgroup_com_admins" {
+
   source  = "pagopa-dx/azure-role-assignments/azurerm"
   version = "~> 0.0"
 
@@ -81,14 +87,15 @@ module "iam_adgroup_com_admins" {
 
   storage_blob = [
     {
-      storage_account_name = azurerm_storage_account.terraform.name
-      resource_group_name  = azurerm_storage_account.terraform.resource_group_name
+      storage_account_name = azurerm_storage_account.terraform_state_itn.name
+      resource_group_name  = azurerm_storage_account.terraform_state_itn.resource_group_name
       role                 = "writer"
     }
   ]
 }
 
 module "iam_adgroup_com_devs" {
+
   source  = "pagopa-dx/azure-role-assignments/azurerm"
   version = "~> 0.0"
 
@@ -96,14 +103,15 @@ module "iam_adgroup_com_devs" {
 
   storage_blob = [
     {
-      storage_account_name = azurerm_storage_account.terraform.name
-      resource_group_name  = azurerm_storage_account.terraform.resource_group_name
+      storage_account_name = azurerm_storage_account.terraform_state_itn.name
+      resource_group_name  = azurerm_storage_account.terraform_state_itn.resource_group_name
       role                 = "writer"
     }
   ]
 }
 
 module "iam_adgroup_svc_admins" {
+
   source  = "pagopa-dx/azure-role-assignments/azurerm"
   version = "~> 0.0"
 
@@ -111,14 +119,15 @@ module "iam_adgroup_svc_admins" {
 
   storage_blob = [
     {
-      storage_account_name = azurerm_storage_account.terraform.name
-      resource_group_name  = azurerm_storage_account.terraform.resource_group_name
+      storage_account_name = azurerm_storage_account.terraform_state_itn.name
+      resource_group_name  = azurerm_storage_account.terraform_state_itn.resource_group_name
       role                 = "writer"
     }
   ]
 }
 
 module "iam_adgroup_svc_devs" {
+
   source  = "pagopa-dx/azure-role-assignments/azurerm"
   version = "~> 0.0"
 
@@ -126,14 +135,15 @@ module "iam_adgroup_svc_devs" {
 
   storage_blob = [
     {
-      storage_account_name = azurerm_storage_account.terraform.name
-      resource_group_name  = azurerm_storage_account.terraform.resource_group_name
+      storage_account_name = azurerm_storage_account.terraform_state_itn.name
+      resource_group_name  = azurerm_storage_account.terraform_state_itn.resource_group_name
       role                 = "writer"
     }
   ]
 }
 
 module "iam_adgroup_auth_admins" {
+
   source  = "pagopa-dx/azure-role-assignments/azurerm"
   version = "~> 0.0"
 
@@ -141,14 +151,15 @@ module "iam_adgroup_auth_admins" {
 
   storage_blob = [
     {
-      storage_account_name = azurerm_storage_account.terraform.name
-      resource_group_name  = azurerm_storage_account.terraform.resource_group_name
+      storage_account_name = azurerm_storage_account.terraform_state_itn.name
+      resource_group_name  = azurerm_storage_account.terraform_state_itn.resource_group_name
       role                 = "writer"
     }
   ]
 }
 
 module "iam_adgroup_auth_devs" {
+
   source  = "pagopa-dx/azure-role-assignments/azurerm"
   version = "~> 0.0"
 
@@ -156,14 +167,15 @@ module "iam_adgroup_auth_devs" {
 
   storage_blob = [
     {
-      storage_account_name = azurerm_storage_account.terraform.name
-      resource_group_name  = azurerm_storage_account.terraform.resource_group_name
+      storage_account_name = azurerm_storage_account.terraform_state_itn.name
+      resource_group_name  = azurerm_storage_account.terraform_state_itn.resource_group_name
       role                 = "writer"
     }
   ]
 }
 
 module "iam_adgroup_bonus_admins" {
+
   source  = "pagopa-dx/azure-role-assignments/azurerm"
   version = "~> 0.0"
 
@@ -171,14 +183,15 @@ module "iam_adgroup_bonus_admins" {
 
   storage_blob = [
     {
-      storage_account_name = azurerm_storage_account.terraform.name
-      resource_group_name  = azurerm_storage_account.terraform.resource_group_name
+      storage_account_name = azurerm_storage_account.terraform_state_itn.name
+      resource_group_name  = azurerm_storage_account.terraform_state_itn.resource_group_name
       role                 = "writer"
     }
   ]
 }
 
 module "iam_adgroup_bonus_devs" {
+
   source  = "pagopa-dx/azure-role-assignments/azurerm"
   version = "~> 0.0"
 
@@ -186,14 +199,15 @@ module "iam_adgroup_bonus_devs" {
 
   storage_blob = [
     {
-      storage_account_name = azurerm_storage_account.terraform.name
-      resource_group_name  = azurerm_storage_account.terraform.resource_group_name
+      storage_account_name = azurerm_storage_account.terraform_state_itn.name
+      resource_group_name  = azurerm_storage_account.terraform_state_itn.resource_group_name
       role                 = "writer"
     }
   ]
 }
 
 module "iam_messages_sp" {
+
   source  = "pagopa-dx/azure-role-assignments/azurerm"
   version = "~> 0.0"
 
@@ -202,8 +216,8 @@ module "iam_messages_sp" {
   # "Allow DevOps messages pipelines to read TF state file"
   storage_blob = [
     {
-      storage_account_name = azurerm_storage_account.terraform.name
-      resource_group_name  = azurerm_storage_account.terraform.resource_group_name
+      storage_account_name = azurerm_storage_account.terraform_state_itn.name
+      resource_group_name  = azurerm_storage_account.terraform_state_itn.resource_group_name
       role                 = "writer"
     }
   ]
