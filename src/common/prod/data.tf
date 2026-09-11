@@ -38,18 +38,6 @@ data "terraform_remote_state" "platform_observability" {
 
 # AD Groups
 
-data "azuread_group" "com_admins" {
-  display_name = "${local.prefix}-${local.env_short}-adgroup-com-admins"
-}
-
-data "azuread_group" "com_devs" {
-  display_name = "${local.prefix}-${local.env_short}-adgroup-com-developers"
-}
-
 data "azuread_group" "svc_devs" {
   display_name = "${local.prefix}-${local.env_short}-adgroup-svc-developers"
-}
-
-data "azuread_group" "admins" {
-  display_name = "${local.prefix}-${local.env_short}-adgroup-admin"
 }

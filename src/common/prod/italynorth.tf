@@ -10,7 +10,7 @@ module "assets_locales_cdn" {
 
   public_dns_zones                       = local.platform_core.dns.zones.public_dns_zones
   log_analytics_workspace_id             = local.platform_observability.monitoring_italynorth.log.id
-  diagnostic_settings_storage_account_id = module.storage_accounts_itn.logs_itn.id
+  diagnostic_settings_storage_account_id = local.platform_observability.storage_accounts.itn.logs.id
 
   azure_adgroups_roles = {
     svc_devs = {
