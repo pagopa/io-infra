@@ -25,6 +25,8 @@ resource "azurerm_dns_txt_record" "logos_custom_domain_validation_txt_record" {
   record {
     value = azurerm_cdn_frontdoor_custom_domain.logos_custom_domain.validation_token
   }
+
+  tags = var.tags
 }
 
 resource "azurerm_dns_cname_record" "logos_custom_domain_dns_record" {
@@ -35,6 +37,8 @@ resource "azurerm_dns_cname_record" "logos_custom_domain_dns_record" {
   resource_group_name = var.resource_group_external
   ttl                 = 3600
   target_resource_id  = azurerm_cdn_frontdoor_endpoint.logos_endpoint.id
+
+  tags = var.tags
 }
 
 resource "azurerm_cdn_frontdoor_origin_group" "logos_origin_group" {
