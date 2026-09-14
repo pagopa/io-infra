@@ -1,13 +1,13 @@
 repos:
   - repo: https://github.com/pagopa/dx
-    rev: '@pagopa/dx-savemoney@0.6.2'
+    rev: 'dx-metrics-import@0.1.10'
     hooks:
       - id: terraform_providers_lock_staged
       - id: lock_modules
         exclude: ^.*/(_modules|modules|\.terraform|env|templates|api|api_product)(/.*)?$
         files: src/(common|core|github_runner|identity|migration|repository|domains|platform)
   - repo: https://github.com/antonbabenko/pre-commit-terraform
-    rev: v1.108.0
+    rev: v1.109.1
     hooks:
       - id: terraform_tflint
         args:
