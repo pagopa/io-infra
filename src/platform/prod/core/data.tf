@@ -10,6 +10,18 @@ data "terraform_remote_state" "core" {
   }
 }
 
+data "terraform_remote_state" "platform_app_routing" {
+  backend = "azurerm"
+
+  config = {
+    resource_group_name  = "terraform-state-rg"
+    storage_account_name = "iopitntfst001"
+    container_name       = "terraform-state"
+    key                  = "io-infra.platform.app-routing.prod.tfstate"
+    use_azuread_auth     = true
+  }
+}
+
 data "azurerm_subscription" "current" {}
 
 data "azurerm_private_endpoint_connection" "psn_appgw" {
