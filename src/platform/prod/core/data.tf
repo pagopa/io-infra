@@ -1,3 +1,7 @@
+data "azurerm_subscription" "current" {}
+
+# Remote States
+
 data "terraform_remote_state" "core" {
   backend = "azurerm"
 
@@ -22,12 +26,7 @@ data "terraform_remote_state" "platform_app_routing" {
   }
 }
 
-data "azurerm_subscription" "current" {}
-
-data "azurerm_private_endpoint_connection" "psn_appgw" {
-  name                = "${local.project_itn}-psn-agw-pep-01"
-  resource_group_name = local.core.networking.itn.vnet_common.resource_group_name
-}
+# AD Groups
 
 data "azuread_group" "admins" {
   display_name = "${local.prefix}-${local.env_short}-adgroup-admin"
