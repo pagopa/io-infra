@@ -256,3 +256,12 @@ module "monitoring_westeurope" {
 
   tags = local.tags
 }
+
+module "storage_accounts_westeurope" {
+  source = "./_modules/storage_accounts"
+
+  project                   = local.project_weu_legacy
+  location                  = "westeurope"
+  resource_group_operations = local.core.resource_groups.westeurope.operations
+  tags                      = local.tags
+}
