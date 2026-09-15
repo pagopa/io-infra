@@ -136,12 +136,6 @@ variable "redis_common" {
   sensitive   = true
 }
 
-variable "citizen_auth_assertion_storage_name" {
-  type        = string
-  description = "Use storage name from citizen_auth domain"
-  default     = "lollipop-assertions-st"
-}
-
 variable "app_settings_override" {
   type        = map(string)
   default     = {}
