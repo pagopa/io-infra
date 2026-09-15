@@ -2,9 +2,7 @@ data "azurerm_subscription" "current" {}
 
 data "azurerm_client_config" "current" {}
 
-data "azuread_group" "svc_devs" {
-  display_name = "${local.prefix}-${local.env_short}-adgroup-svc-developers"
-}
+# Remote States
 
 data "terraform_remote_state" "core" {
   backend = "azurerm"
@@ -40,4 +38,10 @@ data "terraform_remote_state" "platform_observability" {
     key                  = "io-infra.platform.observability.prod.tfstate"
     use_azuread_auth     = true
   }
+}
+
+# AD Groups
+
+data "azuread_group" "svc_devs" {
+  display_name = "${local.prefix}-${local.env_short}-adgroup-svc-developers"
 }
