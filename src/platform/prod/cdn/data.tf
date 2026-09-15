@@ -2,7 +2,7 @@ data "azurerm_subscription" "current" {}
 
 data "azurerm_client_config" "current" {}
 
-# Remote States
+# Remote States
 
 data "terraform_remote_state" "core" {
   backend = "azurerm"
