@@ -1,20 +1,3 @@
-module "storage_accounts_itn" {
-  source = "../_modules/storage_accounts"
-
-  location                  = "italynorth"
-  project                   = local.project_itn
-  subscription_id           = data.azurerm_subscription.current.subscription_id
-  resource_group_common     = local.core.resource_groups.italynorth.common
-  resource_group_operations = local.core.resource_groups.westeurope.operations
-
-  azure_adgroup_com_admins_object_id = data.azuread_group.com_admins.object_id
-  azure_adgroup_com_devs_object_id   = data.azuread_group.com_devs.object_id
-  azure_adgroup_admins_object_id     = data.azuread_group.admins.object_id
-  azure_adgroup_svc_devs_object_id   = data.azuread_group.svc_devs.object_id
-
-  tags = local.tags
-}
-
 module "assets_locales_cdn" {
   source = "../_modules/assets_locales_cdn"
 
@@ -27,7 +10,7 @@ module "assets_locales_cdn" {
 
   public_dns_zones                       = local.platform_core.dns.zones.public_dns_zones
   log_analytics_workspace_id             = local.platform_observability.monitoring_italynorth.log.id
-  diagnostic_settings_storage_account_id = module.storage_accounts_itn.logs_itn.id
+  diagnostic_settings_storage_account_id = local.platform_observability.storage_accounts.itn.logs.id
 
   azure_adgroups_roles = {
     svc_devs = {
