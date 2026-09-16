@@ -14,6 +14,6 @@ locals {
     ManagementTeam = "IO Platform"
   }
 
-  core        = data.terraform_remote_state.core.outputs
-  app_routing = data.terraform_remote_state.platform_app_routing.outputs
+  core                 = data.terraform_remote_state.core.outputs
+  platform_app_routing = data.terraform_remote_state.platform_app_routing.outputs
 }

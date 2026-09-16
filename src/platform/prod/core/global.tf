@@ -30,9 +30,9 @@ module "dns" {
       firmaconio_selfcare = "firmaconio.selfcare"
     }
 
-    app_gateway_public_ip           = local.app_routing.application_gateway.itn.public_ip.address
-    apim_private_ip                 = local.app_routing.apim.itn.private_ips[0]
-    platform_api_gateway_private_ip = local.app_routing.platform_api_gateway.itn.private_ips[0]
+    app_gateway_public_ip           = local.platform_app_routing.application_gateway.itn.public_ip.address
+    apim_private_ip                 = local.platform_app_routing.apim.itn.private_ips[0]
+    platform_api_gateway_private_ip = local.platform_app_routing.platform_api_gateway.itn.private_ips[0]
 
   }
 
