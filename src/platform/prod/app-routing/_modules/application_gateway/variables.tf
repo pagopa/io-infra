@@ -24,11 +24,6 @@ variable "location" {
   description = "Azure region"
 }
 
-variable "location_short" {
-  type        = string
-  description = "Azure region short name"
-}
-
 variable "tags" {
   type        = map(any)
   description = "Resource tags"
@@ -42,11 +37,6 @@ variable "resource_group_common" {
 variable "datasources" {
   type        = map(any)
   description = "Common datasources"
-}
-
-variable "external_domain" {
-  type        = string
-  description = "Domain for delegation"
 }
 
 variable "public_dns_zones" {
@@ -163,11 +153,6 @@ variable "alerts_enabled" {
   type        = bool
   description = "Enable alerts"
   default     = true
-}
-
-variable "deny_paths" {
-  type        = list(string)
-  description = "Regex patterns to deny requests"
 }
 
 variable "error_action_group_id" {

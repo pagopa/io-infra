@@ -1,3 +1,5 @@
+# Remote States
+
 data "terraform_remote_state" "platform_core" {
   backend = "azurerm"
 

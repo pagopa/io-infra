@@ -58,12 +58,6 @@ module "event_hub" {
   tags = var.tags
 }
 
-locals {
-  event_hub = {
-    connection = "${try(local.nonstandard[var.location_short].evh-ns, "${var.project}-evhns-01")}.servicebus.windows.net:9093"
-  }
-}
-
 #tfsec:ignore:AZU023
 resource "azurerm_key_vault_secret" "event_hub_keys" {
   for_each = module.event_hub.key_ids
