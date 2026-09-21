@@ -78,9 +78,9 @@ module "platform_api_gateway" {
 
   autoscale = {
     enabled                       = true
-    default_instances             = 8
-    minimum_instances             = 8
-    maximum_instances             = 10
+    default_instances             = 20
+    minimum_instances             = 20
+    maximum_instances             = 30
     scale_out_capacity_percentage = 50
     scale_out_time_window         = "PT3M"
     scale_out_value               = "2"

@@ -1,10 +1,8 @@
 locals {
   prefix             = "io"
   env_short          = "p"
-  location           = { westeurope = "westeurope", italynorth = "italynorth" }
   location_short     = { westeurope = "weu", italynorth = "itn" }
   project_itn        = "${local.prefix}-${local.env_short}-${local.location_short.italynorth}"
-  project_weu        = "${local.prefix}-${local.env_short}-${local.location_short.westeurope}"
   project_weu_legacy = "${local.prefix}-${local.env_short}"
 
   tags = {
@@ -16,5 +14,6 @@ locals {
     ManagementTeam = "IO Platform"
   }
 
-  core = data.terraform_remote_state.core.outputs
+  core                 = data.terraform_remote_state.core.outputs
+  platform_app_routing = data.terraform_remote_state.platform_app_routing.outputs
 }

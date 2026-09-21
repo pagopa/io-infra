@@ -24,10 +24,6 @@ variable "location_itn" {
   default = "italynorth"
 }
 
-variable "project_itn" {
-  type = string
-}
-
 variable "project" {
   type = string
 }
