@@ -151,14 +151,19 @@ locals {
     # NOTE:
     # - PROD and UAT shares the same callback
     # - UAT config is optional
-    ONEID_PROD_CLIENT_ID     = "4HWHRx-Wv19-cY-YL6Q1AgYVvx3h0Gw_SvtayZWJVVE"
-    ONEID_PROD_CLIENT_SECRET = "@Microsoft.KeyVault(VaultName=${data.azurerm_key_vault.auth.name};SecretName=sm-oneid-prod-client-secret)"
-    ONEID_PROD_ISSUER        = "https://io.oneid.pagopa.it"
-    ONEID_PROD_REDIRECT_URI  = "https://api-app.io.pagopa.it/api/auth/v1/callback"
+    ONEID_PROD_CLIENT_ID        = "4HWHRx-Wv19-cY-YL6Q1AgYVvx3h0Gw_SvtayZWJVVE"
+    ONEID_PROD_CLIENT_SECRET    = "@Microsoft.KeyVault(VaultName=${data.azurerm_key_vault.auth.name};SecretName=sm-oneid-prod-client-secret)"
+    ONEID_PROD_ISSUER           = "https://io.oneid.pagopa.it"
+    ONEID_PROD_REDIRECT_URI     = "https://api-app.io.pagopa.it/api/auth/v1/callback"
+    IDP_FRIENDLY_NAMES_PROD_URL = "assets.io.oneid.pagopa.it/assets/idpFriendlyNameList.json"
 
-    ONEID_UAT_CLIENT_ID     = "XbFEUWXdvQGOU1usvMURZv4YWQjYFS0ggAk0xyFCEKc"
-    ONEID_UAT_CLIENT_SECRET = "@Microsoft.KeyVault(VaultName=${data.azurerm_key_vault.auth.name};SecretName=sm-oneid-uat-client-secret)"
-    ONEID_UAT_ISSUER        = "https://uat.io.oneid.pagopa.it"
+
+    ONEID_UAT_CLIENT_ID        = "XbFEUWXdvQGOU1usvMURZv4YWQjYFS0ggAk0xyFCEKc"
+    ONEID_UAT_CLIENT_SECRET    = "@Microsoft.KeyVault(VaultName=${data.azurerm_key_vault.auth.name};SecretName=sm-oneid-uat-client-secret)"
+    ONEID_UAT_ISSUER           = "https://uat.io.oneid.pagopa.it"
+    IDP_FRIENDLY_NAMES_UAT_URL = "assets.uat.io.oneid.pagopa.it/assets/idpFriendlyNameList.json"
+
+
   }
 }
 
