@@ -5,7 +5,6 @@ module "app_backend_weu" {
   location                = "westeurope"
   location_short          = local.core.resource_groups.westeurope.location_short
   project                 = local.project_weu_legacy
-  prefix                  = local.prefix
   resource_group_linux    = local.core.resource_groups.westeurope.linux
   resource_group_internal = local.core.resource_groups.westeurope.internal
   resource_group_common   = local.core.resource_groups.westeurope.common
@@ -32,7 +31,6 @@ module "app_backend_weu" {
 
   backend_hostnames = local.backend_hostnames
 
-  key_vault        = local.core.key_vault.weu.kv
   key_vault_common = local.core.key_vault.weu.kv_common
 
   error_action_group_id  = local.platform_observability.monitoring_westeurope.action_groups.error

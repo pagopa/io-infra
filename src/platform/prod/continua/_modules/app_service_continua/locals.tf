@@ -1,13 +1,7 @@
 locals {
 
   resource_group_name_common = "${var.project}-rg-common"
-  vnet_name_common           = "${var.project}-vnet-common"
 
-  vnet_common_itn           = "${var.project_itn}-common-vnet-01"
-  resource_group_common_itn = "${var.project_itn}-common-rg-01"
-}
-
-locals {
   continua_appsvc_settings = {
     # Integration with private DNS (see more: https://docs.microsoft.com/en-us/answers/questions/85359/azure-app-service-unable-to-resolve-hostname-of-vi.html)
     WEBSITE_ADD_SITENAME_BINDINGS_IN_APPHOST_CONFIG = "1"
