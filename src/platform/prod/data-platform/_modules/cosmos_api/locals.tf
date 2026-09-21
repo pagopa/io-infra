@@ -90,8 +90,8 @@ locals {
       partition_key_version = null
 
       autoscale_settings = {
-        # Unused, 16000 is the minimum value for the current collection configuration
-        max_throughput = 16000
+        # Unused, 17000 is the minimum value for the current collection configuration
+        max_throughput = 17000
       }
     },
     {
@@ -145,7 +145,7 @@ locals {
       partition_key_path    = "/fiscalCode"
       partition_key_version = null
       autoscale_settings = {
-        max_throughput = 80000
+        max_throughput = 160000
       }
     },
     {
