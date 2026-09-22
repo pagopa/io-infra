@@ -1,3 +1,7 @@
+# At the moment the storage account must have public access enabled due to many github runners not using private agents,
+# also a private endpoint for the storage at the moment is not implemented.
+
+#trivy:ignore:AZU-0012
 resource "azurerm_storage_account" "terraform_state_itn" {
 
   name                = replace("${var.project}tfst001", "-", "")
