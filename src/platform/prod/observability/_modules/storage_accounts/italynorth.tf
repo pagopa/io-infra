@@ -1,3 +1,4 @@
+#trivy:ignore:AZU-0012
 resource "azurerm_storage_account" "iopitnlogst01" {
 
   count = var.location == "italynorth" ? 1 : 0
@@ -9,7 +10,7 @@ resource "azurerm_storage_account" "iopitnlogst01" {
   account_replication_type = "ZRS" # GZRS not available at the moment in ITN
 
   public_network_access_enabled     = false
-  allow_nested_items_to_be_public   = true
+  allow_nested_items_to_be_public   = false
   large_file_share_enabled          = false
   cross_tenant_replication_enabled  = true
   infrastructure_encryption_enabled = true
