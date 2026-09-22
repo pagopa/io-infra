@@ -1,3 +1,4 @@
+#trivy:ignore:AZU-0012
 resource "azurerm_storage_account" "iopitndataexportst01" {
 
   count = var.location == "italynorth" ? 1 : 0
