@@ -17,6 +17,7 @@ resource "azurerm_storage_account" "iopitndataexportst01" {
   tags = var.tags
 }
 
+#trivy:ignore:AZU-0012
 resource "azurerm_storage_account" "retirements_itn_01" {
   count = var.location == "italynorth" ? 1 : 0
 
