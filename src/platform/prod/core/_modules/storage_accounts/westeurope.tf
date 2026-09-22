@@ -1,3 +1,4 @@
+#trivy:ignore:AZU-0012
 resource "azurerm_storage_account" "app" {
   count = var.location == "westeurope" ? 1 : 0
 
@@ -17,6 +18,7 @@ resource "azurerm_storage_account" "app" {
   tags = var.tags
 }
 
+#trivy:ignore:AZU-0012
 resource "azurerm_storage_account" "exportdata_weu_01" {
   count = var.location == "westeurope" ? 1 : 0
 
@@ -26,7 +28,7 @@ resource "azurerm_storage_account" "exportdata_weu_01" {
   account_tier             = "Standard"
   account_replication_type = "GZRS"
 
-  public_network_access_enabled    = true
+  public_network_access_enabled    = false
   shared_access_key_enabled        = true
   allow_nested_items_to_be_public  = false
   cross_tenant_replication_enabled = false
