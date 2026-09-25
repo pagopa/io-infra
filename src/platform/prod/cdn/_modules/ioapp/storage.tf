@@ -1,5 +1,6 @@
 # CDN storage, not used as origin at the moment for module.ioapp since is all exposed from cloudfront
 
+#trivy:ignore:AZU-0012
 resource "azurerm_storage_account" "ioweb_portal" {
   name                     = "iopweuiowebportalsa"
   access_tier              = "Hot"
@@ -9,8 +10,11 @@ resource "azurerm_storage_account" "ioweb_portal" {
   resource_group_name      = var.storage_account_resource_group
   tags                     = var.tags
 
-  public_network_access_enabled   = true
-  allow_nested_items_to_be_public = true
+  # Disabled public since the storage is not used at the moment, trivy critical vulnerability remediation
+  # Ref: https://pagopa.atlassian.net/browse/IOPLT-2101
+
+  public_network_access_enabled   = false
+  allow_nested_items_to_be_public = false
 
   blob_properties {
     versioning_enabled = true
