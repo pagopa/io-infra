@@ -28,7 +28,7 @@ resource "azurerm_storage_account" "exportdata_weu_01" {
   account_tier             = "Standard"
   account_replication_type = "GZRS"
 
-  public_network_access_enabled    = false
+  public_network_access_enabled    = true
   shared_access_key_enabled        = true
   allow_nested_items_to_be_public  = false
   cross_tenant_replication_enabled = false
