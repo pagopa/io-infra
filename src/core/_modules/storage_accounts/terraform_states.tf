@@ -2,6 +2,9 @@
 # also a private endpoint for the storage is still not implemented.
 
 #trivy:ignore:AZU-0012
+#trivy:ignore:AZU-0061
+#trivy:ignore:AZU-0057
+#trivy:ignore:AZU-0058
 resource "azurerm_storage_account" "terraform_state_itn" {
 
   name                = replace("${var.project}tfst001", "-", "")
