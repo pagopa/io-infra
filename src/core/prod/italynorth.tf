@@ -81,5 +81,8 @@ module "storage_accounts_itn" {
 
   messages_sp_object_id = data.azuread_service_principal.platform_iac_sp.object_id
 
+  log_analytics_workspace_id             = local.platform_observability.monitoring_italynorth.log.id
+  diagnostic_settings_storage_account_id = local.platform_observability.storage_accounts.itn.logs.id
+
   tags = local.tags
 }
