@@ -10,10 +10,6 @@ variable "prefix" {
   }
 }
 
-variable "env" {
-  type = string
-}
-
 variable "env_short" {
   type = string
   validation {
@@ -32,69 +28,4 @@ variable "domain" {
     )
     error_message = "Max length is 12 chars."
   }
-}
-
-variable "location" {
-  type        = string
-  description = "One of westeurope, northeurope"
-}
-
-variable "location_short" {
-  type = string
-  validation {
-    condition = (
-      length(var.location_short) == 3
-    )
-    error_message = "Length must be 3 chars."
-  }
-  description = "One of weu, neu"
-}
-
-variable "location_string" {
-  type        = string
-  description = "One of West Europe, North Europe"
-}
-
-variable "instance" {
-  type        = string
-  description = "One of prod01"
-}
-
-variable "lock_enable" {
-  type        = bool
-  default     = false
-  description = "Apply locks to block accedentaly deletions."
-}
-
-variable "tags" {
-  type = map(any)
-  default = {
-    CreatedBy = "Terraform"
-  }
-}
-
-### External resources
-
-variable "monitor_resource_group_name" {
-  type        = string
-  description = "Monitor resource group name"
-}
-
-variable "log_analytics_workspace_name" {
-  type        = string
-  description = "Specifies the name of the Log Analytics Workspace."
-}
-
-variable "log_analytics_workspace_resource_group_name" {
-  type        = string
-  description = "The name of the resource group in which the Log Analytics workspace is located in."
-}
-
-variable "application_insights_name" {
-  type        = string
-  description = "Specifies the name of the Application Insights."
-}
-
-variable "enable_azdoa" {
-  type = bool
 }
