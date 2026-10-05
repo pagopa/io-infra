@@ -10,10 +10,6 @@ variable "prefix" {
   }
 }
 
-variable "env" {
-  type = string
-}
-
 variable "env_short" {
   type = string
   validation {
@@ -50,27 +46,11 @@ variable "location_short" {
   description = "One of wue, neu"
 }
 
-variable "location_string" {
-  type        = string
-  description = "One of West Europe, North Europe"
-}
-
-variable "instance" {
-  type        = string
-  description = "One of prod01, prod02"
-}
-
 variable "tags" {
   type = map(any)
   default = {
     CreatedBy = "Terraform"
   }
-}
-
-variable "lollipop_enabled" {
-  type        = bool
-  default     = false
-  description = "Lollipop function enabled?"
 }
 
 ### External resources
@@ -80,61 +60,9 @@ variable "monitor_resource_group_name" {
   description = "Monitor resource group name"
 }
 
-variable "log_analytics_workspace_name" {
-  type        = string
-  description = "Specifies the name of the Log Analytics Workspace."
-}
-
-variable "log_analytics_workspace_resource_group_name" {
-  type        = string
-  description = "The name of the resource group in which the Log Analytics workspace is located in."
-}
-
 variable "application_insights_name" {
   type        = string
   description = "Specifies the name of the Application Insights."
-}
-
-# Function LolliPOP
-
-variable "cidr_subnet_fnlollipop" {
-  type        = list(string)
-  description = "Function Lollipop address space."
-}
-
-variable "cidr_subnet_fnlollipop_itn" {
-  type        = list(string)
-  description = "Function Lollipop address space."
-}
-
-variable "function_lollipop_kind" {
-  type        = string
-  description = "App service plan kind"
-  default     = null
-}
-
-variable "function_lollipop_sku_size" {
-  type        = string
-  description = "App service plan sku size"
-  default     = null
-}
-
-variable "function_lollipop_autoscale_minimum" {
-  type        = number
-  description = "The minimum number of instances for this resource."
-  default     = 3
-}
-
-variable "function_lollipop_autoscale_maximum" {
-  type        = number
-  description = "The maximum number of instances for this resource."
-  default     = 10
-}
-
-variable "function_lollipop_autoscale_default" {
-  type        = number
-  description = "The number of instances that are available for scaling if metrics are not available for evaluation."
-  default     = 3
 }
 
 ####################
@@ -171,57 +99,4 @@ variable "dns_zone_io" {
   description = "The dns subdomain."
 }
 
-################################
-# Shared plan
-################################
-
-variable "cidr_subnet_shared_1" {
-  type = list(string)
-}
-
-variable "plan_shared_1_kind" {
-  type        = string
-  description = "App service plan kind"
-  default     = null
-}
-
-variable "plan_shared_1_sku_tier" {
-  type        = string
-  description = "App service plan sku tier"
-  default     = null
-}
-
-variable "plan_shared_1_sku_size" {
-  type        = string
-  description = "App service plan sku size"
-  default     = null
-}
-
-variable "plan_shared_1_sku_capacity" {
-  description = "Shared functions app plan capacity"
-  type        = number
-  default     = 3
-}
 ###########################
-################################
-# Function Public
-################################
-
-variable "function_public_autoscale_minimum" {
-  type        = number
-  description = "The minimum number of instances for this resource."
-  default     = 1
-}
-
-variable "function_public_autoscale_maximum" {
-  type        = number
-  description = "The maximum number of instances for this resource."
-  default     = 3
-}
-
-variable "function_public_autoscale_default" {
-  type        = number
-  description = "The number of instances that are available for scaling if metrics are not available for evaluation."
-  default     = 1
-}
-##################################
