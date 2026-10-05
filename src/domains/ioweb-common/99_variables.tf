@@ -10,10 +10,6 @@ variable "prefix" {
   }
 }
 
-variable "env" {
-  type = string
-}
-
 variable "env_short" {
   type = string
   validation {
@@ -48,11 +44,6 @@ variable "location_short" {
     error_message = "Length must be 3 chars."
   }
   description = "One of wue, neu"
-}
-
-variable "instance" {
-  type        = string
-  description = "One of prod01"
 }
 
 variable "tags" {
@@ -97,12 +88,6 @@ variable "subnets_cidrs" {
 variable "app_gateway_host_name" {
   type        = string
   description = "Application gateway host name"
-}
-
-variable "spid_login_plan_sku_tier" {
-  description = "App backend app plan sku tier"
-  type        = string
-  default     = "PremiumV3"
 }
 
 variable "spid_login_plan_sku_size" {
