@@ -8,9 +8,6 @@ module "app_services" {
   subnet_id                  = module.networking.subnet_be_common.id
   private_endpoint_subnet_id = module.networking.subnet_pendpoints.id
 
-  frontend_hostname              = local.frontend_hostname
-  backend_hostname               = local.backend_hostname
-  selfcare_external_hostname     = local.selfcare_external_hostname
   devportal_frontend_hostname    = local.devportal_frontend_hostname
   apim_hostname_api_app_internal = local.apim_hostname_api_app_internal
 
