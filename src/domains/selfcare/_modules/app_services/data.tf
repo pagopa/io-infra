@@ -38,33 +38,8 @@ data "azurerm_key_vault" "key_vault_common" {
   resource_group_name = local.resource_group_name_common
 }
 
-data "azurerm_key_vault_secret" "selfcare_apim_io_service_key" {
-  name         = "apim-IO-SERVICE-KEY"
-  key_vault_id = data.azurerm_key_vault.key_vault_common.id
-}
-
-data "azurerm_key_vault_secret" "apim_service_principal_client_id" {
-  name         = "devportal-SERVICE-PRINCIPAL-CLIENT-ID"
-  key_vault_id = data.azurerm_key_vault.key_vault_common.id
-}
-
-data "azurerm_key_vault_secret" "apim_service_principal_secret" {
-  name         = "devportal-SERVICE-PRINCIPAL-SECRET"
-  key_vault_id = data.azurerm_key_vault.key_vault_common.id
-}
-
-data "azurerm_key_vault_secret" "selfcare_io_sandbox_fiscal_code" {
-  name         = "io-SANDBOX-FISCAL-CODE"
-  key_vault_id = data.azurerm_key_vault.key_vault_common.id
-}
-
 data "azurerm_key_vault_secret" "jira_token" {
   name         = "devportal-JIRA-TOKEN"
-  key_vault_id = data.azurerm_key_vault.key_vault_common.id
-}
-
-data "azurerm_key_vault_secret" "selfcare_subsmigrations_apikey" {
-  name         = "devportal-subsmigrations-APIKEY"
   key_vault_id = data.azurerm_key_vault.key_vault_common.id
 }
 
@@ -90,11 +65,6 @@ data "azurerm_key_vault_secret" "devportal_cookie_key" {
 
 data "azurerm_key_vault_secret" "devportal_request_review_legacy_queue_connectionstring" {
   name         = "devportal-REQUEST-REVIEW-LEGACY-QUEUE-CONNECTIONSTRING"
-  key_vault_id = data.azurerm_key_vault.key_vault_common.id
-}
-
-data "azurerm_key_vault_secret" "services_exclusion_list" {
-  name         = "io-fn-services-SERVICEID-EXCLUSION-LIST"
   key_vault_id = data.azurerm_key_vault.key_vault_common.id
 }
 
@@ -126,11 +96,6 @@ data "azurerm_private_dns_zone" "privatelink_queue_core" {
 
 data "azurerm_private_dns_zone" "privatelink_table_core" {
   name                = "privatelink.table.core.windows.net"
-  resource_group_name = local.resource_group_name_common
-}
-
-data "azurerm_storage_account" "assets_cdn" {
-  name                = replace("${var.project}-stcdnassets", "-", "")
   resource_group_name = local.resource_group_name_common
 }
 

@@ -1,8 +1,3 @@
-data "azurerm_private_dns_zone" "privatelink_postgres_database_azure_com" {
-  name                = "privatelink.postgres.database.azure.com"
-  resource_group_name = local.resource_group_name_common
-}
-
 data "azurerm_key_vault" "key_vault_common" {
   name                = "${var.project}-kv-common"
   resource_group_name = local.resource_group_name_common
