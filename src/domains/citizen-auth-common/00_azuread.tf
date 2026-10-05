@@ -7,13 +7,6 @@ data "azuread_group" "adgroup_developers" {
   display_name = format("%s-adgroup-developers", local.product)
 }
 
-data "azuread_group" "adgroup_externals" {
-  display_name = format("%s-adgroup-externals", local.product)
-}
-
-data "azuread_group" "adgroup_security" {
-  display_name = format("%s-adgroup-security", local.product)
-}
 data "azuread_group" "adgroup_auth_admins" {
   display_name = format("%s-adgroup-auth-admins", local.product)
 }
