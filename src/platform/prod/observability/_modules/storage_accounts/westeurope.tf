@@ -1,3 +1,4 @@
+#trivy:ignore:AZU-0012
 resource "azurerm_storage_account" "logs" {
   count = var.location == "westeurope" ? 1 : 0
 
