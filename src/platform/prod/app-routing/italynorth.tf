@@ -7,7 +7,6 @@ module "apim_itn" {
   source = "./_modules/apim"
 
   location                = "italynorth"
-  location_short          = local.core.resource_groups.italynorth.location_short
   project                 = local.project_itn
   prefix                  = local.prefix
   resource_group_common   = local.resource_groups.itn.common
@@ -39,10 +38,8 @@ module "platform_api_gateway_apim_itn" {
   source = "./_modules/platform_api_gateway"
 
   location                = "italynorth"
-  location_short          = local.core.resource_groups.italynorth.location_short
   project                 = local.project_itn
   prefix                  = local.prefix
-  resource_group_common   = local.resource_groups.itn.common
   resource_group_internal = local.resource_groups.itn.internal
 
   vnet_common = local.core.networking.itn.vnet_common
@@ -80,7 +77,6 @@ module "application_gateway_itn" {
   source = "./_modules/application_gateway"
 
   location              = "italynorth"
-  location_short        = local.core.resource_groups.italynorth.location_short
   project               = local.project_itn
   project_legacy        = local.project_weu_legacy
   prefix                = local.prefix
@@ -97,7 +93,6 @@ module "application_gateway_itn" {
   key_vault        = local.core.key_vault.weu.kv
   key_vault_common = local.core.key_vault.weu.kv_common
   # ---------------------------------------------- #
-  external_domain  = local.platform_core.dns.zones.external_domain
   public_dns_zones = local.platform_core.dns.zones.public_dns_zones
 
   backend_hostnames = {
@@ -127,13 +122,11 @@ module "application_gateway_itn" {
 
   # Use "autoscale" mode to enable autoscaling with min_capacity with 7 for low load events, 10 for medium load events, 15 for high load events or use fixed with the desired capacity click day events
   capacity_settings = {
-    mode         = "autoscale"
-    min_capacity = 20
-    max_capacity = 100
+    mode     = "fixed"
+    capacity = 125
   }
 
   alerts_enabled        = true
-  deny_paths            = ["\\/admin\\/(.*)"]
   error_action_group_id = local.platform_observability.monitoring_westeurope.action_groups.error
 
   ioweb_kv = {

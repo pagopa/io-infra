@@ -5,7 +5,6 @@ module "app_backend_weu" {
   location                = "westeurope"
   location_short          = local.core.resource_groups.westeurope.location_short
   project                 = local.project_weu_legacy
-  prefix                  = local.prefix
   resource_group_linux    = local.core.resource_groups.westeurope.linux
   resource_group_internal = local.core.resource_groups.westeurope.internal
   resource_group_common   = local.core.resource_groups.westeurope.common
@@ -23,7 +22,7 @@ module "app_backend_weu" {
   cidr_subnet                   = each.value.cidr_subnet
   nat_gateways                  = local.core.networking.weu.nat_gateways
   allowed_subnets               = []
-  slot_allowed_subnets          = [local.common.github_runner.itn.subnet_id]
+  slot_allowed_subnets          = [local.core.github_runner.itn.subnet_id]
   allowed_ips                   = local.platform_observability.monitoring_westeurope.appi.reserved_ips
   slot_allowed_ips              = local.platform_observability.monitoring_westeurope.appi.reserved_ips
   enable_premium_plan_autoscale = true
@@ -32,7 +31,6 @@ module "app_backend_weu" {
 
   backend_hostnames = local.backend_hostnames
 
-  key_vault        = local.core.key_vault.weu.kv
   key_vault_common = local.core.key_vault.weu.kv_common
 
   error_action_group_id  = local.platform_observability.monitoring_westeurope.action_groups.error
@@ -41,9 +39,9 @@ module "app_backend_weu" {
   ai_connection_string   = sensitive(local.platform_observability.monitoring_westeurope.appi_connection_string)
 
   redis_common = {
-    hostname           = local.common.redis.weu.hostname
-    ssl_port           = local.common.redis.weu.ssl_port
-    primary_access_key = local.common.redis.weu.primary_access_key
+    hostname           = local.platform_data_platform.redis.weu.hostname
+    ssl_port           = local.platform_data_platform.redis.weu.ssl_port
+    primary_access_key = local.platform_data_platform.redis.weu.primary_access_key
   }
 
   azure_adgroup_wallet_admins_object_id = data.azuread_group.wallet_admins.object_id

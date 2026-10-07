@@ -8,11 +8,6 @@ variable "location" {
   description = "Azure region"
 }
 
-variable "location_short" {
-  type        = string
-  description = "Azure region short name"
-}
-
 variable "tags" {
   type        = map(any)
   description = "Resource tags"
@@ -21,16 +16,6 @@ variable "tags" {
 variable "resource_group_internal" {
   type        = string
   description = "Internal resource group names"
-}
-
-variable "vnet_common" {
-  type = object({
-    id                  = string
-    name                = string
-    address_space       = list(string)
-    resource_group_name = string
-  })
-  description = "Information of the common VNet"
 }
 
 variable "pep_snet" {

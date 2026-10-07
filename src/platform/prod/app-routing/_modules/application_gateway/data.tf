@@ -12,11 +12,6 @@ data "azurerm_linux_web_app" "appservice_continua" {
   resource_group_name = "${var.project}-continua-rg-01"
 }
 
-data "azurerm_linux_web_app" "session_manager_03" {
-  name                = "${var.project_legacy}-weu-session-manager-app-03"
-  resource_group_name = "${var.project_legacy}-weu-session-manager-rg-01"
-}
-
 data "azurerm_linux_web_app" "fims_op_app" {
   name                = "${var.project}-fims-op-app-01"
   resource_group_name = "${var.project}-fims-rg-01"
@@ -139,11 +134,13 @@ data "azurerm_key_vault_certificate" "app_gw_practices_ipatente_io" {
   key_vault_id = var.key_vault.id
 }
 
+#trivy:ignore:DX-TF-0001
 data "azurerm_key_vault_secret" "app_gw_mtls_header_name" {
   name         = "mtls-header-name"
   key_vault_id = var.key_vault.id
 }
 
+#trivy:ignore:DX-TF-0001
 data "azurerm_key_vault_secret" "client_cert" {
   for_each     = { for t in local.trusted_client_certificates : t.secret_name => t }
   name         = each.value.secret_name

@@ -10,7 +10,6 @@ module "continua_app_service_itn" {
   prefix                         = local.prefix
   env_short                      = local.env_short
   location_itn                   = "italynorth"
-  project_itn                    = local.project_itn
   project                        = local.project_weu_legacy
   tags                           = local.tags
   vnet_common_name_itn           = local.core.networking.itn.vnet_common.name

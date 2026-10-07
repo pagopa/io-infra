@@ -35,12 +35,10 @@ module "event_hubs_weu" {
 module "cosmos_api_weu" {
   source = "./_modules/cosmos_api"
 
-  location       = "westeurope"
-  location_short = local.core.resource_groups.westeurope.location_short
-  project        = local.project_weu_legacy
+  location = "westeurope"
+  project  = local.project_weu_legacy
 
   resource_group_internal        = local.core.resource_groups.westeurope.internal
-  vnet_common                    = local.core.networking.weu.vnet_common
   pep_snet                       = local.core.networking.weu.pep_snet
   secondary_location             = "spaincentral"
   secondary_location_pep_snet_id = local.core.networking.itn.pep_snet.id
@@ -60,22 +58,6 @@ module "cosmos_api_weu" {
     data.azurerm_user_assigned_identity.auth_n_identity_infra_ci.principal_id,
     data.azurerm_user_assigned_identity.auth_n_identity_infra_cd.principal_id,
   ]
-
-  tags = local.tags
-}
-
-resource "azurerm_key_vault_secret" "cosmos_api_connection_string" {
-  name         = "cosmos-api-connection-string"
-  key_vault_id = local.core.key_vault.weu.kv_common.id
-  value        = module.cosmos_api_weu.connection_string
-
-  tags = local.tags
-}
-
-resource "azurerm_key_vault_secret" "cosmos_api_primary_key" {
-  name         = "cosmos-api-primary-key"
-  key_vault_id = local.core.key_vault.weu.kv_common.id
-  value        = module.cosmos_api_weu.primary_key
 
   tags = local.tags
 }

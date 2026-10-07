@@ -1,5 +1,7 @@
 data "azurerm_client_config" "current" {}
 
+# Remote States
+
 data "terraform_remote_state" "core" {
   backend = "azurerm"
 
@@ -12,18 +14,6 @@ data "terraform_remote_state" "core" {
   }
 }
 
-data "terraform_remote_state" "common" {
-  backend = "azurerm"
-
-  config = {
-    resource_group_name  = "terraform-state-rg"
-    storage_account_name = "iopitntfst001"
-    container_name       = "terraform-state"
-    key                  = "io-infra.common.prod.tfstate"
-    use_azuread_auth     = true
-  }
-}
-
 data "terraform_remote_state" "platform_core" {
   backend = "azurerm"
 
@@ -32,6 +22,18 @@ data "terraform_remote_state" "platform_core" {
     storage_account_name = "iopitntfst001"
     container_name       = "terraform-state"
     key                  = "io-infra.platform.core.prod.tfstate"
+    use_azuread_auth     = true
+  }
+}
+
+data "terraform_remote_state" "platform_data_platform" {
+  backend = "azurerm"
+
+  config = {
+    resource_group_name  = "terraform-state-rg"
+    storage_account_name = "iopitntfst001"
+    container_name       = "terraform-state"
+    key                  = "io-infra.platform.data-platform.prod.tfstate"
     use_azuread_auth     = true
   }
 }
@@ -90,11 +92,6 @@ data "azurerm_linux_function_app" "services_app_backend_function_app" {
 data "azurerm_linux_function_app" "lollipop_function" {
   name                = "${local.project_itn}-auth-lollipop-func-02"
   resource_group_name = "${local.project_itn}-auth-lollipop-rg-02"
-}
-
-data "azurerm_linux_function_app" "io_sign_user" {
-  resource_group_name = "${local.project_itn}-sign-rg-01"
-  name                = "${local.project_itn}-sign-user-func-01"
 }
 
 data "azurerm_linux_function_app" "io_fims_user" {

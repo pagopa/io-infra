@@ -19,19 +19,9 @@ variable "location" {
   description = "Azure region"
 }
 
-variable "location_short" {
-  type        = string
-  description = "Azure region short name"
-}
-
 variable "tags" {
   type        = map(any)
   description = "Resource tags"
-}
-
-variable "resource_group_common" {
-  type        = string
-  description = "Name of common resource group"
 }
 
 variable "resource_group_internal" {
