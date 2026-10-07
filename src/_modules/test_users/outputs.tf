@@ -10,6 +10,7 @@ output "users" {
         local.test_users_store_review,
         local.test_users_eu_covid_cert,
         local.test_users_cdc,
+        local.test_users_cgn,
         local.test_users_fast_login_load_test,
         local.test_users_unique_email_test,
         ]
@@ -34,6 +35,10 @@ output "users" {
 
     cdc_flat = join(",",
       flatten([local.test_users_cdc])
+    )
+
+    cgn_flat = join(",",
+      flatten([local.test_users_cgn])
     )
 
     light = join(",",
