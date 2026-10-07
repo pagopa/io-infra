@@ -1,0 +1,21 @@
+module "zones" {
+  source = "./zones"
+
+  project = var.project
+
+  dns_zones = var.dns.dns_zones
+
+  vnets = var.dns.vnets
+
+  dns_default_ttl_sec = 3600
+  external_domain     = "pagopa.it"
+
+  resource_groups = var.dns.resource_groups
+
+  app_gateway_public_ip = var.dns.app_gateway_public_ip
+
+  apim_private_ip                 = var.dns.apim_private_ip
+  platform_api_gateway_private_ip = var.dns.platform_api_gateway_private_ip
+
+  tags = var.tags
+}

@@ -16,7 +16,7 @@ module "ioapp" {
     {
       host_name = "ioapp.it"
       dns = {
-        zone_name                = var.public_dns_zones.ioweb_it.name
+        zone_name                = var.public_dns_zones.ioapp_it.name
         zone_resource_group_name = var.resource_group_external
       }
       custom_certificate = {
@@ -29,7 +29,7 @@ module "ioapp" {
     {
       host_name = "www.ioapp.it"
       dns = {
-        zone_name                = var.public_dns_zones.ioweb_it.name
+        zone_name                = var.public_dns_zones.ioapp_it.name
         zone_resource_group_name = var.resource_group_external
       }
     }

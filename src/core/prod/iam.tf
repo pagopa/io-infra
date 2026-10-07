@@ -87,3 +87,19 @@ resource "azurerm_key_vault_access_policy" "kv_common_infra_cd" {
   certificate_permissions = ["Get", "List"]
   key_permissions         = ["Get", "List"]
 }
+
+resource "azurerm_role_assignment" "infra_cd_access_control_administrator" {
+  scope                = data.azurerm_subscription.current.id
+  principal_id         = data.azurerm_user_assigned_identity.managed_identity_io_infra_cd.principal_id
+  role_definition_name = "User Access Administrator"
+  description          = "Allow the io-p-infra-github-cd-identity to manage RBAC permissions"
+}
+
+# Fn-admin monorepo managed identity
+# Needed for Microsoft.KeyVault/vaults/keyrotationpolicies/read' - Ref: https://learn.microsoft.com/en-us/azure/role-based-access-control/built-in-roles/security#key-vault-crypto-officer
+resource "azurerm_role_assignment" "io_plt_ci_id_02_platform_kv" {
+  scope                = module.key_vault_weu.io_p_itn_platform_kv_01.id
+  principal_id         = data.azurerm_user_assigned_identity.managed_identity_io_plt_ci_id_02.principal_id
+  role_definition_name = "Key Vault Crypto Officer"
+  description          = "Allow the io-plt-ci-id-02 to read key rotation policies"
+}
