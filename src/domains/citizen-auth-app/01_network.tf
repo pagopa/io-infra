@@ -25,12 +25,6 @@ data "azurerm_subnet" "apim_itn_snet" {
   resource_group_name  = local.vnet_common_resource_group_name_itn
 }
 
-data "azurerm_subnet" "appgateway_snet" {
-  name                 = "io-p-appgateway-snet"
-  virtual_network_name = local.vnet_common_name
-  resource_group_name  = local.vnet_common_resource_group_name
-}
-
 data "azurerm_subnet" "self_hosted_runner_snet" {
   name                 = "io-p-github-runner-snet"
   virtual_network_name = local.vnet_common_name
@@ -43,13 +37,13 @@ data "azurerm_virtual_network" "common_vnet" {
 }
 
 module "session_manager_snet" {
-  source               = "github.com/pagopa/terraform-azurerm-v3//subnet?ref=v8.22.0"
+  source               = "github.com/pagopa/terraform-azurerm-v4//subnet?ref=v10.1.0"
   name                 = format("%s-session-manager-snet-02", local.common_project)
   address_prefixes     = var.cidr_subnet_session_manager
   resource_group_name  = data.azurerm_virtual_network.common_vnet.resource_group_name
   virtual_network_name = data.azurerm_virtual_network.common_vnet.name
 
-  private_endpoint_network_policies_enabled = true
+  private_endpoint_network_policies = "Enabled"
 
   service_endpoints = [
     "Microsoft.Web",
@@ -65,13 +59,13 @@ module "session_manager_snet" {
 }
 
 module "session_manager_bis_snet" {
-  source               = "github.com/pagopa/terraform-azurerm-v3//subnet?ref=v8.22.0"
+  source               = "github.com/pagopa/terraform-azurerm-v4//subnet?ref=v10.1.0"
   name                 = format("%s-session-manager-snet-03", local.common_project)
   address_prefixes     = var.cidr_subnet_session_manager_bis
   resource_group_name  = data.azurerm_virtual_network.common_vnet.resource_group_name
   virtual_network_name = data.azurerm_virtual_network.common_vnet.name
 
-  private_endpoint_network_policies_enabled = true
+  private_endpoint_network_policies = "Enabled"
 
   service_endpoints = [
     "Microsoft.Web",

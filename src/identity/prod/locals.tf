@@ -6,7 +6,10 @@ locals {
   project   = "${local.prefix}-${local.env_short}"
   domain    = "infra"
 
-  repo_name = "io-infra"
+  repo_name  = "io-infra"
+  repo_owner = "pagopa"
+
+  identity_resource_group_name = "${local.project}-identity-rg"
 
   tags = {
     CostCenter     = "TS000 - Tecnologia e Servizi"

@@ -34,6 +34,13 @@ resource "azurerm_resource_group" "github_managed_identity_itn" {
   tags = local.tags
 }
 
+resource "azurerm_resource_group" "github_runner_itn" {
+  name     = "${local.project_itn}-github-runner-rg-01"
+  location = "italynorth"
+
+  tags = local.tags
+}
+
 resource "azurerm_resource_group" "assets_cdn_itn" {
   name     = "${local.project_itn}-assets-cdn-rg-01"
   location = "italynorth"
@@ -92,13 +99,6 @@ resource "azurerm_resource_group" "sec_weu" {
 
 resource "azurerm_resource_group" "acr_weu" {
   name     = format("%s-container-registry-rg", local.project_weu_legacy)
-  location = "westeurope"
-
-  tags = local.tags
-}
-
-resource "azurerm_resource_group" "assets_cdn_weu" {
-  name     = format("%s-assets-cdn-rg", local.project_weu_legacy)
   location = "westeurope"
 
   tags = local.tags

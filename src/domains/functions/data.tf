@@ -66,11 +66,6 @@ data "azurerm_storage_account" "storage_api" {
   resource_group_name = local.rg_internal_name
 }
 
-data "azurerm_storage_account" "assets_cdn" {
-  name                = replace("${local.project}-stcdnassets", "-", "")
-  resource_group_name = local.rg_common_name
-}
-
 data "azurerm_storage_account" "logs02" {
   name                = replace("${local.project}-stlogs02", "-", "")
   resource_group_name = "${local.project}-rg-operations"
