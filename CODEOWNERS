@@ -2,8 +2,6 @@
 
 * @pagopa/engineering-team-devex @pagopa/io-platform-contributors
 
-/src/common @pagopa/engineering-team-devex @pagopa/io-backend-admin
-
 /src/domains @pagopa/engineering-team-devex @pagopa/io-backend-admin @pagopa/io-backend-contributors
 /src/domains/sign @pagopa/engineering-team-devex @pagopa/io-backend-admin @pagopa/io-backend-contributors @pagopa/io-sign-maintainers
 

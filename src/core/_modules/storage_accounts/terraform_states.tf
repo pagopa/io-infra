@@ -1,4 +1,6 @@
-resource "azurerm_storage_account" "terraform" {
+#trivy:ignore:AZU-0012
+resource "azurerm_storage_account" "terraform_state_itn" {
+
   name                = replace("${var.project}tfst001", "-", "")
   resource_group_name = var.resource_group_name
   location            = var.location

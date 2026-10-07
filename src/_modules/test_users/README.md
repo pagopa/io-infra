@@ -20,30 +20,3 @@ output "test_users" {
 }
 ```
 
-<!-- BEGIN_TF_DOCS -->
-## Requirements
-
-No requirements.
-
-## Providers
-
-No providers.
-
-## Modules
-
-No modules.
-
-## Resources
-
-No resources.
-
-## Inputs
-
-No inputs.
-
-## Outputs
-
-| Name | Description |
-|------|-------------|
-| <a name="output_users"></a> [users](#output\_users) | n/a |
-<!-- END_TF_DOCS -->
