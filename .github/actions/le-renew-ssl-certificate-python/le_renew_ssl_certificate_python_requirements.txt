@@ -225,9 +225,9 @@ msal-extensions==0.3.0 ; python_full_version >= "3.8.0" and python_full_version 
 msrest==0.6.21 ; python_full_version >= "3.8.0" and python_full_version < "4.0.0" \
     --hash=sha256:72661bc7bedc2dc2040e8f170b6e9ef226ee6d3892e01affd4d26b06474d68d8 \
     --hash=sha256:c840511c845330e96886011a236440fafc2c9aff7b2df9c0a92041ee2dee3782
-oauthlib==3.2.2 ; python_full_version >= "3.8.0" and python_full_version < "4.0.0" \
-    --hash=sha256:8139f29aac13e25d502680e9e19963e83f16838d48a0d71c287fe40e7067fbca \
-    --hash=sha256:9859c40929662bec5d64f34d01c99e093149682a3f38915dc0655d5a633dd918
+oauthlib==4.0.0; python_full_version >= "3.8.0" and python_full_version < "4.0.0" \
+    --hash=sha256:624c28c13a0a59cabf9747dfa52af63be3e512a7f2714df16e91b5b3a145e6cd \
+    --hash=sha256:efb274799819440f95b4ab3b818869f1ce9ae26c5beacba0201d1a1b76b54f86
 portalocker==1.7.1 ; python_full_version >= "3.8.0" and python_full_version < "4.0.0" \
     --hash=sha256:34cb36c618d88bcd9079beb36dcdc1848a3e3d92ac4eac59055bdeafc39f9d4a \
     --hash=sha256:6d6f5de5a3e68c4dd65a98ec1babb26d28ccc5e770e07b672d65d5a35e4b2d8a
