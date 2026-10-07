@@ -1,0 +1,55 @@
+resource "azurerm_key_vault_access_policy" "apim_kv_policy" {
+  key_vault_id = var.key_vault.id
+  tenant_id    = var.datasources.azurerm_client_config.tenant_id
+  object_id    = module.apim.principal_id
+
+  key_permissions         = []
+  secret_permissions      = ["Get", "List"]
+  certificate_permissions = ["Get", "List"]
+  storage_permissions     = []
+}
+
+module "iam_adgroup_admins" {
+  source  = "pagopa-dx/azure-role-assignments/azurerm"
+  version = "~> 0.0"
+
+  principal_id = var.azure_adgroup_admins_object_id
+
+  apim = [
+    {
+      name                = module.apim.name
+      resource_group_name = module.apim.resource_group_name
+      role                = "owner"
+    }
+  ]
+}
+
+module "iam_adgroup_developers" {
+  source  = "pagopa-dx/azure-role-assignments/azurerm"
+  version = "~> 0.0"
+
+  principal_id = var.azure_adgroup_developers_object_id
+
+  apim = [
+    {
+      name                = module.apim.name
+      resource_group_name = module.apim.resource_group_name
+      role                = "owner"
+    }
+  ]
+}
+
+module "iam_adgroup_externals" {
+  source  = "pagopa-dx/azure-role-assignments/azurerm"
+  version = "~> 0.0"
+
+  principal_id = var.azure_adgroup_externals_object_id
+
+  apim = [
+    {
+      name                = module.apim.name
+      resource_group_name = module.apim.resource_group_name
+      role                = "owner"
+    }
+  ]
+}

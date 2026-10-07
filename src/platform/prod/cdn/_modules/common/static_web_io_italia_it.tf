@@ -9,16 +9,6 @@ resource "azurerm_cdn_frontdoor_custom_domain" "static_web_io_italia_it" {
   }
 }
 
-resource "azurerm_cdn_frontdoor_custom_domain" "static_web_io_italia_it_legacy" {
-  name                     = "io-p-cdnendpoint-websiteassets-Migrated"
-  cdn_frontdoor_profile_id = azurerm_cdn_frontdoor_profile.common.id
-  host_name                = "io-p-cdnendpoint-websiteassets.azureedge.net"
-
-  tls {
-    certificate_type = "ManagedCertificate"
-  }
-}
-
 resource "azurerm_dns_txt_record" "static_web_io_italia_it" {
   name                = join(".", ["_dnsauth", "static-web"])
   zone_name           = var.public_dns_zones.io_italia_it.name
@@ -28,6 +18,7 @@ resource "azurerm_dns_txt_record" "static_web_io_italia_it" {
   record {
     value = azurerm_cdn_frontdoor_custom_domain.static_web_io_italia_it.validation_token
   }
+  tags = var.tags
 }
 
 resource "azurerm_dns_cname_record" "static_web_io_italia_it" {
@@ -36,6 +27,7 @@ resource "azurerm_dns_cname_record" "static_web_io_italia_it" {
   resource_group_name = var.resource_group_external
   ttl                 = 3600
   target_resource_id  = azurerm_cdn_frontdoor_endpoint.static_web_io_italia_it.id
+  tags                = var.tags
 }
 
 resource "azurerm_cdn_frontdoor_endpoint" "static_web_io_italia_it" {
@@ -86,13 +78,12 @@ resource "azurerm_cdn_frontdoor_route" "static_web_io_italia_it" {
   enabled                       = true
 
   forwarding_protocol    = "MatchRequest"
-  https_redirect_enabled = false # TODO: switch to default https redirect on route level
+  https_redirect_enabled = true
   patterns_to_match      = ["/*"]
-  supported_protocols    = ["Https"]
+  supported_protocols    = ["Http", "Https"]
 
   cdn_frontdoor_custom_domain_ids = [
-    azurerm_cdn_frontdoor_custom_domain.static_web_io_italia_it.id,
-    azurerm_cdn_frontdoor_custom_domain.static_web_io_italia_it_legacy.id
+    azurerm_cdn_frontdoor_custom_domain.static_web_io_italia_it.id
   ]
   link_to_default_domain = true
 

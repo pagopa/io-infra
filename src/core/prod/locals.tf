@@ -34,4 +34,6 @@ locals {
       sec      = "${local.project_itn}-sec-rg-01"
     }
   }
+
+  platform_observability = data.terraform_remote_state.platform_observability.outputs
 }

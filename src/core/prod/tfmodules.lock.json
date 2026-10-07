@@ -94,5 +94,11 @@
     "version": "0.1.3",
     "name": "azure_role_assignments",
     "source": "https://registry.terraform.io/modules/pagopa-dx/azure-role-assignments/azurerm/0.1.3"
+  },
+  "github_runner_itn.container_app_github_runner": {
+    "hash": "9e7ad257adb3eb09a4c5113dbca7a4642481388627a9aea45c3e27a58edac11f",
+    "version": "1.3.4",
+    "name": "github_selfhosted_runner_on_container_app_jobs",
+    "source": "https://registry.terraform.io/modules/pagopa-dx/github-selfhosted-runner-on-container-app-jobs/azurerm/1.3.4"
   }
 }
