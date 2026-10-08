@@ -1,15 +1,5 @@
-data "azurerm_virtual_network" "vnet_common" {
-  name                = local.vnet_common_name
-  resource_group_name = local.vnet_common_resource_group_name
-}
-
 data "azurerm_private_dns_zone" "privatelink_azurewebsites_net" {
   name                = "privatelink.azurewebsites.net"
-  resource_group_name = format("%s-rg-common", local.product)
-}
-
-data "azurerm_private_dns_zone" "privatelink_table_core_windows_net" {
-  name                = "privatelink.table.core.windows.net"
   resource_group_name = format("%s-rg-common", local.product)
 }
 
