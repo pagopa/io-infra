@@ -11,6 +11,10 @@ resource "azurerm_api_management_named_value" "io_fn_cgnmerchant_key_v2" {
   api_management_name = data.azurerm_api_management.apim.name
   resource_group_name = data.azurerm_api_management.apim.resource_group_name
   display_name        = "io-fn-cgnmerchant-key"
-  value               = data.azurerm_key_vault_secret.io_fn_cgnmerchant_key_secret_v2.value
+
+  value_from_key_vault {
+    secret_id = format("%s%s/%s", data.azurerm_key_vault.key_vault_common.vault_uri, "secrets", "io-fn-cgnmerchant-KEY-APIM")
+  }
+
   secret              = "true"
 }
