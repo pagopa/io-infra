@@ -44,20 +44,8 @@ data "azurerm_api_management" "apim_itn_api" {
   resource_group_name = local.apim_itn_resource_group_name
 }
 
-# For Named Value fn-lollipop
-data "azurerm_key_vault_secret" "io_fn_itn_lollipop_key_secret_v2" {
-  name         = "io-fn-itn-lollipop-KEY-APIM"
-  key_vault_id = data.azurerm_key_vault.auth_kv_01.id
-}
-
 # For APIM API module apim_v2_fast_login_operation_api_v1
 data "azurerm_linux_function_app" "functions_fast_login" {
   name                = local.fn_fast_login_name
   resource_group_name = local.fn_fast_login_resource_group_name
-}
-
-# For Named Value fn-fast-login
-data "azurerm_key_vault_secret" "functions_fast_login_api_key" {
-  name         = "io-fn-weu-fast-login-KEY-APIM"
-  key_vault_id = data.azurerm_key_vault.auth_kv_01.id
 }
