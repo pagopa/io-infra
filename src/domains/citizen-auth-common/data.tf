@@ -22,7 +22,6 @@ data "azurerm_user_assigned_identity" "managed_identity_auth_n_identity_infra_cd
   resource_group_name = "${local.product}-itn-auth-rg-01"
 }
 
-
 # ITN LOLLIPOP FUNCTION
 data "azurerm_resource_group" "lollipop_function_rg" {
   name = format("%s-auth-lollipop-rg-02", local.common_project_itn)
