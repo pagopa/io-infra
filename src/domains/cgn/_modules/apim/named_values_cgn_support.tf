@@ -16,7 +16,7 @@ resource "azurerm_api_management_named_value" "io_fn_cgn_support_key" {
     secret_id = format("%s%s/%s", data.azurerm_key_vault.key_vault_common.vault_uri, "secrets", "io-fn-cgn-support-KEY-APIM")
   }
 
-  secret              = "true"
+  secret = "true"
 }
 
 resource "azurerm_api_management_named_value" "cgn_profile_info_read_group_name" {

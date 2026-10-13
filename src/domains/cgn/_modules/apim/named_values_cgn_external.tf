@@ -16,7 +16,7 @@ resource "azurerm_api_management_named_value" "io_fn_cgn_card_key" {
     secret_id = format("%s%s/%s", data.azurerm_key_vault.key_vault_common.vault_uri, "secrets", "io-fn-cgn-card-KEY-APIM")
   }
 
-  secret              = "true"
+  secret = "true"
 }
 
 resource "azurerm_api_management_named_value" "cgn_external_activation_group_name" {

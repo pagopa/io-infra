@@ -16,7 +16,7 @@ resource "azurerm_api_management_named_value" "cgnonboardingportal_os_key_v2" {
     secret_id = format("%s%s/%s", data.azurerm_key_vault.key_vault_common.vault_uri, "secrets", "funccgn-KEY-CGNOS")
   }
 
-  secret              = true
+  secret = true
 }
 
 resource "azurerm_api_management_named_value" "cgnonboardingportal_os_header_name_v2" {
@@ -29,5 +29,5 @@ resource "azurerm_api_management_named_value" "cgnonboardingportal_os_header_nam
     secret_id = format("%s%s/%s", data.azurerm_key_vault.key_vault_common.vault_uri, "secrets", "funccgn-KEY-CGNOSHEADERNAME")
   }
 
-  secret              = true
+  secret = true
 }
