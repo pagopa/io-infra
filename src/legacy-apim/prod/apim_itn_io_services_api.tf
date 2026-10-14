@@ -47,7 +47,7 @@ resource "azurerm_api_management_named_value" "io_fn3_services_key_itn" {
   display_name        = "io-fn3-services-key"
 
   value_from_key_vault {
-    secret_id = format("%s%s/%s", data.azurerm_key_vault.key_vault_common.id, "secrets", "fn3services-KEY-APIM")
+    secret_id = format("%s%s/%s", data.azurerm_key_vault.key_vault_common.vault_uri, "secrets", "fn3services-KEY-APIM")
   }
 
   secret = "true"
@@ -62,7 +62,7 @@ resource "azurerm_api_management_named_value" "io_fn3_eucovidcert_key_itn" {
   display_name        = "io-fn3-eucovidcert-key"
 
   value_from_key_vault {
-    secret_id = format("%s%s/%s", data.azurerm_key_vault.key_vault_common.id, "secrets", "io-fn3-eucovidcert-KEY-APIM")
+    secret_id = format("%s%s/%s", data.azurerm_key_vault.key_vault_common.vault_uri, "secrets", "io-fn3-eucovidcert-KEY-APIM")
   }
 
   secret = "true"
@@ -85,7 +85,7 @@ resource "azurerm_api_management_named_value" "api_gad_client_certificate_verifi
   display_name        = "apigad-gad-client-certificate-verified-header"
 
   value_from_key_vault {
-    secret_id = format("%s%s/%s", data.azurerm_key_vault.key_vault_common.id, "secrets", "apigad-GAD-CLIENT-CERTIFICATE-VERIFIED-HEADER")
+    secret_id = format("%s%s/%s", data.azurerm_key_vault.key_vault_common.vault_uri, "secrets", "apigad-GAD-CLIENT-CERTIFICATE-VERIFIED-HEADER")
   }
 
   secret = "true"
