@@ -62,8 +62,12 @@ resource "azurerm_api_management_named_value" "io_fn_itn_lollipop_key_itn" {
   api_management_name = data.azurerm_api_management.apim_itn_api.name
   resource_group_name = data.azurerm_api_management.apim_itn_api.resource_group_name
   display_name        = "io-fn-itn-lollipop-key"
-  value               = data.azurerm_key_vault_secret.io_fn_itn_lollipop_key_secret_v2.value
-  secret              = "true"
+
+  value_from_key_vault {
+    secret_id = format("%s%s/%s", data.azurerm_key_vault.auth_kv_01.vault_uri, "secrets", "io-fn-itn-lollipop-KEY-APIM")
+  }
+
+  secret = "true"
 }
 
 ####################################################################################
@@ -237,8 +241,12 @@ resource "azurerm_api_management_named_value" "io_fn_itn_fast_login_operation_ke
   api_management_name = data.azurerm_api_management.apim_itn_api.name
   resource_group_name = data.azurerm_api_management.apim_itn_api.resource_group_name
   display_name        = "io-fn-itn-fast-login-operation-key"
-  value               = data.azurerm_key_vault_secret.functions_fast_login_api_key.value
-  secret              = "true"
+
+  value_from_key_vault {
+    secret_id = format("%s%s/%s", data.azurerm_key_vault.auth_kv_01.vault_uri, "secrets", "io-fn-weu-fast-login-KEY-APIM")
+  }
+
+  secret = "true"
 }
 
 resource "azurerm_api_management_named_value" "api_fast_login_operation_group_name_itn" {
