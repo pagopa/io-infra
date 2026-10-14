@@ -149,11 +149,13 @@ resource "azurerm_key_vault_secret" "spid_login_jwt_pub_key" {
   key_vault_id = module.key_vault.id
 }
 
+#trivy:ignore:AVD-DX-0001
 data "azurerm_key_vault_secret" "agid_spid_private_key" {
   name         = "spid-login-AGID-SPID-CERT-KEY"
   key_vault_id = module.key_vault.id
 }
 
+#trivy:ignore:AVD-DX-0001
 data "azurerm_key_vault_secret" "agid_spid_cert" {
   name         = "spid-login-AGID-SPID-CERT-PEM"
   key_vault_id = module.key_vault.id
