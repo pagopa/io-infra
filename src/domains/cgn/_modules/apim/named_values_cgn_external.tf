@@ -11,8 +11,12 @@ resource "azurerm_api_management_named_value" "io_fn_cgn_card_key" {
   api_management_name = data.azurerm_api_management.apim.name
   resource_group_name = data.azurerm_api_management.apim.resource_group_name
   display_name        = "io-fn-cgn-card-key"
-  value               = data.azurerm_key_vault_secret.io_fn_cgn_card_key.value
-  secret              = "true"
+
+  value_from_key_vault {
+    secret_id = format("%s%s/%s", data.azurerm_key_vault.key_vault_common.vault_uri, "secrets", "io-fn-cgn-card-KEY-APIM")
+  }
+
+  secret = "true"
 }
 
 resource "azurerm_api_management_named_value" "cgn_external_activation_group_name" {
