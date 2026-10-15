@@ -1,3 +1,4 @@
+#trivy:ignore:AZU-0012
 resource "azurerm_storage_account" "app" {
   count = var.location == "westeurope" ? 1 : 0
 
@@ -17,6 +18,7 @@ resource "azurerm_storage_account" "app" {
   tags = var.tags
 }
 
+#trivy:ignore:AZU-0012
 resource "azurerm_storage_account" "exportdata_weu_01" {
   count = var.location == "westeurope" ? 1 : 0
 

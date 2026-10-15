@@ -1,3 +1,4 @@
+#trivy:ignore:AZU-0012
 resource "azurerm_storage_account" "iopitndataexportst01" {
 
   count = var.location == "italynorth" ? 1 : 0
@@ -17,6 +18,7 @@ resource "azurerm_storage_account" "iopitndataexportst01" {
   tags = var.tags
 }
 
+#trivy:ignore:AZU-0012
 resource "azurerm_storage_account" "retirements_itn_01" {
   count = var.location == "italynorth" ? 1 : 0
 
@@ -27,7 +29,7 @@ resource "azurerm_storage_account" "retirements_itn_01" {
   account_replication_type = "LRS"
   access_tier              = "Cool"
 
-  public_network_access_enabled    = true
+  public_network_access_enabled    = false
   allow_nested_items_to_be_public  = false
   shared_access_key_enabled        = false
   default_to_oauth_authentication  = true

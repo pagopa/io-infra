@@ -1,1 +1,8 @@
-{}
+{
+  "cosmosdb_test_services.account": {
+    "hash": "b616b69c3fbff75a0b2e353cd7712c2fdb68b9e83797a1390aa67129cfb3053e",
+    "version": "2.0.3",
+    "name": "unknown",
+    "source": "https://registry.terraform.io/modules/pagopa-dx/azure-cosmos-account/azurerm/2.0.3"
+  }
+}

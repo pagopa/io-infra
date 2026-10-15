@@ -23,21 +23,6 @@ variable "subnet_id" {
   description = "Subnet Id for the App Services and Function Apps"
 }
 
-variable "frontend_hostname" {
-  type        = string
-  description = "Frontend hostname to save in app configs"
-}
-
-variable "backend_hostname" {
-  type        = string
-  description = "Backend hostname to save in app configs"
-}
-
-variable "selfcare_external_hostname" {
-  type        = string
-  description = "External hostname to save in app configs"
-}
-
 variable "apim_hostname_api_app_internal" {
   type        = string
   description = "Admin API url to save in app configs"
