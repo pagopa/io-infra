@@ -3,11 +3,13 @@ data "azurerm_key_vault" "key_vault_common" {
   resource_group_name = local.resource_group_name_common
 }
 
+#trivy:ignore:AVD-DX-0001
 data "azurerm_key_vault_secret" "subscriptionmigrations_db_server_adm_password" {
   name         = "selfcare-subsmigrations-DB-ADM-PASSWORD"
   key_vault_id = data.azurerm_key_vault.key_vault_common.id
 }
 
+#trivy:ignore:AVD-DX-0001
 data "azurerm_key_vault_secret" "subscriptionmigrations_db_server_adm_username" {
   name         = "selfcare-subsmigrations-DB-ADM-USERNAME"
   key_vault_id = data.azurerm_key_vault.key_vault_common.id

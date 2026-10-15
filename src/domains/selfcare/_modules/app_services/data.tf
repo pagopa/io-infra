@@ -32,41 +32,49 @@ data "azurerm_key_vault" "key_vault_common" {
   resource_group_name = local.resource_group_name_common
 }
 
+#trivy:ignore:AVD-DX-0001
 data "azurerm_key_vault_secret" "jira_token" {
   name         = "devportal-JIRA-TOKEN"
   key_vault_id = data.azurerm_key_vault.key_vault_common.id
 }
 
+#trivy:ignore:AVD-DX-0001
 data "azurerm_key_vault_secret" "devportal_client_id" {
   name         = "devportal-CLIENT-ID"
   key_vault_id = data.azurerm_key_vault.key_vault_common.id
 }
 
+#trivy:ignore:AVD-DX-0001
 data "azurerm_key_vault_secret" "devportal_client_secret" {
   name         = "devportal-CLIENT-SECRET"
   key_vault_id = data.azurerm_key_vault.key_vault_common.id
 }
 
+#trivy:ignore:AVD-DX-0001
 data "azurerm_key_vault_secret" "devportal_cookie_iv" {
   name         = "devportal-COOKIE-IV"
   key_vault_id = data.azurerm_key_vault.key_vault_common.id
 }
 
+#trivy:ignore:AVD-DX-0001
 data "azurerm_key_vault_secret" "devportal_cookie_key" {
   name         = "devportal-COOKIE-KEY"
   key_vault_id = data.azurerm_key_vault.key_vault_common.id
 }
 
+#trivy:ignore:AVD-DX-0001
 data "azurerm_key_vault_secret" "devportal_request_review_legacy_queue_connectionstring" {
   name         = "devportal-REQUEST-REVIEW-LEGACY-QUEUE-CONNECTIONSTRING"
   key_vault_id = data.azurerm_key_vault.key_vault_common.id
 }
 
+#trivy:ignore:AVD-DX-0001
 data "azurerm_key_vault_secret" "devportal_io_sandbox_fiscal_code" {
   name         = "io-SANDBOX-FISCAL-CODE"
   key_vault_id = data.azurerm_key_vault.key_vault_common.id
 }
 
+#trivy:ignore:AVD-DX-0001
 data "azurerm_key_vault_secret" "devportal_apim_io_service_key" {
   name         = "apim-IO-SERVICE-KEY"
   key_vault_id = data.azurerm_key_vault.key_vault_common.id
