@@ -1,5 +1,4 @@
 terraform {
-
   backend "azurerm" {
     resource_group_name  = "terraform-state-rg"
     storage_account_name = "ioditntfst01"
@@ -12,6 +11,10 @@ terraform {
     azurerm = {
       source  = "hashicorp/azurerm"
       version = "< 5.0.0"
+    }
+    dx = {
+      source  = "pagopa-dx/azure"
+      version = "~> 0.12"
     }
   }
 }
