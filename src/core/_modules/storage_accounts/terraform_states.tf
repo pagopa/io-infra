@@ -19,7 +19,7 @@ resource "azurerm_storage_account" "terraform_state_itn" {
   tags = var.tags
 }
 
-resource "azurerm_monitor_diagnostic_setting" "assets_locales_diagnostic_setting" {
+resource "azurerm_monitor_diagnostic_setting" "terraform_state_itn_diagnostic_setting" {
   target_resource_id         = azurerm_storage_account.terraform_state_itn.id
   name                       = replace("${var.project}tfst001", "-", "")
   log_analytics_workspace_id = var.log_analytics_workspace_id
