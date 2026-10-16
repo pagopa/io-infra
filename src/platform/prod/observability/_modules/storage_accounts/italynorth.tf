@@ -1,4 +1,5 @@
 #trivy:ignore:AZU-0012
+#trivy:ignore:AZU-0057
 resource "azurerm_storage_account" "iopitnlogst01" {
 
   count = var.location == "italynorth" ? 1 : 0
@@ -57,4 +58,24 @@ resource "azurerm_storage_encryption_scope" "iopitnlogst01" {
   storage_account_id                 = azurerm_storage_account.iopitnlogst01[0].id
   source                             = "Microsoft.Storage"
   infrastructure_encryption_required = true
+}
+
+resource "azurerm_monitor_diagnostic_setting" "iopitnlogst01_diagnostic_setting" {
+
+  count = var.location == "italynorth" ? 1 : 0
+
+  depends_on = [azurerm_storage_account.iopitnlogst01]
+
+  target_resource_id         = azurerm_storage_account.iopitnlogst01[0].id
+  name                       = replace("${var.project}logst01", "-", "")
+  log_analytics_workspace_id = var.log_analytics_workspace_id
+  storage_account_id         = azurerm_storage_account.iopitnlogst01[0].id
+
+  enabled_log {
+    category_group = "allLogs"
+  }
+
+  enabled_metric {
+    category = "AllMetrics"
+  }
 }

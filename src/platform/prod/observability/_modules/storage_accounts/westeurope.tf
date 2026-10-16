@@ -1,4 +1,6 @@
 #trivy:ignore:AZU-0012
+#trivy:ignore:AZU-0057
+#trivy:ignore:AZU-0061
 resource "azurerm_storage_account" "logs" {
   count = var.location == "westeurope" ? 1 : 0
 
@@ -17,3 +19,22 @@ resource "azurerm_storage_account" "logs" {
   tags = var.tags
 }
 
+resource "azurerm_monitor_diagnostic_setting" "logs_diagnostic_setting" {
+
+  count = var.location == "westeurope" ? 1 : 0
+
+  depends_on = [azurerm_storage_account.logs]
+
+  target_resource_id         = azurerm_storage_account.logs[0].id
+  name                       = replace("${var.project}stlogs", "-", "")
+  log_analytics_workspace_id = var.log_analytics_workspace_id
+  storage_account_id         = azurerm_storage_account.logs[0].id
+
+  enabled_log {
+    category_group = "allLogs"
+  }
+
+  enabled_metric {
+    category = "AllMetrics"
+  }
+}

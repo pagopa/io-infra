@@ -260,8 +260,9 @@ module "monitoring_westeurope" {
 module "storage_accounts_westeurope" {
   source = "./_modules/storage_accounts"
 
-  project                   = local.project_weu_legacy
-  location                  = "westeurope"
-  resource_group_operations = local.core.resource_groups.westeurope.operations
-  tags                      = local.tags
+  project                    = local.project_weu_legacy
+  location                   = "westeurope"
+  resource_group_operations  = local.core.resource_groups.westeurope.operations
+  log_analytics_workspace_id = module.monitoring_westeurope.log.id
+  tags                       = local.tags
 }
