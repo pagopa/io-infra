@@ -16,7 +16,7 @@ on:
       - ".github/workflows/platform_deploy.yaml"
 jobs:
   platform_cdn_prod_deploy:
-    uses: pagopa/dx/.github/workflows/infra_apply.yaml@main
+    uses: pagopa/dx/.github/workflows/infra_apply.yaml@6abcf9bc0956833202dae18c8218b4a4bc85a7f5 # main
     name: Prod - Code Deploy
     secrets: inherit
     with:
