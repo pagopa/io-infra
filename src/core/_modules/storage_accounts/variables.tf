@@ -87,3 +87,13 @@ variable "messages_sp_object_id" {
   type        = string
   description = "Object Id of the Service Principal used by DevOps pipelines"
 }
+
+variable "log_analytics_workspace_id" {
+  type        = string
+  description = "Log analytics workspace id for metrics"
+}
+
+variable "diagnostic_settings_storage_account_id" {
+  type        = string
+  description = "Storage account id for diagnostic settings logs"
+}
