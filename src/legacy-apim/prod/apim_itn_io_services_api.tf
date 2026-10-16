@@ -40,34 +40,32 @@ resource "azurerm_api_management_named_value" "io_fn3_services_url_itn" {
   value               = "https://io-p-fn3-services.azurewebsites.net"
 }
 
-data "azurerm_key_vault_secret" "io_fn3_services_key_secret_itn" {
-  name         = "fn3services-KEY-APIM"
-  key_vault_id = data.azurerm_key_vault.key_vault_common.id
-}
-
 resource "azurerm_api_management_named_value" "io_fn3_services_key_itn" {
   name                = "io-fn3-services-key"
   api_management_name = data.azurerm_api_management.apim_itn.name
   resource_group_name = data.azurerm_api_management.apim_itn.resource_group_name
   display_name        = "io-fn3-services-key"
-  value               = data.azurerm_key_vault_secret.io_fn3_services_key_secret_itn.value
-  secret              = "true"
+
+  value_from_key_vault {
+    secret_id = format("%s%s/%s", data.azurerm_key_vault.key_vault_common.vault_uri, "secrets", "fn3services-KEY-APIM")
+  }
+
+  secret = "true"
 }
 
 # Named value fn3-eucovidcert
-
-data "azurerm_key_vault_secret" "io_fn3_eucovidcert_key_secret_itn" {
-  name         = "io-fn3-eucovidcert-KEY-APIM"
-  key_vault_id = data.azurerm_key_vault.key_vault_common.id
-}
 
 resource "azurerm_api_management_named_value" "io_fn3_eucovidcert_key_itn" {
   name                = "io-fn3-eucovidcert-key"
   api_management_name = data.azurerm_api_management.apim_itn.name
   resource_group_name = data.azurerm_api_management.apim_itn.resource_group_name
   display_name        = "io-fn3-eucovidcert-key"
-  value               = data.azurerm_key_vault_secret.io_fn3_eucovidcert_key_secret_itn.value
-  secret              = "true"
+
+  value_from_key_vault {
+    secret_id = format("%s%s/%s", data.azurerm_key_vault.key_vault_common.vault_uri, "secrets", "io-fn3-eucovidcert-KEY-APIM")
+  }
+
+  secret = "true"
 }
 
 # alternative url, for differential routing (example: progressive rollout)
@@ -80,18 +78,17 @@ resource "azurerm_api_management_named_value" "io_fn3_eucovidcert_url_alt_itn" {
 }
 
 # Named Value api gad certificate header
-data "azurerm_key_vault_secret" "api_gad_client_certificate_verified_header_secret_itn" {
-  name         = "apigad-GAD-CLIENT-CERTIFICATE-VERIFIED-HEADER"
-  key_vault_id = data.azurerm_key_vault.key_vault_common.id
-}
-
 resource "azurerm_api_management_named_value" "api_gad_client_certificate_verified_header_itn" {
   name                = "apigad-gad-client-certificate-verified-header"
   api_management_name = data.azurerm_api_management.apim_itn.name
   resource_group_name = data.azurerm_api_management.apim_itn.resource_group_name
   display_name        = "apigad-gad-client-certificate-verified-header"
-  value               = data.azurerm_key_vault_secret.api_gad_client_certificate_verified_header_secret_itn.value
-  secret              = "true"
+
+  value_from_key_vault {
+    secret_id = format("%s%s/%s", data.azurerm_key_vault.key_vault_common.vault_uri, "secrets", "apigad-GAD-CLIENT-CERTIFICATE-VERIFIED-HEADER")
+  }
+
+  secret = "true"
 }
 
 module "api_itn_services" {
