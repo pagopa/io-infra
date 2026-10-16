@@ -29,5 +29,8 @@ module "storage_accounts_itn" {
   azure_adgroup_com_devs_object_id   = data.azuread_group.com_devs.object_id
   azure_adgroup_admins_object_id     = data.azuread_group.admins.object_id
 
+  log_analytics_workspace_id             = local.platform_observability.monitoring_italynorth.log.id
+  diagnostic_settings_storage_account_id = local.platform_observability.storage_accounts.itn.logs.id
+
   tags = local.tags
 }
