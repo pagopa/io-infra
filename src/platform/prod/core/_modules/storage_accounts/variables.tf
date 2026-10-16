@@ -42,3 +42,13 @@ variable "subscription_id" {
   type        = string
   description = "Azure subscription id"
 }
+
+variable "log_analytics_workspace_id" {
+  type        = string
+  description = "Log analytics workspace id for metrics"
+}
+
+variable "diagnostic_settings_storage_account_id" {
+  type        = string
+  description = "Storage account id for diagnostic settings logs"
+}
