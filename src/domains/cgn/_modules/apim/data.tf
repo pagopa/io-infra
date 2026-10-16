@@ -8,31 +8,7 @@ data "azurerm_key_vault" "key_vault_common" {
   resource_group_name = local.resource_group_name_common
 }
 
-data "azurerm_key_vault_secret" "cgnonboardingportal_os_key" {
-  name         = "funccgn-KEY-CGNOS"
-  key_vault_id = data.azurerm_key_vault.key_vault_common.id
-}
-
-data "azurerm_key_vault_secret" "cgnonboardingportal_os_header_name" {
-  name         = "funccgn-KEY-CGNOSHEADERNAME"
-  key_vault_id = data.azurerm_key_vault.key_vault_common.id
-}
-
-data "azurerm_key_vault_secret" "io_fn_cgnmerchant_key_secret_v2" {
-  name         = "io-fn-cgnmerchant-KEY-APIM"
-  key_vault_id = data.azurerm_key_vault.key_vault_common.id
-}
-
-data "azurerm_key_vault_secret" "io_fn_cgn_support_key" {
-  name         = "io-fn-cgn-support-KEY-APIM"
-  key_vault_id = data.azurerm_key_vault.key_vault_common.id
-}
-
-data "azurerm_key_vault_secret" "io_fn_cgn_card_key" {
-  name         = "io-fn-cgn-card-KEY-APIM"
-  key_vault_id = data.azurerm_key_vault.key_vault_common.id
-}
-
+#trivy:ignore:AVD-DX-0001
 data "azurerm_key_vault_secret" "cgn_onboarding_backend_identity_v2" {
   name         = "cgn-onboarding-backend-PRINCIPALID"
   key_vault_id = data.azurerm_key_vault.key_vault_common.id

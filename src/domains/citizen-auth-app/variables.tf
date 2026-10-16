@@ -10,10 +10,6 @@ variable "prefix" {
   }
 }
 
-variable "env" {
-  type = string
-}
-
 variable "env_short" {
   type = string
   validation {
@@ -47,23 +43,7 @@ variable "location_short" {
     )
     error_message = "Length must be 3 chars."
   }
-  description = "One of weu, neu"
-}
-
-variable "location_string" {
-  type        = string
-  description = "One of West Europe, North Europe"
-}
-
-variable "instance" {
-  type        = string
-  description = "One of prod01"
-}
-
-variable "lock_enable" {
-  type        = bool
-  default     = false
-  description = "Apply locks to block accedentaly deletions."
+  description = "One of wue, neu"
 }
 
 variable "tags" {
@@ -80,21 +60,43 @@ variable "monitor_resource_group_name" {
   description = "Monitor resource group name"
 }
 
-variable "log_analytics_workspace_name" {
-  type        = string
-  description = "Specifies the name of the Log Analytics Workspace."
-}
-
-variable "log_analytics_workspace_resource_group_name" {
-  type        = string
-  description = "The name of the resource group in which the Log Analytics workspace is located in."
-}
-
 variable "application_insights_name" {
   type        = string
   description = "Specifies the name of the Application Insights."
 }
 
-variable "enable_azdoa" {
-  type = bool
+####################
+# Session manager ##
+####################
+variable "cidr_subnet_session_manager" {
+  type        = list(string)
+  description = "Session manager app service address space."
 }
+
+variable "cidr_subnet_session_manager_bis" {
+  type        = list(string)
+  description = "Session manager second instance app service address space."
+}
+
+variable "session_manager_plan_sku_name" {
+  description = "App service plan sku name"
+  type        = string
+  default     = "P1v3"
+}
+
+####################
+
+# DNS
+variable "external_domain" {
+  type        = string
+  default     = "pagopa.it"
+  description = "Domain for delegation"
+}
+
+variable "dns_zone_io" {
+  type        = string
+  default     = null
+  description = "The dns subdomain."
+}
+
+###########################

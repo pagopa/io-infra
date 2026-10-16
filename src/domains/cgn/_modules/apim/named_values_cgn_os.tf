@@ -11,8 +11,12 @@ resource "azurerm_api_management_named_value" "cgnonboardingportal_os_key_v2" {
   api_management_name = data.azurerm_api_management.apim.name
   resource_group_name = data.azurerm_api_management.apim.resource_group_name
   display_name        = "cgnonboardingportal-os-key"
-  value               = data.azurerm_key_vault_secret.cgnonboardingportal_os_key.value
-  secret              = true
+
+  value_from_key_vault {
+    secret_id = format("%s%s/%s", data.azurerm_key_vault.key_vault_common.vault_uri, "secrets", "funccgn-KEY-CGNOS")
+  }
+
+  secret = true
 }
 
 resource "azurerm_api_management_named_value" "cgnonboardingportal_os_header_name_v2" {
@@ -20,6 +24,10 @@ resource "azurerm_api_management_named_value" "cgnonboardingportal_os_header_nam
   api_management_name = data.azurerm_api_management.apim.name
   resource_group_name = data.azurerm_api_management.apim.resource_group_name
   display_name        = "cgnonboardingportal-os-header-name"
-  value               = data.azurerm_key_vault_secret.cgnonboardingportal_os_header_name.value
-  secret              = true
+
+  value_from_key_vault {
+    secret_id = format("%s%s/%s", data.azurerm_key_vault.key_vault_common.vault_uri, "secrets", "funccgn-KEY-CGNOSHEADERNAME")
+  }
+
+  secret = true
 }

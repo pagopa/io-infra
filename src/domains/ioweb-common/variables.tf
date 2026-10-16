@@ -10,10 +10,6 @@ variable "prefix" {
   }
 }
 
-variable "env" {
-  type = string
-}
-
 variable "env_short" {
   type = string
   validation {
@@ -50,32 +46,11 @@ variable "location_short" {
   description = "One of wue, neu"
 }
 
-variable "location_full" {
-  type        = string
-  description = "One of West Europe, North Europe"
-}
-
-variable "instance" {
-  type        = string
-  description = "One of prod01, prod02"
-}
-
 variable "tags" {
   type = map(any)
   default = {
     CreatedBy = "Terraform"
   }
-}
-
-### Cosmos DB
-
-variable "citizen_auth_database" {
-  type = map(
-    object({
-      max_throughput = number
-      ttl            = number
-    })
-  )
 }
 
 ### External resources
@@ -100,9 +75,23 @@ variable "application_insights_name" {
   description = "Specifies the name of the Application Insights."
 }
 
-variable "enable_azdoa" {
-  type        = bool
-  description = "Specifies Azure Devops Agent enabling"
-  default     = true
+variable "subnets_cidrs" {
+  type = map(
+    list(string)
+  )
+  description = "The CIDR address prefixes of the subnets"
 }
 
+
+### IO WEB Auth
+
+variable "app_gateway_host_name" {
+  type        = string
+  description = "Application gateway host name"
+}
+
+variable "spid_login_plan_sku_size" {
+  description = "App backend app plan sku size"
+  type        = string
+  default     = "P1v3"
+}

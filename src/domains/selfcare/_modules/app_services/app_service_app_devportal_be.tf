@@ -17,7 +17,6 @@ module "appservice_devportal_be" {
   app_settings = local.app-devportal-be.app_settings
 
   allowed_subnets = [
-    data.azurerm_subnet.snet_app_gw.id,
     data.azurerm_subnet.agw_itn_snet.id,
   ]
 

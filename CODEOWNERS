@@ -1,8 +1,8 @@
 # see https://help.github.com/en/articles/about-code-owners#example-of-a-codeowners-file
 
-* @pagopa/engineering-team-devex @pagopa/io-platform-contributors
+* @pagopa/io-platform-contributors
 
-/src/domains @pagopa/engineering-team-devex @pagopa/io-backend-admin @pagopa/io-backend-contributors
-/src/domains/sign @pagopa/engineering-team-devex @pagopa/io-backend-admin @pagopa/io-backend-contributors @pagopa/io-sign-maintainers
+/src/domains @pagopa/io-backend-admin @pagopa/io-backend-contributors
+/src/domains/sign @pagopa/io-backend-admin @pagopa/io-backend-contributors
 
-/src/repository @pagopa/engineering-team-devex @pagopa/io-backend-admin
+/src/repository @pagopa/io-backend-admin

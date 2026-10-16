@@ -3,8 +3,7 @@ locals {
   env_short = "p"
   project   = "${local.prefix}-${local.env_short}"
 
-  location           = "westeurope"
-  secondary_location = "italynorth"
+  location = "westeurope"
 
   # ITN
   apim_itn_name                = "${local.project}-itn-apim-01"
