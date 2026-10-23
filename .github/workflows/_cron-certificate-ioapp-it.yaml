@@ -17,7 +17,7 @@ permissions:
 jobs:
   prod:
     name: "ioapp.it"
-    uses: pagopa/dx/.github/workflows/release-certificate-v1.yaml@main
+    uses: pagopa/dx/.github/workflows/release-certificate-v1.yaml@dea3cc35e4d6a26cc8aa3b08ab22d48c0f958f77 # main
     secrets: inherit
     with:
       force_renewal: ${{ inputs.force_renewal || false }}

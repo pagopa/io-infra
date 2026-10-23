@@ -12,7 +12,7 @@ on:
 
 jobs:
   deploy_common:
-    uses: pagopa/dx/.github/workflows/release-terraform-legacy-v1.yaml@main
+    uses: pagopa/dx/.github/workflows/release-terraform-legacy-v1.yaml@dea3cc35e4d6a26cc8aa3b08ab22d48c0f958f77 # main
     name: Deploy Common
     secrets: inherit
     with:
@@ -23,7 +23,7 @@ jobs:
 
   deploy_app:
     needs: [deploy_common]
-    uses: pagopa/dx/.github/workflows/release-terraform-legacy-v1.yaml@main
+    uses: pagopa/dx/.github/workflows/release-terraform-legacy-v1.yaml@dea3cc35e4d6a26cc8aa3b08ab22d48c0f958f77 # main
     name: Deploy App
     secrets: inherit
     with:
