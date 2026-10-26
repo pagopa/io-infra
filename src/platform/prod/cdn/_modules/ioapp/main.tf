@@ -1,13 +1,14 @@
 module "ioapp" {
   source              = "pagopa-dx/azure-cdn/azurerm"
-  version             = "~> 0.0"
+  version             = "~> 2.0"
   resource_group_name = var.resource_group_cdn
 
   origins = {
     custom-origin = {
 
-      host_name = "d2m1nc4792c1zk.cloudfront.net"
-      priority  = 1
+      host_name            = "d2m1nc4792c1zk.cloudfront.net"
+      preserve_host_header = true
+      priority             = 1
 
     }
   }
