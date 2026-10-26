@@ -12,10 +12,10 @@
     "source": "https://registry.terraform.io/modules/pagopa-dx/azure-role-assignments/azurerm/1.3.3"
   },
   "ioapp.ioapp": {
-    "hash": "65690695eb6e9e4c5ba269f3ba24b4aba8f10b0b3acf311847c0fc520d713077",
-    "version": "2.2.0",
+    "hash": "9db3edffa13b5d0c254aceed0ee316c32ce48a9efddc163fe81ee46ed3fa634c",
+    "version": "2.2.1",
     "name": "unknown",
-    "source": "https://registry.terraform.io/modules/pagopa-dx/azure-cdn/azurerm/2.2.0"
+    "source": "https://registry.terraform.io/modules/pagopa-dx/azure-cdn/azurerm/2.2.1"
   },
   "legacy_cdn_svc_devs": {
     "hash": "a8c1a6fa085349f937017deb20236170f0bb9dd78b5ded85ec75d7caeba7a872",
