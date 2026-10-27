@@ -1,6 +1,7 @@
 #trivy:ignore:AZU-0012
 #trivy:ignore:AZU-0057
 #trivy:ignore:AZU-0061
+#trivy:ignore:AZU-0058
 resource "azurerm_storage_account" "iopitndataexportst01" {
 
   count = var.location == "italynorth" ? 1 : 0
