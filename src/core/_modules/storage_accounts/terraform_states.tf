@@ -23,7 +23,7 @@ resource "azurerm_monitor_diagnostic_setting" "terraform_state_itn_diagnostic_se
 
   depends_on = [azurerm_storage_account.terraform_state_itn]
 
-  target_resource_id         = azurerm_storage_account.terraform_state_itn.id
+  target_resource_id         = "${azurerm_storage_account.terraform_state_itn.id}/blobServices/default"
   name                       = replace("${var.project}tfst001", "-", "")
   log_analytics_workspace_id = var.log_analytics_workspace_id
   storage_account_id         = var.diagnostic_settings_storage_account_id
