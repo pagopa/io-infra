@@ -25,13 +25,17 @@ resource "azurerm_monitor_diagnostic_setting" "logs_diagnostic_setting" {
 
   depends_on = [azurerm_storage_account.logs]
 
-  target_resource_id         = azurerm_storage_account.logs[0].id
+  target_resource_id         = "${azurerm_storage_account.logs[0].id}/blobServices/default"
   name                       = replace("${var.project}stlogs", "-", "")
   log_analytics_workspace_id = var.log_analytics_workspace_id
   storage_account_id         = azurerm_storage_account.logs[0].id
 
   enabled_log {
-    category_group = "allLogs"
+    category = "StorageWrite"
+  }
+
+  enabled_log {
+    category = "StorageDelete"
   }
 
   enabled_metric {

@@ -26,13 +26,17 @@ resource "azurerm_monitor_diagnostic_setting" "iopitndataexportst01_diagnostic_s
 
   depends_on = [azurerm_storage_account.iopitndataexportst01]
 
-  target_resource_id         = azurerm_storage_account.iopitndataexportst01[0].id
+  target_resource_id         = "${azurerm_storage_account.iopitndataexportst01[0].id}/blobServices/default"
   name                       = replace("${var.project}dataexportst01", "-", "")
   log_analytics_workspace_id = var.log_analytics_workspace_id
   storage_account_id         = var.diagnostic_settings_storage_account_id
 
   enabled_log {
-    category_group = "allLogs"
+    category = "StorageWrite"
+  }
+
+  enabled_log {
+    category = "StorageDelete"
   }
 
   enabled_metric {

@@ -26,13 +26,17 @@ resource "azurerm_monitor_diagnostic_setting" "app_diagnostic_setting" {
 
   depends_on = [azurerm_storage_account.app]
 
-  target_resource_id         = azurerm_storage_account.app[0].id
+  target_resource_id         = "${azurerm_storage_account.app[0].id}/blobServices/default"
   name                       = replace("${var.project}stapp", "-", "")
   log_analytics_workspace_id = var.log_analytics_workspace_id
   storage_account_id         = var.diagnostic_settings_storage_account_id
 
   enabled_log {
-    category_group = "allLogs"
+    category = "StorageWrite"
+  }
+
+  enabled_log {
+    category = "StorageDelete"
   }
 
   enabled_metric {
@@ -44,6 +48,7 @@ resource "azurerm_monitor_diagnostic_setting" "app_diagnostic_setting" {
 #trivy:ignore:AZU-0057
 #trivy:ignore:AZU-0061
 resource "azurerm_storage_account" "exportdata_weu_01" {
+
   count = var.location == "westeurope" ? 1 : 0
 
   name                     = replace("${var.project}stexportdata", "-", "")
@@ -62,15 +67,21 @@ resource "azurerm_storage_account" "exportdata_weu_01" {
 
 resource "azurerm_monitor_diagnostic_setting" "exportdata_weu_01_diagnostic_setting" {
 
+  count = var.location == "westeurope" ? 1 : 0
+
   depends_on = [azurerm_storage_account.exportdata_weu_01]
 
-  target_resource_id         = azurerm_storage_account.exportdata_weu_01[0].id
+  target_resource_id         = "${azurerm_storage_account.exportdata_weu_01[0].id}/blobServices/default"
   name                       = replace("${var.project}stexportdata", "-", "")
   log_analytics_workspace_id = var.log_analytics_workspace_id
   storage_account_id         = var.diagnostic_settings_storage_account_id
 
   enabled_log {
-    category_group = "allLogs"
+    category = "StorageWrite"
+  }
+
+  enabled_log {
+    category = "StorageDelete"
   }
 
   enabled_metric {
