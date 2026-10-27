@@ -29,7 +29,11 @@ resource "azurerm_monitor_diagnostic_setting" "terraform_state_itn_diagnostic_se
   storage_account_id         = var.diagnostic_settings_storage_account_id
 
   enabled_log {
-    category_group = "allLogs"
+    category = "StorageWrite"
+  }
+
+  enabled_log {
+    category = "StorageDelete"
   }
 
   enabled_metric {
