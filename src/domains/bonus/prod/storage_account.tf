@@ -136,7 +136,6 @@ resource "azurerm_monitor_diagnostic_setting" "bonus_backup_gwc_01_diagnostic_se
   target_resource_id         = "${azurerm_storage_account.bonus_backup_gwc_01.id}/blobServices/default"
   name                       = replace("${local.secondary_project}backupst01", "-", "")
   log_analytics_workspace_id = local.platform_observability.monitoring_italynorth.log.id
-  storage_account_id         = local.platform_observability.storage_accounts.itn.logs.id
 
   enabled_log {
     category = "StorageWrite"
