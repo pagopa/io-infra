@@ -17,3 +17,8 @@ variable "tags" {
   type        = map(any)
   description = "Resource tags"
 }
+
+variable "log_analytics_workspace_id" {
+  type        = string
+  description = "Log analytics workspace id for metrics"
+}

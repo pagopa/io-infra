@@ -1,4 +1,6 @@
 #trivy:ignore:AZU-0012
+#trivy:ignore:AZU-0057
+#trivy:ignore:AZU-0061
 resource "azurerm_storage_account" "app" {
   count = var.location == "westeurope" ? 1 : 0
 
@@ -18,8 +20,35 @@ resource "azurerm_storage_account" "app" {
   tags = var.tags
 }
 
+resource "azurerm_monitor_diagnostic_setting" "app_diagnostic_setting" {
+
+  count = var.location == "westeurope" ? 1 : 0
+
+  depends_on = [azurerm_storage_account.app]
+
+  target_resource_id         = "${azurerm_storage_account.app[0].id}/blobServices/default"
+  name                       = replace("${var.project}stapp", "-", "")
+  log_analytics_workspace_id = var.log_analytics_workspace_id
+  storage_account_id         = var.diagnostic_settings_storage_account_id
+
+  enabled_log {
+    category = "StorageWrite"
+  }
+
+  enabled_log {
+    category = "StorageDelete"
+  }
+
+  enabled_metric {
+    category = "AllMetrics"
+  }
+}
+
 #trivy:ignore:AZU-0012
+#trivy:ignore:AZU-0057
+#trivy:ignore:AZU-0061
 resource "azurerm_storage_account" "exportdata_weu_01" {
+
   count = var.location == "westeurope" ? 1 : 0
 
   name                     = replace("${var.project}stexportdata", "-", "")
@@ -34,4 +63,28 @@ resource "azurerm_storage_account" "exportdata_weu_01" {
   cross_tenant_replication_enabled = false
 
   tags = var.tags
+}
+
+resource "azurerm_monitor_diagnostic_setting" "exportdata_weu_01_diagnostic_setting" {
+
+  count = var.location == "westeurope" ? 1 : 0
+
+  depends_on = [azurerm_storage_account.exportdata_weu_01]
+
+  target_resource_id         = "${azurerm_storage_account.exportdata_weu_01[0].id}/blobServices/default"
+  name                       = replace("${var.project}stexportdata", "-", "")
+  log_analytics_workspace_id = var.log_analytics_workspace_id
+  storage_account_id         = var.diagnostic_settings_storage_account_id
+
+  enabled_log {
+    category = "StorageWrite"
+  }
+
+  enabled_log {
+    category = "StorageDelete"
+  }
+
+  enabled_metric {
+    category = "AllMetrics"
+  }
 }

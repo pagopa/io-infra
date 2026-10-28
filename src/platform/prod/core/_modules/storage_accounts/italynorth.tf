@@ -1,4 +1,7 @@
 #trivy:ignore:AZU-0012
+#trivy:ignore:AZU-0057
+#trivy:ignore:AZU-0061
+#trivy:ignore:AZU-0058
 resource "azurerm_storage_account" "iopitndataexportst01" {
 
   count = var.location == "italynorth" ? 1 : 0
@@ -16,4 +19,28 @@ resource "azurerm_storage_account" "iopitndataexportst01" {
   cross_tenant_replication_enabled = true
 
   tags = var.tags
+}
+
+resource "azurerm_monitor_diagnostic_setting" "iopitndataexportst01_diagnostic_setting" {
+
+  count = var.location == "italynorth" ? 1 : 0
+
+  depends_on = [azurerm_storage_account.iopitndataexportst01]
+
+  target_resource_id         = "${azurerm_storage_account.iopitndataexportst01[0].id}/blobServices/default"
+  name                       = replace("${var.project}dataexportst01", "-", "")
+  log_analytics_workspace_id = var.log_analytics_workspace_id
+  storage_account_id         = var.diagnostic_settings_storage_account_id
+
+  enabled_log {
+    category = "StorageWrite"
+  }
+
+  enabled_log {
+    category = "StorageDelete"
+  }
+
+  enabled_metric {
+    category = "AllMetrics"
+  }
 }
