@@ -111,14 +111,12 @@ resource "azurerm_management_lock" "st_itn_01" {
   name       = azurerm_storage_account.bonus_backup_itn_01.name
   scope      = azurerm_storage_account.bonus_backup_itn_01.id
   lock_level = "ReadOnly"
-  notes      = "Data is immutable and offline, and should not be read or modified"
 }
 
 resource "azurerm_management_lock" "st_gwc_01" {
   name       = azurerm_storage_account.bonus_backup_gwc_01.name
   scope      = azurerm_storage_account.bonus_backup_gwc_01.id
   lock_level = "ReadOnly"
-  notes      = "Data is immutable and offline, and should not be read or modified"
 }
 
 resource "azurerm_monitor_diagnostic_setting" "bonus_backup_itn_01_diagnostic_setting" {
