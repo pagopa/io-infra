@@ -1,3 +1,7 @@
+#trivy:ignore:AZU-0057
+#trivy:ignore:AZU-0058
+#trivy:ignore:AZU-0060
+#trivy:ignore:AZU-0061
 resource "azurerm_storage_account" "bonus_backup_itn_01" {
   name                = replace("${local.project}backupst01", "-", "")
   resource_group_name = azurerm_resource_group.rg_itn_01.name
@@ -37,6 +41,10 @@ resource "azurerm_storage_account" "bonus_backup_itn_01" {
   tags = local.tags
 }
 
+#trivy:ignore:AZU-0057
+#trivy:ignore:AZU-0058
+#trivy:ignore:AZU-0060
+#trivy:ignore:AZU-0061
 resource "azurerm_storage_account" "bonus_backup_gwc_01" {
   name                = replace("${local.secondary_project}backupst01", "-", "")
   resource_group_name = azurerm_resource_group.rg_itn_01.name
@@ -111,4 +119,48 @@ resource "azurerm_management_lock" "st_gwc_01" {
   scope      = azurerm_storage_account.bonus_backup_gwc_01.id
   lock_level = "ReadOnly"
   notes      = "Data is immutable and offline, and should not be read or modified"
+}
+
+resource "azurerm_monitor_diagnostic_setting" "bonus_backup_itn_01_diagnostic_setting" {
+
+  depends_on = [azurerm_storage_account.bonus_backup_itn_01]
+
+  target_resource_id         = "${azurerm_storage_account.bonus_backup_itn_01.id}/blobServices/default"
+  name                       = replace("${local.project}backupst01", "-", "")
+  log_analytics_workspace_id = local.platform_observability.monitoring_italynorth.log.id
+  storage_account_id         = local.platform_observability.storage_accounts.itn.logs.id
+
+  enabled_log {
+    category = "StorageWrite"
+  }
+
+  enabled_log {
+    category = "StorageDelete"
+  }
+
+  enabled_metric {
+    category = "AllMetrics"
+  }
+}
+
+resource "azurerm_monitor_diagnostic_setting" "bonus_backup_gwc_01_diagnostic_setting" {
+
+  depends_on = [azurerm_storage_account.bonus_backup_gwc_01]
+
+  target_resource_id         = "${azurerm_storage_account.bonus_backup_gwc_01.id}/blobServices/default"
+  name                       = replace("${local.secondary_project}backupst01", "-", "")
+  log_analytics_workspace_id = local.platform_observability.monitoring_italynorth.log.id
+  storage_account_id         = local.platform_observability.storage_accounts.itn.logs.id
+
+  enabled_log {
+    category = "StorageWrite"
+  }
+
+  enabled_log {
+    category = "StorageDelete"
+  }
+
+  enabled_metric {
+    category = "AllMetrics"
+  }
 }

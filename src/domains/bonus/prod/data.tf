@@ -22,3 +22,15 @@ data "azurerm_subnet" "pep" {
   virtual_network_name = data.azurerm_virtual_network.vnet_common_itn.name
   resource_group_name  = data.azurerm_virtual_network.vnet_common_itn.resource_group_name
 }
+
+data "terraform_remote_state" "platform_observability" {
+  backend = "azurerm"
+
+  config = {
+    resource_group_name  = "terraform-state-rg"
+    storage_account_name = "iopitntfst001"
+    container_name       = "terraform-state"
+    key                  = "io-infra.platform.observability.prod.tfstate"
+    use_azuread_auth     = true
+  }
+}
