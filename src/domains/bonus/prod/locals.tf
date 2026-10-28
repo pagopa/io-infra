@@ -9,6 +9,8 @@ locals {
   project                  = "${local.prefix}-${local.env_short}-${local.location_short}-${local.domain}"
   secondary_project        = "${local.prefix}-${local.env_short}-${local.secondary_location_short}-${local.domain}"
 
+  platform_observability = data.terraform_remote_state.platform_observability.outputs
+
   tags = {
     CostCenter     = "TS000 - Tecnologia e Servizi"
     CreatedBy      = "Terraform"
