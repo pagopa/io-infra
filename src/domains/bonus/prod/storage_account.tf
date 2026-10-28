@@ -107,18 +107,6 @@ resource "azurerm_storage_object_replication" "itn_01_to_gwc_01" {
   }
 }
 
-resource "azurerm_management_lock" "st_itn_01" {
-  name       = azurerm_storage_account.bonus_backup_itn_01.name
-  scope      = azurerm_storage_account.bonus_backup_itn_01.id
-  lock_level = "ReadOnly"
-}
-
-resource "azurerm_management_lock" "st_gwc_01" {
-  name       = azurerm_storage_account.bonus_backup_gwc_01.name
-  scope      = azurerm_storage_account.bonus_backup_gwc_01.id
-  lock_level = "ReadOnly"
-}
-
 resource "azurerm_monitor_diagnostic_setting" "bonus_backup_itn_01_diagnostic_setting" {
 
   depends_on = [azurerm_storage_account.bonus_backup_itn_01]
