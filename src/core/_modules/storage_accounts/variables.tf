@@ -97,3 +97,8 @@ variable "diagnostic_settings_storage_account_id" {
   type        = string
   description = "Storage account id for diagnostic settings logs"
 }
+
+variable "subscription_id" {
+  type        = string
+  description = "Azure subscription ID"
+}
