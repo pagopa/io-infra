@@ -93,9 +93,7 @@ module "function_subscriptionmigrations_staging_slot" {
   )
   allowed_subnets = [
     # self hosted runners subnet
-    data.azurerm_subnet.self_hosted_runner_snet.id,
-    #
-    data.azurerm_subnet.snet_azdoa.id
+    data.azurerm_subnet.self_hosted_runner_snet.id
   ]
 
   app_settings = merge(local.function_subscriptionmigrations.app_settings, {
