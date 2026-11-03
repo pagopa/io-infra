@@ -7,7 +7,7 @@ resource "azurerm_key_vault" "io_p_itn_platform_kv_01" {
   tenant_id           = var.tenant_id
 
   sku_name                  = "standard"
-  enable_rbac_authorization = true
+  rbac_authorization_enabled = true
 
   enabled_for_disk_encryption = true
   soft_delete_retention_days  = 15

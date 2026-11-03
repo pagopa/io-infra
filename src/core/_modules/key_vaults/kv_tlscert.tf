@@ -5,7 +5,7 @@ resource "azurerm_key_vault" "tlscert_itn_01" {
   resource_group_name = var.resource_group_itn
 
   sku_name                  = "standard"
-  enable_rbac_authorization = true
+  rbac_authorization_enabled = true
 
   enabled_for_disk_encryption = true
   tenant_id                   = var.tenant_id
