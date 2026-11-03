@@ -28,14 +28,6 @@ module "event_hubs_weu" {
       action  = "Allow"
     },
     {
-      ip_mask = "52.29.74.207", # PDND
-      action  = "Allow"
-    },
-    {
-      ip_mask = "52.29.74.207", # PDND
-      action  = "Allow"
-    },
-    {
       ip_mask = "63.184.191.90", # PDND
       action  = "Allow"
     },
@@ -52,11 +44,11 @@ module "event_hubs_weu" {
       action  = "Allow"
     },
     {
-      ip_mask = "52.29.215.8", # PDND
+      ip_mask = "63.181.230.22", # PDND
       action  = "Allow"
     },
     {
-      ip_mask = "52.29.215.8", # PDND
+      ip_mask = "52.29.74.207", # PDND
       action  = "Allow"
     }
   ]
