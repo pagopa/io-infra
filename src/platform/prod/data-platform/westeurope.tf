@@ -26,6 +26,38 @@ module "event_hubs_weu" {
     {
       ip_mask = "3.126.198.129", # PDND
       action  = "Allow"
+    },
+    {
+      ip_mask = "52.29.74.207", # PDND
+      action  = "Allow"
+    },
+    {
+      ip_mask = "52.29.74.207", # PDND
+      action  = "Allow"
+    },
+    {
+      ip_mask = "63.184.191.90", # PDND
+      action  = "Allow"
+    },
+    {
+      ip_mask = "63.184.95.69", # PDND
+      action  = "Allow"
+    },
+    {
+      ip_mask = "93.189.21.104", # PDND
+      action  = "Allow"
+    },
+    {
+      ip_mask = "52.29.215.8", # PDND
+      action  = "Allow"
+    },
+    {
+      ip_mask = "52.29.215.8", # PDND
+      action  = "Allow"
+    },
+    {
+      ip_mask = "52.29.215.8", # PDND
+      action  = "Allow"
     }
   ]
 
