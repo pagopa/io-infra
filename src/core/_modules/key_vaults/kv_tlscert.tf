@@ -4,7 +4,7 @@ resource "azurerm_key_vault" "tlscert_itn_01" {
   location            = "italynorth"
   resource_group_name = var.resource_group_itn
 
-  sku_name                  = "standard"
+  sku_name                   = "standard"
   rbac_authorization_enabled = true
 
   enabled_for_disk_encryption = true

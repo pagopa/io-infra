@@ -6,7 +6,7 @@ resource "azurerm_key_vault" "io_p_itn_platform_kv_01" {
   resource_group_name = var.resource_group_itn
   tenant_id           = var.tenant_id
 
-  sku_name                  = "standard"
+  sku_name                   = "standard"
   rbac_authorization_enabled = true
 
   enabled_for_disk_encryption = true

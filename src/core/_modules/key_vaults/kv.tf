@@ -8,7 +8,7 @@ resource "azurerm_key_vault" "kv" {
   enabled_for_disk_encryption = true
   purge_protection_enabled    = true
   soft_delete_retention_days  = 15
-  rbac_authorization_enabled = false
+  rbac_authorization_enabled  = false
 
   network_acls {
     bypass         = "AzureServices"
