@@ -22,6 +22,18 @@ data "azurerm_user_assigned_identity" "managed_identity_auth_n_identity_infra_cd
   resource_group_name = "${local.product}-itn-auth-rg-01"
 }
 
+data "terraform_remote_state" "platform_observability" {
+  backend = "azurerm"
+
+  config = {
+    resource_group_name  = "terraform-state-rg"
+    storage_account_name = "iopitntfst001"
+    container_name       = "terraform-state"
+    key                  = "io-infra.platform.observability.prod.tfstate"
+    use_azuread_auth     = true
+  }
+}
+
 ########
 # APIM #
 ########

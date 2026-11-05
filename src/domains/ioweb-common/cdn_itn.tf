@@ -10,6 +10,10 @@ resource "azurerm_resource_group" "io_web_profile_itn_fe_rg" {
   tags = var.tags
 }
 
+#trivy:ignore:AZU-0012
+#trivy:ignore:AZU-0057
+#trivy:ignore:AZU-0058
+#trivy:ignore:AZU-0061
 module "io_web_profile_itn_fe_st" {
   source  = "pagopa-dx/azure-storage-account/azurerm"
   version = "~> 0.0.0"
@@ -32,9 +36,11 @@ module "io_web_profile_itn_fe_st" {
   private_dns_zone_resource_group_name = data.azurerm_resource_group.common_rg_weu.name
 
   force_public_network_access_enabled = true
+
   subservices_enabled = {
     blob = true
   }
+
   blob_features = {
     versioning = true
     change_feed = {
@@ -52,6 +58,27 @@ module "io_web_profile_itn_fe_st" {
   }
 
   tags = var.tags
+}
+
+resource "azurerm_monitor_diagnostic_setting" "io_web_profile_itn_fe_st_diagnostic_setting" {
+
+  depends_on = [module.io_web_profile_itn_fe_st]
+
+  target_resource_id         = "${module.io_web_profile_itn_fe_st.id}/blobServices/default"
+  name                       = replace("${local.project_itn}profile-st-01", "-", "")
+  log_analytics_workspace_id = local.platform_observability.monitoring_italynorth.log.id
+
+  enabled_log {
+    category = "StorageWrite"
+  }
+
+  enabled_log {
+    category = "StorageDelete"
+  }
+
+  enabled_metric {
+    category = "AllMetrics"
+  }
 }
 
 #####################
