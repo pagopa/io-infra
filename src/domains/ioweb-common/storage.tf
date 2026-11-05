@@ -47,7 +47,6 @@ resource "azurerm_monitor_diagnostic_setting" "immutable_spid_logs_storage_diagn
   target_resource_id         = "${module.immutable_spid_logs_storage.id}/blobServices/default"
   name                       = replace(format("%s-spid-logs-im-st", local.project), "-", "")
   log_analytics_workspace_id = local.platform_observability.monitoring_italynorth.log.id
-  storage_account_id         = module.immutable_spid_logs_storage.id
 
   enabled_log {
     category = "StorageWrite"
