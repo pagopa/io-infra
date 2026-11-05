@@ -44,7 +44,7 @@ resource "azurerm_monitor_diagnostic_setting" "lollipop_assertions_storage_diagn
     category = "StorageDelete"
   }
 
-  enabled_metric {
+  metric {
     category = "AllMetrics"
   }
 }
@@ -176,7 +176,7 @@ resource "azurerm_monitor_diagnostic_setting" "immutable_lv_audit_logs_storage_d
     category = "StorageDelete"
   }
 
-  enabled_metric {
+  metric {
     category = "AllMetrics"
   }
 }
