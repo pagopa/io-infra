@@ -9,6 +9,8 @@ data "azurerm_application_insights" "application_insights" {
 }
 
 #tfsec:ignore:AZU023
+#trivy:ignore:AZU-0017
+#trivy:ignore:AZU-0015
 resource "azurerm_key_vault_secret" "appinsights_instrumentation_key" {
   name         = "appinsights-instrumentation-key"
   value        = data.azurerm_application_insights.application_insights.instrumentation_key
@@ -18,6 +20,8 @@ resource "azurerm_key_vault_secret" "appinsights_instrumentation_key" {
 }
 
 #tfsec:ignore:AZU023
+#trivy:ignore:AZU-0017
+#trivy:ignore:AZU-0015
 resource "azurerm_key_vault_secret" "appinsights_connection_string" {
   name         = "appinsights-connection-string"
   value        = data.azurerm_application_insights.application_insights.connection_string
