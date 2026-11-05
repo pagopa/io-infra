@@ -65,7 +65,7 @@ resource "azurerm_monitor_diagnostic_setting" "io_web_profile_itn_fe_st_diagnost
   depends_on = [module.io_web_profile_itn_fe_st]
 
   target_resource_id         = "${module.io_web_profile_itn_fe_st.id}/blobServices/default"
-  name                       = replace("${local.project_itn}st-01", "-", "")
+  name                       = replace("${local.project_itn}profile-st-01", "-", "")
   log_analytics_workspace_id = local.platform_observability.monitoring_italynorth.log.id
 
   enabled_log {
