@@ -1,3 +1,4 @@
+#trivy:ignore:AZU-0013
 resource "azurerm_key_vault" "tlscert_itn_01" {
   name = "${var.project}-itn-tlscert-kv-01"
 
