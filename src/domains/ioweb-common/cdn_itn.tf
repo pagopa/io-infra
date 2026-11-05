@@ -60,6 +60,27 @@ module "io_web_profile_itn_fe_st" {
   tags = var.tags
 }
 
+resource "azurerm_monitor_diagnostic_setting" "io_web_profile_itn_fe_st_diagnostic_setting" {
+
+  depends_on = [module.io_web_profile_itn_fe_st]
+
+  target_resource_id         = "${module.io_web_profile_itn_fe_st.id}/blobServices/default"
+  name                       = replace("${local.project_itn}st-01", "-", "")
+  log_analytics_workspace_id = local.platform_observability.monitoring_italynorth.log.id
+
+  enabled_log {
+    category = "StorageWrite"
+  }
+
+  enabled_log {
+    category = "StorageDelete"
+  }
+
+  enabled_metric {
+    category = "AllMetrics"
+  }
+}
+
 #####################
 # CDN
 #####################
