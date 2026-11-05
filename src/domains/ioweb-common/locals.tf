@@ -10,6 +10,8 @@ locals {
   apim_itn_resource_group_name = "${local.product}-itn-common-rg-01"
 
   spid_login_base_path = "ioweb/auth/v1"
+
+  platform_observability = data.terraform_remote_state.platform_observability.outputs
 }
 
 # Region ITN

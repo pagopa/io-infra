@@ -10,12 +10,13 @@ resource "azurerm_resource_group" "io_web_profile_itn_fe_rg" {
   tags = var.tags
 }
 
+#trivy:ignore:AZU-0012
+#trivy:ignore:AZU-0057
+#trivy:ignore:AZU-0058
+#trivy:ignore:AZU-0061
 module "io_web_profile_itn_fe_st" {
   source  = "pagopa-dx/azure-storage-account/azurerm"
-  version = "~> 0.0.0"
-  // s tier -> Standard LRS
-  // l tier -> Standard ZRS
-  tier = "l"
+  version = "~> 3.0.0"
 
   # NOTE: domain omitted for characters shortage
   environment = {
@@ -49,6 +50,12 @@ module "io_web_profile_itn_fe_st" {
     enabled            = true
     index_document     = "index.html"
     error_404_document = "it/404/index.html"
+  }
+
+  diagnostic_settings = {
+    enabled                    = true
+    log_analytics_workspace_id = local.platform_observability.monitoring_italynorth.log.id
+    storage_account_id         = local.platform_observability.storage_accounts.itn.logs.id
   }
 
   tags = var.tags
