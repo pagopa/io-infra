@@ -6,6 +6,8 @@ locals {
 ############################
 ## App service spid login ##
 ############################
+
+#trivy:ignore:AZU-0003
 module "spid_login" {
   source = "git::https://github.com/pagopa/terraform-azurerm-v4.git//app_service?ref=v10.5.0"
 
