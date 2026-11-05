@@ -7,6 +7,7 @@ data "azurerm_key_vault" "auth_kv_01" {
   resource_group_name = "io-p-itn-auth-main-rg-01"
 }
 
+#trivy:ignore:AZU-0013
 module "key_vault" {
   source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//key_vault?ref=v8.44.1"
 

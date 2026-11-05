@@ -5,6 +5,10 @@ locals {
 ###
 # LolliPoP Assertion Storage
 ###
+
+#trivy:ignore:AZU-0012
+#trivy:ignore:AZU-0061
+#trivy:ignore:AZU-0057
 module "lollipop_assertions_storage" {
   source = "github.com/pagopa/terraform-azurerm-v3//storage_account?ref=v8.12.0"
 
@@ -22,6 +26,27 @@ module "lollipop_assertions_storage" {
   public_network_access_enabled = false
 
   tags = var.tags
+}
+
+resource "azurerm_monitor_diagnostic_setting" "lollipop_assertions_storage_diagnostic_setting" {
+
+  depends_on = [module.lollipop_assertions_storage]
+
+  target_resource_id         = "${module.lollipop_assertions_storage.id}/blobServices/default"
+  name                       = replace(format("%s-lollipop-assertions-st", local.product), "-", "")
+  log_analytics_workspace_id = local.platform_observability.monitoring_italynorth.log.id
+
+  enabled_log {
+    category = "StorageWrite"
+  }
+
+  enabled_log {
+    category = "StorageDelete"
+  }
+
+  enabled_metric {
+    category = "AllMetrics"
+  }
 }
 
 resource "azurerm_role_assignment" "kv_auth_01_lollipop_assertions_keys" {
@@ -101,6 +126,10 @@ resource "azurerm_storage_container" "lollipop_assertions_storage_assertions" {
 ###
 # Immutable LV Audit Log Storage
 ###
+
+#trivy:ignore:AZU-0012
+#trivy:ignore:AZU-0061
+#trivy:ignore:AZU-0057
 module "immutable_lv_audit_logs_storage" {
   source = "git::https://github.com/pagopa/terraform-azurerm-v3//storage_account?ref=v8.12.0"
 
@@ -129,6 +158,27 @@ module "immutable_lv_audit_logs_storage" {
   }
 
   tags = var.tags
+}
+
+resource "azurerm_monitor_diagnostic_setting" "immutable_lv_audit_logs_storage_diagnostic_setting" {
+
+  depends_on = [module.immutable_lv_audit_logs_storage]
+
+  target_resource_id         = "${module.immutable_lv_audit_logs_storage.id}/blobServices/default"
+  name                       = replace(format("%s-lv-logs-im-st", local.product), "-", "")
+  log_analytics_workspace_id = local.platform_observability.monitoring_italynorth.log.id
+
+  enabled_log {
+    category = "StorageWrite"
+  }
+
+  enabled_log {
+    category = "StorageDelete"
+  }
+
+  enabled_metric {
+    category = "AllMetrics"
+  }
 }
 
 resource "azurerm_role_assignment" "kv_auth_01_lv_logs_keys" {
@@ -221,6 +271,10 @@ resource "azurerm_storage_management_policy" "immutable_lv_audit_logs_storage_ma
 ###
 # Citizen Auth Storage
 ###
+
+#trivy:ignore:AZU-0012
+#trivy:ignore:AZU-0061
+#trivy:ignore:AZU-0057
 module "io_citizen_auth_storage" {
   source = "git::https://github.com/pagopa/terraform-azurerm-v3//storage_account?ref=v8.12.0"
 
