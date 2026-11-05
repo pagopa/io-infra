@@ -16,7 +16,10 @@ resource "azurerm_resource_group" "io_web_profile_itn_fe_rg" {
 #trivy:ignore:AZU-0061
 module "io_web_profile_itn_fe_st" {
   source  = "pagopa-dx/azure-storage-account/azurerm"
-  version = "~> 3.0.0"
+  version = "~> 0.0.0"
+  // s tier -> Standard LRS
+  // l tier -> Standard ZRS
+  tier = "l"
 
   # NOTE: domain omitted for characters shortage
   environment = {
@@ -33,9 +36,11 @@ module "io_web_profile_itn_fe_st" {
   private_dns_zone_resource_group_name = data.azurerm_resource_group.common_rg_weu.name
 
   force_public_network_access_enabled = true
+
   subservices_enabled = {
     blob = true
   }
+
   blob_features = {
     versioning = true
     change_feed = {
@@ -50,12 +55,6 @@ module "io_web_profile_itn_fe_st" {
     enabled            = true
     index_document     = "index.html"
     error_404_document = "it/404/index.html"
-  }
-
-  diagnostic_settings = {
-    enabled                    = true
-    log_analytics_workspace_id = local.platform_observability.monitoring_italynorth.log.id
-    storage_account_id         = local.platform_observability.storage_accounts.itn.logs.id
   }
 
   tags = var.tags
