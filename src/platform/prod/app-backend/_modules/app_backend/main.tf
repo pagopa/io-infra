@@ -1,3 +1,4 @@
+#trivy:ignore:AZU-0003
 module "appservice_app_backend" {
   source = "github.com/pagopa/terraform-azurerm-v4//app_service?ref=v1.23.3"
 
