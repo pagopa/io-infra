@@ -25,7 +25,7 @@ resource "azurerm_monitor_diagnostic_setting" "redis_common_backup_zrs_diagnosti
   depends_on = [module.redis_common_backup_zrs]
 
   target_resource_id         = "${module.redis_common_backup_zrs.id}/blobServices/default"
-  name                       = replace("${var.project}tfst001", "-", "")
+  name                       = try(local.nonstandard[var.location_short].storage_account, "${var.project}-redis-common-st-01")
   log_analytics_workspace_id = var.log_analytics_workspace_id
 
   enabled_log {
