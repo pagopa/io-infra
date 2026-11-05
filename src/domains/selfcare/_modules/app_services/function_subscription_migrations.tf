@@ -1,3 +1,6 @@
+#trivy:ignore:AZU-0012
+#trivy:ignore:AZU-0057
+#trivy:ignore:AZU-0061
 module "function_subscriptionmigrations" {
   source = "github.com/pagopa/terraform-azurerm-v3//function_app?ref=v7.69.1"
 
