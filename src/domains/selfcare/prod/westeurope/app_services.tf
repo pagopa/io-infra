@@ -1,4 +1,3 @@
-#trivy:ignore:AZU-0003
 module "app_services" {
   source = "../../_modules/app_services"
 
