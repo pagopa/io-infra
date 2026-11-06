@@ -40,6 +40,7 @@ variable "resource_group_name" {
 }
 
 variable "subscription_current" {
+  type        = string
   description = "Current subscription information"
 }
 
