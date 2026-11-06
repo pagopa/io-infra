@@ -33,7 +33,7 @@ module "cdn_storage" {
   tags = var.tags
 }
 
-resource "azurerm_monitor_diagnostic_setting" "legacy_assets_cdn_storage_account_diagnostic_setting" {
+resource "azurerm_monitor_diagnostic_setting" "assets_cdn_storage_account_diagnostic_setting" {
 
   depends_on = [module.cdn_storage]
 
