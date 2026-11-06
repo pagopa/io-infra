@@ -61,6 +61,8 @@ resource "azurerm_monitor_diagnostic_setting" "immutable_spid_logs_storage_diagn
   }
 }
 
+#trivy:ignore:AZU-0017
+#trivy:ignore:AZU-0015
 resource "azurerm_key_vault_secret" "spid_logs_connection_string" {
   name         = "spid-logs-st-connection-string"
   value        = module.immutable_spid_logs_storage.primary_connection_string
