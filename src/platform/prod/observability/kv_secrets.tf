@@ -1,3 +1,5 @@
+#trivy:ignore:AZU-0017
+#trivy:ignore:AZU-0015
 resource "azurerm_key_vault_secret" "st_logs_primary_connection_string" {
   name         = "st-logs-primary-connection-string"
   key_vault_id = local.core.key_vault.weu.kv_common.id

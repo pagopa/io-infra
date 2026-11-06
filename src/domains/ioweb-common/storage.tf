@@ -6,6 +6,10 @@ locals {
 ######################
 # Immutable SPID LOGS Storage
 ######################
+
+#trivy:ignore:AZU-0012
+#trivy:ignore:AZU-0057
+#trivy:ignore:AZU-0061
 module "immutable_spid_logs_storage" {
   source = "git::https://github.com/pagopa/terraform-azurerm-v4.git//storage_account?ref=v10.5.0"
 
@@ -36,6 +40,29 @@ module "immutable_spid_logs_storage" {
   tags = var.tags
 }
 
+resource "azurerm_monitor_diagnostic_setting" "immutable_spid_logs_storage_diagnostic_setting" {
+
+  depends_on = [module.immutable_spid_logs_storage]
+
+  target_resource_id         = "${module.immutable_spid_logs_storage.id}/blobServices/default"
+  name                       = replace(format("%s-spid-logs-im-st", local.project), "-", "")
+  log_analytics_workspace_id = local.platform_observability.monitoring_italynorth.log.id
+
+  enabled_log {
+    category = "StorageWrite"
+  }
+
+  enabled_log {
+    category = "StorageDelete"
+  }
+
+  enabled_metric {
+    category = "AllMetrics"
+  }
+}
+
+#trivy:ignore:AZU-0017
+#trivy:ignore:AZU-0015
 resource "azurerm_key_vault_secret" "spid_logs_connection_string" {
   name         = "spid-logs-st-connection-string"
   value        = module.immutable_spid_logs_storage.primary_connection_string

@@ -287,7 +287,7 @@ locals {
       host               = "developerportal-backend.io.italia.it"
       port               = 443
       ssl_profile_name   = null
-      firewall_policy_id = null
+      firewall_policy_id = azurerm_web_application_firewall_policy.devportal.id
 
       certificate = {
         name = var.certificates.developerportal_backend_io_italia_it

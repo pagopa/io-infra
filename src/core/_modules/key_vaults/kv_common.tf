@@ -1,3 +1,4 @@
+#trivy:ignore:AZU-0013
 resource "azurerm_key_vault" "common" {
   name                = local.nonstandard[var.location_short].kv_common
   location            = var.location

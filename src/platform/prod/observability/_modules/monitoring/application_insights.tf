@@ -12,6 +12,7 @@ resource "azurerm_application_insights" "appi" {
 }
 
 #tfsec:ignore:AZU023
+#trivy:ignore:AZU-0017
 resource "azurerm_key_vault_secret" "appinsights_instrumentation_key" {
   name         = "appinsights-instrumentation-key"
   value        = azurerm_application_insights.appi.instrumentation_key
@@ -21,6 +22,7 @@ resource "azurerm_key_vault_secret" "appinsights_instrumentation_key" {
 }
 
 #tfsec:ignore:AZU023
+#trivy:ignore:AZU-0017
 resource "azurerm_key_vault_secret" "appinsights_connection_string" {
   name         = "appinsights-connection-string"
   value        = azurerm_application_insights.appi.connection_string

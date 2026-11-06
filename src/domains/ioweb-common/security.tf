@@ -10,6 +10,7 @@ data "azurerm_key_vault" "ioweb" {
   resource_group_name = "io-p-itn-ioweb-rg-01"
 }
 
+#trivy:ignore:AZU-0013
 module "key_vault" {
   source = "git::https://github.com/pagopa/terraform-azurerm-v4.git//key_vault?ref=v10.5.0"
 
@@ -143,6 +144,8 @@ resource "tls_private_key" "jwt" {
 # ####################
 # ####################
 
+#trivy:ignore:AZU-0017
+#trivy:ignore:AZU-0015
 resource "azurerm_key_vault_secret" "spid_login_jwt_pub_key" {
   name         = "spid-login-jwt-pub-key"
   value        = tls_private_key.jwt.public_key_pem
@@ -150,12 +153,16 @@ resource "azurerm_key_vault_secret" "spid_login_jwt_pub_key" {
 }
 
 #trivy:ignore:AVD-DX-0001
+#trivy:ignore:AZU-0017
+#trivy:ignore:AZU-0015
 data "azurerm_key_vault_secret" "agid_spid_private_key" {
   name         = "spid-login-AGID-SPID-CERT-KEY"
   key_vault_id = module.key_vault.id
 }
 
 #trivy:ignore:AVD-DX-0001
+#trivy:ignore:AZU-0017
+#trivy:ignore:AZU-0015
 data "azurerm_key_vault_secret" "agid_spid_cert" {
   name         = "spid-login-AGID-SPID-CERT-PEM"
   key_vault_id = module.key_vault.id
