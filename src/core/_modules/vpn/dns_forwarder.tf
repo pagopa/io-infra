@@ -46,12 +46,29 @@ resource "azurerm_container_group" "dns_forwarder" {
     }
 
     volume {
-      empty_dir  = false
       mount_path = "/app/conf"
       name       = "dns-forwarder-conf"
       read_only  = true
+      secret = {
+        Corefile = base64encode(<<-EOT
+          .:53 {
+              errors
+              ready
+              health
+              forward . 168.63.129.16
+              cache 30
+              loop
+              reload
+          }
+        EOT
+        )
+      }
     }
   }
 
   tags = var.tags
+
+  lifecycle {
+    ignore_changes = [container[0].volume[0].secret]
+  }
 }
