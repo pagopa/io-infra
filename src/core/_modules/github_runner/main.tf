@@ -4,9 +4,9 @@ resource "azurerm_subnet" "github_runner" {
   virtual_network_name = var.vnet_common.name
   address_prefixes     = [var.cidr_subnet]
 
-  service_endpoints = [
-    "Microsoft.Web"
-  ]
+  service_endpoint {
+    service = "Microsoft.Web"
+  }
 
   private_endpoint_network_policies = "Enabled"
 }
