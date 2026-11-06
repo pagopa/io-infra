@@ -11,7 +11,7 @@ on:
 
 jobs:
   deploy:
-    uses: pagopa/dx/.github/workflows/release-terraform-legacy-v1.yaml@main
+    uses: pagopa/dx/.github/workflows/release-terraform-legacy-v1.yaml@d137c49e2c0a935a544a3b87dae98472e5e5c4fd # main
     name: Deploy
     secrets: inherit
     with:
