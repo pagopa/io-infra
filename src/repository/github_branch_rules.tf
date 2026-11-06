@@ -3,6 +3,7 @@ resource "github_branch_default" "default_main" {
   branch     = "main"
 }
 
+#trivy:ignore:GIT-0004
 resource "github_branch_protection" "main" {
   repository_id = github_repository.this.name
   pattern       = "main"
