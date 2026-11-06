@@ -1,14 +1,14 @@
 {
   "iam_kv_common_infra_cd": {
-    "hash": "e102678b1c90df0ec9b005c48ce0748bab2fd2c1c6411954e5c1f6322ac49fee",
-    "version": "5.0.0",
+    "hash": "c8d6298ea600da874b3702de2069e390491fac3fbc5e75e758feb0271cfa8fad",
+    "version": "5.0.1",
     "name": "unknown",
-    "source": "https://registry.terraform.io/modules/pagopa-dx/azure-role-assignments/azurerm/5.0.0"
+    "source": "https://registry.terraform.io/modules/pagopa-dx/azure-role-assignments/azurerm/5.0.1"
   },
   "iam_kv_common_infra_ci": {
-    "hash": "e102678b1c90df0ec9b005c48ce0748bab2fd2c1c6411954e5c1f6322ac49fee",
-    "version": "5.0.0",
+    "hash": "c8d6298ea600da874b3702de2069e390491fac3fbc5e75e758feb0271cfa8fad",
+    "version": "5.0.1",
     "name": "unknown",
-    "source": "https://registry.terraform.io/modules/pagopa-dx/azure-role-assignments/azurerm/5.0.0"
+    "source": "https://registry.terraform.io/modules/pagopa-dx/azure-role-assignments/azurerm/5.0.1"
   }
 }
