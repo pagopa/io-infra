@@ -97,5 +97,7 @@ module "redis_weu" {
   vnet_common              = local.core.networking.weu.vnet_common
   cidr_subnet_redis_common = "10.0.200.0/24"
 
+  log_analytics_workspace_id = local.platform_observability.monitoring_italynorth.log.id
+
   tags = local.tags
 }

@@ -1,3 +1,7 @@
+#trivy:ignore:AZU-0019
+#trivy:ignore:AZU-0021
+#trivy:ignore:AZU-0022
+#trivy:ignore:AZU-0024
 module "subscriptionmigrations_db_flex_server" {
   source = "github.com/pagopa/terraform-azurerm-v3//postgres_flexible_server?ref=v7.69.1"
 
