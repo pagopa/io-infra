@@ -37,3 +37,8 @@ variable "cidr_subnet_redis_common" {
   type        = string
   description = "CIDR block for Redis subnet"
 }
+
+variable "log_analytics_workspace_id" {
+  type        = string
+  description = "Log analytics workspace id for metrics"
+}

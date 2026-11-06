@@ -3,6 +3,24 @@ resource "azurerm_web_application_firewall_policy" "agw" {
   resource_group_name = var.resource_group_common
   location            = var.location
 
+  custom_rules {
+    name      = "BlockBrotliRequestBody"
+    priority  = 1
+    rule_type = "MatchRule"
+    action    = "Block"
+
+    match_conditions {
+      match_variables {
+        variable_name = "RequestHeaders"
+        selector      = "Content-Encoding"
+      }
+
+      operator     = "Regex"
+      match_values = ["(^|,)\\s*br\\s*(,|$)"]
+      transforms   = ["Lowercase"]
+    }
+  }
+
   policy_settings {
     enabled                     = true
     mode                        = "Detection"
@@ -27,6 +45,24 @@ resource "azurerm_web_application_firewall_policy" "app" {
   name                = "${var.project}-agw-api-app-waf-01"
   resource_group_name = var.resource_group_common
   location            = var.location
+
+  custom_rules {
+    name      = "BlockBrotliRequestBody"
+    priority  = 1
+    rule_type = "MatchRule"
+    action    = "Block"
+
+    match_conditions {
+      match_variables {
+        variable_name = "RequestHeaders"
+        selector      = "Content-Encoding"
+      }
+
+      operator     = "Regex"
+      match_values = ["(^|,)\\s*br\\s*(,|$)"]
+      transforms   = ["Lowercase"]
+    }
+  }
 
   policy_settings {
     enabled                     = true
@@ -174,6 +210,50 @@ resource "azurerm_web_application_firewall_policy" "app" {
         }
       }
 
+    }
+  }
+
+  tags = var.tags
+}
+
+resource "azurerm_web_application_firewall_policy" "devportal" {
+  name                = "${var.project}-agw-devportal-waf-01"
+  resource_group_name = var.resource_group_common
+  location            = var.location
+
+  custom_rules {
+    name      = "BlockBrotliRequestBody"
+    priority  = 1
+    rule_type = "MatchRule"
+    action    = "Block"
+
+    match_conditions {
+      match_variables {
+        variable_name = "RequestHeaders"
+        selector      = "Content-Encoding"
+      }
+
+      operator     = "Regex"
+      match_values = ["(^|,)\\s*br\\s*(,|$)"]
+      transforms   = ["Lowercase"]
+    }
+  }
+
+  # WAF inspection stops at 2000 KB; the backend's 5 MiB cap applies only to parsed content types.
+  policy_settings {
+    enabled                          = true
+    mode                             = "Prevention"
+    request_body_check               = true
+    request_body_enforcement         = false
+    request_body_inspect_limit_in_kb = 2000
+    file_upload_limit_in_mb          = 100
+    max_request_body_size_in_kb      = 2000
+  }
+
+  managed_rules {
+    managed_rule_set {
+      type    = "OWASP"
+      version = "3.2"
     }
   }
 

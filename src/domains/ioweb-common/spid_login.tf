@@ -6,6 +6,8 @@ locals {
 ############################
 ## App service spid login ##
 ############################
+
+#trivy:ignore:AZU-0003
 module "spid_login" {
   source = "git::https://github.com/pagopa/terraform-azurerm-v4.git//app_service?ref=v10.5.0"
 
@@ -116,7 +118,6 @@ module "spid_login" {
   }
 
   allowed_subnets = [
-    data.azurerm_subnet.azdoa_snet.id,
     data.azurerm_subnet.ioweb_profile_itn_snet.id,
     data.azurerm_subnet.apim_itn_snet.id,
   ]

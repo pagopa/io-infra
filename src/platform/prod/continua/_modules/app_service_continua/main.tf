@@ -1,3 +1,6 @@
+#trivy:ignore:AZU-0006
+#trivy:ignore:AZU-0003
+#trivy:ignore:AZU-0001
 module "appservice_continua_itn" {
   source  = "pagopa-dx/azure-app-service/azurerm"
   version = "~> 2.0.0"

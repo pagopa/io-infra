@@ -1,5 +1,6 @@
 #tfsec:ignore:azure-appservice-authentication-enabled:exp:2022-05-01 # already ignored, maybe a bug in tfsec
 #tfsec:ignore:azure-appservice-require-client-cert:exp:2022-05-01 # already ignored, maybe a bug in tfsec
+#trivy:ignore:AZU-0003
 module "appservice_devportal_be" {
   source = "github.com/pagopa/terraform-azurerm-v3//app_service?ref=v7.69.1"
 

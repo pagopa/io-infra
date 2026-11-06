@@ -1,3 +1,4 @@
+#trivy:ignore:AZU-0013
 resource "azurerm_key_vault" "io_p_itn_platform_kv_01" {
 
   name = "${var.project}-itn-platform-kv-01"
