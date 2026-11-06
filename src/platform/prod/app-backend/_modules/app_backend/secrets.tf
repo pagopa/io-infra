@@ -1,4 +1,5 @@
 #tfsec:ignore:AZU023
+#trivy:ignore:AZU-0017
 resource "azurerm_key_vault_secret" "appbackend-REDIS-PASSWORD" {
   count        = var.index == 1 ? 1 : 0
   name         = "appbackend-REDIS-PASSWORD"
@@ -8,6 +9,7 @@ resource "azurerm_key_vault_secret" "appbackend-REDIS-PASSWORD" {
 }
 
 #tfsec:ignore:AZU023
+#trivy:ignore:AZU-0017
 resource "azurerm_key_vault_secret" "appbackend-SPID-LOG-STORAGE" {
   count        = var.index == 1 ? 1 : 0
   name         = "appbackend-SPID-LOG-STORAGE"
@@ -17,6 +19,7 @@ resource "azurerm_key_vault_secret" "appbackend-SPID-LOG-STORAGE" {
 }
 
 #tfsec:ignore:AZU023
+#trivy:ignore:AZU-0017
 resource "azurerm_key_vault_secret" "appbackend-NORIFICATIONS-STORAGE" {
   count        = var.index == 1 ? 1 : 0
   name         = "appbackend-NORIFICATIONS-STORAGE"
@@ -26,6 +29,7 @@ resource "azurerm_key_vault_secret" "appbackend-NORIFICATIONS-STORAGE" {
 }
 
 #tfsec:ignore:AZU023
+#trivy:ignore:AZU-0017
 resource "azurerm_key_vault_secret" "appbackend-USERS-LOGIN-STORAGE" {
   count        = var.index == 1 ? 1 : 0
   name         = "appbackend-USERS-LOGIN-STORAGE"
