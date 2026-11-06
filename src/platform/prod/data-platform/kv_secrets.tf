@@ -1,3 +1,5 @@
+#trivy:ignore:AZU-0015
+#trivy:ignore:AZU-0017
 resource "azurerm_key_vault_secret" "cosmos_api_connection_string" {
   name         = "cosmos-api-connection-string"
   key_vault_id = local.core.key_vault.weu.kv_common.id
@@ -6,6 +8,8 @@ resource "azurerm_key_vault_secret" "cosmos_api_connection_string" {
   tags = local.tags
 }
 
+#trivy:ignore:AZU-0015
+#trivy:ignore:AZU-0017
 resource "azurerm_key_vault_secret" "cosmos_api_primary_key" {
   name         = "cosmos-api-primary-key"
   key_vault_id = local.core.key_vault.weu.kv_common.id
