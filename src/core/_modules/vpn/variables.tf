@@ -40,6 +40,10 @@ variable "resource_group_name" {
 }
 
 variable "subscription_current" {
+  type = object({
+    subscription_id = string
+    tenant_id       = string
+  })
   description = "Current subscription information"
 }
 

@@ -4,9 +4,9 @@ resource "azurerm_subnet" "github_runner" {
   virtual_network_name = var.vnet_common.name
   address_prefixes     = [var.cidr_subnet]
 
-  service_endpoints = [
-    "Microsoft.Web"
-  ]
+  service_endpoint {
+    service = "Microsoft.Web"
+  }
 
   private_endpoint_network_policies = "Enabled"
 }
@@ -16,6 +16,7 @@ resource "azurerm_container_app_environment" "github_runner" {
   location            = var.location
   resource_group_name = var.resource_group_name
 
+  logs_destination           = "log-analytics"
   log_analytics_workspace_id = var.log_analytics_workspace_id
 
   infrastructure_subnet_id       = azurerm_subnet.github_runner.id
@@ -27,7 +28,7 @@ resource "azurerm_container_app_environment" "github_runner" {
 
 module "container_app_github_runner" {
   source  = "pagopa-dx/github-selfhosted-runner-on-container-app-jobs/azurerm"
-  version = "~> 1.0"
+  version = "~> 4.0"
 
   environment = {
     prefix          = var.prefix

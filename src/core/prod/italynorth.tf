@@ -84,5 +84,7 @@ module "storage_accounts_itn" {
   log_analytics_workspace_id             = local.platform_observability.monitoring_italynorth.log.id
   diagnostic_settings_storage_account_id = local.platform_observability.storage_accounts.itn.logs.id
 
+  subscription_id = data.azurerm_client_config.current.subscription_id
+
   tags = local.tags
 }
