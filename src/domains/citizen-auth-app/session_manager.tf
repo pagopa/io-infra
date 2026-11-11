@@ -181,6 +181,8 @@ locals {
 // NOTE: If duplicating this service, ensure that write permissions on the session topic
 // are granted before enabling production traffic.
 // see reference https://github.com/pagopa/io-auth-n-identity-domain/blob/303a5659791ce95b529c557f4aa4400e7e51e9a7/infra/resources/prod/servicebus_topic.tf#L61
+
+#trivy:ignore:AZU-0003
 module "session_manager_weu" {
   source = "github.com/pagopa/terraform-azurerm-v4//app_service?ref=v10.1.0"
 
@@ -286,6 +288,7 @@ module "session_manager_weu_staging" {
   tags = var.tags
 }
 
+#trivy:ignore:AZU-0003
 module "session_manager_weu_bis" {
   source = "github.com/pagopa/terraform-azurerm-v4//app_service?ref=v10.1.0"
 
