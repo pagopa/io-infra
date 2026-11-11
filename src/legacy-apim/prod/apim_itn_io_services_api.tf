@@ -1,6 +1,4 @@
-module "apim_itn_product_services" {
-  source = "github.com/pagopa/terraform-azurerm-v3//api_management_product?ref=v8.27.0"
-
+resource "azurerm_api_management_product" "apim_itn_product_services" {
   product_id            = "io-services-api"
   api_management_name   = data.azurerm_api_management.apim_itn.name
   resource_group_name   = data.azurerm_api_management.apim_itn.resource_group_name
@@ -9,8 +7,21 @@ module "apim_itn_product_services" {
   subscription_required = true
   approval_required     = false
   published             = true
+}
 
-  policy_xml = file("./api_product/io_services/_base_policy.xml")
+resource "azurerm_api_management_product_api" "apim_itn_product_services" {
+  api_name            = "io-services-api"
+  product_id          = azurerm_api_management_product.apim_itn_product_services.product_id
+  api_management_name = data.azurerm_api_management.apim_itn.name
+  resource_group_name = data.azurerm_api_management.apim_itn.resource_group_name
+}
+
+resource "azurerm_api_management_product_policy" "apim_itn_product_services" {
+  product_id          = azurerm_api_management_product.apim_itn_product_services.product_id
+  api_management_name = data.azurerm_api_management.apim_itn.name
+  resource_group_name = data.azurerm_api_management.apim_itn.resource_group_name
+
+  xml_content = file("./api_product/io_services/_base_policy.xml")
 }
 
 resource "azurerm_api_management_api_operation_policy" "submit_message_for_user_policy_itn" {
@@ -91,9 +102,7 @@ resource "azurerm_api_management_named_value" "api_gad_client_certificate_verifi
   secret = "true"
 }
 
-module "api_itn_services" {
-  source = "github.com/pagopa/terraform-azurerm-v3//api_management_api?ref=v8.27.0"
-
+resource "azurerm_api_management_api" "api_itn_services" {
   name                = "io-services-api"
   api_management_name = data.azurerm_api_management.apim_itn.name
   resource_group_name = data.azurerm_api_management.apim_itn.resource_group_name
@@ -101,20 +110,26 @@ module "api_itn_services" {
   display_name        = "IO SERVICES API"
   description         = "SERVICES API for IO platform."
 
-  path        = "api/v1"
-  protocols   = ["http", "https"]
-  product_ids = [module.apim_itn_product_services.product_id]
-
-  service_url = null
+  path      = "api/v1"
+  protocols = ["http", "https"]
 
   subscription_required = true
 
-  content_format = "swagger-json"
-  content_value = templatefile("./api/io_services/v1/_swagger.json.tpl",
-    {
-      host = "api.io.pagopa.it"
-    }
-  )
+  import {
+    content_format = "swagger-json"
+    content_value = templatefile("./api/io_services/v1/_swagger.json.tpl",
+      {
+        host = "api.io.pagopa.it"
+      }
+    )
+  }
+
+}
+
+resource "azurerm_api_management_api_policy" "api_itn_services" {
+  api_name            = azurerm_api_management_api.api_itn_services.name
+  api_management_name = data.azurerm_api_management.apim_itn.name
+  resource_group_name = data.azurerm_api_management.apim_itn.resource_group_name
 
   xml_content = file("./api/io_services/v1/policy.xml")
 }
