@@ -1,3 +1,6 @@
+data "azurerm_subscription" "current" {
+}
+
 data "azurerm_storage_account" "source" {
   name                = var.storage_accounts.source.name
   resource_group_name = var.storage_accounts.source.resource_group_name

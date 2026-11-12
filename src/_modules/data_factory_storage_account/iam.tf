@@ -1,18 +1,21 @@
 module "roles" {
   source  = "pagopa-dx/azure-role-assignments/azurerm"
-  version = "~> 0.0"
+  version = "~> 5.0"
 
-  principal_id = var.data_factory_principal_id
+  subscription_id = data.azurerm_subscription.current.id
+  principal_id    = var.data_factory_principal_id
 
   storage_blob = var.what_to_migrate.blob.enabled ? [
     {
       storage_account_name = var.storage_accounts.source.name
       resource_group_name  = var.storage_accounts.source.resource_group_name
+      description          = "Azure Data Factory read permissions"
       role                 = "reader"
     },
     {
       storage_account_name = var.storage_accounts.target.name
       resource_group_name  = var.storage_accounts.target.resource_group_name
+      description          = "Azure Data Factory write permissions"
       role                 = "writer"
     }
   ] : []
@@ -23,11 +26,13 @@ module "roles" {
     {
       storage_account_name = var.storage_accounts.source.name
       resource_group_name  = var.storage_accounts.source.resource_group_name
+      description          = "Azure Data Factory read permissions"
       role                 = "reader"
     },
     {
       storage_account_name = var.storage_accounts.target.name
       resource_group_name  = var.storage_accounts.target.resource_group_name
+      description          = "Azure Data Factory write permissions"
       role                 = "writer"
     }
   ] : []
