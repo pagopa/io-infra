@@ -17,7 +17,7 @@ on:
       - ".github/workflows/core_dev_deploy.yaml"
 jobs:
   dev_itn_core_deploy:
-    uses: pagopa/dx/.github/workflows/infra_apply.yaml@main
+    uses: pagopa/dx/.github/workflows/infra_apply.yaml@d025f45d6725b88af4a7b6e391f4ae13d58af13c # main
     name: Dev - Code Deploy
     secrets: inherit
     with:
