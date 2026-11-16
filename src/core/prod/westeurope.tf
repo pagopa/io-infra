@@ -89,7 +89,6 @@ module "vpn_weu" {
   source = "../_modules/vpn"
 
   location            = azurerm_resource_group.common_weu.location
-  location_short      = local.location_short[azurerm_resource_group.common_weu.location]
   resource_group_name = azurerm_resource_group.common_weu.name
   project             = local.project_weu_legacy
   prefix              = local.prefix

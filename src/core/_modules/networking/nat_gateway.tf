@@ -32,7 +32,7 @@ resource "azurerm_nat_gateway" "this" {
   resource_group_name     = var.resource_group_name
   sku_name                = "Standard"
   idle_timeout_in_minutes = 4
-  zones                   = ["${count.index + 1}"]
+  zones                   = [count.index + 1]
 
   tags = var.tags
 }

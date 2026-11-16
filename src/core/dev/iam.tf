@@ -1,7 +1,7 @@
 module "iam_kv_common_infra_ci" {
 
   source  = "pagopa-dx/azure-role-assignments/azurerm"
-  version = "~>1.3"
+  version = "~> 5.0"
 
   subscription_id = data.azurerm_subscription.current.subscription_id
   principal_id    = data.azurerm_user_assigned_identity.managed_identity_io_infra_ci.principal_id
@@ -22,7 +22,7 @@ module "iam_kv_common_infra_ci" {
 module "iam_kv_common_infra_cd" {
 
   source  = "pagopa-dx/azure-role-assignments/azurerm"
-  version = "~>1.3"
+  version = "~> 5.0"
 
   subscription_id = data.azurerm_subscription.current.subscription_id
   principal_id    = data.azurerm_user_assigned_identity.managed_identity_io_infra_ci.principal_id

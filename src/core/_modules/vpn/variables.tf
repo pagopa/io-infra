@@ -29,11 +29,6 @@ variable "location" {
   description = "Azure region"
 }
 
-variable "location_short" {
-  type        = string
-  description = "Azure region short name"
-}
-
 variable "tags" {
   type        = map(any)
   description = "Resource tags"
@@ -45,6 +40,10 @@ variable "resource_group_name" {
 }
 
 variable "subscription_current" {
+  type = object({
+    subscription_id = string
+    tenant_id       = string
+  })
   description = "Current subscription information"
 }
 

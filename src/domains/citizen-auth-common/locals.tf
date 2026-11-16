@@ -12,6 +12,9 @@ locals {
   # Fast Login references refers to io-auth-n-identity-domain/infra/resources/prod/function_lv.tf
   fn_fast_login_name                = "${local.common_project_itn}-auth-lv-func-02"
   fn_fast_login_resource_group_name = "${local.common_project_itn}-auth-lv-rg-01"
+
+  platform_observability = data.terraform_remote_state.platform_observability.outputs
+
 }
 
 # Region ITN
