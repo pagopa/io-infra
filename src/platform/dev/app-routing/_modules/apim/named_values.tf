@@ -14,6 +14,6 @@ resource "azurerm_api_management_named_value" "test_api_client_id" {
   resource_group_name = module.apim.resource_group_name
   api_management_name = module.apim.name
 
-  value  = azuread_application.test_apim_api.client_id
+  value  = data.azuread_application.test_apim_api.client_id
   secret = false
 }
