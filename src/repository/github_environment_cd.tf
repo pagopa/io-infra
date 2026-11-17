@@ -13,6 +13,7 @@ resource "github_repository_environment" "github_repository_environment_prod_cd"
       data.github_organization_teams.all.teams[*].slug,
       local.prod_cd.reviewers_teams
     )
+    users = local.prod_cd.reviewers_users
   }
 }
 
@@ -41,6 +42,7 @@ resource "github_repository_environment" "github_repository_environment_dev_cd" 
       data.github_organization_teams.all.teams[*].slug,
       local.dev_cd.reviewers_teams
     )
+    users = local.dev_cd.reviewers_users
   }
 }
 
