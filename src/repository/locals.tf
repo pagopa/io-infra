@@ -37,6 +37,7 @@ locals {
       "ARM_SUBSCRIPTION_ID" = data.azurerm_subscription.current.subscription_id
     }
     reviewers_teams = ["io-backend-contributors", "io-backend-admin"]
+    reviewers_users = [29119211] # ansmatbitrock
   }
 
   prod_tls_cd = {
@@ -52,5 +53,6 @@ locals {
       "ARM_SUBSCRIPTION_ID" = data.azurerm_subscription.dev_io.subscription_id
     }
     reviewers_teams = ["io-backend-contributors", "io-backend-admin"]
+    reviewers_users = [29119211] # ansmatbitrock
   }
 }
