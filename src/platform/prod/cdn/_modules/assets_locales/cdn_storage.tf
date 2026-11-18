@@ -4,7 +4,7 @@
 #trivy:ignore:AZU-0061
 module "cdn_storage" {
   source  = "pagopa-dx/azure-storage-account/azurerm"
-  version = "~> 2.0.0"
+  version = "~> 5.0"
 
   resource_group_name = var.resource_group_common
 

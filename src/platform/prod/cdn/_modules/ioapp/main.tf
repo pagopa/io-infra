@@ -1,6 +1,6 @@
 module "ioapp" {
   source              = "pagopa-dx/azure-cdn/azurerm"
-  version             = "~> 2.0"
+  version             = "~> 3.0"
   resource_group_name = var.resource_group_cdn
 
   origins = {

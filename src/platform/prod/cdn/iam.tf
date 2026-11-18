@@ -1,7 +1,7 @@
 module "legacy_cdn_svc_devs" {
 
   source  = "pagopa-dx/azure-role-assignments/azurerm"
-  version = "~> 1.0"
+  version = "~> 5.0"
 
   principal_id    = data.azuread_group.svc_devs.object_id
   subscription_id = data.azurerm_client_config.current.subscription_id
