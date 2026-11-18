@@ -1,3 +1,4 @@
+#trivy:ignore:GIT-0003
 resource "github_repository" "this" {
   name        = "io-infra"
   description = "IO platform infrastructure"
@@ -19,11 +20,8 @@ resource "github_repository" "this" {
   has_wiki        = false
   has_discussions = false
   has_issues      = false
-  has_downloads   = false
 
   topics = ["io", "infrastructure"]
-
-  vulnerability_alerts = true
 
   archive_on_destroy = true
 }

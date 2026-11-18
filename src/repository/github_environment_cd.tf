@@ -13,6 +13,7 @@ resource "github_repository_environment" "github_repository_environment_prod_cd"
       data.github_organization_teams.all.teams[*].slug,
       local.prod_cd.reviewers_teams
     )
+    users = local.prod_cd.reviewers_users
   }
 }
 
@@ -41,32 +42,33 @@ resource "github_repository_environment" "github_repository_environment_dev_cd" 
       data.github_organization_teams.all.teams[*].slug,
       local.dev_cd.reviewers_teams
     )
+    users = local.dev_cd.reviewers_users
   }
 }
 
 resource "github_actions_environment_secret" "env_prod_cd_secrets" {
   for_each = local.prod_cd.secrets
 
-  repository      = github_repository.this.name
-  environment     = github_repository_environment.github_repository_environment_prod_cd.environment
-  secret_name     = each.key
-  plaintext_value = each.value
+  repository  = github_repository.this.name
+  environment = github_repository_environment.github_repository_environment_prod_cd.environment
+  secret_name = each.key
+  value       = each.value
 }
 
 resource "github_actions_environment_secret" "env_prod_tls_cd_secrets" {
   for_each = local.prod_tls_cd.secrets
 
-  repository      = github_repository.this.name
-  environment     = github_repository_environment.github_repository_environment_prod_tls_cd.environment
-  secret_name     = each.key
-  plaintext_value = each.value
+  repository  = github_repository.this.name
+  environment = github_repository_environment.github_repository_environment_prod_tls_cd.environment
+  secret_name = each.key
+  value       = each.value
 }
 
 resource "github_actions_environment_secret" "env_dev_cd_secrets" {
   for_each = local.dev_cd.secrets
 
-  repository      = github_repository.this.name
-  environment     = github_repository_environment.github_repository_environment_dev_cd.environment
-  secret_name     = each.key
-  plaintext_value = each.value
+  repository  = github_repository.this.name
+  environment = github_repository_environment.github_repository_environment_dev_cd.environment
+  secret_name = each.key
+  value       = each.value
 }
