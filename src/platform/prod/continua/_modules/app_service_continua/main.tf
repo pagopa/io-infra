@@ -3,7 +3,7 @@
 #trivy:ignore:AZU-0001
 module "appservice_continua_itn" {
   source  = "pagopa-dx/azure-app-service/azurerm"
-  version = "~> 2.0.0"
+  version = "~> 6.0.0"
 
   environment = {
     prefix          = var.prefix

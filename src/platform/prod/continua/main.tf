@@ -11,12 +11,12 @@ terraform {
   required_providers {
     azurerm = {
       source  = "hashicorp/azurerm"
-      version = "< 5.0.0"
+      version = "~> 5.13.0"
     }
 
     dx = {
       source  = "pagopa-dx/azure"
-      version = "~> 0.10"
+      version = "~> 0.12"
     }
   }
 }
