@@ -30,3 +30,25 @@ resource "azurerm_private_dns_zone_virtual_network_link" "scm_azure_api_net_vnet
 
   tags = var.tags
 }
+
+resource "azurerm_private_dns_zone_virtual_network_link" "storage" {
+  for_each = azurerm_private_dns_zone.storage
+
+  name                  = var.vnets["itn"].name
+  resource_group_name   = each.value.resource_group_name
+  private_dns_zone_name = each.value.name
+  virtual_network_id    = var.vnets["itn"].id
+  registration_enabled  = false
+
+  tags = var.tags
+}
+
+resource "azurerm_private_dns_zone_virtual_network_link" "app_service" {
+  name                  = var.vnets["itn"].name
+  resource_group_name   = data.azurerm_private_dns_zone.app_service.resource_group_name
+  private_dns_zone_name = data.azurerm_private_dns_zone.app_service.name
+  virtual_network_id    = var.vnets["itn"].id
+  registration_enabled  = false
+
+  tags = var.tags
+}
