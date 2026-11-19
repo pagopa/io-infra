@@ -4,6 +4,7 @@ resource "azurerm_application_insights" "appi" {
   resource_group_name  = var.resource_group_common
   application_type     = "other"
   daily_data_cap_in_gb = 300
+  ip_masking_enabled   = false
 
   workspace_id = azurerm_log_analytics_workspace.log.id
 
