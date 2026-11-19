@@ -1,0 +1,32 @@
+<policies>
+  <inbound>
+    <base />
+    <choose>
+      <when condition='@(((Jwt)context.Variables["validated-jwt"]).Claims.ContainsKey("roles") &amp;&amp; ((Jwt)context.Variables["validated-jwt"]).Claims["roles"].Contains("ApiRead"))'>
+        <return-response>
+          <set-status code="200" reason="OK" />
+          <set-header name="Content-Type" exists-action="override">
+            <value>application/json</value>
+          </set-header>
+          <set-body>{"items":[]}</set-body>
+        </return-response>
+      </when>
+    </choose>
+    <return-response>
+      <set-status code="403" reason="Forbidden" />
+      <set-header name="Content-Type" exists-action="override">
+        <value>application/json</value>
+      </set-header>
+      <set-body>{"error":"ApiRead role required."}</set-body>
+    </return-response>
+  </inbound>
+  <backend>
+    <base />
+  </backend>
+  <outbound>
+    <base />
+  </outbound>
+  <on-error>
+    <base />
+  </on-error>
+</policies>
