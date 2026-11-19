@@ -22,6 +22,7 @@ resource "azurerm_data_factory" "this" {
   tags = local.tags
 }
 
+# Double check every operation on this resource before executing terraform apply, in order to avoid the startup of any unwanted migration.
 resource "azurerm_data_factory_integration_runtime_azure" "azure_runtime" {
   name                    = "${local.project_itn}-${local.environment.app_name}-adfir-${local.environment.instance_number}"
   location                = "italynorth"
