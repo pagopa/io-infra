@@ -22,13 +22,14 @@ resource "azurerm_data_factory" "this" {
   tags = local.tags
 }
 
-# Double check every operation on this resource before executing terraform apply, in order to avoid the startup of any unwanted migration.
+/*
 resource "azurerm_data_factory_integration_runtime_azure" "azure_runtime" {
   name                    = "${local.project_itn}-${local.environment.app_name}-adfir-${local.environment.instance_number}"
   location                = "italynorth"
   data_factory_id         = azurerm_data_factory.this.id
   virtual_network_enabled = true
 }
+*/
 
 module "migrate_storage_accounts" {
   for_each = { for migration in local.storage_accounts : "${migration.source.name}|${migration.target.name}" => migration }
