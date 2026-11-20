@@ -2,14 +2,14 @@ terraform {
   required_providers {
     azapi = {
       source  = "Azure/azapi"
-      version = "~> 2.13.0"
+      version = "<= 1.15.0"
     }
   }
 }
 
 module "naming_convention" {
   source  = "pagopa-dx/azure-naming-convention/azurerm"
-  version = "~> 2.0"
+  version = "~> 0.0"
 
   environment = {
     prefix          = var.environment.prefix
