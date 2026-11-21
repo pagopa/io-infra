@@ -1,15 +1,15 @@
 {
   "migrate_cosmos_accounts.naming_convention": {
-    "hash": "8610b9bd32f85eef8aedb86aeca427239c3665ac9ef7a632d721d50895c34814",
-    "version": "0.0.8",
-    "name": "azure_naming_convention",
-    "source": "https://registry.terraform.io/modules/pagopa-dx/azure-naming-convention/azurerm/0.0.8"
+    "hash": "0bc9c0f41d05fa46c6f1223bc0f004155dc370c7ee0e83be4d65eb8c293e7bdb",
+    "version": "2.0.2",
+    "name": "unknown",
+    "source": "https://registry.terraform.io/modules/pagopa-dx/azure-naming-convention/azurerm/2.0.2"
   },
   "migrate_cosmos_accounts.roles": {
-    "hash": "52ca57b72bdf639846a472014cb2113d519bdc00dc4a642e925b97ad6b99d25c",
-    "version": "0.1.3",
-    "name": "azure_role_assignments",
-    "source": "https://registry.terraform.io/modules/pagopa-dx/azure-role-assignments/azurerm/0.1.3"
+    "hash": "c8d6298ea600da874b3702de2069e390491fac3fbc5e75e758feb0271cfa8fad",
+    "version": "5.0.1",
+    "name": "unknown",
+    "source": "https://registry.terraform.io/modules/pagopa-dx/azure-role-assignments/azurerm/5.0.1"
   },
   "migrate_storage_accounts.naming_convention": {
     "hash": "8610b9bd32f85eef8aedb86aeca427239c3665ac9ef7a632d721d50895c34814",
@@ -18,9 +18,9 @@
     "source": "https://registry.terraform.io/modules/pagopa-dx/azure-naming-convention/azurerm/0.0.8"
   },
   "migrate_storage_accounts.roles": {
-    "hash": "52ca57b72bdf639846a472014cb2113d519bdc00dc4a642e925b97ad6b99d25c",
-    "version": "0.1.3",
-    "name": "azure_role_assignments",
-    "source": "https://registry.terraform.io/modules/pagopa-dx/azure-role-assignments/azurerm/0.1.3"
+    "hash": "c8d6298ea600da874b3702de2069e390491fac3fbc5e75e758feb0271cfa8fad",
+    "version": "5.0.1",
+    "name": "unknown",
+    "source": "https://registry.terraform.io/modules/pagopa-dx/azure-role-assignments/azurerm/5.0.1"
   }
 }
