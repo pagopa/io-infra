@@ -12,7 +12,7 @@
 		</when>
 	</choose>
   <!-- Determine if the session token is v2 based on the presence of a dot -->
-  <set-variable name="isV2SessionToken" value='@(((string)context.Variables["bearerToken"]).Contains("."))' />
+  <set-variable name="isV2SessionToken" value='@(((string)context.Variables["authHeader"]).Substring("Bearer ".Length).Trim().Contains("."))' />
   <!-- Determine the session introspection URL based on the token version -->
   <set-variable name="sessionIntrospectionUrl" value='@(
     (bool)context.Variables["isV2SessionToken"]

@@ -65,7 +65,7 @@
 			<!-- Determine the session introspection URL based on the token version -->
 			<set-variable name="sessionIntrospectionUrl" value="@(
         (bool)context.Variables["isV2SessionToken"]
-            ? "https://127.0.0.1/api/auth/v2/user-identity"
+            ? "https://127.0.0.1{{session-manager-introspection-url-v2}}"
             : "https://127.0.0.1{{session-manager-introspection-url}}"
       )" />
 			<send-request mode="new" response-variable-name="introspectionResponse" timeout="10" ignore-error="false">
