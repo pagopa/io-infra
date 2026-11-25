@@ -15,7 +15,9 @@ resource "azurerm_storage_account" "legacy_assets_cdn_storage_account" {
   account_kind = "StorageV2"
   account_tier = "Standard"
   access_tier  = "Hot"
-  #blob_versioning_enabled         = true
+  blob_properties {
+    versioning_enabled = true
+  }
   account_replication_type = "GZRS"
   resource_group_name      = local.core.resource_groups.westeurope.common
   location                 = "westeurope"
