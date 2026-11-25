@@ -29,6 +29,28 @@ resource "azurerm_storage_account" "legacy_assets_cdn_storage_account" {
 
 }
 
+resource "azurerm_monitor_metric_alert" "legacy_assets_cdn_storage_account_low_availability" {
+  name                = "[${azurerm_storage_account.legacy_assets_cdn_storage_account.name}] Low Availability"
+  resource_group_name = local.core.resource_groups.westeurope.common
+  scopes              = [azurerm_storage_account.legacy_assets_cdn_storage_account.id]
+  description         = "The average availability is less than 99.8%. Runbook: not needed."
+  severity            = 0
+  window_size         = "PT5M"
+  frequency           = "PT5M"
+  auto_mitigate       = false
+
+  criteria {
+    metric_namespace       = "Microsoft.Storage/storageAccounts"
+    metric_name            = "Availability"
+    aggregation            = "Average"
+    operator               = "LessThan"
+    threshold              = 99.8
+    skip_metric_validation = false
+  }
+
+  tags = local.tags
+}
+
 resource "azurerm_monitor_diagnostic_setting" "legacy_assets_cdn_storage_account_diagnostic_setting" {
 
   depends_on = [azurerm_storage_account.legacy_assets_cdn_storage_account]
