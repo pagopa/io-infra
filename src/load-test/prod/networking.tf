@@ -13,10 +13,11 @@ resource "azurerm_virtual_network" "weu_load_test" {
 }
 
 resource "azurerm_subnet" "weu_load_test" {
-  name                 = "${local.project}-load-test-snet-01"
-  resource_group_name  = azurerm_resource_group.load_test.name
-  virtual_network_name = azurerm_virtual_network.weu_load_test.name
-  address_prefixes     = ["10.40.0.0/26"]
+  name                              = "${local.project}-load-test-snet-01"
+  resource_group_name               = azurerm_resource_group.load_test.name
+  virtual_network_name              = azurerm_virtual_network.weu_load_test.name
+  address_prefixes                  = ["10.40.0.0/26"]
+  private_endpoint_network_policies = "Enabled"
 }
 
 resource "azurerm_virtual_network_peering" "weu_load_test" {
@@ -41,8 +42,7 @@ resource "azurerm_private_dns_zone_virtual_network_link" "azurewebsites_private_
   name               = azurerm_virtual_network.weu_load_test.name
   virtual_network_id = azurerm_virtual_network.weu_load_test.id
 
-  resource_group_name   = data.azurerm_private_dns_zone.privatelink_azurewebsites.resource_group_name
-  private_dns_zone_name = data.azurerm_private_dns_zone.privatelink_azurewebsites.name
+  private_dns_zone_id = data.azurerm_private_dns_zone.privatelink_azurewebsites.id
 
   registration_enabled = false
 
