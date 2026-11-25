@@ -30,7 +30,7 @@ resource "azurerm_storage_account" "legacy_assets_cdn_storage_account" {
 }
 
 resource "azurerm_storage_account_static_website" "legacy_assets_cdn_storage_account" {
-  storage_account_id = azurerm_monitor_diagnostic_setting.legacy_assets_cdn_storage_account_diagnostic_setting.id
+  storage_account_id = azurerm_storage_account.legacy_assets_cdn_storage_account.id
   index_document     = "index.html"
   error_404_document = "index.html"
 }

@@ -9,5 +9,5 @@ import {
 
 import {
   to = azurerm_storage_account_static_website.legacy_assets_cdn_storage_account
-  id = "/subscriptions/ec285037-c673-4f58-b594-d7c480da4e8b/resourceGroups/io-p-itn-common-rg-01/providers/Microsoft.Storage/storageAccounts/iopstcdnassets"
+  id = "/subscriptions/ec285037-c673-4f58-b594-d7c480da4e8b/resourceGroups/io-p-rg-common/providers/Microsoft.Storage/storageAccounts/iopstcdnassets"
 }
