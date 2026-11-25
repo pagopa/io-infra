@@ -24,7 +24,7 @@ module "ioapp" {
         key_vault_certificate_versionless_id = data.azurerm_key_vault_certificate.ioapp_it_certificate.versionless_id
         key_vault_name                       = data.azurerm_key_vault.ioapp_it_kv.name
         key_vault_resource_group_name        = data.azurerm_key_vault.ioapp_it_kv.resource_group_name
-        key_vault_has_rbac_support           = data.azurerm_key_vault.ioapp_it_kv.enable_rbac_authorization
+        key_vault_has_rbac_support           = data.azurerm_key_vault.ioapp_it_kv.rbac_authorization_enabled
       }
     },
     {
