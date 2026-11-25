@@ -11,6 +11,9 @@ resource "azurerm_storage_account" "logs" {
   account_tier             = "Standard"
   account_replication_type = "GZRS"
 
+  allow_nested_items_to_be_public = true
+  public_network_access           = "Enabled"
+
   blob_properties {
     versioning_enabled  = true
     change_feed_enabled = true
