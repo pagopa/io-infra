@@ -100,10 +100,12 @@ resource "azurerm_cdn_frontdoor_rule" "logos_global_cache" {
   order                     = 1
 
   actions {
-    route_configuration_override_action {
-      cache_behavior                = "OverrideAlways"
-      cache_duration                = "08:00:00" # 8 hours
-      query_string_caching_behavior = "IgnoreQueryString"
+    route_configuration_override {
+      caching {
+        behaviour              = "OverrideAlways"
+        duration               = "08:00:00" # 8 hours
+        query_string_behaviour = "IgnoreQueryString"
+      }
     }
   }
 }
