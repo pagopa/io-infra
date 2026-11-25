@@ -31,9 +31,9 @@ resource "azurerm_storage_account" "legacy_assets_cdn_storage_account" {
 
 resource "azurerm_monitor_diagnostic_setting" "legacy_assets_cdn_storage_account_diagnostic_setting" {
 
-  depends_on = [module.legacy_assets_cdn_storage_account]
+  depends_on = [azurerm_storage_account.legacy_assets_cdn_storage_account]
 
-  target_resource_id         = "${module.legacy_assets_cdn_storage_account.id}/blobServices/default"
+  target_resource_id         = "${azurerm_storage_account.legacy_assets_cdn_storage_account.id}/blobServices/default"
   name                       = replace("${local.project_weu_legacy}stcdnassets", "-", "")
   log_analytics_workspace_id = local.platform_observability.monitoring_italynorth.log.id
 
