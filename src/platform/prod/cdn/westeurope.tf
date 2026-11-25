@@ -15,20 +15,24 @@ resource "azurerm_storage_account" "legacy_assets_cdn_storage_account" {
   account_kind = "StorageV2"
   account_tier = "Standard"
   access_tier  = "Hot"
+
   blob_properties {
     versioning_enabled = true
   }
-  account_replication_type = "GZRS"
-  resource_group_name      = local.core.resource_groups.westeurope.common
-  location                 = "westeurope"
-  #advanced_threat_protection      = false
-  allow_nested_items_to_be_public = true
 
-  #index_document     = "index.html"
-  #error_404_document = "index.html"
+  account_replication_type        = "GZRS"
+  resource_group_name             = local.core.resource_groups.westeurope.common
+  location                        = "westeurope"
+  allow_nested_items_to_be_public = true
 
   tags = local.tags
 
+}
+
+resource "azurerm_storage_account_static_website" "legacy_assets_cdn_storage_account" {
+  storage_account_id = azurerm_monitor_diagnostic_setting.legacy_assets_cdn_storage_account_diagnostic_setting.id
+  index_document     = "index.html"
+  error_404_document = "index.html"
 }
 
 resource "azurerm_monitor_metric_alert" "legacy_assets_cdn_storage_account_low_availability" {
