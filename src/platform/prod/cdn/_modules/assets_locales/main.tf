@@ -77,10 +77,6 @@ resource "azurerm_monitor_diagnostic_setting" "assets_locales_diagnostic_setting
 
   enabled_log {
     category_group = "allLogs"
-    retention_policy {
-      days    = 0
-      enabled = false
-    }
   }
 
   enabled_metric {
