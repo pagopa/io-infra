@@ -1,9 +1,9 @@
 {
   "assets_locales.cdn_storage": {
-    "hash": "036e323c9b81196ec73637681f5f42fe5e8951ba55aa822f31b2af4f27ee1348",
-    "version": "5.0.1",
+    "hash": "3c5437328356e4d602e6ec559690a543f71ec1191012aff4c0fad2c325adba82",
+    "version": "unknown",
     "name": "unknown",
-    "source": "https://registry.terraform.io/modules/pagopa-dx/azure-storage-account/azurerm/5.0.1"
+    "source": "https://registry.terraform.io/modules/pagopa-dx/azure-storage-account/azurerm/6.0.0"
   },
   "assets_locales.storage_account_permissions": {
     "hash": "c8d6298ea600da874b3702de2069e390491fac3fbc5e75e758feb0271cfa8fad",
