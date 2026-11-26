@@ -1,0 +1,28 @@
+<policies>
+  <inbound>
+    <base />
+    <validate-azure-ad-token
+        tenant-id="{{entra-tenant-id}}"
+        header-name="Authorization"
+        failed-validation-httpcode="401"
+        failed-validation-error-message="Missing or invalid access token."
+        output-token-variable-name="validated-jwt">
+      <audiences>
+        <audience>{{test-api-client-id}}</audience>
+      </audiences>
+      <required-claims>
+        <claim name="ver" match="all">
+          <value>2.0</value>
+        </claim>
+      </required-claims>
+    </validate-azure-ad-token>
+  </inbound>
+  <!-- Do not inherit forward-request: this API has no backend. -->
+  <backend />
+  <outbound>
+    <base />
+  </outbound>
+  <on-error>
+    <base />
+  </on-error>
+</policies>
