@@ -2,7 +2,7 @@ module "storage_account_permissions" {
   for_each = var.azure_adgroups_roles
 
   source  = "pagopa-dx/azure-role-assignments/azurerm"
-  version = "~> 1.0"
+  version = "~> 5.0"
 
   subscription_id = var.subscription_id
   principal_id    = each.value.azureadgroup_id

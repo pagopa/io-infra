@@ -9,33 +9,59 @@ module "common" {
 #trivy:ignore:AZU-0012
 #trivy:ignore:AZU-0057
 #trivy:ignore:AZU-0061
-module "legacy_assets_cdn_storage_account" {
+resource "azurerm_storage_account" "legacy_assets_cdn_storage_account" {
 
-  source = "github.com/pagopa/terraform-azurerm-v4//storage_account?ref=v1.23.3"
+  name         = replace("${local.project_weu_legacy}stcdnassets", "-", "")
+  account_kind = "StorageV2"
+  account_tier = "Standard"
+  access_tier  = "Hot"
 
-  name                            = replace("${local.project_weu_legacy}stcdnassets", "-", "")
-  account_kind                    = "StorageV2"
-  account_tier                    = "Standard"
-  access_tier                     = "Hot"
-  blob_versioning_enabled         = true
+  blob_properties {
+    versioning_enabled = true
+  }
+
   account_replication_type        = "GZRS"
   resource_group_name             = local.core.resource_groups.westeurope.common
   location                        = "westeurope"
-  advanced_threat_protection      = false
   allow_nested_items_to_be_public = true
-  public_network_access_enabled   = true
 
+  tags = local.tags
+
+}
+
+resource "azurerm_storage_account_static_website" "legacy_assets_cdn_storage_account" {
+  storage_account_id = azurerm_storage_account.legacy_assets_cdn_storage_account.id
   index_document     = "index.html"
   error_404_document = "index.html"
+}
+
+resource "azurerm_monitor_metric_alert" "legacy_assets_cdn_storage_account_low_availability" {
+  name                = "[${azurerm_storage_account.legacy_assets_cdn_storage_account.name}] Low Availability"
+  resource_group_name = local.core.resource_groups.westeurope.common
+  scopes              = [azurerm_storage_account.legacy_assets_cdn_storage_account.id]
+  description         = "The average availability is less than 99.8%. Runbook: not needed."
+  severity            = 0
+  window_size         = "PT5M"
+  frequency           = "PT5M"
+  auto_mitigate       = false
+
+  criteria {
+    metric_namespace       = "Microsoft.Storage/storageAccounts"
+    metric_name            = "Availability"
+    aggregation            = "Average"
+    operator               = "LessThan"
+    threshold              = 99.8
+    skip_metric_validation = false
+  }
 
   tags = local.tags
 }
 
 resource "azurerm_monitor_diagnostic_setting" "legacy_assets_cdn_storage_account_diagnostic_setting" {
 
-  depends_on = [module.legacy_assets_cdn_storage_account]
+  depends_on = [azurerm_storage_account.legacy_assets_cdn_storage_account]
 
-  target_resource_id         = "${module.legacy_assets_cdn_storage_account.id}/blobServices/default"
+  target_resource_id         = "${azurerm_storage_account.legacy_assets_cdn_storage_account.id}/blobServices/default"
   name                       = replace("${local.project_weu_legacy}stcdnassets", "-", "")
   log_analytics_workspace_id = local.platform_observability.monitoring_italynorth.log.id
 

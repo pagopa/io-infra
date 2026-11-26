@@ -13,10 +13,12 @@ resource "azurerm_cdn_frontdoor_rule" "global_cache" {
   order                     = 1
 
   actions {
-    route_configuration_override_action {
-      cache_behavior                = "OverrideAlways"
-      cache_duration                = "08:00:00" # 8 hours
-      query_string_caching_behavior = "IgnoreQueryString"
+    route_configuration_override {
+      caching {
+        behaviour              = "OverrideAlways"
+        duration               = "08:00:00" # 8 hours
+        query_string_behaviour = "IgnoreQueryString"
+      }
     }
   }
 }
@@ -29,18 +31,18 @@ resource "azurerm_cdn_frontdoor_rule" "sign_origin" {
   order                     = 2
 
   conditions {
-    url_path_condition {
-      operator     = "BeginsWith"
-      match_values = ["/sign"]
-      transforms   = ["Lowercase"]
+    request_path {
+      operator   = "BeginsWith"
+      values     = ["/sign"]
+      transforms = ["Lowercase"]
     }
   }
 
   actions {
-    response_header_action {
-      header_action = "Append"
-      header_name   = "Access-Control-Allow-Origin"
-      value         = "*"
+    modify_response_header {
+      operator     = "Append"
+      header_name  = "Access-Control-Allow-Origin"
+      header_value = "*"
     }
   }
 }
@@ -56,17 +58,19 @@ resource "azurerm_cdn_frontdoor_rule" "caching_rules" {
   order                     = each.value.order
 
   conditions {
-    url_path_condition {
-      operator     = "BeginsWith"
-      match_values = [each.value.source_pattern]
+    request_path {
+      operator = "BeginsWith"
+      values   = [each.value.source_pattern]
     }
   }
 
   actions {
-    route_configuration_override_action {
-      cache_behavior                = each.value.cache_behavior
-      cache_duration                = each.value.cache_duration
-      query_string_caching_behavior = "IgnoreQueryString"
+    route_configuration_override {
+      caching {
+        behaviour              = each.value.cache_behavior
+        duration               = each.value.cache_duration
+        query_string_behaviour = "IgnoreQueryString"
+      }
     }
   }
 }
@@ -81,18 +85,18 @@ resource "azurerm_cdn_frontdoor_rule" "redirect_rules" {
   order                     = each.value.order
 
   conditions {
-    url_path_condition {
-      operator     = "BeginsWith"
-      match_values = [each.value.source_pattern]
+    request_path {
+      operator = "BeginsWith"
+      values   = [each.value.source_pattern]
     }
   }
 
   actions {
-    url_redirect_action {
-      redirect_type        = "TemporaryRedirect"
-      redirect_protocol    = "Https"
-      destination_hostname = each.value.destination_host
-      destination_path     = each.value.destination_path
+    url_redirect {
+      redirect_type         = "TemporaryRedirect"
+      redirect_protocol     = "Https"
+      destination_host_name = each.value.destination_host
+      destination_path      = each.value.destination_path
     }
   }
 }
