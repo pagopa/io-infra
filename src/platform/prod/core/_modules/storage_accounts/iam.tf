@@ -2,7 +2,7 @@ module "exportdata_weu_01_com_admins" {
   count = var.location == "westeurope" ? 1 : 0
 
   source  = "pagopa-dx/azure-role-assignments/azurerm"
-  version = "~> 1.0"
+  version = "~> 5.0"
 
   principal_id    = var.azure_adgroup_com_admins_object_id
   subscription_id = var.subscription_id
@@ -39,7 +39,7 @@ module "exportdata_weu_01_com_devs" {
   count = var.location == "westeurope" ? 1 : 0
 
   source  = "pagopa-dx/azure-role-assignments/azurerm"
-  version = "~> 1.0"
+  version = "~> 5.0"
 
   principal_id    = var.azure_adgroup_com_devs_object_id
   subscription_id = var.subscription_id
