@@ -2,7 +2,7 @@ terraform {
   required_providers {
     azurerm = {
       source  = "hashicorp/azurerm"
-      version = "<= 3.116.0"
+      version = "~> 5.13.0"
     }
   }
 
@@ -35,14 +35,23 @@ provider "azurerm" {
 
 module "federated_identities" {
   source  = "pagopa-dx/azure-federated-identity-with-github/azurerm"
-  version = "~>0.0"
+  version = "~> 4.0"
 
-  prefix       = local.prefix
-  env_short    = local.env_short
-  env          = local.env
-  domain       = local.domain
-  location     = local.location
-  repositories = [local.repo_name]
+  environment = {
+    prefix          = local.prefix
+    env_short       = local.env_short
+    location        = local.location
+    domain          = local.domain
+    instance_number = "01"
+  }
+
+  resource_group_name = local.identity_resource_group_name
+  subscription_id     = data.azurerm_subscription.current.id
+
+  repository = {
+    name  = local.repo_name
+    owner = local.repo_owner
+  }
 
   continuos_integration = {
     enable = true
@@ -101,12 +110,11 @@ module "federated_identities" {
 }
 
 resource "azurerm_federated_identity_credential" "prod_tls_cd" {
-  name                = "prod-tls-cd"
-  resource_group_name = module.federated_identities.federated_cd_identity.resource_group_name
-  parent_id           = data.azurerm_user_assigned_identity.identity_prod_cd.id
-  audience            = ["api://AzureADTokenExchange"]
-  issuer              = "https://token.actions.githubusercontent.com"
-  subject             = "repo:${local.repo_owner}/${local.repo_name}:environment:prod-tls-cd"
+  name                      = "prod-tls-cd"
+  user_assigned_identity_id = data.azurerm_user_assigned_identity.identity_prod_cd.id
+  audience                  = ["api://AzureADTokenExchange"]
+  issuer                    = "https://token.actions.githubusercontent.com"
+  subject                   = "repo:${local.repo_owner}/${local.repo_name}:environment:prod-tls-cd"
 }
 
 resource "azurerm_role_assignment" "ci_cgn" {
