@@ -10,5 +10,17 @@
     "version": "7.1.1",
     "name": "unknown",
     "source": "https://registry.terraform.io/modules/pagopa-dx/azure-function-app/azurerm/7.1.1"
+  },
+  "apim_test_container_app.app": {
+    "hash": "2036352e9e99a806c165b431e3f9fc3669ffc067cca2abf112a7343c7939c38a",
+    "version": "9.1.1",
+    "name": "unknown",
+    "source": "https://registry.terraform.io/modules/pagopa-dx/azure-container-app/azurerm/9.1.1"
+  },
+  "apim_test_container_app.env": {
+    "hash": "d9e3c86ba1ab5baeb96d4f426c95705e3e67c12b6e6d4cc98149cf950a25db31",
+    "version": "5.0.1",
+    "name": "unknown",
+    "source": "https://registry.terraform.io/modules/pagopa-dx/azure-container-app-environment/azurerm/5.0.1"
   }
 }
