@@ -11,8 +11,16 @@
 			</return-response>
 		</when>
 	</choose>
+  <!-- Determine if the session token is v2 based on the presence of a dot -->
+  <set-variable name="isV2SessionToken" value='@(((string)context.Variables["authHeader"]).Substring("Bearer ".Length).Trim().Contains("."))' />
+  <!-- Determine the session introspection URL based on the token version -->
+  <set-variable name="sessionIntrospectionUrl" value='@(
+    (bool)context.Variables["isV2SessionToken"]
+        ? "https://127.0.0.1{{session-manager-introspection-url-v2}}"
+        : "https://127.0.0.1{{session-manager-introspection-url}}"
+  )' />
 	<send-request mode="new" response-variable-name="introspectionResponse" timeout="10" ignore-error="false">
-		<set-url>https://127.0.0.1{{session-manager-introspection-url}}</set-url>
+		<set-url>@((string)context.Variables["sessionIntrospectionUrl"])</set-url>
 		<set-method>GET</set-method>
 		<set-header name="Content-Type" exists-action="override">
 			<value>application/json</value>

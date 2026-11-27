@@ -14,9 +14,32 @@
 	</choose>
 	<!-- 2. Extract the Bearer token to use as cache key -->
 	<set-variable name="bearerToken" value="@(context.Variables.GetValueOrDefault<string>("authHeader").Substring("Bearer ".Length).Trim())" />
-	<!-- 2b. Validate that the Bearer token is non-empty -->
+	<!-- 2a. Determine if the session token is v2 based on the presence of a dot -->
+	<set-variable name="isV2SessionToken" value="@(((string)context.Variables["bearerToken"]).Contains("."))" />
+	<!-- 2b. Compute the cache key for the session token -->
+	<set-variable name="sessionTokenCacheKey" value="@{
+    var token = (string)context.Variables["bearerToken"];
+    if (!(bool)context.Variables["isV2SessionToken"])
+    {
+      return token.Length < 64 ? "" : "{{session-token-cache-prefix}}" + token;
+    }
+
+    var parts = token.Split('.');
+    if (token.Length < 129 || parts.Length != 2 || parts[0].Length == 0 || parts[1].Length == 0)
+    {
+      return "";
+    }
+
+    using (var sha256 = System.Security.Cryptography.SHA256.Create())
+    {
+      var bytes = System.Text.Encoding.UTF8.GetBytes(parts[1]);
+      var hash = BitConverter.ToString(sha256.ComputeHash(bytes)).Replace("-", "").ToLowerInvariant();
+      return "{{session-token-cache-prefix}}" + parts[0] + "." + hash;
+    }
+  }" />
+	<!-- 2c. Validate the computed session token cache key -->
 	<choose>
-		<when condition="@(context.Variables.GetValueOrDefault<string>("bearerToken").Length < 64)">
+		<when condition="@(((string)context.Variables["sessionTokenCacheKey"]).Length == 0)">
 			<return-response>
 				<set-status code="401" reason="Unauthorized" />
 				<set-header name="Content-Type" exists-action="override">
@@ -27,7 +50,7 @@
 		</when>
 	</choose>
 	<!-- 3. Lookup user data in APIM internal cache -->
-	<cache-lookup-value key="@("{{session-token-cache-prefix}}" + context.Variables.GetValueOrDefault<string>("bearerToken"))" variable-name="cachedUserData" caching-type="internal" />
+	<cache-lookup-value key="@(context.Variables.GetValueOrDefault<string>("sessionTokenCacheKey"))" variable-name="cachedUserData" caching-type="internal" />
 	<!-- 4. If cache HIT, use cached value; otherwise call introspection -->
 	<choose>
 		<when condition="@(context.Variables.ContainsKey("cachedUserData"))">
@@ -39,8 +62,14 @@
 		</when>
 		<otherwise>
 			<!-- Cache MISS: call introspection endpoint -->
+			<!-- Determine the session introspection URL based on the token version -->
+			<set-variable name="sessionIntrospectionUrl" value="@(
+        (bool)context.Variables["isV2SessionToken"]
+            ? "https://127.0.0.1{{session-manager-introspection-url-v2}}"
+            : "https://127.0.0.1{{session-manager-introspection-url}}"
+      )" />
 			<send-request mode="new" response-variable-name="introspectionResponse" timeout="10" ignore-error="false">
-				<set-url>https://127.0.0.1{{session-manager-introspection-url}}</set-url>
+				<set-url>@((string)context.Variables["sessionIntrospectionUrl"])</set-url>
 				<set-method>GET</set-method>
 				<set-header name="Content-Type" exists-action="override">
 					<value>application/json</value>
@@ -61,7 +90,7 @@
 					<!-- Store the base64-encoded user data in APIM internal cache with TTL from introspection (only if TTL > 0) -->
 					<choose>
 						<when condition="@((int)context.Variables["tokenTtl"] > 0)">
-							<cache-store-value key="@("{{session-token-cache-prefix}}" + context.Variables.GetValueOrDefault<string>("bearerToken"))" value="@((string)context.Variables["userData"])" duration="@((int)context.Variables["tokenTtl"])" caching-type="internal" />
+							<cache-store-value key="@(context.Variables.GetValueOrDefault<string>("sessionTokenCacheKey"))" value="@((string)context.Variables["userData"])" duration="@((int)context.Variables["tokenTtl"])" caching-type="internal" />
 						</when>
 					</choose>
 					<!-- Remove the Authorization header -->
