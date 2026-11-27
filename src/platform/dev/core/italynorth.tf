@@ -48,3 +48,32 @@ output "function_apim_test_name" {
   description = "Name of the private Function App for the APIM smoke test."
   value       = module.apim_test_caller.name
 }
+
+module "apim_test_container_app" {
+  source = "./_modules/container_app_apim_test"
+
+  prefix                     = local.prefix
+  env_short                  = local.env_short
+  location                   = local.location
+  resource_group_name        = azurerm_resource_group.test_services.name
+  virtual_network            = data.azurerm_virtual_network.itn_common
+  log_analytics_workspace_id = data.azurerm_log_analytics_workspace.itn_common.id
+
+  api_management = {
+    name                = "${local.project}-apim-01"
+    resource_group_name = "${local.project}-apim-rg-01"
+  }
+  api_application_display_name = "${local.prefix}-${local.env_short}-test-apim-entraid-01"
+
+  tags = local.tags
+}
+
+output "container_app_apim_test_name" {
+  description = "Name of the Container App for the APIM smoke test."
+  value       = module.apim_test_container_app.name
+}
+
+output "container_app_apim_test_url" {
+  description = "FQDN of the Container App for the APIM smoke test."
+  value       = module.apim_test_container_app.url
+}
