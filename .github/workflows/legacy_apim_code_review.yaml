@@ -20,7 +20,7 @@ on:
 
 jobs:
   prod_legacy_apim_code_review:
-    uses: pagopa/dx/.github/workflows/infra_plan.yaml@main
+    uses: pagopa/dx/.github/workflows/infra_plan.yaml@4096ba9f421ebb4a452ccec6953e67bc2872657f # main
     name: Prod - Code Review
     secrets: inherit
     with:

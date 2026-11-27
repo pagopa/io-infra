@@ -17,7 +17,7 @@ on:
       - ".github/workflows/core_deploy.yaml"
 jobs:
   prod_itn_core_deploy:
-    uses: pagopa/dx/.github/workflows/infra_apply.yaml@main
+    uses: pagopa/dx/.github/workflows/infra_apply.yaml@4096ba9f421ebb4a452ccec6953e67bc2872657f # main
     name: Prod - Code Deploy
     secrets: inherit
     with:
